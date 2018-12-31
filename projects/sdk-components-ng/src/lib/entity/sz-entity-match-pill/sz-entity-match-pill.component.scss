@@ -1,0 +1,30 @@
+@import "../../scss/variables";
+
+:host {
+
+  .sz-match-pill-element {
+    border-radius: var(--sz-entity-detail-pill-border-radius);
+    display: var(--sz-entity-detail-pill-display);
+    align-items: center;
+    justify-content: center;
+    color: var(--sz-entity-detail-pill-color);
+    padding: var(--sz-entity-detail-pill-padding);
+    font-size: var(--sz-entity-detail-pill-font-size);
+    font-weight: 600;
+    text-transform: var(--sz-entity-detail-pill-text-transform);
+    margin: var(--sz-entity-detail-pill-text-transform);
+    background-color: var(--sz-entity-detail-pill-background-color);
+
+    &.plus {
+      background-color: var(--sz-entity-detail-pill-background-color);
+    }
+    &.minus {
+      color: $sz-red;
+      background-color: $sz-white;
+      border: 1px solid $sz-red;
+    }
+    &.is-ambiguous {
+      background-color: var(--sz-color-ambiguous);
+    }
+  }
+}

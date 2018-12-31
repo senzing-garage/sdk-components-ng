@@ -1,0 +1,18 @@
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 14px;
+  font-size: 14px;
+  margin: 2px 4px;
+
+  span {
+    /* align-self: flex-start;*/
+    margin-right: 7px;
+  }
+
+  svg {
+    align-self: flex-end;
+  }
+}

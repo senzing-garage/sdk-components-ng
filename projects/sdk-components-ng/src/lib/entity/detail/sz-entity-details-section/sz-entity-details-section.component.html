@@ -1,0 +1,46 @@
+<sz-entity-detail-section-header
+  [sectionTitle]="sectionTitle"
+  [sectionCount]="sectionCount"
+  [sectionIcon]="sectionIcon"
+  [sectionId]="sectionId">
+</sz-entity-detail-section-header>
+<div>
+  <ng-container *ngIf="showByDataSource">
+    <sz-entity-detail-section-collapsible-card
+      *ngFor="let dataSourceRecords of _sectionDataByDataSource"
+      [showIcon]="showIcon"
+      [headerIcon]="headerIcon"
+      displayType="record"
+      [cardData]="dataSourceRecords"
+      [expanded]="true"
+      [truncateResults]="true"
+      (entityRecordClick)="onEntityRecordClick($event)">
+    </sz-entity-detail-section-collapsible-card>
+  </ng-container>
+  <ng-container *ngIf="showEntitiesByMatchKey">
+    <sz-entity-detail-section-collapsible-card
+      *ngFor="let entitiesByMatchKey of _sectionDataByMatchKey"
+      [showIcon]="showIcon"
+      [headerIcon]="headerIcon"
+      displayType="entity"
+      [cardData]="entitiesByMatchKey"
+      [truncateResults]="true"
+      [expanded]="true"
+      (entityRecordClick)="onEntityRecordClick($event)"
+      class="by-match-key">
+    </sz-entity-detail-section-collapsible-card>
+  </ng-container>
+  <ng-container *ngIf="!showByDataSource && !showEntitiesByMatchKey">
+    <sz-entity-detail-section-collapsible-card
+      *ngFor="let cardData of sectionData"
+      [showIcon]="showIcon"
+      [headerIcon]="headerIcon"
+      displayType="entity"
+      [cardData]="cardData"
+      [expanded]="true"
+      [truncateResults]="true"
+      (entityRecordClick)="onEntityRecordClick($event)">
+    </sz-entity-detail-section-collapsible-card>
+  </ng-container>
+</div>
+

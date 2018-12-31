@@ -1,0 +1,6 @@
+{
+  "/api": {
+	   "target": "http://g2server:22080/workbench/",
+	    "secure": false
+  }
+}

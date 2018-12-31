@@ -1,0 +1,48 @@
+<div class="search-card__content--wrapper" [class.collapsed]="truncateResults" (click)="truncateResults=!truncateResults">
+    <div class="search-card__content--column" #columnOne  *ngIf="showColumnOne">
+      <div class="line"><span [class.ellipsis]="truncateResults">Record Id: {{entity.recordId}}</span></div>
+      <div class="line" *ngFor="let otherData of entity.otherData; let i = index">
+        <span *ngIf="i < (maxLinesToDisplay-1) || !truncateResults" [class.ellipsis]="truncateResults">
+          {{otherData}}
+        </span>
+      </div>
+      <span class="ellipsis-toggle"
+      matTooltipPosition="left"
+      *ngIf="columnOneTotal > maxLinesToDisplay && truncateResults">...</span>
+    </div>
+    <div class="search-card__content--column" #columnTwo>
+      <div class="line" *ngFor="let nameAttributeData of getNameAndAttributeData(nameData, attributeData); let i = index">
+        <span *ngIf="i < maxLinesToDisplay || !truncateResults" [class.ellipsis]="truncateResults">
+          {{nameAttributeData}}
+        </span>
+      </div>
+      <span class="ellipsis-toggle"
+      matTooltipPosition="left"
+      *ngIf="columnTwoTotal > maxLinesToDisplay && truncateResults">...</span>
+    </div>
+    <div class="search-card__content--column addressData addressPhoneData" #columnThree>
+      <div class="line" *ngFor="let addressPhoneData of getAddressAndPhoneData(addressData, phoneData);
+      let i = index">
+        <span *ngIf="i < maxLinesToDisplay || !truncateResults"
+        [class.linked-attribute]="isLinkedAttribute(addressPhoneData)"
+        [class.ellipsis]="truncateResults">
+          {{addressPhoneData}}
+        </span>
+      </div>
+      <span class="ellipsis-toggle"
+      matTooltipPosition="left"
+      *ngIf="columnThreeTotal > maxLinesToDisplay && truncateResults">...</span>
+    </div>
+    <div class="search-card__content--column" #columnFour *ngIf="showColumnFour">
+      <div class="line" *ngFor="let identificationData of identifierData; let i = index">
+        <span *ngIf="i < maxLinesToDisplay || !truncateResults"
+        [class.linked-attribute]="isLinkedAttribute(identificationData)"
+        [class.ellipsis]="truncateResults">
+          {{identificationData}}
+        </span>
+      </div>
+      <span class="ellipsis-toggle"
+      matTooltipPosition="left"
+      *ngIf="columnFourTotal > maxLinesToDisplay && truncateResults">...</span>
+    </div>
+  </div>

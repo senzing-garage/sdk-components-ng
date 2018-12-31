@@ -1,0 +1,14 @@
+<div class="sz-search-result-card-wrapper" [ngClass]="{
+  'matches': cardTitle === 'Match',
+  'possible-match': cardTitle === 'Possible Match',
+  'discovered-relationships': cardTitle === 'Discovered Relationships',
+  'name-only': cardTitle === 'Name Only Matches',
+  'is-open': isOpen
+  }">
+  <sz-search-result-card-header
+    [searchResult]="searchResult"
+    [searchValue]="searchValue"></sz-search-result-card-header>
+
+  <sz-search-result-card-content
+  [entity]="searchResult" [showAllInfo]="isOpen"></sz-search-result-card-content>
+</div>

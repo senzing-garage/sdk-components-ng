@@ -1,0 +1,50 @@
+<div>
+  <!-- @senzing/sdk/search/sz-search-results -->
+
+  <div class="sz-search-results-total-summary">
+      <div class="sz-search-results-total" *ngIf="searchResults && searchValue">
+        <span class="sz-search-results-total-bold">{{searchResultsTotal}} Results </span>found for
+        <div>
+          <ng-container *ngFor="let attribute of attributeDisplay">{{attribute?.attr}}
+            <span *ngIf="attribute?.value">:</span>
+            <span class="sz-search-results-parameter-value">{{attribute?.value}}&nbsp;</span>
+          </ng-container>
+        </div>
+      </div>
+  </div>
+
+  <div class="search-result__section-header matches"
+    *ngIf="searchResults?.matches?.length > 0">Matches</div>
+  <sz-search-result-card
+    *ngFor="let searchResult of searchResults?.matches; let i = index"
+    (click)="onResultClick($event, searchResult)"
+    [searchResult]="searchResult"
+    [cardTitle]="'Match'">
+  </sz-search-result-card>
+
+  <div class="search-result__section-header possible-match"
+    *ngIf="searchResults?.possibleMatches?.length > 0">Possible Match</div>
+  <sz-search-result-card
+    *ngFor="let searchResult of searchResults?.possibleMatches; let i = index"
+    (click)="onResultClick($event, searchResult)"
+    [searchResult]="searchResult"
+    [cardTitle]="'Possible Matches'">
+  </sz-search-result-card>
+
+  <div class="search-result__section-header possibly-related"
+    *ngIf="searchResults?.discoveredRelationships?.length > 0">Possibly Related</div>
+  <sz-search-result-card
+    *ngFor="let searchResult of searchResults?.discoveredRelationships; let i = index"
+    (click)="onResultClick($event, searchResult)"
+    [searchResult]="searchResult"
+    [cardTitle]="'Discovered Relationships'">
+  </sz-search-result-card>
+
+  <div class="search-result__section-header name-only-matches"
+    *ngIf="searchResults?.nameOnlyMatches?.length > 0">Name Only Matches</div>
+  <sz-search-result-card
+    *ngFor="let searchResult of searchResults?.nameOnlyMatches; let i = index"
+    (click)="onResultClick($event, searchResult)"
+    [searchResult]="searchResult"
+    [cardTitle]="'Name Only Matches'"></sz-search-result-card>
+</div>
