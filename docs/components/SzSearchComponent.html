@@ -1106,10 +1106,9 @@ any parameter changes through the paramsChange emmitter.</p>
 </div>
 
     <div class="tab-pane fade " id="c-readme">
-        <p><h1 id="szsearchcomponent">SzSearchComponent</h1>
-<p>yo! it&#39;s a search component. show em something specific to usage.</p>
-<p>lets bind the output of the search component to the input of the search results component.<p>
-
+        <p><p>The search box component and the search results component are split up. this is done for some practical reasons. most noteably, so results can be placed wherever it makes sense to put them. This does complicate set up a tiny bit, but the tradeoff in flexibility is well worth it.</p>
+<p>So, lets get down to business.
+lets bind the output of the search component to the input of the search results component.</p>
 <p>first add a method to your component(or app.component.ts) that will handle the output:</p>
 <div><pre class="line-numbers"><code class="language-typescript">onSearchResults(evt: SzSearchResults) {
     console.log(&#39;&#64;senzing/sdk-components-ng/sz-search/searchResults: &#39;, evt);
