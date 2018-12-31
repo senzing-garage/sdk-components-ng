@@ -1,0 +1,1081 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Senzing SDK Components</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">Senzing SDK Components</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>SzSearchResultsComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>projects/sdk-components-ng/src/lib/search/sz-search-results/sz-search-results.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>sz-search-results</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./sz-search-results.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./sz-search-results.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#_searchResults">_searchResults</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#_searchValue">_searchValue</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#attributeDisplay">attributeDisplay</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#searchResultsJSON">searchResultsJSON</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#onResultClick">onResultClick</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#parameters">parameters</a>
+                            </li>
+                            <li>
+                                <a href="#results">results</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#resultClick">resultClick</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#searchResults">searchResults</a>
+                                </li>
+                                <li>
+                                    <a href="#searchValue">searchValue</a>
+                                </li>
+                                <li>
+                                    <a href="#searchResultsTotal">searchResultsTotal</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(titleCasePipe: <a href="https://angular.io/api/common/TitleCasePipe" target="_blank">TitleCasePipe</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search-results/sz-search-results.component.ts:74</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>titleCasePipe</td>
+                                                  
+                                                        <td>
+                                                                    <code><a href="https://angular.io/api/common/TitleCasePipe" target="_blank" >TitleCasePipe</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-2">
+                        <a name="parameters"></a>
+                        <code>parameters</code>
+                    </td>
+                    <td class="col-md-10">
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search-results/sz-search-results.component.ts:30</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-2">
+                        <a name="results"></a>
+                        <code>results</code>
+                    </td>
+                    <td class="col-md-10">
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search-results/sz-search-results.component.ts:18</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+    <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-2">
+                        <a name="resultClick"></a>
+                        <code>resultClick</code>
+                    </td>
+                    <td class="col-md-10">
+                        <em><code>$event</code> Type:</em>    <code><a href="../interfaces/SzEntityDetailSectionData.html" target="_self" >EventEmitter&lt;SzEntityDetailSectionData&gt;</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search-results/sz-search-results.component.ts:56</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section>
+    
+        <h3 id="methods">
+            Methods
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ngOnInit"></a>
+                        <span class="name">
+                            <b>
+                            ngOnInit
+                            </b>
+                            <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>ngOnInit()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search-results/sz-search-results.component.ts:80</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onResultClick"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            onResultClick
+                            </b>
+                            <a href="#onResultClick"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>onResultClick(evt: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, resData: <a href="../interfaces/SzEntityDetailSectionData.html">SzEntityDetailSectionData</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search-results/sz-search-results.component.ts:58</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>evt</td>
+                                                        <td>
+                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                                <tr>
+                                                        <td>resData</td>
+                                                        <td>
+                                                                    <code><a href="../interfaces/SzEntityDetailSectionData.html" target="_self" >SzEntityDetailSectionData</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="_searchResults"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            _searchResults
+                            </b>
+                            <a href="#_searchResults"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span><code>_searchResults:     <code><a href="../interfaces/SzSearchResults.html" target="_self" >SzSearchResults</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="../interfaces/SzSearchResults.html" target="_self" >SzSearchResults</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search-results/sz-search-results.component.ts:13</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="_searchValue"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            _searchValue
+                            </b>
+                            <a href="#_searchValue"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span><code>_searchValue:     <code><a href="../interfaces/SzEntitySearchParams.html" target="_self" >SzEntitySearchParams</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="../interfaces/SzEntitySearchParams.html" target="_self" >SzEntitySearchParams</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search-results/sz-search-results.component.ts:14</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="attributeDisplay"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            attributeDisplay
+                            </b>
+                            <a href="#attributeDisplay"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span><code>attributeDisplay:     <code>literal type[]</code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>literal type[]</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search-results/sz-search-results.component.ts:15</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchResultsJSON"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            searchResultsJSON
+                            </b>
+                            <a href="#searchResultsJSON"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span><code>searchResultsJSON:     <code></code>
+</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search-results/sz-search-results.component.ts:74</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchResults"></a>
+                        <span class="name"><b>searchResults</b><a href="#searchResults"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>searchResults()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search-results/sz-search-results.component.ts:25</a></div>
+                                </td>
+                            </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>searchResults(value)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search-results/sz-search-results.component.ts:18</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchValue"></a>
+                        <span class="name"><b>searchValue</b><a href="#searchValue"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>searchValue()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search-results/sz-search-results.component.ts:51</a></div>
+                                </td>
+                            </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>searchValue(value)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search-results/sz-search-results.component.ts:30</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchResultsTotal"></a>
+                        <span class="name"><b>searchResultsTotal</b><a href="#searchResultsTotal"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>searchResultsTotal()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search-results/sz-search-results.component.ts:63</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from &#x27;@angular/core&#x27;;
+import { TitleCasePipe } from &#x27;@angular/common&#x27;;
+import { SzSearchResults } from &#x27;../..//models/responces/search-results/search-results&#x27;;
+import { SzEntitySearchParams } from &#x27;../../models/entity-search&#x27;;
+import { SzEntityDetailSectionData } from &#x27;../../models/entity-detail-section-data&#x27;;
+
+@Component({
+  selector: &#x27;sz-search-results&#x27;,
+  templateUrl: &#x27;./sz-search-results.component.html&#x27;,
+  styleUrls: [&#x27;./sz-search-results.component.scss&#x27;]
+})
+export class SzSearchResultsComponent implements OnInit {
+  public _searchResults: SzSearchResults;
+  public _searchValue: SzEntitySearchParams;
+  public attributeDisplay: { attr: string, value: string }[];
+
+  @Input(&#x27;results&#x27;)
+  public set searchResults(value: SzSearchResults){
+    // value set from webcomponent attr comes in as string
+    this._searchResults &#x3D; (typeof value &#x3D;&#x3D; &#x27;string&#x27;) ? JSON.parse(value) : value;
+    this.searchResultsJSON &#x3D; JSON.stringify(this._searchResults, null, 4);
+    console.log(&#x27;@senzing/sdk/search/sz-search-results/sz-search-results.component@input(results) setter&#x27;+ (typeof value) +&#x27;: \n&#x27;, this._searchResults);
+  };
+
+  public get searchResults(): SzSearchResults {
+    return this._searchResults;
+  }
+
+  @Input(&#x27;parameters&#x27;)
+  public set searchValue(value: SzEntitySearchParams){
+    this._searchValue &#x3D; value;
+
+    this.attributeDisplay &#x3D; Object.keys(this._searchValue)
+      .map(key &#x3D;&gt; {
+        if (this._searchValue[key]) {
+          if (key.toLowerCase() &#x3D;&#x3D;&#x3D; &#x27;phonenumber&#x27;) {
+            return { attr: &#x27;Phone&#x27;, value: this._searchValue[key] };
+          }
+          if (key.toLowerCase() &#x3D;&#x3D;&#x3D; &#x27;orgname&#x27;) {
+            return;
+          }
+          return { attr: this.titleCasePipe.transform(key), value: this._searchValue[key] };
+        }
+      })
+      .filter(i &#x3D;&gt; !!i)
+      .filter((searchValuePair, index, self) &#x3D;&gt; {
+        return searchValuePair.attr.toLowerCase() &#x3D;&#x3D;&#x3D; &#x27;type&#x27; ? Object.keys(self).includes(&#x27;identifier&#x27;) : true;
+      });
+  }
+
+  public get searchValue(): SzEntitySearchParams {
+    return this._searchValue;
+  }
+
+  @Output()
+  public resultClick: EventEmitter&lt;SzEntityDetailSectionData&gt; &#x3D; new EventEmitter&lt;SzEntityDetailSectionData&gt;();
+
+  public onResultClick(evt: any, resData: SzEntityDetailSectionData): void{
+    // evt proxy
+    this.resultClick.emit(resData);
+  }
+
+  get searchResultsTotal(): number {
+    if (this.searchResults) {
+      return this.searchResults.discoveredRelationships.length +
+        this.searchResults.possibleMatches.length +
+        this.searchResults.matches.length +
+        this.searchResults.nameOnlyMatches.length;
+    }
+    return 0;
+  }
+
+  // TODO: remove after debugging
+  public searchResultsJSON;
+
+  constructor(
+    private titleCasePipe: TitleCasePipe
+  ) {}
+
+  ngOnInit() {}
+
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div&gt;
+  &lt;!-- @senzing/sdk/search/sz-search-results --&gt;
+
+  &lt;div class&#x3D;&quot;sz-search-results-total-summary&quot;&gt;
+      &lt;div class&#x3D;&quot;sz-search-results-total&quot; *ngIf&#x3D;&quot;searchResults &amp;&amp; searchValue&quot;&gt;
+        &lt;span class&#x3D;&quot;sz-search-results-total-bold&quot;&gt;{{searchResultsTotal}} Results &lt;/span&gt;found for
+        &lt;div&gt;
+          &lt;ng-container *ngFor&#x3D;&quot;let attribute of attributeDisplay&quot;&gt;{{attribute?.attr}}
+            &lt;span *ngIf&#x3D;&quot;attribute?.value&quot;&gt;:&lt;/span&gt;
+            &lt;span class&#x3D;&quot;sz-search-results-parameter-value&quot;&gt;{{attribute?.value}}&amp;nbsp;&lt;/span&gt;
+          &lt;/ng-container&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class&#x3D;&quot;search-result__section-header matches&quot;
+    *ngIf&#x3D;&quot;searchResults?.matches?.length &gt; 0&quot;&gt;Matches&lt;/div&gt;
+  &lt;sz-search-result-card
+    *ngFor&#x3D;&quot;let searchResult of searchResults?.matches; let i &#x3D; index&quot;
+    (click)&#x3D;&quot;onResultClick($event, searchResult)&quot;
+    [searchResult]&#x3D;&quot;searchResult&quot;
+    [cardTitle]&#x3D;&quot;&#x27;Match&#x27;&quot;&gt;
+  &lt;/sz-search-result-card&gt;
+
+  &lt;div class&#x3D;&quot;search-result__section-header possible-match&quot;
+    *ngIf&#x3D;&quot;searchResults?.possibleMatches?.length &gt; 0&quot;&gt;Possible Match&lt;/div&gt;
+  &lt;sz-search-result-card
+    *ngFor&#x3D;&quot;let searchResult of searchResults?.possibleMatches; let i &#x3D; index&quot;
+    (click)&#x3D;&quot;onResultClick($event, searchResult)&quot;
+    [searchResult]&#x3D;&quot;searchResult&quot;
+    [cardTitle]&#x3D;&quot;&#x27;Possible Matches&#x27;&quot;&gt;
+  &lt;/sz-search-result-card&gt;
+
+  &lt;div class&#x3D;&quot;search-result__section-header possibly-related&quot;
+    *ngIf&#x3D;&quot;searchResults?.discoveredRelationships?.length &gt; 0&quot;&gt;Possibly Related&lt;/div&gt;
+  &lt;sz-search-result-card
+    *ngFor&#x3D;&quot;let searchResult of searchResults?.discoveredRelationships; let i &#x3D; index&quot;
+    (click)&#x3D;&quot;onResultClick($event, searchResult)&quot;
+    [searchResult]&#x3D;&quot;searchResult&quot;
+    [cardTitle]&#x3D;&quot;&#x27;Discovered Relationships&#x27;&quot;&gt;
+  &lt;/sz-search-result-card&gt;
+
+  &lt;div class&#x3D;&quot;search-result__section-header name-only-matches&quot;
+    *ngIf&#x3D;&quot;searchResults?.nameOnlyMatches?.length &gt; 0&quot;&gt;Name Only Matches&lt;/div&gt;
+  &lt;sz-search-result-card
+    *ngFor&#x3D;&quot;let searchResult of searchResults?.nameOnlyMatches; let i &#x3D; index&quot;
+    (click)&#x3D;&quot;onResultClick($event, searchResult)&quot;
+    [searchResult]&#x3D;&quot;searchResult&quot;
+    [cardTitle]&#x3D;&quot;&#x27;Name Only Matches&#x27;&quot;&gt;&lt;/sz-search-result-card&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./sz-search-results.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">@import &quot;../../scss/variables&quot;;
+
+:host {
+  display: block;
+  padding: var(--sz-search-results-padding);
+  color: var(--sz-search-results-color);
+  font-family: var(--sz-search-results-font-family);
+
+  textarea {
+    width: 1000px;
+    height: 400px;
+  }
+  .label-title {
+    text-transform: uppercase;
+  }
+
+  .sz-search-results-total-summary {
+
+    color: var(--sz-search-results-header-color);
+    display: var(--sz-search-results-header-display);
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--sz-search-results-header-padding);
+    margin: var(--sz-search-results-header-margin);
+
+    .sz-search-results-total {
+      font-size: var(--sz-search-results-header-font-size);
+    }
+    .action-buttons__wrapper {
+      display: flex;
+    }
+  }
+
+  .sz-search-results-parameter-value {
+    color: var( --sz-search-results-header-parameter-value-color);
+    font-weight: 600;
+    margin: 0 .5em 0 .5em;
+  }
+
+  .search-result__section-header {
+    display: flex;
+    width: 100%;
+    font-size: var(--sz-search-results-header-font-size);
+    font-weight: 600;
+    height: 40px;
+    align-items: center;
+    color: var(--sz-search-results-section-header-color);
+    padding: var(--sz-search-results-section-header-padding);
+
+    &amp;.matches {
+      background-color: var(--sz-search-results-matches-header-background-color);
+    }
+    &amp;.possible-match {
+      background-color: var(--sz-search-results-possible-match-header-background-color);
+    }
+    &amp;.possibly-related {
+      background-color: var(--sz-search-results-possibly-related-header-background-color);
+    }
+    &amp;.name-only-matches {
+      background-color: var(--sz-search-results-name-only-matches-header-background-color);
+    }
+  }
+
+  .main-card__label {
+    min-height: 150px;
+    width: 200px;
+    min-width: 200px;
+    text-transform: uppercase;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    color: $sz-white;
+    &amp;.search {
+      background-color: $sz-green;
+    }
+    &amp;.insights {
+      background-color: $sz-orange;
+    }
+    &amp;.suggestions {
+      background-color: $sz-brown;
+    }
+    &amp;.data {
+      background-color: $sz-dark2;
+    }
+    &amp;.health {
+      background-color: $sz-dark-blue;
+    }
+  }
+
+}
+</code></pre>
+    </div>
+
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div>  <!-- @senzing/sdk/search/sz-search-results -->  <div class="sz-search-results-total-summary">      <div class="sz-search-results-total" *ngIf="searchResults && searchValue">        <span class="sz-search-results-total-bold">{{searchResultsTotal}} Results </span>found for        <div>          <ng-container *ngFor="let attribute of attributeDisplay">{{attribute?.attr}}            <span *ngIf="attribute?.value">:</span>            <span class="sz-search-results-parameter-value">{{attribute?.value}}&nbsp;</span>          </ng-container>        </div>      </div>  </div>  <div class="search-result__section-header matches"    *ngIf="searchResults?.matches?.length > 0">Matches</div>  <sz-search-result-card    *ngFor="let searchResult of searchResults?.matches; let i = index"    (click)="onResultClick($event, searchResult)"    [searchResult]="searchResult"    [cardTitle]="\'Match\'">  </sz-search-result-card>  <div class="search-result__section-header possible-match"    *ngIf="searchResults?.possibleMatches?.length > 0">Possible Match</div>  <sz-search-result-card    *ngFor="let searchResult of searchResults?.possibleMatches; let i = index"    (click)="onResultClick($event, searchResult)"    [searchResult]="searchResult"    [cardTitle]="\'Possible Matches\'">  </sz-search-result-card>  <div class="search-result__section-header possibly-related"    *ngIf="searchResults?.discoveredRelationships?.length > 0">Possibly Related</div>  <sz-search-result-card    *ngFor="let searchResult of searchResults?.discoveredRelationships; let i = index"    (click)="onResultClick($event, searchResult)"    [searchResult]="searchResult"    [cardTitle]="\'Discovered Relationships\'">  </sz-search-result-card>  <div class="search-result__section-header name-only-matches"    *ngIf="searchResults?.nameOnlyMatches?.length > 0">Name Only Matches</div>  <sz-search-result-card    *ngFor="let searchResult of searchResults?.nameOnlyMatches; let i = index"    (click)="onResultClick($event, searchResult)"    [searchResult]="searchResult"    [cardTitle]="\'Name Only Matches\'"></sz-search-result-card></div></div>'
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'SzSearchResultsComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'SzSearchResultsComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

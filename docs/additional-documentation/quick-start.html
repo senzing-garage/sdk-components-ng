@@ -1,0 +1,175 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Senzing SDK Components</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">Senzing SDK Components</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content additional-page">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="installation">Installation</h1>
+<p><img src="../images/test.png" alt="Test Thumbnail" width="150" height="100" /><br/>
+<img src="../images/test.png" alt="Test Image" class="img-responsive"></p>
+<h2 id="install-angular-and-angular-cli-7-x-x">Install Angular and Angular-Cli 7.x.x</h2>
+<h2 id="create-new-angular-project">Create new Angular Project</h2>
+<div><pre class="line-numbers"><code class="language-bash">ng new senzing-sdk-demo
+cd senzing-sdk-demo</code></pre></div><p>If you&#39;re already working with a Angular 7.x.x Project you can skip ahead to the next section.</p>
+<h2 id="install-senzing-http-services-and-sdk">Install Senzing HTTP Services and SDK</h2>
+<p>TODO: figure out how to distribute and install the HTTP REST api servlet.</p>
+<h3 id="senzing-rest-http">Senzing REST HTTP</h3>
+<div><pre class="line-numbers"><code class="language-bash">npm install &#64;Senzing/service-http-rest</code></pre></div><h3 id="senzing-sdk-componenents">Senzing SDK Componenents</h3>
+<div><pre class="line-numbers"><code class="language-none">npm install &#64;Senzing/sdk-components-ng</code></pre></div><h1 id="configuration">Configuration</h1>
+<h2 id="rest-service">REST Service</h2>
+<p>The Rest service must be configured with a port number and hostname. you will use this same network address info for the next step as well.</p>
+<h3 id="start-up-the-service">Start up the service</h3>
+<div><pre class="line-numbers"><code class="language-bash">cd node_modules/&#64;senzing/service-http-rest
+java -jar g2-webapp-servlet</code></pre></div><p>By default the http rest server will start on the local interface on port 22080. for the sake of this guide we will assume that you are running the rest server on this address. If you change the port number or are hosting the http server on a machine different from the machine you are following this walkthrough on please replace <em><a href="http://localhost:22080">http://localhost:22080</a></em> with the relevant hostname and port number.</p>
+<h3 id="load-in-some-data">Load in some data</h3>
+<p>Lets load in some stub data for the purposes of demonstrating that our rest service is operating in the expected manner. Gotta have something to search through right? </p>
+<p>lets fire up another console window and load in some data.</p>
+<div><pre class="line-numbers"><code class="language-bash">cd node_modules/&#64;senzing/service-http-rest
+node loader.js --file=./demo-data/1.csv</code></pre></div><h2 id="sdk-components">SDK Components</h2>
+<p>The SDK components have to know the network address information of where the HTTP services are running to communicate. There are a number of ways to do this:</p>
+<p>  1) At run time, injected in to the sdkModule&#39;s constructor.
+  2) At run time, by calling the sz-configuration component with the properties as attributes.
+  3) Before run time, by modifying the SDK Service&#39;s api.configuration.json file.
+  4) Before run time, by using a reverse proxy. </p>
+<h3 id="1-">1)</h3>
+<p>Open up your application&#39;s app.module.ts file and add the SDK imports(SenzingSdkModule, and SzRestConfiguration)</p>
+<div><pre class="line-numbers"><code class="language-typescript">import { SenzingSdkModule, SzRestConfiguration } from &#39;&#64;senzing/sdk-components-ng&#39;;</code></pre></div><p>Now add the <em>SenzingSdkModule</em> to your applications imports. You can pass in the API configuration parameters inline(shown below) or via any factory method that constructs a <em>SzRestConfiguration</em> object. Your application&#39;s NgModule declaration should look something like this below:</p>
+<div><pre class="line-numbers"><code class="language-typescript">&#64;NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    SenzingSdkModule.forRoot(() =&gt; {
+      return new SzRestConfiguration({
+        basePath: &quot;/api/&quot;,        
+        withCredentials: false
+      })
+    })
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+</code></pre></div><h3 id="2-">2)</h3>
+<p>the senzing sdk can be configured at run time to point to the location of where the rest service is running this can be done through the configuration tag:</p>
+<div><pre class="line-numbers"><code class="language-none">&lt;sz-configuration basePath=&quot;/api&quot; portNum=&quot;22080&quot;&gt;</code></pre></div><h3 id="4-reverse-proxy-for-development-">4) Reverse Proxy (for development)</h3>
+<p>For the easiest set up possible you may want to use angular-cli&#39;s built in reverse proxy support. This is not recommended for production deployment. By using the reverse proxy, you can temporarily avoid any security issues that will be present in production implementations. To do this type the following in a terminal window from your angular project&#39;s root:</p>
+<div><pre class="line-numbers"><code class="language-none">echo &#39;{&quot;api&quot;: {&quot;target&quot;: &quot;http://localhost:22080/workbench/&quot;, &quot;secure&quot;: false }}&#39; &gt; proxy.conf.json</code></pre></div><p>now add(or just update if already present) the following to your npm package.json start script:
+<code>&quot;start&quot;:&quot;ng serve --proxy-config proxy.conf.json&quot;</code>
+Now anytime you serve the angular application via <code>npm start</code> it will start up the angular development server with a built-in reverse proxy from <a href="http://localhost:4200/api/**/">http://localhost:4200/api/**/</a>* -&gt; <a href="http://localhost:22080/workbench/">http://localhost:22080/workbench/</a>*</p>
+<h3 id="add-sdk-module-to-application">Add SDK Module to application</h3>
+<p>open up your app&#39;s entry point module declaration, this is usually located in src/app/app.module.ts
+and add the following to it&#39;s imports. If you&#39;ve already done this in the previous step, or are using the web component(s) feel free to skip ahead to the html markup step.</p>
+<div><pre class="line-numbers"><code class="language-typescript">import { SenzingSdkModule } from &#39;&#64;senzing/sdk-components-ng&#39;;</code></pre></div><p>now add the SenzingSdkModule to the components imports property:</p>
+<div><pre class="line-numbers"><code class="language-typescript">&#64;NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    SenzingSdkModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})</code></pre></div><p>we should edit our app&#39;s template to pull in some SDK components. lets add the &quot;powered by senzing&quot; component just to make sure our angular app can pull in and render components from the sdk first.</p>
+<p>Open up the app.component.html and replace the content with the following:</p>
+<div><pre class="line-numbers"><code class="language-html">&lt;center&gt;
+  &lt;sz-powered-by format=&quot;large&quot;&gt;&lt;/sz-powered-by&gt;
+  &lt;sz-configuration-about&gt;&lt;/sz-configuration-about&gt;
+&lt;/center&gt;</code></pre></div><p>now lets start up the angular dev server</p>
+<div><pre class="line-numbers"><code class="language-bash">ng serve</code></pre></div><p>you should see a white background with the senzing logo in the top center of the page and a small table of service configuration and datasource properties(pictured below). If you do not then something is wrong. Re-read the steps above and double check that you didn&#39;t miss anything.</p>
+<h3 id="usage">Usage</h3>
+<p>please see api documentation for specific language implementation examples and usage. </p>
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'additional-page';
+            var COMPODOC_CURRENT_PAGE_URL = 'quick-start.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
