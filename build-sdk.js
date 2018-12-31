@@ -24,7 +24,7 @@ var sass = require('node-sass');
     './docs',
     './dist/@senzing/sdk-components-ng/docs'
   ).catch((err)=>{
-    console.log('build err #1: could not copy themes to package.');
+    console.log('build err #1: could not copy documentation to package.');
   });
 
   // now themes
@@ -32,7 +32,7 @@ var sass = require('node-sass');
     './projects/sdk-components-ng/src/lib/scss/themes',
     './dist/@senzing/sdk-components-ng/styles/themes'
   ).catch((err)=>{
-    console.log('build err #1: could not copy themes to package.');
+    console.log('build err #2: could not copy themes to package.');
   });
 
   // do readme and markdown files
@@ -40,13 +40,13 @@ var sass = require('node-sass');
     './projects/sdk-components-ng/README.md',
     './dist/@senzing/sdk-components-ng/README.md'
   ).catch((err)=>{
-    console.log('build err #2: could not copy README.md to package.');
+    console.log('build err #3: could not copy README.md to package.');
   });
   await fs.copyFile(
     './projects/sdk-components-ng/LICENSE',
     './dist/@senzing/sdk-components-ng/LICENSE'
   ).catch((err)=>{
-    console.log('build err #3: could not copy LICENSE to package.');
+    console.log('build err #4: could not copy LICENSE to package.');
   });
 
 })();
