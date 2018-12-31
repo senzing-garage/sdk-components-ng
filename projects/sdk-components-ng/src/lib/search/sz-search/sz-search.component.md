@@ -1,8 +1,8 @@
-# SzSearchComponent
 
-yo! it's a search component. show em something specific to usage.
+The search box component and the search results component are split up. this is done for some practical reasons. most noteably, so results can be placed wherever it makes sense to put them. This does complicate set up a tiny bit, but the tradeoff in flexibility is well worth it.
 
-<p>lets bind the output of the search component to the input of the search results component.<p>
+So, lets get down to business.
+lets bind the output of the search component to the input of the search results component.
 
 first add a method to your component(or app.component.ts) that will handle the output:
 ```typescript

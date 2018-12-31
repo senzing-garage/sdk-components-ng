@@ -3,10 +3,29 @@
 
 # Installation
 
-<img src="../images/test.png" alt="Test Thumbnail" width="150" height="100" /><br/>
-![Test Image](../images/test.png)
+## Prerequisites
+Before you begin, make sure your development environment includes Node.js® and an npm package manager.
 
-## Install Angular and Angular-Cli 7.x.x
+### Node.js
+Angular requires Node.js version 8.x or 10.x.
+
+* To check your version, run `node -v` in a terminal/console window.
+* To get Node.js, go to [nodejs.org](http://nodejs.org/download).
+
+### npm package manager
+Angular, the Angular CLI, and Angular apps depend on features and functionality provided by libraries that are available as [npm packages](https://docs.npmjs.com/about-npm/index.html). To download and install npm packages, you must have an npm package manager.
+
+This Quick Start uses the [npm client](https://docs.npmjs.com/cli/install) command line interface, which is installed with Node.js by default.
+
+To check that you have the npm client installed, run `npm -v` in a terminal/console window.
+
+### Install Angular and Angular-Cli 7.x.x
+This Quick Start makes use of the angular cli tool to automatically set up an angular project and provide tooling. This can be done without the cli tool as well, but for purposes of simplifying the examples it is what we're going to use in this walkthrough.
+
+To install the CLI using npm, open a terminal/console window and enter the following command:
+```bash
+npm install -g @angular/cli
+```
 
 ## Create new Angular Project
 ```bash
@@ -54,12 +73,13 @@ node loader.js --file=./demo-data/1.csv
 ## SDK Components
 The SDK components have to know the network address information of where the HTTP services are running to communicate. There are a number of ways to do this:
 
-  1) At run time, injected in to the sdkModule's constructor.
-  2) At run time, by calling the sz-configuration component with the properties as attributes.
-  3) Before run time, by modifying the SDK Service's api.configuration.json file.
-  4) Before run time, by using a reverse proxy. 
+1. [At run time, injected in to the sdkModule's constructor](#config-1).
+2. [At run time, by calling the sz-configuration component with the properties as attributes](#config-2).
+3. Before run time, by modifying the SDK Service's api.configuration.json file.
+4. [Before run time, by using a reverse proxy.](#config-4)
 
-### 1)
+<a name="config-1"></a>
+### 1) As Module constructor parameters
 Open up your application's app.module.ts file and add the SDK imports(SenzingSdkModule, and SzRestConfiguration)
 ```typescript
 import { SenzingSdkModule, SzRestConfiguration } from '@senzing/sdk-components-ng';
@@ -86,14 +106,14 @@ Now add the *SenzingSdkModule* to your applications imports. You can pass in the
 })
 
 ```
-
-### 2)
+<a name="config-2"></a>
+### 2) Using the configuration Tag
 the senzing sdk can be configured at run time to point to the location of where the rest service is running this can be done through the configuration tag:
 ```
 <sz-configuration basePath="/api" portNum="22080">
 ```
 
-
+<a name="config-4"></a>
 ### 4) Reverse Proxy (for development)
 For the easiest set up possible you may want to use angular-cli's built in reverse proxy support. This is not recommended for production deployment. By using the reverse proxy, you can temporarily avoid any security issues that will be present in production implementations. To do this type the following in a terminal window from your angular project's root:
 ```

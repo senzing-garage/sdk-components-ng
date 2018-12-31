@@ -48,10 +48,22 @@
 
 
 <h1 id="installation">Installation</h1>
-<p><img src="../images/test.png" alt="Test Thumbnail" width="150" height="100" /><br/>
-<img src="../images/test.png" alt="Test Image" class="img-responsive"></p>
-<h2 id="install-angular-and-angular-cli-7-x-x">Install Angular and Angular-Cli 7.x.x</h2>
-<h2 id="create-new-angular-project">Create new Angular Project</h2>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before you begin, make sure your development environment includes Node.js® and an npm package manager.</p>
+<h3 id="node-js">Node.js</h3>
+<p>Angular requires Node.js version 8.x or 10.x.</p>
+<ul>
+<li>To check your version, run <code>node -v</code> in a terminal/console window.</li>
+<li>To get Node.js, go to <a href="http://nodejs.org/download">nodejs.org</a>.</li>
+</ul>
+<h3 id="npm-package-manager">npm package manager</h3>
+<p>Angular, the Angular CLI, and Angular apps depend on features and functionality provided by libraries that are available as <a href="https://docs.npmjs.com/about-npm/index.html">npm packages</a>. To download and install npm packages, you must have an npm package manager.</p>
+<p>This Quick Start uses the <a href="https://docs.npmjs.com/cli/install">npm client</a> command line interface, which is installed with Node.js by default.</p>
+<p>To check that you have the npm client installed, run <code>npm -v</code> in a terminal/console window.</p>
+<h3 id="install-angular-and-angular-cli-7-x-x">Install Angular and Angular-Cli 7.x.x</h3>
+<p>This Quick Start makes use of the angular cli tool to automatically set up an angular project and provide tooling. This can be done without the cli tool as well, but for purposes of simplifying the examples it is what we&#39;re going to use in this walkthrough.</p>
+<p>To install the CLI using npm, open a terminal/console window and enter the following command:</p>
+<div><pre class="line-numbers"><code class="language-bash">npm install -g &#64;angular/cli</code></pre></div><h2 id="create-new-angular-project">Create new Angular Project</h2>
 <div><pre class="line-numbers"><code class="language-bash">ng new senzing-sdk-demo
 cd senzing-sdk-demo</code></pre></div><p>If you&#39;re already working with a Angular 7.x.x Project you can skip ahead to the next section.</p>
 <h2 id="install-senzing-http-services-and-sdk">Install Senzing HTTP Services and SDK</h2>
@@ -70,11 +82,14 @@ java -jar g2-webapp-servlet</code></pre></div><p>By default the http rest server
 <div><pre class="line-numbers"><code class="language-bash">cd node_modules/&#64;senzing/service-http-rest
 node loader.js --file=./demo-data/1.csv</code></pre></div><h2 id="sdk-components">SDK Components</h2>
 <p>The SDK components have to know the network address information of where the HTTP services are running to communicate. There are a number of ways to do this:</p>
-<p>  1) At run time, injected in to the sdkModule&#39;s constructor.
-  2) At run time, by calling the sz-configuration component with the properties as attributes.
-  3) Before run time, by modifying the SDK Service&#39;s api.configuration.json file.
-  4) Before run time, by using a reverse proxy. </p>
-<h3 id="1-">1)</h3>
+<ol>
+<li><a href="#config-1">At run time, injected in to the sdkModule&#39;s constructor</a>.</li>
+<li><a href="#config-2">At run time, by calling the sz-configuration component with the properties as attributes</a>.</li>
+<li>Before run time, by modifying the SDK Service&#39;s api.configuration.json file.</li>
+<li><a href="#config-4">Before run time, by using a reverse proxy.</a></li>
+</ol>
+<p><a name="config-1"></a></p>
+<h3 id="1-as-module-constructor-parameters">1) As Module constructor parameters</h3>
 <p>Open up your application&#39;s app.module.ts file and add the SDK imports(SenzingSdkModule, and SzRestConfiguration)</p>
 <div><pre class="line-numbers"><code class="language-typescript">import { SenzingSdkModule, SzRestConfiguration } from &#39;&#64;senzing/sdk-components-ng&#39;;</code></pre></div><p>Now add the <em>SenzingSdkModule</em> to your applications imports. You can pass in the API configuration parameters inline(shown below) or via any factory method that constructs a <em>SzRestConfiguration</em> object. Your application&#39;s NgModule declaration should look something like this below:</p>
 <div><pre class="line-numbers"><code class="language-typescript">&#64;NgModule({
@@ -93,9 +108,11 @@ node loader.js --file=./demo-data/1.csv</code></pre></div><h2 id="sdk-components
   providers: [],
   bootstrap: [AppComponent]
 })
-</code></pre></div><h3 id="2-">2)</h3>
+</code></pre></div><p><a name="config-2"></a></p>
+<h3 id="2-using-the-configuration-tag">2) Using the configuration Tag</h3>
 <p>the senzing sdk can be configured at run time to point to the location of where the rest service is running this can be done through the configuration tag:</p>
-<div><pre class="line-numbers"><code class="language-none">&lt;sz-configuration basePath=&quot;/api&quot; portNum=&quot;22080&quot;&gt;</code></pre></div><h3 id="4-reverse-proxy-for-development-">4) Reverse Proxy (for development)</h3>
+<div><pre class="line-numbers"><code class="language-none">&lt;sz-configuration basePath=&quot;/api&quot; portNum=&quot;22080&quot;&gt;</code></pre></div><p><a name="config-4"></a></p>
+<h3 id="4-reverse-proxy-for-development-">4) Reverse Proxy (for development)</h3>
 <p>For the easiest set up possible you may want to use angular-cli&#39;s built in reverse proxy support. This is not recommended for production deployment. By using the reverse proxy, you can temporarily avoid any security issues that will be present in production implementations. To do this type the following in a terminal window from your angular project&#39;s root:</p>
 <div><pre class="line-numbers"><code class="language-none">echo &#39;{&quot;api&quot;: {&quot;target&quot;: &quot;http://localhost:22080/workbench/&quot;, &quot;secure&quot;: false }}&#39; &gt; proxy.conf.json</code></pre></div><p>now add(or just update if already present) the following to your npm package.json start script:
 <code>&quot;start&quot;:&quot;ng serve --proxy-config proxy.conf.json&quot;</code>

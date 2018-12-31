@@ -48,6 +48,12 @@
 
 
 <h1 id="pre-defined">Pre Defined</h1>
+<p>We&#39;ve included some pre-built themes for quick usage to get you up and running. You&#39;ll almost certainly want to create your own, or tweak things to match your application&#39;s styling as needed. The compiled css files are located in the styles/themes directory in the package being used.</p>
+<h2 id="using-sass">using sass</h2>
+<p>if you&#39;re using sass(and scss processor can reference node_modules), open up your main scss file(src/styles.scss in default angular layout) and include the following.</p>
+<div><pre class="line-numbers"><code class="language-scss">&#64;import &#39;&#64;senzing/sdk-components-ng/styles/themes/senzing.css&#39;;</code></pre></div><h2 id="using-css">using css</h2>
+<p>open up your main html file and include the css reference in the HEAD of your document.</p>
+<div><pre class="line-numbers"><code class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;node_modules/&#64;senzing/sdk-components-ng/styles/themes/senzing.css&quot;&gt;</code></pre></div><p>for production it is recommended you copy the theme stylesheet you will be using over to a static directory(probably a bad idea to leave node_modules open to the world) and change the above reference to point to it&#39;s location. </p>
 
                    </div><div class="search-results">
     <div class="has-results">
