@@ -1,0 +1,796 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Senzing SDK Components</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">Senzing SDK Components</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>SzEntityDetailComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts</code>
+</p>
+
+
+
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>sz-entity-detail</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./sz-entity-detail.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./sz-entity-detail.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#entity">entity</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#entityDetailJSON">entityDetailJSON</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#projectId">projectId</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#onEntityIdChange">onEntityIdChange</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#onEntityRecordClick">onEntityRecordClick</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#entityId">entityId</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#entityId">entityId</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(searchService: <a href="../injectables/SzSearchService.html">SzSearchService</a>, searchHttpService: <a href="../injectables/SzSearchHttpService.html">SzSearchHttpService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:30</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>searchService</td>
+                                                  
+                                                        <td>
+                                                                    <code><a href="../injectables/SzSearchService.html" target="_self" >SzSearchService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>searchHttpService</td>
+                                                  
+                                                        <td>
+                                                                    <code><a href="../injectables/SzSearchHttpService.html" target="_self" >SzSearchHttpService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-2">
+                        <a name="entityId"></a>
+                        <code>entityId</code>
+                    </td>
+                    <td class="col-md-10">
+                            <p>
+                            <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                            </p>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:20</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+    <section>
+    
+        <h3 id="methods">
+            Methods
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onEntityIdChange"></a>
+                        <span class="name">
+                            <b>
+                            onEntityIdChange
+                            </b>
+                            <a href="#onEntityIdChange"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>onEntityIdChange()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:37</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onEntityRecordClick"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            onEntityRecordClick
+                            </b>
+                            <a href="#onEntityRecordClick"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>onEntityRecordClick(entityId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:28</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>entityId</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="entity"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            entity
+                            </b>
+                            <a href="#entity"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span><code>entity:     <code><a href="../interfaces/SzSearchResultEntityData.html" target="_self" >SzSearchResultEntityData</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="../interfaces/SzSearchResultEntityData.html" target="_self" >SzSearchResultEntityData</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:17</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="entityDetailJSON"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            entityDetailJSON
+                            </b>
+                            <a href="#entityDetailJSON"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span><code>entityDetailJSON:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>&quot;&quot;</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:16</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="projectId"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            projectId
+                            </b>
+                            <a href="#projectId"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span><code>projectId:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>1</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:15</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="entityId"></a>
+                        <span class="name"><b>entityId</b><a href="#entityId"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>entityId()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:24</a></div>
+                                </td>
+                            </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>entityId(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:20</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit,  Input, Output, EventEmitter } from &#x27;@angular/core&#x27;;
+import { SzEntityTypeService } from &#x27;../../services/sz-entity-type.service&#x27;;
+import { SzSearchHttpService } from &#x27;../../services/sz-search-http.service&#x27;;
+import { SzSearchService } from &#x27;../../services/sz-search.service&#x27;;
+import { distinctUntilChanged, map, tap } from &#x27;rxjs/operators&#x27;;
+import { SzSearchResultEntityData } from &#x27;../../models/responces/search-results/sz-search-result-entity-data&#x27;;
+
+@Component({
+  selector: &#x27;sz-entity-detail&#x27;,
+  templateUrl: &#x27;./sz-entity-detail.component.html&#x27;,
+  styleUrls: [&#x27;./sz-entity-detail.component.scss&#x27;]
+})
+export class SzEntityDetailComponent {
+  private _entityId: number;
+  public projectId &#x3D; 1;
+  public entityDetailJSON: string &#x3D; &quot;&quot;;
+  public entity: SzSearchResultEntityData;
+
+  @Input()
+  public set entityId(value: number) {
+    this._entityId &#x3D; value;
+    this.onEntityIdChange();
+  }
+  public get entityId(): number {
+    return this._entityId;
+  }
+
+  public onEntityRecordClick(entityId: number): void {
+    this.entityId &#x3D; entityId;
+  }
+
+  constructor(
+    private searchService: SzSearchService,
+    private searchHttpService: SzSearchHttpService
+  ) {}
+
+  onEntityIdChange() {
+    if (this.projectId &gt; 0 &amp;&amp; this._entityId) {
+      this.searchHttpService.getEntityByEntityId(this.projectId, this._entityId).
+      pipe(
+        tap(res &#x3D;&gt; console.log(&#x27;SzSearchService.getEntityById: &#x27; + this._entityId, res))
+      ).
+      subscribe((entityData: SzSearchResultEntityData) &#x3D;&gt; {
+        console.log(&#x27;sz-entity-detail.onEntityIdChange: &#x27;, entityData);
+        this.entityDetailJSON &#x3D; JSON.stringify(entityData, null, 4);
+        this.entity &#x3D; entityData;
+      });
+    }
+  }
+
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">
+&lt;!-- @senzing/sdk/entity/detail/sz-entity-detail --&gt;
+&lt;div&gt;
+  &lt;sz-entity-detail-header
+  [entity]&#x3D;&quot;entity&quot;
+  [project]&#x3D;&quot;projectId&quot;&gt;
+  &lt;/sz-entity-detail-header&gt;
+
+  &lt;sz-entity-details-section
+    *ngIf&#x3D;&quot;entity?.resolvedEntity?.records?.length&quot;
+    [sectionData]&#x3D;&quot;entity?.resolvedEntity?.records&quot;
+    [sectionTitle]&#x3D;&quot;&#x27;Matched Records&#x27;&quot;
+    sectionId&#x3D;&quot;detail-section-1&quot;
+    [sectionCount]&#x3D;&quot;entity?.resolvedEntity?.records?.length&quot;
+    (entityRecordClick)&#x3D;&quot;onEntityRecordClick($event)&quot;&gt;
+  &lt;/sz-entity-details-section&gt;
+  &lt;sz-entity-details-section
+    *ngIf&#x3D;&quot;entity?.possibleMatches?.length&quot;
+    [sectionData]&#x3D;&quot;entity?.possibleMatches&quot;
+    [sectionTitle]&#x3D;&quot;&#x27;Possible Matches&#x27;&quot;
+    sectionId&#x3D;&quot;detail-section-2&quot;
+    [sectionCount]&#x3D;&quot;entity?.possibleMatches?.length&quot;
+    (entityRecordClick)&#x3D;&quot;onEntityRecordClick($event)&quot;&gt;
+  &lt;/sz-entity-details-section&gt;
+  &lt;sz-entity-details-section
+    *ngIf&#x3D;&quot;entity?.discoveredRelationships?.length&quot;
+    [sectionData]&#x3D;&quot;entity?.discoveredRelationships&quot;
+    [sectionTitle]&#x3D;&quot;&#x27;Possible Relationships&#x27;&quot;
+    sectionId&#x3D;&quot;detail-section-3&quot;
+    [sectionCount]&#x3D;&quot;entity?.discoveredRelationships?.length&quot;
+    (entityRecordClick)&#x3D;&quot;onEntityRecordClick($event)&quot;&gt;
+  &lt;/sz-entity-details-section&gt;
+  &lt;sz-entity-details-section
+    *ngIf&#x3D;&quot;entity?.disclosedRelationships?.length&quot;
+    [sectionData]&#x3D;&quot;entity?.disclosedRelationships&quot;
+    [sectionTitle]&#x3D;&quot;&#x27;Disclosed Relationships&#x27;&quot;
+    sectionId&#x3D;&quot;detail-section-4&quot;
+    [sectionCount]&#x3D;&quot;entity?.disclosedRelationships?.length&quot;
+    (entityRecordClick)&#x3D;&quot;onEntityRecordClick($event)&quot;&gt;
+  &lt;/sz-entity-details-section&gt;
+
+  &lt;hr/&gt;
+  &lt;h3&gt;parameters&lt;/h3&gt;
+  &lt;label&gt;entityId:&lt;/label&gt;&lt;input [value]&#x3D;&quot;entityId&quot; (input)&#x3D;&quot;entityId &#x3D; $event.target.value&quot;/&gt;
+
+  &lt;h3&gt;output&lt;/h3&gt;
+  &lt;textarea [value]&#x3D;&quot;entityDetailJSON&quot;&gt;&lt;/textarea&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./sz-entity-detail.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">
+:host {
+  display: block;
+
+  textarea {
+    width: 1000px;
+    height: 400px;
+  }
+}
+</code></pre>
+    </div>
+
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!-- @senzing/sdk/entity/detail/sz-entity-detail --><div>  <sz-entity-detail-header  [entity]="entity"  [project]="projectId">  </sz-entity-detail-header>  <sz-entity-details-section    *ngIf="entity?.resolvedEntity?.records?.length"    [sectionData]="entity?.resolvedEntity?.records"    [sectionTitle]="\'Matched Records\'"    sectionId="detail-section-1"    [sectionCount]="entity?.resolvedEntity?.records?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="entity?.possibleMatches?.length"    [sectionData]="entity?.possibleMatches"    [sectionTitle]="\'Possible Matches\'"    sectionId="detail-section-2"    [sectionCount]="entity?.possibleMatches?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="entity?.discoveredRelationships?.length"    [sectionData]="entity?.discoveredRelationships"    [sectionTitle]="\'Possible Relationships\'"    sectionId="detail-section-3"    [sectionCount]="entity?.discoveredRelationships?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="entity?.disclosedRelationships?.length"    [sectionData]="entity?.disclosedRelationships"    [sectionTitle]="\'Disclosed Relationships\'"    sectionId="detail-section-4"    [sectionCount]="entity?.disclosedRelationships?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <hr/>  <h3>parameters</h3>  <label>entityId:</label><input [value]="entityId" (input)="entityId = $event.target.value"/>  <h3>output</h3>  <textarea [value]="entityDetailJSON"></textarea></div></div>'
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'SzEntityDetailComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'SzEntityDetailComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
