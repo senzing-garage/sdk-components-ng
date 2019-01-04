@@ -29,7 +29,7 @@ npm install -g @angular/cli
 
 ## Create new Angular Project
 ```bash
-ng new senzing-sdk-demo
+ng new senzing-sdk-demo --style=scss
 cd senzing-sdk-demo
 ```
 If you're already working with a Angular 7.x.x Project you can skip ahead to the next section.
