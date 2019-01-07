@@ -1,0 +1,35 @@
+<div style="text-align:left; font-weight: bold; font-size: 1.5em">
+  @senzing/sdk-components-ng
+</div>
+<div style="text-align:left; text-decoration: italic; font-size: 0.8em; margin: 2px 0 10px 0;">
+  local component testing sandbox
+</div>
+
+<div class="component-example">
+  Example:<br/>
+  <sz-powered-by></sz-powered-by>
+
+</div>
+
+<div class="component-example">
+  Example:<br/>
+  <sz-configuration-about></sz-configuration-about>
+</div>
+
+<!-- start search box -->
+<div class="component-example">
+  <sz-search
+    name="RICHARD LAVARADO"
+    email="114546319@MAIL.COM"
+    (resultsChange)="onSearchResults($event)"
+    (resultsCleared)="onSearchResultsCleared($event)"
+    (parameterChange)="onSearchParameterChange($event)"></sz-search>
+</div>
+<!-- end search box -->
+
+
+<!-- start search results -->
+<div class="component-example">
+  <sz-search-results *ngIf="showSearchResults" [results]="currentSearchResults" [parameters]="currentSearchParameters" (resultClick)="onSearchResultClick($event)"></sz-search-results>
+</div>
+<!-- end search results -->

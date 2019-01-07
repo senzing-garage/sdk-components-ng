@@ -175,9 +175,134 @@
           }
         }
       }
+    },
+    "testing": {
+      "root": "projects/testing/",
+      "sourceRoot": "projects/testing/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss",
+          "spec": false
+        },
+        "@schematics/angular:class": {
+          "spec": false
+        },
+        "@schematics/angular:directive": {
+          "spec": false
+        },
+        "@schematics/angular:guard": {
+          "spec": false
+        },
+        "@schematics/angular:module": {
+          "spec": false
+        },
+        "@schematics/angular:pipe": {
+          "spec": false
+        },
+        "@schematics/angular:service": {
+          "spec": false
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/testing",
+            "index": "projects/testing/src/index.html",
+            "main": "projects/testing/src/main.ts",
+            "polyfills": "projects/testing/src/polyfills.ts",
+            "tsConfig": "projects/testing/tsconfig.app.json",
+            "assets": [
+              "projects/testing/src/favicon.ico",
+              "projects/testing/src/assets"
+            ],
+            "styles": [
+              "projects/sdk-components-ng/src/lib/scss/styles.scss",
+              "projects/testing/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/testing/src/environments/environment.ts",
+                  "with": "projects/testing/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "testing:build",
+            "port": 4300,
+            "proxyConfig": "projects/testing/proxy.conf.json"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "testing:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "testing:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/testing/src/test.ts",
+            "polyfills": "projects/testing/src/polyfills.ts",
+            "tsConfig": "projects/testing/tsconfig.spec.json",
+            "karmaConfig": "projects/testing/karma.conf.js",
+            "styles": [
+              "projects/testing/src/styles.scss"
+            ],
+            "scripts": [],
+            "assets": [
+              "projects/testing/src/favicon.ico",
+              "projects/testing/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/testing/tsconfig.app.json",
+              "projects/testing/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
-  "defaultProject": "@senzing/sdk-components-ng",
+  "defaultProject": "testing",
   "schematics": {
     "@schematics/angular:component": {
       "styleext": "scss"

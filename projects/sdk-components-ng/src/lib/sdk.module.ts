@@ -1,5 +1,5 @@
 import { NgModule, Injector, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+/* import { BrowserModule } from '@angular/platform-browser'; */
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule, TitleCasePipe } from '@angular/common';
@@ -70,7 +70,7 @@ import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
     SzPoweredByComponent
   ],
   imports: [
-    BrowserModule,
+    CommonModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 
 import { Observable, of, from } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators'
@@ -7,15 +7,15 @@ import { switchMap, map } from 'rxjs/operators'
 //import 'rxjs/add/operator/catch'; // no idea where these are
 
 import { SzMappingAttr } from '../models/mapping-attr';
+import { SzRestConfiguration } from '../common/sz-rest-configuration';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SzMappingAttrService {
-  private mappingAttrsPath = 'api/mapping-attributes';
-  private baseURL = '/';
+  private mappingAttrsPath = 'mapping-attributes';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, @Inject(SzRestConfiguration) private apiConfiguration: SzRestConfiguration) {
     // do nothing
   }
 
@@ -39,7 +39,7 @@ export class SzMappingAttrService {
   }
 
   private getMappingAttrsURL(): string {
-    let baseURL = this.baseURL;
+    let baseURL = this.apiConfiguration.basePath;
     if (!baseURL.endsWith('/')) {
       baseURL = baseURL + '/';
     }
