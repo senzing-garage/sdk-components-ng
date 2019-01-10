@@ -98,7 +98,7 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(http: <a href="https://angular.io/api/common/http/HttpClient" target="_blank">HttpClient</a>)</code>
+<code>constructor(http: <a href="https://angular.io/api/common/http/HttpClient" target="_blank">HttpClient</a>, apiConfiguration: <a href="../classes/SzRestConfiguration.html">SzRestConfiguration</a>)</code>
                     </td>
                 </tr>
                         <tr>
@@ -125,6 +125,18 @@
                                                   
                                                         <td>
                                                                     <code><a href="https://angular.io/api/common/http/HttpClient" target="_blank" >HttpClient</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>apiConfiguration</td>
+                                                  
+                                                        <td>
+                                                                    <code><a href="../classes/SzRestConfiguration.html" target="_self" >SzRestConfiguration</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -261,7 +273,7 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient } from &#x27;@angular/common/http&#x27;;
-import { Injectable } from &#x27;@angular/core&#x27;;
+import { Injectable, Inject } from &#x27;@angular/core&#x27;;
 
 import { Observable, of, from } from &#x27;rxjs&#x27;;
 import { switchMap, map } from &#x27;rxjs/operators&#x27;
@@ -269,15 +281,15 @@ import { switchMap, map } from &#x27;rxjs/operators&#x27;
 //import &#x27;rxjs/add/operator/catch&#x27;; // no idea where these are
 
 import { SzMappingAttr } from &#x27;../models/mapping-attr&#x27;;
+import { SzRestConfiguration } from &#x27;../common/sz-rest-configuration&#x27;;
 
 @Injectable({
   providedIn: &#x27;root&#x27;
 })
 export class SzMappingAttrService {
-  private mappingAttrsPath &#x3D; &#x27;api/mapping-attributes&#x27;;
-  private baseURL &#x3D; &#x27;/&#x27;;
+  private mappingAttrsPath &#x3D; &#x27;mapping-attributes&#x27;;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, @Inject(SzRestConfiguration) private apiConfiguration: SzRestConfiguration) {
     // do nothing
   }
 
@@ -301,7 +313,7 @@ export class SzMappingAttrService {
   }
 
   private getMappingAttrsURL(): string {
-    let baseURL &#x3D; this.baseURL;
+    let baseURL &#x3D; this.apiConfiguration.basePath;
     if (!baseURL.endsWith(&#x27;/&#x27;)) {
       baseURL &#x3D; baseURL + &#x27;/&#x27;;
     }
