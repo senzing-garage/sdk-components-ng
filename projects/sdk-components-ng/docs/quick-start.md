@@ -7,7 +7,9 @@
 Before you begin, make sure your development environment includes Node.js® and an npm package manager.
 
 ### Node.js
-Angular requires Node.js version 8.x or 10.x.
+Angular and this specific SDK package requires Node.js version 8.x or 10.x.
+
+If you are looking for the Web Component version of this package it can be found [here](https://github.com/Senzing/sdk-components-web)
 
 * To check your version, run `node -v` in a terminal/console window.
 * To get Node.js, go to [nodejs.org](http://nodejs.org/download).
@@ -19,12 +21,58 @@ This Quick Start uses the [npm client](https://docs.npmjs.com/cli/install) comma
 
 To check that you have the npm client installed, run `npm -v` in a terminal/console window.
 
-### Install Angular and Angular-Cli 7.x.x
+### Install JAVA/JDK x.x
+TODO: find instructions for setting up jdk
+
+### Install Maven x.x (Optional)
+If you want to build the rest server from source you will need to install JDK version x.x.x
+Follow Directions on http://maven.apache.org/install.html
+
+### Install Angular and Angular-Cli 7.1.4
 This Quick Start makes use of the angular cli tool to automatically set up an angular project and provide tooling. This can be done without the cli tool as well, but for purposes of simplifying the examples it is what we're going to use in this walkthrough.
 
 To install the CLI using npm, open a terminal/console window and enter the following command:
 ```bash
 npm install -g @angular/cli
+```
+
+## Install Senzing HTTP Services and SDK
+#### Locate or Create G2.ini
+The library will initialize with this configuration file. This configuration file initializes the g2 engine pointing to a specific project. 
+
+##### Via Application
+If you have already installed the [application](https://senzing.com/use-cases/general-purpose/) it will be located in either 
+*%%LocalAppData%%\Senzing\Workbench\project_{PROJECT_ID}\ or 
+TODO: find osx link
+
+This application will also install any support libraries, and create the initial g2.ini for you.
+
+##### For Enterprise
+TODO: instructions from g2 api documentation.
+
+### Senzing REST Api (pre-built)
+```bash
+npm install @senzing/rest-api-server-java --save-dev
+```
+now start up the rest server with:
+```bash
+java -Djava.library.path="C:\\Program Files\\Senzing\\g2\\lib" -jar node_modules/@senzing/rest-api-server-java/sz-api-server-1.0-SNAPSHOT.jar -iniFile "%%LocalAppData%%\Senzing\Workbench\project_{PROJECT_ID}\g2.ini"
+```
+
+### Senzing REST HTTP (from source)
+
+#### Download and Register G2.jar
+TODO: instructions for this.
+
+```
+mvn install:install-file -Dfile=./g2.jar -DgroupId=com.senzing -DartifactId=g2 -Dversion=1.0.0-SNAPSHOT -Dpackaging=jar
+```
+
+#### Build Server
+```bash
+git clone git@github.com:Senzing/rest-api-server-java.git
+mvn clean install
+java -Djava.library.path="C:\\Program Files\\Senzing\\g2\\lib" -jar target/sz-api-server-1.0-SNAPSHOT.jar -iniFile "%%LocalAppData%%\Senzing\Workbench\project_{PROJECT_ID}\g2.ini"
 ```
 
 ## Create new Angular Project
@@ -34,18 +82,9 @@ cd senzing-sdk-demo
 ```
 If you're already working with a Angular 7.x.x Project you can skip ahead to the next section.
 
-## Install Senzing HTTP Services and SDK
-TODO: figure out how to distribute and install the HTTP REST api servlet.
-
-
-### Senzing REST HTTP
-```bash
-npm install @Senzing/service-http-rest
-```
-
 ### Senzing SDK Componenents
 ```
-npm install @Senzing/sdk-components-ng
+npm install @senzing/sdk-components-ng
 ```
 
 # Configuration
