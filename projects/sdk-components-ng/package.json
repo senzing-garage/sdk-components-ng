@@ -1,6 +1,6 @@
 {
   "name": "@senzing/sdk-components-ng",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": false,
   "keywords" :["Angular","Library","Senzing"],
   "license" : "SEE LICENSE IN LICENSE",
@@ -10,7 +10,7 @@
   },
   "homepage" :"https://senzing.github.io/sdk-components-ng/",
   "peerDependencies": {
-    "@angular/common": "^7.0.0",
-    "@angular/core": "^7.0.0"
+    "@angular/common": "~7.1.0",
+    "@angular/core": "~7.1.0"
   }
 }
