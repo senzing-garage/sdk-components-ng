@@ -2,7 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable, fromEventPattern, Subject } from 'rxjs';
 import { map, tap, mapTo } from 'rxjs/operators';
 
-import { SzSearchHttpService } from './sz-search-http.service';
+import {
+  EntityDataService,
+  SzAttributeSearchResponse,
+  SzEntityResponse,
+  SzAttributeSearchResponseData,
+  SzAttributeSearchResult
+} from '@senzing/rest-api-client-ng';
 import { SzMappingAttrService } from './sz-mapping-attr.service';
 import { SzEntitySearchParams } from './sz-search-params.model';
 
@@ -17,14 +23,15 @@ export class SzSearchService {
   private currentSearchParams: SzEntitySearchParams = {};
 
   constructor(
-    private searchHttpService: SzSearchHttpService,
+    private entityDataService: EntityDataService,
     private mappingAttrService: SzMappingAttrService) {}
 
-  public searchByAttributes(searchParms: SzEntitySearchParams, projectId: number): Observable<SzSearchResults> {
+  public searchByAttributes(searchParms: SzEntitySearchParams): Observable<SzAttributeSearchResult[]> {
     this.currentSearchParams = searchParms;
-    return this.searchHttpService.searchByAttributes(searchParms, projectId)
+
+    return this.entityDataService.searchByAttributes(JSON.stringify(searchParms))
     .pipe(
-      map((searchRes: any) => searchRes as SzSearchResults)
+      map((searchRes: SzAttributeSearchResponse) => searchRes.data.searchResults as SzAttributeSearchResult[])
     );
   }
 
@@ -52,13 +59,13 @@ export class SzSearchService {
     return this.mappingAttrService.getAttributes();
   }
 
-  public getEntityById(projectId: number, entityId: number): Observable<any> {
-    console.log('@senzing/sdk/services/sz-search[getEntityById('+ projectId +','+ entityId +')] ');
+  public getEntityById(entityId: number): Observable<SzEntityResponse> {
+    console.log('@senzing/sdk/services/sz-search[getEntityById('+ entityId +')] ');
 
-    return this.searchHttpService.getEntityByEntityId(projectId, entityId)
+    return this.entityDataService.getEntityByEntityId(entityId)
     .pipe(
       tap(res => console.log('SzSearchService.getEntityById: ' + entityId, res)),
-      map(res => (res as SzSearchResultEntityData))
+      map(res => (res as SzEntityResponse))
     );
   }
 

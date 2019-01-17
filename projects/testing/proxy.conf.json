@@ -1,6 +1,13 @@
 {
   "/api": {
-	   "target": "http://g2server:22080/workbench/",
+	   "target": "http://g2server:56828/workbench/",
 	    "secure": false
+  },
+  "/sz-rest-api/*": {
+    "target": "http://localhost:2080",
+    "secure": false,
+    "pathRewrite": {
+      "^/sz-rest-api": ""
+    }
   }
 }

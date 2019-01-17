@@ -1,12 +1,30 @@
+
+
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
+import { tap, filter } from 'rxjs/operators';
 
-import { EntityDataService, SzAttributeSearchResult } from '@senzing/rest-api-client-ng';
-import { SzEntitySearchParams } from '../../models/entity-search';
-import { SzSearchService } from '../../services/sz-search.service';
-import { SzMappingAttr } from '../../models/mapping-attr';
-import { JSONScrubber } from '../../common/utils';
+import {
+  EntityDataService,
+  SzAttributeSearchResult
+} from '@senzing/rest-api-client-ng';
+import { SzEntitySearchParams, SzSearchService } from '@senzing/sdk-components-ng';
+
+/**
+ * @internal
+*/
+const JSONScrubber = (value: any): any => {
+  const _repl = (name, val) => {
+    if(!val || val == undefined || val == null){
+      return undefined;
+    }
+    return val
+  }
+  if(value){
+    return JSON.parse(JSON.stringify(value, _repl));
+  }
+}
 
 /**
  * @internal
@@ -20,23 +38,12 @@ interface SzSearchFormParams {
   phoneNumber?: string[];
   type?: string[];
 };
-/**
- * Provides a search box component that can execute search queries and return results.
- *
- * @example
- * <sz-search
- * name="Isa Creepr"
- * (resultsChange)="myResultsHandler($event)"
- * (searchStart)="showSpinner()"
- * (searchEnd)="hideSpinner()">
- * @export
- */
 @Component({
-  selector: 'sz-search',
+  selector: 'app-sz-search',
   templateUrl: './sz-search.component.html',
   styleUrls: ['./sz-search.component.scss']
 })
-export class SzSearchComponent implements OnInit {
+export class SzSearchComponentTest implements OnInit {
   /**
    * populate the search fields with an pre-existing set of search parameters.
    */
@@ -121,7 +128,7 @@ export class SzSearchComponent implements OnInit {
    */
   @Input('name')
   public set inputName(value){
-    this.searchService.setSearchParam('NAME_FULL',value);
+    this.searchService.setSearchParam('name',value);
 
     if(this.entitySearchForm){
       this.entitySearchForm['NAME_FULL'] = value;
@@ -137,7 +144,7 @@ export class SzSearchComponent implements OnInit {
    */
   @Input('email')
   public set inputEmail(value){
-    this.searchService.setSearchParam('EMAIL_ADDRESS',value);
+    this.searchService.setSearchParam('email',value);
 
     if(this.entitySearchForm){
       this.entitySearchForm['EMAIL_ADDRESS'] = value;
@@ -215,7 +222,6 @@ export class SzSearchComponent implements OnInit {
   private createEntitySearchForm(): void {
 
     let searchParams = this.searchService.getSearchParams();
-    console.log('createEntitySearchForm: ',JSON.parse(JSON.stringify(searchParams)));
 
     if (searchParams) {
 
@@ -240,7 +246,7 @@ export class SzSearchComponent implements OnInit {
         NAME_TYPE: "PRIMARY"
       });
 
-      this.submitSearch();
+      //this.submitSearch();
     } else {
       this.entitySearchForm = this.fb.group({
         NAME_FULL: [''],

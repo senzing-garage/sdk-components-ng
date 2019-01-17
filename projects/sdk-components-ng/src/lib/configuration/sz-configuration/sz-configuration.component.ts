@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, Input } from '@angular/core';
 import { SzRestConfiguration } from '../../common/sz-rest-configuration';
+import { Configuration as ApiConfiguration } from '@senzing/rest-api-client-ng';
 
 @Component({
   selector: 'sz-configuration',
@@ -37,18 +38,7 @@ export class SzConfigurationComponent implements OnInit {
     this.apiConfiguration.withCredentials = value;
   }
 
-  @Input()
-  set portNum(value: number) {
-    this.apiConfiguration.portNum = value;
-  }
-
-  @Input()
-  set hostName(value: string) {
-    this.apiConfiguration.hostName = value;
-  }
-
-
-  constructor(@Inject(SzRestConfiguration) public apiConfiguration: SzRestConfiguration) { }
+  constructor(@Inject(ApiConfiguration) public apiConfiguration: ApiConfiguration) { }
 
   ngOnInit() {
 

@@ -3,8 +3,13 @@ import { NgModule, Injector, ModuleWithProviders, SkipSelf, Optional } from '@an
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule, TitleCasePipe } from '@angular/common';
+import {
+  ApiModule,
+  Configuration as ApiConfiguration
+} from '@senzing/rest-api-client-ng';
 
 /** utilities */
+import { JSONScrubber } from './common/utils';
 
 /** models */
 import { SzSearchResults } from './models/responces/search-results/search-results';
@@ -19,8 +24,6 @@ import { SzEntityTypeService } from './services/sz-entity-type.service';
 import { SzMappingAttrService } from './services/sz-mapping-attr.service';
 import { SzMappingTemplateService } from './services/sz-mapping-template.service';
 import { SzMessageBundleService } from './services/sz-message-bundle.service';
-import { SzProjectHttpService } from './services/sz-project-http.service';
-import { SzSearchHttpService } from './services/sz-search-http.service';
 import { SzSearchService } from './services/sz-search.service';
 import { SzServerErrorsService } from './services/sz-server-errors.service';
 import { SzSettingsService } from './services/sz-settings.service';
@@ -73,7 +76,8 @@ import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
     CommonModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ApiModule
   ],
   exports: [
     SzEntityDetailComponent,
@@ -99,8 +103,6 @@ import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
     SzMappingAttrService,
     SzMappingTemplateService,
     SzMessageBundleService,
-    SzProjectHttpService,
-    SzSearchHttpService,
     SzSearchService,
     SzServerErrorsService,
     SzSettingsService,
@@ -110,11 +112,12 @@ import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
 })
 export class SenzingSdkModule {
 
-  public static forRoot(configurationFactory: () => SzRestConfiguration): ModuleWithProviders {
+  public static forRoot(configurationFactory: () => SzRestConfiguration, apiConfigFactory: () => ApiConfiguration): ModuleWithProviders {
     return {
         ngModule: SenzingSdkModule,
         providers: [
-          { provide: SzRestConfiguration, useFactory: configurationFactory }
+          { provide: SzRestConfiguration, useFactory: configurationFactory },
+          { provide: ApiConfiguration, useFactory: apiConfigFactory }
         ]
     };
   }

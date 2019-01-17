@@ -1,43 +1,47 @@
 <div>
   <!-- @senzing/sdk/search/sz-search -->
-
-    <div class="content" *ngIf="true">
+  <!--
+    NAME_FULL
+    DATE_OF_BIRTH
+    IDENTIFIER
+    IDENTIFIER_TYPE
+    ADDR_FULL
+    PHONE_NUMBER
+    EMAIL_ADDRESS
+  -->
+  <div class="content" *ngIf="true">
       <section class="entity search" (ngSubmit)="submitSearch()">
         <form class="form" [formGroup]="entitySearchForm" novalidate>
           <div class="row">
             <div class="field name">
               <label for="entity-name">Name</label>
-              <input formControlName="name"
-                     class="search-input"
-                     id="entity-name"
-                     type="text"
-                     placeholder="Search for Name">
+              <input formControlName="NAME_FULL"
+                      class="search-input"
+                      id="entity-name"
+                      type="text"
+                      placeholder="Search for Name">
             </div>
             <div class="field dob">
               <label for="entity-dob">Date of Birth</label>
-              <input formControlName="dob"
-                     id="entity-dob"
-                     type="text"
-                     placeholder="mm/dd/yyyy">
+              <input formControlName="DATE_OF_BIRTH"
+                      id="entity-dob"
+                      type="text"
+                      placeholder="mm/dd/yyyy">
             </div>
             <div class="field identifier">
               <label for="entity-identifier">Identifier</label>
-              <input formControlName="identifier"
-                     id="entity-identifier"
-                     type="text"
-                     placeholder="Number">
+              <input formControlName="IDENTIFIER"
+                      id="entity-identifier"
+                      type="text"
+                      placeholder="Number">
             </div>
             <div class="field type">
               <label for="entity-type">Type</label>
-              <select formControlName="type"
+              <select formControlName="IDENTIFIER_TYPE"
                       class="identifier-dropdown"
                       id="entity-type"
                       name="type">
                 <option [ngValue]="null" disabled>Choose ID type</option>
-                <option *ngFor="let type of orderedAttributes()"
-                        [value]="type.code"
-                        [selected]="type.code === 'PASSPORT_NUMBER'">{{type.featureTypeCode}}
-                </option>
               </select>
             </div>
             <div class="action-button__wrapper">
@@ -47,24 +51,24 @@
           <div class="row">
             <div class="field address">
               <label for="entity-address">Address</label>
-              <input formControlName="address"
-                     id="entity-address"
-                     type="text"
-                     placeholder="Search for Address">
+              <input formControlName="ADDR_FULL"
+                      id="entity-address"
+                      type="text"
+                      placeholder="Search for Address">
             </div>
             <div class="field phone">
               <label for="entity-phone">Phone</label>
-              <input formControlName="phoneNumber"
-                     id="entity-phone"
-                     type="text"
-                     placeholder="Phone #">
+              <input formControlName="PHONE_NUMBER"
+                      id="entity-phone"
+                      type="text"
+                      placeholder="Phone #">
             </div>
             <div class="field email">
               <label for="entity-email">Email</label>
-              <input formControlName="email"
-                     id="entity-email"
-                     type="text"
-                     placeholder="Email Address">
+              <input formControlName="EMAIL_ADDRESS"
+                      id="entity-email"
+                      type="text"
+                      placeholder="Email Address">
             </div>
             <div class="field spacer">
 
@@ -73,12 +77,9 @@
               <button mat-button class="button__search-clear" (click)="clearSearch()">Clear Search Criteria</button>
             </div>
           </div>
-          <div class="row bottom">
-
-          </div>
+          <div class="row bottom"></div>
         </form>
       </section>
 
     </div>
-
-  </div>
+</div>

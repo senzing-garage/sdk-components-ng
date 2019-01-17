@@ -112,12 +112,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(searchHttpService: <a href="../injectables/SzSearchHttpService.html">SzSearchHttpService</a>, mappingAttrService: <a href="../injectables/SzMappingAttrService.html">SzMappingAttrService</a>)</code>
+<code>constructor(entityDataService: EntityDataService, mappingAttrService: <a href="../injectables/SzMappingAttrService.html">SzMappingAttrService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:17</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:23</a></div>
                             </td>
                         </tr>
 
@@ -135,10 +135,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>searchHttpService</td>
+                                                        <td>entityDataService</td>
                                                   
                                                         <td>
-                                                                    <code><a href="../injectables/SzSearchHttpService.html" target="_self" >SzSearchHttpService</a></code>
+                                                                    <code>EntityDataService</code>
                                                         </td>
                                                   
                                                     <td>
@@ -189,14 +189,14 @@
                 <tr>
                     <td class="col-md-4">
                             <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>getEntityById(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, entityId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                        <code>getEntityById(entityId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                     </td>
                 </tr>
 
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:55</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:62</a></div>
                             </td>
                         </tr>
 
@@ -216,18 +216,6 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>projectId</td>
-                                                        <td>
-                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                                <tr>
                                                         <td>entityId</td>
                                                         <td>
                                                                     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
@@ -245,7 +233,7 @@
                             <div>
                             </div>
                             <div class="io-description">
-                                <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+                                <b>Returns : </b>    <code>Observable&lt;SzEntityResponse&gt;</code>
 
                             </div>
                                 <div class="io-description">
@@ -279,7 +267,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:51</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:58</a></div>
                             </td>
                         </tr>
 
@@ -319,7 +307,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:31</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:38</a></div>
                             </td>
                         </tr>
 
@@ -352,14 +340,14 @@
                 <tr>
                     <td class="col-md-4">
                             <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>searchByAttributes(searchParms: <a href="../interfaces/SzEntitySearchParams.html">SzEntitySearchParams</a>, projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                        <code>searchByAttributes(searchParms: <a href="../interfaces/SzEntitySearchParams.html">SzEntitySearchParams</a>)</code>
                     </td>
                 </tr>
 
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:23</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:29</a></div>
                             </td>
                         </tr>
 
@@ -390,25 +378,13 @@
                                                     
 
                                                 </tr>
-                                                <tr>
-                                                        <td>projectId</td>
-                                                        <td>
-                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
                                         </tbody>
                                     </table>
                             </div>
                             <div>
                             </div>
                             <div class="io-description">
-                                <b>Returns : </b>    <code><a href="../interfaces/SzSearchResults.html" target="_self" >Observable&lt;SzSearchResults&gt;</a></code>
+                                <b>Returns : </b>    <code>Observable&lt;SzAttributeSearchResult[]&gt;</code>
 
                             </div>
                                 <div class="io-description">
@@ -442,7 +418,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:35</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:42</a></div>
                             </td>
                         </tr>
 
@@ -512,7 +488,13 @@
 import { Observable, fromEventPattern, Subject } from &#x27;rxjs&#x27;;
 import { map, tap, mapTo } from &#x27;rxjs/operators&#x27;;
 
-import { SzSearchHttpService } from &#x27;./sz-search-http.service&#x27;;
+import {
+  EntityDataService,
+  SzAttributeSearchResponse,
+  SzEntityResponse,
+  SzAttributeSearchResponseData,
+  SzAttributeSearchResult
+} from &#x27;@senzing/rest-api-client-ng&#x27;;
 import { SzMappingAttrService } from &#x27;./sz-mapping-attr.service&#x27;;
 import { SzEntitySearchParams } from &#x27;./sz-search-params.model&#x27;;
 
@@ -527,14 +509,15 @@ export class SzSearchService {
   private currentSearchParams: SzEntitySearchParams &#x3D; {};
 
   constructor(
-    private searchHttpService: SzSearchHttpService,
+    private entityDataService: EntityDataService,
     private mappingAttrService: SzMappingAttrService) {}
 
-  public searchByAttributes(searchParms: SzEntitySearchParams, projectId: number): Observable&lt;SzSearchResults&gt; {
+  public searchByAttributes(searchParms: SzEntitySearchParams): Observable&lt;SzAttributeSearchResult[]&gt; {
     this.currentSearchParams &#x3D; searchParms;
-    return this.searchHttpService.searchByAttributes(searchParms, projectId)
+
+    return this.entityDataService.searchByAttributes(JSON.stringify(searchParms))
     .pipe(
-      map((searchRes: any) &#x3D;&gt; searchRes as SzSearchResults)
+      map((searchRes: SzAttributeSearchResponse) &#x3D;&gt; searchRes.data.searchResults as SzAttributeSearchResult[])
     );
   }
 
@@ -562,13 +545,13 @@ export class SzSearchService {
     return this.mappingAttrService.getAttributes();
   }
 
-  public getEntityById(projectId: number, entityId: number): Observable&lt;any&gt; {
-    console.log(&#x27;@senzing/sdk/services/sz-search[getEntityById(&#x27;+ projectId +&#x27;,&#x27;+ entityId +&#x27;)] &#x27;);
+  public getEntityById(entityId: number): Observable&lt;SzEntityResponse&gt; {
+    console.log(&#x27;@senzing/sdk/services/sz-search[getEntityById(&#x27;+ entityId +&#x27;)] &#x27;);
 
-    return this.searchHttpService.getEntityByEntityId(projectId, entityId)
+    return this.entityDataService.getEntityByEntityId(entityId)
     .pipe(
       tap(res &#x3D;&gt; console.log(&#x27;SzSearchService.getEntityById: &#x27; + entityId, res)),
-      map(res &#x3D;&gt; (res as SzSearchResultEntityData))
+      map(res &#x3D;&gt; (res as SzEntityResponse))
     );
   }
 

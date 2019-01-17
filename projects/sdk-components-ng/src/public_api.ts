@@ -4,15 +4,18 @@
 
 export * from './lib/sdk.module';
 
+
+/** utilities */
+export * from './lib/common/utils';
+
 /** services */
+export * from './lib/services/sz-search.service';  // updated to use rest
+
 export * from './lib/services/sz-data-source.service';
 export * from './lib/services/sz-entity-type.service';
 export * from './lib/services/sz-mapping-attr.service';
 export * from './lib/services/sz-mapping-template.service';
 export * from './lib/services/sz-message-bundle.service';
-export * from './lib/services/sz-project-http.service';
-export * from './lib/services/sz-search-http.service';
-export * from './lib/services/sz-search.service';
 export * from './lib/services/sz-server-errors.service';
 export * from './lib/services/sz-settings.service';
 

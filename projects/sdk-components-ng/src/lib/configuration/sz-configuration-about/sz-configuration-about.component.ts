@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { SzRestConfiguration } from '../../common/sz-rest-configuration';
+import { Configuration as ApiConfiguration } from '@senzing/rest-api-client-ng';
 
 @Component({
   selector: 'sz-configuration-about',
@@ -9,7 +10,7 @@ import { SzRestConfiguration } from '../../common/sz-rest-configuration';
 export class SzConfigurationAboutComponent implements OnInit {
   public apiProperties: object[];
 
-  constructor(@Inject(SzRestConfiguration) public apiConfiguration: SzRestConfiguration) {}
+  constructor(@Inject(ApiConfiguration) public apiConfiguration: ApiConfiguration) {}
 
   public getPropsAsArray(): object[] {
     // Step 1. Get all the object keys.

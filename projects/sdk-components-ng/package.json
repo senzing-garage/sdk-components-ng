@@ -12,5 +12,8 @@
   "peerDependencies": {
     "@angular/common": "~7.1.0",
     "@angular/core": "~7.1.0"
+  },
+  "dependencies": {
+    "@senzing/rest-api-client-ng": "^0.0.2"
   }
 }

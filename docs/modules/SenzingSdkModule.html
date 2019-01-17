@@ -130,12 +130,6 @@
                             <a href="../injectables/SzMessageBundleService.html">SzMessageBundleService</a>
                         </li>
                         <li class="list-group-item">
-                            <a href="../injectables/SzProjectHttpService.html">SzProjectHttpService</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="../injectables/SzSearchHttpService.html">SzSearchHttpService</a>
-                        </li>
-                        <li class="list-group-item">
                             <a href="../injectables/SzSearchService.html">SzSearchService</a>
                         </li>
                         <li class="list-group-item">
@@ -195,14 +189,14 @@
                 <tr>
                     <td class="col-md-4">
                             <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>forRoot(configurationFactory: () => void)</code>
+                        <code>forRoot(configurationFactory: () => void, apiConfigFactory: () => void)</code>
                     </td>
                 </tr>
 
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="113" class="link-to-prism">projects/sdk-components-ng/src/lib/sdk.module.ts:113</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">projects/sdk-components-ng/src/lib/sdk.module.ts:115</a></div>
                             </td>
                         </tr>
 
@@ -223,6 +217,18 @@
                                         <tbody>
                                                 <tr>
                                                         <td>configurationFactory</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                                <tr>
+                                                        <td>apiConfigFactory</td>
                                                         <td>
                                                                     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
                                                         </td>
@@ -260,8 +266,13 @@
 import { HttpClientModule, HttpClient } from &#x27;@angular/common/http&#x27;;
 import { ReactiveFormsModule, FormsModule } from &#x27;@angular/forms&#x27;;
 import { CommonModule, TitleCasePipe } from &#x27;@angular/common&#x27;;
+import {
+  ApiModule,
+  Configuration as ApiConfiguration
+} from &#x27;@senzing/rest-api-client-ng&#x27;;
 
 /** utilities */
+import { JSONScrubber } from &#x27;./common/utils&#x27;;
 
 /** models */
 import { SzSearchResults } from &#x27;./models/responces/search-results/search-results&#x27;;
@@ -276,8 +287,6 @@ import { SzEntityTypeService } from &#x27;./services/sz-entity-type.service&#x27
 import { SzMappingAttrService } from &#x27;./services/sz-mapping-attr.service&#x27;;
 import { SzMappingTemplateService } from &#x27;./services/sz-mapping-template.service&#x27;;
 import { SzMessageBundleService } from &#x27;./services/sz-message-bundle.service&#x27;;
-import { SzProjectHttpService } from &#x27;./services/sz-project-http.service&#x27;;
-import { SzSearchHttpService } from &#x27;./services/sz-search-http.service&#x27;;
 import { SzSearchService } from &#x27;./services/sz-search.service&#x27;;
 import { SzServerErrorsService } from &#x27;./services/sz-server-errors.service&#x27;;
 import { SzSettingsService } from &#x27;./services/sz-settings.service&#x27;;
@@ -330,7 +339,8 @@ import { SzPoweredByComponent } from &#x27;./sz-powered-by/sz-powered-by.compone
     CommonModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ApiModule
   ],
   exports: [
     SzEntityDetailComponent,
@@ -356,8 +366,6 @@ import { SzPoweredByComponent } from &#x27;./sz-powered-by/sz-powered-by.compone
     SzMappingAttrService,
     SzMappingTemplateService,
     SzMessageBundleService,
-    SzProjectHttpService,
-    SzSearchHttpService,
     SzSearchService,
     SzServerErrorsService,
     SzSettingsService,
@@ -367,11 +375,12 @@ import { SzPoweredByComponent } from &#x27;./sz-powered-by/sz-powered-by.compone
 })
 export class SenzingSdkModule {
 
-  public static forRoot(configurationFactory: () &#x3D;&gt; SzRestConfiguration): ModuleWithProviders {
+  public static forRoot(configurationFactory: () &#x3D;&gt; SzRestConfiguration, apiConfigFactory: () &#x3D;&gt; ApiConfiguration): ModuleWithProviders {
     return {
         ngModule: SenzingSdkModule,
         providers: [
-          { provide: SzRestConfiguration, useFactory: configurationFactory }
+          { provide: SzRestConfiguration, useFactory: configurationFactory },
+          { provide: ApiConfiguration, useFactory: apiConfigFactory }
         ]
     };
   }

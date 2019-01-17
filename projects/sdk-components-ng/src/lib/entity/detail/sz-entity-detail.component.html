@@ -14,6 +14,7 @@
     [sectionCount]="entity?.resolvedEntity?.records?.length"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
+  <!--
   <sz-entity-details-section
     *ngIf="entity?.possibleMatches?.length"
     [sectionData]="entity?.possibleMatches"
@@ -38,7 +39,7 @@
     [sectionCount]="entity?.disclosedRelationships?.length"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
-
+-->
   <hr/>
   <h3>parameters</h3>
   <label>entityId:</label><input [value]="entityId" (input)="entityId = $event.target.value"/>
