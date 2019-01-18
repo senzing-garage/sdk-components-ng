@@ -31,6 +31,7 @@ export class SzSearchService {
 
     return this.entityDataService.searchByAttributes(JSON.stringify(searchParms))
     .pipe(
+      tap((searchRes: SzAttributeSearchResponse) => console.log('SzSearchService.searchByAttributes: ',searchParms, searchRes)),
       map((searchRes: SzAttributeSearchResponse) => searchRes.data.searchResults as SzAttributeSearchResult[])
     );
   }

@@ -17,6 +17,7 @@ export class SzSearchResultCardComponent implements OnInit {
   @Input()index: number;
   @Input()isOpen: boolean[];
   @Input()isPrinting: boolean;
+  @Input()showDataSources: boolean;
 
   showRecordId: boolean[] = [];
 

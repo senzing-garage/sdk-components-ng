@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
-import { SzSearchResults } from '../..//models/responces/search-results/search-results';
 import { SzEntitySearchParams } from '../../models/entity-search';
-import { SzEntityDetailSectionData } from '../../models/entity-detail-section-data';
+import {
+  EntityDataService,
+  SzAttributeSearchResult
+} from '@senzing/rest-api-client-ng';
 
 @Component({
   selector: 'sz-search-results',
@@ -10,68 +12,165 @@ import { SzEntityDetailSectionData } from '../../models/entity-detail-section-da
   styleUrls: ['./sz-search-results.component.scss']
 })
 export class SzSearchResultsComponent implements OnInit {
-  public _searchResults: SzSearchResults;
+  public searchResultsJSON; // TODO: remove after debugging
+  public _searchResults: SzAttributeSearchResult[];
   public _searchValue: SzEntitySearchParams;
   public attributeDisplay: { attr: string, value: string }[];
 
+  /**
+   * Shows or hides the datasource lists in the result items header.
+   * @memberof SzSearchResultsComponent
+   */
+  @Input() showDataSources: boolean = true;
+
+  /**
+   * The results of a search response to display in the component.
+   * @memberof SzSearchResultsComponent
+   */
   @Input('results')
-  public set searchResults(value: SzSearchResults){
+  public set searchResults(value: SzAttributeSearchResult[]){
     // value set from webcomponent attr comes in as string
     this._searchResults = (typeof value == 'string') ? JSON.parse(value) : value;
-    this.searchResultsJSON = JSON.stringify(this._searchResults, null, 4);
-    console.log('@senzing/sdk/search/sz-search-results/sz-search-results.component@input(results) setter'+ (typeof value) +': \n', this._searchResults);
+    //this.searchResultsJSON = JSON.stringify(this._searchResults, null, 4);
+    console.log('@senzing/sdk/search/sz-search-results/sz-search-results.component@input(results) setter '+ (typeof value) +': \n', this._searchResults);
   };
-
-  public get searchResults(): SzSearchResults {
+  /**
+   * The search results being displayed in the component.
+   *
+   * @readonly
+   * @memberof SzSearchResultsComponent
+   */
+  public get searchResults(): SzAttributeSearchResult[] {
     return this._searchResults;
   }
 
+  // ----------- getters for different grouping/filtering of search results ----------
+
+  /**
+   * A list of the search results that are matches.
+   * @readonly
+   * @memberof SzSearchResultsComponent
+   */
+  public get matches(): SzAttributeSearchResult[] {
+    return this._searchResults && this._searchResults.filter ? this._searchResults.filter( (sr) => {
+      return sr.resultType == "MATCH";
+    }) : undefined;
+  }
+  /**
+   * A list of the search results that are possible matches.
+   *
+   * @readonly
+   * @memberof SzSearchResultsComponent
+   */
+  public get possibleMatches(): SzAttributeSearchResult[] {
+    return this._searchResults && this._searchResults.filter ? this._searchResults.filter( (sr) => {
+      return sr.resultType == "POSSIBLE_MATCH";
+    }) : undefined;
+  }
+  /**
+   * A list of the search results that are related.
+   *
+   * @readonly
+   * @memberof SzSearchResultsComponent
+   */
+  public get discoveredRelationships(): SzAttributeSearchResult[] {
+    return this._searchResults && this._searchResults.filter ? this._searchResults.filter( (sr) => {
+      return sr.resultType == "POSSIBLE_RELATION";
+    }) : undefined;
+  }
+  /**
+   * A list of the search results that are name only matches.
+   *
+   * @readonly
+   * @memberof SzSearchResultsComponent
+   */
+  public get nameOnlyMatches(): SzAttributeSearchResult[] {
+    return this._searchResults && this._searchResults.filter ? this._searchResults.filter( (sr) => {
+      return sr.resultType == "NAME_ONLY_MATCH";
+    }) : undefined;
+  }
+
+  /**
+   * The current search parameters being used.
+   * used for displaying the parameters being searched on above result list.
+   * @memberof SzSearchResultsComponent
+   */
   @Input('parameters')
   public set searchValue(value: SzEntitySearchParams){
     this._searchValue = value;
 
     this.attributeDisplay = Object.keys(this._searchValue)
-      .map(key => {
-        if (this._searchValue[key]) {
-          if (key.toLowerCase() === 'phonenumber') {
-            return { attr: 'Phone', value: this._searchValue[key] };
-          }
-          if (key.toLowerCase() === 'orgname') {
-            return;
-          }
-          return { attr: this.titleCasePipe.transform(key), value: this._searchValue[key] };
+      .filter((key, index, self) => {
+        if(key === 'IDENTIFIER_TYPE'){
+          return Object.keys(self).includes('IDENTIFIER');
         }
-      })
-      .filter(i => !!i)
-      .filter((searchValuePair, index, self) => {
-        return searchValuePair.attr.toLowerCase() === 'type' ? Object.keys(self).includes('identifier') : true;
-      });
-  }
+        if(key === 'NAME_TYPE'){
+          return false;
+        }
+        if(key === 'ADDR_TYPE'){
+          return false;
+        }
+        if(key === 'COMPANY_NAME_ORG'){
+          return false;
+        }
 
+        return true;
+      })
+      .map(key => {
+        const humanKeys = {
+          'PHONE_NUMBER':'PHONE',
+          'NAME_FULL':'NAME',
+          'PERSON_NAME_FULL':'NAME',
+          'NAME_FIRST':'FIRST NAME',
+          'NAME_LAST':'LAST NAME',
+          'EMAIL_ADDRESS': 'EMAIL',
+          'ADDR_CITY':'CITY',
+          'ADDR_STATE':'STATE',
+          'ADDR_POSTAL_CODE':'ZIP CODE',
+          'SSN_NUMBER':'SSN',
+          'DRIVERS_LICENSE_NUMBER':'DL#'
+        }
+        let retVal = {attr: key, value: this._searchValue[key]};                  // temp const
+        if(humanKeys[retVal.attr]){ retVal.attr = humanKeys[retVal.attr]; };      // repl enum val with human readable
+        retVal.attr = this.titleCasePipe.transform(retVal.attr.replace(/_/g,' ')); // titlecase trans
+
+        return retVal
+      })
+      .filter(i => !!i);
+  }
+  /**
+   * The current search parameters being used.
+   * @readonly
+   * @memberof SzSearchResultsComponent
+   */
   public get searchValue(): SzEntitySearchParams {
     return this._searchValue;
   }
-
+  /**
+   * Occurs when a search result item is clicked.
+   *
+   * @memberof SzSearchResultsComponent
+   */
   @Output()
-  public resultClick: EventEmitter<SzEntityDetailSectionData> = new EventEmitter<SzEntityDetailSectionData>();
-
-  public onResultClick(evt: any, resData: SzEntityDetailSectionData): void{
+  public resultClick: EventEmitter<SzAttributeSearchResult> = new EventEmitter<SzAttributeSearchResult>();
+  /**
+   * DOM click handler which then triggers the "resultClick" event emitter.
+   *
+   * @memberof SzSearchResultsComponent
+   */
+  public onResultClick(evt: any, resData: SzAttributeSearchResult): void{
     // evt proxy
     this.resultClick.emit(resData);
   }
-
+  /**
+   * Total number of search results being displayed.
+   *
+   * @readonly
+   * @memberof SzSearchResultsComponent
+   */
   get searchResultsTotal(): number {
-    if (this.searchResults) {
-      return this.searchResults.discoveredRelationships.length +
-        this.searchResults.possibleMatches.length +
-        this.searchResults.matches.length +
-        this.searchResults.nameOnlyMatches.length;
-    }
-    return 0;
+    return (this.searchResults && this.searchResults.length) ? this.searchResults.length : 0;
   }
-
-  // TODO: remove after debugging
-  public searchResultsJSON;
 
   constructor(
     private titleCasePipe: TitleCasePipe
