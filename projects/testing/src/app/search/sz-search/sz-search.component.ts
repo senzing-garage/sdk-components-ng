@@ -9,22 +9,7 @@ import {
   EntityDataService,
   SzAttributeSearchResult
 } from '@senzing/rest-api-client-ng';
-import { SzEntitySearchParams, SzSearchService } from '@senzing/sdk-components-ng';
-
-/**
- * @internal
-*/
-const JSONScrubber = (value: any): any => {
-  const _repl = (name, val) => {
-    if(!val || val == undefined || val == null){
-      return undefined;
-    }
-    return val
-  }
-  if(value){
-    return JSON.parse(JSON.stringify(value, _repl));
-  }
-}
+import { SzEntitySearchParams, SzSearchService, JSONScrubber } from '@senzing/sdk-components-ng';
 
 /**
  * @internal
