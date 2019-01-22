@@ -1,7 +1,7 @@
 # @senzing/sdk-components-ng
 
 ## Overview
-This project is for the sensing sdk components that can be used in other projects using angular 7.X.X
+This project is for the senzing sdk components that can be used in other projects using angular 7.X.X
 To see an example of an electron app using the sdk components feel free to checkout the latest windows or mac builds from https://senzing.com/senzing-app/
 
 ## Dependencies
