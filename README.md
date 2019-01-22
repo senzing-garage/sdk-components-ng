@@ -16,13 +16,14 @@ These components require the senzing [rest api gateway](https://github.com/Senzi
 git@github.com:Senzing/rest-api-server-java.git
 cd rest-api-server-java
 mvn clean install
-java -jar target/sz-api-server-1.5.0.jar
+java -Djava.library.path="C:\Program Files\Senzing\g2\lib" -jar target/sz-api-server-1.5.0.jar -iniFile %LOCALAPPDATA%/Senzing/Workbench/project_1/g2.ini
 ```
 
 ##### from NPM
 ```bash
 npm install @senzing/rest-api-server-java --save
 java -jar node_modules/@senzing/rest-api-server-java/sz-api-server-1.5.0.jar
+java -Djava.library.path="C:\Program Files\Senzing\g2\lib" -jar node_modules/@senzing/rest-api-server-java/sz-api-server-1.5.0.jar -iniFile node_modules/@senzing/rest-api-server-java/g2.ini
 ```
 
 #### Components

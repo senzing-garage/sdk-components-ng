@@ -32,7 +32,7 @@
 
 <h1 id="-senzing-sdk-components-ng">@senzing/sdk-components-ng</h1>
 <h2 id="overview">Overview</h2>
-<p>This project is for the sensing sdk components that can be used in other projects using angular 7.X.X
+<p>This project is for the senzing sdk components that can be used in other projects using angular 7.X.X
 To see an example of an electron app using the sdk components feel free to checkout the latest windows or mac builds from <a href="https://senzing.com/senzing-app/">https://senzing.com/senzing-app/</a></p>
 <h2 id="dependencies">Dependencies</h2>
 <p>these components are dependent on a <a href="https://github.com/Senzing/rest-api-server-java/">rest api gateway</a> and <a href="https://github.com/Senzing/rest-api-client-ng/">the rest-api-client-ng</a> <a href="https://www.npmjs.com/package/@senzing/rest-api-client-ng">package</a>. </p>
@@ -43,9 +43,10 @@ To see an example of an electron app using the sdk components feel free to check
 <div><pre class="line-numbers"><code class="language-bash">git&#64;github.com:Senzing/rest-api-server-java.git
 cd rest-api-server-java
 mvn clean install
-java -jar target/sz-api-server-1.5.0.jar</code></pre></div><h5 id="from-npm">from NPM</h5>
+java -Djava.library.path=&quot;C:\Program Files\Senzing\g2\lib&quot; -jar target/sz-api-server-1.5.0.jar -iniFile %LOCALAPPDATA%/Senzing/Workbench/project_1/g2.ini</code></pre></div><h5 id="from-npm">from NPM</h5>
 <div><pre class="line-numbers"><code class="language-bash">npm install &#64;senzing/rest-api-server-java --save
-java -jar node_modules/&#64;senzing/rest-api-server-java/sz-api-server-1.5.0.jar</code></pre></div><h4 id="components">Components</h4>
+java -jar node_modules/&#64;senzing/rest-api-server-java/sz-api-server-1.5.0.jar
+java -Djava.library.path=&quot;C:\Program Files\Senzing\g2\lib&quot; -jar node_modules/&#64;senzing/rest-api-server-java/sz-api-server-1.5.0.jar -iniFile node_modules/&#64;senzing/rest-api-server-java/g2.ini</code></pre></div><h4 id="components">Components</h4>
 <p>open a terminal window to the location of your project and type<br><code>npm install @senzing/sdk-components-ng --save</code>
 <br/> <br/> </p>
 <h2 id="quick-start">Quick Start</h2>

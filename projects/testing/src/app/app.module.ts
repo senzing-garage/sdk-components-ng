@@ -3,11 +3,11 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { SenzingSdkModule, SzRestConfiguration, SzPoweredByComponent  } from '@senzing/sdk-components-ng';
+import { SenzingSdkModule, SzPoweredByComponent  } from '@senzing/sdk-components-ng';
 
 import { AppComponent } from './app.component';
 import { SzSearchComponentTest } from './search/sz-search/sz-search.component';
-import { ApiModule } from '@senzing/rest-api-client-ng';
+import { ApiModule, Configuration as SzRestConfiguration } from '@senzing/rest-api-client-ng';
 import { SzSearchResultsTestComponent } from './search/sz-search-results-test/sz-search-results-test.component';
 import { SzSearchResultsCardTestComponent } from './search/sz-search-results-card-test/sz-search-results-card-test.component';
 import { SzSearchResultCardHeaderTestComponent } from './search/sz-search-results-card-test/sz-search-result-card-header-test/sz-search-result-card-header-test.component';
@@ -31,8 +31,6 @@ import { SzSearchResultCardContentTestComponent } from './search/sz-search-resul
       () => {
         return new SzRestConfiguration({
           basePath: '/api',
-          hostName: 'SizzzLaK',
-          portNum: 22080,
           withCredentials: false
         });
       },

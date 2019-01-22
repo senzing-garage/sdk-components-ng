@@ -35,18 +35,27 @@ var sass = require('node-sass');
     console.log('build err #2: could not copy themes to package.');
   });
 
+  // root readme.md file to under sdk project(so the npm readme stays in sync)
+  await fs.copyFile(
+    './README.md',
+    './projects/sdk-components-ng/README.md'
+  ).catch((err)=>{
+    console.log('build err #3: could not copy README.md to package.');
+  });
+
   // do readme and markdown files
   await fs.copyFile(
     './projects/sdk-components-ng/README.md',
     './dist/@senzing/sdk-components-ng/README.md'
   ).catch((err)=>{
-    console.log('build err #3: could not copy README.md to package.');
+    console.log('build err #4: could not copy README.md to package.');
   });
+
   await fs.copyFile(
     './projects/sdk-components-ng/LICENSE',
     './dist/@senzing/sdk-components-ng/LICENSE'
   ).catch((err)=>{
-    console.log('build err #4: could not copy LICENSE to package.');
+    console.log('build err #5: could not copy LICENSE to package.');
   });
 
 })();
