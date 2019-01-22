@@ -1,41 +1,48 @@
 # @senzing/sdk-components-ng
 
 ## Overview
+This project is for the sensing sdk components that can be used in other projects using angular 7.X.X
+To see an example of an electron app using the sdk components feel free to checkout the latest windows or mac builds from https://senzing.com/senzing-app/
 
+## Dependencies
+these components are dependent on a [rest api gateway](https://github.com/Senzing/rest-api-server-java/) and [the rest-api-client-ng](https://github.com/Senzing/rest-api-client-ng/) [package](https://www.npmjs.com/package/@senzing/rest-api-client-ng). 
 
-## Installation
+### Installation
 #### REST Service Gateway
-open a terminal window to the location of your project and type  
-`npm install @senzing/service-rest-http --save`
+These components require the senzing [rest api gateway](https://github.com/Senzing/rest-api-server-java/) to function. Follow [the instructions](https://github.com/Senzing/rest-api-server-java/) to check out and build the [Api REST server](https://github.com/Senzing/rest-api-server-java/).
+
+##### Build(and run) from Source
+```bash
+git@github.com:Senzing/rest-api-server-java.git
+cd rest-api-server-java
+mvn clean install
+java -jar target/sz-api-server-1.5.0.jar
+```
+
+##### from NPM
+```bash
+npm install @senzing/rest-api-server-java --save
+java -jar node_modules/@senzing/rest-api-server-java/sz-api-server-1.5.0.jar
+```
 
 #### Components
 open a terminal window to the location of your project and type  
 `npm install @senzing/sdk-components-ng --save`
 <br/> <br/> 
 
-#### Dependencies
-these components are dependent on a [rest api gateway](https://www.npmjs.com/package/@senzing/service-rest-http) to forward requests from the 
-web application to the g2 instance and back. 
-Node should install this for you when you install this package. If it doesn't, or 
-you just want to look through it's documentation you can find it [Here](https://www.npmjs.com/package/@senzing/service-rest-http).
-<br/> <br/> 
 
 ## Quick Start
 After installation you will need to do a few more things.
 
-1) Start up an instance of the @senzing/service-rest-http by running the following 
-   from the application root. 
-```bash
-java -jar node_modules/@senzing/service-rest-http/http.jar
-```
+1) Start up an instance of the [Api REST server](https://github.com/Senzing/rest-api-server-java/) if not currently running.
   <br/> 
-  
+
 
 2) Add the SenzingSDKModule to your angular app's app.module.ts 
 ```typescript
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { SenzingSdkModule, SzRestConfiguration } from '@senzing/sdk-components-ng';
+import { SenzingSdkModule } from '@senzing/sdk-components-ng';
 
 import { AppComponent } from './app.component';
 
@@ -154,13 +161,15 @@ export class AppComponent {
 
 ### Configuration
 The SenzingSDKModule accepts a factory method or a object literal that conforms to the 
-properties found in the SzRestConfiguration class. By adding a factory like the following to the constructor method, you can change services configuration to point to non-default values.
+properties found in the [Configuration](https://senzing.github.io/rest-api-client-ng/classes/Configuration.html) class. By adding a factory like the following to the constructor method, you can change services configuration to point to non-default values.
 
 The following tells any components to make api requests to http://localhost:22080/api/
 ```typescript
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { SenzingSdkModule, SzRestConfiguration } from '@senzing/sdk-components-ng';
+import { SenzingSdkModule } from '@senzing/sdk-components-ng';
+import { SenzingSdkModule } from '@senzing/rest-api-client-ng';
+import { Configuration as SzApiConfiguration } from '@senzing/rest-api-client-ng';
 
 import { AppComponent } from './app.component';
 
@@ -171,7 +180,7 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     SenzingSdkModule.forRoot(() => {
-      return new SzRestConfiguration({
+      return new SzApiConfiguration({
         basePath: "http://localhost:22080/api/",
         withCredentials: false
       })
@@ -185,82 +194,12 @@ export class AppModule { }
 <br/> 
 
 ### Parameters
-  
-  <table class="table table-sm table-bordered index-table">
-      <tbody>
-              <tr>
-                  <td class="col-md-4">
-                      <h6><b>Properties</b></h6>
-                  </td>
-              </tr>
-              <tr>
-                  <td class="col-md-4">
-                      <ul class="index-list">
-                          <li>
-                                  <span class="modifier">Optional</span>
-                              <a href="#accessToken">accessToken</a>
-                          </li>
-                          <li>
-                                  <span class="modifier">Optional</span>
-                              <a href="#apiKeys">apiKeys</a>
-                          </li>
-                          <li>
-                                  <span class="modifier">Optional</span>
-                              <a href="#basePath">basePath</a>
-                          </li>
-                          <li>
-                                  <span class="modifier">Optional</span>
-                              <a href="#hostName">hostName</a>
-                          </li>
-                          <li>
-                                  <span class="modifier">Optional</span>
-                              <a href="#password">password</a>
-                          </li>
-                          <li>
-                                  <span class="modifier">Optional</span>
-                              <a href="#portNum">portNum</a>
-                          </li>
-                          <li>
-                                  <span class="modifier">Optional</span>
-                              <a href="#username">username</a>
-                          </li>
-                          <li>
-                                  <span class="modifier">Optional</span>
-                              <a href="#withCredentials">withCredentials</a>
-                          </li>
-                      </ul>
-                  </td>
-              </tr>
-              <tr>
-                  <td class="col-md-4">
-                      <h6><b>Methods</b></h6>
-                  </td>
-              </tr>
-              <tr>
-                  <td class="col-md-4">
-                      <ul class="index-list">
-                          <li>
-                                  <span class="modifier">Public</span>
-                              <a href="#isJsonMime">isJsonMime</a>
-                          </li>
-                          <li>
-                                  <span class="modifier">Public</span>
-                              <a href="#selectHeaderAccept">selectHeaderAccept</a>
-                          </li>
-                          <li>
-                                  <span class="modifier">Public</span>
-                              <a href="#selectHeaderContentType">selectHeaderContentType</a>
-                          </li>
-                      </ul>
-                  </td>
-              </tr>
-      </tbody>
-  </table>
+See [online documentation](https://senzing.github.io/rest-api-client-ng/classes/Configuration.html) for a complete list of configuration parameters that can control the connection behavior of the sdk components.
 
 
 ## Documentation
 Installation contains a statically generated API and component references. They can be found in
-node_modules/@senzing/sdk-components-ng/docs or Online here.
+node_modules/@senzing/sdk-components-ng/docs or [Online here](https://senzing.github.io/sdk-components-ng/).
 
 
 ## Trouble Shooting

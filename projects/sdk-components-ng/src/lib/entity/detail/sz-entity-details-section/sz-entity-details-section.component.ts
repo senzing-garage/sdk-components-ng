@@ -17,7 +17,7 @@ export class SzEntityDetailsSectionComponent implements OnInit {
   @Input() entity: SzSearchResultEntityData;
   @Input()
   set sectionData(value) {
-    console.log('setting section data: ', value);
+    //console.log('setting section data: ', value);
     this._sectionData = value;
     this._sectionDataByDataSource = this.getSectionDataByDataSource(value);
     this._sectionDataByMatchKey = this.getSectionDataByMatchKey(value);
@@ -81,7 +81,7 @@ export class SzEntityDetailsSectionComponent implements OnInit {
         dsAsArray.push(byDS[_k]);
       }
     }
-    if (_ret && _ret.length > 0) { console.log('records by source: ', dsAsArray); }
+    //if (_ret && _ret.length > 0) { console.log('records by source: ', dsAsArray); }
     return dsAsArray;
   }
 

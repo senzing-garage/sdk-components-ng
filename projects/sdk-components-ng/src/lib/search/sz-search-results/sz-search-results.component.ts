@@ -3,7 +3,8 @@ import { TitleCasePipe } from '@angular/common';
 import { SzEntitySearchParams } from '../../models/entity-search';
 import {
   EntityDataService,
-  SzAttributeSearchResult
+  SzAttributeSearchResult,
+  SzAttributeSearchResultType
 } from '@senzing/rest-api-client-ng';
 
 @Component({
@@ -53,7 +54,7 @@ export class SzSearchResultsComponent implements OnInit {
    */
   public get matches(): SzAttributeSearchResult[] {
     return this._searchResults && this._searchResults.filter ? this._searchResults.filter( (sr) => {
-      return sr.resultType == "MATCH";
+      return sr.resultType == SzAttributeSearchResultType.MATCH;
     }) : undefined;
   }
   /**
@@ -64,7 +65,7 @@ export class SzSearchResultsComponent implements OnInit {
    */
   public get possibleMatches(): SzAttributeSearchResult[] {
     return this._searchResults && this._searchResults.filter ? this._searchResults.filter( (sr) => {
-      return sr.resultType == "POSSIBLE_MATCH";
+      return sr.resultType == SzAttributeSearchResultType.POSSIBLEMATCH;
     }) : undefined;
   }
   /**
@@ -75,7 +76,7 @@ export class SzSearchResultsComponent implements OnInit {
    */
   public get discoveredRelationships(): SzAttributeSearchResult[] {
     return this._searchResults && this._searchResults.filter ? this._searchResults.filter( (sr) => {
-      return sr.resultType == "POSSIBLE_RELATION";
+      return sr.resultType == SzAttributeSearchResultType.POSSIBLERELATION;
     }) : undefined;
   }
   /**
@@ -86,7 +87,7 @@ export class SzSearchResultsComponent implements OnInit {
    */
   public get nameOnlyMatches(): SzAttributeSearchResult[] {
     return this._searchResults && this._searchResults.filter ? this._searchResults.filter( (sr) => {
-      return sr.resultType == "NAME_ONLY_MATCH";
+      return sr.resultType == SzAttributeSearchResultType.NAMEONLYMATCH;
     }) : undefined;
   }
 

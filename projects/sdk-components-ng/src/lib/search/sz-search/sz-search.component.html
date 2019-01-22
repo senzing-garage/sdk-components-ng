@@ -42,6 +42,10 @@
                       id="entity-type"
                       name="type">
                 <option [ngValue]="null" disabled>Choose ID type</option>
+                <option *ngFor="let type of orderedAttributes()"
+                        [value]="type.attributeCode"
+                        [selected]="type.attributeCode === 'PASSPORT_NUMBER'">{{type.featureType}}
+                </option>
               </select>
             </div>
             <div class="action-button__wrapper">

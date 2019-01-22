@@ -2,8 +2,7 @@
 <!-- @senzing/sdk/entity/detail/sz-entity-detail -->
 <div>
   <sz-entity-detail-header
-  [entity]="entity"
-  [project]="projectId">
+  [entity]="entity">
   </sz-entity-detail-header>
 
   <sz-entity-details-section
@@ -14,32 +13,32 @@
     [sectionCount]="entity?.resolvedEntity?.records?.length"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
-  <!--
+
   <sz-entity-details-section
-    *ngIf="entity?.possibleMatches?.length"
-    [sectionData]="entity?.possibleMatches"
+    *ngIf="this.possibleMatches?.length"
+    [sectionData]="this.possibleMatches"
     [sectionTitle]="'Possible Matches'"
     sectionId="detail-section-2"
-    [sectionCount]="entity?.possibleMatches?.length"
+    [sectionCount]="this.possibleMatches?.length"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
   <sz-entity-details-section
-    *ngIf="entity?.discoveredRelationships?.length"
-    [sectionData]="entity?.discoveredRelationships"
+    *ngIf="this.discoveredRelationships?.length"
+    [sectionData]="this.discoveredRelationships"
     [sectionTitle]="'Possible Relationships'"
     sectionId="detail-section-3"
-    [sectionCount]="entity?.discoveredRelationships?.length"
+    [sectionCount]="this.discoveredRelationships?.length"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
   <sz-entity-details-section
-    *ngIf="entity?.disclosedRelationships?.length"
-    [sectionData]="entity?.disclosedRelationships"
+    *ngIf="this.disclosedRelationships?.length"
+    [sectionData]="this.disclosedRelationships"
     [sectionTitle]="'Disclosed Relationships'"
     sectionId="detail-section-4"
-    [sectionCount]="entity?.disclosedRelationships?.length"
+    [sectionCount]="this.disclosedRelationships?.length"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
--->
+
   <hr/>
   <h3>parameters</h3>
   <label>entityId:</label><input [value]="entityId" (input)="entityId = $event.target.value"/>

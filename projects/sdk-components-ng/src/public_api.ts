@@ -3,21 +3,14 @@
  */
 
 export * from './lib/sdk.module';
-
+export * from '@senzing/rest-api-client-ng';
 
 /** utilities */
 export * from './lib/common/utils';
 
 /** services */
 export * from './lib/services/sz-search.service';  // updated to use rest
-
-export * from './lib/services/sz-data-source.service';
-export * from './lib/services/sz-entity-type.service';
-export * from './lib/services/sz-mapping-attr.service';
-export * from './lib/services/sz-mapping-template.service';
 export * from './lib/services/sz-message-bundle.service';
-export * from './lib/services/sz-server-errors.service';
-export * from './lib/services/sz-settings.service';
 
 /** components */
 export * from './lib/search/sz-search/sz-search.component';

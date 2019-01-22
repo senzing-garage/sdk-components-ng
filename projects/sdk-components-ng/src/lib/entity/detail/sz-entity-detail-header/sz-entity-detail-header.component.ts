@@ -1,7 +1,15 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
 import { SzEntityDetailSectionSummary } from '../../../models/entity-detail-section-data';
-import { SzProject } from '../../../project/project';
+
+
+import {
+  EntityDataService,
+  SzEntityData,
+  SzRelatedEntity,
+  SzResolvedEntity,
+  SzEntityRecord,
+  SzRelationshipType
+} from '@senzing/rest-api-client-ng';
 
 /**
  * @internal
@@ -14,8 +22,48 @@ import { SzProject } from '../../../project/project';
 })
 export class SzEntityDetailHeaderComponent implements OnInit {
   @Input() public searchTerm: string;
-  @Input() public project: SzProject;
-  @Input() public entity: SzSearchResultEntityData;
+  @Input() public entity: SzEntityData;
+
+/**
+   * A list of the search results that are matches.
+   * @readonly
+   */
+  public get matches(): SzEntityRecord[] {
+    return this.entity && this.entity.resolvedEntity.records ? this.entity.resolvedEntity.records : undefined;
+  }
+  /**
+   * A list of the search results that are possible matches.
+   *
+   * @readonly
+   */
+  public get possibleMatches(): SzRelatedEntity[] {
+    return this.entity && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
+      return sr.relationType == SzRelationshipType.POSSIBLEMATCH;
+    }) : undefined;
+  }
+  /**
+   * A list of the search results that are related.
+   *
+   * @readonly
+   */
+  public get discoveredRelationships(): SzRelatedEntity[] {
+    return this.entity && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
+      return sr.relationType == SzRelationshipType.POSSIBLERELATION;
+    }) : undefined;
+  }
+  /**
+   * A list of the search results that are name only matches.
+   *
+   * @readonly
+   */
+  public get disclosedRelationships(): SzRelatedEntity[] {
+
+    return this.entity && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
+      return sr.relationType == SzRelationshipType.DISCLOSEDRELATION;
+    }) : undefined;
+  }
+
+
 
   constructor() {
   }
@@ -30,16 +78,16 @@ export class SzEntityDetailHeaderComponent implements OnInit {
           title: 'Matched Record'+ (this.entity.resolvedEntity.records.length === 1 ? '' : 's')
         },
         {
-          total: this.entity.possibleMatches.length,
-          title: 'Possible Match'+ (this.entity.possibleMatches.length === 1 ? '' : 'es')
+          total: this.possibleMatches.length,
+          title: 'Possible Match'+ (this.possibleMatches.length === 1 ? '' : 'es')
         },
         {
-          total: this.entity.discoveredRelationships.length,
-          title: 'Possible Relationship'+ (this.entity.discoveredRelationships.length === 1 ? '' : 's')
+          total: this.discoveredRelationships.length,
+          title: 'Possible Relationship'+ (this.discoveredRelationships.length === 1 ? '' : 's')
         },
         {
-          total: this.entity.disclosedRelationships.length,
-          title: 'Disclosed Relationship'+ (this.entity.disclosedRelationships.length === 1 ? '' : 's')
+          total: this.disclosedRelationships.length,
+          title: 'Disclosed Relationship'+ (this.disclosedRelationships.length === 1 ? '' : 's')
         },
       ];
     }

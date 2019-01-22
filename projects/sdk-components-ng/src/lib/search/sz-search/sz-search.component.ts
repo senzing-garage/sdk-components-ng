@@ -1,11 +1,18 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject,  } from 'rxjs';
+import { map, tap, mapTo } from 'rxjs/operators';
 
-import { EntityDataService, SzAttributeSearchResult } from '@senzing/rest-api-client-ng';
+import {
+  EntityDataService,
+  ConfigService,
+  SzAttributeSearchResult,
+  SzAttributeType,
+  SzAttributeTypesResponse,
+  SzAttributeTypesResponseData
+} from '@senzing/rest-api-client-ng';
 import { SzEntitySearchParams } from '../../models/entity-search';
 import { SzSearchService } from '../../services/sz-search.service';
-import { SzMappingAttr } from '../../models/mapping-attr';
 import { JSONScrubber } from '../../common/utils';
 
 /**
@@ -47,13 +54,6 @@ export class SzSearchComponent implements OnInit {
    * @memberof SzSearchComponent
    */
   @Input() showSearchLabel = true;
-  /**
-   * collection of mapping attributes. this is usually populated from the mapping attributes
-   * query from the search service.
-   * @memberof SzSearchComponent
-   * @internal
-   */
-  //private matchingAttributes: SzMappingAttr[];
   /**
    * collection of which mapping attributes to show in the identifiers pulldown.
    * @memberof SzSearchComponent
@@ -184,9 +184,55 @@ export class SzSearchComponent implements OnInit {
       this.entitySearchForm['DATE_OF_BIRTH'] = value;
     }
   }
+  /**
+   * collection of mapping attributes. this is usually populated from the mapping attributes
+   * query from the search service.
+   * @memberof SzSearchComponent
+   * @internal
+   */
+  private matchingAttributes: SzAttributeType[];
+
+  @Input('attributeTypes')
+  public set inputAttributeTypes(value: SzAttributeType[]) {
+    // strip out non-identifiers
+    value = value.filter( (attr: SzAttributeType) => {
+      return (attr.attributeClass === 'IDENTIFIER')
+    });
+
+    // filter out by specific codes
+    if(this.allowedTypeAttributes && this.allowedTypeAttributes.length > 0){
+      value = value.filter( (attr: SzAttributeType) => {
+        return (this.allowedTypeAttributes.indexOf( attr.attributeCode) > -1)
+      });
+    }
+    this.matchingAttributes = value;
+  }
+  /**
+   * returns an ordered list of identifier fields to use in the pulldown list.
+   * @internal
+   * @returns SzAttributeType[]
+   */
+  public orderedAttributes(): SzAttributeType[] {
+    if(this.matchingAttributes && this.matchingAttributes.sort){
+      return this.matchingAttributes.sort((a, b) => {
+        let returnVal = 0;
+
+        if (a.attributeCode.match(/^PASSPORT/)) {
+          returnVal = returnVal - 1;
+        }
+
+        if (b.attributeCode.match(/^PASSPORT/)) {
+          returnVal = returnVal + 1;
+        }
+
+        return returnVal;
+      });
+    }
+    return this.matchingAttributes;
+  }
   /* end tag input setters */
 
-  constructor(private fb: FormBuilder, private entityService: EntityDataService, private searchService: SzSearchService) {}
+  constructor(private fb: FormBuilder, private entityService: EntityDataService, private configService: ConfigService, private searchService: SzSearchService) {}
 
   /**
    * do any additional component set up
@@ -196,15 +242,16 @@ export class SzSearchComponent implements OnInit {
     this.createEntitySearchForm();
 
     // get attributes
-    /*
-    this.searchService.getMappingAttributes()
-    .subscribe((attrs: SzMappingAttr[])=>{
-      this.matchingAttributes = attrs.filter( (attr: SzMappingAttr) => {
-        return (this.allowedTypeAttributes.indexOf( attr.code) > -1)
-      });
-      console.log('sz-search.getMappingAttributes: ', this.matchingAttributes);
+    this.configService.getAttributeTypes()
+    .pipe(
+      tap( (resp: any)=> console.log(resp) ),
+      map( (resp: SzAttributeTypesResponse) => resp.data.attributeTypes )
+    )
+    .subscribe((attributeTypes: SzAttributeType[]) => {
+      // yup
+      this.inputAttributeTypes = attributeTypes;
+      console.log('got attribute types: ', attributeTypes);
     });
-    */
   }
 
   /**
@@ -295,29 +342,4 @@ export class SzSearchComponent implements OnInit {
     this.entitySearchForm.reset();
     //this.searchService.clearSearchCriteria();
   }
-
-  /**
-   * returns an ordered list of fields to use in the pulldown list.
-   * @internal
-   * @returns SzMappingAttr[]
-   */
-  /*
-  public orderedAttributes(): SzMappingAttr[] {
-    if(this.matchingAttributes && this.matchingAttributes.sort){
-      return this.matchingAttributes.sort((a, b) => {
-        let returnVal = 0;
-
-        if (a.code.match(/^PASSPORT/)) {
-          returnVal = returnVal - 1;
-        }
-
-        if (b.code.match(/^PASSPORT/)) {
-          returnVal = returnVal + 1;
-        }
-
-        return returnVal;
-      });
-    }
-    return this.matchingAttributes;
-  }*/
 }

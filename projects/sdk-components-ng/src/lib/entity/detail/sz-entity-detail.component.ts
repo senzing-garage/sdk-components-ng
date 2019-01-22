@@ -1,9 +1,15 @@
 import { Component, OnInit,  Input, Output, EventEmitter } from '@angular/core';
-import { SzEntityTypeService } from '../../services/sz-entity-type.service';
 import { SzSearchService } from '../../services/sz-search.service';
 import { distinctUntilChanged, map, tap } from 'rxjs/operators';
-import { SzSearchResultEntityData } from '../../models/responces/search-results/sz-search-result-entity-data';
-import { SzEntityResponse, SzEntityData } from '@senzing/rest-api-client-ng';
+
+import {
+  EntityDataService,
+  SzEntityData,
+  SzRelatedEntity,
+  SzResolvedEntity,
+  SzEntityRecord,
+  SzRelationshipType
+} from '@senzing/rest-api-client-ng';
 
 @Component({
   selector: 'sz-entity-detail',
@@ -25,6 +31,45 @@ export class SzEntityDetailComponent {
     return this._entityId;
   }
 
+  /**
+   * A list of the search results that are matches.
+   * @readonly
+   */
+  public get matches(): SzEntityRecord[] {
+    return this.entity && this.entity.resolvedEntity.records ? this.entity.resolvedEntity.records : undefined;
+  }
+  /**
+   * A list of the search results that are possible matches.
+   *
+   * @readonly
+   */
+  public get possibleMatches(): SzRelatedEntity[] {
+    return this.entity && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
+      return sr.relationType == SzRelationshipType.POSSIBLEMATCH;
+    }) : undefined;
+  }
+  /**
+   * A list of the search results that are related.
+   *
+   * @readonly
+   */
+  public get discoveredRelationships(): SzRelatedEntity[] {
+    return this.entity && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
+      return sr.relationType == SzRelationshipType.POSSIBLERELATION;
+    }) : undefined;
+  }
+  /**
+   * A list of the search results that are name only matches.
+   *
+   * @readonly
+   */
+  public get disclosedRelationships(): SzRelatedEntity[] {
+
+    return this.entity && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
+      return sr.relationType == SzRelationshipType.DISCLOSEDRELATION;
+    }) : undefined;
+  }
+
   public onEntityRecordClick(entityId: number): void {
     this.entityId = entityId;
   }
@@ -39,10 +84,10 @@ export class SzEntityDetailComponent {
       pipe(
         tap(res => console.log('SzSearchService.getEntityById: ' + this._entityId, res))
       ).
-      subscribe((entityData: SzEntityResponse) => {
+      subscribe((entityData: SzEntityData) => {
         console.log('sz-entity-detail.onEntityIdChange: ', entityData);
         this.entityDetailJSON = JSON.stringify(entityData, null, 4);
-        this.entity = entityData.data;
+        this.entity = entityData;
       });
     }
   }

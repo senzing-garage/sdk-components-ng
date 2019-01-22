@@ -19,11 +19,13 @@ import {
 })
 export class SzSearchResultCardHeaderComponent implements OnInit {
   private _searchResult: SzAttributeSearchResult;
+
   @Input() showDataSources: boolean = true;
+
   @Input()
   set searchResult(value: SzAttributeSearchResult) {
     this._searchResult = value;
-    console.log('sz-search-result-card-header.setSearchResult: ', this._searchResult);
+    //console.log('sz-search-result-card-header.setSearchResult: ', this._searchResult);
   }
   get searchResult(): SzAttributeSearchResult {
     return this._searchResult;
@@ -48,7 +50,7 @@ export class SzSearchResultCardHeaderComponent implements OnInit {
   }
 
   get entityDetailsLinkName(): string {
-    console.log('sz-search-result-card-header.getEntityDetailsLinkName: ', this._searchResult);
+    //console.log('sz-search-result-card-header.getEntityDetailsLinkName: ', this._searchResult);
     if (this._searchResult && this._searchResult.entityName) {
       return this._searchResult.entityName;
     } else if(this._searchResult && this._searchResult.bestName) {

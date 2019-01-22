@@ -5,7 +5,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import {
   ApiModule,
-  Configuration as ApiConfiguration
+  Configuration as ApiConfiguration,
+  SzAttributeType
 } from '@senzing/rest-api-client-ng';
 
 /** utilities */
@@ -13,20 +14,13 @@ import { JSONScrubber } from './common/utils';
 
 /** models */
 import { SzSearchResults } from './models/responces/search-results/search-results';
-import { SzSearchResultEntityData } from './models/responces/search-results/sz-search-result-entity-data';
 import { SzEntityDetailSectionData } from './models/entity-detail-section-data';
 import { SzEntitySearchParams } from './models/entity-search';
 
 /** services */
 import { SzRestConfiguration } from './common/sz-rest-configuration';
-import { SzDataSourceService } from './services/sz-data-source.service';
-import { SzEntityTypeService } from './services/sz-entity-type.service';
-import { SzMappingAttrService } from './services/sz-mapping-attr.service';
-import { SzMappingTemplateService } from './services/sz-mapping-template.service';
 import { SzMessageBundleService } from './services/sz-message-bundle.service';
 import { SzSearchService } from './services/sz-search.service';
-import { SzServerErrorsService } from './services/sz-server-errors.service';
-import { SzSettingsService } from './services/sz-settings.service';
 
 /** components */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
@@ -98,14 +92,8 @@ import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
     SzConfigurationAboutComponent
   ],
   providers: [
-    SzDataSourceService,
-    SzEntityTypeService,
-    SzMappingAttrService,
-    SzMappingTemplateService,
     SzMessageBundleService,
     SzSearchService,
-    SzServerErrorsService,
-    SzSettingsService,
     HttpClient,
     TitleCasePipe
   ]
