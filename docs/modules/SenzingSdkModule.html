@@ -171,14 +171,14 @@
                 <tr>
                     <td class="col-md-4">
                             <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>forRoot(configurationFactory: () => void, apiConfigFactory: () => void)</code>
+                        <code>forRoot(apiConfigFactory: () => void)</code>
                     </td>
                 </tr>
 
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">projects/sdk-components-ng/src/lib/sdk.module.ts:103</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="101" class="link-to-prism">projects/sdk-components-ng/src/lib/sdk.module.ts:101</a></div>
                             </td>
                         </tr>
 
@@ -197,18 +197,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                                <tr>
-                                                        <td>configurationFactory</td>
-                                                        <td>
-                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
                                                 <tr>
                                                         <td>apiConfigFactory</td>
                                                         <td>
@@ -250,7 +238,7 @@ import { ReactiveFormsModule, FormsModule } from &#x27;@angular/forms&#x27;;
 import { CommonModule, TitleCasePipe } from &#x27;@angular/common&#x27;;
 import {
   ApiModule,
-  Configuration as ApiConfiguration,
+  Configuration as SzRestConfiguration,
   SzAttributeType
 } from &#x27;@senzing/rest-api-client-ng&#x27;;
 
@@ -258,12 +246,10 @@ import {
 import { JSONScrubber } from &#x27;./common/utils&#x27;;
 
 /** models */
-import { SzSearchResults } from &#x27;./models/responces/search-results/search-results&#x27;;
 import { SzEntityDetailSectionData } from &#x27;./models/entity-detail-section-data&#x27;;
 import { SzEntitySearchParams } from &#x27;./models/entity-search&#x27;;
 
 /** services */
-import { SzRestConfiguration } from &#x27;./common/sz-rest-configuration&#x27;;
 import { SzMessageBundleService } from &#x27;./services/sz-message-bundle.service&#x27;;
 import { SzSearchService } from &#x27;./services/sz-search.service&#x27;;
 
@@ -345,12 +331,11 @@ import { SzPoweredByComponent } from &#x27;./sz-powered-by/sz-powered-by.compone
 })
 export class SenzingSdkModule {
 
-  public static forRoot(configurationFactory: () &#x3D;&gt; SzRestConfiguration, apiConfigFactory: () &#x3D;&gt; ApiConfiguration): ModuleWithProviders {
+  public static forRoot(apiConfigFactory: () &#x3D;&gt; SzRestConfiguration): ModuleWithProviders {
     return {
         ngModule: SenzingSdkModule,
         providers: [
-          { provide: SzRestConfiguration, useFactory: configurationFactory },
-          { provide: ApiConfiguration, useFactory: apiConfigFactory }
+          { provide: SzRestConfiguration, useFactory: apiConfigFactory }
         ]
     };
   }

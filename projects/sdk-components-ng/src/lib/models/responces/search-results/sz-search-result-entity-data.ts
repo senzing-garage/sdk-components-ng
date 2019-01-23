@@ -1,6 +1,5 @@
 import { SzRawDataMatches } from './raw-data-matches';
-import { SzResolvedEntityData } from './resolved-entity-data';
-import { SzRelatedEntity } from './related-entity';
+import { SzResolvedEntity, SzRelatedEntity, SzDataSourceRecordSummary } from '@senzing/rest-api-client-ng';
 
 export interface SzSearchResultEntityData {
   // required
@@ -20,7 +19,7 @@ export interface SzSearchResultEntityData {
   nameDataMatches?: any[];
   attributeDataMatches?: any[];
   addressDataMatches?: any[];
-  resolvedEntity: SzResolvedEntityData;
+  resolvedEntity: SzResolvedEntity;
   topIdentifiers?: string[];
   topAddresses?: string[];
   matchScore?: number;

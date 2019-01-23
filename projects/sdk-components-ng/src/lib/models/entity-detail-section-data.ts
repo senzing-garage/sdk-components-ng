@@ -1,16 +1,16 @@
-import { SzDataSourceBreakdown } from './responces/search-results/data-source-breakdown';
-import { SzEntityRecord } from './responces/search-results/entity-record';
-import { SzFeatures } from './responces/search-results/features';
+import { SzEntityRecord, SzEntityFeature, SzDataSourceRecordSummary } from '@senzing/rest-api-client-ng';
 
 export interface SzEntityDetailSectionData {
   'resolutionRuleCode': string;
   'matchLevel': number;
   'refScore': number;
   'matchKey': string;
-  'dataSourceBreakdown': SzDataSourceBreakdown[];
+  'recordSummaries': SzDataSourceRecordSummary[];
   'identifierData': string[];
   'records': SzEntityRecord[];
-  'features': SzFeatures;
+  'features'?: {
+    [key: string] : SzEntityFeature[]
+  }
   'bestName': string;
   'attributeData': string[];
   'phoneData': string[];

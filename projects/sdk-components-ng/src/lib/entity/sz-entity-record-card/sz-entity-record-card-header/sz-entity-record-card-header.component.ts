@@ -1,16 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
-import { SzDataSourceBreakdown } from '../../../models/responces/search-results/data-source-breakdown';
-//import { SzEntityRecord } from '../../../models/responces/search-results/entity-record';
-
-import {
-  EntityDataService,
-  SzEntityData,
-  SzRelatedEntity,
-  SzResolvedEntity,
-  SzEntityRecord,
-  SzBaseRelatedEntity
-} from '@senzing/rest-api-client-ng';
+import { SzResolvedEntity, SzDataSourceRecordSummary } from '@senzing/rest-api-client-ng';
 
 /**
  * @internal
@@ -40,15 +30,15 @@ export class SzEntityRecordCardHeaderComponent implements OnInit {
   get breakDownInfoExist(): boolean {
     //console.log('card-header.component.breakDownInfoExist: ', this.searchResult);
     if (this.searchResult && this.searchResult.resolvedEntity) {
-      return this.searchResult.resolvedEntity.dataSourceBreakdown.length > 0;
+      return this.searchResult.resolvedEntity.recordSummaries.length > 0;
     } else {
       return false;
     }
   }
 
-  get breakDownInfo(): SzDataSourceBreakdown[] {
+  get breakDownInfo(): SzDataSourceRecordSummary[] {
     if (this.searchResult && this.searchResult.resolvedEntity) {
-      return this.searchResult.resolvedEntity.dataSourceBreakdown;
+      return this.searchResult.resolvedEntity.recordSummaries;
     }
   }
 

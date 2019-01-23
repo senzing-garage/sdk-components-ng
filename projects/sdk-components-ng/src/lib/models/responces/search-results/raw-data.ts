@@ -1,3 +1,5 @@
+import {SzResponseWithRawData} from '@senzing/rest-api-client-ng';
+
 export interface SzRawData {
   DATA_SOURCE: string;
   ENTITY_TYPE: string;

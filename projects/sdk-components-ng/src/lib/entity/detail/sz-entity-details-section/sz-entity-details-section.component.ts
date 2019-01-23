@@ -1,13 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-
-import {
-  EntityDataService,
-  SzEntityData,
-  SzRelatedEntity,
-  SzResolvedEntity,
-  SzEntityRecord,
-  SzRelationshipType
-} from '@senzing/rest-api-client-ng';
+import { SzRelatedEntity, SzEntityRecord } from '@senzing/rest-api-client-ng';
 
 /**
  * @internal

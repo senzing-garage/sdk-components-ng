@@ -1,12 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
-import { SzDataSourceBreakdown } from '../../../models/responces/search-results/data-source-breakdown';
-import { SzEntityRecord } from '../../../models/responces/search-results/entity-record';
-import {
-  EntityDataService,
-  SzAttributeSearchResult,
-  SzDataSourceRecordSummary
-} from '@senzing/rest-api-client-ng';
+import { SzEntityRecord, SzAttributeSearchResult, SzDataSourceRecordSummary } from '@senzing/rest-api-client-ng';
 
 /**
  * @internal

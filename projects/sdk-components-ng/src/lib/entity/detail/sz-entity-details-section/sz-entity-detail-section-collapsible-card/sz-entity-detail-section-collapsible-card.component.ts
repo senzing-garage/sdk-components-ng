@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { SzEntityDetailSectionData } from '../../../../models/entity-detail-section-data';
-import { SzEntityRecord } from '../../../../models/responces/search-results/entity-record';
+import { SzEntityRecord } from '@senzing/rest-api-client-ng';
 
 /**
  * @internal

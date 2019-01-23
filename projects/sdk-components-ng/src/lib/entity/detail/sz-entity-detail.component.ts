@@ -3,10 +3,8 @@ import { SzSearchService } from '../../services/sz-search.service';
 import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 
 import {
-  EntityDataService,
   SzEntityData,
   SzRelatedEntity,
-  SzResolvedEntity,
   SzEntityRecord,
   SzRelationshipType
 } from '@senzing/rest-api-client-ng';

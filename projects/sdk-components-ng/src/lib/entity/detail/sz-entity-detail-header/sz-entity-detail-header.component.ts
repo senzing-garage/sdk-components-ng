@@ -3,10 +3,8 @@ import { SzEntityDetailSectionSummary } from '../../../models/entity-detail-sect
 
 
 import {
-  EntityDataService,
   SzEntityData,
   SzRelatedEntity,
-  SzResolvedEntity,
   SzEntityRecord,
   SzRelationshipType
 } from '@senzing/rest-api-client-ng';

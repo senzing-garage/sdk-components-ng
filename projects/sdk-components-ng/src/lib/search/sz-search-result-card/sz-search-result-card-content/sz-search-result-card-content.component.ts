@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
-import { SzEntityRecord } from '../../../models/responces/search-results/entity-record';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
+
+import { SzRelatedEntity, SzEntityRecord } from '@senzing/rest-api-client-ng';
 
 /**
  * @internal
