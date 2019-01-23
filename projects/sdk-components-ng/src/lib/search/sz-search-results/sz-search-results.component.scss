@@ -39,7 +39,7 @@
 
   .search-result__section-header {
     display: flex;
-    width: 100%;
+    width: calc(100% - 40px);
     font-size: var(--sz-search-results-header-font-size);
     font-weight: 600;
     height: 40px;

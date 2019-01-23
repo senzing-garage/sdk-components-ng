@@ -38,11 +38,4 @@
     [sectionCount]="this._disclosedRelationships?.length"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
-
-  <hr/>
-  <h3>parameters</h3>
-  <label>entityId:</label><input [value]="entityId" (input)="entityId = $event.target.value"/>
-
-  <h3>output</h3>
-  <textarea [value]="entityDetailJSON"></textarea>
 </div>

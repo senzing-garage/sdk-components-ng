@@ -1042,13 +1042,6 @@ export class SzEntityDetailComponent {
     [sectionCount]&#x3D;&quot;this._disclosedRelationships?.length&quot;
     (entityRecordClick)&#x3D;&quot;onEntityRecordClick($event)&quot;&gt;
   &lt;/sz-entity-details-section&gt;
-
-  &lt;hr/&gt;
-  &lt;h3&gt;parameters&lt;/h3&gt;
-  &lt;label&gt;entityId:&lt;/label&gt;&lt;input [value]&#x3D;&quot;entityId&quot; (input)&#x3D;&quot;entityId &#x3D; $event.target.value&quot;/&gt;
-
-  &lt;h3&gt;output&lt;/h3&gt;
-  &lt;textarea [value]&#x3D;&quot;entityDetailJSON&quot;&gt;&lt;/textarea&gt;
 &lt;/div&gt;
 </code></pre>
     </div>
@@ -1077,7 +1070,7 @@ export class SzEntityDetailComponent {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><!-- @senzing/sdk/entity/detail/sz-entity-detail --><div>  <sz-entity-detail-header  [entity]="entity">  </sz-entity-detail-header>  <sz-entity-details-section    *ngIf="entity?.resolvedEntity?.records?.length"    [sectionData]="entity?.resolvedEntity?.records"    [sectionTitle]="\'Matched Records\'"    sectionId="detail-section-1"    [sectionCount]="entity?.resolvedEntity?.records?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="this.possibleMatches?.length"    [sectionData]="this.possibleMatches"    [sectionTitle]="\'Possible Matches\'"    sectionId="detail-section-2"    [sectionCount]="this.possibleMatches?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="this._discoveredRelationships?.length"    [sectionData]="this._discoveredRelationships"    [sectionTitle]="\'Possible Relationships\'"    sectionId="detail-section-3"    [sectionCount]="this._discoveredRelationships?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="this._disclosedRelationships?.length"    [sectionData]="this._disclosedRelationships"    [sectionTitle]="\'Disclosed Relationships\'"    sectionId="detail-section-4"    [sectionCount]="this._disclosedRelationships?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <hr/>  <h3>parameters</h3>  <label>entityId:</label><input [value]="entityId" (input)="entityId = $event.target.value"/>  <h3>output</h3>  <textarea [value]="entityDetailJSON"></textarea></div></div>'
+        var COMPONENT_TEMPLATE = '<div><!-- @senzing/sdk/entity/detail/sz-entity-detail --><div>  <sz-entity-detail-header  [entity]="entity">  </sz-entity-detail-header>  <sz-entity-details-section    *ngIf="entity?.resolvedEntity?.records?.length"    [sectionData]="entity?.resolvedEntity?.records"    [sectionTitle]="\'Matched Records\'"    sectionId="detail-section-1"    [sectionCount]="entity?.resolvedEntity?.records?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="this.possibleMatches?.length"    [sectionData]="this.possibleMatches"    [sectionTitle]="\'Possible Matches\'"    sectionId="detail-section-2"    [sectionCount]="this.possibleMatches?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="this._discoveredRelationships?.length"    [sectionData]="this._discoveredRelationships"    [sectionTitle]="\'Possible Relationships\'"    sectionId="detail-section-3"    [sectionCount]="this._discoveredRelationships?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="this._disclosedRelationships?.length"    [sectionData]="this._disclosedRelationships"    [sectionTitle]="\'Disclosed Relationships\'"    sectionId="detail-section-4"    [sectionCount]="this._disclosedRelationships?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section></div></div>'
     var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzEntityDetailComponent'};

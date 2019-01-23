@@ -38,9 +38,10 @@
         }
       }
     },
-    "testing": {
-      "root": "projects/testing/",
-      "sourceRoot": "projects/testing/src",
+
+    "examples/search-with-results-and-details": {
+      "root": "examples/search-with-results-and-details/",
+      "sourceRoot": "examples/search-with-results-and-details/src",
       "projectType": "application",
       "prefix": "app",
       "schematics": {
@@ -71,18 +72,18 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/testing",
-            "index": "projects/testing/src/index.html",
-            "main": "projects/testing/src/main.ts",
-            "polyfills": "projects/testing/src/polyfills.ts",
-            "tsConfig": "projects/testing/tsconfig.app.json",
+            "outputPath": "dist/@senzing/examples/search-with-results-and-details",
+            "index": "examples/search-with-results-and-details/src/index.html",
+            "main": "examples/search-with-results-and-details/src/main.ts",
+            "polyfills": "examples/search-with-results-and-details/src/polyfills.ts",
+            "tsConfig": "examples/search-with-results-and-details/tsconfig.app.json",
             "assets": [
-              "projects/testing/src/favicon.ico",
-              "projects/testing/src/assets"
+              "examples/search-with-results-and-details/src/favicon.ico",
+              "examples/search-with-results-and-details/src/assets"
             ],
             "styles": [
               "projects/sdk-components-ng/src/lib/scss/styles.scss",
-              "projects/testing/src/styles.scss"
+              "examples/search-with-results-and-details/src/styles.scss"
             ],
             "scripts": []
           },
@@ -90,8 +91,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "projects/testing/src/environments/environment.ts",
-                  "with": "projects/testing/src/environments/environment.prod.ts"
+                  "replace": "examples/search-with-results-and-details/src/environments/environment.ts",
+                  "with": "examples/search-with-results-and-details/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -116,35 +117,35 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "testing:build",
+            "browserTarget": "examples/search-with-results-and-details:build",
             "port": 4300
           },
           "configurations": {
             "production": {
-              "browserTarget": "testing:build:production"
+              "browserTarget": "examples/search-with-results-and-details:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "testing:build"
+            "browserTarget": "examples/search-with-results-and-details:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/testing/src/test.ts",
-            "polyfills": "projects/testing/src/polyfills.ts",
-            "tsConfig": "projects/testing/tsconfig.spec.json",
-            "karmaConfig": "projects/testing/karma.conf.js",
+            "main": "examples/search-with-results-and-details/src/test.ts",
+            "polyfills": "examples/search-with-results-and-details/src/polyfills.ts",
+            "tsConfig": "examples/search-with-results-and-details/tsconfig.spec.json",
+            "karmaConfig": "examples/search-with-results-and-details/karma.conf.js",
             "styles": [
-              "projects/testing/src/styles.scss"
+              "examples/search-with-results-and-details/src/styles.scss"
             ],
             "scripts": [],
             "assets": [
-              "projects/testing/src/favicon.ico",
-              "projects/testing/src/assets"
+              "examples/search-with-results-and-details/src/favicon.ico",
+              "examples/search-with-results-and-details/src/assets"
             ]
           }
         },
@@ -152,8 +153,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/testing/tsconfig.app.json",
-              "projects/testing/tsconfig.spec.json"
+              "examples/search-with-results-and-details/tsconfig.app.json",
+              "examples/search-with-results-and-details/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -163,7 +164,7 @@
       }
     }
   },
-  "defaultProject": "testing",
+  "defaultProject": "examples/search-with-results-and-details",
   "schematics": {
     "@schematics/angular:component": {
       "styleext": "scss"

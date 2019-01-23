@@ -14,14 +14,18 @@ body {
 
   /* search box vars */
   --sz-search-button-submit-color: #{$sz-white};
-  --sz-search-button-clear-color: #{$sz-black};
+  --sz-search-button-clear-color: #{$sz-white};
   --sz-search-button-submit-background-color: #{$sz-blue};
   --sz-search-button-clear-background-color: #{$sz-grey};
   --sz-search-button-border: 1px solid #{$sz-dark-grey};
-  --sz-search-button-submit-border: var(--sz-search-button-border);
-  --sz-search-button-padding: 0 10px 0 10px;
+  --sz-search-button-submit-border: 1px solid #{$sz-dark-blue};
+  --sz-search-button-clear-padding: 0 10px 0 10px;
+  --sz-search-button-submit-padding: 0 30px 0 30px;
   --sz-search-button-margin: 0;
-  --sz-search-button-border-radius: 22px;
+  --sz-search-button-border-radius: 6px;
+  /* --sz-search-button-submit-font-size: 10px;*/
+  --sz-search-button-clear-font-size: 10px;
+
 
   --sz-search-input-color: #{$sz-input-font-color};
   --sz-search-input-background-color: #{$sz-input-background-color};
@@ -31,13 +35,13 @@ body {
   --sz-search-input-margin: 5px;
   --sz-search-input-placeholder-color: #{$sz-input-placeholder-color};
   --sz-search-input-border: 1px solid #{$sz-input-border-color};
-  --sz-search-input-border-radius: 22px;
+  --sz-search-input-border-radius: 6px;
   --sz-search-input-hover-border: 1px solid #{$sz-input-active-border-color};
   --sz-search-input-focus-border: var(--sz-search-input-hover-border);
 
   --sz-search-label-color: #{$sz-font-color-1};
   --sz-search-label-padding: 4px;
-  --sz-search-label-margin: 0 0 10px 20px;
+  --sz-search-label-margin: 0 0 10px 4px;
   --sz-search-label-font-size: 8px;
   --sz-search-label-display: block;
 

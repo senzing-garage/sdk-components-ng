@@ -1,6 +1,6 @@
 {
   "name": "@senzing/sdk-components-ng",
-  "version": "0.0.3",
+  "version": "1.0.0-alpha",
   "private": false,
   "keywords" :["Angular","Library","Senzing"],
   "license" : "SEE LICENSE IN LICENSE",

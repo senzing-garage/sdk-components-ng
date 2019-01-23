@@ -1718,14 +1718,21 @@ export class SzSearchComponent implements OnInit {
       padding: var(--sz-search-button-padding);
       margin: var(--sz-search-button-margin);
       height: 40px;
+
       &amp;.button__search-go {
         background-color: var(--sz-search-button-submit-background-color);
         color: var(--sz-search-button-submit-color);
         border: var(--sz-search-button-submit-border);
+        white-space: nowrap;
+        padding: var(--sz-search-button-submit-padding);
+        font-size: var(--sz-search-button-submit-font-size);
       }
       &amp;.button__search-clear {
         background-color: var(--sz-search-button-clear-background-color);
         color: var(--sz-search-button-clear-color);
+        white-space: nowrap;
+        padding: var(--sz-search-button-clear-padding);
+        font-size: var(--sz-search-button-clear-font-size);
       }
     }
   }

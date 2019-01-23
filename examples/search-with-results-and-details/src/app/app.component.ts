@@ -11,11 +11,16 @@ import {
 })
 export class AppComponent {
   public currentSearchResults: SzAttributeSearchResult[];
-  public currentlySelectedEntityId: number = 6063;
+  public currentlySelectedEntityId: number = undefined;
   public currentSearchParameters: SzEntitySearchParams;
 
   public showSearchResults = false;
-  public showSearchResultDetail = false;
+  public get showSearchResultDetail(): boolean {
+    if(this.currentlySelectedEntityId && this.currentlySelectedEntityId > 0) {
+      return true;
+    }
+    return false;
+  }
 
   onSearchResults(evt: SzAttributeSearchResult[]){
     console.log('searchResults: ',evt);
@@ -25,8 +30,11 @@ export class AppComponent {
 
     // show results
     this.showSearchResults = true;
-    // hide detail
-    this.showSearchResultDetail = false;
+  }
+
+  public onBackToSearchResultsClick($event): void {
+    this.showSearchResults = true;
+    this.currentlySelectedEntityId = undefined;
   }
 
   public onSearchResultClick(entityData: SzAttributeSearchResult){
@@ -35,16 +43,18 @@ export class AppComponent {
 
     if(entityData && entityData.entityId > 0) {
       this.currentlySelectedEntityId = entityData.entityId;
-      this.showSearchResultDetail = true;
       this.showSearchResults = false;
     } else {
-      this.showSearchResultDetail = false;
+      this.currentlySelectedEntityId = undefined;
+      this.showSearchResults = true;
     }
   }
 
   public onSearchResultsCleared(searchParams: SzEntitySearchParams){
     // hide search results
     this.showSearchResults = false;
+    this.currentSearchResults = undefined;
+    this.currentlySelectedEntityId = undefined;
   }
 
   public onSearchParameterChange(searchParams: SzEntitySearchParams) {
