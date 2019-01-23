@@ -104,20 +104,20 @@ export class AppModule { }</code></pre></div><p>  <br/> </p>
 </svg>
 </div></div>
 
-<p>If not then double check that step 2 is correct, and that you remembered to include the 
+<p>If not then double check that step 2 is correct, and that you remembered to include the
 import statement as well.
-<br/> 
-<br/> 
+<br/>
+<br/>
 <br/></p>
 <p>4) Check that components can communicate with rest api gateway sucessfully. Add the following to your app.component.html(or any template) : </p>
 <div><pre class="line-numbers"><code class="language-html">&lt;sz-configuration-about&gt;&lt;/sz-configuration-about&gt;</code></pre></div><p>The result should be a list of service configuration parameters and values.</p>
-<p>5) Load the engine with data to resolve. 
+<p>5) Load the engine with data to resolve.
    The sdk ships with some example data that can be loaded in to the engine. An example of how to do that  is below:</p>
 <p>   5.1) TODO</p>
 <p>6) Verify that the components are working properly. The easiest way to do this is to is to just implement a search box, and a result list. Copy the following to your app.component.html file</p>
 <div><pre class="line-numbers"><code class="language-html">&lt;sz-search (resultsChange)=&quot;onSearchResults($event)&quot;&gt;&lt;/sz-search&gt;
-&lt;sz-search-results 
-[results]=&quot;currentSearchResults&quot; 
+&lt;sz-search-results
+[results]=&quot;currentSearchResults&quot;
 (resultClick)=&quot;onSearchResultClick($event)&quot;&gt;&lt;/sz-search-results&gt;</code></pre></div><p>now in your controller class(app.component.ts) add the <em>onSearchResults</em> and <em>onSearchResultClick</em> methods we just referenced above:</p>
 <div><pre class="line-numbers"><code class="language-typescript">import { Component } from &#39;&#64;angular/core&#39;;
 import { SzSearchResults, SzSearchResultEntityData, SzEntitySearchParams } from &#39;&#64;senzing/sdk-components-ng&#39;;
@@ -149,7 +149,7 @@ export class AppComponent {
 }</code></pre></div><p><br/> <br/> <br/> </p>
 <h2 id="configuration-parameters">Configuration &amp; Parameters</h2>
 <h3 id="configuration">Configuration</h3>
-<p>The SenzingSDKModule accepts a factory method or a object literal that conforms to the 
+<p>The SenzingSDKModule accepts a factory method or a object literal that conforms to the
 properties found in the <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">Configuration</a> class. By adding a factory like the following to the constructor method, you can change services configuration to point to non-default values.</p>
 <p>The following tells any components to make api requests to <a href="http://localhost:22080/api/">http://localhost:22080/api/</a></p>
 <div><pre class="line-numbers"><code class="language-typescript">import { BrowserModule } from &#39;&#64;angular/platform-browser&#39;;

@@ -158,19 +158,32 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
+<<<<<<< HEAD
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { SzEntityRecord, SzEntityFeature, SzDataSourceRecordSummary } from &#x27;@senzing/rest-api-client-ng&#x27;;
+=======
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { SzDataSourceBreakdown } from &#x27;./responces/search-results/data-source-breakdown&#x27;;
+import { SzEntityRecord } from &#x27;./responces/search-results/entity-record&#x27;;
+import { SzFeatures } from &#x27;./responces/search-results/features&#x27;;
+>>>>>>> 17aa77efdf802aae901b6865d2a187c0bd461599
 
 export interface SzEntityDetailSectionData {
   &#x27;resolutionRuleCode&#x27;: string;
   &#x27;matchLevel&#x27;: number;
   &#x27;refScore&#x27;: number;
   &#x27;matchKey&#x27;: string;
+<<<<<<< HEAD
   &#x27;recordSummaries&#x27;: SzDataSourceRecordSummary[];
   &#x27;identifierData&#x27;: string[];
   &#x27;records&#x27;: SzEntityRecord[];
   &#x27;features&#x27;?: {
     [key: string] : SzEntityFeature[]
   }
+=======
+  &#x27;dataSourceBreakdown&#x27;: SzDataSourceBreakdown[];
+  &#x27;identifierData&#x27;: string[];
+  &#x27;records&#x27;: SzEntityRecord[];
+  &#x27;features&#x27;: SzFeatures;
+>>>>>>> 17aa77efdf802aae901b6865d2a187c0bd461599
   &#x27;bestName&#x27;: string;
   &#x27;attributeData&#x27;: string[];
   &#x27;phoneData&#x27;: string[];
