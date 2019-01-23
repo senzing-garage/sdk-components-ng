@@ -3,7 +3,6 @@
   "version": "1.0.0-alpha",
   "scripts": {
     "ng": "ng",
-    "sandbox": "ng serve testing",
     "start": "ng build @senzing/sdk-components-ng && ng serve",
     "start:documentation": "./node_modules/.bin/compodoc -s -d docs",
     "start:docs": "npm run start:documentation",
