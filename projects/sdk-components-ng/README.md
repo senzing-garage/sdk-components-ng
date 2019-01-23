@@ -5,7 +5,7 @@ This project is for the senzing sdk components that can be used in other project
 To see an example of an electron app using the sdk components feel free to checkout the latest windows or mac builds from https://senzing.com/senzing-app/
 
 ## Dependencies
-these components are dependent on a [rest api gateway](https://github.com/Senzing/rest-api-server-java/) and [the rest-api-client-ng](https://github.com/Senzing/rest-api-client-ng/) [package](https://www.npmjs.com/package/@senzing/rest-api-client-ng). 
+these components are dependent on a [rest api gateway](https://github.com/Senzing/rest-api-server-java/) OR [the rest-api-client-ng](https://github.com/Senzing/rest-api-client-ng/) [package](https://www.npmjs.com/package/@senzing/rest-api-client-ng). 
 
 ### Installation
 #### REST Service Gateway
@@ -126,7 +126,11 @@ The result should be a list of service configuration parameters and values.
 now in your controller class(app.component.ts) add the *onSearchResults* and *onSearchResultClick* methods we just referenced above:
 ```typescript
 import { Component } from '@angular/core';
-import { SzSearchResults, SzSearchResultEntityData, SzEntitySearchParams } from '@senzing/sdk-components-ng';
+import {
+  SzEntitySearchParams,
+  SzAttributeSearchResult
+} from '@senzing/sdk-components-ng';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -134,18 +138,18 @@ import { SzSearchResults, SzSearchResultEntityData, SzEntitySearchParams } from 
 })
 export class AppComponent {
   title = 'senzing-sdk-consumer';
-  public currentSearchResults: SzSearchResults;
-  public currentlySelectedEntityId = 4068;
+  public currentSearchResults: SzAttributeSearchResult[];
+  public currentlySelectedEntityId: number;
   public currentSearchParameters: SzEntitySearchParams;
 
-  onSearchResults(evt: SzSearchResults) {
+  onSearchResults(evt: SzAttributeSearchResult[]) {
     console.log('@senzing/sz-search-results: ', evt);
     // store on current scope
     this.currentSearchResults = evt;
     // results module is bound to this property
   }
 
-  public onSearchResultClick(entityData: SzSearchResultEntityData) {
+  public onSearchResultClick(entityData: SzAttributeSearchResult) {
     console.log('@senzing/sz-search-results-click: ', entityData);
 
     if (entityData && entityData.entityId > 0) {
@@ -164,14 +168,12 @@ export class AppComponent {
 The SenzingSDKModule accepts a factory method or a object literal that conforms to the 
 properties found in the [Configuration](https://senzing.github.io/rest-api-client-ng/classes/Configuration.html) class. By adding a factory like the following to the constructor method, you can change services configuration to point to non-default values.
 
-The following tells any components to make api requests to http://localhost:22080/api/
+The following tells any components to turn on CORS functionality and make all api requests to localhost port 22080( http://localhost:22080/ ).
+
 ```typescript
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { SenzingSdkModule } from '@senzing/sdk-components-ng';
-import { SenzingSdkModule } from '@senzing/rest-api-client-ng';
-import { Configuration as SzApiConfiguration } from '@senzing/rest-api-client-ng';
-
+import { SenzingSdkModule, SzRestConfiguration } from '@senzing/sdk-components-ng';
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -180,12 +182,14 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    SenzingSdkModule.forRoot(() => {
-      return new SzApiConfiguration({
-        basePath: "http://localhost:22080/api/",
-        withCredentials: false
-      })
-    })
+    SenzingSdkModule.forRoot(
+      () => {
+        return new SzRestConfiguration({
+          basePath: 'http://localhost:2080',
+          withCredentials: true
+        });
+      }
+    )
   ],
   providers: [],
   bootstrap: [AppComponent]
