@@ -51,12 +51,8 @@
 <h2 id="prerequisites">Prerequisites</h2>
 <p>Before you begin, make sure your development environment includes Node.js® and an npm package manager.</p>
 <h3 id="node-js">Node.js</h3>
-<<<<<<< HEAD
 <p>Angular and this specific SDK package requires Node.js version 8.x or 10.x.</p>
 <p>If you are looking for the Web Component version of this package it can be found <a href="https://github.com/Senzing/sdk-components-web">here</a></p>
-=======
-<p>Angular requires Node.js version 8.x or 10.x.</p>
->>>>>>> 17aa77efdf802aae901b6865d2a187c0bd461599
 <ul>
 <li>To check your version, run <code>node -v</code> in a terminal/console window.</li>
 <li>To get Node.js, go to <a href="http://nodejs.org/download">nodejs.org</a>.</li>
@@ -65,7 +61,6 @@
 <p>Angular, the Angular CLI, and Angular apps depend on features and functionality provided by libraries that are available as <a href="https://docs.npmjs.com/about-npm/index.html">npm packages</a>. To download and install npm packages, you must have an npm package manager.</p>
 <p>This Quick Start uses the <a href="https://docs.npmjs.com/cli/install">npm client</a> command line interface, which is installed with Node.js by default.</p>
 <p>To check that you have the npm client installed, run <code>npm -v</code> in a terminal/console window.</p>
-<<<<<<< HEAD
 <h3 id="install-java-jdk-x-x">Install JAVA/JDK x.x</h3>
 <p>TODO: find instructions for setting up jdk</p>
 <h3 id="install-maven-x-x-optional-">Install Maven x.x (Optional)</h3>
@@ -97,19 +92,6 @@ java -Djava.library.path=&quot;C:\\Program Files\\Senzing\\g2\\lib&quot; -jar ta
 cd senzing-sdk-demo</code></pre></div><p>If you&#39;re already working with a Angular 7.x.x Project you can skip ahead to the next section.</p>
 <h3 id="senzing-sdk-componenents">Senzing SDK Componenents</h3>
 <div><pre class="line-numbers"><code class="language-none">npm install &#64;senzing/sdk-components-ng</code></pre></div><h1 id="configuration">Configuration</h1>
-=======
-<h3 id="install-angular-and-angular-cli-7-x-x">Install Angular and Angular-Cli 7.x.x</h3>
-<p>This Quick Start makes use of the angular cli tool to automatically set up an angular project and provide tooling. This can be done without the cli tool as well, but for purposes of simplifying the examples it is what we&#39;re going to use in this walkthrough.</p>
-<p>To install the CLI using npm, open a terminal/console window and enter the following command:</p>
-<div><pre class="line-numbers"><code class="language-bash">npm install -g &#64;angular/cli</code></pre></div><h2 id="create-new-angular-project">Create new Angular Project</h2>
-<div><pre class="line-numbers"><code class="language-bash">ng new senzing-sdk-demo
-cd senzing-sdk-demo</code></pre></div><p>If you&#39;re already working with a Angular 7.x.x Project you can skip ahead to the next section.</p>
-<h2 id="install-senzing-http-services-and-sdk">Install Senzing HTTP Services and SDK</h2>
-<p>TODO: figure out how to distribute and install the HTTP REST api servlet.</p>
-<h3 id="senzing-rest-http">Senzing REST HTTP</h3>
-<div><pre class="line-numbers"><code class="language-bash">npm install &#64;Senzing/service-http-rest</code></pre></div><h3 id="senzing-sdk-componenents">Senzing SDK Componenents</h3>
-<div><pre class="line-numbers"><code class="language-none">npm install &#64;Senzing/sdk-components-ng</code></pre></div><h1 id="configuration">Configuration</h1>
->>>>>>> 17aa77efdf802aae901b6865d2a187c0bd461599
 <h2 id="rest-service">REST Service</h2>
 <p>The Rest service must be configured with a port number and hostname. you will use this same network address info for the next step as well.</p>
 <h3 id="start-up-the-service">Start up the service</h3>
