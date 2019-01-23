@@ -1,5 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
+
+import {
+  EntityDataService,
+  SzEntityData,
+  SzRelatedEntity,
+  SzResolvedEntity,
+  SzEntityRecord,
+  SzRelationshipType
+} from '@senzing/rest-api-client-ng';
 
 /**
  * @internal
@@ -11,10 +19,11 @@ import { SzSearchResultEntityData } from '../../../models/responces/search-resul
   styleUrls: ['./sz-entity-details-section.component.scss']
 })
 export class SzEntityDetailsSectionComponent implements OnInit {
-  _sectionData: any;
-  _sectionDataByDataSource: any;
-  _sectionDataByMatchKey: any;
-  @Input() entity: SzSearchResultEntityData;
+  _sectionData: SzEntityRecord[] | SzRelatedEntity[];
+  _sectionDataByDataSource: SzEntityRecord[] | SzRelatedEntity[];
+  _sectionDataByMatchKey: SzEntityRecord[] | SzRelatedEntity[];
+
+  @Input() entity: SzEntityRecord | SzRelatedEntity;
   @Input()
   set sectionData(value) {
     //console.log('setting section data: ', value);
@@ -104,7 +113,6 @@ export class SzEntityDetailsSectionComponent implements OnInit {
         _retByMKAsArray.push(_retByMK[_k]);
       }
     }
-    //console.warn('detail-section.component.getSectionDataByMatchKey: ', _retByMK, _ret);
     return _retByMKAsArray;
   }
 

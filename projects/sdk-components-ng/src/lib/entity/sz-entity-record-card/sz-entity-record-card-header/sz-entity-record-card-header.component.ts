@@ -1,7 +1,16 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
 import { SzDataSourceBreakdown } from '../../../models/responces/search-results/data-source-breakdown';
-import { SzEntityRecord } from '../../../models/responces/search-results/entity-record';
+//import { SzEntityRecord } from '../../../models/responces/search-results/entity-record';
+
+import {
+  EntityDataService,
+  SzEntityData,
+  SzRelatedEntity,
+  SzResolvedEntity,
+  SzEntityRecord,
+  SzBaseRelatedEntity
+} from '@senzing/rest-api-client-ng';
 
 /**
  * @internal
@@ -16,7 +25,7 @@ export class SzEntityRecordCardHeaderComponent implements OnInit {
   @Input() searchResult: SzSearchResultEntityData;
   @Input() searchValue: string;
   @Input() hideBackGroundColor: boolean;
-  @Input() entityData: SzEntityRecord;
+  @Input() entityData: SzResolvedEntity;
   alert = false;
 
   @Output()
@@ -32,8 +41,6 @@ export class SzEntityRecordCardHeaderComponent implements OnInit {
     //console.log('card-header.component.breakDownInfoExist: ', this.searchResult);
     if (this.searchResult && this.searchResult.resolvedEntity) {
       return this.searchResult.resolvedEntity.dataSourceBreakdown.length > 0;
-    } else if(this.entityData && this.entityData.dataSourceBreakdown) {
-      return this.entityData.dataSourceBreakdown.length > 0;
     } else {
       return false;
     }
@@ -42,8 +49,6 @@ export class SzEntityRecordCardHeaderComponent implements OnInit {
   get breakDownInfo(): SzDataSourceBreakdown[] {
     if (this.searchResult && this.searchResult.resolvedEntity) {
       return this.searchResult.resolvedEntity.dataSourceBreakdown;
-    } else if(this.entityData && this.entityData.dataSourceBreakdown) {
-      return this.entityData.dataSourceBreakdown;
     }
   }
 
@@ -52,6 +57,8 @@ export class SzEntityRecordCardHeaderComponent implements OnInit {
       return this.searchResult.resolvedEntity.bestName;
     } else if(this.entityData && this.entityData.bestName) {
       return this.entityData.bestName;
+    } else if(this.entityData && this.entityData.entityName) {
+      return this.entityData.entityName;
     }
   }
 

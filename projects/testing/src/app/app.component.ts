@@ -8,7 +8,7 @@ import { SzSearchResults, SzSearchResultEntityData, SzEntitySearchParams } from 
 })
 export class AppComponent {
   public currentSearchResults: SzSearchResults;
-  public currentlySelectedEntityId: number = 4067;
+  public currentlySelectedEntityId: number = 6063;
   public currentSearchParameters: SzEntitySearchParams;
 
   public showSearchResults = false;

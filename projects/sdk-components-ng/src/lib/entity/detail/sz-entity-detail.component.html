@@ -23,19 +23,19 @@
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
   <sz-entity-details-section
-    *ngIf="this.discoveredRelationships?.length"
-    [sectionData]="this.discoveredRelationships"
+    *ngIf="this._discoveredRelationships?.length"
+    [sectionData]="this._discoveredRelationships"
     [sectionTitle]="'Possible Relationships'"
     sectionId="detail-section-3"
-    [sectionCount]="this.discoveredRelationships?.length"
+    [sectionCount]="this._discoveredRelationships?.length"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
   <sz-entity-details-section
-    *ngIf="this.disclosedRelationships?.length"
-    [sectionData]="this.disclosedRelationships"
+    *ngIf="this._disclosedRelationships?.length"
+    [sectionData]="this._disclosedRelationships"
     [sectionTitle]="'Disclosed Relationships'"
     sectionId="detail-section-4"
-    [sectionCount]="this.disclosedRelationships?.length"
+    [sectionCount]="this._disclosedRelationships?.length"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
 

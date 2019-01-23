@@ -1,8 +1,15 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
 import { SzResolvedEntityData } from '../../../models/responces/search-results/resolved-entity-data';
-import { SzEntityRecord } from '../../../models/responces/search-results/entity-record';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
+
+import {
+  EntityDataService,
+  SzEntityData,
+  SzRelatedEntity,
+  SzResolvedEntity,
+  SzEntityRecord
+} from '@senzing/rest-api-client-ng';
 
 /**
  * @internal
@@ -15,8 +22,17 @@ import { SzEntityDetailSectionData } from '../../../models/entity-detail-section
 })
 export class SzEntityRecordCardContentComponent implements OnInit {
   //@Input() entity: ResolvedEntityData | SearchResultEntityData | EntityDetailSectionData | EntityRecord;
-  @Input() entity: any; // the strong typing is making it impossible to handle all variations
+  _entity: any;
+  @Input() set entity(value) {
+    //console.log('set entity: ', value);
+    this._entity = value;
+  };
+  get entity() {
+    return this._entity;
+  }
+
   @Input() maxLinesToDisplay = 3;
+
   @Input() set parentEntity( value ) {
     this._parentEntity = value;
     if(value && value.matchKey) {
@@ -65,13 +81,13 @@ export class SzEntityRecordCardContentComponent implements OnInit {
 
   // ----------------- start total getters -------------------
   get columnOneTotal(): number {
-    if (this.entity && this.entity.otherData) {
-      return this.entity.otherData.length;
+    if (this.entity.entityName && this.entity.addressData) {
+      return this.entity.addressData.length;
     }
     return 0;
   }
   get showColumnOne(): boolean {
-    return (this.entity && this.entity.otherData && this.entity.otherData.length > 0);
+    return (this.entity && this.entity.addressData && this.entity.addressData.length > 0);
   }
   get columnTwoTotal(): number {
     return (this.nameData.concat(this.attributeData).length);
@@ -87,12 +103,28 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   }
   // -----------------  end total getters  -------------------
 
-  get nameData(): string[] {
+  get otherData(): string[] {
     if (this.entity) {
       if (this.entity && this.entity.nameData) {
         return this.entity.nameData;
-      } else if (this.entity && this.entity.topNames) {
-        return this.entity.topNames;
+      } else if (this.entity && this.entity.nameData) {
+        return this.entity.nameData;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
+  get nameData(): string[] {
+    if (this.entity) {
+      if (this.entity && this.entity.nameData && this.entity.nameData.length > 0) {
+        return this.entity.nameData;
+      } else if (this.entity && this.entity.bestName) {
+        return [this.entity.bestName];
+      } else if (this.entity && this.entity.entityName) {
+        return [this.entity.entityName];
       } else {
         return [];
       }
@@ -105,8 +137,8 @@ export class SzEntityRecordCardContentComponent implements OnInit {
     if (this.entity) {
       if ( this.entity.attributeData) {
         return this.entity.attributeData;
-      } else if ( this.entity.topAttributes) {
-        return this.entity.topAttributes;
+      } else if ( this.entity.attributeData) {
+        return this.entity.attributeData;
       } else {
         return [];
       }
@@ -133,8 +165,8 @@ export class SzEntityRecordCardContentComponent implements OnInit {
     if (this.entity) {
       if (this.entity.phoneData) {
         return this.entity.phoneData;
-      } else if (this.entity.topPhoneNumbers) {
-        return this.entity.topPhoneNumbers;
+      } else if (this.entity.phoneData) {
+        return this.entity.phoneData;
       } else {
         return [];
       }
@@ -194,8 +226,8 @@ export class SzEntityRecordCardContentComponent implements OnInit {
     if (this.entity) {
       if (this.entity.identifierData) {
         return this.entity.identifierData;
-      } else if (this.entity.topIdentifiers) {
-        return this.entity.topIdentifiers;
+      } else if (this.entity.identifierData) {
+        return this.entity.identifierData;
       } else {
         return [];
       }

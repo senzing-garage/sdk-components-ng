@@ -103,16 +103,16 @@ body {
     /* start relationship section list vars */
     --sz-entity-detail-section-header-margin: 1em 0 0;
     --sz-entity-detail-section-header-padding: .4em 1em;
-    --sz-entity-detail-section-header-color: #{$sz-blue};
+    --sz-entity-detail-section-header-color: #FFFFFF;
     --sz-entity-detail-section-header-font-size: 28px;
     --sz-entity-detail-section-header-font-family: $sz-font-family;
     --sz-entity-detail-section-header-border-radius: 4px 4px 0 0;
 
 
-    --sz-entity-detail-section-color: #fff;
+    --sz-entity-detail-section-color: #808285;
     --sz-entity-detail-section-font-size: 18px;
     --sz-entity-detail-section-line-height: 18px;
-    --sz-entity-detail-section-background: rgb(0, 0, 53); /* #f8f8f8;*/
+    --sz-entity-detail-section-background: #eaeaea;
 
     --sz-entity-detail-section-border: 1px solid #{$sz-dark-grey};
     --sz-entity-detail-section-border-radius: 0 0 6px 6px;
@@ -123,8 +123,10 @@ body {
     --sz-entity-detail-section-title-font-size: 20px;
     --sz-entity-detail-section-padding: 0 24px;
 
+    --sz-entity-detail-name-font-size: 20px;
+
     --sz-entity-detail-section-record-card-display: block;
-    --sz-entity-detail-section-record-card-background-color: orange;
+    --sz-entity-detail-section-record-card-background-color: #FFFFFF;
     --sz-entity-detail-section-record-card-margin: 8px;
     --sz-entity-detail-section-record-card-padding: 15px;
     --sz-entity-detail-section-record-card-border-radius: 5px;
