@@ -1,8 +1,4 @@
 {
-  "/api": {
-	   "target": "http://g2server:56828/workbench/",
-	    "secure": false
-  },
   "/sz-rest-api/*": {
     "target": "http://localhost:2080",
     "secure": false,

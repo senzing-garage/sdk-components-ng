@@ -117,8 +117,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "testing:build",
-            "port": 4300,
-            "proxyConfig": "projects/testing/proxy.conf.json"
+            "port": 4300
           },
           "configurations": {
             "production": {

@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { SzSearchResults, SzSearchResultEntityData, SzEntitySearchParams } from '@senzing/sdk-components-ng';
+import {
+  SzEntitySearchParams,
+  SzAttributeSearchResult
+} from '@senzing/sdk-components-ng';
 
 @Component({
   selector: 'app-root',
@@ -7,14 +10,14 @@ import { SzSearchResults, SzSearchResultEntityData, SzEntitySearchParams } from 
   styles: []
 })
 export class AppComponent {
-  public currentSearchResults: SzSearchResults;
+  public currentSearchResults: SzAttributeSearchResult[];
   public currentlySelectedEntityId: number = 6063;
   public currentSearchParameters: SzEntitySearchParams;
 
   public showSearchResults = false;
   public showSearchResultDetail = false;
 
-  onSearchResults(evt: SzSearchResults){
+  onSearchResults(evt: SzAttributeSearchResult[]){
     console.log('searchResults: ',evt);
     // store on current scope
     this.currentSearchResults = evt;
@@ -26,7 +29,7 @@ export class AppComponent {
     this.showSearchResultDetail = false;
   }
 
-  public onSearchResultClick(entityData: SzSearchResultEntityData){
+  public onSearchResultClick(entityData: SzAttributeSearchResult){
     console.log('onSearchResultClick: ', entityData);
     //alert('clicked on search result!'+ entityData.entityId);
 

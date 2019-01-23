@@ -1,15 +1,10 @@
 import { SzDataSourceBreakdown } from './data-source-breakdown';
 import { SzFeatures } from './features';
 
-export interface SzRelatedEntity {
-  records: any[];
-  dataSourceBreakdown: SzDataSourceBreakdown[];
-  identifierData: string[];
-  features: SzFeatures;
-  entityId: number;
-  nameData: string[];
-  attributeData: string[];
-  addressData: string[];
-  lensId: number;
-  phoneData: string[];
+import {
+  SzRelatedEntity
+} from '@senzing/rest-api-client-ng';
+
+export interface SzRelatedEntity extends SzRelatedEntity {
+
 }

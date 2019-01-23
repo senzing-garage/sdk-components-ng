@@ -1,3 +1,5 @@
+//import { Configuration } from '@senzing/rest-api-client-ng';
+
 /*
  * Public API Surface of sdk
  */
@@ -22,8 +24,60 @@ export * from './lib/configuration/sz-configuration/sz-configuration.component';
 export * from './lib/configuration/sz-configuration-about/sz-configuration-about.component';
 
 /** models */
-export * from './lib/models/responces/search-results/search-results';
 export * from './lib/models/responces/search-results/sz-search-result-entity-data';
 export * from './lib/models/entity-detail-section-data';
 export * from './lib/models/entity-search';
 export * from './lib/common/sz-rest-configuration';
+
+/** export some members of rest client to ease type use */
+export {
+  Configuration as SzRestConfiguration,
+
+  SzAttributeClass,
+  SzAttributeNecessity,
+  SzAttributeSearchResponse,
+  SzAttributeSearchResponseData,
+  SzAttributeSearchResult,
+  SzAttributeSearchResultType,
+  SzAttributeType,
+  SzAttributeTypeResponse,
+  SzAttributeTypeResponseData,
+  SzAttributeTypesResponse,
+  SzAttributeTypesResponseData,
+
+  SzDataSourceRecordSummary,
+  SzDataSourcesResponse,
+  SzDataSourcesResponseData,
+
+  SzEntityData,
+  SzEntityFeature,
+  SzEntityIdentifier,
+  SzEntityIdentifiers,
+  SzEntityNetworkData,
+  SzEntityNetworkResponse,
+  SzEntityPath,
+  SzEntityPathResponse,
+  SzEntityPathData,
+  SzEntityRecord,
+  SzEntityResponse,
+
+  SzError,
+  SzErrorResponse,
+
+  SzLicenseInfo,
+  SzLicenseResponse,
+  SzLicenseResponseData,
+
+  SzLoadRecordResponse,
+  SzLoadRecordResponseData,
+
+  SzRecordId,
+  SzRecordResponse,
+  SzRecordResponseData,
+
+  SzRelatedEntity,
+  SzRelationshipType,
+  SzResolvedEntity,
+  SzResponseWithRawData
+
+} from '@senzing/rest-api-client-ng';

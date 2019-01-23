@@ -5,7 +5,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import {
   ApiModule,
-  Configuration as ApiConfiguration,
+  Configuration as SzRestConfiguration,
   SzAttributeType
 } from '@senzing/rest-api-client-ng';
 
@@ -13,12 +13,10 @@ import {
 import { JSONScrubber } from './common/utils';
 
 /** models */
-import { SzSearchResults } from './models/responces/search-results/search-results';
 import { SzEntityDetailSectionData } from './models/entity-detail-section-data';
 import { SzEntitySearchParams } from './models/entity-search';
 
 /** services */
-import { SzRestConfiguration } from './common/sz-rest-configuration';
 import { SzMessageBundleService } from './services/sz-message-bundle.service';
 import { SzSearchService } from './services/sz-search.service';
 
@@ -100,12 +98,11 @@ import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
 })
 export class SenzingSdkModule {
 
-  public static forRoot(configurationFactory: () => SzRestConfiguration, apiConfigFactory: () => ApiConfiguration): ModuleWithProviders {
+  public static forRoot(apiConfigFactory: () => SzRestConfiguration): ModuleWithProviders {
     return {
         ngModule: SenzingSdkModule,
         providers: [
-          { provide: SzRestConfiguration, useFactory: configurationFactory },
-          { provide: ApiConfiguration, useFactory: apiConfigFactory }
+          { provide: SzRestConfiguration, useFactory: apiConfigFactory }
         ]
     };
   }
