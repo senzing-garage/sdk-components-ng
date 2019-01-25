@@ -17,7 +17,8 @@
     "start:server": "java -Djava.library.path=\"C:\\Program Files\\Senzing\\g2\\lib\" -jar \"C:\\Users\\arawi\\www\\rest-api-server-java\\target\\sz-api-server-1.5.0.jar\" -iniFile \"C:\\Users\\arawi\\AppData\\Local\\Senzing\\Workbench\\project_1\\g2.ini\"",
     "start:rest": "npm run start:server",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "example:search-with-results-and-details":"ng serve example/search-with-results-and-details"
   },
   "private": true,
   "dependencies": {

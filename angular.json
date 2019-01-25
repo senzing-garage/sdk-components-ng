@@ -39,7 +39,7 @@
       }
     },
 
-    "examples/search-with-results-and-details": {
+    "example/search-with-results-and-details": {
       "root": "examples/search-with-results-and-details/",
       "sourceRoot": "examples/search-with-results-and-details/src",
       "projectType": "application",
@@ -117,19 +117,19 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "examples/search-with-results-and-details:build",
+            "browserTarget": "example/search-with-results-and-details:build",
             "port": 4300
           },
           "configurations": {
             "production": {
-              "browserTarget": "examples/search-with-results-and-details:build:production"
+              "browserTarget": "example/search-with-results-and-details:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "examples/search-with-results-and-details:build"
+            "browserTarget": "example/search-with-results-and-details:build"
           }
         },
         "test": {
@@ -164,7 +164,7 @@
       }
     }
   },
-  "defaultProject": "examples/search-with-results-and-details",
+  "defaultProject": "example/search-with-results-and-details",
   "schematics": {
     "@schematics/angular:component": {
       "styleext": "scss"

@@ -5,18 +5,29 @@ This project is for the senzing sdk components that can be used in other project
 To see an example of an electron app using the sdk components feel free to checkout the latest windows or mac builds from https://senzing.com/senzing-app/
 
 ## Dependencies
-these components are dependent on a [rest api gateway](https://github.com/Senzing/rest-api-server-java/) OR [the rest-api-client-ng](https://github.com/Senzing/rest-api-client-ng/) [package](https://www.npmjs.com/package/@senzing/rest-api-client-ng). 
+
+For building from Source: 
+* [Node/NPM](https://nodejs.org/). 
+* [Angular CLI](https://cli.angular.io/), 
+* [TypeScript](https://www.typescriptlang.org/)
+* [Senzing REST API Sever](https://github.com/Senzing/rest-api-server-java/)
+* [JAVA JDK 1.8](https://jdk.java.net/) _(for rest-api-server-java)_
+
+Please see the installation instructions for each of these for how to install and setup each one properly.
 
 ### Installation
+#### Shortcuts
+If you're developing on Windows or macOS, do yourself a favor and download and install [the app](https://senzing.com/senzing-app/). It installs the G2 libs and sets up project config files. It also gives you an easy way to load and browse data outside of the Senzing REST API Sever. You can do it manually too if you need to.
+
 #### REST Service Gateway
-These components require the senzing [rest api gateway](https://github.com/Senzing/rest-api-server-java/) to function. Follow [the instructions](https://github.com/Senzing/rest-api-server-java/) to check out and build the [Api REST server](https://github.com/Senzing/rest-api-server-java/).
+These components require the senzing [Senzing REST API Sever](https://github.com/Senzing/rest-api-server-java/) to function. Follow [the instructions](https://github.com/Senzing/rest-api-server-java/) to check out and build the [Senzing REST API Sever](https://github.com/Senzing/rest-api-server-java/) from source. 
 
 ##### Build(and run) from Source
 ```bash
 git@github.com:Senzing/rest-api-server-java.git
 cd rest-api-server-java
 mvn clean install
-java -Djava.library.path="C:\Program Files\Senzing\g2\lib" -jar target/sz-api-server-1.5.0.jar -iniFile %LOCALAPPDATA%/Senzing/Workbench/project_1/g2.ini
+java -jar target/sz-api-server-1.5.0.jar -iniFile %LOCALAPPDATA%/Senzing/Workbench/project_1/g2.ini
 ```
 
 ##### from NPM
@@ -35,7 +46,7 @@ open a terminal window to the location of your project and type
 ## Quick Start
 After installation you will need to do a few more things.
 
-1) Start up an instance of the [Api REST server](https://github.com/Senzing/rest-api-server-java/) if not currently running.
+1) Start up an instance of the [rest api server](https://github.com/Senzing/rest-api-server-java/) if not currently running.
   <br/> 
 
 
