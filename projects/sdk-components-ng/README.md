@@ -203,8 +203,7 @@ export class AppComponent {
 
 Now, start up your standard angular dev server(or maybe just restart for fun) via `ng serve`
 and you should be greeted by a page like with a search box. And search results list right below it.
-![screen shot of working example](docs/images/ss-search-with-results.small.png)
-
+![screen shot of working example](docs/images/ss-search-with-results.png)
 
 <h2>
 And that's it! at least for the quickstart. There are a ton more options for running the rest server, interacting with the components and services. </h2>
