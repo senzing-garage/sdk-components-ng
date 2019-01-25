@@ -74,7 +74,7 @@ java -jar "%HOMEPATH%\www\rest-api-server-java\target\sz-api-server-1.5.0.jar" -
 <br/> 
 
 <b>via npm script: </b><br/>
-edit the following line in package.json to point to your projects G2.ini path and the REST Server JAR. Then the server can just be started up by runnning `npm run server`.
+edit the following line in package.json to point to your projects G2.ini path and the REST Server JAR. Then the server can just be started up by runnning `npm run start:server`.
 
 ```json
 "start:server": "java -jar \"%HOMEPATH%\\www\\rest-api-server-java\\target\\sz-api-server-1.5.0.jar\" -iniFile \"%LOCALAPPDATA%\\Senzing\\Workbench\\project_1\\g2.ini\"",
