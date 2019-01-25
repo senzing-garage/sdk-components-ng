@@ -11,7 +11,7 @@ For building from Source:
 * [Angular CLI](https://cli.angular.io/), 
 * [TypeScript](https://www.typescriptlang.org/)
 * [Senzing REST API Sever](https://github.com/Senzing/rest-api-server-java/)
-* [JAVA JDK](https://jdk.java.net/) _(for rest-api-server-java)_
+* [JAVA JDK 1.8](https://jdk.java.net/) _(for rest-api-server-java)_
 
 Please see the installation instructions for each of these for how to install and setup each one properly.
 
@@ -217,5 +217,6 @@ See [online documentation](https://senzing.github.io/rest-api-client-ng/classes/
 Installation contains a statically generated API and component references. They can be found in
 node_modules/@senzing/sdk-components-ng/docs or [Online here](https://senzing.github.io/sdk-components-ng/).
 
+## Examples
+When you check out the source for this repository there is a directory of Angular project examples. Please see the [Examples Readme](https://github.com/Senzing/sdk-components-ng/tree/master/examples) for more information on how these work.
 
-## Trouble Shooting

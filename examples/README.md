@@ -10,7 +10,7 @@ npm run build
 npm run example:name-of-example
 ```
 
-which will start up an instance of the angular cli development server that will serve the appropriate example. So if I wanted to serve up the <i>search-with-results-and-details</i> example I would type `ng run example/search-with-results-and-details`
+which will start up an instance of the angular cli development server that will serve the appropriate example. So if I wanted to serve up the <i>search-with-results-and-details</i> example I would type `npm run example:search-with-results-and-details`
 
 <small>note: notice that it's <b><u>"example"</u></b> and not <b>"examples"</b> with regards to the commands. this is intentional to avoid strange shell behavior thinking we are referring to the <i>physical</i> directory and not the project definition name.</small>
 
