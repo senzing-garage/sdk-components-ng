@@ -20,8 +20,8 @@ Please see the installation instructions for each of these for how to install an
 If you're developing on Windows or macOS, do yourself a favor and download and install [the app](https://senzing.com/senzing-app/). It installs the G2 libs and sets up project config files. It also gives you an easy way to load and browse data outside of the Senzing REST API Sever. You can do it manually too if you need to.
 <br/> <br/>
 
-#### REST Service Gateway
-These components require the senzing [Senzing REST API Sever](https://github.com/Senzing/rest-api-server-java/) to function. Follow [the instructions](https://github.com/Senzing/rest-api-server-java/) to check out and build the [Senzing REST API Sever](https://github.com/Senzing/rest-api-server-java/) from source. 
+#### REST API Server
+These components require the senzing [Senzing REST API Sever](https://github.com/Senzing/rest-api-server-java/) to function. Follow [the instructions](https://github.com/Senzing/rest-api-server-java/) to check out and build the [Senzing REST API Sever](https://github.com/Senzing/rest-api-server-java/) from source or download a pre-built. 
 
 ##### Build(and run) from Source
 ```bash
@@ -30,14 +30,14 @@ cd rest-api-server-java
 mvn clean install
 java -jar target/sz-api-server-1.5.0.jar -iniFile %LOCALAPPDATA%/Senzing/Workbench/project_1/g2.ini
 ```
-
+<!--
 ##### from NPM
 ```bash
 npm install @senzing/rest-api-server-java --save
 java -jar node_modules/@senzing/rest-api-server-java/sz-api-server-1.5.0.jar
 java -Djava.library.path="C:\Program Files\Senzing\g2\lib" -jar node_modules/@senzing/rest-api-server-java/sz-api-server-1.5.0.jar -iniFile node_modules/@senzing/rest-api-server-java/g2.ini
 ```
-<br/> <br/> <br/> 
+<br/>--> <br/> <br/> 
 
 ### SDK Components
 open a terminal window to the location of your project and type: 

@@ -48,16 +48,21 @@ To see an example of an electron app using the sdk components feel free to check
 <h4 id="shortcuts">Shortcuts</h4>
 <p>If you&#39;re developing on Windows or macOS, do yourself a favor and download and install <a href="https://senzing.com/senzing-app/">the app</a>. It installs the G2 libs and sets up project config files. It also gives you an easy way to load and browse data outside of the Senzing REST API Sever. You can do it manually too if you need to.
 <br/> <br/></p>
-<h4 id="rest-service-gateway">REST Service Gateway</h4>
-<p>These components require the senzing <a href="https://github.com/Senzing/rest-api-server-java/">Senzing REST API Sever</a> to function. Follow <a href="https://github.com/Senzing/rest-api-server-java/">the instructions</a> to check out and build the <a href="https://github.com/Senzing/rest-api-server-java/">Senzing REST API Sever</a> from source. </p>
+<h4 id="rest-api-server">REST API Server</h4>
+<p>These components require the senzing <a href="https://github.com/Senzing/rest-api-server-java/">Senzing REST API Sever</a> to function. Follow <a href="https://github.com/Senzing/rest-api-server-java/">the instructions</a> to check out and build the <a href="https://github.com/Senzing/rest-api-server-java/">Senzing REST API Sever</a> from source or download a pre-built. </p>
 <h5 id="build-and-run-from-source">Build(and run) from Source</h5>
 <div><pre class="line-numbers"><code class="language-bash">git&#64;github.com:Senzing/rest-api-server-java.git
 cd rest-api-server-java
 mvn clean install
-java -jar target/sz-api-server-1.5.0.jar -iniFile %LOCALAPPDATA%/Senzing/Workbench/project_1/g2.ini</code></pre></div><h5 id="from-npm">from NPM</h5>
-<div><pre class="line-numbers"><code class="language-bash">npm install &#64;senzing/rest-api-server-java --save
-java -jar node_modules/&#64;senzing/rest-api-server-java/sz-api-server-1.5.0.jar
-java -Djava.library.path=&quot;C:\Program Files\Senzing\g2\lib&quot; -jar node_modules/&#64;senzing/rest-api-server-java/sz-api-server-1.5.0.jar -iniFile node_modules/&#64;senzing/rest-api-server-java/g2.ini</code></pre></div><p><br/> <br/> <br/> </p>
+java -jar target/sz-api-server-1.5.0.jar -iniFile %LOCALAPPDATA%/Senzing/Workbench/project_1/g2.ini</code></pre></div><!--
+##### from NPM
+```bash
+npm install @senzing/rest-api-server-java --save
+java -jar node_modules/@senzing/rest-api-server-java/sz-api-server-1.5.0.jar
+java -Djava.library.path="C:\Program Files\Senzing\g2\lib" -jar node_modules/@senzing/rest-api-server-java/sz-api-server-1.5.0.jar -iniFile node_modules/@senzing/rest-api-server-java/g2.ini
+```
+<br/>--> <br/> <br/> 
+
 <h3 id="sdk-components">SDK Components</h3>
 <p>open a terminal window to the location of your project and type: 
 <code>npm install @senzing/sdk-components-ng --save</code></p>
