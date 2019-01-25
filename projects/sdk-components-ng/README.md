@@ -203,8 +203,8 @@ export class AppComponent {
 
 Now, start up your standard angular dev server(or maybe just restart for fun) via `ng serve`
 and you should be greeted by a page like with a search box. And search results list right below it.
-![screen shot of working example](https://github.com/Senzing/sdk-components-ng/tree/pre-alpha/projects/sdk-components-ng/docs/images/ss-search-with-results.small.png)
-https://github.com/Senzing/sdk-components-ng/tree/pre-alpha/projects/sdk-components-ng/docs/images/ss-search-with-results.png
+![screen shot of working example](https://github.com/Senzing/sdk-components-ng/raw/pre-alpha/projects/sdk-components-ng/docs/images/ss-search-with-results.small.png)
+
 
 <h2>
 And that's it! at least for the quickstart. There are a ton more options for running the rest server, interacting with the components and services. </h2>
