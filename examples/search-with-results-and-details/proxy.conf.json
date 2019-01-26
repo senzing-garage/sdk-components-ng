@@ -1,9 +1,0 @@
-{
-  "/sz-rest-api/*": {
-    "target": "http://localhost:2080",
-    "secure": false,
-    "pathRewrite": {
-      "^/sz-rest-api": ""
-    }
-  }
-}
