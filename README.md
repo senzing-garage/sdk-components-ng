@@ -74,7 +74,7 @@ java -jar "%HOMEPATH%\www\rest-api-server-java\target\sz-api-server-1.5.0.jar" -
 <br/> 
 
 <b>via npm script: </b><br/>
-edit the following line in package.json to point to your projects G2.ini path and the REST Server JAR. Then the server can just be started up by runnning `npm run start:server`.
+edit(or add) the following line in package.json to point to your projects G2.ini path and the REST Server JAR. Then the server can just be started up by runnning `npm run start:server`.
 
 ```json
 "start:server": "java -jar \"%HOMEPATH%\\www\\rest-api-server-java\\target\\sz-api-server-1.5.0.jar\" -iniFile \"%LOCALAPPDATA%\\Senzing\\Workbench\\project_1\\g2.ini\"",
@@ -98,7 +98,7 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    SenzingSdkModule
+    SenzingSdkModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -190,7 +190,7 @@ And that's it! at least for the quickstart. There are a ton more options for run
 ## Configuration & Parameters
 
 The SenzingSDKModule accepts a factory method or a object literal that conforms to the 
-properties found in the [Configuration](https://senzing.github.io/rest-api-client-ng/classes/Configuration.html) class. By adding a factory like the following to the constructor method, you can change services configuration to point to non-default values.
+properties found in the [SzRestConfiguration](https://senzing.github.io/sdk-components-ng/classes/SzRestConfiguration.html) class. By adding a factory like the following to the constructor method, you can change services configuration to point to non-default values.
 
 The following tells any components to turn on CORS functionality and make all api requests to localhost port 22080( http://localhost:22080/ ).
 
@@ -233,3 +233,38 @@ node_modules/@senzing/sdk-components-ng/docs or [Online here](https://senzing.gi
 ## Examples
 When you check out the source for this repository there is a directory of Angular project examples. Please see the [Examples Readme](https://github.com/Senzing/sdk-components-ng/tree/master/examples) for more information on how these work.
 
+
+## Troubleshooting
+occasionally something does go wrong(I know, I know right?). Here are some common things we run in to:
+
+<table style="border: 2px solid #eee; border-collapse: separate; border-spacing: 2px;">
+  <thead style="background-color: #c0c0c0; color: #454545; font-weight: bold;">
+    <tr>
+      <td style="padding: 2px 5px;">Problem</td>
+      <td style="padding: 2px 5px;">Solution</td>
+      <td style="padding: 2px 5px;">Explanation</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="padding: 0 0 12px 0; border-bottom: 1px solid green;">
+      <td style="padding: 10px 5px;">messages like <code>GET http://attribute-types/ net::ERR_NAME_NOT_RESOLVED</code> are 
+      showing up in the developer console</td>
+      <td style="padding: 10px 5px;">
+        Set the api configuration to the address and port your rest server is running at by 
+        passing in an instance of <a href="https://senzing.github.io/sdk-components-ng/classes/SzRestConfiguration.html">SzRestConfiguration</a> to the <a href="https://senzing.github.io/sdk-components-ng/modules/SenzingSdkModule.html">SenzingSdkModule.forRoot method</a>.
+        <br/><br/>
+        Double check and make sure you can connect to your rest server via 
+        <code>curl -i http://localhost:2080/heartbeat</code>
+      </td>
+      <td style="padding: 10px 5px;">
+        The api is trying to hit the rest server without an appropriate basepath or the hostname.
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 10px 5px;"><code>npm run start</code> throws weird "No App Module" error</td>
+      <td style="padding: 10px 5px;">recompile the npm package. <br/>
+      <code>npm run build</code></td>
+      <td style="padding: 10px 5px;">For whatever reason sometimes the builder <i>misses</i> compiling packages. open up dist/@senzing/sdk-components/public_api.d.ts and check to make sure all the packages being referenced actually got compiled.</td>
+    </tr>
+  </tbody>
+</table>

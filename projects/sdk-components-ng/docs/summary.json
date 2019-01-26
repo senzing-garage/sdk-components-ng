@@ -1,9 +1,5 @@
 [
   {
-      "title": "Quick Start",
-      "file": "quick-start.md"
-  },
-  {
     "title": "Themes",
     "file": "themes/README.md",
     "children": [

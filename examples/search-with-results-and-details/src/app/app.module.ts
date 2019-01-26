@@ -5,7 +5,6 @@ import { CommonModule, TitleCasePipe } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 import { SenzingSdkModule, SzRestConfiguration, SzPoweredByComponent  } from '@senzing/sdk-components-ng';
-import { ApiModule } from '@senzing/rest-api-client-ng';
 
 import { AppComponent } from './app.component';
 import { SzSearchComponentTest } from './search/sz-search/sz-search.component';
@@ -29,22 +28,7 @@ import { SzSearchResultCardContentTestComponent } from './search/sz-search-resul
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    SenzingSdkModule.forRoot(
-      () => {
-        return new SzRestConfiguration({
-          basePath: 'http://localhost:2080',
-          withCredentials: true
-        });
-      }
-    ),
-    ApiModule.forRoot(
-      () => {
-        return new SzRestConfiguration({
-          basePath: 'http://localhost:2080',
-          withCredentials: true
-        });
-      }
-    )
+    SenzingSdkModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

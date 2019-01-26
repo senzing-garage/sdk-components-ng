@@ -97,13 +97,47 @@ import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
   ]
 })
 export class SenzingSdkModule {
+  /**
+   * initialize the SenzingSdkModule with an instance of
+   * SzRestConfiguration or a factory method that returns a SzRestConfiguration.
+   *
+   * @example
+   * SenzingSdkModule.forRoot(
+    () => {
+      return new SzRestConfiguration({
+        basePath: 'http://myapiserver:2080',
+        withCredentials: true
+      });
+    }
+   )
+   *
+   */
+  public static forRoot(apiConfigFactory?: SzRestConfiguration | any): ModuleWithProviders {
+    let _providers = [];
 
-  public static forRoot(apiConfigFactory: () => SzRestConfiguration): ModuleWithProviders {
+    function isFunction(obj) {
+     return !!(obj && obj.constructor && obj.call && obj.apply);
+    };
+
+    if(apiConfigFactory === undefined){
+      apiConfigFactory = function() {
+        return new SzRestConfiguration({
+          basePath: "http://localhost:2080",
+          withCredentials: true
+        })
+      }
+      console.warn('no config factory. setting default values for api service calls: ', apiConfigFactory());
+    }
+    // check apiConfigFactory shape to figure out what is what
+    if(apiConfigFactory && !isFunction(apiConfigFactory) && apiConfigFactory.basePath ){
+      _providers.push(  { provide: SzRestConfiguration, useValue: apiConfigFactory } );
+    } else if(apiConfigFactory && isFunction(apiConfigFactory) && apiConfigFactory().basePath) {
+      _providers.push(  { provide: SzRestConfiguration, useFactory: apiConfigFactory } );
+    }
+
     return {
         ngModule: SenzingSdkModule,
-        providers: [
-          { provide: SzRestConfiguration, useFactory: apiConfigFactory }
-        ]
+        providers: _providers
     };
   }
 
