@@ -209,7 +209,7 @@ import { AppComponent } from './app.component';
     SenzingSdkModule.forRoot(
       () => {
         return new SzRestConfiguration({
-          basePath: 'http://localhost:2080',
+          basePath: 'http://localhost:22080',
           withCredentials: true
         });
       }
