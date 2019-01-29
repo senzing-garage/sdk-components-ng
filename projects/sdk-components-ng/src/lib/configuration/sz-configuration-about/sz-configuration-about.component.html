@@ -1,0 +1,10 @@
+<div class="sz-configuration-about">
+  <div class="header">
+      <div class="column">Property Name</div>
+      <div class="column">Property Value</div>
+  </div>
+    <div *ngFor=" let propObj of this.apiProperties" class="row">
+      <div class="column cell">{{propObj['key']}}</div>
+      <div class="column cell">{{propObj['value']}}</div>
+    </div>
+</div>

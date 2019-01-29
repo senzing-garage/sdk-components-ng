@@ -57,16 +57,7 @@
                 <td class="col-md-4">
                     <ul class="index-list">
                         <li>
-                            <a href="#fromServer" title="projects/sdk-components-ng/src/lib/common/data-marshalling.ts"><b>fromServer</b>&nbsp;&nbsp;&nbsp;(projects/.../data-marshalling.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#fromServerArray" title="projects/sdk-components-ng/src/lib/common/data-marshalling.ts"><b>fromServerArray</b>&nbsp;&nbsp;&nbsp;(projects/.../data-marshalling.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#toServer" title="projects/sdk-components-ng/src/lib/common/data-marshalling.ts"><b>toServer</b>&nbsp;&nbsp;&nbsp;(projects/.../data-marshalling.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#toServerArray" title="projects/sdk-components-ng/src/lib/common/data-marshalling.ts"><b>toServerArray</b>&nbsp;&nbsp;&nbsp;(projects/.../data-marshalling.ts)</a>
+                            <a href="#JSONScrubber" title="projects/sdk-components-ng/src/lib/common/utils.ts"><b>JSONScrubber</b>&nbsp;&nbsp;&nbsp;(projects/.../utils.ts)</a>
                         </li>
                     </ul>
                 </td>
@@ -75,24 +66,24 @@
     </table>
 </section>
 
-    <h3>projects/sdk-components-ng/src/lib/common/data-marshalling.ts</h3>
+    <h3>projects/sdk-components-ng/src/lib/common/utils.ts</h3>
     <section>
     <h3></h3>        <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="fromServer"></a>
+                        <a name="JSONScrubber"></a>
                         <span class="name">
                             <b>
-                            fromServer
+                            JSONScrubber
                             </b>
-                            <a href="#fromServer"><span class="icon ion-ios-link"></span></a>
+                            <a href="#JSONScrubber"><span class="icon ion-ios-link"></span></a>
                         </span>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-<code>fromServer(target, source: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, dateFields)</code>
+<code>JSONScrubber(value: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                     </td>
                 </tr>
 
@@ -101,6 +92,10 @@
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>A reusable function to remove any null or undefined values, and their
+associated keys from a json object.
+used internally.</p>
+</div>
 
                             <div class="io-description">
                                     <b>Parameters :</b>
@@ -114,263 +109,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>target</td>
-                                                        <td>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                                <tr>
-                                                        <td>source</td>
+                                                        <td>value</td>
                                                         <td>
                                                                     <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
                                                         </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                                <tr>
-                                                        <td>dateFields</td>
-                                                        <td>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="fromServerArray"></a>
-                        <span class="name">
-                            <b>
-                            fromServerArray
-                            </b>
-                            <a href="#fromServerArray"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-<code>fromServerArray(target, source, producer, dateFields)</code>
-                    </td>
-                </tr>
-
-
-
-
-                <tr>
-                    <td class="col-md-4">
-
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>target</td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                                <tr>
-                                                        <td>source</td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                                <tr>
-                                                        <td>producer</td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                                <tr>
-                                                        <td>dateFields</td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="toServer"></a>
-                        <span class="name">
-                            <b>
-                            toServer
-                            </b>
-                            <a href="#toServer"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-<code>toServer(target, source, dateFields)</code>
-                    </td>
-                </tr>
-
-
-
-
-                <tr>
-                    <td class="col-md-4">
-
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>target</td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                                <tr>
-                                                        <td>source</td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                                <tr>
-                                                        <td>dateFields</td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="toServerArray"></a>
-                        <span class="name">
-                            <b>
-                            toServerArray
-                            </b>
-                            <a href="#toServerArray"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-<code>toServerArray(target, source, producer, dateFields)</code>
-                    </td>
-                </tr>
-
-
-
-
-                <tr>
-                    <td class="col-md-4">
-
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>target</td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                                <tr>
-                                                        <td>source</td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                                <tr>
-                                                        <td>producer</td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                                <tr>
-                                                        <td>dateFields</td>
                                                     
                                                     <td>
                                                             No

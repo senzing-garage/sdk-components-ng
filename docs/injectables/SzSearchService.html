@@ -76,6 +76,10 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#getAttributeTypes">getAttributeTypes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#getEntityById">getEntityById</a>
                             </li>
                             <li>
@@ -112,12 +116,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(searchHttpService: <a href="../injectables/SzSearchHttpService.html">SzSearchHttpService</a>, mappingAttrService: <a href="../injectables/SzMappingAttrService.html">SzMappingAttrService</a>)</code>
+<code>constructor(entityDataService: EntityDataService, configService: ConfigService)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:17</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:20</a></div>
                             </td>
                         </tr>
 
@@ -135,10 +139,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>searchHttpService</td>
+                                                        <td>entityDataService</td>
                                                   
                                                         <td>
-                                                                    <code><a href="../injectables/SzSearchHttpService.html" target="_self" >SzSearchHttpService</a></code>
+                                                                    <code>EntityDataService</code>
                                                         </td>
                                                   
                                                     <td>
@@ -147,10 +151,10 @@
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>mappingAttrService</td>
+                                                        <td>configService</td>
                                                   
                                                         <td>
-                                                                    <code><a href="../injectables/SzMappingAttrService.html" target="_self" >SzMappingAttrService</a></code>
+                                                                    <code>ConfigService</code>
                                                         </td>
                                                   
                                                     <td>
@@ -176,6 +180,48 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="getAttributeTypes"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            getAttributeTypes
+                            </b>
+                            <a href="#getAttributeTypes"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>getAttributeTypes()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:81</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>get list of characteristics as attribute types</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Observable&lt;SzAttributeType[]&gt;</code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="getEntityById"></a>
                         <span class="name">
                             <b>
@@ -189,20 +235,22 @@
                 <tr>
                     <td class="col-md-4">
                             <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>getEntityById(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, entityId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                        <code>getEntityById(entityId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                     </td>
                 </tr>
 
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:55</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:95</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>get an SzEntityData model by providing an entityId.</p>
+</div>
 
                             <div class="io-description">
                                     <b>Parameters :</b>
@@ -215,18 +263,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                                <tr>
-                                                        <td>projectId</td>
-                                                        <td>
-                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
                                                 <tr>
                                                         <td>entityId</td>
                                                         <td>
@@ -245,7 +281,7 @@
                             <div>
                             </div>
                             <div class="io-description">
-                                <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+                                <b>Returns : </b>    <code>Observable&lt;SzEntityData&gt;</code>
 
                             </div>
                                 <div class="io-description">
@@ -279,7 +315,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:51</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:73</a></div>
                             </td>
                         </tr>
 
@@ -288,7 +324,7 @@
                     <td class="col-md-4">
 
                             <div class="io-description">
-                                <b>Returns : </b>    <code><a href="../classes/SzMappingAttr.html" target="_self" >Observable&lt;SzMappingAttr[]&gt;</a></code>
+                                <b>Returns : </b>    <code>Observable&lt;SzAttributeType[]&gt;</code>
 
                             </div>
                     </td>
@@ -319,13 +355,15 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:31</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:46</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>get the current search params.</p>
+</div>
 
                             <div class="io-description">
                                 <b>Returns : </b>    <code><a href="../interfaces/SzEntitySearchParams.html" target="_self" >SzEntitySearchParams</a></code>
@@ -352,20 +390,22 @@
                 <tr>
                     <td class="col-md-4">
                             <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>searchByAttributes(searchParms: <a href="../interfaces/SzEntitySearchParams.html">SzEntitySearchParams</a>, projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                        <code>searchByAttributes(searchParms: <a href="../interfaces/SzEntitySearchParams.html">SzEntitySearchParams</a>)</code>
                     </td>
                 </tr>
 
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:23</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:32</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>perform a search request againt the data source.</p>
+</div>
 
                             <div class="io-description">
                                     <b>Parameters :</b>
@@ -390,25 +430,13 @@
                                                     
 
                                                 </tr>
-                                                <tr>
-                                                        <td>projectId</td>
-                                                        <td>
-                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
                                         </tbody>
                                     </table>
                             </div>
                             <div>
                             </div>
                             <div class="io-description">
-                                <b>Returns : </b>    <code><a href="../interfaces/SzSearchResults.html" target="_self" >Observable&lt;SzSearchResults&gt;</a></code>
+                                <b>Returns : </b>    <code>Observable&lt;SzAttributeSearchResult[]&gt;</code>
 
                             </div>
                                 <div class="io-description">
@@ -442,13 +470,15 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:35</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:54</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>set the an individual search parameter.</p>
+</div>
 
                             <div class="io-description">
                                     <b>Parameters :</b>
@@ -512,13 +542,16 @@
 import { Observable, fromEventPattern, Subject } from &#x27;rxjs&#x27;;
 import { map, tap, mapTo } from &#x27;rxjs/operators&#x27;;
 
-import { SzSearchHttpService } from &#x27;./sz-search-http.service&#x27;;
-import { SzMappingAttrService } from &#x27;./sz-mapping-attr.service&#x27;;
-import { SzEntitySearchParams } from &#x27;./sz-search-params.model&#x27;;
-
-import { SzSearchResultEntityData } from &#x27;../models/responces/search-results/sz-search-result-entity-data&#x27;;
-import { SzSearchResults } from &#x27;../models/responces/search-results/search-results&#x27;;
-import { SzMappingAttr } from &#x27;../models/mapping-attr&#x27;;
+import {
+  EntityDataService,
+  ConfigService,
+  SzAttributeSearchResponse,
+  SzEntityData,
+  SzAttributeTypesResponse,
+  SzAttributeType,
+  SzAttributeSearchResult
+} from &#x27;@senzing/rest-api-client-ng&#x27;;
+import { SzEntitySearchParams } from &#x27;../models/entity-search&#x27;;
 
 @Injectable({
   providedIn: &#x27;root&#x27;
@@ -527,21 +560,37 @@ export class SzSearchService {
   private currentSearchParams: SzEntitySearchParams &#x3D; {};
 
   constructor(
-    private searchHttpService: SzSearchHttpService,
-    private mappingAttrService: SzMappingAttrService) {}
+    private entityDataService: EntityDataService,
+    private configService: ConfigService) {}
 
-  public searchByAttributes(searchParms: SzEntitySearchParams, projectId: number): Observable&lt;SzSearchResults&gt; {
+  /**
+   * perform a search request againt the data source.
+   * @link http://editor.swagger.io/?url&#x3D;https://raw.githubusercontent.com/Senzing/rest-api-proposal/master/senzing-api.yaml | GET /entities
+   *
+   * @memberof SzSearchService
+   */
+  public searchByAttributes(searchParms: SzEntitySearchParams): Observable&lt;SzAttributeSearchResult[]&gt; {
     this.currentSearchParams &#x3D; searchParms;
-    return this.searchHttpService.searchByAttributes(searchParms, projectId)
+
+    return this.entityDataService.searchByAttributes(JSON.stringify(searchParms))
     .pipe(
-      map((searchRes: any) &#x3D;&gt; searchRes as SzSearchResults)
+      tap((searchRes: SzAttributeSearchResponse) &#x3D;&gt; console.log(&#x27;SzSearchService.searchByAttributes: &#x27;,searchParms, searchRes)),
+      map((searchRes: SzAttributeSearchResponse) &#x3D;&gt; searchRes.data.searchResults as SzAttributeSearchResult[])
     );
   }
-
+  /**
+   * get the current search params.
+   *
+   * @memberof SzSearchService
+   */
   public getSearchParams(): SzEntitySearchParams {
     return this.currentSearchParams;
   }
 
+  /**
+   * set the an individual search parameter.
+   * @memberof SzSearchService
+   */
   public setSearchParam(paramName: any, value: any): void {
     try{
       this.currentSearchParams[paramName] &#x3D; value;
@@ -558,17 +607,38 @@ export class SzSearchService {
   }
   */
 
-  public getMappingAttributes(): Observable&lt;SzMappingAttr[]&gt; {
-    return this.mappingAttrService.getAttributes();
+  /**
+   * @alias getAttributeTypes
+  */
+  public getMappingAttributes(): Observable&lt;SzAttributeType[]&gt; {
+    return this.getAttributeTypes();
+  }
+  /**
+   * get list of characteristics as attribute types
+   *
+   * @memberof SzSearchService
+   */
+  public getAttributeTypes(): Observable&lt;SzAttributeType[]&gt; {
+    // get attributes
+    return this.configService.getAttributeTypes()
+    .pipe(
+      tap( (resp: SzAttributeTypesResponse)&#x3D;&gt; console.log(&#x27;SzSearchService.getMappingAttributes: &#x27;,resp.data.attributeTypes) ),
+      map( (resp: SzAttributeTypesResponse) &#x3D;&gt; resp.data.attributeTypes )
+    );
   }
 
-  public getEntityById(projectId: number, entityId: number): Observable&lt;any&gt; {
-    console.log(&#x27;@senzing/sdk/services/sz-search[getEntityById(&#x27;+ projectId +&#x27;,&#x27;+ entityId +&#x27;)] &#x27;);
+  /**
+   * get an SzEntityData model by providing an entityId.
+   *
+   * @memberof SzSearchService
+   */
+  public getEntityById(entityId: number): Observable&lt;SzEntityData&gt; {
+    console.log(&#x27;@senzing/sdk/services/sz-search[getEntityById(&#x27;+ entityId +&#x27;)] &#x27;);
 
-    return this.searchHttpService.getEntityByEntityId(projectId, entityId)
+    return this.entityDataService.getEntityByEntityId(entityId)
     .pipe(
-      tap(res &#x3D;&gt; console.log(&#x27;SzSearchService.getEntityById: &#x27; + entityId, res)),
-      map(res &#x3D;&gt; (res as SzSearchResultEntityData))
+      tap(res &#x3D;&gt; console.log(&#x27;SzSearchService.getEntityById: &#x27; + entityId, res.data)),
+      map(res &#x3D;&gt; (res.data as SzEntityData))
     );
   }
 

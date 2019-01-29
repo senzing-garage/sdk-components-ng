@@ -1,0 +1,41 @@
+
+<!-- @senzing/sdk/entity/detail/sz-entity-detail -->
+<div>
+  <sz-entity-detail-header
+  [entity]="entity">
+  </sz-entity-detail-header>
+
+  <sz-entity-details-section
+    *ngIf="entity?.resolvedEntity?.records?.length"
+    [sectionData]="entity?.resolvedEntity?.records"
+    [sectionTitle]="'Matched Records'"
+    sectionId="detail-section-1"
+    [sectionCount]="entity?.resolvedEntity?.records?.length"
+    (entityRecordClick)="onEntityRecordClick($event)">
+  </sz-entity-details-section>
+
+  <sz-entity-details-section
+    *ngIf="this.possibleMatches?.length"
+    [sectionData]="this.possibleMatches"
+    [sectionTitle]="'Possible Matches'"
+    sectionId="detail-section-2"
+    [sectionCount]="this.possibleMatches?.length"
+    (entityRecordClick)="onEntityRecordClick($event)">
+  </sz-entity-details-section>
+  <sz-entity-details-section
+    *ngIf="this._discoveredRelationships?.length"
+    [sectionData]="this._discoveredRelationships"
+    [sectionTitle]="'Possible Relationships'"
+    sectionId="detail-section-3"
+    [sectionCount]="this._discoveredRelationships?.length"
+    (entityRecordClick)="onEntityRecordClick($event)">
+  </sz-entity-details-section>
+  <sz-entity-details-section
+    *ngIf="this._disclosedRelationships?.length"
+    [sectionData]="this._disclosedRelationships"
+    [sectionTitle]="'Disclosed Relationships'"
+    sectionId="detail-section-4"
+    [sectionCount]="this._disclosedRelationships?.length"
+    (entityRecordClick)="onEntityRecordClick($event)">
+  </sz-entity-details-section>
+</div>

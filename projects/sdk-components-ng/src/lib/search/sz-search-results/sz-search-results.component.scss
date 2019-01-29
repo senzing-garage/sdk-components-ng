@@ -1,0 +1,92 @@
+@import "../../scss/variables";
+
+:host {
+  display: block;
+  padding: var(--sz-search-results-padding);
+  color: var(--sz-search-results-color);
+  font-family: var(--sz-search-results-font-family);
+
+  textarea {
+    width: 1000px;
+    height: 400px;
+  }
+  .label-title {
+    text-transform: uppercase;
+  }
+
+  .sz-search-results-total-summary {
+
+    color: var(--sz-search-results-header-color);
+    display: var(--sz-search-results-header-display);
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--sz-search-results-header-padding);
+    margin: var(--sz-search-results-header-margin);
+
+    .sz-search-results-total {
+      font-size: var(--sz-search-results-header-font-size);
+    }
+    .action-buttons__wrapper {
+      display: flex;
+    }
+  }
+
+  .sz-search-results-parameter-value {
+    color: var( --sz-search-results-header-parameter-value-color);
+    font-weight: 600;
+    margin: 0 .5em 0 .5em;
+  }
+
+  .search-result__section-header {
+    display: flex;
+    width: calc(100% - 40px);
+    font-size: var(--sz-search-results-header-font-size);
+    font-weight: 600;
+    height: 40px;
+    align-items: center;
+    color: var(--sz-search-results-section-header-color);
+    padding: var(--sz-search-results-section-header-padding);
+
+    &.matches {
+      background-color: var(--sz-search-results-matches-header-background-color);
+    }
+    &.possible-match {
+      background-color: var(--sz-search-results-possible-match-header-background-color);
+    }
+    &.possibly-related {
+      background-color: var(--sz-search-results-possibly-related-header-background-color);
+    }
+    &.name-only-matches {
+      background-color: var(--sz-search-results-name-only-matches-header-background-color);
+    }
+  }
+
+  .main-card__label {
+    min-height: 150px;
+    width: 200px;
+    min-width: 200px;
+    text-transform: uppercase;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    color: $sz-white;
+    &.search {
+      background-color: $sz-green;
+    }
+    &.insights {
+      background-color: $sz-orange;
+    }
+    &.suggestions {
+      background-color: $sz-brown;
+    }
+    &.data {
+      background-color: $sz-dark2;
+    }
+    &.health {
+      background-color: $sz-dark-blue;
+    }
+  }
+
+}

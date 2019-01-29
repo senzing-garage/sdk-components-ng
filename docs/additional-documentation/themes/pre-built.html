@@ -52,8 +52,33 @@
 <h2 id="using-sass">using sass</h2>
 <p>if you&#39;re using sass(and scss processor can reference node_modules), open up your main scss file(src/styles.scss in default angular layout) and include the following.</p>
 <div><pre class="line-numbers"><code class="language-scss">&#64;import &#39;&#64;senzing/sdk-components-ng/styles/themes/senzing.css&#39;;</code></pre></div><h2 id="using-css">using css</h2>
-<p>open up your main html file and include the css reference in the HEAD of your document.</p>
+<p>there are several different ways to include a pre-built theme in your project.
+You could just add the stylesheet path to your main html file and include the css reference in the HEAD of your document.</p>
 <div><pre class="line-numbers"><code class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;node_modules/&#64;senzing/sdk-components-ng/styles/themes/senzing.css&quot;&gt;</code></pre></div><p>for production it is recommended you copy the theme stylesheet you will be using over to a static directory(probably a bad idea to leave node_modules open to the world) and change the above reference to point to it&#39;s location. </p>
+<h3 id="angular-projects">angular projects</h3>
+<center><img src="../images/themes/add-to-style-paths.png"><center>
+if you're using the sdk components in the scope of an angular project the recommended way is to add the theme file path to your *angular.json* file for your project.
+
+<p>find the _architect.build.options.styles node in the file, and add the path there. </p>
+<div><pre class="line-numbers"><code class="language-json">&quot;styles&quot;: [
+  &quot;src/styles.scss&quot;,
+  &quot;node_modules/\\&#64;senzing/sdk-components-ng/styles/themes/drab.css&quot;
+],</code></pre></div><p>and next time you run or build your angular project it will include the theme file for the sdk components.</p>
+<div style="border-radius: 5px; border: 1px solid #000; padding: 8px;">
+  <div><b>Note*</b></div>
+  Windows users have to deal with _escaping_ escape charaters when directly accessing npm namespaced paths.
+  (illustrated above) 
+</div>
+
+
+<h2 id="themes">Themes</h2>
+<div style="display: flex-box; flex-direction: columns;">
+  <img src="../images/themes/ss-drab.png">
+  <p>
+    <h3>Drab</h3>
+    <label>location: </label>`node_modules/@senzing/sdk-components-ng/styles/themes/drab.css`
+  </p>
+</div>
 
                    </div><div class="search-results">
     <div class="has-results">

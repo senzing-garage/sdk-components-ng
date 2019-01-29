@@ -1,0 +1,32 @@
+:host {
+  display: block;
+  /*border: 2px dashed blueviolet;*/
+
+
+  sz-entity-detail-section-collapsible-card, .sz-entity-detail-section-collapsible-card {
+    display: block;
+    background: var(--sz-entity-detail-section-background);
+    color: var(--sz-entity-detail-section-color);
+    font-size: var(--sz-entity-detail-section-font-size);
+    line-height: var(--sz-entity-detail-section-line-height);
+
+    border-bottom: var(--sz-entity-detail-section-border-top);
+    border-left: var(--sz-entity-detail-section-border-left);
+    border-right: var(--sz-entity-detail-section-border-right);
+    border-bottom: var(--sz-entity-detail-section-border-bottom);
+    overflow: hidden;
+
+    &:last-child {
+      border-radius: var(--sz-entity-detail-section-border-radius);
+    }
+    &.by-match-key {
+      app-card-content {
+        background-color: transparent;
+        border: 0;
+      }
+    }
+  }
+  .mat-accordion {
+    box-shadow: none;
+  }
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "title": "Themes",
+    "file": "themes/README.md",
+    "children": [
+      {
+        "title": "Pre Built",
+        "file": "themes/pre-defined.md"
+      },
+      {
+        "title": "Customizing",
+        "file": "themes/custom.md"
+      }
+    ]
+  }
+]

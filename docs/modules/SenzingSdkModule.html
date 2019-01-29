@@ -115,34 +115,7 @@
                             title="Official documentation about module providers"><span class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <a href="../injectables/SzDataSourceService.html">SzDataSourceService</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="../injectables/SzEntityTypeService.html">SzEntityTypeService</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="../injectables/SzMappingAttrService.html">SzMappingAttrService</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="../injectables/SzMappingTemplateService.html">SzMappingTemplateService</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="../injectables/SzMessageBundleService.html">SzMessageBundleService</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="../injectables/SzProjectHttpService.html">SzProjectHttpService</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="../injectables/SzSearchHttpService.html">SzSearchHttpService</a>
-                        </li>
-                        <li class="list-group-item">
                             <a href="../injectables/SzSearchService.html">SzSearchService</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="../injectables/SzServerErrorsService.html">SzServerErrorsService</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="../injectables/SzSettingsService.html">SzSettingsService</a>
                         </li>
                     </ul>
                 </div>
@@ -195,20 +168,22 @@
                 <tr>
                     <td class="col-md-4">
                             <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>forRoot(configurationFactory: () => void)</code>
+                        <code>forRoot(apiConfigFactory?: () => void)</code>
                     </td>
                 </tr>
 
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="113" class="link-to-prism">projects/sdk-components-ng/src/lib/sdk.module.ts:113</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="131" class="link-to-prism">projects/sdk-components-ng/src/lib/sdk.module.ts:131</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>initialize the SenzingSdkModule with an optional factory method that returns a <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> instance.</p>
+</div>
 
                             <div class="io-description">
                                     <b>Parameters :</b>
@@ -222,13 +197,13 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>configurationFactory</td>
+                                                        <td>apiConfigFactory</td>
                                                         <td>
                                                                     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
                                                         </td>
                                                     
                                                     <td>
-                                                            No
+                                                            Yes
                                                     </td>
                                                     
 
@@ -237,6 +212,13 @@
                                     </table>
                             </div>
                             <div>
+                                    <b>Example :</b>
+                                        <div>
+                                            <pre class="line-numbers"><code class="language-html">export function SzRestConfigurationFactory() {
+return new SzRestConfiguration({ basePath: &quot;myapiserverhostname.com:2080&quot;, withCredentials: true });
+}
+SenzingSdkModule.forRoot( SzRestConfigurationFactory )</code></pre>
+                                        </div>
                             </div>
                             <div class="io-description">
                                 <b>Returns : </b>    <code><a href="https://angular.io/api/core/ModuleWithProviders" target="_blank" >ModuleWithProviders</a></code>
@@ -255,32 +237,27 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { NgModule, Injector, ModuleWithProviders, SkipSelf, Optional } from &#x27;@angular/core&#x27;;
-import { BrowserModule } from &#x27;@angular/platform-browser&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { NgModule, Injector, ModuleWithProviders, SkipSelf, Optional, Provider, InjectionToken } from &#x27;@angular/core&#x27;;
+/* import { BrowserModule } from &#x27;@angular/platform-browser&#x27;; */
 import { HttpClientModule, HttpClient } from &#x27;@angular/common/http&#x27;;
 import { ReactiveFormsModule, FormsModule } from &#x27;@angular/forms&#x27;;
 import { CommonModule, TitleCasePipe } from &#x27;@angular/common&#x27;;
+import {
+  ApiModule,
+  Configuration as SzRestConfiguration,
+  ConfigurationParameters as SzRestConfigurationParameters
+} from &#x27;@senzing/rest-api-client-ng&#x27;;
 
 /** utilities */
+import { JSONScrubber } from &#x27;./common/utils&#x27;;
 
 /** models */
-import { SzSearchResults } from &#x27;./models/responces/search-results/search-results&#x27;;
-import { SzSearchResultEntityData } from &#x27;./models/responces/search-results/sz-search-result-entity-data&#x27;;
 import { SzEntityDetailSectionData } from &#x27;./models/entity-detail-section-data&#x27;;
 import { SzEntitySearchParams } from &#x27;./models/entity-search&#x27;;
 
 /** services */
-import { SzRestConfiguration } from &#x27;./common/sz-rest-configuration&#x27;;
-import { SzDataSourceService } from &#x27;./services/sz-data-source.service&#x27;;
-import { SzEntityTypeService } from &#x27;./services/sz-entity-type.service&#x27;;
-import { SzMappingAttrService } from &#x27;./services/sz-mapping-attr.service&#x27;;
-import { SzMappingTemplateService } from &#x27;./services/sz-mapping-template.service&#x27;;
 import { SzMessageBundleService } from &#x27;./services/sz-message-bundle.service&#x27;;
-import { SzProjectHttpService } from &#x27;./services/sz-project-http.service&#x27;;
-import { SzSearchHttpService } from &#x27;./services/sz-search-http.service&#x27;;
 import { SzSearchService } from &#x27;./services/sz-search.service&#x27;;
-import { SzServerErrorsService } from &#x27;./services/sz-server-errors.service&#x27;;
-import { SzSettingsService } from &#x27;./services/sz-settings.service&#x27;;
 
 /** components */
 import { SzEntityDetailComponent } from &#x27;./entity/detail/sz-entity-detail.component&#x27;;
@@ -303,6 +280,26 @@ import { SzSearchResultCardHeaderComponent } from  &#x27;./search/sz-search-resu
 import { SzConfigurationAboutComponent } from &#x27;./configuration/sz-configuration-about/sz-configuration-about.component&#x27;;
 import { SzConfigurationComponent } from &#x27;./configuration/sz-configuration/sz-configuration.component&#x27;;
 import { SzPoweredByComponent } from &#x27;./sz-powered-by/sz-powered-by.component&#x27;;
+
+/**
+ * Sets up a default set of service parameters for use
+ * by the SDK Components.
+ *
+ * this is only used when no configuration parameters are set
+ * via the forRoot static method.
+ * @internal
+ */
+export function SzDefaultRestConfigurationFactory(): SzRestConfiguration {
+  return new SzRestConfiguration({
+    basePath: &#x27;http://localhost:2080&#x27;,
+    withCredentials: true
+  });
+}
+/**
+ * Injection Token for the rest configuration class
+ * @internal
+ */
+const SzRestConfigurationInjector &#x3D; new InjectionToken&lt;SzRestConfiguration&gt;(&quot;SzRestConfiguration&quot;);
 
 @NgModule({
   declarations: [
@@ -327,10 +324,11 @@ import { SzPoweredByComponent } from &#x27;./sz-powered-by/sz-powered-by.compone
     SzPoweredByComponent
   ],
   imports: [
-    BrowserModule,
+    CommonModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ApiModule
   ],
   exports: [
     SzEntityDetailComponent,
@@ -351,27 +349,32 @@ import { SzPoweredByComponent } from &#x27;./sz-powered-by/sz-powered-by.compone
     SzConfigurationAboutComponent
   ],
   providers: [
-    SzDataSourceService,
-    SzEntityTypeService,
-    SzMappingAttrService,
-    SzMappingTemplateService,
     SzMessageBundleService,
-    SzProjectHttpService,
-    SzSearchHttpService,
     SzSearchService,
-    SzServerErrorsService,
-    SzSettingsService,
     HttpClient,
     TitleCasePipe
   ]
 })
 export class SenzingSdkModule {
+  /**
+   * initialize the SenzingSdkModule with an optional factory method that returns a {@link https://senzing.github.io/rest-api-client-ng/classes/Configuration.html|SzRestConfiguration} instance.
+   * @see {@link https://senzing.github.io/rest-api-client-ng/classes/Configuration.html|SzRestConfiguration}
+   * @example
+   export function SzRestConfigurationFactory() {
+      return new SzRestConfiguration({ basePath: \&quot;myapiserverhostname.com:2080\&quot;, withCredentials: true });
+   }
 
-  public static forRoot(configurationFactory: () &#x3D;&gt; SzRestConfiguration): ModuleWithProviders {
+   SenzingSdkModule.forRoot( SzRestConfigurationFactory )
+   *
+   */
+  public static forRoot(apiConfigFactory?: () &#x3D;&gt; SzRestConfiguration): ModuleWithProviders {
     return {
         ngModule: SenzingSdkModule,
         providers: [
-          { provide: SzRestConfiguration, useFactory: configurationFactory }
+          {
+            provide: SzRestConfiguration,
+            useFactory: apiConfigFactory ? apiConfigFactory : SzDefaultRestConfigurationFactory
+          }
         ]
     };
   }
