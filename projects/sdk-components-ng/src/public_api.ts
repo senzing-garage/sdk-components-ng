@@ -27,11 +27,11 @@ export * from './lib/configuration/sz-configuration-about/sz-configuration-about
 export * from './lib/models/responces/search-results/sz-search-result-entity-data';
 export * from './lib/models/entity-detail-section-data';
 export * from './lib/models/entity-search';
-export * from './lib/common/sz-rest-configuration';
 
 /** export some members of rest client to ease type use */
 export {
   Configuration as SzRestConfiguration,
+  ConfigurationParameters as SzRestConfigurationParameters,
 
   SzAttributeClass,
   SzAttributeNecessity,

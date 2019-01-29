@@ -1,4 +1,4 @@
-import { NgModule, Injector, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
+import { NgModule, Injector, ModuleWithProviders, SkipSelf, Optional, Provider, InjectionToken } from '@angular/core';
 /* import { BrowserModule } from '@angular/platform-browser'; */
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -6,7 +6,7 @@ import { CommonModule, TitleCasePipe } from '@angular/common';
 import {
   ApiModule,
   Configuration as SzRestConfiguration,
-  SzAttributeType
+  ConfigurationParameters as SzRestConfigurationParameters
 } from '@senzing/rest-api-client-ng';
 
 /** utilities */
@@ -41,6 +41,26 @@ import { SzSearchResultCardHeaderComponent } from  './search/sz-search-result-ca
 import { SzConfigurationAboutComponent } from './configuration/sz-configuration-about/sz-configuration-about.component';
 import { SzConfigurationComponent } from './configuration/sz-configuration/sz-configuration.component';
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
+
+/**
+ * Sets up a default set of service parameters for use
+ * by the SDK Components.
+ *
+ * this is only used when no configuration parameters are set
+ * via the forRoot static method.
+ * @internal
+ */
+export function SzDefaultRestConfigurationFactory(): SzRestConfiguration {
+  return new SzRestConfiguration({
+    basePath: 'http://localhost:2080',
+    withCredentials: true
+  });
+}
+/**
+ * Injection Token for the rest configuration class
+ * @internal
+ */
+const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzRestConfiguration");
 
 @NgModule({
   declarations: [
@@ -98,46 +118,25 @@ import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
 })
 export class SenzingSdkModule {
   /**
-   * initialize the SenzingSdkModule with an instance of
-   * SzRestConfiguration or a factory method that returns a SzRestConfiguration.
-   *
+   * initialize the SenzingSdkModule with an optional factory method that returns a {@link https://senzing.github.io/rest-api-client-ng/classes/Configuration.html|SzRestConfiguration} instance.
+   * @see {@link https://senzing.github.io/rest-api-client-ng/classes/Configuration.html|SzRestConfiguration}
    * @example
-   * SenzingSdkModule.forRoot(
-    () => {
-      return new SzRestConfiguration({
-        basePath: 'http://myapiserver:2080',
-        withCredentials: true
-      });
-    }
-   )
+   export function SzRestConfigurationFactory() {
+      return new SzRestConfiguration({ basePath: \"myapiserverhostname.com:2080\", withCredentials: true });
+   }
+
+   SenzingSdkModule.forRoot( SzRestConfigurationFactory )
    *
    */
-  public static forRoot(apiConfigFactory?: SzRestConfiguration | any): ModuleWithProviders {
-    let _providers = [];
-
-    function isFunction(obj) {
-     return !!(obj && obj.constructor && obj.call && obj.apply);
-    };
-
-    if(apiConfigFactory === undefined){
-      apiConfigFactory = function() {
-        return new SzRestConfiguration({
-          basePath: "http://localhost:2080",
-          withCredentials: true
-        })
-      }
-      console.warn('no config factory. setting default values for api service calls: ', apiConfigFactory());
-    }
-    // check apiConfigFactory shape to figure out what is what
-    if(apiConfigFactory && !isFunction(apiConfigFactory) && apiConfigFactory.basePath ){
-      _providers.push(  { provide: SzRestConfiguration, useValue: apiConfigFactory } );
-    } else if(apiConfigFactory && isFunction(apiConfigFactory) && apiConfigFactory().basePath) {
-      _providers.push(  { provide: SzRestConfiguration, useFactory: apiConfigFactory } );
-    }
-
+  public static forRoot(apiConfigFactory?: () => SzRestConfiguration): ModuleWithProviders {
     return {
         ngModule: SenzingSdkModule,
-        providers: _providers
+        providers: [
+          {
+            provide: SzRestConfiguration,
+            useFactory: apiConfigFactory ? apiConfigFactory : SzDefaultRestConfigurationFactory
+          }
+        ]
     };
   }
 

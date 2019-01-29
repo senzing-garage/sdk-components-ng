@@ -115,9 +115,6 @@
                             title="Official documentation about module providers"><span class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <a href="../injectables/SzMessageBundleService.html">SzMessageBundleService</a>
-                        </li>
-                        <li class="list-group-item">
                             <a href="../injectables/SzSearchService.html">SzSearchService</a>
                         </li>
                     </ul>
@@ -171,22 +168,21 @@
                 <tr>
                     <td class="col-md-4">
                             <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>forRoot(apiConfigFactory?: <a href="../classes/SzRestConfiguration.html">SzRestConfiguration | any</a>)</code>
+                        <code>forRoot(apiConfigFactory?: () => void)</code>
                     </td>
                 </tr>
 
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">projects/sdk-components-ng/src/lib/sdk.module.ts:115</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="131" class="link-to-prism">projects/sdk-components-ng/src/lib/sdk.module.ts:131</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>initialize the SenzingSdkModule with an instance of
-SzRestConfiguration or a factory method that returns a SzRestConfiguration.</p>
+                            <div class="io-description"><p>initialize the SenzingSdkModule with an optional factory method that returns a <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> instance.</p>
 </div>
 
                             <div class="io-description">
@@ -203,7 +199,7 @@ SzRestConfiguration or a factory method that returns a SzRestConfiguration.</p>
                                                 <tr>
                                                         <td>apiConfigFactory</td>
                                                         <td>
-                                                                    <code><a href="../classes/SzRestConfiguration.html" target="_self" >SzRestConfiguration | any</a></code>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
                                                         </td>
                                                     
                                                     <td>
@@ -218,14 +214,10 @@ SzRestConfiguration or a factory method that returns a SzRestConfiguration.</p>
                             <div>
                                     <b>Example :</b>
                                         <div>
-                                            <pre class="line-numbers"><code class="language-html">SenzingSdkModule.forRoot(
-() =&amp;gt; {
-return new SzRestConfiguration({
-basePath: &amp;#39;&lt;a href=&quot;http://myapiserver:2080&amp;#39;&quot;&gt;http://myapiserver:2080&amp;#39;&lt;/a&gt;,
-withCredentials: true
-});
+                                            <pre class="line-numbers"><code class="language-html">export function SzRestConfigurationFactory() {
+return new SzRestConfiguration({ basePath: &quot;myapiserverhostname.com:2080&quot;, withCredentials: true });
 }
-)</code></pre>
+SenzingSdkModule.forRoot( SzRestConfigurationFactory )</code></pre>
                                         </div>
                             </div>
                             <div class="io-description">
@@ -245,7 +237,7 @@ withCredentials: true
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { NgModule, Injector, ModuleWithProviders, SkipSelf, Optional } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { NgModule, Injector, ModuleWithProviders, SkipSelf, Optional, Provider, InjectionToken } from &#x27;@angular/core&#x27;;
 /* import { BrowserModule } from &#x27;@angular/platform-browser&#x27;; */
 import { HttpClientModule, HttpClient } from &#x27;@angular/common/http&#x27;;
 import { ReactiveFormsModule, FormsModule } from &#x27;@angular/forms&#x27;;
@@ -253,7 +245,7 @@ import { CommonModule, TitleCasePipe } from &#x27;@angular/common&#x27;;
 import {
   ApiModule,
   Configuration as SzRestConfiguration,
-  SzAttributeType
+  ConfigurationParameters as SzRestConfigurationParameters
 } from &#x27;@senzing/rest-api-client-ng&#x27;;
 
 /** utilities */
@@ -288,6 +280,26 @@ import { SzSearchResultCardHeaderComponent } from  &#x27;./search/sz-search-resu
 import { SzConfigurationAboutComponent } from &#x27;./configuration/sz-configuration-about/sz-configuration-about.component&#x27;;
 import { SzConfigurationComponent } from &#x27;./configuration/sz-configuration/sz-configuration.component&#x27;;
 import { SzPoweredByComponent } from &#x27;./sz-powered-by/sz-powered-by.component&#x27;;
+
+/**
+ * Sets up a default set of service parameters for use
+ * by the SDK Components.
+ *
+ * this is only used when no configuration parameters are set
+ * via the forRoot static method.
+ * @internal
+ */
+export function SzDefaultRestConfigurationFactory(): SzRestConfiguration {
+  return new SzRestConfiguration({
+    basePath: &#x27;http://localhost:2080&#x27;,
+    withCredentials: true
+  });
+}
+/**
+ * Injection Token for the rest configuration class
+ * @internal
+ */
+const SzRestConfigurationInjector &#x3D; new InjectionToken&lt;SzRestConfiguration&gt;(&quot;SzRestConfiguration&quot;);
 
 @NgModule({
   declarations: [
@@ -345,46 +357,25 @@ import { SzPoweredByComponent } from &#x27;./sz-powered-by/sz-powered-by.compone
 })
 export class SenzingSdkModule {
   /**
-   * initialize the SenzingSdkModule with an instance of
-   * SzRestConfiguration or a factory method that returns a SzRestConfiguration.
-   *
+   * initialize the SenzingSdkModule with an optional factory method that returns a {@link https://senzing.github.io/rest-api-client-ng/classes/Configuration.html|SzRestConfiguration} instance.
+   * @see {@link https://senzing.github.io/rest-api-client-ng/classes/Configuration.html|SzRestConfiguration}
    * @example
-   * SenzingSdkModule.forRoot(
-    () &#x3D;&gt; {
-      return new SzRestConfiguration({
-        basePath: &#x27;http://myapiserver:2080&#x27;,
-        withCredentials: true
-      });
-    }
-   )
+   export function SzRestConfigurationFactory() {
+      return new SzRestConfiguration({ basePath: \&quot;myapiserverhostname.com:2080\&quot;, withCredentials: true });
+   }
+
+   SenzingSdkModule.forRoot( SzRestConfigurationFactory )
    *
    */
-  public static forRoot(apiConfigFactory?: SzRestConfiguration | any): ModuleWithProviders {
-    let _providers &#x3D; [];
-
-    function isFunction(obj) {
-     return !!(obj &amp;&amp; obj.constructor &amp;&amp; obj.call &amp;&amp; obj.apply);
-    };
-
-    if(apiConfigFactory &#x3D;&#x3D;&#x3D; undefined){
-      apiConfigFactory &#x3D; function() {
-        return new SzRestConfiguration({
-          basePath: &quot;http://localhost:2080&quot;,
-          withCredentials: true
-        })
-      }
-      console.warn(&#x27;no config factory. setting default values for api service calls: &#x27;, apiConfigFactory());
-    }
-    // check apiConfigFactory shape to figure out what is what
-    if(apiConfigFactory &amp;&amp; !isFunction(apiConfigFactory) &amp;&amp; apiConfigFactory.basePath ){
-      _providers.push(  { provide: SzRestConfiguration, useValue: apiConfigFactory } );
-    } else if(apiConfigFactory &amp;&amp; isFunction(apiConfigFactory) &amp;&amp; apiConfigFactory().basePath) {
-      _providers.push(  { provide: SzRestConfiguration, useFactory: apiConfigFactory } );
-    }
-
+  public static forRoot(apiConfigFactory?: () &#x3D;&gt; SzRestConfiguration): ModuleWithProviders {
     return {
         ngModule: SenzingSdkModule,
-        providers: _providers
+        providers: [
+          {
+            provide: SzRestConfiguration,
+            useFactory: apiConfigFactory ? apiConfigFactory : SzDefaultRestConfigurationFactory
+          }
+        ]
     };
   }
 

@@ -189,10 +189,10 @@ And that's it! at least for the quickstart. There are a ton more options for run
 
 ## Configuration & Parameters
 
-The SenzingSDKModule accepts a factory method or a object literal that conforms to the 
-properties found in the [SzRestConfiguration](https://senzing.github.io/sdk-components-ng/classes/SzRestConfiguration.html) class. By adding a factory like the following to the constructor method, you can change services configuration to point to non-default values.
+The SenzingSDKModule accepts a factory method that returns an instance of the 
+[SzRestConfiguration](https://senzing.github.io/rest-api-client-ng/classes/Configuration.html) class. By adding a factory like the following to the forRoot method, you can change services configuration to point to non-default values.
 
-The following tells any components to turn on CORS functionality and make all api requests to localhost port 22080( http://localhost:22080/ ).
+The following tells any components to turn on CORS functionality and make all api requests to localhost port 2080( http://localhost:2080/ ).
 
 ```typescript
 import { BrowserModule } from '@angular/platform-browser';
@@ -200,20 +200,22 @@ import { NgModule } from '@angular/core';
 import { SenzingSdkModule, SzRestConfiguration } from '@senzing/sdk-components-ng';
 import { AppComponent } from './app.component';
 
+// create exportable factory  
+// for AOT compilation
+export function SzRestConfigurationFactory() {
+  return new SzRestConfiguration({
+    basePath: 'http://localhost:2080',
+    withCredentials: true
+  });
+}
+
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
     BrowserModule,
-    SenzingSdkModule.forRoot(
-      () => {
-        return new SzRestConfiguration({
-          basePath: 'http://localhost:22080',
-          withCredentials: true
-        });
-      }
-    )
+    SenzingSdkModule.forRoot( SzRestConfigurationFactory )
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -251,7 +253,7 @@ occasionally something does go wrong(I know, I know right?). Here are some commo
       showing up in the developer console</td>
       <td style="padding: 10px 5px;">
         Set the api configuration to the address and port your rest server is running at by 
-        passing in an instance of <a href="https://senzing.github.io/sdk-components-ng/classes/SzRestConfiguration.html">SzRestConfiguration</a> to the <a href="https://senzing.github.io/sdk-components-ng/modules/SenzingSdkModule.html">SenzingSdkModule.forRoot method</a>.
+        passing in an instance of <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> to the <a href="https://senzing.github.io/sdk-components-ng/modules/SenzingSdkModule.html">SenzingSdkModule.forRoot method</a>.
         <br/><br/>
         Double check and make sure you can connect to your rest server via 
         <code>curl -i http://localhost:2080/heartbeat</code>

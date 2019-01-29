@@ -1,9 +1,11 @@
+/** @internal */
 const DEFAULT_DATE_FIELDS = [
   "createdOn",
   "lastModified",
   "timestamp"
 ];
 
+/** @internal */
 export function fromServer<T>(target:      T,
                               source:      any,
                               dateFields:  string[]|undefined = undefined)
@@ -28,6 +30,7 @@ export function fromServer<T>(target:      T,
   return target;
 }
 
+/** @internal */
 export function toServer<T>(target:     T,
                             source:     T,
                             dateFields: string[]|undefined = undefined)
@@ -52,6 +55,7 @@ export function toServer<T>(target:     T,
   return target;
 }
 
+/** @internal */
 export function fromServerArray<T>(target:     T[],
                                    source:     any[],
                                    producer:   () => T,
@@ -69,6 +73,7 @@ export function fromServerArray<T>(target:     T[],
   return target;
 }
 
+/** @internal */
 export function toServerArray<T>(target:      T[],
                                  source:      T[],
                                  producer:    () => T,
