@@ -52,11 +52,11 @@ TODO: instructions from g2 api documentation.
 
 ### Senzing REST Api (pre-built)
 ```bash
-npm install @senzing/rest-api-server-java --save-dev
+npm install @senzing/senzing-api-server --save-dev
 ```
 now start up the rest server with:
 ```bash
-java -Djava.library.path="C:\\Program Files\\Senzing\\g2\\lib" -jar node_modules/@senzing/rest-api-server-java/sz-api-server-1.0-SNAPSHOT.jar -iniFile "%%LocalAppData%%\Senzing\Workbench\project_{PROJECT_ID}\g2.ini"
+java -Djava.library.path="C:\\Program Files\\Senzing\\g2\\lib" -jar node_modules/@senzing/senzing-api-server/sz-api-server-1.0-SNAPSHOT.jar -iniFile "%%LocalAppData%%\Senzing\Workbench\project_{PROJECT_ID}\g2.ini"
 ```
 
 ### Senzing REST HTTP (from source)
@@ -70,7 +70,7 @@ mvn install:install-file -Dfile=./g2.jar -DgroupId=com.senzing -DartifactId=g2 -
 
 #### Build Server
 ```bash
-git clone git@github.com:Senzing/rest-api-server-java.git
+git clone git@github.com:Senzing/senzing-api-server.git
 mvn clean install
 java -Djava.library.path="C:\\Program Files\\Senzing\\g2\\lib" -jar target/sz-api-server-1.0-SNAPSHOT.jar -iniFile "%%LocalAppData%%\Senzing\Workbench\project_{PROJECT_ID}\g2.ini"
 ```
