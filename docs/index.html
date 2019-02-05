@@ -40,8 +40,8 @@ To see an example of an electron app using the sdk components feel free to check
 <li><a href="https://nodejs.org/">Node/NPM</a>. </li>
 <li><a href="https://cli.angular.io/">Angular CLI</a></li>
 <li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
-<li><a href="https://github.com/Senzing/rest-api-server-java/">Senzing REST API Sever</a></li>
-<li><a href="https://jdk.java.net/">JAVA JDK 1.8</a> <em>(for rest-api-server-java)</em></li>
+<li><a href="https://github.com/Senzing/senzing-api-server/">Senzing REST API Sever</a></li>
+<li><a href="https://jdk.java.net/">JAVA JDK 1.8</a> <em>(for senzing-api-server)</em></li>
 </ul>
 <p>Please see the installation instructions for each of these for how to install and setup each one properly.</p>
 <h3 id="installation">Installation</h3>
@@ -49,17 +49,17 @@ To see an example of an electron app using the sdk components feel free to check
 <p>If you&#39;re developing on Windows or macOS, do yourself a favor and download and install <a href="https://senzing.com/senzing-app/">the app</a>. It installs the G2 libs and sets up project config files. It also gives you an easy way to load and browse data outside of the Senzing REST API Sever. You can do it manually too if you need to.
 <br/> <br/></p>
 <h4 id="rest-api-server">REST API Server</h4>
-<p>These components require the senzing <a href="https://github.com/Senzing/rest-api-server-java/">Senzing REST API Sever</a> to function. Follow <a href="https://github.com/Senzing/rest-api-server-java/">the instructions</a> to check out and build the <a href="https://github.com/Senzing/rest-api-server-java/">Senzing REST API Sever</a> from source or download a pre-built. </p>
+<p>These components require the senzing <a href="https://github.com/Senzing/senzing-api-server/">Senzing REST API Sever</a> to function. Follow <a href="https://github.com/Senzing/senzing-api-server/">the instructions</a> to check out and build the <a href="https://github.com/Senzing/senzing-api-server/">Senzing REST API Sever</a> from source or download a pre-built. </p>
 <h5 id="build-and-run-from-source">Build(and run) from Source</h5>
-<div><pre class="line-numbers"><code class="language-bash">git&#64;github.com:Senzing/rest-api-server-java.git
-cd rest-api-server-java
+<div><pre class="line-numbers"><code class="language-bash">git&#64;github.com:Senzing/senzing-api-server.git
+cd senzing-api-server
 mvn clean install
 java -jar target/sz-api-server-1.5.0.jar -iniFile %LOCALAPPDATA%/Senzing/Workbench/project_1/g2.ini</code></pre></div><!--
 ##### from NPM
 ```bash
-npm install @senzing/rest-api-server-java --save
-java -jar node_modules/@senzing/rest-api-server-java/sz-api-server-1.5.0.jar
-java -Djava.library.path="C:\Program Files\Senzing\g2\lib" -jar node_modules/@senzing/rest-api-server-java/sz-api-server-1.5.0.jar -iniFile node_modules/@senzing/rest-api-server-java/g2.ini
+npm install @senzing/senzing-api-server --save
+java -jar node_modules/@senzing/senzing-api-server/sz-api-server-1.5.0.jar
+java -Djava.library.path="C:\Program Files\Senzing\g2\lib" -jar node_modules/@senzing/senzing-api-server/sz-api-server-1.5.0.jar -iniFile node_modules/@senzing/senzing-api-server/g2.ini
 ```
 <br/>--> <br/> <br/> 
 
@@ -75,13 +75,13 @@ java -Djava.library.path="C:\Program Files\Senzing\g2\lib" -jar node_modules/@se
   SzAttributeSearchResult
 } from &#39;&#64;senzing/sdk-components-ng&#39;;</code></pre></div><p><br/> <br/> <br/> </p>
 <h3 id="quick-start">Quick Start</h3>
-<p><b>1)</b> Start up an instance of the <a href="https://github.com/Senzing/rest-api-server-java/">rest api server</a> if not currently running.</p>
+<p><b>1)</b> Start up an instance of the <a href="https://github.com/Senzing/senzing-api-server/">rest api server</a> if not currently running.</p>
 <p>you can start up the REST Server manually by invoking through java, or by making a slight change to the npm script(for convenience).</p>
 <p><b>through java:</b></p>
-<div><pre class="line-numbers"><code class="language-terminal">java -jar &quot;%HOMEPATH%\www\rest-api-server-java\target\sz-api-server-1.5.0.jar&quot; -iniFile &quot;%LOCALAPPDATA%\Senzing\Workbench\project_1\g2.ini&quot;</code></pre></div><p><br/> </p>
+<div><pre class="line-numbers"><code class="language-terminal">java -jar &quot;%HOMEPATH%\www\senzing-api-server\target\sz-api-server-1.5.0.jar&quot; -iniFile &quot;%LOCALAPPDATA%\Senzing\Workbench\project_1\g2.ini&quot;</code></pre></div><p><br/> </p>
 <p><b>via npm script: </b><br/>
 edit(or add) the following line in package.json to point to your projects G2.ini path and the REST Server JAR. Then the server can just be started up by runnning <code>npm run start:server</code>.</p>
-<div><pre class="line-numbers"><code class="language-json">&quot;start:server&quot;: &quot;java -jar \&quot;%HOMEPATH%\\www\\rest-api-server-java\\target\\sz-api-server-1.5.0.jar\&quot; -iniFile \&quot;%LOCALAPPDATA%\\Senzing\\Workbench\\project_1\\g2.ini\&quot;&quot;,</code></pre></div><p>  <br/><br/> </p>
+<div><pre class="line-numbers"><code class="language-json">&quot;start:server&quot;: &quot;java -jar \&quot;%HOMEPATH%\\www\\senzing-api-server\\target\\sz-api-server-1.5.0.jar\&quot; -iniFile \&quot;%LOCALAPPDATA%\\Senzing\\Workbench\\project_1\\g2.ini\&quot;&quot;,</code></pre></div><p>  <br/><br/> </p>
 <p><b>2)</b> Add the SenzingSDKModule to your angular app&#39;s app.module.ts </p>
 <div><pre class="line-numbers"><code class="language-typescript">import { BrowserModule } from &#39;&#64;angular/platform-browser&#39;;
 import { NgModule } from &#39;&#64;angular/core&#39;;
