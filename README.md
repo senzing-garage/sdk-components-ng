@@ -11,7 +11,6 @@ For building from Source:
 * [Angular CLI](https://cli.angular.io/)
 * [TypeScript](https://www.typescriptlang.org/)
 * [Senzing REST API Sever](https://github.com/Senzing/senzing-api-server/)
-* [JAVA JDK 1.8](https://jdk.java.net/) _(for senzing-api-server)_
 
 Please see the installation instructions for each of these for how to install and setup each one properly.
 
