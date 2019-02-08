@@ -94,6 +94,10 @@
     <table class="table table-sm table-hover">
         <tbody>
 
+            <tr>
+                <td class="col-md-3">changeDetection</td>
+                <td class="col-md-9"><code>ChangeDetectionStrategy.OnPush</code></td>
+            </tr>
 
 
 
@@ -195,6 +199,9 @@
                             <li>
                                 <a href="#showSearchLabel">showSearchLabel</a>
                             </li>
+                            <li>
+                                <a href="#updateAttributeTypes">updateAttributeTypes</a>
+                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -218,6 +225,9 @@
                             </li>
                             <li>
                                 <a href="#searchEnd">searchEnd</a>
+                            </li>
+                            <li>
+                                <a href="#searchException">searchException</a>
                             </li>
                             <li>
                                 <a href="#searchStart">searchStart</a>
@@ -270,12 +280,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(fb: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>, configService: ConfigService, searchService: <a href="../injectables/SzSearchService.html">SzSearchService</a>)</code>
+<code>constructor(fb: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>, configService: ConfigService, ref: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>, searchService: <a href="../injectables/SzSearchService.html">SzSearchService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="231" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:231</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="238" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:238</a></div>
                             </td>
                         </tr>
 
@@ -309,6 +319,18 @@
                                                   
                                                         <td>
                                                                     <code>ConfigService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>ref</td>
+                                                  
+                                                        <td>
+                                                                    <code><a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank" >ChangeDetectorRef</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -353,7 +375,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="152" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:152</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="159" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:159</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -386,7 +408,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:60</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:61</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -407,7 +429,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="195" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:195</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="202" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:202</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -426,7 +448,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="179" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:179</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="186" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:186</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -445,7 +467,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="138" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:138</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="145" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:145</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -464,7 +486,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="170" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:170</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="177" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:177</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -483,7 +505,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="122" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:122</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="129" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:129</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -502,7 +524,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="161" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:161</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="168" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:168</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -525,7 +547,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:49</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:50</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -547,7 +569,45 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:55</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:56</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-2">
+                        <a name="updateAttributeTypes"></a>
+                        <code>updateAttributeTypes</code>
+                    </td>
+                    <td class="col-md-10">
+                        <div><p>Pull in the list of attribute types from the api server.</p>
+</div>
+                        <p>
+                            <em>Default value : </em><code>(): void &#x3D;&gt; {
+    // get attributes
+    this.configService.getAttributeTypes()
+    .pipe(
+      tap( (resp: any)&#x3D;&gt; console.log(resp) ),
+      map( (resp: SzAttributeTypesResponse) &#x3D;&gt; resp.data.attributeTypes ),
+      first()
+    )
+    .subscribe((attributeTypes: SzAttributeType[]) &#x3D;&gt; {
+      // yup
+      this.inputAttributeTypes &#x3D; attributeTypes;
+      this.ref.markForCheck();
+      this.ref.detectChanges();
+    }, (err)&#x3D;&gt;{
+      this.searchException.next( err );
+    });
+  }</code>
+                        </p>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="262" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:262</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -571,7 +631,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="102" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:102</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="109" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:109</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -592,7 +652,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:95</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="102" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:102</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -613,7 +673,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="89" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:89</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="96" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:96</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -634,7 +694,28 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:83</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:84</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-2">
+                        <a name="searchException"></a>
+                        <code>searchException</code>
+                    </td>
+                    <td class="col-md-10">
+                        <div><p>emitted when a search encounters an exception</p>
+</div>
+                        <em><code>$event</code> Type:</em>    <code>EventEmitter&lt;Error&gt;</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="90" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:90</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -655,7 +736,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:77</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:78</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -692,7 +773,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="344" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:344</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="382" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:382</a></div>
                             </td>
                         </tr>
 
@@ -734,7 +815,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="314" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:314</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="333" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:333</a></div>
                             </td>
                         </tr>
 
@@ -779,7 +860,7 @@ any parameter changes through the paramsChange emmitter.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="122" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:122</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="129" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:129</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -840,7 +921,7 @@ any parameter changes through the paramsChange emmitter.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="138" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:138</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="145" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:145</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -901,7 +982,7 @@ any parameter changes through the paramsChange emmitter.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="152" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:152</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="159" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:159</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -962,7 +1043,7 @@ any parameter changes through the paramsChange emmitter.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="161" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:161</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="168" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:168</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -1019,7 +1100,7 @@ any parameter changes through the paramsChange emmitter.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="170" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:170</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="177" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:177</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -1076,7 +1157,7 @@ any parameter changes through the paramsChange emmitter.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="179" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:179</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="186" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:186</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -1133,7 +1214,7 @@ any parameter changes through the paramsChange emmitter.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="195" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:195</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="202" class="link-to-prism">projects/sdk-components-ng/src/lib/search/sz-search/sz-search.component.ts:202</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -1196,10 +1277,10 @@ lets bind the output of the search component to the input of the search results 
     </div>
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from &#x27;@angular/core&#x27;;
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from &#x27;@angular/forms&#x27;;
-import { Observable, Subject,  } from &#x27;rxjs&#x27;;
-import { map, tap, mapTo } from &#x27;rxjs/operators&#x27;;
+import { Observable, Subject  } from &#x27;rxjs&#x27;;
+import { map, tap, mapTo, first } from &#x27;rxjs/operators&#x27;;
 
 import {
   ConfigService,
@@ -1238,7 +1319,8 @@ interface SzSearchFormParams {
 @Component({
   selector: &#x27;sz-search&#x27;,
   templateUrl: &#x27;./sz-search.component.html&#x27;,
-  styleUrls: [&#x27;./sz-search.component.scss&#x27;]
+  styleUrls: [&#x27;./sz-search.component.scss&#x27;],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SzSearchComponent implements OnInit {
   /**
@@ -1279,6 +1361,12 @@ export class SzSearchComponent implements OnInit {
    * @memberof SzSearchComponent
    */
   @Output() searchEnd: EventEmitter&lt;number&gt; &#x3D; new EventEmitter&lt;number&gt;();
+  /**
+   * emitted when a search encounters an exception
+   * @returns the number of total results returned from the search.
+   * @memberof SzSearchComponent
+   */
+  @Output() searchException: EventEmitter&lt;Error&gt; &#x3D; new EventEmitter&lt;Error&gt;();
 
   /**
    * emmitted when the results have been cleared.
@@ -1432,6 +1520,7 @@ export class SzSearchComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private configService: ConfigService,
+    private ref: ChangeDetectorRef,
     private searchService: SzSearchService) {
 
   }
@@ -1442,17 +1531,28 @@ export class SzSearchComponent implements OnInit {
    */
   public ngOnInit(): void {
     this.createEntitySearchForm();
+    this.updateAttributeTypes();
+  }
 
+  /**
+   * Pull in the list of attribute types from the api server.
+   */
+  @Input()
+  public updateAttributeTypes &#x3D; (): void &#x3D;&gt; {
     // get attributes
     this.configService.getAttributeTypes()
     .pipe(
       tap( (resp: any)&#x3D;&gt; console.log(resp) ),
-      map( (resp: SzAttributeTypesResponse) &#x3D;&gt; resp.data.attributeTypes )
+      map( (resp: SzAttributeTypesResponse) &#x3D;&gt; resp.data.attributeTypes ),
+      first()
     )
     .subscribe((attributeTypes: SzAttributeType[]) &#x3D;&gt; {
       // yup
       this.inputAttributeTypes &#x3D; attributeTypes;
-      console.log(&#x27;got attribute types: &#x27;, attributeTypes);
+      this.ref.markForCheck();
+      this.ref.detectChanges();
+    }, (err)&#x3D;&gt;{
+      this.searchException.next( err );
     });
   }
 
@@ -1464,7 +1564,7 @@ export class SzSearchComponent implements OnInit {
   private createEntitySearchForm(): void {
 
     let searchParams &#x3D; this.searchService.getSearchParams();
-    console.log(&#x27;createEntitySearchForm: &#x27;,JSON.parse(JSON.stringify(searchParams)));
+    //console.log(&#x27;createEntitySearchForm: &#x27;,JSON.parse(JSON.stringify(searchParams)));
 
     if (searchParams) {
 
@@ -1489,7 +1589,7 @@ export class SzSearchComponent implements OnInit {
         NAME_TYPE: &quot;PRIMARY&quot;
       });
 
-      this.submitSearch();
+      //this.submitSearch();
     } else {
       this.entitySearchForm &#x3D; this.fb.group({
         NAME_FULL: [&#x27;&#x27;],
@@ -1510,14 +1610,32 @@ export class SzSearchComponent implements OnInit {
    * any parameter changes through the paramsChange emmitter.
    */
   public submitSearch(): void {
-    const searchParams &#x3D; JSONScrubber(this.entitySearchForm.value);
+    let searchParams &#x3D; JSONScrubber(this.entitySearchForm.value);
 
+    // clear out identifier fields if no identifier specified
+    if(searchParams[&#x27;IDENTIFIER_TYPE&#x27;] &amp;&amp; !searchParams[&#x27;IDENTIFIER&#x27;]){
+      // clear this
+      searchParams[&#x27;IDENTIFIER_TYPE&#x27;] &#x3D;  undefined;
+    }
+    // clear out name fields if name field is empty
+    if(searchParams[&#x27;NAME_TYPE&#x27;] &amp;&amp; (!searchParams[&#x27;NAME_FULL&#x27;] &amp;&amp; !searchParams[&#x27;COMPANY_NAME_ORG&#x27;])) {
+      searchParams[&#x27;NAME_TYPE&#x27;] &#x3D;  undefined;
+    }
+    // proxy name value to company name
+    if (searchParams[&#x27;NAME_FULL&#x27;]) {
+      searchParams[&#x27;COMPANY_NAME_ORG&#x27;] &#x3D; searchParams[&#x27;NAME_FULL&#x27;];
+    }
+    // default identifier type to passport if none selected
     if (searchParams[&#x27;IDENTIFIER&#x27;] &amp;&amp; !searchParams[&#x27;IDENTIFIER_TYPE&#x27;]) {
       searchParams[&#x27;IDENTIFIER_TYPE&#x27;] &#x3D; &#x27;PASSPORT_NUMBER&#x27;;
     }
+    // after mods scrub nulls
+    searchParams &#x3D; JSONScrubber(searchParams);
 
-    if (searchParams[&#x27;NAME_FULL&#x27;]) {
-      searchParams[&#x27;COMPANY_NAME_ORG&#x27;] &#x3D; searchParams[&#x27;NAME_FULL&#x27;];
+    if(Object.keys(searchParams).length &lt;&#x3D; 0){
+      // do not perform search if criteria are empty
+      this.searchException.next(new Error(&quot;null criteria&quot;));
+      return;
     }
 
     console.log(&#x27;@senzing/sdk/search/sz-search/sz-search.component.submitSearch: &#x27;, searchParams);
@@ -1530,8 +1648,9 @@ export class SzSearchComponent implements OnInit {
       this.searchResultsJSON &#x3D; JSON.stringify(res, null, 4);
       this.searchEnd.emit(totalResults);
       this.searchResults.next(res);
-
-      console.log(&#x27;@senzing/sdk/search/sz-search/sz-search.component.submitSearch: results &#x27;, res);
+    }, (err)&#x3D;&gt;{
+      this.searchEnd.emit();
+      this.searchException.next( err );
     });
 
     this.searchParameters.next(this.searchService.getSearchParams());

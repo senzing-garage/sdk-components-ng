@@ -21,6 +21,9 @@ export class AppComponent {
     }
     return false;
   }
+  onSearchException(err: Error) {
+    throw (err.message);
+  }
 
   onSearchResults(evt: SzAttributeSearchResult[]){
     console.log('searchResults: ',evt);

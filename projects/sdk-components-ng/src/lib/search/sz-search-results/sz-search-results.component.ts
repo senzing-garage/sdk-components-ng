@@ -33,7 +33,6 @@ export class SzSearchResultsComponent implements OnInit {
     // value set from webcomponent attr comes in as string
     this._searchResults = (typeof value == 'string') ? JSON.parse(value) : value;
     //this.searchResultsJSON = JSON.stringify(this._searchResults, null, 4);
-    console.log('@senzing/sdk/search/sz-search-results/sz-search-results.component@input(results) setter '+ (typeof value) +': \n', this._searchResults);
   };
   /**
    * The search results being displayed in the component.

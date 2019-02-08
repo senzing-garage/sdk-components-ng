@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable, Subject,  } from 'rxjs';
-import { map, tap, mapTo } from 'rxjs/operators';
+import { Observable, Subject  } from 'rxjs';
+import { map, tap, mapTo, first } from 'rxjs/operators';
 
 import {
   ConfigService,
@@ -40,7 +40,8 @@ interface SzSearchFormParams {
 @Component({
   selector: 'sz-search',
   templateUrl: './sz-search.component.html',
-  styleUrls: ['./sz-search.component.scss']
+  styleUrls: ['./sz-search.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SzSearchComponent implements OnInit {
   /**
@@ -81,6 +82,12 @@ export class SzSearchComponent implements OnInit {
    * @memberof SzSearchComponent
    */
   @Output() searchEnd: EventEmitter<number> = new EventEmitter<number>();
+  /**
+   * emitted when a search encounters an exception
+   * @returns the number of total results returned from the search.
+   * @memberof SzSearchComponent
+   */
+  @Output() searchException: EventEmitter<Error> = new EventEmitter<Error>();
 
   /**
    * emmitted when the results have been cleared.
@@ -234,6 +241,7 @@ export class SzSearchComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private configService: ConfigService,
+    private ref: ChangeDetectorRef,
     private searchService: SzSearchService) {
 
   }
@@ -244,17 +252,28 @@ export class SzSearchComponent implements OnInit {
    */
   public ngOnInit(): void {
     this.createEntitySearchForm();
+    this.updateAttributeTypes();
+  }
 
+  /**
+   * Pull in the list of attribute types from the api server.
+   */
+  @Input()
+  public updateAttributeTypes = (): void => {
     // get attributes
     this.configService.getAttributeTypes()
     .pipe(
       tap( (resp: any)=> console.log(resp) ),
-      map( (resp: SzAttributeTypesResponse) => resp.data.attributeTypes )
+      map( (resp: SzAttributeTypesResponse) => resp.data.attributeTypes ),
+      first()
     )
     .subscribe((attributeTypes: SzAttributeType[]) => {
       // yup
       this.inputAttributeTypes = attributeTypes;
-      console.log('got attribute types: ', attributeTypes);
+      this.ref.markForCheck();
+      this.ref.detectChanges();
+    }, (err)=>{
+      this.searchException.next( err );
     });
   }
 
@@ -266,7 +285,7 @@ export class SzSearchComponent implements OnInit {
   private createEntitySearchForm(): void {
 
     let searchParams = this.searchService.getSearchParams();
-    console.log('createEntitySearchForm: ',JSON.parse(JSON.stringify(searchParams)));
+    //console.log('createEntitySearchForm: ',JSON.parse(JSON.stringify(searchParams)));
 
     if (searchParams) {
 
@@ -291,7 +310,7 @@ export class SzSearchComponent implements OnInit {
         NAME_TYPE: "PRIMARY"
       });
 
-      this.submitSearch();
+      //this.submitSearch();
     } else {
       this.entitySearchForm = this.fb.group({
         NAME_FULL: [''],
@@ -312,14 +331,32 @@ export class SzSearchComponent implements OnInit {
    * any parameter changes through the paramsChange emmitter.
    */
   public submitSearch(): void {
-    const searchParams = JSONScrubber(this.entitySearchForm.value);
+    let searchParams = JSONScrubber(this.entitySearchForm.value);
 
+    // clear out identifier fields if no identifier specified
+    if(searchParams['IDENTIFIER_TYPE'] && !searchParams['IDENTIFIER']){
+      // clear this
+      searchParams['IDENTIFIER_TYPE'] =  undefined;
+    }
+    // clear out name fields if name field is empty
+    if(searchParams['NAME_TYPE'] && (!searchParams['NAME_FULL'] && !searchParams['COMPANY_NAME_ORG'])) {
+      searchParams['NAME_TYPE'] =  undefined;
+    }
+    // proxy name value to company name
+    if (searchParams['NAME_FULL']) {
+      searchParams['COMPANY_NAME_ORG'] = searchParams['NAME_FULL'];
+    }
+    // default identifier type to passport if none selected
     if (searchParams['IDENTIFIER'] && !searchParams['IDENTIFIER_TYPE']) {
       searchParams['IDENTIFIER_TYPE'] = 'PASSPORT_NUMBER';
     }
+    // after mods scrub nulls
+    searchParams = JSONScrubber(searchParams);
 
-    if (searchParams['NAME_FULL']) {
-      searchParams['COMPANY_NAME_ORG'] = searchParams['NAME_FULL'];
+    if(Object.keys(searchParams).length <= 0){
+      // do not perform search if criteria are empty
+      this.searchException.next(new Error("null criteria"));
+      return;
     }
 
     console.log('@senzing/sdk/search/sz-search/sz-search.component.submitSearch: ', searchParams);
@@ -332,8 +369,9 @@ export class SzSearchComponent implements OnInit {
       this.searchResultsJSON = JSON.stringify(res, null, 4);
       this.searchEnd.emit(totalResults);
       this.searchResults.next(res);
-
-      console.log('@senzing/sdk/search/sz-search/sz-search.component.submitSearch: results ', res);
+    }, (err)=>{
+      this.searchEnd.emit();
+      this.searchException.next( err );
     });
 
     this.searchParameters.next(this.searchService.getSearchParams());
