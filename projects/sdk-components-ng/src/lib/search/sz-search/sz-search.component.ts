@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable, Subject,  } from 'rxjs';
-import { map, tap, mapTo } from 'rxjs/operators';
+import { Observable, Subject  } from 'rxjs';
+import { map, tap, mapTo, first } from 'rxjs/operators';
 
 import {
   ConfigService,
@@ -40,7 +40,8 @@ interface SzSearchFormParams {
 @Component({
   selector: 'sz-search',
   templateUrl: './sz-search.component.html',
-  styleUrls: ['./sz-search.component.scss']
+  styleUrls: ['./sz-search.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SzSearchComponent implements OnInit {
   /**
@@ -240,6 +241,7 @@ export class SzSearchComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private configService: ConfigService,
+    private ref: ChangeDetectorRef,
     private searchService: SzSearchService) {
 
   }
@@ -250,16 +252,28 @@ export class SzSearchComponent implements OnInit {
    */
   public ngOnInit(): void {
     this.createEntitySearchForm();
+    this.updateAttributeTypes();
+  }
 
+  /**
+   * Pull in the list of attribute types from the api server.
+   */
+  @Input()
+  public updateAttributeTypes = (): void => {
     // get attributes
     this.configService.getAttributeTypes()
     .pipe(
       tap( (resp: any)=> console.log(resp) ),
-      map( (resp: SzAttributeTypesResponse) => resp.data.attributeTypes )
+      map( (resp: SzAttributeTypesResponse) => resp.data.attributeTypes ),
+      first()
     )
     .subscribe((attributeTypes: SzAttributeType[]) => {
       // yup
       this.inputAttributeTypes = attributeTypes;
+      this.ref.markForCheck();
+      this.ref.detectChanges();
+    }, (err)=>{
+      this.searchException.next( err );
     });
   }
 
@@ -355,6 +369,9 @@ export class SzSearchComponent implements OnInit {
       this.searchResultsJSON = JSON.stringify(res, null, 4);
       this.searchEnd.emit(totalResults);
       this.searchResults.next(res);
+    }, (err)=>{
+      this.searchEnd.emit();
+      this.searchException.next( err );
     });
 
     this.searchParameters.next(this.searchService.getSearchParams());
