@@ -7,15 +7,18 @@ body {
     --sz-color-possible-matches: #C9741F;
     --sz-color-disclosed: #2B7169;
     --sz-color-ambiguous: #7b00ad;
+
     --sz-search-button-submit-color: #FFFFFF;
     --sz-search-button-clear-color: #000000;
     --sz-search-button-submit-background-color: #0C9BF4;
     --sz-search-button-clear-background-color: #95989A;
     --sz-search-button-border: 1px solid #808285;
     --sz-search-button-submit-border: 1px solid #808285;
-    --sz-search-button-padding: 0 10px 0 10px;
+    --sz-search-button-clear-padding: 0 10px 0 10px;
+    --sz-search-button-submit-padding: 0 30px 0 30px;
     --sz-search-button-margin: 0;
-    --sz-search-button-border-radius: 22px;
+    --sz-search-button-border-radius: 6px;
+    --sz-search-button-clear-font-size: 10px;
     --sz-search-input-color: #95989A;
     --sz-search-input-background-color: #FFFFFF;
     --sz-search-input-display: inline-block;
@@ -24,12 +27,12 @@ body {
     --sz-search-input-margin: 5px;
     --sz-search-input-placeholder-color: #95989A;
     --sz-search-input-border: 1px solid #95989A;
-    --sz-search-input-border-radius: 22px;
+    --sz-search-input-border-radius: 6px;
     --sz-search-input-hover-border: 1px solid #808285;
     --sz-search-input-focus-border: 1px solid #808285;
     --sz-search-label-color: #5e5e5e;
     --sz-search-label-padding: 4px;
-    --sz-search-label-margin: 0 0 10px 20px;
+    --sz-search-label-margin: 0 0 10px 4px;
     --sz-search-label-font-size: 8px;
     --sz-search-label-display: block;
     --sz-search-results-padding: 20px;
@@ -109,4 +112,5 @@ body {
     --sz-entity-detail-pill-margin: 0 10px 0 0;
     --sz-entity-detail-pill-background-color: #808285;
     --sz-entity-detail-pill-border-radius: 5px;
+    --sz-entity-detail-pill-color: #FFF;
 }

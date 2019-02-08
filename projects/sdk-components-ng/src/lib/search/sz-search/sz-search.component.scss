@@ -155,6 +155,7 @@
       color: var(--sz-search-label-color);
       padding: var(--sz-search-label-padding);
       margin: var(--sz-search-label-margin);
+      font-size: var(--sz-search-label-font-size);
     }
     &.name, &.address {
       width: 35%;

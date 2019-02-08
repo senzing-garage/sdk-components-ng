@@ -20,12 +20,14 @@
       color: var(--sz-search-results-a-color);
       display: flex;
       align-items: center;
+      cursor: var(--sz-search-results-a-cursor);
     }
 
     .search__link {
       text-decoration: none;
       color: var(--sz-search-results-a-color);
       cursor: var(--sz-search-results-a-cursor);
+      white-space: nowrap;
     }
 
     .search-card__header--breakdown {
