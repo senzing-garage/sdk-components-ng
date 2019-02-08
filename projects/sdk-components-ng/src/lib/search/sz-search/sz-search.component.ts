@@ -4,7 +4,6 @@ import { Observable, Subject,  } from 'rxjs';
 import { map, tap, mapTo } from 'rxjs/operators';
 
 import {
-  EntityDataService,
   ConfigService,
   SzAttributeSearchResult,
   SzAttributeType,
@@ -232,7 +231,12 @@ export class SzSearchComponent implements OnInit {
   }
   /* end tag input setters */
 
-  constructor(private fb: FormBuilder, private entityService: EntityDataService, private configService: ConfigService, private searchService: SzSearchService) {}
+  constructor(
+    private fb: FormBuilder,
+    private configService: ConfigService,
+    private searchService: SzSearchService) {
+
+  }
 
   /**
    * do any additional component set up
