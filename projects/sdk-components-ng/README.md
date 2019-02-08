@@ -10,8 +10,8 @@ For building from Source:
 * [Node/NPM](https://nodejs.org/). 
 * [Angular CLI](https://cli.angular.io/)
 * [TypeScript](https://www.typescriptlang.org/)
-* [Senzing REST API Sever](https://github.com/Senzing/rest-api-server-java/)
-* [JAVA JDK 1.8](https://jdk.java.net/) _(for rest-api-server-java)_
+* [Senzing REST API Sever](https://github.com/Senzing/senzing-api-server/)
+* [JAVA JDK 1.8](https://jdk.java.net/) _(for senzing-api-server)_
 
 Please see the installation instructions for each of these for how to install and setup each one properly.
 
@@ -21,21 +21,21 @@ If you're developing on Windows or macOS, do yourself a favor and download and i
 <br/> <br/>
 
 #### REST API Server
-These components require the senzing [Senzing REST API Sever](https://github.com/Senzing/rest-api-server-java/) to function. Follow [the instructions](https://github.com/Senzing/rest-api-server-java/) to check out and build the [Senzing REST API Sever](https://github.com/Senzing/rest-api-server-java/) from source or download a pre-built. 
+These components require the senzing [Senzing REST API Sever](https://github.com/Senzing/senzing-api-server/) to function. Follow [the instructions](https://github.com/Senzing/senzing-api-server/) to check out and build the [Senzing REST API Sever](https://github.com/Senzing/senzing-api-server/) from source or download a pre-built. 
 
 ##### Build(and run) from Source
 ```bash
-git@github.com:Senzing/rest-api-server-java.git
-cd rest-api-server-java
+git@github.com:Senzing/senzing-api-server.git
+cd senzing-api-server
 mvn clean install
 java -jar target/sz-api-server-1.5.0.jar -iniFile %LOCALAPPDATA%/Senzing/Workbench/project_1/g2.ini
 ```
 <!--
 ##### from NPM
 ```bash
-npm install @senzing/rest-api-server-java --save
-java -jar node_modules/@senzing/rest-api-server-java/sz-api-server-1.5.0.jar
-java -Djava.library.path="C:\Program Files\Senzing\g2\lib" -jar node_modules/@senzing/rest-api-server-java/sz-api-server-1.5.0.jar -iniFile node_modules/@senzing/rest-api-server-java/g2.ini
+npm install @senzing/senzing-api-server --save
+java -jar node_modules/@senzing/senzing-api-server/sz-api-server-1.5.0.jar
+java -Djava.library.path="C:\Program Files\Senzing\g2\lib" -jar node_modules/@senzing/senzing-api-server/sz-api-server-1.5.0.jar -iniFile node_modules/@senzing/senzing-api-server/g2.ini
 ```
 <br/>--> <br/> <br/> 
 
@@ -62,14 +62,14 @@ import {
 
 ### Quick Start
 
-<b>1)</b> Start up an instance of the [rest api server](https://github.com/Senzing/rest-api-server-java/) if not currently running.
+<b>1)</b> Start up an instance of the [rest api server](https://github.com/Senzing/senzing-api-server/) if not currently running.
 
 you can start up the REST Server manually by invoking through java, or by making a slight change to the npm script(for convenience).
 
 <b>through java:</b>
 
 ```terminal
-java -jar "%HOMEPATH%\www\rest-api-server-java\target\sz-api-server-1.5.0.jar" -iniFile "%LOCALAPPDATA%\Senzing\Workbench\project_1\g2.ini"
+java -jar "%HOMEPATH%\www\senzing-api-server\target\sz-api-server-1.5.0.jar" -iniFile "%LOCALAPPDATA%\Senzing\Workbench\project_1\g2.ini"
 ```
 <br/> 
 
@@ -77,7 +77,7 @@ java -jar "%HOMEPATH%\www\rest-api-server-java\target\sz-api-server-1.5.0.jar" -
 edit(or add) the following line in package.json to point to your projects G2.ini path and the REST Server JAR. Then the server can just be started up by runnning `npm run start:server`.
 
 ```json
-"start:server": "java -jar \"%HOMEPATH%\\www\\rest-api-server-java\\target\\sz-api-server-1.5.0.jar\" -iniFile \"%LOCALAPPDATA%\\Senzing\\Workbench\\project_1\\g2.ini\"",
+"start:server": "java -jar \"%HOMEPATH%\\www\\senzing-api-server\\target\\sz-api-server-1.5.0.jar\" -iniFile \"%LOCALAPPDATA%\\Senzing\\Workbench\\project_1\\g2.ini\"",
 ```
 
 

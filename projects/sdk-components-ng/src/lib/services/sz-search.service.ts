@@ -25,7 +25,7 @@ export class SzSearchService {
 
   /**
    * perform a search request againt the data source.
-   * @link http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/rest-api-proposal/master/senzing-api.yaml | GET /entities
+   * @link http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml | GET /entities
    *
    * @memberof SzSearchService
    */
