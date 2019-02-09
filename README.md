@@ -105,8 +105,9 @@ import statement as well.
 
 The result should be a list of service configuration parameters and values.
 
-**5)** Load the engine with data to resolve. The easiest way to do this currently is to load a CSV using the application.
-This can also be done through the Senzing REST API.
+**5)** Load the engine with data to resolve. The easiest way to do this currently is to load a CSV using the
+[Senzing app](https://senzing.com/#download).  This can also be done through the
+[Senzing REST API](https://github.com/Senzing/senzing-rest-api) using the [Senzing REST API Server](https://github.com/Senzing/senzing-api-server).
 
 **6)** Verify that the components are working properly. The easiest way to do this is to is to just implement a search box, and a result list. Copy the following to your app.component.html file
 
