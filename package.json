@@ -19,7 +19,8 @@
     "server": "npm run start:server",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "example:search-with-results-and-details": "ng serve example/search-with-results-and-details"
+    "example:search-with-results-and-details": "ng serve example/search-with-results-and-details",
+    "example:search-with-spinner": "ng serve example/search-with-spinner"
   },
   "private": true,
   "dependencies": {

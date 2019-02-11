@@ -1,0 +1,48 @@
+<div style="text-align:left; font-weight: bold; font-size: 1.5em">
+  @senzing/sdk-components-ng Example App
+</div>
+
+<div style="text-align:left; text-decoration: italic; font-size: 0.8em; margin: 2px 0 10px 0;">
+  An example Angular app showing a basic usage of the searchStart, searchStart, and searchException events sz-search, sz-search-results,
+  and sz-entity-detail components working together.
+</div>
+
+<!-- start spinner overlay -->
+<div class="mat-background" *ngIf="showProgressSpinner">
+  <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+  </div>
+</div>
+<!-- end spinner overlay -->
+
+<!-- start search box -->
+<div class="component-example">
+  <sz-search
+      (searchStart)="showProgressSpinner=true"
+      (searchEnd)="showProgressSpinner=false"
+      (resultsChange)="onSearchResults($event)"
+      (resultsCleared)="onSearchResultsCleared($event)"
+      (searchException)="onSearchException($event)"
+      (parameterChange)="onSearchParameterChange($event)"></sz-search>
+</div>
+<!-- end search box -->
+
+<!-- start search results -->
+<div class="component-example" *ngIf="!showSearchResultDetail && !showProgressSpinner">
+  <sz-search-results *ngIf="showSearchResults" [results]="currentSearchResults" [parameters]="currentSearchParameters" (resultClick)="showProgressSpinner=true; onSearchResultClick($event)"></sz-search-results>
+</div>
+<!-- end search results -->
+<!-- start entity detail -->
+<div *ngIf="showSearchResultDetail && !showProgressSpinner">
+  <div class="detail-wrapper">
+      <button (click)="onBackToSearchResultsClick($event)">&lt;&lt; Go Back to Search Results</button>
+  </div>
+  <sz-entity-detail
+  (requestEnd)="showProgressSpinner=false"
+  [entityId]="currentlySelectedEntityId"></sz-entity-detail>
+</div>
+<!-- end entity detail -->
