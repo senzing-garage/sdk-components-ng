@@ -1,10 +1,9 @@
 <div style="text-align:left; font-weight: bold; font-size: 1.5em">
-  @senzing/sdk-components-ng Example App
+  @senzing/sdk-components-ng spinner example
 </div>
 
 <div style="text-align:left; text-decoration: italic; font-size: 0.8em; margin: 2px 0 10px 0;">
-  An example Angular app showing a basic usage of the searchStart, searchStart, and searchException events sz-search, sz-search-results,
-  and sz-entity-detail components working together.
+  An example Angular app showing a basic usage of the searchStart, searchStart, and searchException events of sz-search component.
 </div>
 
 <!-- start spinner overlay -->
@@ -31,11 +30,19 @@
 </div>
 <!-- end search box -->
 
+<!-- start error box -->
+<div class="error-message" *ngIf="errorMessage">
+    <strong>An Error Occurred:</strong>
+    {{ errorMessage }}
+  </div>
+  <!-- start error box -->
+
 <!-- start search results -->
 <div class="component-example" *ngIf="!showSearchResultDetail && !showProgressSpinner">
   <sz-search-results *ngIf="showSearchResults" [results]="currentSearchResults" [parameters]="currentSearchParameters" (resultClick)="showProgressSpinner=true; onSearchResultClick($event)"></sz-search-results>
 </div>
 <!-- end search results -->
+
 <!-- start entity detail -->
 <div *ngIf="showSearchResultDetail && !showProgressSpinner">
   <div class="detail-wrapper">

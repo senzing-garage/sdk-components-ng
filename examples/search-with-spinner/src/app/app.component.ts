@@ -13,6 +13,8 @@ export class AppComponent {
   public currentSearchResults: SzAttributeSearchResult[];
   public currentlySelectedEntityId: number = undefined;
   public currentSearchParameters: SzEntitySearchParams;
+  public searchException: Error;
+  public errorMessage: string;
 
   public showSearchResults = false;
   public get showSearchResultDetail(): boolean {
@@ -28,12 +30,23 @@ export class AppComponent {
     this.currentSearchResults = evt;
     // results module is bound to this property
 
+    // clear errors
+    this.errorMessage = undefined;
+
     // show results
     this.showSearchResults = true;
   }
 
   onSearchException(err: Error) {
-    throw (err.message);
+    this.searchException = err;
+    console.log(err);
+    if(err.message == 'null criteria'){
+      this.errorMessage = "Please add a criteria to search for.";
+    } else if(err.message.startsWith('Http failure')) {
+      this.errorMessage = "API Server unreachable.";
+    } else {
+      this.errorMessage = this.searchException.message;
+    }
   }
 
   public onBackToSearchResultsClick($event): void {
@@ -59,6 +72,8 @@ export class AppComponent {
     this.showSearchResults = false;
     this.currentSearchResults = undefined;
     this.currentlySelectedEntityId = undefined;
+    // clear errors
+    this.errorMessage = undefined;
   }
 
   public onSearchParameterChange(searchParams: SzEntitySearchParams) {

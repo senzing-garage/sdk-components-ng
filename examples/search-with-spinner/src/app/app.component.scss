@@ -69,4 +69,17 @@
           color: #ffffffd4;
       }
   }
+
+  /* error message */
+  .error-message {
+    border: 1px solid #888888;
+    margin: 30px 33px;
+    display: block;
+    width: 754px;
+    border-radius: 10px;
+    background-color: #E0E0E0;
+    padding: 16px 25px;
+    text-align: center;
+    color: #4c4c4c;
+  }
 }
