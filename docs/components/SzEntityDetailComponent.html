@@ -140,10 +140,6 @@
                                     <span class="modifier">Public</span>
                                 <a href="#entityDetailJSON">entityDetailJSON</a>
                             </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#projectId">projectId</a>
-                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -176,12 +172,38 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#data">data</a>
+                            </li>
+                            <li>
                                 <a href="#entityId">entityId</a>
                             </li>
                         </ul>
                     </td>
                 </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#dataChanged">dataChanged</a>
+                            </li>
+                            <li>
+                                <a href="#exception">exception</a>
+                            </li>
+                            <li>
+                                <a href="#requestEnd">requestEnd</a>
+                            </li>
+                            <li>
+                                <a href="#requestStart">requestStart</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
 
 
@@ -193,6 +215,9 @@
                     <tr>
                         <td class="col-md-4">
                             <ul class="index-list">
+                                <li>
+                                    <a href="#entityData">entityData</a>
+                                </li>
                                 <li>
                                     <a href="#entityId">entityId</a>
                                 </li>
@@ -226,7 +251,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:81</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="113" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:113</a></div>
                             </td>
                         </tr>
 
@@ -270,10 +295,31 @@
             <tbody>
                 <tr>
                     <td class="col-md-2">
+                        <a name="data"></a>
+                        <code>data</code>
+                    </td>
+                    <td class="col-md-10">
+                        <div><p>emmitted when the entity data to display has been changed.</p>
+</div>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:55</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-2">
                         <a name="entityId"></a>
                         <code>entityId</code>
                     </td>
                     <td class="col-md-10">
+                        <div><p>set the entity data by passing in an entity id number.</p>
+</div>
                             <p>
                             <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 
@@ -282,13 +328,99 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:32</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:63</a></div>
                             </td>
                         </tr>
             </tbody>
         </table>
 </section>
+    <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-2">
+                        <a name="dataChanged"></a>
+                        <code>dataChanged</code>
+                    </td>
+                    <td class="col-md-10">
+                        <div><p>emmitted when the entity data to display has been changed.</p>
+</div>
+                        <em><code>$event</code> Type:</em>    <code>Subject&lt;SzEntityData&gt;</code>
 
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:49</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-2">
+                        <a name="exception"></a>
+                        <code>exception</code>
+                    </td>
+                    <td class="col-md-10">
+                        <div><p>emitted when a search encounters an exception</p>
+</div>
+                        <em><code>$event</code> Type:</em>    <code>EventEmitter&lt;Error&gt;</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:43</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-2">
+                        <a name="requestEnd"></a>
+                        <code>requestEnd</code>
+                    </td>
+                    <td class="col-md-10">
+                        <div><p>emitted when a search is done being performed.</p>
+</div>
+                        <em><code>$event</code> Type:</em>    <code>EventEmitter&lt;SzEntityData | Error&gt;</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:38</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-2">
+                        <a name="requestStart"></a>
+                        <code>requestStart</code>
+                    </td>
+                    <td class="col-md-10">
+                        <div><p>emitted when the component begins a request for an entities data.</p>
+</div>
+                        <em><code>$event</code> Type:</em>    <code>EventEmitter&lt;number&gt;</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:33</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
 
 
     <section>
@@ -318,13 +450,16 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:87</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="155" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:155</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>when entityId property is changed, request the data from the api
+and display the result.</p>
+</div>
 
                             <div class="io-description">
                                 <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -358,13 +493,16 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:79</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="145" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:145</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>internal handler for when a entity record displayed inside of widget is
+clicked on.</p>
+</div>
 
                             <div class="io-description">
                                     <b>Parameters :</b>
@@ -623,52 +761,69 @@
 
             </tbody>
         </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="projectId"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            projectId
-                            </b>
-                            <a href="#projectId"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span><code>projectId:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-</code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>1</code>
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:19</a></div>
-                            </td>
-                        </tr>
-
-
-            </tbody>
-        </table>
 </section>
 
     <section>
     <h3 id="accessors">
         Accessors
     </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="entityData"></a>
+                        <span class="name"><b>entityData</b><a href="#entityData"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>entityData(value)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:55</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>emmitted when the entity data to display has been changed.</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -685,9 +840,22 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:36</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:72</a></div>
                                 </td>
                             </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Get the entity Id of the current entity being displayed.</p>
+</div>
+
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -696,11 +864,13 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:32</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:63</a></div>
                                 </td>
                             </tr>
                     <tr>
                         <td class="col-md-4">
+                                <div class="io-description"><p>set the entity data by passing in an entity id number.</p>
+</div>
 
                                 <div class="io-description">
                                         <b>Parameters :</b>
@@ -754,7 +924,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:44</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:80</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -789,7 +959,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:52</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:88</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -824,7 +994,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:62</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="98" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:98</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -859,7 +1029,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:72</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="108" class="link-to-prism">projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts:108</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -886,6 +1056,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit,  Input, Output, EventEmitter } from &#x27;@angular/core&#x27;;
 import { SzSearchService } from &#x27;../../services/sz-search.service&#x27;;
 import { distinctUntilChanged, map, tap } from &#x27;rxjs/operators&#x27;;
+import { Subject } from &#x27;rxjs&#x27;;
 
 import {
   SzEntityData,
@@ -901,7 +1072,6 @@ import {
 })
 export class SzEntityDetailComponent {
   private _entityId: number;
-  public projectId &#x3D; 1;
   public entityDetailJSON: string &#x3D; &quot;&quot;;
 
   public entity: SzEntityData;
@@ -911,15 +1081,51 @@ export class SzEntityDetailComponent {
   _possibleMatches: SzRelatedEntity[];
   _matches: SzEntityRecord[];
 
+  /**
+   * emitted when the component begins a request for an entities data.
+   * @returns entityId of the request being made.
+   */
+  @Output() requestStart: EventEmitter&lt;number&gt; &#x3D; new EventEmitter&lt;number&gt;();
+  /**
+   * emitted when a search is done being performed.
+   * @returns the result of the entity request OR an Error object if something went wrong.
+   */
+  @Output() requestEnd: EventEmitter&lt;SzEntityData|Error&gt; &#x3D; new EventEmitter&lt;SzEntityData|Error&gt;();
+  /**
+   * emitted when a search encounters an exception
+   * @returns the number of total results returned from the search.
+   */
+  @Output() exception: EventEmitter&lt;Error&gt; &#x3D; new EventEmitter&lt;Error&gt;();
 
+  /**
+   * emmitted when the entity data to display has been changed.
+   */
+  @Output(&#x27;dataChanged&#x27;)
+  dataChanged: Subject&lt;SzEntityData&gt; &#x3D; new Subject&lt;SzEntityData&gt;();
 
+  /**
+   * emmitted when the entity data to display has been changed.
+   */
+  @Input(&#x27;data&#x27;)
+  public set entityData(value: SzEntityData) {
+    this.entity &#x3D; value;
+  }
+
+  /**
+   * set the entity data by passing in an entity id number.
+   */
   @Input()
   public set entityId(value: number) {
     this._entityId &#x3D; value;
     this.onEntityIdChange();
   }
+  /**
+   * Get the entity Id of the current entity being displayed.
+   *
+   * @readonly
+   */
   public get entityId(): number {
-    return this._entityId;
+    return this.entity &amp;&amp; this.entity.resolvedEntity &amp;&amp; this.entity.resolvedEntity.entityId ? this.entity.resolvedEntity.entityId : this._entityId;
   }
 
   /**
@@ -961,16 +1167,50 @@ export class SzEntityDetailComponent {
     }) : undefined;
   }
 
-  public onEntityRecordClick(entityId: number): void {
-    this.entityId &#x3D; entityId;
-  }
-
   constructor(
     private searchService: SzSearchService,
   ) {}
 
+
+  /**
+   * after entity data has been changed, regenerate the filtered lists.
+   *  matches, possible matches, possible relationships, and disclosed relationships.
+   */
+  private onEntityDataChanged(){
+    // doing the set on these manually because pulling directly from setter(s)
+    // causes render change cycle to break mem and hammer redraw
+    if(this.entity &amp;&amp; this.entity.resolvedEntity.records) this._matches &#x3D; this.entity.resolvedEntity.records
+    if(this.entity &amp;&amp; this.entity.relatedEntities.filter) this._possibleMatches &#x3D; this.entity.relatedEntities.filter( (sr) &#x3D;&gt; {
+      return sr.relationType &#x3D;&#x3D; SzRelationshipType.POSSIBLEMATCH;
+    });
+    if(this.entity &amp;&amp; this.entity.relatedEntities.filter) this._discoveredRelationships &#x3D; this.entity.relatedEntities.filter( (sr) &#x3D;&gt; {
+      return sr.relationType &#x3D;&#x3D; SzRelationshipType.POSSIBLERELATION;
+    });
+    if(this.entity &amp;&amp; this.entity.relatedEntities.filter) this._disclosedRelationships &#x3D; this.entity.relatedEntities.filter( (sr) &#x3D;&gt; {
+      return sr.relationType &#x3D;&#x3D; SzRelationshipType.DISCLOSEDRELATION;
+    });
+
+    this.dataChanged.next(this.entity);
+  }
+
+  /**
+   * internal handler for when a entity record displayed inside of widget is
+   * clicked on.
+   */
+  public onEntityRecordClick(entityId: number): void {
+    this.entityId &#x3D; entityId;
+  }
+
+  /**
+   * when entityId property is changed, request the data from the api
+   * and display the result.
+   *
+   * @memberof SzEntityDetailComponent
+   */
   onEntityIdChange() {
-    if (this.projectId &gt; 0 &amp;&amp; this._entityId) {
+    if (this._entityId) {
+      this.requestStart.emit(this._entityId);
+
       this.searchService.getEntityById(this._entityId).
       pipe(
         tap(res &#x3D;&gt; console.log(&#x27;SzSearchService.getEntityById: &#x27; + this._entityId, res))
@@ -979,20 +1219,12 @@ export class SzEntityDetailComponent {
         console.log(&#x27;sz-entity-detail.onEntityIdChange: &#x27;, entityData);
         this.entityDetailJSON &#x3D; JSON.stringify(entityData, null, 4);
         this.entity &#x3D; entityData;
-
-        // doing the set on these manually because pulling directly from setter(s)
-        // causes render change cycle to break mem and hammer redraw
-        if(this.entity &amp;&amp; this.entity.resolvedEntity.records) this._matches &#x3D; this.entity.resolvedEntity.records
-        if(this.entity &amp;&amp; this.entity.relatedEntities.filter) this._possibleMatches &#x3D; this.entity.relatedEntities.filter( (sr) &#x3D;&gt; {
-          return sr.relationType &#x3D;&#x3D; SzRelationshipType.POSSIBLEMATCH;
-        });
-        if(this.entity &amp;&amp; this.entity.relatedEntities.filter) this._discoveredRelationships &#x3D; this.entity.relatedEntities.filter( (sr) &#x3D;&gt; {
-          return sr.relationType &#x3D;&#x3D; SzRelationshipType.POSSIBLERELATION;
-        });
-        if(this.entity &amp;&amp; this.entity.relatedEntities.filter) this._disclosedRelationships &#x3D; this.entity.relatedEntities.filter( (sr) &#x3D;&gt; {
-          return sr.relationType &#x3D;&#x3D; SzRelationshipType.DISCLOSEDRELATION;
-        });
-
+        this.onEntityDataChanged();
+        this.requestEnd.emit( entityData );
+        this.dataChanged.next( entityData );
+      }, (err)&#x3D;&gt;{
+        this.requestEnd.emit( err );
+        this.exception.next( err );
       });
     }
   }
