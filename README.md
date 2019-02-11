@@ -1,4 +1,4 @@
-# @Senzing/sdk-components-ng
+# @senzing/sdk-components-ng
 
 ## Overview
 
@@ -58,8 +58,7 @@ import {
 if not currently running.
 
 See the [README.md](https://github.com/Senzing/senzing-api-server) for instructions on how
-to start the Senzing REST API Server on the command line or with Docker.  You can also use
-the [Senzing App Integration Scripts](https://github.com/Senzing/senzing-api-server/tree/master/app-scripts).
+to start the Senzing REST API Server on the command line or with Docker.  
 
 **2)** Add the SenzingSDKModule to your angular app's app.module.ts
 
