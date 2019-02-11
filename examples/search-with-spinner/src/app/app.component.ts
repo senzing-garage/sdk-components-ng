@@ -17,13 +17,16 @@ export class AppComponent {
   public errorMessage: string;
 
   public showSearchResults = false;
+  /** whether or not we should show the detail page */
   public get showSearchResultDetail(): boolean {
     if(this.currentlySelectedEntityId && this.currentlySelectedEntityId > 0) {
       return true;
     }
     return false;
   }
-
+  /**
+   * when new search results are returned.
+   */
   onSearchResults(evt: SzAttributeSearchResult[]){
     console.log('searchResults: ',evt);
     // store on current scope
@@ -37,6 +40,9 @@ export class AppComponent {
     this.showSearchResults = true;
   }
 
+  /**
+   * when searching encounters an error.
+   */
   onSearchException(err: Error) {
     this.searchException = err;
     console.log(err);
@@ -49,11 +55,17 @@ export class AppComponent {
     }
   }
 
+  /**
+   * when back to search results button is clicked.
+   */
   public onBackToSearchResultsClick($event): void {
     this.showSearchResults = true;
     this.currentlySelectedEntityId = undefined;
   }
 
+  /**
+   * when an entity is clicked on in the list
+   */
   public onSearchResultClick(entityData: SzAttributeSearchResult){
     console.log('onSearchResultClick: ', entityData);
     //alert('clicked on search result!'+ entityData.entityId);
@@ -67,6 +79,7 @@ export class AppComponent {
     }
   }
 
+  /** when the "clear" button is clicked */
   public onSearchResultsCleared(searchParams: SzEntitySearchParams){
     // hide search results
     this.showSearchResults = false;
@@ -76,6 +89,7 @@ export class AppComponent {
     this.errorMessage = undefined;
   }
 
+  /** when search parameters have changed */
   public onSearchParameterChange(searchParams: SzEntitySearchParams) {
     console.log('onSearchParameterChange: ', searchParams);
     this.currentSearchParameters = searchParams;

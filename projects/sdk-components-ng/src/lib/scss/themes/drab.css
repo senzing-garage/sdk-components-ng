@@ -81,7 +81,7 @@ body {
   --sz-entity-detail-header-section-totals-icon-width: 28px;
   --sz-entity-detail-section-header-margin: 1em 0 0;
   --sz-entity-detail-section-header-padding: 2px 1em;
-  --sz-entity-detail-section-header-color: #474845;
+  --sz-entity-detail-section-header-color: #fff;
   --sz-entity-detail-section-header-font-size: 20px;
   --sz-entity-detail-section-header-font-family: $sz-font-family;
   --sz-entity-detail-section-header-border-radius: 4px 4px 0 0;

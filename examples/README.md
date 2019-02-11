@@ -39,7 +39,7 @@ The relevant source for for each example is located in the examples/{name of exa
     <tr>
       <td>search-with-spinner</td>
       <td>`npm run example:search-with-spinner`</td>
-      <td>An example Angular app showing a usage of the searchStart, searchStart, and searchException events from sz-search. The example creates a spinner that shows up while data requests are being made(with a min and max display time).</td>
+      <td>An example Angular app showing a usage of the searchStart, searchStart, and exception events from sz-search. The example creates a spinner that shows up while data requests are being made(with a min and max display time).</td>
     </tr>
   </tbody>
 </table>
