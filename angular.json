@@ -183,7 +183,6 @@
             ],
             "styles": [
               "examples/search-with-spinner/src/styles.scss",
-              "projects/sdk-components-ng/src/lib/scss/themes/senzing.css",
               "projects/sdk-components-ng/src/lib/scss/themes/drab.css"
             ],
             "scripts": []

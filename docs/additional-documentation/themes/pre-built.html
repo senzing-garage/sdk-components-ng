@@ -49,15 +49,15 @@
 
 <h1 id="pre-defined">Pre Defined</h1>
 <p>We&#39;ve included some pre-built themes for quick usage to get you up and running. You&#39;ll almost certainly want to create your own, or tweak things to match your application&#39;s styling as needed. The compiled css files are located in the styles/themes directory in the package being used.</p>
-<h2 id="using-sass">using sass</h2>
+<h2 id="using-sass">using SASS</h2>
 <p>if you&#39;re using sass(and scss processor can reference node_modules), open up your main scss file(src/styles.scss in default angular layout) and include the following.</p>
-<div><pre class="line-numbers"><code class="language-scss">&#64;import &#39;&#64;senzing/sdk-components-ng/styles/themes/senzing.css&#39;;</code></pre></div><h2 id="using-css">using css</h2>
+<div><pre class="line-numbers"><code class="language-scss">&#64;import &#39;&#64;senzing/sdk-components-ng/styles/themes/senzing.css&#39;;</code></pre></div><h2 id="using-css">using CSS</h2>
 <p>there are several different ways to include a pre-built theme in your project.
 You could just add the stylesheet path to your main html file and include the css reference in the HEAD of your document.</p>
 <div><pre class="line-numbers"><code class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;node_modules/&#64;senzing/sdk-components-ng/styles/themes/senzing.css&quot;&gt;</code></pre></div><p>for production it is recommended you copy the theme stylesheet you will be using over to a static directory(probably a bad idea to leave node_modules open to the world) and change the above reference to point to it&#39;s location. </p>
-<h3 id="angular-projects">angular projects</h3>
-<center><img src="../images/themes/add-to-style-paths.png"><center>
-if you're using the sdk components in the scope of an angular project the recommended way is to add the theme file path to your *angular.json* file for your project.
+<h3 id="angular-projects">Angular projects</h3>
+<p>if you&#39;re using the sdk components in the scope of an angular project the recommended way is to add the theme file path to your <em>angular.json</em> file for your project.</p>
+<img style="border: 1px solid #CCC; padding: 10px 20px 30px 20px; margin: 12px 0 40px 0;" src="../../docs/images/themes/add-to-style-paths.png">
 
 <p>find the _architect.build.options.styles node in the file, and add the path there. </p>
 <div><pre class="line-numbers"><code class="language-json">&quot;styles&quot;: [
@@ -70,14 +70,23 @@ if you're using the sdk components in the scope of an angular project the recomm
   (illustrated above) 
 </div>
 
+<h2 style="margin-top: 30px;">
+Themes
+</h2>
 
-<h2 id="themes">Themes</h2>
 <div style="display: flex-box; flex-direction: columns;">
-  <img src="../images/themes/ss-drab.png">
-  <p>
+  <div style="border-bottom: 2px inset; margin-bottom: 20px;">
     <h3>Drab</h3>
-    <label>location: </label>`node_modules/@senzing/sdk-components-ng/styles/themes/drab.css`
-  </p>
+    location: 
+      node_modules/@senzing/sdk-components-ng/styles/themes/drab.css
+      <img style="border: 1px solid #CCC; padding: 10px 20px 30px 20px; margin: 12px 0 40px 0;" src="../../docs/images/themes/ss-drab.png"/>
+  </div>
+  <div style="border-bottom: 2px inset; margin-bottom: 20px;">
+    <h3>Senzing</h3>
+    location: 
+      node_modules/@senzing/sdk-components-ng/styles/themes/senzing.css
+      <img style="border: 1px solid #CCC; padding: 10px 20px 30px 20px; margin: 12px 0 40px 0;" src="../../docs/images/themes/ss-senzing.png"/>
+  </div>
 </div>
 
                    </div><div class="search-results">
