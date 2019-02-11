@@ -38,7 +38,7 @@ export class SzEntityDetailComponent {
   @Output() requestEnd: EventEmitter<SzEntityData|Error> = new EventEmitter<SzEntityData|Error>();
   /**
    * emitted when a search encounters an exception
-   * @returns the number of total results returned from the search.
+   * @returns error object.
    */
   @Output() exception: EventEmitter<Error> = new EventEmitter<Error>();
 
