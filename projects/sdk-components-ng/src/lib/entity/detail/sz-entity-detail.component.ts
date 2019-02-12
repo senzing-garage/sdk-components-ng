@@ -49,7 +49,7 @@ export class SzEntityDetailComponent {
   dataChanged: Subject<SzEntityData> = new Subject<SzEntityData>();
 
   /**
-   * emmitted when the entity data to display has been changed.
+   * set the entity data directly, instead of via entityId lookup.
    */
   @Input('data')
   public set entityData(value: SzEntityData) {
@@ -64,10 +64,9 @@ export class SzEntityDetailComponent {
     this._entityId = value;
     this.onEntityIdChange();
   }
+
   /**
    * Get the entity Id of the current entity being displayed.
-   *
-   * @readonly
    */
   public get entityId(): number {
     return this.entity && this.entity.resolvedEntity && this.entity.resolvedEntity.entityId ? this.entity.resolvedEntity.entityId : this._entityId;
