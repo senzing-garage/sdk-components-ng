@@ -1,5 +1,4 @@
 body {
-  --sz-font-family: $sz-font-family;
   --sz-color-matches: #869076;
   --sz-color-possible-match: #869076;
   --sz-color-possibly-related: #7d6378;
@@ -13,9 +12,12 @@ body {
   --sz-search-button-clear-background-color: #95989A;
   --sz-search-button-border: 1px solid #808285;
   --sz-search-button-submit-border: 1px solid #808285;
+  --sz-search-button-clear-padding: 0 10px 0 10px;
+  --sz-search-button-submit-padding: 0 30px 0 30px;
   --sz-search-button-padding: 0 20px 0 20px;
   --sz-search-button-margin: 0;
   --sz-search-button-border-radius: 2px;
+  --sz-search-button-clear-font-size: 10px;
   --sz-search-input-color: #95989A;
   --sz-search-input-background-color: #FFFFFF;
   --sz-search-input-display: inline-block;
@@ -29,8 +31,8 @@ body {
   --sz-search-input-focus-border: 1px solid #808285;
   --sz-search-label-color: #5e5e5e;
   --sz-search-label-padding: 4px;
-  --sz-search-label-margin: 0 0 10px 20px;
-  --sz-search-label-font-size: 8px;
+  --sz-search-label-margin: 0 0 10px 5px;
+  --sz-search-label-font-size: 12px;
   --sz-search-label-display: block;
   --sz-search-results-padding: 20px;
   --sz-search-results-color: #5e5e5e;
@@ -64,7 +66,7 @@ body {
   --sz-entity-detail-icon-width: 85px;
   --sz-entity-detail-icon-border: 2px solid #82848647;
   --sz-entity-detail-icon-border-radius: 50%;
-  --sz-entity-detail-icon-margin: 60px 30px 30px 20px;
+  --sz-entity-detail-icon-margin: 30px 30px 30px 20px;
   --sz-entity-detail-header-entity-name-font-size: 34px;
   --sz-entity-detail-header-entity-name-font-weight: 600;
   --sz-entity-detail-header-section-totals-margin: 0 10px 0 0;
@@ -79,7 +81,7 @@ body {
   --sz-entity-detail-header-section-totals-icon-width: 28px;
   --sz-entity-detail-section-header-margin: 1em 0 0;
   --sz-entity-detail-section-header-padding: 2px 1em;
-  --sz-entity-detail-section-header-color: #474845;
+  --sz-entity-detail-section-header-color: #fff;
   --sz-entity-detail-section-header-font-size: 20px;
   --sz-entity-detail-section-header-font-family: $sz-font-family;
   --sz-entity-detail-section-header-border-radius: 4px 4px 0 0;
@@ -95,6 +97,7 @@ body {
   --sz-entity-detail-section-border-bottom: 1px solid #808285;
   --sz-entity-detail-section-title-font-size: 20px;
   --sz-entity-detail-section-padding: 0 24px;
+  --sz-entity-detail-name-font-size: 20px;
   --sz-entity-detail-section-record-card-display: block;
   --sz-entity-detail-section-record-card-background-color: #d1d1d0;
   --sz-entity-detail-section-record-card-margin: 8px;
@@ -107,6 +110,6 @@ body {
   --sz-entity-detail-pill-padding: 5px 8px;
   --sz-entity-detail-pill-margin: 0 10px 0 0;
   --sz-entity-detail-pill-background-color: #808285;
+  --sz-entity-detail-pill-color: #FFFFFF;
   --sz-entity-detail-pill-border-radius: 5px;
-
 }

@@ -84,10 +84,14 @@ export class SzSearchComponent implements OnInit {
   @Output() searchEnd: EventEmitter<number> = new EventEmitter<number>();
   /**
    * emitted when a search encounters an exception
-   * @returns the number of total results returned from the search.
-   * @memberof SzSearchComponent
+   * @todo remove from next breaking change release.
+   * @deprecated
    */
   @Output() searchException: EventEmitter<Error> = new EventEmitter<Error>();
+  /**
+   * emitted when a search encounters an exception
+   */
+  @Output() exception: EventEmitter<Error> = new EventEmitter<Error>();
 
   /**
    * emmitted when the results have been cleared.
@@ -273,7 +277,8 @@ export class SzSearchComponent implements OnInit {
       this.ref.markForCheck();
       this.ref.detectChanges();
     }, (err)=>{
-      this.searchException.next( err );
+      this.searchException.next( err ); //TODO: remove in breaking change release
+      this.exception.next( err );
     });
   }
 
@@ -355,7 +360,8 @@ export class SzSearchComponent implements OnInit {
 
     if(Object.keys(searchParams).length <= 0){
       // do not perform search if criteria are empty
-      this.searchException.next(new Error("null criteria"));
+      this.searchException.next(new Error("null criteria")); //TODO: remove in breaking change release
+      this.exception.next( new Error("null criteria") );
       return;
     }
 
@@ -371,7 +377,8 @@ export class SzSearchComponent implements OnInit {
       this.searchResults.next(res);
     }, (err)=>{
       this.searchEnd.emit();
-      this.searchException.next( err );
+      this.searchException.next( err ); //TODO: remove in breaking change release
+      this.exception.next( err );
     });
 
     this.searchParameters.next(this.searchService.getSearchParams());
