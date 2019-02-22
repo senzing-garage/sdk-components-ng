@@ -50,9 +50,6 @@
         <li class="active">
             <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
-        </li>
 </ul>
 
 <div class="tab-content">
@@ -899,38 +896,6 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { SzRawDataMatches } from &#x27;./raw-data-matches&#x27;;
-import { SzResolvedEntity, SzRelatedEntity, SzDataSourceRecordSummary } from &#x27;@senzing/rest-api-client-ng&#x27;;
-
-export interface SzSearchResultEntityData {
-  // required
-  relatedEntities: SzRelatedEntity[];
-  discoveredRelationships: any [];
-  possibleMatches: any [];
-  disclosedRelationships: any [];
-  // optional
-  entityId?: number;
-  bestName?: string;
-  relationshipDataMatches?: any[];
-  entityDataMatches?: any[];
-  otherDataMatches?: any[];
-  topPhoneNumbers?: string[];
-  phoneDataMatches?: any[];
-  rawDataMatches?: SzRawDataMatches;
-  nameDataMatches?: any[];
-  attributeDataMatches?: any[];
-  addressDataMatches?: any[];
-  resolvedEntity: SzResolvedEntity;
-  topIdentifiers?: string[];
-  topAddresses?: string[];
-  matchScore?: number;
-  topAttributes?: string[];
-  topNames?: string[];
-  identifierDataMatches?: any[];
-}
-</code></pre>
-    </div>
 </div>
 
 

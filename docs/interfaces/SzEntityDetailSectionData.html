@@ -50,9 +50,6 @@
         <li class="active">
             <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
-        </li>
 </ul>
 
 <div class="tab-content">
@@ -617,36 +614,6 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { SzEntityRecord, SzEntityFeature, SzDataSourceRecordSummary } from &#x27;@senzing/rest-api-client-ng&#x27;;
-
-export interface SzEntityDetailSectionData {
-  &#x27;resolutionRuleCode&#x27;: string;
-  &#x27;matchLevel&#x27;: number;
-  &#x27;refScore&#x27;: number;
-  &#x27;matchKey&#x27;: string;
-  &#x27;recordSummaries&#x27;: SzDataSourceRecordSummary[];
-  &#x27;identifierData&#x27;: string[];
-  &#x27;records&#x27;: SzEntityRecord[];
-  &#x27;features&#x27;?: {
-    [key: string] : SzEntityFeature[]
-  }
-  &#x27;bestName&#x27;: string;
-  &#x27;attributeData&#x27;: string[];
-  &#x27;phoneData&#x27;: string[];
-  &#x27;nameData&#x27;: string[];
-  &#x27;lensId&#x27;: number;
-  &#x27;entityId&#x27;: number;
-  &#x27;addressData&#x27;: string[];
-  &#x27;dataSource&#x27;?: string;
-}
-
-export interface SzEntityDetailSectionSummary {
-  total: number;
-  title: string;
-}
-</code></pre>
-    </div>
 </div>
 
 
