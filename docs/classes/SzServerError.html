@@ -49,9 +49,6 @@
         <li class="active">
             <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
-        </li>
 </ul>
 
 <div class="tab-content">
@@ -168,11 +165,6 @@
 
                         </td>
                     </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">projects/sdk-components-ng/src/lib/common/server-error.ts:9</a></div>
-                            </td>
-                        </tr>
 
 
             </tbody>
@@ -202,11 +194,6 @@
 
                         </td>
                     </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">projects/sdk-components-ng/src/lib/common/server-error.ts:8</a></div>
-                            </td>
-                        </tr>
 
 
             </tbody>
@@ -236,11 +223,6 @@
 
                         </td>
                     </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">projects/sdk-components-ng/src/lib/common/server-error.ts:11</a></div>
-                            </td>
-                        </tr>
 
 
             </tbody>
@@ -270,11 +252,6 @@
 
                         </td>
                     </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">projects/sdk-components-ng/src/lib/common/server-error.ts:7</a></div>
-                            </td>
-                        </tr>
 
 
             </tbody>
@@ -304,11 +281,6 @@
 
                         </td>
                     </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">projects/sdk-components-ng/src/lib/common/server-error.ts:10</a></div>
-                            </td>
-                        </tr>
 
 
             </tbody>
@@ -338,11 +310,6 @@
 
                         </td>
                     </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">projects/sdk-components-ng/src/lib/common/server-error.ts:12</a></div>
-                            </td>
-                        </tr>
 
 
             </tbody>
@@ -376,11 +343,6 @@
                 </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">projects/sdk-components-ng/src/lib/common/server-error.ts:14</a></div>
-                            </td>
-                        </tr>
 
 
                 <tr>
@@ -447,11 +409,6 @@
                 </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">projects/sdk-components-ng/src/lib/common/server-error.ts:18</a></div>
-                            </td>
-                        </tr>
 
 
                 <tr>
@@ -518,11 +475,6 @@
                 </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">projects/sdk-components-ng/src/lib/common/server-error.ts:23</a></div>
-                            </td>
-                        </tr>
 
 
                 <tr>
@@ -589,11 +541,6 @@
                 </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">projects/sdk-components-ng/src/lib/common/server-error.ts:27</a></div>
-                            </td>
-                        </tr>
 
 
                 <tr>
@@ -648,40 +595,6 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
-  fromServer, toServer, fromServerArray, toServerArray
-} from &#x27;./data-marshalling&#x27;;
-
-// @dynamic
-export class SzServerError {
-  id: string;
-  critical: boolean;
-  code: string;
-  message: string;
-  detail: string;
-  timestamp: Date;
-
-  public static fromServer(source: any): SzServerError {
-    return fromServer&lt;SzServerError&gt;(new SzServerError(), source);
-  }
-
-  public static fromServerArray(sourceArray: any[]): SzServerError[] {
-    return fromServerArray&lt;SzServerError&gt;(
-      &lt;SzServerError[]&gt; [], sourceArray, function(){ return new SzServerError() });
-  }
-
-  public static toServer(source: SzServerError): SzServerError {
-    return &lt;SzServerError&gt; toServer&lt;SzServerError&gt;(new SzServerError(), source);
-  }
-
-  public static toServerArray(sourceArray: SzServerError[]): SzServerError[] {
-    return &lt;SzServerError[]&gt; toServerArray&lt;SzServerError&gt;(
-      &lt;SzServerError[]&gt; [], sourceArray, function(){ return new SzServerError() });
-  }
-}
-</code></pre>
-    </div>
 </div>
 
 
