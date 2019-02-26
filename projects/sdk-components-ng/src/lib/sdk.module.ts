@@ -37,10 +37,11 @@ import { SzSearchComponent } from './search/sz-search/sz-search.component';
 import { SzSearchResultsComponent } from './search/sz-search-results/sz-search-results.component';
 import { SzSearchResultCardComponent } from './search/sz-search-result-card/sz-search-result-card.component';
 import { SzSearchResultCardContentComponent } from './search/sz-search-result-card/sz-search-result-card-content/sz-search-result-card-content.component';
-import { SzSearchResultCardHeaderComponent } from  './search/sz-search-result-card/sz-search-result-card-header/sz-search-result-card-header.component';
+import { SzSearchResultCardHeaderComponent } from './search/sz-search-result-card/sz-search-result-card-header/sz-search-result-card-header.component';
 import { SzConfigurationAboutComponent } from './configuration/sz-configuration-about/sz-configuration-about.component';
 import { SzConfigurationComponent } from './configuration/sz-configuration/sz-configuration.component';
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
+import { SzRelationshipNetworkComponent } from './graph/sz-relationship-network/sz-relationship-network.component';
 
 /**
  * Sets up a default set of service parameters for use
@@ -82,7 +83,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultCardHeaderComponent,
     SzConfigurationAboutComponent,
     SzConfigurationComponent,
-    SzPoweredByComponent
+    SzPoweredByComponent,
+    SzRelationshipNetworkComponent
   ],
   imports: [
     CommonModule,
@@ -98,7 +100,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultCardComponent,
     SzPoweredByComponent,
     SzConfigurationComponent,
-    SzConfigurationAboutComponent
+    SzConfigurationAboutComponent,
+    SzRelationshipNetworkComponent
   ],
   /** for components being exported as web components */
   entryComponents: [
@@ -107,7 +110,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultsComponent,
     SzPoweredByComponent,
     SzConfigurationComponent,
-    SzConfigurationAboutComponent
+    SzConfigurationAboutComponent,
+    SzRelationshipNetworkComponent
   ],
   providers: [
     SzMessageBundleService,

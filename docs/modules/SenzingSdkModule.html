@@ -79,6 +79,9 @@
                             <a href="../components/SzPoweredByComponent.html">SzPoweredByComponent</a>
                         </li>
                         <li class="list-group-item">
+                            <a href="../components/SzRelationshipNetworkComponent.html">SzRelationshipNetworkComponent</a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="../components/SzSearchComponent.html">SzSearchComponent</a>
                         </li>
                         <li class="list-group-item">
@@ -101,6 +104,9 @@
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzPoweredByComponent.html">SzPoweredByComponent</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../components/SzRelationshipNetworkComponent.html">SzRelationshipNetworkComponent</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzSearchComponent.html">SzSearchComponent</a>
@@ -134,6 +140,9 @@
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzPoweredByComponent.html">SzPoweredByComponent</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../components/SzRelationshipNetworkComponent.html">SzRelationshipNetworkComponent</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzSearchComponent.html">SzSearchComponent</a>
@@ -175,7 +184,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="131" class="link-to-prism">projects/sdk-components-ng/src/lib/sdk.module.ts:131</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="135" class="link-to-prism">projects/sdk-components-ng/src/lib/sdk.module.ts:135</a></div>
                             </td>
                         </tr>
 
@@ -276,10 +285,11 @@ import { SzSearchComponent } from &#x27;./search/sz-search/sz-search.component&#
 import { SzSearchResultsComponent } from &#x27;./search/sz-search-results/sz-search-results.component&#x27;;
 import { SzSearchResultCardComponent } from &#x27;./search/sz-search-result-card/sz-search-result-card.component&#x27;;
 import { SzSearchResultCardContentComponent } from &#x27;./search/sz-search-result-card/sz-search-result-card-content/sz-search-result-card-content.component&#x27;;
-import { SzSearchResultCardHeaderComponent } from  &#x27;./search/sz-search-result-card/sz-search-result-card-header/sz-search-result-card-header.component&#x27;;
+import { SzSearchResultCardHeaderComponent } from &#x27;./search/sz-search-result-card/sz-search-result-card-header/sz-search-result-card-header.component&#x27;;
 import { SzConfigurationAboutComponent } from &#x27;./configuration/sz-configuration-about/sz-configuration-about.component&#x27;;
 import { SzConfigurationComponent } from &#x27;./configuration/sz-configuration/sz-configuration.component&#x27;;
 import { SzPoweredByComponent } from &#x27;./sz-powered-by/sz-powered-by.component&#x27;;
+import { SzRelationshipNetworkComponent } from &#x27;./graph/sz-relationship-network/sz-relationship-network.component&#x27;;
 
 /**
  * Sets up a default set of service parameters for use
@@ -321,7 +331,8 @@ const SzRestConfigurationInjector &#x3D; new InjectionToken&lt;SzRestConfigurati
     SzSearchResultCardHeaderComponent,
     SzConfigurationAboutComponent,
     SzConfigurationComponent,
-    SzPoweredByComponent
+    SzPoweredByComponent,
+    SzRelationshipNetworkComponent
   ],
   imports: [
     CommonModule,
@@ -337,7 +348,8 @@ const SzRestConfigurationInjector &#x3D; new InjectionToken&lt;SzRestConfigurati
     SzSearchResultCardComponent,
     SzPoweredByComponent,
     SzConfigurationComponent,
-    SzConfigurationAboutComponent
+    SzConfigurationAboutComponent,
+    SzRelationshipNetworkComponent
   ],
   /** for components being exported as web components */
   entryComponents: [
@@ -346,7 +358,8 @@ const SzRestConfigurationInjector &#x3D; new InjectionToken&lt;SzRestConfigurati
     SzSearchResultsComponent,
     SzPoweredByComponent,
     SzConfigurationComponent,
-    SzConfigurationAboutComponent
+    SzConfigurationAboutComponent,
+    SzRelationshipNetworkComponent
   ],
   providers: [
     SzMessageBundleService,
