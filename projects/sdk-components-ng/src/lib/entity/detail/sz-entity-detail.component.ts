@@ -120,10 +120,10 @@ export class SzEntityDetailComponent {
    * after entity data has been changed, regenerate the filtered lists.
    *  matches, possible matches, possible relationships, and disclosed relationships.
    */
-  private onEntityDataChanged(){
+  private onEntityDataChanged() {
     // doing the set on these manually because pulling directly from setter(s)
     // causes render change cycle to break mem and hammer redraw
-    if(this.entity && this.entity.resolvedEntity.records) this._matches = this.entity.resolvedEntity.records
+    if(this.entity && this.entity.resolvedEntity.records) this._matches = this.entity.resolvedEntity.records;
     if(this.entity && this.entity.relatedEntities.filter) this._possibleMatches = this.entity.relatedEntities.filter( (sr) => {
       return sr.relationType == SzRelationshipType.POSSIBLEMATCH;
     });
@@ -166,7 +166,7 @@ export class SzEntityDetailComponent {
         this.onEntityDataChanged();
         this.requestEnd.emit( entityData );
         this.dataChanged.next( entityData );
-      }, (err)=>{
+      }, (err)=> {
         this.requestEnd.emit( err );
         this.exception.next( err );
       });
