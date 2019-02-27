@@ -20,7 +20,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "example:search-with-results-and-details": "ng serve example/search-with-results-and-details",
-    "example:search-with-spinner": "ng serve example/search-with-spinner"
+    "example:search-with-spinner": "ng serve example/search-with-spinner",
+    "example:graph": "ng serve example/graph"
   },
   "private": true,
   "dependencies": {
@@ -34,7 +35,7 @@
     "@angular/platform-browser": "~7.1.0",
     "@angular/platform-browser-dynamic": "~7.1.0",
     "@angular/router": "~7.1.0",
-    "@senzing/rest-api-client-ng": "~0.0.6",
+    "@senzing/rest-api-client-ng": "file:../rest-api-client-ng/dist/@senzing/rest-api-client-ng/senzing-rest-api-client-ng-1.0.0.tgz",
     "@types/d3": "^5.7.1",
     "core-js": "^2.5.4",
     "d3": "^5.9.1",

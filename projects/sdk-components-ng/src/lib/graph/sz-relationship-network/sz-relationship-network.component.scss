@@ -37,3 +37,11 @@ div.tooltip {
   pointer-events: none;
 }
 
+:host {
+  svg {
+    .link {
+      stroke: #999;
+      stroke-width: 2px;
+    }
+  }
+}

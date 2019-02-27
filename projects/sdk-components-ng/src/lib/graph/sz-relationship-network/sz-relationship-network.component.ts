@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
 import { Graph, NodeInfo, LinkInfo } from './Graph';
 import { Simulation } from 'd3-force';
-
+import { EntityGraphService } from '@senzing/rest-api-client-ng';
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'sz-relationship-network',
   templateUrl: './sz-relationship-network.component.html',
@@ -31,17 +32,30 @@ export class SzRelationshipNetworkComponent implements OnInit {
     }
   };
 
+  @ViewChild('graphEle') svgComponent;
+  public svgElement: SVGSVGElement;
+
   private _svgWidth: number;
-  @Input()public set svgWidth(value: string) { this._svgWidth = +value; }
+  @Input() public set svgWidth(value: number) { this._svgWidth = +value; }
+  public get svgWidth(): number { return this._svgWidth; }
 
   private _svgHeight: number;
-  @Input() set svgHeight(value: string) { this._svgHeight = +value; }
+  @Input() public set svgHeight(value: number) { this._svgHeight = +value; }
+  public get svgHeight(): number { return this._svgHeight; }
+
 
   private _port: number;
   @Input() set port(value: string) { this._port = +value; }
 
-  private _entityIds: string;
-  @Input() set entityIds(value: string) { this._entityIds = value; }
+  private _entityIds: string[];
+  @Input() set entityIds(value: string) {
+    if(value && value.indexOf(',')) {
+      const sArr = value.split(',');
+      this._entityIds = sArr;
+    } else {
+      this._entityIds = [value];
+    }
+  }
 
   private _maxDegrees: number;
   @Input() set maxDegrees(value: string) { this._maxDegrees = +value; }
@@ -61,7 +75,9 @@ export class SzRelationshipNetworkComponent implements OnInit {
   forceSimulation: Simulation<NodeInfo, LinkInfo>;
   linkedByNodeIndexMap;
 
-  constructor() {
+  constructor(
+    private graphService: EntityGraphService,
+  ) {
     console.log("constructor!!!");
     this.linkedByNodeIndexMap = {};
   }
@@ -69,21 +85,41 @@ export class SzRelationshipNetworkComponent implements OnInit {
 
 
   ngOnInit() {
+    // get dom element reference to svg tag
+    this.svgElement = (this.svgComponent.nativeElement as SVGSVGElement);
+
+    console.log('sswwwweeeeet. svg ref: ', this.svgElement);
+
     console.log("init!!!");
     if (this._entityIds === undefined || this._entityIds.length === 0) {
       console.log("No EntityIDs passed in to " + this);
       return;
     }
     console.log("Making calls!");
+    this.getNetwork().pipe(
+      map(this.asGraph),
+    ).subscribe( this.addSvg.bind(this) );
+    /*
     const json = this.getNetwork();
     console.log("Calls made successfully!");
     const graph = this.asGraph(json);
     console.log("We made it into a Graph!");
     this.addSvg(graph);
-    console.log("All done!");
+
+    console.log("All done!");*/
   }
 
-  private getNetwork(): Graph {
+  private getNetwork() {
+    return this.graphService.findNetworkByEntityID(
+      this._entityIds,
+      this._maxDegrees,
+      this._buildOut,
+      this._maxEntities,
+      SzRelationshipNetworkComponent.WITH_RAW );
+  }
+
+  /*
+  private getNetworkDep() {
     let response;
     try {
       console.log("Starting to assemble URL.");
@@ -111,6 +147,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
     }
     console.log("Done with call, trying to get body");
     return response.json();
+
   }
 
   static asQueryParamList(name: string, ids: string) {
@@ -124,18 +161,17 @@ export class SzRelationshipNetworkComponent implements OnInit {
     console.log("Done with entity IDs");
     return outputString;
   }
+  */
 
   addSvg(graph: Graph, parentSelection = d3.select("body")) {
-    console.log("Okay, let's do this!");
+    console.log("Okay, let's do this!", graph);
     const tooltip = parentSelection
       .append("div")
       .attr("class", "tooltip")
       .style("opacity", 0);
 
     // Add the SVG to the HTML body
-    const svg = parentSelection.append('svg')
-      .attr('width', this._svgWidth)
-      .attr('height', this._svgHeight);
+    const svg = d3.select( this.svgElement );
 
     /*
      * If you're unfamiliar with selectors acting like a join (starting in d3.v4), here's where things may be confusing.
@@ -238,9 +274,10 @@ export class SzRelationshipNetworkComponent implements OnInit {
       .force('center', d3.forceCenter(this._svgWidth / 2, this._svgHeight / 2)) // Make all nodes start near the center of the SVG
       .force('x', d3.forceX(this._svgWidth / 2).strength(0.01)) // x and y continually pull all nodes toward a point.  If the
       .force('y', d3.forceY(this._svgHeight / 2).strength(0.01)) //  graph has multiple networks, this keeps them on screen
-      .on('tick', this.tick);
+      .on('tick', this.tick.bind(this));
 
     // Make the tooltip visible when mousing over nodes.  Fade out distant nodes
+    /*
     this.node.on('mouseover.tooltip', function (d) {
       tooltip.transition()
         .duration(300)
@@ -260,8 +297,10 @@ export class SzRelationshipNetworkComponent implements OnInit {
         tooltip.style("left", (d3.event.pageX) + "px")
           .style("top", (d3.event.pageY + 10) + "px");
       });
+      */
 
     // Make the tooltip visible when mousing over links.  Fade out distant nodes
+    /*
     this.link.on('mouseover.fade', this.linkFade(0.1))
       .on('mouseover.tooltip', function (d) {
         tooltip.transition()
@@ -281,8 +320,9 @@ export class SzRelationshipNetworkComponent implements OnInit {
         tooltip.style("left", (d3.event.pageX) + "px")
           .style("top", (d3.event.pageY + 10) + "px");
       });
+      */
 
-    graph.links.forEach( this.registerLink);
+    graph.links.forEach( this.registerLink.bind(this) );
   }
 
   private registerLink(d: LinkInfo) {
@@ -516,6 +556,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
 
   static getIconType(resolvedEntity) {
     // Look for type information in the first 10 records.
+    console.log('getIconType: ', resolvedEntity["RECORDS"]);
     const recordsArr = resolvedEntity["RECORDS"].slice(0, 9);
     for (let i = 0; i < recordsArr.length; i++) {
       const elem = recordsArr[i];
