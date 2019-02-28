@@ -287,7 +287,6 @@ export class SzRelationshipNetworkComponent implements OnInit {
       .on('tick', this.tick.bind(this));
 
     // Make the tooltip visible when mousing over nodes.  Fade out distant nodes
-    /*
     this.node.on('mouseover.tooltip', function (d) {
       tooltip.transition()
         .duration(300)
@@ -296,22 +295,20 @@ export class SzRelationshipNetworkComponent implements OnInit {
         .style("left", (d3.event.pageX) + "px")
         .style("top", (d3.event.pageY + 10) + "px");
     })
-      .on('mouseover.fade', this.fade(0.1))
+      .on('mouseover.fade', this.fade(0.1).bind(this))
       .on("mouseout.tooltip", function () {
         tooltip.transition()
           .duration(100)
           .style("opacity", 0);
       })
-      .on('mouseout.fade', this.fade(1))
+      .on('mouseout.fade', this.fade(1).bind(this))
       .on("mousemove", function () {
         tooltip.style("left", (d3.event.pageX) + "px")
           .style("top", (d3.event.pageY + 10) + "px");
       });
-      */
 
     // Make the tooltip visible when mousing over links.  Fade out distant nodes
-    /*
-    this.link.on('mouseover.fade', this.linkFade(0.1))
+    this.link.on('mouseover.fade', this.linkFade(0.1).bind(this))
       .on('mouseover.tooltip', function (d) {
         tooltip.transition()
           .duration(300)
@@ -325,12 +322,11 @@ export class SzRelationshipNetworkComponent implements OnInit {
           .duration(100)
           .style("opacity", 0);
       })
-      .on('mouseout.fade', this.linkFade(1))
+      .on('mouseout.fade', this.linkFade(1).bind(this))
       .on("mousemove", function () {
         tooltip.style("left", (d3.event.pageX) + "px")
           .style("top", (d3.event.pageY + 10) + "px");
       });
-      */
 
     graph.links.forEach( this.registerLink.bind(this) );
   }
@@ -363,9 +359,10 @@ export class SzRelationshipNetworkComponent implements OnInit {
 
   //Fade rules for hovering over nodes
   fade(opacity) {
+    const isConnectedLocal = this.isConnected.bind(this);
     return d => {
       this.node.transition().duration(100).style('opacity', function (o) {
-        const thisOpacity = this.isConnected(d, o) ? 1 : opacity;
+        const thisOpacity = isConnectedLocal(d, o) ? 1 : opacity;
         this.setAttribute('fill-opacity', thisOpacity);
         return thisOpacity;
       });
@@ -380,10 +377,11 @@ export class SzRelationshipNetworkComponent implements OnInit {
   // Fade Rules for hovering over links
   // As currently implemented, any nodes that are connected to both source and target are not faded out.
   linkFade(opacity) {
+    const isConnectedLocal = this.isConnected.bind(this);
     return d => {
       this.node.transition().duration(100).style('opacity', function (o) {
-        const thisOpacity = this.isConnected(d.source, o) &&
-                            this.isConnected(d.target, o) ? 1 : opacity;
+        const thisOpacity = isConnectedLocal(d.source, o) &&
+                            isConnectedLocal(d.target, o) ? 1 : opacity;
         this.setAttribute('fill-opacity', thisOpacity);
         return thisOpacity;
       });
