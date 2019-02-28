@@ -1,6 +1,6 @@
 {
   "name": "@senzing/sdk-components-ng",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": false,
   "keywords" :["Angular","Library","Senzing"],
   "license" : "SEE LICENSE IN LICENSE",
@@ -11,9 +11,7 @@
   "homepage" :"https://senzing.github.io/sdk-components-ng/",
   "peerDependencies": {
     "@angular/common": "~7.1.0",
-    "@angular/core": "~7.1.0"
-  },
-  "dependencies": {
-    "@senzing/rest-api-client-ng": "^0.0.6"
+    "@angular/core": "~7.1.0",
+    "@senzing/rest-api-client-ng": "1.0.0"
   }
 }

@@ -35,6 +35,10 @@ export class SzRelationshipNetworkComponent implements OnInit {
   @ViewChild('graphEle') svgComponent;
   public svgElement: SVGSVGElement;
 
+  private _showLinkLabels: any = false;
+  @Input() public set showLinkLabels(value: boolean) {this._showLinkLabels = value; }
+  public get showLinkLabels(): boolean { return this._showLinkLabels; }
+
   private _svgWidth: number;
   @Input() public set svgWidth(value: number) { this._svgWidth = +value; }
   public get svgWidth(): number { return this._svgWidth; }
@@ -49,11 +53,14 @@ export class SzRelationshipNetworkComponent implements OnInit {
 
   private _entityIds: string[];
   @Input() set entityIds(value: string) {
+    console.log("Finding commas");
     if(value && value.indexOf(',')) {
       const sArr = value.split(',');
       this._entityIds = sArr;
+      console.log("Split done");
     } else {
       this._entityIds = [value];
+      console.log("No split done");
     }
   }
 
@@ -196,15 +203,18 @@ export class SzRelationshipNetworkComponent implements OnInit {
       .attr('id', d => d.id); // This lets SVG know which label goes with which line
 
     // Add link labels
-    this.linkLabel = linkGroup.append('svg:text')
-      .attr('text-anchor', 'middle')
-      .attr('class', 'link-label')
-      .attr('dy', -3)
-      .append('textPath')
-      .attr('class', d => d.isCoreLink ? 'coreLinkText' : 'linkText')
-      .attr('startOffset', '50%')
-      .attr('xlink:href', d => '#' + d.id) // This lets SVG know which label goes with which line
-      .text(d => d.matchKey);
+    if (this.showLinkLabels) {
+      // TODO Append link labels after initialization on showLinkLabels change.
+      this.linkLabel = linkGroup.append('svg:text')
+        .attr('text-anchor', 'middle')
+        .attr('class', 'link-label')
+        .attr('dy', -3)
+        .append('textPath')
+        .attr('class', d => d.isCoreLink ? 'coreLinkText' : 'linkText')
+        .attr('startOffset', '50%')
+        .attr('xlink:href', d => '#' + d.id) // This lets SVG know which label goes with which line
+        .text(d => d.matchKey);
+    }
 
     // Add Nodes.  Adding the nodes after the links is important, because svg doesn't have a z axis.  Later elements are
     //   drawn on top of earlier elements.
@@ -361,7 +371,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
       });
 
       this.link.transition().duration(100).style('opacity', o => (o.source === d || o.target === d ? 1 : opacity));
-      if (d3.select("#showMatchKeysCheckbox").property("checked")) {
+      if (this.showLinkLabels) {
         this.linkLabel.transition().duration(100).style('opacity', opacity);
       }
     };
@@ -379,7 +389,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
       });
 
       this.link.transition().duration(100).style('opacity', o => (o.source === d.source && o.target === d.target ? 1 : opacity));
-      if (d3.select("#showMatchKeysCheckbox").property("checked")) {
+      if (this.showLinkLabels) {
         this.linkLabel.transition().duration(100).style('opacity', opacity);
       }
     };
@@ -404,7 +414,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
       SzRelationshipNetworkComponent.linkSvg(d.target, d.source));
 
     // Show or hide .link-label
-    if (d3.select("#showMatchKeysCheckbox").property("checked")) {
+    if (this.showLinkLabels) {
       d3.selectAll('.link-label').attr('opacity', 100);
     } else {
       d3.selectAll('.link-label').attr('opacity', 0);
