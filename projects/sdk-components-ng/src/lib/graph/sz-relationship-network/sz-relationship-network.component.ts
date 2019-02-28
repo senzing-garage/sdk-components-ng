@@ -403,9 +403,9 @@ export class SzRelationshipNetworkComponent implements OnInit {
     // Update the SVG for each .node
     this.node.attr("transform", d => "translate(" + d.x + "," + d.y + ")")
       .call(d3.drag()             // TODO Update dragging code to use v5 conventions for event listening
-        .on("start", this.dragstarted)
-        .on("drag", this.dragged)
-        .on("end", this.dragended));
+        .on("start", this.dragstarted.bind(this))
+        .on("drag", this.dragged.bind(this))
+        .on("end", this.dragended.bind(this)));
 
     // Update link SVG
     // Draws left to right so .link-label stay right-side up
