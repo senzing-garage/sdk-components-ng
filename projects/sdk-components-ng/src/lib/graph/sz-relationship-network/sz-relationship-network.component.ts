@@ -174,7 +174,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
     console.log("Okay, let's do this!", graph);
     const tooltip = parentSelection
       .append("div")
-      .attr("class", "tooltip")
+      .attr("class", "sz-graph-tooltip")
       .style("opacity", 0);
 
     // Add the SVG to the HTML body
@@ -193,13 +193,13 @@ export class SzRelationshipNetworkComponent implements OnInit {
      */
 
     // Add link groups (line + label)
-    const linkGroup = svg.selectAll('.link')
+    const linkGroup = svg.selectAll('.sz-graph-link')
       .data(graph.links)
       .enter();
 
     // Add the lines, except we're not defining how they're drawn here.  That happens in tick()
     this.link = linkGroup.append('path')
-      .attr('class', d => d.isCoreLink ? 'coreLink' : 'link')
+      .attr('class', d => d.isCoreLink ? 'sz-graph-core-ink' : 'sz-graph-link')
       .attr('id', d => d.id); // This lets SVG know which label goes with which line
 
     // Add link labels
@@ -207,10 +207,10 @@ export class SzRelationshipNetworkComponent implements OnInit {
       // TODO Append link labels after initialization on showLinkLabels change.
       this.linkLabel = linkGroup.append('svg:text')
         .attr('text-anchor', 'middle')
-        .attr('class', 'link-label')
+        .attr('class', 'sz-graph-link-label')
         .attr('dy', -3)
         .append('textPath')
-        .attr('class', d => d.isCoreLink ? 'coreLinkText' : 'linkText')
+        .attr('class', d => d.isCoreLink ? 'sz-graph-core-link-text' : 'sz-graph-link-text')
         .attr('startOffset', '50%')
         .attr('xlink:href', d => '#' + d.id) // This lets SVG know which label goes with which line
         .text(d => d.matchKey);
@@ -218,22 +218,22 @@ export class SzRelationshipNetworkComponent implements OnInit {
 
     // Add Nodes.  Adding the nodes after the links is important, because svg doesn't have a z axis.  Later elements are
     //   drawn on top of earlier elements.
-    this.node = svg.selectAll('.node')
+    this.node = svg.selectAll('.sz-graph-node')
       .data(graph.nodes)
       .enter().append('g')
-      .attr('class', 'node');
+      .attr('class', 'sz-graph-node');
 
     // Add an SVG icon for the person's face.  This hides the links so they're not visible through the face.
     this.node.filter(d => d.iconType !== "business" && SzRelationshipNetworkComponent.ICONS[d.iconType])
       .append('path')
-      .attr('class', 'iconEnclosure')
+      .attr('class', 'sz-graph-icon-enclosure')
       .attr('d', d => SzRelationshipNetworkComponent.ICONS[d.iconType]["enclosed"])
       .attr("transform", "translate(-25,-28) scale(0.05)");
 
     // Add an SVG icon for the person.
     this.node.filter(d => d.iconType !== "business")
       .append('path')
-      .attr('class', 'nodeIcon')
+      .attr('class', 'sz-graph-node-icon')
       .attr('fill', d => d.isQueriedNode ? "#000000" : d.isCoreNode ? '#999999' : '#DDDDDD')
       .attr("d", d => SzRelationshipNetworkComponent.ICONS[d.iconType] ?
                       SzRelationshipNetworkComponent.ICONS[d.iconType]["shape"] :
@@ -252,14 +252,14 @@ export class SzRelationshipNetworkComponent implements OnInit {
       .attr("y", -25)
       .attr("height", 50)
       .attr("width", 50)
-      .attr('class', "icon " + (d => d.isQueriedNode ? 'queriedNode' : d.isCoreNode ? 'coreNode' : 'node'));
+      .attr('class', "sz-graph-icon " + (d => d.isQueriedNode ? 'sz-graph-queried-node' : d.isCoreNode ? 'sz-graph-core-node' : 'sz-graph-node'));
 
     // Add node labels
     this.nodeLabel = this.node.append("svg:text")
       .attr("text-anchor", "middle")
       .attr("dy", ".35em")
       .attr("y", 33)
-      .attr("class", "label")
+      .attr("class", "sz-graph-label")
       .text(d => d.name.length > 18 ? d.name.substring(0, 15).trim() + "..." : d.name);
 
     // Adds a background underneath the node labels.  This label is mostly opaque so that the label is still legible in
@@ -275,7 +275,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
       .attr('y', (d, i) => nodeLabelBBoxAry[i].y)
       .attr('width', (d, i) => nodeLabelBBoxAry[i].width)
       .attr('height', (d, i) => nodeLabelBBoxAry[i].height)
-      .attr('class', "bbox");
+      .attr('class', "sz-graph-bbox");
 
     // Define the simulation with nodes, forces, and event listeners.
     this.forceSimulation = d3.forceSimulation(graph.nodes)

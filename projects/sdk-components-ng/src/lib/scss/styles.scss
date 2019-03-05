@@ -15,6 +15,48 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  .sz-graph-node {
+    font-size: 12px;
+  }
+
+  .sz-graph-link-label {
+    font-size: 10px;
+  }
+
+  .sz-graph-bbox {
+    fill: white;
+    fill-opacity: 0.7;
+  }
+
+  .sz-graph-core-link {
+    stroke: #555;
+    stroke-width: 3px;
+  }
+
+  .sz-graph-link {
+    stroke: #999;
+    stroke-width: 2px;
+  }
+
+  .sz-graph-icon-enclosure {
+    fill: white;
+  }
+
+  sz-graph-tooltip {
+    position: absolute;
+    background-color: white;
+    max-width: 200px;
+    height: auto;
+    padding: 1px;
+    border-radius: 4px;
+    border: 1px solid;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
+    pointer-events: none;
+  }
+
+}
+
 .senzing-alarm:before {
   content: "\e900";
 }

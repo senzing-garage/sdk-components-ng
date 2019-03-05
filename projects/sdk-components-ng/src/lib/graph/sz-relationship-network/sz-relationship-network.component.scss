@@ -1,31 +1,31 @@
-.node {
+.sz-graph-node {
   font-size: 12px;
 }
 
-.link-label {
+.sz-graph-link-label {
   font-size: 10px;
 }
 
-.bbox {
+.sz-graph-bbox {
   fill: white;
   fill-opacity: 0.7;
 }
 
-.coreLink {
+.sz-graph-core-link {
   stroke: #555;
   stroke-width: 3px;
 }
 
-.link {
+.sz-graph-link {
   stroke: #999;
   stroke-width: 2px;
 }
 
-.iconEnclosure {
+.sz-graph-icon-enclosure {
   fill: white;
 }
 
-div.tooltip {
+div.sz-graph-tooltip {
   position: absolute;
   background-color: white;
   max-width: 200px;
@@ -39,7 +39,7 @@ div.tooltip {
 
 :host {
   svg {
-    .link {
+    .sz-graph-link {
       stroke: #999;
       stroke-width: 2px;
     }
