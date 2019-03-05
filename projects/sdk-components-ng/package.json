@@ -9,9 +9,11 @@
     "url" : "https://github.com/Senzing/sdk-components-ng"
   },
   "homepage" :"https://senzing.github.io/sdk-components-ng/",
+  "dependencies": {
+    "@senzing/rest-api-client-ng": "~1.0.0"
+  },
   "peerDependencies": {
     "@angular/common": "~7.1.0",
-    "@angular/core": "~7.1.0",
-    "@senzing/rest-api-client-ng": "1.0.0"
+    "@angular/core": "~7.1.0"
   }
 }
