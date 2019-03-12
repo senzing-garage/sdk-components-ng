@@ -2,6 +2,19 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --sz-search-button-submit-background-color: #1e1e9e;
+  --sz-search-button-submit-font-size: 14px;
+  --sz-search-button-submit-font-weight: bold;
+  --sz-search-button-clear-font-weight: bold;
+  --sz-search-button-submit-color: white;
+  --sz-search-button-clear-color: white;
+  --sz-search-button-clear-padding: 0 10px 0 10px;
+  --sz-search-button-submit-padding: 0 30px 0 30px;
+  --sz-search-label-font-size: 14px;
+  --sz-search-results-header-parameter-value-color: #1e1e9e;
+  --sz-search-button-submit-border: 2px solid #000;
+  --sz-search-button-border-radius: 4px;
+  --sz-search-results-a-color: #1e1e9e;
 }
 
 // spinner animations

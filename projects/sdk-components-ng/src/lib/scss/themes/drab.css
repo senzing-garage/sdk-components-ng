@@ -8,6 +8,8 @@ body {
   --sz-color-ambiguous: #7b00ad;
   --sz-search-button-submit-color: #869076;
   --sz-search-button-clear-color: #000000;
+  --sz-search-button-submit-font-size: 14px;
+  --sz-search-button-submit-font-weight: normal;
   --sz-search-button-submit-background-color: #d0d926;
   --sz-search-button-clear-background-color: #95989A;
   --sz-search-button-border: 1px solid #808285;
@@ -18,6 +20,7 @@ body {
   --sz-search-button-margin: 0;
   --sz-search-button-border-radius: 2px;
   --sz-search-button-clear-font-size: 10px;
+  --sz-search-button-clear-font-weight: normal;
   --sz-search-input-color: #95989A;
   --sz-search-input-background-color: #FFFFFF;
   --sz-search-input-display: inline-block;

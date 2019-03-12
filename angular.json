@@ -182,8 +182,8 @@
               "examples/search-with-spinner/src/assets"
             ],
             "styles": [
-              "examples/search-with-spinner/src/styles.scss",
-              "projects/sdk-components-ng/src/lib/scss/themes/drab.css"
+              "projects/sdk-components-ng/src/lib/scss/themes/drab.css",
+              "examples/search-with-spinner/src/styles.scss"
             ],
             "scripts": []
           },
