@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   SzEntitySearchParams,
-  SzAttributeSearchResult
+  SzAttributeSearchResult,
+  SzSearchComponent
 } from '@senzing/sdk-components-ng';
 
 @Component({
@@ -13,7 +14,6 @@ export class AppComponent {
   public currentSearchResults: SzAttributeSearchResult[];
   public currentlySelectedEntityId: number = undefined;
   public currentSearchParameters: SzEntitySearchParams;
-
   public showSearchResults = false;
   public get showSearchResultDetail(): boolean {
     if(this.currentlySelectedEntityId && this.currentlySelectedEntityId > 0) {

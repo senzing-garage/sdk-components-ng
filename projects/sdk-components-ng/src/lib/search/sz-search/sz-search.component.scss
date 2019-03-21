@@ -57,6 +57,19 @@
     min-width: 145px;
     margin-right: 10px;
 
+    &.disabled {
+      button.button__search-go {
+        border-color: var(--sz-search-button-disabled-border-color);
+        background-color: var(--sz-search-button-disabled-background-color);
+        color: var(--sz-search-button-disabled-color);
+      }
+      button.button__search-clear {
+        border-color: var(--sz-clear-button-disabled-border-color);
+        background-color: var(--sz-clear-button-disabled-background-color);
+        color: var(--sz-search-clear-button-disabled-color);
+      }
+    }
+
     button {
       border: var(--sz-search-button-border);
       border-radius: var(--sz-search-button-border-radius);
@@ -123,6 +136,10 @@
     &:focus::placeholder {
       opacity: .4;
     }
+    &:disabled {
+      pointer-events: var(--sz-disabled-input-pointer-events);
+      cursor: var(--sz-disabled-input-cursor);
+    }
   }
 
   i.label_icon {
@@ -148,6 +165,25 @@
     display: inline-block;
     flex-direction: column;
     padding-right: 20px;
+
+    &.hidden {
+      display: none;
+    }
+
+    &.disabled {
+      color: var(--sz-disabled-label-color);
+      label {
+        color: var(--sz-disabled-label-color);
+      }
+      input, select {
+        border-color: var(--sz-disabled-input-border-color);
+        color: var(--sz-disabled-input-color);
+        background-color: var(--sz-disabled-input-background-color);
+      }
+      input::placeholder, select::placeholder {
+        color: var(--sz-disabled-input-color);
+      }
+    }
 
     label {
       white-space: nowrap;

@@ -14,9 +14,7 @@ import { SzEntitySearchParams } from '../../models/entity-search';
 import { SzSearchService } from '../../services/sz-search.service';
 import { JSONScrubber } from '../../common/utils';
 
-/**
- * @internal
- */
+/** @internal */
 interface SzSearchFormParams {
   name?: string[];
   email?: string[];
@@ -25,7 +23,30 @@ interface SzSearchFormParams {
   address?: string[];
   phoneNumber?: string[];
   type?: string[];
+}
+/** @internal */
+interface SzBoolFieldMapByName {
+  searchButton: boolean;
+  resetButton: boolean;
+  name: boolean;
+  dob: boolean;
+  identifier: boolean;
+  email: boolean;
+  address: boolean;
+  phone: boolean;
+  identifierType: boolean;
+}
+
+/** @internal */
+const parseBool = (value: any): boolean => {
+  if (!value || value === undefined) {
+    return false;
+  } else if (typeof value === 'string') {
+    return (value.toLowerCase().trim() === 'true') ? true : false;
+  } else if (value > 0) { return true; }
+  return false;
 };
+
 /**
  * Provides a search box component that can execute search queries and return results.
  *
@@ -202,6 +223,82 @@ export class SzSearchComponent implements OnInit {
    */
   private matchingAttributes: SzAttributeType[];
 
+  // ---------------------- individual field visibility setters ----------------------------------
+  /** hide the search button */
+  @Input() public set hideSearchButton(value: any)   { this.hiddenFields.searchButton        = parseBool(value); }
+  /** hide the reset button */
+  @Input() public set hideResetButton(value: any)    { this.hiddenFields.resetButton         = parseBool(value); }
+  /** hide the clear button */
+  @Input() public set hideClearButton(value: any)    { this.hiddenFields.resetButton         = parseBool(value); }
+  /** hide the "Name" input field */
+  @Input() public set hideName(value: any)           { this.hiddenFields.name                = parseBool(value); }
+  /** hide the "DOB" input field */
+  @Input() public set hideDob(value: any)            { this.hiddenFields.dob                 = parseBool(value); }
+  /** hide the "Identifier" input field */
+  @Input() public set hideIdentifier(value: any)     { this.hiddenFields.identifier          = parseBool(value); }
+  /** hide the "Email" input field */
+  @Input() public set hideEmail(value: any)          { this.hiddenFields.email               = parseBool(value); }
+  /** hide the "Address" input field */
+  @Input() public set hideAddress(value: any)        { this.hiddenFields.address             = parseBool(value); }
+  /** hide the "Phone Number" input field */
+  @Input() public set hidePhone(value: any)          { this.hiddenFields.phone               = parseBool(value); }
+  /** hide the "Identifier Type" input field */
+  @Input() public set hideIdentifierType(value: any) { this.hiddenFields.identifierType      = parseBool(value); }
+
+  // ---------------------- individual field visibility setters ----------------------------------
+  /** disable the search button. button is not clickable. */
+  @Input() public set disableSearchButton(value: any)   { this.disabledFields.searchButton   = parseBool(value); }
+  /** disable the reset button. button is not clickable. */
+  @Input() public set disableResetButton(value: any)    { this.disabledFields.resetButton    = parseBool(value); }
+  /** disable the clear button. button is not clickable. */
+  @Input() public set disableClearButton(value: any)    { this.disabledFields.resetButton    = parseBool(value); }
+  /** disable the "Name" field. input cannot be edited. */
+  @Input() public set disableName(value: any)           { this.disabledFields.name           = parseBool(value); }
+  /** disable the "Date of Birth" field. input cannot be edited. */
+  @Input() public set disableDob(value: any)            { this.disabledFields.dob            = parseBool(value); }
+  /** disable the "Identifier" field. input cannot be edited. */
+  @Input() public set disableIdentifier(value: any)     { this.disabledFields.identifier     = parseBool(value); }
+  /** disable the "Email" field. input cannot be edited. */
+  @Input() public set disableEmail(value: any)          { this.disabledFields.email          = parseBool(value); }
+  /** disable the "Address" field. input cannot be edited. */
+  @Input() public set disableAddress(value: any)        { this.disabledFields.address        = parseBool(value); }
+  /** disable the "Phone Number" field. input cannot be edited. */
+  @Input() public set disablePhone(value: any)          { this.disabledFields.phone          = parseBool(value); }
+  /** disable the "Identifier Type" field. input cannot be edited. */
+  @Input() public set disableIdentifierType(value: any) { this.disabledFields.identifierType = parseBool(value); }
+
+  /** @interal */
+  public getDisabled(key: string): string {
+    if(this.disabledFields && this.disabledFields[ key ]) {
+      return '';
+    }
+    return null;
+  }
+  /** @internal*/
+  public disabledFields: SzBoolFieldMapByName = {
+    searchButton: false,
+    resetButton: false,
+    name: false,
+    dob: false,
+    identifier: false,
+    email: false,
+    address: false,
+    phone: false,
+    identifierType: false
+  };
+  /** @internal */
+  public hiddenFields: SzBoolFieldMapByName = {
+    searchButton: false,
+    resetButton: false,
+    name: false,
+    dob: false,
+    identifier: false,
+    email: false,
+    address: false,
+    phone: false,
+    identifierType: false
+  };
+
   @Input('attributeTypes')
   public set inputAttributeTypes(value: SzAttributeType[]) {
     // strip out non-identifiers
@@ -276,7 +373,7 @@ export class SzSearchComponent implements OnInit {
       this.inputAttributeTypes = attributeTypes;
       this.ref.markForCheck();
       this.ref.detectChanges();
-    }, (err)=>{
+    }, (err)=> {
       this.searchException.next( err ); //TODO: remove in breaking change release
       this.exception.next( err );
     });
