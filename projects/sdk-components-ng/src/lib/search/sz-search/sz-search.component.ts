@@ -244,7 +244,7 @@ export class SzSearchComponent implements OnInit {
   /** hide the "Identifier Type" input field */
   @Input() public set hideIdentifierType(value: any) { this.hiddenFields.identifierType      = parseBool(value); }
 
-  // ---------------------- individual field visibility setters ----------------------------------
+  // ---------------------- individual field readonly setters ------------------------------------
   /** disable the search button. button is not clickable. */
   @Input() public set disableSearchButton(value: any)   { this.disabledFields.searchButton   = parseBool(value); }
   /** disable the reset button. button is not clickable. */
@@ -266,18 +266,52 @@ export class SzSearchComponent implements OnInit {
   /** disable the "Identifier Type" field. input cannot be edited. */
   @Input() public set disableIdentifierType(value: any) { this.disabledFields.identifierType = parseBool(value); }
 
-
+  // ---------------------- identifier type option visibility setters ----------------------------
+  /** disable the identifier type "NIN" option */
   @Input() public set disableNINNumberOption(value: any) { if(value) {        this.disableIdentifierOption('NIN_NUMBER'); }}
+  /** disable the identifier type "ACCOUNT NUMBER" option */
   @Input() public set disableACCTNUMOption(value: any) { if(value) {          this.disableIdentifierOption('ACCOUNT_NUMBER'); }}
+  /** disable the identifier type "SSN" option*/
   @Input() public set disableSSNOption(value: any) { if(value) {              this.disableIdentifierOption('SSN_NUMBER'); }}
+  /** disable the identifier type "SSN Last 4" option */
   @Input() public set disableSSNLAST4Option(value: any) { if(value) {         this.disableIdentifierOption('SSN_LAST4'); }}
+  /** disable the identifier type "DRLIC" option */
   @Input() public set disableDRLICOption(value: any) { if(value) {            this.disableIdentifierOption('DRIVERS_LICENSE_NUMBER'); }}
+  /** disable the identifier type "Passport" option */
   @Input() public set disablePassportOption(value: any) { if(value) {         this.disableIdentifierOption('PASSPORT_NUMBER'); }}
+  /** disable the identifier type "NationalID" option */
   @Input() public set disableNationalIDOption(value: any) { if(value) {       this.disableIdentifierOption('NATIONAL_ID_NUMBER'); }}
+  /** disable the identifier type "Other ID" option */
   @Input() public set disableOtherIDOption(value: any) { if(value) {          this.disableIdentifierOption('OTHER_ID_NUMBER'); }}
+  /** disable the identifier type "Tax ID" option*/
   @Input() public set disableOtherTaxIDOption(value: any) { if(value) {       this.disableIdentifierOption('TAX_ID_NUMBER'); }}
-  @Input() public set trustedIDOption(value: any) { if(value) {               this.disableIdentifierOption('TRUSTED_ID_NUMBER'); }}
+  /** disable the identifier type "Trusted ID" option */
+  @Input() public set disableTrustedIDOption(value: any) { if(value) {        this.disableIdentifierOption('TRUSTED_ID_NUMBER'); }}
+  /** enable the identifier type "NIN" option */
+  @Input() public set enableNINNumberOption(value: any) { if(value) {        this.enableIdentifierOption('NIN_NUMBER'); }}
+  /** enable the identifier type "ACCOUNT NUMBER" option */
+  @Input() public set enableACCTNUMOption(value: any) { if(value) {          this.enableIdentifierOption('ACCOUNT_NUMBER'); }}
+  /** enable the identifier type "SSN" option */
+  @Input() public set enableSSNOption(value: any) { if(value) {              this.enableIdentifierOption('SSN_NUMBER'); }}
+  /** enable the identifier type "SSN Last 4" option */
+  @Input() public set enableSSNLAST4Option(value: any) { if(value) {         this.enableIdentifierOption('SSN_LAST4'); }}
+  /** enable the identifier type "DRLIC" option */
+  @Input() public set enableDRLICOption(value: any) { if(value) {            this.enableIdentifierOption('DRIVERS_LICENSE_NUMBER'); }}
+  /** enable the identifier type "Passport" option */
+  @Input() public set enablePassportOption(value: any) { if(value) {         this.enableIdentifierOption('PASSPORT_NUMBER'); }}
+  /** enable the identifier type "NationalID" option */
+  @Input() public set enableNationalIDOption(value: any) { if(value) {       this.enableIdentifierOption('NATIONAL_ID_NUMBER'); }}
+  /** enable the identifier type "Other ID" option */
+  @Input() public set enableOtherIDOption(value: any) { if(value) {          this.enableIdentifierOption('OTHER_ID_NUMBER'); }}
+  /** enable the identifier type "Tax ID" option */
+  @Input() public set enableOtherTaxIDOption(value: any) { if(value) {       this.enableIdentifierOption('TAX_ID_NUMBER'); }}
+  /** enable the identifier type "Trusted ID" option */
+  @Input() public set enableTrustedIDOption(value: any) { if(value) {        this.enableIdentifierOption('TRUSTED_ID_NUMBER'); }}
 
+  /**
+   * disable an individual identifier type option.
+   * @internal
+   */
   private disableIdentifierOption(value: string) {
     value = value.trim();
     const optionIndex = this.allowedTypeAttributes.indexOf(value);
@@ -285,6 +319,10 @@ export class SzSearchComponent implements OnInit {
       this.allowedTypeAttributes.splice(optionIndex, 1);
     }
   }
+  /**
+   * enable an individual identifier type option.
+   * @internal
+   */
   private enableIdentifierOption(value: string) {
     value = value.trim();
     const optionIndex = this.allowedTypeAttributes.indexOf(value);
@@ -292,7 +330,10 @@ export class SzSearchComponent implements OnInit {
       this.allowedTypeAttributes.push(value);
     }
   }
-
+  /**
+   * enable a set of identifier type options.
+   * format is "SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER" or array of strings
+   */
   @Input()
   public set enableIdentifierOptions(options: string[] | string) {
     if(typeof options === 'string') {
@@ -303,7 +344,10 @@ export class SzSearchComponent implements OnInit {
       this.enableIdentifierOption(opt);
     });
   }
-
+  /**
+   * disable a set of identifier type options.
+   * format is "SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER" or array of strings
+   */
   @Input()
   public set disableIdentifierOptions(options: string[] | string) {
     if(typeof options === 'string') {
