@@ -61,8 +61,7 @@ const parseBool = (value: any): boolean => {
 @Component({
   selector: 'sz-search',
   templateUrl: './sz-search.component.html',
-  styleUrls: ['./sz-search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./sz-search.component.scss']
 })
 export class SzSearchComponent implements OnInit {
   /**
@@ -221,7 +220,7 @@ export class SzSearchComponent implements OnInit {
    * @memberof SzSearchComponent
    * @internal
    */
-  private matchingAttributes: SzAttributeType[];
+  public matchingAttributes: SzAttributeType[];
 
   // ---------------------- individual field visibility setters ----------------------------------
   /** hide the search button */
@@ -267,6 +266,55 @@ export class SzSearchComponent implements OnInit {
   /** disable the "Identifier Type" field. input cannot be edited. */
   @Input() public set disableIdentifierType(value: any) { this.disabledFields.identifierType = parseBool(value); }
 
+
+  @Input() public set disableNINNumberOption(value: any) { if(value) {        this.disableIdentifierOption('NIN_NUMBER'); }}
+  @Input() public set disableACCTNUMOption(value: any) { if(value) {          this.disableIdentifierOption('ACCOUNT_NUMBER'); }}
+  @Input() public set disableSSNOption(value: any) { if(value) {              this.disableIdentifierOption('SSN_NUMBER'); }}
+  @Input() public set disableSSNLAST4Option(value: any) { if(value) {         this.disableIdentifierOption('SSN_LAST4'); }}
+  @Input() public set disableDRLICOption(value: any) { if(value) {            this.disableIdentifierOption('DRIVERS_LICENSE_NUMBER'); }}
+  @Input() public set disablePassportOption(value: any) { if(value) {         this.disableIdentifierOption('PASSPORT_NUMBER'); }}
+  @Input() public set disableNationalIDOption(value: any) { if(value) {       this.disableIdentifierOption('NATIONAL_ID_NUMBER'); }}
+  @Input() public set disableOtherIDOption(value: any) { if(value) {          this.disableIdentifierOption('OTHER_ID_NUMBER'); }}
+  @Input() public set disableOtherTaxIDOption(value: any) { if(value) {       this.disableIdentifierOption('TAX_ID_NUMBER'); }}
+  @Input() public set trustedIDOption(value: any) { if(value) {               this.disableIdentifierOption('TRUSTED_ID_NUMBER'); }}
+
+  private disableIdentifierOption(value: string) {
+    value = value.trim();
+    const optionIndex = this.allowedTypeAttributes.indexOf(value);
+    if(optionIndex > -1) {
+      this.allowedTypeAttributes.splice(optionIndex, 1);
+    }
+  }
+  private enableIdentifierOption(value: string) {
+    value = value.trim();
+    const optionIndex = this.allowedTypeAttributes.indexOf(value);
+    if(optionIndex < 0) {
+      this.allowedTypeAttributes.push(value);
+    }
+  }
+
+  @Input()
+  public set enableIdentifierOptions(options: string[] | string) {
+    if(typeof options === 'string') {
+      options = options.trim().split(',');
+    }
+    // enable each option in collection
+    options.forEach((opt)=> {
+      this.enableIdentifierOption(opt);
+    });
+  }
+
+  @Input()
+  public set disableIdentifierOptions(options: string[] | string) {
+    if(typeof options === 'string') {
+      options = options.split(',');
+    }
+    // enable each option in collection
+    options.forEach((opt)=> {
+      this.disableIdentifierOption(opt);
+    });
+  }
+
   /** @interal */
   public getDisabled(key: string): string {
     if(this.disabledFields && this.disabledFields[ key ]) {
@@ -303,13 +351,13 @@ export class SzSearchComponent implements OnInit {
   public set inputAttributeTypes(value: SzAttributeType[]) {
     // strip out non-identifiers
     value = value.filter( (attr: SzAttributeType) => {
-      return (attr.attributeClass === 'IDENTIFIER')
+      return (attr.attributeClass === 'IDENTIFIER');
     });
 
     // filter out by specific codes
-    if(this.allowedTypeAttributes && this.allowedTypeAttributes.length > 0){
+    if(this.allowedTypeAttributes && this.allowedTypeAttributes.length > 0) {
       value = value.filter( (attr: SzAttributeType) => {
-        return (this.allowedTypeAttributes.indexOf( attr.attributeCode) > -1)
+        return (this.allowedTypeAttributes.indexOf( attr.attributeCode) > -1);
       });
     }
     this.matchingAttributes = value;
@@ -321,7 +369,7 @@ export class SzSearchComponent implements OnInit {
    */
   public orderedAttributes(): SzAttributeType[] {
     if(this.matchingAttributes && this.matchingAttributes.sort){
-      return this.matchingAttributes.sort((a, b) => {
+      const matchingAttrs =  this.matchingAttributes.sort((a, b) => {
         let returnVal = 0;
 
         if (a.attributeCode.match(/^PASSPORT/)) {
@@ -334,7 +382,9 @@ export class SzSearchComponent implements OnInit {
 
         return returnVal;
       });
+      return matchingAttrs;
     }
+
     return this.matchingAttributes;
   }
   /* end tag input setters */
@@ -364,7 +414,6 @@ export class SzSearchComponent implements OnInit {
     // get attributes
     this.configService.getAttributeTypes()
     .pipe(
-      tap( (resp: any)=> console.log(resp) ),
       map( (resp: SzAttributeTypesResponse) => resp.data.attributeTypes ),
       first()
     )
@@ -385,7 +434,6 @@ export class SzSearchComponent implements OnInit {
    * @internal
   */
   private createEntitySearchForm(): void {
-
     let searchParams = this.searchService.getSearchParams();
     //console.log('createEntitySearchForm: ',JSON.parse(JSON.stringify(searchParams)));
 
@@ -461,9 +509,6 @@ export class SzSearchComponent implements OnInit {
       this.exception.next( new Error("null criteria") );
       return;
     }
-
-    console.log('@senzing/sdk/search/sz-search/sz-search.component.submitSearch: ', searchParams);
-
     this.searchStart.emit(searchParams);
 
     this.searchService.searchByAttributes(searchParams)
