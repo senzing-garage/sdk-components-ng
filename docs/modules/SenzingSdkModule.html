@@ -82,6 +82,9 @@
                             <a href="../components/SzRelationshipNetworkComponent.html">SzRelationshipNetworkComponent</a>
                         </li>
                         <li class="list-group-item">
+                            <a href="../components/SzRelationshipPathComponent.html">SzRelationshipPathComponent</a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="../components/SzSearchComponent.html">SzSearchComponent</a>
                         </li>
                         <li class="list-group-item">
@@ -107,6 +110,9 @@
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzRelationshipNetworkComponent.html">SzRelationshipNetworkComponent</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../components/SzRelationshipPathComponent.html">SzRelationshipPathComponent</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzSearchComponent.html">SzSearchComponent</a>
@@ -143,6 +149,9 @@
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzRelationshipNetworkComponent.html">SzRelationshipNetworkComponent</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../components/SzRelationshipPathComponent.html">SzRelationshipPathComponent</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzSearchComponent.html">SzSearchComponent</a>
@@ -184,7 +193,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="135" class="link-to-prism">projects/sdk-components-ng/src/lib/sdk.module.ts:135</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="139" class="link-to-prism">projects/sdk-components-ng/src/lib/sdk.module.ts:139</a></div>
                             </td>
                         </tr>
 
@@ -290,6 +299,7 @@ import { SzConfigurationAboutComponent } from &#x27;./configuration/sz-configura
 import { SzConfigurationComponent } from &#x27;./configuration/sz-configuration/sz-configuration.component&#x27;;
 import { SzPoweredByComponent } from &#x27;./sz-powered-by/sz-powered-by.component&#x27;;
 import { SzRelationshipNetworkComponent } from &#x27;./graph/sz-relationship-network/sz-relationship-network.component&#x27;;
+import { SzRelationshipPathComponent } from &#x27;./graph/sz-relationship-path/sz-relationship-path.component&#x27;;
 
 /**
  * Sets up a default set of service parameters for use
@@ -332,7 +342,8 @@ const SzRestConfigurationInjector &#x3D; new InjectionToken&lt;SzRestConfigurati
     SzConfigurationAboutComponent,
     SzConfigurationComponent,
     SzPoweredByComponent,
-    SzRelationshipNetworkComponent
+    SzRelationshipNetworkComponent,
+    SzRelationshipPathComponent
   ],
   imports: [
     CommonModule,
@@ -349,7 +360,8 @@ const SzRestConfigurationInjector &#x3D; new InjectionToken&lt;SzRestConfigurati
     SzPoweredByComponent,
     SzConfigurationComponent,
     SzConfigurationAboutComponent,
-    SzRelationshipNetworkComponent
+    SzRelationshipNetworkComponent,
+    SzRelationshipPathComponent
   ],
   /** for components being exported as web components */
   entryComponents: [
@@ -359,7 +371,8 @@ const SzRestConfigurationInjector &#x3D; new InjectionToken&lt;SzRestConfigurati
     SzPoweredByComponent,
     SzConfigurationComponent,
     SzConfigurationAboutComponent,
-    SzRelationshipNetworkComponent
+    SzRelationshipNetworkComponent,
+    SzRelationshipPathComponent
   ],
   providers: [
     SzMessageBundleService,

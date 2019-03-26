@@ -1,15 +1,16 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import * as d3 from 'd3';
-import { Graph, NodeInfo, LinkInfo } from './graph-types';
 import { Simulation } from 'd3-force';
+import { Graph, LinkInfo, NodeInfo } from '../sz-relationship-network/graph-types';
 import { EntityGraphService } from '@senzing/rest-api-client-ng';
 import { map } from 'rxjs/operators';
+import * as d3 from 'd3';
+
 @Component({
-  selector: 'sz-relationship-network',
-  templateUrl: './sz-relationship-network.component.html',
-  styleUrls: ['./sz-relationship-network.component.scss']
+  selector: 'sz-relationship-path',
+  templateUrl: './sz-relationship-path.component.html',
+  styleUrls: ['./sz-relationship-path.component.scss']
 })
-export class SzRelationshipNetworkComponent implements OnInit {
+export class SzRelationshipPathComponent implements OnInit {
 
   static readonly ICONS = {
     business: null, // TODO replace the business .png with SVG
@@ -35,10 +36,6 @@ export class SzRelationshipNetworkComponent implements OnInit {
   @ViewChild('graphEle') svgComponent;
   public svgElement: SVGSVGElement;
 
-  private _showLinkLabels: any = false;
-  @Input() public set showLinkLabels(value: boolean) {this._showLinkLabels = value; }
-  public get showLinkLabels(): boolean { return this._showLinkLabels; }
-
   private _svgWidth: number;
   @Input() public set svgWidth(value: number) { this._svgWidth = +value; }
   public get svgWidth(): number { return this._svgWidth; }
@@ -51,29 +48,36 @@ export class SzRelationshipNetworkComponent implements OnInit {
   private _port: number;
   @Input() set port(value: string) { this._port = +value; }
 
-  private _entityIds: string[];
-  @Input() set entityIds(value: string) {
+  private _excludeIds: string[];
+  @Input() set excludeIds(value: string) {
     console.log("Finding commas");
     if(value && value.indexOf(',')) {
-      const sArr = value.split(',');
-      this._entityIds = sArr;
+      this._excludeIds = value.split(',');
       console.log("Split done");
     } else {
-      this._entityIds = [value];
+      this._excludeIds = [value];
       console.log("No split done");
     }
   }
 
+  private _from: string;
+  @Input() public set from(value: string) { this._from = value; }
+  public get from(): string { return this._from; }
+
+  private _to: string;
+  @Input() public set to(value: string) { this._to = value; }
+  public get to(): string { return this._to; }
+
   private _maxDegrees: number;
   @Input() set maxDegrees(value: string) { this._maxDegrees = +value; }
 
-  private _buildOut: number;
-  @Input() set buildOut(value: string) { this._buildOut = +value; }
-
-  private _maxEntities: number;
-  @Input() set maxEntities(value: string) { this._maxEntities = +value; }
-
   static readonly WITH_RAW: boolean = true;
+
+  private _showLinkLabels: any = false;
+  @Input() public set showLinkLabels(value: boolean) { this._showLinkLabels = value; }
+  public get showLinkLabels(): boolean { return this._showLinkLabels; }
+
+
 
   node;
   nodeLabel;
@@ -82,93 +86,40 @@ export class SzRelationshipNetworkComponent implements OnInit {
   forceSimulation: Simulation<NodeInfo, LinkInfo>;
   linkedByNodeIndexMap;
 
+
   constructor(
     private graphService: EntityGraphService,
   ) {
-    console.log("constructor!!!");
+    console.log("Constructing Relationship Path");
     this.linkedByNodeIndexMap = {};
   }
-
-
 
   ngOnInit() {
     // get dom element reference to svg tag
     this.svgElement = (this.svgComponent.nativeElement as SVGSVGElement);
 
-    console.log('sswwwweeeeet. svg ref: ', this.svgElement);
-
-    console.log("init!!!");
-    if (this._entityIds === undefined || this._entityIds.length === 0) {
+    if (this.from === undefined || this.from.length === 0 ||
+        this.to === undefined || this.to.length === 0) {
       console.log("No EntityIDs passed in to " + this);
       return;
     }
     console.log("Making calls!");
-    this.getNetwork().pipe(
-      map(this.asGraph),
+    this.getPath().pipe(
+      map(SzRelationshipPathComponent.asGraph),
     ).subscribe( this.addSvg.bind(this) );
-    /*
-    const json = this.getNetwork();
-    console.log("Calls made successfully!");
-    const graph = this.asGraph(json);
-    console.log("We made it into a Graph!");
-    this.addSvg(graph);
-
-    console.log("All done!");*/
   }
 
-  private getNetwork() {
-    return this.graphService.findNetworkByEntityID(
-      this._entityIds,
+
+  private getPath() {
+    return this.graphService.findPathByEntityID(
+      { id: this._from },
+      { id: this._to },
       this._maxDegrees,
-      this._buildOut,
-      this._maxEntities,
-      SzRelationshipNetworkComponent.WITH_RAW );
+      this._excludeIds,
+      true,
+      undefined,
+      SzRelationshipPathComponent.WITH_RAW );
   }
-
-  /*
-  private getNetworkDep() {
-    let response;
-    try {
-      console.log("Starting to assemble URL.");
-      const url = 'http://localhost:' + this._port + '/entity-networks?'
-        + SzRelationshipNetworkComponent.asQueryParamList('e', this._entityIds)
-        + '&maxDegrees=' + this._maxDegrees
-        + '&buildOut=' + this._buildOut
-        + '&maxEntities=' + this._maxEntities
-        + '&withRaw=' + SzRelationshipNetworkComponent.WITH_RAW;
-      console.log("Calling " + url);
-      response = fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-    } catch (e) {
-      if (e.message === 'Failed to fetch') {
-        alert('Rest API call failed.  Please make sure the Rest API is started on port ' + this.port);
-        throw e;
-      } else {
-        alert('Unknown error occurred: ' + e.message);
-        throw e;
-      }
-    }
-    console.log("Done with call, trying to get body");
-    return response.json();
-
-  }
-
-  static asQueryParamList(name: string, ids: string) {
-    console.log("Look here!");
-    const idsArray = ids.substring(1, ids.length - 1).split(',');
-
-    let outputString = 'e=' + idsArray[0];
-    for (let i = 1; i < idsArray.length; i++) {
-      outputString += '&e=' + idsArray[i];
-    }
-    console.log("Done with entity IDs");
-    return outputString;
-  }
-  */
 
   addSvg(graph: Graph, parentSelection = d3.select("body")) {
     console.log("Okay, let's do this!", graph);
@@ -177,20 +128,21 @@ export class SzRelationshipNetworkComponent implements OnInit {
       .attr("class", "sz-graph-tooltip")
       .style("opacity", 0);
 
+
     // Add the SVG to the HTML body
     const svg = d3.select( this.svgElement );
 
     /*
-     * If you're unfamiliar with selectors acting like a join (starting in d3.v4), here's where things may be confusing.
-     *   selectAll(...)                   selects all elements in the DOM (that match the selector's value).
-     *   selectAll(...).data(...)         selects the intersection of items both in the DOM and in data.
-     *   selectAll(...).data(...).enter() selects new items that are in data but not yet in the DOM.  Usually followed by append(...).
-     *   selectAll(...).data(...).exit()  selects old items that are in the DOM but no longer in data.  Usually followed by remove().
-     *
-     * A lot of D3 examples are v3, where selectAll(...).data(...) selected existing items AND new items.  In v4+ if you
-     *   want to select both new and existing elements, you call existingItems.merge(newItems).  I don't do that in this
-     *   code, but there's an excellent example at https://bl.ocks.org/mbostock/3808218.
-     */
+ * If you're unfamiliar with selectors acting like a join (starting in d3.v4), here's where things may be confusing.
+ *   selectAll(...)                   selects all elements in the DOM (that match the selector's value).
+ *   selectAll(...).data(...)         selects the intersection of items both in the DOM and in data.
+ *   selectAll(...).data(...).enter() selects new items that are in data but not yet in the DOM.  Usually followed by append(...).
+ *   selectAll(...).data(...).exit()  selects old items that are in the DOM but no longer in data.  Usually followed by remove().
+ *
+ * A lot of D3 examples are v3, where selectAll(...).data(...) selected existing items AND new items.  In v4+ if you
+ *   want to select both new and existing elements, you call existingItems.merge(newItems).  I don't do that in this
+ *   code, but there's an excellent example at https://bl.ocks.org/mbostock/3808218.
+ */
 
     // Add link groups (line + label)
     const linkGroup = svg.selectAll('.sz-graph-link')
@@ -199,7 +151,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
 
     // Add the lines, except we're not defining how they're drawn here.  That happens in tick()
     this.link = linkGroup.append('path')
-      .attr('class', d => d.isCoreLink ? 'sz-graph-core-ink' : 'sz-graph-link')
+      .attr('class', 'sz-graph-core-link')
       .attr('id', d => d.id); // This lets SVG know which label goes with which line
 
     // Add link labels
@@ -210,7 +162,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
         .attr('class', 'sz-graph-link-label')
         .attr('dy', -3)
         .append('textPath')
-        .attr('class', d => d.isCoreLink ? 'sz-graph-core-link-text' : 'sz-graph-link-text')
+        .attr('class', 'sz-graph-core-link-text')
         .attr('startOffset', '50%')
         .attr('xlink:href', d => '#' + d.id) // This lets SVG know which label goes with which line
         .text(d => d.matchKey);
@@ -224,35 +176,32 @@ export class SzRelationshipNetworkComponent implements OnInit {
       .attr('class', 'sz-graph-node');
 
     // Add an SVG icon for the person's face.  This hides the links so they're not visible through the face.
-    this.node.filter(d => d.iconType !== "business" && SzRelationshipNetworkComponent.ICONS[d.iconType])
+    this.node.filter(d => d.iconType !== "business" && SzRelationshipPathComponent.ICONS[d.iconType])
       .append('path')
       .attr('class', 'sz-graph-icon-enclosure')
-      .attr('d', d => SzRelationshipNetworkComponent.ICONS[d.iconType]["enclosed"])
+      .attr('d', d => SzRelationshipPathComponent.ICONS[d.iconType]["enclosed"])
       .attr("transform", "translate(-25,-28) scale(0.05)");
 
     // Add an SVG icon for the person.
     this.node.filter(d => d.iconType !== "business")
       .append('path')
       .attr('class', 'sz-graph-node-icon')
-      .attr('fill', d => d.isQueriedNode ? "#000000" : d.isCoreNode ? '#999999' : '#DDDDDD')
-      .attr("d", d => SzRelationshipNetworkComponent.ICONS[d.iconType] ?
-                      SzRelationshipNetworkComponent.ICONS[d.iconType]["shape"] :
-                      SzRelationshipNetworkComponent.ICONS["default"]["shape"])
+      .attr('fill', "#000000")
+      .attr("d", d => SzRelationshipPathComponent.ICONS[d.iconType] ?
+        SzRelationshipPathComponent.ICONS[d.iconType]["shape"] :
+        SzRelationshipPathComponent.ICONS["default"]["shape"])
       .attr("transform", "translate(-25,-28) scale(0.05)");
 
     // Add .png icons for businesses
     // TODO replace .png business icon with SVG
     this.node.filter(d => d.iconType === "business")
       .append('image')
-      .attr("xlink:href", d => {
-        const nodeType = d.isQueriedNode ? 'queried' : d.isCoreNode ? 'core' : 'buildout';
-        return "../img/icons8-building-50-" + nodeType + ".png";
-      })
+      .attr("xlink:href", "../img/icons8-building-50-queried.png")
       .attr("x", -25)
       .attr("y", -25)
       .attr("height", 50)
       .attr("width", 50)
-      .attr('class', "sz-graph-icon " + (d => d.isQueriedNode ? 'sz-graph-queried-node' : d.isCoreNode ? 'sz-graph-core-node' : 'sz-graph-node'));
+      .attr('class', 'sz-graph-icon sz-graph-queried-node');
 
     // Add node labels
     this.nodeLabel = this.node.append("svg:text")
@@ -291,7 +240,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
       tooltip.transition()
         .duration(300)
         .style("opacity", .8);
-      tooltip.html(SzRelationshipNetworkComponent.nodeTooltipText(d))
+      tooltip.html(SzRelationshipPathComponent.nodeTooltipText(d))
         .style("left", (d3.event.pageX) + "px")
         .style("top", (d3.event.pageY + 10) + "px");
     })
@@ -313,7 +262,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
         tooltip.transition()
           .duration(300)
           .style("opacity", .8);
-        tooltip.html(SzRelationshipNetworkComponent.linkTooltipText(d))
+        tooltip.html(SzRelationshipPathComponent.linkTooltipText(d))
           .style("left", (d3.event.pageX) + "px")
           .style("top", (d3.event.pageY + 10) + "px");
       })
@@ -329,6 +278,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
       });
 
     graph.links.forEach( this.registerLink.bind(this) );
+
   }
 
   private registerLink(d: LinkInfo) {
@@ -381,7 +331,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
     return d => {
       this.node.transition().duration(100).style('opacity', function (o) {
         const thisOpacity = isConnectedLocal(d.source, o) &&
-                            isConnectedLocal(d.target, o) ? 1 : opacity;
+        isConnectedLocal(d.target, o) ? 1 : opacity;
         this.setAttribute('fill-opacity', thisOpacity);
         return thisOpacity;
       });
@@ -408,8 +358,8 @@ export class SzRelationshipNetworkComponent implements OnInit {
     // Update link SVG
     // Draws left to right so .link-label stay right-side up
     this.link.attr('d', d => (d.source.x < d.target.x) ?
-      SzRelationshipNetworkComponent.linkSvg(d.source, d.target) :
-      SzRelationshipNetworkComponent.linkSvg(d.target, d.source));
+      SzRelationshipPathComponent.linkSvg(d.source, d.target) :
+      SzRelationshipPathComponent.linkSvg(d.target, d.source));
 
     // Show or hide .link-label
     if (this.showLinkLabels) {
@@ -458,113 +408,93 @@ export class SzRelationshipNetworkComponent implements OnInit {
     d3.event.subject.fy = null;
   }
 
-
   //////////////////
   // DATA MAPPING //
   //////////////////
 
-  asGraph(rawTextOrJson) : Graph {
+  static asGraph(rawTextOrJson) {
     let data = (rawTextOrJson instanceof Object) ? rawTextOrJson : JSON.parse(rawTextOrJson);
 
-    // The input can either be the output of the engine's findNetworkByEntityID or findNetworkByRecordID methods
-    //   or the response body of a call to the REST API's /entity-networks.
+    // The input can either be the output of the engine's findPathByEntityID or findPathByRecordID methods
+    //   or the response body of a call to the REST API's /entity-paths.
     if (data["rawData"]) data = data["rawData"];
     const entityPaths = data["ENTITY_PATHS"];
     const entitiesData = data["ENTITIES"];
+    const entityPath = entityPaths[0];
+    const entityIds = entityPath["ENTITIES"];
+    const nodeCount = entityIds.length;
 
-    const entityIndex = [];
-    const linkIndex = [];
+
     const nodes = [];
     const links = [];
-    const queriedEntityIds = [];
-    const coreEntityIds = [];
-    const coreLinkIds = [];
 
-    // Identify queried nodes and the nodes and links that connect them.
-    for (let i = 0; i < entityPaths.length; i++) {
-      if (!queriedEntityIds.includes(entityPaths[i]["START_ENTITY_ID"])) queriedEntityIds.push(entityPaths[i]["START_ENTITY_ID"]);
-      if (!queriedEntityIds.includes(entityPaths[i]["END_ENTITY_ID"])) queriedEntityIds.push(entityPaths[i]["END_ENTITY_ID"]);
-
-      const pathIds = entityPaths[i]["ENTITIES"];
-      const nodeCount = pathIds.length;
-      for (let j = 0; j < nodeCount; j++) {
-        if (!coreEntityIds.includes(pathIds[j])) {
-          coreEntityIds.push(pathIds[j]);
-        }
+    if (nodeCount > 0) {
+      // Add a node for each resolved entity
+      for (let i = 0; i < nodeCount; i++) {
+        nodes[i] = SzRelationshipPathComponent.asNode(entitiesData, entityIds, i);
       }
-      for (let k = 0; k < nodeCount - 1; k++) {
-        const linkArr = [pathIds[k], pathIds[k + 1]].sort();
-        const linkKey = {firstId: linkArr[0], secondId: linkArr[1]};
-        if (!SzRelationshipNetworkComponent.hasKey(coreLinkIds, linkKey)) {
-          coreLinkIds.push(linkKey);
-        }
+      for (let j = 0; j < nodeCount - 1; j++) {
+        const relatedEntityInfo = SzRelationshipPathComponent.findRelatedEntityInfo(SzRelationshipPathComponent.findEntityInfo(entitiesData, entityIds[j]), entityIds[j + 1]);
+        links[j] = {
+          id: j,
+          source: j,
+          target: j + 1,
+          matchLevel: relatedEntityInfo["MATCH_LEVEL"],
+          matchKey: relatedEntityInfo["MATCH_KEY"]
+        };
       }
+    } else {
+      nodes[0] = SzRelationshipPathComponent.asNode(entitiesData, [entityPath['START_ENTITY_ID']], 0);
+      nodes[1] = SzRelationshipPathComponent.asNode(entitiesData, [entityPath['END_ENTITY_ID']], 0);
     }
-
-    // Add a node for each resolved entity
-    for (let l = 0; l < entitiesData.length; l++) {
-      const resolvedEntity = entitiesData[l]["RESOLVED_ENTITY"];
-      const entityId = resolvedEntity["ENTITY_ID"];
-      // Create Node
-      entityIndex.push(entityId);
-      const features = resolvedEntity["FEATURES"];
-      nodes.push({
-        isQueriedNode: queriedEntityIds.includes(entityId),
-        isCoreNode: coreEntityIds.includes(entityId),
-        iconType: SzRelationshipNetworkComponent.getIconType(resolvedEntity),
-        entityId: entityId,
-        orgName: resolvedEntity["ENTITY_NAME"],
-        name: SzRelationshipNetworkComponent.firstOrNull(features, "NAME"),
-        address: SzRelationshipNetworkComponent.firstOrNull(features, "ADDRESS"),
-        phone: SzRelationshipNetworkComponent.firstOrNull(features, "PHONE")
-      });
-    }
-
-    // Add links between resolved entities.
-    for (let m = 0; m < entitiesData.length; m++) {
-      const entityInfo = entitiesData[m];
-      const entityId = entityInfo["RESOLVED_ENTITY"]["ENTITY_ID"];
-      const relatedEntities = entityInfo["RELATED_ENTITIES"];
-      for (let n = 0; n < relatedEntities.length; n++) {
-        // Create link (if not already created)
-        const relatedEntity = relatedEntities[n];
-        const relatedEntityId = relatedEntity["ENTITY_ID"];
-        const linkArr = [entityId, relatedEntityId].sort();
-        const linkKey = {firstId: linkArr[0], secondId: linkArr[1]};
-        // Only add links between resolved entities
-        // TODO Add links to related entities not in resolved entities to show where the network can be expanded.
-        if (!SzRelationshipNetworkComponent.hasKey(linkIndex, linkKey) && entityIndex.indexOf(relatedEntityId) !== -1) {
-          linkIndex.push(linkKey);
-          links.push({
-            source: entityIndex.indexOf(entityId),
-            target: entityIndex.indexOf(relatedEntityId),
-            matchLevel: relatedEntity["MATCH_LEVEL"],
-            matchKey: relatedEntity["MATCH_KEY"],
-            isCoreLink: SzRelationshipNetworkComponent.hasKey(coreLinkIds, linkKey),
-            id: linkIndex.indexOf(linkKey)
-          });
-        }
-      }
-    }
-
-    // GRAPH CONSTRUCTED
     return {
       nodes: nodes,
       links: links
     };
   }
 
-  static firstOrNull(features, name) {
-    return features && features[name] && [name].length !== 0 ? features[name][0]["FEAT_DESC"] : null;
+  private static asNode(entitiesData, entityIds, i: number) {
+    const entityInfo = SzRelationshipPathComponent.findEntityInfo(entitiesData, entityIds[i]);
+    const resolvedEntity = entityInfo['RESOLVED_ENTITY'];
+    const features = resolvedEntity['FEATURES'];
+
+    return {
+      entityId: entityIds[i],
+      id: resolvedEntity['ENTITY_ID'],
+      iconType: SzRelationshipPathComponent.getIconType(resolvedEntity),
+      orgName: resolvedEntity['ENTITY_NAME'],
+      name: SzRelationshipPathComponent.firstOrNull(features, 'NAME'),
+      address: SzRelationshipPathComponent.firstOrNull(features, 'ADDRESS'),
+      phone: SzRelationshipPathComponent.firstOrNull(features, 'PHONE')
+    };
   }
 
-  static hasKey(usedLinks, linkKey) {
-    return usedLinks.filter(key => key.firstId === linkKey.firstId && key.secondId === linkKey.secondId).length !== 0;
+  private static firstOrNull(features, name: string) {
+    return (features && features[name] && !features[name].isEmpty) ? features[name][0]["FEAT_DESC"] : null;
   }
 
-  static getIconType(resolvedEntity) {
+  static findEntityInfo(entitiesData, entityId) {
+    for (let i = 0; i < entitiesData.length; i++) {
+      if (entitiesData[i]["RESOLVED_ENTITY"]["ENTITY_ID"] === entityId) return entitiesData[i];
+    }
+    return undefined;
+  }
+
+  private static findRelatedEntityInfo(entityData, relatedEntityId) {
+    const relatedEntityData = entityData["RELATED_ENTITIES"];
+    for (let i = 0; i < relatedEntityData.length; i++) {
+      if (relatedEntityData[i]["ENTITY_ID"] === relatedEntityId) return relatedEntityData[i];
+    }
+  }
+
+  /**
+   * Determines which icon should be shown for this node.
+   *
+   * @param resolvedEntity The entity for the node being drawn.
+   * @returns the key for the icon's SVG.
+   */
+  private static getIconType(resolvedEntity) {
     // Look for type information in the first 10 records.
-    console.log('getIconType: ', resolvedEntity["RECORDS"]);
     const recordsArr = resolvedEntity["RECORDS"].slice(0, 9);
     for (let i = 0; i < recordsArr.length; i++) {
       const elem = recordsArr[i];

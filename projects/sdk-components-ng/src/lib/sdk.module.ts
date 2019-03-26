@@ -42,6 +42,7 @@ import { SzConfigurationAboutComponent } from './configuration/sz-configuration-
 import { SzConfigurationComponent } from './configuration/sz-configuration/sz-configuration.component';
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
 import { SzRelationshipNetworkComponent } from './graph/sz-relationship-network/sz-relationship-network.component';
+import { SzRelationshipPathComponent } from './graph/sz-relationship-path/sz-relationship-path.component';
 
 /**
  * Sets up a default set of service parameters for use
@@ -84,7 +85,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzConfigurationAboutComponent,
     SzConfigurationComponent,
     SzPoweredByComponent,
-    SzRelationshipNetworkComponent
+    SzRelationshipNetworkComponent,
+    SzRelationshipPathComponent
   ],
   imports: [
     CommonModule,
@@ -101,7 +103,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzPoweredByComponent,
     SzConfigurationComponent,
     SzConfigurationAboutComponent,
-    SzRelationshipNetworkComponent
+    SzRelationshipNetworkComponent,
+    SzRelationshipPathComponent
   ],
   /** for components being exported as web components */
   entryComponents: [
@@ -111,7 +114,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzPoweredByComponent,
     SzConfigurationComponent,
     SzConfigurationAboutComponent,
-    SzRelationshipNetworkComponent
+    SzRelationshipNetworkComponent,
+    SzRelationshipPathComponent
   ],
   providers: [
     SzMessageBundleService,

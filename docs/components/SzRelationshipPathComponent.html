@@ -35,7 +35,7 @@
 
 <ol class="breadcrumb">
   <li>Components</li>
-  <li>SzRelationshipNetworkComponent</li>
+  <li>SzRelationshipPathComponent</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -58,7 +58,7 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts</code>
+    <code>projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts</code>
 </p>
 
 
@@ -88,19 +88,19 @@
 
             <tr>
                 <td class="col-md-3">selector</td>
-                <td class="col-md-9"><code>sz-relationship-network</code></td>
+                <td class="col-md-9"><code>sz-relationship-path</code></td>
             </tr>
 
             <tr>
                 <td class="col-md-3">styleUrls</td>
-                <td class="col-md-9"><code>./sz-relationship-network.component.scss</code></td>
+                <td class="col-md-9"><code>./sz-relationship-path.component.scss</code></td>
             </tr>
 
 
 
             <tr>
                 <td class="col-md-3">templateUrl</td>
-                <td class="col-md-9"><code>./sz-relationship-network.component.html</code></td>
+                <td class="col-md-9"><code>./sz-relationship-path.component.html</code></td>
             </tr>
 
 
@@ -177,6 +177,7 @@
                                 <a href="#addSvg">addSvg</a>
                             </li>
                             <li>
+                                    <span class="modifier">Static</span>
                                 <a href="#asGraph">asGraph</a>
                             </li>
                             <li>
@@ -193,15 +194,7 @@
                             </li>
                             <li>
                                     <span class="modifier">Static</span>
-                                <a href="#firstOrNull">firstOrNull</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Static</span>
-                                <a href="#getIconType">getIconType</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Static</span>
-                                <a href="#hasKey">hasKey</a>
+                                <a href="#findEntityInfo">findEntityInfo</a>
                             </li>
                             <li>
                                 <a href="#isConnected">isConnected</a>
@@ -240,16 +233,13 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#buildOut">buildOut</a>
+                                <a href="#excludeIds">excludeIds</a>
                             </li>
                             <li>
-                                <a href="#entityIds">entityIds</a>
+                                <a href="#from">from</a>
                             </li>
                             <li>
                                 <a href="#maxDegrees">maxDegrees</a>
-                            </li>
-                            <li>
-                                <a href="#maxEntities">maxEntities</a>
                             </li>
                             <li>
                                 <a href="#port">port</a>
@@ -262,6 +252,9 @@
                             </li>
                             <li>
                                 <a href="#svgWidth">svgWidth</a>
+                            </li>
+                            <li>
+                                <a href="#to">to</a>
                             </li>
                         </ul>
                     </td>
@@ -279,9 +272,6 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#showLinkLabels">showLinkLabels</a>
-                                </li>
-                                <li>
                                     <a href="#svgWidth">svgWidth</a>
                                 </li>
                                 <li>
@@ -291,16 +281,19 @@
                                     <a href="#port">port</a>
                                 </li>
                                 <li>
-                                    <a href="#entityIds">entityIds</a>
+                                    <a href="#excludeIds">excludeIds</a>
+                                </li>
+                                <li>
+                                    <a href="#from">from</a>
+                                </li>
+                                <li>
+                                    <a href="#to">to</a>
                                 </li>
                                 <li>
                                     <a href="#maxDegrees">maxDegrees</a>
                                 </li>
                                 <li>
-                                    <a href="#buildOut">buildOut</a>
-                                </li>
-                                <li>
-                                    <a href="#maxEntities">maxEntities</a>
+                                    <a href="#showLinkLabels">showLinkLabels</a>
                                 </li>
                             </ul>
                         </td>
@@ -320,7 +313,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:83</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:87</a></div>
                             </td>
                         </tr>
 
@@ -364,8 +357,8 @@
             <tbody>
                 <tr>
                     <td class="col-md-2">
-                        <a name="buildOut"></a>
-                        <code>buildOut</code>
+                        <a name="excludeIds"></a>
+                        <code>excludeIds</code>
                     </td>
                     <td class="col-md-10">
                             <p>
@@ -376,7 +369,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:71</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:52</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -385,8 +378,8 @@
             <tbody>
                 <tr>
                     <td class="col-md-2">
-                        <a name="entityIds"></a>
-                        <code>entityIds</code>
+                        <a name="from"></a>
+                        <code>from</code>
                     </td>
                     <td class="col-md-10">
                             <p>
@@ -397,7 +390,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:55</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:64</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -418,28 +411,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:68</a></div>
-                            </td>
-                        </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-2">
-                        <a name="maxEntities"></a>
-                        <code>maxEntities</code>
-                    </td>
-                    <td class="col-md-10">
-                            <p>
-                            <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                            </p>
-                    </td>
-                </tr>
-                        <tr>
-                            <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:74</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:72</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -460,7 +432,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:52</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:49</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -481,7 +453,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:39</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:77</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -502,7 +474,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:47</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:44</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -523,7 +495,28 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:43</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:40</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-2">
+                        <a name="to"></a>
+                        <code>to</code>
+                    </td>
+                    <td class="col-md-10">
+                            <p>
+                            <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                            </p>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:68</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -559,7 +552,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="173" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:173</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="124" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:124</a></div>
                             </td>
                         </tr>
 
@@ -630,6 +623,7 @@
                         <a name="asGraph"></a>
                         <span class="name">
                             <b>
+                                <span class="modifier">Static</span>
                             asGraph
                             </b>
                             <a href="#asGraph"><span class="icon ion-ios-link"></span></a>
@@ -638,14 +632,15 @@
                 </tr>
                 <tr>
                     <td class="col-md-4">
-<code>asGraph(rawTextOrJson)</code>
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>asGraph(rawTextOrJson)</code>
                     </td>
                 </tr>
 
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="466" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:466</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="415" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:415</a></div>
                             </td>
                         </tr>
 
@@ -678,7 +673,7 @@
                             <div>
                             </div>
                             <div class="io-description">
-                                <b>Returns : </b>    <code><a href="../interfaces/Graph.html" target="_self" >Graph</a></code>
+                                <b>Returns : </b>    <code>{ nodes: {}; links: {}; }</code>
 
                             </div>
                                 <div class="io-description">
@@ -710,7 +705,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="454" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:454</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="404" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:404</a></div>
                             </td>
                         </tr>
 
@@ -751,7 +746,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="445" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:445</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="395" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:395</a></div>
                             </td>
                         </tr>
 
@@ -791,7 +786,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="436" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:436</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="386" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:386</a></div>
                             </td>
                         </tr>
 
@@ -835,7 +830,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="361" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:361</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="311" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:311</a></div>
                             </td>
                         </tr>
 
@@ -882,27 +877,27 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="firstOrNull"></a>
+                        <a name="findEntityInfo"></a>
                         <span class="name">
                             <b>
                                 <span class="modifier">Static</span>
-                            firstOrNull
+                            findEntityInfo
                             </b>
-                            <a href="#firstOrNull"><span class="icon ion-ios-link"></span></a>
+                            <a href="#findEntityInfo"><span class="icon ion-ios-link"></span></a>
                         </span>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
                             <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>firstOrNull(features, name)</code>
+                        <code>findEntityInfo(entitiesData, entityId)</code>
                     </td>
                 </tr>
 
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="557" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:557</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="476" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:476</a></div>
                             </td>
                         </tr>
 
@@ -921,7 +916,7 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>features</td>
+                                                        <td>entitiesData</td>
                                                     
                                                     <td>
                                                             No
@@ -930,7 +925,7 @@
 
                                                 </tr>
                                                 <tr>
-                                                        <td>name</td>
+                                                        <td>entityId</td>
                                                     
                                                     <td>
                                                             No
@@ -945,149 +940,6 @@
                             </div>
                             <div class="io-description">
                                 <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                            </div>
-                                <div class="io-description">
-                                    
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="getIconType"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Static</span>
-                            getIconType
-                            </b>
-                            <a href="#getIconType"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>getIconType(resolvedEntity)</code>
-                    </td>
-                </tr>
-
-
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="565" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:565</a></div>
-                            </td>
-                        </tr>
-
-
-                <tr>
-                    <td class="col-md-4">
-
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>resolvedEntity</td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code>&quot;business&quot; | &quot;userFemale&quot; | &quot;userMale&quot; | &quot;default&quot;</code>
-
-                            </div>
-                                <div class="io-description">
-                                    
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="hasKey"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Static</span>
-                            hasKey
-                            </b>
-                            <a href="#hasKey"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>hasKey(usedLinks, linkKey)</code>
-                    </td>
-                </tr>
-
-
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="561" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:561</a></div>
-                            </td>
-                        </tr>
-
-
-                <tr>
-                    <td class="col-md-4">
-
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>usedLinks</td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                                <tr>
-                                                        <td>linkKey</td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 
                             </div>
                                 <div class="io-description">
@@ -1119,7 +971,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="354" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:354</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="304" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:304</a></div>
                             </td>
                         </tr>
 
@@ -1193,7 +1045,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="379" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:379</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="329" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:329</a></div>
                             </td>
                         </tr>
 
@@ -1260,7 +1112,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="425" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:425</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="375" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:375</a></div>
                             </td>
                         </tr>
 
@@ -1338,7 +1190,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="340" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:340</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="290" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:290</a></div>
                             </td>
                         </tr>
 
@@ -1403,7 +1255,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:94</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="97" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:97</a></div>
                             </td>
                         </tr>
 
@@ -1443,7 +1295,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="347" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:347</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="297" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:297</a></div>
                             </td>
                         </tr>
 
@@ -1508,7 +1360,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="400" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:400</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="350" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:350</a></div>
                             </td>
                         </tr>
 
@@ -1561,7 +1413,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:82</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:86</a></div>
                             </td>
                         </tr>
 
@@ -1621,7 +1473,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:14</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:15</a></div>
                             </td>
                         </tr>
 
@@ -1649,7 +1501,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:80</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:84</a></div>
                             </td>
                         </tr>
 
@@ -1677,7 +1529,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:83</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:87</a></div>
                             </td>
                         </tr>
 
@@ -1705,7 +1557,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:81</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="85" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:85</a></div>
                             </td>
                         </tr>
 
@@ -1733,7 +1585,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:78</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:82</a></div>
                             </td>
                         </tr>
 
@@ -1761,7 +1613,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:79</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:83</a></div>
                             </td>
                         </tr>
 
@@ -1798,7 +1650,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:35</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:36</a></div>
                             </td>
                         </tr>
 
@@ -1833,7 +1685,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:36</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:37</a></div>
                             </td>
                         </tr>
 
@@ -1874,7 +1726,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:76</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:74</a></div>
                             </td>
                         </tr>
 
@@ -1891,75 +1743,6 @@ Not called when D3&#39;s forces reach equilibrium</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="showLinkLabels"></a>
-                        <span class="name"><b>showLinkLabels</b><a href="#showLinkLabels"><span class="icon ion-ios-link"></span></a></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>showLinkLabels()</code></span>
-                    </td>
-                </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:40</a></div>
-                                </td>
-                            </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>showLinkLabels(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
-                    </td>
-                </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:39</a></div>
-                                </td>
-                            </tr>
-                    <tr>
-                        <td class="col-md-4">
-
-                                <div class="io-description">
-                                        <b>Parameters :</b>
-                                        <table class="params">
-                                            <thead>
-                                                <tr>
-                                                    <td>Name</td>
-                                                        <td>Type</td>
-                                                    <td>Optional</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                    <tr>
-                                                            <td>value</td>
-                                                    
-                                                            <td>
-                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-                                                            </td>
-                                                    
-                                                        <td>
-                                                                No
-                                                        </td>
-                                                        
-                                                    </tr>
-                                            </tbody>
-                                        </table>
-                                </div>
-                                <div>
-                                </div>
-                                <div class="io-description">
-                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                                </div>
-                        </td>
-                    </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
                         <a name="svgWidth"></a>
                         <span class="name"><b>svgWidth</b><a href="#svgWidth"><span class="icon ion-ios-link"></span></a></span>
                     </td>
@@ -1972,7 +1755,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:44</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:41</a></div>
                                 </td>
                             </tr>
 
@@ -1983,7 +1766,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:43</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:40</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -2041,7 +1824,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:48</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:45</a></div>
                                 </td>
                             </tr>
 
@@ -2052,7 +1835,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:47</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:44</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -2111,7 +1894,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:52</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:49</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -2157,20 +1940,158 @@ Not called when D3&#39;s forces reach equilibrium</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="entityIds"></a>
-                        <span class="name"><b>entityIds</b><a href="#entityIds"><span class="icon ion-ios-link"></span></a></span>
+                        <a name="excludeIds"></a>
+                        <span class="name"><b>excludeIds</b><a href="#excludeIds"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
 
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>entityIds(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
+                        <span class="accessor"><b>set</b><code>excludeIds(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
                     </td>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:55</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:52</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="from"></a>
+                        <span class="name"><b>from</b><a href="#from"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>from()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:65</a></div>
+                                </td>
+                            </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>from(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:64</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="to"></a>
+                        <span class="name"><b>to</b><a href="#to"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>to()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:69</a></div>
+                                </td>
+                            </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>to(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:68</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -2229,7 +2150,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:68</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:72</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -2275,20 +2196,30 @@ Not called when D3&#39;s forces reach equilibrium</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="buildOut"></a>
-                        <span class="name"><b>buildOut</b><a href="#buildOut"><span class="icon ion-ios-link"></span></a></span>
+                        <a name="showLinkLabels"></a>
+                        <span class="name"><b>showLinkLabels</b><a href="#showLinkLabels"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
 
-
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>buildOut(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
+                        <span class="accessor"><b>get</b><code>showLinkLabels()</code></span>
                     </td>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:71</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:78</a></div>
+                                </td>
+                            </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>showLinkLabels(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-path/sz-relationship-path.component.ts:77</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -2309,66 +2240,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                                                             <td>value</td>
                                                     
                                                             <td>
-                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                                            </td>
-                                                    
-                                                        <td>
-                                                                No
-                                                        </td>
-                                                        
-                                                    </tr>
-                                            </tbody>
-                                        </table>
-                                </div>
-                                <div>
-                                </div>
-                                <div class="io-description">
-                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                                </div>
-                        </td>
-                    </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="maxEntities"></a>
-                        <span class="name"><b>maxEntities</b><a href="#maxEntities"><span class="icon ion-ios-link"></span></a></span>
-                    </td>
-                </tr>
-
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>maxEntities(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
-                    </td>
-                </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts:74</a></div>
-                                </td>
-                            </tr>
-                    <tr>
-                        <td class="col-md-4">
-
-                                <div class="io-description">
-                                        <b>Parameters :</b>
-                                        <table class="params">
-                                            <thead>
-                                                <tr>
-                                                    <td>Name</td>
-                                                        <td>Type</td>
-                                                    <td>Optional</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                    <tr>
-                                                            <td>value</td>
-                                                    
-                                                            <td>
-                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
                                                             </td>
                                                     
                                                         <td>
@@ -2395,17 +2267,18 @@ Not called when D3&#39;s forces reach equilibrium</p>
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
-import * as d3 from &#x27;d3&#x27;;
-import { Graph, NodeInfo, LinkInfo } from &#x27;./graph-types&#x27;;
 import { Simulation } from &#x27;d3-force&#x27;;
+import { Graph, LinkInfo, NodeInfo } from &#x27;../sz-relationship-network/graph-types&#x27;;
 import { EntityGraphService } from &#x27;@senzing/rest-api-client-ng&#x27;;
 import { map } from &#x27;rxjs/operators&#x27;;
+import * as d3 from &#x27;d3&#x27;;
+
 @Component({
-  selector: &#x27;sz-relationship-network&#x27;,
-  templateUrl: &#x27;./sz-relationship-network.component.html&#x27;,
-  styleUrls: [&#x27;./sz-relationship-network.component.scss&#x27;]
+  selector: &#x27;sz-relationship-path&#x27;,
+  templateUrl: &#x27;./sz-relationship-path.component.html&#x27;,
+  styleUrls: [&#x27;./sz-relationship-path.component.scss&#x27;]
 })
-export class SzRelationshipNetworkComponent implements OnInit {
+export class SzRelationshipPathComponent implements OnInit {
 
   static readonly ICONS &#x3D; {
     business: null, // TODO replace the business .png with SVG
@@ -2431,10 +2304,6 @@ export class SzRelationshipNetworkComponent implements OnInit {
   @ViewChild(&#x27;graphEle&#x27;) svgComponent;
   public svgElement: SVGSVGElement;
 
-  private _showLinkLabels: any &#x3D; false;
-  @Input() public set showLinkLabels(value: boolean) {this._showLinkLabels &#x3D; value; }
-  public get showLinkLabels(): boolean { return this._showLinkLabels; }
-
   private _svgWidth: number;
   @Input() public set svgWidth(value: number) { this._svgWidth &#x3D; +value; }
   public get svgWidth(): number { return this._svgWidth; }
@@ -2447,29 +2316,36 @@ export class SzRelationshipNetworkComponent implements OnInit {
   private _port: number;
   @Input() set port(value: string) { this._port &#x3D; +value; }
 
-  private _entityIds: string[];
-  @Input() set entityIds(value: string) {
+  private _excludeIds: string[];
+  @Input() set excludeIds(value: string) {
     console.log(&quot;Finding commas&quot;);
     if(value &amp;&amp; value.indexOf(&#x27;,&#x27;)) {
-      const sArr &#x3D; value.split(&#x27;,&#x27;);
-      this._entityIds &#x3D; sArr;
+      this._excludeIds &#x3D; value.split(&#x27;,&#x27;);
       console.log(&quot;Split done&quot;);
     } else {
-      this._entityIds &#x3D; [value];
+      this._excludeIds &#x3D; [value];
       console.log(&quot;No split done&quot;);
     }
   }
 
+  private _from: string;
+  @Input() public set from(value: string) { this._from &#x3D; value; }
+  public get from(): string { return this._from; }
+
+  private _to: string;
+  @Input() public set to(value: string) { this._to &#x3D; value; }
+  public get to(): string { return this._to; }
+
   private _maxDegrees: number;
   @Input() set maxDegrees(value: string) { this._maxDegrees &#x3D; +value; }
 
-  private _buildOut: number;
-  @Input() set buildOut(value: string) { this._buildOut &#x3D; +value; }
-
-  private _maxEntities: number;
-  @Input() set maxEntities(value: string) { this._maxEntities &#x3D; +value; }
-
   static readonly WITH_RAW: boolean &#x3D; true;
+
+  private _showLinkLabels: any &#x3D; false;
+  @Input() public set showLinkLabels(value: boolean) { this._showLinkLabels &#x3D; value; }
+  public get showLinkLabels(): boolean { return this._showLinkLabels; }
+
+
 
   node;
   nodeLabel;
@@ -2478,93 +2354,40 @@ export class SzRelationshipNetworkComponent implements OnInit {
   forceSimulation: Simulation&lt;NodeInfo, LinkInfo&gt;;
   linkedByNodeIndexMap;
 
+
   constructor(
     private graphService: EntityGraphService,
   ) {
-    console.log(&quot;constructor!!!&quot;);
+    console.log(&quot;Constructing Relationship Path&quot;);
     this.linkedByNodeIndexMap &#x3D; {};
   }
-
-
 
   ngOnInit() {
     // get dom element reference to svg tag
     this.svgElement &#x3D; (this.svgComponent.nativeElement as SVGSVGElement);
 
-    console.log(&#x27;sswwwweeeeet. svg ref: &#x27;, this.svgElement);
-
-    console.log(&quot;init!!!&quot;);
-    if (this._entityIds &#x3D;&#x3D;&#x3D; undefined || this._entityIds.length &#x3D;&#x3D;&#x3D; 0) {
+    if (this.from &#x3D;&#x3D;&#x3D; undefined || this.from.length &#x3D;&#x3D;&#x3D; 0 ||
+        this.to &#x3D;&#x3D;&#x3D; undefined || this.to.length &#x3D;&#x3D;&#x3D; 0) {
       console.log(&quot;No EntityIDs passed in to &quot; + this);
       return;
     }
     console.log(&quot;Making calls!&quot;);
-    this.getNetwork().pipe(
-      map(this.asGraph),
+    this.getPath().pipe(
+      map(SzRelationshipPathComponent.asGraph),
     ).subscribe( this.addSvg.bind(this) );
-    /*
-    const json &#x3D; this.getNetwork();
-    console.log(&quot;Calls made successfully!&quot;);
-    const graph &#x3D; this.asGraph(json);
-    console.log(&quot;We made it into a Graph!&quot;);
-    this.addSvg(graph);
-
-    console.log(&quot;All done!&quot;);*/
   }
 
-  private getNetwork() {
-    return this.graphService.findNetworkByEntityID(
-      this._entityIds,
+
+  private getPath() {
+    return this.graphService.findPathByEntityID(
+      { id: this._from },
+      { id: this._to },
       this._maxDegrees,
-      this._buildOut,
-      this._maxEntities,
-      SzRelationshipNetworkComponent.WITH_RAW );
+      this._excludeIds,
+      true,
+      undefined,
+      SzRelationshipPathComponent.WITH_RAW );
   }
-
-  /*
-  private getNetworkDep() {
-    let response;
-    try {
-      console.log(&quot;Starting to assemble URL.&quot;);
-      const url &#x3D; &#x27;http://localhost:&#x27; + this._port + &#x27;/entity-networks?&#x27;
-        + SzRelationshipNetworkComponent.asQueryParamList(&#x27;e&#x27;, this._entityIds)
-        + &#x27;&amp;maxDegrees&#x3D;&#x27; + this._maxDegrees
-        + &#x27;&amp;buildOut&#x3D;&#x27; + this._buildOut
-        + &#x27;&amp;maxEntities&#x3D;&#x27; + this._maxEntities
-        + &#x27;&amp;withRaw&#x3D;&#x27; + SzRelationshipNetworkComponent.WITH_RAW;
-      console.log(&quot;Calling &quot; + url);
-      response &#x3D; fetch(url, {
-        method: &#x27;GET&#x27;,
-        headers: {
-          &#x27;Content-Type&#x27;: &#x27;application/json&#x27;
-        }
-      });
-    } catch (e) {
-      if (e.message &#x3D;&#x3D;&#x3D; &#x27;Failed to fetch&#x27;) {
-        alert(&#x27;Rest API call failed.  Please make sure the Rest API is started on port &#x27; + this.port);
-        throw e;
-      } else {
-        alert(&#x27;Unknown error occurred: &#x27; + e.message);
-        throw e;
-      }
-    }
-    console.log(&quot;Done with call, trying to get body&quot;);
-    return response.json();
-
-  }
-
-  static asQueryParamList(name: string, ids: string) {
-    console.log(&quot;Look here!&quot;);
-    const idsArray &#x3D; ids.substring(1, ids.length - 1).split(&#x27;,&#x27;);
-
-    let outputString &#x3D; &#x27;e&#x3D;&#x27; + idsArray[0];
-    for (let i &#x3D; 1; i &lt; idsArray.length; i++) {
-      outputString +&#x3D; &#x27;&amp;e&#x3D;&#x27; + idsArray[i];
-    }
-    console.log(&quot;Done with entity IDs&quot;);
-    return outputString;
-  }
-  */
 
   addSvg(graph: Graph, parentSelection &#x3D; d3.select(&quot;body&quot;)) {
     console.log(&quot;Okay, let&#x27;s do this!&quot;, graph);
@@ -2573,20 +2396,21 @@ export class SzRelationshipNetworkComponent implements OnInit {
       .attr(&quot;class&quot;, &quot;sz-graph-tooltip&quot;)
       .style(&quot;opacity&quot;, 0);
 
+
     // Add the SVG to the HTML body
     const svg &#x3D; d3.select( this.svgElement );
 
     /*
-     * If you&#x27;re unfamiliar with selectors acting like a join (starting in d3.v4), here&#x27;s where things may be confusing.
-     *   selectAll(...)                   selects all elements in the DOM (that match the selector&#x27;s value).
-     *   selectAll(...).data(...)         selects the intersection of items both in the DOM and in data.
-     *   selectAll(...).data(...).enter() selects new items that are in data but not yet in the DOM.  Usually followed by append(...).
-     *   selectAll(...).data(...).exit()  selects old items that are in the DOM but no longer in data.  Usually followed by remove().
-     *
-     * A lot of D3 examples are v3, where selectAll(...).data(...) selected existing items AND new items.  In v4+ if you
-     *   want to select both new and existing elements, you call existingItems.merge(newItems).  I don&#x27;t do that in this
-     *   code, but there&#x27;s an excellent example at https://bl.ocks.org/mbostock/3808218.
-     */
+ * If you&#x27;re unfamiliar with selectors acting like a join (starting in d3.v4), here&#x27;s where things may be confusing.
+ *   selectAll(...)                   selects all elements in the DOM (that match the selector&#x27;s value).
+ *   selectAll(...).data(...)         selects the intersection of items both in the DOM and in data.
+ *   selectAll(...).data(...).enter() selects new items that are in data but not yet in the DOM.  Usually followed by append(...).
+ *   selectAll(...).data(...).exit()  selects old items that are in the DOM but no longer in data.  Usually followed by remove().
+ *
+ * A lot of D3 examples are v3, where selectAll(...).data(...) selected existing items AND new items.  In v4+ if you
+ *   want to select both new and existing elements, you call existingItems.merge(newItems).  I don&#x27;t do that in this
+ *   code, but there&#x27;s an excellent example at https://bl.ocks.org/mbostock/3808218.
+ */
 
     // Add link groups (line + label)
     const linkGroup &#x3D; svg.selectAll(&#x27;.sz-graph-link&#x27;)
@@ -2595,7 +2419,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
 
     // Add the lines, except we&#x27;re not defining how they&#x27;re drawn here.  That happens in tick()
     this.link &#x3D; linkGroup.append(&#x27;path&#x27;)
-      .attr(&#x27;class&#x27;, d &#x3D;&gt; d.isCoreLink ? &#x27;sz-graph-core-ink&#x27; : &#x27;sz-graph-link&#x27;)
+      .attr(&#x27;class&#x27;, &#x27;sz-graph-core-link&#x27;)
       .attr(&#x27;id&#x27;, d &#x3D;&gt; d.id); // This lets SVG know which label goes with which line
 
     // Add link labels
@@ -2606,7 +2430,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
         .attr(&#x27;class&#x27;, &#x27;sz-graph-link-label&#x27;)
         .attr(&#x27;dy&#x27;, -3)
         .append(&#x27;textPath&#x27;)
-        .attr(&#x27;class&#x27;, d &#x3D;&gt; d.isCoreLink ? &#x27;sz-graph-core-link-text&#x27; : &#x27;sz-graph-link-text&#x27;)
+        .attr(&#x27;class&#x27;, &#x27;sz-graph-core-link-text&#x27;)
         .attr(&#x27;startOffset&#x27;, &#x27;50%&#x27;)
         .attr(&#x27;xlink:href&#x27;, d &#x3D;&gt; &#x27;#&#x27; + d.id) // This lets SVG know which label goes with which line
         .text(d &#x3D;&gt; d.matchKey);
@@ -2620,35 +2444,32 @@ export class SzRelationshipNetworkComponent implements OnInit {
       .attr(&#x27;class&#x27;, &#x27;sz-graph-node&#x27;);
 
     // Add an SVG icon for the person&#x27;s face.  This hides the links so they&#x27;re not visible through the face.
-    this.node.filter(d &#x3D;&gt; d.iconType !&#x3D;&#x3D; &quot;business&quot; &amp;&amp; SzRelationshipNetworkComponent.ICONS[d.iconType])
+    this.node.filter(d &#x3D;&gt; d.iconType !&#x3D;&#x3D; &quot;business&quot; &amp;&amp; SzRelationshipPathComponent.ICONS[d.iconType])
       .append(&#x27;path&#x27;)
       .attr(&#x27;class&#x27;, &#x27;sz-graph-icon-enclosure&#x27;)
-      .attr(&#x27;d&#x27;, d &#x3D;&gt; SzRelationshipNetworkComponent.ICONS[d.iconType][&quot;enclosed&quot;])
+      .attr(&#x27;d&#x27;, d &#x3D;&gt; SzRelationshipPathComponent.ICONS[d.iconType][&quot;enclosed&quot;])
       .attr(&quot;transform&quot;, &quot;translate(-25,-28) scale(0.05)&quot;);
 
     // Add an SVG icon for the person.
     this.node.filter(d &#x3D;&gt; d.iconType !&#x3D;&#x3D; &quot;business&quot;)
       .append(&#x27;path&#x27;)
       .attr(&#x27;class&#x27;, &#x27;sz-graph-node-icon&#x27;)
-      .attr(&#x27;fill&#x27;, d &#x3D;&gt; d.isQueriedNode ? &quot;#000000&quot; : d.isCoreNode ? &#x27;#999999&#x27; : &#x27;#DDDDDD&#x27;)
-      .attr(&quot;d&quot;, d &#x3D;&gt; SzRelationshipNetworkComponent.ICONS[d.iconType] ?
-                      SzRelationshipNetworkComponent.ICONS[d.iconType][&quot;shape&quot;] :
-                      SzRelationshipNetworkComponent.ICONS[&quot;default&quot;][&quot;shape&quot;])
+      .attr(&#x27;fill&#x27;, &quot;#000000&quot;)
+      .attr(&quot;d&quot;, d &#x3D;&gt; SzRelationshipPathComponent.ICONS[d.iconType] ?
+        SzRelationshipPathComponent.ICONS[d.iconType][&quot;shape&quot;] :
+        SzRelationshipPathComponent.ICONS[&quot;default&quot;][&quot;shape&quot;])
       .attr(&quot;transform&quot;, &quot;translate(-25,-28) scale(0.05)&quot;);
 
     // Add .png icons for businesses
     // TODO replace .png business icon with SVG
     this.node.filter(d &#x3D;&gt; d.iconType &#x3D;&#x3D;&#x3D; &quot;business&quot;)
       .append(&#x27;image&#x27;)
-      .attr(&quot;xlink:href&quot;, d &#x3D;&gt; {
-        const nodeType &#x3D; d.isQueriedNode ? &#x27;queried&#x27; : d.isCoreNode ? &#x27;core&#x27; : &#x27;buildout&#x27;;
-        return &quot;../img/icons8-building-50-&quot; + nodeType + &quot;.png&quot;;
-      })
+      .attr(&quot;xlink:href&quot;, &quot;../img/icons8-building-50-queried.png&quot;)
       .attr(&quot;x&quot;, -25)
       .attr(&quot;y&quot;, -25)
       .attr(&quot;height&quot;, 50)
       .attr(&quot;width&quot;, 50)
-      .attr(&#x27;class&#x27;, &quot;sz-graph-icon &quot; + (d &#x3D;&gt; d.isQueriedNode ? &#x27;sz-graph-queried-node&#x27; : d.isCoreNode ? &#x27;sz-graph-core-node&#x27; : &#x27;sz-graph-node&#x27;));
+      .attr(&#x27;class&#x27;, &#x27;sz-graph-icon sz-graph-queried-node&#x27;);
 
     // Add node labels
     this.nodeLabel &#x3D; this.node.append(&quot;svg:text&quot;)
@@ -2687,7 +2508,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
       tooltip.transition()
         .duration(300)
         .style(&quot;opacity&quot;, .8);
-      tooltip.html(SzRelationshipNetworkComponent.nodeTooltipText(d))
+      tooltip.html(SzRelationshipPathComponent.nodeTooltipText(d))
         .style(&quot;left&quot;, (d3.event.pageX) + &quot;px&quot;)
         .style(&quot;top&quot;, (d3.event.pageY + 10) + &quot;px&quot;);
     })
@@ -2709,7 +2530,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
         tooltip.transition()
           .duration(300)
           .style(&quot;opacity&quot;, .8);
-        tooltip.html(SzRelationshipNetworkComponent.linkTooltipText(d))
+        tooltip.html(SzRelationshipPathComponent.linkTooltipText(d))
           .style(&quot;left&quot;, (d3.event.pageX) + &quot;px&quot;)
           .style(&quot;top&quot;, (d3.event.pageY + 10) + &quot;px&quot;);
       })
@@ -2725,6 +2546,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
       });
 
     graph.links.forEach( this.registerLink.bind(this) );
+
   }
 
   private registerLink(d: LinkInfo) {
@@ -2777,7 +2599,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
     return d &#x3D;&gt; {
       this.node.transition().duration(100).style(&#x27;opacity&#x27;, function (o) {
         const thisOpacity &#x3D; isConnectedLocal(d.source, o) &amp;&amp;
-                            isConnectedLocal(d.target, o) ? 1 : opacity;
+        isConnectedLocal(d.target, o) ? 1 : opacity;
         this.setAttribute(&#x27;fill-opacity&#x27;, thisOpacity);
         return thisOpacity;
       });
@@ -2804,8 +2626,8 @@ export class SzRelationshipNetworkComponent implements OnInit {
     // Update link SVG
     // Draws left to right so .link-label stay right-side up
     this.link.attr(&#x27;d&#x27;, d &#x3D;&gt; (d.source.x &lt; d.target.x) ?
-      SzRelationshipNetworkComponent.linkSvg(d.source, d.target) :
-      SzRelationshipNetworkComponent.linkSvg(d.target, d.source));
+      SzRelationshipPathComponent.linkSvg(d.source, d.target) :
+      SzRelationshipPathComponent.linkSvg(d.target, d.source));
 
     // Show or hide .link-label
     if (this.showLinkLabels) {
@@ -2854,113 +2676,93 @@ export class SzRelationshipNetworkComponent implements OnInit {
     d3.event.subject.fy &#x3D; null;
   }
 
-
   //////////////////
   // DATA MAPPING //
   //////////////////
 
-  asGraph(rawTextOrJson) : Graph {
+  static asGraph(rawTextOrJson) {
     let data &#x3D; (rawTextOrJson instanceof Object) ? rawTextOrJson : JSON.parse(rawTextOrJson);
 
-    // The input can either be the output of the engine&#x27;s findNetworkByEntityID or findNetworkByRecordID methods
-    //   or the response body of a call to the REST API&#x27;s /entity-networks.
+    // The input can either be the output of the engine&#x27;s findPathByEntityID or findPathByRecordID methods
+    //   or the response body of a call to the REST API&#x27;s /entity-paths.
     if (data[&quot;rawData&quot;]) data &#x3D; data[&quot;rawData&quot;];
     const entityPaths &#x3D; data[&quot;ENTITY_PATHS&quot;];
     const entitiesData &#x3D; data[&quot;ENTITIES&quot;];
+    const entityPath &#x3D; entityPaths[0];
+    const entityIds &#x3D; entityPath[&quot;ENTITIES&quot;];
+    const nodeCount &#x3D; entityIds.length;
 
-    const entityIndex &#x3D; [];
-    const linkIndex &#x3D; [];
+
     const nodes &#x3D; [];
     const links &#x3D; [];
-    const queriedEntityIds &#x3D; [];
-    const coreEntityIds &#x3D; [];
-    const coreLinkIds &#x3D; [];
 
-    // Identify queried nodes and the nodes and links that connect them.
-    for (let i &#x3D; 0; i &lt; entityPaths.length; i++) {
-      if (!queriedEntityIds.includes(entityPaths[i][&quot;START_ENTITY_ID&quot;])) queriedEntityIds.push(entityPaths[i][&quot;START_ENTITY_ID&quot;]);
-      if (!queriedEntityIds.includes(entityPaths[i][&quot;END_ENTITY_ID&quot;])) queriedEntityIds.push(entityPaths[i][&quot;END_ENTITY_ID&quot;]);
-
-      const pathIds &#x3D; entityPaths[i][&quot;ENTITIES&quot;];
-      const nodeCount &#x3D; pathIds.length;
-      for (let j &#x3D; 0; j &lt; nodeCount; j++) {
-        if (!coreEntityIds.includes(pathIds[j])) {
-          coreEntityIds.push(pathIds[j]);
-        }
+    if (nodeCount &gt; 0) {
+      // Add a node for each resolved entity
+      for (let i &#x3D; 0; i &lt; nodeCount; i++) {
+        nodes[i] &#x3D; SzRelationshipPathComponent.asNode(entitiesData, entityIds, i);
       }
-      for (let k &#x3D; 0; k &lt; nodeCount - 1; k++) {
-        const linkArr &#x3D; [pathIds[k], pathIds[k + 1]].sort();
-        const linkKey &#x3D; {firstId: linkArr[0], secondId: linkArr[1]};
-        if (!SzRelationshipNetworkComponent.hasKey(coreLinkIds, linkKey)) {
-          coreLinkIds.push(linkKey);
-        }
+      for (let j &#x3D; 0; j &lt; nodeCount - 1; j++) {
+        const relatedEntityInfo &#x3D; SzRelationshipPathComponent.findRelatedEntityInfo(SzRelationshipPathComponent.findEntityInfo(entitiesData, entityIds[j]), entityIds[j + 1]);
+        links[j] &#x3D; {
+          id: j,
+          source: j,
+          target: j + 1,
+          matchLevel: relatedEntityInfo[&quot;MATCH_LEVEL&quot;],
+          matchKey: relatedEntityInfo[&quot;MATCH_KEY&quot;]
+        };
       }
+    } else {
+      nodes[0] &#x3D; SzRelationshipPathComponent.asNode(entitiesData, [entityPath[&#x27;START_ENTITY_ID&#x27;]], 0);
+      nodes[1] &#x3D; SzRelationshipPathComponent.asNode(entitiesData, [entityPath[&#x27;END_ENTITY_ID&#x27;]], 0);
     }
-
-    // Add a node for each resolved entity
-    for (let l &#x3D; 0; l &lt; entitiesData.length; l++) {
-      const resolvedEntity &#x3D; entitiesData[l][&quot;RESOLVED_ENTITY&quot;];
-      const entityId &#x3D; resolvedEntity[&quot;ENTITY_ID&quot;];
-      // Create Node
-      entityIndex.push(entityId);
-      const features &#x3D; resolvedEntity[&quot;FEATURES&quot;];
-      nodes.push({
-        isQueriedNode: queriedEntityIds.includes(entityId),
-        isCoreNode: coreEntityIds.includes(entityId),
-        iconType: SzRelationshipNetworkComponent.getIconType(resolvedEntity),
-        entityId: entityId,
-        orgName: resolvedEntity[&quot;ENTITY_NAME&quot;],
-        name: SzRelationshipNetworkComponent.firstOrNull(features, &quot;NAME&quot;),
-        address: SzRelationshipNetworkComponent.firstOrNull(features, &quot;ADDRESS&quot;),
-        phone: SzRelationshipNetworkComponent.firstOrNull(features, &quot;PHONE&quot;)
-      });
-    }
-
-    // Add links between resolved entities.
-    for (let m &#x3D; 0; m &lt; entitiesData.length; m++) {
-      const entityInfo &#x3D; entitiesData[m];
-      const entityId &#x3D; entityInfo[&quot;RESOLVED_ENTITY&quot;][&quot;ENTITY_ID&quot;];
-      const relatedEntities &#x3D; entityInfo[&quot;RELATED_ENTITIES&quot;];
-      for (let n &#x3D; 0; n &lt; relatedEntities.length; n++) {
-        // Create link (if not already created)
-        const relatedEntity &#x3D; relatedEntities[n];
-        const relatedEntityId &#x3D; relatedEntity[&quot;ENTITY_ID&quot;];
-        const linkArr &#x3D; [entityId, relatedEntityId].sort();
-        const linkKey &#x3D; {firstId: linkArr[0], secondId: linkArr[1]};
-        // Only add links between resolved entities
-        // TODO Add links to related entities not in resolved entities to show where the network can be expanded.
-        if (!SzRelationshipNetworkComponent.hasKey(linkIndex, linkKey) &amp;&amp; entityIndex.indexOf(relatedEntityId) !&#x3D;&#x3D; -1) {
-          linkIndex.push(linkKey);
-          links.push({
-            source: entityIndex.indexOf(entityId),
-            target: entityIndex.indexOf(relatedEntityId),
-            matchLevel: relatedEntity[&quot;MATCH_LEVEL&quot;],
-            matchKey: relatedEntity[&quot;MATCH_KEY&quot;],
-            isCoreLink: SzRelationshipNetworkComponent.hasKey(coreLinkIds, linkKey),
-            id: linkIndex.indexOf(linkKey)
-          });
-        }
-      }
-    }
-
-    // GRAPH CONSTRUCTED
     return {
       nodes: nodes,
       links: links
     };
   }
 
-  static firstOrNull(features, name) {
-    return features &amp;&amp; features[name] &amp;&amp; [name].length !&#x3D;&#x3D; 0 ? features[name][0][&quot;FEAT_DESC&quot;] : null;
+  private static asNode(entitiesData, entityIds, i: number) {
+    const entityInfo &#x3D; SzRelationshipPathComponent.findEntityInfo(entitiesData, entityIds[i]);
+    const resolvedEntity &#x3D; entityInfo[&#x27;RESOLVED_ENTITY&#x27;];
+    const features &#x3D; resolvedEntity[&#x27;FEATURES&#x27;];
+
+    return {
+      entityId: entityIds[i],
+      id: resolvedEntity[&#x27;ENTITY_ID&#x27;],
+      iconType: SzRelationshipPathComponent.getIconType(resolvedEntity),
+      orgName: resolvedEntity[&#x27;ENTITY_NAME&#x27;],
+      name: SzRelationshipPathComponent.firstOrNull(features, &#x27;NAME&#x27;),
+      address: SzRelationshipPathComponent.firstOrNull(features, &#x27;ADDRESS&#x27;),
+      phone: SzRelationshipPathComponent.firstOrNull(features, &#x27;PHONE&#x27;)
+    };
   }
 
-  static hasKey(usedLinks, linkKey) {
-    return usedLinks.filter(key &#x3D;&gt; key.firstId &#x3D;&#x3D;&#x3D; linkKey.firstId &amp;&amp; key.secondId &#x3D;&#x3D;&#x3D; linkKey.secondId).length !&#x3D;&#x3D; 0;
+  private static firstOrNull(features, name: string) {
+    return (features &amp;&amp; features[name] &amp;&amp; !features[name].isEmpty) ? features[name][0][&quot;FEAT_DESC&quot;] : null;
   }
 
-  static getIconType(resolvedEntity) {
+  static findEntityInfo(entitiesData, entityId) {
+    for (let i &#x3D; 0; i &lt; entitiesData.length; i++) {
+      if (entitiesData[i][&quot;RESOLVED_ENTITY&quot;][&quot;ENTITY_ID&quot;] &#x3D;&#x3D;&#x3D; entityId) return entitiesData[i];
+    }
+    return undefined;
+  }
+
+  private static findRelatedEntityInfo(entityData, relatedEntityId) {
+    const relatedEntityData &#x3D; entityData[&quot;RELATED_ENTITIES&quot;];
+    for (let i &#x3D; 0; i &lt; relatedEntityData.length; i++) {
+      if (relatedEntityData[i][&quot;ENTITY_ID&quot;] &#x3D;&#x3D;&#x3D; relatedEntityId) return relatedEntityData[i];
+    }
+  }
+
+  /**
+   * Determines which icon should be shown for this node.
+   *
+   * @param resolvedEntity The entity for the node being drawn.
+   * @returns the key for the icon&#x27;s SVG.
+   */
+  private static getIconType(resolvedEntity) {
     // Look for type information in the first 10 records.
-    console.log(&#x27;getIconType: &#x27;, resolvedEntity[&quot;RECORDS&quot;]);
     const recordsArr &#x3D; resolvedEntity[&quot;RECORDS&quot;].slice(0, 9);
     for (let i &#x3D; 0; i &lt; recordsArr.length; i++) {
       const elem &#x3D; recordsArr[i];
@@ -2990,56 +2792,9 @@ export class SzRelationshipNetworkComponent implements OnInit {
 
     <div class="tab-pane fade " id="c-styleData">
                 <p class="comment">
-                    <code>./sz-relationship-network.component.scss</code>
+                    <code>./sz-relationship-path.component.scss</code>
                 </p>
-                <pre class="line-numbers"><code class="language-scss">.sz-graph-node {
-  font-size: 12px;
-}
-
-.sz-graph-link-label {
-  font-size: 10px;
-}
-
-.sz-graph-bbox {
-  fill: white;
-  fill-opacity: 0.7;
-}
-
-.sz-graph-core-link {
-  stroke: #555;
-  stroke-width: 3px;
-}
-
-.sz-graph-link {
-  stroke: #999;
-  stroke-width: 2px;
-}
-
-.sz-graph-icon-enclosure {
-  fill: white;
-}
-
-div.sz-graph-tooltip {
-  position: absolute;
-  background-color: white;
-  max-width: 200px;
-  height: auto;
-  padding: 1px;
-  border-radius: 4px;
-  border: 1px solid;
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
-  pointer-events: none;
-}
-
-:host {
-  svg {
-    .sz-graph-link {
-      stroke: #999;
-      stroke-width: 2px;
-    }
-  }
-}
-</code></pre>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
     </div>
 
 
@@ -3053,7 +2808,7 @@ div.sz-graph-tooltip {
         var COMPONENT_TEMPLATE = '<div><div>  <svg #graphEle class="graph-chart" [attr.width]="svgWidth" [attr.height]="svgHeight"></svg></div></div>'
     var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'}];
     var DIRECTIVES = [];
-    var ACTUAL_COMPONENT = {'name': 'SzRelationshipNetworkComponent'};
+    var ACTUAL_COMPONENT = {'name': 'SzRelationshipPathComponent'};
 </script>
 <script src="../js/tree.js"></script>
 
@@ -3087,7 +2842,7 @@ div.sz-graph-tooltip {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
-            var COMPODOC_CURRENT_PAGE_URL = 'SzRelationshipNetworkComponent.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'SzRelationshipPathComponent.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
