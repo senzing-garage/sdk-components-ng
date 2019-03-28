@@ -45,9 +45,6 @@
         <li class="active">
             <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
-        </li>
 </ul>
 
 <div class="tab-content">
@@ -119,11 +116,6 @@
 <code>constructor(entityDataService: EntityDataService, configService: ConfigService)</code>
                     </td>
                 </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:20</a></div>
-                            </td>
-                        </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -198,11 +190,6 @@
                 </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:81</a></div>
-                            </td>
-                        </tr>
 
 
                 <tr>
@@ -240,11 +227,6 @@
                 </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:95</a></div>
-                            </td>
-                        </tr>
 
 
                 <tr>
@@ -313,11 +295,6 @@
                 </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:73</a></div>
-                            </td>
-                        </tr>
 
 
                 <tr>
@@ -353,11 +330,6 @@
                 </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:46</a></div>
-                            </td>
-                        </tr>
 
 
                 <tr>
@@ -395,11 +367,6 @@
                 </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:32</a></div>
-                            </td>
-                        </tr>
 
 
                 <tr>
@@ -468,11 +435,6 @@
                 </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">projects/sdk-components-ng/src/lib/services/sz-search.service.ts:54</a></div>
-                            </td>
-                        </tr>
 
 
                 <tr>
@@ -537,114 +499,6 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
-import { Observable, fromEventPattern, Subject } from &#x27;rxjs&#x27;;
-import { map, tap, mapTo } from &#x27;rxjs/operators&#x27;;
-
-import {
-  EntityDataService,
-  ConfigService,
-  SzAttributeSearchResponse,
-  SzEntityData,
-  SzAttributeTypesResponse,
-  SzAttributeType,
-  SzAttributeSearchResult
-} from &#x27;@senzing/rest-api-client-ng&#x27;;
-import { SzEntitySearchParams } from &#x27;../models/entity-search&#x27;;
-
-@Injectable({
-  providedIn: &#x27;root&#x27;
-})
-export class SzSearchService {
-  private currentSearchParams: SzEntitySearchParams &#x3D; {};
-
-  constructor(
-    private entityDataService: EntityDataService,
-    private configService: ConfigService) {}
-
-  /**
-   * perform a search request againt the data source.
-   * @link http://editor.swagger.io/?url&#x3D;https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml | GET /entities
-   *
-   * @memberof SzSearchService
-   */
-  public searchByAttributes(searchParms: SzEntitySearchParams): Observable&lt;SzAttributeSearchResult[]&gt; {
-    this.currentSearchParams &#x3D; searchParms;
-
-    return this.entityDataService.searchByAttributes(JSON.stringify(searchParms))
-    .pipe(
-      tap((searchRes: SzAttributeSearchResponse) &#x3D;&gt; console.log(&#x27;SzSearchService.searchByAttributes: &#x27;,searchParms, searchRes)),
-      map((searchRes: SzAttributeSearchResponse) &#x3D;&gt; searchRes.data.searchResults as SzAttributeSearchResult[])
-    );
-  }
-  /**
-   * get the current search params.
-   *
-   * @memberof SzSearchService
-   */
-  public getSearchParams(): SzEntitySearchParams {
-    return this.currentSearchParams;
-  }
-
-  /**
-   * set the an individual search parameter.
-   * @memberof SzSearchService
-   */
-  public setSearchParam(paramName: any, value: any): void {
-    try{
-      this.currentSearchParams[paramName] &#x3D; value;
-    } catch(err){}
-  }
-
-  /*
-  loadSearchResults(queryParams: SzEntitySearchParams, projectId: number): void {
-    //this.store.dispatch(new Search.LoadSearchResultsAction({queryParams, projectId}));
-  }
-
-  loadSearchResultsByAttributes(queryParams: SzEntitySearchParams, projectId: number): void {
-    //this.store.dispatch(new Search.LoadSearchResultsByAttributesAction({queryParams, projectId}));
-  }
-  */
-
-  /**
-   * @alias getAttributeTypes
-  */
-  public getMappingAttributes(): Observable&lt;SzAttributeType[]&gt; {
-    return this.getAttributeTypes();
-  }
-  /**
-   * get list of characteristics as attribute types
-   *
-   * @memberof SzSearchService
-   */
-  public getAttributeTypes(): Observable&lt;SzAttributeType[]&gt; {
-    // get attributes
-    return this.configService.getAttributeTypes()
-    .pipe(
-      tap( (resp: SzAttributeTypesResponse)&#x3D;&gt; console.log(&#x27;SzSearchService.getMappingAttributes: &#x27;,resp.data.attributeTypes) ),
-      map( (resp: SzAttributeTypesResponse) &#x3D;&gt; resp.data.attributeTypes )
-    );
-  }
-
-  /**
-   * get an SzEntityData model by providing an entityId.
-   *
-   * @memberof SzSearchService
-   */
-  public getEntityById(entityId: number): Observable&lt;SzEntityData&gt; {
-    console.log(&#x27;@senzing/sdk/services/sz-search[getEntityById(&#x27;+ entityId +&#x27;)] &#x27;);
-
-    return this.entityDataService.getEntityByEntityId(entityId)
-    .pipe(
-      tap(res &#x3D;&gt; console.log(&#x27;SzSearchService.getEntityById: &#x27; + entityId, res.data)),
-      map(res &#x3D;&gt; (res.data as SzEntityData))
-    );
-  }
-
-}
-</code></pre>
-    </div>
 
 </div>
 

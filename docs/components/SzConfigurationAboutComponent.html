@@ -43,9 +43,6 @@
             <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
         <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
-        </li>
-        <li >
             <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
         </li>
         <li >
@@ -174,11 +171,6 @@
 <code>constructor(apiConfiguration: SzRestConfiguration)</code>
                     </td>
                 </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">projects/sdk-components-ng/src/lib/configuration/sz-configuration-about/sz-configuration-about.component.ts:10</a></div>
-                            </td>
-                        </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -245,11 +237,6 @@
                 </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">projects/sdk-components-ng/src/lib/configuration/sz-configuration-about/sz-configuration-about.component.ts:14</a></div>
-                            </td>
-                        </tr>
 
 
                 <tr>
@@ -283,11 +270,6 @@
                 </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">projects/sdk-components-ng/src/lib/configuration/sz-configuration-about/sz-configuration-about.component.ts:26</a></div>
-                            </td>
-                        </tr>
 
 
                 <tr>
@@ -343,11 +325,6 @@
                             </code>
                         </td>
                     </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">projects/sdk-components-ng/src/lib/configuration/sz-configuration-about/sz-configuration-about.component.ts:12</a></div>
-                            </td>
-                        </tr>
 
 
             </tbody>
@@ -378,11 +355,6 @@
 
                         </td>
                     </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">projects/sdk-components-ng/src/lib/configuration/sz-configuration-about/sz-configuration-about.component.ts:10</a></div>
-                            </td>
-                        </tr>
 
 
             </tbody>
@@ -392,41 +364,6 @@
 </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, Inject } from &#x27;@angular/core&#x27;;
-import { Configuration as SzRestConfiguration } from &#x27;@senzing/rest-api-client-ng&#x27;;
-
-@Component({
-  selector: &#x27;sz-configuration-about&#x27;,
-  templateUrl: &#x27;./sz-configuration-about.component.html&#x27;,
-  styleUrls: [&#x27;./sz-configuration-about.component.scss&#x27;]
-})
-export class SzConfigurationAboutComponent implements OnInit {
-  public apiProperties: object[];
-
-  constructor(@Inject(SzRestConfiguration) public apiConfiguration: SzRestConfiguration) {}
-
-  public getPropsAsArray(): object[] {
-    // Step 1. Get all the object keys.
-    let propKeys &#x3D; Object.keys(this.apiConfiguration);
-    // Step 2. Create an empty array.
-    let retArr &#x3D; [];
-    // Step 3. Iterate throw all keys.
-    for(let propKey of propKeys) {
-      retArr.push( {key: propKey, value: this.apiConfiguration[propKey] } );
-    }
-    return retArr;
-  }
-
-  ngOnInit() {
-    if(this.apiConfiguration){
-      this.apiProperties &#x3D; this.getPropsAsArray();
-    }
-  }
-
-}
-</code></pre>
-    </div>
 
     <div class="tab-pane fade " id="c-templateData">
         <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;sz-configuration-about&quot;&gt;
