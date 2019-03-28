@@ -10,7 +10,7 @@
   },
   "homepage" :"https://senzing.github.io/sdk-components-ng/",
   "dependencies": {
-    "@senzing/rest-api-client-ng": "~1.0.0",
+    "@senzing/rest-api-client-ng": "~1.0.1",
     "d3": "^5.9.1",
     "@types/d3": "^5.7.1"
   },

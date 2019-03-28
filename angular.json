@@ -369,7 +369,7 @@
       }
     }
   },
-  "defaultProject": "example/graph",
+  "defaultProject": "example/search-with-results-and-details",
   "schematics": {
     "@schematics/angular:component": {
       "styleext": "scss"
