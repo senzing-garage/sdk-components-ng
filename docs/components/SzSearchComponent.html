@@ -82,11 +82,7 @@
     </p>
     <div class="io-description">
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;sz-search
-name=&quot;Isa Creepr&quot;
-(resultsChange)=&quot;myResultsHandler($event)&quot;
-(searchStart)=&quot;showSpinner()&quot;
-(searchEnd)=&quot;hideSpinner()&quot;&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;sz-searchname=&quot;Isa Creepr&quot;(resultsChange)=&quot;myResultsHandler($event)&quot;(searchStart)=&quot;showSpinner()&quot;(searchEnd)=&quot;hideSpinner()&quot;&gt;</code></pre>
                 </div>
     </div>
 
@@ -303,51 +299,51 @@ name=&quot;Isa Creepr&quot;
                                         <tbody>
                                                 <tr>
                                                         <td>fb</td>
-
+                                                  
                                                         <td>
                                                                     <code><a href="https://angular.io/api/forms/FormBuilder" target="_blank" >FormBuilder</a></code>
                                                         </td>
-
+                                                  
                                                     <td>
                                                             No
                                                     </td>
-
+                                                    
                                                 </tr>
                                                 <tr>
                                                         <td>configService</td>
-
+                                                  
                                                         <td>
                                                                     <code>ConfigService</code>
                                                         </td>
-
+                                                  
                                                     <td>
                                                             No
                                                     </td>
-
+                                                    
                                                 </tr>
                                                 <tr>
                                                         <td>ref</td>
-
+                                                  
                                                         <td>
                                                                     <code><a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank" >ChangeDetectorRef</a></code>
                                                         </td>
-
+                                                  
                                                     <td>
                                                             No
                                                     </td>
-
+                                                    
                                                 </tr>
                                                 <tr>
                                                         <td>searchService</td>
-
+                                                  
                                                         <td>
                                                                     <code><a href="../injectables/SzSearchService.html" target="_self" >SzSearchService</a></code>
                                                         </td>
-
+                                                  
                                                     <td>
                                                             No
                                                     </td>
-
+                                                    
                                                 </tr>
                                         </tbody>
                                     </table>
@@ -676,7 +672,7 @@ name=&quot;Isa Creepr&quot;
 
 
     <section>
-
+    
         <h3 id="methods">
             Methods
         </h3>
@@ -796,12 +792,12 @@ any parameter changes through the paramsChange emmitter.</p>
                                             <tbody>
                                                     <tr>
                                                             <td>value</td>
-
-
+                                                    
+                                                    
                                                         <td>
                                                                 No
                                                         </td>
-
+                                                        
                                                     </tr>
                                             </tbody>
                                         </table>
@@ -852,12 +848,12 @@ any parameter changes through the paramsChange emmitter.</p>
                                             <tbody>
                                                     <tr>
                                                             <td>value</td>
-
-
+                                                    
+                                                    
                                                         <td>
                                                                 No
                                                         </td>
-
+                                                        
                                                     </tr>
                                             </tbody>
                                         </table>
@@ -908,12 +904,12 @@ any parameter changes through the paramsChange emmitter.</p>
                                             <tbody>
                                                     <tr>
                                                             <td>value</td>
-
-
+                                                    
+                                                    
                                                         <td>
                                                                 No
                                                         </td>
-
+                                                        
                                                     </tr>
                                             </tbody>
                                         </table>
@@ -964,12 +960,12 @@ any parameter changes through the paramsChange emmitter.</p>
                                             <tbody>
                                                     <tr>
                                                             <td>value</td>
-
-
+                                                    
+                                                    
                                                         <td>
                                                                 No
                                                         </td>
-
+                                                        
                                                     </tr>
                                             </tbody>
                                         </table>
@@ -1016,12 +1012,12 @@ any parameter changes through the paramsChange emmitter.</p>
                                             <tbody>
                                                     <tr>
                                                             <td>value</td>
-
-
+                                                    
+                                                    
                                                         <td>
                                                                 No
                                                         </td>
-
+                                                        
                                                     </tr>
                                             </tbody>
                                         </table>
@@ -1068,12 +1064,12 @@ any parameter changes through the paramsChange emmitter.</p>
                                             <tbody>
                                                     <tr>
                                                             <td>value</td>
-
-
+                                                    
+                                                    
                                                         <td>
                                                                 No
                                                         </td>
-
+                                                        
                                                     </tr>
                                             </tbody>
                                         </table>
@@ -1119,15 +1115,15 @@ any parameter changes through the paramsChange emmitter.</p>
                                             <tbody>
                                                     <tr>
                                                             <td>value</td>
-
+                                                    
                                                             <td>
                                                                         <code>[]</code>
                                                             </td>
-
+                                                    
                                                         <td>
                                                                 No
                                                         </td>
-
+                                                        
                                                     </tr>
                                             </tbody>
                                         </table>
@@ -1162,403 +1158,6 @@ lets bind the output of the search component to the input of the search results 
 </p>
     </div>
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from &#x27;@angular/core&#x27;;
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from &#x27;@angular/forms&#x27;;
-import { Observable, Subject  } from &#x27;rxjs&#x27;;
-import { map, tap, mapTo, first } from &#x27;rxjs/operators&#x27;;
-
-import {
-  ConfigService,
-  SzAttributeSearchResult,
-  SzAttributeType,
-  SzAttributeTypesResponse,
-  SzAttributeTypesResponseData
-} from &#x27;@senzing/rest-api-client-ng&#x27;;
-import { SzEntitySearchParams } from &#x27;../../models/entity-search&#x27;;
-import { SzSearchService } from &#x27;../../services/sz-search.service&#x27;;
-import { JSONScrubber } from &#x27;../../common/utils&#x27;;
-
-/**
- * @internal
- */
-interface SzSearchFormParams {
-  name?: string[];
-  email?: string[];
-  dob?: string[];
-  identifier?: string[];
-  address?: string[];
-  phoneNumber?: string[];
-  type?: string[];
-};
-/**
- * Provides a search box component that can execute search queries and return results.
- *
- * @example
- * &lt;sz-search
- * name&#x3D;&quot;Isa Creepr&quot;
- * (resultsChange)&#x3D;&quot;myResultsHandler($event)&quot;
- * (searchStart)&#x3D;&quot;showSpinner()&quot;
- * (searchEnd)&#x3D;&quot;hideSpinner()&quot;&gt;
- * @export
- */
-@Component({
-  selector: &#x27;sz-search&#x27;,
-  templateUrl: &#x27;./sz-search.component.html&#x27;,
-  styleUrls: [&#x27;./sz-search.component.scss&#x27;],
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class SzSearchComponent implements OnInit {
-  /**
-   * populate the search fields with an pre-existing set of search parameters.
-   */
-  @Input() searchValue: SzEntitySearchParams;
-
-  /**
-   * whether or not to show the search box label
-   * @memberof SzSearchComponent
-   */
-  @Input() showSearchLabel &#x3D; true;
-  /**
-   * collection of which mapping attributes to show in the identifiers pulldown.
-   * @memberof SzSearchComponent
-   */
-  @Input() allowedTypeAttributes &#x3D; [
-    &#x27;NIN_NUMBER&#x27;,
-    &#x27;ACCOUNT_NUMBER&#x27;,
-    &#x27;SSN_NUMBER&#x27;,
-    &#x27;SSN_LAST4&#x27;,
-    &#x27;DRIVERS_LICENSE_NUMBER&#x27;,
-    &#x27;PASSPORT_NUMBER&#x27;,
-    &#x27;NATIONAL_ID_NUMBER&#x27;,
-    &#x27;OTHER_ID_NUMBER&#x27;,
-    &#x27;TAX_ID_NUMBER&#x27;,
-    &#x27;TRUSTED_ID_NUMBER&#x27;
-  ];
-  /**
-   * emitted when a search is being performed.
-   * @returns SzSearchFormParams
-   * @memberof SzSearchComponent
-   */
-  @Output() searchStart: EventEmitter&lt;SzSearchFormParams&gt; &#x3D; new EventEmitter&lt;SzSearchFormParams&gt;();
-  /**
-   * emitted when a search is done being performed.
-   * @returns the number of total results returned from the search.
-   * @memberof SzSearchComponent
-   */
-  @Output() searchEnd: EventEmitter&lt;number&gt; &#x3D; new EventEmitter&lt;number&gt;();
-  /**
-   * emitted when a search encounters an exception
-   * @todo remove from next breaking change release.
-   * @deprecated
-   */
-  @Output() searchException: EventEmitter&lt;Error&gt; &#x3D; new EventEmitter&lt;Error&gt;();
-  /**
-   * emitted when a search encounters an exception
-   */
-  @Output() exception: EventEmitter&lt;Error&gt; &#x3D; new EventEmitter&lt;Error&gt;();
-
-  /**
-   * emmitted when the results have been cleared.
-   * @memberof SzSearchComponent
-   */
-  @Output() resultsCleared: EventEmitter&lt;void&gt; &#x3D; new EventEmitter&lt;void&gt;();
-  /**
-   * emmitted when the search results have been changed.
-   * @memberof SzSearchComponent
-   */
-  @Output(&#x27;resultsChange&#x27;)
-  searchResults: Subject&lt;SzAttributeSearchResult[]&gt; &#x3D; new Subject&lt;SzAttributeSearchResult[]&gt;();
-  /**
-   * emmitted when parameters of the search have been changed.
-   *
-   * @memberof SzSearchComponent
-   */
-  @Output(&#x27;parameterChange&#x27;)
-  searchParameters: Subject&lt;SzEntitySearchParams&gt; &#x3D; new Subject&lt;SzEntitySearchParams&gt;();
-
-  /**
-   * @ignore
-   */
-  entitySearchForm: FormGroup;
-  /**
-   * @ignore
-   */
-  public searchResultsJSON;
-
-  /* start tag input setters */
-  /**
-   * the name field of the search form.
-   * @example
-   * &lt;sz-search name&#x3D;&quot;Good Guy&quot;&gt;
-   *
-   * @memberof SzSearchComponent
-   */
-  @Input(&#x27;name&#x27;)
-  public set inputName(value){
-    this.searchService.setSearchParam(&#x27;NAME_FULL&#x27;,value);
-
-    if(this.entitySearchForm){
-      this.entitySearchForm[&#x27;NAME_FULL&#x27;] &#x3D; value;
-    }
-  }
-  /**
-   * sets the value of the email field.
-   *
-   * @example
-   * &lt;sz-search email&#x3D;&quot;guy.i.am.looking&amp;#64;for.com&quot;&gt;
-   *
-   * @memberof SzSearchComponent
-   */
-  @Input(&#x27;email&#x27;)
-  public set inputEmail(value){
-    this.searchService.setSearchParam(&#x27;EMAIL_ADDRESS&#x27;,value);
-
-    if(this.entitySearchForm){
-      this.entitySearchForm[&#x27;EMAIL_ADDRESS&#x27;] &#x3D; value;
-    }
-  }
-  /**
-   * sets the value of the address field
-   * @example
-   * &lt;sz-search address&#x3D;&quot;421 Rawling Str&quot;&gt;
-   * @memberof SzSearchComponent
-   */
-  @Input(&#x27;address&#x27;)
-  public set inputAddress(value){
-    this.searchService.setSearchParam(&#x27;ADDR_FULL&#x27;,value);
-
-    if(this.entitySearchForm){
-      this.entitySearchForm[&#x27;ADDR_FULL&#x27;] &#x3D; value;
-    }
-  }
-  /** sets the value of the phone field */
-  @Input(&#x27;phone&#x27;)
-  public set inputPhone(value){
-    this.searchService.setSearchParam(&#x27;PHONE_NUMBER&#x27;,value);
-
-    if(this.entitySearchForm){
-      this.entitySearchForm[&#x27;PHONE_NUMBER&#x27;] &#x3D; value;
-    }
-  }
-  /** sets the value of the identifier field */
-  @Input(&#x27;identifier&#x27;)
-  public set inputIdentifier(value){
-    this.searchService.setSearchParam(&#x27;IDENTIFIER&#x27;,value);
-
-    if(this.entitySearchForm){
-      this.entitySearchForm[&#x27;IDENTIFIER&#x27;] &#x3D; value;
-    }
-  }
-  /** sets the value of the date of birth form field */
-  @Input(&#x27;dob&#x27;)
-  public set inputDob(value){
-    this.searchService.setSearchParam(&#x27;DATE_OF_BIRTH&#x27;,value);
-
-    if(this.entitySearchForm){
-      this.entitySearchForm[&#x27;DATE_OF_BIRTH&#x27;] &#x3D; value;
-    }
-  }
-  /**
-   * collection of mapping attributes. this is usually populated from the mapping attributes
-   * query from the search service.
-   * @memberof SzSearchComponent
-   * @internal
-   */
-  private matchingAttributes: SzAttributeType[];
-
-  @Input(&#x27;attributeTypes&#x27;)
-  public set inputAttributeTypes(value: SzAttributeType[]) {
-    // strip out non-identifiers
-    value &#x3D; value.filter( (attr: SzAttributeType) &#x3D;&gt; {
-      return (attr.attributeClass &#x3D;&#x3D;&#x3D; &#x27;IDENTIFIER&#x27;)
-    });
-
-    // filter out by specific codes
-    if(this.allowedTypeAttributes &amp;&amp; this.allowedTypeAttributes.length &gt; 0){
-      value &#x3D; value.filter( (attr: SzAttributeType) &#x3D;&gt; {
-        return (this.allowedTypeAttributes.indexOf( attr.attributeCode) &gt; -1)
-      });
-    }
-    this.matchingAttributes &#x3D; value;
-  }
-  /**
-   * returns an ordered list of identifier fields to use in the pulldown list.
-   * @internal
-   * @returns SzAttributeType[]
-   */
-  public orderedAttributes(): SzAttributeType[] {
-    if(this.matchingAttributes &amp;&amp; this.matchingAttributes.sort){
-      return this.matchingAttributes.sort((a, b) &#x3D;&gt; {
-        let returnVal &#x3D; 0;
-
-        if (a.attributeCode.match(/^PASSPORT/)) {
-          returnVal &#x3D; returnVal - 1;
-        }
-
-        if (b.attributeCode.match(/^PASSPORT/)) {
-          returnVal &#x3D; returnVal + 1;
-        }
-
-        return returnVal;
-      });
-    }
-    return this.matchingAttributes;
-  }
-  /* end tag input setters */
-
-  constructor(
-    private fb: FormBuilder,
-    private configService: ConfigService,
-    private ref: ChangeDetectorRef,
-    private searchService: SzSearchService) {
-
-  }
-
-  /**
-   * do any additional component set up
-   * @internal
-   */
-  public ngOnInit(): void {
-    this.createEntitySearchForm();
-    this.updateAttributeTypes();
-  }
-
-  /**
-   * Pull in the list of attribute types from the api server.
-   */
-  @Input()
-  public updateAttributeTypes &#x3D; (): void &#x3D;&gt; {
-    // get attributes
-    this.configService.getAttributeTypes()
-    .pipe(
-      tap( (resp: any)&#x3D;&gt; console.log(resp) ),
-      map( (resp: SzAttributeTypesResponse) &#x3D;&gt; resp.data.attributeTypes ),
-      first()
-    )
-    .subscribe((attributeTypes: SzAttributeType[]) &#x3D;&gt; {
-      // yup
-      this.inputAttributeTypes &#x3D; attributeTypes;
-      this.ref.markForCheck();
-      this.ref.detectChanges();
-    }, (err)&#x3D;&gt;{
-      this.searchException.next( err ); //TODO: remove in breaking change release
-      this.exception.next( err );
-    });
-  }
-
-  /**
-   * gets the current search parameters from the searchService and sets up the search form
-   * with current values.
-   * @internal
-  */
-  private createEntitySearchForm(): void {
-
-    let searchParams &#x3D; this.searchService.getSearchParams();
-    //console.log(&#x27;createEntitySearchForm: &#x27;,JSON.parse(JSON.stringify(searchParams)));
-
-    if (searchParams) {
-
-      const {
-        NAME_FULL,
-        DATE_OF_BIRTH,
-        IDENTIFIER,
-        IDENTIFIER_TYPE,
-        ADDR_FULL,
-        PHONE_NUMBER,
-        EMAIL_ADDRESS
-      } &#x3D;  searchParams;
-
-      this.entitySearchForm &#x3D; this.fb.group({
-        NAME_FULL: [NAME_FULL],
-        DATE_OF_BIRTH: [DATE_OF_BIRTH],
-        IDENTIFIER: [IDENTIFIER],
-        IDENTIFIER_TYPE: &quot;PASSPORT_NUMBER&quot;,
-        ADDR_FULL: [ADDR_FULL],
-        PHONE_NUMBER: [PHONE_NUMBER],
-        EMAIL_ADDRESS: [EMAIL_ADDRESS],
-        NAME_TYPE: &quot;PRIMARY&quot;
-      });
-
-      //this.submitSearch();
-    } else {
-      this.entitySearchForm &#x3D; this.fb.group({
-        NAME_FULL: [&#x27;&#x27;],
-        DATE_OF_BIRTH: [&#x27;&#x27;],
-        IDENTIFIER: [&#x27;&#x27;],
-        ADDR_FULL: [&#x27;&#x27;],
-        PHONE_NUMBER: [&#x27;&#x27;],
-        EMAIL_ADDRESS: [&#x27;&#x27;],
-        IDENTIFIER_TYPE: [&#x27;&#x27;]
-      });
-    }
-
-  }
-  /**
-   * submit current search params to search service.
-   * when search service returns a result it publishes the result
-   * through the resultsChange event emitter, and
-   * any parameter changes through the paramsChange emmitter.
-   */
-  public submitSearch(): void {
-    let searchParams &#x3D; JSONScrubber(this.entitySearchForm.value);
-
-    // clear out identifier fields if no identifier specified
-    if(searchParams[&#x27;IDENTIFIER_TYPE&#x27;] &amp;&amp; !searchParams[&#x27;IDENTIFIER&#x27;]){
-      // clear this
-      searchParams[&#x27;IDENTIFIER_TYPE&#x27;] &#x3D;  undefined;
-    }
-    // clear out name fields if name field is empty
-    if(searchParams[&#x27;NAME_TYPE&#x27;] &amp;&amp; (!searchParams[&#x27;NAME_FULL&#x27;] &amp;&amp; !searchParams[&#x27;COMPANY_NAME_ORG&#x27;])) {
-      searchParams[&#x27;NAME_TYPE&#x27;] &#x3D;  undefined;
-    }
-    // proxy name value to company name
-    if (searchParams[&#x27;NAME_FULL&#x27;]) {
-      searchParams[&#x27;COMPANY_NAME_ORG&#x27;] &#x3D; searchParams[&#x27;NAME_FULL&#x27;];
-    }
-    // default identifier type to passport if none selected
-    if (searchParams[&#x27;IDENTIFIER&#x27;] &amp;&amp; !searchParams[&#x27;IDENTIFIER_TYPE&#x27;]) {
-      searchParams[&#x27;IDENTIFIER_TYPE&#x27;] &#x3D; &#x27;PASSPORT_NUMBER&#x27;;
-    }
-    // after mods scrub nulls
-    searchParams &#x3D; JSONScrubber(searchParams);
-
-    if(Object.keys(searchParams).length &lt;&#x3D; 0){
-      // do not perform search if criteria are empty
-      this.searchException.next(new Error(&quot;null criteria&quot;)); //TODO: remove in breaking change release
-      this.exception.next( new Error(&quot;null criteria&quot;) );
-      return;
-    }
-
-    console.log(&#x27;@senzing/sdk/search/sz-search/sz-search.component.submitSearch: &#x27;, searchParams);
-
-    this.searchStart.emit(searchParams);
-
-    this.searchService.searchByAttributes(searchParams)
-    .subscribe((res) &#x3D;&gt; {
-      const totalResults &#x3D; res ? res.length : 0;
-      this.searchResultsJSON &#x3D; JSON.stringify(res, null, 4);
-      this.searchEnd.emit(totalResults);
-      this.searchResults.next(res);
-    }, (err)&#x3D;&gt;{
-      this.searchEnd.emit();
-      this.searchException.next( err ); //TODO: remove in breaking change release
-      this.exception.next( err );
-    });
-
-    this.searchParameters.next(this.searchService.getSearchParams());
-  }
-  /**
-   * clear the search params and form inputs.
-   */
-  public clearSearch(): void {
-    this.resultsCleared.emit();
-    this.entitySearchForm.reset();
-    //this.searchService.clearSearchCriteria();
-  }
-}
-</code></pre>
-    </div>
 
     <div class="tab-pane fade " id="c-templateData">
         <pre class="line-numbers"><code class="language-html">&lt;div&gt;
@@ -1855,7 +1454,7 @@ export class SzSearchComponent implements OnInit {
     </div>
 
 
-
+    
 </div>
 
 <script src="../js/libs/vis.min.js"></script>

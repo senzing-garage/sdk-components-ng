@@ -162,7 +162,7 @@
         </div>
 
         <section>
-
+    
         <h3 id="methods">
             Methods
         </h3>
@@ -188,11 +188,6 @@
                 </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="139" class="link-to-prism">projects/sdk-components-ng/src/lib/sdk.module.ts:139</a></div>
-                            </td>
-                        </tr>
 
 
                 <tr>
@@ -216,11 +211,11 @@
                                                         <td>
                                                                     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
                                                         </td>
-
+                                                    
                                                     <td>
                                                             Yes
                                                     </td>
-
+                                                    
 
                                                 </tr>
                                         </tbody>
@@ -240,7 +235,7 @@ SenzingSdkModule.forRoot( SzRestConfigurationFactory )</code></pre>
 
                             </div>
                                 <div class="io-description">
-
+                                    
                                 </div>
                     </td>
                 </tr>
@@ -251,160 +246,6 @@ SenzingSdkModule.forRoot( SzRestConfigurationFactory )</code></pre>
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { NgModule, Injector, ModuleWithProviders, SkipSelf, Optional, Provider, InjectionToken } from &#x27;@angular/core&#x27;;
-/* import { BrowserModule } from &#x27;@angular/platform-browser&#x27;; */
-import { HttpClientModule, HttpClient } from &#x27;@angular/common/http&#x27;;
-import { ReactiveFormsModule, FormsModule } from &#x27;@angular/forms&#x27;;
-import { CommonModule, TitleCasePipe } from &#x27;@angular/common&#x27;;
-import {
-  ApiModule,
-  Configuration as SzRestConfiguration,
-  ConfigurationParameters as SzRestConfigurationParameters
-} from &#x27;@senzing/rest-api-client-ng&#x27;;
-
-/** utilities */
-import { JSONScrubber } from &#x27;./common/utils&#x27;;
-
-/** models */
-import { SzEntityDetailSectionData } from &#x27;./models/entity-detail-section-data&#x27;;
-import { SzEntitySearchParams } from &#x27;./models/entity-search&#x27;;
-
-/** services */
-import { SzMessageBundleService } from &#x27;./services/sz-message-bundle.service&#x27;;
-import { SzSearchService } from &#x27;./services/sz-search.service&#x27;;
-
-/** components */
-import { SzEntityDetailComponent } from &#x27;./entity/detail/sz-entity-detail.component&#x27;;
-import { SzEntityDetailHeaderComponent } from &#x27;./entity/detail/sz-entity-detail-header/sz-entity-detail-header.component&#x27;;
-import { SzEntityDetailSectionSummaryComponent } from &#x27;./entity/detail/sz-entity-detail-header/sz-entity-detail-section-summary/sz-entity-detail-section-summary.component&#x27;;
-import { SzEntityDetailHeaderContentComponent } from &#x27;./entity/detail/sz-entity-detail-header/sz-entity-detail-header-content/sz-entity-detail-header-content.component&#x27;;
-import { SzEntityDetailsSectionComponent } from &#x27;./entity/detail/sz-entity-details-section/sz-entity-details-section.component&#x27;;
-import { SzEntityDetailSectionHeaderComponent } from &#x27;./entity/detail/sz-entity-details-section/sz-entity-detail-section-header/sz-entity-detail-section-header.component&#x27;;
-import { SzEntityDetailSectionCollapsibleCardComponent } from &#x27;./entity/detail/sz-entity-details-section/sz-entity-detail-section-collapsible-card/sz-entity-detail-section-collapsible-card.component&#x27;;
-import { SzEntityMatchPillComponent } from &#x27;./entity/sz-entity-match-pill/sz-entity-match-pill.component&#x27;;
-import { SzEntityRecordCardComponent } from &#x27;./entity/sz-entity-record-card/sz-entity-record-card.component&#x27;;
-import { SzEntityRecordCardHeaderComponent } from &#x27;./entity/sz-entity-record-card/sz-entity-record-card-header/sz-entity-record-card-header.component&#x27;;
-import { SzEntityRecordCardContentComponent } from &#x27;./entity/sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component&#x27;;
-
-import { SzSearchComponent } from &#x27;./search/sz-search/sz-search.component&#x27;;
-import { SzSearchResultsComponent } from &#x27;./search/sz-search-results/sz-search-results.component&#x27;;
-import { SzSearchResultCardComponent } from &#x27;./search/sz-search-result-card/sz-search-result-card.component&#x27;;
-import { SzSearchResultCardContentComponent } from &#x27;./search/sz-search-result-card/sz-search-result-card-content/sz-search-result-card-content.component&#x27;;
-import { SzSearchResultCardHeaderComponent } from &#x27;./search/sz-search-result-card/sz-search-result-card-header/sz-search-result-card-header.component&#x27;;
-import { SzConfigurationAboutComponent } from &#x27;./configuration/sz-configuration-about/sz-configuration-about.component&#x27;;
-import { SzConfigurationComponent } from &#x27;./configuration/sz-configuration/sz-configuration.component&#x27;;
-import { SzPoweredByComponent } from &#x27;./sz-powered-by/sz-powered-by.component&#x27;;
-import { SzRelationshipNetworkComponent } from &#x27;./graph/sz-relationship-network/sz-relationship-network.component&#x27;;
-import { SzRelationshipPathComponent } from &#x27;./graph/sz-relationship-path/sz-relationship-path.component&#x27;;
-
-/**
- * Sets up a default set of service parameters for use
- * by the SDK Components.
- *
- * this is only used when no configuration parameters are set
- * via the forRoot static method.
- * @internal
- */
-export function SzDefaultRestConfigurationFactory(): SzRestConfiguration {
-  return new SzRestConfiguration({
-    basePath: &#x27;http://localhost:2080&#x27;,
-    withCredentials: true
-  });
-}
-/**
- * Injection Token for the rest configuration class
- * @internal
- */
-const SzRestConfigurationInjector &#x3D; new InjectionToken&lt;SzRestConfiguration&gt;(&quot;SzRestConfiguration&quot;);
-
-@NgModule({
-  declarations: [
-    SzEntityDetailComponent,
-    SzSearchComponent,
-    SzSearchResultsComponent,
-    SzSearchResultCardComponent,
-    SzSearchResultCardContentComponent,
-    SzEntityDetailHeaderComponent,
-    SzEntityDetailsSectionComponent,
-    SzEntityDetailSectionSummaryComponent,
-    SzEntityDetailHeaderContentComponent,
-    SzEntityDetailSectionHeaderComponent,
-    SzEntityDetailSectionCollapsibleCardComponent,
-    SzEntityMatchPillComponent,
-    SzEntityRecordCardComponent,
-    SzEntityRecordCardHeaderComponent,
-    SzEntityRecordCardContentComponent,
-    SzSearchResultCardHeaderComponent,
-    SzConfigurationAboutComponent,
-    SzConfigurationComponent,
-    SzPoweredByComponent,
-    SzRelationshipNetworkComponent,
-    SzRelationshipPathComponent
-  ],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ApiModule
-  ],
-  exports: [
-    SzEntityDetailComponent,
-    SzSearchComponent,
-    SzSearchResultsComponent,
-    SzSearchResultCardComponent,
-    SzPoweredByComponent,
-    SzConfigurationComponent,
-    SzConfigurationAboutComponent,
-    SzRelationshipNetworkComponent,
-    SzRelationshipPathComponent
-  ],
-  /** for components being exported as web components */
-  entryComponents: [
-    SzEntityDetailComponent,
-    SzSearchComponent,
-    SzSearchResultsComponent,
-    SzPoweredByComponent,
-    SzConfigurationComponent,
-    SzConfigurationAboutComponent,
-    SzRelationshipNetworkComponent,
-    SzRelationshipPathComponent
-  ],
-  providers: [
-    SzMessageBundleService,
-    SzSearchService,
-    HttpClient,
-    TitleCasePipe
-  ]
-})
-export class SenzingSdkModule {
-  /**
-   * initialize the SenzingSdkModule with an optional factory method that returns a {@link https://senzing.github.io/rest-api-client-ng/classes/Configuration.html|SzRestConfiguration} instance.
-   * @see {@link https://senzing.github.io/rest-api-client-ng/classes/Configuration.html|SzRestConfiguration}
-   * @example
-   export function SzRestConfigurationFactory() {
-      return new SzRestConfiguration({ basePath: \&quot;myapiserverhostname.com:2080\&quot;, withCredentials: true });
-   }
-
-   SenzingSdkModule.forRoot( SzRestConfigurationFactory )
-   *
-   */
-  public static forRoot(apiConfigFactory?: () &#x3D;&gt; SzRestConfiguration): ModuleWithProviders {
-    return {
-        ngModule: SenzingSdkModule,
-        providers: [
-          {
-            provide: SzRestConfiguration,
-            useFactory: apiConfigFactory ? apiConfigFactory : SzDefaultRestConfigurationFactory
-          }
-        ]
-    };
-  }
-
-}
-</code></pre>
-    </div>
 </div>
 
 
