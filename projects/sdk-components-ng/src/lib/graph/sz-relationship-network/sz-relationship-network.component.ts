@@ -53,14 +53,11 @@ export class SzRelationshipNetworkComponent implements OnInit {
 
   private _entityIds: string[];
   @Input() set entityIds(value: string) {
-    console.log("Finding commas");
     if(value && value.indexOf(',')) {
       const sArr = value.split(',');
       this._entityIds = sArr;
-      console.log("Split done");
     } else {
       this._entityIds = [value];
-      console.log("No split done");
     }
   }
 
@@ -85,7 +82,6 @@ export class SzRelationshipNetworkComponent implements OnInit {
   constructor(
     private graphService: EntityGraphService,
   ) {
-    console.log("constructor!!!");
     this.linkedByNodeIndexMap = {};
   }
 
@@ -95,25 +91,13 @@ export class SzRelationshipNetworkComponent implements OnInit {
     // get dom element reference to svg tag
     this.svgElement = (this.svgComponent.nativeElement as SVGSVGElement);
 
-    console.log('sswwwweeeeet. svg ref: ', this.svgElement);
-
-    console.log("init!!!");
     if (this._entityIds === undefined || this._entityIds.length === 0) {
       console.log("No EntityIDs passed in to " + this);
       return;
     }
-    console.log("Making calls!");
     this.getNetwork().pipe(
       map(this.asGraph),
     ).subscribe( this.addSvg.bind(this) );
-    /*
-    const json = this.getNetwork();
-    console.log("Calls made successfully!");
-    const graph = this.asGraph(json);
-    console.log("We made it into a Graph!");
-    this.addSvg(graph);
-
-    console.log("All done!");*/
   }
 
   private getNetwork() {
@@ -125,53 +109,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
       SzRelationshipNetworkComponent.WITH_RAW );
   }
 
-  /*
-  private getNetworkDep() {
-    let response;
-    try {
-      console.log("Starting to assemble URL.");
-      const url = 'http://localhost:' + this._port + '/entity-networks?'
-        + SzRelationshipNetworkComponent.asQueryParamList('e', this._entityIds)
-        + '&maxDegrees=' + this._maxDegrees
-        + '&buildOut=' + this._buildOut
-        + '&maxEntities=' + this._maxEntities
-        + '&withRaw=' + SzRelationshipNetworkComponent.WITH_RAW;
-      console.log("Calling " + url);
-      response = fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-    } catch (e) {
-      if (e.message === 'Failed to fetch') {
-        alert('Rest API call failed.  Please make sure the Rest API is started on port ' + this.port);
-        throw e;
-      } else {
-        alert('Unknown error occurred: ' + e.message);
-        throw e;
-      }
-    }
-    console.log("Done with call, trying to get body");
-    return response.json();
-
-  }
-
-  static asQueryParamList(name: string, ids: string) {
-    console.log("Look here!");
-    const idsArray = ids.substring(1, ids.length - 1).split(',');
-
-    let outputString = 'e=' + idsArray[0];
-    for (let i = 1; i < idsArray.length; i++) {
-      outputString += '&e=' + idsArray[i];
-    }
-    console.log("Done with entity IDs");
-    return outputString;
-  }
-  */
-
   addSvg(graph: Graph, parentSelection = d3.select("body")) {
-    console.log("Okay, let's do this!", graph);
     const tooltip = parentSelection
       .append("div")
       .attr("class", "sz-graph-tooltip")
@@ -564,7 +502,6 @@ export class SzRelationshipNetworkComponent implements OnInit {
 
   static getIconType(resolvedEntity) {
     // Look for type information in the first 10 records.
-    console.log('getIconType: ', resolvedEntity["RECORDS"]);
     const recordsArr = resolvedEntity["RECORDS"].slice(0, 9);
     for (let i = 0; i < recordsArr.length; i++) {
       const elem = recordsArr[i];
