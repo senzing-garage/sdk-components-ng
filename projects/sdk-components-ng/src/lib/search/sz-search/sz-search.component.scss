@@ -84,6 +84,7 @@
         white-space: nowrap;
         padding: var(--sz-search-button-submit-padding);
         font-size: var(--sz-search-button-submit-font-size);
+        font-weight: var(--sz-search-button-submit-font-weight);
       }
       &.button__search-clear {
         background-color: var(--sz-search-button-clear-background-color);
@@ -91,6 +92,7 @@
         white-space: nowrap;
         padding: var(--sz-search-button-clear-padding);
         font-size: var(--sz-search-button-clear-font-size);
+        font-weight: var(--sz-search-button-clear-font-weight);
       }
     }
   }

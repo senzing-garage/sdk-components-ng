@@ -9,6 +9,8 @@ body {
   --sz-color-ambiguous: #7b00ad;
   --sz-search-button-submit-color: #FFFFFF;
   --sz-search-button-clear-color: #FFFFFF;
+  --sz-search-button-submit-font-size: 10px;
+  --sz-search-button-submit-font-weight: normal;
   --sz-search-button-submit-background-color: #0C9BF4;
   --sz-search-button-clear-background-color: #95989A;
   --sz-search-button-border: 1px solid #808285;
@@ -24,6 +26,7 @@ body {
   --sz-clear-button-disabled-border-color: var(--sz-search-button-disabled-border-color);
   --sz-clear-button-disabled-background-color: var(--sz-search-button-clear-background-color);
   --sz-clear-button-disabled-color: var(--sz-search-button-disabled-color);
+  --sz-search-button-clear-font-weight: normal;
   --sz-search-input-color: #95989A;
   --sz-search-input-background-color: #FFFFFF;
   --sz-search-input-display: inline-block;
