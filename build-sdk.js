@@ -11,11 +11,24 @@ var sass = require('node-sass');
     if(err){
       console.log('SASSY ERROR: ',err.message);
     } else {
-      fs.writeFile('./dist/@senzing/sdk-components-ng/styles/styles.css', result.css, function(err){
-        if(!err){
-          //file written on disk
+      // make styles dir
+      fs.mkdir('./dist/@senzing/sdk-components-ng/styles', { recursive: true }, (err) => {
+        if(!(err)){
+          // was able to create styles dir
+
+          // now write file to it
+          fs.writeFile('./dist/@senzing/sdk-components-ng/styles/styles.css', result.css, function(err){
+            if(!err){
+              //file written on disk
+              console.log('wrote ./dist/@senzing/sdk-components-ng/styles.css');
+            } else {
+              console.log('could not write ./dist/@senzing/sdk-components-ng/styles.css ',err);
+            }
+          });
+
         }
       });
+
     }
   });
 

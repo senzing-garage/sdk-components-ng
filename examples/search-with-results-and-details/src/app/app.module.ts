@@ -11,17 +11,13 @@ import { SzSearchComponentTest } from './search/sz-search/sz-search.component';
 
 import { SzSearchResultsTestComponent } from './search/sz-search-results-test/sz-search-results-test.component';
 import { SzSearchResultsCardTestComponent } from './search/sz-search-results-card-test/sz-search-results-card-test.component';
-import { SzSearchResultCardHeaderTestComponent } from './search/sz-search-results-card-test/sz-search-result-card-header-test/sz-search-result-card-header-test.component';
-import { SzSearchResultCardContentTestComponent } from './search/sz-search-results-card-test/sz-search-result-card-content-test/sz-search-result-card-content-test.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SzSearchComponentTest,
     SzSearchResultsTestComponent,
-    SzSearchResultsCardTestComponent,
-    SzSearchResultCardHeaderTestComponent,
-    SzSearchResultCardContentTestComponent
+    SzSearchResultsCardTestComponent
   ],
   imports: [
     BrowserModule,

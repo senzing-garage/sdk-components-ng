@@ -53,7 +53,7 @@
     "curly": false,
     "eofline": true,
     "forin": false,
-    "import-blacklist": [true, "rxjs"],
+    "import-blacklist": [true],
     "import-spacing": true,
     "indent": [
       true,
@@ -120,7 +120,7 @@
       "always"
     ],
     "triple-equals": [
-      true,
+      false,
       "allow-null-check"
     ],
     "typedef-whitespace": [
@@ -154,7 +154,8 @@
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
     "no-input-rename": true,
-    "no-output-rename": true,
+    "no-output-rename": false,
+    "no-redundant-jsdoc": false,
     "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,

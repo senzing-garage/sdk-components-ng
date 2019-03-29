@@ -5,6 +5,7 @@
     "entryFile": "src/public_api.ts"
   },
   "whitelistedNonPeerDependencies": [
-    "@senzing/rest-api-client-ng"
+    "@senzing/rest-api-client-ng",
+    "d3"
   ]
 }
