@@ -358,7 +358,16 @@ export class SzSearchComponent implements OnInit {
       this.disableIdentifierOption(opt);
     });
   }
-
+  /** @interal */
+  public getAnyDisabled(keys: string[]): string {
+    const _some = keys.some((key) => {
+      return this.disabledFields[ key ];
+    });
+    if(_some) {
+      return '';
+    }
+    return null;
+  }
   /** @interal */
   public getDisabled(key: string): string {
     if(this.disabledFields && this.disabledFields[ key ]) {

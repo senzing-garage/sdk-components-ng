@@ -38,12 +38,12 @@
                       [attr.disabled]="getDisabled('identifier')"
                       placeholder="Number">
             </div>
-            <div class="field type" [class.disabled]="disabledFields['identifierType']" *ngIf="!hiddenFields['identifier'] && !hiddenFields['identifierType']">
+            <div class="field type" [class.disabled]="disabledFields['identifierType'] || disabledFields['identifier']" *ngIf="!hiddenFields['identifier'] && !hiddenFields['identifierType']">
               <label for="entity-type">Type</label>
               <select formControlName="IDENTIFIER_TYPE"
                       class="identifier-dropdown"
                       id="entity-type"
-                      [attr.disabled]="getDisabled('identifierType')"
+                      [attr.disabled]="getAnyDisabled(['identifierType','identifier'])"
                       name="type">
                 <option [ngValue]="null" disabled>Choose ID type</option>
                 <option *ngFor="let type of orderedAttributes()"
