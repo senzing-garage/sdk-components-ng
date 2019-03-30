@@ -20,6 +20,12 @@ body {
   --sz-search-button-margin: 0;
   --sz-search-button-border-radius: 6px;
   --sz-search-button-clear-font-size: 10px;
+  --sz-search-button-disabled-border-color: rgb(133, 133, 133);
+  --sz-search-button-disabled-background-color: var(--sz-search-button-submit-background-color);
+  --sz-search-button-disabled-color: var(--sz-search-button-submit-color);
+  --sz-clear-button-disabled-border-color: var(--sz-search-button-disabled-border-color);
+  --sz-clear-button-disabled-background-color: var(--sz-search-button-clear-background-color);
+  --sz-clear-button-disabled-color: var(--sz-search-button-disabled-color);
   --sz-search-button-clear-font-weight: normal;
   --sz-search-input-color: #95989A;
   --sz-search-input-background-color: #FFFFFF;
@@ -37,6 +43,12 @@ body {
   --sz-search-label-margin: 0 0 10px 4px;
   --sz-search-label-font-size: 11px;
   --sz-search-label-display: block;
+  --sz-disabled-label-color: rgb(175, 175, 175);
+  --sz-disabled-input-color: var(--sz-disabled-label-color);
+  --sz-disabled-input-background-color: rgb(238, 238, 238);
+  --sz-disabled-input-border-color: var(--sz-disabled-label-color);
+  --sz-disabled-input-pointer-events: none;
+  --sz-disabled-input-cursor: default;
   --sz-search-results-padding: 20px;
   --sz-search-results-color: #5e5e5e;
   --sz-search-results-font-family: Helvetica;

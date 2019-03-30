@@ -14,9 +14,7 @@ import { SzEntitySearchParams } from '../../models/entity-search';
 import { SzSearchService } from '../../services/sz-search.service';
 import { JSONScrubber } from '../../common/utils';
 
-/**
- * @internal
- */
+/** @internal */
 interface SzSearchFormParams {
   name?: string[];
   email?: string[];
@@ -25,7 +23,30 @@ interface SzSearchFormParams {
   address?: string[];
   phoneNumber?: string[];
   type?: string[];
+}
+/** @internal */
+interface SzBoolFieldMapByName {
+  searchButton: boolean;
+  resetButton: boolean;
+  name: boolean;
+  dob: boolean;
+  identifier: boolean;
+  email: boolean;
+  address: boolean;
+  phone: boolean;
+  identifierType: boolean;
+}
+
+/** @internal */
+const parseBool = (value: any): boolean => {
+  if (!value || value === undefined) {
+    return false;
+  } else if (typeof value === 'string') {
+    return (value.toLowerCase().trim() === 'true') ? true : false;
+  } else if (value > 0) { return true; }
+  return false;
 };
+
 /**
  * Provides a search box component that can execute search queries and return results.
  *
@@ -40,8 +61,7 @@ interface SzSearchFormParams {
 @Component({
   selector: 'sz-search',
   templateUrl: './sz-search.component.html',
-  styleUrls: ['./sz-search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./sz-search.component.scss']
 })
 export class SzSearchComponent implements OnInit {
   /**
@@ -200,19 +220,197 @@ export class SzSearchComponent implements OnInit {
    * @memberof SzSearchComponent
    * @internal
    */
-  private matchingAttributes: SzAttributeType[];
+  public matchingAttributes: SzAttributeType[];
+
+  // ---------------------- individual field visibility setters ----------------------------------
+  /** hide the search button */
+  @Input() public set hideSearchButton(value: any)   { this.hiddenFields.searchButton        = parseBool(value); }
+  /** hide the reset button */
+  @Input() public set hideResetButton(value: any)    { this.hiddenFields.resetButton         = parseBool(value); }
+  /** hide the clear button */
+  @Input() public set hideClearButton(value: any)    { this.hiddenFields.resetButton         = parseBool(value); }
+  /** hide the "Name" input field */
+  @Input() public set hideName(value: any)           { this.hiddenFields.name                = parseBool(value); }
+  /** hide the "DOB" input field */
+  @Input() public set hideDob(value: any)            { this.hiddenFields.dob                 = parseBool(value); }
+  /** hide the "Identifier" input field */
+  @Input() public set hideIdentifier(value: any)     { this.hiddenFields.identifier          = parseBool(value); }
+  /** hide the "Email" input field */
+  @Input() public set hideEmail(value: any)          { this.hiddenFields.email               = parseBool(value); }
+  /** hide the "Address" input field */
+  @Input() public set hideAddress(value: any)        { this.hiddenFields.address             = parseBool(value); }
+  /** hide the "Phone Number" input field */
+  @Input() public set hidePhone(value: any)          { this.hiddenFields.phone               = parseBool(value); }
+  /** hide the "Identifier Type" input field */
+  @Input() public set hideIdentifierType(value: any) { this.hiddenFields.identifierType      = parseBool(value); }
+
+  // ---------------------- individual field readonly setters ------------------------------------
+  /** disable the search button. button is not clickable. */
+  @Input() public set disableSearchButton(value: any)   { this.disabledFields.searchButton   = parseBool(value); }
+  /** disable the reset button. button is not clickable. */
+  @Input() public set disableResetButton(value: any)    { this.disabledFields.resetButton    = parseBool(value); }
+  /** disable the clear button. button is not clickable. */
+  @Input() public set disableClearButton(value: any)    { this.disabledFields.resetButton    = parseBool(value); }
+  /** disable the "Name" field. input cannot be edited. */
+  @Input() public set disableName(value: any)           { this.disabledFields.name           = parseBool(value); }
+  /** disable the "Date of Birth" field. input cannot be edited. */
+  @Input() public set disableDob(value: any)            { this.disabledFields.dob            = parseBool(value); }
+  /** disable the "Identifier" field. input cannot be edited. */
+  @Input() public set disableIdentifier(value: any)     { this.disabledFields.identifier     = parseBool(value); }
+  /** disable the "Email" field. input cannot be edited. */
+  @Input() public set disableEmail(value: any)          { this.disabledFields.email          = parseBool(value); }
+  /** disable the "Address" field. input cannot be edited. */
+  @Input() public set disableAddress(value: any)        { this.disabledFields.address        = parseBool(value); }
+  /** disable the "Phone Number" field. input cannot be edited. */
+  @Input() public set disablePhone(value: any)          { this.disabledFields.phone          = parseBool(value); }
+  /** disable the "Identifier Type" field. input cannot be edited. */
+  @Input() public set disableIdentifierType(value: any) { this.disabledFields.identifierType = parseBool(value); }
+
+  // ---------------------- identifier type option visibility setters ----------------------------
+  /** disable the identifier type "NIN" option */
+  @Input() public set disableNINNumberOption(value: any) { if(value) {        this.disableIdentifierOption('NIN_NUMBER'); }}
+  /** disable the identifier type "ACCOUNT NUMBER" option */
+  @Input() public set disableACCTNUMOption(value: any) { if(value) {          this.disableIdentifierOption('ACCOUNT_NUMBER'); }}
+  /** disable the identifier type "SSN" option*/
+  @Input() public set disableSSNOption(value: any) { if(value) {              this.disableIdentifierOption('SSN_NUMBER'); }}
+  /** disable the identifier type "SSN Last 4" option */
+  @Input() public set disableSSNLAST4Option(value: any) { if(value) {         this.disableIdentifierOption('SSN_LAST4'); }}
+  /** disable the identifier type "DRLIC" option */
+  @Input() public set disableDRLICOption(value: any) { if(value) {            this.disableIdentifierOption('DRIVERS_LICENSE_NUMBER'); }}
+  /** disable the identifier type "Passport" option */
+  @Input() public set disablePassportOption(value: any) { if(value) {         this.disableIdentifierOption('PASSPORT_NUMBER'); }}
+  /** disable the identifier type "NationalID" option */
+  @Input() public set disableNationalIDOption(value: any) { if(value) {       this.disableIdentifierOption('NATIONAL_ID_NUMBER'); }}
+  /** disable the identifier type "Other ID" option */
+  @Input() public set disableOtherIDOption(value: any) { if(value) {          this.disableIdentifierOption('OTHER_ID_NUMBER'); }}
+  /** disable the identifier type "Tax ID" option*/
+  @Input() public set disableOtherTaxIDOption(value: any) { if(value) {       this.disableIdentifierOption('TAX_ID_NUMBER'); }}
+  /** disable the identifier type "Trusted ID" option */
+  @Input() public set disableTrustedIDOption(value: any) { if(value) {        this.disableIdentifierOption('TRUSTED_ID_NUMBER'); }}
+  /** enable the identifier type "NIN" option */
+  @Input() public set enableNINNumberOption(value: any) { if(value) {        this.enableIdentifierOption('NIN_NUMBER'); }}
+  /** enable the identifier type "ACCOUNT NUMBER" option */
+  @Input() public set enableACCTNUMOption(value: any) { if(value) {          this.enableIdentifierOption('ACCOUNT_NUMBER'); }}
+  /** enable the identifier type "SSN" option */
+  @Input() public set enableSSNOption(value: any) { if(value) {              this.enableIdentifierOption('SSN_NUMBER'); }}
+  /** enable the identifier type "SSN Last 4" option */
+  @Input() public set enableSSNLAST4Option(value: any) { if(value) {         this.enableIdentifierOption('SSN_LAST4'); }}
+  /** enable the identifier type "DRLIC" option */
+  @Input() public set enableDRLICOption(value: any) { if(value) {            this.enableIdentifierOption('DRIVERS_LICENSE_NUMBER'); }}
+  /** enable the identifier type "Passport" option */
+  @Input() public set enablePassportOption(value: any) { if(value) {         this.enableIdentifierOption('PASSPORT_NUMBER'); }}
+  /** enable the identifier type "NationalID" option */
+  @Input() public set enableNationalIDOption(value: any) { if(value) {       this.enableIdentifierOption('NATIONAL_ID_NUMBER'); }}
+  /** enable the identifier type "Other ID" option */
+  @Input() public set enableOtherIDOption(value: any) { if(value) {          this.enableIdentifierOption('OTHER_ID_NUMBER'); }}
+  /** enable the identifier type "Tax ID" option */
+  @Input() public set enableOtherTaxIDOption(value: any) { if(value) {       this.enableIdentifierOption('TAX_ID_NUMBER'); }}
+  /** enable the identifier type "Trusted ID" option */
+  @Input() public set enableTrustedIDOption(value: any) { if(value) {        this.enableIdentifierOption('TRUSTED_ID_NUMBER'); }}
+
+  /**
+   * disable an individual identifier type option.
+   * @internal
+   */
+  private disableIdentifierOption(value: string) {
+    value = value.trim();
+    const optionIndex = this.allowedTypeAttributes.indexOf(value);
+    if(optionIndex > -1) {
+      this.allowedTypeAttributes.splice(optionIndex, 1);
+    }
+  }
+  /**
+   * enable an individual identifier type option.
+   * @internal
+   */
+  private enableIdentifierOption(value: string) {
+    value = value.trim();
+    const optionIndex = this.allowedTypeAttributes.indexOf(value);
+    if(optionIndex < 0) {
+      this.allowedTypeAttributes.push(value);
+    }
+  }
+  /**
+   * enable a set of identifier type options.
+   * format is "SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER" or array of strings
+   */
+  @Input()
+  public set enableIdentifierOptions(options: string[] | string) {
+    if(typeof options === 'string') {
+      options = options.trim().split(',');
+    }
+    // enable each option in collection
+    options.forEach((opt)=> {
+      this.enableIdentifierOption(opt);
+    });
+  }
+  /**
+   * disable a set of identifier type options.
+   * format is "SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER" or array of strings
+   */
+  @Input()
+  public set disableIdentifierOptions(options: string[] | string) {
+    if(typeof options === 'string') {
+      options = options.split(',');
+    }
+    // enable each option in collection
+    options.forEach((opt)=> {
+      this.disableIdentifierOption(opt);
+    });
+  }
+  /** @interal */
+  public getAnyDisabled(keys: string[]): string {
+    const _some = keys.some((key) => {
+      return this.disabledFields[ key ];
+    });
+    if(_some) {
+      return '';
+    }
+    return null;
+  }
+  /** @interal */
+  public getDisabled(key: string): string {
+    if(this.disabledFields && this.disabledFields[ key ]) {
+      return '';
+    }
+    return null;
+  }
+  /** @internal*/
+  public disabledFields: SzBoolFieldMapByName = {
+    searchButton: false,
+    resetButton: false,
+    name: false,
+    dob: false,
+    identifier: false,
+    email: false,
+    address: false,
+    phone: false,
+    identifierType: false
+  };
+  /** @internal */
+  public hiddenFields: SzBoolFieldMapByName = {
+    searchButton: false,
+    resetButton: false,
+    name: false,
+    dob: false,
+    identifier: false,
+    email: false,
+    address: false,
+    phone: false,
+    identifierType: false
+  };
 
   @Input('attributeTypes')
   public set inputAttributeTypes(value: SzAttributeType[]) {
     // strip out non-identifiers
     value = value.filter( (attr: SzAttributeType) => {
-      return (attr.attributeClass === 'IDENTIFIER')
+      return (attr.attributeClass === 'IDENTIFIER');
     });
 
     // filter out by specific codes
-    if(this.allowedTypeAttributes && this.allowedTypeAttributes.length > 0){
+    if(this.allowedTypeAttributes && this.allowedTypeAttributes.length > 0) {
       value = value.filter( (attr: SzAttributeType) => {
-        return (this.allowedTypeAttributes.indexOf( attr.attributeCode) > -1)
+        return (this.allowedTypeAttributes.indexOf( attr.attributeCode) > -1);
       });
     }
     this.matchingAttributes = value;
@@ -224,7 +422,7 @@ export class SzSearchComponent implements OnInit {
    */
   public orderedAttributes(): SzAttributeType[] {
     if(this.matchingAttributes && this.matchingAttributes.sort){
-      return this.matchingAttributes.sort((a, b) => {
+      const matchingAttrs =  this.matchingAttributes.sort((a, b) => {
         let returnVal = 0;
 
         if (a.attributeCode.match(/^PASSPORT/)) {
@@ -237,7 +435,9 @@ export class SzSearchComponent implements OnInit {
 
         return returnVal;
       });
+      return matchingAttrs;
     }
+
     return this.matchingAttributes;
   }
   /* end tag input setters */
@@ -267,7 +467,6 @@ export class SzSearchComponent implements OnInit {
     // get attributes
     this.configService.getAttributeTypes()
     .pipe(
-      tap( (resp: any)=> console.log(resp) ),
       map( (resp: SzAttributeTypesResponse) => resp.data.attributeTypes ),
       first()
     )
@@ -276,7 +475,7 @@ export class SzSearchComponent implements OnInit {
       this.inputAttributeTypes = attributeTypes;
       this.ref.markForCheck();
       this.ref.detectChanges();
-    }, (err)=>{
+    }, (err)=> {
       this.searchException.next( err ); //TODO: remove in breaking change release
       this.exception.next( err );
     });
@@ -288,7 +487,6 @@ export class SzSearchComponent implements OnInit {
    * @internal
   */
   private createEntitySearchForm(): void {
-
     let searchParams = this.searchService.getSearchParams();
     //console.log('createEntitySearchForm: ',JSON.parse(JSON.stringify(searchParams)));
 
@@ -364,9 +562,6 @@ export class SzSearchComponent implements OnInit {
       this.exception.next( new Error("null criteria") );
       return;
     }
-
-    console.log('@senzing/sdk/search/sz-search/sz-search.component.submitSearch: ', searchParams);
-
     this.searchStart.emit(searchParams);
 
     this.searchService.searchByAttributes(searchParams)

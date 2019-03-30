@@ -9,6 +9,8 @@
 <!-- start search box -->
 <div class="component-example">
   <sz-search
+    disableIdentifierOptions="PASSPORT_NUMBER, DRIVERS_LICENSE_NUMBER, SSN_LAST4"
+    enableIdentifierOptions="SOCIAL_NETWORK"
     (resultsChange)="onSearchResults($event)"
     (resultsCleared)="onSearchResultsCleared($event)"
     (exception)="onSearchException($event)"
