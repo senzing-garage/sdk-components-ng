@@ -12,7 +12,7 @@
       [headerIcon]="headerIcon"
       displayType="record"
       [cardData]="dataSourceRecords"
-      [expanded]="true"
+      [expanded]="!collapsed"
       [truncateResults]="true"
       (entityRecordClick)="onEntityRecordClick($event)">
     </sz-entity-detail-section-collapsible-card>
@@ -25,7 +25,7 @@
       displayType="entity"
       [cardData]="entitiesByMatchKey"
       [truncateResults]="true"
-      [expanded]="true"
+      [expanded]="!collapsed"
       (entityRecordClick)="onEntityRecordClick($event)"
       class="by-match-key">
     </sz-entity-detail-section-collapsible-card>
@@ -37,7 +37,7 @@
       [headerIcon]="headerIcon"
       displayType="entity"
       [cardData]="cardData"
-      [expanded]="true"
+      [expanded]="!collapsed"
       [truncateResults]="true"
       (entityRecordClick)="onEntityRecordClick($event)">
     </sz-entity-detail-section-collapsible-card>

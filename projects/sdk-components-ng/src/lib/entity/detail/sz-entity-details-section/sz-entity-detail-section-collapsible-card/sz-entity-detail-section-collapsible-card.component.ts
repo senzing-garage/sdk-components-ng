@@ -21,6 +21,7 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, Af
   @Input() cardTitle: string;
   @Input()
   set expanded(value) {
+    console.log('set expanded: ', value);
     this.isOpen = value;
   }
   get expanded(): boolean {

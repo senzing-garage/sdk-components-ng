@@ -10,6 +10,11 @@ import {
   SzRelationshipType
 } from '@senzing/rest-api-client-ng';
 
+interface collapsedChangeEvent {
+  'section': string;
+  'value': boolean;
+}
+
 @Component({
   selector: 'sz-entity-detail',
   templateUrl: './sz-entity-detail.component.html',
@@ -54,6 +59,65 @@ export class SzEntityDetailComponent {
   @Input('data')
   public set entityData(value: SzEntityData) {
     this.entity = value;
+  }
+
+  private collapsedSectionMap = {
+    'records': true,
+    'possible': true,
+    'discovered': false,
+    'disclosed': false
+  };
+
+  @Input()
+  public set recordsCollapsed(value: boolean) {
+    const prevVal = this.collapsedSectionMap.records;
+    this.collapsedSectionMap.records = value;
+    this.collapsedChange.next( {
+      'section': 'records',
+      'value': value
+    } );
+  }
+  public get recordsCollapsed(): boolean {
+    return this.isCollapsed('records')   ? true : false;
+  }
+  @Input()
+  public set possibleCollapsed(value: boolean) {
+    this.collapsedSectionMap.possible = value;
+    this.collapsedChange.next( {
+      'section': 'possible',
+      'value': value
+    } );
+  }
+  public get possibleCollapsed(): boolean {
+    return this.isCollapsed('possible')   ? true : false;
+  }
+  @Input()
+  public set discoveredCollapsed(value: boolean) {
+    this.collapsedSectionMap.discovered = value;
+    this.collapsedChange.next( {
+      'section': 'discovered',
+      'value': value
+    } );
+  }
+  public get discoveredCollapsed(): boolean {
+    return this.isCollapsed('discovered')   ? true : false;
+  }
+  @Input()
+  public set disclosedCollapsed(value: boolean) {
+    this.collapsedSectionMap.disclosed = value;
+    this.collapsedChange.next( {
+      'section': 'disclosed',
+      'value': value
+    } );
+  }
+  public get disclosedCollapsed(): boolean {
+    return this.isCollapsed('disclosed')   ? true : false;
+  }
+
+  @Output() collapsedChange: EventEmitter<collapsedChangeEvent> = new EventEmitter<collapsedChangeEvent>();
+
+  private isCollapsed(key: string): boolean {
+    return (this.collapsedSectionMap[ key ]) ? true : false;
   }
 
   /**

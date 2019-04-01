@@ -18,6 +18,14 @@
 </div>
 <!-- end search box -->
 
+<button (click)="toggleExpanded($event, toggleCollapsedSection.value)">Toggle Expanded</button>
+<select #toggleCollapsedSection>
+  <option value="records">Matches</option>
+  <option value="possible">Possible Matches</option>
+  <option value="discovered">Possible Relationships</option>
+  <option value="disclosed">Disclosed</option>
+</select>
+
 <!-- start search results -->
 <div class="component-example">
   <sz-search-results *ngIf="showSearchResults" [results]="currentSearchResults" [parameters]="currentSearchParameters" (resultClick)="onSearchResultClick($event)"></sz-search-results>
@@ -28,6 +36,6 @@
   <div class="detail-wrapper">
       <button (click)="onBackToSearchResultsClick($event)">&lt;&lt; Go Back to Search Results</button>
   </div>
-  <sz-entity-detail [entityId]="currentlySelectedEntityId"></sz-entity-detail>
+  <sz-entity-detail #entityDetail [entityId]="currentlySelectedEntityId"></sz-entity-detail>
 </div>
 <!-- end entity detail -->

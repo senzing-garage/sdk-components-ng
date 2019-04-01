@@ -11,6 +11,7 @@
     [sectionTitle]="'Matched Records'"
     sectionId="detail-section-1"
     [sectionCount]="entity?.resolvedEntity?.records?.length"
+    [collapsed]="this.recordsCollapsed"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
 
@@ -20,6 +21,7 @@
     [sectionTitle]="'Possible Matches'"
     sectionId="detail-section-2"
     [sectionCount]="this.possibleMatches?.length"
+    [collapsed]="this.possibleCollapsed"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
   <sz-entity-details-section
@@ -28,6 +30,7 @@
     [sectionTitle]="'Possible Relationships'"
     sectionId="detail-section-3"
     [sectionCount]="this._discoveredRelationships?.length"
+    [collapsed]="this.discoveredCollapsed"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
   <sz-entity-details-section
@@ -36,6 +39,7 @@
     [sectionTitle]="'Disclosed Relationships'"
     sectionId="detail-section-4"
     [sectionCount]="this._disclosedRelationships?.length"
+    [collapsed]="this.disclosedCollapsed"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
 </div>

@@ -14,6 +14,7 @@ export class SzEntityDetailsSectionComponent implements OnInit {
   _sectionData: SzEntityRecord[] | SzRelatedEntity[];
   _sectionDataByDataSource: SzEntityRecord[] | SzRelatedEntity[];
   _sectionDataByMatchKey: SzEntityRecord[] | SzRelatedEntity[];
+  _collapsed = true;
 
   @Input() entity: SzEntityRecord | SzRelatedEntity;
   @Input()
@@ -29,7 +30,14 @@ export class SzEntityDetailsSectionComponent implements OnInit {
   @Input() sectionTitle: string;
   @Input() sectionCount: number;
   @Input() sectionId: string;
-
+  @Input()
+  set collapsed( value: boolean ) {
+    this._collapsed = value;
+    console.log('collapsed setter: ', this._collapsed);
+  }
+  get collapsed() {
+    return this._collapsed;
+  }
 
   @Output()
   public entityRecordClick: EventEmitter<number> = new EventEmitter<number>();
