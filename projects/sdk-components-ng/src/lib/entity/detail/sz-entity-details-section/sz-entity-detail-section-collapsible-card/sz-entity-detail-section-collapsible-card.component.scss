@@ -35,6 +35,10 @@
     transform: rotate(180deg);
   }
 
+  .entity-record {
+    margin: auto auto 1.5em auto;
+  }
+
   sz-entity-record-card-content, .sz-entity-record-card-content {
 
     display: var(--sz-entity-detail-section-record-card-display);

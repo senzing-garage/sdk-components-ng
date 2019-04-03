@@ -119,20 +119,25 @@ body {
     /* end header vars */
 
     /* start relationship section list vars */
+    --sz-entity-detail-name-font-size: 1.7em;
+    --sz-entity-detail-name-line-height: 1.7em;
+    --sz-entity-detail-name-margin: 0 0 18px 0;
+    --sz-entity-detail-name-display: block;
     --sz-entity-detail-section-header-margin: 1em 0 0;
     --sz-entity-detail-section-header-padding: .4em 1em;
     --sz-entity-detail-section-header-color: #FFFFFF;
     --sz-entity-detail-section-header-font-size: 28px;
+    --sz-entity-detail-section-header-count-label-font-size: var(--sz-entity-detail-section-header-font-size);
+    --sz-entity-detail-section-header-count-font-size: 32px;
+
     --sz-entity-detail-section-header-font-family: $sz-font-family;
     --sz-entity-detail-section-header-border-radius: 4px 4px 0 0;
-
-
-    --sz-entity-detail-section-color: #808285;
+    --sz-entity-detail-section-color: #2e2e2d;
     --sz-entity-detail-section-font-size: 18px;
-    --sz-entity-detail-section-line-height: 18px;
-    --sz-entity-detail-section-background: #eaeaea;
-
-    --sz-entity-detail-section-border: 1px solid #{$sz-dark-grey};
+    --sz-entity-detail-section-line-height: 20px;
+    --sz-entity-detail-section-background: #ffffff;
+    --sz-entity-detail-section-by-matches-background: #f1eeee;
+    --sz-entity-detail-section-border: 1px solid #DFDFE1;
     --sz-entity-detail-section-border-radius: 0 0 6px 6px;
     --sz-entity-detail-section-border-left: var(--sz-entity-detail-section-border);
     --sz-entity-detail-section-border-right: var(--sz-entity-detail-section-border);
@@ -140,20 +145,16 @@ body {
     --sz-entity-detail-section-border-bottom: var(--sz-entity-detail-section-border);
     --sz-entity-detail-section-title-font-size: 20px;
     --sz-entity-detail-section-padding: 0 24px;
-
-    --sz-entity-detail-name-font-size: 20px;
-
     --sz-entity-detail-section-record-card-display: block;
     --sz-entity-detail-section-record-card-background-color: #FFFFFF;
     --sz-entity-detail-section-record-card-margin: 8px;
     --sz-entity-detail-section-record-card-padding: 15px;
     --sz-entity-detail-section-record-card-border-radius: 5px;
-    --sz-entity-detail-section-record-card-border: 1px solid #eaeaea;
-
+    --sz-entity-detail-section-record-card-border: 1px solid #dedede;
     --sz-entity-detail-pill-display: inline-block;
     --sz-entity-detail-pill-font-size: 20px;
     --sz-entity-detail-pill-text-transform: uppercase;
-    --sz-entity-detail-pill-padding: 5px 8px;
+    --sz-entity-detail-pill-padding: 8px 8px 9px 8px;
     --sz-entity-detail-pill-margin: 0 10px 0 0;
     --sz-entity-detail-pill-background-color: #{$sz-dark-grey};
     --sz-entity-detail-pill-color: #{$sz-white};

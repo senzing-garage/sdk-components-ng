@@ -28,9 +28,10 @@ export class SzEntityRecordCardHeaderComponent implements OnInit {
   }
 
   get breakDownInfoExist(): boolean {
-    //console.log('card-header.component.breakDownInfoExist: ', this.searchResult);
     if (this.searchResult && this.searchResult.resolvedEntity) {
       return this.searchResult.resolvedEntity.recordSummaries.length > 0;
+    } else if(this.entityData) {
+      return this.entityData.recordSummaries.length > 0;
     } else {
       return false;
     }
@@ -39,6 +40,8 @@ export class SzEntityRecordCardHeaderComponent implements OnInit {
   get breakDownInfo(): SzDataSourceRecordSummary[] {
     if (this.searchResult && this.searchResult.resolvedEntity) {
       return this.searchResult.resolvedEntity.recordSummaries;
+    } else if(this.entityData && this.entityData.recordSummaries) {
+      return this.entityData.recordSummaries;
     }
   }
 
@@ -73,7 +76,7 @@ export class SzEntityRecordCardHeaderComponent implements OnInit {
   }
 
   public onEntityDetailLinkClick(entityId: number | boolean): void {
-    if(entityId && entityId > 0 && typeof entityId == 'number'){
+    if(entityId && entityId > 0 && typeof entityId == 'number') {
       console.log('onEntityDetailLinkClick: "'+ entityId +'"');
       this.entityRecordClick.emit(entityId);
     }

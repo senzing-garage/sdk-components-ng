@@ -7,6 +7,7 @@
 <div>
   <ng-container *ngIf="showByDataSource">
     <sz-entity-detail-section-collapsible-card
+      class="by-datasource"
       *ngFor="let dataSourceRecords of _sectionDataByDataSource"
       [showIcon]="showIcon"
       [headerIcon]="headerIcon"
@@ -19,6 +20,7 @@
   </ng-container>
   <ng-container *ngIf="showEntitiesByMatchKey">
     <sz-entity-detail-section-collapsible-card
+      class="by-matchkey"
       *ngFor="let entitiesByMatchKey of _sectionDataByMatchKey"
       [showIcon]="showIcon"
       [headerIcon]="headerIcon"
@@ -32,6 +34,7 @@
   </ng-container>
   <ng-container *ngIf="!showByDataSource && !showEntitiesByMatchKey">
     <sz-entity-detail-section-collapsible-card
+      class="by-entity"
       *ngFor="let cardData of sectionData"
       [showIcon]="showIcon"
       [headerIcon]="headerIcon"

@@ -37,7 +37,7 @@
     <!-- start is entity record (possible/disclosed matches) -->
     <ng-container *ngIf="isEntityRecord(cardData)">
       <div class="entity-records mat-expansion-panel-body">
-          <div *ngFor="let _cardData of cardData?.records">
+          <div class="entity-record" *ngFor="let _cardData of cardData?.records">
               <sz-entity-record-card-header
                 [entityData]="_cardData"
                 [hideBackGroundColor]="true"

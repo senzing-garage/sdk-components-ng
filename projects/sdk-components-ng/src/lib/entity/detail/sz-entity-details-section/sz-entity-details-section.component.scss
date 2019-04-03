@@ -25,6 +25,9 @@
         border: 0;
       }
     }
+    &.by-datasource {
+      background-color: var(--sz-entity-detail-section-by-matches-background);
+    }
   }
   .mat-accordion {
     box-shadow: none;
