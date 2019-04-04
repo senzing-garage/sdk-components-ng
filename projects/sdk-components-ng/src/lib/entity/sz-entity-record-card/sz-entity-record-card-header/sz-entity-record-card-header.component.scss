@@ -1,12 +1,13 @@
 @import "../../../scss/variables";
 
 .search-card__header--wrapper {
-
+  display: block;
   color: var(--sz-entity-detail-name-color);
   font-family: var(--sz-entity-detail-name-font-family);
   font-size: var(--sz-entity-detail-name-font-size);
   line-height: var(--sz-entity-detail-name-line-height);
   display: var(--sz-entity-detail-name-display);
+  margin: var(--sz-entity-detail-name-margin);
   align-items: center;
 
   &.no-background {

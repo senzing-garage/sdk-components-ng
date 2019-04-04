@@ -155,7 +155,7 @@ export class SzEntityDetailComponent {
     if (this._entityId) {
       this.requestStart.emit(this._entityId);
 
-      this.searchService.getEntityById(this._entityId).
+      this.searchService.getEntityById(this._entityId, true).
       pipe(
         tap(res => console.log('SzSearchService.getEntityById: ' + this._entityId, res))
       ).

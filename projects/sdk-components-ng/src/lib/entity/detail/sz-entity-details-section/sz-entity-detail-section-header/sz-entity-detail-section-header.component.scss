@@ -1,4 +1,5 @@
 @import "../../../../scss/variables";
+
 .section-header__wrapper {
   display: flex;
   align-items: center;
@@ -46,11 +47,15 @@
   .section-header__right-content {
     display: flex;
     align-items: center;
-  .section-header__countLabel {
-    font-size: 18px;
-    font-weight: 300;
-    margin: 0 0 0 5px;
-  }
+    .section-header__countLabel {
+      font-size: var(--sz-entity-detail-section-header-count-label-font-size);
+      /*font-weight: 300;*/
+      margin: 0 0 0 6px;
+    }
+    .section-header__count {
+      font-size: var(--sz-entity-detail-section-header-count-font-size);
+      margin: 0 4px 0 8px;
+    }
   }
 
 }
