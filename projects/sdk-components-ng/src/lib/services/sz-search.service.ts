@@ -34,7 +34,7 @@ export class SzSearchService {
 
     return this.entityDataService.searchByAttributes(JSON.stringify(searchParms))
     .pipe(
-      tap((searchRes: SzAttributeSearchResponse) => console.log('SzSearchService.searchByAttributes: ',searchParms, searchRes)),
+      tap((searchRes: SzAttributeSearchResponse) => console.log('SzSearchService.searchByAttributes: ', searchParms, searchRes)),
       map((searchRes: SzAttributeSearchResponse) => searchRes.data.searchResults as SzAttributeSearchResult[])
     );
   }
@@ -52,9 +52,9 @@ export class SzSearchService {
    * @memberof SzSearchService
    */
   public setSearchParam(paramName: any, value: any): void {
-    try{
+    try {
       this.currentSearchParams[paramName] = value;
-    } catch(err){}
+    } catch(err) {}
   }
 
   /*
@@ -82,7 +82,7 @@ export class SzSearchService {
     // get attributes
     return this.configService.getAttributeTypes()
     .pipe(
-      tap( (resp: SzAttributeTypesResponse)=> console.log('SzSearchService.getMappingAttributes: ',resp.data.attributeTypes) ),
+      tap( (resp: SzAttributeTypesResponse)=> console.log('SzSearchService.getMappingAttributes: ', resp.data.attributeTypes) ),
       map( (resp: SzAttributeTypesResponse) => resp.data.attributeTypes )
     );
   }
@@ -92,10 +92,10 @@ export class SzSearchService {
    *
    * @memberof SzSearchService
    */
-  public getEntityById(entityId: number): Observable<SzEntityData> {
-    console.log('@senzing/sdk/services/sz-search[getEntityById('+ entityId +')] ');
+  public getEntityById(entityId: number, withRelated = false): Observable<SzEntityData> {
+    console.log('@senzing/sdk/services/sz-search[getEntityById('+ entityId +', '+ withRelated +')] ');
 
-    return this.entityDataService.getEntityByEntityId(entityId)
+    return this.entityDataService.getEntityByEntityId(entityId, withRelated)
     .pipe(
       tap(res => console.log('SzSearchService.getEntityById: ' + entityId, res.data)),
       map(res => (res.data as SzEntityData))

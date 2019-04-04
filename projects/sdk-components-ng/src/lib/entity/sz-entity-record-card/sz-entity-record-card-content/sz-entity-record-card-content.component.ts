@@ -23,7 +23,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   @Input() set entity(value) {
     //console.log('set entity: ', value);
     this._entity = value;
-  };
+  }
   get entity() {
     return this._entity;
   }
@@ -77,6 +77,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   }
 
   // ----------------- start total getters -------------------
+
   get columnOneTotal(): number {
     if (this.entity.entityName && this.entity.addressData) {
       return this.entity.addressData.length;
@@ -84,7 +85,8 @@ export class SzEntityRecordCardContentComponent implements OnInit {
     return 0;
   }
   get showColumnOne(): boolean {
-    return (this.entity && this.entity.addressData && this.entity.addressData.length > 0);
+    return false;
+    //return (this.entity && this.entity.addressData && this.entity.addressData.length > 0);
   }
   get columnTwoTotal(): number {
     return (this.nameData.concat(this.attributeData).length);

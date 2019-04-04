@@ -1,0 +1,15 @@
+:host {
+  .search-card__content--wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .search-card__content--column {
+      min-width: 30%;
+    }
+
+    .search-card__content--column:last-child {
+      flex-grow: 2;
+    }
+  }
+}

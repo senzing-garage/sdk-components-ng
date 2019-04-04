@@ -1,6 +1,7 @@
 @import "../../scss/variables";
 
 :host {
+  margin: var(--sz-entity-detail-pill-margin);
 
   .sz-match-pill-element {
     border-radius: var(--sz-entity-detail-pill-border-radius);
