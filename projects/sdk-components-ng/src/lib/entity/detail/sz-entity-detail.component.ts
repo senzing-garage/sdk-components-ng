@@ -17,7 +17,8 @@ import {
 })
 export class SzEntityDetailComponent {
   private _entityId: number;
-  public entityDetailJSON: string = "";
+  private entityDetailJSON: string = "";
+  private _requestDataOnIdChange = true;
 
   public entity: SzEntityData;
   // data views
@@ -41,28 +42,41 @@ export class SzEntityDetailComponent {
    * @returns error object.
    */
   @Output() exception: EventEmitter<Error> = new EventEmitter<Error>();
-
   /**
    * emmitted when the entity data to display has been changed.
    */
   @Output('dataChanged')
   dataChanged: Subject<SzEntityData> = new Subject<SzEntityData>();
-
+  /**
+   * emmitted when the entity id has been changed.
+   */
+  @Output('entityIdChanged')
+  entityIdChanged: EventEmitter<number> = new EventEmitter<number>();
   /**
    * set the entity data directly, instead of via entityId lookup.
    */
   @Input('data')
   public set entityData(value: SzEntityData) {
     this.entity = value;
+    this.onEntityDataChanged();
+  }
+  /**
+   * set the entity data by passing in an entity id number.
+   */
+  @Input()
+  public set entityId(value: number) {
+    const _hasChanged = (value !== this._entityId) ? true : false;
+    this._entityId = value;
+    // safety check
+    if(_hasChanged && this._requestDataOnIdChange) { this.onEntityIdChange(); }
   }
 
   /**
    * set the entity data by passing in an entity id number.
    */
   @Input()
-  public set entityId(value: number) {
-    this._entityId = value;
-    this.onEntityIdChange();
+  public set requestDataOnIdChange(value: boolean) {
+    this._requestDataOnIdChange = value;
   }
 
   /**
@@ -151,7 +165,9 @@ export class SzEntityDetailComponent {
    *
    * @memberof SzEntityDetailComponent
    */
-  onEntityIdChange() {
+  public onEntityIdChange() {
+    this.entityIdChanged.emit(this._entityId);
+
     if (this._entityId) {
       this.requestStart.emit(this._entityId);
 
