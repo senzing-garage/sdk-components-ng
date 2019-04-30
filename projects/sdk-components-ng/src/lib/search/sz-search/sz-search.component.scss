@@ -3,7 +3,6 @@
 :host {
   display: flex;
   align-items: stretch;
-  margin-bottom: 30px;
   padding: 0;
   overflow: hidden;
 
@@ -99,7 +98,7 @@
   .content {
     align-items: center;
     display: flex;
-    padding: 0px 0px 0px 30px;
+    padding: 0px;
     width: 100%;
   }
 
