@@ -440,6 +440,7 @@ export class SzSearchComponent implements OnInit {
 
     return this.matchingAttributes;
   }
+
   /* end tag input setters */
 
   constructor(
@@ -527,6 +528,16 @@ export class SzSearchComponent implements OnInit {
     }
 
   }
+  /**
+   * submits search form on enter press
+   * if the submit button is currently hidden
+   */
+  public onKeyEnter(): void {
+    if(this.hiddenFields.searchButton){
+      this.submitSearch();
+    }
+  }
+
   /**
    * submit current search params to search service.
    * when search service returns a result it publishes the result

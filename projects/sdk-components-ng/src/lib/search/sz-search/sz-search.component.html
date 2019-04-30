@@ -20,6 +20,7 @@
                       id="entity-name"
                       type="text"
                       [attr.disabled]="getDisabled('name')"
+                      (keyup.enter)="onKeyEnter()"
                       placeholder="Search for Name">
             </div>
             <div class="field dob" [class.disabled]="disabledFields['dob']" *ngIf="!hiddenFields['dob']">
@@ -28,6 +29,7 @@
                       id="entity-dob"
                       type="text"
                       [attr.disabled]="getDisabled('dob')"
+                      (keyup.enter)="onKeyEnter()"
                       placeholder="mm/dd/yyyy">
             </div>
             <div class="field identifier" [class.disabled]="disabledFields['identifier']" *ngIf="!hiddenFields['identifier']">
@@ -36,6 +38,7 @@
                       id="entity-identifier"
                       type="text"
                       [attr.disabled]="getDisabled('identifier')"
+                      (keyup.enter)="onKeyEnter()"
                       placeholder="Number">
             </div>
             <div class="field type" [class.disabled]="disabledFields['identifierType'] || disabledFields['identifier']" *ngIf="!hiddenFields['identifier'] && !hiddenFields['identifierType']">
@@ -65,6 +68,7 @@
                       id="entity-address"
                       type="text"
                       [attr.disabled]="getDisabled('address')"
+                      (keyup.enter)="onKeyEnter()"
                       placeholder="Search for Address">
             </div>
             <div class="field phone" [class.disabled]="disabledFields['phone']" *ngIf="!hiddenFields['phone']">
@@ -81,6 +85,7 @@
                       id="entity-email"
                       type="text"
                       [attr.disabled]="getDisabled('email')"
+                      (keyup.enter)="onKeyEnter()"
                       placeholder="Email Address">
             </div>
             <div class="field spacer">
