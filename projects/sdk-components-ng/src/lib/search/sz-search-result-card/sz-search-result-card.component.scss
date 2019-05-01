@@ -8,7 +8,11 @@
     background: $sz-white;
     padding: 0px 20px 20px 10px;
     overflow: hidden;
-    transition: all 500ms ease-in-out;
+    transition: var(--sz-search-results-transition);
+
+    &:hover {
+      color: var(--sz-search-results-a-hover-color);
+    }
 
     &.matches {
       border-left: var(--sz-search-results-matches-card-border-left);
@@ -26,4 +30,5 @@
       border-left: var(--sz-search-results-name-only-card-border-left);
     }
   }
+
 }
