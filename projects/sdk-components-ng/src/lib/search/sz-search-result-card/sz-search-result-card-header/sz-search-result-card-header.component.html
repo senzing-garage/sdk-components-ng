@@ -11,7 +11,7 @@
       <div *ngIf="recordSummariesExist && showDataSources" class="breakdown-container">
         <span *ngFor="let info of recordSummaries"
               class="search-card__header--breakdown ellipsis">
-           | {{info?.dataSource}} <!-- ({{info?.recordCount}}) --><!-- {{info?.topRecordIds[0]}} -->
+           | {{info?.dataSource}} ({{info?.recordCount}})<!-- {{info?.topRecordIds[0]}} -->
         </span>
       </div>
     </header>
