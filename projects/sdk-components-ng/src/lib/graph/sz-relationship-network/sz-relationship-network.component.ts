@@ -4,6 +4,12 @@ import { Graph, NodeInfo, LinkInfo } from './graph-types';
 import { Simulation } from 'd3-force';
 import { EntityGraphService } from '@senzing/rest-api-client-ng';
 import { map } from 'rxjs/operators';
+
+/**
+ * Provides a SVG of a relationship network diagram via D3.
+ * @export
+ * @class SzRelationshipNetworkComponent
+ */
 @Component({
   selector: 'sz-relationship-network',
   templateUrl: './sz-relationship-network.component.html',
@@ -39,25 +45,89 @@ export class SzRelationshipNetworkComponent implements OnInit {
   @Input() public set showLinkLabels(value: boolean) {this._showLinkLabels = value; }
   public get showLinkLabels(): boolean { return this._showLinkLabels; }
 
-  private _svgWidth: number;
-  @Input() public set svgWidth(value: number) { this._svgWidth = +value; }
-  public get svgWidth(): number { return this._svgWidth; }
+  /**
+   * DOM ele width attr value, can be '100', '200', '100%', '75vh' etc
+   */
+  private _svgWidth: string;
+  /**
+   * arbitrary value just for drawing
+   * @internal
+   */
+  private _statWidth: number = 600;
+  /**
+   * sets the width attribute of the svg.
+   * @deprecated svg is always 100% of parent dom elements width
+   */
+  @Input() public set svgWidth(value: string) { this._svgWidth = value; }
+  /**
+   * @deprecated svg is always 100% of parent dom elements height
+   */
+  public get svgWidth(): string { return this._svgWidth; }
 
-  private _svgHeight: number;
-  @Input() public set svgHeight(value: number) { this._svgHeight = +value; }
-  public get svgHeight(): number { return this._svgHeight; }
+  /**
+   * DOM ele width attr value, can be '100', '200', '100%', '75vh' etc
+   * @internal
+   */
+  private _svgHeight: string;
+  /**
+   * arbitrary value just for drawing
+   * @internal
+   */
+  private _statHeight: number = 400;
+  /**
+   * sets the height attribute of the svg.
+   * @deprecated svg is always 100% of parent dom elements height
+   */
+  @Input() public set svgHeight(value: string) { this._svgHeight = value; }
+  /**
+   * @deprecated svg is always 100% of parent dom elements height
+   */
+  public get svgHeight(): string { return this._svgHeight; }
 
+  /**
+   * this matches up with the "_statWidth" and "_statHeight" to
+   * control aspect ratio for dynamic scaling.
+   * @internal
+  */
+  private _svgViewBox: string = '150 125 600 400';
+  /**
+   * this matches up with the "_statWidth" and "_statHeight" to
+   * control aspect ratio for dynamic scaling.
+   * @internal
+  */
+  @Input() public set svgViewBox(value: string){ this._svgViewBox = value; }
 
-  private _port: number;
-  @Input() set port(value: string) { this._port = +value; }
+  /**
+   * the preserveAspectRatio attribute on the svg element.
+   * @interal
+   */
+  private _preserveAspectRatio: string = "xMidYMid meet";
+   /**
+   * sets the preserveAspectRatio attribute on the svg element.
+   */
+  @Input() public set svgPreserveAspectRatio(value: string){ this._preserveAspectRatio = value; }
 
+  /** @internal */
   private _entityIds: string[];
-  @Input() set entityIds(value: string) {
-    if(value && value.indexOf(',')) {
-      const sArr = value.split(',');
-      this._entityIds = sArr;
-    } else {
-      this._entityIds = [value];
+  /**
+   * Set the entityIds of the src entities to do discovery search around.
+   */
+  @Input() set entityIds(value: string | number | number[]) {
+    if(value && typeof value === 'string'){
+      if(value && value.indexOf(',')) {
+        // string array
+        const sArr = value.split(',');
+        this._entityIds = sArr;
+      } else {
+        // single string
+        this._entityIds = [value];
+      }
+    } else if(value && typeof value === 'number'){
+      // single number
+      this._entityIds = [ value.toString() ];
+    } else if(value){
+      // the only other thing it could be is number[]
+      this._entityIds = value.toString().split(',');
     }
   }
 
@@ -217,11 +287,11 @@ export class SzRelationshipNetworkComponent implements OnInit {
 
     // Define the simulation with nodes, forces, and event listeners.
     this.forceSimulation = d3.forceSimulation(graph.nodes)
-      .force('link', d3.forceLink().links(graph.links).distance(this._svgWidth / 8)) // links pull nodes together
+      .force('link', d3.forceLink().links(graph.links).distance(this._statWidth / 8)) // links pull nodes together
       .force('charge', d3.forceManyBody().strength(-100)) // nodes repel each other
-      .force('center', d3.forceCenter(this._svgWidth / 2, this._svgHeight / 2)) // Make all nodes start near the center of the SVG
-      .force('x', d3.forceX(this._svgWidth / 2).strength(0.01)) // x and y continually pull all nodes toward a point.  If the
-      .force('y', d3.forceY(this._svgHeight / 2).strength(0.01)) //  graph has multiple networks, this keeps them on screen
+      .force('center', d3.forceCenter(this._statWidth / 2, this._statHeight / 2)) // Make all nodes start near the center of the SVG
+      .force('x', d3.forceX(this._statWidth / 2).strength(0.01)) // x and y continually pull all nodes toward a point.  If the
+      .force('y', d3.forceY(this._statHeight / 2).strength(0.01)) //  graph has multiple networks, this keeps them on screen
       .on('tick', this.tick.bind(this));
 
     // Make the tooltip visible when mousing over nodes.  Fade out distant nodes
