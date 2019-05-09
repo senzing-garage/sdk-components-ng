@@ -1,0 +1,17 @@
+
+<div class="section-header__wrapper graph-relationships">
+  <div class="section-header__left-content">
+    <span>At a Glance</span>
+  </div>
+  <div class="section-header__right-content">
+    <span class="section-header__count">{{ data?.relatedEntities.length }}</span>
+    <span class="section-header__countLabel">Relationships</span>
+  </div>
+</div>
+<div class="sz-entity-detail-section-collapsible-card">
+  <sz-relationship-network
+    [entityIds]="graphIds"
+    [maxDegrees]="maxDegrees"
+    buildOut=2
+    [maxEntities]="maxEntities"></sz-relationship-network>
+</div>
