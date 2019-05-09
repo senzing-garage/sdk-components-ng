@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
 
 import {
   SzEntityData,
@@ -18,6 +18,8 @@ import {
   styleUrls: ['./sz-entity-detail-graph.component.scss']
 })
 export class SzEntityDetailGraphComponent implements OnInit {
+  isOpen: boolean = true;
+
   @Input() data: {
     resolvedEntity: SzResolvedEntity,
     relatedEntities: SzRelatedEntity[]
@@ -25,6 +27,16 @@ export class SzEntityDetailGraphComponent implements OnInit {
   @Input() sectionIcon: string;
   @Input() maxDegrees: number = 2;
   @Input() maxEntities: number = 25;
+  @Input()
+  set expanded(value) {
+    this.isOpen = value;
+  }
+  get expanded(): boolean {
+    return this.isOpen;
+  }
+
+  @HostBinding('class.open') get cssClssOpen() { return this.expanded; };
+  @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; };
 
   public get graphIds(): number[] {
     let _ret = [];
@@ -34,8 +46,10 @@ export class SzEntityDetailGraphComponent implements OnInit {
     return _ret;
   }
 
-  constructor() {}
-
-  ngOnInit() {
+  toggleExpanded(evt: Event) {
+    this.expanded = !this.expanded;
   }
+
+  constructor() {}
+  ngOnInit() {}
 }

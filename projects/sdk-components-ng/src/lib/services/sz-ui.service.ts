@@ -19,7 +19,6 @@ export interface RelationshipHoverEvent {
  * Component state changes etc.
  *
  * @export
- * @class SzUIEventService
  */
 @Injectable({
   providedIn: 'root'
