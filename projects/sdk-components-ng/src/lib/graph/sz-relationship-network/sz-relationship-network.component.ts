@@ -49,7 +49,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
    * arbitrary value just for drawing
    * @internal
    */
-  private _statWidth: number = 600;
+  private _statWidth: number = 800;
   /**
    * sets the width of the component
    */
@@ -71,7 +71,7 @@ export class SzRelationshipNetworkComponent implements OnInit {
    * content centering and dynamic scaling properties.
    * @internal
   */
-  private _svgViewBox: string = '150 50 300 300';
+  private _svgViewBox: string = '150 50 400 300';
   /**
    * sets the viewBox attribute on the svg element.
   */

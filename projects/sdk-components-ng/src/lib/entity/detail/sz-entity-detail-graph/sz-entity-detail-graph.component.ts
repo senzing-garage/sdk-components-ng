@@ -25,7 +25,7 @@ export class SzEntityDetailGraphComponent implements OnInit {
     relatedEntities: SzRelatedEntity[]
   }
   @Input() sectionIcon: string;
-  @Input() maxDegrees: number = 2;
+  @Input() maxDegrees: number = 90;
   @Input() maxEntities: number = 25;
   @Input()
   set expanded(value) {
