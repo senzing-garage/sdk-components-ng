@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, HostBinding, OnInit, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
 import { Graph, NodeInfo, LinkInfo } from './graph-types';
 import { Simulation } from 'd3-force';
@@ -8,7 +8,6 @@ import { map } from 'rxjs/operators';
 /**
  * Provides a SVG of a relationship network diagram via D3.
  * @export
- * @class SzRelationshipNetworkComponent
  */
 @Component({
   selector: 'sz-relationship-network',
@@ -45,30 +44,17 @@ export class SzRelationshipNetworkComponent implements OnInit {
   @Input() public set showLinkLabels(value: boolean) {this._showLinkLabels = value; }
   public get showLinkLabels(): boolean { return this._showLinkLabels; }
 
-  /**
-   * DOM ele width attr value, can be '100', '200', '100%', '75vh' etc
-   */
-  private _svgWidth: string;
+
   /**
    * arbitrary value just for drawing
    * @internal
    */
   private _statWidth: number = 600;
   /**
-   * sets the width attribute of the svg.
-   * @deprecated svg is always 100% of parent dom elements width
+   * sets the width of the component
    */
-  @Input() public set svgWidth(value: string) { this._svgWidth = value; }
-  /**
-   * @deprecated svg is always 100% of parent dom elements height
-   */
-  public get svgWidth(): string { return this._svgWidth; }
+  @HostBinding('style.width.px')@Input() svgWidth;
 
-  /**
-   * DOM ele width attr value, can be '100', '200', '100%', '75vh' etc
-   * @internal
-   */
-  private _svgHeight: string;
   /**
    * arbitrary value just for drawing
    * @internal
@@ -78,24 +64,22 @@ export class SzRelationshipNetworkComponent implements OnInit {
    * sets the height attribute of the svg.
    * @deprecated svg is always 100% of parent dom elements height
    */
-  @Input() public set svgHeight(value: string) { this._svgHeight = value; }
-  /**
-   * @deprecated svg is always 100% of parent dom elements height
-   */
-  public get svgHeight(): string { return this._svgHeight; }
+  @HostBinding('style.height.px')@Input() svgHeight: string;
 
   /**
    * this matches up with the "_statWidth" and "_statHeight" to
-   * control aspect ratio for dynamic scaling.
+   * content centering and dynamic scaling properties.
    * @internal
   */
-  private _svgViewBox: string = '150 125 600 400';
+  private _svgViewBox: string = '150 50 300 300';
   /**
-   * this matches up with the "_statWidth" and "_statHeight" to
-   * control aspect ratio for dynamic scaling.
-   * @internal
+   * sets the viewBox attribute on the svg element.
   */
   @Input() public set svgViewBox(value: string){ this._svgViewBox = value; }
+  /**
+   * gets the viewBox attribute on the svg element.
+   */
+  public get svgViewBox(){ return this._svgViewBox; }
 
   /**
    * the preserveAspectRatio attribute on the svg element.
@@ -104,8 +88,13 @@ export class SzRelationshipNetworkComponent implements OnInit {
   private _preserveAspectRatio: string = "xMidYMid meet";
    /**
    * sets the preserveAspectRatio attribute on the svg element.
+   * used to set aspect ratio, centering etc for dynamic scaling.
    */
   @Input() public set svgPreserveAspectRatio(value: string){ this._preserveAspectRatio = value; }
+  /**
+   * gets the preserveAspectRatio attribute on the svg element.
+   */
+  public get svgPreserveAspectRatio(){ return this._preserveAspectRatio; }
 
   /** @internal */
   private _entityIds: string[];
