@@ -6,8 +6,8 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
  */
 @Component({
   selector: 'sz-entity-detail-section-header',
-  templateUrl: './sz-entity-detail-section-header.component.html',
-  styleUrls: ['./sz-entity-detail-section-header.component.scss']
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss']
 })
 export class SzEntityDetailSectionHeaderComponent implements OnInit {
   @Input() sectionTitle: string;

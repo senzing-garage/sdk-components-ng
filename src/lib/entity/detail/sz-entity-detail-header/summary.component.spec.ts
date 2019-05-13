@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SzEntityDetailSectionSummaryComponent } from './sz-entity-detail-section-summary.component';
+import { SzEntityDetailSectionSummaryComponent } from './summary.component';
 
 describe('SzEntityDetailSectionSummaryComponent', () => {
   let component: SzEntityDetailSectionSummaryComponent;

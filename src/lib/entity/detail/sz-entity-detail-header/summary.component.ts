@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { SzEntityDetailSectionSummary } from '../../../../models/entity-detail-section-data';
+import { SzEntityDetailSectionSummary } from '../../../models/entity-detail-section-data';
 
 /**
  * @internal
@@ -7,8 +7,8 @@ import { SzEntityDetailSectionSummary } from '../../../../models/entity-detail-s
  */
 @Component({
   selector: 'sz-entity-detail-section-summary',
-  templateUrl: './sz-entity-detail-section-summary.component.html',
-  styleUrls: ['./sz-entity-detail-section-summary.component.scss']
+  templateUrl: './summary.component.html',
+  styleUrls: ['./summary.component.scss']
 })
 export class SzEntityDetailSectionSummaryComponent implements OnInit {
   @Input()section: SzEntityDetailSectionSummary;

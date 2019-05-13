@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { SzEntityDetailSectionData } from '../../../../models/entity-detail-section-data';
+import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 import { SzEntityRecord } from '@senzing/rest-api-client-ng';
 
 /**
@@ -8,8 +8,8 @@ import { SzEntityRecord } from '@senzing/rest-api-client-ng';
  */
 @Component({
   selector: 'sz-entity-detail-section-collapsible-card',
-  templateUrl: './sz-entity-detail-section-collapsible-card.component.html',
-  styleUrls: ['./sz-entity-detail-section-collapsible-card.component.scss']
+  templateUrl: './collapsible-card.component.html',
+  styleUrls: ['./collapsible-card.component.scss']
 })
 export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, AfterViewInit {
   //private static _msgHandler : SzMessageHandler = new SzMessageHandler('entity.collapsible-card');

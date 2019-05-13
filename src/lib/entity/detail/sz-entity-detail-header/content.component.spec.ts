@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SzEntityDetailHeaderContentComponent } from './sz-entity-detail-header-content.component';
+import { SzEntityDetailHeaderContentComponent } from './content.component';
 
 describe('SzEntityDetailHeaderContentComponent', () => {
   let component: SzEntityDetailHeaderContentComponent;

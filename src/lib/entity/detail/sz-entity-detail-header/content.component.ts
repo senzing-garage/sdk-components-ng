@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 
-import { SzSearchResultEntityData } from '../../../../models/responces/search-results/sz-search-result-entity-data';
-import { SzEntityDetailSectionData } from '../../../../models/entity-detail-section-data';
+import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
+import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 import { SzEntityRecord } from '@senzing/rest-api-client-ng';
 
 /**
@@ -10,8 +10,8 @@ import { SzEntityRecord } from '@senzing/rest-api-client-ng';
  */
 @Component({
   selector: 'sz-entity-detail-header-content',
-  templateUrl: './sz-entity-detail-header-content.component.html',
-  styleUrls: ['./sz-entity-detail-header-content.component.scss']
+  templateUrl: './content.component.html',
+  styleUrls: ['./content.component.scss']
 })
 export class SzEntityDetailHeaderContentComponent implements OnInit {
   //@Input() entity: ResolvedEntityData | SearchResultEntityData | EntityDetailSectionData | EntityRecord;

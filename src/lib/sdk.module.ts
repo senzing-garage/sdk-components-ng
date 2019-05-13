@@ -22,12 +22,13 @@ import { SzSearchService } from './services/sz-search.service';
 
 /** components */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
-import { SzEntityDetailHeaderComponent } from './entity/detail/sz-entity-detail-header/sz-entity-detail-header.component';
-import { SzEntityDetailSectionSummaryComponent } from './entity/detail/sz-entity-detail-header/sz-entity-detail-section-summary/sz-entity-detail-section-summary.component';
-import { SzEntityDetailHeaderContentComponent } from './entity/detail/sz-entity-detail-header/sz-entity-detail-header-content/sz-entity-detail-header-content.component';
+import { SzEntityDetailHeaderComponent } from './entity/detail/sz-entity-detail-header/header.component';
+import { SzEntityDetailSectionSummaryComponent } from './entity/detail/sz-entity-detail-header/summary.component';
+import { SzEntityDetailHeaderContentComponent } from './entity/detail/sz-entity-detail-header/content.component';
 import { SzEntityDetailsSectionComponent } from './entity/detail/sz-entity-details-section/sz-entity-details-section.component';
-import { SzEntityDetailSectionHeaderComponent } from './entity/detail/sz-entity-details-section/sz-entity-detail-section-header/sz-entity-detail-section-header.component';
-import { SzEntityDetailSectionCollapsibleCardComponent } from './entity/detail/sz-entity-details-section/sz-entity-detail-section-collapsible-card/sz-entity-detail-section-collapsible-card.component';
+import { SzEntityDetailSectionHeaderComponent } from './entity/detail/sz-entity-details-section/header.component';
+import { SzEntityDetailSectionCollapsibleCardComponent } from './entity/detail/sz-entity-details-section/collapsible-card.component';
+
 import { SzEntityMatchPillComponent } from './entity/sz-entity-match-pill/sz-entity-match-pill.component';
 import { SzEntityRecordCardComponent } from './entity/sz-entity-record-card/sz-entity-record-card.component';
 import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-card/sz-entity-record-card-header/sz-entity-record-card-header.component';
