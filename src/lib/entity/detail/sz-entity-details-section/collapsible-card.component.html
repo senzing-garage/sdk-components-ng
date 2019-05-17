@@ -1,8 +1,7 @@
 <div #expPanel hideToggle="true" expanded="true"
-  (click)="toggleExpanded($event)"
   [ngClass]="{'open': expanded, 'closed': !expanded}"
   >
-    <div class="mat-expansion-panel-header">
+    <div class="mat-expansion-panel-header" (click)="toggleExpanded($event)">
       <div class="mat-panel-title">
 
         <svg class="arrow" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
