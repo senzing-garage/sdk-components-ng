@@ -13,6 +13,7 @@ export * from './lib/common/utils';
 /** services */
 export * from './lib/services/sz-search.service';  // updated to use rest
 export * from './lib/services/sz-message-bundle.service';
+export * from './lib/services/sz-configuration.service';
 
 /** components */
 export * from './lib/search/sz-search/sz-search.component';

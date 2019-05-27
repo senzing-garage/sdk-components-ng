@@ -488,7 +488,7 @@ export class SzSearchComponent implements OnInit {
    * @internal
   */
   private createEntitySearchForm(): void {
-    let searchParams = this.searchService.getSearchParams();
+    const searchParams = this.searchService.getSearchParams();
     //console.log('createEntitySearchForm: ',JSON.parse(JSON.stringify(searchParams)));
 
     if (searchParams) {
