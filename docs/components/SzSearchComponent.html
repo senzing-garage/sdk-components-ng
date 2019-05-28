@@ -82,7 +82,11 @@
     </p>
     <div class="io-description">
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;sz-searchname=&quot;Isa Creepr&quot;(resultsChange)=&quot;myResultsHandler($event)&quot;(searchStart)=&quot;showSpinner()&quot;(searchEnd)=&quot;hideSpinner()&quot;&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;sz-search
+name=&quot;Isa Creepr&quot;
+(resultsChange)=&quot;myResultsHandler($event)&quot;
+(searchStart)=&quot;showSpinner()&quot;
+(searchEnd)=&quot;hideSpinner()&quot;&gt;</code></pre>
                 </div>
     </div>
 
@@ -145,6 +149,10 @@
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#clearSearch">clearSearch</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getAnyDisabled">getAnyDisabled</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -1710,6 +1718,72 @@ format is &quot;SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER&quot; or array of strings
                                 <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                             </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getAnyDisabled"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            getAnyDisabled
+                            </b>
+                            <a href="#getAnyDisabled"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>getAnyDisabled(keys: string[])</code>
+                    </td>
+                </tr>
+
+
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>keys</td>
+                                                        <td>
+                                                                    <code>string[]</code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
                     </td>
                 </tr>
             </tbody>
@@ -4613,12 +4687,12 @@ lets bind the output of the search component to the input of the search results 
                       [attr.disabled]&#x3D;&quot;getDisabled(&#x27;identifier&#x27;)&quot;
                       placeholder&#x3D;&quot;Number&quot;&gt;
             &lt;/div&gt;
-            &lt;div class&#x3D;&quot;field type&quot; [class.disabled]&#x3D;&quot;disabledFields[&#x27;identifierType&#x27;]&quot; *ngIf&#x3D;&quot;!hiddenFields[&#x27;identifier&#x27;] &amp;&amp; !hiddenFields[&#x27;identifierType&#x27;]&quot;&gt;
+            &lt;div class&#x3D;&quot;field type&quot; [class.disabled]&#x3D;&quot;disabledFields[&#x27;identifierType&#x27;] || disabledFields[&#x27;identifier&#x27;]&quot; *ngIf&#x3D;&quot;!hiddenFields[&#x27;identifier&#x27;] &amp;&amp; !hiddenFields[&#x27;identifierType&#x27;]&quot;&gt;
               &lt;label for&#x3D;&quot;entity-type&quot;&gt;Type&lt;/label&gt;
               &lt;select formControlName&#x3D;&quot;IDENTIFIER_TYPE&quot;
                       class&#x3D;&quot;identifier-dropdown&quot;
                       id&#x3D;&quot;entity-type&quot;
-                      [attr.disabled]&#x3D;&quot;getDisabled(&#x27;identifierType&#x27;)&quot;
+                      [attr.disabled]&#x3D;&quot;getAnyDisabled([&#x27;identifierType&#x27;,&#x27;identifier&#x27;])&quot;
                       name&#x3D;&quot;type&quot;&gt;
                 &lt;option [ngValue]&#x3D;&quot;null&quot; disabled&gt;Choose ID type&lt;/option&gt;
                 &lt;option *ngFor&#x3D;&quot;let type of orderedAttributes()&quot;
@@ -4921,8 +4995,8 @@ lets bind the output of the search component to the input of the search results 
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div>  <!-- @senzing/sdk/search/sz-search -->  <!--    NAME_FULL    DATE_OF_BIRTH    IDENTIFIER    IDENTIFIER_TYPE    ADDR_FULL    PHONE_NUMBER    EMAIL_ADDRESS  -->  <div class="content" *ngIf="true">      <section class="entity search" (ngSubmit)="submitSearch()">        <form class="form" [formGroup]="entitySearchForm" novalidate>          <div class="row">            <div class="field name" [class.disabled]="disabledFields[\'name\']" *ngIf="!hiddenFields[\'name\']">              <label for="entity-name">Name</label>              <input formControlName="NAME_FULL"                      class="search-input"                      id="entity-name"                      type="text"                      [attr.disabled]="getDisabled(\'name\')"                      placeholder="Search for Name">            </div>            <div class="field dob" [class.disabled]="disabledFields[\'dob\']" *ngIf="!hiddenFields[\'dob\']">              <label for="entity-dob">Date of Birth</label>              <input formControlName="DATE_OF_BIRTH"                      id="entity-dob"                      type="text"                      [attr.disabled]="getDisabled(\'dob\')"                      placeholder="mm/dd/yyyy">            </div>            <div class="field identifier" [class.disabled]="disabledFields[\'identifier\']" *ngIf="!hiddenFields[\'identifier\']">              <label for="entity-identifier">Identifier</label>              <input formControlName="IDENTIFIER"                      id="entity-identifier"                      type="text"                      [attr.disabled]="getDisabled(\'identifier\')"                      placeholder="Number">            </div>            <div class="field type" [class.disabled]="disabledFields[\'identifierType\']" *ngIf="!hiddenFields[\'identifier\'] && !hiddenFields[\'identifierType\']">              <label for="entity-type">Type</label>              <select formControlName="IDENTIFIER_TYPE"                      class="identifier-dropdown"                      id="entity-type"                      [attr.disabled]="getDisabled(\'identifierType\')"                      name="type">                <option [ngValue]="null" disabled>Choose ID type</option>                <option *ngFor="let type of orderedAttributes()"                        [value]="type.attributeCode"                        [selected]="type.attributeCode === \'PASSPORT_NUMBER\'">{{type.featureType}}                </option>              </select>            </div>            <div class="action-button__wrapper" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">              <button mat-button class="button__search-go"              [attr.disabled]="getDisabled(\'searchButton\')"              (click)="submitSearch()">Search</button>            </div>          </div>          <div class="row">            <div class="field address" [class.disabled]="disabledFields[\'address\']" *ngIf="!hiddenFields[\'address\']">              <label for="entity-address">Address</label>              <input formControlName="ADDR_FULL"                      id="entity-address"                      type="text"                      [attr.disabled]="getDisabled(\'address\')"                      placeholder="Search for Address">            </div>            <div class="field phone" [class.disabled]="disabledFields[\'phone\']" *ngIf="!hiddenFields[\'phone\']">              <label for="entity-phone">Phone</label>              <input formControlName="PHONE_NUMBER"                      id="entity-phone"                      type="text"                      [attr.disabled]="getDisabled(\'phone\')"                      placeholder="Phone #">            </div>            <div class="field email" [class.disabled]="disabledFields[\'email\']" *ngIf="!hiddenFields[\'email\']">              <label for="entity-email">Email</label>              <input formControlName="EMAIL_ADDRESS"                      id="entity-email"                      type="text"                      [attr.disabled]="getDisabled(\'email\')"                      placeholder="Email Address">            </div>            <div class="field spacer">            </div>            <div class="action-button__wrapper" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">Clear Search Criteria</button>            </div>          </div>          <div class="row bottom"></div>        </form>      </section>    </div></div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'}];
+        var COMPONENT_TEMPLATE = '<div><div>  <!-- @senzing/sdk/search/sz-search -->  <!--    NAME_FULL    DATE_OF_BIRTH    IDENTIFIER    IDENTIFIER_TYPE    ADDR_FULL    PHONE_NUMBER    EMAIL_ADDRESS  -->  <div class="content" *ngIf="true">      <section class="entity search" (ngSubmit)="submitSearch()">        <form class="form" [formGroup]="entitySearchForm" novalidate>          <div class="row">            <div class="field name" [class.disabled]="disabledFields[\'name\']" *ngIf="!hiddenFields[\'name\']">              <label for="entity-name">Name</label>              <input formControlName="NAME_FULL"                      class="search-input"                      id="entity-name"                      type="text"                      [attr.disabled]="getDisabled(\'name\')"                      placeholder="Search for Name">            </div>            <div class="field dob" [class.disabled]="disabledFields[\'dob\']" *ngIf="!hiddenFields[\'dob\']">              <label for="entity-dob">Date of Birth</label>              <input formControlName="DATE_OF_BIRTH"                      id="entity-dob"                      type="text"                      [attr.disabled]="getDisabled(\'dob\')"                      placeholder="mm/dd/yyyy">            </div>            <div class="field identifier" [class.disabled]="disabledFields[\'identifier\']" *ngIf="!hiddenFields[\'identifier\']">              <label for="entity-identifier">Identifier</label>              <input formControlName="IDENTIFIER"                      id="entity-identifier"                      type="text"                      [attr.disabled]="getDisabled(\'identifier\')"                      placeholder="Number">            </div>            <div class="field type" [class.disabled]="disabledFields[\'identifierType\'] || disabledFields[\'identifier\']" *ngIf="!hiddenFields[\'identifier\'] && !hiddenFields[\'identifierType\']">              <label for="entity-type">Type</label>              <select formControlName="IDENTIFIER_TYPE"                      class="identifier-dropdown"                      id="entity-type"                      [attr.disabled]="getAnyDisabled([\'identifierType\',\'identifier\'])"                      name="type">                <option [ngValue]="null" disabled>Choose ID type</option>                <option *ngFor="let type of orderedAttributes()"                        [value]="type.attributeCode"                        [selected]="type.attributeCode === \'PASSPORT_NUMBER\'">{{type.featureType}}                </option>              </select>            </div>            <div class="action-button__wrapper" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">              <button mat-button class="button__search-go"              [attr.disabled]="getDisabled(\'searchButton\')"              (click)="submitSearch()">Search</button>            </div>          </div>          <div class="row">            <div class="field address" [class.disabled]="disabledFields[\'address\']" *ngIf="!hiddenFields[\'address\']">              <label for="entity-address">Address</label>              <input formControlName="ADDR_FULL"                      id="entity-address"                      type="text"                      [attr.disabled]="getDisabled(\'address\')"                      placeholder="Search for Address">            </div>            <div class="field phone" [class.disabled]="disabledFields[\'phone\']" *ngIf="!hiddenFields[\'phone\']">              <label for="entity-phone">Phone</label>              <input formControlName="PHONE_NUMBER"                      id="entity-phone"                      type="text"                      [attr.disabled]="getDisabled(\'phone\')"                      placeholder="Phone #">            </div>            <div class="field email" [class.disabled]="disabledFields[\'email\']" *ngIf="!hiddenFields[\'email\']">              <label for="entity-email">Email</label>              <input formControlName="EMAIL_ADDRESS"                      id="entity-email"                      type="text"                      [attr.disabled]="getDisabled(\'email\')"                      placeholder="Email Address">            </div>            <div class="field spacer">            </div>            <div class="action-button__wrapper" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">Clear Search Criteria</button>            </div>          </div>          <div class="row bottom"></div>        </form>      </section>    </div></div></div>'
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipNetworkInputComponent', 'selector': 'sz-relationship-network-input'},{'name': 'SzRelationshipNetworkLookupComponent', 'selector': 'sz-relationship-network-lookup'},{'name': 'SzRelationshipNetworkUploadComponent', 'selector': 'sz-relationship-network-upload'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzSearchComponent'};
 </script>
