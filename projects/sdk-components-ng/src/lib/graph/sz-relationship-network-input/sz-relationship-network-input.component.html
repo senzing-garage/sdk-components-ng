@@ -8,7 +8,7 @@
     <input type="button" id="btnAddEntityInput" value="+" (click)="addEntityInput()"/><br/>
 
     <label for="networkMaxDegrees">Maximum Separation: </label><input type="range" min="1" max="5" value="3" [(ngModel)]="networkMaxDegrees" id="networkMaxDegrees" name="networkMaxDegrees"><span id="networkMaxDegreeValue">{{networkMaxDegrees}}</span><br/>
-    <label for="networkBuildout">Network Buildout: </label><input type="range" min="1" max="5" value="2" [(ngModel)]="networkBuildout" id="networkBuildout" name="networkBuildout"><span id="networkBuildoutValue">{{networkBuildout}}</span><br/>
+    <label for="networkBuildout">Network Buildout: </label><input type="range" min="0" max="5" value="2" [(ngModel)]="networkBuildout" id="networkBuildout" name="networkBuildout"><span id="networkBuildoutValue">{{networkBuildout}}</span><br/>
     <label for="maxEntities">Entity Limit: </label><input type="text" id="maxEntities" value="1000" [(ngModel)]="maxEntities" name="maxEntities"><br/>
 
     <label id="checkboxLabel" for="showMatchKeysCheckbox">Show Match Keys</label>
