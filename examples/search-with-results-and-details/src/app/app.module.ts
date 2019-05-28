@@ -11,13 +11,19 @@ import { SzSearchComponentTest } from './search/sz-search/sz-search.component';
 
 import { SzSearchResultsTestComponent } from './search/sz-search-results-test/sz-search-results-test.component';
 import { SzSearchResultsCardTestComponent } from './search/sz-search-results-card-test/sz-search-results-card-test.component';
+import { SzRelationshipNetworkInputComponent } from 'projects/sdk-components-ng/src/lib/graph/sz-relationship-network-input/sz-relationship-network-input.component';
+import { SzRelationshipNetworkLookupComponent } from '../../../../projects/sdk-components-ng/src/lib/graph/sz-relationship-network-lookup/sz-relationship-network-lookup.component';
+import { SzRelationshipNetworkUploadComponent } from '../../../../projects/sdk-components-ng/src/lib/graph/sz-relationship-network-upload/sz-relationship-network-upload.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SzSearchComponentTest,
     SzSearchResultsTestComponent,
-    SzSearchResultsCardTestComponent
+    SzSearchResultsCardTestComponent,
+    SzRelationshipNetworkInputComponent,
+    SzRelationshipNetworkLookupComponent,
+    SzRelationshipNetworkUploadComponent
   ],
   imports: [
     BrowserModule,

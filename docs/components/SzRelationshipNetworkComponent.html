@@ -58,6 +58,13 @@
     <code>projects/sdk-components-ng/src/lib/graph/sz-relationship-network/sz-relationship-network.component.ts</code>
 </p>
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Provides a SVG of a relationship network diagram via D3.</p>
+
+    </p>
 
 
     <p class="comment">
@@ -67,6 +74,11 @@
                 <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
     </p>
 
+    <p class="comment">
+        <h3>Example</h3>
+    </p>
+    <div class="io-description">
+    </div>
 
 <section>
     <h3>Metadata</h3>
@@ -249,13 +261,16 @@
                                 <a href="#maxEntities">maxEntities</a>
                             </li>
                             <li>
-                                <a href="#port">port</a>
-                            </li>
-                            <li>
                                 <a href="#showLinkLabels">showLinkLabels</a>
                             </li>
                             <li>
                                 <a href="#svgHeight">svgHeight</a>
+                            </li>
+                            <li>
+                                <a href="#svgPreserveAspectRatio">svgPreserveAspectRatio</a>
+                            </li>
+                            <li>
+                                <a href="#svgViewBox">svgViewBox</a>
                             </li>
                             <li>
                                 <a href="#svgWidth">svgWidth</a>
@@ -279,13 +294,10 @@
                                     <a href="#showLinkLabels">showLinkLabels</a>
                                 </li>
                                 <li>
-                                    <a href="#svgWidth">svgWidth</a>
+                                    <a href="#svgViewBox">svgViewBox</a>
                                 </li>
                                 <li>
-                                    <a href="#svgHeight">svgHeight</a>
-                                </li>
-                                <li>
-                                    <a href="#port">port</a>
+                                    <a href="#svgPreserveAspectRatio">svgPreserveAspectRatio</a>
                                 </li>
                                 <li>
                                     <a href="#entityIds">entityIds</a>
@@ -376,10 +388,8 @@
                         <code>entityIds</code>
                     </td>
                     <td class="col-md-10">
-                            <p>
-                            <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                            </p>
+                        <div><p>Set the entityIds of the src entities to do discovery search around.</p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -420,22 +430,6 @@
             <tbody>
                 <tr>
                     <td class="col-md-2">
-                        <a name="port"></a>
-                        <code>port</code>
-                    </td>
-                    <td class="col-md-10">
-                            <p>
-                            <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                            </p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-2">
                         <a name="showLinkLabels"></a>
                         <code>showLinkLabels</code>
                     </td>
@@ -456,8 +450,47 @@
                         <code>svgHeight</code>
                     </td>
                     <td class="col-md-10">
+                        <div><p>sets the height attribute of the svg.</p>
+</div>
                             <p>
-                            <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                            <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                            </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-2">
+                        <a name="svgPreserveAspectRatio"></a>
+                        <code>svgPreserveAspectRatio</code>
+                    </td>
+                    <td class="col-md-10">
+                        <div><p>sets the preserveAspectRatio attribute on the svg element.
+used to set aspect ratio, centering etc for dynamic scaling.</p>
+</div>
+                            <p>
+                            <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                            </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-2">
+                        <a name="svgViewBox"></a>
+                        <code>svgViewBox</code>
+                    </td>
+                    <td class="col-md-10">
+                        <div><p>sets the viewBox attribute on the svg element.</p>
+</div>
+                            <p>
+                            <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                             </p>
                     </td>
@@ -472,10 +505,8 @@
                         <code>svgWidth</code>
                     </td>
                     <td class="col-md-10">
-                            <p>
-                            <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                            </p>
+                        <div><p>sets the width of the component</p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -1772,24 +1803,33 @@ Not called when D3&#39;s forces reach equilibrium</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="svgWidth"></a>
-                        <span class="name"><b>svgWidth</b><a href="#svgWidth"><span class="icon ion-ios-link"></span></a></span>
+                        <a name="svgViewBox"></a>
+                        <span class="name"><b>svgViewBox</b><a href="#svgViewBox"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>svgWidth()</code></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>svgWidth(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code></span>
+                        <span class="accessor"><b>get</b><code>svgViewBox()</code></span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
+                                <div class="io-description"><p>gets the viewBox attribute on the svg element.</p>
+</div>
+
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>svgViewBox(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>sets the viewBox attribute on the svg element.</p>
+</div>
 
                                 <div class="io-description">
                                         <b>Parameters :</b>
@@ -1806,7 +1846,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                                                             <td>value</td>
                                                     
                                                             <td>
-                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                                             </td>
                                                     
                                                         <td>
@@ -1831,78 +1871,34 @@ Not called when D3&#39;s forces reach equilibrium</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="svgHeight"></a>
-                        <span class="name"><b>svgHeight</b><a href="#svgHeight"><span class="icon ion-ios-link"></span></a></span>
+                        <a name="svgPreserveAspectRatio"></a>
+                        <span class="name"><b>svgPreserveAspectRatio</b><a href="#svgPreserveAspectRatio"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>svgHeight()</code></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>svgHeight(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code></span>
+                        <span class="accessor"><b>get</b><code>svgPreserveAspectRatio()</code></span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
+                                <div class="io-description"><p>gets the preserveAspectRatio attribute on the svg element.</p>
+</div>
 
-                                <div class="io-description">
-                                        <b>Parameters :</b>
-                                        <table class="params">
-                                            <thead>
-                                                <tr>
-                                                    <td>Name</td>
-                                                        <td>Type</td>
-                                                    <td>Optional</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                    <tr>
-                                                            <td>value</td>
-                                                    
-                                                            <td>
-                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                                            </td>
-                                                    
-                                                        <td>
-                                                                No
-                                                        </td>
-                                                        
-                                                    </tr>
-                                            </tbody>
-                                        </table>
-                                </div>
-                                <div>
-                                </div>
-                                <div class="io-description">
-                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                                </div>
                         </td>
                     </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="port"></a>
-                        <span class="name"><b>port</b><a href="#port"><span class="icon ion-ios-link"></span></a></span>
-                    </td>
-                </tr>
-
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>port(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
+                        <span class="accessor"><b>set</b><code>svgPreserveAspectRatio(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
+                                <div class="io-description"><p>sets the preserveAspectRatio attribute on the svg element.
+used to set aspect ratio, centering etc for dynamic scaling.</p>
+</div>
 
                                 <div class="io-description">
                                         <b>Parameters :</b>
@@ -1952,11 +1948,13 @@ Not called when D3&#39;s forces reach equilibrium</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>entityIds(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
+                        <span class="accessor"><b>set</b><code>entityIds(value)</code></span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
+                                <div class="io-description"><p>Set the entityIds of the src entities to do discovery search around.</p>
+</div>
 
                                 <div class="io-description">
                                         <b>Parameters :</b>
@@ -1964,7 +1962,6 @@ Not called when D3&#39;s forces reach equilibrium</p>
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
-                                                        <td>Type</td>
                                                     <td>Optional</td>
                                                 </tr>
                                             </thead>
@@ -1972,9 +1969,6 @@ Not called when D3&#39;s forces reach equilibrium</p>
                                                     <tr>
                                                             <td>value</td>
                                                     
-                                                            <td>
-                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -2162,9 +2156,11 @@ Not called when D3&#39;s forces reach equilibrium</p>
 
 
     <div class="tab-pane fade " id="c-templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;div&gt;
-  &lt;svg #graphEle class&#x3D;&quot;graph-chart&quot; [attr.width]&#x3D;&quot;svgWidth&quot; [attr.height]&#x3D;&quot;svgHeight&quot;&gt;&lt;/svg&gt;
-&lt;/div&gt;
+        <pre class="line-numbers"><code class="language-html">
+  &lt;svg #graphEle class&#x3D;&quot;graph-chart&quot;
+  [attr.viewBox]&#x3D;&quot;this.svgViewBox&quot;
+  [attr.preserveAspectRatio]&#x3D;&quot;this.svgPreserveAspectRatio&quot;
+  &gt;&lt;/svg&gt;
 </code></pre>
     </div>
 
@@ -2172,7 +2168,8 @@ Not called when D3&#39;s forces reach equilibrium</p>
                 <p class="comment">
                     <code>./sz-relationship-network.component.scss</code>
                 </p>
-                <pre class="line-numbers"><code class="language-scss">.sz-graph-node {
+                <pre class="line-numbers"><code class="language-scss">
+.sz-graph-node {
   font-size: 12px;
 }
 
@@ -2212,7 +2209,15 @@ div.sz-graph-tooltip {
 }
 
 :host {
+  display: block;
+  width: 100%;
+  height: 100%;
+
   svg {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+
     .sz-graph-link {
       stroke: #999;
       stroke-width: 2px;
@@ -2230,8 +2235,8 @@ div.sz-graph-tooltip {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div>  <svg #graphEle class="graph-chart" [attr.width]="svgWidth" [attr.height]="svgHeight"></svg></div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'}];
+        var COMPONENT_TEMPLATE = '<div>  <svg #graphEle class="graph-chart"  [attr.viewBox]="this.svgViewBox"  [attr.preserveAspectRatio]="this.svgPreserveAspectRatio"  ></svg></div>'
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipNetworkInputComponent', 'selector': 'sz-relationship-network-input'},{'name': 'SzRelationshipNetworkLookupComponent', 'selector': 'sz-relationship-network-lookup'},{'name': 'SzRelationshipNetworkUploadComponent', 'selector': 'sz-relationship-network-upload'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzRelationshipNetworkComponent'};
 </script>
