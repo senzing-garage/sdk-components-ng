@@ -123,6 +123,7 @@
     margin: var(--sz-search-input-margin);
     border: var(--sz-search-input-border);
     border-radius: var(--sz-search-input-border-radius);
+    box-sizing: unset;
 
     &:hover, &:focus {
       /* box-shadow: inset 0 -2px #ccc; */
@@ -153,7 +154,7 @@
   .entity.search {
     width: 100%;
   }
-  .row {
+  .sz-row {
     display: flex;
     padding: 10px 0 0 0;
     align-items: flex-end;
