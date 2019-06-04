@@ -1,0 +1,24 @@
+<div class="detail-header__wrapper">
+  <div class="detail-header__top--wrapper">
+    <svg class="icon-user icon-inline icon-flip" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0"
+    width="190" viewBox="0, 0, 1024, 1024">
+      <g id="icon-user">
+        <path d="M687.543 660.114c7.314 21.943 14.629 43.886 14.629 65.829 0 102.4-87.771 190.171-197.486 190.171s-204.8-87.771-204.8-190.171c0-21.943 7.314-43.886 14.629-65.829-14.629-14.629-21.943-36.571-14.629-65.829 0-21.943 14.629-43.886 29.257-58.514 21.943-117.029 95.086-190.171 182.857-190.171s153.6 73.143 182.857 190.171c0 14.629 14.629 36.571 14.629 58.514 7.314 29.257 0 51.2-21.943 65.829zM687.543 594.286c0-21.943-7.314-36.571-21.943-43.886 0 0-7.314-7.314-7.314-7.314-14.629-102.4-80.457-175.543-153.6-175.543s-138.971 73.143-160.914 175.543c0 0 0 7.314-7.314 7.314-7.314 7.314-14.629 29.257-14.629 43.886 0 29.257 7.314 43.886 14.629 51.2 0 0 7.314 7.314 7.314 7.314 7.314-29.257 14.629-51.2 14.629-36.571 0 29.257-7.314 87.771-7.314 117.029 29.257 21.943 80.457 51.2 124.343 51.2 0 0 0 0 0 0 43.886 0 58.514-14.629 73.143-36.571 14.629-29.257 36.571-51.2 109.714-51.2 0 0 0 0 7.314 0-7.314-29.257-7.314-58.514-7.314-80.457 0-14.629 7.314 7.314 14.629 36.571 0 0 0 0 7.314-7.314 0-7.314 14.629-21.943 7.314-51.2zM680.229 367.543c-29.257-65.829-95.086-117.029-175.543-117.029s-146.286 51.2-175.543 124.343c-146.286-36.571-256-153.6-256-292.571v-95.086h877.714v95.086c0 138.971-117.029 256-270.629 285.257z" />
+      </g>
+    </svg>
+    <div class="detail-header__top-right">
+      <div><span class="detail-header__entity-name">{{entity?.resolvedEntity?.bestName | titlecase}}</span></div>
+      <!--<div><span class="detail-header__last-seen">Last seen: TBD</span></div>-->
+      <div class="detail-header__section-summary--wrapper">
+        <sz-entity-detail-section-summary
+          *ngFor="let section of sectionSummaryInfo; let idx = index"
+          [sectionId]="idx+1"
+          [section]="section">
+        </sz-entity-detail-section-summary>
+      </div>
+    </div>
+  </div>
+  <div class="detail-header__bottom--wrapper">
+    <sz-entity-detail-header-content [entity]="entity?.resolvedEntity"></sz-entity-detail-header-content>
+  </div>
+</div>

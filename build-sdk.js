@@ -5,8 +5,8 @@ var sass = require('node-sass');
 (async function build() {
   // do styles first
   await sass.render({
-    file: "./projects/sdk-components-ng/src/lib/scss/styles.scss",
-    includePaths: ["./projects/sdk-components-ng/src/lib/scss/"]
+    file: "./src/lib/scss/styles.scss",
+    includePaths: ["./src/lib/scss/"]
   }, function(err, result) {
     if(err){
       console.log('SASSY ERROR: ',err.message);
@@ -42,7 +42,7 @@ var sass = require('node-sass');
 
   // now themes
   await fs.copy(
-    './projects/sdk-components-ng/src/lib/scss/themes',
+    './src/lib/scss/themes',
     './dist/@senzing/sdk-components-ng/styles/themes'
   ).catch((err)=>{
     console.log('build err #2: could not copy themes to package.');
@@ -51,21 +51,21 @@ var sass = require('node-sass');
   // root readme.md file to under sdk project(so the npm readme stays in sync)
   await fs.copyFile(
     './README.md',
-    './projects/sdk-components-ng/README.md'
+    './src/README.md'
   ).catch((err)=>{
     console.log('build err #3: could not copy README.md to package.');
   });
 
   // do readme and markdown files
   await fs.copyFile(
-    './projects/sdk-components-ng/README.md',
+    './src/README.md',
     './dist/@senzing/sdk-components-ng/README.md'
   ).catch((err)=>{
     console.log('build err #4: could not copy README.md to package.');
   });
 
   await fs.copyFile(
-    './projects/sdk-components-ng/LICENSE',
+    './src/LICENSE',
     './dist/@senzing/sdk-components-ng/LICENSE'
   ).catch((err)=>{
     console.log('build err #5: could not copy LICENSE to package.');

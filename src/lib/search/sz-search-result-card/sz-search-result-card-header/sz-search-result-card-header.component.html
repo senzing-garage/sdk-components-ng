@@ -1,0 +1,18 @@
+<div class="search-card__header--wrapper" [ngClass]="{'no-background': hideBackGroundColor}">
+    <i *ngIf="alert" class="senzing-alert search-card__header--alert"></i>
+    <header class="search-card__header">
+      <span>
+        <a class="search__link"
+           *ngIf="entityDetailsLink">
+          <span>{{ entityDetailsLinkName | titlecase}}&nbsp;</span>
+        </a>
+      </span>
+      <ng-template #bestName><a class="search__link">{{searchResult?.bestName}}</a></ng-template>
+      <div *ngIf="recordSummariesExist && showDataSources" class="breakdown-container">
+        <span *ngFor="let info of recordSummaries"
+              class="search-card__header--breakdown ellipsis">
+           | {{info?.dataSource}} ({{info?.recordCount}})<!-- {{info?.topRecordIds[0]}} -->
+        </span>
+      </div>
+    </header>
+  </div>

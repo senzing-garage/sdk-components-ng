@@ -5,31 +5,31 @@
   "projects": {
     "@senzing/sdk-components-ng": {
       "root": "projects/sdk-components-ng",
-      "sourceRoot": "projects/sdk-components-ng/src",
+      "sourceRoot": "src",
       "projectType": "library",
       "prefix": "sz",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/sdk-components-ng/tsconfig.lib.json",
-            "project": "projects/sdk-components-ng/ng-package.json"
+            "tsConfig": "src/tsconfig.lib.json",
+            "project": "src/ng-package.json"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/sdk-components-ng/src/test.ts",
-            "tsConfig": "projects/sdk-components-ng/tsconfig.spec.json",
-            "karmaConfig": "projects/sdk-components-ng/karma.conf.js"
+            "main": "src/test.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "karmaConfig": "src/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/sdk-components-ng/tsconfig.lib.json",
-              "projects/sdk-components-ng/tsconfig.spec.json"
+              "src/tsconfig.lib.json",
+              "src/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -81,7 +81,7 @@
               "examples/search-with-results-and-details/src/assets"
             ],
             "styles": [
-              "projects/sdk-components-ng/src/lib/scss/styles.scss",
+              "src/lib/scss/styles.scss",
               "examples/search-with-results-and-details/src/styles.scss"
             ],
             "scripts": []
@@ -182,7 +182,7 @@
               "examples/search-with-spinner/src/assets"
             ],
             "styles": [
-              "projects/sdk-components-ng/src/lib/scss/themes/drab.css",
+              "src/lib/scss/themes/drab.css",
               "examples/search-with-spinner/src/styles.scss"
             ],
             "scripts": []
@@ -287,7 +287,7 @@
               "examples/graph/src/assets"
             ],
             "styles": [
-              "projects/sdk-components-ng/src/lib/scss/styles.scss",
+              "src/lib/scss/styles.scss",
               "examples/graph/src/styles.scss"
             ],
             "scripts": []
