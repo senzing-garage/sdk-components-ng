@@ -79,7 +79,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit {
   /**
    * gets the viewBox attribute on the svg element.
    */
-  public get svgViewBox(){ return this._svgViewBox; }
+  public get svgViewBox() { return this._svgViewBox; }
 
   /**
    * the preserveAspectRatio attribute on the svg element.
@@ -90,11 +90,19 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit {
    * sets the preserveAspectRatio attribute on the svg element.
    * used to set aspect ratio, centering etc for dynamic scaling.
    */
-  @Input() public set svgPreserveAspectRatio(value: string){ this._preserveAspectRatio = value; }
+  @Input() public set svgPreserveAspectRatio(value: string) { this._preserveAspectRatio = value; }
   /**
    * gets the preserveAspectRatio attribute on the svg element.
    */
-  public get svgPreserveAspectRatio(){ return this._preserveAspectRatio; }
+  public get svgPreserveAspectRatio() { return this._preserveAspectRatio; }
+
+  private _forceXYContinuous: boolean = false;
+  /**
+   * sets whether or not to force XY gravity and node repulsion
+   * even after drag repositioning. IE node "snaps" back in to place
+   * after drag-end.
+   */
+  @Input() public set forceXYContinuous(value: boolean) { this._forceXYContinuous = value; }
 
   /** @internal */
   private _entityIds: string[];
@@ -317,13 +325,21 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit {
       .attr('class', "sz-graph-icon " + (d => d.isQueriedNode ? 'sz-graph-queried-node' : d.isCoreNode ? 'sz-graph-core-node' : 'sz-graph-node'));
 
     // Define the simulation with nodes, forces, and event listeners.
-    this.forceSimulation = d3.forceSimulation(graph.nodes)
+    if(this._forceXYContinuous) {
+      this.forceSimulation = d3.forceSimulation(graph.nodes)
       .force('link', d3.forceLink().links(graph.links).distance(this._statWidth / this._linkGravity)) // links pull nodes together
-      .force('charge', d3.forceManyBody().strength(-600)) // nodes repel each other
+      .force('charge', d3.forceManyBody().strength(-30)) // nodes repel each other
       .force('center', d3.forceCenter(this._statWidth / 2, this._statHeight / 2)) // Make all nodes start near the center of the SVG
-      //.force('x', d3.forceX(this._statWidth / 2).strength(0.01)) // x and y continually pull all nodes toward a point.  If the
-      //.force('y', d3.forceY(this._statHeight / 2).strength(0.01)) //  graph has multiple networks, this keeps them on screen
+      .force('x', d3.forceX(this._statWidth / 2).strength(0.01)) // x and y continually pull all nodes toward a point.  If the
+      .force('y', d3.forceY(this._statHeight / 2).strength(0.01)) //  graph has multiple networks, this keeps them on screen
       .on('tick', this.tick.bind(this));
+    } else {
+      this.forceSimulation = d3.forceSimulation(graph.nodes)
+      .force('link', d3.forceLink().links(graph.links).distance(this._statWidth / this._linkGravity)) // links pull nodes together
+      .force('charge', d3.forceManyBody().strength(-10)) // nodes repel each other
+      .force('center', d3.forceCenter(this._statWidth / 2, this._statHeight / 2)) // Make all nodes start near the center of the SVG
+      .on('tick', this.tick.bind(this));
+    }
 
     // Make the tooltip visible when mousing over nodes.  Fade out distant nodes
     this.node.on('mouseover.tooltip', function (d) {
@@ -496,10 +512,16 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit {
    */
   dragended() {
     if (!d3.event.active) this.forceSimulation.alphaTarget(0);
-    // commented out to prevent "bounce-back"
-    // dunno if its right but it works
-    //d3.event.subject.fx = null;
-    //d3.event.subject.fy = null;
+    if(this._forceXYContinuous) {
+      // nodes snap back in to place
+      d3.event.subject.fx = null;
+      d3.event.subject.fy = null;
+    } else {
+      // nodes once dragged stay where you put them
+      // elegant compromise
+      d3.event.subject.fx = d3.event.subject.x;
+      d3.event.subject.fy = d3.event.subject.y;
+    }
   }
 
 
