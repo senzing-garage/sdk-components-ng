@@ -19,6 +19,7 @@ import { SzEntitySearchParams } from './models/entity-search';
 /** services */
 import { SzMessageBundleService } from './services/sz-message-bundle.service';
 import { SzSearchService } from './services/sz-search.service';
+import { SzUIEventService } from './services/sz-ui.service';
 
 /** components */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
@@ -29,6 +30,7 @@ import { SzEntityDetailsSectionComponent } from './entity/detail/sz-entity-detai
 import { SzEntityDetailSectionHeaderComponent } from './entity/detail/sz-entity-details-section/header.component';
 import { SzEntityDetailSectionCollapsibleCardComponent } from './entity/detail/sz-entity-details-section/collapsible-card.component';
 
+import { SzEntityDetailGraphComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
 import { SzEntityMatchPillComponent } from './entity/sz-entity-match-pill/sz-entity-match-pill.component';
 import { SzEntityRecordCardComponent } from './entity/sz-entity-record-card/sz-entity-record-card.component';
 import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-card/sz-entity-record-card-header/sz-entity-record-card-header.component';
@@ -43,8 +45,10 @@ import { SzConfigurationAboutComponent } from './configuration/sz-configuration-
 import { SzConfigurationComponent } from './configuration/sz-configuration/sz-configuration.component';
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
 import { SzRelationshipNetworkComponent } from './graph/sz-relationship-network/sz-relationship-network.component';
+import { SzRelationshipNetworkInputComponent } from './graph/sz-relationship-network-input/sz-relationship-network-input.component';
+import { SzRelationshipNetworkLookupComponent } from './graph/sz-relationship-network-lookup/sz-relationship-network-lookup.component';
+import { SzRelationshipNetworkUploadComponent } from './graph/sz-relationship-network-upload/sz-relationship-network-upload.component';
 import { SzRelationshipPathComponent } from './graph/sz-relationship-path/sz-relationship-path.component';
-
 /**
  * Sets up a default set of service parameters for use
  * by the SDK Components.
@@ -72,6 +76,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultsComponent,
     SzSearchResultCardComponent,
     SzSearchResultCardContentComponent,
+    SzEntityDetailGraphComponent,
     SzEntityDetailHeaderComponent,
     SzEntityDetailsSectionComponent,
     SzEntityDetailSectionSummaryComponent,
@@ -87,6 +92,9 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzConfigurationComponent,
     SzPoweredByComponent,
     SzRelationshipNetworkComponent,
+    SzRelationshipNetworkInputComponent,
+    SzRelationshipNetworkLookupComponent,
+    SzRelationshipNetworkUploadComponent,
     SzRelationshipPathComponent
   ],
   imports: [
@@ -105,6 +113,9 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzConfigurationComponent,
     SzConfigurationAboutComponent,
     SzRelationshipNetworkComponent,
+    SzRelationshipNetworkInputComponent,
+    SzRelationshipNetworkLookupComponent,
+    SzRelationshipNetworkUploadComponent,
     SzRelationshipPathComponent
   ],
   /** for components being exported as web components */
@@ -116,13 +127,17 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzConfigurationComponent,
     SzConfigurationAboutComponent,
     SzRelationshipNetworkComponent,
+    SzRelationshipNetworkInputComponent,
+    SzRelationshipNetworkLookupComponent,
+    SzRelationshipNetworkUploadComponent,
     SzRelationshipPathComponent
   ],
   providers: [
     SzMessageBundleService,
     SzSearchService,
     HttpClient,
-    TitleCasePipe
+    TitleCasePipe,
+    SzUIEventService
   ]
 })
 export class SenzingSdkModule {

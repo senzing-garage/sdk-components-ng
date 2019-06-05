@@ -5,6 +5,11 @@
   [entity]="entity">
   </sz-entity-detail-header>
 
+  <sz-entity-detail-graph
+    *ngIf="graphData && this._showGraphSection"
+    [data]="graphData"
+  ></sz-entity-detail-graph>
+
   <sz-entity-details-section
     *ngIf="entity?.resolvedEntity?.records?.length"
     [sectionData]="entity?.resolvedEntity?.records"

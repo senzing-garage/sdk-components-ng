@@ -104,6 +104,9 @@ body {
   --sz-entity-detail-section-font-size: 18px;
   --sz-entity-detail-section-line-height: 18px;
   --sz-entity-detail-section-background: #eaeaea;
+  --sz-entity-detail-section-graph-height: 500px;
+  --sz-entity-detail-section-graph-collapsed-height: 70px;
+  --sz-entity-detail-section-graph-background: #f8f7f5;
   --sz-entity-detail-section-border: 1px solid #808285;
   --sz-entity-detail-section-border-radius: 0 0 6px 6px;
   --sz-entity-detail-section-border-left: var(--sz-entity-detail-section-border);
