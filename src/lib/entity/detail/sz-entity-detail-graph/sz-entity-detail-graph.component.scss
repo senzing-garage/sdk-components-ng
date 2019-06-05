@@ -74,6 +74,16 @@
   border-radius: var(--sz-entity-detail-section-header-border-radius);
   background: var(--sz-color-graph-relationships);
 
+  svg.mat-icon {
+    display: inline-block;
+    width: var(--sz-entity-detail-section-header-font-size);
+    height: calc( var(--sz-entity-detail-section-header-font-size) *1.15 );
+    stroke-width: 0;
+    stroke: var(--sz-entity-detail-section-header-color);
+    fill: var(--sz-entity-detail-section-header-color);
+    margin-right: .3em;
+  }
+
   .section-header__right-content {
     display: flex;
     align-items: center;
