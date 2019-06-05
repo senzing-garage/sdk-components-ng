@@ -7,7 +7,7 @@
     "start:documentation": "./node_modules/.bin/compodoc -s -d docs",
     "start:docs": "npm run start:documentation",
     "build": "ng build @senzing/sdk-components-ng && node build-sdk.js",
-    "build:docs": "./node_modules/.bin/compodoc -p projects/sdk-components-ng/tsconfig.lib.json -n \"Senzing SDK Components\" --includesName \"Guides\" -d docs -a projects/sdk-components-ng/docs/images --includes projects/sdk-components-ng/docs --disableInternal --disablePrivate --disableDomTree --disableGraph --disableRoutesGraph --disableCoverage --disableSourceCode && node build-docs",
+    "build:docs": "./node_modules/.bin/compodoc -p src/tsconfig.lib.json -n \"Senzing SDK Components\" --includesName \"Guides\" -d docs -a src/docs/images --includes src/docs --disableInternal --disablePrivate --disableDomTree --disableGraph --disableRoutesGraph --disableCoverage --disableSourceCode && node build-docs",
     "build:example": "ng build --prod --output-hashing none",
     "clean": "rimraf dist/@senzing/sdk-components-ng",
     "package": "npm run build:docs && npm run build && cd ./dist/@senzing/sdk-components-ng/ && npm pack",

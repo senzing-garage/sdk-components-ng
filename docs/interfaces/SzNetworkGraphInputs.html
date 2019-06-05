@@ -43,7 +43,7 @@
 
 <ol class="breadcrumb">
   <li>Interfaces</li>
-  <li>LinkInfo</li>
+  <li>SzNetworkGraphInputs</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -58,16 +58,10 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/lib/graph/sz-relationship-network/graph-types.ts</code>
+            <code>src/lib/models/network-graph-inputs.ts</code>
         </p>
 
 
-            <p class="comment">
-                <h3>Extends</h3>
-            </p>
-            <p class="comment">
-                    <code>SimulationLinkDatum</code>
-            </p>
 
         <section>
             <h3 id="index">Index</h3>
@@ -82,16 +76,10 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                        <a href="#id">id</a>
+                                        <a href="#data">data</a>
                                 </li>
                                 <li>
-                                        <a href="#isCoreLink">isCoreLink</a>
-                                </li>
-                                <li>
-                                        <a href="#matchKey">matchKey</a>
-                                </li>
-                                <li>
-                                        <a href="#matchLevel">matchLevel</a>
+                                        <a href="#showLinkLabels">showLinkLabels</a>
                                 </li>
                             </ul>
                         </td>
@@ -108,24 +96,18 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="id"></a>
-                                        <span class="name"><b>id</b><a href="#id"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="data"></a>
+                                        <span class="name"><b>data</b><a href="#data"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>id:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                        <code>data:     <code></code>
 </code>
                                     </td>
                                 </tr>
 
 
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                                        </td>
-                                    </tr>
 
 
 
@@ -137,13 +119,13 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="isCoreLink"></a>
-                                        <span class="name"><b>isCoreLink</b><a href="#isCoreLink"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="showLinkLabels"></a>
+                                        <span class="name"><b>showLinkLabels</b><a href="#showLinkLabels"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>isCoreLink:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        <code>showLinkLabels:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -152,64 +134,6 @@
                                     <tr>
                                         <td class="col-md-4">
                                             <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="matchKey"></a>
-                                        <span class="name"><b>matchKey</b><a href="#matchKey"><span class="icon ion-ios-link"></span></a></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>matchKey:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="matchLevel"></a>
-                                        <span class="name"><b>matchLevel</b><a href="#matchLevel"><span class="icon ion-ios-link"></span></a></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>matchLevel:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                                         </td>
                                     </tr>
@@ -248,7 +172,7 @@
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'LinkInfo.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'SzNetworkGraphInputs.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

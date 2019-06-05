@@ -55,7 +55,7 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>projects/sdk-components-ng/src/lib/entity/detail/sz-entity-detail.component.ts</code>
+    <code>src/lib/entity/detail/sz-entity-detail.component.ts</code>
 </p>
 
 
@@ -131,6 +131,10 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#_showGraphSection">_showGraphSection</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#entity">entity</a>
                             </li>
                         </ul>
@@ -173,6 +177,9 @@
                             </li>
                             <li>
                                 <a href="#requestDataOnIdChange">requestDataOnIdChange</a>
+                            </li>
+                            <li>
+                                <a href="#showGraphSection">showGraphSection</a>
                             </li>
                         </ul>
                     </td>
@@ -220,6 +227,9 @@
                                 </li>
                                 <li>
                                     <a href="#entityId">entityId</a>
+                                </li>
+                                <li>
+                                    <a href="#showGraphSection">showGraphSection</a>
                                 </li>
                                 <li>
                                     <a href="#requestDataOnIdChange">requestDataOnIdChange</a>
@@ -333,6 +343,24 @@
                     </td>
                     <td class="col-md-10">
                         <div><p>set the entity data by passing in an entity id number.</p>
+</div>
+                            <p>
+                            <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                            </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-2">
+                        <a name="showGraphSection"></a>
+                        <code>showGraphSection</code>
+                    </td>
+                    <td class="col-md-10">
+                        <div><p>show or hide the &quot;At a Glance&quot; section.</p>
 </div>
                             <p>
                             <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
@@ -667,6 +695,35 @@ clicked on.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="_showGraphSection"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            _showGraphSection
+                            </b>
+                            <a href="#_showGraphSection"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span><code>_showGraphSection:     <code></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>true</code>
+                        </td>
+                    </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="entity"></a>
                         <span class="name">
                             <b>
@@ -803,6 +860,62 @@ clicked on.</p>
                                                     
                                                             <td>
                                                                         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showGraphSection"></a>
+                        <span class="name"><b>showGraphSection</b><a href="#showGraphSection"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>showGraphSection(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>show or hide the &quot;At a Glance&quot; section.</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
                                                             </td>
                                                     
                                                         <td>
@@ -1037,7 +1150,7 @@ clicked on.</p>
   &lt;/sz-entity-detail-header&gt;
 
   &lt;sz-entity-detail-graph
-    *ngIf&#x3D;&quot;graphData&quot;
+    *ngIf&#x3D;&quot;graphData &amp;&amp; this._showGraphSection&quot;
     [data]&#x3D;&quot;graphData&quot;
   &gt;&lt;/sz-entity-detail-graph&gt;
 
@@ -1102,7 +1215,7 @@ clicked on.</p>
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><!-- @senzing/sdk/entity/detail/sz-entity-detail --><div>  <sz-entity-detail-header  [entity]="entity">  </sz-entity-detail-header>  <sz-entity-detail-graph    *ngIf="graphData"    [data]="graphData"  ></sz-entity-detail-graph>  <sz-entity-details-section    *ngIf="entity?.resolvedEntity?.records?.length"    [sectionData]="entity?.resolvedEntity?.records"    [sectionTitle]="\'Matched Records\'"    sectionId="detail-section-1"    [sectionCount]="entity?.resolvedEntity?.records?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="this.possibleMatches?.length"    [sectionData]="this.possibleMatches"    [sectionTitle]="\'Possible Matches\'"    sectionId="detail-section-2"    [sectionCount]="this.possibleMatches?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="this._discoveredRelationships?.length"    [sectionData]="this._discoveredRelationships"    [sectionTitle]="\'Possible Relationships\'"    sectionId="detail-section-3"    [sectionCount]="this._discoveredRelationships?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="this._disclosedRelationships?.length"    [sectionData]="this._disclosedRelationships"    [sectionTitle]="\'Disclosed Relationships\'"    sectionId="detail-section-4"    [sectionCount]="this._disclosedRelationships?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section></div></div>'
+        var COMPONENT_TEMPLATE = '<div><!-- @senzing/sdk/entity/detail/sz-entity-detail --><div>  <sz-entity-detail-header  [entity]="entity">  </sz-entity-detail-header>  <sz-entity-detail-graph    *ngIf="graphData && this._showGraphSection"    [data]="graphData"  ></sz-entity-detail-graph>  <sz-entity-details-section    *ngIf="entity?.resolvedEntity?.records?.length"    [sectionData]="entity?.resolvedEntity?.records"    [sectionTitle]="\'Matched Records\'"    sectionId="detail-section-1"    [sectionCount]="entity?.resolvedEntity?.records?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="this.possibleMatches?.length"    [sectionData]="this.possibleMatches"    [sectionTitle]="\'Possible Matches\'"    sectionId="detail-section-2"    [sectionCount]="this.possibleMatches?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="this._discoveredRelationships?.length"    [sectionData]="this._discoveredRelationships"    [sectionTitle]="\'Possible Relationships\'"    sectionId="detail-section-3"    [sectionCount]="this._discoveredRelationships?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="this._disclosedRelationships?.length"    [sectionData]="this._disclosedRelationships"    [sectionTitle]="\'Disclosed Relationships\'"    sectionId="detail-section-4"    [sectionCount]="this._disclosedRelationships?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section></div></div>'
     var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipNetworkInputComponent', 'selector': 'sz-relationship-network-input'},{'name': 'SzRelationshipNetworkLookupComponent', 'selector': 'sz-relationship-network-lookup'},{'name': 'SzRelationshipNetworkUploadComponent', 'selector': 'sz-relationship-network-upload'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzEntityDetailComponent'};
