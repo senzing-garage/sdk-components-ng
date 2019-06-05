@@ -16,8 +16,13 @@ import { map, tap } from 'rxjs/operators';
 })
 export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit {
 
+
+
   static readonly ICONS = {
-    business: null, // TODO replace the business .png with SVG
+    business: {
+      shape: "M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z",
+      enclosed: "M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"
+    }, // TODO replace the business .png with SVG
     userFemale: {
       // The outline of the face and shoulders for the female icon
       shape: "M687.543 599.771c-29.257 73.143-95.086 124.343-175.543 124.343s-146.286-51.2-175.543-117.029c-146.286 36.571-256 146.286-256 277.943v95.086h870.4v-95.086c0-138.971-117.029-248.686-263.314-285.257zM768 592.457c0 0-51.2-299.886-65.829-365.714-14.629-87.771-95.086-160.914-197.486-160.914-95.086 0-182.857 65.829-197.486 160.914-7.314 51.2-73.143 329.143-80.457 343.771 0 0 7.314 14.629 95.086-14.629 7.314 0 43.886-14.629 51.2-14.629 36.571 51.2 80.457 80.457 138.971 80.457 51.2 0 102.4-29.257 138.971-87.771 29.257 14.629 14.629 36.571 117.029 58.514zM512 599.771c-43.886 0-80.457-21.943-109.714-65.829v0c0 0-7.314-7.314-7.314-7.314s0 0 0 0-7.314-7.314-7.314-14.629c0 0 0 0 0 0 0-7.314-7.314-7.314-7.314-14.629 0 0 0 0 0 0 0-7.314-7.314-7.314-7.314-14.629 0 0 0 0 0 0-7.314 0-7.314-7.314-7.314-7.314s0 0 0 0c0-7.314 0-7.314-7.314-14.629 0 0 0 0 0 0 0-7.314 0-7.314-7.314-14.629 0 0 0 0 0 0 0-7.314 0-7.314 0-14.629 0 0 0-7.314-7.314-7.314-7.314-7.314-14.629-21.943-14.629-43.886s7.314-43.886 14.629-51.2c0 0 7.314 0 7.314-7.314 14.629 14.629 7.314-7.314 7.314-21.943 0-43.886 0-51.2 0-58.514 29.257-21.943 80.457-51.2 117.029-51.2 0 0 0 0 0 0 43.886 0 51.2 14.629 73.143 36.571 14.629 29.257 43.886 51.2 109.714 51.2 0 0 0 0 7.314 0 0 0 0 14.629 0 29.257s0 43.886 7.314 14.629c0 0 0 0 7.314 7.314s14.629 21.943 14.629 51.2c0 21.943-7.314 36.571-21.943 43.886 0 0-7.314 7.314-7.314 7.314 0 7.314 0 7.314 0 14.629 0 0 0 0 0 0-7.314 7.314-7.314 7.314-7.314 14.629 0 0 0 0 0 0 0 7.314 0 7.314-7.314 14.629 0 0 0 0 0 0 0 7.314 0 7.314-7.314 14.629 0 0 0 0 0 0 0 7.314 0 7.314-7.314 14.629 0 0 0 0 0 0s-0 7.314-0 7.314c0 0 0 0 0 0 0 7.314-7.314 7.314-7.314 14.629 0 0 0 0 0 0s-7.314 7.314-7.314 7.314v0c-29.257 43.886-73.143 65.829-109.714 65.829z",
@@ -310,8 +315,21 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit {
                       SzRelationshipNetworkComponent.ICONS["default"]["shape"])
       .attr("transform", "translate(-20,-20) scale(.080)");
 
+    // Add svg icon for business (corps are not people)
+    this.node.filter(d => d.iconType === "business")
+    .append('path')
+    .attr('class', function(d){
+      return ['sz-graph-node-icon'].concat(d.relationTypeClasses).join(' ')
+    })
+    .attr('fill', d => d.isQueriedNode ? "#000000" : d.isCoreNode ? '#999999' : '#DDDDDD')
+    .attr("d", d => SzRelationshipNetworkComponent.ICONS[d.iconType] ?
+                    SzRelationshipNetworkComponent.ICONS[d.iconType]["shape"] :
+                    SzRelationshipNetworkComponent.ICONS["default"]["shape"])
+    .attr("transform", "translate(-20,-20) scale(1.4)");
+
     // Add .png icons for businesses
     // TODO replace .png business icon with SVG
+    /*
     this.node.filter(d => d.iconType === "business")
       .append('image')
       .attr("xlink:href", d => {
@@ -323,6 +341,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit {
       .attr("height", 50)
       .attr("width", 50)
       .attr('class', "sz-graph-icon " + (d => d.isQueriedNode ? 'sz-graph-queried-node' : d.isCoreNode ? 'sz-graph-core-node' : 'sz-graph-node'));
+    */
 
     // Define the simulation with nodes, forces, and event listeners.
     if(this._forceXYContinuous) {
@@ -662,9 +681,8 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit {
   static getIconType(resolvedEntity) {
     let retVal = 'default';
     if(resolvedEntity && resolvedEntity.records){
-      //console.log('getIconType2: ', resolvedEntity);
       resolvedEntity.records.slice(0,9).forEach(element => {
-        if(element.nameOrg) {
+        if(element.nameOrg || (element.addressData && element.addressData.some((addr) => { return addr.indexOf('BUSINESS') > -1; }))) {
           retVal = 'business'
         } else if(element.gender && (element.gender === 'FEMALE' || element.gender === 'F') ){
           retVal = 'userFemale'
