@@ -71,6 +71,15 @@ export class SzEntityDetailComponent {
     if(_hasChanged && this._requestDataOnIdChange) { this.onEntityIdChange(); }
   }
 
+  public _showGraphSection = true;
+  /**
+   * show or hide the "At a Glance" section.
+   */
+  @Input()
+  public set showGraphSection(value: boolean) {
+    this._showGraphSection = value;
+  }
+
   /**
    * set the entity data by passing in an entity id number.
    */

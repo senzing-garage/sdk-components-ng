@@ -6,7 +6,7 @@
   </sz-entity-detail-header>
 
   <sz-entity-detail-graph
-    *ngIf="graphData"
+    *ngIf="graphData && this._showGraphSection"
     [data]="graphData"
   ></sz-entity-detail-graph>
 
