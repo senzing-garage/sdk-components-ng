@@ -20,6 +20,11 @@ body {
     font-size: 12px;
   }
 
+  .sz-graph-label {
+    font-size: 10px;
+    font-weight: bold;
+  }
+
   .sz-graph-link-label {
     font-size: 10px;
   }
@@ -36,11 +41,31 @@ body {
 
   .sz-graph-link {
     stroke: #999;
-    stroke-width: 2px;
+    stroke-width: 1px;
+  }
+
+  .sz-graph-node-icon {
+    fill: lighten( $sz-dark2, 10% );
+
+    &.graph-node-rel-primary {
+      fill: $sz-dark2;
+    }
   }
 
   .sz-graph-icon-enclosure {
     fill: white;
+    opacity: .5;
+
+    &.graph-node-rel-prel {
+      fill: var(--sz-color-possibly-related);
+    }
+    &.graph-node-rel-pmatch {
+      fill: var(--sz-color-possible-match);
+    }
+    &.graph-node-rel-disclosed {
+      fill: var(--sz-color-disclosed);
+    }
+
   }
 
   .sz-graph-tooltip {

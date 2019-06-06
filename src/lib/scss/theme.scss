@@ -11,6 +11,7 @@ body {
   --sz-color-possible-matches: #{$sz-orange};
   --sz-color-disclosed: #{$sz-green};
   --sz-color-ambiguous: #{$sz-purple};
+  --sz-color-graph-relationships: #{$sz-magenta};
 
   /* search box vars */
   --sz-search-button-submit-color: #{$sz-white};
@@ -132,10 +133,13 @@ body {
 
     --sz-entity-detail-section-header-font-family: $sz-font-family;
     --sz-entity-detail-section-header-border-radius: 4px 4px 0 0;
+    --sz-entity-detail-section-graph-height: 500px;
+    --sz-entity-detail-section-graph-collapsed-height: 70px;
     --sz-entity-detail-section-color: #2e2e2d;
     --sz-entity-detail-section-font-size: 18px;
     --sz-entity-detail-section-line-height: 20px;
     --sz-entity-detail-section-background: #ffffff;
+    --sz-entity-detail-section-graph-background: #f8f7f5;
     --sz-entity-detail-section-by-matches-background: #f1eeee;
     --sz-entity-detail-section-border: 1px solid #DFDFE1;
     --sz-entity-detail-section-border-radius: 0 0 6px 6px;

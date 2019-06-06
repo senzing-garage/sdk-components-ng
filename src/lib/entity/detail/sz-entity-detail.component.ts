@@ -71,12 +71,34 @@ export class SzEntityDetailComponent {
     if(_hasChanged && this._requestDataOnIdChange) { this.onEntityIdChange(); }
   }
 
+  public _showGraphSection = true;
+  /**
+   * show or hide the "At a Glance" section.
+   */
+  @Input()
+  public set showGraphSection(value: boolean) {
+    this._showGraphSection = value;
+  }
+
   /**
    * set the entity data by passing in an entity id number.
    */
   @Input()
   public set requestDataOnIdChange(value: boolean) {
     this._requestDataOnIdChange = value;
+  }
+
+  /**
+   * Gets the data in the model shape used by the relationship network graph.
+   */
+  public get graphData() {
+    if(!this.entity || this.entity == null){
+      return;
+    }
+    return {
+      resolvedEntity: this.entity.resolvedEntity,
+      relatedEntities: this.entity.relatedEntities
+    }
   }
 
   /**

@@ -12,7 +12,7 @@
   <div class="content" *ngIf="true">
       <section class="entity search" (ngSubmit)="submitSearch()">
         <form class="form" [formGroup]="entitySearchForm" novalidate>
-          <div class="row">
+          <div class="sz-row">
             <div class="field name" [class.disabled]="disabledFields['name']" *ngIf="!hiddenFields['name']">
               <label for="entity-name">Name</label>
               <input formControlName="NAME_FULL"
@@ -61,7 +61,7 @@
               (click)="submitSearch()">Search</button>
             </div>
           </div>
-          <div class="row">
+          <div class="sz-row">
             <div class="field address" [class.disabled]="disabledFields['address']" *ngIf="!hiddenFields['address']">
               <label for="entity-address">Address</label>
               <input formControlName="ADDR_FULL"
@@ -97,7 +97,7 @@
               (click)="clearSearch()">Clear Search Criteria</button>
             </div>
           </div>
-          <div class="row bottom"></div>
+          <div class="sz-row bottom"></div>
         </form>
       </section>
 
