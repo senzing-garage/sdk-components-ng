@@ -32,5 +32,5 @@ const context5 = require.context('./lib/sz-powered-by', true, /\.spec\.ts$/);
 // And load the modules.
 context.keys().map(context);
 context2.keys().map(context2);
-//context3.keys().map(context3);
+context3.keys().map(context3);
 context5.keys().map(context5);

@@ -50,7 +50,7 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, Af
     this.matchPills = this.createPillInfo(this.cardData);
     //console.log('MATCH PILLS! ', this.matchPills);
     //this.matchPills = this.createMatchPillInfo(this.cardData.records);
-    this.headerTitleText = !this.isEntityRecord(this.cardData) ? this.cardData.dataSource + (this.recordCount > 0 ? '(' + this.recordCount + ')' : '') : '';
+    this.headerTitleText = !this.isEntityRecord(this.cardData) && this.cardData && this.cardData.dataSource ? this.cardData.dataSource + (this.recordCount > 0 ? '(' + this.recordCount + ')' : '') : '';
   }
 
   ngAfterViewInit() {

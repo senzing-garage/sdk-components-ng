@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzEntityRecordCardHeaderComponent } from './sz-entity-record-card-header.component';
+import { SenzingSdkModule } from 'src/lib/sdk.module';
 
 describe('SzEntityRecordCardHeaderComponent', () => {
   let component: SzEntityRecordCardHeaderComponent;
@@ -8,7 +9,7 @@ describe('SzEntityRecordCardHeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SzEntityRecordCardHeaderComponent ]
+      imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
   }));

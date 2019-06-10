@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzEntityMatchPillComponent } from './sz-entity-match-pill.component';
+import { SenzingSdkModule } from 'src/lib/sdk.module';
 
 describe('SzEntityMatchPillComponent', () => {
   let component: SzEntityMatchPillComponent;
@@ -8,7 +9,7 @@ describe('SzEntityMatchPillComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SzEntityMatchPillComponent ]
+      imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
   }));
