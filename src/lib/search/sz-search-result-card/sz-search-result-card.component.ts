@@ -24,7 +24,9 @@ export class SzSearchResultCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.showRecordId.fill(false, this.searchResult.records.length);
+    if(this.searchResult) {
+      this.showRecordId.fill(false, this.searchResult.records.length);
+    }
   }
 
   toggleShowRecordId(index: number): void {
