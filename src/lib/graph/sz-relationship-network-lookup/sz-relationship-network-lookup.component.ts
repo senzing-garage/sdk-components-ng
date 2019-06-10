@@ -43,13 +43,17 @@ export class SzRelationshipNetworkLookupComponent implements OnInit {
   }
 
   broadcastInputs() {
-    return this.graphService.findNetworkByEntityID(
-      this._entityIds,
-      this._maxDegrees,
-      this._buildOut,
-      this._maxEntities,
-      SzRelationshipNetworkLookupComponent.WITH_RAW )
-      .subscribe(this.emitResult.bind(this));
+    if(this._entityIds){
+      return this.graphService.findNetworkByEntityID(
+        this._entityIds,
+        this._maxDegrees,
+        this._buildOut,
+        this._maxEntities,
+        SzRelationshipNetworkLookupComponent.WITH_RAW )
+        .subscribe(this.emitResult.bind(this));
+    } else {
+      return false;
+    }
   }
 
   private emitResult(result) {
