@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzPoweredByComponent } from './sz-powered-by.component';
+import { SenzingSdkModule } from 'src/lib/sdk.module';
 
 describe('SzPoweredByComponent', () => {
   let component: SzPoweredByComponent;
@@ -8,7 +9,7 @@ describe('SzPoweredByComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SzPoweredByComponent ]
+      imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
   }));

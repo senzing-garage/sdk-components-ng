@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzConfigurationAboutComponent } from './sz-configuration-about.component';
+import { SenzingSdkModule } from 'src/lib/sdk.module';
 
 describe('SzConfigurationAboutComponent', () => {
   let component: SzConfigurationAboutComponent;
@@ -8,7 +9,7 @@ describe('SzConfigurationAboutComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SzConfigurationAboutComponent ]
+      imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
   }));
