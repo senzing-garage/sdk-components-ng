@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzRelationshipNetworkUploadComponent } from './sz-relationship-network-upload.component';
+import { SenzingSdkModule } from 'src/lib/sdk.module';
 
 describe('SzRelationshipNetworkUploadComponent', () => {
   let component: SzRelationshipNetworkUploadComponent;
@@ -8,7 +9,7 @@ describe('SzRelationshipNetworkUploadComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SzRelationshipNetworkUploadComponent ]
+      imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
   }));

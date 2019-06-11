@@ -119,6 +119,7 @@ export class SzEntityDetailsSectionComponent implements OnInit {
 
   get sectionIcon(): string {
     let _className = 'senzing-relationships';
+    if(!this.sectionTitle){ return _className; }
     switch(this.sectionTitle.toLowerCase()) {
       case 'matched records':
         _className = 'senzing-matches';

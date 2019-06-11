@@ -191,22 +191,28 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit {
 
   /** make network request and populate svg */
   ngAfterViewInit() {
-    this.getNetwork().pipe(
-      map(this.asGraph.bind(this)),
-      tap( (gdata: Graph) => { console.log('SzRelationshipNetworkGraph: g1 = ', gdata); })
-    ).subscribe( this.addSvg.bind(this) );
+    if(this._entityIds){
+      this.getNetwork().pipe(
+        map(this.asGraph.bind(this)),
+        tap( (gdata: Graph) => { console.log('SzRelationshipNetworkGraph: g1 = ', gdata); })
+      ).subscribe( this.addSvg.bind(this) );
+    }
   }
 
   /**
    * make graph network request using input parameters
    */
   private getNetwork() {
-    return this.graphService.findNetworkByEntityID(
-      this._entityIds,
-      this._maxDegrees,
-      this._buildOut,
-      this._maxEntities,
-      SzRelationshipNetworkComponent.WITH_RAW );
+    if(this._entityIds){
+      return this.graphService.findNetworkByEntityID(
+        this._entityIds,
+        this._maxDegrees,
+        this._buildOut,
+        this._maxEntities,
+        SzRelationshipNetworkComponent.WITH_RAW );
+    } else {
+      throw new Error('entity ids are required to make "findNetworkByEntityID" call.');
+    }
   }
 
   /** render svg elements from graph data */

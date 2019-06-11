@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzRelationshipNetworkLookupComponent } from './sz-relationship-network-lookup.component';
+import { SenzingSdkModule } from 'src/lib/sdk.module';
 
 describe('SzRelationshipNetworkLookupComponent', () => {
   let component: SzRelationshipNetworkLookupComponent;
@@ -8,7 +9,7 @@ describe('SzRelationshipNetworkLookupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SzRelationshipNetworkLookupComponent ]
+      imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
   }));

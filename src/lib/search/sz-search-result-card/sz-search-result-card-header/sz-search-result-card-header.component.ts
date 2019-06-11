@@ -15,34 +15,34 @@ export class SzSearchResultCardHeaderComponent implements OnInit {
 
   @Input() showDataSources: boolean = true;
 
-  @Input()
-  set searchResult(value: SzAttributeSearchResult) {
+  @Input() public set searchResult(value: SzAttributeSearchResult) {
     this._searchResult = value;
     //console.log('sz-search-result-card-header.setSearchResult: ', this._searchResult);
   }
-  get searchResult(): SzAttributeSearchResult {
+  public get searchResult(): SzAttributeSearchResult {
     return this._searchResult;
   }
-  @Input() searchValue: string;
-  @Input() hideBackGroundColor: boolean;
-  @Input() entityData: SzEntityRecord;
+
+  @Input() public searchValue: string;
+  @Input() public hideBackGroundColor: boolean;
+  @Input() public entityData: SzEntityRecord;
   alert = false;
 
-  get recordSummariesExist(): boolean {
+  public get recordSummariesExist(): boolean {
     if(this.searchResult && this.searchResult.recordSummaries){
       return this.searchResult.recordSummaries.length > 0;
     }
     return false
   }
 
-  get recordSummaries(): SzDataSourceRecordSummary[] | boolean {
+  public get recordSummaries(): SzDataSourceRecordSummary[] | boolean {
     if(this.searchResult && this.searchResult.recordSummaries){
       return this.searchResult.recordSummaries;
     }
     return false
   }
 
-  get entityDetailsLinkName(): string {
+  public get entityDetailsLinkName(): string {
     //console.log('sz-search-result-card-header.getEntityDetailsLinkName: ', this._searchResult);
     if (this._searchResult && this._searchResult.entityName) {
       return this._searchResult.entityName;
@@ -51,7 +51,7 @@ export class SzSearchResultCardHeaderComponent implements OnInit {
     }
   }
 
-  get entityDetailsLink(): string | boolean {
+  public get entityDetailsLink(): string | boolean {
     if (this._searchResult && this._searchResult.entityId) {
       return `/search/details/${this._searchResult.entityId}`;
     } else if(this._searchResult && this._searchResult.entityId ) {
