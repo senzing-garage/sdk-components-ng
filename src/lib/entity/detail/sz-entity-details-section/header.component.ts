@@ -21,6 +21,7 @@ export class SzEntityDetailSectionHeaderComponent implements OnInit {
   }
 
   get countLabel(): string {
+    if(!this.sectionTitle) { return ''; }
     switch (this.sectionTitle.toLowerCase()) {
       case 'matched records': return 'Records';
       case 'possible matches': return 'Matches';
@@ -31,16 +32,16 @@ export class SzEntityDetailSectionHeaderComponent implements OnInit {
   }
 
   get isMatchedRecords(): boolean {
-    return this.sectionTitle.toLowerCase() === 'matched records';
+    return this.sectionTitle && this.sectionTitle.toLowerCase() === 'matched records';
   }
 
   get isPossibleMatches(): boolean {
-    return this.sectionTitle.toLowerCase() === 'possible matches';
+    return this.sectionTitle && this.sectionTitle.toLowerCase() === 'possible matches';
   }
   get isPossibleRelationships(): boolean {
-    return this.sectionTitle.toLowerCase() === 'possible relationships';
+    return this.sectionTitle && this.sectionTitle.toLowerCase() === 'possible relationships';
   }
   get isDisclosedRelationships(): boolean {
-    return this.sectionTitle.toLowerCase() === 'disclosed relationships';
+    return this.sectionTitle && this.sectionTitle.toLowerCase() === 'disclosed relationships';
   }
 }

@@ -15,8 +15,8 @@ import {
  */
 @Component({
   selector: 'sz-entity-detail-header',
-  templateUrl: './sz-entity-detail-header.component.html',
-  styleUrls: ['./sz-entity-detail-header.component.scss']
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss']
 })
 export class SzEntityDetailHeaderComponent implements OnInit {
   @Input() public searchTerm: string;

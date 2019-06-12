@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzEntityDetailSectionCollapsibleCardComponent } from './collapsible-card.component';
+import { SenzingSdkModule } from 'src/lib/sdk.module';
 
 describe('SzEntityDetailSectionCollapsibleCardComponent', () => {
   let component: SzEntityDetailSectionCollapsibleCardComponent;
@@ -8,7 +9,7 @@ describe('SzEntityDetailSectionCollapsibleCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SzEntityDetailSectionCollapsibleCardComponent ]
+      imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
   }));

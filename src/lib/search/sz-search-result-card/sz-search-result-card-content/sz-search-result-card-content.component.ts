@@ -13,9 +13,9 @@ import { SzRelatedEntity, SzEntityRecord } from '@senzing/rest-api-client-ng';
   styleUrls: ['./sz-search-result-card-content.component.scss']
 })
 export class SzSearchResultCardContentComponent implements OnInit {
-  @Input() entity: SzEntityDetailSectionData;
-  @Input() maxLinesToDisplay = 3;
-  @Input() showAllInfo: boolean;
+  @Input() public entity: SzEntityDetailSectionData;
+  @Input() public maxLinesToDisplay = 3;
+  @Input() public showAllInfo: boolean;
 
   @ViewChild('columnOne')
   private columnOne: ElementRef;
@@ -56,25 +56,27 @@ export class SzSearchResultCardContentComponent implements OnInit {
 
   // ----------------- start total getters -------------------
   get columnTwoTotal(): number {
-    return (this.nameData.concat(this.attributeData).length);
+    const totalData = this.getNameAndAttributeData(this.nameData, this.attributeData);
+    return totalData && totalData.length ? totalData.length : 0;
   }
   get showColumnTwo(): boolean {
     return (this.columnTwoTotal > 0);
   }
   get columnThreeTotal(): number {
-    return (this.addressData.concat(this.phoneData).length);
+    const totalData = this.getAddressAndPhoneData(this.addressData, this.phoneData);
+    return totalData && totalData.length ? totalData.length : 0;
   }
   get showColumnThree(): boolean {
     return (this.columnThreeTotal > 0);
   }
   get columnFourTotal(): number {
-    return this.identifierData.length;
+    return this.identifierData ? this.identifierData.length : 0;
   }
   public get showColumnFour(): boolean {
-    return this.identifierData.length > 0;
+    return this.identifierData ? this.identifierData.length > 0 : false;
   }
   get columnFiveTotal(): number {
-    return this.otherData.length;
+    return this.otherData ? this.otherData.length : 0;
   }
   get showColumnFive(): boolean {
     return (this.columnFiveTotal > 0);
@@ -82,31 +84,47 @@ export class SzSearchResultCardContentComponent implements OnInit {
   // -----------------  end total getters  -------------------
 
   getNameAndAttributeData(nameData: string[], attributeData: string[]): string[] {
-    return nameData.concat(attributeData);
+    if(nameData && nameData.concat && attributeData) {
+      return nameData.concat(attributeData);
+    } else if(nameData) {
+      return nameData;
+    } else if(attributeData) {
+      return attributeData;
+    }
+    return [];
   }
 
   getAddressAndPhoneData(addressData: string[], phoneData: string[]): string[] {
+    if(addressData && addressData.concat && phoneData) {
+      return addressData.concat(phoneData);
+    } else if(addressData) {
+      return addressData;
+    } else if(phoneData) {
+      return phoneData;
+    }
+    return [];
+
     return addressData.concat(phoneData);
   }
 
-  get nameData(): string[] {
-        return this.entity.nameData;
+  get nameData(): string[] | undefined {
+        return this.entity && this.entity.nameData ? this.entity.nameData : undefined;
   }
 
-  get attributeData(): string[] {
-        return this.entity.attributeData;
+  get attributeData(): string[] | undefined {
+        return this.entity && this.entity.attributeData ? this.entity.attributeData : undefined;
   }
 
-  get addressData(): string[] {
-        return this.entity.addressData;
+  get addressData(): string[] | undefined {
+        return this.entity && this.entity.addressData ? this.entity.addressData : undefined;
   }
 
-  get phoneData(): string[] {
-        return this.entity.phoneData;
+  get phoneData(): string[] | undefined {
+        return this.entity && this.entity.phoneData ? this.entity.phoneData : undefined;
   }
 
-  get identifierData(): string[] {
-        return this.entity.identifierData;
+  get identifierData(): string[] | undefined {
+        return this.entity && this.entity.identifierData ? this.entity.identifierData : undefined;
   }
 
   get otherData(): string[] {
@@ -127,7 +145,7 @@ export class SzSearchResultCardContentComponent implements OnInit {
   }
 
   private getEntityRecord(obj: any): SzEntityRecord {
-    if (obj.otherData !== undefined) {
+    if (obj && obj.otherData !== undefined) {
       return {...obj} as SzEntityRecord;
     } else {
       return {} as SzEntityRecord;

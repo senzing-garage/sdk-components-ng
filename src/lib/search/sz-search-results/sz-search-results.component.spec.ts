@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzSearchResultsComponent } from './sz-search-results.component';
+import { SenzingSdkModule } from 'src/lib/sdk.module';
+
 
 describe('SzSearchResultsComponent', () => {
   let component: SzSearchResultsComponent;
@@ -8,7 +10,7 @@ describe('SzSearchResultsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SzSearchResultsComponent ]
+      imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
   }));

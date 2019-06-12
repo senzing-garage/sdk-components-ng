@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzEntityDetailSectionHeaderComponent } from './header.component';
+import { SenzingSdkModule } from 'src/lib/sdk.module';
 
 describe('SzEntityDetailSectionHeaderComponent', () => {
   let component: SzEntityDetailSectionHeaderComponent;
@@ -8,7 +9,7 @@ describe('SzEntityDetailSectionHeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SzEntityDetailSectionHeaderComponent ]
+      imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
   }));

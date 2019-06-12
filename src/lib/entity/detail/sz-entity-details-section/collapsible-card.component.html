@@ -15,7 +15,7 @@
           </g>
         </svg>
 
-        <span class="collapsible-card__title">{{cardData.dataSource}}</span>
+        <span class="collapsible-card__title">{{cardData?.dataSource}}</span>
         <ng-container *ngIf="matchPills?.length > 0">
           <sz-entity-match-pill
             *ngFor="let pill of matchPills"
