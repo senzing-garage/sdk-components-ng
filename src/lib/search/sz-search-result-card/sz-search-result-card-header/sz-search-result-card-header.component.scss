@@ -1,0 +1,56 @@
+@import "../../../scss/variables";
+
+:host {
+  .search-card__header--wrapper {
+    font-family: var(--sz-search-results-a-font-family);
+    font-size: var(--sz-search-results-a-font-size);
+    line-height: var(--sz-search-results-a-font-size);
+    display: flex;
+    align-items: center;
+
+    &.no-background {
+      background: none;
+    }
+
+    .search-card__header--alert {
+      color: $sz-red;
+      margin: 0 10px;
+    }
+    .search-card__header {
+      color: var(--sz-search-results-a-color);
+      display: flex;
+      align-items: center;
+      cursor: var(--sz-search-results-a-cursor);
+    }
+
+    .search__link {
+      display: inline-block;
+      text-decoration: none;
+      color: var(--sz-search-results-name-color);
+      cursor: var(--sz-search-results-a-cursor);
+      white-space: nowrap;
+      font-weight: var(--sz-search-results-name-font-weight);
+      min-width: var(--sz-search-results-name-min-width);
+
+      &:hover {
+        color: var(--sz-search-results-name-hover-color);
+      }
+    }
+
+    .search-card__header--breakdown {
+      max-width: 300px;
+      display: inline-block;
+    }
+
+    .ellipsis {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .breakdown-container {
+      display: flex;
+      align-items: center;
+    }
+  }
+}

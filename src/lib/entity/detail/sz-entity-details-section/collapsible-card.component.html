@@ -1,0 +1,73 @@
+<div #expPanel hideToggle="true" expanded="true"
+  [ngClass]="{'open': expanded, 'closed': !expanded}"
+  >
+    <div class="mat-expansion-panel-header" (click)="toggleExpanded($event)">
+      <div class="mat-panel-title">
+
+        <svg class="arrow" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	        viewBox="0 0 386.257 386.257" width="12" xml:space="preserve">
+          <polygon points="0,96.879 193.129,289.379 386.257,96.879 "/></svg>
+
+        <svg *ngIf="showIcon" class="icon-inline icon-flip" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          viewBox="0, 0, 1024, 1024" width="32" xml:space="preserve">
+          <g id="icon-datasource">
+            <path d="M972.8 448v263.314c0 0 0 0 0 7.314 0 109.714-197.486 197.486-453.486 197.486s-460.8-87.771-460.8-204.8c0-7.314 0-14.629 0-14.629v-234.057c0-7.314 0-14.629 0-14.629s0-14.629 0-14.629v-234.057c0-7.314 0-14.629 0-14.629 0-109.714 197.486-197.486 453.486-197.486 248.686 0 438.857 80.457 453.486 182.857 0 0 0 0 0 0v7.314c0 0 0 0 0 7.314 0 0 0 0 0 7.314v241.371c0 0 0-7.314 0-7.314 7.314 7.314 7.314 14.629 7.314 21.943 0 0 0 0 0 0zM768 338.286v0c-146.286-43.886-358.4-43.886-512 0v0c-87.771 29.257-146.286 65.829-146.286 109.714 0 36.571 51.2 80.457 138.971 102.4l14.629-7.314c146.286-36.571 343.771-36.571 490.057 0v0l14.629 7.314c87.771-29.257 138.971-65.829 138.971-102.4 7.314-36.571-43.886-80.457-138.971-109.714zM519.314 857.6c234.057 0 402.286-73.143 402.286-146.286 0-36.571-58.514-80.457-146.286-109.714v0c-146.286-43.886-358.4-43.886-512 0v0c-87.771 29.257-146.286 65.829-146.286 109.714 0 73.143 160.914 146.286 402.286 146.286zM519.314 38.4c-234.057 0-402.286 73.143-402.286 146.286 0 36.571 51.2 80.457 138.971 102.4l14.629-7.314c146.286-36.571 343.771-36.571 490.057 0v0l14.629 7.314c87.771-29.257 138.971-65.829 138.971-102.4 0-73.143-160.914-146.286-394.971-146.286z" />
+          </g>
+        </svg>
+
+        <span class="collapsible-card__title">{{cardData?.dataSource}}</span>
+        <ng-container *ngIf="matchPills?.length > 0">
+          <sz-entity-match-pill
+            *ngFor="let pill of matchPills"
+            [text]="pill.text"
+            [plusMinus]="pill.plusMinus">
+          </sz-entity-match-pill>
+        </ng-container>
+        <sz-entity-match-pill
+        *ngIf="hasAmbiguousMatch"
+        text="AMBIGUOUS"
+        matTooltip="An ambiguous match is a special kind of possible match because it could resolve to more than one entity.  Drill into it to find out what other entities this one might belong to." matTooltipShowDelay="200"
+        matTooltipPosition="right"
+        [ambiguous]="true">
+        </sz-entity-match-pill>
+
+      </div>
+    </div>
+    <!-- start is entity record (possible/disclosed matches) -->
+    <ng-container *ngIf="isEntityRecord(cardData)">
+      <div class="entity-records mat-expansion-panel-body">
+          <div class="entity-record" *ngFor="let _cardData of cardData?.records">
+              <sz-entity-record-card-header
+                [entityData]="_cardData"
+                [hideBackGroundColor]="true"
+                (entityRecordClick)="onEntityRecordClick($event)"
+                >
+              </sz-entity-record-card-header>
+              <sz-entity-record-card-content
+              [entity]="_cardData"
+              [parentEntity]="cardData"
+              [ngClass]="{'open': expanded, 'no-shade': true}"
+              [truncateResults]="truncateResults"
+              [truncatedTooltip]="'click to expand.'"
+            ></sz-entity-record-card-content>
+          </div>
+      </div>
+    </ng-container>
+    <!-- end is entity record (possible/disclosed matches) -->
+
+    <!-- start is not entity record (datasource records) -->
+    <ng-container *ngIf="!isEntityRecord(cardData)">
+      <div class="search-card-records  mat-expansion-panel-body">
+        <sz-entity-record-card-content
+          *ngFor="let _cardData of cardData?.records"
+          [entity]="_cardData"
+          [parentEntity]="cardData"
+          [ngClass]="{'open': expanded}"
+          [truncateResults]="truncateResults"
+          [truncatedTooltip]="'click to expand.'"
+        ></sz-entity-record-card-content>
+      </div>
+    </ng-container>
+    <!-- end is not entity record (datasource records) -->
+
+  </div>

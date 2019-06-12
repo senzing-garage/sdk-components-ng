@@ -1,0 +1,11 @@
+{
+  "$schema": "../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../dist/@senzing/sdk-components-ng",
+  "lib": {
+    "entryFile": "public_api.ts"
+  },
+  "whitelistedNonPeerDependencies": [
+    "@senzing/rest-api-client-ng",
+    "d3"
+  ]
+}

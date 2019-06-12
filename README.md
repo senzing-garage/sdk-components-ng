@@ -1,5 +1,7 @@
 # @senzing/sdk-components-ng
 
+[![Build Status](https://travis-ci.com/senzingiris/sdk-components-ng.svg?token=WxmiqA9RBhXENsrx41xE&branch=master)](https://travis-ci.com/senzingiris/sdk-components-ng)
+
 ## Overview
 
 This project is for the Senzing&reg; SDK components that can be used in other projects using Angular 7.X.X.
