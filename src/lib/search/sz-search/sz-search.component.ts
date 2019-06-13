@@ -580,6 +580,7 @@ export class SzSearchComponent implements OnInit {
       const totalResults = res ? res.length : 0;
       this.searchResultsJSON = JSON.stringify(res, null, 4);
       this.searchEnd.emit(totalResults);
+      this.searchService.setSearchResults(res);
       this.searchResults.next(res);
     }, (err)=>{
       this.searchEnd.emit();

@@ -18,6 +18,7 @@ import { SzEntitySearchParams } from '../models/entity-search';
 })
 export class SzSearchService {
   private currentSearchParams: SzEntitySearchParams = {};
+  private currentSearchResults: SzAttributeSearchResult[] | null = null;
 
   constructor(
     private entityDataService: EntityDataService,
@@ -55,6 +56,31 @@ export class SzSearchService {
     try {
       this.currentSearchParams[paramName] = value;
     } catch(err) {}
+  }
+
+  /**
+   * get the current search results from the last search.
+   * @memberof SzSearchService
+   */
+  public getSearchResults() : SzAttributeSearchResult[] | null {
+    return this.currentSearchResults;
+  }
+
+  /**
+   * set the current search results from the last search.
+   * @memberof SzSearchService
+   */
+  public setSearchResults(results: SzAttributeSearchResult[] | null) : void {
+    this.currentSearchResults = results ? results : null;
+  }
+
+  /**
+   * clears out current search parameters and search results.
+   * @memberof SzSearchService
+   */
+  public clearCurrentSearchState() : void {
+    this.currentSearchParams  = {};
+    this.currentSearchResults = null;
   }
 
   /*
