@@ -1,10 +1,10 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "projects",
+  "newProjectRoot": "examples",
   "projects": {
     "@senzing/sdk-components-ng": {
-      "root": "projects/sdk-components-ng",
+      "root": "",
       "sourceRoot": "src",
       "projectType": "library",
       "prefix": "sz",
@@ -31,6 +31,34 @@
               "src/tsconfig.lib.json",
               "src/tsconfig.spec.json"
             ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "@senzing/sdk-components-ng/e2e": {
+      "root": "e2e/",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "example/search-with-results-and-details:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "example/search-with-results-and-details:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "e2e/tsconfig.e2e.json",
             "exclude": [
               "**/node_modules/**"
             ]

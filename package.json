@@ -19,7 +19,7 @@
     "start:rest": "npm run start:server",
     "server": "npm run start:server",
     "lint": "ng lint",
-    "e2e": "ng e2e",
+    "e2e": "ng e2e @senzing/sdk-components-ng/e2e",
     "example:search-with-results-and-details": "ng serve example/search-with-results-and-details",
     "example:search-with-spinner": "ng serve example/search-with-spinner",
     "example:graph": "ng serve example/graph"
