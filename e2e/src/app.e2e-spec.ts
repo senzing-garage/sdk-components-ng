@@ -7,8 +7,8 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should have app-root element', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to senzing!');
+    expect(page.getAppRoot());
   });
 });
