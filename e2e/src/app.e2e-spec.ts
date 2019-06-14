@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('workspace-project App', () => {
+describe('@senzing/sdk-components-ng', () => {
   let page: AppPage;
 
   beforeEach(() => {
