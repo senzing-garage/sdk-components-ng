@@ -1,5 +1,5 @@
-import { SearchBox } from './src/search.po';
-import { browser, until, by } from 'protractor';
+import { SearchBox } from './search.po';
+import { browser, until, by, $$, $ } from 'protractor';
 
 describe('@senzing/sdk-components-ng/sz-search tests', () => {
   let page: SearchBox;
@@ -25,6 +25,13 @@ describe('@senzing/sdk-components-ng/sz-search tests', () => {
   it('submit button should be clickable', () => {
     expect(page.getSearchButtonSubmit().isEnabled).toBeTruthy();
   });
+
+  /*
+  it('should have search results', () => {
+    page.clickSearchButtonSubmit();
+    browser.sleep(60000);
+    expect( $$('sz-search-result-card').count() ).toBeGreaterThan(0);
+  });*/
 
 
 });
