@@ -23,6 +23,6 @@ install:
 
 script:
 - npm run test:headless
-- npm run e2e:headless
 - npm run build:docs
 - npm run build
+- npm run e2e:headless
