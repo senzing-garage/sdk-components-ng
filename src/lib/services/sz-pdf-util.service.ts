@@ -58,30 +58,6 @@ export class SzPdfUtilService {
     });
   }
   /**
-   * Create a downloadable PDF from an entity search result.
-   */
-  public createPdfFromEntitySearch(data: SzEntityData): void{
-    console.log('SzPdfUtilService.createPdfFromAttributeSearch: ', data);
-
-    const doc = new jsPDF();
-    const entity = data.resolvedEntity;
-    if(data && data.resolvedEntity) {
-      let pIndex = 0;
-      let pLineY = 10;
-      const pMarginLeft = 10;
-      const pLineHeight = 12;
-      const rNameHeight = 20;
-      const rAddrHeight = 12;
-      const resultSpacing = 20;
-      const pHeadHeight = 20;
-
-      doc.setFontSize(rNameHeight);
-      doc.text(entity.entityName, pMarginLeft, pLineY); pLineY = pLineY+(rNameHeight - (rNameHeight / 2));
-
-      doc.save(`${entity.entityName.toLowerCase().replace(' ','-')}-${entity.entityId}.pdf`);
-    }
-  }
-  /**
    * Create a downloadable PDF from a attribute search result.
    */
   public createPdfFromAttributeSearch(data: SzAttributeSearchResult[], searchParams?: SzEntitySearchParams, resultsPerPage: number = 10): void {
