@@ -1,10 +1,10 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "projects",
+  "newProjectRoot": "examples",
   "projects": {
     "@senzing/sdk-components-ng": {
-      "root": "projects/sdk-components-ng",
+      "root": "",
       "sourceRoot": "src",
       "projectType": "library",
       "prefix": "sz",
@@ -31,6 +31,138 @@
               "src/tsconfig.lib.json",
               "src/tsconfig.spec.json"
             ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "@senzing/sdk-components-ng/e2e": {
+      "root": "e2e",
+      "sourceRoot": "e2e",
+      "projectType": "application",
+      "prefix": "",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss",
+          "spec": false
+        },
+        "@schematics/angular:class": {
+          "spec": false
+        },
+        "@schematics/angular:directive": {
+          "spec": false
+        },
+        "@schematics/angular:guard": {
+          "spec": false
+        },
+        "@schematics/angular:module": {
+          "spec": false
+        },
+        "@schematics/angular:pipe": {
+          "spec": false
+        },
+        "@schematics/angular:service": {
+          "spec": false
+        }
+      },
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "@senzing/sdk-components-ng/e2e:serve:e2e"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "@senzing/sdk-components-ng/e2e:serve:e2e"
+            },
+            "e2e": {
+              "devServerTarget": "@senzing/sdk-components-ng/e2e:serve:e2e"
+            }
+          }
+        },
+
+
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/@senzing/sdk-components-e2e",
+            "index": "e2e/harness/src/index.html",
+            "main": "e2e/harness/src/main.ts",
+            "polyfills": "e2e/harness/src/polyfills.ts",
+            "tsConfig": "e2e/tsconfig.e2e.json",
+            "assets": [
+              "e2e/harness/src/favicon.ico",
+              "e2e/harness/src/assets"
+            ],
+            "styles": [
+              "src/lib/scss/styles.scss",
+              "e2e/harness/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "e2e/harness/src/environments/environment.ts",
+                  "with": "e2e/harness/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            },
+            "e2e": {
+              "fileReplacements": [
+                {
+                  "replace": "e2e/harness/src/environments/environment.ts",
+                  "with": "e2e/harness/src/environments/environment.test.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "@senzing/sdk-components-ng/e2e:build",
+            "port": 4300
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "@senzing/sdk-components-ng/e2e:build:production"
+            },
+            "e2e": {
+              "browserTarget": "@senzing/sdk-components-ng/e2e:build:e2e"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "@senzing/sdk-components-ng/e2e:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "e2e/tsconfig.e2e.json",
             "exclude": [
               "**/node_modules/**"
             ]
