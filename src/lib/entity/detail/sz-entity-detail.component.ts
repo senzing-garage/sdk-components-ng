@@ -1,4 +1,4 @@
-import { Component, OnInit,  Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit,  Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { SzSearchService } from '../../services/sz-search.service';
 import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -26,6 +26,12 @@ export class SzEntityDetailComponent {
   _disclosedRelationships: SzRelatedEntity[];
   _possibleMatches: SzRelatedEntity[];
   _matches: SzEntityRecord[];
+
+  /** used for print and pdf support, allows fetching DOM HTMLElement */
+  @ViewChild('nativeElementRef') nativeElementRef: ElementRef;
+  public get nativeElement(): HTMLElement {
+    return this.nativeElementRef.nativeElement;
+  };
 
   /**
    * emitted when the component begins a request for an entities data.
