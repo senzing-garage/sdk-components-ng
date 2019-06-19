@@ -539,12 +539,9 @@ export class SzSearchComponent implements OnInit {
   }
 
   /**
-   * submit current search params to search service.
-   * when search service returns a result it publishes the result
-   * through the resultsChange event emitter, and
-   * any parameter changes through the paramsChange emmitter.
+   * get the current search params from input values
    */
-  public submitSearch(): void {
+  public getSearchParams(): any {
     let searchParams = JSONScrubber(this.entitySearchForm.value);
 
     // clear out identifier fields if no identifier specified
@@ -566,6 +563,17 @@ export class SzSearchComponent implements OnInit {
     }
     // after mods scrub nulls
     searchParams = JSONScrubber(searchParams);
+    return searchParams;
+  }
+
+  /**
+   * submit current search params to search service.
+   * when search service returns a result it publishes the result
+   * through the resultsChange event emitter, and
+   * any parameter changes through the paramsChange emmitter.
+   */
+  public submitSearch(): void {
+    const searchParams = this.getSearchParams();
 
     if(Object.keys(searchParams).length <= 0){
       // do not perform search if criteria are empty
