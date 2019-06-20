@@ -13,9 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Unit tests fixed
 - Added .travis.yml for CI support
 
-## [1.0.5]
+## [1.0.5](https://github.com/senzingiris/sdk-components-ng/releases/tag/1.0.5)
 
 - D3 "at a glance" chart added to entity detail component.
-- Bugfixes for #21, #22, #24, #26, #34, #40
+- Bugfixes for #21, #22, #24, #26, #34, #38, #40
 - Support for sub-repo compilation
   
