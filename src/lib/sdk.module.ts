@@ -21,6 +21,7 @@ import { SzMessageBundleService } from './services/sz-message-bundle.service';
 import { SzSearchService } from './services/sz-search.service';
 import { SzConfigurationService } from './services/sz-configuration.service';
 import { SzUIEventService } from './services/sz-ui.service';
+import { SzPdfUtilService } from './services/sz-pdf-util.service';
 
 /** components */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
@@ -139,7 +140,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzConfigurationService,
     HttpClient,
     TitleCasePipe,
-    SzUIEventService
+    SzUIEventService,
+    SzPdfUtilService
   ]
 })
 export class SenzingSdkModule {

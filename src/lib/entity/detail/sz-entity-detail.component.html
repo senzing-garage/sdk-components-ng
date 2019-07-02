@@ -1,11 +1,11 @@
 
 <!-- @senzing/sdk/entity/detail/sz-entity-detail -->
-<div>
+<div #nativeElementRef>
   <sz-entity-detail-header
   [entity]="entity">
   </sz-entity-detail-header>
 
-  <sz-entity-detail-graph
+  <sz-entity-detail-graph data-html2canvas-ignore
     *ngIf="graphData && this._showGraphSection"
     [data]="graphData"
   ></sz-entity-detail-graph>

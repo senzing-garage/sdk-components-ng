@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+
+}
+
+.detail-wrapper {
+  background-color: #C0C0C0;
+  color: #3a3a3a;
+  padding: 10px 10px;
+  margin: 0 0 40px 0;
+  border: 1px solid #a3a3a3;
+  border-top: 1px solid #9d9d9d;
+  background-image: linear-gradient(#a4a4a4, #727272);
+
+  button {
+    padding: 10px 55px 10px 15px;
+    background-color: #424242;
+    border: none;
+    border-radius: 3px;
+    color: #ffffffd4;
+
+  }
+
+}
