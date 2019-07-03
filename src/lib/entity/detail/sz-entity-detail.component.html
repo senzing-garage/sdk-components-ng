@@ -21,7 +21,7 @@
 
   <sz-entity-details-section
     *ngIf="this.possibleMatches?.length"
-    [sectionData]="this.possibleMatches"
+    [sectionData]="this._possibleMatches"
     [sectionTitle]="'Possible Matches'"
     sectionId="detail-section-2"
     [sectionCount]="this.possibleMatches?.length"
