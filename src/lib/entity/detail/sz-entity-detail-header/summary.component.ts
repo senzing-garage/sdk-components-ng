@@ -1,5 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { SzEntityDetailSectionSummary } from '../../../models/entity-detail-section-data';
+import { Location } from "@angular/common";
+import { Router, NavigationEnd } from "@angular/router";
+import { filter } from 'rxjs/operators';
 
 /**
  * @internal
@@ -10,13 +13,36 @@ import { SzEntityDetailSectionSummary } from '../../../models/entity-detail-sect
   templateUrl: './summary.component.html',
   styleUrls: ['./summary.component.scss']
 })
-export class SzEntityDetailSectionSummaryComponent implements OnInit {
+export class SzEntityDetailSectionSummaryComponent implements OnInit, OnDestroy {
   @Input()section: SzEntityDetailSectionSummary;
   @Input()sectionId: number;
 
-  constructor() { }
+  private navigationSubscription;
+  public routePath: string = "";
+  @Input() public inheritRoutePath = true;
+
+  constructor( private location: Location, router: Router ) {
+    this.navigationSubscription = router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+    ).subscribe(val => {
+      if (location.path( false ) !== "" && location.path( false ) !== this.routePath && this.inheritRoutePath) {
+        this.routePath = location.path( false );
+      }
+    });
+  }
 
   ngOnInit() {
+    // get current location
+    if(this.inheritRoutePath) { this.routePath = this.location.path( false ); }
+  }
+
+  ngOnDestroy() {
+    // avoid memory leaks here by cleaning up after ourselves. If we
+    // don't then we will continue to run our routepath updates
+    // on every navigationEnd event.
+    if (this.navigationSubscription) {
+       this.navigationSubscription.unsubscribe();
+    }
   }
 
   get sectionTarget(): string {
