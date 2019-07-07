@@ -8,6 +8,8 @@
     "@senzing/rest-api-client-ng",
     "d3",
     "jspdf",
-    "html2canvas"
+    "html2canvas",
+    "@types/d3",
+    "@types/jspdf"
   ]
 }
