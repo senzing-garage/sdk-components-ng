@@ -16,6 +16,17 @@ export class SzEntityMatchPillComponent implements OnInit {
   @Input() ambiguous: boolean;
 
   constructor() { }
+  /**
+   * get the css classes for the component. used by the template.
+   */
+  public get matchKeyClasses(): string {
+    let classes = ['sz-match-pill-element'];
+    if(this.plusMinus == 'plus') { classes.push('plus'); }
+    if(this.plusMinus == 'minus') { classes.push('minus'); }
+    if(this.ambiguous) { classes.push('is-ambiguous'); }
+    classes.push('key-'+ this.text.toLowerCase().replace('+', '').replace('-', '') );
+    return classes.join(' ');
+  }
 
   ngOnInit() {
   }

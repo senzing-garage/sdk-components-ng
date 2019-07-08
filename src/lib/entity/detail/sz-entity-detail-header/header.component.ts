@@ -61,7 +61,23 @@ export class SzEntityDetailHeaderComponent implements OnInit {
     }) : undefined;
   }
 
-
+  /**
+   * Best name to use for entity
+   *
+   * @readonly
+   */
+  public get bestName(): string {
+    if(this.entity) {
+      if(this.entity.resolvedEntity.bestName) {
+        return this.entity.resolvedEntity.bestName.trim();
+      } else if(this.entity.resolvedEntity.entityName) {
+        return this.entity.resolvedEntity.entityName.trim();
+      } else if(this.entity.resolvedEntity.nameData.length > 0) {
+        return this.entity.resolvedEntity.nameData[1];
+      }
+    }
+    return "";
+  }
 
   constructor() {
   }
