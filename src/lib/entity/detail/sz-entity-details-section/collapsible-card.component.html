@@ -1,5 +1,5 @@
 <div #expPanel hideToggle="true" expanded="true"
-  [ngClass]="{'open': expanded, 'closed': !expanded}"
+  [ngClass]="cssClasses"
   >
     <div class="mat-expansion-panel-header" (click)="toggleExpanded($event)">
       <div class="mat-panel-title">

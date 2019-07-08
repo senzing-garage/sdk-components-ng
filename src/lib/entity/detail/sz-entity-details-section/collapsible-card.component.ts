@@ -12,21 +12,24 @@ import { SzEntityRecord } from '@senzing/rest-api-client-ng';
   styleUrls: ['./collapsible-card.component.scss']
 })
 export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, AfterViewInit {
-  //private static _msgHandler : SzMessageHandler = new SzMessageHandler('entity.collapsible-card');
-  //private msgHandler: SzMessageHandler = CollapsibleCardComponent._msgHandler;
   @ViewChild('messages') private messagesContainer: HTMLElement;
 
   @Input() showIcon = true;
   @Input() headerIcon: string;
   @Input() cardTitle: string;
+  /**
+   * set the expanded state of the component
+   */
   @Input()
   set expanded(value) {
     this.isOpen = value;
   }
+  /**
+   * get the expanded state of the component
+   */
   get expanded(): boolean {
     return this.isOpen;
   }
-  //@Input() cardData: any;
   @Input() displayType: string = 'entity';
   @Input() truncateResults: boolean = true;
 
@@ -69,9 +72,41 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, Af
     this.isOpen = false;
   }
 
+  /**
+   * toggle the collapse/expand state
+   */
   toggleExpanded(evt: Event) {
     this.expanded = !this.expanded;
     console.log('set new expanded state: ', this.expanded, evt);
+  }
+
+  /**
+   * get the css classes for the component.
+   * used by the template.
+   * @readonly
+   */
+  public get cssClasses(): string {
+    const retArr = ['sz-entity-detail-section-collapsible-card-content'];
+    if( this.expanded ) {
+      retArr.push('open');
+    } else {
+      retArr.push('closed');
+    }
+    // match pill obj shape
+    // { text: string, ambiguous: boolean, plusMinus: string }
+    if(this.matchPills && this.matchPills.forEach) {
+      this.matchPills.forEach(( m ) => {
+        let k = m.text;
+        if(k.indexOf && k.indexOf('+') <= 0) {
+          k = k.substr(1);
+        }
+        if(k.replace) { k = k.replace('+', '_'); }
+        if(k.toLowerCase) { k = k.toLowerCase(); }
+        retArr.push( 'key-'+ k );
+      });
+    }
+    const retStr = retArr.join(' ');
+    return retArr.join(' ');
   }
 
   isEntityRecord(data: SzEntityDetailSectionData | SzEntityRecord): data is SzEntityRecord {
@@ -105,7 +140,6 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, Af
       return pills;
     }
   }
-
 
   private createMatchPillInfo(data: any): { text: string, plusMinus: string }[] {
     if (data && data.matchKey) {

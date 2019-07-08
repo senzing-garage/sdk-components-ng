@@ -31,7 +31,7 @@ export class SzEntityDetailComponent {
   @ViewChild('nativeElementRef') nativeElementRef: ElementRef;
   public get nativeElement(): HTMLElement {
     return this.nativeElementRef.nativeElement;
-  };
+  }
 
   /**
    * emitted when the component begins a request for an entities data.
@@ -98,13 +98,13 @@ export class SzEntityDetailComponent {
    * Gets the data in the model shape used by the relationship network graph.
    */
   public get graphData() {
-    if(!this.entity || this.entity == null){
+    if(!this.entity || this.entity == null) {
       return;
     }
     return {
       resolvedEntity: this.entity.resolvedEntity,
       relatedEntities: this.entity.relatedEntities
-    }
+    };
   }
 
   /**

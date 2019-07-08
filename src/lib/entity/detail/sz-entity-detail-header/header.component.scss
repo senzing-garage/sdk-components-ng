@@ -26,6 +26,8 @@
       border-radius: var(--sz-entity-detail-icon-border-radius);
       height: var(--sz-entity-detail-icon-height);
       width: var(--sz-entity-detail-icon-width);
+      min-height: 120px;
+      min-width: 120px;
       display: var(--sz-entity-detail-icon-display);
       margin: var(--sz-entity-detail-icon-margin);
       overflow: hidden;
@@ -43,6 +45,10 @@
     }
     .detail-header__last-seen {
       font-size: 24px;
+    }
+
+    .detail-header__bottom--wrapper {
+      margin-top: 7px;
     }
   }
 }
