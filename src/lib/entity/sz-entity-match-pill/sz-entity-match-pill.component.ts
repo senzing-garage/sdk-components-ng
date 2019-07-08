@@ -24,7 +24,9 @@ export class SzEntityMatchPillComponent implements OnInit {
     if(this.plusMinus == 'plus') { classes.push('plus'); }
     if(this.plusMinus == 'minus') { classes.push('minus'); }
     if(this.ambiguous) { classes.push('is-ambiguous'); }
-    classes.push('key-'+ this.text.toLowerCase().replace('+', '').replace('-', '') );
+    if(this.text && this.text.toLowerCase && this.text.replace) {
+      classes.push('key-'+ this.text.toLowerCase().replace('+', '').replace('-', '') );
+    }
     return classes.join(' ');
   }
 
