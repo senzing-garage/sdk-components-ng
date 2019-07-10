@@ -168,7 +168,7 @@ And that's it! At least for the quickstart. There are a ton more options for run
 The SenzingSDKModule accepts a factory method that returns an instance of the
 [SzRestConfiguration](https://senzing.github.io/rest-api-client-ng/classes/Configuration.html) class. By adding a factory like the following to the forRoot method, you can change services configuration to point to non-default values.
 
-The following tells any components to turn on CORS functionality and make all api requests to localhost port 2080 (i.e.: http://localhost:2080/).
+The following tells any components to turn on CORS functionality and make all api requests to localhost port 8080 (i.e.: http://localhost:8080/).
 
 ```typescript
 import { BrowserModule } from '@angular/platform-browser';
@@ -180,7 +180,7 @@ import { AppComponent } from './app.component';
 // for AOT compilation
 export function SzRestConfigurationFactory() {
   return new SzRestConfiguration({
-    basePath: 'http://localhost:2080',
+    basePath: 'http://localhost:8080',
     withCredentials: true
   });
 }
@@ -233,7 +233,7 @@ Occasionally something does go wrong (I know, I know right?). Here are some comm
         passing in an instance of <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> to the <a href="https://senzing.github.io/sdk-components-ng/modules/SenzingSdkModule.html">SenzingSdkModule.forRoot method</a>.
         <br/><br/>
         Double check and make sure you can connect to your rest server via
-        <code>curl -i http://localhost:2080/heartbeat</code>
+        <code>curl -i http://localhost:8080/heartbeat</code>
       </td>
       <td style="padding: 10px 5px;">
         The api is trying to hit the rest server without an appropriate basepath or the hostname.

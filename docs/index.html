@@ -141,7 +141,7 @@ and you should be greeted by a page like with a search box. And search results l
 <h2 id="configuration-parameters">Configuration &amp; Parameters</h2>
 <p>The SenzingSDKModule accepts a factory method that returns an instance of the
 <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> class. By adding a factory like the following to the forRoot method, you can change services configuration to point to non-default values.</p>
-<p>The following tells any components to turn on CORS functionality and make all api requests to localhost port 2080 (i.e.: <a href="http://localhost:2080/)">http://localhost:2080/)</a>.</p>
+<p>The following tells any components to turn on CORS functionality and make all api requests to localhost port 8080 (i.e.: <a href="http://localhost:8080/)">http://localhost:8080/)</a>.</p>
 <div><pre class="line-numbers"><code class="language-typescript">import { BrowserModule } from &#39;&#64;angular/platform-browser&#39;;
 import { NgModule } from &#39;&#64;angular/core&#39;;
 import { SenzingSdkModule, SzRestConfiguration } from &#39;&#64;senzing/sdk-components-ng&#39;;
@@ -151,7 +151,7 @@ import { AppComponent } from &#39;./app.component&#39;;
 // for AOT compilation
 export function SzRestConfigurationFactory() {
   return new SzRestConfiguration({
-    basePath: &#39;http://localhost:2080&#39;,
+    basePath: &#39;http://localhost:8080&#39;,
     withCredentials: true
   });
 }
@@ -193,7 +193,7 @@ node_modules/@senzing/sdk-components-ng/docs or <a href="https://senzing.github.
         passing in an instance of <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> to the <a href="https://senzing.github.io/sdk-components-ng/modules/SenzingSdkModule.html">SenzingSdkModule.forRoot method</a>.
         <br/><br/>
         Double check and make sure you can connect to your rest server via
-        <code>curl -i http://localhost:2080/heartbeat</code>
+        <code>curl -i http://localhost:8080/heartbeat</code>
       </td>
       <td style="padding: 10px 5px;">
         The api is trying to hit the rest server without an appropriate basepath or the hostname.
