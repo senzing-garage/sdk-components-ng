@@ -5,7 +5,7 @@
     "timestamp": "2019-03-20T17:30:07.167Z"
   },
   "links": {
-    "self": "http://localhost:2080/entity-paths?from=914082&to=179726&maxDegrees=3&forbidAvoided=true&withRaw=true"
+    "self": "http://localhost:8080/entity-paths?from=914082&to=179726&maxDegrees=3&forbidAvoided=true&withRaw=true"
   },
   "rawData": {
     "ENTITY_PATHS": [

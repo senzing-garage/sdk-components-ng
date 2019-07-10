@@ -11,7 +11,7 @@ export const environment = {
 
 // api configuration parameters
 export const apiConfig: SzRestConfigurationParameters = {
-  'basePath': 'http://localhost:2080',
+  'basePath': 'http://localhost:8080',
   'withCredentials': true
 };
 

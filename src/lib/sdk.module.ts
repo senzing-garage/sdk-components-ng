@@ -143,7 +143,7 @@ export class SenzingSdkModule {
    * @see {@link https://senzing.github.io/rest-api-client-ng/classes/Configuration.html|SzRestConfiguration}
    * @example
    export function SzRestConfigurationFactory() {
-      return new SzRestConfiguration({ basePath: \"myapiserverhostname.com:2080\", withCredentials: true });
+      return new SzRestConfiguration({ basePath: \"myapiserverhostname.com:8080\", withCredentials: true });
    }
 
    SenzingSdkModule.forRoot( SzRestConfigurationFactory )
