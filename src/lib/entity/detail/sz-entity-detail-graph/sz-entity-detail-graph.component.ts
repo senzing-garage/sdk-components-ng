@@ -20,6 +20,7 @@ import {
 export class SzEntityDetailGraphComponent implements OnInit {
   isOpen: boolean = true;
 
+  @Input() public title: string = "Relationships at a Glance";
   @Input() data: {
     resolvedEntity: SzResolvedEntity,
     relatedEntities: SzRelatedEntity[]
