@@ -86,6 +86,21 @@ export class SzEntityDetailComponent {
     this._showGraphSection = value;
   }
 
+  public _graphTitle: string = "Relationships at a Glance";
+  /**
+   * graph section title
+   */
+  @Input()
+  public set graphTitle(value: string) {
+    this._graphTitle = value;
+  }
+  /**
+   * graph section title
+   */
+  public get graphTitle() {
+    return this._graphTitle;
+  }
+
   /**
    * set the entity data by passing in an entity id number.
    */

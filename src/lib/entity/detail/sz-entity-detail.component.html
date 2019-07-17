@@ -8,6 +8,7 @@
   <sz-entity-detail-graph data-html2canvas-ignore
     *ngIf="graphData && this._showGraphSection"
     [data]="graphData"
+    [title]="this.graphTitle"
   ></sz-entity-detail-graph>
 
   <sz-entity-details-section class="details-section datasources"
