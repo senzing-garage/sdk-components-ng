@@ -31,6 +31,20 @@ export class SzEntityDetailSectionSummaryComponent implements OnInit, OnDestroy 
     });
   }
 
+  /**
+   * when a summary box is clicked, this handler is invoked and updates the
+   * url fragment.
+   */
+  public onSummaryClick(event: any) {
+    console.warn('onSummaryClick: ', event, this.routePath, this.sectionTarget);
+    let loc = window.location.href;
+    if(loc.indexOf('#') > 0){
+      loc = loc.substring(0, loc.indexOf('#'));
+    }
+    loc = loc +'#'+ this.sectionTarget;
+    window.location.href = loc;
+  }
+
   ngOnInit() {
     // get current location
     if(this.inheritRoutePath) { this.routePath = this.location.path( false ); }

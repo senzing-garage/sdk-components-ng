@@ -31,7 +31,7 @@ export class SzEntityDetailComponent {
   @ViewChild('nativeElementRef') nativeElementRef: ElementRef;
   public get nativeElement(): HTMLElement {
     return this.nativeElementRef.nativeElement;
-  };
+  }
 
   /**
    * emitted when the component begins a request for an entities data.
@@ -104,7 +104,7 @@ export class SzEntityDetailComponent {
     return {
       resolvedEntity: this.entity.resolvedEntity,
       relatedEntities: this.entity.relatedEntities
-    }
+    };
   }
 
   /**

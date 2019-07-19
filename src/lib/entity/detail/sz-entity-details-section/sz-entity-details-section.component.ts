@@ -89,7 +89,7 @@ export class SzEntityDetailsSectionComponent implements OnInit {
   private getSectionDataByMatchKey(sectionData) {
     const _ret = sectionData;
 
-    let _retByMK = {};
+    const _retByMK = {};
     const _retByMKAsArray = [];
     if(_ret && _ret.forEach) {
       _ret.forEach(matchGroup => {

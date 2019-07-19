@@ -5,8 +5,7 @@
       'disclosed-relationships': isDisclosedRelationships,
       'no-results': noResults
       }"
-      scrollTo scrollableElementSelector=".app-content" [href]="routePath+'#'+sectionTarget"
-      >
+      (click)="onSummaryClick($event)">
   <div class="section-summary__top">
     <span class="section-summary__count">{{section?.total}}</span>
     <span>
