@@ -137,6 +137,9 @@
                                     <span class="modifier">Public</span>
                                 <a href="#entity">entity</a>
                             </li>
+                            <li>
+                                <a href="#nativeElementRef">nativeElementRef</a>
+                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -222,6 +225,9 @@
                     <tr>
                         <td class="col-md-4">
                             <ul class="index-list">
+                                <li>
+                                    <a href="#nativeElement">nativeElement</a>
+                                </li>
                                 <li>
                                     <a href="#entityData">entityData</a>
                                 </li>
@@ -750,12 +756,73 @@ clicked on.</p>
 
             </tbody>
         </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="nativeElementRef"></a>
+                        <span class="name">
+                            <b>
+                            nativeElementRef
+                            </b>
+                            <a href="#nativeElementRef"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>nativeElementRef:     <code><a href="https://angular.io/api/core/ElementRef" target="_blank" >ElementRef</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="https://angular.io/api/core/ElementRef" target="_blank" >ElementRef</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @ViewChild(&#x27;nativeElementRef&#x27;)<br />
+                            </code>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>used for print and pdf support, allows fetching DOM HTMLElement </p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
 </section>
 
     <section>
     <h3 id="accessors">
         Accessors
     </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="nativeElement"></a>
+                        <span class="name"><b>nativeElement</b><a href="#nativeElement"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>nativeElement()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -1144,17 +1211,17 @@ clicked on.</p>
     <div class="tab-pane fade " id="c-templateData">
         <pre class="line-numbers"><code class="language-html">
 &lt;!-- @senzing/sdk/entity/detail/sz-entity-detail --&gt;
-&lt;div&gt;
+&lt;div #nativeElementRef&gt;
   &lt;sz-entity-detail-header
   [entity]&#x3D;&quot;entity&quot;&gt;
   &lt;/sz-entity-detail-header&gt;
 
-  &lt;sz-entity-detail-graph
+  &lt;sz-entity-detail-graph data-html2canvas-ignore
     *ngIf&#x3D;&quot;graphData &amp;&amp; this._showGraphSection&quot;
     [data]&#x3D;&quot;graphData&quot;
   &gt;&lt;/sz-entity-detail-graph&gt;
 
-  &lt;sz-entity-details-section
+  &lt;sz-entity-details-section class&#x3D;&quot;details-section datasources&quot;
     *ngIf&#x3D;&quot;entity?.resolvedEntity?.records?.length&quot;
     [sectionData]&#x3D;&quot;entity?.resolvedEntity?.records&quot;
     [sectionTitle]&#x3D;&quot;&#x27;Matched Records&#x27;&quot;
@@ -1163,15 +1230,15 @@ clicked on.</p>
     (entityRecordClick)&#x3D;&quot;onEntityRecordClick($event)&quot;&gt;
   &lt;/sz-entity-details-section&gt;
 
-  &lt;sz-entity-details-section
-    *ngIf&#x3D;&quot;this.possibleMatches?.length&quot;
-    [sectionData]&#x3D;&quot;this.possibleMatches&quot;
+  &lt;sz-entity-details-section class&#x3D;&quot;details-section possible&quot;
+    *ngIf&#x3D;&quot;this._possibleMatches?.length&quot;
+    [sectionData]&#x3D;&quot;this._possibleMatches&quot;
     [sectionTitle]&#x3D;&quot;&#x27;Possible Matches&#x27;&quot;
     sectionId&#x3D;&quot;detail-section-2&quot;
-    [sectionCount]&#x3D;&quot;this.possibleMatches?.length&quot;
+    [sectionCount]&#x3D;&quot;this._possibleMatches?.length&quot;
     (entityRecordClick)&#x3D;&quot;onEntityRecordClick($event)&quot;&gt;
   &lt;/sz-entity-details-section&gt;
-  &lt;sz-entity-details-section
+  &lt;sz-entity-details-section class&#x3D;&quot;details-section discovered&quot;
     *ngIf&#x3D;&quot;this._discoveredRelationships?.length&quot;
     [sectionData]&#x3D;&quot;this._discoveredRelationships&quot;
     [sectionTitle]&#x3D;&quot;&#x27;Possible Relationships&#x27;&quot;
@@ -1179,7 +1246,7 @@ clicked on.</p>
     [sectionCount]&#x3D;&quot;this._discoveredRelationships?.length&quot;
     (entityRecordClick)&#x3D;&quot;onEntityRecordClick($event)&quot;&gt;
   &lt;/sz-entity-details-section&gt;
-  &lt;sz-entity-details-section
+  &lt;sz-entity-details-section class&#x3D;&quot;details-section disclosed&quot;
     *ngIf&#x3D;&quot;this._disclosedRelationships?.length&quot;
     [sectionData]&#x3D;&quot;this._disclosedRelationships&quot;
     [sectionTitle]&#x3D;&quot;&#x27;Disclosed Relationships&#x27;&quot;
@@ -1215,8 +1282,8 @@ clicked on.</p>
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><!-- @senzing/sdk/entity/detail/sz-entity-detail --><div>  <sz-entity-detail-header  [entity]="entity">  </sz-entity-detail-header>  <sz-entity-detail-graph    *ngIf="graphData && this._showGraphSection"    [data]="graphData"  ></sz-entity-detail-graph>  <sz-entity-details-section    *ngIf="entity?.resolvedEntity?.records?.length"    [sectionData]="entity?.resolvedEntity?.records"    [sectionTitle]="\'Matched Records\'"    sectionId="detail-section-1"    [sectionCount]="entity?.resolvedEntity?.records?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="this.possibleMatches?.length"    [sectionData]="this.possibleMatches"    [sectionTitle]="\'Possible Matches\'"    sectionId="detail-section-2"    [sectionCount]="this.possibleMatches?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="this._discoveredRelationships?.length"    [sectionData]="this._discoveredRelationships"    [sectionTitle]="\'Possible Relationships\'"    sectionId="detail-section-3"    [sectionCount]="this._discoveredRelationships?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section    *ngIf="this._disclosedRelationships?.length"    [sectionData]="this._disclosedRelationships"    [sectionTitle]="\'Disclosed Relationships\'"    sectionId="detail-section-4"    [sectionCount]="this._disclosedRelationships?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section></div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipNetworkInputComponent', 'selector': 'sz-relationship-network-input'},{'name': 'SzRelationshipNetworkLookupComponent', 'selector': 'sz-relationship-network-lookup'},{'name': 'SzRelationshipNetworkUploadComponent', 'selector': 'sz-relationship-network-upload'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'}];
+        var COMPONENT_TEMPLATE = '<div><!-- @senzing/sdk/entity/detail/sz-entity-detail --><div #nativeElementRef>  <sz-entity-detail-header  [entity]="entity">  </sz-entity-detail-header>  <sz-entity-detail-graph data-html2canvas-ignore    *ngIf="graphData && this._showGraphSection"    [data]="graphData"  ></sz-entity-detail-graph>  <sz-entity-details-section class="details-section datasources"    *ngIf="entity?.resolvedEntity?.records?.length"    [sectionData]="entity?.resolvedEntity?.records"    [sectionTitle]="\'Matched Records\'"    sectionId="detail-section-1"    [sectionCount]="entity?.resolvedEntity?.records?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section possible"    *ngIf="this._possibleMatches?.length"    [sectionData]="this._possibleMatches"    [sectionTitle]="\'Possible Matches\'"    sectionId="detail-section-2"    [sectionCount]="this._possibleMatches?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section discovered"    *ngIf="this._discoveredRelationships?.length"    [sectionData]="this._discoveredRelationships"    [sectionTitle]="\'Possible Relationships\'"    sectionId="detail-section-3"    [sectionCount]="this._discoveredRelationships?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section disclosed"    *ngIf="this._disclosedRelationships?.length"    [sectionData]="this._disclosedRelationships"    [sectionTitle]="\'Disclosed Relationships\'"    sectionId="detail-section-4"    [sectionCount]="this._disclosedRelationships?.length"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section></div></div>'
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzEntityDetailComponent'};
 </script>

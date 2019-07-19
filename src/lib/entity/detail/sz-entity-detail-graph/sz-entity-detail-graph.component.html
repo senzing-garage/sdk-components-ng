@@ -1,5 +1,5 @@
 
-<div class="section-header__wrapper graph-relationships"
+<div data-html2canvas-ignore class="section-header__wrapper graph-relationships"
   [ngClass]="{'open': expanded, 'closed': !expanded}"
   (click)="toggleExpanded($event)"
 >
@@ -8,7 +8,7 @@
       viewBox="0 0 386.257 386.257" width="12" xml:space="preserve">
       <polygon points="0,96.879 193.129,289.379 386.257,96.879 "/></svg>
     <svg xmlns="http://www.w3.org/2000/svg" class="mat-icon" width="24" height="24" viewBox="0 0 24 24"><circle cx="7.2" cy="14.4" r="3.2"/><circle cx="14.8" cy="18" r="2"/><circle cx="15.2" cy="8.8" r="4.8"/></svg>
-    <span>At a Glance</span>
+    <span>{{ this.title }}</span>
   </div>
   <div class="section-header__right-content">
     <span class="section-header__count">{{ data?.relatedEntities.length }}</span>
@@ -16,12 +16,12 @@
   </div>
 </div>
 <div class="sz-entity-detail-section-collapsible-card">
-  <sz-relationship-network
+  <sz-relationship-network class="sz-relationship-network-graph"
     svgViewBox="150 50 400 300"
     svgPreserveAspectRatio="xMinYMid meet"
     [entityIds]="graphIds"
     [maxDegrees]="maxDegrees"
-    buildOut=25
+    buildOut=1
     [linkGravity]="5"
     [showLinkLabels]="true"
     [maxEntities]="maxEntities"></sz-relationship-network>

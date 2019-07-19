@@ -1,16 +1,17 @@
 
 <!-- @senzing/sdk/entity/detail/sz-entity-detail -->
-<div>
+<div #nativeElementRef>
   <sz-entity-detail-header
   [entity]="entity">
   </sz-entity-detail-header>
 
-  <sz-entity-detail-graph
+  <sz-entity-detail-graph data-html2canvas-ignore
     *ngIf="graphData && this._showGraphSection"
     [data]="graphData"
+    [title]="this.graphTitle"
   ></sz-entity-detail-graph>
 
-  <sz-entity-details-section
+  <sz-entity-details-section class="details-section datasources"
     *ngIf="entity?.resolvedEntity?.records?.length"
     [sectionData]="entity?.resolvedEntity?.records"
     [sectionTitle]="'Matched Records'"
@@ -19,15 +20,15 @@
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
 
-  <sz-entity-details-section
-    *ngIf="this.possibleMatches?.length"
-    [sectionData]="this.possibleMatches"
+  <sz-entity-details-section class="details-section possible"
+    *ngIf="this._possibleMatches?.length"
+    [sectionData]="this._possibleMatches"
     [sectionTitle]="'Possible Matches'"
     sectionId="detail-section-2"
-    [sectionCount]="this.possibleMatches?.length"
+    [sectionCount]="this._possibleMatches?.length"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
-  <sz-entity-details-section
+  <sz-entity-details-section class="details-section discovered"
     *ngIf="this._discoveredRelationships?.length"
     [sectionData]="this._discoveredRelationships"
     [sectionTitle]="'Possible Relationships'"
@@ -35,7 +36,7 @@
     [sectionCount]="this._discoveredRelationships?.length"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
-  <sz-entity-details-section
+  <sz-entity-details-section class="details-section disclosed"
     *ngIf="this._disclosedRelationships?.length"
     [sectionData]="this._disclosedRelationships"
     [sectionTitle]="'Disclosed Relationships'"

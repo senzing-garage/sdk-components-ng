@@ -1,4 +1,4 @@
-import { Component, OnInit,  Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit,  Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { SzSearchService } from '../../services/sz-search.service';
 import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -26,6 +26,12 @@ export class SzEntityDetailComponent {
   _disclosedRelationships: SzRelatedEntity[];
   _possibleMatches: SzRelatedEntity[];
   _matches: SzEntityRecord[];
+
+  /** used for print and pdf support, allows fetching DOM HTMLElement */
+  @ViewChild('nativeElementRef') nativeElementRef: ElementRef;
+  public get nativeElement(): HTMLElement {
+    return this.nativeElementRef.nativeElement;
+  }
 
   /**
    * emitted when the component begins a request for an entities data.
@@ -80,6 +86,21 @@ export class SzEntityDetailComponent {
     this._showGraphSection = value;
   }
 
+  public _graphTitle: string = "Relationships at a Glance";
+  /**
+   * graph section title
+   */
+  @Input()
+  public set graphTitle(value: string) {
+    this._graphTitle = value;
+  }
+  /**
+   * graph section title
+   */
+  public get graphTitle() {
+    return this._graphTitle;
+  }
+
   /**
    * set the entity data by passing in an entity id number.
    */
@@ -92,13 +113,13 @@ export class SzEntityDetailComponent {
    * Gets the data in the model shape used by the relationship network graph.
    */
   public get graphData() {
-    if(!this.entity || this.entity == null){
+    if(!this.entity || this.entity == null) {
       return;
     }
     return {
       resolvedEntity: this.entity.resolvedEntity,
       relatedEntities: this.entity.relatedEntities
-    }
+    };
   }
 
   /**

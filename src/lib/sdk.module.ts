@@ -20,6 +20,7 @@ import { SzEntitySearchParams } from './models/entity-search';
 import { SzMessageBundleService } from './services/sz-message-bundle.service';
 import { SzSearchService } from './services/sz-search.service';
 import { SzUIEventService } from './services/sz-ui.service';
+import { SzPdfUtilService } from './services/sz-pdf-util.service';
 
 /** components */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
@@ -44,11 +45,20 @@ import { SzSearchResultCardHeaderComponent } from './search/sz-search-result-car
 import { SzConfigurationAboutComponent } from './configuration/sz-configuration-about/sz-configuration-about.component';
 import { SzConfigurationComponent } from './configuration/sz-configuration/sz-configuration.component';
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
+
+/*
 import { SzRelationshipNetworkComponent } from './graph/sz-relationship-network/sz-relationship-network.component';
 import { SzRelationshipNetworkInputComponent } from './graph/sz-relationship-network-input/sz-relationship-network-input.component';
 import { SzRelationshipNetworkLookupComponent } from './graph/sz-relationship-network-lookup/sz-relationship-network-lookup.component';
 import { SzRelationshipNetworkUploadComponent } from './graph/sz-relationship-network-upload/sz-relationship-network-upload.component';
 import { SzRelationshipPathComponent } from './graph/sz-relationship-path/sz-relationship-path.component';
+*/
+
+import {
+  SenzingSdkGraphModule
+} from '@senzing/sdk-graph-components';
+
+
 /**
  * Sets up a default set of service parameters for use
  * by the SDK Components.
@@ -59,7 +69,7 @@ import { SzRelationshipPathComponent } from './graph/sz-relationship-path/sz-rel
  */
 export function SzDefaultRestConfigurationFactory(): SzRestConfiguration {
   return new SzRestConfiguration({
-    basePath: 'http://localhost:2080',
+    basePath: 'http://localhost:8080',
     withCredentials: true
   });
 }
@@ -90,18 +100,14 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultCardHeaderComponent,
     SzConfigurationAboutComponent,
     SzConfigurationComponent,
-    SzPoweredByComponent,
-    SzRelationshipNetworkComponent,
-    SzRelationshipNetworkInputComponent,
-    SzRelationshipNetworkLookupComponent,
-    SzRelationshipNetworkUploadComponent,
-    SzRelationshipPathComponent
+    SzPoweredByComponent
   ],
   imports: [
     CommonModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    SenzingSdkGraphModule,
     ApiModule
   ],
   exports: [
@@ -111,12 +117,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultCardComponent,
     SzPoweredByComponent,
     SzConfigurationComponent,
-    SzConfigurationAboutComponent,
-    SzRelationshipNetworkComponent,
-    SzRelationshipNetworkInputComponent,
-    SzRelationshipNetworkLookupComponent,
-    SzRelationshipNetworkUploadComponent,
-    SzRelationshipPathComponent
+    SzConfigurationAboutComponent
   ],
   /** for components being exported as web components */
   entryComponents: [
@@ -125,19 +126,15 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultsComponent,
     SzPoweredByComponent,
     SzConfigurationComponent,
-    SzConfigurationAboutComponent,
-    SzRelationshipNetworkComponent,
-    SzRelationshipNetworkInputComponent,
-    SzRelationshipNetworkLookupComponent,
-    SzRelationshipNetworkUploadComponent,
-    SzRelationshipPathComponent
+    SzConfigurationAboutComponent
   ],
   providers: [
     SzMessageBundleService,
     SzSearchService,
     HttpClient,
     TitleCasePipe,
-    SzUIEventService
+    SzUIEventService,
+    SzPdfUtilService
   ]
 })
 export class SenzingSdkModule {
@@ -146,7 +143,7 @@ export class SenzingSdkModule {
    * @see {@link https://senzing.github.io/rest-api-client-ng/classes/Configuration.html|SzRestConfiguration}
    * @example
    export function SzRestConfigurationFactory() {
-      return new SzRestConfiguration({ basePath: \"myapiserverhostname.com:2080\", withCredentials: true });
+      return new SzRestConfiguration({ basePath: \"myapiserverhostname.com:8080\", withCredentials: true });
    }
 
    SenzingSdkModule.forRoot( SzRestConfigurationFactory )

@@ -1,10 +1,5 @@
 <div
-  [ngClass]="{
-    'sz-match-pill-element': true,
-    'plus': plusMinus=='plus',
-    'minus': plusMinus=='minus',
-    'is-ambiguous': ambiguous
-  }"
+  [ngClass]="matchKeyClasses"
 >
   <span>{{text}}</span>
 </div>

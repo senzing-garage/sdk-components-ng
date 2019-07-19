@@ -6,6 +6,11 @@
   },
   "whitelistedNonPeerDependencies": [
     "@senzing/rest-api-client-ng",
-    "d3"
+    "@senzing/sdk-graph-components",
+    "d3",
+    "jspdf",
+    "html2canvas",
+    "@types/d3",
+    "@types/jspdf"
   ]
 }

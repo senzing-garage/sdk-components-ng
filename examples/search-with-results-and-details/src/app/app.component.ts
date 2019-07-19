@@ -1,32 +1,55 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import {
   SzEntitySearchParams,
   SzAttributeSearchResult,
-  SzSearchComponent
+  SzSearchComponent,
+  SzPdfUtilService,
+  SzSearchService,
+  SzEntityDetailComponent,
+  SzEntityData
 } from '@senzing/sdk-components-ng';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styles: []
+  styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   public currentSearchResults: SzAttributeSearchResult[];
   public currentlySelectedEntityId: number = undefined;
   public currentSearchParameters: SzEntitySearchParams;
   public showSearchResults = false;
   public get showSearchResultDetail(): boolean {
-    if(this.currentlySelectedEntityId && this.currentlySelectedEntityId > 0) {
+    if (this.currentlySelectedEntityId && this.currentlySelectedEntityId > 0) {
       return true;
     }
     return false;
   }
+  @ViewChild('searchBox') searchBox: SzSearchComponent;
+  @ViewChild('entityDetailComponent') entityDetailComponent: SzEntityDetailComponent;
+
+  public get showPdfDownloadButton(): boolean {
+    return (this.currentSearchResults !== undefined && this.currentSearchResults && this.currentSearchResults.length > 0);
+  }
+
+  constructor(public pdfUtil: SzPdfUtilService, public searchService: SzSearchService){}
+
+  ngAfterViewInit() {
+    const searchParams = this.searchBox.getSearchParams();
+    if (searchParams){
+      if ( Object.keys(searchParams).length > 0) {
+        // do auto search
+        this.searchBox.submitSearch();
+      }
+    }
+  }
+
   onSearchException(err: Error) {
     throw (err.message);
   }
 
   onSearchResults(evt: SzAttributeSearchResult[]){
-    console.log('searchResults: ',evt);
     // store on current scope
     this.currentSearchResults = evt;
     // results module is bound to this property
@@ -40,11 +63,18 @@ export class AppComponent {
     this.currentlySelectedEntityId = undefined;
   }
 
-  public onSearchResultClick(entityData: SzAttributeSearchResult){
-    console.log('onSearchResultClick: ', entityData);
-    //alert('clicked on search result!'+ entityData.entityId);
+  public onPDFDownloadClick(): void {
+    this.pdfUtil.createPdfFromAttributeSearch( this.currentSearchResults, this.currentSearchParameters );
+  }
 
-    if(entityData && entityData.entityId > 0) {
+  public onEntityPDFDownloadClick(): void {
+    const filename = this.entityDetailComponent.entity.resolvedEntity.entityName.toLowerCase().replace(' ', '-entity') + '.pdf';
+    this.pdfUtil.createPdfFromHtmlElement(this.entityDetailComponent.nativeElement, filename);
+  }
+
+  public onSearchResultClick(entityData: SzAttributeSearchResult){
+    // console.log('onSearchResultClick: ', entityData);
+    if (entityData && entityData.entityId > 0) {
       this.currentlySelectedEntityId = entityData.entityId;
       this.showSearchResults = false;
     } else {
