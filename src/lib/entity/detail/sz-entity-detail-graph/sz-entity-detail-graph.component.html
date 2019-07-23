@@ -15,7 +15,7 @@
     <span class="section-header__countLabel">Relationships</span>
   </div>
 </div>
-<div class="sz-entity-detail-section-collapsible-card">
+<div #graphContainer class="sz-entity-detail-section-collapsible-card">
   <sz-relationship-network class="sz-relationship-network-graph"
     svgViewBox="150 50 400 300"
     svgPreserveAspectRatio="xMinYMid meet"
@@ -24,5 +24,7 @@
     buildOut=1
     [linkGravity]="5"
     [showLinkLabels]="true"
+    (contextMenuClick)="onRightClick($event)"
+    (entityClick)="onEntityClick($event)"
     [maxEntities]="maxEntities"></sz-relationship-network>
 </div>

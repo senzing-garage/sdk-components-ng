@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit, ViewChild, Output, EventEmitter, ElementRef } from '@angular/core';
 
 import {
   SzEntityData,
@@ -38,6 +38,24 @@ export class SzEntityDetailGraphComponent implements OnInit {
 
   @HostBinding('class.open') get cssClssOpen() { return this.expanded; };
   @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; };
+  @ViewChild('graphContainer') graphContainerEle: ElementRef;
+
+  /**
+   * emitted when the player right clicks a entity node.
+   * @returns object with various entity and ui properties.
+   */
+  @Output() contextMenuClick: EventEmitter<any> = new EventEmitter<any>();
+
+  /**
+   * emitted when the player clicks a entity node.
+   * @returns object with various entity and ui properties.
+   */
+  @Output() entityClick: EventEmitter<any> = new EventEmitter<any>();
+  /**
+   * emitted when the player clicks a entity node.
+   * @returns object with various entity and ui properties.
+   */
+  @Output() entityDblClick: EventEmitter<any> = new EventEmitter<any>();
 
   public get graphIds(): number[] {
     let _ret = [];
@@ -47,8 +65,53 @@ export class SzEntityDetailGraphComponent implements OnInit {
     return _ret;
   }
 
+  /** toggle collapsed/expanded state of graph */
   toggleExpanded(evt: Event) {
     this.expanded = !this.expanded;
+  }
+  /**
+   * on entity node click in the graph.
+   * proxies to synthetic "entityClick" event.
+   */
+  public onEntityClick(event: any) {
+    this.entityClick.emit(event);
+  }
+  /**
+   * on entity node click in the graph.
+   * proxies to synthetic "entityClick" event.
+   */
+  public onEntityDblClick(event: any) {
+    this.entityDblClick.emit(event);
+  }
+  /**
+   * on entity node right click in the graph.
+   * proxies to synthetic "contextMenuClick" event.
+   * automatically adds the container ele page x/y to relative svg x/y for total x/y offset
+   */
+  public onRightClick(event: any) {
+    if(this.graphContainerEle && this.graphContainerEle.nativeElement) {
+      interface evtModel {
+        address?: string
+        entityId?: number
+        iconType?: string
+        index?: number
+        isCoreNode?: false
+        isQueriedNode?: false
+        name?: string
+        orgName?: string
+        phone?: string
+        x?: number
+        y?: number
+      }
+
+      const pos: {x, y} = this.graphContainerEle.nativeElement.getBoundingClientRect();
+      const evtSynth: evtModel = Object.assign({}, event);
+      // change x/y to include element relative offset
+      evtSynth.x = (Math.floor(pos.x) + Math.floor(event.x));
+      evtSynth.y = (Math.floor(pos.y) + Math.floor(event.y));
+      //console.warn('onRightClick: ', pos, event);
+      this.contextMenuClick.emit( evtSynth );
+    }
   }
 
   constructor() {}

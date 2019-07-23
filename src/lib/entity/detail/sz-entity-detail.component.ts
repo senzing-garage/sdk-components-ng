@@ -59,6 +59,22 @@ export class SzEntityDetailComponent {
   @Output('entityIdChanged')
   entityIdChanged: EventEmitter<number> = new EventEmitter<number>();
   /**
+   * emitted when the user right clicks a graph entity node.
+   * @returns object with various entity and ui properties.
+   */
+  @Output() graphContextMenuClick: EventEmitter<any> = new EventEmitter<any>();
+  /**
+   * emitted when the user clicks a graph entity node.
+   * @returns object with various entity and ui properties.
+   */
+  @Output() graphEntityClick: EventEmitter<any> = new EventEmitter<any>();
+  /**
+   * emitted when the user double clicks a graph entity node.
+   * @returns object with various entity and ui properties.
+   */
+  @Output() graphEntityDblClick: EventEmitter<any> = new EventEmitter<any>();
+
+  /**
    * set the entity data directly, instead of via entityId lookup.
    */
   @Input('data')
@@ -200,6 +216,24 @@ export class SzEntityDetailComponent {
    */
   public onEntityRecordClick(entityId: number): void {
     this.entityId = entityId;
+  }
+  /**
+   * proxies internal graph component entity click to "graphEntityClick" event.
+   */
+  public onGraphEntityClick(event: any) {
+    this.graphEntityClick.emit(event);
+  }
+  /**
+   * proxies internal graph component entity double click to "graphEntityDblClick" event.
+   */
+  public onGraphEntityDblClick(event: any) {
+    this.graphEntityDblClick.emit(event);
+  }
+  /**
+   * proxies internal graph component entity right-click to "graphContextMenuClick" event.
+   */
+  public onGraphRightClick(event: any) {
+    this.graphContextMenuClick.emit(event);
   }
 
   /**
