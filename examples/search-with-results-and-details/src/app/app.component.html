@@ -23,6 +23,22 @@
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/><path d="M0 0h24v24H0z" fill="none"/></svg> Print
 </button>
 
+<!-- start graph match keys checkbox -->
+<input type="checkbox"
+  id="graph-toggle-match-keys" name="graph-toggle-match-keys"
+  [checked]="showGraphMatchKeys"
+  (change)="toggleGraphMatchKeys($event)"><label for="graph-toggle-match-keys">Toggle Match Keys</label>
+<!-- end graph match keys checkbox -->
+
+<!-- start graph context menu template -->
+<ng-template #graphContextMenu let-entityEvt>
+    <ul class="graph-context-menu">
+        <li>#{{entityEvt?.entityId}}</li>
+        <li (click)="openGraphItemInNewMenu(entityEvt.entityId)">Open in new tab</li>
+    </ul>
+</ng-template>
+<!-- end graph context menu template -->
+
 <!-- start search results -->
 <div class="component-example">
   <sz-search-results *ngIf="showSearchResults" [results]="currentSearchResults" [parameters]="currentSearchParameters" (resultClick)="onSearchResultClick($event)"></sz-search-results>
@@ -36,6 +52,12 @@
   <div class="detail-wrapper">
       <button (click)="onBackToSearchResultsClick($event)">&lt;&lt; Go Back to Search Results</button>
   </div>
-  <sz-entity-detail #entityDetailComponent [entityId]="currentlySelectedEntityId"></sz-entity-detail>
+  <sz-entity-detail
+    #entityDetailComponent
+    (graphEntityClick)="onGraphEntityClick($event)"
+    (graphEntityDblClick)="onGraphEntityDblClick($event)"
+    (graphContextMenuClick)="onGraphContextClick($event)"
+    [showGraphMatchKeys]="_showGraphMatchKeys"
+    [entityId]="currentlySelectedEntityId"></sz-entity-detail>
 </div>
 <!-- end entity detail -->
