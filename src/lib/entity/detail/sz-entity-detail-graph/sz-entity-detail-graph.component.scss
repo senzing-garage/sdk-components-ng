@@ -59,7 +59,7 @@
     }
   }
 }
-
+/* header */
 .section-header__wrapper {
   display: flex;
   align-items: center;
@@ -95,6 +95,38 @@
     .section-header__count {
       font-size: var(--sz-entity-detail-section-header-count-font-size);
       margin: 0 4px 0 8px;
+    }
+  }
+}
+/* control surface */
+.sz-entity-detail-section-collapsible-card {
+  position: relative;
+}
+sz-entity-detail-graph-control, .entity-detail-graph-control {
+  /* background-color: #424242; */
+  border: 1px solid #d3d3d3;
+  border-bottom: none;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 7px;
+  display: block;
+  z-index: 200;
+  position: absolute;
+  /* top: 0; */
+  right: 0;
+  bottom: 0px;
+  border-right: none;
+  font-size: 13px;
+  color: #979797;
+  padding-left: 2px;
+
+  ul {
+    display: block;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: block;
     }
   }
 }

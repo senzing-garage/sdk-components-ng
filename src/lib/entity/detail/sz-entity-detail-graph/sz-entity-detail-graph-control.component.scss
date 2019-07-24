@@ -1,0 +1,21 @@
+:host {
+  padding: 0px 1px;
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    margin: 1px 0 1px 0;
+    display: block;
+    background-color: #fff;
+    padding: 4px 1em 4px 1em;
+
+    a {
+      display: block;
+    }
+  }
+
+}

@@ -119,6 +119,15 @@ export class SzEntityDetailGraphComponent implements OnInit {
     }
   }
 
+  public onOptionChange(event: {name: string, value: any}) {
+    console.warn('onOptionChange: ', event);
+    switch(event.name) {
+      case 'showLinkLabels':
+        this.showMatchKeys = event.value;
+        break;
+    }
+  }
+
   constructor() {}
   ngOnInit() {}
 }
