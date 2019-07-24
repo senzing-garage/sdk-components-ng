@@ -25,6 +25,11 @@ export class SzEntityDetailGraphComponent implements OnInit {
     resolvedEntity: SzResolvedEntity,
     relatedEntities: SzRelatedEntity[]
   }
+  public _showMatchKeys = false;
+  @Input() public set showMatchKeys(value: boolean) {
+    this._showMatchKeys = value;
+    //console.log('@senzing/sdk-components-ng:sz-entity-detail-graph.showMatchKeys: ', value);
+  };
   @Input() sectionIcon: string;
   @Input() maxDegrees: number = 90;
   @Input() maxEntities: number = 25;

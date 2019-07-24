@@ -117,6 +117,16 @@ export class SzEntityDetailComponent {
     return this._graphTitle;
   }
 
+  public _showGraphMatchKeys: boolean = true;
+  /**
+   * show or hide the "At a Glance" section.
+   */
+  @Input()
+  public set showGraphMatchKeys(value: boolean) {
+    this._showGraphMatchKeys = value;
+  }
+
+
   /**
    * set the entity data by passing in an entity id number.
    */

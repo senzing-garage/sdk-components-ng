@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, ViewContainerRef, TemplateRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, ViewContainerRef, TemplateRef, Input } from '@angular/core';
 import {
   SzEntitySearchParams,
   SzAttributeSearchResult,
@@ -23,6 +23,11 @@ export class AppComponent implements AfterViewInit {
   public currentlySelectedEntityId: number = undefined;
   public currentSearchParameters: SzEntitySearchParams;
   public showSearchResults = false;
+  public _showGraphMatchKeys = false;
+  @Input() public set showGraphMatchKeys(value){
+    this._showGraphMatchKeys = value;
+  }
+
   public get showSearchResultDetail(): boolean {
     if (this.currentlySelectedEntityId && this.currentlySelectedEntityId > 0) {
       return true;
@@ -83,10 +88,10 @@ export class AppComponent implements AfterViewInit {
   }
 
   public onGraphEntityClick(event: any): void {
-    alert('clicked on graph entity #' + event.entityId);
+    console.log('clicked on graph entity #' + event.entityId);
   }
   public onGraphEntityDblClick(event: any): void {
-    alert('double clicked on graph entity #' + event.entityId);
+    console.log('double clicked on graph entity #' + event.entityId);
   }
   public onGraphContextClick(event: any): void {
     this.openContextMenu(event);
@@ -138,6 +143,16 @@ export class AppComponent implements AfterViewInit {
       this.overlayRef.dispose();
       this.overlayRef = null;
     }
+  }
+
+  public toggleGraphMatchKeys(event): void {
+    let _checked = false;
+    if (event.target) {
+      _checked = event.target.checked;
+    } else if (event.srcElement) {
+      _checked = event.srcElement.checked;
+    }
+    this.showGraphMatchKeys = _checked;
   }
 
   public onSearchResultClick(entityData: SzAttributeSearchResult){

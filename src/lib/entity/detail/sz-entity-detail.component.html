@@ -9,6 +9,7 @@
     *ngIf="graphData && this._showGraphSection"
     [data]="graphData"
     [title]="this.graphTitle"
+    [showMatchKeys]="this._showGraphMatchKeys"
     (contextMenuClick)="onGraphRightClick($event)"
     (entityClick)="onGraphEntityClick($event)"
   ></sz-entity-detail-graph>

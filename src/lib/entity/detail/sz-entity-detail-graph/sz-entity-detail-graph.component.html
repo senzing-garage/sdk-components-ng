@@ -23,7 +23,7 @@
     [maxDegrees]="maxDegrees"
     buildOut=1
     [linkGravity]="5"
-    [showLinkLabels]="true"
+    [showLinkLabels]="_showMatchKeys"
     (contextMenuClick)="onRightClick($event)"
     (entityClick)="onEntityClick($event)"
     [maxEntities]="maxEntities"></sz-relationship-network>
