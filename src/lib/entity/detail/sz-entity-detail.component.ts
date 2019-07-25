@@ -136,8 +136,8 @@ export class SzEntityDetailComponent implements AfterViewInit {
    * whether or not the graph component is displaying match keys
    */
   public get showGraphMatchKeys() {
-    if(this.graphComponent && this.graphComponent.graphControlComponent && this.graphComponent.graphControlComponent.showLinkLabels) {
-      return this.graphComponent.graphControlComponent.showLinkLabels;
+    if(this.graphComponent && this.graphComponent.graphComponent && this.graphComponent.graphComponent.showLinkLabels) {
+      return this.graphComponent.graphComponent.showLinkLabels;
     } else {
       return this._showGraphMatchKeys;
     }
