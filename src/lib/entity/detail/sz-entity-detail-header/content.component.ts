@@ -42,6 +42,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   _matchKeys: string[];
 
   constructor(private ref: ChangeDetectorRef) {
+    console.log('SzEntityDetailHeaderContentComponent.constructor');
   }
 
   ngOnInit() {
@@ -146,6 +147,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   getMatchKeysAsArray(pEntity: any): string[] {
     let ret = [];
 
+    try{
     if(pEntity && pEntity.matchKey) {
       const mkeys = pEntity.matchKey
       .split(/[-](?=\w)/)
@@ -164,6 +166,10 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
       return ret;
     }
 
+  }catch(err){
+    console.log('SzEntityDetailHeaderContentComponent.getMatchKeysAsArray:error', err);
+  }
+
     return ret;
   }
 
@@ -172,6 +178,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
       return this._matchKeys;
     }
     // no match keys, should we retest?
+    return []
   }
 
   isLinkedAttribute(attrValue: string): boolean {
