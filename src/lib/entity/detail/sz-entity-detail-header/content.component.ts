@@ -41,8 +41,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   _parentEntity: any;
   _matchKeys: string[];
 
-  constructor(private ref: ChangeDetectorRef) {
-  }
+  constructor(private ref: ChangeDetectorRef) {}
 
   ngOnInit() {
     setTimeout(() => {
@@ -163,7 +162,6 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
 
       return ret;
     }
-
     return ret;
   }
 
@@ -172,6 +170,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
       return this._matchKeys;
     }
     // no match keys, should we retest?
+    return []
   }
 
   isLinkedAttribute(attrValue: string): boolean {
