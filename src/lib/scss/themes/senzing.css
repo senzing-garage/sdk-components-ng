@@ -144,8 +144,10 @@ body {
   --sz-entity-graph-control-font-size: 13px;
   --sz-entity-graph-control-color: #979797;
   --sz-entity-graph-control-background-color: #fff;
-  --sz-entity-graph-control-padding-left: 3px;
+  --sz-entity-graph-control-padding-top: 1px;
   --sz-entity-graph-control-padding-right: 3px;
+  --sz-entity-graph-control-padding-bottom: 0px;
+  --sz-entity-graph-control-padding-left: 3px;
   /* control borders */
   --sz-entity-graph-control-border-top: 1px solid #d3d3d3;
   --sz-entity-graph-control-border-right: none;

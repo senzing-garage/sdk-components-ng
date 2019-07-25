@@ -117,8 +117,10 @@ sz-entity-detail-graph-control, .sz-entity-detail-graph-control {
   bottom: var(--sz-entity-graph-control-bottom);
   font-size: var(--sz-entity-graph-control-font-size);
   color: var(--sz-entity-graph-control-color);
-  padding-left: var(--sz-entity-graph-control-padding-left);
+  padding-top: var(--sz-entity-graph-control-padding-top);
   padding-right: var(--sz-entity-graph-control-padding-right);
+  padding-bottom: var(--sz-entity-graph-control-padding-bottom);
+  padding-left: var(--sz-entity-graph-control-padding-left);
 
   border: var(--sz-entity-graph-control-border);
   border-top: var(--sz-entity-graph-control-border-top);
