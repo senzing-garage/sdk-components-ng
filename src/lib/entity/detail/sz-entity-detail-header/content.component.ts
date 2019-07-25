@@ -225,7 +225,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
 
   get identifierData(): string[] {
     console.log('SzEntityDetailHeaderContentComponent.identifierData #1');
-
+    try{
     if (this.entity) {
       console.log('SzEntityDetailHeaderContentComponent.identifierData #2');
 
@@ -243,6 +243,10 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
     } else {
       return [];
     }
+  }catch(err){
+    console.log('\tSzEntityDetailHeaderContentComponent.identifierData error', err);
+
+  }
     console.log('SzEntityDetailHeaderContentComponent.identifierData #5');
     return [];
   }
