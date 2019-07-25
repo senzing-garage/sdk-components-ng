@@ -226,27 +226,30 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   get identifierData(): string[] {
     console.log('SzEntityDetailHeaderContentComponent.identifierData #1');
     try{
-    if (this.entity) {
-      console.log('SzEntityDetailHeaderContentComponent.identifierData #2');
+        console.log('SzEntityDetailHeaderContentComponent.identifierData #1.1');
 
-      if (this.entity.identifierData) {
-        console.log('SzEntityDetailHeaderContentComponent.identifierData #3');
+      if (this.entity) {
+        console.log('SzEntityDetailHeaderContentComponent.identifierData #2');
 
-        return this.entity.identifierData;
-      } else if (this.entity.topIdentifiers) {
-        console.log('SzEntityDetailHeaderContentComponent.identifierData #4');
+        if (this.entity.identifierData) {
+          console.log('SzEntityDetailHeaderContentComponent.identifierData #3');
 
-        return this.entity.topIdentifiers;
+          return this.entity.identifierData;
+        } else if (this.entity.topIdentifiers) {
+          console.log('SzEntityDetailHeaderContentComponent.identifierData #4');
+
+          return this.entity.topIdentifiers;
+        } else {
+          return [];
+        }
       } else {
         return [];
       }
-    } else {
-      return [];
-    }
-  }catch(err){
-    console.log('\tSzEntityDetailHeaderContentComponent.identifierData error', err);
+    }catch(err){
+      console.log('\tSzEntityDetailHeaderContentComponent.identifierData error');
 
-  }
+      console.log('\tSzEntityDetailHeaderContentComponent.identifierData error', err.message);
+    }
     console.log('SzEntityDetailHeaderContentComponent.identifierData #5');
     return [];
   }
