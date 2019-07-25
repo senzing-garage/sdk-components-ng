@@ -224,12 +224,18 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   }
 
   get identifierData(): string[] {
-    console.log('SzEntityDetailHeaderContentComponent.identifierData');
+    console.log('SzEntityDetailHeaderContentComponent.identifierData #1');
 
     if (this.entity) {
+      console.log('SzEntityDetailHeaderContentComponent.identifierData #2');
+
       if (this.entity.identifierData) {
+        console.log('SzEntityDetailHeaderContentComponent.identifierData #3');
+
         return this.entity.identifierData;
       } else if (this.entity.topIdentifiers) {
+        console.log('SzEntityDetailHeaderContentComponent.identifierData #4');
+
         return this.entity.topIdentifiers;
       } else {
         return [];
@@ -237,6 +243,8 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
     } else {
       return [];
     }
+    console.log('SzEntityDetailHeaderContentComponent.identifierData #5');
+    return [];
   }
 
   /**
