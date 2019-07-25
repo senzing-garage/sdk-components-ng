@@ -24,6 +24,9 @@ export class SzEntityDetailGraphControlComponent implements OnInit {
   @Input() public set showLinkLabels(value){
     this._showLinkLabels = value;
   }
+  public get showLinkLabels(): boolean {
+    return this._showLinkLabels;
+  }
   @Output() public optionChanged = new EventEmitter<{name: string, value: any}>();
   constructor() {}
   ngOnInit() {}

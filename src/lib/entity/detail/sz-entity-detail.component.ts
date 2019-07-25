@@ -1,6 +1,6 @@
-import { Component, OnInit,  Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { SzSearchService } from '../../services/sz-search.service';
-import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import {
@@ -9,13 +9,14 @@ import {
   SzEntityRecord,
   SzRelationshipType
 } from '@senzing/rest-api-client-ng';
+import { SzEntityDetailGraphComponent } from './sz-entity-detail-graph/sz-entity-detail-graph.component';
 
 @Component({
   selector: 'sz-entity-detail',
   templateUrl: './sz-entity-detail.component.html',
   styleUrls: ['./sz-entity-detail.component.scss']
 })
-export class SzEntityDetailComponent {
+export class SzEntityDetailComponent implements AfterViewInit {
   private _entityId: number;
   private entityDetailJSON: string = "";
   private _requestDataOnIdChange = true;
@@ -31,6 +32,12 @@ export class SzEntityDetailComponent {
   @ViewChild('nativeElementRef') nativeElementRef: ElementRef;
   public get nativeElement(): HTMLElement {
     return this.nativeElementRef.nativeElement;
+  }
+  @ViewChild(SzEntityDetailGraphComponent)
+  public graphComponent: SzEntityDetailGraphComponent;
+
+  ngAfterViewInit() {
+    // console.log("graphComponentEle:", this);
   }
 
   /**
@@ -124,6 +131,16 @@ export class SzEntityDetailComponent {
   @Input()
   public set showGraphMatchKeys(value: boolean) {
     this._showGraphMatchKeys = value;
+  }
+  /**
+   * whether or not the graph component is displaying match keys
+   */
+  public get showGraphMatchKeys() {
+    if(this.graphComponent && this.graphComponent.graphComponent && this.graphComponent.graphComponent.showLinkLabels) {
+      return this.graphComponent.graphComponent.showLinkLabels;
+    } else {
+      return this._showGraphMatchKeys;
+    }
   }
 
 

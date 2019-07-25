@@ -8,13 +8,22 @@
   }
 
   li {
-    margin: 1px 0 1px 0;
+    margin: var(--sz-entity-graph-control-item-margin);
     display: block;
-    background-color: #fff;
+    background-color: var(--sz-entity-graph-control-item-background-color);
     padding: 4px 1em 4px 1em;
+    cursor: var(--sz-entity-graph-control-cursor);
 
+    &:hover {
+      cursor: var(--sz-entity-graph-control-item-cursor);
+    }
+
+    label {
+      cursor: var(--sz-entity-graph-control-item-cursor);
+    }
     a {
       display: block;
+      cursor: var(--sz-entity-graph-control-item-cursor);
     }
   }
 

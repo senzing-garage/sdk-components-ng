@@ -7,6 +7,7 @@ import {
   SzEntityRecord,
   SzRelationshipType
 } from '@senzing/rest-api-client-ng';
+import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
 
 /**
  * @internal
@@ -44,6 +45,7 @@ export class SzEntityDetailGraphComponent implements OnInit {
   @HostBinding('class.open') get cssClssOpen() { return this.expanded; };
   @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; };
   @ViewChild('graphContainer') graphContainerEle: ElementRef;
+  @ViewChild(SzEntityDetailGraphControlComponent) graphComponent: SzEntityDetailGraphControlComponent;
 
   /**
    * emitted when the player right clicks a entity node.
@@ -120,7 +122,6 @@ export class SzEntityDetailGraphComponent implements OnInit {
   }
 
   public onOptionChange(event: {name: string, value: any}) {
-    console.warn('onOptionChange: ', event);
     switch(event.name) {
       case 'showLinkLabels':
         this.showMatchKeys = event.value;

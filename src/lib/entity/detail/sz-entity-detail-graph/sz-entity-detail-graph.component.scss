@@ -21,6 +21,10 @@
       height: 6px;
     }
 
+    sz-entity-detail-graph-control, .sz-entity-detail-graph-control {
+      display: none;
+    }
+
     sz-relationship-network, .sz-relationship-network {
       display: none;
     }
@@ -102,32 +106,33 @@
 .sz-entity-detail-section-collapsible-card {
   position: relative;
 }
-sz-entity-detail-graph-control, .entity-detail-graph-control {
-  /* background-color: #424242; */
-  border: 1px solid #d3d3d3;
-  border-bottom: none;
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 7px;
-  display: block;
-  z-index: 200;
-  position: absolute;
-  /* top: 0; */
-  right: 0;
-  bottom: 0px;
-  border-right: none;
-  font-size: 13px;
-  color: #979797;
-  padding-left: 2px;
+sz-entity-detail-graph-control, .sz-entity-detail-graph-control {
+  background-color: var(--sz-entity-graph-control-background-color);
+  display: var(--sz-entity-graph-control-display);
+  z-index: var(--sz-entity-graph-control-z-index);
+  position: var(--sz-entity-graph-control-position);
+  top: var(--sz-entity-graph-control-top);
+  left: var(--sz-entity-graph-control-left);
+  right: var(--sz-entity-graph-control-right);
+  bottom: var(--sz-entity-graph-control-bottom);
+  font-size: var(--sz-entity-graph-control-font-size);
+  color: var(--sz-entity-graph-control-color);
+  padding-left: var(--sz-entity-graph-control-padding-left);
+  padding-right: var(--sz-entity-graph-control-padding-right);
 
-  ul {
-    display: block;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+  border: var(--sz-entity-graph-control-border);
+  border-top: var(--sz-entity-graph-control-border-top);
+  border-right: var(--sz-entity-graph-control-border-right);
+  border-left: var(--sz-entity-graph-control-border-left);
+  border-bottom: var(--sz-entity-graph-control-border-bottom);
+  border-bottom-left-radius: var(--sz-entity-graph-control-border-bottom-left-radius);
+  border-bottom-right-radius: var(--sz-entity-graph-control-border-bottom-right-radius);
+  border-top-left-radius: var(--sz-entity-graph-control-border-top-left-radius);
+  border-top-right-radius: var(--sz-entity-graph-control-border-top-right-radius);
 
-    li {
-      display: block;
-    }
-  }
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer */
+  -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
+  -webkit-user-select: none; /* Chrome, Safari, and Opera */
+  -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
 }
-
