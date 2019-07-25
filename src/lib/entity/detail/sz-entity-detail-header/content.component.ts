@@ -18,6 +18,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   @Input() entity: any; // the strong typing is making it impossible to handle all variations
   @Input() maxLinesToDisplay = 3;
   @Input() set parentEntity( value ) {
+    console.log('SzEntityDetailHeaderContentComponent.set parentEntity');
     this._parentEntity = value;
     if(value && value.matchKey) {
       this._matchKeys = this.getMatchKeysAsArray(value);
@@ -41,52 +42,69 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   _parentEntity: any;
   _matchKeys: string[];
 
-  constructor(private ref: ChangeDetectorRef) {}
+  constructor(private ref: ChangeDetectorRef) {
+    console.log('SzEntityDetailHeaderContentComponent.constructor');
+  }
 
   ngOnInit() {
     setTimeout(() => {
+      console.log('SzEntityDetailHeaderContentComponent.ngOnInit #1');
+
       //this.columnOneTotal = this.columnOne ? this.columnOne.nativeElement.children.length : 0;
       //this.columnTwoTotal = this.columnTwo.nativeElement.children.length;
       //this.columnThreeTotal = this.columnThree.nativeElement.children.length;
       //this.columnFourTotal = this.columnFour.nativeElement.children.length;
 
       this.ref.markForCheck();
+      console.log('SzEntityDetailHeaderContentComponent.ngOnInit #2');
     });
   }
 
   getNameAndAttributeData(nameData: string[], attributeData: string[]): string[] {
+    console.log('SzEntityDetailHeaderContentComponent.getNameAndAttributeData #1');
     return nameData.concat(attributeData);
+    console.log('SzEntityDetailHeaderContentComponent.getNameAndAttributeData #2');
   }
 
   getAddressAndPhoneData(addressData: string[], phoneData: string[]): string[] {
+    console.log('SzEntityDetailHeaderContentComponent.getAddressAndPhoneData #1');
     return addressData.concat(phoneData);
+    console.log('SzEntityDetailHeaderContentComponent.getAddressAndPhoneData #2');
   }
 
   // ----------------- start total getters -------------------
   get columnOneTotal(): number {
+    console.log('SzEntityDetailHeaderContentComponent.get columnOneTotal');
     if (this.entity && this.entity.otherData) {
       return this.entity.otherData.length;
     }
     return 0;
   }
   get showColumnOne(): boolean {
+    console.log('SzEntityDetailHeaderContentComponent.get showColumnOne');
     return (this.entity && this.entity.otherData && this.entity.otherData.length > 0);
   }
   get columnTwoTotal(): number {
+    console.log('SzEntityDetailHeaderContentComponent.get columnTwoTotal');
     return (this.nameData.concat(this.attributeData).length);
   }
   get columnThreeTotal(): number {
+    console.log('SzEntityDetailHeaderContentComponent.get columnThreeTotal');
     return (this.addressData.concat(this.phoneData).length);
   }
   get columnFourTotal(): number {
+    console.log('SzEntityDetailHeaderContentComponent.get columnFourTotal');
     return this.identifierData.length;
   }
   public get showColumnFour(): boolean {
+    console.log('SzEntityDetailHeaderContentComponent.get showColumnFour');
     return this.identifierData.length > 0;
   }
   // -----------------  end total getters  -------------------
 
   get nameData(): string[] {
+    console.log('SzEntityDetailHeaderContentComponent.get nameData');
+
     if (this.entity) {
       if (this.entity && this.entity.nameData) {
         return this.entity.nameData;
@@ -101,6 +119,8 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   }
 
   get attributeData(): string[] {
+    console.log('SzEntityDetailHeaderContentComponent.get attributeData');
+
     if (this.entity) {
       if ( this.entity.attributeData) {
         return this.entity.attributeData;
@@ -115,6 +135,8 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   }
 
   get addressData(): string[] {
+    console.log('SzEntityDetailHeaderContentComponent.get addressData');
+
     if (this.entity) {
       if (this.entity.addressData) {
         return this.entity.addressData;
@@ -129,6 +151,8 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   }
 
   get phoneData(): string[] {
+    console.log('SzEntityDetailHeaderContentComponent.get phoneData');
+
     if (this.entity) {
       if (this.entity.phoneData) {
         return this.entity.phoneData;
@@ -143,8 +167,10 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   }
 
   getMatchKeysAsArray(pEntity: any): string[] {
-    let ret = [];
+    console.log('SzEntityDetailHeaderContentComponent.getMatchKeysAsArray');
 
+    let ret = [];
+    try{
     if(pEntity && pEntity.matchKey) {
       const mkeys = pEntity.matchKey
       .split(/[-](?=\w)/)
@@ -162,10 +188,16 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
 
       return ret;
     }
+
+  }catch(err){
+    console.log('SzEntityDetailHeaderContentComponent.getMatchKeysAsArray:error', err);
+  }
+
     return ret;
   }
 
   get matchKeys(): string[] {
+    console.log('SzEntityDetailHeaderContentComponent.get matchKeys');
     if(this._matchKeys) {
       return this._matchKeys;
     }
@@ -174,6 +206,8 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   }
 
   isLinkedAttribute(attrValue: string): boolean {
+    console.log('SzEntityDetailHeaderContentComponent.isLinkedAttribute');
+
     const matchArr = this.matchKeys;
     if(attrValue && matchArr && matchArr.length > 0) {
 
@@ -190,6 +224,8 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   }
 
   get identifierData(): string[] {
+    console.log('SzEntityDetailHeaderContentComponent.identifierData');
+
     if (this.entity) {
       if (this.entity.identifierData) {
         return this.entity.identifierData;
@@ -207,6 +243,8 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
    * @deprecated
    */
   private isEntityRecord(data: SzSearchResultEntityData | SzEntityDetailSectionData | SzEntityRecord): data is SzEntityRecord {
+    console.log('SzEntityDetailHeaderContentComponent.isEntityRecord');
+
     if (data) {
       return (<SzEntityRecord>data).relationshipData !== undefined && (<SzEntityRecord>data).relationshipData.length > 0;
     }
@@ -215,6 +253,8 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
    * @deprecated
    */
   private isEntityDetailData(data: SzSearchResultEntityData | SzEntityDetailSectionData | SzEntityRecord): data is SzEntityDetailSectionData {
+    console.log('SzEntityDetailHeaderContentComponent.isEntityDetailData');
+
     if (data) {
       return (<SzEntityDetailSectionData>data).matchLevel !== undefined;
     }
