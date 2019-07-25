@@ -23,4 +23,12 @@ describe('SzEntityDetailGraphControlComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should default to open', () => {
+    expect(component.isOpen).toBeTruthy();
+  });
+
+  it('graph should default to show link labels', () => {
+    expect(component.showLinkLabels).toBeTruthy();
+  });
 });

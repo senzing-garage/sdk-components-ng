@@ -20,7 +20,7 @@ import {
 export class SzEntityDetailGraphControlComponent implements OnInit {
   isOpen: boolean = true;
 
-  public _showLinkLabels = false;
+  public _showLinkLabels = true;
   @Input() public set showLinkLabels(value){
     this._showLinkLabels = value;
   }
