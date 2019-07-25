@@ -45,7 +45,7 @@ export class SzEntityDetailGraphComponent implements OnInit {
   @HostBinding('class.open') get cssClssOpen() { return this.expanded; };
   @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; };
   @ViewChild('graphContainer') graphContainerEle: ElementRef;
-  @ViewChild(SzEntityDetailGraphControlComponent) graphControlComponent: SzEntityDetailGraphControlComponent;
+  @ViewChild(SzEntityDetailGraphControlComponent) graphComponent: SzEntityDetailGraphControlComponent;
 
   /**
    * emitted when the player right clicks a entity node.
