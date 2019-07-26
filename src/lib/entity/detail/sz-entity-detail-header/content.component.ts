@@ -96,7 +96,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
     } catch(err){
       console.log('SzEntityDetailHeaderContentComponent.get showColumnFour error: ', err.message);
     }
-    return this.identifierData.length > 0;
+    return (this.identifierData.length > 0);
   }
   // -----------------  end total getters  -------------------
 
@@ -188,7 +188,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
 
   isLinkedAttribute(attrValue: string): boolean {
     const matchArr = this.matchKeys;
-    if(attrValue && matchArr && matchArr.length > 0) {
+    if(attrValue && matchArr && matchArr.some && matchArr.length > 0) {
 
       const keyMatch = matchArr.some( (mkey) => {
         return attrValue.indexOf(mkey+':') >=0 ;
@@ -209,10 +209,10 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
 
       if (this.entity) {
         console.log('SzEntityDetailHeaderContentComponent.identifierData #3');
-        if (this.entity.identifierData) {
+        if (this.entity.identifierData && this.entity.identifierData.length > 0) {
           console.log('SzEntityDetailHeaderContentComponent.identifierData #4');
           return this.entity.identifierData;
-        } else if (this.entity.topIdentifiers) {
+        } else if (this.entity.topIdentifiers && this.entity.topIdentifiers.length > 0) {
           console.log('SzEntityDetailHeaderContentComponent.identifierData #5');
           return this.entity.topIdentifiers;
         } else {
