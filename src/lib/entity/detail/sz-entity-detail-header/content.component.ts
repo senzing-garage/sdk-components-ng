@@ -42,7 +42,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   _parentEntity: any;
   _matchKeys: string[];
 
-  constructor(private ref: ChangeDetectorRef) {
+  constructor() {
     console.log('SzEntityDetailHeaderContentComponent.constructor');
   }
 
@@ -55,7 +55,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
       //this.columnThreeTotal = this.columnThree.nativeElement.children.length;
       //this.columnFourTotal = this.columnFour.nativeElement.children.length;
 
-      this.ref.markForCheck();
+      //this.ref.markForCheck();
     });
   }
 
@@ -96,7 +96,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
     } catch(err){
       console.log('SzEntityDetailHeaderContentComponent.get showColumnFour error: ', err.message);
     }
-    return (this.identifierData.length > 0);
+    return false;
   }
   // -----------------  end total getters  -------------------
 
