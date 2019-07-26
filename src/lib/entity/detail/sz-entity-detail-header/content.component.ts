@@ -18,7 +18,6 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   @Input() entity: any; // the strong typing is making it impossible to handle all variations
   @Input() maxLinesToDisplay = 3;
   @Input() set parentEntity( value ) {
-    console.log('SzEntityDetailHeaderContentComponent.set parentEntity');
     this._parentEntity = value;
     if(value && value.matchKey) {
       this._matchKeys = this.getMatchKeysAsArray(value);
@@ -46,18 +45,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
     console.log('SzEntityDetailHeaderContentComponent.constructor');
   }
 
-  ngOnInit() {
-    setTimeout(() => {
-      console.log('SzEntityDetailHeaderContentComponent.ngOnInit #1');
-
-      //this.columnOneTotal = this.columnOne ? this.columnOne.nativeElement.children.length : 0;
-      //this.columnTwoTotal = this.columnTwo.nativeElement.children.length;
-      //this.columnThreeTotal = this.columnThree.nativeElement.children.length;
-      //this.columnFourTotal = this.columnFour.nativeElement.children.length;
-
-      //this.ref.markForCheck();
-    });
-  }
+  ngOnInit() {}
 
   getNameAndAttributeData(nameData: string[], attributeData: string[]): string[] {
     return nameData.concat(attributeData);
@@ -84,17 +72,14 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
     return (this.addressData.concat(this.phoneData).length);
   }
   get columnFourTotal(): number {
-    console.log('SzEntityDetailHeaderContentComponent.get columnFourTotal');
     return this.identifierData.length;
   }
   public get showColumnFour(): boolean {
-    console.log('SzEntityDetailHeaderContentComponent.get showColumnFour #1');
     try {
       const ret = (this.identifierData.length > 0);
-      console.log('SzEntityDetailHeaderContentComponent.get showColumnFour #2', this.identifierData);
       return ret;
     } catch(err){
-      console.log('SzEntityDetailHeaderContentComponent.get showColumnFour error: ', err.message);
+      console.warn('SzEntityDetailHeaderContentComponent.get showColumnFour error: ', err.message);
     }
     return false;
   }
@@ -203,31 +188,21 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   }
 
   get identifierData(): string[] {
-    console.log('SzEntityDetailHeaderContentComponent.identifierData #1');
     try{
-        console.log('SzEntityDetailHeaderContentComponent.identifierData #2');
-
       if (this.entity) {
-        console.log('SzEntityDetailHeaderContentComponent.identifierData #3');
         if (this.entity.identifierData && this.entity.identifierData.length > 0) {
-          console.log('SzEntityDetailHeaderContentComponent.identifierData #4');
           return this.entity.identifierData;
         } else if (this.entity.topIdentifiers && this.entity.topIdentifiers.length > 0) {
-          console.log('SzEntityDetailHeaderContentComponent.identifierData #5');
           return this.entity.topIdentifiers;
         } else {
-          console.log('SzEntityDetailHeaderContentComponent.identifierData #6');
           return [];
         }
       } else {
-        console.log('SzEntityDetailHeaderContentComponent.identifierData #7');
         return [];
       }
     }catch(err){
-      console.log('\tSzEntityDetailHeaderContentComponent.identifierData error');
-      console.log('\tSzEntityDetailHeaderContentComponent.identifierData error', err.message);
+      console.warn('\tSzEntityDetailHeaderContentComponent.identifierData error', err.message);
     }
-    console.log('SzEntityDetailHeaderContentComponent.identifierData #8');
     return [];
   }
 
