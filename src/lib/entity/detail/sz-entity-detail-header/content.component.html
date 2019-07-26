@@ -33,16 +33,16 @@
       matTooltipPosition="left"
       *ngIf="columnThreeTotal > maxLinesToDisplay && truncateResults">...</span>
     </div>
-    <!--<div class="search-card__content--column" #columnFour *ngIf="showColumnFour">
-      <div class="line" *ngFor="let identificationData of identifierData; let i = index">
+    <div class="search-card__content--column" #columnFour *ngIf="showColumnFour">
+      <!--<div class="line" *ngFor="let identificationData of identifierData; let i = index">
         <span *ngIf="i < maxLinesToDisplay || !truncateResults"
         [class.linked-attribute]="isLinkedAttribute(identificationData)"
         [class.ellipsis]="truncateResults">
           {{identificationData}}
         </span>
-      </div>
+      </div>-->
       <span class="ellipsis-toggle"
       matTooltipPosition="left"
       *ngIf="columnFourTotal > maxLinesToDisplay && truncateResults">...</span>
-    </div>-->
+    </div>
   </div>
