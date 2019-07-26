@@ -26,8 +26,7 @@
 <!-- start graph match keys checkbox -->
 <input type="checkbox"
   id="graph-toggle-match-keys" name="graph-toggle-match-keys"
-  [checked]="showGraphMatchKeys"
-  (change)="toggleGraphMatchKeys($event)"><label for="graph-toggle-match-keys">Toggle Match Keys</label>
+  (click)="toggleGraphMatchKeys($event)"><label (click)="toggleGraphMatchKeys($event)" for="graph-toggle-match-keys">Toggle Match Keys</label>
 <!-- end graph match keys checkbox -->
 
 <!-- start graph context menu template -->
@@ -57,7 +56,7 @@
     (graphEntityClick)="onGraphEntityClick($event)"
     (graphEntityDblClick)="onGraphEntityDblClick($event)"
     (graphContextMenuClick)="onGraphContextClick($event)"
-    [showGraphMatchKeys]="_showGraphMatchKeys"
+    [showGraphMatchKeys]="true"
     [entityId]="currentlySelectedEntityId"></sz-entity-detail>
 </div>
 <!-- end entity detail -->

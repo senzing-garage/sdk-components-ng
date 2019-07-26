@@ -32,6 +32,7 @@ import { SzEntityDetailSectionHeaderComponent } from './entity/detail/sz-entity-
 import { SzEntityDetailSectionCollapsibleCardComponent } from './entity/detail/sz-entity-details-section/collapsible-card.component';
 
 import { SzEntityDetailGraphComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
+import { SzEntityDetailGraphControlComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-control.component';
 import { SzEntityMatchPillComponent } from './entity/sz-entity-match-pill/sz-entity-match-pill.component';
 import { SzEntityRecordCardComponent } from './entity/sz-entity-record-card/sz-entity-record-card.component';
 import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-card/sz-entity-record-card-header/sz-entity-record-card-header.component';
@@ -87,6 +88,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultCardComponent,
     SzSearchResultCardContentComponent,
     SzEntityDetailGraphComponent,
+    SzEntityDetailGraphControlComponent,
     SzEntityDetailHeaderComponent,
     SzEntityDetailsSectionComponent,
     SzEntityDetailSectionSummaryComponent,
@@ -117,7 +119,9 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultCardComponent,
     SzPoweredByComponent,
     SzConfigurationComponent,
-    SzConfigurationAboutComponent
+    SzConfigurationAboutComponent,
+    SzEntityDetailGraphComponent,
+    SzEntityDetailGraphControlComponent
   ],
   /** for components being exported as web components */
   entryComponents: [

@@ -27,4 +27,8 @@
     (contextMenuClick)="onRightClick($event)"
     (entityClick)="onEntityClick($event)"
     [maxEntities]="maxEntities"></sz-relationship-network>
+    <sz-entity-detail-graph-control class="sz-entity-detail-graph-control"
+    [showLinkLabels]="_showMatchKeys"
+    (optionChanged)="onOptionChange($event)"
+    ></sz-entity-detail-graph-control>
 </div>

@@ -1,22 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SzEntityDetailHeaderComponent } from './header.component';
+import { SzEntityDetailGraphComponent } from './sz-entity-detail-graph.component';
 import { SenzingSdkModule } from 'src/lib/sdk.module';
 
-describe('SzEntityDetailHeaderComponent', () => {
-  let component: SzEntityDetailHeaderComponent;
-  let fixture: ComponentFixture<SzEntityDetailHeaderComponent>;
+describe('SzEntityDetailGraphComponent', () => {
+  let component: SzEntityDetailGraphComponent;
+  let fixture: ComponentFixture<SzEntityDetailGraphComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
+  }));
 
-    fixture = TestBed.createComponent(SzEntityDetailHeaderComponent);
+  beforeEach(() => {
+    fixture = TestBed.createComponent(SzEntityDetailGraphComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

@@ -12,13 +12,11 @@ describe('SzEntityDetailHeaderContentComponent', () => {
       imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(SzEntityDetailHeaderContentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

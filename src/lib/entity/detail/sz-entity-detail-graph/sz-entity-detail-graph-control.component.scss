@@ -1,0 +1,30 @@
+:host {
+  padding: 0px 1px;
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    margin: var(--sz-entity-graph-control-item-margin);
+    display: block;
+    background-color: var(--sz-entity-graph-control-item-background-color);
+    padding: 4px 1em 4px 1em;
+    cursor: var(--sz-entity-graph-control-cursor);
+
+    &:hover {
+      cursor: var(--sz-entity-graph-control-item-cursor);
+    }
+
+    label {
+      cursor: var(--sz-entity-graph-control-item-cursor);
+    }
+    a {
+      display: block;
+      cursor: var(--sz-entity-graph-control-item-cursor);
+    }
+  }
+
+}

@@ -130,4 +130,34 @@ body {
   --sz-entity-detail-pill-background-color: #808285;
   --sz-entity-detail-pill-color: #FFFFFF;
   --sz-entity-detail-pill-border-radius: 5px;
+
+  /* graph */
+  --sz-entity-graph-control-border: 1px solid #d3d3d3;
+  --sz-entity-graph-control-position: absolute;
+  --sz-entity-graph-control-display: block;
+  --sz-entity-graph-control-cursor: default;
+  --sz-entity-graph-control-z-index : 200;
+  --sz-entity-graph-control-top: auto;
+  --sz-entity-graph-control-left: auto;
+  --sz-entity-graph-control-right: 0px;
+  --sz-entity-graph-control-bottom: 0px;
+  --sz-entity-graph-control-font-size: 13px;
+  --sz-entity-graph-control-color: #979797;
+  --sz-entity-graph-control-background-color: #fff;
+  --sz-entity-graph-control-padding-top: 1px;
+  --sz-entity-graph-control-padding-right: 3px;
+  --sz-entity-graph-control-padding-bottom: 0px;
+  --sz-entity-graph-control-padding-left: 3px;
+  /* control borders */
+  --sz-entity-graph-control-border-top: 1px solid #d3d3d3;
+  --sz-entity-graph-control-border-right: none;
+  --sz-entity-graph-control-border-bottom: none;
+  --sz-entity-graph-control-border-left: 1px solid #d3d3d3;
+  --sz-entity-graph-control-border-top-left-radius: 7px;
+  --sz-entity-graph-control-border-top-right-radius: 0;
+  --sz-entity-graph-control-border-bottom-left-radius: 0;
+  --sz-entity-graph-control-border-bottom-right-radius: 0;
+  --sz-entity-graph-control-item-cursor: pointer;
+  --sz-entity-graph-control-item-background-color: #fff;
+  --sz-entity-graph-control-item-margin: 0;
 }

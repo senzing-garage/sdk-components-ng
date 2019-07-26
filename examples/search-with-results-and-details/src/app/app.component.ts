@@ -23,9 +23,17 @@ export class AppComponent implements AfterViewInit {
   public currentlySelectedEntityId: number = undefined;
   public currentSearchParameters: SzEntitySearchParams;
   public showSearchResults = false;
-  public _showGraphMatchKeys = false;
-  @Input() public set showGraphMatchKeys(value){
-    this._showGraphMatchKeys = value;
+  public set showGraphMatchKeys(value: boolean) {
+    if (this.entityDetailComponent){
+      this.entityDetailComponent.showGraphMatchKeys = value;
+    }
+  }
+  public get showGraphMatchKeys(): boolean {
+    if (this.entityDetailComponent){
+      // console.log('showGraphMatchKeys: ', this.entityDetailComponent.showGraphMatchKeys);
+      return this.entityDetailComponent.showGraphMatchKeys;
+    }
+   return false;
   }
 
   public get showSearchResultDetail(): boolean {
@@ -35,7 +43,7 @@ export class AppComponent implements AfterViewInit {
     return false;
   }
   @ViewChild('searchBox') searchBox: SzSearchComponent;
-  @ViewChild('entityDetailComponent') entityDetailComponent: SzEntityDetailComponent;
+  @ViewChild(SzEntityDetailComponent) entityDetailComponent: SzEntityDetailComponent;
   @ViewChild('graphContextMenu') graphContextMenu: TemplateRef<any>;
   sub: Subscription;
   overlayRef: OverlayRef | null;

@@ -41,19 +41,9 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   _parentEntity: any;
   _matchKeys: string[];
 
-  constructor(private ref: ChangeDetectorRef) {
-  }
+  constructor() {}
 
-  ngOnInit() {
-    setTimeout(() => {
-      //this.columnOneTotal = this.columnOne ? this.columnOne.nativeElement.children.length : 0;
-      //this.columnTwoTotal = this.columnTwo.nativeElement.children.length;
-      //this.columnThreeTotal = this.columnThree.nativeElement.children.length;
-      //this.columnFourTotal = this.columnFour.nativeElement.children.length;
-
-      this.ref.markForCheck();
-    });
-  }
+  ngOnInit() {}
 
   getNameAndAttributeData(nameData: string[], attributeData: string[]): string[] {
     return nameData.concat(attributeData);
@@ -83,7 +73,13 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
     return this.identifierData.length;
   }
   public get showColumnFour(): boolean {
-    return this.identifierData.length > 0;
+    try {
+      const ret = (this.identifierData.length > 0);
+      return ret;
+    } catch(err){
+      console.warn('SzEntityDetailHeaderContentComponent.get showColumnFour error: ', err.message);
+    }
+    return false;
   }
   // -----------------  end total getters  -------------------
 
@@ -145,7 +141,6 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
 
   getMatchKeysAsArray(pEntity: any): string[] {
     let ret = [];
-
     if(pEntity && pEntity.matchKey) {
       const mkeys = pEntity.matchKey
       .split(/[-](?=\w)/)
@@ -163,7 +158,6 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
 
       return ret;
     }
-
     return ret;
   }
 
@@ -172,11 +166,12 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
       return this._matchKeys;
     }
     // no match keys, should we retest?
+    return []
   }
 
   isLinkedAttribute(attrValue: string): boolean {
     const matchArr = this.matchKeys;
-    if(attrValue && matchArr && matchArr.length > 0) {
+    if(attrValue && matchArr && matchArr.some && matchArr.length > 0) {
 
       const keyMatch = matchArr.some( (mkey) => {
         return attrValue.indexOf(mkey+':') >=0 ;
@@ -191,17 +186,22 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   }
 
   get identifierData(): string[] {
-    if (this.entity) {
-      if (this.entity.identifierData) {
-        return this.entity.identifierData;
-      } else if (this.entity.topIdentifiers) {
-        return this.entity.topIdentifiers;
+    try{
+      if (this.entity) {
+        if (this.entity.identifierData && this.entity.identifierData.length > 0) {
+          return this.entity.identifierData;
+        } else if (this.entity.topIdentifiers && this.entity.topIdentifiers.length > 0) {
+          return this.entity.topIdentifiers;
+        } else {
+          return [];
+        }
       } else {
         return [];
       }
-    } else {
-      return [];
+    }catch(err){
+      console.warn('\tSzEntityDetailHeaderContentComponent.identifierData error', err.message);
     }
+    return [];
   }
 
   /**

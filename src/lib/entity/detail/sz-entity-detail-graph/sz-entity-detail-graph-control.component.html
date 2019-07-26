@@ -1,0 +1,12 @@
+<div>
+  <ul>
+    <li>
+      <!-- start graph match keys checkbox -->
+      <input type="checkbox"
+        id="sz-graph-toggle-match-keys" name="sz-graph-toggle-match-keys"
+        [checked]="showLinkLabels"
+        (change)="toggleBoolOption('showLinkLabels',$event)"><label for="sz-graph-toggle-match-keys">Toggle Match Keys</label>
+      <!-- end graph match keys checkbox -->
+    </li>
+  </ul>
+</div>
