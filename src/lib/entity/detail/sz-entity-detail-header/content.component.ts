@@ -41,9 +41,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   _parentEntity: any;
   _matchKeys: string[];
 
-  constructor() {
-    console.log('SzEntityDetailHeaderContentComponent.constructor');
-  }
+  constructor() {}
 
   ngOnInit() {}
 
