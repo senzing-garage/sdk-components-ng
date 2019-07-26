@@ -97,7 +97,14 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
     return this.identifierData.length;
   }
   public get showColumnFour(): boolean {
-    console.log('SzEntityDetailHeaderContentComponent.get showColumnFour');
+    console.log('SzEntityDetailHeaderContentComponent.get showColumnFour #1');
+    try {
+      const ret = (this.identifierData.length > 0);
+      console.log('SzEntityDetailHeaderContentComponent.get showColumnFour #2');
+      return ret;
+    } catch(err){
+      console.log('SzEntityDetailHeaderContentComponent.get showColumnFour error: ', err.message);
+    }
     return this.identifierData.length > 0;
   }
   // -----------------  end total getters  -------------------
