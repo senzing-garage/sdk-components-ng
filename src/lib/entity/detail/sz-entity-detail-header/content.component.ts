@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inpu
 
 import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
-import { SzEntityRecord } from '@senzing/rest-api-client-ng';
+import { SzEntityRecord, SzEntityFeature } from '@senzing/rest-api-client-ng';
 
 /**
  * @internal

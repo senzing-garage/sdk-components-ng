@@ -6,7 +6,8 @@ import {
   SzEntityData,
   SzRelatedEntity,
   SzEntityRecord,
-  SzRelationshipType
+  SzRelationshipType,
+  SzEntityFeature
 } from '@senzing/rest-api-client-ng';
 
 /**
@@ -22,7 +23,7 @@ export class SzEntityDetailHeaderComponent implements OnInit {
   @Input() public searchTerm: string;
   @Input() public entity: SzEntityData;
 
-/**
+  /**
    * A list of the search results that are matches.
    * @readonly
    */
@@ -78,9 +79,107 @@ export class SzEntityDetailHeaderComponent implements OnInit {
     }
     return "";
   }
-
-  constructor() {
+  /**
+   * returns "M", "F", or undefined if gender cannot be determined.
+   * @param features
+   */
+  private getGenderFromFeatures(features: {[key: string] : SzEntityFeature[]} | undefined | null): string | undefined {
+    if(features){
+      //console.warn('getGenderFromFeatures: ', features.GENDER);
+      if(features.GENDER){
+        // has gender
+        let _gender = features.GENDER;
+        if(_gender.some) {
+          let _female = _gender.some( (val: {primaryValue: string, usageType: any, duplicateValues: any} ) => {
+            return val.primaryValue === "F";
+          });
+          let _male = _gender.some( (val: {primaryValue: string, usageType: any, duplicateValues: any} ) => {
+            return val.primaryValue === "M";
+          });
+          //console.warn('getGenderFromFeatures: ', _female, features.GENDER);
+          return (_female ? 'F' : ( _male ? 'M' : undefined));
+        }
+      }
+    }
   }
+  /**
+   * returns true if a Entities features collection can identify it as a person.
+   * returns false if a Entities features collection cannot identify it as a company or the entity type cannot be identified.
+   */
+  private isPerson(features: {[key: string] : SzEntityFeature[]} | undefined | null): boolean {
+    if(features) {
+      let hasPersonKey = false;
+      let hasBusinessKey = false;
+      let personKeys = ["DOB","DRLIC","SSN","SSN_LAST4","PASSPORT","GENDER"];
+      personKeys.forEach((keyName) => {
+        if( features[keyName] ){
+          hasPersonKey = true; // has key
+        }
+      });
+      if(features && (features.ORG || features.NAME_ORG)){
+        hasBusinessKey = true;
+      }
+      return (!hasBusinessKey && hasPersonKey);
+    }
+  }
+  /**
+   * returns the svg view box to use for the primary icon
+   * @readonly
+   */
+  public get iconViewBox() {
+    let ret = '0, 0, 1024, 1024';
+    const iconClasses = this.iconClasses;
+    if(iconClasses && iconClasses.indexOf){
+
+      if(iconClasses.indexOf('company') >= 0){
+        ret = '0, -5, 24, 32';
+      } else if(iconClasses.indexOf('female') >= 0) {
+        ret = '0, -50, 1024, 1024';
+      }
+    }
+    return ret;
+  }
+  /**
+   * returns string[] of classes to be applied to icon svg element
+   * @readonly
+   */
+  public get iconClasses() {
+    let ret = ['icon-user', 'icon-inline'];
+    if(this.entity && this.entity.resolvedEntity.features) {
+      let isPerson = this.isPerson(this.entity.resolvedEntity.features);
+      let gender = this.getGenderFromFeatures(this.entity.resolvedEntity.features);
+      //console.warn('gender: ', gender);
+      if(gender) {
+        ret.push( (gender == 'F' ? 'female' : 'male') );
+        if(gender == 'M'){
+          ret.push('icon-flip');
+        }
+      } else if(!isPerson) {
+        ret.push('company');
+      } else {
+        ret.push('default');
+      }
+    } else {
+      // default
+      ret.push('default');
+    }
+    //console.log('iconClasses: ', ret);
+    return ret
+  }
+  /**
+   * return the gender to be used for the icon.
+   * @returns none | F | M
+   * @readonly
+   */
+  public get iconGender(): string {
+    let gender = 'none';
+    if(this.entity && this.entity.resolvedEntity){
+      gender = this.getGenderFromFeatures(this.entity.resolvedEntity.features)
+    }
+    return gender;
+  }
+
+  constructor() {}
 
   ngOnInit() {}
 
