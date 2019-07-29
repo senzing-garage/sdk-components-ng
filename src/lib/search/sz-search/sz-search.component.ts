@@ -561,6 +561,14 @@ export class SzSearchComponent implements OnInit {
     if (searchParams['IDENTIFIER'] && !searchParams['IDENTIFIER_TYPE']) {
       searchParams['IDENTIFIER_TYPE'] = 'PASSPORT_NUMBER';
     }
+    if(searchParams['IDENTIFIER_TYPE'] && searchParams['IDENTIFIER']){
+      // use the "IDENTIFIER_TYPE" as the key
+      // and the "IDENTIFIER" as the value
+      searchParams[ (searchParams['IDENTIFIER_TYPE']) ] = searchParams['IDENTIFIER'];
+      // after transmutation null out old key/value
+      searchParams['IDENTIFIER'] = undefined;
+      searchParams['IDENTIFIER_TYPE'] =  undefined;
+    }
     // after mods scrub nulls
     searchParams = JSONScrubber(searchParams);
     return searchParams;
