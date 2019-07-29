@@ -39,11 +39,14 @@
       fill: var(--sz-entity-detail-icon-fill);
     }
     /* svg paths by class */
-    .icon-user-female, .icon-user-company, .icon-user-male {
+    .icon-user-female, .icon-user-company, .icon-user-male, .icon-user-default {
       display: none;
       fill: none;
     }
     /* active svg path styles*/
+    .icon-user.default {
+      .icon-user-default {fill: var(--sz-entity-detail-icon-person-fill); display: inline;}
+    }
     .icon-user.male {
       .icon-user-male {fill: var(--sz-entity-detail-icon-person-fill); display: inline;}
     }

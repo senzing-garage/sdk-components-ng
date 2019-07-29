@@ -157,11 +157,11 @@ export class SzEntityDetailHeaderComponent implements OnInit {
       } else if(!isPerson) {
         ret.push('company');
       } else {
-        ret.push('default');
+        ret.push('default'); ret.push('icon-flip');
       }
     } else {
       // default
-      ret.push('default');
+      ret.push('default'); ret.push('icon-flip');
     }
     //console.log('iconClasses: ', ret);
     return ret
