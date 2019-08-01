@@ -2,7 +2,8 @@ import { NgModule, Injector, ModuleWithProviders, SkipSelf, Optional, Provider, 
 /* import { BrowserModule } from '@angular/platform-browser'; */
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { CommonModule, TitleCasePipe } from '@angular/common';
+import { CommonModule, TitleCasePipe, Location, PathLocationStrategy, LocationStrategy } from '@angular/common';
+
 import {
   ApiModule,
   Configuration as SzRestConfiguration,
@@ -10,11 +11,11 @@ import {
 } from '@senzing/rest-api-client-ng';
 
 /** utilities */
-import { JSONScrubber } from './common/utils';
+// import { JSONScrubber } from './common/utils';
 
 /** models */
-import { SzEntityDetailSectionData } from './models/entity-detail-section-data';
-import { SzEntitySearchParams } from './models/entity-search';
+// import { SzEntityDetailSectionData } from './models/entity-detail-section-data';
+// import { SzEntitySearchParams } from './models/entity-search';
 
 /** services */
 import { SzMessageBundleService } from './services/sz-message-bundle.service';
@@ -140,7 +141,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     HttpClient,
     TitleCasePipe,
     SzUIEventService,
-    SzPdfUtilService
+    SzPdfUtilService,
+    Location
   ]
 })
 export class SenzingSdkModule {
@@ -162,7 +164,8 @@ export class SenzingSdkModule {
           {
             provide: SzRestConfiguration,
             useFactory: apiConfigFactory ? apiConfigFactory : SzDefaultRestConfigurationFactory
-          }
+          },
+          {provide: LocationStrategy, useClass: PathLocationStrategy}
         ]
     };
   }

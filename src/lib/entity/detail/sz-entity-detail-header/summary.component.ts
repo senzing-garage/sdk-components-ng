@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, Optional } from '@angular/core';
 import { SzEntityDetailSectionSummary } from '../../../models/entity-detail-section-data';
 import { Location } from "@angular/common";
 import { Router, NavigationEnd } from "@angular/router";
@@ -21,14 +21,16 @@ export class SzEntityDetailSectionSummaryComponent implements OnInit, OnDestroy 
   public routePath: string = "";
   @Input() public inheritRoutePath = true;
 
-  constructor( private location: Location, router: Router ) {
-    this.navigationSubscription = router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-    ).subscribe(val => {
-      if (location.path( false ) !== "" && location.path( false ) !== this.routePath && this.inheritRoutePath) {
-        this.routePath = location.path( false );
-      }
-    });
+  constructor(@Optional() private location: Location, @Optional() router: Router ) {
+    if(router && location){
+      this.navigationSubscription = router.events.pipe(
+        filter(event => event instanceof NavigationEnd),
+      ).subscribe(val => {
+        if (location.path( false ) !== "" && location.path( false ) !== this.routePath && this.inheritRoutePath) {
+          this.routePath = location.path( false );
+        }
+      });
+    }
   }
 
   /**
