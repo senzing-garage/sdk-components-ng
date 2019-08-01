@@ -104,8 +104,7 @@
     "one-line": [
       true,
       "check-catch",
-      "check-else",
-      "check-whitespace"
+      "check-else"
     ],
     "prefer-const": true,
     "quotemark": [
@@ -140,7 +139,7 @@
       "check-format"
     ],
     "whitespace": [
-      true,
+      false,
       /*"check-branch",*/
       /*"check-decl",*/
       /*"check-operator",*/

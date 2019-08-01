@@ -488,7 +488,7 @@ export class SzSearchComponent implements OnInit {
    * @internal
   */
   private createEntitySearchForm(): void {
-    let searchParams = this.searchService.getSearchParams();
+    const searchParams = this.searchService.getSearchParams();
     //console.log('createEntitySearchForm: ',JSON.parse(JSON.stringify(searchParams)));
 
     if (searchParams) {
@@ -558,8 +558,13 @@ export class SzSearchComponent implements OnInit {
       searchParams['COMPANY_NAME_ORG'] = searchParams['NAME_FULL'];
     }
     // default identifier type to passport if none selected
-    if (searchParams['IDENTIFIER'] && !searchParams['IDENTIFIER_TYPE']) {
-      searchParams['IDENTIFIER_TYPE'] = 'PASSPORT_NUMBER';
+    if(searchParams['IDENTIFIER_TYPE'] && searchParams['IDENTIFIER']){
+      // use the "IDENTIFIER_TYPE" as the key
+      // and the "IDENTIFIER" as the value
+      searchParams[ (searchParams['IDENTIFIER_TYPE']) ] = searchParams['IDENTIFIER'];
+      // after transmutation null out old key/value
+      searchParams['IDENTIFIER'] = undefined;
+      searchParams['IDENTIFIER_TYPE'] =  undefined;
     }
     if(searchParams['IDENTIFIER_TYPE'] && searchParams['IDENTIFIER']){
       // use the "IDENTIFIER_TYPE" as the key
@@ -596,6 +601,7 @@ export class SzSearchComponent implements OnInit {
       const totalResults = res ? res.length : 0;
       this.searchResultsJSON = JSON.stringify(res, null, 4);
       this.searchEnd.emit(totalResults);
+      this.searchService.setSearchResults(res);
       this.searchResults.next(res);
     }, (err)=>{
       this.searchEnd.emit();

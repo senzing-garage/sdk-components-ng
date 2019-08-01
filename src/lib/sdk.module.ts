@@ -19,6 +19,7 @@ import { SzEntitySearchParams } from './models/entity-search';
 /** services */
 import { SzMessageBundleService } from './services/sz-message-bundle.service';
 import { SzSearchService } from './services/sz-search.service';
+import { SzConfigurationService } from './services/sz-configuration.service';
 import { SzUIEventService } from './services/sz-ui.service';
 import { SzPdfUtilService } from './services/sz-pdf-util.service';
 
@@ -135,6 +136,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
   providers: [
     SzMessageBundleService,
     SzSearchService,
+    SzConfigurationService,
     HttpClient,
     TitleCasePipe,
     SzUIEventService,
