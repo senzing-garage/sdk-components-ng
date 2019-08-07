@@ -12,6 +12,16 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzEntityDetailGraphComponent } from './sz-entity-detail-graph/sz-entity-detail-graph.component';
 
+/** @internal */
+const parseBool = (value: any): boolean => {
+  if (!value || value === undefined) {
+    return false;
+  } else if (typeof value === 'string') {
+    return (value.toLowerCase().trim() === 'true') ? true : false;
+  } else if (value > 0) { return true; }
+  return false;
+};
+
 @Component({
   selector: 'sz-entity-detail',
   templateUrl: './sz-entity-detail.component.html',
@@ -106,8 +116,8 @@ export class SzEntityDetailComponent implements AfterViewInit {
    * show or hide the "At a Glance" section.
    */
   @Input()
-  public set showGraphSection(value: boolean) {
-    this._showGraphSection = value;
+  public set showGraphSection(value: boolean | string) {
+    this._showGraphSection = parseBool(value);
   }
 
   public _graphTitle: string = "Relationships at a Glance";
@@ -130,8 +140,8 @@ export class SzEntityDetailComponent implements AfterViewInit {
    * show or hide the "At a Glance" section.
    */
   @Input()
-  public set showGraphMatchKeys(value: boolean) {
-    this._showGraphMatchKeys = value;
+  public set showGraphMatchKeys(value: boolean | string) {
+    this._showGraphMatchKeys = parseBool(value);
   }
   /**
    * whether or not the graph component is displaying match keys
@@ -149,8 +159,8 @@ export class SzEntityDetailComponent implements AfterViewInit {
    * set the entity data by passing in an entity id number.
    */
   @Input()
-  public set requestDataOnIdChange(value: boolean) {
-    this._requestDataOnIdChange = value;
+  public set requestDataOnIdChange(value: boolean | string) {
+    this._requestDataOnIdChange = parseBool(value);
   }
 
   /**

@@ -13,6 +13,7 @@ import {
   SzAttributeSearchResult
 } from '@senzing/rest-api-client-ng';
 import { SzEntitySearchParams } from '../models/entity-search';
+import { SzGraphConfigurationService } from '@senzing/sdk-graph-components';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,9 @@ export class SzConfigurationService {
   @Input()
   set apiKeys(value: {[ key: string ]: string}) {
     this.apiConfiguration.apiKeys = value;
+    if(this.graphApiConfigService && this.graphApiConfigService.apiKeys){
+      this.graphApiConfigService.apiKeys = this.apiConfiguration.apiKeys;
+    }
     this.onParameterChange();
   }
 
@@ -44,6 +48,9 @@ export class SzConfigurationService {
   @Input()
   set username(value: string) {
     this.apiConfiguration.username = value;
+    if(this.graphApiConfigService && this.graphApiConfigService.username){
+      this.graphApiConfigService.username = this.apiConfiguration.username;
+    }
     this.onParameterChange();
   }
 
@@ -51,12 +58,18 @@ export class SzConfigurationService {
   @Input()
   set password(value: string) {
     this.apiConfiguration.password = value;
+    if(this.graphApiConfigService && this.graphApiConfigService.password){
+      this.graphApiConfigService.password = this.apiConfiguration.password;
+    }
     this.onParameterChange();
   }
 
   @Input()
   set accessToken(value: string | (() => string)) {
     this.apiConfiguration.accessToken = value;
+    if(this.graphApiConfigService && this.graphApiConfigService.accessToken){
+      this.graphApiConfigService.accessToken = this.apiConfiguration.accessToken;
+    }
     this.onParameterChange();
   }
 
@@ -66,6 +79,9 @@ export class SzConfigurationService {
   @Input()
   public set basePath(value: string) {
     this.apiConfiguration.basePath = value;
+    if(this.graphApiConfigService && this.graphApiConfigService.basePath){
+      this.graphApiConfigService.basePath = this.apiConfiguration.basePath;
+    }
     this.onParameterChange();
   }
   public get basePath(): string {
@@ -76,6 +92,9 @@ export class SzConfigurationService {
   @Input()
   set withCredentials(value: boolean) {
     this.apiConfiguration.withCredentials = value;
+    if(this.graphApiConfigService && this.graphApiConfigService.withCredentials){
+      this.graphApiConfigService.withCredentials = this.apiConfiguration.withCredentials;
+    }
     this.onParameterChange();
   }
 
@@ -86,6 +105,9 @@ export class SzConfigurationService {
     for(const propKey of propKeys) {
       const propValue = value[ propKey ];
       this.apiConfiguration[propKey] = propValue;
+      if(this.graphApiConfigService && this.graphApiConfigService.apiConfiguration){
+        this.graphApiConfigService.apiConfiguration[propKey] = propValue;
+      }
     }
   }
   /** bulk fetch of sdk configuration parameters. */
@@ -100,6 +122,5 @@ export class SzConfigurationService {
     return retVal;
   }
 
-
-  constructor(@Inject(SzRestConfiguration) public apiConfiguration: SzRestConfiguration) { }
+  constructor(@Inject(SzRestConfiguration) public apiConfiguration: SzRestConfiguration, public graphApiConfigService: SzGraphConfigurationService) { }
 }
