@@ -116,7 +116,7 @@ export class SzEntityDetailComponent implements AfterViewInit {
    * show or hide the "At a Glance" section.
    */
   @Input()
-  public set showGraphSection(value: boolean | string) {
+  public set showGraphSection(value: any) {
     this._showGraphSection = parseBool(value);
   }
 
@@ -140,7 +140,7 @@ export class SzEntityDetailComponent implements AfterViewInit {
    * show or hide the "At a Glance" section.
    */
   @Input()
-  public set showGraphMatchKeys(value: boolean | string) {
+  public set showGraphMatchKeys(value: any) {
     this._showGraphMatchKeys = parseBool(value);
   }
   /**
@@ -159,7 +159,7 @@ export class SzEntityDetailComponent implements AfterViewInit {
    * set the entity data by passing in an entity id number.
    */
   @Input()
-  public set requestDataOnIdChange(value: boolean | string) {
+  public set requestDataOnIdChange(value: any) {
     this._requestDataOnIdChange = parseBool(value);
   }
 
