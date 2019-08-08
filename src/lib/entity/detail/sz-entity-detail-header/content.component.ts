@@ -166,7 +166,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
       return this._matchKeys;
     }
     // no match keys, should we retest?
-    return []
+    return [];
   }
 
   isLinkedAttribute(attrValue: string): boolean {

@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import {
   SzEntityData,
   SzRelatedEntity,
+  SzResolvedEntity,
   SzEntityRecord,
   SzRelationshipType
 } from '@senzing/rest-api-client-ng';
