@@ -1,6 +1,7 @@
 import { Component, Inject, Input, Output } from '@angular/core';
 import { Configuration as SzRestConfiguration } from '@senzing/rest-api-client-ng';
 import { Subject } from 'rxjs';
+import { SzConfigurationService } from '../../services/sz-configuration.service';
 
 @Component({
   selector: 'sz-configuration',
@@ -16,7 +17,7 @@ export class SzConfigurationComponent {
   public parametersChanged: Subject<SzRestConfiguration> = new Subject<SzRestConfiguration>();
 
   private onParameterChange(): void {
-    this.parametersChanged.next(this.apiConfiguration);
+    this.parametersChanged.next(this.apiConfigService.apiConfiguration);
   }
 
   /**
@@ -24,7 +25,7 @@ export class SzConfigurationComponent {
    */
   @Input()
   set apiKeys(value: {[ key: string ]: string}) {
-    this.apiConfiguration.apiKeys = value;
+    this.apiConfigService.apiKeys = value;
     this.onParameterChange();
   }
 
@@ -33,20 +34,20 @@ export class SzConfigurationComponent {
    */
   @Input()
   set username(value: string) {
-    this.apiConfiguration.username = value;
+    this.apiConfigService.username = value;
     this.onParameterChange();
   }
 
   /** password used for challenge respose. */
   @Input()
   set password(value: string) {
-    this.apiConfiguration.password = value;
+    this.apiConfigService.password = value;
     this.onParameterChange();
   }
 
   @Input()
   set accessToken(value: string | (() => string)) {
-    this.apiConfiguration.accessToken = value;
+    this.apiConfigService.accessToken = value;
     this.onParameterChange();
   }
 
@@ -55,17 +56,17 @@ export class SzConfigurationComponent {
    */
   @Input()
   set basePath(value: string) {
-    this.apiConfiguration.basePath = value;
+    this.apiConfigService.basePath = value;
     this.onParameterChange();
   }
 
   /** whether or not to use CORs for api requests */
   @Input()
   set withCredentials(value: boolean) {
-    this.apiConfiguration.withCredentials = value;
+    this.apiConfigService.withCredentials = value;
     this.onParameterChange();
   }
 
-  constructor(@Inject(SzRestConfiguration) public apiConfiguration: SzRestConfiguration) { }
+  constructor(private apiConfigService: SzConfigurationService) { }
 
 }
