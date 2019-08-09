@@ -1,10 +1,12 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject  } from 'rxjs';
-import { map, tap, mapTo, first } from 'rxjs/operators';
+import { map, tap, mapTo, first, filter } from 'rxjs/operators';
 
 import {
   ConfigService,
+  Configuration as SzRestConfiguration,
+  ConfigurationParameters as SzRestConfigurationParameters,
   SzAttributeSearchResult,
   SzAttributeType,
   SzAttributeTypesResponse,
@@ -13,6 +15,7 @@ import {
 import { SzEntitySearchParams } from '../../models/entity-search';
 import { SzSearchService } from '../../services/sz-search.service';
 import { JSONScrubber } from '../../common/utils';
+import { SzConfigurationService } from '../../services/sz-configuration.service';
 
 /** @internal */
 interface SzSearchFormParams {
@@ -447,9 +450,32 @@ export class SzSearchComponent implements OnInit {
     private fb: FormBuilder,
     private configService: ConfigService,
     private ref: ChangeDetectorRef,
+    private apiConfigService: SzConfigurationService,
     private searchService: SzSearchService) {
 
   }
+
+  /**
+   * @internal
+  */
+  private _waitForConfigChange = false;
+  /**
+   * whether or not to show the wait for the the api
+   * conf to change before fetching resources like the identifiers list
+   * @memberof SzSearchComponent
+   */
+  @Input() public set waitForConfigChange(value: any){
+    this._waitForConfigChange = parseBool(value);
+  }
+  public get waitForConfigChange(): boolean | any {
+    return this._waitForConfigChange;
+  }
+  /**
+   * whether or not to fetch new attributes from the
+   * api server when a configuration change is detected
+   * @memberof SzSearchComponent
+   */
+  @Input() getAttributesOnConfigChange = true;
 
   /**
    * do any additional component set up
@@ -457,7 +483,20 @@ export class SzSearchComponent implements OnInit {
    */
   public ngOnInit(): void {
     this.createEntitySearchForm();
-    this.updateAttributeTypes();
+    this.apiConfigService.parametersChanged.pipe(
+      filter( () => {
+        return this.getAttributesOnConfigChange;
+       })
+    ).subscribe(
+      (cfg: SzRestConfiguration) => {
+        //console.info('@senzing/sdk-components-ng/sz-search[ngOnInit]->apiConfigService.parametersChanged: ', cfg);
+        this.updateAttributeTypes();
+      }
+    );
+    // make immediate request
+    if(!this.waitForConfigChange){
+      this.updateAttributeTypes();
+    }
   }
 
   /**
