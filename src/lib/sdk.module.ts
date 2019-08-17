@@ -60,6 +60,7 @@ import { SzRelationshipPathComponent } from './graph/sz-relationship-path/sz-rel
 import {
   SenzingSdkGraphModule
 } from '@senzing/sdk-graph-components';
+import { SzPrefsService } from './services/sz-prefs.service';
 
 
 /**
@@ -142,7 +143,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     TitleCasePipe,
     SzUIEventService,
     SzPdfUtilService,
-    Location
+    Location,
+    SzPrefsService
   ]
 })
 export class SenzingSdkModule {
