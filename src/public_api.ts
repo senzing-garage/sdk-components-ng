@@ -16,7 +16,10 @@ export * from './lib/services/sz-message-bundle.service';
 export * from './lib/services/sz-configuration.service';
 export * from './lib/services/sz-ui.service';
 export * from './lib/services/sz-pdf-util.service';
-export * from './lib/services/sz-prefs.service';
+export {
+  SzPrefsService2,
+  SzSdkPrefsModel as SzSdkPrefsModel2
+} from './lib/services/sz-prefs2.service';
 
 /** components */
 export * from './lib/search/sz-search/sz-search.component';

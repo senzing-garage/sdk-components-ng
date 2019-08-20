@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject  } from 'rxjs';
 import { map, tap, mapTo, first, filter } from 'rxjs/operators';
@@ -16,6 +16,7 @@ import { SzEntitySearchParams } from '../../models/entity-search';
 import { SzSearchService } from '../../services/sz-search.service';
 import { JSONScrubber } from '../../common/utils';
 import { SzConfigurationService } from '../../services/sz-configuration.service';
+import { SzPrefsService2 } from '../../services/sz-prefs2.service';
 
 /** @internal */
 interface SzSearchFormParams {
@@ -451,8 +452,17 @@ export class SzSearchComponent implements OnInit {
     private configService: ConfigService,
     private ref: ChangeDetectorRef,
     private apiConfigService: SzConfigurationService,
+    private prefs: SzPrefsService2,
     private searchService: SzSearchService) {
 
+      this.prefs.prefsChanged.subscribe( (pJson)=>{
+        console.warn('prefs change from service 2!', pJson);
+        if(pJson && pJson.searchForm && pJson.searchForm.allowedTypeAttributes) {
+          // update the allowedTypeAttributes
+          this.allowedTypeAttributes = pJson.searchForm.allowedTypeAttributes;
+          this.updateAttributeTypes();
+        }
+      });
   }
 
   /**

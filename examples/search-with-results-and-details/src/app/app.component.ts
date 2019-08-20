@@ -6,7 +6,9 @@ import {
   SzPdfUtilService,
   SzSearchService,
   SzEntityDetailComponent,
-  SzEntityData
+  SzEntityData,
+  SzPrefsService2,
+  SzConfigurationService
 } from '@senzing/sdk-components-ng';
 import { tap, filter, take } from 'rxjs/operators';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -56,6 +58,7 @@ export class AppComponent implements AfterViewInit {
     public pdfUtil: SzPdfUtilService,
     public searchService: SzSearchService,
     public overlay: Overlay,
+    public prefs: SzPrefsService2,
     public viewContainerRef: ViewContainerRef){}
 
   ngAfterViewInit() {
@@ -66,6 +69,10 @@ export class AppComponent implements AfterViewInit {
         this.searchBox.submitSearch();
       }
     }
+
+    this.prefs.searchResults.prefsChanged.subscribe( (srprefs) => {
+      console.warn('consumer prefs change: ', srprefs);
+    });
   }
 
   onSearchException(err: Error) {
@@ -150,6 +157,12 @@ export class AppComponent implements AfterViewInit {
     if (this.overlayRef) {
       this.overlayRef.dispose();
       this.overlayRef = null;
+    }
+  }
+
+  public togglePref(prefGroup: string, prefKey): void {
+    if (prefGroup && this.prefs[prefGroup]){
+      this.prefs[prefGroup][prefKey] = !this.prefs[prefGroup][prefKey] ;
     }
   }
 

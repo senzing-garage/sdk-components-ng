@@ -10,6 +10,10 @@ import {
   ConfigurationParameters as SzRestConfigurationParameters
 } from '@senzing/rest-api-client-ng';
 
+import {
+  SenzingSdkGraphModule
+} from '@senzing/sdk-graph-components';
+
 /** utilities */
 // import { JSONScrubber } from './common/utils';
 
@@ -23,6 +27,7 @@ import { SzSearchService } from './services/sz-search.service';
 import { SzConfigurationService } from './services/sz-configuration.service';
 import { SzUIEventService } from './services/sz-ui.service';
 import { SzPdfUtilService } from './services/sz-pdf-util.service';
+import { SzPrefsService2 } from './services/sz-prefs2.service';
 
 /** components */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
@@ -56,11 +61,6 @@ import { SzRelationshipNetworkLookupComponent } from './graph/sz-relationship-ne
 import { SzRelationshipNetworkUploadComponent } from './graph/sz-relationship-network-upload/sz-relationship-network-upload.component';
 import { SzRelationshipPathComponent } from './graph/sz-relationship-path/sz-relationship-path.component';
 */
-
-import {
-  SenzingSdkGraphModule
-} from '@senzing/sdk-graph-components';
-import { SzPrefsService } from './services/sz-prefs.service';
 
 
 /**
@@ -139,12 +139,12 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzMessageBundleService,
     SzSearchService,
     SzConfigurationService,
+    SzPrefsService2,
     HttpClient,
     TitleCasePipe,
     SzUIEventService,
     SzPdfUtilService,
-    Location,
-    SzPrefsService
+    Location
   ]
 })
 export class SenzingSdkModule {
