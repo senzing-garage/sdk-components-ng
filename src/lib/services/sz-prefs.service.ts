@@ -13,7 +13,7 @@ import {
   SzAttributeSearchResult
 } from '@senzing/rest-api-client-ng';
 import { SzEntitySearchParams } from '../models/entity-search';
-//import { SzGraphConfigurationService } from '@senzing/sdk-graph-components';
+import { SzGraphConfigurationService } from '@senzing/sdk-graph-components';
 
 export class SzSdkPrefsBase {
   public prefsChanged: BehaviorSubject<any> = new BehaviorSubject<any>(this.toJSONObject());
@@ -282,7 +282,11 @@ export interface SzSdkPrefsModel {
   graph?: any
 };
 
-export class SzSdkPrefs {
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SzPrefsService {
   public prefsChanged: BehaviorSubject<SzSdkPrefsModel> = new BehaviorSubject<SzSdkPrefsModel>( this.toJSONObject() );
   public searchForm?: SzSearchFormPrefs       = new SzSearchFormPrefs();
   public searchResults?: SzSearchResultsPrefs = new SzSearchResultsPrefs();
@@ -333,16 +337,8 @@ export class SzSdkPrefs {
     return JSON.stringify(this.toJSONObject());
   }
 
-  constructor(defaultPrefs?: any){
-    if(defaultPrefs) {
-      // initialize with defaults passed in
-      if( typeof defaultPrefs == 'string'){
-        this.fromJSONString( defaultPrefs );
-      } else {
-        // shrug
-        this.fromJSONObject( defaultPrefs );
-      }
-    }
+  constructor(){
+    console.warn(' !!!INITIALIZE SzPrefsService!!! ');
     this.searchForm.prefsChanged.subscribe( (prefsObj ) => {
       console.log('search form prefs changed!!', prefsObj);
       this.prefsChanged.next( this.toJSONObject() );
@@ -359,23 +355,5 @@ export class SzSdkPrefs {
       console.log('graph prefs changed!!', prefsObj);
       this.prefsChanged.next( this.toJSONObject() );
     });
-  }
-
-  public forceChange() {
-    this.prefsChanged.next( this.toJSONObject() );
-  }
-}
-
-
-@Injectable({
-  providedIn: 'root'
-})
-export class SzPrefsService extends SzSdkPrefs {
-  public tval = true;
-
-  constructor(
-    ) {
-    super();
-    console.warn(' !!INITIALIZE SzPrefsService!! ');
   }
 }

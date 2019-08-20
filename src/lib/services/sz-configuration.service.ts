@@ -14,7 +14,7 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzEntitySearchParams } from '../models/entity-search';
 import { SzGraphConfigurationService } from '@senzing/sdk-graph-components';
-import { SzPrefsService2 } from './sz-prefs2.service';
+import { SzPrefsService } from './sz-prefs.service';
 
 @Injectable({
   providedIn: 'root'
@@ -126,6 +126,6 @@ export class SzConfigurationService {
   constructor(
     @Inject(SzRestConfiguration) public apiConfiguration: SzRestConfiguration,
     public graphApiConfigService: SzGraphConfigurationService,
-    public prefs: SzPrefsService2
+    public prefs: SzPrefsService
   ) {}
 }

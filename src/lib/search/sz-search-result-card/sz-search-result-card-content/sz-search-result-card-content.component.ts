@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inpu
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 
 import { SzRelatedEntity, SzEntityRecord } from '@senzing/rest-api-client-ng';
-import { SzPrefsService2 } from '../../../services/sz-prefs2.service';
+import { SzPrefsService } from '../../../services/sz-prefs.service';
 
 /**
  * @internal
@@ -41,7 +41,7 @@ export class SzSearchResultCardContentComponent implements OnInit {
 
   constructor(
     private ref: ChangeDetectorRef,
-    public prefs: SzPrefsService2
+    public prefs: SzPrefsService
   ) {}
 
   ngOnInit() {

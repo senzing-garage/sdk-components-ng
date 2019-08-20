@@ -17,9 +17,9 @@ export * from './lib/services/sz-configuration.service';
 export * from './lib/services/sz-ui.service';
 export * from './lib/services/sz-pdf-util.service';
 export {
-  SzPrefsService2,
+  SzPrefsService,
   SzSdkPrefsModel as SzSdkPrefsModel2
-} from './lib/services/sz-prefs2.service';
+} from './lib/services/sz-prefs.service';
 
 /** components */
 export * from './lib/search/sz-search/sz-search.component';

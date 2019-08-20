@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
-import { SzPrefsService2 } from '../services/sz-prefs2.service';
+import { SzPrefsService } from '../services/sz-prefs.service';
 
 @Component({
   selector: 'sz-powered-by',
@@ -10,7 +10,7 @@ export class SzPoweredByComponent implements OnInit {
   @Input()
   format = 'small';
 
-  constructor(public prefs: SzPrefsService2) {
+  constructor(public prefs: SzPrefsService) {
     this.prefs.searchResults.prefsChanged.subscribe( (prefs)=> {
       console.log('search results prefs from powered by', prefs);
     });

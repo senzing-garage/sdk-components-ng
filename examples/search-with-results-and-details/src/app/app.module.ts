@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { SenzingSdkModule, SzRestConfiguration, SzPoweredByComponent, SzPrefsService2, SzConfigurationService  } from '@senzing/sdk-components-ng';
+import { SenzingSdkModule, SzRestConfiguration, SzPoweredByComponent, SzPrefsService, SzConfigurationService  } from '@senzing/sdk-components-ng';
 import { OverlayModule } from '@angular/cdk/overlay';
 
 import { AppComponent } from './app.component';
@@ -27,7 +27,7 @@ import {
     SenzingSdkModule.forRoot()
   ],
   providers: [
-    SzPrefsService2,
+    SzPrefsService,
     SzConfigurationService
   ],
   bootstrap: [AppComponent]

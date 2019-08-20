@@ -27,7 +27,7 @@ import { SzSearchService } from './services/sz-search.service';
 import { SzConfigurationService } from './services/sz-configuration.service';
 import { SzUIEventService } from './services/sz-ui.service';
 import { SzPdfUtilService } from './services/sz-pdf-util.service';
-import { SzPrefsService2 } from './services/sz-prefs2.service';
+import { SzPrefsService } from './services/sz-prefs.service';
 
 /** components */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
@@ -139,7 +139,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzMessageBundleService,
     SzSearchService,
     SzConfigurationService,
-    SzPrefsService2,
+    SzPrefsService,
     HttpClient,
     TitleCasePipe,
     SzUIEventService,

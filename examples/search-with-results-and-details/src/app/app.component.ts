@@ -7,7 +7,7 @@ import {
   SzSearchService,
   SzEntityDetailComponent,
   SzEntityData,
-  SzPrefsService2,
+  SzPrefsService,
   SzConfigurationService
 } from '@senzing/sdk-components-ng';
 import { tap, filter, take } from 'rxjs/operators';
@@ -58,7 +58,7 @@ export class AppComponent implements AfterViewInit {
     public pdfUtil: SzPdfUtilService,
     public searchService: SzSearchService,
     public overlay: Overlay,
-    public prefs: SzPrefsService2,
+    public prefs: SzPrefsService,
     public viewContainerRef: ViewContainerRef){}
 
   ngAfterViewInit() {

@@ -12,10 +12,10 @@ import {
   SzAttributeType,
   SzAttributeSearchResult
 } from '@senzing/rest-api-client-ng';
-import { SzEntitySearchParams } from '../models/entity-search';
-import { SzGraphConfigurationService } from '@senzing/sdk-graph-components';
+// import { SzGraphConfigurationService } from '@senzing/sdk-graph-components';
 
-class SzSdkPrefsBase {
+/*
+export class SzSdkPrefsBase {
   public prefsChanged: BehaviorSubject<any> = new BehaviorSubject<any>(this.toJSONObject());
 
   // the keys of methods in the object
@@ -80,7 +80,7 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
 
 }
 
-class SzSearchResultsPrefs extends SzSdkPrefsBase {
+export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   // private vars
   private _openInNewTab: boolean = false;
   private _showOtherData: boolean = false;
@@ -171,7 +171,7 @@ class SzSearchResultsPrefs extends SzSdkPrefsBase {
     this.prefsChanged.next( this.toJSONObject() );
   }
 }
-class SzEntityDetailPrefs extends SzSdkPrefsBase {
+export class SzEntityDetailPrefs extends SzSdkPrefsBase {
   private _graphCollapsed: boolean;
   private _recordsCollapsed: boolean;
   private _disclosedCollapsed: boolean;
@@ -251,13 +251,14 @@ class SzEntityDetailPrefs extends SzSdkPrefsBase {
     this._openInNewTab = value;
     this.prefsChanged.next( this.toJSONObject() );
   }
-}
+}*/
 
 /**
  * TODO: move this to graph package
  * and have this file import from npm package
  */
-class SzGraphPrefs extends SzSdkPrefsBase {
+/*
+export class SzGraphPrefs extends SzSdkPrefsBase {
   // private vars
   public openInNewTab: boolean = false;
   public openInSidePanel: boolean = false;
@@ -282,11 +283,7 @@ export interface SzSdkPrefsModel {
   graph?: any
 };
 
-
-@Injectable({
-  providedIn: 'root'
-})
-export class SzPrefsService2 {
+export class SzSdkPrefs {
   public prefsChanged: BehaviorSubject<SzSdkPrefsModel> = new BehaviorSubject<SzSdkPrefsModel>( this.toJSONObject() );
   public searchForm?: SzSearchFormPrefs       = new SzSearchFormPrefs();
   public searchResults?: SzSearchResultsPrefs = new SzSearchResultsPrefs();
@@ -337,8 +334,16 @@ export class SzPrefsService2 {
     return JSON.stringify(this.toJSONObject());
   }
 
-  constructor(){
-    console.warn(' !!INITIALIZE SzPrefsService2!! ');
+  constructor(defaultPrefs?: any){
+    if(defaultPrefs) {
+      // initialize with defaults passed in
+      if( typeof defaultPrefs == 'string'){
+        this.fromJSONString( defaultPrefs );
+      } else {
+        // shrug
+        this.fromJSONObject( defaultPrefs );
+      }
+    }
     this.searchForm.prefsChanged.subscribe( (prefsObj ) => {
       console.log('search form prefs changed!!', prefsObj);
       this.prefsChanged.next( this.toJSONObject() );
@@ -356,4 +361,23 @@ export class SzPrefsService2 {
       this.prefsChanged.next( this.toJSONObject() );
     });
   }
+
+  public forceChange() {
+    this.prefsChanged.next( this.toJSONObject() );
+  }
 }
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SzPrefsService extends SzSdkPrefs {
+  public tval = true;
+
+  constructor(
+    ) {
+    super();
+    console.warn(' !!INITIALIZE SzPrefsService!! ');
+  }
+}
+*/

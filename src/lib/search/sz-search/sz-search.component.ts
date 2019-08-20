@@ -16,7 +16,7 @@ import { SzEntitySearchParams } from '../../models/entity-search';
 import { SzSearchService } from '../../services/sz-search.service';
 import { JSONScrubber } from '../../common/utils';
 import { SzConfigurationService } from '../../services/sz-configuration.service';
-import { SzPrefsService2 } from '../../services/sz-prefs2.service';
+import { SzPrefsService } from '../../services/sz-prefs.service';
 
 /** @internal */
 interface SzSearchFormParams {
@@ -452,7 +452,7 @@ export class SzSearchComponent implements OnInit {
     private configService: ConfigService,
     private ref: ChangeDetectorRef,
     private apiConfigService: SzConfigurationService,
-    private prefs: SzPrefsService2,
+    private prefs: SzPrefsService,
     private searchService: SzSearchService) {
 
       this.prefs.prefsChanged.subscribe( (pJson)=>{

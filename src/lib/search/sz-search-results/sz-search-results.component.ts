@@ -6,7 +6,7 @@ import {
   SzAttributeSearchResult,
   SzAttributeSearchResultType
 } from '@senzing/rest-api-client-ng';
-import { SzPrefsService2 } from '../../services/sz-prefs2.service';
+import { SzPrefsService } from '../../services/sz-prefs.service';
 
 @Component({
   selector: 'sz-search-results',
@@ -175,7 +175,7 @@ export class SzSearchResultsComponent implements OnInit {
 
   constructor(
     private titleCasePipe: TitleCasePipe,
-    private prefs: SzPrefsService2
+    private prefs: SzPrefsService
   ) {
     this.prefs.searchResults.prefsChanged.subscribe( (pJson)=>{
       console.warn('SEARCH RESULTS PREF CHANGE!', pJson);
