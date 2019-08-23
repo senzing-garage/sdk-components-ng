@@ -5,6 +5,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { SenzingSdkModule, SzPrefsService, SzConfigurationService } from '@senzing/sdk-components-ng';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { StorageServiceModule } from 'ngx-webstorage-service';
 
 import { AppComponent } from './app.component';
 import { SzPrefsManagerComponent } from './prefs/prefs-manager.component';
@@ -20,6 +21,7 @@ import { SzPrefsManagerComponent } from './prefs/prefs-manager.component';
     FormsModule,
     OverlayModule,
     ReactiveFormsModule,
+    StorageServiceModule,
     SenzingSdkModule.forRoot()
   ],
   providers: [

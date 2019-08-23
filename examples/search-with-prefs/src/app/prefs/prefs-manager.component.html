@@ -1,4 +1,12 @@
 <div>
   <h2>Prefs Manager</h2>
   <hr/>
+  <h3>Search Form</h3>
+  <label>Show Identifiers:</label>
+  <div *ngFor="let item of sForm_allowedTypeAttributes">
+    <input type="checkbox" [checked]="isAllowedAttributeChecked( item )" (change)="updateArrayBoolPrefValue('searchForm','allowedTypeAttributes', item, $event)"><label>{{item}}</label>
+  </div>
+  <hr/>
+  <h3>Search Results</h3>
+  <input type="checkbox" [checked]="boolPrefChecked('searchResults','showOtherData')" (change)="updateBoolPrefValue('searchResults','showOtherData', $event)"><label>Show Other Data:</label>
 </div>

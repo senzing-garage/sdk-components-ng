@@ -1,6 +1,6 @@
-import { Injectable, Output, Input, Inject } from '@angular/core';
+import { Injectable, Output, Input, Inject, OnDestroy } from '@angular/core';
 import { Observable, fromEventPattern, Subject, BehaviorSubject } from 'rxjs';
-import { map, tap, mapTo } from 'rxjs/operators';
+import { map, tap, mapTo, takeUntil } from 'rxjs/operators';
 import { Configuration as SzRestConfiguration, ConfigurationParameters as SzRestConfigurationParameters } from '@senzing/rest-api-client-ng';
 
 import {
@@ -16,6 +16,7 @@ import { SzEntitySearchParams } from '../models/entity-search';
 import { SzGraphConfigurationService } from '@senzing/sdk-graph-components';
 
 export class SzSdkPrefsBase {
+  public bulkSet: boolean = false;
   public prefsChanged: BehaviorSubject<any> = new BehaviorSubject<any>(this.toJSONObject());
 
   // the keys of methods in the object
@@ -39,16 +40,23 @@ export class SzSdkPrefsBase {
     return retObj;
   }
   public fromJSONObject(value: string) {
+    this.bulkSet = true;
+    let _isChanged = false;
     if (this.jsonKeys && this.jsonKeys.forEach) {
       this.jsonKeys.forEach((k: string) => {
         if( value[k] !== undefined ){
           try{
             this[k] = value[k];
+            _isChanged = true;
           } catch (err) {
             // console.warn('attempted to get prefVal, but pref unset. ', err)
           };
         }
       });
+    }
+    this.bulkSet = false;
+    if(_isChanged){
+      this.prefsChanged.next( this.toJSONObject() );
     }
   }
   public toJSONString(): string {
@@ -75,7 +83,7 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
   }
   public set allowedTypeAttributes(value: string[]) {
     this._allowedTypeAttributes = value;
-    this.prefsChanged.next( this.toJSONObject );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
 
 }
@@ -112,63 +120,63 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   }
   public set openInNewTab(value: boolean) {
     this._openInNewTab = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   public get showOtherData(): boolean {
     return this._showOtherData;
   }
   public set showOtherData(value: boolean) {
     this._showOtherData = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   public get showAttributeData(): boolean {
     return this._showAttributeData;
   }
   public set showAttributeData(value: boolean) {
     this._showAttributeData = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   public get showRecordIds(): boolean {
     return this._showRecordIds;
   }
   public set showRecordIds(value: boolean) {
     this._showRecordIds = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   public get truncateRecordsAt(): number {
     return this._truncateRecordsAt;
   }
   public set truncateRecordsAt(value: number) {
     this._truncateRecordsAt = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   public get truncateOtherDataAt(): number {
     return this._truncateOtherDataAt;
   }
   public set truncateOtherDataAt(value: number) {
     this._truncateOtherDataAt = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   public get truncateAttributeDataAt(): number {
     return this._truncateAttributeDataAt;
   }
   public set truncateAttributeDataAt(value: number) {
     this._truncateAttributeDataAt = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   public get showEmbeddedGraph(): boolean {
     return this._showEmbeddedGraph;
   }
   public set showEmbeddedGraph(value: boolean) {
     this._showEmbeddedGraph = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   public get linkToEmbeddedGraph(): boolean {
     return this._linkToEmbeddedGraph;
   }
   public set linkToEmbeddedGraph(value: boolean) {
     this._linkToEmbeddedGraph = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
 }
 export class SzEntityDetailPrefs extends SzSdkPrefsBase {
@@ -200,56 +208,56 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
   }
   public set graphCollapsed(value: boolean) {
     this._graphCollapsed = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   public get recordsCollapsed(): boolean {
     return this._recordsCollapsed;
   }
   public set recordsCollapsed(value: boolean) {
     this._recordsCollapsed = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   public get disclosedCollapsed(): boolean {
     return this._disclosedCollapsed;
   }
   public set disclosedCollapsed(value: boolean) {
     this._disclosedCollapsed = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   public get possibleMatchesCollapsed(): boolean {
     return this._possibleMatchesCollapsed;
   }
   public set possibleMatchesCollapsed(value: boolean) {
     this._possibleMatchesCollapsed = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   public get possibleRelationshipsCollapsed(): boolean {
     return this._possibleRelationshipsCollapsed;
   }
   public set possibleRelationshipsCollapsed(value: boolean) {
     this._possibleRelationshipsCollapsed = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   public get showEdgeLabels(): boolean {
     return this._showEdgeLabels;
   }
   public set showEdgeLabels(value: boolean) {
     this._showEdgeLabels = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   public get truncateAt(): number {
     return this._truncateAt;
   }
   public set truncateAt(value: number) {
     this._truncateAt = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   public get openInNewTab(): boolean {
     return this._openInNewTab;
   }
   public set openInNewTab(value: boolean) {
     this._openInNewTab = value;
-    this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
 }
 
@@ -286,7 +294,9 @@ export interface SzSdkPrefsModel {
 @Injectable({
   providedIn: 'root'
 })
-export class SzPrefsService {
+export class SzPrefsService implements OnDestroy {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
   public prefsChanged: BehaviorSubject<SzSdkPrefsModel> = new BehaviorSubject<SzSdkPrefsModel>( this.toJSONObject() );
   public searchForm?: SzSearchFormPrefs       = new SzSearchFormPrefs();
   public searchResults?: SzSearchResultsPrefs = new SzSearchResultsPrefs();
@@ -312,10 +322,12 @@ export class SzPrefsService {
     _keys.forEach( (_k ) => {
       if( this[_k] && this[_k].fromJSONObject ){
         // object inheriting from 'SzSdkPrefsBase'
+        //console.log(`setting "${_k}" via this[_k].fromJSONObject`, value[_k]);
         this[_k].fromJSONObject( value[_k] );
       } else {
         //   maybe top level property
         //   :-/
+        //console.log(`setting "${_k}" via direct assignment`, value[_k], this[_k]);
         this[_k] = value[_k];
       }
     });
@@ -339,21 +351,38 @@ export class SzPrefsService {
 
   constructor(){
     console.warn(' !!!INITIALIZE SzPrefsService!!! ');
-    this.searchForm.prefsChanged.subscribe( (prefsObj ) => {
+
+    this.searchForm.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( (prefsObj ) => {
       console.log('search form prefs changed!!', prefsObj);
       this.prefsChanged.next( this.toJSONObject() );
     });
-    this.searchResults.prefsChanged.subscribe( (prefsObj ) => {
+    this.searchResults.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( (prefsObj ) => {
       console.log('search results prefs changed!!', prefsObj);
       this.prefsChanged.next( this.toJSONObject() );
     });
-    this.entityDetail.prefsChanged.subscribe( (prefsObj ) => {
+    this.entityDetail.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( (prefsObj ) => {
       console.log('entity detail prefs changed!!', prefsObj);
       this.prefsChanged.next( this.toJSONObject() );
     });
-    this.graph.prefsChanged.subscribe( (prefsObj ) => {
+    this.graph.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( (prefsObj ) => {
       console.log('graph prefs changed!!', prefsObj);
       this.prefsChanged.next( this.toJSONObject() );
     });
+  }
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

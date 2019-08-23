@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, Inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 
 import { SzRelatedEntity, SzEntityRecord } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * @internal
@@ -13,7 +15,9 @@ import { SzPrefsService } from '../../../services/sz-prefs.service';
   templateUrl: './sz-search-result-card-content.component.html',
   styleUrls: ['./sz-search-result-card-content.component.scss']
 })
-export class SzSearchResultCardContentComponent implements OnInit {
+export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
   @Input() public entity: SzEntityDetailSectionData;
   @Input() public maxLinesToDisplay = 3;
   @Input() public showAllInfo: boolean;
@@ -62,7 +66,17 @@ export class SzSearchResultCardContentComponent implements OnInit {
 
       this.ref.markForCheck();
     });
-    this.prefs.searchResults.prefsChanged.subscribe( this.onPrefsChange.bind(this) );
+    this.prefs.searchResults.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( this.onPrefsChange.bind(this) );
+  }
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   private onPrefsChange(prefs: any) {
