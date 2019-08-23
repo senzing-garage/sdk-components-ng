@@ -54,15 +54,6 @@ import { SzConfigurationAboutComponent } from './configuration/sz-configuration-
 import { SzConfigurationComponent } from './configuration/sz-configuration/sz-configuration.component';
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
 
-/*
-import { SzRelationshipNetworkComponent } from './graph/sz-relationship-network/sz-relationship-network.component';
-import { SzRelationshipNetworkInputComponent } from './graph/sz-relationship-network-input/sz-relationship-network-input.component';
-import { SzRelationshipNetworkLookupComponent } from './graph/sz-relationship-network-lookup/sz-relationship-network-lookup.component';
-import { SzRelationshipNetworkUploadComponent } from './graph/sz-relationship-network-upload/sz-relationship-network-upload.component';
-import { SzRelationshipPathComponent } from './graph/sz-relationship-path/sz-relationship-path.component';
-*/
-
-
 /**
  * Sets up a default set of service parameters for use
  * by the SDK Components.

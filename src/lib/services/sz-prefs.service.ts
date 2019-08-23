@@ -180,83 +180,146 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   }
 }
 export class SzEntityDetailPrefs extends SzSdkPrefsBase {
-  private _graphCollapsed: boolean;
-  private _recordsCollapsed: boolean;
-  private _disclosedCollapsed: boolean;
-  private _possibleMatchesCollapsed: boolean;
-  private _possibleRelationshipsCollapsed: boolean;
-  private _showEdgeLabels: boolean;
-  private _truncateAt: number;
-  private _openInNewTab: boolean;
+  private _showGraphSection: boolean = true;
+  private _showMatchesSection: boolean = true;
+  private _showPossibleMatchesSection: boolean = true;
+  private _showPossibleRelationshipsSection: boolean = true;
+  private _showDisclosedSection: boolean = true;
+  private _graphSectionCollapsed: boolean = true;
+  private _recordsSectionCollapsed: boolean = false;
+  private _possibleMatchesSectionCollapsed: boolean = false;
+  private _possibleRelationshipsSectionCollapsed: boolean = false;
+  private _disclosedRelationshipsSectionCollapsed: boolean = false;
+  private _rememberSectionCollapsedState: boolean = true;
+  private _truncateSummaryAt: number = 4;
+  private _showOtherData: boolean = true;
+  private _truncateOtherDataAt: number = 5;
+  private _openLinksInNewTab: boolean = false;
 
   // json key that are output through
   // toJSONObject and fromJSONObject
   jsonKeys = [
-    'graphCollapsed',
-    'recordsCollapsed',
-    'disclosedCollapsed',
-    'possibleMatchesCollapsed',
-    'possibleRelationshipsCollapsed',
-    'showEdgeLabels',
-    'truncateAt',
-    'openInNewTab'
+    'showGraphSection',
+    'showMatchesSection',
+    'showPossibleMatchesSection',
+    'showPossibleRelationshipsSection',
+    'showDisclosedSection',
+    'graphSectionCollapsed',
+    'recordsSectionCollapsed',
+    'possibleMatchesSectionCollapsed',
+    'possibleRelationshipsSectionCollapsed',
+    'disclosedRelationshipsSectionCollapsed',
+    'rememberSectionCollapsedState',
+    'truncateSummaryAt',
+    'showOtherData',
+    'truncateOtherDataAt',
+    'openLinksInNewTab'
   ]
 
   // getters and setters
-  public get graphCollapsed(): boolean {
-    return this._graphCollapsed;
+  public get showGraphSection(): boolean {
+    return this._showGraphSection;
   }
-  public set graphCollapsed(value: boolean) {
-    this._graphCollapsed = value;
+  public set showGraphSection(value: boolean) {
+    this._showGraphSection = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
-  public get recordsCollapsed(): boolean {
-    return this._recordsCollapsed;
+  public get showMatchesSection(): boolean {
+    return this._showMatchesSection;
   }
-  public set recordsCollapsed(value: boolean) {
-    this._recordsCollapsed = value;
+  public set showMatchesSection(value: boolean) {
+    this._showMatchesSection = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
-  public get disclosedCollapsed(): boolean {
-    return this._disclosedCollapsed;
+  public get showPossibleMatchesSection(): boolean {
+    return this._showPossibleMatchesSection;
   }
-  public set disclosedCollapsed(value: boolean) {
-    this._disclosedCollapsed = value;
+  public set showPossibleMatchesSection(value: boolean) {
+    this._showPossibleMatchesSection = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
-  public get possibleMatchesCollapsed(): boolean {
-    return this._possibleMatchesCollapsed;
+  public get showPossibleRelationshipsSection(): boolean {
+    return this._showPossibleRelationshipsSection;
   }
-  public set possibleMatchesCollapsed(value: boolean) {
-    this._possibleMatchesCollapsed = value;
+  public set showPossibleRelationshipsSection(value: boolean) {
+    this._showPossibleRelationshipsSection = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
-  public get possibleRelationshipsCollapsed(): boolean {
-    return this._possibleRelationshipsCollapsed;
+  public get showDisclosedSection(): boolean {
+    return this._showDisclosedSection;
   }
-  public set possibleRelationshipsCollapsed(value: boolean) {
-    this._possibleRelationshipsCollapsed = value;
+  public set showDisclosedSection(value: boolean) {
+    this._showDisclosedSection = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
-  public get showEdgeLabels(): boolean {
-    return this._showEdgeLabels;
+  public get graphSectionCollapsed(): boolean {
+    return this._graphSectionCollapsed;
   }
-  public set showEdgeLabels(value: boolean) {
-    this._showEdgeLabels = value;
+  public set graphSectionCollapsed(value: boolean) {
+    this._graphSectionCollapsed = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
-  public get truncateAt(): number {
-    return this._truncateAt;
+  public get recordsSectionCollapsed(): boolean {
+    return this._recordsSectionCollapsed;
   }
-  public set truncateAt(value: number) {
-    this._truncateAt = value;
+  public set recordsSectionCollapsed(value: boolean) {
+    this._recordsSectionCollapsed = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
-  public get openInNewTab(): boolean {
-    return this._openInNewTab;
+  public get possibleMatchesSectionCollapsed(): boolean {
+    return this._possibleMatchesSectionCollapsed;
   }
-  public set openInNewTab(value: boolean) {
-    this._openInNewTab = value;
+  public set possibleMatchesSectionCollapsed(value: boolean) {
+    this._possibleMatchesSectionCollapsed = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get possibleRelationshipsSectionCollapsed(): boolean {
+    return this._possibleRelationshipsSectionCollapsed;
+  }
+  public set possibleRelationshipsSectionCollapsed(value: boolean) {
+    this._possibleRelationshipsSectionCollapsed = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get disclosedRelationshipsSectionCollapsed(): boolean {
+    return this._disclosedRelationshipsSectionCollapsed;
+  }
+  public set disclosedRelationshipsSectionCollapsed(value: boolean) {
+    this._disclosedRelationshipsSectionCollapsed = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get rememberSectionCollapsedState(): boolean {
+    return this._rememberSectionCollapsedState;
+  }
+  public set rememberSectionCollapsedState(value: boolean) {
+    this._rememberSectionCollapsedState = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get truncateSummaryAt(): number {
+    return this._truncateSummaryAt;
+  }
+  public set truncateSummaryAt(value: number) {
+    this._truncateSummaryAt = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get showOtherData(): boolean {
+    return this._showOtherData;
+  }
+  public set showOtherData(value: boolean) {
+    this._showOtherData = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get truncateOtherDataAt(): number {
+    return this._truncateOtherDataAt;
+  }
+  public set truncateOtherDataAt(value: number) {
+    this._truncateOtherDataAt = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get openLinksInNewTab(): boolean {
+    return this._openLinksInNewTab;
+  }
+  public set openLinksInNewTab(value: boolean) {
+    this._openLinksInNewTab = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
 }
@@ -267,20 +330,51 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
  */
 export class SzGraphPrefs extends SzSdkPrefsBase {
   // private vars
-  public openInNewTab: boolean = false;
-  public openInSidePanel: boolean = false;
-  public showEdgeLabels: boolean = false;
-  public dataSourceColors = {
+  public _openInNewTab: boolean = false;
+  public _openInSidePanel: boolean = false;
+  public _dataSourceColors = {
     'owners':'#0088ff'
   };
+  public _showMatchKeys: boolean = false;
+
   // json key that are output through
   // toJSONObject and fromJSONObject
   jsonKeys = [
     'openInNewTab',
     'openInSidePanel',
-    'showEdgeLabels',
-    'dataSourceColors'
+    'dataSourceColors',
+    'showMatchKeys'
   ]
+
+  // getters and setters
+  public get openInNewTab(): boolean {
+    return this._openInNewTab;
+  }
+  public set openInNewTab(value: boolean) {
+    this._openInNewTab = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get openInSidePanel(): boolean {
+    return this._openInSidePanel;
+  }
+  public set openInSidePanel(value: boolean) {
+    this._openInSidePanel = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get dataSourceColors(): any {
+    return this._dataSourceColors;
+  }
+  public set dataSourceColors(value: any) {
+    this._dataSourceColors = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get showMatchKeys(): boolean {
+    return this._showMatchKeys;
+  }
+  public set showMatchKeys(value: boolean) {
+    this._showMatchKeys = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
 }
 
 export interface SzSdkPrefsModel {
@@ -314,6 +408,9 @@ export class SzPrefsService implements OnDestroy {
     }
     if(this.entityDetail){
       retObj.entityDetail = this.entityDetail.toJSONObject();
+    }
+    if(this.graph){
+      retObj.graph = this.graph.toJSONObject();
     }
     return retObj;
   }
@@ -350,30 +447,28 @@ export class SzPrefsService implements OnDestroy {
   }
 
   constructor(){
-    console.warn(' !!!INITIALIZE SzPrefsService!!! ');
-
     this.searchForm.prefsChanged.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe( (prefsObj ) => {
-      console.log('search form prefs changed!!', prefsObj);
+      //console.log('search form prefs changed!!', prefsObj);
       this.prefsChanged.next( this.toJSONObject() );
     });
     this.searchResults.prefsChanged.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe( (prefsObj ) => {
-      console.log('search results prefs changed!!', prefsObj);
+      //console.log('search results prefs changed!!', prefsObj);
       this.prefsChanged.next( this.toJSONObject() );
     });
     this.entityDetail.prefsChanged.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe( (prefsObj ) => {
-      console.log('entity detail prefs changed!!', prefsObj);
+      //console.log('entity detail prefs changed!!', prefsObj);
       this.prefsChanged.next( this.toJSONObject() );
     });
     this.graph.prefsChanged.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe( (prefsObj ) => {
-      console.log('graph prefs changed!!', prefsObj);
+      //console.log('graph prefs changed!!', prefsObj);
       this.prefsChanged.next( this.toJSONObject() );
     });
   }

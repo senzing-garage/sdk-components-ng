@@ -79,8 +79,8 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    console.warn('SRESULTS PREFS CHANGED!!! ', this, prefs);
     this._showOtherData = prefs.showOtherData;
     this._showAttributeData = prefs.showAttributeData;
     this._truncateOtherDataAt = prefs.truncateOtherDataAt;
