@@ -344,7 +344,9 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     this.showDisclosedSection = this.prefs.entityDetail.showDisclosedSection;
 
     // get and listen for prefs change
-    this.prefs.entityDetail.prefsChanged.subscribe( this.onPrefsChange.bind(this) );
+    this.prefs.entityDetail.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( this.onPrefsChange.bind(this) );
   }
 
 

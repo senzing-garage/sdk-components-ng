@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, EventEmitter, ElementRef } from '@angular/core';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
-import { tap, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import {
@@ -160,7 +160,9 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.prefs.graph.prefsChanged.subscribe( this.onPrefsChange.bind(this) );
+    this.prefs.graph.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( this.onPrefsChange.bind(this) );
   }
 
   /** proxy handler for when prefs have changed externally */

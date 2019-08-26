@@ -78,7 +78,9 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
     //this.matchPills = this.createMatchPillInfo(this.cardData.records);
     this.headerTitleText = !this.isEntityRecord(this.cardData) && this.cardData && this.cardData.dataSource ? this.cardData.dataSource + (this.recordCount > 0 ? '(' + this.recordCount + ')' : '') : '';
 
-    this.prefs.entityDetail.prefsChanged.subscribe( this.onPrefsChange.bind(this) );
+    this.prefs.entityDetail.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( this.onPrefsChange.bind(this) );
   }
 
   /** proxy handler for when prefs have changed externally */
