@@ -257,35 +257,35 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
   }
   public set graphSectionCollapsed(value: boolean) {
     this._graphSectionCollapsed = value;
-    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet && this._rememberSectionCollapsedState) this.prefsChanged.next( this.toJSONObject() );
   }
   public get recordsSectionCollapsed(): boolean {
     return this._recordsSectionCollapsed;
   }
   public set recordsSectionCollapsed(value: boolean) {
     this._recordsSectionCollapsed = value;
-    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet && this._rememberSectionCollapsedState) this.prefsChanged.next( this.toJSONObject() );
   }
   public get possibleMatchesSectionCollapsed(): boolean {
     return this._possibleMatchesSectionCollapsed;
   }
   public set possibleMatchesSectionCollapsed(value: boolean) {
     this._possibleMatchesSectionCollapsed = value;
-    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet && this._rememberSectionCollapsedState) this.prefsChanged.next( this.toJSONObject() );
   }
   public get possibleRelationshipsSectionCollapsed(): boolean {
     return this._possibleRelationshipsSectionCollapsed;
   }
   public set possibleRelationshipsSectionCollapsed(value: boolean) {
     this._possibleRelationshipsSectionCollapsed = value;
-    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet && this._rememberSectionCollapsedState) this.prefsChanged.next( this.toJSONObject() );
   }
   public get disclosedRelationshipsSectionCollapsed(): boolean {
     return this._disclosedRelationshipsSectionCollapsed;
   }
   public set disclosedRelationshipsSectionCollapsed(value: boolean) {
     this._disclosedRelationshipsSectionCollapsed = value;
-    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet && this._rememberSectionCollapsedState) this.prefsChanged.next( this.toJSONObject() );
   }
   public get rememberSectionCollapsedState(): boolean {
     return this._rememberSectionCollapsedState;

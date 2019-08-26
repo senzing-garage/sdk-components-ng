@@ -76,7 +76,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.prefs.prefsChanged.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe( (srprefs) => {
-      console.warn('consumer prefs change: ', srprefs);
+      // console.warn('consumer prefs change: ', srprefs);
     });
   }
 
@@ -208,7 +208,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   }
 
   public onSearchParameterChange(searchParams: SzEntitySearchParams) {
-    console.log('onSearchParameterChange: ', searchParams);
+    // console.log('onSearchParameterChange: ', searchParams);
     this.currentSearchParameters = searchParams;
   }
 }

@@ -50,7 +50,6 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // get and listen for prefs change
-
     this._showOtherData = this.prefs.searchResults.showOtherData;
     this._showAttributeData = this.prefs.searchResults.showAttributeData;
     this._truncateOtherDataAt = this.prefs.searchResults.truncateOtherDataAt;

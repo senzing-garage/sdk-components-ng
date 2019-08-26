@@ -62,7 +62,7 @@ export class SzPrefsManagerComponent implements OnInit, OnDestroy {
     ).subscribe( (pJson) => {
       this._prefsJSON = pJson;
       this.savePrefsToLocalStorage();
-      console.warn('SAVED SDK PREFS TO LocalStorage', pJson, this.storage.get(this.STORAGE_KEY) || 'LocaL storage is empty');
+      // console.warn('SAVED SDK PREFS TO LocalStorage', pJson, this.storage.get(this.STORAGE_KEY) || 'LocaL storage is empty');
     });
   }
 

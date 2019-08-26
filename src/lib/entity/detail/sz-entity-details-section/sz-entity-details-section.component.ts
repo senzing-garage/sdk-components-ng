@@ -29,6 +29,14 @@ export class SzEntityDetailsSectionComponent implements OnInit {
   @Input() sectionTitle: string;
   @Input() sectionCount: number;
   @Input() sectionId: string;
+  /** when the user collapses or expands the ui toggle */
+  @Output() onCollapsedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() public collapsedStatePrefsKey: string = 'borgledeerger';
+
+  public onCollapsibleCardStateChange(isCollapsed?: boolean) {
+    //console.warn('onCollapsibleCardStateChange: ', isCollapsed, this.collapsedStatePrefsKey);
+    this.onCollapsedChange.emit(isCollapsed);
+  }
 
 
   @Output()

@@ -76,9 +76,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
     try {
       const ret = (this.identifierData.length > 0);
       return ret;
-    } catch(err){
-      console.warn('SzEntityDetailHeaderContentComponent.get showColumnFour error: ', err.message);
-    }
+    } catch(err){}
     return false;
   }
   // -----------------  end total getters  -------------------

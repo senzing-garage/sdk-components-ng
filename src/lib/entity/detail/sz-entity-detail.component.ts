@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { SzSearchService } from '../../services/sz-search.service';
-import { tap } from 'rxjs/operators';
+import { tap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import {
@@ -11,6 +11,8 @@ import {
   SzRelationshipType
 } from '@senzing/rest-api-client-ng';
 import { SzEntityDetailGraphComponent } from './sz-entity-detail-graph/sz-entity-detail-graph.component';
+
+import { SzPrefsService } from '../../services/sz-prefs.service';
 
 /** @internal */
 const parseBool = (value: any): boolean => {
@@ -27,7 +29,10 @@ const parseBool = (value: any): boolean => {
   templateUrl: './sz-entity-detail.component.html',
   styleUrls: ['./sz-entity-detail.component.scss']
 })
-export class SzEntityDetailComponent implements AfterViewInit {
+export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
+
   private _entityId: number;
   private entityDetailJSON: string = "";
   private _requestDataOnIdChange = true;
@@ -39,6 +44,19 @@ export class SzEntityDetailComponent implements AfterViewInit {
   _possibleMatches: SzRelatedEntity[];
   _matches: SzEntityRecord[];
 
+  // show | hide specific sections
+  private _showGraphSection: boolean = true;
+  private _showMatchesSection: boolean = true;
+  private _showPossibleMatchesSection: boolean = true;
+  private _showPossibleRelationshipsSection: boolean = true;
+  private _showDisclosedSection: boolean = true;
+  // collapse or expand specific setions
+  private _graphSectionCollapsed: boolean = true;
+  private _recordsSectionCollapsed: boolean = false;
+  private _possibleMatchesSectionCollapsed: boolean = false;
+  private _possibleRelationshipsSectionCollapsed: boolean = false;
+  private _disclosedRelationshipsSectionCollapsed: boolean = false;
+
   /** used for print and pdf support, allows fetching DOM HTMLElement */
   @ViewChild('nativeElementRef') nativeElementRef: ElementRef;
   public get nativeElement(): HTMLElement {
@@ -46,10 +64,6 @@ export class SzEntityDetailComponent implements AfterViewInit {
   }
   @ViewChild(SzEntityDetailGraphComponent)
   public graphComponent: SzEntityDetailGraphComponent;
-
-  ngAfterViewInit() {
-    // console.log("graphComponentEle:", this);
-  }
 
   /**
    * emitted when the component begins a request for an entities data.
@@ -111,13 +125,107 @@ export class SzEntityDetailComponent implements AfterViewInit {
     if(_hasChanged && this._requestDataOnIdChange) { this.onEntityIdChange(); }
   }
 
-  public _showGraphSection = true;
   /**
    * show or hide the "At a Glance" section.
    */
   @Input()
   public set showGraphSection(value: any) {
     this._showGraphSection = parseBool(value);
+  }
+  public get showGraphSection(): any {
+    return this._showGraphSection;
+  }
+    /**
+   * show or hide the "Records" section.
+   */
+  @Input()
+  public set showMatchesSection(value: any) {
+    this._showMatchesSection = parseBool(value);
+  }
+  public get showMatchesSection(): any {
+    return this._showMatchesSection;
+  }
+    /**
+   * show or hide the "Possible Matches" section.
+   */
+  @Input()
+  public set showPossibleMatchesSection(value: any) {
+    this._showPossibleMatchesSection = parseBool(value);
+  }
+  public get showPossibleMatchesSection(): any {
+    return this._showPossibleMatchesSection;
+  }
+    /**
+   * show or hide the "Possible Relationships" section.
+   */
+  @Input()
+  public set showPossibleRelationshipsSection(value: any) {
+    this._showPossibleRelationshipsSection = parseBool(value);
+  }
+  public get showPossibleRelationshipsSection(): any {
+    return this._showPossibleRelationshipsSection;
+  }
+    /**
+   * show or hide the "Disclosed Relationships" section.
+   */
+  @Input()
+  public set showDisclosedSection(value: any) {
+    this._showDisclosedSection = parseBool(value);
+  }
+  public get showDisclosedSection(): any {
+    return this._showDisclosedSection;
+  }
+
+
+  /**
+   * collapse or expand the "At a Glance" section.
+   */
+  @Input()
+  public set graphSectionCollapsed(value: any) {
+    this._graphSectionCollapsed = parseBool(value);
+  }
+  public get graphSectionCollapsed(): any {
+    return this._graphSectionCollapsed;
+  }
+    /**
+   * show or hide the "Records" section.
+   */
+  @Input()
+  public set recordsSectionCollapsed(value: any) {
+    this._recordsSectionCollapsed = parseBool(value);
+  }
+  public get recordsSectionCollapsed(): any {
+    return this._recordsSectionCollapsed;
+  }
+    /**
+   * show or hide the "Possible Matches" section.
+   */
+  @Input()
+  public set possibleMatchesSectionCollapsed(value: any) {
+    this._possibleMatchesSectionCollapsed = parseBool(value);
+  }
+  public get possibleMatchesSectionCollapsed(): any {
+    return this._possibleMatchesSectionCollapsed;
+  }
+    /**
+   * show or hide the "Possible Relationships" section.
+   */
+  @Input()
+  public set possibleRelationshipsSectionCollapsed(value: any) {
+    this._possibleRelationshipsSectionCollapsed = parseBool(value);
+  }
+  public get possibleRelationshipsSectionCollapsed(): any {
+    return this._possibleRelationshipsSectionCollapsed;
+  }
+    /**
+   * show or hide the "Disclosed Relationships" section.
+   */
+  @Input()
+  public set disclosedRelationshipsSectionCollapsed(value: any) {
+    this._disclosedRelationshipsSectionCollapsed = parseBool(value);
+  }
+  public get disclosedRelationshipsSectionCollapsed(): any {
+    return this._disclosedRelationshipsSectionCollapsed;
   }
 
   public _graphTitle: string = "Relationships at a Glance";
@@ -224,8 +332,57 @@ export class SzEntityDetailComponent implements AfterViewInit {
 
   constructor(
     private searchService: SzSearchService,
+    public prefs: SzPrefsService
   ) {}
 
+  ngOnInit() {
+    // show or hide sections based on pref change
+    this.showGraphSection = this.prefs.entityDetail.showGraphSection;
+    this.showMatchesSection = this.prefs.entityDetail.showMatchesSection;
+    this.showPossibleMatchesSection = this.prefs.entityDetail.showPossibleMatchesSection;
+    this.showPossibleRelationshipsSection = this.prefs.entityDetail.showPossibleRelationshipsSection;
+    this.showDisclosedSection = this.prefs.entityDetail.showDisclosedSection;
+
+    // get and listen for prefs change
+    this.prefs.entityDetail.prefsChanged.subscribe( this.onPrefsChange.bind(this) );
+  }
+
+
+  ngAfterViewInit() {}
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+
+  /** proxy handler for when prefs have changed externally */
+  private onPrefsChange(prefs: any) {
+    // show or hide sections based on pref change
+    this.showGraphSection = prefs.showGraphSection;
+    this.showMatchesSection = prefs.showMatchesSection;
+    this.showPossibleMatchesSection = prefs.showPossibleMatchesSection;
+    this.showPossibleRelationshipsSection = prefs.showPossibleRelationshipsSection;
+    this.showDisclosedSection = prefs.showDisclosedSection;
+
+    // collapse or expand specific setions
+    this.graphSectionCollapsed = prefs.graphSectionCollapsed;
+    this.recordsSectionCollapsed = prefs.recordsSectionCollapsed;
+    this.possibleMatchesSectionCollapsed = prefs.possibleMatchesSectionCollapsed;
+    this.possibleRelationshipsSectionCollapsed = prefs.possibleRelationshipsSectionCollapsed;
+    this.disclosedRelationshipsSectionCollapsed = prefs.disclosedRelationshipsSectionCollapsed;
+
+    //console.log('SzEntityDetailComponent.onPrefsChange: ', prefs);
+    /*
+    this._showOtherData = prefs.showOtherData;
+    this._showAttributeData = prefs.showAttributeData;
+    this._truncateOtherDataAt = prefs.truncateOtherDataAt;
+    this._truncateAttributeDataAt = prefs.truncateAttributeDataAt;
+    */
+  }
 
   /**
    * after entity data has been changed, regenerate the filtered lists.
@@ -274,6 +431,20 @@ export class SzEntityDetailComponent implements AfterViewInit {
     this.graphContextMenuClick.emit(event);
   }
 
+  public onSectionCollapsedChange(prefsKey: string, isCollapsed: boolean) {
+    // console.log('SzEntityDetailComponent.onSectionCollapsedChange: ', prefsKey, isCollapsed);
+    if( prefsKey && this.prefs.entityDetail) {
+      this.prefs.entityDetail[prefsKey] = isCollapsed;
+    }
+    /*
+    private _graphSectionCollapsed: boolean = true;
+    private _recordsSectionCollapsed: boolean = false;
+    private _possibleMatchesSectionCollapsed: boolean = false;
+    private _possibleRelationshipsSectionCollapsed: boolean = false;
+    private _disclosedRelationshipsSectionCollapsed: boolean = false;
+    */
+  }
+
   /**
    * when entityId property is changed, request the data from the api
    * and display the result.
@@ -291,7 +462,7 @@ export class SzEntityDetailComponent implements AfterViewInit {
         tap(res => console.log('SzSearchService.getEntityById: ' + this._entityId, res))
       ).
       subscribe((entityData: SzEntityData) => {
-        console.log('sz-entity-detail.onEntityIdChange: ', entityData);
+        // console.log('sz-entity-detail.onEntityIdChange: ', entityData);
         this.entityDetailJSON = JSON.stringify(entityData, null, 4);
         this.entity = entityData;
         this.onEntityDataChanged();
