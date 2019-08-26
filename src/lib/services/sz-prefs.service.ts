@@ -336,6 +336,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     'owners':'#0088ff'
   };
   public _showMatchKeys: boolean = false;
+  private _rememberStateOptions: boolean = true;
 
   // json key that are output through
   // toJSONObject and fromJSONObject
@@ -343,7 +344,8 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     'openInNewTab',
     'openInSidePanel',
     'dataSourceColors',
-    'showMatchKeys'
+    'showMatchKeys',
+    'rememberStateOptions'
   ]
 
   // getters and setters
@@ -352,28 +354,34 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   }
   public set openInNewTab(value: boolean) {
     this._openInNewTab = value;
-    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
   }
   public get openInSidePanel(): boolean {
     return this._openInSidePanel;
   }
   public set openInSidePanel(value: boolean) {
     this._openInSidePanel = value;
-    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
   }
   public get dataSourceColors(): any {
     return this._dataSourceColors;
   }
   public set dataSourceColors(value: any) {
     this._dataSourceColors = value;
-    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
   }
   public get showMatchKeys(): boolean {
     return this._showMatchKeys;
   }
   public set showMatchKeys(value: boolean) {
     this._showMatchKeys = value;
-    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+    if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get rememberStateOptions(): boolean {
+    return this._rememberStateOptions;
+  }
+  public set rememberStateOptions(value: boolean) {
+    this._rememberStateOptions = value;
   }
 }
 

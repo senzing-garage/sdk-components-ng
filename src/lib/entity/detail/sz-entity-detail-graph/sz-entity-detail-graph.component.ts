@@ -1,4 +1,7 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit, ViewChild, Output, EventEmitter, ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, EventEmitter, ElementRef } from '@angular/core';
+import { SzPrefsService } from '../../../services/sz-prefs.service';
+import { tap, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 import {
   SzEntityData,
@@ -18,7 +21,9 @@ import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-co
   templateUrl: './sz-entity-detail-graph.component.html',
   styleUrls: ['./sz-entity-detail-graph.component.scss']
 })
-export class SzEntityDetailGraphComponent implements OnInit {
+export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
   isOpen: boolean = true;
 
   @Input() public title: string = "Relationships at a Glance";
@@ -27,9 +32,22 @@ export class SzEntityDetailGraphComponent implements OnInit {
     relatedEntities: SzRelatedEntity[]
   }
   public _showMatchKeys = false;
+  /** sets the visibility of edge labels on the node links */
   @Input() public set showMatchKeys(value: boolean) {
     this._showMatchKeys = value;
     //console.log('@senzing/sdk-components-ng:sz-entity-detail-graph.showMatchKeys: ', value);
+  };
+  private _openInNewTab: boolean = false;
+  /** whether or not to open entity clicks in new tab */
+  @Input() public set openInNewTab(value: boolean) {
+    this._openInNewTab = value;
+    //console.log('@senzing/sdk-components-ng:sz-entity-detail-graph.openInNewTab: ', value);
+  };
+  public _openInSidePanel = false;
+  /** whether or not to open entity clicks in side drawer */
+  @Input() public set openInSidePanel(value: boolean) {
+    this._openInSidePanel = value;
+    //console.log('@senzing/sdk-components-ng:sz-entity-detail-graph.openInSidePanel: ', value);
   };
   @Input() sectionIcon: string;
   @Input() maxDegrees: number = 90;
@@ -129,6 +147,26 @@ export class SzEntityDetailGraphComponent implements OnInit {
     }
   }
 
-  constructor() {}
-  ngOnInit() {}
+  constructor(
+    public prefs: SzPrefsService
+  ) {}
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  ngOnInit() {
+    this.prefs.graph.prefsChanged.subscribe( this.onPrefsChange.bind(this) );
+  }
+
+  /** proxy handler for when prefs have changed externally */
+  private onPrefsChange(prefs: any) {
+    //console.warn('@senzing/sdk-components-ng/sz-entity-detail-graph.onPrefsChange(): ', prefs);
+    this._showMatchKeys = prefs.showMatchKeys;
+  }
+
 }
