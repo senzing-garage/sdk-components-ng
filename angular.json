@@ -557,7 +557,7 @@
       }
     }
   },
-  "defaultProject": "example/search-with-prefs",
+  "defaultProject": "example/search-with-results-and-details",
   "schematics": {
     "@schematics/angular:component": {
       "styleext": "scss"

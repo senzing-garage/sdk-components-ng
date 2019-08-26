@@ -23,7 +23,8 @@
     "e2e:headless": "ng e2e @senzing/sdk-components-ng/e2e --configuration=e2e --protractor-config=e2e/protractor.ci.conf.js",
     "example:search-with-results-and-details": "ng serve example/search-with-results-and-details",
     "example:search-with-spinner": "ng serve example/search-with-spinner",
-    "example:graph": "ng serve example/graph"
+    "example:graph": "ng serve example/graph",
+    "example:search-with-prefs": "ng serve example/search-with-prefs"
   },
   "private": true,
   "dependencies": {

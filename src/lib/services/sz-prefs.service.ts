@@ -86,6 +86,16 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
 
+  /**
+   * publish out a "first" real payload so that
+   * subscribers get an initial payload from this subclass
+   * instead of the empty superclass
+   **/
+  constructor(){
+    super();
+    this.prefsChanged.next( this.toJSONObject() );
+  }
+
 }
 
 export class SzSearchResultsPrefs extends SzSdkPrefsBase {
@@ -177,6 +187,16 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   public set linkToEmbeddedGraph(value: boolean) {
     this._linkToEmbeddedGraph = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+
+  /**
+   * publish out a "first" real payload so that
+   * subscribers get an initial payload from this subclass
+   * instead of the empty superclass
+   **/
+  constructor(){
+    super();
+    this.prefsChanged.next( this.toJSONObject() );
   }
 }
 export class SzEntityDetailPrefs extends SzSdkPrefsBase {
@@ -321,6 +341,16 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
   public set openLinksInNewTab(value: boolean) {
     this._openLinksInNewTab = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+
+  /**
+   * publish out a "first" real payload so that
+   * subscribers get an initial payload from this subclass
+   * instead of the empty superclass
+   **/
+  constructor(){
+    super();
+    this.prefsChanged.next( this.toJSONObject() );
   }
 }
 
