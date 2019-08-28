@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, EventEmitter, ElementRef } from '@angular/core';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import {
@@ -11,6 +11,7 @@ import {
   SzRelationshipType
 } from '@senzing/rest-api-client-ng';
 import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
+import { SzRelationshipNetworkComponent } from '@senzing/sdk-graph-components';
 
 /**
  * @internal
@@ -25,6 +26,11 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
   isOpen: boolean = true;
+
+  /**
+   * @internal
+   */
+  @ViewChild(SzRelationshipNetworkComponent) graphNetworkComponent: SzRelationshipNetworkComponent;
 
   @Input() public title: string = "Relationships at a Glance";
   @Input() data: {
@@ -50,8 +56,8 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     //console.log('@senzing/sdk-components-ng:sz-entity-detail-graph.openInSidePanel: ', value);
   };
   @Input() sectionIcon: string;
-  @Input() maxDegrees: number = 90;
-  @Input() maxEntities: number = 25;
+  @Input() maxDegrees: number = 1;
+  @Input() maxEntities: number = 20;
   @Input()
   set expanded(value) {
     this.isOpen = value;
@@ -161,14 +167,29 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.prefs.graph.prefsChanged.pipe(
-      takeUntil(this.unsubscribe$)
+      takeUntil(this.unsubscribe$),
+      debounceTime(1250)
     ).subscribe( this.onPrefsChange.bind(this) );
   }
 
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    //console.warn('@senzing/sdk-components-ng/sz-entity-detail-graph.onPrefsChange(): ', prefs);
+    // console.warn('@senzing/sdk-components-ng/sz-entity-detail-graph.onPrefsChange(): ', prefs);
     this._showMatchKeys = prefs.showMatchKeys;
+    this.maxDegrees = prefs.maxDegreesOfSeparation;
+    this.maxEntities = prefs.maxEntities;
+
+    if(this.graphNetworkComponent) {
+      // update graph with new properties
+      this.graphNetworkComponent.maxDegrees = this.maxDegrees.toString();
+      this.graphNetworkComponent.maxEntities = this.maxEntities.toString();
+      this.reload();
+    }
+  }
+
+  private reload() {
+    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph.reload: ', this.graphNetworkComponent);
+    this.graphNetworkComponent.reload();
   }
 
 }

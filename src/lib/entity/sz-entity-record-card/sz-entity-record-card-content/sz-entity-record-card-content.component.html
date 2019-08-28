@@ -1,8 +1,8 @@
 <div class="search-card__content--wrapper" [class.collapsed]="truncateResults" (click)="truncateResults=!truncateResults">
     <div class="search-card__content--column" #columnOne  *ngIf="showColumnOne">
-      <div class="line" *ngIf="entity?.recordId"><span [class.ellipsis]="truncateResults">Record Id: {{entity.recordId}}</span></div>
+      <div class="line" *ngIf="entity?.recordId && showRecordIdWhenNative"><span [class.ellipsis]="truncateResults">Record Id: {{entity.recordId}}</span></div>
       <div class="line" *ngFor="let otherData of otherData; let i = index">
-        <span *ngIf="i < (maxLinesToDisplay-1) || !truncateResults" [class.ellipsis]="truncateResults">
+        <span *ngIf="i < (truncateOtherDataAt-1) || truncateOtherDataAt < 0 || !truncateResults || showOtherData" [class.ellipsis]="truncateResults">
           {{otherData}}
         </span>
       </div>

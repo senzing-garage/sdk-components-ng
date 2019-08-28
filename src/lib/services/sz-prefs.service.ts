@@ -215,6 +215,12 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
   private _showOtherData: boolean = true;
   private _truncateOtherDataAt: number = 5;
   private _openLinksInNewTab: boolean = false;
+  private _showOtherDataInRecords: boolean = true;
+  private _showOtherDataInEntities: boolean = true;
+  private _showOtherDataInSummary: boolean = false;
+  private _truncateOtherDataInRecordsAt: number = 5;
+  private _hideGraphWhenZeroRelations: boolean = true;
+  private _showRecordIdWhenNative: boolean = true;
 
   // json key that are output through
   // toJSONObject and fromJSONObject
@@ -233,7 +239,13 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
     'truncateSummaryAt',
     'showOtherData',
     'truncateOtherDataAt',
-    'openLinksInNewTab'
+    'openLinksInNewTab',
+    'showOtherDataInRecords',
+    'showOtherDataInEntities',
+    'showOtherDataInSummary',
+    'truncateOtherDataInRecordsAt',
+    'hideGraphWhenZeroRelations',
+    'showRecordIdWhenNative'
   ]
 
   // getters and setters
@@ -342,6 +354,49 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
     this._openLinksInNewTab = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
+  public get showOtherDataInRecords(): boolean {
+    return this._showOtherDataInRecords;
+  }
+  public set showOtherDataInRecords(value: boolean) {
+    this._showOtherDataInRecords = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get showOtherDataInEntities(): boolean {
+    return this._showOtherDataInEntities;
+  }
+  public set showOtherDataInEntities(value: boolean) {
+    this._showOtherDataInEntities = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get showOtherDataInSummary(): boolean {
+    return this._showOtherDataInSummary;
+  }
+  public set showOtherDataInSummary(value: boolean) {
+    this._showOtherDataInSummary = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get truncateOtherDataInRecordsAt(): number {
+    return this._truncateOtherDataInRecordsAt;
+  }
+  public set truncateOtherDataInRecordsAt(value: number) {
+    this._truncateOtherDataInRecordsAt = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get hideGraphWhenZeroRelations(): boolean {
+    return this._hideGraphWhenZeroRelations;
+  }
+  public set hideGraphWhenZeroRelations(value: boolean) {
+    this._hideGraphWhenZeroRelations = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get showRecordIdWhenNative(): boolean {
+    return this._showRecordIdWhenNative;
+  }
+  public set showRecordIdWhenNative(value: boolean) {
+    this._showRecordIdWhenNative = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+
 
   /**
    * publish out a "first" real payload so that
@@ -367,6 +422,8 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   };
   public _showMatchKeys: boolean = false;
   private _rememberStateOptions: boolean = true;
+  public _maxDegreesOfSeparation: number = 3;
+  public _maxEntities: number = 3;
 
   // json key that are output through
   // toJSONObject and fromJSONObject
@@ -375,7 +432,9 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     'openInSidePanel',
     'dataSourceColors',
     'showMatchKeys',
-    'rememberStateOptions'
+    'rememberStateOptions',
+    'maxDegreesOfSeparation',
+    'maxEntities'
   ]
 
   // getters and setters
@@ -411,7 +470,23 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     return this._rememberStateOptions;
   }
   public set rememberStateOptions(value: boolean) {
+    // this one doesnt need to push "next" to event bus
+    // rather it controls whether the other setters send to event bus
     this._rememberStateOptions = value;
+  }
+  public get maxDegreesOfSeparation(): number {
+    return this._maxDegreesOfSeparation;
+  }
+  public set maxDegreesOfSeparation(value: number) {
+    this._maxDegreesOfSeparation = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get maxEntities(): number {
+    return this._maxEntities;
+  }
+  public set maxEntities(value: number) {
+    this._maxEntities = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
 }
 
