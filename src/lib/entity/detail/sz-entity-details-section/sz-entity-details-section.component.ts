@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnInit, AfterViewInit, ViewChildren, QueryList, OnDestroy } from '@angular/core';
 import { SzRelatedEntity, SzEntityRecord } from '@senzing/rest-api-client-ng';
+import { SzEntityDetailSectionCollapsibleCardComponent } from './collapsible-card.component';
+import { Subject } from 'rxjs';
 
 /**
  * @internal
@@ -10,7 +12,9 @@ import { SzRelatedEntity, SzEntityRecord } from '@senzing/rest-api-client-ng';
   templateUrl: './sz-entity-details-section.component.html',
   styleUrls: ['./sz-entity-details-section.component.scss']
 })
-export class SzEntityDetailsSectionComponent implements OnInit {
+export class SzEntityDetailsSectionComponent implements OnDestroy {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
   _sectionData: SzEntityRecord[] | SzRelatedEntity[];
   _sectionDataByDataSource: SzEntityRecord[] | SzRelatedEntity[];
   _sectionDataByMatchKey: SzEntityRecord[] | SzRelatedEntity[];
@@ -29,14 +33,42 @@ export class SzEntityDetailsSectionComponent implements OnInit {
   @Input() sectionTitle: string;
   @Input() sectionCount: number;
   @Input() sectionId: string;
+  /** when the user collapses or expands the ui toggle */
+  @Output() onCollapsedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() public collapsedStatePrefsKey: string = 'borgledeerger';
 
+  public onCollapsibleCardStateChange(isCollapsed?: boolean) {
+    let totalInAll = this.collapsable.length;
+    const numExpanded: number = this.collapsable.filter( (colCard ) => {
+      return (colCard.expanded) == true;
+    }).length;
+    const numCollapsed: number = this.collapsable.filter( (colCard ) => {
+      return (colCard.expanded) == false;
+    }).length;
+    let allCollapsed = (numCollapsed == totalInAll);
+    let allExpanded = (numExpanded == totalInAll);
+
+    if(allCollapsed || allExpanded) {
+      // we only want to publish a state change if all the cards are in a uniform state
+      // so we can remember expanded state of entire sections.
+      // console.warn('onCollapsibleCardStateChange: ', allCollapsed, allExpanded, this.collapsedStatePrefsKey, this.collapsable);
+      this.onCollapsedChange.emit(isCollapsed);
+    }
+  }
+
+  @ViewChildren(SzEntityDetailSectionCollapsibleCardComponent) collapsable: QueryList<SzEntityDetailSectionCollapsibleCardComponent>
 
   @Output()
   public entityRecordClick: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() { }
 
-  ngOnInit() {
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   get showByDataSource(): boolean {

@@ -1,6 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 import { SzEntityRecord } from '@senzing/rest-api-client-ng';
+import { SzPrefsService } from '../../../services/sz-prefs.service';
+import { tap, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 /**
  * @internal
@@ -11,8 +14,10 @@ import { SzEntityRecord } from '@senzing/rest-api-client-ng';
   templateUrl: './collapsible-card.component.html',
   styleUrls: ['./collapsible-card.component.scss']
 })
-export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, AfterViewInit {
+export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('messages') private messagesContainer: HTMLElement;
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
 
   @Input() showIcon = true;
   @Input() headerIcon: string;
@@ -23,6 +28,8 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, Af
   @Input()
   set expanded(value) {
     this.isOpen = value;
+    // publish event change emmitter
+    this.onCollapsedChange.emit(!this.isOpen);
   }
   /**
    * get the expanded state of the component
@@ -30,6 +37,12 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, Af
   get expanded(): boolean {
     return this.isOpen;
   }
+
+  /** emits an event when the collapsed state of the card changes */
+  @Output()
+  public onCollapsedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() public collapsedStatePrefsKey: string;
+
   @Input() displayType: string = 'entity';
   @Input() truncateResults: boolean = true;
 
@@ -41,7 +54,17 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, Af
   @Output()
   public entityRecordClick: EventEmitter<number> = new EventEmitter<number>();
 
-  constructor() {
+  constructor(
+    public prefs: SzPrefsService
+  ) {
+  }
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   get recordCount() {
@@ -54,6 +77,18 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, Af
     //console.log('MATCH PILLS! ', this.matchPills);
     //this.matchPills = this.createMatchPillInfo(this.cardData.records);
     this.headerTitleText = !this.isEntityRecord(this.cardData) && this.cardData && this.cardData.dataSource ? this.cardData.dataSource + (this.recordCount > 0 ? '(' + this.recordCount + ')' : '') : '';
+
+    this.prefs.entityDetail.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( this.onPrefsChange.bind(this) );
+  }
+
+  /** proxy handler for when prefs have changed externally */
+  private onPrefsChange(prefs: any) {
+    if( typeof prefs[ this.collapsedStatePrefsKey ] == 'boolean') {
+      this.isOpen = !(prefs[ this.collapsedStatePrefsKey ]);
+      //console.warn(`SzEntityDetailSectionCollapsibleCardComponent.onPrefsChange: value of this.collapsedStatePrefsKey(${this.collapsedStatePrefsKey}) is "${prefs[ this.collapsedStatePrefsKey ]}" `, `isOpen set to ${ !(prefs[ this.collapsedStatePrefsKey ])}`, prefs[ this.collapsedStatePrefsKey ]);
+    }
   }
 
   ngAfterViewInit() {
@@ -77,7 +112,6 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, Af
    */
   toggleExpanded(evt: Event) {
     this.expanded = !this.expanded;
-    console.log('set new expanded state: ', this.expanded, evt);
   }
 
   /**

@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef, Inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject  } from 'rxjs';
-import { map, tap, mapTo, first, filter } from 'rxjs/operators';
+import { map, tap, mapTo, first, filter, takeUntil } from 'rxjs/operators';
 
 import {
   ConfigService,
@@ -16,6 +16,7 @@ import { SzEntitySearchParams } from '../../models/entity-search';
 import { SzSearchService } from '../../services/sz-search.service';
 import { JSONScrubber } from '../../common/utils';
 import { SzConfigurationService } from '../../services/sz-configuration.service';
+import { SzPrefsService } from '../../services/sz-prefs.service';
 
 /** @internal */
 interface SzSearchFormParams {
@@ -66,7 +67,10 @@ const parseBool = (value: any): boolean => {
   templateUrl: './sz-search.component.html',
   styleUrls: ['./sz-search.component.scss']
 })
-export class SzSearchComponent implements OnInit {
+export class SzSearchComponent implements OnInit, OnDestroy {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
+
   /**
    * populate the search fields with an pre-existing set of search parameters.
    */
@@ -403,6 +407,7 @@ export class SzSearchComponent implements OnInit {
     identifierType: false
   };
 
+  private _attributeTypesFromServer: SzAttributeType[];
   @Input('attributeTypes')
   public set inputAttributeTypes(value: SzAttributeType[]) {
     // strip out non-identifiers
@@ -410,14 +415,28 @@ export class SzSearchComponent implements OnInit {
       return (attr.attributeClass === 'IDENTIFIER');
     });
 
+    // store for caching
+    this._attributeTypesFromServer = value;
+
     // filter out by specific codes
-    if(this.allowedTypeAttributes && this.allowedTypeAttributes.length > 0) {
-      value = value.filter( (attr: SzAttributeType) => {
-        return (this.allowedTypeAttributes.indexOf( attr.attributeCode) > -1);
+    this.matchingAttributes = this.filterAttributeTypesByAllowedTypes(value, this.allowedTypeAttributes);
+  }
+
+  public get inputAttributeTypes(): SzAttributeType[] {
+    return this._attributeTypesFromServer;
+  }
+
+  private filterAttributeTypesByAllowedTypes( attributeTypes: SzAttributeType[], allowedTypes: string[] ) {
+    let retTypes: SzAttributeType[] = attributeTypes;
+
+    if(allowedTypes && allowedTypes.length > 0) {
+      retTypes = attributeTypes.filter( (attr: SzAttributeType) => {
+        return (allowedTypes.indexOf( attr.attributeCode) > -1);
       });
     }
-    this.matchingAttributes = value;
+    return retTypes
   }
+
   /**
    * returns an ordered list of identifier fields to use in the pulldown list.
    * @internal
@@ -451,8 +470,30 @@ export class SzSearchComponent implements OnInit {
     private configService: ConfigService,
     private ref: ChangeDetectorRef,
     private apiConfigService: SzConfigurationService,
+    private prefs: SzPrefsService,
     private searchService: SzSearchService) {
 
+      this.prefs.searchForm.prefsChanged.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe( (pJson) => {
+        if(pJson && pJson.allowedTypeAttributes) {
+          // update the allowedTypeAttributes
+          this.allowedTypeAttributes = pJson.allowedTypeAttributes;
+          if(this.inputAttributeTypes){
+            // we already have response from server
+            // just re-filter result
+            this.matchingAttributes = this.filterAttributeTypesByAllowedTypes(this.inputAttributeTypes, this.allowedTypeAttributes);
+            /*console.warn('filtering attr list based on prefs change',
+            this.inputAttributeTypes,
+            this.allowedTypeAttributes,
+            this.matchingAttributes);*/
+
+            this.ref.markForCheck();
+            this.ref.detectChanges();
+          }
+          // otherwise wait for initial response
+        }
+      });
   }
 
   /**
@@ -484,6 +525,7 @@ export class SzSearchComponent implements OnInit {
   public ngOnInit(): void {
     this.createEntitySearchForm();
     this.apiConfigService.parametersChanged.pipe(
+      takeUntil(this.unsubscribe$),
       filter( () => {
         return this.getAttributesOnConfigChange;
        })
@@ -500,6 +542,14 @@ export class SzSearchComponent implements OnInit {
   }
 
   /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  /**
    * Pull in the list of attribute types from the api server.
    */
   @Input()
@@ -507,6 +557,7 @@ export class SzSearchComponent implements OnInit {
     // get attributes
     this.configService.getAttributeTypes()
     .pipe(
+      takeUntil(this.unsubscribe$),
       map( (resp: SzAttributeTypesResponse) => resp.data.attributeTypes ),
       first()
     )
@@ -635,7 +686,9 @@ export class SzSearchComponent implements OnInit {
     }
     this.searchStart.emit(searchParams);
 
-    this.searchService.searchByAttributes(searchParams)
+    this.searchService.searchByAttributes(searchParams).pipe(
+      takeUntil(this.unsubscribe$)
+    )
     .subscribe((res) => {
       const totalResults = res ? res.length : 0;
       this.searchResultsJSON = JSON.stringify(res, null, 4);

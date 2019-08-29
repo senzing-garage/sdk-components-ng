@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, ViewContainerRef, TemplateRef, Input } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, ViewContainerRef, TemplateRef, Input, OnDestroy } from '@angular/core';
 import {
   SzEntitySearchParams,
   SzAttributeSearchResult,
@@ -10,21 +10,24 @@ import {
   SzPrefsService,
   SzConfigurationService
 } from '@senzing/sdk-components-ng';
-import { tap, filter, take } from 'rxjs/operators';
+import { tap, filter, take, takeUntil } from 'rxjs/operators';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Subscription, fromEvent } from 'rxjs';
+import { Subscription, fromEvent, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements AfterViewInit, OnDestroy {
   public currentSearchResults: SzAttributeSearchResult[];
   public currentlySelectedEntityId: number = undefined;
   public currentSearchParameters: SzEntitySearchParams;
   public showSearchResults = false;
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
+
   public set showGraphMatchKeys(value: boolean) {
     if (this.entityDetailComponent){
       this.entityDetailComponent.showGraphMatchKeys = value;
@@ -69,6 +72,20 @@ export class AppComponent implements AfterViewInit {
         this.searchBox.submitSearch();
       }
     }
+
+    this.prefs.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( (srprefs) => {
+      // console.warn('consumer prefs change: ', srprefs);
+    });
+  }
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   onSearchException(err: Error) {
@@ -156,6 +173,12 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
+  public togglePref(prefGroup: string, prefKey): void {
+    if (prefGroup && this.prefs[prefGroup]){
+      this.prefs[prefGroup][prefKey] = !this.prefs[prefGroup][prefKey] ;
+    }
+  }
+
   public toggleGraphMatchKeys(event): void {
     let _checked = false;
     if (event.target) {
@@ -185,7 +208,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   public onSearchParameterChange(searchParams: SzEntitySearchParams) {
-    console.log('onSearchParameterChange: ', searchParams);
+    // console.log('onSearchParameterChange: ', searchParams);
     this.currentSearchParameters = searchParams;
   }
 }

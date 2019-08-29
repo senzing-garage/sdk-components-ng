@@ -1,0 +1,91 @@
+<div class="prefs-ui-lists">
+  <div class="prefs-ui-column">
+      <div class="prefs-ui-column-inner">
+
+          <h3>Search Form</h3>
+          <label>Show Identifiers:</label>
+          <div *ngFor="let item of sForm_allowedTypeAttributes; index as i;">
+            <input type="checkbox" [attr.id]="('cb-sf-'+i)" [checked]="isAllowedAttributeChecked( item )" (change)="updateArrayBoolPrefValue('searchForm','allowedTypeAttributes', item, $event)"><label [attr.for]="('cb-sf-'+i)">{{item}}</label>
+          </div>
+
+          <span class="sep"></span>
+
+          <h3>Search Results</h3>
+          <input type="checkbox" id="cb-sr-1" [checked]="boolPrefChecked('searchResults','showOtherData')" (change)="updateBoolPrefValue('searchResults','showOtherData', $event)"><label for="cb-sr-1">Show Other Data:</label>
+
+      </div>
+  </div>
+  <div class="prefs-ui-column">
+    <div class="prefs-ui-column-inner">
+
+        <h3>Entity Detail</h3>
+        <div class="cb-row">
+          <input type="checkbox" id="cb-ed-13" [checked]="boolPrefChecked('entityDetail','showOtherData')" (change)="updateBoolPrefValue('entityDetail','showOtherData', $event)"><label for="cb-ed-13">Show Other Data:</label>
+        </div>
+
+        <h4>Sections Shown:</h4>
+        <div class="cb-row">
+          <input type="checkbox" id="cb-ed-1" [checked]="boolPrefChecked('entityDetail','showGraphSection')" (change)="updateBoolPrefValue('entityDetail','showGraphSection', $event)"><label for="cb-ed-1">Show Graph:</label>
+        </div>
+        <div class="cb-row">
+            <input type="checkbox" id="cb-ed-2" [checked]="boolPrefChecked('entityDetail','showMatchesSection')" (change)="updateBoolPrefValue('entityDetail','showMatchesSection', $event)"><label for="cb-ed-2">Show Records:</label>
+        </div>
+        <div class="cb-row">
+            <input type="checkbox" id="cb-ed-3" [checked]="boolPrefChecked('entityDetail','showPossibleMatchesSection')" (change)="updateBoolPrefValue('entityDetail','showPossibleMatchesSection', $event)"><label for="cb-ed-3">Show Possible Matches:</label>
+        </div>
+        <div class="cb-row">
+            <input type="checkbox" id="cb-ed-4" [checked]="boolPrefChecked('entityDetail','showPossibleRelationshipsSection')" (change)="updateBoolPrefValue('entityDetail','showPossibleRelationshipsSection', $event)"><label for="cb-ed-4">Show Possible Relationships:</label>
+        </div>
+        <div class="cb-row">
+            <input type="checkbox" id="cb-ed-5" [checked]="boolPrefChecked('entityDetail','showDisclosedSection')" (change)="updateBoolPrefValue('entityDetail','showDisclosedSection', $event)"><label for="cb-ed-5">Show Disclosed Relationships:</label>
+        </div>
+        <div class="cb-row">
+            <input type="checkbox" id="cb-ed-6" [checked]="boolPrefChecked('entityDetail','openLinksInNewTab')" (change)="updateBoolPrefValue('entityDetail','openLinksInNewTab', $event)"><label for="cb-ed-6">Clicks on Entities open in new tab:</label>
+        </div>
+
+        <span class="sep"></span>
+        <h4>Section Collapsed State:</h4>
+        <div class="cb-row">
+            <input type="checkbox" id="cb-ed-7" [checked]="boolPrefChecked('entityDetail','graphSectionCollapsed')" (change)="updateBoolPrefValue('entityDetail','graphSectionCollapsed', $event)"><label for="cb-ed-7">Graph collaped by default:</label>
+        </div>
+        <div class="cb-row">
+            <input type="checkbox" id="cb-ed-8" [checked]="boolPrefChecked('entityDetail','recordsSectionCollapsed')" (change)="updateBoolPrefValue('entityDetail','recordsSectionCollapsed', $event)"><label for="cb-ed-8">Records collaped by default:</label>
+        </div>
+        <div class="cb-row">
+            <input type="checkbox" id="cb-ed-9" [checked]="boolPrefChecked('entityDetail','possibleMatchesSectionCollapsed')" (change)="updateBoolPrefValue('entityDetail','possibleMatchesSectionCollapsed', $event)"><label for="cb-ed-9">Possible Matches collaped by default:</label>  </div>
+        <div class="cb-row">
+            <input type="checkbox" id="cb-ed-10" [checked]="boolPrefChecked('entityDetail','possibleRelationshipsSectionCollapsed')" (change)="updateBoolPrefValue('entityDetail','possibleRelationshipsSectionCollapsed', $event)"><label for="cb-ed-10">Possible Relationships collaped by default:</label>
+        </div>
+        <div class="cb-row">
+            <input type="checkbox" id="cb-ed-11" [checked]="boolPrefChecked('entityDetail','disclosedRelationshipsSectionCollapsed')" (change)="updateBoolPrefValue('entityDetail','disclosedRelationshipsSectionCollapsed', $event)"><label for="cb-ed-11">Disclosed Relationships collaped by default:</label>
+        </div>
+        <div class="cb-row">
+            <input type="checkbox" id="cb-ed-12" [checked]="boolPrefChecked('entityDetail','rememberSectionCollapsedState')" (change)="updateBoolPrefValue('entityDetail','rememberSectionCollapsedState', $event)"><label for="cb-ed-12">Remember section visibility changes:</label>
+        </div>
+    </div>
+  </div>
+  <div class="prefs-ui-column">
+    <div class="prefs-ui-column-inner">
+
+        <h3>Graph Section</h3>
+        <div class="cb-row">
+            <input type="checkbox" id="cb-ed-graph-1" [checked]="boolPrefChecked('graph','showMatchKeys')" (change)="updateBoolPrefValue('graph','showMatchKeys', $event)"><label for="cb-ed-graph-1">Show Match Keys:</label>
+        </div>
+        <div class="cb-row">
+          <input type="checkbox" id="cb-ed-graph-2" [checked]="boolPrefChecked('graph','openInNewTab')" (change)="updateBoolPrefValue('graph','openInNewTab', $event)"><label for="cb-ed-graph-2">Open entities detail in new tab:</label>
+        </div>
+        <div class="cb-row">
+          <input type="checkbox" id="cb-ed-graph-3" [checked]="boolPrefChecked('graph','openInSidePanel')" (change)="updateBoolPrefValue('graph','openInSidePanel', $event)"><label for="cb-ed-graph-3">Open entities detail side panel:</label>
+        </div>
+        <div class="cb-row">
+          <input type="checkbox" id="cb-ed-graph-4" [checked]="boolPrefChecked('graph','rememberStateOptions')" (change)="updateBoolPrefValue('graph','rememberStateOptions', $event)"><label for="cb-ed-graph-4">Remember graph ui options state:</label>
+        </div>
+        <!--
+        <div class="cb-row">
+          <input type="checkbox" id="cb-ed-graph-4" [checked]="boolPrefChecked('graph','dataSourceColors')" (change)="updateBoolPrefValue('graph','dataSourceColors', $event)"><label for="cb-ed-graph-4">:</label>
+        </div>
+        -->
+
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
 import { SzEntitySearchParams } from '../../models/entity-search';
 import {
@@ -6,17 +6,21 @@ import {
   SzAttributeSearchResult,
   SzAttributeSearchResultType
 } from '@senzing/rest-api-client-ng';
+import { SzPrefsService } from '../../services/sz-prefs.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'sz-search-results',
   templateUrl: './sz-search-results.component.html',
   styleUrls: ['./sz-search-results.component.scss']
 })
-export class SzSearchResultsComponent implements OnInit {
+export class SzSearchResultsComponent implements OnInit, OnDestroy {
   public searchResultsJSON; // TODO: remove after debugging
   public _searchResults: SzAttributeSearchResult[];
   public _searchValue: SzEntitySearchParams;
   public attributeDisplay: { attr: string, value: string }[];
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
 
   /**
    * Shows or hides the datasource lists in the result items header.
@@ -173,9 +177,25 @@ export class SzSearchResultsComponent implements OnInit {
   }
 
   constructor(
-    private titleCasePipe: TitleCasePipe
-  ) {}
+    private titleCasePipe: TitleCasePipe,
+    private prefs: SzPrefsService
+  ) {
+    /*
+    this.prefs.searchResults.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( (pJson)=>{
+      console.warn('SEARCH RESULTS PREF CHANGE!', pJson);
+    });*/
+  }
 
   ngOnInit() {}
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
 }

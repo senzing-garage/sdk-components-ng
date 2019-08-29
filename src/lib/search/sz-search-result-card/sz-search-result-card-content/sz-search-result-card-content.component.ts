@@ -1,7 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 
 import { SzRelatedEntity, SzEntityRecord } from '@senzing/rest-api-client-ng';
+import { SzPrefsService } from '../../../services/sz-prefs.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * @internal
@@ -12,7 +15,9 @@ import { SzRelatedEntity, SzEntityRecord } from '@senzing/rest-api-client-ng';
   templateUrl: './sz-search-result-card-content.component.html',
   styleUrls: ['./sz-search-result-card-content.component.scss']
 })
-export class SzSearchResultCardContentComponent implements OnInit {
+export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
   @Input() public entity: SzEntityDetailSectionData;
   @Input() public maxLinesToDisplay = 3;
   @Input() public showAllInfo: boolean;
@@ -38,10 +43,18 @@ export class SzSearchResultCardContentComponent implements OnInit {
   //columnFourTotal: number;
   //columnFiveTotal: number;
 
-  constructor(private ref: ChangeDetectorRef) {
-  }
+  constructor(
+    private ref: ChangeDetectorRef,
+    public prefs: SzPrefsService
+  ) {}
 
   ngOnInit() {
+    // get and listen for prefs change
+    this._showOtherData = this.prefs.searchResults.showOtherData;
+    this._showAttributeData = this.prefs.searchResults.showAttributeData;
+    this._truncateOtherDataAt = this.prefs.searchResults.truncateOtherDataAt;
+    this._truncateAttributeDataAt = this.prefs.searchResults.truncateAttributeDataAt;
+
     setTimeout(() => {
       // @deprecated
       //this.columnOneTotal = this.columnOne ? this.columnOne.nativeElement.children.length : 0;
@@ -52,6 +65,25 @@ export class SzSearchResultCardContentComponent implements OnInit {
 
       this.ref.markForCheck();
     });
+    this.prefs.searchResults.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( this.onPrefsChange.bind(this) );
+  }
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  /** proxy handler for when prefs have changed externally */
+  private onPrefsChange(prefs: any) {
+    this._showOtherData = prefs.showOtherData;
+    this._showAttributeData = prefs.showAttributeData;
+    this._truncateOtherDataAt = prefs.truncateOtherDataAt;
+    this._truncateAttributeDataAt = prefs.truncateAttributeDataAt;
   }
 
   // ----------------- start total getters -------------------
@@ -79,8 +111,13 @@ export class SzSearchResultCardContentComponent implements OnInit {
     return this.otherData ? this.otherData.length : 0;
   }
   get showColumnFive(): boolean {
-    return (this.columnFiveTotal > 0);
+    return (this.columnFiveTotal > 0 && this._showOtherData);
   }
+  public _showAttributeData = false;
+  public _showOtherData = true;
+  public _truncateOtherDataAt = 2;
+  public _truncateAttributeDataAt = 2;
+
   // -----------------  end total getters  -------------------
 
   getNameAndAttributeData(nameData: string[], attributeData: string[]): string[] {
@@ -112,7 +149,7 @@ export class SzSearchResultCardContentComponent implements OnInit {
   }
 
   get attributeData(): string[] | undefined {
-        return this.entity && this.entity.attributeData ? this.entity.attributeData : undefined;
+        return this.entity && this.entity.attributeData && this._showAttributeData ? this.entity.attributeData : undefined;
   }
 
   get addressData(): string[] | undefined {

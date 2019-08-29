@@ -448,6 +448,113 @@
           }
         }
       }
+    },
+    "example/search-with-prefs": {
+      "root": "examples/search-with-prefs/",
+      "sourceRoot": "examples/search-with-prefs/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss",
+          "spec": false
+        },
+        "@schematics/angular:class": {
+          "spec": false
+        },
+        "@schematics/angular:directive": {
+          "spec": false
+        },
+        "@schematics/angular:guard": {
+          "spec": false
+        },
+        "@schematics/angular:module": {
+          "spec": false
+        },
+        "@schematics/angular:pipe": {
+          "spec": false
+        },
+        "@schematics/angular:service": {
+          "spec": false
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/@senzing/examples/search-with-prefs",
+            "index": "examples/search-with-prefs/src/index.html",
+            "main": "examples/search-with-prefs/src/main.ts",
+            "polyfills": "examples/search-with-prefs/src/polyfills.ts",
+            "tsConfig": "examples/search-with-prefs/tsconfig.app.json",
+            "assets": [
+              "examples/search-with-prefs/src/favicon.ico",
+              "examples/search-with-prefs/src/assets"
+            ],
+            "styles": [
+              "src/lib/scss/styles.scss",
+              "examples/search-with-prefs/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "examples/search-with-prefs/src/environments/environment.ts",
+                  "with": "examples/search-with-prefs/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "example/search-with-prefs:build",
+            "port": 4300
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "example/search-with-prefs:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "example/search-with-prefs:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "examples/search-with-prefs/tsconfig.app.json",
+              "examples/search-with-prefs/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "example/search-with-results-and-details",

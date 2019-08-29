@@ -167,7 +167,7 @@ export class SzPdfUtilService {
     // search criteria header
     if(searchParams){
       let attributes = this.getDisplayAttributes(searchParams);
-      console.warn('search header: ', attributes, searchResults);
+      // console.warn('search header: ', attributes, searchResults);
       let headerStr = (searchResults && searchResults.length) ? `${searchResults.length} Results found for` : `Results for`;
       doc.text(headerStr, 10, yPos); yPos=yPos+2;
       yPos = yPos+5;

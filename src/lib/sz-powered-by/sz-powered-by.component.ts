@@ -8,12 +8,6 @@ import { Component, OnInit, Input } from '@angular/core';
 export class SzPoweredByComponent implements OnInit {
   @Input()
   format = 'small';
-
-  constructor() {
-
-  }
-
-  ngOnInit() {
-  }
-
+  constructor() {}
+  ngOnInit() {}
 }
