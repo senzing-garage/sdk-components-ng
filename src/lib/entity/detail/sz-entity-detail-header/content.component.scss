@@ -18,11 +18,15 @@
     }
 
     .line {
-      line-height: 1.5em;
+      line-height: 1em;
       margin-bottom: 1em;
 
       span {
         display: inline-block;
+      }
+
+      &:last-child {
+        margin-bottom: 3.25em;
       }
     }
 
@@ -37,7 +41,7 @@
 
   &.collapsed {
     .search-card__content--column .line {
-      line-height: 1.25em;
+      line-height: 1em;
       margin-bottom: 0;
     }
   }

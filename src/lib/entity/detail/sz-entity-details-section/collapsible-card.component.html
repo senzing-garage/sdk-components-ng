@@ -44,6 +44,8 @@
                 >
               </sz-entity-record-card-header>
               <sz-entity-record-card-content
+              [showOtherData]="showOtherDataInEntities"
+              [ignorePrefOtherDataChanges]="true"
               [entity]="_cardData"
               [parentEntity]="cardData"
               [ngClass]="{'open': expanded, 'no-shade': true}"
@@ -60,6 +62,8 @@
       <div class="search-card-records  mat-expansion-panel-body">
         <sz-entity-record-card-content
           *ngFor="let _cardData of cardData?.records"
+          [showOtherData]="showOtherDataInDatasourceRecords"
+          [truncateOtherDataAt]="truncateOtherDataInRecordsAt"
           [entity]="_cardData"
           [parentEntity]="cardData"
           [ngClass]="{'open': expanded}"
