@@ -99,6 +99,12 @@
           (change)="updateIntPrefValue('graph','maxEntities', graphMaxEntities.value)"><label for="num-ed-graph-2">Max entities displayed</label>
         </div>
         <div class="cb-row">
+          <input type="number" #graphBuildOut id="num-ed-graph-3" class="ff-num"
+          min="1" max="25" size="2"
+          [value]="prefValAsInt('graph','buildOut')"
+          (change)="updateIntPrefValue('graph','buildOut', graphBuildOut.value)"><label for="num-ed-graph-3">Build Out</label>
+        </div>
+        <div class="cb-row">
             <input type="checkbox" id="cb-ed-graph-1" [checked]="boolPrefChecked('graph','showMatchKeys')" (change)="updateBoolPrefValue('graph','showMatchKeys', $event)"><label for="cb-ed-graph-1">Show Match Keys:</label>
         </div>
         <div class="cb-row">

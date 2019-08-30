@@ -58,6 +58,8 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   @Input() sectionIcon: string;
   @Input() maxDegrees: number = 1;
   @Input() maxEntities: number = 20;
+  @Input() buildOut: number = 1;
+
   @Input()
   set expanded(value) {
     this.isOpen = value;
@@ -202,11 +204,13 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     this._showMatchKeys = prefs.showMatchKeys;
     this.maxDegrees = prefs.maxDegreesOfSeparation;
     this.maxEntities = prefs.maxEntities;
+    this.buildOut = prefs.buildOut;
 
     if(this.graphNetworkComponent) {
       // update graph with new properties
-      this.graphNetworkComponent.maxDegrees = this.maxDegrees.toString();
-      this.graphNetworkComponent.maxEntities = this.maxEntities.toString();
+      this.graphNetworkComponent.maxDegrees = this.maxDegrees;
+      this.graphNetworkComponent.maxEntities = this.maxEntities;
+      this.graphNetworkComponent.buildOut = this.buildOut;
       this.reload();
     }
   }

@@ -424,6 +424,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   private _rememberStateOptions: boolean = true;
   public _maxDegreesOfSeparation: number = 3;
   public _maxEntities: number = 3;
+  public _buildOut: number = 1;
 
   // json key that are output through
   // toJSONObject and fromJSONObject
@@ -434,7 +435,8 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     'showMatchKeys',
     'rememberStateOptions',
     'maxDegreesOfSeparation',
-    'maxEntities'
+    'maxEntities',
+    'buildOut'
   ]
 
   // getters and setters
@@ -486,6 +488,13 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   }
   public set maxEntities(value: number) {
     this._maxEntities = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  public get buildOut(): number {
+    return this._buildOut;
+  }
+  public set buildOut(value: number) {
+    this._buildOut = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
 }
