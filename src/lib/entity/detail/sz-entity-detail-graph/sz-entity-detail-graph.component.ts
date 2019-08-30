@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, EventEmitter, ElementRef } from '@angular/core';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
-import { takeUntil, debounceTime } from 'rxjs/operators';
+import { takeUntil, debounceTime, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import {
@@ -25,7 +25,7 @@ import { SzRelationshipNetworkComponent } from '@senzing/sdk-graph-components';
 export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
-  isOpen: boolean = true;
+  public isOpen: boolean = true;
 
   /**
    * @internal
@@ -33,7 +33,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   @ViewChild(SzRelationshipNetworkComponent) graphNetworkComponent: SzRelationshipNetworkComponent;
 
   @Input() public title: string = "Relationships at a Glance";
-  @Input() data: {
+  @Input() public data: {
     resolvedEntity: SzResolvedEntity,
     relatedEntities: SzRelatedEntity[]
   }
@@ -166,15 +166,39 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // graph prefs
     this.prefs.graph.prefsChanged.pipe(
       takeUntil(this.unsubscribe$),
       debounceTime(1250)
     ).subscribe( this.onPrefsChange.bind(this) );
+    // entity prefs
+    this.prefs.entityDetail.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( (prefs: any) => {
+      if(prefs.hideGraphWhenZeroRelations && this.data.relatedEntities.length == 0){
+        this.isOpen = false;
+      } else if(this.data.relatedEntities.length == 0 && this.isOpen == false) {
+        this.isOpen = true;
+      }
+    })
+
+  }
+  /**
+   * when the graph component returns no results on its data response
+   * this handler is invoked.
+   * @param data
+   */
+  public onNoResults(data: any) {
+    // when set to autocollapse on no results
+    // collapse tray
+    if(this.prefs.entityDetail.hideGraphWhenZeroRelations){
+      this.isOpen = false;
+    }
   }
 
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    // console.warn('@senzing/sdk-components-ng/sz-entity-detail-graph.onPrefsChange(): ', prefs);
+    //console.warn('@senzing/sdk-components-ng/sz-entity-detail-graph.onPrefsChange(): ', prefs);
     this._showMatchKeys = prefs.showMatchKeys;
     this.maxDegrees = prefs.maxDegreesOfSeparation;
     this.maxEntities = prefs.maxEntities;

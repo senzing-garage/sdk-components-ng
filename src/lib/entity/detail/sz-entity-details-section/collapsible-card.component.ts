@@ -99,7 +99,7 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
       //console.warn(`SzEntityDetailSectionCollapsibleCardComponent.onPrefsChange: value of this.collapsedStatePrefsKey(${this.collapsedStatePrefsKey}) is "${prefs[ this.collapsedStatePrefsKey ]}" `, `isOpen set to ${ !(prefs[ this.collapsedStatePrefsKey ])}`, prefs[ this.collapsedStatePrefsKey ]);
     }
     if( typeof prefs.showOtherDataInEntities == 'boolean') {
-      console.warn(`SzEntityDetailSectionCollapsibleCardComponent.onPrefsChange: value of showOtherDataInEntities(${this.showOtherDataInEntities}) is "${prefs.showOtherDataInEntities}" `);
+      //console.warn(`SzEntityDetailSectionCollapsibleCardComponent.onPrefsChange: value of showOtherDataInEntities(${this.showOtherDataInEntities}) is "${prefs.showOtherDataInEntities}" `);
       this.showOtherDataInEntities = prefs.showOtherDataInEntities;
     }
   }
