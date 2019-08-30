@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, EventEmitter, ElementRef } from '@angular/core';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
-import { takeUntil, debounceTime, filter } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import {
@@ -26,6 +26,14 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
   public isOpen: boolean = true;
+
+  /**
+   * Observeable stream for the event that occurs when the graph is
+   * rendered for the first time.
+   * TODO: remove in next 0.0.7 sdk-graph-components release
+   */
+  private _graphComponentRenderCompleted: Subject<boolean> = new Subject<boolean>();
+  private _graphComponentRendered = false;
 
   /**
    * @internal
@@ -169,21 +177,38 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // graph prefs
+    // NOTE: I had a "debounceTime" in the pipe throttle
+    // change intervals, but the reality is no one is gonna be sitting
+    // there incrementing prefchange values constantly. if that becomes a problem
+    // add it back
     this.prefs.graph.prefsChanged.pipe(
       takeUntil(this.unsubscribe$),
-      debounceTime(1250)
     ).subscribe( this.onPrefsChange.bind(this) );
+
     // entity prefs
     this.prefs.entityDetail.prefsChanged.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe( (prefs: any) => {
-      if(prefs.hideGraphWhenZeroRelations && this.data.relatedEntities.length == 0){
+      if(prefs.hideGraphWhenZeroRelations && this.data && this.data.relatedEntities.length == 0){
         this.isOpen = false;
-      } else if(this.data.relatedEntities.length == 0 && this.isOpen == false) {
+      } else if(this.data && this.data.relatedEntities.length == 0 && this.isOpen == false) {
         this.isOpen = true;
       }
     })
 
+    // keep track of whether or not the graph has been rendered
+    // this is to get around publishing a new 0.0.7 sdk-graph-components
+    // for a simple bugfix to the "rendered" property. There is a property called
+    // "rendered" in the component but its not wired in to the lifecycle properly
+    if(this.graphNetworkComponent){
+      this.graphNetworkComponent.renderComplete.pipe(
+        takeUntil(this.unsubscribe$),
+        takeUntil(this._graphComponentRenderCompleted)
+      ).subscribe( (ren: boolean) => {
+        this._graphComponentRendered = true;
+        this._graphComponentRenderCompleted.next(true);
+      });
+    }
   }
   /**
    * when the graph component returns no results on its data response
@@ -211,13 +236,17 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
       this.graphNetworkComponent.maxDegrees = this.maxDegrees;
       this.graphNetworkComponent.maxEntities = this.maxEntities;
       this.graphNetworkComponent.buildOut = this.buildOut;
-      this.reload();
+      if(this._graphComponentRendered){
+        this.reload();
+      }
     }
   }
 
-  private reload() {
+  public reload() {
     console.log('@senzing/sdk-components-ng/sz-entity-detail-graph.reload: ', this.graphNetworkComponent);
-    this.graphNetworkComponent.reload();
+    if(this._graphComponentRendered){
+      this.graphNetworkComponent.reload();
+    }
   }
 
 }
