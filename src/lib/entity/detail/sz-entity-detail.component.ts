@@ -403,7 +403,10 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     if(this.entity && this.entity.relatedEntities.filter) this._disclosedRelationships = this.entity.relatedEntities.filter( (sr) => {
       return sr.relationType == SzRelationshipType.DISCLOSEDRELATION;
     });
-
+    // redraw graph on entity change
+    if(this.graphComponent && this.graphComponent.reload) {
+      this.graphComponent.reload();
+    }
     this.dataChanged.next(this.entity);
   }
 
