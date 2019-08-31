@@ -1,4 +1,4 @@
-<div class="search-card__content--wrapper" [class.collapsed]="truncateResults" (click)="truncateResults=!truncateResults">
+<div class="search-card__content--wrapper" [class.collapsed]="truncateResults" (click)="toggleTruncation($event)">
     <div class="search-card__content--column" #columnOne  *ngIf="showColumnOne">
       <div class="line"><span [class.ellipsis]="truncateResults">Record Id: {{entity.recordId}}</span></div>
       <div class="line" *ngFor="let otherData of entity.otherData; let i = index">

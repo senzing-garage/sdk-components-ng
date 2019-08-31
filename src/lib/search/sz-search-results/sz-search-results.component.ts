@@ -162,9 +162,18 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
    *
    * @memberof SzSearchResultsComponent
    */
-  public onResultClick(evt: any, resData: SzAttributeSearchResult): void{
-    // evt proxy
-    this.resultClick.emit(resData);
+  public onResultClick(evt: any, resData: SzAttributeSearchResult): void
+  {
+    // preflight check to see if user is trying to select text
+    if(window && window.getSelection){
+      var selection = window.getSelection();
+      if(selection.toString().length === 0) {
+        // evt proxy
+        this.resultClick.emit(resData);
+      }
+    } else {
+      this.resultClick.emit(resData);
+    }
   }
   /**
    * Total number of search results being displayed.
