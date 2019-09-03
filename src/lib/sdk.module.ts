@@ -3,6 +3,7 @@ import { NgModule, Injector, ModuleWithProviders, SkipSelf, Optional, Provider, 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule, TitleCasePipe, Location, PathLocationStrategy, LocationStrategy } from '@angular/common';
+import { LayoutModule } from '@angular/cdk/layout';
 
 import {
   ApiModule,
@@ -103,6 +104,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    LayoutModule,
     SenzingSdkGraphModule,
     ApiModule
   ],

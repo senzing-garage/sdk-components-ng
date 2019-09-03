@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { SzRelatedEntity, SzEntityRecord } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 /**
  * @internal

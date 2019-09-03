@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
 import { SzEntityDetailSectionData } from '../../models/entity-detail-section-data';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 /**
  * @internal
@@ -10,7 +12,7 @@ import { SzEntityDetailSectionData } from '../../models/entity-detail-section-da
   templateUrl: './sz-search-result-card.component.html',
   styleUrls: ['./sz-search-result-card.component.scss']
 })
-export class SzSearchResultCardComponent implements OnInit {
+export class SzSearchResultCardComponent implements OnInit, OnDestroy {
   @Input()searchResult: SzEntityDetailSectionData;
   @Input()searchValue: string;
   @Input()cardTitle: string;
@@ -18,15 +20,24 @@ export class SzSearchResultCardComponent implements OnInit {
   @Input()isOpen: boolean[];
   @Input()isPrinting: boolean;
   @Input()showDataSources: boolean;
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
 
   showRecordId: boolean[] = [];
 
-  constructor() { }
+  constructor(public breakpointObserver: BreakpointObserver) { }
 
   ngOnInit() {
     if(this.searchResult) {
       this.showRecordId.fill(false, this.searchResult.records.length);
     }
+  }
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   toggleShowRecordId(index: number): void {

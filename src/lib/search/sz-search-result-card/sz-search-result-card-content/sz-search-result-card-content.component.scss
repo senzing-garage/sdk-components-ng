@@ -1,4 +1,26 @@
 
 :host {
   color: var(--sz-search-results-color);
+  .search-card__content--wrapper {
+    display: flex;
+    flex-wrap: wrap;
+
+    .search-card__content--column {
+      margin-right: 2em;
+      margin-bottom: 1em;
+
+      &:last-child {
+        margin-right: 0;
+        margin-bottom: 0;
+      }
+
+      &.address-data, &.other-data {
+        flex-grow: 1;
+      }
+      &.name-data {
+        min-width: 300px;
+      }
+    }
+
+  }
 }
