@@ -220,6 +220,21 @@ export class SzEntityDetailHeaderContentComponent implements OnDestroy, OnInit {
     }
     return false;
   }
+  /**
+   * toggle the truncated expand/collapse
+   * state of the content element
+   */
+  public toggleTruncation(event: any) {
+    if(window && window.getSelection){
+      var selection = window.getSelection();
+      if(selection.toString().length === 0) {
+        // evt proxy
+        this.truncateResults=!this.truncateResults;
+      }
+    } else {
+      this.truncateResults=!this.truncateResults;
+    }
+  }
 
   get identifierData(): string[] {
     try{

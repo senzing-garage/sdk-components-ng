@@ -3,7 +3,7 @@
   [class.columns-two]="!showColumnOne && !showColumnFour"
   [class.columns-three]="showColumnOne && !showColumnFour || showColumnFour && !showColumnOne"
   [class.columns-four]="showColumnOne && showColumnFour"
-  (click)="truncateResults=!truncateResults">
+  (click)="toggleTruncation($event)">
     <div  class="search-card__content--column" #columnOne  *ngIf="showColumnOne">
       <div class="line" *ngIf="hasRecordId && showRecordIdWhenNative"><span [class.ellipsis]="truncateResults">Record Id: {{entity.recordId}}</span></div>
 
