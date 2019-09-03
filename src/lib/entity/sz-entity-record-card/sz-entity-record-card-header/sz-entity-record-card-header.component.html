@@ -12,7 +12,7 @@
     <div *ngIf="breakDownInfoExist" class="breakdown-container">
       <span *ngFor="let info of breakDownInfo"
             class="search-card__header--breakdown ellipsis">
-         | {{info?.dataSource}} <!-- ({{info?.recordCount}}) --><!-- {{info?.topRecordIds[0]}} -->
+         | {{info?.dataSource}}<span *ngIf="info?.recordCount > 1"> ({{info?.recordCount}})</span><span *ngIf="info?.recordCount > 1 && info?.topRecordIds[0]"> {{info?.topRecordIds}}</span>
       </span>
     </div>
   </header>

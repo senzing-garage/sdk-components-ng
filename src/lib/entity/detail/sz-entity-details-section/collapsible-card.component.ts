@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnInit
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 import { SzEntityRecord } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
-import { tap, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 /**
@@ -14,7 +14,7 @@ import { Subject } from 'rxjs';
   templateUrl: './collapsible-card.component.html',
   styleUrls: ['./collapsible-card.component.scss']
 })
-export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, OnDestroy, AfterViewInit {
+export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, OnDestroy {
   @ViewChild('messages') private messagesContainer: HTMLElement;
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
@@ -22,6 +22,11 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   @Input() showIcon = true;
   @Input() headerIcon: string;
   @Input() cardTitle: string;
+
+  public showOtherDataInDatasourceRecords: boolean = true;
+  public showOtherDataInEntities: boolean = false;
+  public truncateOtherDataInRecordsAt: number = -1; // < 0 is unlimited
+
   /**
    * set the expanded state of the component
    */
@@ -56,8 +61,7 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
 
   constructor(
     public prefs: SzPrefsService
-  ) {
-  }
+  ) {}
 
   /**
    * unsubscribe when component is destroyed
@@ -89,15 +93,16 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
       this.isOpen = !(prefs[ this.collapsedStatePrefsKey ]);
       //console.warn(`SzEntityDetailSectionCollapsibleCardComponent.onPrefsChange: value of this.collapsedStatePrefsKey(${this.collapsedStatePrefsKey}) is "${prefs[ this.collapsedStatePrefsKey ]}" `, `isOpen set to ${ !(prefs[ this.collapsedStatePrefsKey ])}`, prefs[ this.collapsedStatePrefsKey ]);
     }
+    if( typeof prefs.showOtherDataInDatasourceRecords == 'boolean') {
+      this.showOtherDataInDatasourceRecords = prefs.showOtherDataInDatasourceRecords;
+      this.truncateOtherDataInRecordsAt = prefs.truncateOtherDataInRecordsAt
+      //console.warn(`SzEntityDetailSectionCollapsibleCardComponent.onPrefsChange: value of this.collapsedStatePrefsKey(${this.collapsedStatePrefsKey}) is "${prefs[ this.collapsedStatePrefsKey ]}" `, `isOpen set to ${ !(prefs[ this.collapsedStatePrefsKey ])}`, prefs[ this.collapsedStatePrefsKey ]);
+    }
+    if( typeof prefs.showOtherDataInEntities == 'boolean') {
+      //console.warn(`SzEntityDetailSectionCollapsibleCardComponent.onPrefsChange: value of showOtherDataInEntities(${this.showOtherDataInEntities}) is "${prefs.showOtherDataInEntities}" `);
+      this.showOtherDataInEntities = prefs.showOtherDataInEntities;
+    }
   }
-
-  ngAfterViewInit() {
-    //this.msgHandler.processMessages(this.messagesContainer);
-  }
-  /*
-  public get msg() : SzMessageHandlerView {
-    return this.msgHandler.view;
-  }*/
 
   onExpand() {
     this.isOpen = true;
