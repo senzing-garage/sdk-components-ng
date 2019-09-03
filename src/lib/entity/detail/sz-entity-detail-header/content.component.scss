@@ -4,6 +4,14 @@
   display: flex;
   .search-card__content--wrapper {
     display: flex;
+
+    &.layout-narrow {
+      border: 2px solid green;
+      flex-direction: column;
+    }
+    &.layout-medium {
+      border: 2px solid cyan;
+    }
   }
   .search-card__content--column {
     display: flex;

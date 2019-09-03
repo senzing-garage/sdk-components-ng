@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Subject, BehaviorSubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
@@ -37,6 +39,13 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   private columnThree: ElementRef;
   @ViewChild('columnFour')
   private columnFour: ElementRef;
+
+  /** 0 = wide layout. 1 = narrow layout */
+  @Input() public layout = 0;
+  @Input() public layoutClasses: string[] = [];
+
+  /** subscription breakpoint changes */
+  private layoutChange$ = new BehaviorSubject<number>(this.layout);
 
   _parentEntity: any;
   _matchKeys: string[];

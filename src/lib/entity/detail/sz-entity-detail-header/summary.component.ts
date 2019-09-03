@@ -20,6 +20,7 @@ export class SzEntityDetailSectionSummaryComponent implements OnInit, OnDestroy 
 
   @Input()section: SzEntityDetailSectionSummary;
   @Input()sectionId: number;
+  @Input() public layoutClasses: string[] = [];
 
   //private navigationSubscription;
   public routePath: string = "";
@@ -88,5 +89,19 @@ export class SzEntityDetailSectionSummaryComponent implements OnInit, OnDestroy 
   }
   get isDisclosedRelationships(): boolean {
     return this.section.title.toLowerCase() === 'disclosed relationships' || this.section.title.toLowerCase() === 'disclosed relationship';
+  }
+
+  public get cssClasses(): string[] {
+    let retVal = [];
+    // apply icons and colors to section
+    if(this.isMatchedRecords){ retVal.push('matched-records'); }
+    if(this.isPossibleMatches){ retVal.push('possible-matches'); }
+    if(this.isPossibleRelationships){ retVal.push('possible-relationships'); }
+    if(this.isDisclosedRelationships){ retVal.push('disclosed-relationships'); }
+    if(this.noResults){ retVal.push('no-results'); }
+    // merge with cssLayoutClasses
+    retVal = retVal.concat( this.layoutClasses );
+
+    return retVal;
   }
 }
