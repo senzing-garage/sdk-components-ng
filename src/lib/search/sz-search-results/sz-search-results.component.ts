@@ -103,7 +103,8 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
   public set searchValue(value: SzEntitySearchParams){
     this._searchValue = value;
 
-    this.attributeDisplay = Object.keys(this._searchValue)
+    if(value){
+      this.attributeDisplay = Object.keys(this._searchValue)
       .filter((key, index, self) => {
         if(key === 'IDENTIFIER_TYPE'){
           return Object.keys(self).includes('IDENTIFIER');
@@ -141,6 +142,7 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
         return retVal
       })
       .filter(i => !!i);
+    }
   }
   /**
    * The current search parameters being used.

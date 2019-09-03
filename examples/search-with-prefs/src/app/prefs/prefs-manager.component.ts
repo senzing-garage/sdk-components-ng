@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, Inject, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Inject, OnInit, Output, ViewChild, OnDestroy, ElementRef } from '@angular/core';
 import { SzPrefsService, SzSdkPrefsModel } from '@senzing/sdk-components-ng';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { takeUntil } from 'rxjs/operators';
@@ -32,6 +32,9 @@ export class SzPrefsManagerComponent implements OnInit, OnDestroy {
     'SOCIAL_NETWORK'
   ].sort();
 
+  @ViewChild('graphMaxDegrees') graphMaxDegrees: ElementRef;
+  @ViewChild('graphMaxEntities') graphMaxEntities: ElementRef;
+
   public isAllowedAttributeChecked(attrKey: string){
     let retVal = false;
     if (this._prefsJSON && this._prefsJSON.searchForm && this._prefsJSON.searchForm.allowedTypeAttributes) {
@@ -47,6 +50,13 @@ export class SzPrefsManagerComponent implements OnInit, OnDestroy {
       // console.log(`isAllowedAttributeChecked( ${attrKey} )`, (this._prefsJSON.searchForm.allowedTypeAttributes.indexOf(attrKey) > 0));
       retVal = this.prefs[prefGroup][prefKey];
     }
+    return retVal;
+  }
+
+  public prefValAsInt(prefGroup: string, prefKey: string): number {
+    let retVal = -1;
+    // console.log(`prefValAsInt( ${prefKey} )`, typeof this.prefs[prefGroup][prefKey]);
+    retVal = this.prefs[prefGroup][prefKey];
     return retVal;
   }
 
@@ -108,5 +118,13 @@ export class SzPrefsManagerComponent implements OnInit, OnDestroy {
       this.prefs[prefGroup][prefKey] = prefs;
     }
   }
+
+  updateIntPrefValue(prefGroup: string, prefKey: string, prefVal: number): void {
+    //console.log(`updateIntPrefValue(${prefGroup}, ${prefKey})`, prefVal, typeof this.prefs[prefGroup][prefKey]);
+    if (prefVal > 0 && this.prefs[prefGroup] && this.prefs[prefGroup][prefKey]){
+      this.prefs[prefGroup][prefKey] = prefVal;
+    }
+  }
+
 
 }
