@@ -44,13 +44,22 @@ export class SzEntityDetailSectionSummaryComponent implements OnInit, OnDestroy 
    * url fragment.
    */
   public onSummaryClick(event: any) {
-    console.warn('onSummaryClick: ', event, this.routePath, this.sectionTarget);
+    //console.warn('onSummaryClick: ', event, this.routePath, this.sectionTarget);
     let loc = window.location.href;
     if(loc.indexOf('#') > 0){
       loc = loc.substring(0, loc.indexOf('#'));
     }
     loc = loc +'#'+ this.sectionTarget;
-    window.location.href = loc;
+    // check to see if user is trying to highlight text
+    if(window && window.getSelection){
+      var selection = window.getSelection();
+      if(selection.toString().length === 0) {
+        // now invoke href
+        window.location.href = loc;
+      }
+    } else {
+      window.location.href = loc;
+    }
   }
 
   ngOnInit() {

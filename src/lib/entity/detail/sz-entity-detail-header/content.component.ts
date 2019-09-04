@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 import { SzEntityRecord, SzEntityFeature } from '@senzing/rest-api-client-ng';
+import { SzPrefsService } from '../../../services/sz-prefs.service';
 
 /**
  * @internal
@@ -15,7 +16,13 @@ import { SzEntityRecord, SzEntityFeature } from '@senzing/rest-api-client-ng';
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.scss']
 })
-export class SzEntityDetailHeaderContentComponent implements OnInit {
+export class SzEntityDetailHeaderContentComponent implements OnDestroy, OnInit {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
+  private _truncateOtherDataAt: number = 3;
+  @Input() public showOtherData: boolean = true;
+  @Input() public showRecordIdWhenNative: boolean = false;
+
   //@Input() entity: ResolvedEntityData | SearchResultEntityData | EntityDetailSectionData | EntityRecord;
   @Input() entity: any; // the strong typing is making it impossible to handle all variations
   @Input() maxLinesToDisplay = 3;
@@ -50,9 +57,38 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   _parentEntity: any;
   _matchKeys: string[];
 
-  constructor() {}
+  constructor(
+    public prefs: SzPrefsService
+  ) {}
 
-  ngOnInit() {}
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  ngOnInit() {
+    // subscribe to pref changes
+    this.prefs.entityDetail.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( this.onPrefsChange.bind(this) );
+  }
+
+  /** proxy handler for when prefs have changed externally */
+  private onPrefsChange(prefs: any) {
+    this.showOtherData = prefs.showOtherDataInSummary;
+    this.showRecordIdWhenNative = prefs.showRecordIdWhenNative;
+    //console.warn(`SzEntityDetailHeaderContentComponent.onPrefsChange: value of this._showOtherData(${this.collapsedStatePrefsKey}) is "${prefs[ this.collapsedStatePrefsKey ]}" `, `isOpen set to ${ !(prefs[ this.collapsedStatePrefsKey ])}`, prefs[ this.collapsedStatePrefsKey ]);
+  }
+
+  public get hasRecordId(): boolean {
+    if(this.entity && this.entity.recordId){
+      return (this.entity.recordId !== undefined && this.entity.recordId !== null) ? true: false;
+    }
+    return false;
+  }
 
   getNameAndAttributeData(nameData: string[], attributeData: string[]): string[] {
     return nameData.concat(attributeData);
@@ -70,7 +106,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
     return 0;
   }
   get showColumnOne(): boolean {
-    return (this.entity && this.entity.otherData && this.entity.otherData.length > 0);
+    return (this.entity && this.entity.otherData && this.entity.otherData.length > 0) && this.showOtherData;
   }
   get columnTwoTotal(): number {
     return (this.nameData.concat(this.attributeData).length);
@@ -190,6 +226,21 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
       //console.warn('isLinkedAttribute issue. ', attrValue, matchArr);
     }
     return false;
+  }
+  /**
+   * toggle the truncated expand/collapse
+   * state of the content element
+   */
+  public toggleTruncation(event: any) {
+    if(window && window.getSelection){
+      var selection = window.getSelection();
+      if(selection.toString().length === 0) {
+        // evt proxy
+        this.truncateResults=!this.truncateResults;
+      }
+    } else {
+      this.truncateResults=!this.truncateResults;
+    }
   }
 
   get identifierData(): string[] {

@@ -11,7 +11,7 @@
           <span class="sep"></span>
 
           <h3>Search Results</h3>
-          <input type="checkbox" id="cb-sr-1" [checked]="boolPrefChecked('searchResults','showOtherData')" (change)="updateBoolPrefValue('searchResults','showOtherData', $event)"><label for="cb-sr-1">Show Other Data:</label>
+          <input type="checkbox" id="cb-sr-1" [checked]="boolPrefChecked('searchResults','showOtherData')" (change)="updateBoolPrefValue('searchResults','showOtherData', $event)"><label for="cb-sr-1">Show "other" data when present:</label>
 
       </div>
   </div>
@@ -20,7 +20,25 @@
 
         <h3>Entity Detail</h3>
         <div class="cb-row">
-          <input type="checkbox" id="cb-ed-13" [checked]="boolPrefChecked('entityDetail','showOtherData')" (change)="updateBoolPrefValue('entityDetail','showOtherData', $event)"><label for="cb-ed-13">Show Other Data:</label>
+          <input type="number" #entDetailTruncateOtherDataAt id="num-ed-1" class="ff-num"
+          min="2" max="1000" size="2"
+          [value]="prefValAsInt('entityDetail','truncateOtherDataInRecordsAt')"
+          (change)="updateIntPrefValue('entityDetail','truncateOtherDataInRecordsAt', entDetailTruncateOtherDataAt.value)"><label for="num-ed-1">Max lines to show in other data records</label>
+        </div>
+        <div class="cb-row">
+          <input type="checkbox" id="cb-ed-14" [checked]="boolPrefChecked('entityDetail','showOtherDataInSummary')" (change)="updateBoolPrefValue('entityDetail','showOtherDataInSummary', $event)"><label for="cb-ed-14">Show "other" data in summary:</label>
+        </div>
+        <div class="cb-row">
+          <input type="checkbox" id="cb-ed-13" [checked]="boolPrefChecked('entityDetail','showOtherDataInRecords')" (change)="updateBoolPrefValue('entityDetail','showOtherDataInRecords', $event)"><label for="cb-ed-13">Show "other" data in records:</label>
+        </div>
+        <div class="cb-row">
+          <input type="checkbox" id="cb-ed-17" [checked]="boolPrefChecked('entityDetail','showOtherDataInEntities')" (change)="updateBoolPrefValue('entityDetail','showOtherDataInEntities', $event)"><label for="cb-ed-17">Show "other" data in entities:</label>
+        </div>
+        <div class="cb-row">
+          <input type="checkbox" id="cb-ed-15" [checked]="boolPrefChecked('entityDetail','hideGraphWhenZeroRelations')" (change)="updateBoolPrefValue('entityDetail','hideGraphWhenZeroRelations', $event)"><label for="cb-ed-15">Hide "At a glance" when &lt; 1 relationship</label>
+        </div>
+        <div class="cb-row">
+          <input type="checkbox" id="cb-ed-16" [checked]="boolPrefChecked('entityDetail','showRecordIdWhenNative')" (change)="updateBoolPrefValue('entityDetail','showRecordIdWhenNative', $event)"><label for="cb-ed-16">Show "record id" when present in source records</label>
         </div>
 
         <h4>Sections Shown:</h4>
@@ -69,6 +87,24 @@
 
         <h3>Graph Section</h3>
         <div class="cb-row">
+          <input type="number" #graphMaxDegrees id="num-ed-graph-1" class="ff-num"
+          min="1" max="90" size="2"
+          [value]="prefValAsInt('graph','maxDegreesOfSeparation')"
+          (change)="updateIntPrefValue('graph','maxDegreesOfSeparation', graphMaxDegrees.value)"><label for="num-ed-graph-1">Max degrees of separation</label>
+        </div>
+        <div class="cb-row">
+          <input type="number" #graphMaxEntities id="num-ed-graph-2" class="ff-num"
+          min="2" max="20" size="2"
+          [value]="prefValAsInt('graph','maxEntities')"
+          (change)="updateIntPrefValue('graph','maxEntities', graphMaxEntities.value)"><label for="num-ed-graph-2">Max entities displayed</label>
+        </div>
+        <div class="cb-row">
+          <input type="number" #graphBuildOut id="num-ed-graph-3" class="ff-num"
+          min="1" max="25" size="2"
+          [value]="prefValAsInt('graph','buildOut')"
+          (change)="updateIntPrefValue('graph','buildOut', graphBuildOut.value)"><label for="num-ed-graph-3">Build Out</label>
+        </div>
+        <div class="cb-row">
             <input type="checkbox" id="cb-ed-graph-1" [checked]="boolPrefChecked('graph','showMatchKeys')" (change)="updateBoolPrefValue('graph','showMatchKeys', $event)"><label for="cb-ed-graph-1">Show Match Keys:</label>
         </div>
         <div class="cb-row">
@@ -78,7 +114,7 @@
           <input type="checkbox" id="cb-ed-graph-3" [checked]="boolPrefChecked('graph','openInSidePanel')" (change)="updateBoolPrefValue('graph','openInSidePanel', $event)"><label for="cb-ed-graph-3">Open entities detail side panel:</label>
         </div>
         <div class="cb-row">
-          <input type="checkbox" id="cb-ed-graph-4" [checked]="boolPrefChecked('graph','rememberStateOptions')" (change)="updateBoolPrefValue('graph','rememberStateOptions', $event)"><label for="cb-ed-graph-4">Remember graph ui options state:</label>
+          <input type="checkbox" id="cb-ed-graph-20" [checked]="boolPrefChecked('graph','rememberStateOptions')" (change)="updateBoolPrefValue('graph','rememberStateOptions', $event)"><label for="cb-ed-graph-20">Remember graph ui options state:</label>
         </div>
         <!--
         <div class="cb-row">
