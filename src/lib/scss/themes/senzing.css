@@ -118,7 +118,7 @@ body {
   --sz-entity-detail-name-font-size: 20px;
   --sz-entity-detail-section-record-card-display: block;
   --sz-entity-detail-section-record-card-background-color: #FFFFFF;
-  --sz-entity-detail-section-record-card-margin: 8px;
+  --sz-entity-detail-section-record-card-margin: 8px 0 8px 0;
   --sz-entity-detail-section-record-card-padding: 15px;
   --sz-entity-detail-section-record-card-border-radius: 5px;
   --sz-entity-detail-section-record-card-border: 1px solid #eaeaea;

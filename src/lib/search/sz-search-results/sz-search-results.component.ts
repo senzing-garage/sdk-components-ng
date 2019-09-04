@@ -103,7 +103,8 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
   public set searchValue(value: SzEntitySearchParams){
     this._searchValue = value;
 
-    this.attributeDisplay = Object.keys(this._searchValue)
+    if(value){
+      this.attributeDisplay = Object.keys(this._searchValue)
       .filter((key, index, self) => {
         if(key === 'IDENTIFIER_TYPE'){
           return Object.keys(self).includes('IDENTIFIER');
@@ -141,6 +142,7 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
         return retVal
       })
       .filter(i => !!i);
+    }
   }
   /**
    * The current search parameters being used.
@@ -162,9 +164,18 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
    *
    * @memberof SzSearchResultsComponent
    */
-  public onResultClick(evt: any, resData: SzAttributeSearchResult): void{
-    // evt proxy
-    this.resultClick.emit(resData);
+  public onResultClick(evt: any, resData: SzAttributeSearchResult): void
+  {
+    // preflight check to see if user is trying to select text
+    if(window && window.getSelection){
+      var selection = window.getSelection();
+      if(selection.toString().length === 0) {
+        // evt proxy
+        this.resultClick.emit(resData);
+      }
+    } else {
+      this.resultClick.emit(resData);
+    }
   }
   /**
    * Total number of search results being displayed.

@@ -11,9 +11,7 @@ import {
   SzRelationshipType
 } from '@senzing/rest-api-client-ng';
 import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
-
 import { SzRelationshipNetworkComponent } from '@senzing/sdk-graph-components';
-
 /**
  * @internal
  * @export
@@ -26,10 +24,23 @@ import { SzRelationshipNetworkComponent } from '@senzing/sdk-graph-components';
 export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
-  isOpen: boolean = true;
+  public isOpen: boolean = true;
+
+  /**
+   * Observeable stream for the event that occurs when the graph is
+   * rendered for the first time.
+   * TODO: remove in next 0.0.7 sdk-graph-components release
+   */
+  private _graphComponentRenderCompleted: Subject<boolean> = new Subject<boolean>();
+  private _graphComponentRendered = false;
+
+  /**
+   * @internal
+   */
+  @ViewChild(SzRelationshipNetworkComponent) graphNetworkComponent: SzRelationshipNetworkComponent;
 
   @Input() public title: string = "Relationships at a Glance";
-  @Input() data: {
+  @Input() public data: {
     resolvedEntity: SzResolvedEntity,
     relatedEntities: SzRelatedEntity[]
   }
@@ -52,8 +63,10 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     //console.log('@senzing/sdk-components-ng:sz-entity-detail-graph.openInSidePanel: ', value);
   };
   @Input() sectionIcon: string;
-  @Input() maxDegrees: number = 90;
-  @Input() maxEntities: number = 25;
+  @Input() maxDegrees: number = 1;
+  @Input() maxEntities: number = 20;
+  @Input() buildOut: number = 1;
+
   @Input()
   set expanded(value) {
     this.isOpen = value;
@@ -164,9 +177,51 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // graph prefs
+    // NOTE: I had a "debounceTime" in the pipe throttle
+    // change intervals, but the reality is no one is gonna be sitting
+    // there incrementing prefchange values constantly. if that becomes a problem
+    // add it back
     this.prefs.graph.prefsChanged.pipe(
-      takeUntil(this.unsubscribe$)
+      takeUntil(this.unsubscribe$),
     ).subscribe( this.onPrefsChange.bind(this) );
+
+    // entity prefs
+    this.prefs.entityDetail.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( (prefs: any) => {
+      if(prefs.hideGraphWhenZeroRelations && this.data && this.data.relatedEntities.length == 0){
+        this.isOpen = false;
+      } else if(this.data && this.data.relatedEntities.length == 0 && this.isOpen == false) {
+        this.isOpen = true;
+      }
+    })
+
+    // keep track of whether or not the graph has been rendered
+    // this is to get around publishing a new 0.0.7 sdk-graph-components
+    // for a simple bugfix to the "rendered" property. There is a property called
+    // "rendered" in the component but its not wired in to the lifecycle properly
+    if(this.graphNetworkComponent){
+      this.graphNetworkComponent.renderComplete.pipe(
+        takeUntil(this.unsubscribe$),
+        takeUntil(this._graphComponentRenderCompleted)
+      ).subscribe( (ren: boolean) => {
+        this._graphComponentRendered = true;
+        this._graphComponentRenderCompleted.next(true);
+      });
+    }
+  }
+  /**
+   * when the graph component returns no results on its data response
+   * this handler is invoked.
+   * @param data
+   */
+  public onNoResults(data: any) {
+    // when set to autocollapse on no results
+    // collapse tray
+    if(this.prefs.entityDetail.hideGraphWhenZeroRelations){
+      this.isOpen = false;
+    }
   }
 
   /**
@@ -182,6 +237,18 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   private onPrefsChange(prefs: any) {
     //console.warn('@senzing/sdk-components-ng/sz-entity-detail-graph.onPrefsChange(): ', prefs);
     this._showMatchKeys = prefs.showMatchKeys;
-  }
+    this.maxDegrees = prefs.maxDegreesOfSeparation;
+    this.maxEntities = prefs.maxEntities;
+    this.buildOut = prefs.buildOut;
 
+    if(this.graphNetworkComponent) {
+      // update graph with new properties
+      this.graphNetworkComponent.maxDegrees = this.maxDegrees;
+      this.graphNetworkComponent.maxEntities = this.maxEntities;
+      this.graphNetworkComponent.buildOut = this.buildOut;
+      if(this._graphComponentRendered){
+        this.reload();
+      }
+    }
+  }
 }

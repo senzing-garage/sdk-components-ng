@@ -1,6 +1,5 @@
 
 <div data-html2canvas-ignore class="section-header__wrapper graph-relationships"
-  [ngClass]="{'open': expanded, 'closed': !expanded}"
   (click)="toggleExpanded($event)"
 >
   <div class="section-header__left-content">
@@ -21,11 +20,12 @@
     svgPreserveAspectRatio="xMinYMid meet"
     [entityIds]="graphIds"
     [maxDegrees]="maxDegrees"
-    buildOut=1
+    [buildOut]="buildOut"
     [linkGravity]="5"
     [showLinkLabels]="_showMatchKeys"
     (contextMenuClick)="onRightClick($event)"
     (entityClick)="onEntityClick($event)"
+    (noResults)="onNoResults($event)"
     [maxEntities]="maxEntities"></sz-relationship-network>
     <sz-entity-detail-graph-control class="sz-entity-detail-graph-control"
     [showLinkLabels]="_showMatchKeys"
