@@ -26,6 +26,7 @@ export class SzEntityDetailHeaderContentComponent implements OnDestroy, OnInit {
   //@Input() entity: ResolvedEntityData | SearchResultEntityData | EntityDetailSectionData | EntityRecord;
   @Input() entity: any; // the strong typing is making it impossible to handle all variations
   @Input() maxLinesToDisplay = 3;
+  @Input() truncateOtherDataAt = 3;
   @Input() set parentEntity( value ) {
     this._parentEntity = value;
     if(value && value.matchKey) {
@@ -80,7 +81,9 @@ export class SzEntityDetailHeaderContentComponent implements OnDestroy, OnInit {
   private onPrefsChange(prefs: any) {
     this.showOtherData = prefs.showOtherDataInSummary;
     this.showRecordIdWhenNative = prefs.showRecordIdWhenNative;
-    //console.warn(`SzEntityDetailHeaderContentComponent.onPrefsChange: value of this._showOtherData(${this.collapsedStatePrefsKey}) is "${prefs[ this.collapsedStatePrefsKey ]}" `, `isOpen set to ${ !(prefs[ this.collapsedStatePrefsKey ])}`, prefs[ this.collapsedStatePrefsKey ]);
+    this.truncateOtherDataAt = prefs.truncateSummaryAt;
+    this.maxLinesToDisplay = prefs.truncateSummaryAt;
+    // console.warn(`SzEntityDetailHeaderContentComponent.onPrefsChange: `, prefs.truncateSummaryAt);
   }
 
   public get hasRecordId(): boolean {

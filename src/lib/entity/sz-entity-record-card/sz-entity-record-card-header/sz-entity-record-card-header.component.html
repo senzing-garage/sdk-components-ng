@@ -1,7 +1,7 @@
 <div class="search-card__header--wrapper" [ngClass]="{'no-background': hideBackGroundColor}">
   <i *ngIf="alert" class="senzing-alert search-card__header--alert"></i>
   <header class="search-card__header">
-    <span>
+    <span class="search__bestname">
       <a class="search__link"
         (click)="onEntityDetailLinkClick(entityDetailsId)"
          *ngIf="entityDetailsId">
@@ -12,7 +12,7 @@
     <div *ngIf="breakDownInfoExist" class="breakdown-container">
       <span *ngFor="let info of breakDownInfo"
             class="search-card__header--breakdown ellipsis">
-         | {{info?.dataSource}}<span *ngIf="info?.recordCount > 1"> ({{info?.recordCount}})</span><span *ngIf="info?.recordCount > 1 && info?.topRecordIds[0]"> {{info?.topRecordIds}}</span>
+         | {{info?.dataSource}}<span *ngIf="info?.recordCount > 1"> ({{info?.recordCount}})</span><span class="record-id" *ngIf="info?.recordCount <= 1 && info?.topRecordIds[0] && showRecordIdWhenSingleRecord">: {{info?.topRecordIds}}</span>
       </span>
     </div>
   </header>

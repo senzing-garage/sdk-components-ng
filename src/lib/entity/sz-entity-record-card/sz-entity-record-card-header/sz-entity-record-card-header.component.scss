@@ -30,8 +30,12 @@
     cursor: var(--sz-search-results-a-cursor);
   }
 
+  .search__bestname {
+    white-space: nowrap;
+  }
+
   .search-card__header--breakdown {
-    max-width: 300px;
+    max-width: 98%;
     display: inline-block;
   }
 
@@ -44,5 +48,14 @@
   .breakdown-container {
     display: flex;
     align-items: center;
+    flex-grow: 2;
+
+    .record-id {
+      font-style: italic;
+      color: #0a97ff94;
+      margin-left: 0px;
+    }
   }
+
+
 }

@@ -218,7 +218,6 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
       }
     });
     const layoutChanges = this.breakpointObserver.observe(bpSubArr);
-    console.warn('listening for breakpoint changes: ', bpSubArr);
 
     layoutChanges.pipe(
       takeUntil(this.unsubscribe$)
@@ -245,29 +244,8 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
       this.layoutClasses = _matches.map( (_bp) => {
         return _bp.cssClass;
       })
-      console.info('breakpoint state: ', this.layoutClasses, _matches, state, cssQueryMatches);
-
-      /*
-
-      if(!state.matches && this.layout == 0) {
-        this.layout = 1;
-        this.layoutChange$.next(this.layout);
-      } else if( this.layout == 1) {
-        this.layout = 0;
-        this.layoutChange$.next(this.layout);
-      }*/
-
     })
-    /*
-    this.layoutChange$.pipe(
-      takeUntil(this.unsubscribe$)
-    ).subscribe( (layoutType: number) => {
-      if(layoutType == 0) {
-        console.warn('change layout to wide');
-      } else {
-        console.warn('change layout to narrow');
-      }
-    })*/
+
   }
 
   /**

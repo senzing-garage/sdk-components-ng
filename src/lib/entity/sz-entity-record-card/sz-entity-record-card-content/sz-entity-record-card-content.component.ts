@@ -103,11 +103,12 @@ export class SzEntityRecordCardContentComponent implements OnInit {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    if( typeof prefs.truncateOtherDataInRecordsAt == 'boolean') {
+    //console.warn(`SzEntityDetailSectionCollapsibleCardComponent.onPrefsChange: `, prefs.truncateOtherDataInRecordsAt, this.truncateOtherDataAt);
+    if( prefs.truncateOtherDataInRecordsAt) {
       this._truncateOtherDataAt = prefs.truncateOtherDataInRecordsAt
-      //console.warn(`SzEntityDetailSectionCollapsibleCardComponent.onPrefsChange: value of this.collapsedStatePrefsKey(${this.collapsedStatePrefsKey}) is "${prefs[ this.collapsedStatePrefsKey ]}" `, `isOpen set to ${ !(prefs[ this.collapsedStatePrefsKey ])}`, prefs[ this.collapsedStatePrefsKey ]);
     }
     if( !this.ignorePrefOtherDataChanges && typeof prefs.showOtherData == 'boolean') {
       this._showOtherData = prefs.showOtherDataInRecords;

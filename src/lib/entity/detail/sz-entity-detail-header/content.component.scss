@@ -8,12 +8,18 @@
     display: flex;
 
     &.layout-narrow {
-      border: 2px solid green;
       flex-direction: column;
+
+      .search-card__content--column {
+        width: unset;
+        margin-right: unset;
+      }
     }
+    /*
     &.layout-medium {
       border: 2px solid cyan;
     }
+    */
 
     /* set hard column perc widths based on how many cols are showing */
     /*

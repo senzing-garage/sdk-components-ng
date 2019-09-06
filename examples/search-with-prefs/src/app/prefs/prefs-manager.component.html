@@ -21,9 +21,15 @@
         <h3>Entity Detail</h3>
         <div class="cb-row">
           <input type="number" #entDetailTruncateOtherDataAt id="num-ed-1" class="ff-num"
-          min="2" max="1000" size="2"
+          min="1" max="1000" size="2"
           [value]="prefValAsInt('entityDetail','truncateOtherDataInRecordsAt')"
-          (change)="updateIntPrefValue('entityDetail','truncateOtherDataInRecordsAt', entDetailTruncateOtherDataAt.value)"><label for="num-ed-1">Max lines to show in other data records</label>
+          (change)="updateIntPrefValue('entityDetail','truncateOtherDataInRecordsAt', entDetailTruncateOtherDataAt.value)"><label for="num-ed-1">Max lines to show of other data in records</label>
+        </div>
+        <div class="cb-row">
+            <input type="number" #entDetailSummaryTruncateAt id="num-ed-2" class="ff-num"
+            min="2" max="1000" size="2"
+            [value]="prefValAsInt('entityDetail','truncateSummaryAt')"
+            (change)="updateIntPrefValue('entityDetail','truncateSummaryAt', entDetailSummaryTruncateAt.value)"><label for="num-ed-2">How many lines to show in Header summary</label>
         </div>
         <div class="cb-row">
           <input type="checkbox" id="cb-ed-14" [checked]="boolPrefChecked('entityDetail','showOtherDataInSummary')" (change)="updateBoolPrefValue('entityDetail','showOtherDataInSummary', $event)"><label for="cb-ed-14">Show "other" data in summary:</label>
@@ -39,6 +45,9 @@
         </div>
         <div class="cb-row">
           <input type="checkbox" id="cb-ed-16" [checked]="boolPrefChecked('entityDetail','showRecordIdWhenNative')" (change)="updateBoolPrefValue('entityDetail','showRecordIdWhenNative', $event)"><label for="cb-ed-16">Show "record id" when present in source records</label>
+        </div>
+        <div class="cb-row">
+            <input type="checkbox" id="cb-ed-18" [checked]="boolPrefChecked('entityDetail','showTopEntityRecordIdsWhenSingular')" (change)="updateBoolPrefValue('entityDetail','showTopEntityRecordIdsWhenSingular', $event)"><label for="cb-ed-18">Show "record id" when only one record in entity</label>
         </div>
 
         <h4>Sections Shown:</h4>
