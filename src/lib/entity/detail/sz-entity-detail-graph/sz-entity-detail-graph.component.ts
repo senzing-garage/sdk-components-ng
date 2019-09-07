@@ -12,7 +12,6 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
 import { SzRelationshipNetworkComponent } from '@senzing/sdk-graph-components';
-
 /**
  * @internal
  * @export
@@ -80,6 +79,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; };
   @ViewChild('graphContainer') graphContainerEle: ElementRef;
   @ViewChild(SzEntityDetailGraphControlComponent) graphControlComponent: SzEntityDetailGraphControlComponent;
+  @ViewChild(SzRelationshipNetworkComponent) graph : SzRelationshipNetworkComponent;
 
   /**
    * emitted when the player right clicks a entity node.
@@ -103,6 +103,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     if(this.data && this.data.resolvedEntity) {
       _ret.push(this.data.resolvedEntity.entityId);
     }
+    //console.log('graphIds setter: ', _ret);
     return _ret;
   }
 
@@ -223,6 +224,15 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * initiates a redraw of the graph canvas inside the component
+   */
+  public reload(): void {
+    if(this.graph && this.graph.reload) {
+      this.graph.reload();
+    }
+  }
+
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
     //console.warn('@senzing/sdk-components-ng/sz-entity-detail-graph.onPrefsChange(): ', prefs);
@@ -241,12 +251,4 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
       }
     }
   }
-
-  public reload() {
-    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph.reload: ', this.graphNetworkComponent);
-    if(this._graphComponentRendered){
-      this.graphNetworkComponent.reload();
-    }
-  }
-
 }
