@@ -31,8 +31,10 @@
       .icon-user {
         height: 150px;
         width: 150px;
-        min-height: unset;
-        min-width: unset;
+        /*min-height: unset;
+        min-width: unset;*/
+        min-height: var(--sz-entity-detail-icon-height);
+        min-width: var(--sz-entity-detail-icon-width);
       }
     }
     &.layout-narrow {

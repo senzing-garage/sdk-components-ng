@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { SzEntityDetailSectionSummary } from '../../../models/entity-detail-section-data';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { Subject, BehaviorSubject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 
 import {
   SzEntityData,
@@ -32,7 +32,20 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     {cssClass: 'layout-medium', minWidth: 700, maxWidth: 1120 },
     {cssClass: 'layout-narrow', maxWidth: 699 }
   ]
-  @Input() public layoutClasses: string[] = [];
+  public _layoutClasses: string[] = [];
+  @Input() public set layoutClasses(value: string[] | string){
+    if(value && value !== undefined) {
+      if(typeof value == 'string') {
+        this._layoutClasses = [value];
+      } else {
+        this._layoutClasses = value;
+      }
+    }
+  };
+  public get layoutClasses() {
+    return this._layoutClasses;
+  }
+  @Input() public forceLayout: boolean = false;
 
   /**
    * A list of the search results that are matches.
@@ -220,7 +233,8 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     const layoutChanges = this.breakpointObserver.observe(bpSubArr);
 
     layoutChanges.pipe(
-      takeUntil(this.unsubscribe$)
+      takeUntil(this.unsubscribe$),
+      filter( () => { return !this.forceLayout })
     ).subscribe( (state: BreakpointState) => {
 
       const cssQueryMatches = [];

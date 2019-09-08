@@ -507,6 +507,16 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     this._buildOut = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
+
+  /**
+   * publish out a "first" real payload so that
+   * subscribers get an initial payload from this subclass
+   * instead of the empty superclass
+   **/
+  constructor(){
+    super();
+    this.prefsChanged.next( this.toJSONObject() );
+  }
 }
 
 export interface SzSdkPrefsModel {

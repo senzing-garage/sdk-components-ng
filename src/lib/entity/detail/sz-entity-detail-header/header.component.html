@@ -1,5 +1,5 @@
 <div class="detail-header__wrapper"
-  [ngClass]="layoutClasses"
+  [ngClass]="_layoutClasses"
   >
   <div class="detail-header__top--wrapper">
     <svg class="hide-on-narrow" [ngClass]="iconClasses" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0"
@@ -20,7 +20,7 @@
       <div class="detail-header__section-summary--wrapper">
         <sz-entity-detail-section-summary
           *ngFor="let section of sectionSummaryInfo; let idx = index"
-          [layoutClasses]="layoutClasses"
+          [layoutClasses]="_layoutClasses"
           [sectionId]="idx+1"
           [section]="section">
         </sz-entity-detail-section-summary>
@@ -29,7 +29,7 @@
   </div>
   <div class="detail-header__bottom--wrapper">
     <sz-entity-detail-header-content
-    [layoutClasses]="layoutClasses"
+    [layoutClasses]="_layoutClasses"
     [entity]="entity?.resolvedEntity"></sz-entity-detail-header-content>
   </div>
 </div>

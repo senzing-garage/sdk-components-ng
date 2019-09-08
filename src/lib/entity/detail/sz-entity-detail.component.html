@@ -2,7 +2,9 @@
 <!-- @senzing/sdk/entity/detail/sz-entity-detail -->
 <div #nativeElementRef>
   <sz-entity-detail-header
-  [entity]="entity">
+  [entity]="entity"
+  [forceLayout]="_forceLayout"
+  [layoutClasses]="_layoutEnforcers">
   </sz-entity-detail-header>
 
   <sz-entity-detail-graph data-html2canvas-ignore
