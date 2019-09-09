@@ -136,7 +136,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   get showColumnOne(): boolean {
     let retVal = false;
     if(this.entity) {
-      if(this.showOtherData && this.entity.otherData) {
+      if(this.showOtherData && this.entity.otherData && this.entity.otherData.length > 0) {
         retVal = true;
       }
     }
