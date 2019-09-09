@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnInit
 import { SzRelatedEntity, SzEntityRecord } from '@senzing/rest-api-client-ng';
 import { SzEntityDetailSectionCollapsibleCardComponent } from './collapsible-card.component';
 import { Subject } from 'rxjs';
+import { takeUntil, filter } from 'rxjs/operators';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 
 /**
  * @internal
@@ -55,13 +57,33 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
       this.onCollapsedChange.emit(isCollapsed);
     }
   }
-
   @ViewChildren(SzEntityDetailSectionCollapsibleCardComponent) collapsable: QueryList<SzEntityDetailSectionCollapsibleCardComponent>
+
+  /** the width to switch from wide to narrow layout */
+  @Input() public layoutBreakpoints = [
+    {cssClass: 'layout-wide', minWidth: 1021 },
+    {cssClass: 'layout-medium', minWidth: 700, maxWidth: 1120 },
+    {cssClass: 'layout-narrow', maxWidth: 699 }
+  ]
+  public _layoutClasses: string[] = [];
+  @Input() public set layoutClasses(value: string[] | string){
+    if(value && value !== undefined) {
+      if(typeof value == 'string') {
+        this._layoutClasses = [value];
+      } else {
+        this._layoutClasses = value;
+      }
+    }
+  };
+  public get layoutClasses() {
+    return this._layoutClasses;
+  }
+  @Input() public forceLayout: boolean = false;
 
   @Output()
   public entityRecordClick: EventEmitter<number> = new EventEmitter<number>();
 
-  constructor() { }
+  constructor(public breakpointObserver: BreakpointObserver) { }
 
   /**
    * unsubscribe when component is destroyed
@@ -69,6 +91,51 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  ngOnInit() {
+    // detect layout changes
+    let bpSubArr = [];
+    this.layoutBreakpoints.forEach( (bpObj: any) => {
+      if(bpObj.minWidth && bpObj.maxWidth){
+        // in between
+        bpSubArr.push(`(min-width: ${bpObj.minWidth}px) and (max-width: ${bpObj.maxWidth}px)`);
+      } else if(bpObj.minWidth){
+        bpSubArr.push(`(min-width: ${bpObj.minWidth}px)`);
+      } else if(bpObj.maxWidth){
+        bpSubArr.push(`(max-width: ${bpObj.maxWidth}px)`);
+      }
+    });
+    const layoutChanges = this.breakpointObserver.observe(bpSubArr);
+
+    layoutChanges.pipe(
+      takeUntil(this.unsubscribe$),
+      filter( () => { return !this.forceLayout })
+    ).subscribe( (state: BreakpointState) => {
+
+      const cssQueryMatches = [];
+      // get array of media query matches
+      for(let k in state.breakpoints){
+        const val = state.breakpoints[k];
+        if(val == true) {
+          // find key in layoutBreakpoints
+          cssQueryMatches.push( k )
+        }
+      }
+      // get array of layoutBreakpoints objects that match media queries
+      const _matches = this.layoutBreakpoints.filter( (_bp) => {
+        const _mq = this.getCssQueryFromCriteria(_bp.minWidth, _bp.maxWidth);
+        if(cssQueryMatches.indexOf(_mq) >= 0) {
+          return true;
+        }
+        return false;
+      });
+      // assign matches to local prop
+      this.layoutClasses = _matches.map( (_bp) => {
+        return _bp.cssClass;
+      })
+    })
+
   }
 
   get showByDataSource(): boolean {
@@ -168,6 +235,18 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
   public onEntityRecordClick(entityId: number): void {
     console.log('sz-entity-details-section: ', entityId);
     this.entityRecordClick.emit(entityId);
+  }
+
+  getCssQueryFromCriteria(minWidth?: number, maxWidth?: number): string | undefined {
+    if(minWidth && maxWidth){
+      // in between
+      return (`(min-width: ${minWidth}px) and (max-width: ${maxWidth}px)`);
+    } else if(minWidth){
+      return (`(min-width: ${minWidth}px)`);
+    } else if(maxWidth){
+      return (`(max-width: ${maxWidth}px)`);
+    }
+    return
   }
 
 }

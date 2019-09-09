@@ -26,14 +26,14 @@
   </div>
 
   <div class="search-card__content--column identifier-data" #columnFour *ngIf="showColumnFour">
-    <ng-container *ngFor="let identificationData of identifierData; let i = index">
+    <div class="line" *ngFor="let identificationData of identifierData; let i = index">
       <span
         class="break-for-print"
         [ngClass]="{
           'ellipsis': collapsed,
           'hidden': (i >= maxLinesToDisplay)}"
           >{{identificationData}}</span>
-    </ng-container>
+    </div>
     <span *ngIf="columnFourTotal > maxLinesToDisplay">...</span>
   </div>
 

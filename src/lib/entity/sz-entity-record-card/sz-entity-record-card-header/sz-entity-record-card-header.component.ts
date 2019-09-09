@@ -20,6 +20,7 @@ export class SzEntityRecordCardHeaderComponent implements OnInit, OnDestroy {
   @Input() hideBackGroundColor: boolean;
   @Input() entityData: SzResolvedEntity;
   @Input() showRecordIdWhenSingleRecord: boolean = false;
+  @Input() public layoutClasses: string[] = [];
 
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();

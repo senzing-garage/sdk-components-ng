@@ -4,6 +4,17 @@
     flex-direction: row;
     justify-content: space-between;
 
+    /* for narrow layouts change the reflow orientation */
+    &.layout-narrow {
+      flex-direction: column;
+
+      .search-card__content--column {
+        min-width: auto;
+        margin-right: auto;
+        margin-bottom: 2em;
+      }
+    }
+
     .line {
       margin-bottom: .5em;
     }

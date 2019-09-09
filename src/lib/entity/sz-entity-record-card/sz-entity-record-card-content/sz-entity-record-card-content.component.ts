@@ -6,7 +6,7 @@ import {
   SzResolvedEntity,
   SzEntityRecord
 } from '@senzing/rest-api-client-ng';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { tap, takeUntil } from 'rxjs/operators';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
 
@@ -80,6 +80,13 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   private columnThree: ElementRef;
   @ViewChild('columnFour')
   private columnFour: ElementRef;
+
+  /** 0 = wide layout. 1 = narrow layout */
+  @Input() public layout = 0;
+  @Input() public layoutClasses: string[] = [];
+
+  /** subscription breakpoint changes */
+  private layoutChange$ = new BehaviorSubject<number>(this.layout);
 
   _parentEntity: any;
   _matchKeys: string[];

@@ -24,6 +24,8 @@
     [sectionTitle]="'Matched Records'"
     sectionId="detail-section-1"
     [sectionCount]="entity?.resolvedEntity?.records?.length"
+    [forceLayout]="_forceLayout"
+    [layoutClasses]="_layoutEnforcers"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
 
@@ -35,6 +37,8 @@
     [sectionTitle]="'Possible Matches'"
     sectionId="detail-section-2"
     [sectionCount]="this._possibleMatches?.length"
+    [forceLayout]="_forceLayout"
+    [layoutClasses]="_layoutEnforcers"
     (onCollapsedChange)="this.onSectionCollapsedChange('possibleMatches', $event)"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
@@ -46,6 +50,8 @@
     [sectionTitle]="'Possible Relationships'"
     sectionId="detail-section-3"
     [sectionCount]="this._discoveredRelationships?.length"
+    [forceLayout]="_forceLayout"
+    [layoutClasses]="_layoutEnforcers"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
   <sz-entity-details-section class="details-section disclosed"
@@ -56,6 +62,8 @@
     [sectionTitle]="'Disclosed Relationships'"
     sectionId="detail-section-4"
     [sectionCount]="this._disclosedRelationships?.length"
+    [forceLayout]="_forceLayout"
+    [layoutClasses]="_layoutEnforcers"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
 </div>
