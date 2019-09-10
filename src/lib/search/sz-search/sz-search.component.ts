@@ -2,6 +2,7 @@ import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDe
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject  } from 'rxjs';
 import { map, tap, mapTo, first, filter, takeUntil } from 'rxjs/operators';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 
 import {
   ConfigService,
@@ -407,6 +408,56 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     identifierType: false
   };
 
+  // layout enforcers
+  /** @internal */
+  public _layoutEnforcers: string[] = [''];
+  /** @internal */
+  public _forceLayout = false;
+  /** @internal */
+  public _layoutClasses: string[] = [];
+
+  /**
+   * Takes a collection or a single value of layout enum css classnames to pass
+   * to all children components. this value overrides auto-responsive css adjustments.
+   *
+   * @example forceLayout="layout-narrow"
+   *
+   * @memberof SzEntityDetailComponent
+   */
+  @Input() public set forceLayout(value: string | string[]) {
+    if(value){
+      this._forceLayout = true;
+      if(typeof value == 'string'){
+        if(value.indexOf(',') > -1){
+          this._layoutEnforcers = value.split(',');
+        } else {
+          this._layoutEnforcers = [value];
+        }
+      } else {
+        this._layoutEnforcers = value;
+      }
+    }
+
+  }
+  /** the width to switch from wide to narrow layout */
+  @Input() public layoutBreakpoints = [
+    {cssClass: 'layout-wide', minWidth: 1021 },
+    {cssClass: 'layout-medium', minWidth: 700, maxWidth: 1120 },
+    {cssClass: 'layout-narrow', maxWidth: 699 }
+  ]
+  @Input() public set layoutClasses(value: string[] | string){
+    if(value && value !== undefined) {
+      if(typeof value == 'string') {
+        this._layoutClasses = [value];
+      } else {
+        this._layoutClasses = value;
+      }
+    }
+  };
+  public get layoutClasses() {
+    return this._layoutClasses;
+  }
+
   private _attributeTypesFromServer: SzAttributeType[];
   @Input('attributeTypes')
   public set inputAttributeTypes(value: SzAttributeType[]) {
@@ -471,7 +522,8 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     private ref: ChangeDetectorRef,
     private apiConfigService: SzConfigurationService,
     private prefs: SzPrefsService,
-    private searchService: SzSearchService) {
+    private searchService: SzSearchService,
+    public breakpointObserver: BreakpointObserver) {
 
       this.prefs.searchForm.prefsChanged.pipe(
         takeUntil(this.unsubscribe$)
@@ -539,6 +591,47 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     if(!this.waitForConfigChange){
       this.updateAttributeTypes();
     }
+    // detect layout changes
+    let bpSubArr = [];
+    this.layoutBreakpoints.forEach( (bpObj: any) => {
+      if(bpObj.minWidth && bpObj.maxWidth){
+        // in between
+        bpSubArr.push(`(min-width: ${bpObj.minWidth}px) and (max-width: ${bpObj.maxWidth}px)`);
+      } else if(bpObj.minWidth){
+        bpSubArr.push(`(min-width: ${bpObj.minWidth}px)`);
+      } else if(bpObj.maxWidth){
+        bpSubArr.push(`(max-width: ${bpObj.maxWidth}px)`);
+      }
+    });
+    const layoutChanges = this.breakpointObserver.observe(bpSubArr);
+
+    layoutChanges.pipe(
+      takeUntil(this.unsubscribe$),
+      filter( () => { return !this.forceLayout })
+    ).subscribe( (state: BreakpointState) => {
+
+      const cssQueryMatches = [];
+      // get array of media query matches
+      for(let k in state.breakpoints){
+        const val = state.breakpoints[k];
+        if(val == true) {
+          // find key in layoutBreakpoints
+          cssQueryMatches.push( k )
+        }
+      }
+      // get array of layoutBreakpoints objects that match media queries
+      const _matches = this.layoutBreakpoints.filter( (_bp) => {
+        const _mq = this.getCssQueryFromCriteria(_bp.minWidth, _bp.maxWidth);
+        if(cssQueryMatches.indexOf(_mq) >= 0) {
+          return true;
+        }
+        return false;
+      });
+      // assign matches to local prop
+      this.layoutClasses = _matches.map( (_bp) => {
+        return _bp.cssClass;
+      })
+    })
   }
 
   /**
@@ -570,6 +663,18 @@ export class SzSearchComponent implements OnInit, OnDestroy {
       this.searchException.next( err ); //TODO: remove in breaking change release
       this.exception.next( err );
     });
+  }
+
+  getCssQueryFromCriteria(minWidth?: number, maxWidth?: number): string | undefined {
+    if(minWidth && maxWidth){
+      // in between
+      return (`(min-width: ${minWidth}px) and (max-width: ${maxWidth}px)`);
+    } else if(minWidth){
+      return (`(min-width: ${minWidth}px)`);
+    } else if(maxWidth){
+      return (`(max-width: ${maxWidth}px)`);
+    }
+    return
   }
 
   /**
