@@ -1,6 +1,9 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
 import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
 import { SzResolvedEntity, SzDataSourceRecordSummary } from '@senzing/rest-api-client-ng';
+import { SzPrefsService } from '../../../services/sz-prefs.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * @internal
@@ -11,20 +14,38 @@ import { SzResolvedEntity, SzDataSourceRecordSummary } from '@senzing/rest-api-c
   templateUrl: './sz-entity-record-card-header.component.html',
   styleUrls: ['./sz-entity-record-card-header.component.scss']
 })
-export class SzEntityRecordCardHeaderComponent implements OnInit {
+export class SzEntityRecordCardHeaderComponent implements OnInit, OnDestroy {
   @Input() searchResult: SzSearchResultEntityData;
   @Input() searchValue: string;
   @Input() hideBackGroundColor: boolean;
   @Input() entityData: SzResolvedEntity;
+  @Input() showRecordIdWhenSingleRecord: boolean = false;
+  @Input() public layoutClasses: string[] = [];
+
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
+
   alert = false;
 
   @Output()
   public entityRecordClick: EventEmitter<number> = new EventEmitter<number>();
 
-  constructor() {
+  constructor(
+    public prefs: SzPrefsService
+  ) {}
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   ngOnInit() {
+    this.prefs.entityDetail.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe( this.onPrefsChange.bind(this) );
   }
 
   get breakDownInfoExist(): boolean {
@@ -80,5 +101,11 @@ export class SzEntityRecordCardHeaderComponent implements OnInit {
       console.log('onEntityDetailLinkClick: "'+ entityId +'"');
       this.entityRecordClick.emit(entityId);
     }
+  }
+
+  /** proxy handler for when prefs have changed externally */
+  private onPrefsChange(prefs: any) {
+    //console.warn('@senzing/sdk-components-ng/sz-entity-record-card-header.onPrefsChange(): ', prefs);
+    this.showRecordIdWhenSingleRecord = prefs.showTopEntityRecordIdsWhenSingular;
   }
 }

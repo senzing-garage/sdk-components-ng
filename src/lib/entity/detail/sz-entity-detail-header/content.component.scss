@@ -7,6 +7,20 @@
     width: 98%;
     display: flex;
 
+    &.layout-narrow {
+      flex-direction: column;
+
+      .search-card__content--column {
+        width: unset;
+        margin-right: unset;
+      }
+    }
+    /*
+    &.layout-medium {
+      border: 2px solid cyan;
+    }
+    */
+
     /* set hard column perc widths based on how many cols are showing */
     /*
     &.columns-one {

@@ -22,7 +22,7 @@ import { Subscription, fromEvent, Subject } from 'rxjs';
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
   public currentSearchResults: SzAttributeSearchResult[];
-  public currentlySelectedEntityId: number = undefined;
+  public currentlySelectedEntityId: number = 1002;
   public currentSearchParameters: SzEntitySearchParams;
   public showSearchResults = false;
   /** subscription to notify subscribers to unbind */

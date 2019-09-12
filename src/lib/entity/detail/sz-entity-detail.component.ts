@@ -38,6 +38,36 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private _requestDataOnIdChange = true;
 
   public entity: SzEntityData;
+
+  // layout enforcers
+  /** @internal */
+  public _layoutEnforcers: string[] = [''];
+  /** @internal */
+  public _forceLayout = false;
+  /**
+   * Takes a collection or a single value of layout enum css classnames to pass
+   * to all children components. this value overrides auto-responsive css adjustments.
+   *
+   * @example forceLayout="layout-narrow"
+   *
+   * @memberof SzEntityDetailComponent
+   */
+  @Input() public set forceLayout(value: string | string[]) {
+    if(value){
+      this._forceLayout = true;
+      if(typeof value == 'string'){
+        if(value.indexOf(',') > -1){
+          this._layoutEnforcers = value.split(',');
+        } else {
+          this._layoutEnforcers = [value];
+        }
+      } else {
+        this._layoutEnforcers = value;
+      }
+    }
+
+  }
+
   // data views
   _discoveredRelationships: SzRelatedEntity[];
   _disclosedRelationships: SzRelatedEntity[];
@@ -131,6 +161,10 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   @Input()
   public set showGraphSection(value: any) {
     this._showGraphSection = parseBool(value);
+    // update pref from setter
+    if(this.prefs.entityDetail.showGraphSection !== this._showGraphSection){
+      this.prefs.entityDetail.showGraphSection = this._showGraphSection;
+    }
   }
   public get showGraphSection(): any {
     return this._showGraphSection;
@@ -141,6 +175,10 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   @Input()
   public set showMatchesSection(value: any) {
     this._showMatchesSection = parseBool(value);
+    // update pref from setter
+    if(this.prefs.entityDetail.showMatchesSection !== this._showMatchesSection){
+      this.prefs.entityDetail.showMatchesSection = this._showMatchesSection;
+    }
   }
   public get showMatchesSection(): any {
     return this._showMatchesSection;
@@ -151,6 +189,10 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   @Input()
   public set showPossibleMatchesSection(value: any) {
     this._showPossibleMatchesSection = parseBool(value);
+    // update pref from setter
+    if(this.prefs.entityDetail.showPossibleMatchesSection !== this._showPossibleMatchesSection){
+      this.prefs.entityDetail.showPossibleMatchesSection = this._showPossibleMatchesSection;
+    }
   }
   public get showPossibleMatchesSection(): any {
     return this._showPossibleMatchesSection;
@@ -161,6 +203,10 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   @Input()
   public set showPossibleRelationshipsSection(value: any) {
     this._showPossibleRelationshipsSection = parseBool(value);
+    // update pref from setter
+    if(this.prefs.entityDetail.showPossibleRelationshipsSection !== this._showPossibleRelationshipsSection){
+      this.prefs.entityDetail.showPossibleRelationshipsSection = this._showPossibleRelationshipsSection;
+    }
   }
   public get showPossibleRelationshipsSection(): any {
     return this._showPossibleRelationshipsSection;
@@ -171,6 +217,10 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   @Input()
   public set showDisclosedSection(value: any) {
     this._showDisclosedSection = parseBool(value);
+    // update pref from setter
+    if(this.prefs.entityDetail.showDisclosedSection !== this._showDisclosedSection){
+      this.prefs.entityDetail.showDisclosedSection = this._showDisclosedSection;
+    }
   }
   public get showDisclosedSection(): any {
     return this._showDisclosedSection;

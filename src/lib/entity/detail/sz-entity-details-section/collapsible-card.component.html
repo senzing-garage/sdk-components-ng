@@ -40,6 +40,7 @@
               <sz-entity-record-card-header
                 [entityData]="_cardData"
                 [hideBackGroundColor]="true"
+                [layoutClasses]="layoutClasses"
                 (entityRecordClick)="onEntityRecordClick($event)"
                 >
               </sz-entity-record-card-header>
@@ -48,6 +49,7 @@
               [ignorePrefOtherDataChanges]="true"
               [entity]="_cardData"
               [parentEntity]="cardData"
+              [layoutClasses]="layoutClasses"
               [ngClass]="{'open': expanded, 'no-shade': true}"
               [truncateResults]="truncateResults"
               [truncatedTooltip]="'click to expand.'"
@@ -67,6 +69,7 @@
           [entity]="_cardData"
           [parentEntity]="cardData"
           [ngClass]="{'open': expanded}"
+          [layoutClasses]="layoutClasses"
           [truncateResults]="truncateResults"
           [truncatedTooltip]="'click to expand.'"
         ></sz-entity-record-card-content>

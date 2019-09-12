@@ -22,6 +22,7 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   @Input() showIcon = true;
   @Input() headerIcon: string;
   @Input() cardTitle: string;
+  @Input() public layoutClasses: string[] = [];
 
   public showOtherDataInDatasourceRecords: boolean = true;
   public showOtherDataInEntities: boolean = false;
@@ -125,7 +126,7 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
    * @readonly
    */
   public get cssClasses(): string {
-    const retArr = ['sz-entity-detail-section-collapsible-card-content'];
+    let retArr = ['sz-entity-detail-section-collapsible-card-content'];
     if( this.expanded ) {
       retArr.push('open');
     } else {
@@ -143,6 +144,10 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
         if(k.toLowerCase) { k = k.toLowerCase(); }
         retArr.push( 'key-'+ k );
       });
+    }
+    // check for layout classes, concat if exists
+    if(this.layoutClasses && this.layoutClasses.length > 0){
+      retArr = retArr.concat(this.layoutClasses);
     }
     const retStr = retArr.join(' ');
     return retArr.join(' ');

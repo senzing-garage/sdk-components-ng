@@ -2,9 +2,10 @@
   [sectionTitle]="sectionTitle"
   [sectionCount]="sectionCount"
   [sectionIcon]="sectionIcon"
-  [sectionId]="sectionId">
+  [sectionId]="sectionId"
+  [ngClass]="_layoutClasses">
 </sz-entity-detail-section-header>
-<div>
+<div [ngClass]="_layoutClasses">
   <ng-container *ngIf="showByDataSource">
     <sz-entity-detail-section-collapsible-card
       class="by-datasource"
@@ -14,6 +15,7 @@
       displayType="record"
       [cardData]="dataSourceRecords"
       [collapsedStatePrefsKey]="this.collapsedStatePrefsKey"
+      [layoutClasses]="_layoutClasses"
       (onCollapsedChange)="this.onCollapsibleCardStateChange($event)"
       [truncateResults]="true"
       (entityRecordClick)="onEntityRecordClick($event)">
@@ -29,6 +31,7 @@
       [cardData]="entitiesByMatchKey"
       [truncateResults]="true"
       [collapsedStatePrefsKey]="this.collapsedStatePrefsKey"
+      [layoutClasses]="_layoutClasses"
       (onCollapsedChange)="this.onCollapsibleCardStateChange($event)"
       (entityRecordClick)="onEntityRecordClick($event)"
       class="by-match-key">
@@ -43,6 +46,7 @@
       displayType="entity"
       [cardData]="cardData"
       [collapsedStatePrefsKey]="this.collapsedStatePrefsKey"
+      [layoutClasses]="_layoutClasses"
       (onCollapsedChange)="this.onCollapsibleCardStateChange($event)"
       [truncateResults]="true"
       (entityRecordClick)="onEntityRecordClick($event)">

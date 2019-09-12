@@ -205,7 +205,7 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
   private _showPossibleMatchesSection: boolean = true;
   private _showPossibleRelationshipsSection: boolean = true;
   private _showDisclosedSection: boolean = true;
-  private _graphSectionCollapsed: boolean = true;
+  private _graphSectionCollapsed: boolean = false;
   private _recordsSectionCollapsed: boolean = false;
   private _possibleMatchesSectionCollapsed: boolean = false;
   private _possibleRelationshipsSectionCollapsed: boolean = false;
@@ -216,11 +216,12 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
   private _truncateOtherDataAt: number = 5;
   private _openLinksInNewTab: boolean = false;
   private _showOtherDataInRecords: boolean = true;
-  private _showOtherDataInEntities: boolean = true;
+  private _showOtherDataInEntities: boolean = false;
   private _showOtherDataInSummary: boolean = false;
   private _truncateOtherDataInRecordsAt: number = 5;
   private _hideGraphWhenZeroRelations: boolean = true;
-  private _showRecordIdWhenNative: boolean = true;
+  private _showRecordIdWhenNative: boolean = false;
+  private _showTopEntityRecordIdsWhenSingular: boolean = false;
 
   // json key that are output through
   // toJSONObject and fromJSONObject
@@ -245,7 +246,8 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
     'showOtherDataInSummary',
     'truncateOtherDataInRecordsAt',
     'hideGraphWhenZeroRelations',
-    'showRecordIdWhenNative'
+    'showRecordIdWhenNative',
+    'showTopEntityRecordIdsWhenSingular'
   ]
 
   // getters and setters
@@ -396,6 +398,14 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
     this._showRecordIdWhenNative = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
+  public get showTopEntityRecordIdsWhenSingular(): boolean {
+    return this._showTopEntityRecordIdsWhenSingular;
+  }
+  public set showTopEntityRecordIdsWhenSingular(value: boolean) {
+    this._showTopEntityRecordIdsWhenSingular = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+
 
 
   /**
@@ -496,6 +506,16 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   public set buildOut(value: number) {
     this._buildOut = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+
+  /**
+   * publish out a "first" real payload so that
+   * subscribers get an initial payload from this subclass
+   * instead of the empty superclass
+   **/
+  constructor(){
+    super();
+    this.prefsChanged.next( this.toJSONObject() );
   }
 }
 

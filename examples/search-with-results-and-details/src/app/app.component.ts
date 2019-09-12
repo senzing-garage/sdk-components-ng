@@ -22,7 +22,7 @@ import { Subscription, fromEvent } from 'rxjs';
 })
 export class AppComponent implements AfterViewInit {
   public currentSearchResults: SzAttributeSearchResult[];
-  public currentlySelectedEntityId: number = undefined;
+  public currentlySelectedEntityId: number = 2004;
   public currentSearchParameters: SzEntitySearchParams;
   public showSearchResults = false;
   public set showGraphMatchKeys(value: boolean) {

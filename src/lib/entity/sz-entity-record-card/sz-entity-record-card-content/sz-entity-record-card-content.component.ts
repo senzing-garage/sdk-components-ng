@@ -6,7 +6,7 @@ import {
   SzResolvedEntity,
   SzEntityRecord
 } from '@senzing/rest-api-client-ng';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { tap, takeUntil } from 'rxjs/operators';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
 
@@ -81,6 +81,13 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   @ViewChild('columnFour')
   private columnFour: ElementRef;
 
+  /** 0 = wide layout. 1 = narrow layout */
+  @Input() public layout = 0;
+  @Input() public layoutClasses: string[] = [];
+
+  /** subscription breakpoint changes */
+  private layoutChange$ = new BehaviorSubject<number>(this.layout);
+
   _parentEntity: any;
   _matchKeys: string[];
 
@@ -103,11 +110,12 @@ export class SzEntityRecordCardContentComponent implements OnInit {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    if( typeof prefs.truncateOtherDataInRecordsAt == 'boolean') {
+    //console.warn(`SzEntityDetailSectionCollapsibleCardComponent.onPrefsChange: `, prefs.truncateOtherDataInRecordsAt, this.truncateOtherDataAt);
+    if( prefs.truncateOtherDataInRecordsAt) {
       this._truncateOtherDataAt = prefs.truncateOtherDataInRecordsAt
-      //console.warn(`SzEntityDetailSectionCollapsibleCardComponent.onPrefsChange: value of this.collapsedStatePrefsKey(${this.collapsedStatePrefsKey}) is "${prefs[ this.collapsedStatePrefsKey ]}" `, `isOpen set to ${ !(prefs[ this.collapsedStatePrefsKey ])}`, prefs[ this.collapsedStatePrefsKey ]);
     }
     if( !this.ignorePrefOtherDataChanges && typeof prefs.showOtherData == 'boolean') {
       this._showOtherData = prefs.showOtherDataInRecords;
@@ -135,7 +143,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   get showColumnOne(): boolean {
     let retVal = false;
     if(this.entity) {
-      if(this.showOtherData && this.entity.otherData) {
+      if(this.showOtherData && this.entity.otherData && this.entity.otherData.length > 0) {
         retVal = true;
       }
     }
