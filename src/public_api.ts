@@ -29,6 +29,7 @@ export * from './lib/entity/detail/sz-entity-detail.component';
 export * from './lib/sz-powered-by/sz-powered-by.component';
 export * from './lib/configuration/sz-configuration/sz-configuration.component';
 export * from './lib/configuration/sz-configuration-about/sz-configuration-about.component';
+export * from './lib/configuration/sz-preferences/sz-preferences.component';
 
 export * from '@senzing/sdk-graph-components';
 /*
