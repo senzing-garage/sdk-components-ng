@@ -19,8 +19,16 @@
 </div>
 <!-- end search box -->
 
+<!-- start prefs service box -->
+<sz-preferences #prefsComponent
+(prefsChange)="onPrefsChange($event)"
+></sz-preferences>
+
+<button (click)="toggleOtherData()"> toggle show Other data</button>
+<!--  end prefs service box  -->
+
 <!-- start prefs manager box -->
-<sz-prefs-manager></sz-prefs-manager>
+<!-- <sz-prefs-manager></sz-prefs-manager> -->
 <!--  end prefs manager box  -->
 
 <!-- start graph context menu template -->

@@ -1,6 +1,6 @@
 import { Injectable, Output, Input, Inject, OnDestroy } from '@angular/core';
-import { Observable, fromEventPattern, Subject, BehaviorSubject } from 'rxjs';
-import { map, tap, mapTo, takeUntil } from 'rxjs/operators';
+import { Observable, fromEventPattern, Subject, BehaviorSubject, merge, timer } from 'rxjs';
+import { map, tap, mapTo, takeUntil, debounce } from 'rxjs/operators';
 import { Configuration as SzRestConfiguration, ConfigurationParameters as SzRestConfigurationParameters } from '@senzing/rest-api-client-ng';
 
 import {
@@ -589,28 +589,23 @@ export class SzPrefsService implements OnDestroy {
   }
 
   constructor(){
-    this.searchForm.prefsChanged.pipe(
-      takeUntil(this.unsubscribe$)
-    ).subscribe( (prefsObj ) => {
-      //console.log('search form prefs changed!!', prefsObj);
-      this.prefsChanged.next( this.toJSONObject() );
-    });
-    this.searchResults.prefsChanged.pipe(
-      takeUntil(this.unsubscribe$)
-    ).subscribe( (prefsObj ) => {
-      //console.log('search results prefs changed!!', prefsObj);
-      this.prefsChanged.next( this.toJSONObject() );
-    });
-    this.entityDetail.prefsChanged.pipe(
-      takeUntil(this.unsubscribe$)
-    ).subscribe( (prefsObj ) => {
-      //console.log('entity detail prefs changed!!', prefsObj);
-      this.prefsChanged.next( this.toJSONObject() );
-    });
-    this.graph.prefsChanged.pipe(
-      takeUntil(this.unsubscribe$)
-    ).subscribe( (prefsObj ) => {
-      //console.log('graph prefs changed!!', prefsObj);
+
+    // listen for any prefs changes
+    // as one meta-observeable
+    const concat_prefchanges = merge(
+      this.searchForm.prefsChanged,
+      this.searchResults.prefsChanged,
+      this.entityDetail.prefsChanged,
+      this.graph.prefsChanged
+    );
+    // now filter and debounce
+    // so that any back to back changes are
+    // only published as a single event
+    concat_prefchanges.pipe(
+      takeUntil(this.unsubscribe$),
+      debounce(() => timer(100))
+    ).subscribe((prefsObj ) => {
+      console.log('prefs changed!!', prefsObj);
       this.prefsChanged.next( this.toJSONObject() );
     });
   }

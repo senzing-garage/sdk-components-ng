@@ -8,7 +8,8 @@ import {
   SzEntityDetailComponent,
   SzEntityData,
   SzPrefsService,
-  SzConfigurationService
+  SzConfigurationService,
+  SzPreferencesComponent
 } from '@senzing/sdk-components-ng';
 import { tap, filter, take, takeUntil } from 'rxjs/operators';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -50,11 +51,21 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   @ViewChild('searchBox') searchBox: SzSearchComponent;
   @ViewChild(SzEntityDetailComponent) entityDetailComponent: SzEntityDetailComponent;
   @ViewChild('graphContextMenu') graphContextMenu: TemplateRef<any>;
+  @ViewChild(SzPreferencesComponent) prefsComponent: SzPreferencesComponent;
+
   sub: Subscription;
   overlayRef: OverlayRef | null;
 
   public get showPdfDownloadButton(): boolean {
     return (this.currentSearchResults !== undefined && this.currentSearchResults && this.currentSearchResults.length > 0);
+  }
+
+  public toggleOtherData() {
+    console.warn('toggleOtherData: ', this.prefsComponent);
+    const p = this.prefsComponent;
+    p.EntityDetailShowOtherData = !p.EntityDetailShowOtherData;
+    p.EntityDetailShowOtherDataInRecords = !p.EntityDetailShowOtherDataInRecords;
+    p.SearchResultsShowOtherData = !p.SearchResultsShowOtherData;
   }
 
   constructor(
@@ -177,6 +188,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     if (prefGroup && this.prefs[prefGroup]){
       this.prefs[prefGroup][prefKey] = !this.prefs[prefGroup][prefKey] ;
     }
+  }
+
+  public onPrefsChange(value: any) {
+    console.warn('onPrefsChange: ', value);
   }
 
   public toggleGraphMatchKeys(event): void {
