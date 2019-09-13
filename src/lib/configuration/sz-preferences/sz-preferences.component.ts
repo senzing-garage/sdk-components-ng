@@ -28,7 +28,7 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   private _prefsJSON: SzSdkPrefsModel;
 
-  // --------------------------------- event emmitters and subjects ---------------------
+  // --------------------------------- event emmitters and subjects ----------------------
 
   /**
    * emmitted when a property has been changed.
@@ -37,7 +37,7 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   @Output()
   public prefsChange: EventEmitter<SzSdkPrefsModel> = new EventEmitter<SzSdkPrefsModel>();
 
-  // --------------------------------- start prefs getters/setters ----------------------
+  // --------------------------------- start prefs getters/setters -----------------------
 
   // -------------   search form
   public get SearchFormOpenInNewTab(): string[] {
@@ -103,7 +103,7 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
     this.prefs.searchResults.linkToEmbeddedGraph = value;
   }
 
-  // -------------   entity detail
+  // -----------------------------------------   entity detail ----------------------------
 
   public get EntityDetailShowGraphSection(): boolean {
     return this.prefs.entityDetail.showGraphSection;
@@ -238,7 +238,7 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
     this.prefs.entityDetail.showTopEntityRecordIdsWhenSingular = value;
   }
 
-  // --------------------------------- graph preferences
+  // --------------------------------- graph preferences ---------------------------------
   public get GraphOpenInNewTab(): boolean {
     return this.prefs.graph.openInNewTab;
   }
@@ -290,7 +290,7 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
     this.prefs.graph.buildOut = value;
   }
 
-  // ---------------------------------  end prefs getters/setters  ----------------------
+  // ---------------------------------  end prefs getters/setters  -----------------------
 
   constructor(
     private prefs: SzPrefsService

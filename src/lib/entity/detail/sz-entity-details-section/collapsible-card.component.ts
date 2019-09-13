@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnInit, OnDestroy, AfterViewInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 import { SzEntityRecord } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
@@ -61,7 +61,8 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   public entityRecordClick: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(
-    public prefs: SzPrefsService
+    public prefs: SzPrefsService,
+    private cd: ChangeDetectorRef
   ) {}
 
   /**
@@ -103,6 +104,8 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
       //console.warn(`SzEntityDetailSectionCollapsibleCardComponent.onPrefsChange: value of showOtherDataInEntities(${this.showOtherDataInEntities}) is "${prefs.showOtherDataInEntities}" `);
       this.showOtherDataInEntities = prefs.showOtherDataInEntities;
     }
+    // update view manually (for web components redraw reliability)
+    this.cd.detectChanges();
   }
 
   onExpand() {

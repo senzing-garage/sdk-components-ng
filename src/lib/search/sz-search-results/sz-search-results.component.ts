@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
 import { SzEntitySearchParams } from '../../models/entity-search';
 import {
@@ -189,7 +189,8 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
 
   constructor(
     private titleCasePipe: TitleCasePipe,
-    private prefs: SzPrefsService
+    private prefs: SzPrefsService,
+    private cd: ChangeDetectorRef
   ) {
     /*
     this.prefs.searchResults.prefsChanged.pipe(

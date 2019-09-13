@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
 import { SzResolvedEntity, SzDataSourceRecordSummary } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
@@ -31,7 +31,8 @@ export class SzEntityRecordCardHeaderComponent implements OnInit, OnDestroy {
   public entityRecordClick: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(
-    public prefs: SzPrefsService
+    public prefs: SzPrefsService,
+    private cd: ChangeDetectorRef
   ) {}
 
   /**
@@ -107,5 +108,7 @@ export class SzEntityRecordCardHeaderComponent implements OnInit, OnDestroy {
   private onPrefsChange(prefs: any) {
     //console.warn('@senzing/sdk-components-ng/sz-entity-record-card-header.onPrefsChange(): ', prefs);
     this.showRecordIdWhenSingleRecord = prefs.showTopEntityRecordIdsWhenSingular;
+    // update view manually (for web components redraw reliability)
+    this.cd.detectChanges();
   }
 }

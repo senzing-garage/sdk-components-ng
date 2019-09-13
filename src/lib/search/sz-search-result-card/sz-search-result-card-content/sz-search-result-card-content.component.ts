@@ -44,7 +44,7 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
   //columnFiveTotal: number;
 
   constructor(
-    private ref: ChangeDetectorRef,
+    private cd: ChangeDetectorRef,
     public prefs: SzPrefsService
   ) {}
 
@@ -63,7 +63,7 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
       //this.columnFourTotal = this.columnFour.nativeElement.children.length;
       //this.columnFiveTotal = this.columnFive.nativeElement.children.length;
 
-      this.ref.markForCheck();
+      this.cd.markForCheck();
     });
     this.prefs.searchResults.prefsChanged.pipe(
       takeUntil(this.unsubscribe$)
@@ -84,6 +84,8 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
     this._showAttributeData = prefs.showAttributeData;
     this._truncateOtherDataAt = prefs.truncateOtherDataAt;
     this._truncateAttributeDataAt = prefs.truncateAttributeDataAt;
+    // update view manually (for web components redraw reliability)
+    this.cd.detectChanges();
   }
 
   // ----------------- start total getters -------------------

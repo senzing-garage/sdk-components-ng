@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, EventEmitter, ElementRef } from '@angular/core';
+import { Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -165,7 +165,8 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    public prefs: SzPrefsService
+    public prefs: SzPrefsService,
+    private cd: ChangeDetectorRef
   ) {}
 
   /**
@@ -250,5 +251,8 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
         this.reload();
       }
     }
+
+    // update view manually (for web components redraw reliability)
+    this.cd.detectChanges();
   }
 }

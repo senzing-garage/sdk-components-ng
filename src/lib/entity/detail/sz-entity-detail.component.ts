@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { SzSearchService } from '../../services/sz-search.service';
 import { tap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -382,7 +382,8 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
   constructor(
     private searchService: SzSearchService,
-    public prefs: SzPrefsService
+    public prefs: SzPrefsService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -427,13 +428,8 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     this.possibleRelationshipsSectionCollapsed = prefs.possibleRelationshipsSectionCollapsed;
     this.disclosedRelationshipsSectionCollapsed = prefs.disclosedRelationshipsSectionCollapsed;
 
-    //console.log('SzEntityDetailComponent.onPrefsChange: ', prefs);
-    /*
-    this._showOtherData = prefs.showOtherData;
-    this._showAttributeData = prefs.showAttributeData;
-    this._truncateOtherDataAt = prefs.truncateOtherDataAt;
-    this._truncateAttributeDataAt = prefs.truncateAttributeDataAt;
-    */
+    // update view manually (for web components redraw reliability)
+    this.cd.detectChanges();
   }
 
   /**

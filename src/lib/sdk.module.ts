@@ -126,6 +126,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
   /** for components being exported as web components */
   entryComponents: [
     SzEntityDetailComponent,
+    SzEntityDetailGraphComponent,
     SzSearchComponent,
     SzSearchResultsComponent,
     SzPoweredByComponent,

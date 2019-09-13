@@ -91,11 +91,11 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   _parentEntity: any;
   _matchKeys: string[];
 
-  constructor(private ref: ChangeDetectorRef, public prefs: SzPrefsService) {}
+  constructor(private cd: ChangeDetectorRef, public prefs: SzPrefsService) {}
 
   ngOnInit() {
     setTimeout(() => {
-      this.ref.markForCheck();
+      this.cd.markForCheck();
     });
 
     this.prefs.entityDetail.prefsChanged.pipe(
@@ -122,6 +122,8 @@ export class SzEntityRecordCardContentComponent implements OnInit {
       //console.warn(`SzEntityRecordCardContentComponent.onPrefsChange: value of this.showOtherData(${this.showOtherData}) is "${prefs.showOtherDataInRecords }" `);
     }
     this.showRecordIdWhenNative = prefs.showRecordIdWhenNative;
+    // update view manually (for web components redraw reliability)
+    this.cd.detectChanges();
   }
 
   getNameAndAttributeData(nameData: string[], attributeData: string[]): string[] {
