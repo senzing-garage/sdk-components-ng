@@ -109,6 +109,7 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   private _truncateOtherDataAt: number = 3;
   private _truncateAttributeDataAt: number = 3;
   private _showRecordIds: boolean = false;
+  private _truncateIdentifierDataAt: number = 4;
 
   // json key that are output through
   // toJSONObject and fromJSONObject
@@ -121,7 +122,8 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
     'truncateAttributeDataAt',
     'showEmbeddedGraph',
     'showRecordIds',
-    'linkToEmbeddedGraph'
+    'linkToEmbeddedGraph',
+    'truncateIdentifierDataAt'
   ]
 
   // getters and setters
@@ -188,6 +190,14 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
     this._linkToEmbeddedGraph = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
+  public get truncateIdentifierDataAt(): number {
+    return this._truncateIdentifierDataAt;
+  }
+  public set truncateIdentifierDataAt(value: number) {
+    this._truncateIdentifierDataAt = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+
 
   /**
    * publish out a "first" real payload so that
@@ -539,6 +549,7 @@ export class SzPrefsService implements OnDestroy {
   public entityDetail?: SzEntityDetailPrefs   = new SzEntityDetailPrefs();
   public graph?: SzGraphPrefs                 = new SzGraphPrefs();
 
+  /** get shallow JSON copy of services object state by calling same method on namespace members */
   public toJSONObject() {
     let retObj: SzSdkPrefsModel = {};
 
@@ -556,7 +567,9 @@ export class SzPrefsService implements OnDestroy {
     }
     return retObj;
   }
+  /** populate values from JSON. bulk import basically. */
   public fromJSONObject(value: SzSdkPrefsModel) {
+    if(!value || value == undefined){ return; }
     const _keys = Object.keys(value);
     _keys.forEach( (_k ) => {
       if( this[_k] && this[_k].fromJSONObject ){
@@ -571,6 +584,7 @@ export class SzPrefsService implements OnDestroy {
       }
     });
   }
+  /** populate objects and values from JSON. bulk import basically */
   public fromJSONString(value: string) {
     let _sVal = JSON.parse(value);
 
@@ -584,12 +598,12 @@ export class SzPrefsService implements OnDestroy {
       this.entityDetail.fromJSONObject( _sVal.entityDetail );
     }
   }
+  /** get a serialized JSON string from current instance. bulk export. */
   public toJSONString(): string {
     return JSON.stringify(this.toJSONObject());
   }
 
   constructor(){
-
     // listen for any prefs changes
     // as one meta-observeable
     const concat_prefchanges = merge(
@@ -605,7 +619,6 @@ export class SzPrefsService implements OnDestroy {
       takeUntil(this.unsubscribe$),
       debounce(() => timer(100))
     ).subscribe((prefsObj ) => {
-      console.log('prefs changed!!', prefsObj);
       this.prefsChanged.next( this.toJSONObject() );
     });
   }

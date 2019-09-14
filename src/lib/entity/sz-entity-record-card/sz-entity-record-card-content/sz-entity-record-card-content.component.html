@@ -15,7 +15,7 @@
       </div>
       <span class="ellipsis-toggle" matTooltip="truncatedTooltip"
       matTooltipPosition="left"
-      *ngIf="columnOneTotal > maxLinesToDisplay && truncateResults">...</span>
+      *ngIf="columnOneTotal > truncateOtherDataAt && truncateResults">...</span>
     </div>
     <div class="search-card__content--column" #columnTwo>
       <div class="line" [class.truncated]="i >= maxLinesToDisplay && truncateResults" *ngFor="let nameAttributeData of getNameAndAttributeData(nameData, attributeData); let i = index">

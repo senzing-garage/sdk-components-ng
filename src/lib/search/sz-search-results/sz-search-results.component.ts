@@ -8,6 +8,7 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'sz-search-results',
@@ -192,12 +193,12 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
     private prefs: SzPrefsService,
     private cd: ChangeDetectorRef
   ) {
-    /*
     this.prefs.searchResults.prefsChanged.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe( (pJson)=>{
-      console.warn('SEARCH RESULTS PREF CHANGE!', pJson);
-    });*/
+      //console.warn('SEARCH RESULTS PREF CHANGE!', pJson);
+      cd.detectChanges();
+    });
   }
 
   ngOnInit() {}

@@ -110,6 +110,9 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   /** toggle collapsed/expanded state of graph */
   toggleExpanded(evt: Event) {
     this.expanded = !this.expanded;
+    if(this.expanded !== !this.prefs.entityDetail.graphSectionCollapsed) {
+      this.prefs.entityDetail.graphSectionCollapsed = !this.expanded;
+    }
   }
   /**
    * on entity node click in the graph.
@@ -191,10 +194,19 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     this.prefs.entityDetail.prefsChanged.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe( (prefs: any) => {
+      let changedStateOnZero = false;
       if(prefs.hideGraphWhenZeroRelations && this.data && this.data.relatedEntities.length == 0){
         this.isOpen = false;
+        changedStateOnZero = true;
       } else if(this.data && this.data.relatedEntities.length == 0 && this.isOpen == false) {
         this.isOpen = true;
+        changedStateOnZero = true;
+      }
+      if(!changedStateOnZero) {
+        if(!prefs.graphSectionCollapsed !== this.isOpen){
+          // sync up
+          this.isOpen = !prefs.graphSectionCollapsed;
+        }
       }
     })
 

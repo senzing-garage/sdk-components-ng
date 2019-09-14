@@ -125,6 +125,14 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   @Input() public set SearchResultsLinkToEmbeddedGraph(value: boolean) {
     this.prefs.searchResults.linkToEmbeddedGraph = value;
   }
+  /** number of lines of "identifier data" shown before ellipsis in search results */
+  public get SearchResultsTruncateIdentifierDataAt(): number {
+    return this.prefs.searchResults.truncateAttributeDataAt;
+  }
+  /** number of lines of "identifier data" shown before ellipsis in search results */
+  @Input() public set SearchResultsTruncateIdentifierDataAt(value: number) {
+    this.prefs.searchResults.truncateAttributeDataAt = value;
+  }
 
   // -----------------------------------------   entity detail ----------------------------
 
@@ -377,11 +385,11 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   // ---------------------------------  end prefs getters/setters  -----------------------
 
   /** which fields to explicitly not show to the user */
-  private editableBlacklist = {
+  @Input() public editableBlacklist = {
     searchForm: [],
-    searchResults: [],
-    entityDetail: [],
-    graph: ['dataSourceColors']
+    searchResults: ['truncateRecordsAt','linkToEmbeddedGraph','showEmbeddedGraph','openInNewTab'],
+    entityDetail: ['openLinksInNewTab'],
+    graph: ['dataSourceColors','openInNewTab','openInSidePanel']
   };
   // just initially get the prefs maps for the UI to reference statically
   public searchFormOptions    = this.getNameSpaceOptions('searchForm');
