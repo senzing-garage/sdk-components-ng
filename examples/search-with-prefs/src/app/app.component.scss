@@ -1,5 +1,14 @@
+@import "sass-burger/_burger.scss";
+
 
 :host {
+  padding-top: 60px;
+  display: block;
+
+  &.menu-expanded {
+    padding-top: 655px;
+  }
+
   .download-pdf {
     padding: 5px 10px;
     display: inline-flex;
@@ -8,5 +17,41 @@
     align-items: center;
 
     svg { margin-right: 5px; }
+  }
+  .static-header {
+    position: fixed;
+    top: 0px;
+    width: 100vw;
+    left: 0px;
+    background-color: #dfdfdf;
+    padding: 5px 0px 5px 0px;
+    z-index: 205;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    &.expanded {
+      .prefs-container { height: 635px; }
+    }
+    .primary-row {
+      flex-grow: 2;
+      margin: 0 10px 0 10px;
+      padding: 2px 0 0 8px;
+      border-radius: 5px;
+      background-color: #fff;
+    }
+    .prefs-container {
+      height: 0px;
+      transition: height 1s;
+      overflow: hidden;
+    }
+    .burger-handle {
+      margin: 5px 20px 5px -1px;
+      cursor: pointer;
+
+      .hamburger {
+        @include burger(25px, 5px, 4px, #444);
+      }
+    }
   }
 }
