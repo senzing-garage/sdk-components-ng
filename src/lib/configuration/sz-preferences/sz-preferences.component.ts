@@ -6,15 +6,31 @@ import { SzSdkPrefsModel, SzPrefsService } from '../../services/sz-prefs.service
 import { takeUntil } from 'rxjs/operators';
 
 /**
- * Provides a service integration web component that can be used to set, read, change, and
+ * Provides a service integration web component(WC) that can be used to set, read, change, and
  * respoond to UI bus event/preference changes.
  *
- * @example
+ * For Angular implementations we recommend using {@link SzPrefsService} as an injectable as it
+ * provides the more robust solution.
+ *
+ * @example <!-- (WC) javascript -->
+ * <sz-preferences id="prefsIntf"></sz-preferences>
+ * document.getElementById('prefsIntf').GraphBuildOut = 5;
+ *
+ * @example <!-- (WC) By attribute: -->
  * <sz-preferences
  * graph-build-out="20">
- * @example
+ *
+ * @example <!-- (WC) show other data in search results: -->
  * <sz-preferences
  * search-results-show-other-data="true">
+ *
+ * @example <!-- (WC) show interactive UI: -->
+ * <sz-preferences
+ * show-controls="true">
+ *
+ * @example <!-- (Angular) -->
+ * <sz-preferences
+ * (prefsChange)="myPrefsChangeHandler($event)">
  *
  * @export
  */
@@ -43,17 +59,28 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   // --------------------------------- start prefs getters/setters -----------------------
 
   // -------------   search form
-  /** the allowed identifier types to show in the search form pulldown */
-  public get SearchFormAllowedTypeAttributes(): string[] {
+  /** the allowed identifier types to show in the search form pulldown
+   * @example
+   * <sz-preferences
+   * search-form-allowed-type-attributes="SSN_NUMBER,DRIVERS_LICENSE_NUMBER">
+  */
+  public get SearchFormAllowedTypeAttributes(): string[] | string {
     return this.prefs.searchForm.allowedTypeAttributes;
   }
   /** the allowed identifier types to show in the search form pulldown */
-  @Input() public set SearchFormAllowedTypeAttributes(value: string[]) {
+  @Input() public set SearchFormAllowedTypeAttributes(value: string[] | string) {
+    if(typeof value == 'string') {
+      value = (value.indexOf(',') > 0) ? value.split(',') : [value];
+    }
     this.prefs.searchForm.allowedTypeAttributes = value;
   }
 
   // -------------   search results
-  /** open a new tab when a user clicks a search result */
+  /** open a new tab when a user clicks a search result
+   * @example
+   * <sz-preferences
+   * search-results-open-in-new-tab="true">
+  */
   public get SearchResultsOpenInNewTab(): boolean {
     return this.prefs.searchResults.openInNewTab;
   }
@@ -383,6 +410,7 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   }
 
   // ---------------------------------  end prefs getters/setters  -----------------------
+  loadFromJSON
 
   /** which fields to explicitly not show to the user */
   @Input() public editableBlacklist = {

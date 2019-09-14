@@ -27,129 +27,84 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content component">
+               <div class="content injectable">
                    <div class="content-data">
 
 
 
 
+
+
+
 <ol class="breadcrumb">
-  <li>Components</li>
-  <li>SzConfigurationComponent</li>
+  <li>Injectables</li>
+  <li>SzConfigurationService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
         <li class="active">
             <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
-        </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info"><p class="comment">
-    <h3>File</h3>
-</p>
-<p class="comment">
-    <code>src/lib/configuration/sz-configuration/sz-configuration.component.ts</code>
-</p>
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/lib/services/sz-configuration.service.ts</code>
+        </p>
 
-    <p class="comment">
-        <h3>Description</h3>
-    </p>
-    <p class="comment">
-        <p>Provides a service integration web component(WC) that can be used to set, read, change, and
-API configuration parameters used through all components.</p>
-<p>For Angular implementations we recommend using <a href="../injectables/SzConfigurationService.html">SzConfigurationService</a> as an injectable as it
-provides the more robust solution.</p>
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Provides a service injectable that can be used to dynamically change the global
+values that are passed throughout all components for API connection requests.</p>
+<p>This service is provided for advanced usage where the connection parameters have to
+change dynamically through the application lifecycle(ie changing request namespace from &#39;<a href="http://api.mydomain.com&#39;">http://api.mydomain.com&#39;</a> to &#39;<a href="http://api.mydomain.com/SUBSECTION&#39;">http://api.mydomain.com/SUBSECTION&#39;</a>).</p>
+<p>If your application just needs its values initialized that should be done by
+passing in a config factory to the <a href="../modules/SenzingSdkModule.html#forRoot">SenzingSdkModule</a> method.</p>
 
-    </p>
-
-
-
-    <p class="comment">
-        <h3>Example</h3>
-    </p>
-    <div class="io-description">
-                <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) SzConfigurationComponent Example - javascript --&gt;&lt;sz-configuration id=&quot;sz-api-conf&quot;&gt;&lt;/sz-preferences&gt;document.getElementById('sz-conf').basePath = 'http://apis.mydomain.com';</code></pre>
-                </div>
-                <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) SzConfigurationComponent Example - By attribute --&gt;&lt;sz-configuration base-path=&quot;http://apis.mydomain.com/api&quot;&gt;&lt;/sz-configuration&gt;</code></pre>
-                </div>
-    </div>
-
-<section>
-    <h3>Metadata</h3>
-    <table class="table table-sm table-hover">
-        <tbody>
+            </p>
 
 
+            <p class="comment">
+                <h3>Example</h3>
+            </p>
+            <div class="io-description">
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">this.apiconf.basePath = 'http://apis.mydomain.com/';</code></pre>
+                        </div>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">this.apiconf.parametersChanged.subscribe( (params) =&gt; { console.log('api connection params changed.', params); })</code></pre>
+                        </div>
+            </div>
 
-
-
-
-
-
-
-
-
-            <tr>
-                <td class="col-md-3">selector</td>
-                <td class="col-md-9"><code>sz-configuration</code></td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-3">styles</td>
-                <td class="col-md-9"><code></code></td>
-            </tr>
-
-
-
-
-
-
-
-
-
-
-        </tbody>
-    </table>
-</section>
-
-    <section>
+            <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
-
-
                 <tr>
                     <td class="col-md-4">
-                        <h6><b>Inputs</b></h6>
+                        <h6><b>Properties</b></h6>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#accessToken">accessToken</a>
+                                    <span class="modifier">Public</span>
+                                <a href="#apiConfiguration">apiConfiguration</a>
                             </li>
                             <li>
-                                <a href="#apiKeys">apiKeys</a>
+                                    <span class="modifier">Public</span>
+                                <a href="#graphApiConfigService">graphApiConfigService</a>
                             </li>
                             <li>
-                                <a href="#basePath">basePath</a>
-                            </li>
-                            <li>
-                                <a href="#password">password</a>
-                            </li>
-                            <li>
-                                <a href="#username">username</a>
-                            </li>
-                            <li>
-                                <a href="#withCredentials">withCredentials</a>
+                                    <span class="modifier">Public</span>
+                                <a href="#prefs">prefs</a>
                             </li>
                         </ul>
                     </td>
@@ -157,18 +112,25 @@ provides the more robust solution.</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <h6><b>Outputs</b></h6>
+                        <h6><b>Methods</b></h6>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#parametersChanged">parametersChanged</a>
+                                    <span class="modifier">Public</span>
+                                <a href="#asConfigurationParameters">asConfigurationParameters</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#fromParameters">fromParameters</a>
                             </li>
                         </ul>
                     </td>
                 </tr>
+
+
 
 
 
@@ -205,13 +167,13 @@ provides the more robust solution.</p>
     </table>
 </section>
 
-    <section>
+            <section>
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(apiConfigService: <a href="../injectables/SzConfigurationService.html">SzConfigurationService</a>)</code>
+<code>constructor(apiConfiguration: SzRestConfiguration, graphApiConfigService: SzGraphConfigurationService, prefs: <a href="../injectables/SzPrefsService.html">SzPrefsService</a>)</code>
                     </td>
                 </tr>
 
@@ -229,10 +191,34 @@ provides the more robust solution.</p>
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>apiConfigService</td>
+                                                        <td>apiConfiguration</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/SzConfigurationService.html" target="_self" >SzConfigurationService</a></code>
+                                                                    <code>SzRestConfiguration</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>graphApiConfigService</td>
+                                                  
+                                                        <td>
+                                                                    <code>SzGraphConfigurationService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>prefs</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SzPrefsService.html" target="_self" >SzPrefsService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -249,161 +235,203 @@ provides the more robust solution.</p>
         </table>
 </section>
 
-    <section>
-    <h3 id="inputs">Inputs</h3>
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="asConfigurationParameters"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            asConfigurationParameters
+                        </b>
+                        <a href="#asConfigurationParameters"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>asConfigurationParameters()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>bulk fetch of sdk configuration parameters. </p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>SzRestConfigurationParameters</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fromParameters"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            fromParameters
+                        </b>
+                        <a href="#fromParameters"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>fromParameters(value: SzRestConfigurationParameters)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>bulk runtime set of sdk configuration </p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                            <code>SzRestConfigurationParameters</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="accessToken"></a>
-                        <b>accessToken</b>
+                        <a name="apiConfiguration"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            apiConfiguration</b>
+                            <a href="#apiConfiguration"><span class="icon ion-ios-link"></span></a>
+                        </span>
                     </td>
                 </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>SzRestConfiguration</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @Inject(SzRestConfiguration)<br />
+                            </code>
+                        </td>
+                    </tr>
+
+
             </tbody>
         </table>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="apiKeys"></a>
-                        <b>apiKeys</b>
+                        <a name="graphApiConfigService"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            graphApiConfigService</b>
+                            <a href="#graphApiConfigService"><span class="icon ion-ios-link"></span></a>
+                        </span>
                     </td>
                 </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>literal type</code>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>SzGraphConfigurationService</code>
 
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>apiKeys to use when connnecting to Api Server</p>
-</div>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+
+
             </tbody>
         </table>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="basePath"></a>
-                        <b>basePath</b>
+                        <a name="prefs"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            prefs</b>
+                            <a href="#prefs"><span class="icon ion-ios-link"></span></a>
+                        </span>
                     </td>
                 </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../injectables/SzPrefsService.html" target="_self" >SzPrefsService</a></code>
 
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>prefix all api requests with this value. most commonly a http or https
-protocol://hostname:port string that your api server can be accessed through</p>
-</div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="password"></a>
-                        <b>password</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                        </td>
+                    </tr>
 
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>password used for challenge respose. </p>
-</div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="username"></a>
-                        <b>username</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>Username to use when using challenge response authentication.</p>
-</div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="withCredentials"></a>
-                        <b>withCredentials</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>whether or not to use CORs for api requests </p>
-</div>
-                    </td>
-                </tr>
             </tbody>
         </table>
 </section>
-    <section>
-    <h3 id="outputs">Outputs</h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="parametersChanged"></a>
-                        <b>parametersChanged</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>Subject&lt;SzRestConfiguration&gt;</code>
 
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>emmitted when a property has been changed.
-used mostly for diagnostics.</p>
-</div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-</section>
-
-
-
-
-    <section>
+            <section>
     <h3 id="accessors">
         Accessors
     </h3>
@@ -634,6 +662,11 @@ used mostly for diagnostics.</p>
                     </td>
                 </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>basePath()</code></span>
+                    </td>
+                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -739,33 +772,11 @@ protocol://hostname:port string that your api server can be accessed through</p>
             </tbody>
         </table>
 </section>
-</div>
-
-
-
-
-    <div class="tab-pane fade " id="c-styleData">
-            <pre class="line-numbers"><code class="language-scss">
-</code></pre>
     </div>
 
 
-    
+
 </div>
-
-<script src="../js/libs/vis.min.js"></script>
-<script src="../js/libs/htmlparser.js"></script>
-<script src="../js/libs/deep-iterator.js"></script>
-<script>
-        var COMPONENT_TEMPLATE = '<div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'}];
-    var DIRECTIVES = [];
-    var ACTUAL_COMPONENT = {'name': 'SzConfigurationComponent'};
-</script>
-<script src="../js/tree.js"></script>
-
-
-
 
 
 
@@ -794,8 +805,8 @@ protocol://hostname:port string that your api server can be accessed through</p>
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
-            var COMPODOC_CURRENT_PAGE_URL = 'SzConfigurationComponent.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'SzConfigurationService.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

@@ -10,6 +10,32 @@ import { SzPrefsService } from '../../services/sz-prefs.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+/**
+ * Provides a graphical search results component. Data can be provided a number of ways.
+ * The simplest of which is to bind the results input setter to the output of the
+ * {@link SzSearchComponent} resultsChange event.
+ *
+ * @example <!-- (Angular) SzSearchComponent -->
+ * <sz-search
+ * name="Isa Creepr"
+ * (resultsChange)="resultsOfSearch=$event"></sz-search>
+ * <sz-search-results [results]="resultsOfSearch"></sz-search-results>
+ * @export
+ *
+ * @example <!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo -->
+ * <sz-search
+ * id="sz-search"
+ * name="Isa Creepr"></sz-search>
+ * <sz-search-results id="sz-search-results"></sz-search-results>
+ * <script>
+ *  var szSearchComponent = document.getElementById('sz-search');
+ *  var szSearchResultsComponent = document.getElementById('sz-search-results');
+ *  szSearchComponent.addEventListener('resultsChange', (evt) => {
+ *    console.log('search results: ', evt);
+ *    szSearchResultsComponent.results = evt.detail;
+ *  });
+ * </script>
+ */
 @Component({
   selector: 'sz-search-results',
   templateUrl: './sz-search-results.component.html',

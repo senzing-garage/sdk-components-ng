@@ -77,6 +77,10 @@ export function SzDefaultRestConfigurationFactory(): SzRestConfiguration {
  */
 const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzRestConfiguration");
 
+/**
+ * Senzing SDK Components Module.
+ * Add to your applications module imports array.
+ */
 @NgModule({
   declarations: [
     SzEntityDetailComponent,

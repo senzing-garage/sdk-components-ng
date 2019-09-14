@@ -16,6 +16,22 @@ import { SzEntitySearchParams } from '../models/entity-search';
 import { SzGraphConfigurationService } from '@senzing/sdk-graph-components';
 import { SzPrefsService } from './sz-prefs.service';
 
+/**
+ * Provides a service injectable that can be used to dynamically change the global
+ * values that are passed throughout all components for API connection requests.
+ *
+ * This service is provided for advanced usage where the connection parameters have to
+ * change dynamically through the application lifecycle(ie changing request namespace from 'http://api.mydomain.com' to 'http://api.mydomain.com/SUBSECTION').
+ *
+ * If your application just needs its values initialized that should be done by
+ * passing in a config factory to the {@link SenzingSdkModule#forRoot} method.
+ *
+ * @example
+ * this.apiconf.basePath = 'http://apis.mydomain.com/';
+ *
+ * @example
+ * this.apiconf.parametersChanged.subscribe( (params) => { console.log('api connection params changed.', params); })
+ */
 @Injectable({
   providedIn: 'root'
 })

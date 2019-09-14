@@ -30,10 +30,10 @@
                <div class="content getting-started">
                    <div class="content-data">
 
-<h1 id="-senzing-sdk-components-ng">@senzing/sdk-components-ng</h1>
-<p><a href="https://travis-ci.com/senzingiris/sdk-components-ng"><img src="https://travis-ci.com/senzingiris/sdk-components-ng.svg?token=WxmiqA9RBhXENsrx41xE&branch=master" alt="Build Status" class="img-responsive"></a></p>
+<h1 id="senzingsdk-components-ng">@senzing/sdk-components-ng</h1>
 <h2 id="overview">Overview</h2>
 <p>This project is for the Senzing&reg; SDK components that can be used in other projects using Angular 7.X.X.</p>
+<p><a href="https://travis-ci.com/senzingiris/sdk-components-ng"><img src="https://travis-ci.com/senzingiris/sdk-components-ng.svg?token=WxmiqA9RBhXENsrx41xE&branch=master" alt="Build Status" class="img-responsive"></a></p>
 <h2 id="dependencies">Dependencies</h2>
 <p>For building from Source:</p>
 <ul>
@@ -138,10 +138,10 @@ export class AppComponent {
 and you should be greeted by a page like with a search box. And search results list right below it.</p>
 <p><img src="docs/images/ss-search-with-results.small.png" alt="screen shot of working example" class="img-responsive"></p>
 <p>And that&#39;s it! At least for the quickstart. There are a ton more options for running the rest server, interacting with the components and services.</p>
-<h2 id="configuration-parameters">Configuration &amp; Parameters</h2>
+<h2 id="configuration--parameters">Configuration &amp; Parameters</h2>
 <p>The SenzingSDKModule accepts a factory method that returns an instance of the
 <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> class. By adding a factory like the following to the forRoot method, you can change services configuration to point to non-default values.</p>
-<p>The following tells any components to turn on CORS functionality and make all api requests to localhost port 8080 (i.e.: <a href="http://localhost:8080/)">http://localhost:8080/)</a>.</p>
+<p>The following tells any components to turn on CORS functionality and make all api requests to localhost port 8080 (i.e.: <a href="http://localhost:8080/">http://localhost:8080/</a>).</p>
 <div><pre class="line-numbers"><code class="language-typescript">import { BrowserModule } from &#39;&#64;angular/platform-browser&#39;;
 import { NgModule } from &#39;&#64;angular/core&#39;;
 import { SenzingSdkModule, SzRestConfiguration } from &#39;&#64;senzing/sdk-components-ng&#39;;
@@ -171,7 +171,7 @@ export class AppModule { }</code></pre></div><h3 id="parameters">Parameters</h3>
 <p>See <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">online documentation</a> for a complete list of configuration parameters that can control the connection behavior of the sdk components.</p>
 <h2 id="documentation">Documentation</h2>
 <p>Installation contains a statically generated API and component references. They can be found in
-node_modules/@senzing/sdk-components-ng/docs or <a href="https://senzing.github.io/sdk-components-ng/">Online here</a>.</p>
+node_modules/@senzing/sdk-components-ng/docs or <a href="https://senzingiris.github.io/sdk-components-ng/">Online here</a>.</p>
 <h2 id="examples">Examples</h2>
 <p>When you check out the source for this repository there is a directory of Angular project examples. Please see the <a href="https://github.com/Senzing/sdk-components-ng/tree/master/examples">Examples Readme</a> for more information on how these work.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
@@ -190,7 +190,7 @@ node_modules/@senzing/sdk-components-ng/docs or <a href="https://senzing.github.
       showing up in the developer console</td>
       <td style="padding: 10px 5px;">
         Set the api configuration to the address and port your rest server is running at by
-        passing in an instance of <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> to the <a href="https://senzing.github.io/sdk-components-ng/modules/SenzingSdkModule.html">SenzingSdkModule.forRoot method</a>.
+        passing in an instance of <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> to the <a href="https://senzingiris.github.io/sdk-components-ng/modules/SenzingSdkModule.html">SenzingSdkModule.forRoot method</a>.
         <br/><br/>
         Double check and make sure you can connect to your rest server via
         <code>curl -i http://localhost:8080/heartbeat</code>
@@ -221,6 +221,7 @@ node_modules/@senzing/sdk-components-ng/docs or <a href="https://senzing.github.
 
 
 
+                   
 
 
 

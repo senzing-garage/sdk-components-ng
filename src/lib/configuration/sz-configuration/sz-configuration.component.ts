@@ -3,6 +3,22 @@ import { Configuration as SzRestConfiguration } from '@senzing/rest-api-client-n
 import { Subject } from 'rxjs';
 import { SzConfigurationService } from '../../services/sz-configuration.service';
 
+/**
+ * Provides a service integration web component(WC) that can be used to set, read, change, and
+ * API configuration parameters used through all components.
+ *
+ * For Angular implementations we recommend using {@link SzConfigurationService} as an injectable as it
+ * provides the more robust solution.
+ *
+ * @example <!-- (WC) SzConfigurationComponent Example - javascript -->
+ * <sz-configuration id="sz-api-conf"></sz-preferences>
+ * document.getElementById('sz-conf').basePath = 'http://apis.mydomain.com';
+ *
+ * @example <!-- (WC) SzConfigurationComponent Example - By attribute -->
+ * <sz-configuration base-path="http://apis.mydomain.com/api"></sz-configuration>
+ *
+ * @export
+ */
 @Component({
   selector: 'sz-configuration',
   template: ``,

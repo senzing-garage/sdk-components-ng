@@ -24,6 +24,28 @@ const parseBool = (value: any): boolean => {
   return false;
 };
 
+/**
+ * The Entity Detail Component.
+ * Generates a complex detail page from input parameters.
+ *
+ * @example <!-- (Angular) -->
+ * <sz-entity-detail
+ *   [showGraphMatchKeys]="true"
+ *   (entityIdChanged)="entityChangedHandler($event)"
+ *   [entityId]="currentlySelectedEntityId"></sz-entity-detail>
+ *
+ * @example <!-- (WC) by attribute -->
+ * <sz-entity-detail
+ *   show-graph-match-keys="true"
+ *   entity-id="1002"></sz-entity-detail>
+ *
+ * @example <!-- (WC) by DOM -->
+ * <sz-entity-detail id="sz-ent-detail"></sz-entity-detail>
+ * <script>
+ * document.getElementById('sz-ent-detail').entityId = 1002;
+ * document.getElementById('sz-ent-detail').addEventListener('entityIdChanged', (entId) => { console.log('entity id changed!', entId); })
+ * </script>
+ */
 @Component({
   selector: 'sz-entity-detail',
   templateUrl: './sz-entity-detail.component.html',
@@ -48,7 +70,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    * Takes a collection or a single value of layout enum css classnames to pass
    * to all children components. this value overrides auto-responsive css adjustments.
    *
-   * @example forceLayout="layout-narrow"
+   * @example forceLayout='layout-narrow'
    *
    * @memberof SzEntityDetailComponent
    */

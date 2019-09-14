@@ -55,13 +55,37 @@ const parseBool = (value: any): boolean => {
 /**
  * Provides a search box component that can execute search queries and return results.
  *
- * @example
+ * @example <!-- (WC javascript) SzSearchComponent -->
+ * <sz-search
+ * id="sz-search"
+ * name="Isa Creepr"></sz-search>
+ * <script>
+ *  document.getElementById('sz-search').addEventListener('resultsChange', (results) => {
+ *    console.log('search results: ', results);
+ *  });
+ * </script>
+ *
+ * @example <!-- (Angular) SzSearchComponent -->
  * <sz-search
  * name="Isa Creepr"
  * (resultsChange)="myResultsHandler($event)"
  * (searchStart)="showSpinner()"
- * (searchEnd)="hideSpinner()">
+ * (searchEnd)="hideSpinner()"></sz-search>
  * @export
+ *
+ * @example <!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo -->
+ * <sz-search
+ * id="sz-search"
+ * name="Isa Creepr"></sz-search>
+ * <sz-search-results id="sz-search-results"></sz-search-results>
+ * <script>
+ *  var szSearchComponent = document.getElementById('sz-search');
+ *  var szSearchResultsComponent = document.getElementById('sz-search-results');
+ *  szSearchComponent.addEventListener('resultsChange', (evt) => {
+ *    console.log('search results: ', evt);
+ *    szSearchResultsComponent.results = evt.detail;
+ *  });
+ * </script>
  */
 @Component({
   selector: 'sz-search',
