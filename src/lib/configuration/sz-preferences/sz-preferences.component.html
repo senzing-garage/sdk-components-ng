@@ -1,3 +1,76 @@
-<div class="sz-preferences">
-    <h2>SzPreferences Component</h2>
+<div *ngIf="showControls" class="sz-preferences">
+    <div class="prefs-ui-lists">
+        <!-- start search form prefs
+        <div class="prefs-ui-column">
+            <h4 class="title">Search</h4>
+            <ul class="prefs-ui-column-inner">
+                <li *ngFor="let opt of searchFormOptions; let i = index">
+                    <input *ngIf="opt.inputType == 'checkbox'" [attr.id]="'c1-opts-search-form-'+ i" type="checkbox"
+                    [checked]="boolPrefChecked('searchForm', opt.name)"
+                    (change)="updateBoolPrefValue('searchForm', opt.name, $event)">
+
+                    <input *ngIf="opt.inputType == 'number'" [attr.id]="'c1-opts-search-form-'+ i" type="number"
+                    min="1" max="90" size="2"
+                    [value]="prefValAsInt('searchForm', opt.name)"
+                    (change)="updateIntPrefValue('searchForm', opt.name, $event)">
+                    <label [attr.for]="'c1-opts-search-form-'+ i">{{ toSentenceCase(opt.name) | titlecase }}</label>
+                </li>
+            </ul>
+        </div>
+         end search form prefs -->
+        <!-- start search results prefs -->
+        <div class="prefs-ui-column">
+            <h4 class="title">Search Results</h4>
+            <ul class="prefs-ui-column-inner">
+                <li *ngFor="let opt of searchResultsOptions; let i = index" [attr.pref-key]="opt.name">
+                    <input *ngIf="opt.inputType == 'checkbox'" [attr.id]="'c2-opts-search-results-'+ i" type="checkbox"
+                    [checked]="boolPrefChecked('searchResults', opt.name)"
+                    (change)="updateBoolPrefValue('searchResults', opt.name, $event)">
+
+                    <input *ngIf="opt.inputType == 'number'" [attr.id]="'c2-opts-search-results-'+ i" type="number"
+                    min="1" max="90" size="2"
+                    [value]="prefValAsInt('searchResults', opt.name)"
+                    (change)="updateIntPrefValue('searchResults', opt.name, $event)">
+                    <label [attr.for]="'c2-opts-search-results-'+ i">{{ toSentenceCase(opt.name) | titlecase }}<!-- <span class="pref-key">({{opt.name}})</span> --></label>
+                </li>
+            </ul>
+        </div>
+        <!-- end search results prefs -->
+        <!-- start entity detail prefs -->
+        <div class="prefs-ui-column">
+            <h4 class="title">Entity Detail</h4>
+            <ul class="prefs-ui-column-inner">
+                <li *ngFor="let opt of entityDetailOptions; let i = index">
+                    <input *ngIf="opt.inputType == 'checkbox'" [attr.id]="'c3-opts-entityDetail-'+ i" type="checkbox"
+                    [checked]="boolPrefChecked('entityDetail', opt.name)"
+                    (change)="updateBoolPrefValue('entityDetail', opt.name, $event)">
+
+                    <input *ngIf="opt.inputType == 'number'" [attr.id]="'c3-opts-entityDetail-'+ i" type="number"
+                    min="1" max="90" size="2"
+                    [value]="prefValAsInt('entityDetail', opt.name)"
+                    (change)="updateIntPrefValue('entityDetail', opt.name, $event)">
+                    <label [attr.for]="'c3-opts-entityDetail-'+ i">{{ toSentenceCase(opt.name) | titlecase }}</label>
+                </li>
+            </ul>
+        </div>
+        <!-- end entity detail prefs -->
+        <!-- start graph prefs -->
+        <div class="prefs-ui-column">
+            <h4 class="title">Graph</h4>
+            <ul class="prefs-ui-column-inner">
+                <li *ngFor="let opt of graphOptions; let i = index">
+                    <input *ngIf="opt.inputType == 'checkbox'" [attr.id]="'c4-opts-graph-'+ i" type="checkbox"
+                    [checked]="boolPrefChecked('graph', opt.name)"
+                    (change)="updateBoolPrefValue('graph', opt.name, $event)">
+
+                    <input *ngIf="opt.inputType == 'number'" [attr.id]="'c4-opts-graph-'+ i" type="number"
+                    min="1" max="90" size="2"
+                    [value]="prefValAsInt('graph', opt.name)"
+                    (change)="updateIntPrefValue('graph', opt.name, $event)">
+                    <label [attr.for]="'c4-opts-graph-'+ i">{{ toSentenceCase(opt.name) | titlecase }}</label>
+                </li>
+            </ul>
+        </div>
+        <!-- end graph prefs -->
+    </div>
 </div>

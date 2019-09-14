@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, ViewContainerRef, TemplateRef, Input, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, ViewContainerRef, TemplateRef, Input, OnDestroy, HostBinding } from '@angular/core';
 import {
   SzEntitySearchParams,
   SzAttributeSearchResult,
@@ -26,6 +26,9 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   public currentlySelectedEntityId: number = 1002;
   public currentSearchParameters: SzEntitySearchParams;
   public showSearchResults = false;
+  // public showPrefs = true;
+  @HostBinding('class.menu-expanded') showPrefs =  false;
+
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
 
