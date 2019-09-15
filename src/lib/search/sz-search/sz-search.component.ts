@@ -154,8 +154,7 @@ export class SzSearchComponent implements OnInit, OnDestroy {
    * emmitted when the search results have been changed.
    * @memberof SzSearchComponent
    */
-  @Output('resultsChange')
-  searchResults: Subject<SzAttributeSearchResult[]> = new Subject<SzAttributeSearchResult[]>();
+  @Output('resultsChange') searchResults: Subject<SzAttributeSearchResult[]> = new Subject<SzAttributeSearchResult[]>();
   /**
    * emmitted when parameters of the search have been changed.
    *
