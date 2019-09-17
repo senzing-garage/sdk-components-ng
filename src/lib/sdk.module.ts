@@ -54,6 +54,8 @@ import { SzSearchResultCardHeaderComponent } from './search/sz-search-result-car
 import { SzConfigurationAboutComponent } from './configuration/sz-configuration-about/sz-configuration-about.component';
 import { SzConfigurationComponent } from './configuration/sz-configuration/sz-configuration.component';
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
+import { SzPreferencesComponent } from './configuration/sz-preferences/sz-preferences.component';
+
 
 /**
  * Sets up a default set of service parameters for use
@@ -75,6 +77,10 @@ export function SzDefaultRestConfigurationFactory(): SzRestConfiguration {
  */
 const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzRestConfiguration");
 
+/**
+ * Senzing SDK Components Module.
+ * Add to your applications module imports array.
+ */
 @NgModule({
   declarations: [
     SzEntityDetailComponent,
@@ -97,7 +103,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultCardHeaderComponent,
     SzConfigurationAboutComponent,
     SzConfigurationComponent,
-    SzPoweredByComponent
+    SzPoweredByComponent,
+    SzPreferencesComponent
   ],
   imports: [
     CommonModule,
@@ -117,16 +124,19 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzConfigurationComponent,
     SzConfigurationAboutComponent,
     SzEntityDetailGraphComponent,
-    SzEntityDetailGraphControlComponent
+    SzEntityDetailGraphControlComponent,
+    SzPreferencesComponent
   ],
   /** for components being exported as web components */
   entryComponents: [
     SzEntityDetailComponent,
+    SzEntityDetailGraphComponent,
     SzSearchComponent,
     SzSearchResultsComponent,
     SzPoweredByComponent,
     SzConfigurationComponent,
-    SzConfigurationAboutComponent
+    SzConfigurationAboutComponent,
+    SzPreferencesComponent
   ],
   providers: [
     SzMessageBundleService,

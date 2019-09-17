@@ -1,15 +1,28 @@
-<div style="text-align:left; font-weight: bold; font-size: 1.5em">
-  @senzing/sdk-components-ng/examples/search-with-prefs
-</div>
-<div style="text-align:left; text-decoration: italic; font-size: 0.8em; margin: 2px 0 10px 0;">
-  An example Angular app showing usage of the sz-search, sz-search-results,
-  and prefs service.
+<div class="static-header" [class.expanded]="showPrefs">
+  <div class="primary-row">
+      <div style="text-align:left; font-weight: bold; font-size: 1.5em">
+        @senzing/sdk-components-ng/examples/search-with-prefs
+      </div>
+      <div style="text-align:left; text-decoration: italic; font-size: 0.8em; margin: 2px 0 10px 0;">
+        An example Angular app showing usage of the sz-search, sz-search-results,
+        and prefs service.
+      </div>
+  </div>
+  <div class="burger-handle" (click)="showPrefs=!showPrefs"><div class="hamburger"></div></div>
+  <div class="prefs-container">
+    <!-- start prefs service box -->
+    <sz-preferences #prefsComponent
+    showControls="true"
+    ></sz-preferences>
+    <!--  end prefs service box  -->
+  </div>
 </div>
 
 <!-- start search box -->
 <div class="component-example">
   <sz-search
     #searchBox
+    name="Elizabeth Jones"
     disableIdentifierOptions="SSN_LAST4"
     enableIdentifierOptions="SOCIAL_NETWORK"
     (resultsChange)="onSearchResults($event)"
@@ -18,10 +31,6 @@
     (parameterChange)="onSearchParameterChange($event)"></sz-search>
 </div>
 <!-- end search box -->
-
-<!-- start prefs manager box -->
-<sz-prefs-manager></sz-prefs-manager>
-<!--  end prefs manager box  -->
 
 <!-- start graph context menu template -->
 <ng-template #graphContextMenu let-entityEvt>

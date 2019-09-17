@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, EventEmitter, ElementRef } from '@angular/core';
+import { Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -110,6 +110,9 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   /** toggle collapsed/expanded state of graph */
   toggleExpanded(evt: Event) {
     this.expanded = !this.expanded;
+    if(this.expanded !== !this.prefs.entityDetail.graphSectionCollapsed) {
+      this.prefs.entityDetail.graphSectionCollapsed = !this.expanded;
+    }
   }
   /**
    * on entity node click in the graph.
@@ -165,7 +168,8 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    public prefs: SzPrefsService
+    public prefs: SzPrefsService,
+    private cd: ChangeDetectorRef
   ) {}
 
   /**
@@ -190,10 +194,19 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     this.prefs.entityDetail.prefsChanged.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe( (prefs: any) => {
+      let changedStateOnZero = false;
       if(prefs.hideGraphWhenZeroRelations && this.data && this.data.relatedEntities.length == 0){
         this.isOpen = false;
+        changedStateOnZero = true;
       } else if(this.data && this.data.relatedEntities.length == 0 && this.isOpen == false) {
         this.isOpen = true;
+        changedStateOnZero = true;
+      }
+      if(!changedStateOnZero) {
+        if(!prefs.graphSectionCollapsed !== this.isOpen){
+          // sync up
+          this.isOpen = !prefs.graphSectionCollapsed;
+        }
       }
     })
 
@@ -250,5 +263,8 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
         this.reload();
       }
     }
+
+    // update view manually (for web components redraw reliability)
+    this.cd.detectChanges();
   }
 }

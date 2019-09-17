@@ -42,6 +42,9 @@
     <li  class="active" >
         <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
     </li>
+    <li >
+        <a href="#readme" role="tab" id="readme-tab" data-toggle="tab" data-link="readme">README</a>
+    </li>
 </ul>
 
 <div class="tab-content">
@@ -55,6 +58,14 @@
         </p>
 
 
+        <p class="comment">
+            <h3>Description</h3>
+        </p>
+        <p class="comment">
+            <p>Senzing SDK Components Module.
+Add to your applications module imports array.</p>
+
+        </p>
 
 
         <div class="container-fluid module">
@@ -74,6 +85,9 @@
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzPoweredByComponent.html">SzPoweredByComponent</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../components/SzPreferencesComponent.html">SzPreferencesComponent</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzSearchComponent.html">SzSearchComponent</a>
@@ -97,7 +111,13 @@
                             <a href="../components/SzEntityDetailComponent.html">SzEntityDetailComponent</a>
                         </li>
                         <li class="list-group-item">
+                            <a href="../components/SzEntityDetailGraphComponent.html">SzEntityDetailGraphComponent</a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="../components/SzPoweredByComponent.html">SzPoweredByComponent</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../components/SzPreferencesComponent.html">SzPreferencesComponent</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzSearchComponent.html">SzSearchComponent</a>
@@ -112,7 +132,13 @@
                             title="Official documentation about module providers"><span class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
+                            <a href="../injectables/SzConfigurationService.html">SzConfigurationService</a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="../injectables/SzPdfUtilService.html">SzPdfUtilService</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../injectables/SzPrefsService.html">SzPrefsService</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../injectables/SzSearchService.html">SzSearchService</a>
@@ -139,6 +165,9 @@
                             <a href="../components/SzPoweredByComponent.html">SzPoweredByComponent</a>
                         </li>
                         <li class="list-group-item">
+                            <a href="../components/SzPreferencesComponent.html">SzPreferencesComponent</a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="../components/SzSearchComponent.html">SzSearchComponent</a>
                         </li>
                         <li class="list-group-item">
@@ -151,88 +180,115 @@
 
         <section>
     
-        <h3 id="methods">
-            Methods
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="forRoot"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Static</span>
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="forRoot"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Static</span>
                             forRoot
-                            </b>
-                            <a href="#forRoot"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>forRoot(apiConfigFactory?: () => void)</code>
-                    </td>
-                </tr>
+                        </b>
+                        <a href="#forRoot"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>forRoot(apiConfigFactory?: () => void)</code>
+                </td>
+            </tr>
 
 
 
 
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>initialize the SenzingSdkModule with an optional factory method that returns a <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> instance.</p>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>initialize the SenzingSdkModule with an optional factory method that returns a <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> instance.</p>
 </div>
 
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>apiConfigFactory</td>
-                                                        <td>
-                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            Yes
-                                                    </td>
-                                                    
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>apiConfigFactory</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                    </td>
 
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                                    <b>Example :</b>
-                                        <div>
-                                            <pre class="line-numbers"><code class="language-html">export function SzRestConfigurationFactory() {
-return new SzRestConfiguration({ basePath: &quot;myapiserverhostname.com:8080&quot;, withCredentials: true });
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">export function SzRestConfigurationFactory() {
+return new SzRestConfiguration({ basePath: &amp;quot;myapiserverhostname.com:8080&amp;quot;, withCredentials: true });
 }
 SenzingSdkModule.forRoot( SzRestConfigurationFactory )</code></pre>
-                                        </div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code><a href="https://angular.io/api/core/ModuleWithProviders" target="_blank" >ModuleWithProviders</a></code>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://angular.io/api/core/ModuleWithProviders" target="_blank" >ModuleWithProviders</a></code>
 
-                            </div>
-                                <div class="io-description">
-                                    
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>
-
     </div>
 
+    <div class="tab-pane fade " id="c-readme">
+        <p><h1 id="sdk-module-installation-and-usage">SDK Module Installation and Usage</h1>
+<h2 id="installation">Installation</h2>
+<p>Open up a terminal to your application root and type <code>npm install @senzing/sdk-components-ng --save</code>.</p>
+<h2 id="add-to-appmodulets">Add to app.module.ts</h2>
+<p>Now open up your applications main module file, in most cases this will be app.module.ts for projects generated by angular-cli.</p>
+<div><pre class="line-numbers"><code class="language-typescript">import { BrowserModule } from &#39;&#64;angular/platform-browser&#39;;
+import { NgModule } from &#39;&#64;angular/core&#39;;
+import { SenzingSdkModule } from &#39;&#64;senzing/sdk-components-ng&#39;;
+
+import { AppComponent } from &#39;./app.component&#39;;
+
+&#64;NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    SenzingSdkModule.forRoot()
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }</code></pre></div><p>Now start up your application and start adding tags or referencing services. The simplest
+ way to test that things are set up correctly is to add the static <em>sz-powered-by</em> tag
+ to your applications html template.</p>
+<div><pre class="line-numbers"><code class="language-html">&lt;sz-powered-by&gt;&lt;/sz-powered-by&gt;</code></pre></div></p>
+    </div>
 
 </div>
 
@@ -245,6 +301,7 @@ SenzingSdkModule.forRoot( SzRestConfigurationFactory )</code></pre>
 
 
 
+                   
 
 
 

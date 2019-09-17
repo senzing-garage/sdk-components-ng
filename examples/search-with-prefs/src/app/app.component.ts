@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, ViewContainerRef, TemplateRef, Input, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, ViewContainerRef, TemplateRef, Input, OnDestroy, HostBinding, Inject } from '@angular/core';
 import {
   SzEntitySearchParams,
   SzAttributeSearchResult,
@@ -8,12 +8,15 @@ import {
   SzEntityDetailComponent,
   SzEntityData,
   SzPrefsService,
-  SzConfigurationService
+  SzSdkPrefsModel,
+  SzConfigurationService,
+  SzPreferencesComponent
 } from '@senzing/sdk-components-ng';
 import { tap, filter, take, takeUntil } from 'rxjs/operators';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Subscription, fromEvent, Subject } from 'rxjs';
+import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 
 @Component({
   selector: 'app-root',
@@ -21,48 +24,64 @@ import { Subscription, fromEvent, Subject } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
+  /** current results from search */
   public currentSearchResults: SzAttributeSearchResult[];
-  public currentlySelectedEntityId: number = 1002;
+  /** entity id to disply in detail component */
+  public currentlySelectedEntityId: number;
+  /** current search params being used */
   public currentSearchParameters: SzEntitySearchParams;
+  /** show search results component. turned off until we have a search result */
   public showSearchResults = false;
+  // prefs related vars
+  /** localstorage key to store pref data in */
+  public STORAGE_KEY = 'senzing-web-app';
+  /** original json value when app was loaded */
+  private _localStorageOriginalValue: SzSdkPrefsModel = this.storage.get(this.STORAGE_KEY);
+  /** local cached json model of prefs */
+  private _prefsJSON: SzSdkPrefsModel;
+  /** css class for when menu bar is expanded */
+  @HostBinding('class.menu-expanded') showPrefs =  false;
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
+  /** search form component */
+  @ViewChild('searchBox') searchBox: SzSearchComponent;
+  /** entity detail component */
+  @ViewChild(SzEntityDetailComponent) entityDetailComponent: SzEntityDetailComponent;
+  /** context menu to use on graph interaction */
+  @ViewChild('graphContextMenu') graphContextMenu: TemplateRef<any>;
+  /** preferences service interface/proxy component */
+  @ViewChild(SzPreferencesComponent) prefsComponent: SzPreferencesComponent;
 
-  public set showGraphMatchKeys(value: boolean) {
-    if (this.entityDetailComponent){
-      this.entityDetailComponent.showGraphMatchKeys = value;
-    }
-  }
-  public get showGraphMatchKeys(): boolean {
-    if (this.entityDetailComponent){
-      // console.log('showGraphMatchKeys: ', this.entityDetailComponent.showGraphMatchKeys);
-      return this.entityDetailComponent.showGraphMatchKeys;
-    }
-   return false;
-  }
+  ctxMenusub: Subscription;
+  overlayRef: OverlayRef | null;
 
+  /** show search results component */
   public get showSearchResultDetail(): boolean {
     if (this.currentlySelectedEntityId && this.currentlySelectedEntityId > 0) {
       return true;
     }
     return false;
   }
-  @ViewChild('searchBox') searchBox: SzSearchComponent;
-  @ViewChild(SzEntityDetailComponent) entityDetailComponent: SzEntityDetailComponent;
-  @ViewChild('graphContextMenu') graphContextMenu: TemplateRef<any>;
-  sub: Subscription;
-  overlayRef: OverlayRef | null;
-
-  public get showPdfDownloadButton(): boolean {
-    return (this.currentSearchResults !== undefined && this.currentSearchResults && this.currentSearchResults.length > 0);
+  /** save value of  _prefsJSON to local storage */
+  savePrefsToLocalStorage() {
+    this.storage.set(this.STORAGE_KEY, this._prefsJSON);
+  }
+  /** get prefs json from local storage */
+  getPrefsFromLocalStorage() {
+    return this.storage.get(this.STORAGE_KEY);
   }
 
+  // --------------------------------------------------  lifecycle related
   constructor(
     public pdfUtil: SzPdfUtilService,
     public searchService: SzSearchService,
     public overlay: Overlay,
     public prefs: SzPrefsService,
-    public viewContainerRef: ViewContainerRef){}
+    @Inject(LOCAL_STORAGE) private storage: StorageService,
+    public viewContainerRef: ViewContainerRef){
+      // initialize prefs from localStorage value
+      this.prefs.fromJSONObject(this._localStorageOriginalValue);
+    }
 
   ngAfterViewInit() {
     const searchParams = this.searchBox.getSearchParams();
@@ -76,6 +95,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.prefs.prefsChanged.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe( (srprefs) => {
+      this._prefsJSON = srprefs;
+      this.savePrefsToLocalStorage();
       // console.warn('consumer prefs change: ', srprefs);
     });
   }
@@ -88,33 +109,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  onSearchException(err: Error) {
-    throw (err.message);
-  }
-
-  onSearchResults(evt: SzAttributeSearchResult[]){
-    // store on current scope
-    this.currentSearchResults = evt;
-    // results module is bound to this property
-
-    // show results
-    this.showSearchResults = true;
-  }
-
-  public onBackToSearchResultsClick($event): void {
-    this.showSearchResults = true;
-    this.currentlySelectedEntityId = undefined;
-  }
-
-  public onPDFDownloadClick(): void {
-    this.pdfUtil.createPdfFromAttributeSearch( this.currentSearchResults, this.currentSearchParameters );
-  }
-
-  public onEntityPDFDownloadClick(): void {
-    const filename = this.entityDetailComponent.entity.resolvedEntity.entityName.toLowerCase().replace(' ', '-entity') + '.pdf';
-    this.pdfUtil.createPdfFromHtmlElement(this.entityDetailComponent.nativeElement, filename);
-  }
-
+  // ------------------------------------------- start graph context menu related
   public onGraphEntityClick(event: any): void {
     console.log('clicked on graph entity #' + event.entityId);
   }
@@ -124,7 +119,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   public onGraphContextClick(event: any): void {
     this.openContextMenu(event);
   }
-
   openGraphItemInNewMenu(entityId: number) {
     window.open('/entity/' + entityId, '_blank');
   }
@@ -151,7 +145,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       $implicit: event
     }));
 
-    this.sub = fromEvent<MouseEvent>(document, 'click')
+    this.ctxMenusub = fromEvent<MouseEvent>(document, 'click')
       .pipe(
         filter(evt => {
           const clickTarget = evt.target as HTMLElement;
@@ -164,31 +158,18 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   }
 
   closeContextMenu() {
-    if (this.sub){
-      this.sub.unsubscribe();
+    if (this.ctxMenusub){
+      this.ctxMenusub.unsubscribe();
     }
     if (this.overlayRef) {
       this.overlayRef.dispose();
       this.overlayRef = null;
     }
   }
+  // ------------------------------------------- end graph context menu related
 
-  public togglePref(prefGroup: string, prefKey): void {
-    if (prefGroup && this.prefs[prefGroup]){
-      this.prefs[prefGroup][prefKey] = !this.prefs[prefGroup][prefKey] ;
-    }
-  }
-
-  public toggleGraphMatchKeys(event): void {
-    let _checked = false;
-    if (event.target) {
-      _checked = event.target.checked;
-    } else if (event.srcElement) {
-      _checked = event.srcElement.checked;
-    }
-    this.showGraphMatchKeys = _checked;
-  }
-
+  // ------------------------------------------- event handlers
+  /** when a search result is clicked show the entity detail component */
   public onSearchResultClick(entityData: SzAttributeSearchResult){
     // console.log('onSearchResultClick: ', entityData);
     if (entityData && entityData.entityId > 0) {
@@ -199,16 +180,34 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       this.showSearchResults = true;
     }
   }
-
+  /** clear the current search results */
   public onSearchResultsCleared(searchParams: SzEntitySearchParams){
     // hide search results
     this.showSearchResults = false;
     this.currentSearchResults = undefined;
     this.currentlySelectedEntityId = undefined;
   }
-
+  /** store the current parameters on scope */
   public onSearchParameterChange(searchParams: SzEntitySearchParams) {
     // console.log('onSearchParameterChange: ', searchParams);
     this.currentSearchParameters = searchParams;
+  }
+
+  onSearchException(err: Error) {
+    throw (err.message);
+  }
+  /** when search results come back from component update local value */
+  onSearchResults(evt: SzAttributeSearchResult[]){
+    // store on current scope
+    this.currentSearchResults = evt;
+    // results module is bound to this property
+
+    // show results
+    this.showSearchResults = true;
+  }
+  /** hide the detail component and show the search results */
+  public onBackToSearchResultsClick($event): void {
+    this.showSearchResults = true;
+    this.currentlySelectedEntityId = undefined;
   }
 }

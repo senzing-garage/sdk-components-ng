@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -59,7 +59,8 @@ export class SzEntityDetailHeaderContentComponent implements OnDestroy, OnInit {
   _matchKeys: string[];
 
   constructor(
-    public prefs: SzPrefsService
+    public prefs: SzPrefsService,
+    private cd: ChangeDetectorRef
   ) {}
 
   /**
@@ -83,7 +84,9 @@ export class SzEntityDetailHeaderContentComponent implements OnDestroy, OnInit {
     this.showRecordIdWhenNative = prefs.showRecordIdWhenNative;
     this.truncateOtherDataAt = prefs.truncateSummaryAt;
     this.maxLinesToDisplay = prefs.truncateSummaryAt;
-    // console.warn(`SzEntityDetailHeaderContentComponent.onPrefsChange: `, prefs.truncateSummaryAt);
+
+    // update view manually (for web components redraw reliability)
+    this.cd.detectChanges();
   }
 
   public get hasRecordId(): boolean {

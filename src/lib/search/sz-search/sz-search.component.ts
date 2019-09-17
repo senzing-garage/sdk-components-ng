@@ -55,13 +55,37 @@ const parseBool = (value: any): boolean => {
 /**
  * Provides a search box component that can execute search queries and return results.
  *
- * @example
+ * @example <!-- (WC javascript) SzSearchComponent -->
+ * <sz-search
+ * id="sz-search"
+ * name="Isa Creepr"></sz-search>
+ * <script>
+ *  document.getElementById('sz-search').addEventListener('resultsChange', (results) => {
+ *    console.log('search results: ', results);
+ *  });
+ * </script>
+ *
+ * @example <!-- (Angular) SzSearchComponent -->
  * <sz-search
  * name="Isa Creepr"
  * (resultsChange)="myResultsHandler($event)"
  * (searchStart)="showSpinner()"
- * (searchEnd)="hideSpinner()">
+ * (searchEnd)="hideSpinner()"></sz-search>
  * @export
+ *
+ * @example <!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo -->
+ * <sz-search
+ * id="sz-search"
+ * name="Isa Creepr"></sz-search>
+ * <sz-search-results id="sz-search-results"></sz-search-results>
+ * <script>
+ *  var szSearchComponent = document.getElementById('sz-search');
+ *  var szSearchResultsComponent = document.getElementById('sz-search-results');
+ *  szSearchComponent.addEventListener('resultsChange', (evt) => {
+ *    console.log('search results: ', evt);
+ *    szSearchResultsComponent.results = evt.detail;
+ *  });
+ * </script>
  */
 @Component({
   selector: 'sz-search',
@@ -130,8 +154,7 @@ export class SzSearchComponent implements OnInit, OnDestroy {
    * emmitted when the search results have been changed.
    * @memberof SzSearchComponent
    */
-  @Output('resultsChange')
-  searchResults: Subject<SzAttributeSearchResult[]> = new Subject<SzAttributeSearchResult[]>();
+  @Output('resultsChange') searchResults: Subject<SzAttributeSearchResult[]> = new Subject<SzAttributeSearchResult[]>();
   /**
    * emmitted when parameters of the search have been changed.
    *
@@ -519,7 +542,7 @@ export class SzSearchComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private configService: ConfigService,
-    private ref: ChangeDetectorRef,
+    private cd: ChangeDetectorRef,
     private apiConfigService: SzConfigurationService,
     private prefs: SzPrefsService,
     private searchService: SzSearchService,
@@ -540,8 +563,8 @@ export class SzSearchComponent implements OnInit, OnDestroy {
             this.allowedTypeAttributes,
             this.matchingAttributes);*/
 
-            this.ref.markForCheck();
-            this.ref.detectChanges();
+            this.cd.markForCheck();
+            this.cd.detectChanges();
           }
           // otherwise wait for initial response
         }
@@ -657,8 +680,8 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     .subscribe((attributeTypes: SzAttributeType[]) => {
       // yup
       this.inputAttributeTypes = attributeTypes;
-      this.ref.markForCheck();
-      this.ref.detectChanges();
+      this.cd.markForCheck();
+      this.cd.detectChanges();
     }, (err)=> {
       this.searchException.next( err ); //TODO: remove in breaking change release
       this.exception.next( err );

@@ -20,6 +20,10 @@ describe('SzEntityDetailSectionSummaryComponent', () => {
     component.section = {total: 0, title: ''};
   });
 
+  afterEach(() => {
+    fixture.destroy();
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
