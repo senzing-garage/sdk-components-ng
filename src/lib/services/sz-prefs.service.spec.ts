@@ -100,8 +100,6 @@ describe('SzPrefsService', () => {
     service.fromJSONString( JSON.stringify(mockData) );
   });
   it('can set preferences via fromJSONObject()', (done) => {
-    console.log('-------------- DEBUG --------------- \n\r', JSON.stringify(mockData, null, 2));
-
     service.prefsChanged.pipe(
       /** filter because the first publish is always empty object */
       filter( (g: SzSdkPrefsModel) => {
@@ -123,7 +121,6 @@ describe('SzPrefsService', () => {
         return g && g.searchForm;
       })
     ).subscribe((g: SzSdkPrefsModel) => {
-      //console.log('------------------- DEBUG ------------', Object.keys(g).join(', '));
        expect(g.searchForm.allowedTypeAttributes).toEqual([
         'PASSPORT_NUMBER',
         'NATIONAL_ID_NUMBER',
