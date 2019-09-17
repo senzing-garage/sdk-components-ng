@@ -1,7 +1,7 @@
 <div *ngIf="showControls" class="sz-preferences">
     <div class="prefs-ui-lists">
         <!-- start search form prefs
-        <div class="prefs-ui-column">
+        <div class="prefs-ui-column prefs-ui-column-search-form">
             <h4 class="title">Search</h4>
             <ul class="prefs-ui-column-inner">
                 <li *ngFor="let opt of searchFormOptions; let i = index" [attr.pref-key]="opt.name">
@@ -19,7 +19,7 @@
         </div>
          end search form prefs -->
         <!-- start search results prefs -->
-        <div class="prefs-ui-column">
+        <div class="prefs-ui-column prefs-ui-column-search-results">
             <h4 class="title">Search Results</h4>
             <ul class="prefs-ui-column-inner">
                 <li *ngFor="let opt of searchResultsOptions; let i = index" [attr.pref-key]="opt.name">
@@ -37,7 +37,7 @@
         </div>
         <!-- end search results prefs -->
         <!-- start entity detail prefs -->
-        <div class="prefs-ui-column">
+        <div class="prefs-ui-column prefs-ui-column-entity-detail">
             <h4 class="title">Entity Detail</h4>
             <ul class="prefs-ui-column-inner">
                 <li *ngFor="let opt of entityDetailOptions; let i = index" [attr.pref-key]="opt.name">
@@ -55,7 +55,7 @@
         </div>
         <!-- end entity detail prefs -->
         <!-- start graph prefs -->
-        <div class="prefs-ui-column">
+        <div class="prefs-ui-column prefs-ui-column-graph">
             <h4 class="title">Graph</h4>
             <ul class="prefs-ui-column-inner">
                 <li *ngFor="let opt of graphOptions; let i = index" [attr.pref-key]="opt.name">

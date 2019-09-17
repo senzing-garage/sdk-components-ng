@@ -694,9 +694,9 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
    * useful for not getting notified on bulk property sets.
    */
   public set rememberStateOptions(value: boolean) {
-    // this one doesnt need to push "next" to event bus
-    // rather it controls whether the other setters send to event bus
+    // it controls whether the other setters send to event bus
     this._rememberStateOptions = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** maximum degrees of separatation between relationships */
   public get maxDegreesOfSeparation(): number {

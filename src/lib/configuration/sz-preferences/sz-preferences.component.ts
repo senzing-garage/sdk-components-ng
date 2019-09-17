@@ -117,7 +117,7 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
     return this.prefs.searchResults.truncateRecordsAt;
   }
   /** number of lines shown before ellipsis in search results */
-  @Input() public set SearchResultsruncateRecordsAt(value: number) {
+  @Input() public set SearchResultsTruncateRecordsAt(value: number) {
     this.prefs.searchResults.truncateRecordsAt = value;
   }
   /** number of lines of "other data" shown before ellipsis in search results */
@@ -154,11 +154,11 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   }
   /** number of lines of "identifier data" shown before ellipsis in search results */
   public get SearchResultsTruncateIdentifierDataAt(): number {
-    return this.prefs.searchResults.truncateAttributeDataAt;
+    return this.prefs.searchResults.truncateIdentifierDataAt;
   }
   /** number of lines of "identifier data" shown before ellipsis in search results */
   @Input() public set SearchResultsTruncateIdentifierDataAt(value: number) {
-    this.prefs.searchResults.truncateAttributeDataAt = value;
+    this.prefs.searchResults.truncateIdentifierDataAt = value;
   }
 
   // -----------------------------------------   entity detail ----------------------------
