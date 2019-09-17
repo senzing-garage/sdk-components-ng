@@ -16,17 +16,20 @@
   </div>
 </div>
 <div #graphContainer class="sz-entity-detail-section-collapsible-card">
+  <sz-relationship-network-lookup [entityIds]="graphIds"
+                                  [buildOut]=1
+                                  [maxDegrees]="maxDegrees"
+                                  [maxEntities]="maxEntities"
+                                  (networkLoaded)="onNetworkLoaded($event)"></sz-relationship-network-lookup>
   <sz-relationship-network class="sz-relationship-network-graph"
     svgViewBox="150 50 400 300"
     svgPreserveAspectRatio="xMinYMid meet"
-    [entityIds]="graphIds"
-    [maxDegrees]="maxDegrees"
-    buildOut=1
+    [graphData]="_inputs"
     [linkGravity]="5"
     [showLinkLabels]="_showMatchKeys"
     (contextMenuClick)="onRightClick($event)"
     (entityClick)="onEntityClick($event)"
-    [maxEntities]="maxEntities"></sz-relationship-network>
+  ></sz-relationship-network>
     <sz-entity-detail-graph-control class="sz-entity-detail-graph-control"
     [showLinkLabels]="_showMatchKeys"
     (optionChanged)="onOptionChange($event)"

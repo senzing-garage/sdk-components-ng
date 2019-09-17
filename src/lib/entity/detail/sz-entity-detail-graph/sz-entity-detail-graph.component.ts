@@ -8,6 +8,7 @@ import {
   SzRelationshipType
 } from '@senzing/rest-api-client-ng';
 import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
+import {SzNetworkGraphInputs} from '../../../models/network-graph-inputs';
 
 /**
  * @internal
@@ -63,6 +64,8 @@ export class SzEntityDetailGraphComponent implements OnInit {
    * @returns object with various entity and ui properties.
    */
   @Output() entityDblClick: EventEmitter<any> = new EventEmitter<any>();
+
+  _inputs: SzNetworkGraphInputs;
 
   public get graphIds(): number[] {
     let _ret = [];
@@ -131,4 +134,8 @@ export class SzEntityDetailGraphComponent implements OnInit {
 
   constructor() {}
   ngOnInit() {}
+
+  onNetworkLoaded(inputs: SzNetworkGraphInputs) {
+    this._inputs = inputs;
+  }
 }
