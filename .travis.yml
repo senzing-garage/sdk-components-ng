@@ -21,7 +21,7 @@ install:
   - chromedriver --version
 
 before_script:
-  - chromedriver-update 75.0.3770.142
+  - chromedriver-update 77.0.3865.40
 
 script:
   - npm run test:headless
