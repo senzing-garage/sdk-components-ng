@@ -6,12 +6,6 @@ sudo: required
 branches:
   only:
   - master
-addons:
-  apt:
-    sources:
-      - google-chrome
-    packages:
-      - google-chrome-stable
 
 cache:
   directories:
@@ -26,4 +20,3 @@ script:
 - npm run test:headless
 - npm run build:docs
 - npm run build
-- npm run e2e:headless
