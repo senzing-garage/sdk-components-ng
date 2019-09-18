@@ -18,13 +18,13 @@ install:
   - travis_wait npm install
   - travis_wait npm install -g @angular/cli@7.1.4
   - ng version
-  - chromedriver --version
+#  - chromedriver --version
 
-before_script:
-  - chromedriver-update 77.0.3865.40
+#before_script:
+#  - chromedriver-update 77.0.3865.40
 
 script:
   - npm run test:headless
   - npm run build:docs
   - npm run build
-  - npm run e2e:headless
+#  - npm run e2e:headless
