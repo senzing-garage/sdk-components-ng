@@ -5,6 +5,7 @@
 This project is for the Senzing&reg; SDK components that can be used in other projects using Angular 7.X.X.
 
 [![Build Status](https://travis-ci.com/Senzing/sdk-components-ng.svg?branch=master)](https://travis-ci.com/Senzing/sdk-components-ng)
+[![npm version](https://badge.fury.io/js/%40senzing%2Fsdk-components-ng.svg)](https://badge.fury.io/js/%40senzing%2Fsdk-components-ng)
 
 ## Dependencies
 
