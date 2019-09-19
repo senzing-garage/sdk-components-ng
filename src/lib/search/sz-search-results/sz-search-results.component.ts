@@ -218,16 +218,16 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
     private titleCasePipe: TitleCasePipe,
     private prefs: SzPrefsService,
     private cd: ChangeDetectorRef
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.prefs.searchResults.prefsChanged.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe( (pJson)=>{
       //console.warn('SEARCH RESULTS PREF CHANGE!', pJson);
-      cd.detectChanges();
+      this.cd.detectChanges();
     });
   }
-
-  ngOnInit() {}
 
   /**
    * unsubscribe when component is destroyed

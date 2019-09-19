@@ -4,8 +4,7 @@
 
 This project is for the Senzing&reg; SDK components that can be used in other projects using Angular 7.X.X.
 
-
-[![Build Status](https://travis-ci.com/senzingiris/sdk-components-ng.svg?token=WxmiqA9RBhXENsrx41xE&branch=master)](https://travis-ci.com/senzingiris/sdk-components-ng)
+[![Build Status](https://travis-ci.com/Senzing/sdk-components-ng.svg?branch=master)](https://travis-ci.com/Senzing/sdk-components-ng)
 
 ## Dependencies
 
@@ -207,7 +206,7 @@ See [online documentation](https://senzing.github.io/rest-api-client-ng/classes/
 ## Documentation
 
 Installation contains a statically generated API and component references. They can be found in
-node_modules/@senzing/sdk-components-ng/docs or [Online here](https://senzingiris.github.io/sdk-components-ng/).
+node_modules/@senzing/sdk-components-ng/docs or [Online here](https://senzing.github.io/sdk-components-ng/).
 
 ## Examples
 
@@ -231,7 +230,7 @@ Occasionally something does go wrong (I know, I know right?). Here are some comm
       showing up in the developer console</td>
       <td style="padding: 10px 5px;">
         Set the api configuration to the address and port your rest server is running at by
-        passing in an instance of <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> to the <a href="https://senzingiris.github.io/sdk-components-ng/modules/SenzingSdkModule.html">SenzingSdkModule.forRoot method</a>.
+        passing in an instance of <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> to the <a href="https://senzing.github.io/sdk-components-ng/modules/SenzingSdkModule.html">SenzingSdkModule.forRoot method</a>.
         <br/><br/>
         Double check and make sure you can connect to your rest server via
         <code>curl -i http://localhost:8080/heartbeat</code>
