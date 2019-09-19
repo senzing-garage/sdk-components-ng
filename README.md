@@ -6,6 +6,8 @@ This project is for the Senzing&reg; SDK components that can be used in other pr
 
 [![Build Status](https://travis-ci.com/Senzing/sdk-components-ng.svg?branch=master)](https://travis-ci.com/Senzing/sdk-components-ng)
 [![npm version](https://badge.fury.io/js/%40senzing%2Fsdk-components-ng.svg)](https://badge.fury.io/js/%40senzing%2Fsdk-components-ng)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/senzing/sdk-components-ng?color=%2300c4ff&logo=latest%20tag)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/senzing/sdk-components-ng?color=orange&logo=latest&logoColor=blue&style=flat-square)
 
 ## Dependencies
 
