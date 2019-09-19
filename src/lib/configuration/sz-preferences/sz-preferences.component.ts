@@ -20,6 +20,10 @@ import { takeUntil } from 'rxjs/operators';
  * <sz-preferences
  * graph-build-out="20">
  *
+ * @example <!-- (WC) bulk initialize from local storage: -->
+ * <sz-preferences id="prefsIntf" show-controls="true">
+ * document.getElementById('prefsIntf').prefsFromJSONString = localStorage.getItem('NAME_OF_LS_KEY');
+ *
  * @example <!-- (WC) show other data in search results: -->
  * <sz-preferences
  * search-results-show-other-data="true">
@@ -410,7 +414,13 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   }
 
   // ---------------------------------  end prefs getters/setters  -----------------------
-  loadFromJSON
+
+  /** a JSON string value used for initializing preferences state from a JSON representation. */
+  @Input() public set prefsFromJSONString(value: string) {
+    if(value && value !== undefined && value !== null){
+      this.prefs.fromJSONString(value);
+    }
+  }
 
   /** which fields to explicitly not show to the user */
   @Input() public editableBlacklist = {
@@ -526,7 +536,6 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   }
   /** event bus prefs change to component emmitter proxy */
   private onPrefsChange(value: SzSdkPrefsModel): void {
-    //console.log('onPrefsChange: ', value, this.prefsChange);
     if(this.prefsChange) {
       this.prefsChange.emit(value);
     }
