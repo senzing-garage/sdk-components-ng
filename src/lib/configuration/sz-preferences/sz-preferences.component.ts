@@ -14,15 +14,17 @@ import { takeUntil } from 'rxjs/operators';
  *
  * @example <!-- (WC) javascript -->
  * <sz-preferences id="prefsIntf"></sz-preferences>
- * document.getElementById('prefsIntf').GraphBuildOut = 5;
+ * <script>document.getElementById('prefsIntf').GraphBuildOut = 5;</script>
  *
  * @example <!-- (WC) By attribute: -->
  * <sz-preferences
  * graph-build-out="20">
  *
- * @example <!-- (WC) bulk initialize from local storage: -->
+ * @example <!-- (WC) javascript bulk initialize from local storage: -->
  * <sz-preferences id="prefsIntf" show-controls="true">
+ * <script>
  * document.getElementById('prefsIntf').prefsFromJSONString = localStorage.getItem('NAME_OF_LS_KEY');
+ * </script>
  *
  * @example <!-- (WC) show other data in search results: -->
  * <sz-preferences
