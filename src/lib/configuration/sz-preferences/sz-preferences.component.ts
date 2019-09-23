@@ -14,11 +14,17 @@ import { takeUntil } from 'rxjs/operators';
  *
  * @example <!-- (WC) javascript -->
  * <sz-preferences id="prefsIntf"></sz-preferences>
- * document.getElementById('prefsIntf').GraphBuildOut = 5;
+ * <script>document.getElementById('prefsIntf').GraphBuildOut = 5;</script>
  *
  * @example <!-- (WC) By attribute: -->
  * <sz-preferences
  * graph-build-out="20">
+ *
+ * @example <!-- (WC) javascript bulk initialize from local storage: -->
+ * <sz-preferences id="prefsIntf" show-controls="true">
+ * <script>
+ * document.getElementById('prefsIntf').prefsFromJSONString = localStorage.getItem('NAME_OF_LS_KEY');
+ * </script>
  *
  * @example <!-- (WC) show other data in search results: -->
  * <sz-preferences
@@ -410,7 +416,13 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   }
 
   // ---------------------------------  end prefs getters/setters  -----------------------
-  loadFromJSON
+
+  /** a JSON string value used for initializing preferences state from a JSON representation. */
+  @Input() public set prefsFromJSONString(value: string) {
+    if(value && value !== undefined && value !== null){
+      this.prefs.fromJSONString(value);
+    }
+  }
 
   /** which fields to explicitly not show to the user */
   @Input() public editableBlacklist = {
@@ -526,7 +538,6 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   }
   /** event bus prefs change to component emmitter proxy */
   private onPrefsChange(value: SzSdkPrefsModel): void {
-    //console.log('onPrefsChange: ', value, this.prefsChange);
     if(this.prefsChange) {
       this.prefsChange.emit(value);
     }
