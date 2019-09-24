@@ -15,6 +15,7 @@
     text-transform: var(--sz-entity-detail-pill-text-transform);
     margin: var(--sz-entity-detail-pill-text-transform);
     background-color: var(--sz-entity-detail-pill-background-color);
+    white-space: nowrap;
 
     &.plus {
       background-color: var(--sz-entity-detail-pill-background-color);

@@ -2,15 +2,54 @@
 
 :host {
   display: flex;
+
   .search-card__content--wrapper {
+    width: 98%;
     display: flex;
+
+    &.layout-narrow {
+      flex-direction: column;
+
+      .search-card__content--column {
+        width: unset;
+        margin-right: unset;
+      }
+    }
+    /*
+    &.layout-medium {
+      border: 2px solid cyan;
+    }
+    */
+
+    /* set hard column perc widths based on how many cols are showing */
+    /*
+    &.columns-one {
+      .search-card__content--column   { width: 80%; }
+    }
+    &.columns-two {
+      .search-card__content--column   { width: 20%; }
+    }
+    &.columns-three {
+      .search-card__content--column   { width: 33%; }
+    }
+    &.columns-four {
+      .search-card__content--column   { width: 20%; }
+    }
+    */
   }
+
   .search-card__content--column {
     display: flex;
     flex-direction: column;
-    width: 33%;
+    width: 24%;
     margin-right: 20px;
     overflow: hidden;
+
+    &:last-child {
+      width: auto;
+      flex-grow: 5;
+      margin-right: 20px;
+    }
 
     &.addressData, &.addressPhoneData {
       flex-grow: 5;
@@ -18,11 +57,18 @@
     }
 
     .line {
-      line-height: 1.5em;
-      margin-bottom: 1em;
+      line-height: 1em;
+      margin-bottom: .5em;
+      &.truncated {
+        margin-bottom: 0;
+      }
 
       span {
         display: inline-block;
+      }
+
+      &:last-child {
+        margin-bottom: 3.25em;
       }
     }
 
@@ -31,13 +77,14 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      line-height: 1em;
       width: 100%;
     }
   }
 
   &.collapsed {
     .search-card__content--column .line {
-      line-height: 1.25em;
+      line-height: 1em;
       margin-bottom: 0;
     }
   }

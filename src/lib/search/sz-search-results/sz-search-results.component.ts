@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
 import { SzEntitySearchParams } from '../../models/entity-search';
 import {
@@ -6,17 +6,48 @@ import {
   SzAttributeSearchResult,
   SzAttributeSearchResultType
 } from '@senzing/rest-api-client-ng';
+import { SzPrefsService } from '../../services/sz-prefs.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
+/**
+ * Provides a graphical search results component. Data can be provided a number of ways.
+ * The simplest of which is to bind the results input setter to the output of the
+ * {@link SzSearchComponent} resultsChange event.
+ *
+ * @example <!-- (Angular) SzSearchComponent -->
+ * <sz-search
+ * name="Isa Creepr"
+ * (resultsChange)="resultsOfSearch=$event"></sz-search>
+ * <sz-search-results [results]="resultsOfSearch"></sz-search-results>
+ * @export
+ *
+ * @example <!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo -->
+ * <sz-search
+ * id="sz-search"
+ * name="Isa Creepr"></sz-search>
+ * <sz-search-results id="sz-search-results"></sz-search-results>
+ * <script>
+ *  var szSearchComponent = document.getElementById('sz-search');
+ *  var szSearchResultsComponent = document.getElementById('sz-search-results');
+ *  szSearchComponent.addEventListener('resultsChange', (evt) => {
+ *    console.log('search results: ', evt);
+ *    szSearchResultsComponent.results = evt.detail;
+ *  });
+ * </script>
+ */
 @Component({
   selector: 'sz-search-results',
   templateUrl: './sz-search-results.component.html',
   styleUrls: ['./sz-search-results.component.scss']
 })
-export class SzSearchResultsComponent implements OnInit {
+export class SzSearchResultsComponent implements OnInit, OnDestroy {
   public searchResultsJSON; // TODO: remove after debugging
   public _searchResults: SzAttributeSearchResult[];
   public _searchValue: SzEntitySearchParams;
   public attributeDisplay: { attr: string, value: string }[];
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
 
   /**
    * Shows or hides the datasource lists in the result items header.
@@ -99,7 +130,8 @@ export class SzSearchResultsComponent implements OnInit {
   public set searchValue(value: SzEntitySearchParams){
     this._searchValue = value;
 
-    this.attributeDisplay = Object.keys(this._searchValue)
+    if(value){
+      this.attributeDisplay = Object.keys(this._searchValue)
       .filter((key, index, self) => {
         if(key === 'IDENTIFIER_TYPE'){
           return Object.keys(self).includes('IDENTIFIER');
@@ -137,6 +169,7 @@ export class SzSearchResultsComponent implements OnInit {
         return retVal
       })
       .filter(i => !!i);
+    }
   }
   /**
    * The current search parameters being used.
@@ -158,9 +191,18 @@ export class SzSearchResultsComponent implements OnInit {
    *
    * @memberof SzSearchResultsComponent
    */
-  public onResultClick(evt: any, resData: SzAttributeSearchResult): void{
-    // evt proxy
-    this.resultClick.emit(resData);
+  public onResultClick(evt: any, resData: SzAttributeSearchResult): void
+  {
+    // preflight check to see if user is trying to select text
+    if(window && window.getSelection){
+      var selection = window.getSelection();
+      if(selection.toString().length === 0) {
+        // evt proxy
+        this.resultClick.emit(resData);
+      }
+    } else {
+      this.resultClick.emit(resData);
+    }
   }
   /**
    * Total number of search results being displayed.
@@ -173,9 +215,26 @@ export class SzSearchResultsComponent implements OnInit {
   }
 
   constructor(
-    private titleCasePipe: TitleCasePipe
+    private titleCasePipe: TitleCasePipe,
+    private prefs: SzPrefsService,
+    private cd: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.prefs.searchResults.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( (pJson)=>{
+      //console.warn('SEARCH RESULTS PREF CHANGE!', pJson);
+      this.cd.detectChanges();
+    });
+  }
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
 }

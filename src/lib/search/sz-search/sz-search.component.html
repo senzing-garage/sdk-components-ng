@@ -9,7 +9,9 @@
     PHONE_NUMBER
     EMAIL_ADDRESS
   -->
-  <div class="content" *ngIf="true">
+  <div class="content" *ngIf="true"
+  [ngClass]="_layoutClasses"
+  >
       <section class="entity search" (ngSubmit)="submitSearch()">
         <form class="form" [formGroup]="entitySearchForm" novalidate>
           <div class="sz-row">
@@ -55,7 +57,7 @@
                 </option>
               </select>
             </div>
-            <div class="action-button__wrapper" [class.disabled]="disabledFields['searchButton']" *ngIf="!hiddenFields['searchButton']">
+            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields['searchButton']" *ngIf="!hiddenFields['searchButton']">
               <button mat-button class="button__search-go"
               [attr.disabled]="getDisabled('searchButton')"
               (click)="submitSearch()">Search</button>
@@ -91,13 +93,24 @@
             <div class="field spacer">
 
             </div>
-            <div class="action-button__wrapper" [class.disabled]="disabledFields['resetButton']" *ngIf="!hiddenFields['resetButton']">
+            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields['resetButton']" *ngIf="!hiddenFields['resetButton']">
               <button mat-button class="button__search-clear"
               [attr.disabled]="getDisabled('resetButton')"
               (click)="clearSearch()">Clear Search Criteria</button>
             </div>
           </div>
-          <div class="sz-row bottom"></div>
+          <div class="sz-row bottom">
+            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields['resetButton']" *ngIf="!hiddenFields['resetButton']">
+              <button mat-button class="button__search-clear"
+              [attr.disabled]="getDisabled('resetButton')"
+              (click)="clearSearch()">Clear</button>
+            </div>
+            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields['searchButton']" *ngIf="!hiddenFields['searchButton']">
+              <button mat-button class="button__search-go"
+              [attr.disabled]="getDisabled('searchButton')"
+              (click)="submitSearch()">Search</button>
+            </div>
+          </div>
         </form>
       </section>
 

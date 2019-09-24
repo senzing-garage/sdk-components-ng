@@ -4,12 +4,43 @@
     flex-direction: row;
     justify-content: space-between;
 
+    /* for narrow layouts change the reflow orientation */
+    &.layout-narrow {
+      flex-direction: column;
+
+      .search-card__content--column {
+        min-width: auto;
+        margin-right: auto;
+        margin-bottom: 2em;
+      }
+    }
+
+    .line {
+      margin-bottom: .5em;
+    }
+    /* assume three columns, then override */
     .search-card__content--column {
       min-width: 30%;
+      margin-right: 2em;
     }
 
     .search-card__content--column:last-child {
       flex-grow: 2;
+      margin-right: 0;
     }
+  }
+
+  /* set hard column perc widths based on how many cols are showing */
+  .search-card__content--wrapper.columns-one {
+    .search-card__content--column   { min-width: 80%; }
+  }
+  .search-card__content--wrapper.columns-two {
+    .search-card__content--column   { min-width: 40%; }
+  }
+  .search-card__content--wrapper.columns-three {
+    .search-card__content--column   { min-width: 30%; }
+  }
+  .search-card__content--wrapper.columns-four {
+    .search-card__content--column   { min-width: 20%; }
   }
 }

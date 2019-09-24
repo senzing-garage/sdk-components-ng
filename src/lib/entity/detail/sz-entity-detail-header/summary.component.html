@@ -1,10 +1,5 @@
-<a class="section-summary__wrapper" [ngClass]="{
-      'matched-records': isMatchedRecords,
-      'possible-matches': isPossibleMatches,
-      'possible-relationships': isPossibleRelationships,
-      'disclosed-relationships': isDisclosedRelationships,
-      'no-results': noResults
-      }"
+<a class="section-summary__wrapper"
+      [ngClass]="cssClasses"
       (click)="onSummaryClick($event)">
   <div class="section-summary__top">
     <span class="section-summary__count">{{section?.total}}</span>

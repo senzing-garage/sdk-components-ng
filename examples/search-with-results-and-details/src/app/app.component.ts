@@ -6,7 +6,9 @@ import {
   SzPdfUtilService,
   SzSearchService,
   SzEntityDetailComponent,
-  SzEntityData
+  SzEntityData,
+  SzPrefsService,
+  SzConfigurationService
 } from '@senzing/sdk-components-ng';
 import { tap, filter, take } from 'rxjs/operators';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -20,7 +22,7 @@ import { Subscription, fromEvent } from 'rxjs';
 })
 export class AppComponent implements AfterViewInit {
   public currentSearchResults: SzAttributeSearchResult[];
-  public currentlySelectedEntityId: number = undefined;
+  public currentlySelectedEntityId: number = 2004;
   public currentSearchParameters: SzEntitySearchParams;
   public showSearchResults = false;
   public set showGraphMatchKeys(value: boolean) {
@@ -56,6 +58,7 @@ export class AppComponent implements AfterViewInit {
     public pdfUtil: SzPdfUtilService,
     public searchService: SzSearchService,
     public overlay: Overlay,
+    public prefs: SzPrefsService,
     public viewContainerRef: ViewContainerRef){}
 
   ngAfterViewInit() {

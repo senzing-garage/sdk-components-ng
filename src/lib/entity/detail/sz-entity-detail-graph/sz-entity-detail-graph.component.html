@@ -1,6 +1,5 @@
 
 <div data-html2canvas-ignore class="section-header__wrapper graph-relationships"
-  [ngClass]="{'open': expanded, 'closed': !expanded}"
   (click)="toggleExpanded($event)"
 >
   <div class="section-header__left-content">
@@ -8,7 +7,7 @@
       viewBox="0 0 386.257 386.257" width="12" xml:space="preserve">
       <polygon points="0,96.879 193.129,289.379 386.257,96.879 "/></svg>
     <svg xmlns="http://www.w3.org/2000/svg" class="mat-icon" width="24" height="24" viewBox="0 0 24 24"><circle cx="7.2" cy="14.4" r="3.2"/><circle cx="14.8" cy="18" r="2"/><circle cx="15.2" cy="8.8" r="4.8"/></svg>
-    <span>{{ this.title }}</span>
+    <span class="section-header__title">{{ this.title }}</span>
   </div>
   <div class="section-header__right-content">
     <span class="section-header__count">{{ data?.relatedEntities.length }}</span>
@@ -16,16 +15,17 @@
   </div>
 </div>
 <div #graphContainer class="sz-entity-detail-section-collapsible-card">
-  <sz-relationship-network class="sz-relationship-network-graph"
+  <sz-relationship-network #graph class="sz-relationship-network-graph"
     svgViewBox="150 50 400 300"
     svgPreserveAspectRatio="xMinYMid meet"
     [entityIds]="graphIds"
     [maxDegrees]="maxDegrees"
-    buildOut=1
+    [buildOut]="buildOut"
     [linkGravity]="5"
     [showLinkLabels]="_showMatchKeys"
     (contextMenuClick)="onRightClick($event)"
     (entityClick)="onEntityClick($event)"
+    (noResults)="onNoResults($event)"
     [maxEntities]="maxEntities"></sz-relationship-network>
     <sz-entity-detail-graph-control class="sz-entity-detail-graph-control"
     [showLinkLabels]="_showMatchKeys"

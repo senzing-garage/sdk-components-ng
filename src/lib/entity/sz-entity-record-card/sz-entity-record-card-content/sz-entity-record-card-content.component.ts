@@ -1,12 +1,15 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
-
 import {
   SzEntityData,
   SzResolvedEntity,
   SzEntityRecord
 } from '@senzing/rest-api-client-ng';
+import { Subject, BehaviorSubject } from 'rxjs';
+import { tap, takeUntil } from 'rxjs/operators';
+import { SzPrefsService } from '../../../services/sz-prefs.service';
+
 
 /**
  * @internal
@@ -18,10 +21,37 @@ import {
   styleUrls: ['./sz-entity-record-card-content.component.scss']
 })
 export class SzEntityRecordCardContentComponent implements OnInit {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
+
   //@Input() entity: ResolvedEntityData | SearchResultEntityData | EntityDetailSectionData | EntityRecord;
   _entity: any;
+
+  private _truncateOtherDataAt: number = -1;
+  private _showOtherData: boolean = false;
+  private _ignorePrefOtherDataChanges = false;
+  @Input() public showRecordIdWhenNative: boolean = false;
+  @Input() public set ignorePrefOtherDataChanges(value: boolean) {
+    this._ignorePrefOtherDataChanges = value;
+  }
+  public get ignorePrefOtherDataChanges() {
+    return this._ignorePrefOtherDataChanges;
+  }
+  @Input() set showOtherData(value: boolean) {
+    this._showOtherData = value;
+  }
+  get showOtherData(): boolean {
+    return this._showOtherData;
+  }
+  @Input() set truncateOtherDataAt(value: number) {
+    this._truncateOtherDataAt = value;
+  }
+  get truncateOtherDataAt(): number {
+    return this._truncateOtherDataAt;
+  }
+
   @Input() set entity(value) {
-    //console.log('set entity: ', value);
+    // console.log('set entity: ', value);
     this._entity = value;
   }
   get entity() {
@@ -51,21 +81,49 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   @ViewChild('columnFour')
   private columnFour: ElementRef;
 
+  /** 0 = wide layout. 1 = narrow layout */
+  @Input() public layout = 0;
+  @Input() public layoutClasses: string[] = [];
+
+  /** subscription breakpoint changes */
+  private layoutChange$ = new BehaviorSubject<number>(this.layout);
+
   _parentEntity: any;
   _matchKeys: string[];
 
-  constructor(private ref: ChangeDetectorRef) {
-  }
+  constructor(private cd: ChangeDetectorRef, public prefs: SzPrefsService) {}
 
   ngOnInit() {
     setTimeout(() => {
-      //this.columnOneTotal = this.columnOne ? this.columnOne.nativeElement.children.length : 0;
-      //this.columnTwoTotal = this.columnTwo.nativeElement.children.length;
-      //this.columnThreeTotal = this.columnThree.nativeElement.children.length;
-      //this.columnFourTotal = this.columnFour.nativeElement.children.length;
-
-      this.ref.markForCheck();
+      this.cd.markForCheck();
     });
+
+    this.prefs.entityDetail.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( this.onPrefsChange.bind(this) );
+  }
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  /** proxy handler for when prefs have changed externally */
+  private onPrefsChange(prefs: any) {
+    //console.warn(`SzEntityDetailSectionCollapsibleCardComponent.onPrefsChange: `, prefs.truncateOtherDataInRecordsAt, this.truncateOtherDataAt);
+    if( prefs.truncateOtherDataInRecordsAt) {
+      this._truncateOtherDataAt = prefs.truncateOtherDataInRecordsAt
+    }
+    if( !this.ignorePrefOtherDataChanges && typeof prefs.showOtherData == 'boolean') {
+      this._showOtherData = prefs.showOtherDataInRecords;
+      //console.warn(`SzEntityRecordCardContentComponent.onPrefsChange: value of this.showOtherData(${this.showOtherData}) is "${prefs.showOtherDataInRecords }" `);
+    }
+    this.showRecordIdWhenNative = prefs.showRecordIdWhenNative;
+    // update view manually (for web components redraw reliability)
+    this.cd.detectChanges();
   }
 
   getNameAndAttributeData(nameData: string[], attributeData: string[]): string[] {
@@ -85,8 +143,13 @@ export class SzEntityRecordCardContentComponent implements OnInit {
     return 0;
   }
   get showColumnOne(): boolean {
-    return false;
-    //return (this.entity && this.entity.addressData && this.entity.addressData.length > 0);
+    let retVal = false;
+    if(this.entity) {
+      if(this.showOtherData && this.entity.otherData && this.entity.otherData.length > 0) {
+        retVal = true;
+      }
+    }
+    return retVal;
   }
   get columnTwoTotal(): number {
     return (this.nameData.concat(this.attributeData).length);
@@ -103,8 +166,10 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   // -----------------  end total getters  -------------------
 
   get otherData(): string[] {
-    if (this.entity) {
-      if (this.entity && this.entity.nameData) {
+    if (this.entity && this.showOtherData) {
+      if (this.entity.otherData ) {
+        return this.entity.otherData;
+      } else if (this.entity && this.entity.nameData) {
         return this.entity.nameData;
       } else if (this.entity && this.entity.nameData) {
         return this.entity.nameData;

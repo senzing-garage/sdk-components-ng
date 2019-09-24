@@ -1,12 +1,7 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit, ViewChild, Output, EventEmitter, ElementRef } from '@angular/core';
-
-import {
-  SzEntityData,
-  SzRelatedEntity,
-  SzResolvedEntity,
-  SzEntityRecord,
-  SzRelationshipType
-} from '@senzing/rest-api-client-ng';
+import { Component, HostBinding, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { SzPrefsService } from '../../../services/sz-prefs.service';
+import { tap, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 /**
  * @internal
@@ -17,8 +12,10 @@ import {
   templateUrl: './sz-entity-detail-graph-control.component.html',
   styleUrls: ['./sz-entity-detail-graph-control.component.scss']
 })
-export class SzEntityDetailGraphControlComponent implements OnInit {
+export class SzEntityDetailGraphControlComponent implements OnInit, OnDestroy {
   isOpen: boolean = true;
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
 
   public _showLinkLabels = true;
   @Input() public set showLinkLabels(value){
@@ -28,7 +25,19 @@ export class SzEntityDetailGraphControlComponent implements OnInit {
     return this._showLinkLabels;
   }
   @Output() public optionChanged = new EventEmitter<{name: string, value: any}>();
-  constructor() {}
+
+  constructor(
+    public prefs: SzPrefsService
+  ) {}
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   ngOnInit() {}
 
   public changeOption(optName: string, value: any): void {

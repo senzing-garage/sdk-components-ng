@@ -1,6 +1,15 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Configuration as SzRestConfiguration } from '@senzing/rest-api-client-ng';
 
+/**
+ * Provides a component that lists all current API connection config parameters as
+ * a human readable table.
+ *
+ * @example
+ * <sz-configuration-about></sz-configuration-about>
+ *
+ * @export
+ */
 @Component({
   selector: 'sz-configuration-about',
   templateUrl: './sz-configuration-about.component.html',

@@ -58,6 +58,7 @@
 
 
 
+
             <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
@@ -71,6 +72,10 @@
                 <tr>
                     <td class="col-md-4">
                         <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#clearCurrentSearchState">clearCurrentSearchState</a>
+                            </li>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#getAttributeTypes">getAttributeTypes</a>
@@ -89,11 +94,19 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#getSearchResults">getSearchResults</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#searchByAttributes">searchByAttributes</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#setSearchParam">setSearchParam</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#setSearchResults">setSearchResults</a>
                             </li>
                         </ul>
                     </td>
@@ -165,353 +178,494 @@
 
             <section>
     
-        <h3 id="methods">
-            Methods
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="getAttributeTypes"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearCurrentSearchState"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            clearCurrentSearchState
+                        </b>
+                        <a href="#clearCurrentSearchState"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>clearCurrentSearchState()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>clears out current search parameters and search results.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAttributeTypes"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
                             getAttributeTypes
-                            </b>
-                            <a href="#getAttributeTypes"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>getAttributeTypes()</code>
-                    </td>
-                </tr>
+                        </b>
+                        <a href="#getAttributeTypes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAttributeTypes()</code>
+                </td>
+            </tr>
 
 
 
 
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>get list of characteristics as attribute types</p>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>get list of characteristics as attribute types</p>
 </div>
 
-                            <div class="io-description">
-                                <b>Returns : </b>    <code>Observable&lt;SzAttributeType[]&gt;</code>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;SzAttributeType[]&gt;</code>
 
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="getEntityById"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getEntityById"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
                             getEntityById
-                            </b>
-                            <a href="#getEntityById"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>getEntityById(entityId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, withRelated)</code>
-                    </td>
-                </tr>
+                        </b>
+                        <a href="#getEntityById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getEntityById(entityId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, withRelated)</code>
+                </td>
+            </tr>
 
 
 
 
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>get an SzEntityData model by providing an entityId.</p>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>get an SzEntityData model by providing an entityId.</p>
 </div>
 
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                                    <td>Default value</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>entityId</td>
-                                                        <td>
-                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                        </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Default value</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>entityId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
-                                                </tr>
-                                                <tr>
-                                                        <td>withRelated</td>
-                                                        <td>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                                <code>false</code>
-                                                        </td>
+                                    <td>
+                                        No
+                                    </td>
 
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code>Observable&lt;SzEntityData&gt;</code>
+                                    <td>
+                                    </td>
 
-                            </div>
-                                <div class="io-description">
-                                    
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="getMappingAttributes"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
+                                </tr>
+                                <tr>
+                                    <td>withRelated</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>false</code>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;SzEntityData&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMappingAttributes"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
                             getMappingAttributes
-                            </b>
-                            <a href="#getMappingAttributes"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>getMappingAttributes()</code>
-                    </td>
-                </tr>
+                        </b>
+                        <a href="#getMappingAttributes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getMappingAttributes()</code>
+                </td>
+            </tr>
 
 
 
 
-                <tr>
-                    <td class="col-md-4">
+            <tr>
+                <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Returns : </b>    <code>Observable&lt;SzAttributeType[]&gt;</code>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;SzAttributeType[]&gt;</code>
 
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="getSearchParams"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSearchParams"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
                             getSearchParams
-                            </b>
-                            <a href="#getSearchParams"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>getSearchParams()</code>
-                    </td>
-                </tr>
+                        </b>
+                        <a href="#getSearchParams"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getSearchParams()</code>
+                </td>
+            </tr>
 
 
 
 
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>get the current search params.</p>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>get the current search params.</p>
 </div>
 
-                            <div class="io-description">
-                                <b>Returns : </b>    <code><a href="../interfaces/SzEntitySearchParams.html" target="_self" >SzEntitySearchParams</a></code>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/SzEntitySearchParams.html" target="_self" >SzEntitySearchParams</a></code>
 
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="searchByAttributes"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSearchResults"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getSearchResults
+                        </b>
+                        <a href="#getSearchResults"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getSearchResults()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>get the current search results from the last search.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>[] | null</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="searchByAttributes"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
                             searchByAttributes
-                            </b>
-                            <a href="#searchByAttributes"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>searchByAttributes(searchParms: <a href="../interfaces/SzEntitySearchParams.html">SzEntitySearchParams</a>)</code>
-                    </td>
-                </tr>
+                        </b>
+                        <a href="#searchByAttributes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>searchByAttributes(searchParms: <a href="../interfaces/SzEntitySearchParams.html">SzEntitySearchParams</a>)</code>
+                </td>
+            </tr>
 
 
 
 
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>perform a search request againt the data source.</p>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>perform a search request againt the data source.</p>
 </div>
 
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>searchParms</td>
-                                                        <td>
-                                                                    <code><a href="../interfaces/SzEntitySearchParams.html" target="_self" >SzEntitySearchParams</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>searchParms</td>
+                                    <td>
+                                                <code><a href="../interfaces/SzEntitySearchParams.html" target="_self" >SzEntitySearchParams</a></code>
+                                    </td>
 
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code>Observable&lt;SzAttributeSearchResult[]&gt;</code>
+                                    <td>
+                                        No
+                                    </td>
 
-                            </div>
-                                <div class="io-description">
-                                    
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="setSearchParam"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;SzAttributeSearchResult[]&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setSearchParam"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
                             setSearchParam
-                            </b>
-                            <a href="#setSearchParam"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>setSearchParam(paramName: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, value: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
-                    </td>
-                </tr>
+                        </b>
+                        <a href="#setSearchParam"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setSearchParam(paramName: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, value: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
 
 
 
 
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>set the an individual search parameter.</p>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>set the an individual search parameter.</p>
 </div>
 
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>paramName</td>
-                                                        <td>
-                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>paramName</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
 
-                                                </tr>
-                                                <tr>
-                                                        <td>value</td>
-                                                        <td>
-                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
+                                    <td>
+                                        No
+                                    </td>
 
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                            </div>
-                                <div class="io-description">
-                                    
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                                </tr>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setSearchResults"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            setSearchResults
+                        </b>
+                        <a href="#setSearchResults"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setSearchResults(results: SzAttributeSearchResult[] | null)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>set the current search results from the last search.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>results</td>
+                                    <td>
+                                            <code>SzAttributeSearchResult[] | null</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>
-
 
     </div>
 
@@ -525,6 +679,7 @@
 
 
 
+                   
 
 
 
