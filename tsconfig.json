@@ -25,5 +25,9 @@
         "dist/@senzing/sdk-components-ng/*"
       ]
     }
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "deprecated"
+  ]
 }

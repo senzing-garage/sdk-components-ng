@@ -40,12 +40,16 @@
               <sz-entity-record-card-header
                 [entityData]="_cardData"
                 [hideBackGroundColor]="true"
+                [layoutClasses]="layoutClasses"
                 (entityRecordClick)="onEntityRecordClick($event)"
                 >
               </sz-entity-record-card-header>
               <sz-entity-record-card-content
+              [showOtherData]="showOtherDataInEntities"
+              [ignorePrefOtherDataChanges]="true"
               [entity]="_cardData"
               [parentEntity]="cardData"
+              [layoutClasses]="layoutClasses"
               [ngClass]="{'open': expanded, 'no-shade': true}"
               [truncateResults]="truncateResults"
               [truncatedTooltip]="'click to expand.'"
@@ -60,9 +64,12 @@
       <div class="search-card-records  mat-expansion-panel-body">
         <sz-entity-record-card-content
           *ngFor="let _cardData of cardData?.records"
+          [showOtherData]="showOtherDataInDatasourceRecords"
+          [truncateOtherDataAt]="truncateOtherDataInRecordsAt"
           [entity]="_cardData"
           [parentEntity]="cardData"
           [ngClass]="{'open': expanded}"
+          [layoutClasses]="layoutClasses"
           [truncateResults]="truncateResults"
           [truncatedTooltip]="'click to expand.'"
         ></sz-entity-record-card-content>

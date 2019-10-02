@@ -101,6 +101,19 @@
       margin: 0 4px 0 8px;
     }
   }
+  .section-header__left-content {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 70%;
+
+    .section-header__title {
+      overflow: hidden;
+      white-space: nowrap;
+      width: 100%;
+      text-overflow: ellipsis;
+    }
+  }
 }
 /* control surface */
 .sz-entity-detail-section-collapsible-card {

@@ -55,9 +55,30 @@
     <code>src/lib/configuration/sz-configuration/sz-configuration.component.ts</code>
 </p>
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Provides a service integration web component(WC) that can be used to set, read, change, and
+API configuration parameters used through all components.</p>
+<p>For Angular implementations we recommend using <a href="../injectables/SzConfigurationService.html">SzConfigurationService</a> as an injectable as it
+provides the more robust solution.</p>
+
+    </p>
 
 
 
+    <p class="comment">
+        <h3>Example</h3>
+    </p>
+    <div class="io-description">
+                <div>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) SzConfigurationComponent Example - javascript --&gt;&lt;sz-configuration id=&quot;sz-api-conf&quot;&gt;&lt;/sz-preferences&gt;document.getElementById('sz-conf').basePath = 'http://apis.mydomain.com';</code></pre>
+                </div>
+                <div>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) SzConfigurationComponent Example - By attribute --&gt;&lt;sz-configuration base-path=&quot;http://apis.mydomain.com/api&quot;&gt;&lt;/sz-configuration&gt;</code></pre>
+                </div>
+    </div>
 
 <section>
     <h3>Metadata</h3>
@@ -102,21 +123,6 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <h6><b>Properties</b></h6>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <ul class="index-list">
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#apiConfiguration">apiConfiguration</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
 
 
                 <tr>
@@ -205,7 +211,7 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(apiConfiguration: SzRestConfiguration)</code>
+<code>constructor(apiConfigService: <a href="../injectables/SzConfigurationService.html">SzConfigurationService</a>)</code>
                     </td>
                 </tr>
 
@@ -223,10 +229,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>apiConfiguration</td>
+                                                        <td>apiConfigService</td>
                                                   
                                                         <td>
-                                                                    <code>SzRestConfiguration</code>
+                                                                        <code><a href="../injectables/SzConfigurationService.html" target="_self" >SzConfigurationService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -248,11 +254,9 @@
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <td class="col-md-2">
+                    <td class="col-md-4">
                         <a name="accessToken"></a>
-                        <code>accessToken</code>
-                    </td>
-                    <td class="col-md-10">
+                        <b>accessToken</b>
                     </td>
                 </tr>
             </tbody>
@@ -260,17 +264,21 @@
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <td class="col-md-2">
+                    <td class="col-md-4">
                         <a name="apiKeys"></a>
-                        <code>apiKeys</code>
+                        <b>apiKeys</b>
                     </td>
-                    <td class="col-md-10">
-                        <div><p>apiKeys to use when connnecting to Api Server</p>
-</div>
-                            <p>
-                            <em>Type :</em>    <code>literal type</code>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>literal type</code>
 
-                            </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>apiKeys to use when connnecting to Api Server</p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -278,18 +286,22 @@
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <td class="col-md-2">
+                    <td class="col-md-4">
                         <a name="basePath"></a>
-                        <code>basePath</code>
+                        <b>basePath</b>
                     </td>
-                    <td class="col-md-10">
-                        <div><p>prefix all api requests with this value. most commonly a http or https
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>prefix all api requests with this value. most commonly a http or https
 protocol://hostname:port string that your api server can be accessed through</p>
 </div>
-                            <p>
-                            <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                            </p>
                     </td>
                 </tr>
             </tbody>
@@ -297,17 +309,21 @@ protocol://hostname:port string that your api server can be accessed through</p>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <td class="col-md-2">
+                    <td class="col-md-4">
                         <a name="password"></a>
-                        <code>password</code>
+                        <b>password</b>
                     </td>
-                    <td class="col-md-10">
-                        <div><p>password used for challenge respose. </p>
-</div>
-                            <p>
-                            <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
-                            </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>password used for challenge respose. </p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -315,17 +331,21 @@ protocol://hostname:port string that your api server can be accessed through</p>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <td class="col-md-2">
+                    <td class="col-md-4">
                         <a name="username"></a>
-                        <code>username</code>
+                        <b>username</b>
                     </td>
-                    <td class="col-md-10">
-                        <div><p>Username to use when using challenge response authentication.</p>
-</div>
-                            <p>
-                            <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
-                            </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Username to use when using challenge response authentication.</p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -333,17 +353,21 @@ protocol://hostname:port string that your api server can be accessed through</p>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <td class="col-md-2">
+                    <td class="col-md-4">
                         <a name="withCredentials"></a>
-                        <code>withCredentials</code>
+                        <b>withCredentials</b>
                     </td>
-                    <td class="col-md-10">
-                        <div><p>whether or not to use CORs for api requests </p>
-</div>
-                            <p>
-                            <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 
-                            </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>whether or not to use CORs for api requests </p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -354,16 +378,22 @@ protocol://hostname:port string that your api server can be accessed through</p>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <td class="col-md-2">
+                    <td class="col-md-4">
                         <a name="parametersChanged"></a>
-                        <code>parametersChanged</code>
+                        <b>parametersChanged</b>
                     </td>
-                    <td class="col-md-10">
-                        <div><p>emmitted when a property has been changed.
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Subject&lt;SzRestConfiguration&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>emmitted when a property has been changed.
 used mostly for diagnostics.</p>
 </div>
-                        <em><code>$event</code> Type:</em>    <code>Subject&lt;SzRestConfiguration&gt;</code>
-
                     </td>
                 </tr>
             </tbody>
@@ -372,51 +402,6 @@ used mostly for diagnostics.</p>
 
 
 
-    <section>
-    
-        <h3 id="inputs">
-            Properties
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="apiConfiguration"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            apiConfiguration
-                            </b>
-                            <a href="#apiConfiguration"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span><code>apiConfiguration:     <code>SzRestConfiguration</code>
-</code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>SzRestConfiguration</code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <b>Decorators : </b>
-                            <br />
-                            <code>
-                                @Inject(SzRestConfiguration)<br />
-                            </code>
-                        </td>
-                    </tr>
-
-
-            </tbody>
-        </table>
-</section>
 
     <section>
     <h3 id="accessors">
@@ -471,7 +456,7 @@ used mostly for diagnostics.</p>
                                 <div>
                                 </div>
                                 <div class="io-description">
-                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                                 </div>
                         </td>
@@ -513,7 +498,7 @@ used mostly for diagnostics.</p>
                                                             <td>value</td>
                                                     
                                                             <td>
-                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                                             </td>
                                                     
                                                         <td>
@@ -527,7 +512,7 @@ used mostly for diagnostics.</p>
                                 <div>
                                 </div>
                                 <div class="io-description">
-                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                                 </div>
                         </td>
@@ -569,7 +554,7 @@ used mostly for diagnostics.</p>
                                                             <td>value</td>
                                                     
                                                             <td>
-                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                                             </td>
                                                     
                                                         <td>
@@ -583,7 +568,7 @@ used mostly for diagnostics.</p>
                                 <div>
                                 </div>
                                 <div class="io-description">
-                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                                 </div>
                         </td>
@@ -633,7 +618,7 @@ used mostly for diagnostics.</p>
                                 <div>
                                 </div>
                                 <div class="io-description">
-                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                                 </div>
                         </td>
@@ -676,7 +661,7 @@ protocol://hostname:port string that your api server can be accessed through</p>
                                                             <td>value</td>
                                                     
                                                             <td>
-                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                                             </td>
                                                     
                                                         <td>
@@ -690,7 +675,7 @@ protocol://hostname:port string that your api server can be accessed through</p>
                                 <div>
                                 </div>
                                 <div class="io-description">
-                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                                 </div>
                         </td>
@@ -732,7 +717,7 @@ protocol://hostname:port string that your api server can be accessed through</p>
                                                             <td>value</td>
                                                     
                                                             <td>
-                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
                                                             </td>
                                                     
                                                         <td>
@@ -746,7 +731,7 @@ protocol://hostname:port string that your api server can be accessed through</p>
                                 <div>
                                 </div>
                                 <div class="io-description">
-                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                                 </div>
                         </td>
@@ -773,7 +758,7 @@ protocol://hostname:port string that your api server can be accessed through</p>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'}];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzConfigurationComponent'};
 </script>
@@ -788,6 +773,7 @@ protocol://hostname:port string that your api server can be accessed through</p>
 
 
 
+                   
 
 
 

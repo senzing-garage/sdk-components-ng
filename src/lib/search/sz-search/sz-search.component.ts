@@ -1,10 +1,13 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef, Inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject  } from 'rxjs';
-import { map, tap, mapTo, first } from 'rxjs/operators';
+import { map, tap, mapTo, first, filter, takeUntil } from 'rxjs/operators';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 
 import {
   ConfigService,
+  Configuration as SzRestConfiguration,
+  ConfigurationParameters as SzRestConfigurationParameters,
   SzAttributeSearchResult,
   SzAttributeType,
   SzAttributeTypesResponse,
@@ -13,6 +16,8 @@ import {
 import { SzEntitySearchParams } from '../../models/entity-search';
 import { SzSearchService } from '../../services/sz-search.service';
 import { JSONScrubber } from '../../common/utils';
+import { SzConfigurationService } from '../../services/sz-configuration.service';
+import { SzPrefsService } from '../../services/sz-prefs.service';
 
 /** @internal */
 interface SzSearchFormParams {
@@ -50,20 +55,47 @@ const parseBool = (value: any): boolean => {
 /**
  * Provides a search box component that can execute search queries and return results.
  *
- * @example
+ * @example <!-- (WC javascript) SzSearchComponent -->
+ * <sz-search
+ * id="sz-search"
+ * name="Isa Creepr"></sz-search>
+ * <script>
+ *  document.getElementById('sz-search').addEventListener('resultsChange', (results) => {
+ *    console.log('search results: ', results);
+ *  });
+ * </script>
+ *
+ * @example <!-- (Angular) SzSearchComponent -->
  * <sz-search
  * name="Isa Creepr"
  * (resultsChange)="myResultsHandler($event)"
  * (searchStart)="showSpinner()"
- * (searchEnd)="hideSpinner()">
+ * (searchEnd)="hideSpinner()"></sz-search>
  * @export
+ *
+ * @example <!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo -->
+ * <sz-search
+ * id="sz-search"
+ * name="Isa Creepr"></sz-search>
+ * <sz-search-results id="sz-search-results"></sz-search-results>
+ * <script>
+ *  var szSearchComponent = document.getElementById('sz-search');
+ *  var szSearchResultsComponent = document.getElementById('sz-search-results');
+ *  szSearchComponent.addEventListener('resultsChange', (evt) => {
+ *    console.log('search results: ', evt);
+ *    szSearchResultsComponent.results = evt.detail;
+ *  });
+ * </script>
  */
 @Component({
   selector: 'sz-search',
   templateUrl: './sz-search.component.html',
   styleUrls: ['./sz-search.component.scss']
 })
-export class SzSearchComponent implements OnInit {
+export class SzSearchComponent implements OnInit, OnDestroy {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
+
   /**
    * populate the search fields with an pre-existing set of search parameters.
    */
@@ -122,8 +154,7 @@ export class SzSearchComponent implements OnInit {
    * emmitted when the search results have been changed.
    * @memberof SzSearchComponent
    */
-  @Output('resultsChange')
-  searchResults: Subject<SzAttributeSearchResult[]> = new Subject<SzAttributeSearchResult[]>();
+  @Output('resultsChange') searchResults: Subject<SzAttributeSearchResult[]> = new Subject<SzAttributeSearchResult[]>();
   /**
    * emmitted when parameters of the search have been changed.
    *
@@ -400,6 +431,57 @@ export class SzSearchComponent implements OnInit {
     identifierType: false
   };
 
+  // layout enforcers
+  /** @internal */
+  public _layoutEnforcers: string[] = [''];
+  /** @internal */
+  public _forceLayout = false;
+  /** @internal */
+  public _layoutClasses: string[] = [];
+
+  /**
+   * Takes a collection or a single value of layout enum css classnames to pass
+   * to all children components. this value overrides auto-responsive css adjustments.
+   *
+   * @example forceLayout="layout-narrow"
+   *
+   * @memberof SzEntityDetailComponent
+   */
+  @Input() public set forceLayout(value: string | string[]) {
+    if(value){
+      this._forceLayout = true;
+      if(typeof value == 'string'){
+        if(value.indexOf(',') > -1){
+          this._layoutEnforcers = value.split(',');
+        } else {
+          this._layoutEnforcers = [value];
+        }
+      } else {
+        this._layoutEnforcers = value;
+      }
+    }
+
+  }
+  /** the width to switch from wide to narrow layout */
+  @Input() public layoutBreakpoints = [
+    {cssClass: 'layout-wide', minWidth: 1021 },
+    {cssClass: 'layout-medium', minWidth: 700, maxWidth: 1120 },
+    {cssClass: 'layout-narrow', maxWidth: 699 }
+  ]
+  @Input() public set layoutClasses(value: string[] | string){
+    if(value && value !== undefined) {
+      if(typeof value == 'string') {
+        this._layoutClasses = [value];
+      } else {
+        this._layoutClasses = value;
+      }
+    }
+  };
+  public get layoutClasses() {
+    return this._layoutClasses;
+  }
+
+  private _attributeTypesFromServer: SzAttributeType[];
   @Input('attributeTypes')
   public set inputAttributeTypes(value: SzAttributeType[]) {
     // strip out non-identifiers
@@ -407,14 +489,28 @@ export class SzSearchComponent implements OnInit {
       return (attr.attributeClass === 'IDENTIFIER');
     });
 
+    // store for caching
+    this._attributeTypesFromServer = value;
+
     // filter out by specific codes
-    if(this.allowedTypeAttributes && this.allowedTypeAttributes.length > 0) {
-      value = value.filter( (attr: SzAttributeType) => {
-        return (this.allowedTypeAttributes.indexOf( attr.attributeCode) > -1);
+    this.matchingAttributes = this.filterAttributeTypesByAllowedTypes(value, this.allowedTypeAttributes);
+  }
+
+  public get inputAttributeTypes(): SzAttributeType[] {
+    return this._attributeTypesFromServer;
+  }
+
+  private filterAttributeTypesByAllowedTypes( attributeTypes: SzAttributeType[], allowedTypes: string[] ) {
+    let retTypes: SzAttributeType[] = attributeTypes;
+
+    if(allowedTypes && allowedTypes.length > 0) {
+      retTypes = attributeTypes.filter( (attr: SzAttributeType) => {
+        return (allowedTypes.indexOf( attr.attributeCode) > -1);
       });
     }
-    this.matchingAttributes = value;
+    return retTypes
   }
+
   /**
    * returns an ordered list of identifier fields to use in the pulldown list.
    * @internal
@@ -446,10 +542,56 @@ export class SzSearchComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private configService: ConfigService,
-    private ref: ChangeDetectorRef,
-    private searchService: SzSearchService) {
+    private cd: ChangeDetectorRef,
+    private apiConfigService: SzConfigurationService,
+    private prefs: SzPrefsService,
+    private searchService: SzSearchService,
+    public breakpointObserver: BreakpointObserver) {
 
+      this.prefs.searchForm.prefsChanged.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe( (pJson) => {
+        if(pJson && pJson.allowedTypeAttributes) {
+          // update the allowedTypeAttributes
+          this.allowedTypeAttributes = pJson.allowedTypeAttributes;
+          if(this.inputAttributeTypes){
+            // we already have response from server
+            // just re-filter result
+            this.matchingAttributes = this.filterAttributeTypesByAllowedTypes(this.inputAttributeTypes, this.allowedTypeAttributes);
+            /*console.warn('filtering attr list based on prefs change',
+            this.inputAttributeTypes,
+            this.allowedTypeAttributes,
+            this.matchingAttributes);*/
+
+            this.cd.markForCheck();
+            this.cd.detectChanges();
+          }
+          // otherwise wait for initial response
+        }
+      });
   }
+
+  /**
+   * @internal
+  */
+  private _waitForConfigChange = false;
+  /**
+   * whether or not to show the wait for the the api
+   * conf to change before fetching resources like the identifiers list
+   * @memberof SzSearchComponent
+   */
+  @Input() public set waitForConfigChange(value: any){
+    this._waitForConfigChange = parseBool(value);
+  }
+  public get waitForConfigChange(): boolean | any {
+    return this._waitForConfigChange;
+  }
+  /**
+   * whether or not to fetch new attributes from the
+   * api server when a configuration change is detected
+   * @memberof SzSearchComponent
+   */
+  @Input() getAttributesOnConfigChange = true;
 
   /**
    * do any additional component set up
@@ -457,7 +599,70 @@ export class SzSearchComponent implements OnInit {
    */
   public ngOnInit(): void {
     this.createEntitySearchForm();
-    this.updateAttributeTypes();
+    this.apiConfigService.parametersChanged.pipe(
+      takeUntil(this.unsubscribe$),
+      filter( () => {
+        return this.getAttributesOnConfigChange;
+       })
+    ).subscribe(
+      (cfg: SzRestConfiguration) => {
+        //console.info('@senzing/sdk-components-ng/sz-search[ngOnInit]->apiConfigService.parametersChanged: ', cfg);
+        this.updateAttributeTypes();
+      }
+    );
+    // make immediate request
+    if(!this.waitForConfigChange){
+      this.updateAttributeTypes();
+    }
+    // detect layout changes
+    let bpSubArr = [];
+    this.layoutBreakpoints.forEach( (bpObj: any) => {
+      if(bpObj.minWidth && bpObj.maxWidth){
+        // in between
+        bpSubArr.push(`(min-width: ${bpObj.minWidth}px) and (max-width: ${bpObj.maxWidth}px)`);
+      } else if(bpObj.minWidth){
+        bpSubArr.push(`(min-width: ${bpObj.minWidth}px)`);
+      } else if(bpObj.maxWidth){
+        bpSubArr.push(`(max-width: ${bpObj.maxWidth}px)`);
+      }
+    });
+    const layoutChanges = this.breakpointObserver.observe(bpSubArr);
+
+    layoutChanges.pipe(
+      takeUntil(this.unsubscribe$),
+      filter( () => { return !this.forceLayout })
+    ).subscribe( (state: BreakpointState) => {
+
+      const cssQueryMatches = [];
+      // get array of media query matches
+      for(let k in state.breakpoints){
+        const val = state.breakpoints[k];
+        if(val == true) {
+          // find key in layoutBreakpoints
+          cssQueryMatches.push( k )
+        }
+      }
+      // get array of layoutBreakpoints objects that match media queries
+      const _matches = this.layoutBreakpoints.filter( (_bp) => {
+        const _mq = this.getCssQueryFromCriteria(_bp.minWidth, _bp.maxWidth);
+        if(cssQueryMatches.indexOf(_mq) >= 0) {
+          return true;
+        }
+        return false;
+      });
+      // assign matches to local prop
+      this.layoutClasses = _matches.map( (_bp) => {
+        return _bp.cssClass;
+      })
+    })
+  }
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   /**
@@ -468,18 +673,31 @@ export class SzSearchComponent implements OnInit {
     // get attributes
     this.configService.getAttributeTypes()
     .pipe(
+      takeUntil(this.unsubscribe$),
       map( (resp: SzAttributeTypesResponse) => resp.data.attributeTypes ),
       first()
     )
     .subscribe((attributeTypes: SzAttributeType[]) => {
       // yup
       this.inputAttributeTypes = attributeTypes;
-      this.ref.markForCheck();
-      this.ref.detectChanges();
+      this.cd.markForCheck();
+      this.cd.detectChanges();
     }, (err)=> {
       this.searchException.next( err ); //TODO: remove in breaking change release
       this.exception.next( err );
     });
+  }
+
+  getCssQueryFromCriteria(minWidth?: number, maxWidth?: number): string | undefined {
+    if(minWidth && maxWidth){
+      // in between
+      return (`(min-width: ${minWidth}px) and (max-width: ${maxWidth}px)`);
+    } else if(minWidth){
+      return (`(min-width: ${minWidth}px)`);
+    } else if(maxWidth){
+      return (`(max-width: ${maxWidth}px)`);
+    }
+    return
   }
 
   /**
@@ -596,7 +814,9 @@ export class SzSearchComponent implements OnInit {
     }
     this.searchStart.emit(searchParams);
 
-    this.searchService.searchByAttributes(searchParams)
+    this.searchService.searchByAttributes(searchParams).pipe(
+      takeUntil(this.unsubscribe$)
+    )
     .subscribe((res) => {
       const totalResults = res ? res.length : 0;
       this.searchResultsJSON = JSON.stringify(res, null, 4);

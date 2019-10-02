@@ -16,18 +16,25 @@ export * from './lib/services/sz-message-bundle.service';
 export * from './lib/services/sz-configuration.service';
 export * from './lib/services/sz-ui.service';
 export * from './lib/services/sz-pdf-util.service';
+export {
+  SzPrefsService,
+  SzSdkPrefsModel
+} from './lib/services/sz-prefs.service';
 
 /** components */
 export * from './lib/search/sz-search/sz-search.component';
 export * from './lib/search/sz-search-results/sz-search-results.component';
 export * from './lib/search/sz-search-result-card/sz-search-result-card.component';
 export * from './lib/entity/detail/sz-entity-detail.component';
+export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
 export * from './lib/sz-powered-by/sz-powered-by.component';
 export * from './lib/configuration/sz-configuration/sz-configuration.component';
 export * from './lib/configuration/sz-configuration-about/sz-configuration-about.component';
-
+export * from './lib/configuration/sz-preferences/sz-preferences.component';
 export * from '@senzing/sdk-graph-components';
 /*
+// graph components have been moved to their own separate package "@senzing/sdk-graph-components"
+
 export * from './lib/graph/sz-relationship-network/sz-relationship-network.component';
 export * from './lib/graph/sz-relationship-network-input/sz-relationship-network-input.component';
 export * from './lib/graph/sz-relationship-network-lookup/sz-relationship-network-lookup.component';

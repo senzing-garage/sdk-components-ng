@@ -1,0 +1,59 @@
+:host {
+  display: block;
+  h4.title {
+    font-size: 1em;
+    font-weight: 600;
+    margin: 0 0 7px 0;
+    padding: 0 0 10px 0;
+    border-bottom: 1px inset #999;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin-left: 0;
+      margin-bottom: 5px;
+      font-size: .8em;
+
+      label {
+        margin-left: 10px;
+      }
+      input[type=number] {
+        width: 38px;
+        text-align: center;
+      }
+      input[type=checkbox] {
+        margin-left: 28px;
+      }
+
+      .pref-key {
+        font-weight: 600;
+        font-size: .6em;
+        text-emphasis: 1em;
+        display: block;
+      }
+    }
+  }
+
+  .prefs-ui-lists {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+  .prefs-ui-column {
+    display: inline-block;
+    padding: 10px 20px 2em 1em;
+    margin: 0 2em 0 0;
+    /* width: 200px; */
+    border-radius: 5px;
+    background-color: #efefef;
+
+    .prefs-ui-column-inner {
+      display: inline-block;
+    }
+  }
+}
