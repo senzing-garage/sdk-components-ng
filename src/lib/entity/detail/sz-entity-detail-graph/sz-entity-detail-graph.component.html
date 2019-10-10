@@ -15,15 +15,12 @@
   </div>
 </div>
 <div #graphContainer class="sz-entity-detail-section-collapsible-card">
-  <sz-relationship-network-lookup [entityIds]="graphIds"
-                                  [buildOut]=buildOut
-                                  [maxDegrees]="maxDegrees"
-                                  [maxEntities]="maxEntities"
-                                  (networkLoaded)="onNetworkLoaded($event)"></sz-relationship-network-lookup>
   <sz-relationship-network class="sz-relationship-network-graph"
     svgViewBox="150 50 400 300"
     svgPreserveAspectRatio="xMinYMid meet"
-    [loadedData]="_inputs"
+    [entityIds]="graphIds"
+    [maxDegrees]="maxDegrees"
+    [buildOut]="buildOut"
     [linkGravity]="5"
     [showLinkLabels]="_showMatchKeys"
     (contextMenuClick)="onRightClick($event)"
