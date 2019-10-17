@@ -627,9 +627,9 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _rememberStateOptions: boolean = true;
   /** @internal */
-  private _maxDegreesOfSeparation: number = 3;
+  private _maxDegreesOfSeparation: number = 1;
   /** @internal */
-  private _maxEntities: number = 3;
+  private _maxEntities: number = 40;
   /** @internal */
   private _buildOut: number = 1;
 
