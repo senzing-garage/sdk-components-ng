@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input } from '@angular/core';
+import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { Configuration as SzRestConfiguration } from '@senzing/rest-api-client-ng';
 
 /**
@@ -19,17 +19,22 @@ export class SzPrefDictComponent implements OnInit {
 
   public keyTitle = "datasource";
   public valueTitle = "color";
+  @Input() public valueType = "text";
 
   public newKeyPrefix = "DataSourceName";
   public keyPlaceholder = "Data Source Name";
-
-
   public _data: any = {
     'OWNERS': 'red',
     'SAMPLE_PERSON': 'purple',
   };
-
   private _newKeyMaxInt = Object.keys(this._data).length + 1;
+
+  /**
+   * emmitted when a property has been changed.
+   * used mostly for diagnostics.
+   */
+  @Output()
+  public dataChange: EventEmitter<any> = new EventEmitter<any>();
 
   @Input() public set value(val: any) {
     const isInitialValue = (this._data == undefined) ? true : false;
@@ -86,6 +91,7 @@ export class SzPrefDictComponent implements OnInit {
     if(propertyKey && evt && evt.target && evt.target.value){
       const newValue   = evt.target.value;
       this._data[propertyKey] = newValue;
+      this.publish();
     } else {
       console.warn('could not update value: ', evt, this._data);
     }
@@ -110,6 +116,7 @@ export class SzPrefDictComponent implements OnInit {
       // add new one
       _oldData[newKey] = oldValue;
       this._data = _oldData;
+      this.publish();
     }
     console.log('onKeyChange: ', propertyKey, this._data);
 
@@ -131,6 +138,9 @@ export class SzPrefDictComponent implements OnInit {
     }
     return retArr;
   }
+
+  /** publish data change event using current payload */
+  publish() { this.dataChange.emit(this._data); }
 
   ngOnInit() {}
 

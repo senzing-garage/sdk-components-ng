@@ -12,7 +12,7 @@
         [placeholder]="keyPlaceholder"
         (change)="onKeyChange(valuePair.name, $event)"
         class="text value-pair-row-cell first-child" [value]="valuePair.name"/>
-      <input type="text" [id]="'dict-input-'+valuePair.name+'-value'"
+      <input [type]="valueType" [id]="'dict-input-'+valuePair.name+'-value'"
         (change)="onValueChange(valuePair.name, $event)"
         class="text value-pair-row-cell" [value]="valuePair.value"/>
     </div>

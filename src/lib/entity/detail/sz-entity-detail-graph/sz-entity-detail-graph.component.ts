@@ -11,7 +11,7 @@ import {
   SzRelationshipType
 } from '@senzing/rest-api-client-ng';
 import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
-import { SzRelationshipNetworkComponent } from '@senzing/sdk-graph-components';
+import { SzRelationshipNetworkComponent, NodeFilterPair } from '@senzing/sdk-graph-components';
 /**
  * @internal
  * @export
@@ -66,6 +66,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   @Input() maxDegrees: number = 1;
   @Input() maxEntities: number = 20;
   @Input() buildOut: number = 1;
+  @Input() dataSourceColors: any = {};
 
   @Input()
   set expanded(value) {
@@ -253,12 +254,17 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     this.maxDegrees = prefs.maxDegreesOfSeparation;
     this.maxEntities = prefs.maxEntities;
     this.buildOut = prefs.buildOut;
+    this.dataSourceColors = prefs.dataSourceColors;
 
     if(this.graphNetworkComponent) {
       // update graph with new properties
       this.graphNetworkComponent.maxDegrees = this.maxDegrees;
       this.graphNetworkComponent.maxEntities = this.maxEntities;
       this.graphNetworkComponent.buildOut = this.buildOut;
+      if(this.dataSourceColors && Object.keys(this.dataSourceColors) && Object.keys(this.dataSourceColors).length > 0) {
+        // has colors, apply them
+        this.graphNetworkComponent.highlight = this.dataSourceColors;
+      }
       if(this._graphComponentRendered){
         this.reload();
       }
@@ -266,5 +272,38 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
 
     // update view manually (for web components redraw reliability)
     this.cd.detectChanges();
+  }
+  // ----------------------  special built-ins for applying user colors to nodes in datasources ---------------
+
+  /** function used to generate entity node fill colors from those saved in preferences */
+  public get entityNodecolorsByDataSource(): NodeFilterPair[] {
+    var _ret = [];
+    if(this.dataSourceColors) {
+      var _keys = Object.keys(this.dataSourceColors);
+      _ret = _keys.map( (_key) => {
+        var _color = this.dataSourceColors[_key];
+        return {
+          selectorFn: this.isEntityNodeInDataSource.bind(this, _key),
+          modifierFn: this.setEntityNodeFillColor.bind(this, _color)
+        }
+      })
+    }
+    return _ret;
+  }
+  /** used by "entityNodecolorsByDataSource" getter to query nodes as belonging to a datasource */
+  private isEntityNodeInDataSource(dataSource, nodeData) {
+    // console.log('fromOwners: ', nodeData);
+    if(nodeData && nodeData.dataSources && nodeData.dataSources.indexOf){
+      return nodeData.dataSources.indexOf(dataSource) >= 0;
+    } else {
+      return false;
+    }
+  }
+  /** used by "entityNodecolorsByDataSource" getter to set fill color of nodes in a nodelist */
+  private setEntityNodeFillColor(color, nodeList) {
+    // nodeList.attr('fill', '#e6b100');
+    if(nodeList && nodeList.style){
+      nodeList.style('fill', color);
+    }
   }
 }
