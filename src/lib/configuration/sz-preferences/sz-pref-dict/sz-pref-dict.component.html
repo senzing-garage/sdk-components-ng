@@ -1,3 +1,21 @@
 <div class="sz-pref-dict">
-  SzPrefDictComponent skeleton
+  <div class="value-pair">
+    <div class="value-pair-header">
+      <div class="value-pair-header-cell">{{ keyTitle }}</div>
+      <div class="value-pair-header-cell">{{ valueTitle }}</div>
+    </div>
+  </div>
+  <div class="value-pair" *ngFor="let valuePair of valueAsArray">
+    <div class="value-pair-row">
+      <button class="button-del" (click)="deleteProperty(valuePair.name)">-</button>
+      <input type="text "[id]="'dict-input-'+valuePair.name+'-key'"
+        [placeholder]="keyPlaceholder"
+        (change)="onKeyChange(valuePair.name, $event)"
+        class="text value-pair-row-cell first-child" [value]="valuePair.name"/>
+      <input type="text" [id]="'dict-input-'+valuePair.name+'-value'"
+        (change)="onValueChange(valuePair.name, $event)"
+        class="text value-pair-row-cell" [value]="valuePair.value"/>
+    </div>
+  </div>
+  <button class="button-add" (click)="addProperty()">+</button>
 </div>
