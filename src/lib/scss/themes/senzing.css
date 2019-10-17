@@ -148,6 +148,7 @@ body {
   --sz-entity-graph-control-padding-right: 3px;
   --sz-entity-graph-control-padding-bottom: 0px;
   --sz-entity-graph-control-padding-left: 3px;
+  --sz-entity-graph-overlay-color: #9d9d9d;
   /* control borders */
   --sz-entity-graph-control-border-top: 1px solid #d3d3d3;
   --sz-entity-graph-control-border-right: none;

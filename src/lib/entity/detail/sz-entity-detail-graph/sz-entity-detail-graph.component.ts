@@ -67,6 +67,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   @Input() maxEntities: number = 20;
   @Input() buildOut: number = 1;
   @Input() dataSourceColors: any = {};
+  @Input() showPopOutIcon: boolean = true;
 
   @Input()
   set expanded(value) {
@@ -87,6 +88,12 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
    * @returns object with various entity and ui properties.
    */
   @Output() contextMenuClick: EventEmitter<any> = new EventEmitter<any>();
+
+  /**
+   * emitted when the player right clicks a entity node.
+   * @returns object with various entity and ui properties.
+   */
+  @Output() popoutClick: EventEmitter<any> = new EventEmitter<any>();
 
   /**
    * emitted when the player clicks a entity node.
@@ -158,6 +165,11 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
       //console.warn('onRightClick: ', pos, event);
       this.contextMenuClick.emit( evtSynth );
     }
+  }
+  /** publish an "popoutClick" event on icon click, pass the entityIds as arg */
+  public onPopOutClick(event?: any) {
+    // publish event
+    this.popoutClick.emit(this.graphIds);
   }
 
   public onOptionChange(event: {name: string, value: any}) {
@@ -301,7 +313,6 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   }
   /** used by "entityNodecolorsByDataSource" getter to set fill color of nodes in a nodelist */
   private setEntityNodeFillColor(color, nodeList) {
-    // nodeList.attr('fill', '#e6b100');
     if(nodeList && nodeList.style){
       nodeList.style('fill', color);
     }

@@ -32,4 +32,14 @@
     [showLinkLabels]="_showMatchKeys"
     (optionChanged)="onOptionChange($event)"
     ></sz-entity-detail-graph-control>
+    <svg class="popout-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+      viewBox="0 0 64 64"
+      (click)="onPopOutClick()"
+      *ngIf="showPopOutIcon"
+      enable-background="new 0 0 64 64" xml:space="preserve">
+      <g>
+        <g><g><polygon points="53,56 8,56 8,11 30,11 30,3 0,3 0,64 61,64 61,34 53,34"/></g></g>
+        <g><g><polygon points="42,0 50,8 33,25 39,31 56,14 64,23 64,0"/></g></g>
+      </g>
+    </svg>
 </div>

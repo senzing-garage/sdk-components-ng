@@ -42,6 +42,18 @@
     height: 100%;
   }
 
+  .popout-icon {
+    display: block;
+    bottom: 10px;
+    left: 10px;
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    z-index: 2000;
+    color: var(--sz-entity-graph-overlay-color);
+    fill: var(--sz-entity-graph-overlay-color);
+    cursor: pointer;
+  }
 
   sz-entity-detail-section-collapsible-card, .sz-entity-detail-section-collapsible-card {
     width: 100%;
