@@ -55,7 +55,7 @@ import { SzConfigurationAboutComponent } from './configuration/sz-configuration-
 import { SzConfigurationComponent } from './configuration/sz-configuration/sz-configuration.component';
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
 import { SzPreferencesComponent } from './configuration/sz-preferences/sz-preferences.component';
-
+import { SzPrefDictComponent } from './configuration/sz-preferences/sz-pref-dict/sz-pref-dict.component';
 
 /**
  * Sets up a default set of service parameters for use
@@ -104,7 +104,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzConfigurationAboutComponent,
     SzConfigurationComponent,
     SzPoweredByComponent,
-    SzPreferencesComponent
+    SzPreferencesComponent,
+    SzPrefDictComponent
   ],
   imports: [
     CommonModule,
