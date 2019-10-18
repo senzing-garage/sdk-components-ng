@@ -68,6 +68,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   @Input() buildOut: number = 1;
   @Input() dataSourceColors: any = {};
   @Input() showPopOutIcon: boolean = false;
+  @Input() showFiltersControl: boolean = true;
   private _showMatchKeyControl: boolean = true;
   @Input() set showMatchKeyControl(value: boolean | string) {
     if((value as string) == 'true' || (value as string) == 'True' || (value as string) == 'false' || (value as string) == 'False') {

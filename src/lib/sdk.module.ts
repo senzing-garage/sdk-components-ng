@@ -29,6 +29,7 @@ import { SzConfigurationService } from './services/sz-configuration.service';
 import { SzUIEventService } from './services/sz-ui.service';
 import { SzPdfUtilService } from './services/sz-pdf-util.service';
 import { SzPrefsService } from './services/sz-prefs.service';
+import { SzDataSourcesService } from './services/sz-datasources.service';
 
 /** components */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
@@ -41,6 +42,7 @@ import { SzEntityDetailSectionCollapsibleCardComponent } from './entity/detail/s
 
 import { SzEntityDetailGraphComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
 import { SzEntityDetailGraphControlComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-control.component';
+import { SzEntityDetailGraphFilterComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-filter.component';
 import { SzEntityMatchPillComponent } from './entity/sz-entity-match-pill/sz-entity-match-pill.component';
 import { SzEntityRecordCardComponent } from './entity/sz-entity-record-card/sz-entity-record-card.component';
 import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-card/sz-entity-record-card-header/sz-entity-record-card-header.component';
@@ -90,6 +92,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultCardContentComponent,
     SzEntityDetailGraphComponent,
     SzEntityDetailGraphControlComponent,
+    SzEntityDetailGraphFilterComponent,
     SzEntityDetailHeaderComponent,
     SzEntityDetailsSectionComponent,
     SzEntityDetailSectionSummaryComponent,
@@ -126,6 +129,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzConfigurationAboutComponent,
     SzEntityDetailGraphComponent,
     SzEntityDetailGraphControlComponent,
+    SzEntityDetailGraphFilterComponent,
     SzPreferencesComponent
   ],
   /** for components being exported as web components */
@@ -143,6 +147,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzMessageBundleService,
     SzSearchService,
     SzConfigurationService,
+    SzDataSourcesService,
     SzPrefsService,
     HttpClient,
     TitleCasePipe,

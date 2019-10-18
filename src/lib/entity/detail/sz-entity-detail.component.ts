@@ -171,7 +171,8 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   @Input() graphShowMatchKeyControl = true;
   /** show the pop-out icon control */
   @Input() graphShowPopOutIcon = false;
-
+  /** show the pop-out icon control */
+  @Input() graphShowFiltersControl = true;
 
   /**
    * set the entity data directly, instead of via entityId lookup.

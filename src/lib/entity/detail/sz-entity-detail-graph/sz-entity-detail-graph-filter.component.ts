@@ -1,0 +1,69 @@
+import { Component, HostBinding, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { SzPrefsService } from '../../../services/sz-prefs.service';
+import { SzDataSourcesService } from '../../../services/sz-datasources.service';
+import { tap, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+
+/**
+ * @internal
+ * @export
+ */
+@Component({
+  selector: 'sz-entity-detail-graph-filter',
+  templateUrl: './sz-entity-detail-graph-filter.component.html',
+  styleUrls: ['./sz-entity-detail-graph-filter.component.scss']
+})
+export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
+  isOpen: boolean = true;
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
+
+  public _showLinkLabels = true;
+  @Input() public set showLinkLabels(value){
+    this._showLinkLabels = value;
+  }
+  public get showLinkLabels(): boolean {
+    return this._showLinkLabels;
+  }
+  @Output() public optionChanged = new EventEmitter<{name: string, value: any}>();
+
+  constructor(
+    public prefs: SzPrefsService,
+    public datasources: SzDataSourcesService
+  ) {}
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  ngOnInit() {
+    this.getDataSources();
+  }
+
+  public _datasources: string[] = [];
+
+  public getDataSources() {
+    return this.datasources.listDataSources().subscribe((dataSrc: string[]) => {
+      console.log('got data from api request', dataSrc);
+      this._datasources = dataSrc;
+    });
+  }
+
+
+  public changeOption(optName: string, value: any): void {
+    this.optionChanged.emit({'name': optName, 'value': value});
+  }
+  public toggleBoolOption(optName: string, event): void {
+    let _checked = false;
+    if (event.target) {
+      _checked = event.target.checked;
+    } else if (event.srcElement) {
+      _checked = event.srcElement.checked;
+    }
+    this.optionChanged.emit({'name': optName, value: _checked});
+  }
+}

@@ -1,0 +1,21 @@
+<div>
+  <h3>Filters</h3>
+  <ul>
+    <li>
+      <!-- start graph match keys checkbox -->
+      <input type="checkbox"
+        id="sz-graph-toggle-match-keys" name="sz-graph-toggle-match-keys"
+        [checked]="showLinkLabels"
+        (change)="toggleBoolOption('showLinkLabels',$event)"><label for="sz-graph-toggle-match-keys">Show Match Key</label>
+      <!-- end graph match keys checkbox -->
+    </li>
+  </ul>
+  <h3>Show Sources</h3>
+  <ul>
+    <li *ngFor="let ds of _datasources">{{ds}}</li>
+  </ul>
+  <h3>Source Colors</h3>
+  <ul>
+    <li *ngFor="let ds of _datasources">{{ds}}</li>
+  </ul>
+</div>
