@@ -28,11 +28,15 @@
     (entityClick)="onEntityClick($event)"
     (noResults)="onNoResults($event)"
     [maxEntities]="maxEntities"></sz-relationship-network>
-    <sz-entity-detail-graph-control class="sz-entity-detail-graph-control"
+    <sz-entity-detail-graph-control *ngIf="showMatchKeyControl" class="sz-entity-detail-graph-control"
     [showLinkLabels]="_showMatchKeys"
     (optionChanged)="onOptionChange($event)"
     ></sz-entity-detail-graph-control>
-    <svg class="popout-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+    <svg class="popout-icon"
+      [class.top-left]="popOutIconPosition == 'top-left'"
+      [class.top-right]="popOutIconPosition == 'top-right'"
+      [class.bottom-right]="popOutIconPosition == 'bottom-right'"
+      [class.bottom-left]="popOutIconPosition == 'bottom-left'" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
       viewBox="0 0 64 64"
       (click)="onPopOutClick()"
       *ngIf="showPopOutIcon"

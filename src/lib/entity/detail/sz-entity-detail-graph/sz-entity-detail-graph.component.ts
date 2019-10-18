@@ -67,7 +67,26 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   @Input() maxEntities: number = 20;
   @Input() buildOut: number = 1;
   @Input() dataSourceColors: any = {};
-  @Input() showPopOutIcon: boolean = true;
+  @Input() showPopOutIcon: boolean = false;
+  private _showMatchKeyControl: boolean = true;
+  @Input() set showMatchKeyControl(value: boolean | string) {
+    if((value as string) == 'true' || (value as string) == 'True' || (value as string) == 'false' || (value as string) == 'False') {
+      switch((value as string).toLowerCase()) {
+        case 'true':
+          value = true;
+          break;
+        case 'false':
+          value = false;
+          break;
+      }
+    }
+    this._showMatchKeyControl = (value as boolean);
+  }
+  get showMatchKeyControl(): boolean | string {
+    return this._showMatchKeyControl;
+  }
+  /** the position of the pop-out icon ('top-left' | 'top-right' | 'bottom-right' | 'bottom-left') */
+  @Input() popOutIconPosition: string = 'bottom-left';
 
   @Input()
   set expanded(value) {

@@ -53,6 +53,27 @@
     color: var(--sz-entity-graph-overlay-color);
     fill: var(--sz-entity-graph-overlay-color);
     cursor: pointer;
+
+    &.top-left {
+      top: 10px;
+      left: 10px;
+    }
+    &.top-right {
+      top: 10px;
+      left: unset;
+      right: 10px;
+    }
+    &.bottom-left {
+      top: unset;
+      bottom: 10px;
+      left: 10px;
+    }
+    &.bottom-right {
+      top: unset;
+      bottom: 10px;
+      left: unset;
+      right: 10px;
+    }
   }
 
   sz-entity-detail-section-collapsible-card, .sz-entity-detail-section-collapsible-card {

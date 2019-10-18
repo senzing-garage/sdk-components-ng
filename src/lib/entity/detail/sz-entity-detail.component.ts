@@ -157,6 +157,21 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    * @returns object with various entity and ui properties.
    */
   @Output() graphEntityDblClick: EventEmitter<any> = new EventEmitter<any>();
+  /**
+   * emitted when the user double clicks a graph entity node.
+   * @returns object with various entity and ui properties.
+   */
+  @Output() graphPopOutClick: EventEmitter<any> = new EventEmitter<any>();
+
+  /** what position the pop-out icon should be displayed
+   * ('top-left' | 'top-right' | 'bottom-right' | 'bottom-left')
+  */
+  @Input() graphPopOutIconPosition = 'bottom-left'
+  /** show the small 'show match keys' control in the bottom right */
+  @Input() graphShowMatchKeyControl = true;
+  /** show the pop-out icon control */
+  @Input() graphShowPopOutIcon = false;
+
 
   /**
    * set the entity data directly, instead of via entityId lookup.
@@ -502,6 +517,12 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    */
   public onGraphRightClick(event: any) {
     this.graphContextMenuClick.emit(event);
+  }
+  /**
+   * proxies internal graph component pop-out click to "graphPopOutClick" event.
+   */
+  public onGraphPopoutClick(event: any) {
+    this.graphPopOutClick.emit(event);
   }
 
   public onSectionCollapsedChange(prefsKey: string, isCollapsed: boolean) {
