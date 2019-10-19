@@ -1,5 +1,7 @@
 :host {
-  padding: 0px 1px;
+  .drawer-wrapper {
+    margin: 1em 0;
+  }
 
   ul {
     list-style-type: none;
@@ -14,9 +16,10 @@
     padding: 4px 1em 4px 1em;
     cursor: var(--sz-entity-graph-control-cursor);
 
+    /*
     &:hover {
       cursor: var(--sz-entity-graph-control-item-cursor);
-    }
+    }*/
 
     label {
       cursor: var(--sz-entity-graph-control-item-cursor);
@@ -27,4 +30,89 @@
     }
   }
 
+  h3:first-child {
+    margin-top: 0;
+  }
+
+  hr {
+    margin-top: 1em;
+    border-top: 0;
+    border-bottom: 1px solid #dadada;
+  }
+
+  ul.sliders-list {
+    /* position the current val to the right of slider */
+    .intVal {
+      position: relative;
+      top: -7px;
+      margin-left: 7px;
+    }
+  }
+  ul.filters-list {
+    li {
+      margin: 0;
+      padding: 0 0 0 14px;
+    }
+    input[type=checkbox] {
+      width: 1.2em;
+      height: 1.2em;
+      padding: 0;
+      margin: 0 7px 0 0;
+    }
+  }
+  ul.colors-list, ul.other-colors-list  {
+    li {
+      margin-bottom: 2px;
+      padding-bottom: 0;
+    }
+    input[type=color] {
+      display: inline-block;
+      width: 15px;
+      height: 18px;
+      margin: 0 7px 0 0;
+    }
+  }
+}
+
+.has-tooltip {
+  position: relative;
+  .tooltip {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    right: -100%;
+    bottom: 115%;
+    /* width: 120px; */
+    background-color: #00000073;
+    color: #fff;
+    text-align: center;
+    padding: 5px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    font-size: 10px;
+    z-index: 1;
+    transition: opacity .5s;
+  }
+  &.block-level-src {
+    .tooltip {
+      right: 10%;
+    }
+  }
+  /* tooltip has little pointer nub */
+  .tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 80%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #00000073 transparent transparent transparent;
+  }
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.has-tooltip:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
 }

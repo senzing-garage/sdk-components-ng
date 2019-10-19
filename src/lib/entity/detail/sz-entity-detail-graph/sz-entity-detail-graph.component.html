@@ -22,7 +22,8 @@
     [maxDegrees]="maxDegrees"
     [buildOut]="buildOut"
     [linkGravity]="5"
-    [highlight]="entityNodecolorsByDataSource"
+    [highlight]="entityNodeColors"
+    [filter]="entityNodeFilterByDataSource"
     [showLinkLabels]="_showMatchKeys"
     (contextMenuClick)="onRightClick($event)"
     (entityClick)="onEntityClick($event)"
@@ -34,7 +35,7 @@
     (optionChanged)="onOptionChange($event)"
     ></sz-entity-detail-graph-control>
 
-    <sz-entity-detail-graph-filter *ngIf="showFiltersControl" class="sz-entity-detail-graph-control"
+    <sz-entity-detail-graph-filter *ngIf="showFiltersControl" class="sz-entity-detail-graph-filter"
     [showLinkLabels]="_showMatchKeys"
     (optionChanged)="onOptionChange($event)"
     ></sz-entity-detail-graph-filter>

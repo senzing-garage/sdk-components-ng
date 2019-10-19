@@ -48,27 +48,26 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   /** sets the visibility of edge labels on the node links */
   @Input() public set showMatchKeys(value: boolean) {
     this._showMatchKeys = value;
-    //console.log('@senzing/sdk-components-ng:sz-entity-detail-graph.showMatchKeys: ', value);
   };
   private _openInNewTab: boolean = false;
   /** whether or not to open entity clicks in new tab */
   @Input() public set openInNewTab(value: boolean) {
     this._openInNewTab = value;
-    //console.log('@senzing/sdk-components-ng:sz-entity-detail-graph.openInNewTab: ', value);
   };
   public _openInSidePanel = false;
   /** whether or not to open entity clicks in side drawer */
   @Input() public set openInSidePanel(value: boolean) {
     this._openInSidePanel = value;
-    //console.log('@senzing/sdk-components-ng:sz-entity-detail-graph.openInSidePanel: ', value);
   };
   @Input() sectionIcon: string;
   @Input() maxDegrees: number = 1;
   @Input() maxEntities: number = 20;
   @Input() buildOut: number = 1;
   @Input() dataSourceColors: any = {};
+  @Input() dataSourcesFiltered: string[] = [];
   @Input() showPopOutIcon: boolean = false;
   @Input() showFiltersControl: boolean = true;
+  private neverFilterQueriedEntityIds: boolean = true;
   private _showMatchKeyControl: boolean = true;
   @Input() set showMatchKeyControl(value: boolean | string) {
     if((value as string) == 'true' || (value as string) == 'True' || (value as string) == 'false' || (value as string) == 'False') {
@@ -88,6 +87,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   }
   /** the position of the pop-out icon ('top-left' | 'top-right' | 'bottom-right' | 'bottom-left') */
   @Input() popOutIconPosition: string = 'bottom-left';
+  @Input() public queriedEntitiesColor;
 
   @Input()
   set expanded(value) {
@@ -282,21 +282,27 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
     // console.log('@senzing/sdk-components-ng/sz-entity-detail-graph.onPrefsChange(): ', prefs, this.prefs.graph);
+    let queryParamChanged = false;
+    if(this.maxDegrees != prefs.maxDegreesOfSeparation ||
+      this.maxEntities != prefs.maxEntities ||
+      this.buildOut != prefs.buildOut){
+      // only params that factor in to the API call
+      // should trigger full redraw
+      queryParamChanged = true;
+    }
     this._showMatchKeys = prefs.showMatchKeys;
     this.maxDegrees = prefs.maxDegreesOfSeparation;
     this.maxEntities = prefs.maxEntities;
     this.buildOut = prefs.buildOut;
     this.dataSourceColors = prefs.dataSourceColors;
-
-    if(this.graphNetworkComponent) {
+    this.dataSourcesFiltered = prefs.dataSourcesFiltered;
+    this.neverFilterQueriedEntityIds = prefs.neverFilterQueriedEntityIds;
+    this.queriedEntitiesColor = prefs.queriedEntitiesColor;
+    if(this.graphNetworkComponent && queryParamChanged) {
       // update graph with new properties
       this.graphNetworkComponent.maxDegrees = this.maxDegrees;
       this.graphNetworkComponent.maxEntities = this.maxEntities;
       this.graphNetworkComponent.buildOut = this.buildOut;
-      if(this.dataSourceColors && Object.keys(this.dataSourceColors) && Object.keys(this.dataSourceColors).length > 0) {
-        // has colors, apply them
-        this.graphNetworkComponent.highlight = this.dataSourceColors;
-      }
       if(this._graphComponentRendered){
         this.reload();
       }
@@ -305,7 +311,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     // update view manually (for web components redraw reliability)
     this.cd.detectChanges();
   }
-  // ----------------------  special built-ins for applying user colors to nodes in datasources ---------------
+  // ----------------------  special built-ins for applying colors and filters to nodes in datasources ---------------
 
   /** function used to generate entity node fill colors from those saved in preferences */
   public get entityNodecolorsByDataSource(): NodeFilterPair[] {
@@ -322,11 +328,48 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     }
     return _ret;
   }
+  /** get the list of filters to apply to inner graph component */
+  public get entityNodeFilterByDataSource(): NodeFilterPair[] {
+    var _ret = [];
+    if(this.dataSourcesFiltered) {
+      _ret = this.dataSourcesFiltered.map( (_name) => {
+        return {
+          selectorFn: this.isEntityNodeInDataSource.bind(this, _name)
+        }
+      })
+    }
+    return _ret;
+  }
+  /** get an array of NodeFilterPair to use for highlighting certain graph nodes specific colors */
+  public get entityNodeColors(): NodeFilterPair[] {
+    var _ret = this.entityNodecolorsByDataSource;
+    if( this.queriedEntitiesColor && this.queriedEntitiesColor !== undefined){
+      // add special color for active/primary nodes
+      _ret.push( {
+        selectorFn: this.isEntityNodeInQuery.bind(this),
+        modifierFn: this.setEntityNodeFillColor.bind(this, this.queriedEntitiesColor)
+      } );
+    }
+    return _ret;
+  }
   /** used by "entityNodecolorsByDataSource" getter to query nodes as belonging to a datasource */
   private isEntityNodeInDataSource(dataSource, nodeData) {
     // console.log('fromOwners: ', nodeData);
-    if(nodeData && nodeData.dataSources && nodeData.dataSources.indexOf){
-      return nodeData.dataSources.indexOf(dataSource) >= 0;
+    let _retVal = false;
+    if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
+      return false;
+    } else {
+      if(nodeData && nodeData.dataSources && nodeData.dataSources.indexOf){
+        return nodeData.dataSources.indexOf(dataSource) >= 0;
+      } else {
+        return false;
+      }
+    }
+  }
+  /** checks to see if entity node is one of the primary entities queried for*/
+  private isEntityNodeInQuery(nodeData) {
+    if(this.graphIds){
+      return this.graphIds.indexOf( nodeData.entityId ) >= 0;
     } else {
       return false;
     }

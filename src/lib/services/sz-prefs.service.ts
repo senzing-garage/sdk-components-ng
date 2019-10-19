@@ -99,6 +99,9 @@ export class SzSdkPrefsBase {
  */
 export class SzSearchFormPrefs extends SzSdkPrefsBase {
   // --------------- private vars
+  /** @internal */
+  private _rememberLastSearches: number = 10;
+  private _savedSearches: [];
   private _allowedTypeAttributes: string[] = [
     'NIN_NUMBER',
     'ACCOUNT_NUMBER',
@@ -119,6 +122,25 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
   ]
 
   // ------------------- getters and setters
+  /** remember last X searches in autofill. */
+  public get rememberLastSearches(): number {
+    return this._rememberLastSearches;
+  }
+  /** remember last X searches in autofill. */
+  public set rememberLastSearches(value: number) {
+    this._rememberLastSearches = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** get list of last searches performed. */
+  public get savedSearches(): [] {
+    return this._savedSearches;
+  }
+  /** update list of last searches performed. */
+  public set savedSearches(value: []) {
+    this._savedSearches = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+
   /** the allowed identifier types to show in the identifier pulldown */
   public get allowedTypeAttributes(): string[] {
     return this._allowedTypeAttributes;
@@ -632,6 +654,14 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   private _maxEntities: number = 40;
   /** @internal */
   private _buildOut: number = 1;
+  /** @internal */
+  private _dataSourcesFiltered: string[] = [
+    'SAMPLE PERSON'
+  ];
+  /** @internal */
+  private _neverFilterQueriedEntityIds: boolean = true;
+  /** @internal */
+  private _queriedEntitiesColor: string | undefined;
 
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
@@ -644,7 +674,10 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     'rememberStateOptions',
     'maxDegreesOfSeparation',
     'maxEntities',
-    'buildOut'
+    'buildOut',
+    'dataSourcesFiltered',
+    'neverFilterQueriedEntityIds',
+    'queriedEntitiesColor'
   ]
 
   // -------------- getters and setters
@@ -725,6 +758,34 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     this._buildOut = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
+  /** hide any entity node when belonging to particular datasources */
+  public get dataSourcesFiltered(): string[] {
+    return this._dataSourcesFiltered;
+  }
+  /** hide any entity node when belonging to particular datasources */
+  public set dataSourcesFiltered(value: string[]) {
+    this._dataSourcesFiltered = value;
+    if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** never filter out the entities that were explicity declared in query */
+  public get neverFilterQueriedEntityIds(): boolean {
+    return this._neverFilterQueriedEntityIds;
+  }
+  /** never filter out the entities that were explicity declared in query */
+  public set neverFilterQueriedEntityIds(value: boolean) {
+    this._neverFilterQueriedEntityIds = value;
+    if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** color of active or queried for entity or entitities */
+  public get queriedEntitiesColor(): string | undefined {
+    return this._queriedEntitiesColor;
+  }
+  /** color of active or queried for entity or entitities */
+  public set queriedEntitiesColor(value: string | undefined) {
+    this._queriedEntitiesColor = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+
 
   /**
    * publish out a "first" real payload so that

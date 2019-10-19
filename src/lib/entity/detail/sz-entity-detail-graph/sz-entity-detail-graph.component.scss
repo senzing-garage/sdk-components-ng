@@ -89,7 +89,7 @@
     border-left: var(--sz-entity-detail-section-border-left);
     border-right: var(--sz-entity-detail-section-border-right);
     border-bottom: var(--sz-entity-detail-section-border-bottom);
-    overflow: hidden;
+    /*overflow: hidden;*/
 
     &:last-child {
       border-radius: var(--sz-entity-detail-section-border-radius);
@@ -152,7 +152,7 @@
 .sz-entity-detail-section-collapsible-card {
   position: relative;
 }
-sz-entity-detail-graph-control, .sz-entity-detail-graph-control {
+sz-entity-detail-graph-control, .sz-entity-detail-graph-control, .sz-entity-detail-graph-filter {
   background-color: var(--sz-entity-graph-control-background-color);
   display: var(--sz-entity-graph-control-display);
   z-index: var(--sz-entity-graph-control-z-index);
