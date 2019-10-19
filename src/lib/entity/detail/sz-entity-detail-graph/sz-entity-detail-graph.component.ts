@@ -66,7 +66,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   @Input() dataSourceColors: any = {};
   @Input() dataSourcesFiltered: string[] = [];
   @Input() showPopOutIcon: boolean = false;
-  @Input() showFiltersControl: boolean = true;
+  @Input() showFiltersControl: boolean = false;
   private neverFilterQueriedEntityIds: boolean = true;
   private _showMatchKeyControl: boolean = true;
   @Input() set showMatchKeyControl(value: boolean | string) {
