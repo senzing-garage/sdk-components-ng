@@ -11,7 +11,6 @@
   "homepage" :"https://senzing.github.io/sdk-components-ng/",
   "dependencies": {
     "@senzing/rest-api-client-ng": "^1.0.2",
-    "@senzing/sdk-graph-components": "^0.0.6",
     "d3": "^5.9.1",
     "jspdf": "^1.5.3",
     "html2canvas": "^1.0.0-rc.3",
@@ -21,6 +20,7 @@
   "peerDependencies": {
     "@angular/cdk": "^7.1.0",
     "@angular/common": "~7.1.0",
-    "@angular/core": "~7.1.0"
+    "@angular/core": "~7.1.0",
+    "@senzing/sdk-graph-components": "^0.0.7"
   }
 }

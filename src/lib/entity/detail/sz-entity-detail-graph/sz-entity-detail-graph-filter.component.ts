@@ -154,7 +154,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
   }
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onPrefsChange(): ', prefs, this.prefs.graph);
+    // console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onPrefsChange(): ', prefs, this.prefs.graph);
     this._showLinkLabels = prefs.showMatchKeys;
     this.maxDegreesOfSeparation = prefs.maxDegreesOfSeparation;
     this.maxEntities = prefs.maxEntities;

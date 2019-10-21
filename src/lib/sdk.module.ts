@@ -44,6 +44,7 @@ import { SzEntityDetailGraphComponent } from './entity/detail/sz-entity-detail-g
 import { SzEntityDetailGraphControlComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-control.component';
 import { SzEntityDetailGraphFilterComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-filter.component';
 import { SzEntityMatchPillComponent } from './entity/sz-entity-match-pill/sz-entity-match-pill.component';
+import { SzStandaloneGraphComponent } from './entity/detail/sz-entity-detail-graph/sz-standalone-graph.component';
 import { SzEntityRecordCardComponent } from './entity/sz-entity-record-card/sz-entity-record-card.component';
 import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-card/sz-entity-record-card-header/sz-entity-record-card-header.component';
 import { SzEntityRecordCardContentComponent } from './entity/sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
@@ -93,6 +94,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzEntityDetailGraphComponent,
     SzEntityDetailGraphControlComponent,
     SzEntityDetailGraphFilterComponent,
+    SzStandaloneGraphComponent,
     SzEntityDetailHeaderComponent,
     SzEntityDetailsSectionComponent,
     SzEntityDetailSectionSummaryComponent,
@@ -130,12 +132,14 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzEntityDetailGraphComponent,
     SzEntityDetailGraphControlComponent,
     SzEntityDetailGraphFilterComponent,
+    SzStandaloneGraphComponent,
     SzPreferencesComponent
   ],
   /** for components being exported as web components */
   entryComponents: [
     SzEntityDetailComponent,
     SzEntityDetailGraphComponent,
+    SzStandaloneGraphComponent,
     SzSearchComponent,
     SzSearchResultsComponent,
     SzPoweredByComponent,
