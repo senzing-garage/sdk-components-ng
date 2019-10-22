@@ -1,7 +1,7 @@
 import { Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 import {
   SzEntityData,
@@ -112,6 +112,40 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
    * @returns object with various entity and ui properties.
    */
   @Output() contextMenuClick: EventEmitter<any> = new EventEmitter<any>();
+
+  /** @internal */
+  private _requestStarted: Subject<boolean> = new Subject<boolean>();
+  /** @internal */
+  private _requestComplete: Subject<boolean> = new Subject<boolean>();
+  /** @internal */
+  private _renderComplete: Subject<boolean> = new Subject<boolean>();
+  /** @internal */
+  private _requestNoResults: Subject<boolean> = new Subject<boolean>();
+  /**
+   * Observeable stream for the event that occurs when a network
+   * request is initiated
+   */
+  @Output() public requestStarted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  /**
+   * Observeable stream for the event that occurs when a network
+   * request is completed
+   */
+  @Output() public requestComplete: EventEmitter<boolean> = new EventEmitter<boolean>();
+  /**
+   * Observeable stream for the event that occurs when a draw
+   * operation is completed
+   */
+  @Output() public renderComplete: EventEmitter<boolean> = new EventEmitter<boolean>();
+  /**
+   * Observeable stream for the event that occurs when a
+   * request completed but has no results
+   */
+  @Output() public requestNoResults: EventEmitter<boolean> = new EventEmitter<boolean>();
+  /**
+   * emitted when the player right clicks a entity node.
+   * @returns object with various entity and ui properties.
+   */
+  @Output() noResults: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   /**
    * emitted when the player right clicks a entity node.
@@ -253,6 +287,30 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     // for a simple bugfix to the "rendered" property. There is a property called
     // "rendered" in the component but its not wired in to the lifecycle properly
     if(this.graphNetworkComponent){
+      this.graphNetworkComponent.requestStarted.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe( (args) => {
+        console.log('[STANDALONE GRAPH] requestStarted', args);
+        this.requestStarted.emit(args);
+      });
+      this.graphNetworkComponent.requestComplete.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe( (args) => {
+        this.requestComplete.emit(args);
+      });
+      this.graphNetworkComponent.renderComplete.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe( (args) => {
+          console.log('[STANDALONE GRAPH] renderComplete', args);
+        this.renderComplete.emit(args);
+      });
+      this.graphNetworkComponent.requestNoResults.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe( (args) => {
+        this.requestNoResults.emit(args);
+        this.noResults.emit(args);
+      });
+
       this.graphNetworkComponent.renderComplete.pipe(
         takeUntil(this.unsubscribe$),
         takeUntil(this._graphComponentRenderCompleted)

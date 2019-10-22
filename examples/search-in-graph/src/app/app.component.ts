@@ -31,6 +31,7 @@ export class AppComponent implements AfterViewInit {
   public searchResultEntityIds: number[];
   public currentSearchParameters: SzEntitySearchParams;
   public showSearchResults = false;
+  public showSpinner = false;
   // prefs related vars
   /** localstorage key to store pref data in */
   public STORAGE_KEY = 'senzing-web-app';
@@ -108,6 +109,18 @@ export class AppComponent implements AfterViewInit {
     throw (err.message);
   }
 
+  onRequestStarted(evt: any) {
+    console.log('onRequestStarted: ', evt);
+    this.showSpinner = true;
+  }
+  onRequestComplete(evt: any) {
+    console.log('onRequestComplete: ', evt);
+  }
+  onRenderComplete(evt: any) {
+    console.log('onRenderComplete: ', evt);
+    this.showSpinner = false;
+  }
+
   onSearchResults(evt: SzAttributeSearchResult[]){
     // store on current scope
     this.currentSearchResults = evt;
@@ -166,7 +179,7 @@ export class AppComponent implements AfterViewInit {
 
   onTabClick(tabName: string) {
     console.log('onTabClick: ' + tabName);
-    switch(tabName){
+    switch (tabName){
       case 'detail':
         this.showFilters = false;
         this.showEntityDetail = true;
