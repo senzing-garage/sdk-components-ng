@@ -29,16 +29,33 @@
 </ng-template>
 <!-- end graph context menu template -->
 
-<!-- start graph control -->
-<div #graphContainer>
-    <sz-standalone-graph data-html2canvas-ignore
-    *ngIf="showSearchResults"
-    [graphIds]="searchResultEntityIds"
-    [showPopOutIcon]="false"
-    [showMatchKeyControl]="false"
-    [showFiltersControl]="true"
-    [filterControlPosition]="'bottom-right'"
-    [showMatchKeys]="true"
-  ></sz-standalone-graph>
+<button (click)="onTabClick('detail')">show detail</button>
+<button (click)="onTabClick('filters')">show filters</button>
+
+<div class="content-container">:
+  <!-- start graph control -->
+  <div #graphContainer>
+      <sz-standalone-graph data-html2canvas-ignore
+      *ngIf="showSearchResults"
+      filterWidth="320"
+      [graphIds]="searchResultEntityIds"
+      [showPopOutIcon]="false"
+      [showMatchKeyControl]="false"
+      [showFiltersControl]="showFilters"
+      [filterControlPosition]="'top-right'"
+      (entityClick)="onGraphEntityClick($event)"
+      [showMatchKeys]="true"
+    ></sz-standalone-graph>
+  </div>
+  <!--  end graph control  -->
+
+  <!-- start entity detail -->
+  <div *ngIf="showEntityDetail" class="embedded-detail-viewer">
+    <sz-entity-detail
+      #entityDetailComponent
+      [showGraphSection]="false"
+      [forceLayout]="'layout-narrow'"
+      [entityId]="currentlySelectedEntityId"></sz-entity-detail>
+  </div>
+  <!-- end entity detail -->
 </div>
-<!--  end graph control  -->

@@ -1,7 +1,7 @@
 @import "../../../scss/variables";
 
 :host {
-  height: var(--sz-entity-detail-section-graph-height);
+  height: var(--sz-large-graph-height);
   display: block;
   transition: height 500ms;
 
@@ -41,6 +41,10 @@
   sz-relationship-network {
     height: 100%;
   }
+  sz-relationship-network-graph, .sz-relationship-network-graph {
+    width: calc(100% - 320px);
+    background-color: #fff;
+  }
 
   .popout-icon {
     display: block;
@@ -79,6 +83,25 @@
   sz-entity-detail-section-collapsible-card, .sz-entity-detail-section-collapsible-card {
     width: 100%;
     height: calc( 100% - 60px);
+    display: block;
+    background: var(--sz-entity-detail-section-graph-background);
+    color: var(--sz-entity-detail-section-color);
+    font-size: var(--sz-entity-detail-section-font-size);
+    line-height: var(--sz-entity-detail-section-line-height);
+
+    border-bottom: var(--sz-entity-detail-section-border-top);
+    border-left: var(--sz-entity-detail-section-border-left);
+    border-right: var(--sz-entity-detail-section-border-right);
+    border-bottom: var(--sz-entity-detail-section-border-bottom);
+    /*overflow: hidden;*/
+
+    &:last-child {
+      border-radius: var(--sz-entity-detail-section-border-radius);
+    }
+  }
+  sz-standalone-graph-container, .sz-standalone-graph-container {
+    width: 100%;
+    height: 100%;
     display: block;
     background: var(--sz-entity-detail-section-graph-background);
     color: var(--sz-entity-detail-section-color);
@@ -149,11 +172,12 @@
   }
 }
 /* control surface */
-.sz-entity-detail-section-collapsible-card {
+.sz-entity-detail-section-collapsible-card, .sz-entity-detail-section-collapsible-card {
   position: relative;
 }
+
 sz-entity-detail-graph-control, .sz-entity-detail-graph-control, .sz-entity-detail-graph-filter {
-  background-color: var(--sz-entity-graph-control-background-color);
+  /* background-color: var(--sz-entity-graph-control-background-color); */
   display: var(--sz-entity-graph-control-display);
   z-index: var(--sz-entity-graph-control-z-index);
   position: var(--sz-entity-graph-control-position);
@@ -187,26 +211,26 @@ sz-entity-detail-graph-control, .sz-entity-detail-graph-control, .sz-entity-deta
 
 .sz-entity-detail-graph-filter {
   &.top-left {
-    top: 10px;
-    left: 10px;
+    top: 0px;
+    left: 0px;
     right: unset;
   }
   &.top-right {
-    top: 10px;
+    top: 0px;
     left: unset;
-    right: 10px;
+    right: 0px;
     bottom: unset;
   }
   &.bottom-left {
     top: unset;
-    bottom: 10px;
-    left: 10px;
+    bottom: 0px;
+    left: 0px;
     right: unset;
   }
   &.bottom-right {
     top: unset;
-    bottom: 10px;
+    bottom: 0px;
     left: unset;
-    right: 10px;
+    right: 0px;
   }
 }

@@ -9,6 +9,7 @@ import {
   SzEntityData,
   SzPrefsService,
   SzSdkPrefsModel,
+  SzStandaloneGraphComponent,
   SzConfigurationService
 } from '@senzing/sdk-components-ng';
 import { tap, filter, take, takeUntil } from 'rxjs/operators';
@@ -37,6 +38,11 @@ export class AppComponent implements AfterViewInit {
   private _localStorageOriginalValue: SzSdkPrefsModel = this.storage.get(this.STORAGE_KEY);
   /** local cached json model of prefs */
   private _prefsJSON: SzSdkPrefsModel;
+  /** entity detail component */
+  @ViewChild(SzEntityDetailComponent) entityDetailComponent: SzEntityDetailComponent;
+  /** graph component */
+  @ViewChild(SzStandaloneGraphComponent) graphComponent: SzStandaloneGraphComponent;
+
   public set showGraphMatchKeys(value: boolean) {
 
     // if (this.entityDetailComponent){
@@ -51,14 +57,16 @@ export class AppComponent implements AfterViewInit {
    return false;
   }
 
+  public showEntityDetail: boolean = false;
+  public showFilters: boolean = true;
   public get showSearchResultDetail(): boolean {
     if (this.currentlySelectedEntityId && this.currentlySelectedEntityId > 0) {
       return true;
     }
     return false;
   }
+
   @ViewChild('searchBox') searchBox: SzSearchComponent;
-  // @ViewChild(SzEntityDetailComponent) entityDetailComponent: SzEntityDetailComponent;
   @ViewChild('graphContextMenu') graphContextMenu: TemplateRef<any>;
   sub: Subscription;
   overlayRef: OverlayRef | null;
@@ -131,6 +139,7 @@ export class AppComponent implements AfterViewInit {
   public onBackToSearchResultsClick($event): void {
     this.showSearchResults = true;
     this.currentlySelectedEntityId = undefined;
+    this.showEntityDetail = false;
   }
 
   public onPDFDownloadClick(): void {
@@ -144,12 +153,30 @@ export class AppComponent implements AfterViewInit {
 
   public onGraphEntityClick(event: any): void {
     console.log('clicked on graph entity #' + event.entityId);
+    this.currentlySelectedEntityId = event.entityId;
+    this.showEntityDetail = true;
+    this.showFilters = false;
   }
   public onGraphEntityDblClick(event: any): void {
     console.log('double clicked on graph entity #' + event.entityId);
   }
   public onGraphContextClick(event: any): void {
     this.openContextMenu(event);
+  }
+
+  onTabClick(tabName: string) {
+    console.log('onTabClick: ' + tabName);
+    switch(tabName){
+      case 'detail':
+        this.showFilters = false;
+        this.showEntityDetail = true;
+        break;
+      case 'filters':
+        this.showFilters = true;
+        this.showEntityDetail = false;
+
+    }
+    this.graphComponent.showFiltersControl = false;
   }
 
   openGraphItemInNewMenu(entityId: number) {

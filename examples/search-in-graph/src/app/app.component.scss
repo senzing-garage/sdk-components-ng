@@ -9,4 +9,28 @@
 
     svg { margin-right: 5px; }
   }
+
+  .content-container {
+    position: relative;
+    background-color: #fff;
+    --sz-entity-graph-control-border-top: none;
+    --sz-entity-graph-control-border-right: none;
+    --sz-entity-graph-control-border-bottom: none;
+    --sz-entity-graph-control-border-left: none;
+    --sz-entity-graph-control-border-top-left-radius: 0;
+    --sz-entity-graph-control-border-top-right-radius: 0;
+    --sz-entity-graph-control-border-bottom-left-radius: 0;
+    --sz-entity-graph-control-border-bottom-right-radius: 0;
+
+    .embedded-detail-viewer {
+      background-color: #fafafa;
+      border: 1px solid #c0c0c0;
+      width: 400px;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
+
+
+  }
 }

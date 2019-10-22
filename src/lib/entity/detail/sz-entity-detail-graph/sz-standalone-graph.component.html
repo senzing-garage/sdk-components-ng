@@ -1,8 +1,9 @@
 
-<div #graphContainer class="sz-entity-detail-section-collapsible-card">
+<div #graphContainer class="sz-standalone-graph-container">
   <sz-relationship-network #graph class="sz-relationship-network-graph"
     svgViewBox="150 50 400 300"
     svgPreserveAspectRatio="xMinYMid meet"
+    [ngStyle]="{'width.px': 'calc(100% - '+ filterWidth+'px)'}"
     [entityIds]="graphIds"
     [maxDegrees]="maxDegrees"
     [buildOut]="buildOut"
@@ -21,6 +22,7 @@
     ></sz-entity-detail-graph-control>
 
     <sz-entity-detail-graph-filter *ngIf="showFiltersControl" class="sz-entity-detail-graph-filter"
+      [ngStyle]="{'width.px': filterWidth}"
       [class.top-left]="filterControlPosition == 'top-left'"
       [class.top-right]="filterControlPosition == 'top-right'"
       [class.bottom-right]="filterControlPosition == 'bottom-right'"

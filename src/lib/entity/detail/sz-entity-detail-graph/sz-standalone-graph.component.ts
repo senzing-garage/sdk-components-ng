@@ -70,6 +70,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   @Input() showPopOutIcon: boolean = false;
   @Input() showFiltersControl: boolean = false;
   @Input() filterControlPosition: string = 'bottom-left';
+  @Input() filterWidth: number;
   private neverFilterQueriedEntityIds: boolean = true;
   private _showMatchKeyControl: boolean = true;
   @Input() set showMatchKeyControl(value: boolean | string) {
