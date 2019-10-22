@@ -13,6 +13,7 @@
   .content-container {
     position: relative;
     background-color: #fff;
+    --sz-large-graph-height: 720px;
     --sz-entity-graph-control-border-top: none;
     --sz-entity-graph-control-border-right: none;
     --sz-entity-graph-control-border-bottom: none;
@@ -21,14 +22,17 @@
     --sz-entity-graph-control-border-top-right-radius: 0;
     --sz-entity-graph-control-border-bottom-left-radius: 0;
     --sz-entity-graph-control-border-bottom-right-radius: 0;
+    --sz-entity-graph-control-item-background-color: none;
 
     .embedded-detail-viewer {
       background-color: #fafafa;
       border: 1px solid #c0c0c0;
-      width: 400px;
+      width: 340px;
+      height: 100%;
       position: absolute;
       top: 0px;
       right: 0px;
+      overflow: scroll;
     }
 
 
