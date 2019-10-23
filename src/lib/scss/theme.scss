@@ -166,6 +166,27 @@ body {
     --sz-entity-detail-pill-background-color: #{$sz-dark-grey};
     --sz-entity-detail-pill-color: #{$sz-white};
     --sz-entity-detail-pill-border-radius: 5px;
+    /* special overrides for component view since it coexists with primary detail view */
+    --sz-entity-detail-section-header-lo-rail-font-size: 12px;
+    --sz-entity-detail-section-header-lo-rail-font-weight: 400px;
+    --sz-entity-detail-section-lo-rail-border: none;
+    --sz-entity-detail-section-lo-rail-font-size: 14px;
+    --sz-entity-detail-section-lo-rail-font-weight: normal;
+    --sz-entity-detail-section-lo-rail-border-radius: 0;
+    --sz-entity-detail-section-lo-rail-border-left: var(--sz-entity-detail-section-lo-rail-border);
+    --sz-entity-detail-section-lo-rail-border-right: var(--sz-entity-detail-section-lo-rail-border);
+    --sz-entity-detail-section-lo-rail-border-top: var(--sz-entity-detail-section-lo-rail-border);
+    --sz-entity-detail-section-lo-rail-border-bottom: 1px solid #ddd;
+    --sz-entity-detail-header-lo-rail-totals-font-size: 9px;
+    --sz-entity-detail-header-lo-rail-totals-number-font-size: 26px;
+    --sz-entity-detail-header-lo-rail-padding: 0 0 0 20px;
+    --sz-entity-detail-header-lo-rail-border: none;
+    --sz-entity-detail-header-lo-rail-name-font-size: 2em;
+    --sz-entity-detail-header-lo-rail-name-font-weight: 600;
+    --sz-entity-detail-header-lo-rail-name-padding: var(--sz-entity-detail-header-lo-rail-padding);
+    --sz-entity-detail-pill-lo-rail-font-size: 11px;
+    --sz-entity-detail-pill-lo-rail-border-radius: 5px;
+    --sz-entity-detail-pill-lo-rail-padding: 2px 5px;
     /* end relationship section list vars */
 
     /* graph */

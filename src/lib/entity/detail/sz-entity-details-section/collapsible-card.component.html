@@ -20,6 +20,7 @@
           <sz-entity-match-pill
             *ngFor="let pill of matchPills"
             [text]="pill.text"
+            [layoutClasses]="layoutClasses"
             [plusMinus]="pill.plusMinus">
           </sz-entity-match-pill>
         </ng-container>
@@ -28,6 +29,7 @@
         text="AMBIGUOUS"
         matTooltip="An ambiguous match is a special kind of possible match because it could resolve to more than one entity.  Drill into it to find out what other entities this one might belong to." matTooltipShowDelay="200"
         matTooltipPosition="right"
+        [layoutClasses]="layoutClasses"
         [ambiguous]="true">
         </sz-entity-match-pill>
 

@@ -12,6 +12,36 @@
   font-family: var(--sz-entity-detail-section-header-font-family);
   border-radius: var(--sz-entity-detail-section-header-border-radius);
 
+  &.layout-rail {
+    border-radius: var(--sz-entity-detail-section-lo-rail-border-radius);
+    font-size: var(--sz-entity-detail-section-header-lo-rail-font-size);
+    font-weight: var(--sz-entity-detail-section-header-lo-rail-font-weight);
+
+    .section-header__left-content {
+      span {
+        font-size: inherit;
+        font-weight: inherit;
+      }
+    }
+    .section-header__right-content {
+      .section-header__countLabel {
+        /*font-size: var(--sz-entity-detail-section-header-count-label-font-size);*/
+        /*font-weight: 300;*/
+        font-size: inherit;
+        font-weight: inherit;
+      }
+      .section-header__count {
+        font-size: inherit;
+        font-weight: inherit;
+      }
+    }
+  }
+
+  &.layout-narrow, &.layout-rail {
+    .hide-on-narrow {
+        display: none;
+    }
+  }
 
   svg {
     display: inline-block;

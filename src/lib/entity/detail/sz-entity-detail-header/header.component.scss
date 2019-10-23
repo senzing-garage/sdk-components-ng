@@ -50,6 +50,25 @@
       .detail-header__section-summary--wrapper {
         margin: 1em 0 0 0;
       }
+      .detail-header__top-right { width: 100%; }
+    }
+    &.layout-rail {
+      .hide-on-narrow {
+        display: none;
+      }
+      .detail-header__top--wrapper {
+        width: 100%;
+        .detail-header__top-right { width: 100%; }
+        .detail-header__entity-name {
+          font-size: var(--sz-entity-detail-header-lo-rail-name-font-size);
+          font-weight: var(--sz-entity-detail-header-lo-rail-name-font-weight);
+          padding: var(--sz-entity-detail-header-lo-rail-name-padding);
+        }
+        sz-entity-detail-section-summary, .sz-entity-detail-section-summary {
+          flex: 1 25%;
+        }
+      }
+
     }
   }
 
