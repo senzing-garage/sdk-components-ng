@@ -84,6 +84,8 @@ export class AppComponent implements AfterViewInit {
     @Inject(LOCAL_STORAGE) private storage: StorageService,
     public viewContainerRef: ViewContainerRef){
       // initialize prefs from localStorage value
+      // BEFORE this.prefs.prefsChanged => this.savePrefsToLocalStorage
+      // otherwise will overwrite with defaults
       this.prefs.fromJSONObject(this._localStorageOriginalValue);
     }
 
@@ -100,8 +102,9 @@ export class AppComponent implements AfterViewInit {
       takeUntil(this.unsubscribe$)
     ).subscribe( (srprefs) => {
       this._prefsJSON = srprefs;
+      // this.savePrefsToLocalStorage();
+      console.warn('consumer prefs change: ', srprefs);
       this.savePrefsToLocalStorage();
-      // console.warn('consumer prefs change: ', srprefs);
     });
   }
 

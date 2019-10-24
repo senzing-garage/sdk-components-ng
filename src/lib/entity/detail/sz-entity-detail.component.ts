@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { SzSearchService } from '../../services/sz-search.service';
-import { tap, takeUntil } from 'rxjs/operators';
+import { tap, takeUntil, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import {
@@ -88,6 +88,21 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
       }
     }
 
+  }
+  /**
+   * update prefs values when setter values change.
+   * useful when you have multiple component instances but not
+   * all of them should be setting prefs state.
+   */
+  private _updatePrefsOnChange: boolean = true;
+  /**
+   * update prefs values when setter values change.
+   * useful when you have multiple component instances but not
+   * all of them should be setting prefs state. OR if you have a specific
+   * instance that shouldnt be updating pref state.
+   */
+  @Input() set updatePrefsOnChange(value: boolean) {
+    this._updatePrefsOnChange = value;
   }
 
   // data views
@@ -200,7 +215,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   public set showGraphSection(value: any) {
     this._showGraphSection = parseBool(value);
     // update pref from setter
-    if(this.prefs.entityDetail.showGraphSection !== this._showGraphSection){
+    if(this.prefs.entityDetail.showGraphSection !== this._showGraphSection && this._updatePrefsOnChange){
       this.prefs.entityDetail.showGraphSection = this._showGraphSection;
     }
   }
@@ -214,7 +229,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   public set showMatchesSection(value: any) {
     this._showMatchesSection = parseBool(value);
     // update pref from setter
-    if(this.prefs.entityDetail.showMatchesSection !== this._showMatchesSection){
+    if(this.prefs.entityDetail.showMatchesSection !== this._showMatchesSection && this._updatePrefsOnChange){
       this.prefs.entityDetail.showMatchesSection = this._showMatchesSection;
     }
   }
@@ -228,7 +243,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   public set showPossibleMatchesSection(value: any) {
     this._showPossibleMatchesSection = parseBool(value);
     // update pref from setter
-    if(this.prefs.entityDetail.showPossibleMatchesSection !== this._showPossibleMatchesSection){
+    if(this.prefs.entityDetail.showPossibleMatchesSection !== this._showPossibleMatchesSection && this._updatePrefsOnChange){
       this.prefs.entityDetail.showPossibleMatchesSection = this._showPossibleMatchesSection;
     }
   }
@@ -242,7 +257,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   public set showPossibleRelationshipsSection(value: any) {
     this._showPossibleRelationshipsSection = parseBool(value);
     // update pref from setter
-    if(this.prefs.entityDetail.showPossibleRelationshipsSection !== this._showPossibleRelationshipsSection){
+    if(this.prefs.entityDetail.showPossibleRelationshipsSection !== this._showPossibleRelationshipsSection && this._updatePrefsOnChange){
       this.prefs.entityDetail.showPossibleRelationshipsSection = this._showPossibleRelationshipsSection;
     }
   }
@@ -256,7 +271,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   public set showDisclosedSection(value: any) {
     this._showDisclosedSection = parseBool(value);
     // update pref from setter
-    if(this.prefs.entityDetail.showDisclosedSection !== this._showDisclosedSection){
+    if(this.prefs.entityDetail.showDisclosedSection !== this._showDisclosedSection && this._updatePrefsOnChange){
       this.prefs.entityDetail.showDisclosedSection = this._showDisclosedSection;
     }
   }
@@ -426,15 +441,18 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
   ngOnInit() {
     // show or hide sections based on pref change
-    this.showGraphSection = this.prefs.entityDetail.showGraphSection;
-    this.showMatchesSection = this.prefs.entityDetail.showMatchesSection;
-    this.showPossibleMatchesSection = this.prefs.entityDetail.showPossibleMatchesSection;
-    this.showPossibleRelationshipsSection = this.prefs.entityDetail.showPossibleRelationshipsSection;
-    this.showDisclosedSection = this.prefs.entityDetail.showDisclosedSection;
-
+    if(this._updatePrefsOnChange){
+      // if were not saving prefs then do not initialize with values
+      this.showGraphSection = this.prefs.entityDetail.showGraphSection;
+      this.showMatchesSection = this.prefs.entityDetail.showMatchesSection;
+      this.showPossibleMatchesSection = this.prefs.entityDetail.showPossibleMatchesSection;
+      this.showPossibleRelationshipsSection = this.prefs.entityDetail.showPossibleRelationshipsSection;
+      this.showDisclosedSection = this.prefs.entityDetail.showDisclosedSection;
+    }
     // get and listen for prefs change
     this.prefs.entityDetail.prefsChanged.pipe(
-      takeUntil(this.unsubscribe$)
+      takeUntil(this.unsubscribe$),
+      filter( () => { return this._updatePrefsOnChange }),
     ).subscribe( this.onPrefsChange.bind(this) );
   }
 

@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject, BehaviorSubject, merge, timer } from 'rxjs';
-import { takeUntil, debounce } from 'rxjs/operators';
+import { takeUntil, debounce, filter } from 'rxjs/operators';
 //import { Configuration as SzRestConfiguration, ConfigurationParameters as SzRestConfigurationParameters } from '@senzing/rest-api-client-ng';
 
 /*
@@ -856,9 +856,6 @@ export interface SzSdkPrefsModel {
 export class SzPrefsService implements OnDestroy {
   /** subscription to notify subscribers to unbind @internal */
   private unsubscribe$ = new Subject<void>();
-  /**
-   * subscribe for state change representation. */
-  public prefsChanged: BehaviorSubject<SzSdkPrefsModel> = new BehaviorSubject<SzSdkPrefsModel>( this.toJSONObject() );
   /** instance of {@link SzSearchFormPrefs} */
   public searchForm?: SzSearchFormPrefs       = new SzSearchFormPrefs();
   /** instance of {@link SzSearchResultsPrefs} */
@@ -867,6 +864,10 @@ export class SzPrefsService implements OnDestroy {
   public entityDetail?: SzEntityDetailPrefs   = new SzEntityDetailPrefs();
   /** instance of {@link SzGraphPrefs} */
   public graph?: SzGraphPrefs                 = new SzGraphPrefs();
+
+  /**
+   * subscribe for state change representation. */
+  public prefsChanged: BehaviorSubject<SzSdkPrefsModel> = new BehaviorSubject<SzSdkPrefsModel>( this.toJSONObject() );
 
   /** get shallow JSON copy of services object state by calling
    * same method on namespace members.
