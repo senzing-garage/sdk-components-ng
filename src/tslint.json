@@ -45,7 +45,7 @@
       "ignore-for-loop"
     ],
     "callable-types": true,
-    "class-name": true,
+    "class-name": false,
     "comment-format": [
       false,
       "check-space"
@@ -115,7 +115,8 @@
     "radix": false,
     "semicolon": [
       true,
-      "always"
+      "always",
+      "ignore-interfaces"
     ],
     "triple-equals": [
       false,

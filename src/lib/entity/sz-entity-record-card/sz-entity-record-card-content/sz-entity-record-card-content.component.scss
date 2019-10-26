@@ -5,7 +5,7 @@
     justify-content: space-between;
 
     /* for narrow layouts change the reflow orientation */
-    &.layout-narrow {
+    &.layout-narrow, &.layout-rail {
       flex-direction: column;
 
       .search-card__content--column {

@@ -12,8 +12,7 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
 import { SzNetworkGraphInputs } from '../../../models/network-graph-inputs';
-import { SzRelationshipNetworkComponent } from '@senzing/sdk-graph-components';
-
+import { SzRelationshipNetworkComponent, NodeFilterPair } from '@senzing/sdk-graph-components';
 /**
  * @internal
  * @export
@@ -45,29 +44,51 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   @Input() public data: {
     resolvedEntity: SzResolvedEntity,
     relatedEntities: SzRelatedEntity[]
-  }
+  };
   public _showMatchKeys = false;
   /** sets the visibility of edge labels on the node links */
   @Input() public set showMatchKeys(value: boolean) {
     this._showMatchKeys = value;
-    //console.log('@senzing/sdk-components-ng:sz-entity-detail-graph.showMatchKeys: ', value);
-  };
+  }
   private _openInNewTab: boolean = false;
   /** whether or not to open entity clicks in new tab */
   @Input() public set openInNewTab(value: boolean) {
     this._openInNewTab = value;
-    //console.log('@senzing/sdk-components-ng:sz-entity-detail-graph.openInNewTab: ', value);
-  };
+  }
   public _openInSidePanel = false;
   /** whether or not to open entity clicks in side drawer */
   @Input() public set openInSidePanel(value: boolean) {
     this._openInSidePanel = value;
-    //console.log('@senzing/sdk-components-ng:sz-entity-detail-graph.openInSidePanel: ', value);
-  };
+  }
   @Input() sectionIcon: string;
   @Input() maxDegrees: number = 1;
   @Input() maxEntities: number = 20;
   @Input() buildOut: number = 1;
+  @Input() dataSourceColors: any = {};
+  @Input() dataSourcesFiltered: string[] = [];
+  @Input() showPopOutIcon: boolean = false;
+  @Input() showFiltersControl: boolean = false;
+  private neverFilterQueriedEntityIds: boolean = true;
+  private _showMatchKeyControl: boolean = true;
+  @Input() set showMatchKeyControl(value: boolean | string) {
+    if((value as string) == 'true' || (value as string) == 'True' || (value as string) == 'false' || (value as string) == 'False') {
+      switch((value as string).toLowerCase()) {
+        case 'true':
+          value = true;
+          break;
+        case 'false':
+          value = false;
+          break;
+      }
+    }
+    this._showMatchKeyControl = (value as boolean);
+  }
+  get showMatchKeyControl(): boolean | string {
+    return this._showMatchKeyControl;
+  }
+  /** the position of the pop-out icon ('top-left' | 'top-right' | 'bottom-right' | 'bottom-left') */
+  @Input() popOutIconPosition: string = 'bottom-left';
+  @Input() public queriedEntitiesColor;
 
   @Input()
   set expanded(value) {
@@ -77,8 +98,8 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     return this.isOpen;
   }
 
-  @HostBinding('class.open') get cssClssOpen() { return this.expanded; };
-  @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; };
+  @HostBinding('class.open') get cssClssOpen() { return this.expanded; }
+  @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; }
   @ViewChild('graphContainer') graphContainerEle: ElementRef;
   @ViewChild(SzEntityDetailGraphControlComponent) graphControlComponent: SzEntityDetailGraphControlComponent;
   @ViewChild(SzRelationshipNetworkComponent) graph : SzRelationshipNetworkComponent;
@@ -88,6 +109,12 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
    * @returns object with various entity and ui properties.
    */
   @Output() contextMenuClick: EventEmitter<any> = new EventEmitter<any>();
+
+  /**
+   * emitted when the player right clicks a entity node.
+   * @returns object with various entity and ui properties.
+   */
+  @Output() popoutClick: EventEmitter<any> = new EventEmitter<any>();
 
   /**
    * emitted when the player clicks a entity node.
@@ -103,7 +130,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   _inputs: SzNetworkGraphInputs;
 
   public get graphIds(): number[] {
-    let _ret = [];
+    const _ret = [];
     if(this.data && this.data.resolvedEntity) {
       _ret.push(this.data.resolvedEntity.entityId);
     }
@@ -142,15 +169,15 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
       interface evtModel {
         address?: string
         entityId?: number
-        iconType?: string
-        index?: number
-        isCoreNode?: false
-        isQueriedNode?: false
-        name?: string
-        orgName?: string
-        phone?: string
-        x?: number
-        y?: number
+        iconType?: string;
+        index?: number;
+        isCoreNode?: false;
+        isQueriedNode?: false;
+        name?: string;
+        orgName?: string;
+        phone?: string;
+        x?: number;
+        y?: number;
       }
 
       const pos: {x, y} = this.graphContainerEle.nativeElement.getBoundingClientRect();
@@ -161,6 +188,11 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
       //console.warn('onRightClick: ', pos, event);
       this.contextMenuClick.emit( evtSynth );
     }
+  }
+  /** publish an "popoutClick" event on icon click, pass the entityIds as arg */
+  public onPopOutClick(event?: any) {
+    // publish event
+    this.popoutClick.emit(this.graphIds);
   }
 
   public onOptionChange(event: {name: string, value: any}) {
@@ -215,7 +247,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
           this.isOpen = !prefs.graphSectionCollapsed;
         }
       }
-    })
+    });
 
     // keep track of whether or not the graph has been rendered
     // this is to get around publishing a new 0.0.7 sdk-graph-components
@@ -255,13 +287,24 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
 
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph.onPrefsChange(): ', prefs, this.prefs.graph, this._graphComponentRendered);
+    // console.log('@senzing/sdk-components-ng/sz-entity-detail-graph.onPrefsChange(): ', prefs, this.prefs.graph);
+    let queryParamChanged = false;
+    if(this.maxDegrees != prefs.maxDegreesOfSeparation ||
+      this.maxEntities != prefs.maxEntities ||
+      this.buildOut != prefs.buildOut){
+      // only params that factor in to the API call
+      // should trigger full redraw
+      queryParamChanged = true;
+    }
     this._showMatchKeys = prefs.showMatchKeys;
     this.maxDegrees = prefs.maxDegreesOfSeparation;
     this.maxEntities = prefs.maxEntities;
     this.buildOut = prefs.buildOut;
-
-    if(this.graphNetworkComponent) {
+    this.dataSourceColors = prefs.dataSourceColors;
+    this.dataSourcesFiltered = prefs.dataSourcesFiltered;
+    this.neverFilterQueriedEntityIds = prefs.neverFilterQueriedEntityIds;
+    this.queriedEntitiesColor = prefs.queriedEntitiesColor;
+    if(this.graphNetworkComponent && queryParamChanged) {
       // update graph with new properties
       this.graphNetworkComponent.maxDegrees = this.maxDegrees;
       this.graphNetworkComponent.maxEntities = this.maxEntities;
@@ -273,5 +316,73 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
 
     // update view manually (for web components redraw reliability)
     this.cd.detectChanges();
+  }
+  // ----------------------  special built-ins for applying colors and filters to nodes in datasources ---------------
+
+  /** function used to generate entity node fill colors from those saved in preferences */
+  public get entityNodecolorsByDataSource(): NodeFilterPair[] {
+    let _ret = [];
+    if(this.dataSourceColors) {
+      const _keys = Object.keys(this.dataSourceColors);
+      _ret = _keys.map( (_key) => {
+        const _color = this.dataSourceColors[_key];
+        return {
+          selectorFn: this.isEntityNodeInDataSource.bind(this, _key),
+          modifierFn: this.setEntityNodeFillColor.bind(this, _color)
+        };
+      });
+    }
+    return _ret;
+  }
+  /** get the list of filters to apply to inner graph component */
+  public get entityNodeFilterByDataSource(): NodeFilterPair[] {
+    let _ret = [];
+    if(this.dataSourcesFiltered) {
+      _ret = this.dataSourcesFiltered.map( (_name) => {
+        return {
+          selectorFn: this.isEntityNodeInDataSource.bind(this, _name)
+        };
+      });
+    }
+    return _ret;
+  }
+  /** get an array of NodeFilterPair to use for highlighting certain graph nodes specific colors */
+  public get entityNodeColors(): NodeFilterPair[] {
+    const _ret = this.entityNodecolorsByDataSource;
+    if( this.queriedEntitiesColor && this.queriedEntitiesColor !== undefined){
+      // add special color for active/primary nodes
+      _ret.push( {
+        selectorFn: this.isEntityNodeInQuery.bind(this),
+        modifierFn: this.setEntityNodeFillColor.bind(this, this.queriedEntitiesColor)
+      } );
+    }
+    return _ret;
+  }
+  /** used by "entityNodecolorsByDataSource" getter to query nodes as belonging to a datasource */
+  private isEntityNodeInDataSource(dataSource, nodeData) {
+    // console.log('fromOwners: ', nodeData);
+    if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
+      return false;
+    } else {
+      if(nodeData && nodeData.dataSources && nodeData.dataSources.indexOf){
+        return nodeData.dataSources.indexOf(dataSource) >= 0;
+      } else {
+        return false;
+      }
+    }
+  }
+  /** checks to see if entity node is one of the primary entities queried for*/
+  private isEntityNodeInQuery(nodeData) {
+    if(this.graphIds){
+      return this.graphIds.indexOf( nodeData.entityId ) >= 0;
+    } else {
+      return false;
+    }
+  }
+  /** used by "entityNodecolorsByDataSource" getter to set fill color of nodes in a nodelist */
+  private setEntityNodeFillColor(color, nodeList) {
+    if(nodeList && nodeList.style){
+      nodeList.style('fill', color);
+    }
   }
 }

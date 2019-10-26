@@ -7,7 +7,7 @@
   }
 
   /* responsive layout adjustments */
-  .layout-narrow {
+  .layout-narrow, &.layout-rail {
     sz-entity-match-pill, .sz-entity-match-pill {
       margin-top: 4px;
       margin-bottom: 4px;

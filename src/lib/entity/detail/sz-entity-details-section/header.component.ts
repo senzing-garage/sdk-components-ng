@@ -15,9 +15,36 @@ export class SzEntityDetailSectionHeaderComponent implements OnInit {
   @Input() sectionIcon: string;
   @Input() sectionId: string;
 
+  public _layoutClasses: string[] = [];
+  @Input() public set layoutClasses(value: string[] | string){
+    if(value && value !== undefined) {
+      if(typeof value == 'string') {
+        this._layoutClasses = [value];
+      } else {
+        this._layoutClasses = value;
+      }
+    }
+  };
+  public get layoutClasses() {
+    return this._layoutClasses;
+  }
+  @Input() public forceLayout: boolean = false;
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  get ngClasses() {
+    let retVal = [];
+    if(this.isMatchedRecords){ retVal.push('matched-records'); }
+    if(this.isPossibleMatches){ retVal.push('possible-matches'); }
+    if(this.isPossibleRelationships){ retVal.push('possible-relationships'); }
+    if(this.isDisclosedRelationships){ retVal.push('disclosed-relationships'); }
+    if(this._layoutClasses && this._layoutClasses.length > 0){
+      retVal = retVal.concat(this._layoutClasses);
+    }
+    return retVal;
   }
 
   get countLabel(): string {

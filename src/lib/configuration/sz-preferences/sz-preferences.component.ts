@@ -1,7 +1,8 @@
-import { Component, Inject, Input, Output, OnInit, AfterViewInit, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, Inject, Input, Output, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { Configuration as SzRestConfiguration } from '@senzing/rest-api-client-ng';
-import { Subject, BehaviorSubject } from 'rxjs';
-import { SzConfigurationService } from '../../services/sz-configuration.service';
+import { Subject } from 'rxjs';
+// import { SzConfigurationService } from '../../services/sz-configuration.service';
+import { SzDataSourcesService } from '../..//services/sz-datasources.service';
 import { SzSdkPrefsModel, SzPrefsService } from '../../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
 
@@ -519,7 +520,8 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private prefs: SzPrefsService
+    private prefs: SzPrefsService,
+    public datasources: SzDataSourcesService
   ) {}
 
   ngOnInit() {
@@ -541,5 +543,10 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
     if(this.prefsChange) {
       this.prefsChange.emit(value);
     }
+  }
+
+  /** helper method for retrieving list of datasources */
+  public getDataSources() {
+    return this.datasources.listDataSources();
   }
 }
