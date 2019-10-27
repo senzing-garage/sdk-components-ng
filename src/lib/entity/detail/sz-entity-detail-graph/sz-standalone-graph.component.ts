@@ -171,7 +171,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     this._graphIds = value;
     // only reload graph if value has changed
     if(_oVal !== value){
-      console.log('set graphIds: ', this._graphIds, typeof this.graphIds, value, typeof value);
+      // console.log('set graphIds: ', this._graphIds, typeof this.graphIds, value, typeof value);
       this.reload();
     }
   };
