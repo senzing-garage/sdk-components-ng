@@ -338,26 +338,23 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   public get entityNodeFilterByDataSource(): NodeFilterPair[] {
     let _ret = [];
     if(this.dataSourcesFiltered) {
-      if(this.graphNetworkComponent && this.graphNetworkComponent.isD3 === true) {
-        // D3 takes a array of functions
+      if( this.graph && this.graph.isD3) {
         _ret = this.dataSourcesFiltered.map( (_name) => {
           return {
-            selectorFn: this.isEntityNodeInDataSource.bind(this, _name)
+            selectorFn: this.isEntityNodeInDataSource.bind(this, _name),
+            selectorArgs: _name
           };
         });
-        //console.log('entityNodeFilterByDataSource: D3 ', _ret);
 
-      } else if(this.graphNetworkComponent && this.graphNetworkComponent.isKeyLines === true){
-        // keylines can only handle a singe function
-        // curry in the ds names
-        _ret = [((dataSourceNames, nodeData) => {
-          const _selFnRet = nodeData.d.dataSources.some((nodeDsName) => {
-            return dataSourceNames.indexOf(nodeDsName) > -1;
-          });
-          return _selFnRet;
-        }).bind(this, this.dataSourcesFiltered)];
-        //console.log('entityNodeFilterByDataSource: KeyLines ', _ret);
+      } else if (this.graph && this.graph.isKeyLines) {
+        // keylines filter is selection inverted
+        _ret = [{
+          selectorFn: this.isEntityNodeNotInDataSources.bind(this, this.dataSourcesFiltered),
+          selectorArgs: this.dataSourcesFiltered
+        }];
       }
+    } else {
+      //console.log('entityNodeFilterByDataSource: ',this._lastFilterConfig, JSON.stringify(_ret));
     }
     return _ret;
   }
@@ -368,7 +365,9 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
       // add special color for active/primary nodes
       _ret.push( {
         selectorFn: this.isEntityNodeInQuery.bind(this),
-        modifierFn: this.setEntityNodeFillColor.bind(this, this.queriedEntitiesColor)
+        modifierFn: this.setEntityNodeFillColor.bind(this, this.queriedEntitiesColor),
+        selectorArgs: this.graphIds,
+        modifierArgs: this.queriedEntitiesColor
       } );
     }
     return _ret;
@@ -376,11 +375,53 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   /** used by "entityNodecolorsByDataSource" getter to query nodes as belonging to a datasource */
   private isEntityNodeInDataSource(dataSource, nodeData) {
     // console.log('fromOwners: ', nodeData);
+    const _retVal = false;
     if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
       return false;
     } else {
       if(nodeData && nodeData.dataSources && nodeData.dataSources.indexOf){
         return nodeData.dataSources.indexOf(dataSource) >= 0;
+      } else if (nodeData && nodeData.d && nodeData.d.dataSources && nodeData.d.dataSources.indexOf) {
+        return nodeData.d.dataSources.indexOf(dataSource) >= 0;
+      } else {
+        return false;
+      }
+    }
+  }
+  private isEntityNodeInDataSources(dataSources, nodeData) {
+    // console.log('fromOwners: ', nodeData);
+    console.log('isEntityNodeInDataSources: ', dataSources, nodeData);
+    if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
+      return false;
+    } else {
+      if(nodeData && nodeData.dataSources && nodeData.dataSources.indexOf){
+        // D3 filter query
+        return (nodeData.dataSources.some( (dsName) => {
+          return dataSources.indexOf(dsName) > -1;
+        }));
+      } else if (nodeData && nodeData.d && nodeData.d.dataSources && nodeData.d.dataSources.indexOf) {
+        return (nodeData.d.dataSources.some( (dsName) => {
+            return dataSources.indexOf(dsName) > -1;
+        }));
+      } else {
+        return false;
+      }
+    }
+  }
+  private isEntityNodeNotInDataSources(dataSources, nodeData) {
+    //console.log('isEntityNodeNotInDataSources: ', dataSources, nodeData);
+    if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
+      return false;
+    } else {
+      if(nodeData && nodeData.dataSources && nodeData.dataSources.indexOf){
+        // D3 filter query
+        return !(nodeData.dataSources.some( (dsName) => {
+          return dataSources.indexOf(dsName) > -1;
+        }));
+      } else if (nodeData && nodeData.d && nodeData.d.dataSources && nodeData.d.dataSources.indexOf) {
+        return !(nodeData.d.dataSources.some( (dsName) => {
+            return dataSources.indexOf(dsName) > -1;
+        }));
       } else {
         return false;
       }
@@ -395,9 +436,18 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     }
   }
   /** used by "entityNodecolorsByDataSource" getter to set fill color of nodes in a nodelist */
-  private setEntityNodeFillColor(color, nodeList) {
-    if(nodeList && nodeList.style){
+  private setEntityNodeFillColor(color, nodeList, scope) {
+    if (nodeList && nodeList.style) {
       nodeList.style('fill', color);
+    } else if ( scope && nodeList instanceof Array && nodeList.every && nodeList.every( (nodeItem) => nodeItem.type === 'node')) {
+      const modifierList = nodeList.map((item) => {
+        return { id: item.id, c: color };
+      });
+      if (scope && scope.setProperties) {
+        scope.setProperties(modifierList);
+      }
+    } else {
+      console.warn('cannot modify');
     }
   }
 }
