@@ -338,11 +338,26 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   public get entityNodeFilterByDataSource(): NodeFilterPair[] {
     let _ret = [];
     if(this.dataSourcesFiltered) {
-      _ret = this.dataSourcesFiltered.map( (_name) => {
-        return {
-          selectorFn: this.isEntityNodeInDataSource.bind(this, _name)
-        };
-      });
+      if(this.graphNetworkComponent && this.graphNetworkComponent.isD3 === true) {
+        // D3 takes a array of functions
+        _ret = this.dataSourcesFiltered.map( (_name) => {
+          return {
+            selectorFn: this.isEntityNodeInDataSource.bind(this, _name)
+          };
+        });
+        //console.log('entityNodeFilterByDataSource: D3 ', _ret);
+
+      } else if(this.graphNetworkComponent && this.graphNetworkComponent.isKeyLines === true){
+        // keylines can only handle a singe function
+        // curry in the ds names
+        _ret = [((dataSourceNames, nodeData) => {
+          const _selFnRet = nodeData.d.dataSources.some((nodeDsName) => {
+            return dataSourceNames.indexOf(nodeDsName) > -1;
+          });
+          return _selFnRet;
+        }).bind(this, this.dataSourcesFiltered)];
+        //console.log('entityNodeFilterByDataSource: KeyLines ', _ret);
+      }
     }
     return _ret;
   }

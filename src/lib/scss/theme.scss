@@ -207,6 +207,13 @@ body {
     --sz-entity-graph-control-padding-bottom: 0px;
     --sz-entity-graph-control-padding-left: 3px;
     --sz-entity-graph-overlay-color: #9d9d9d;
+    /* tooltip */
+    --sz-graph-tooltip-font-size: 10px;
+    --sz-graph-tooltip-background-color: #fff;
+    --sz-graph-tooltip-max-width: 200px;
+    --sz-graph-tooltip-padding: 10px;
+    --sz-graph-tooltip-border-radius: 4px;
+    --sz-graph-tooltip-border: 1px solid #333;
     /* large graph */
     --sz-large-graph-height: 100%;
 
