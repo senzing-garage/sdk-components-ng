@@ -126,9 +126,14 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
 
       coloredDataSourceNames.forEach( (pair) => {
         this.dataSourceColors[pair.key] = pair.value;
-      })
+      });
     // update colors pref
     //console.log('onDsColorChange: ', this.dataSourceColors, coloredDataSourceNames);
+    if( this.prefs && this.prefs.graph) {
+      // there is some sort of mem reference clone issue
+      // forcing update seems to fix it
+      this.prefs.graph.dataSourceColors = this.dataSourceColors;
+    }
   }
   /** handler for when an integer pref value has changed. ie: buildOut  */
   onIntParameterChange(prefName, value) {
@@ -196,7 +201,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
         // add control for colored by list
         (this.colorsByDataSourcesForm.controls.datasources as FormArray).push(control2);
       });
-    })
+    });
   }
   /** helper method for retrieving list of datasources */
   public getDataSources() {

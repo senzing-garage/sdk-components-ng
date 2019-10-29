@@ -386,7 +386,9 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
         const _color = this.dataSourceColors[_key];
         return {
           selectorFn: this.isEntityNodeInDataSource.bind(this, _key),
-          modifierFn: this.setEntityNodeFillColor.bind(this, _color)
+          modifierFn: this.setEntityNodeFillColor.bind(this, _color),
+          selectorArgs: _key,
+          modifierArgs: _color
         };
       });
     }
@@ -488,7 +490,8 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   /** checks to see if entity node is one of the primary entities queried for*/
   private isEntityNodeInQuery(nodeData) {
     if(this.graphIds){
-      return this.graphIds.indexOf( nodeData.entityId ) >= 0;
+      const _dataEntityId = (nodeData && nodeData.d && nodeData.d.entityId) ? (nodeData && nodeData.d && nodeData.d.entityId) : nodeData.entityId ;
+      return (_dataEntityId) ? this.graphIds.indexOf( _dataEntityId ) >= 0 : false;
     } else {
       return false;
     }
