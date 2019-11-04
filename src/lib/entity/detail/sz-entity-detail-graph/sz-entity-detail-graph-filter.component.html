@@ -28,7 +28,7 @@
         <span class="intVal">({{ buildOut }})</span>
       </label>
     </li>
-    <li>
+    <li *ngIf="showMaxEntities">
       <label>
         <div>
           <span class="has-tooltip">
@@ -40,7 +40,7 @@
         <span class="intVal">({{ maxEntities }})</span>
       </label>
     </li>
-    <li>
+    <li *ngIf="showMaxDegreesOfSeparation">
       <label>
         <div>
           <span class="has-tooltip">

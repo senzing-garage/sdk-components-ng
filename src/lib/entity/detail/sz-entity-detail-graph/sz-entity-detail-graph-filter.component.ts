@@ -22,7 +22,9 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
 
   @Input() maxDegreesOfSeparation: number = 1;
+  @Input() showMaxDegreesOfSeparation: boolean = false;
   @Input() maxEntities: number = 20;
+  @Input() showMaxEntities: boolean = true;
   @Input() buildOut: number = 1;
   @Input() buildOutMin: number = 0;
   @Input() buildOutMax: number = 5;
