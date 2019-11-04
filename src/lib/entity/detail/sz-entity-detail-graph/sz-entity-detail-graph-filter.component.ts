@@ -24,6 +24,8 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
   @Input() maxDegreesOfSeparation: number = 1;
   @Input() maxEntities: number = 20;
   @Input() buildOut: number = 1;
+  @Input() buildOutMin: number = 0;
+  @Input() buildOutMax: number = 5;
   @Input() dataSourceColors: any = {};
   @Input() dataSourcesFiltered: string[] = [];
   @Input() queriedEntitiesColor: string;

@@ -24,7 +24,7 @@
             <span class="tooltip tooptip-left">number of relationship hops away from focused entity</span>
           </span>
         </div>
-        <input type="range" min="1" max="5" formControlName="buildOut" [value]="buildOut" (change)="onIntParameterChange('buildOut', $event.target.value)" required>
+        <input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut" (change)="onIntParameterChange('buildOut', $event.target.value)" required>
         <span class="intVal">({{ buildOut }})</span>
       </label>
     </li>
