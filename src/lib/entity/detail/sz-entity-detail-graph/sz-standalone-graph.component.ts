@@ -12,7 +12,8 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
 import { SzEntityDetailGraphFilterComponent } from './sz-entity-detail-graph-filter.component';
-import { SzRelationshipNetworkComponent, NodeFilterPair } from '@senzing/sdk-graph-components';
+import { SzRelationshipNetworkComponent, NodeFilterPair, SzNetworkGraphInputs } from '@senzing/sdk-graph-components';
+
 /**
  * @internal
  * @export
@@ -72,6 +73,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   @Input() filterControlPosition: string = 'bottom-left';
   @Input() filterWidth: number;
   private neverFilterQueriedEntityIds: boolean = true;
+  public filterShowDataSources: string[];
   private _showMatchKeyControl: boolean = true;
   @Input() set showMatchKeyControl(value: boolean | string) {
     if((value as string) == 'true' || (value as string) == 'True' || (value as string) == 'false' || (value as string) == 'False') {
@@ -193,6 +195,17 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     this.entityDblClick.emit(event);
   }
   /**
+   * on data received by api request and mapped to
+   * component input format model. when data has been loaded
+   * and parsed build list of distinct datasource names
+   * from data.
+  */
+  public onGraphDataLoaded(inputs: SzNetworkGraphInputs) {
+    if(inputs.data && inputs.data.entities) {
+      this.filterShowDataSources = SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data);
+    }
+  }
+  /**
    * on entity node right click in the graph.
    * proxies to synthetic "contextMenuClick" event.
    * automatically adds the container ele page x/y to relative svg x/y for total x/y offset
@@ -309,6 +322,11 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
       ).subscribe( (args) => {
         this.requestNoResults.emit(args);
         this.noResults.emit(args);
+      });
+      this.graphNetworkComponent.onDataLoaded.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe( (args) => {
+          console.log('[STANDALONE GRAPH] onDataLoaded', args);
       });
 
       this.graphNetworkComponent.renderComplete.pipe(

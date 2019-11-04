@@ -28,6 +28,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
   @Input() buildOut: number = 1;
   @Input() buildOutMin: number = 0;
   @Input() buildOutMax: number = 5;
+  @Input() showDataSources: string[];
   @Input() dataSourceColors: any = {};
   @Input() dataSourcesFiltered: string[] = [];
   @Input() queriedEntitiesColor: string;
@@ -210,5 +211,9 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
   /** helper method for retrieving list of datasources */
   public getDataSources() {
     return this.datasources.listDataSources();
+  }
+  /** if "showDataSources" array is specified, check that string name is present in list */
+  public shouldDataSourceBeDisplayed( dsName: string) {
+    return (this.showDataSources && this.showDataSources.length > 0) ? (this.showDataSources.indexOf( dsName ) > -1) : true;
   }
 }

@@ -59,22 +59,30 @@
   <h3>{{ sectionTitles[1] }}</h3>
   <form [formGroup]="filterByDataSourcesForm">
   <ul class="filters-list">
-    <li formArrayName="datasources" *ngFor="let ds of filterByDataSourcesData.controls; let i = index">
-      <label>
-        <input type="checkbox" [formControlName]="i" (change)="onDsFilterChange()">{{_datasources[i]}}
-      </label>
-    </li>
+    <ng-container *ngFor="let ds of filterByDataSourcesData.controls; let i = index">
+        <ng-container *ngIf="shouldDataSourceBeDisplayed(_datasources[i])">
+            <li formArrayName="datasources">
+              <label>
+                <input type="checkbox" [formControlName]="i" (change)="onDsFilterChange()">{{_datasources[i]}}
+              </label>
+            </li>
+        </ng-container>
+    </ng-container>
   </ul>
   </form>
   <hr>
   <h3>{{ sectionTitles[2] }}</h3>
   <form [formGroup]="colorsByDataSourcesForm">
   <ul class="colors-list">
-    <li formArrayName="datasources" *ngFor="let ds of colorsByDataSourcesData.controls; let i = index">
-      <label>
-        <input type="color" [formControlName]="i" (change)="onDsColorChange()">{{_datasources[i]}}
-      </label>
-    </li>
+    <ng-container *ngFor="let ds of colorsByDataSourcesData.controls; let i = index">
+        <ng-container *ngIf="shouldDataSourceBeDisplayed(_datasources[i])">
+          <li formArrayName="datasources">
+            <label>
+              <input type="color" [formControlName]="i" (change)="onDsColorChange()">{{_datasources[i]}}
+            </label>
+          </li>
+        </ng-container>
+    </ng-container>
   </ul>
   </form>
   <hr>
