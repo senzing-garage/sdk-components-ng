@@ -85,7 +85,7 @@ describe('SzPrefsService', () => {
 
   // ------------------ test against mock data load -------------------
   it('can set preferences via fromJSONString()', (done) => {
-    //console.log('-------------- DEBUG --------------- \n\r', JSON.stringify(mockData, null, 2));
+    console.log('-------------- DEBUG --------------- \n\r', JSON.stringify(mockData, null, 2));
 
     service.prefsChanged.pipe(
       /** filter because the first publish is always empty object */
@@ -93,7 +93,7 @@ describe('SzPrefsService', () => {
         return g && g.searchForm;
       })
     ).subscribe((g: SzSdkPrefsModel) => {
-      //console.log('------------------- DEBUG ------------', Object.keys(g).join(', '));
+      console.log('------------------- DEBUG ------------', Object.keys(g).join(', '));
        expect(g.searchResults.showOtherData).toEqual(true);
        done();
     });
