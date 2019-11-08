@@ -24,11 +24,11 @@
             <span class="tooltip tooptip-left">number of relationship hops away from focused entity</span>
           </span>
         </div>
-        <input type="range" min="1" max="5" formControlName="buildOut" [value]="buildOut" (change)="onIntParameterChange('buildOut', $event.target.value)" required>
+        <input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut" (change)="onIntParameterChange('buildOut', $event.target.value)" required>
         <span class="intVal">({{ buildOut }})</span>
       </label>
     </li>
-    <li>
+    <li *ngIf="showMaxEntities">
       <label>
         <div>
           <span class="has-tooltip">
@@ -40,7 +40,7 @@
         <span class="intVal">({{ maxEntities }})</span>
       </label>
     </li>
-    <li>
+    <li *ngIf="showMaxDegreesOfSeparation">
       <label>
         <div>
           <span class="has-tooltip">
@@ -59,22 +59,30 @@
   <h3>{{ sectionTitles[1] }}</h3>
   <form [formGroup]="filterByDataSourcesForm">
   <ul class="filters-list">
-    <li formArrayName="datasources" *ngFor="let ds of filterByDataSourcesData.controls; let i = index">
-      <label>
-        <input type="checkbox" [formControlName]="i" (change)="onDsFilterChange()">{{_datasources[i]}}
-      </label>
-    </li>
+    <ng-container *ngFor="let ds of filterByDataSourcesData.controls; let i = index">
+        <ng-container *ngIf="shouldDataSourceBeDisplayed(_datasources[i])">
+            <li formArrayName="datasources">
+              <label>
+                <input type="checkbox" [formControlName]="i" (change)="onDsFilterChange()">{{_datasources[i]}}
+              </label>
+            </li>
+        </ng-container>
+    </ng-container>
   </ul>
   </form>
   <hr>
   <h3>{{ sectionTitles[2] }}</h3>
   <form [formGroup]="colorsByDataSourcesForm">
   <ul class="colors-list">
-    <li formArrayName="datasources" *ngFor="let ds of colorsByDataSourcesData.controls; let i = index">
-      <label>
-        <input type="color" [formControlName]="i" (change)="onDsColorChange()">{{_datasources[i]}}
-      </label>
-    </li>
+    <ng-container *ngFor="let ds of colorsByDataSourcesData.controls; let i = index">
+        <ng-container *ngIf="shouldDataSourceBeDisplayed(_datasources[i])">
+          <li formArrayName="datasources">
+            <label>
+              <input type="color" [formControlName]="i" (change)="onDsColorChange()">{{_datasources[i]}}
+            </label>
+          </li>
+        </ng-container>
+    </ng-container>
   </ul>
   </form>
   <hr>

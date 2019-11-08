@@ -43,6 +43,8 @@
   }
   sz-relationship-network-graph, .sz-relationship-network-graph {
     width: calc(100% - 340px);
+    height: 100%;
+    display: block;
     background-color: #fff;
   }
 

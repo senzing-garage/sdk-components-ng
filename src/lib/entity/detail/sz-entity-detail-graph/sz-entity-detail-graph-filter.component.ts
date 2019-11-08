@@ -22,8 +22,13 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
 
   @Input() maxDegreesOfSeparation: number = 1;
+  @Input() showMaxDegreesOfSeparation: boolean = false;
   @Input() maxEntities: number = 20;
+  @Input() showMaxEntities: boolean = true;
   @Input() buildOut: number = 1;
+  @Input() buildOutMin: number = 0;
+  @Input() buildOutMax: number = 5;
+  @Input() showDataSources: string[];
   @Input() dataSourceColors: any = {};
   @Input() dataSourcesFiltered: string[] = [];
   @Input() queriedEntitiesColor: string;
@@ -126,9 +131,14 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
 
       coloredDataSourceNames.forEach( (pair) => {
         this.dataSourceColors[pair.key] = pair.value;
-      })
+      });
     // update colors pref
     //console.log('onDsColorChange: ', this.dataSourceColors, coloredDataSourceNames);
+    if( this.prefs && this.prefs.graph) {
+      // there is some sort of mem reference clone issue
+      // forcing update seems to fix it
+      this.prefs.graph.dataSourceColors = this.dataSourceColors;
+    }
   }
   /** handler for when an integer pref value has changed. ie: buildOut  */
   onIntParameterChange(prefName, value) {
@@ -196,10 +206,14 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
         // add control for colored by list
         (this.colorsByDataSourcesForm.controls.datasources as FormArray).push(control2);
       });
-    })
+    });
   }
   /** helper method for retrieving list of datasources */
   public getDataSources() {
     return this.datasources.listDataSources();
+  }
+  /** if "showDataSources" array is specified, check that string name is present in list */
+  public shouldDataSourceBeDisplayed( dsName: string) {
+    return (this.showDataSources && this.showDataSources.length > 0) ? (this.showDataSources.indexOf( dsName ) > -1) : true;
   }
 }

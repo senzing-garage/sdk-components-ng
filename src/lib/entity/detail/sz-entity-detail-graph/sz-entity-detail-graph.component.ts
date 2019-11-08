@@ -11,6 +11,7 @@ import {
   SzRelationshipType
 } from '@senzing/rest-api-client-ng';
 import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
+import { SzNetworkGraphInputs } from '../../../models/network-graph-inputs';
 import { SzRelationshipNetworkComponent, NodeFilterPair } from '@senzing/sdk-graph-components';
 /**
  * @internal
@@ -43,22 +44,22 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   @Input() public data: {
     resolvedEntity: SzResolvedEntity,
     relatedEntities: SzRelatedEntity[]
-  }
+  };
   public _showMatchKeys = false;
   /** sets the visibility of edge labels on the node links */
   @Input() public set showMatchKeys(value: boolean) {
     this._showMatchKeys = value;
-  };
+  }
   private _openInNewTab: boolean = false;
   /** whether or not to open entity clicks in new tab */
   @Input() public set openInNewTab(value: boolean) {
     this._openInNewTab = value;
-  };
+  }
   public _openInSidePanel = false;
   /** whether or not to open entity clicks in side drawer */
   @Input() public set openInSidePanel(value: boolean) {
     this._openInSidePanel = value;
-  };
+  }
   @Input() sectionIcon: string;
   @Input() maxDegrees: number = 1;
   @Input() maxEntities: number = 20;
@@ -97,8 +98,8 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     return this.isOpen;
   }
 
-  @HostBinding('class.open') get cssClssOpen() { return this.expanded; };
-  @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; };
+  @HostBinding('class.open') get cssClssOpen() { return this.expanded; }
+  @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; }
   @ViewChild('graphContainer') graphContainerEle: ElementRef;
   @ViewChild(SzEntityDetailGraphControlComponent) graphControlComponent: SzEntityDetailGraphControlComponent;
   @ViewChild(SzRelationshipNetworkComponent) graph : SzRelationshipNetworkComponent;
@@ -126,8 +127,10 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
    */
   @Output() entityDblClick: EventEmitter<any> = new EventEmitter<any>();
 
+  _inputs: SzNetworkGraphInputs;
+
   public get graphIds(): number[] {
-    let _ret = [];
+    const _ret = [];
     if(this.data && this.data.resolvedEntity) {
       _ret.push(this.data.resolvedEntity.entityId);
     }
@@ -166,15 +169,15 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
       interface evtModel {
         address?: string
         entityId?: number
-        iconType?: string
-        index?: number
-        isCoreNode?: false
-        isQueriedNode?: false
-        name?: string
-        orgName?: string
-        phone?: string
-        x?: number
-        y?: number
+        iconType?: string;
+        index?: number;
+        isCoreNode?: false;
+        isQueriedNode?: false;
+        name?: string;
+        orgName?: string;
+        phone?: string;
+        x?: number;
+        y?: number;
       }
 
       const pos: {x, y} = this.graphContainerEle.nativeElement.getBoundingClientRect();
@@ -200,6 +203,9 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     }
   }
 
+  onNetworkLoaded(inputs: SzNetworkGraphInputs) {
+    this._inputs = inputs;
+  }
   constructor(
     public prefs: SzPrefsService,
     private cd: ChangeDetectorRef
@@ -241,7 +247,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
           this.isOpen = !prefs.graphSectionCollapsed;
         }
       }
-    })
+    });
 
     // keep track of whether or not the graph has been rendered
     // this is to get around publishing a new 0.0.7 sdk-graph-components
@@ -315,39 +321,53 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
 
   /** function used to generate entity node fill colors from those saved in preferences */
   public get entityNodecolorsByDataSource(): NodeFilterPair[] {
-    var _ret = [];
+    let _ret = [];
     if(this.dataSourceColors) {
-      var _keys = Object.keys(this.dataSourceColors);
+      const _keys = Object.keys(this.dataSourceColors);
       _ret = _keys.map( (_key) => {
-        var _color = this.dataSourceColors[_key];
+        const _color = this.dataSourceColors[_key];
         return {
           selectorFn: this.isEntityNodeInDataSource.bind(this, _key),
           modifierFn: this.setEntityNodeFillColor.bind(this, _color)
-        }
-      })
+        };
+      });
     }
     return _ret;
   }
   /** get the list of filters to apply to inner graph component */
   public get entityNodeFilterByDataSource(): NodeFilterPair[] {
-    var _ret = [];
+    let _ret = [];
     if(this.dataSourcesFiltered) {
-      _ret = this.dataSourcesFiltered.map( (_name) => {
-        return {
-          selectorFn: this.isEntityNodeInDataSource.bind(this, _name)
-        }
-      })
+      if( this.graph && this.graph.isD3) {
+        _ret = this.dataSourcesFiltered.map( (_name) => {
+          return {
+            selectorFn: this.isEntityNodeInDataSource.bind(this, _name),
+            selectorArgs: _name
+          };
+        });
+
+      } else if (this.graph && this.graph.isKeyLines) {
+        // keylines filter is selection inverted
+        _ret = [{
+          selectorFn: this.isEntityNodeNotInDataSources.bind(this, this.dataSourcesFiltered),
+          selectorArgs: this.dataSourcesFiltered
+        }];
+      }
+    } else {
+      //console.log('entityNodeFilterByDataSource: ',this._lastFilterConfig, JSON.stringify(_ret));
     }
     return _ret;
   }
   /** get an array of NodeFilterPair to use for highlighting certain graph nodes specific colors */
   public get entityNodeColors(): NodeFilterPair[] {
-    var _ret = this.entityNodecolorsByDataSource;
+    const _ret = this.entityNodecolorsByDataSource;
     if( this.queriedEntitiesColor && this.queriedEntitiesColor !== undefined){
       // add special color for active/primary nodes
       _ret.push( {
         selectorFn: this.isEntityNodeInQuery.bind(this),
-        modifierFn: this.setEntityNodeFillColor.bind(this, this.queriedEntitiesColor)
+        modifierFn: this.setEntityNodeFillColor.bind(this, this.queriedEntitiesColor),
+        selectorArgs: this.graphIds,
+        modifierArgs: this.queriedEntitiesColor
       } );
     }
     return _ret;
@@ -355,12 +375,53 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   /** used by "entityNodecolorsByDataSource" getter to query nodes as belonging to a datasource */
   private isEntityNodeInDataSource(dataSource, nodeData) {
     // console.log('fromOwners: ', nodeData);
-    let _retVal = false;
+    const _retVal = false;
     if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
       return false;
     } else {
       if(nodeData && nodeData.dataSources && nodeData.dataSources.indexOf){
         return nodeData.dataSources.indexOf(dataSource) >= 0;
+      } else if (nodeData && nodeData.d && nodeData.d.dataSources && nodeData.d.dataSources.indexOf) {
+        return nodeData.d.dataSources.indexOf(dataSource) >= 0;
+      } else {
+        return false;
+      }
+    }
+  }
+  private isEntityNodeInDataSources(dataSources, nodeData) {
+    // console.log('fromOwners: ', nodeData);
+    console.log('isEntityNodeInDataSources: ', dataSources, nodeData);
+    if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
+      return false;
+    } else {
+      if(nodeData && nodeData.dataSources && nodeData.dataSources.indexOf){
+        // D3 filter query
+        return (nodeData.dataSources.some( (dsName) => {
+          return dataSources.indexOf(dsName) > -1;
+        }));
+      } else if (nodeData && nodeData.d && nodeData.d.dataSources && nodeData.d.dataSources.indexOf) {
+        return (nodeData.d.dataSources.some( (dsName) => {
+            return dataSources.indexOf(dsName) > -1;
+        }));
+      } else {
+        return false;
+      }
+    }
+  }
+  private isEntityNodeNotInDataSources(dataSources, nodeData) {
+    //console.log('isEntityNodeNotInDataSources: ', dataSources, nodeData);
+    if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
+      return false;
+    } else {
+      if(nodeData && nodeData.dataSources && nodeData.dataSources.indexOf){
+        // D3 filter query
+        return !(nodeData.dataSources.some( (dsName) => {
+          return dataSources.indexOf(dsName) > -1;
+        }));
+      } else if (nodeData && nodeData.d && nodeData.d.dataSources && nodeData.d.dataSources.indexOf) {
+        return !(nodeData.d.dataSources.some( (dsName) => {
+            return dataSources.indexOf(dsName) > -1;
+        }));
       } else {
         return false;
       }
@@ -375,9 +436,18 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     }
   }
   /** used by "entityNodecolorsByDataSource" getter to set fill color of nodes in a nodelist */
-  private setEntityNodeFillColor(color, nodeList) {
-    if(nodeList && nodeList.style){
+  private setEntityNodeFillColor(color, nodeList, scope) {
+    if (nodeList && nodeList.style) {
       nodeList.style('fill', color);
+    } else if ( scope && nodeList instanceof Array && nodeList.every && nodeList.every( (nodeItem) => nodeItem.type === 'node')) {
+      const modifierList = nodeList.map((item) => {
+        return { id: item.id, c: color };
+      });
+      if (scope && scope.setProperties) {
+        scope.setProperties(modifierList);
+      }
+    } else {
+      console.warn('cannot modify');
     }
   }
 }
