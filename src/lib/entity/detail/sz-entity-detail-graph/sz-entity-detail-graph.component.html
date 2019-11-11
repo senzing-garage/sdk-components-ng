@@ -28,6 +28,7 @@
     (contextMenuClick)="onRightClick($event)"
     (entityClick)="onEntityClick($event)"
     (noResults)="onNoResults($event)"
+    (onDataLoaded)="onGraphDataLoaded($event)"
     [maxEntities]="maxEntities"></sz-relationship-network>
 
     <sz-entity-detail-graph-control *ngIf="showMatchKeyControl" class="sz-entity-detail-graph-control"

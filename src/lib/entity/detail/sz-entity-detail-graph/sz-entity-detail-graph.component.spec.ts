@@ -25,9 +25,9 @@ describe('SzEntityDetailGraphComponent', () => {
     fixture.destroy();
   });
 
-  /*
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  */
+
 });
