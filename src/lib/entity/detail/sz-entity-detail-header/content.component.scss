@@ -7,7 +7,7 @@
     width: 98%;
     display: flex;
 
-    &.layout-narrow {
+    &.layout-narrow, &.layout-rail {
       flex-direction: column;
 
       .search-card__content--column {
@@ -15,6 +15,12 @@
         margin-right: unset;
       }
     }
+
+    &.layout-rail {
+      padding: var(--sz-entity-detail-header-lo-rail-padding);
+      border: var(--sz-entity-detail-header-lo-rail-border);
+    }
+
     /*
     &.layout-medium {
       border: 2px solid cyan;

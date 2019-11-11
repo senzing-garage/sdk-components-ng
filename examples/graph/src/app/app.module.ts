@@ -4,7 +4,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { SenzingSdkModule, SzRestConfiguration, SzPoweredByComponent  } from '@senzing/sdk-components-ng';
-
+import { SenzingSdkGraphModule } from '@senzing/sdk-graph-components';
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -16,7 +16,8 @@ import { AppComponent } from './app.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    SenzingSdkModule.forRoot()
+    SenzingSdkModule.forRoot(),
+    SenzingSdkGraphModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

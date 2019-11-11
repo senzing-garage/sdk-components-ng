@@ -29,6 +29,7 @@ import { SzConfigurationService } from './services/sz-configuration.service';
 import { SzUIEventService } from './services/sz-ui.service';
 import { SzPdfUtilService } from './services/sz-pdf-util.service';
 import { SzPrefsService } from './services/sz-prefs.service';
+import { SzDataSourcesService } from './services/sz-datasources.service';
 
 /** components */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
@@ -41,7 +42,9 @@ import { SzEntityDetailSectionCollapsibleCardComponent } from './entity/detail/s
 
 import { SzEntityDetailGraphComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
 import { SzEntityDetailGraphControlComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-control.component';
+import { SzEntityDetailGraphFilterComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-filter.component';
 import { SzEntityMatchPillComponent } from './entity/sz-entity-match-pill/sz-entity-match-pill.component';
+import { SzStandaloneGraphComponent } from './entity/detail/sz-entity-detail-graph/sz-standalone-graph.component';
 import { SzEntityRecordCardComponent } from './entity/sz-entity-record-card/sz-entity-record-card.component';
 import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-card/sz-entity-record-card-header/sz-entity-record-card-header.component';
 import { SzEntityRecordCardContentComponent } from './entity/sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
@@ -55,7 +58,7 @@ import { SzConfigurationAboutComponent } from './configuration/sz-configuration-
 import { SzConfigurationComponent } from './configuration/sz-configuration/sz-configuration.component';
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
 import { SzPreferencesComponent } from './configuration/sz-preferences/sz-preferences.component';
-
+import { SzPrefDictComponent } from './configuration/sz-preferences/sz-pref-dict/sz-pref-dict.component';
 
 /**
  * Sets up a default set of service parameters for use
@@ -90,6 +93,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultCardContentComponent,
     SzEntityDetailGraphComponent,
     SzEntityDetailGraphControlComponent,
+    SzEntityDetailGraphFilterComponent,
+    SzStandaloneGraphComponent,
     SzEntityDetailHeaderComponent,
     SzEntityDetailsSectionComponent,
     SzEntityDetailSectionSummaryComponent,
@@ -104,7 +109,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzConfigurationAboutComponent,
     SzConfigurationComponent,
     SzPoweredByComponent,
-    SzPreferencesComponent
+    SzPreferencesComponent,
+    SzPrefDictComponent
   ],
   imports: [
     CommonModule,
@@ -125,12 +131,15 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzConfigurationAboutComponent,
     SzEntityDetailGraphComponent,
     SzEntityDetailGraphControlComponent,
+    SzEntityDetailGraphFilterComponent,
+    SzStandaloneGraphComponent,
     SzPreferencesComponent
   ],
   /** for components being exported as web components */
   entryComponents: [
     SzEntityDetailComponent,
     SzEntityDetailGraphComponent,
+    SzStandaloneGraphComponent,
     SzSearchComponent,
     SzSearchResultsComponent,
     SzPoweredByComponent,
@@ -142,6 +151,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzMessageBundleService,
     SzSearchService,
     SzConfigurationService,
+    SzDataSourcesService,
     SzPrefsService,
     HttpClient,
     TitleCasePipe,

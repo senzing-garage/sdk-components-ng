@@ -23,10 +23,14 @@
     display: flex;
     align-items: center;
 
-    &.layout-narrow {
+    &.layout-narrow, &.layout-rail {
       /* change some spacing things for narrow layouts */
       flex-direction: column;
       align-items: flex-start;
+
+      .hide-on-narrow {
+          display: none;
+      }
 
       .search-card__header--breakdown {
         max-width: unset;

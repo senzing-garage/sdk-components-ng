@@ -28,5 +28,11 @@
     &.is-ambiguous {
       background-color: var(--sz-color-ambiguous);
     }
+
+    &.layout-rail {
+      font-size: var(--sz-entity-detail-pill-lo-rail-font-size);
+      border-radius: var(--sz-entity-detail-pill-lo-rail-border-radius);
+      padding: var(--sz-entity-detail-pill-lo-rail-padding);
+    }
   }
 }

@@ -15,6 +15,7 @@ export * from './lib/services/sz-search.service';  // updated to use rest
 export * from './lib/services/sz-message-bundle.service';
 export * from './lib/services/sz-configuration.service';
 export * from './lib/services/sz-ui.service';
+export * from './lib/services/sz-datasources.service';
 export * from './lib/services/sz-pdf-util.service';
 export {
   SzPrefsService,
@@ -27,6 +28,9 @@ export * from './lib/search/sz-search-results/sz-search-results.component';
 export * from './lib/search/sz-search-result-card/sz-search-result-card.component';
 export * from './lib/entity/detail/sz-entity-detail.component';
 export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
+export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-control.component';
+export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-filter.component';
+export { SzStandaloneGraphComponent } from './lib/entity/detail/sz-entity-detail-graph/sz-standalone-graph.component';
 export * from './lib/sz-powered-by/sz-powered-by.component';
 export * from './lib/configuration/sz-configuration/sz-configuration.component';
 export * from './lib/configuration/sz-configuration-about/sz-configuration-about.component';

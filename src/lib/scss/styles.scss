@@ -26,7 +26,7 @@ body {
   }
 
   .sz-graph-link-label {
-    font-size: 10px;
+    font-size: 7px;
   }
 
   .sz-graph-bbox {
@@ -52,7 +52,7 @@ body {
     }
   }
 
-  .sz-graph-icon-enclosure {
+  .sz-graph-icon-enclosure, .sz-graph-business-icon-enclosure {
     fill: white;
     opacity: .5;
 

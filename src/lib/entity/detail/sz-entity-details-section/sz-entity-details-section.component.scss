@@ -3,6 +3,19 @@
   /*border: 2px dashed blueviolet;*/
 
 
+  .layout-rail {
+    sz-entity-detail-section-collapsible-card, .sz-entity-detail-section-collapsible-card {
+      border-top: var(--sz-entity-detail-section-lo-rail-border-top);
+      border-left: var(--sz-entity-detail-section-lo-rail-border-left);
+      border-right: var(--sz-entity-detail-section-lo-rail-border-right);
+      border-bottom: var(--sz-entity-detail-section-lo-rail-border-bottom);
+      font-size: var(--sz-entity-detail-section-lo-rail-font-size);
+      font-weight: var(--sz-entity-detail-section-lo-rail-font-weight);
+      border-radius: var(--sz-entity-detail-section-lo-rail-border-radius);
+    }
+  }
+
+
   sz-entity-detail-section-collapsible-card, .sz-entity-detail-section-collapsible-card {
     display: block;
     background: var(--sz-entity-detail-section-background);
