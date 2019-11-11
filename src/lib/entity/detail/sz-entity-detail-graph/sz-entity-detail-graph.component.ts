@@ -42,10 +42,44 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
 
   @Input() public title: string = "Relationships at a Glance";
 
-  @Input() public data: {
+  /** data passed in from parent component
+   * used in sz-entity-detail.component.
+   * passes in entity node data needed for context display
+   * @deprecated
+  */
+  private _data: {
     resolvedEntity: SzResolvedEntity,
     relatedEntities: SzRelatedEntity[]
   }
+
+  /** data passed in from parent component
+   * used in sz-entity-detail.component.
+   * passes in entity node data needed for context display
+   * @deprecated
+  */
+  @Input() public set data(value: {
+    resolvedEntity: SzResolvedEntity,
+    relatedEntities: SzRelatedEntity[]
+  }) {
+    this._data = value;
+    if(value && value.resolvedEntity) {
+      this._graphIds = [ value.resolvedEntity.entityId ];
+    }
+  }
+
+  /** data passed in from parent component
+   * used in sz-entity-detail.component.
+   * passes in entity node data needed for context display
+   *
+   * @deprecated
+  */
+  public get data(): {
+    resolvedEntity: SzResolvedEntity,
+    relatedEntities: SzRelatedEntity[]
+  } {
+    return this._data;
+  }
+
   public _showMatchKeys = false;
   /** sets the visibility of edge labels on the node links */
   @Input() public set showMatchKeys(value: boolean) {
@@ -102,8 +136,8 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     return this.isOpen;
   }
 
-  //@HostBinding('class.open') get cssClssOpen() { return this.expanded; };
-  //@HostBinding('class.closed') get cssClssClosed() { return !this.expanded; };
+  @HostBinding('class.open') get cssClssOpen() { return this.expanded; };
+  @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; };
   @ViewChild('graphContainer') graphContainerEle: ElementRef;
   @ViewChild(SzEntityDetailGraphControlComponent) graphControlComponent: SzEntityDetailGraphControlComponent;
   @ViewChild(SzRelationshipNetworkComponent) graph : SzRelationshipNetworkComponent;
@@ -164,6 +198,8 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
    * @returns object with various entity and ui properties.
    */
   @Output() entityDblClick: EventEmitter<any> = new EventEmitter<any>();
+
+  _inputs: SzNetworkGraphInputs;
 
   private _graphIds: number[];
   @Input() public set graphIds(value: number[]) {
@@ -255,6 +291,13 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
         this.showMatchKeys = event.value;
         break;
     }
+  }
+  /**
+   * Older style data passing, comes from the SzNetworkInputs->XMLHTTPRequest->mutation->event
+   * @deprecated
+   */
+  onNetworkLoaded(inputs: SzNetworkGraphInputs) {
+    this._inputs = inputs;
   }
 
   constructor(
@@ -369,7 +412,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
 
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    //console.log('@senzing/sdk-components-ng/sz-standalone-graph.onPrefsChange(): ', prefs, this.prefs.graph);
+    // console.log('@senzing/sdk-components-ng/sz-entity-detail-graph.onPrefsChange(): ', prefs, this.prefs.graph);
     let queryParamChanged = false;
     if(this.maxDegrees != prefs.maxDegreesOfSeparation ||
       this.maxEntities != prefs.maxEntities ||
