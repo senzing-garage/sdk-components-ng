@@ -1,7 +1,7 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { SzSdkPrefsModel, SzPrefsService } from './sz-prefs.service';
-import { filter } from 'rxjs/operators';
+import { filter, debounceTime } from 'rxjs/operators';
 
 describe('SzPrefsService', () => {
   let injector: TestBed;
@@ -83,34 +83,35 @@ describe('SzPrefsService', () => {
     httpMock.verify();
   });
 
-  /** *******************************************************
-   *  DISABLED. Theres something wrong with the tests, not the code
-   *  needs to be properly debug. might be race condition maybe.
-   **********************************************************/
+  /** *********************************************************
+   * for some reason the service publishes a series of prefsChange
+   * event(s) immediately. this leads to a situation where
+   * the tests only care about the last one in the stack, but
+   * the service is delivering a history stack. to get around it
+   * using "debounceTime(500)"
+   *
+  *************************************************************/
 
-  /*
   // ------------------ test against mock data load -------------------
   it('can set preferences via fromJSONString()', (done) => {
-    console.log('-------------- DEBUG --------------- \n\r', JSON.stringify(mockData, null, 2));
+    //console.log('-------------- DEBUG (input) --------------- \n\r', JSON.stringify(mockData, null, 2));
+    service.fromJSONString( JSON.stringify(mockData) );
 
     service.prefsChanged.pipe(
       // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
-      console.log('------------------- DEBUG ------------', Object.keys(g).join(', '));
+      console.log('------------------- DEBUG (output) ------------', Object.keys(g).join(', '));
+      console.log('2', JSON.stringify(g, null, 2) );
        expect(g.searchResults.showOtherData).toEqual(true);
        done();
     });
-    service.fromJSONString( JSON.stringify(mockData) );
   });
+
   it('can set preferences via fromJSONObject()', (done) => {
     service.prefsChanged.pipe(
       // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
        expect(g.entityDetail.showTopEntityRecordIdsWhenSingular).toEqual(true);
        done();
@@ -119,13 +120,9 @@ describe('SzPrefsService', () => {
   });
 
   // --------------------------- test against individual pref setters -------------------
-
   it('search form pref: can set "allowedTypeAttributes"', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
        expect(g.searchForm.allowedTypeAttributes).toEqual([
         'PASSPORT_NUMBER',
@@ -150,10 +147,7 @@ describe('SzPrefsService', () => {
   // --------------------------- search results -----------------------------------------
   it('search results "openInNewTab" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
        expect(g.searchResults.openInNewTab).toEqual(true);
        done();
@@ -162,10 +156,7 @@ describe('SzPrefsService', () => {
   });
   it('search results "showOtherData" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.searchResults.showOtherData).toEqual(true);
       done();
@@ -174,10 +165,7 @@ describe('SzPrefsService', () => {
   });
   it('search results "showAttributeData" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.searchResults.showAttributeData).toEqual(true);
       done();
@@ -186,10 +174,7 @@ describe('SzPrefsService', () => {
   });
   it('search results "truncateRecordsAt" changes to 9', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.searchResults.truncateRecordsAt).toEqual(9);
       done();
@@ -198,10 +183,7 @@ describe('SzPrefsService', () => {
   });
   it('search results "truncateOtherDataAt" changes to 9', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.searchResults.truncateOtherDataAt).toEqual(9);
       done();
@@ -210,10 +192,7 @@ describe('SzPrefsService', () => {
   });
   it('search results "truncateAttributeDataAt" changes to 9', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.searchResults.truncateAttributeDataAt).toEqual(9);
       done();
@@ -222,10 +201,7 @@ describe('SzPrefsService', () => {
   });
   it('search results "showEmbeddedGraph" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.searchResults.showEmbeddedGraph).toEqual(true);
       done();
@@ -234,10 +210,7 @@ describe('SzPrefsService', () => {
   });
   it('search results "showRecordIds" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.searchResults.showRecordIds).toEqual(true);
       done();
@@ -246,10 +219,7 @@ describe('SzPrefsService', () => {
   });
   it('search results "linkToEmbeddedGraph" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.searchResults.linkToEmbeddedGraph).toEqual(true);
       done();
@@ -258,10 +228,7 @@ describe('SzPrefsService', () => {
   });
   it('search results "truncateIdentifierDataAt" changes to 9', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.searchResults.truncateIdentifierDataAt).toEqual(9);
       done();
@@ -273,10 +240,7 @@ describe('SzPrefsService', () => {
 
   it('entity detail "showGraphSection" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.showGraphSection).toEqual(true);
       done();
@@ -285,10 +249,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "showMatchesSection" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.showMatchesSection).toEqual(true);
       done();
@@ -297,10 +258,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "showPossibleMatchesSection" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.showPossibleMatchesSection).toEqual(true);
       done();
@@ -309,10 +267,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "showPossibleRelationshipsSection" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.showPossibleRelationshipsSection).toEqual(true);
       done();
@@ -321,10 +276,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "showDisclosedSection" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.showDisclosedSection).toEqual(true);
       done();
@@ -334,10 +286,7 @@ describe('SzPrefsService', () => {
 
   it('entity detail "graphSectionCollapsed" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.graphSectionCollapsed).toEqual(true);
       done();
@@ -346,10 +295,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "recordsSectionCollapsed" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.recordsSectionCollapsed).toEqual(true);
       done();
@@ -358,10 +304,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "possibleMatchesSectionCollapsed" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.possibleMatchesSectionCollapsed).toEqual(true);
       done();
@@ -370,10 +313,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "possibleRelationshipsSectionCollapsed" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.possibleRelationshipsSectionCollapsed).toEqual(true);
       done();
@@ -382,10 +322,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "disclosedRelationshipsSectionCollapsed" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.disclosedRelationshipsSectionCollapsed).toEqual(true);
       done();
@@ -395,10 +332,7 @@ describe('SzPrefsService', () => {
 
   it('entity detail "rememberSectionCollapsedState" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.rememberSectionCollapsedState).toEqual(true);
       done();
@@ -407,10 +341,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "truncateSummaryAt" changes to 9', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.truncateSummaryAt).toEqual(9);
       done();
@@ -419,10 +350,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "showOtherData" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.showOtherData).toEqual(true);
       done();
@@ -431,10 +359,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "truncateOtherDataAt" changes to 9', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.truncateOtherDataAt).toEqual(9);
       done();
@@ -443,10 +368,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "openLinksInNewTab" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.openLinksInNewTab).toEqual(true);
       done();
@@ -455,10 +377,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "showOtherDataInRecords" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.showOtherDataInRecords).toEqual(true);
       done();
@@ -467,10 +386,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "showOtherDataInEntities" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.showOtherDataInEntities).toEqual(true);
       done();
@@ -479,10 +395,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "showOtherDataInSummary" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.showOtherDataInSummary).toEqual(true);
       done();
@@ -491,10 +404,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "truncateOtherDataInRecordsAt" changes to 9', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.truncateOtherDataInRecordsAt).toEqual(9);
       done();
@@ -503,10 +413,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "hideGraphWhenZeroRelations" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.hideGraphWhenZeroRelations).toEqual(true);
       done();
@@ -515,10 +422,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "showRecordIdWhenNative" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.showRecordIdWhenNative).toEqual(true);
       done();
@@ -527,10 +431,7 @@ describe('SzPrefsService', () => {
   });
   it('entity detail "showTopEntityRecordIdsWhenSingular" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.entityDetail;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.entityDetail.showTopEntityRecordIdsWhenSingular).toEqual(true);
       done();
@@ -541,10 +442,7 @@ describe('SzPrefsService', () => {
   // --------------------------- graph -----------------------------------------
   it('graph "openInNewTab" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.graph.openInNewTab).toEqual(true);
       done();
@@ -553,10 +451,7 @@ describe('SzPrefsService', () => {
   });
   it('graph "openInSidePanel" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.graph.openInSidePanel).toEqual(true);
       done();
@@ -565,10 +460,7 @@ describe('SzPrefsService', () => {
   });
   it('graph "showMatchKeys" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.graph.showMatchKeys).toEqual(true);
       done();
@@ -577,10 +469,7 @@ describe('SzPrefsService', () => {
   });
   it('graph "rememberStateOptions" changes to true', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.graph.rememberStateOptions).toEqual(true);
       done();
@@ -589,10 +478,7 @@ describe('SzPrefsService', () => {
   });
   it('graph "maxDegreesOfSeparation" changes to 9', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.graph.maxDegreesOfSeparation).toEqual(9);
       done();
@@ -601,10 +487,7 @@ describe('SzPrefsService', () => {
   });
   it('graph "maxEntities" changes to 9', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.graph.maxEntities).toEqual(9);
       done();
@@ -614,15 +497,11 @@ describe('SzPrefsService', () => {
 
   it('graph "buildOut" changes to 9', (done) => {
     service.prefsChanged.pipe(
-      // filter because the first publish is always empty object
-      filter( (g: SzSdkPrefsModel) => {
-        return g && g.searchForm;
-      })
+      debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.graph.buildOut).toEqual(9);
       done();
     });
     service.graph.buildOut = 9;
   });
-  */
 });
