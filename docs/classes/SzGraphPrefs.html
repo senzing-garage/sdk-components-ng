@@ -181,6 +181,15 @@ Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsS
                                 <li>
                                     <a href="#buildOut">buildOut</a>
                                 </li>
+                                <li>
+                                    <a href="#dataSourcesFiltered">dataSourcesFiltered</a>
+                                </li>
+                                <li>
+                                    <a href="#neverFilterQueriedEntityIds">neverFilterQueriedEntityIds</a>
+                                </li>
+                                <li>
+                                    <a href="#queriedEntitiesColor">queriedEntitiesColor</a>
+                                </li>
                             </ul>
                         </td>
                     </tr>
@@ -243,7 +252,10 @@ instead of the empty superclass</p>
     &#x27;rememberStateOptions&#x27;,
     &#x27;maxDegreesOfSeparation&#x27;,
     &#x27;maxEntities&#x27;,
-    &#x27;buildOut&#x27;
+    &#x27;buildOut&#x27;,
+    &#x27;dataSourcesFiltered&#x27;,
+    &#x27;neverFilterQueriedEntityIds&#x27;,
+    &#x27;queriedEntitiesColor&#x27;
   ]</code>
                         </td>
                     </tr>
@@ -1080,6 +1092,218 @@ useful for not getting notified on bulk property sets.</p>
                                                             <td>
                                                                             <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                                             </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dataSourcesFiltered"></a>
+                        <span class="name"><b>dataSourcesFiltered</b><a href="#dataSourcesFiltered"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>dataSourcesFiltered()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>hide any entity node when belonging to particular datasources </p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>string[]</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>dataSourcesFiltered(value: [])</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>hide any entity node when belonging to particular datasources </p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code>[]</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="neverFilterQueriedEntityIds"></a>
+                        <span class="name"><b>neverFilterQueriedEntityIds</b><a href="#neverFilterQueriedEntityIds"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>neverFilterQueriedEntityIds()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>never filter out the entities that were explicity declared in query </p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>neverFilterQueriedEntityIds(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>never filter out the entities that were explicity declared in query </p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="queriedEntitiesColor"></a>
+                        <span class="name"><b>queriedEntitiesColor</b><a href="#queriedEntitiesColor"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>queriedEntitiesColor()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>color of active or queried for entity or entitities </p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>string | undefined</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>queriedEntitiesColor(value)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>color of active or queried for entity or entitities </p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
                                                     
                                                         <td>
                                                                 No
