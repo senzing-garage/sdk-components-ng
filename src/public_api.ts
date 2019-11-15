@@ -24,6 +24,7 @@ export {
 
 /** components */
 export * from './lib/search/sz-search/sz-search.component';
+export { SzSearchByIdComponent } from './lib/search/sz-search/sz-search-by-id.component';
 export * from './lib/search/sz-search-results/sz-search-results.component';
 export * from './lib/search/sz-search-result-card/sz-search-result-card.component';
 export * from './lib/entity/detail/sz-entity-detail.component';

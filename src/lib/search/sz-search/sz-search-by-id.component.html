@@ -1,0 +1,118 @@
+
+  <!-- @senzing/sdk/search/sz-search-by-id -->
+  <!--
+    NAME_FULL
+    DATE_OF_BIRTH
+    IDENTIFIER
+    IDENTIFIER_TYPE
+    ADDR_FULL
+    PHONE_NUMBER
+    EMAIL_ADDRESS
+  -->
+  <div class="content" *ngIf="true"
+  [ngClass]="_layoutClasses"
+  >
+      <section class="entity search" (ngSubmit)="submitSearch()">
+        <form class="form" [formGroup]="entitySearchForm" novalidate>
+          <h2>SzSearchByIdComponent</h2>
+          <div class="sz-row">
+            <div class="field name" [class.disabled]="disabledFields['name']" *ngIf="!hiddenFields['name']">
+              <label for="entity-name">Name</label>
+              <input formControlName="NAME_FULL"
+                      class="search-input"
+                      id="entity-name"
+                      type="text"
+                      [attr.disabled]="getDisabled('name')"
+                      (keyup.enter)="onKeyEnter()"
+                      placeholder="Search for Name">
+            </div>
+            <div class="field dob" [class.disabled]="disabledFields['dob']" *ngIf="!hiddenFields['dob']">
+              <label for="entity-dob">Date of Birth</label>
+              <input formControlName="DATE_OF_BIRTH"
+                      id="entity-dob"
+                      type="text"
+                      [attr.disabled]="getDisabled('dob')"
+                      (keyup.enter)="onKeyEnter()"
+                      placeholder="mm/dd/yyyy">
+            </div>
+            <div class="field identifier" [class.disabled]="disabledFields['identifier']" *ngIf="!hiddenFields['identifier']">
+              <label for="entity-identifier">Identifier</label>
+              <input formControlName="IDENTIFIER"
+                      id="entity-identifier"
+                      type="text"
+                      [attr.disabled]="getDisabled('identifier')"
+                      (keyup.enter)="onKeyEnter()"
+                      placeholder="Number">
+            </div>
+            <div class="field type" [class.disabled]="disabledFields['identifierType'] || disabledFields['identifier']" *ngIf="!hiddenFields['identifier'] && !hiddenFields['identifierType']">
+              <label for="entity-type">Type</label>
+              <select formControlName="IDENTIFIER_TYPE"
+                      class="identifier-dropdown"
+                      id="entity-type"
+                      [attr.disabled]="getAnyDisabled(['identifierType','identifier'])"
+                      name="type">
+                <option [ngValue]="null" disabled>Choose ID type</option>
+                <option *ngFor="let type of orderedAttributes()"
+                        [value]="type.attributeCode"
+                        [selected]="type.attributeCode === 'PASSPORT_NUMBER'">{{type.featureType}}
+                </option>
+              </select>
+            </div>
+            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields['searchButton']" *ngIf="!hiddenFields['searchButton']">
+              <button mat-button class="button__search-go"
+              [attr.disabled]="getDisabled('searchButton')"
+              (click)="submitSearch()">Search</button>
+            </div>
+          </div>
+          <div class="sz-row">
+            <div class="field address" [class.disabled]="disabledFields['address']" *ngIf="!hiddenFields['address']">
+              <label for="entity-address">Address</label>
+              <input formControlName="ADDR_FULL"
+                      id="entity-address"
+                      type="text"
+                      [attr.disabled]="getDisabled('address')"
+                      (keyup.enter)="onKeyEnter()"
+                      placeholder="Search for Address">
+            </div>
+            <div class="field phone" [class.disabled]="disabledFields['phone']" *ngIf="!hiddenFields['phone']">
+              <label for="entity-phone">Phone</label>
+              <input formControlName="PHONE_NUMBER"
+                      id="entity-phone"
+                      type="text"
+                      [attr.disabled]="getDisabled('phone')"
+                      placeholder="Phone #">
+            </div>
+            <div class="field email" [class.disabled]="disabledFields['email']" *ngIf="!hiddenFields['email']">
+              <label for="entity-email">Email</label>
+              <input formControlName="EMAIL_ADDRESS"
+                      id="entity-email"
+                      type="text"
+                      [attr.disabled]="getDisabled('email')"
+                      (keyup.enter)="onKeyEnter()"
+                      placeholder="Email Address">
+            </div>
+            <div class="field spacer">
+
+            </div>
+            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields['resetButton']" *ngIf="!hiddenFields['resetButton']">
+              <button mat-button class="button__search-clear"
+              [attr.disabled]="getDisabled('resetButton')"
+              (click)="clearSearch()">Clear Search Criteria</button>
+            </div>
+          </div>
+          <div class="sz-row bottom">
+            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields['resetButton']" *ngIf="!hiddenFields['resetButton']">
+              <button mat-button class="button__search-clear"
+              [attr.disabled]="getDisabled('resetButton')"
+              (click)="clearSearch()">Clear</button>
+            </div>
+            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields['searchButton']" *ngIf="!hiddenFields['searchButton']">
+              <button mat-button class="button__search-go"
+              [attr.disabled]="getDisabled('searchButton')"
+              (click)="submitSearch()">Search</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+    </div>

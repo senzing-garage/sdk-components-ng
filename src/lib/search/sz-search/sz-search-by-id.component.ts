@@ -1,0 +1,842 @@
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef, Inject, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Observable, Subject  } from 'rxjs';
+import { map, tap, mapTo, first, filter, takeUntil } from 'rxjs/operators';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+
+import {
+  ConfigService,
+  Configuration as SzRestConfiguration,
+  ConfigurationParameters as SzRestConfigurationParameters,
+  SzAttributeSearchResult,
+  SzAttributeType,
+  SzAttributeTypesResponse,
+  SzAttributeTypesResponseData
+} from '@senzing/rest-api-client-ng';
+import { SzEntitySearchParams } from '../../models/entity-search';
+import { SzSearchService } from '../../services/sz-search.service';
+import { JSONScrubber } from '../../common/utils';
+import { SzConfigurationService } from '../../services/sz-configuration.service';
+import { SzPrefsService } from '../../services/sz-prefs.service';
+
+/** @internal */
+interface SzSearchFormParams {
+  name?: string[];
+  email?: string[];
+  dob?: string[];
+  identifier?: string[];
+  address?: string[];
+  phoneNumber?: string[];
+  type?: string[];
+}
+/** @internal */
+interface SzBoolFieldMapByName {
+  searchButton: boolean;
+  resetButton: boolean;
+  name: boolean;
+  dob: boolean;
+  identifier: boolean;
+  email: boolean;
+  address: boolean;
+  phone: boolean;
+  identifierType: boolean;
+}
+
+/** @internal */
+const parseBool = (value: any): boolean => {
+  if (!value || value === undefined) {
+    return false;
+  } else if (typeof value === 'string') {
+    return (value.toLowerCase().trim() === 'true') ? true : false;
+  } else if (value > 0) { return true; }
+  return false;
+};
+
+/**
+ * Provides a search box component that can execute search queries and return results.
+ *
+ * @example <!-- (WC javascript) SzSearchByIdComponent -->
+ * <sz-search
+ * id="sz-search"
+ * name="Isa Creepr"></sz-search>
+ * <script>
+ *  document.getElementById('sz-search').addEventListener('resultsChange', (results) => {
+ *    console.log('search results: ', results);
+ *  });
+ * </script>
+ *
+ * @example <!-- (Angular) SzSearchByIdComponent -->
+ * <sz-search
+ * name="Isa Creepr"
+ * (resultsChange)="myResultsHandler($event)"
+ * (searchStart)="showSpinner()"
+ * (searchEnd)="hideSpinner()"></sz-search>
+ * @export
+ *
+ * @example <!-- (WC javascript) SzSearchByIdComponent and SzSearchResultsComponent combo -->
+ * <sz-search
+ * id="sz-search"
+ * name="Isa Creepr"></sz-search>
+ * <sz-search-results id="sz-search-results"></sz-search-results>
+ * <script>
+ *  var szSearchByIdComponent = document.getElementById('sz-search');
+ *  var szSearchResultsComponent = document.getElementById('sz-search-results');
+ *  szSearchByIdComponent.addEventListener('resultsChange', (evt) => {
+ *    console.log('search results: ', evt);
+ *    szSearchResultsComponent.results = evt.detail;
+ *  });
+ * </script>
+ */
+@Component({
+  selector: 'sz-search-by-id',
+  templateUrl: './sz-search-by-id.component.html',
+  styleUrls: ['./sz-search-by-id.component.scss']
+})
+export class SzSearchByIdComponent implements OnInit, OnDestroy {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
+
+  /**
+   * populate the search fields with an pre-existing set of search parameters.
+   */
+  @Input() searchValue: SzEntitySearchParams;
+
+  /**
+   * whether or not to show the search box label
+   * @memberof SzSearchByIdComponent
+   */
+  @Input() showSearchLabel = true;
+  /**
+   * collection of which mapping attributes to show in the identifiers pulldown.
+   * @memberof SzSearchByIdComponent
+   */
+  @Input() allowedTypeAttributes = [
+    'NIN_NUMBER',
+    'ACCOUNT_NUMBER',
+    'SSN_NUMBER',
+    'SSN_LAST4',
+    'DRIVERS_LICENSE_NUMBER',
+    'PASSPORT_NUMBER',
+    'NATIONAL_ID_NUMBER',
+    'OTHER_ID_NUMBER',
+    'TAX_ID_NUMBER',
+    'TRUSTED_ID_NUMBER'
+  ];
+  /**
+   * emitted when a search is being performed.
+   * @returns SzSearchFormParams
+   * @memberof SzSearchByIdComponent
+   */
+  @Output() searchStart: EventEmitter<SzSearchFormParams> = new EventEmitter<SzSearchFormParams>();
+  /**
+   * emitted when a search is done being performed.
+   * @returns the number of total results returned from the search.
+   * @memberof SzSearchByIdComponent
+   */
+  @Output() searchEnd: EventEmitter<number> = new EventEmitter<number>();
+  /**
+   * emitted when a search encounters an exception
+   * @todo remove from next breaking change release.
+   * @deprecated
+   */
+  @Output() searchException: EventEmitter<Error> = new EventEmitter<Error>();
+  /**
+   * emitted when a search encounters an exception
+   */
+  @Output() exception: EventEmitter<Error> = new EventEmitter<Error>();
+
+  /**
+   * emmitted when the results have been cleared.
+   * @memberof SzSearchByIdComponent
+   */
+  @Output() resultsCleared: EventEmitter<void> = new EventEmitter<void>();
+  /**
+   * emmitted when the search results have been changed.
+   * @memberof SzSearchByIdComponent
+   */
+  @Output('resultsChange') searchResults: Subject<SzAttributeSearchResult[]> = new Subject<SzAttributeSearchResult[]>();
+  /**
+   * emmitted when parameters of the search have been changed.
+   *
+   * @memberof SzSearchByIdComponent
+   */
+  @Output('parameterChange')
+  searchParameters: Subject<SzEntitySearchParams> = new Subject<SzEntitySearchParams>();
+
+  /**
+   * @ignore
+   */
+  entitySearchForm: FormGroup;
+  /**
+   * @ignore
+   */
+  public searchResultsJSON;
+
+  /* start tag input setters */
+  /**
+   * the name field of the search form.
+   * @example
+   * <sz-search name="Good Guy">
+   *
+   * @memberof SzSearchByIdComponent
+   */
+  @Input('name')
+  public set inputName(value){
+    this.searchService.setSearchParam('NAME_FULL',value);
+
+    if(this.entitySearchForm){
+      this.entitySearchForm['NAME_FULL'] = value;
+    }
+  }
+  /**
+   * sets the value of the email field.
+   *
+   * @example
+   * <sz-search email="guy.i.am.looking&#64;for.com">
+   *
+   * @memberof SzSearchByIdComponent
+   */
+  @Input('email')
+  public set inputEmail(value){
+    this.searchService.setSearchParam('EMAIL_ADDRESS',value);
+
+    if(this.entitySearchForm){
+      this.entitySearchForm['EMAIL_ADDRESS'] = value;
+    }
+  }
+  /**
+   * sets the value of the address field
+   * @example
+   * <sz-search address="421 Rawling Str">
+   * @memberof SzSearchByIdComponent
+   */
+  @Input('address')
+  public set inputAddress(value){
+    this.searchService.setSearchParam('ADDR_FULL',value);
+
+    if(this.entitySearchForm){
+      this.entitySearchForm['ADDR_FULL'] = value;
+    }
+  }
+  /** sets the value of the phone field */
+  @Input('phone')
+  public set inputPhone(value){
+    this.searchService.setSearchParam('PHONE_NUMBER',value);
+
+    if(this.entitySearchForm){
+      this.entitySearchForm['PHONE_NUMBER'] = value;
+    }
+  }
+  /** sets the value of the identifier field */
+  @Input('identifier')
+  public set inputIdentifier(value){
+    this.searchService.setSearchParam('IDENTIFIER',value);
+
+    if(this.entitySearchForm){
+      this.entitySearchForm['IDENTIFIER'] = value;
+    }
+  }
+  /** sets the value of the date of birth form field */
+  @Input('dob')
+  public set inputDob(value){
+    this.searchService.setSearchParam('DATE_OF_BIRTH',value);
+
+    if(this.entitySearchForm){
+      this.entitySearchForm['DATE_OF_BIRTH'] = value;
+    }
+  }
+  /**
+   * collection of mapping attributes. this is usually populated from the mapping attributes
+   * query from the search service.
+   * @memberof SzSearchByIdComponent
+   * @internal
+   */
+  public matchingAttributes: SzAttributeType[];
+
+  // ---------------------- individual field visibility setters ----------------------------------
+  /** hide the search button */
+  @Input() public set hideSearchButton(value: any)   { this.hiddenFields.searchButton        = parseBool(value); }
+  /** hide the reset button */
+  @Input() public set hideResetButton(value: any)    { this.hiddenFields.resetButton         = parseBool(value); }
+  /** hide the clear button */
+  @Input() public set hideClearButton(value: any)    { this.hiddenFields.resetButton         = parseBool(value); }
+  /** hide the "Name" input field */
+  @Input() public set hideName(value: any)           { this.hiddenFields.name                = parseBool(value); }
+  /** hide the "DOB" input field */
+  @Input() public set hideDob(value: any)            { this.hiddenFields.dob                 = parseBool(value); }
+  /** hide the "Identifier" input field */
+  @Input() public set hideIdentifier(value: any)     { this.hiddenFields.identifier          = parseBool(value); }
+  /** hide the "Email" input field */
+  @Input() public set hideEmail(value: any)          { this.hiddenFields.email               = parseBool(value); }
+  /** hide the "Address" input field */
+  @Input() public set hideAddress(value: any)        { this.hiddenFields.address             = parseBool(value); }
+  /** hide the "Phone Number" input field */
+  @Input() public set hidePhone(value: any)          { this.hiddenFields.phone               = parseBool(value); }
+  /** hide the "Identifier Type" input field */
+  @Input() public set hideIdentifierType(value: any) { this.hiddenFields.identifierType      = parseBool(value); }
+
+  // ---------------------- individual field readonly setters ------------------------------------
+  /** disable the search button. button is not clickable. */
+  @Input() public set disableSearchButton(value: any)   { this.disabledFields.searchButton   = parseBool(value); }
+  /** disable the reset button. button is not clickable. */
+  @Input() public set disableResetButton(value: any)    { this.disabledFields.resetButton    = parseBool(value); }
+  /** disable the clear button. button is not clickable. */
+  @Input() public set disableClearButton(value: any)    { this.disabledFields.resetButton    = parseBool(value); }
+  /** disable the "Name" field. input cannot be edited. */
+  @Input() public set disableName(value: any)           { this.disabledFields.name           = parseBool(value); }
+  /** disable the "Date of Birth" field. input cannot be edited. */
+  @Input() public set disableDob(value: any)            { this.disabledFields.dob            = parseBool(value); }
+  /** disable the "Identifier" field. input cannot be edited. */
+  @Input() public set disableIdentifier(value: any)     { this.disabledFields.identifier     = parseBool(value); }
+  /** disable the "Email" field. input cannot be edited. */
+  @Input() public set disableEmail(value: any)          { this.disabledFields.email          = parseBool(value); }
+  /** disable the "Address" field. input cannot be edited. */
+  @Input() public set disableAddress(value: any)        { this.disabledFields.address        = parseBool(value); }
+  /** disable the "Phone Number" field. input cannot be edited. */
+  @Input() public set disablePhone(value: any)          { this.disabledFields.phone          = parseBool(value); }
+  /** disable the "Identifier Type" field. input cannot be edited. */
+  @Input() public set disableIdentifierType(value: any) { this.disabledFields.identifierType = parseBool(value); }
+
+  // ---------------------- identifier type option visibility setters ----------------------------
+  /** disable the identifier type "NIN" option */
+  @Input() public set disableNINNumberOption(value: any) { if(value) {        this.disableIdentifierOption('NIN_NUMBER'); }}
+  /** disable the identifier type "ACCOUNT NUMBER" option */
+  @Input() public set disableACCTNUMOption(value: any) { if(value) {          this.disableIdentifierOption('ACCOUNT_NUMBER'); }}
+  /** disable the identifier type "SSN" option*/
+  @Input() public set disableSSNOption(value: any) { if(value) {              this.disableIdentifierOption('SSN_NUMBER'); }}
+  /** disable the identifier type "SSN Last 4" option */
+  @Input() public set disableSSNLAST4Option(value: any) { if(value) {         this.disableIdentifierOption('SSN_LAST4'); }}
+  /** disable the identifier type "DRLIC" option */
+  @Input() public set disableDRLICOption(value: any) { if(value) {            this.disableIdentifierOption('DRIVERS_LICENSE_NUMBER'); }}
+  /** disable the identifier type "Passport" option */
+  @Input() public set disablePassportOption(value: any) { if(value) {         this.disableIdentifierOption('PASSPORT_NUMBER'); }}
+  /** disable the identifier type "NationalID" option */
+  @Input() public set disableNationalIDOption(value: any) { if(value) {       this.disableIdentifierOption('NATIONAL_ID_NUMBER'); }}
+  /** disable the identifier type "Other ID" option */
+  @Input() public set disableOtherIDOption(value: any) { if(value) {          this.disableIdentifierOption('OTHER_ID_NUMBER'); }}
+  /** disable the identifier type "Tax ID" option*/
+  @Input() public set disableOtherTaxIDOption(value: any) { if(value) {       this.disableIdentifierOption('TAX_ID_NUMBER'); }}
+  /** disable the identifier type "Trusted ID" option */
+  @Input() public set disableTrustedIDOption(value: any) { if(value) {        this.disableIdentifierOption('TRUSTED_ID_NUMBER'); }}
+  /** enable the identifier type "NIN" option */
+  @Input() public set enableNINNumberOption(value: any) { if(value) {        this.enableIdentifierOption('NIN_NUMBER'); }}
+  /** enable the identifier type "ACCOUNT NUMBER" option */
+  @Input() public set enableACCTNUMOption(value: any) { if(value) {          this.enableIdentifierOption('ACCOUNT_NUMBER'); }}
+  /** enable the identifier type "SSN" option */
+  @Input() public set enableSSNOption(value: any) { if(value) {              this.enableIdentifierOption('SSN_NUMBER'); }}
+  /** enable the identifier type "SSN Last 4" option */
+  @Input() public set enableSSNLAST4Option(value: any) { if(value) {         this.enableIdentifierOption('SSN_LAST4'); }}
+  /** enable the identifier type "DRLIC" option */
+  @Input() public set enableDRLICOption(value: any) { if(value) {            this.enableIdentifierOption('DRIVERS_LICENSE_NUMBER'); }}
+  /** enable the identifier type "Passport" option */
+  @Input() public set enablePassportOption(value: any) { if(value) {         this.enableIdentifierOption('PASSPORT_NUMBER'); }}
+  /** enable the identifier type "NationalID" option */
+  @Input() public set enableNationalIDOption(value: any) { if(value) {       this.enableIdentifierOption('NATIONAL_ID_NUMBER'); }}
+  /** enable the identifier type "Other ID" option */
+  @Input() public set enableOtherIDOption(value: any) { if(value) {          this.enableIdentifierOption('OTHER_ID_NUMBER'); }}
+  /** enable the identifier type "Tax ID" option */
+  @Input() public set enableOtherTaxIDOption(value: any) { if(value) {       this.enableIdentifierOption('TAX_ID_NUMBER'); }}
+  /** enable the identifier type "Trusted ID" option */
+  @Input() public set enableTrustedIDOption(value: any) { if(value) {        this.enableIdentifierOption('TRUSTED_ID_NUMBER'); }}
+
+  /**
+   * disable an individual identifier type option.
+   * @internal
+   */
+  private disableIdentifierOption(value: string) {
+    value = value.trim();
+    const optionIndex = this.allowedTypeAttributes.indexOf(value);
+    if(optionIndex > -1) {
+      this.allowedTypeAttributes.splice(optionIndex, 1);
+    }
+  }
+  /**
+   * enable an individual identifier type option.
+   * @internal
+   */
+  private enableIdentifierOption(value: string) {
+    value = value.trim();
+    const optionIndex = this.allowedTypeAttributes.indexOf(value);
+    if(optionIndex < 0) {
+      this.allowedTypeAttributes.push(value);
+    }
+  }
+  /**
+   * enable a set of identifier type options.
+   * format is "SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER" or array of strings
+   */
+  @Input()
+  public set enableIdentifierOptions(options: string[] | string) {
+    if(typeof options === 'string') {
+      options = options.trim().split(',');
+    }
+    // enable each option in collection
+    options.forEach((opt)=> {
+      this.enableIdentifierOption(opt);
+    });
+  }
+  /**
+   * disable a set of identifier type options.
+   * format is "SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER" or array of strings
+   */
+  @Input()
+  public set disableIdentifierOptions(options: string[] | string) {
+    if(typeof options === 'string') {
+      options = options.split(',');
+    }
+    // enable each option in collection
+    options.forEach((opt)=> {
+      this.disableIdentifierOption(opt);
+    });
+  }
+  /** @interal */
+  public getAnyDisabled(keys: string[]): string {
+    const _some = keys.some((key) => {
+      return this.disabledFields[ key ];
+    });
+    if(_some) {
+      return '';
+    }
+    return null;
+  }
+  /** @interal */
+  public getDisabled(key: string): string {
+    if(this.disabledFields && this.disabledFields[ key ]) {
+      return '';
+    }
+    return null;
+  }
+  /** @internal*/
+  public disabledFields: SzBoolFieldMapByName = {
+    searchButton: false,
+    resetButton: false,
+    name: false,
+    dob: false,
+    identifier: false,
+    email: false,
+    address: false,
+    phone: false,
+    identifierType: false
+  };
+  /** @internal */
+  public hiddenFields: SzBoolFieldMapByName = {
+    searchButton: false,
+    resetButton: false,
+    name: false,
+    dob: false,
+    identifier: false,
+    email: false,
+    address: false,
+    phone: false,
+    identifierType: false
+  };
+
+  // layout enforcers
+  /** @internal */
+  public _layoutEnforcers: string[] = [''];
+  /** @internal */
+  public _forceLayout = false;
+  /** @internal */
+  public _layoutClasses: string[] = [];
+
+  /**
+   * Takes a collection or a single value of layout enum css classnames to pass
+   * to all children components. this value overrides auto-responsive css adjustments.
+   *
+   * @example forceLayout="layout-narrow"
+   *
+   * @memberof SzEntityDetailComponent
+   */
+  @Input() public set forceLayout(value: string | string[]) {
+    if(value){
+      this._forceLayout = true;
+      if(typeof value == 'string'){
+        if(value.indexOf(',') > -1){
+          this._layoutEnforcers = value.split(',');
+        } else {
+          this._layoutEnforcers = [value];
+        }
+      } else {
+        this._layoutEnforcers = value;
+      }
+    }
+
+  }
+  /** the width to switch from wide to narrow layout */
+  @Input() public layoutBreakpoints = [
+    {cssClass: 'layout-wide', minWidth: 1021 },
+    {cssClass: 'layout-medium', minWidth: 700, maxWidth: 1120 },
+    {cssClass: 'layout-narrow', maxWidth: 699 }
+  ]
+  @Input() public set layoutClasses(value: string[] | string){
+    if(value && value !== undefined) {
+      if(typeof value == 'string') {
+        this._layoutClasses = [value];
+      } else {
+        this._layoutClasses = value;
+      }
+    }
+  };
+  public get layoutClasses() {
+    return this._layoutClasses;
+  }
+
+  private _attributeTypesFromServer: SzAttributeType[];
+  @Input('attributeTypes')
+  public set inputAttributeTypes(value: SzAttributeType[]) {
+    // strip out non-identifiers
+    value = value.filter( (attr: SzAttributeType) => {
+      return (attr.attributeClass === 'IDENTIFIER');
+    });
+
+    // store for caching
+    this._attributeTypesFromServer = value;
+
+    // filter out by specific codes
+    this.matchingAttributes = this.filterAttributeTypesByAllowedTypes(value, this.allowedTypeAttributes);
+  }
+
+  public get inputAttributeTypes(): SzAttributeType[] {
+    return this._attributeTypesFromServer;
+  }
+
+  private filterAttributeTypesByAllowedTypes( attributeTypes: SzAttributeType[], allowedTypes: string[] ) {
+    let retTypes: SzAttributeType[] = attributeTypes;
+
+    if(allowedTypes && allowedTypes.length > 0) {
+      retTypes = attributeTypes.filter( (attr: SzAttributeType) => {
+        return (allowedTypes.indexOf( attr.attributeCode) > -1);
+      });
+    }
+    return retTypes
+  }
+
+  /**
+   * returns an ordered list of identifier fields to use in the pulldown list.
+   * @internal
+   * @returns SzAttributeType[]
+   */
+  public orderedAttributes(): SzAttributeType[] {
+    if(this.matchingAttributes && this.matchingAttributes.sort){
+      const matchingAttrs =  this.matchingAttributes.sort((a, b) => {
+        let returnVal = 0;
+
+        if (a.attributeCode.match(/^PASSPORT/)) {
+          returnVal = returnVal - 1;
+        }
+
+        if (b.attributeCode.match(/^PASSPORT/)) {
+          returnVal = returnVal + 1;
+        }
+
+        return returnVal;
+      });
+      return matchingAttrs;
+    }
+
+    return this.matchingAttributes;
+  }
+
+  /* end tag input setters */
+
+  constructor(
+    private fb: FormBuilder,
+    private configService: ConfigService,
+    private cd: ChangeDetectorRef,
+    private apiConfigService: SzConfigurationService,
+    private prefs: SzPrefsService,
+    private searchService: SzSearchService,
+    public breakpointObserver: BreakpointObserver) {
+
+      this.prefs.searchForm.prefsChanged.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe( (pJson) => {
+        if(pJson && pJson.allowedTypeAttributes) {
+          // update the allowedTypeAttributes
+          this.allowedTypeAttributes = pJson.allowedTypeAttributes;
+          if(this.inputAttributeTypes){
+            // we already have response from server
+            // just re-filter result
+            this.matchingAttributes = this.filterAttributeTypesByAllowedTypes(this.inputAttributeTypes, this.allowedTypeAttributes);
+            /*console.warn('filtering attr list based on prefs change',
+            this.inputAttributeTypes,
+            this.allowedTypeAttributes,
+            this.matchingAttributes);*/
+
+            this.cd.markForCheck();
+            this.cd.detectChanges();
+          }
+          // otherwise wait for initial response
+        }
+      });
+  }
+
+  /**
+   * @internal
+  */
+  private _waitForConfigChange = false;
+  /**
+   * whether or not to show the wait for the the api
+   * conf to change before fetching resources like the identifiers list
+   * @memberof SzSearchByIdComponent
+   */
+  @Input() public set waitForConfigChange(value: any){
+    this._waitForConfigChange = parseBool(value);
+  }
+  public get waitForConfigChange(): boolean | any {
+    return this._waitForConfigChange;
+  }
+  /**
+   * whether or not to fetch new attributes from the
+   * api server when a configuration change is detected
+   * @memberof SzSearchByIdComponent
+   */
+  @Input() getAttributesOnConfigChange = true;
+
+  /**
+   * do any additional component set up
+   * @internal
+   */
+  public ngOnInit(): void {
+    this.createEntitySearchForm();
+    this.apiConfigService.parametersChanged.pipe(
+      takeUntil(this.unsubscribe$),
+      filter( () => {
+        return this.getAttributesOnConfigChange;
+       })
+    ).subscribe(
+      (cfg: SzRestConfiguration) => {
+        //console.info('@senzing/sdk-components-ng/sz-search[ngOnInit]->apiConfigService.parametersChanged: ', cfg);
+        this.updateAttributeTypes();
+      }
+    );
+    // make immediate request
+    if(!this.waitForConfigChange){
+      this.updateAttributeTypes();
+    }
+    // detect layout changes
+    let bpSubArr = [];
+    this.layoutBreakpoints.forEach( (bpObj: any) => {
+      if(bpObj.minWidth && bpObj.maxWidth){
+        // in between
+        bpSubArr.push(`(min-width: ${bpObj.minWidth}px) and (max-width: ${bpObj.maxWidth}px)`);
+      } else if(bpObj.minWidth){
+        bpSubArr.push(`(min-width: ${bpObj.minWidth}px)`);
+      } else if(bpObj.maxWidth){
+        bpSubArr.push(`(max-width: ${bpObj.maxWidth}px)`);
+      }
+    });
+    const layoutChanges = this.breakpointObserver.observe(bpSubArr);
+
+    layoutChanges.pipe(
+      takeUntil(this.unsubscribe$),
+      filter( () => { return !this.forceLayout })
+    ).subscribe( (state: BreakpointState) => {
+
+      const cssQueryMatches = [];
+      // get array of media query matches
+      for(let k in state.breakpoints){
+        const val = state.breakpoints[k];
+        if(val == true) {
+          // find key in layoutBreakpoints
+          cssQueryMatches.push( k )
+        }
+      }
+      // get array of layoutBreakpoints objects that match media queries
+      const _matches = this.layoutBreakpoints.filter( (_bp) => {
+        const _mq = this.getCssQueryFromCriteria(_bp.minWidth, _bp.maxWidth);
+        if(cssQueryMatches.indexOf(_mq) >= 0) {
+          return true;
+        }
+        return false;
+      });
+      // assign matches to local prop
+      this.layoutClasses = _matches.map( (_bp) => {
+        return _bp.cssClass;
+      })
+    })
+  }
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  /**
+   * Pull in the list of attribute types from the api server.
+   */
+  @Input()
+  public updateAttributeTypes = (): void => {
+    // get attributes
+    this.configService.getAttributeTypes()
+    .pipe(
+      takeUntil(this.unsubscribe$),
+      map( (resp: SzAttributeTypesResponse) => resp.data.attributeTypes ),
+      first()
+    )
+    .subscribe((attributeTypes: SzAttributeType[]) => {
+      // yup
+      this.inputAttributeTypes = attributeTypes;
+      this.cd.markForCheck();
+      this.cd.detectChanges();
+    }, (err)=> {
+      this.searchException.next( err ); //TODO: remove in breaking change release
+      this.exception.next( err );
+    });
+  }
+
+  getCssQueryFromCriteria(minWidth?: number, maxWidth?: number): string | undefined {
+    if(minWidth && maxWidth){
+      // in between
+      return (`(min-width: ${minWidth}px) and (max-width: ${maxWidth}px)`);
+    } else if(minWidth){
+      return (`(min-width: ${minWidth}px)`);
+    } else if(maxWidth){
+      return (`(max-width: ${maxWidth}px)`);
+    }
+    return
+  }
+
+  /**
+   * gets the current search parameters from the searchService and sets up the search form
+   * with current values.
+   * @internal
+  */
+  private createEntitySearchForm(): void {
+    const searchParams = this.searchService.getSearchParams();
+    //console.log('createEntitySearchForm: ',JSON.parse(JSON.stringify(searchParams)));
+
+    if (searchParams) {
+
+      const {
+        NAME_FULL,
+        DATE_OF_BIRTH,
+        IDENTIFIER,
+        IDENTIFIER_TYPE,
+        ADDR_FULL,
+        PHONE_NUMBER,
+        EMAIL_ADDRESS
+      } =  searchParams;
+
+      this.entitySearchForm = this.fb.group({
+        NAME_FULL: [NAME_FULL],
+        DATE_OF_BIRTH: [DATE_OF_BIRTH],
+        IDENTIFIER: [IDENTIFIER],
+        IDENTIFIER_TYPE: "PASSPORT_NUMBER",
+        ADDR_FULL: [ADDR_FULL],
+        PHONE_NUMBER: [PHONE_NUMBER],
+        EMAIL_ADDRESS: [EMAIL_ADDRESS],
+        NAME_TYPE: "PRIMARY"
+      });
+
+      //this.submitSearch();
+    } else {
+      this.entitySearchForm = this.fb.group({
+        NAME_FULL: [''],
+        DATE_OF_BIRTH: [''],
+        IDENTIFIER: [''],
+        ADDR_FULL: [''],
+        PHONE_NUMBER: [''],
+        EMAIL_ADDRESS: [''],
+        IDENTIFIER_TYPE: ['']
+      });
+    }
+
+  }
+  /**
+   * submits search form on enter press
+   * if the submit button is currently hidden
+   */
+  public onKeyEnter(): void {
+    if(this.hiddenFields.searchButton){
+      this.submitSearch();
+    }
+  }
+
+  /**
+   * get the current search params from input values
+   */
+  public getSearchParams(): any {
+    let searchParams = JSONScrubber(this.entitySearchForm.value);
+
+    // clear out identifier fields if no identifier specified
+    if(searchParams['IDENTIFIER_TYPE'] && !searchParams['IDENTIFIER']){
+      // clear this
+      searchParams['IDENTIFIER_TYPE'] =  undefined;
+    }
+    // clear out name fields if name field is empty
+    if(searchParams['NAME_TYPE'] && (!searchParams['NAME_FULL'] && !searchParams['COMPANY_NAME_ORG'])) {
+      searchParams['NAME_TYPE'] =  undefined;
+    }
+    // proxy name value to company name
+    if (searchParams['NAME_FULL']) {
+      searchParams['COMPANY_NAME_ORG'] = searchParams['NAME_FULL'];
+    }
+    // default identifier type to passport if none selected
+    if(searchParams['IDENTIFIER_TYPE'] && searchParams['IDENTIFIER']){
+      // use the "IDENTIFIER_TYPE" as the key
+      // and the "IDENTIFIER" as the value
+      searchParams[ (searchParams['IDENTIFIER_TYPE']) ] = searchParams['IDENTIFIER'];
+      // after transmutation null out old key/value
+      searchParams['IDENTIFIER'] = undefined;
+      searchParams['IDENTIFIER_TYPE'] =  undefined;
+    }
+    if(searchParams['IDENTIFIER_TYPE'] && searchParams['IDENTIFIER']){
+      // use the "IDENTIFIER_TYPE" as the key
+      // and the "IDENTIFIER" as the value
+      searchParams[ (searchParams['IDENTIFIER_TYPE']) ] = searchParams['IDENTIFIER'];
+      // after transmutation null out old key/value
+      searchParams['IDENTIFIER'] = undefined;
+      searchParams['IDENTIFIER_TYPE'] =  undefined;
+    }
+    // after mods scrub nulls
+    searchParams = JSONScrubber(searchParams);
+    return searchParams;
+  }
+
+  /**
+   * submit current search params to search service.
+   * when search service returns a result it publishes the result
+   * through the resultsChange event emitter, and
+   * any parameter changes through the paramsChange emmitter.
+   */
+  public submitSearch(): void {
+    const searchParams = this.getSearchParams();
+
+    if(Object.keys(searchParams).length <= 0){
+      // do not perform search if criteria are empty
+      this.searchException.next(new Error("null criteria")); //TODO: remove in breaking change release
+      this.exception.next( new Error("null criteria") );
+      return;
+    }
+    this.searchStart.emit(searchParams);
+
+    this.searchService.searchByAttributes(searchParams).pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((res) => {
+      const totalResults = res ? res.length : 0;
+      this.searchResultsJSON = JSON.stringify(res, null, 4);
+      this.searchEnd.emit(totalResults);
+      this.searchService.setSearchResults(res);
+      this.searchResults.next(res);
+    }, (err)=>{
+      this.searchEnd.emit();
+      this.searchException.next( err ); //TODO: remove in breaking change release
+      this.exception.next( err );
+    });
+
+    this.searchParameters.next(this.searchService.getSearchParams());
+  }
+  /**
+   * clear the search params and form inputs.
+   */
+  public clearSearch(): void {
+    this.resultsCleared.emit();
+    this.entitySearchForm.reset();
+    //this.searchService.clearSearchCriteria();
+  }
+}
