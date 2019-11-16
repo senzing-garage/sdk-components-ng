@@ -22,7 +22,7 @@
                   id="datasource-name"
                   name="datasource-name">
                     <option [ngValue]="null" disabled [selected]="true">Data Source Name</option>
-                    <option *ngFor="let dsName of _datasources"
+                    <option *ngFor="let dsName of filteredDataSources"
                             [value]="dsName">{{ dsName }}
                     </option>
                   </select>

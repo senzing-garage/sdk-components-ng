@@ -31,20 +31,35 @@
     (parameterChange)="onSearchParameterChange($event)"></sz-search>-->
   <sz-search-by-id #searchBox
   [dataSource]="'COMPANIES'"
-  [recordId]="1001"
   (parameterChange)="onSearchParameterChange($event)"
+  (exception)="onByIdException($event)"
+  (entityChange)="onEntityResult($event)"
+  (resultCleared)="onSearchResultsCleared($event)"
   (resultChange)="onResultChange($event)"></sz-search-by-id>
 </div>
 <!-- end search box -->
 <!-- start search result for sz-search-by-id -->
-<div *ngIf="formResult">
+<div *ngIf="formParams">
   <h3 *ngIf="formParams.recordId">
-    Record #{{ formParams.recordId }} in '{{ formParams.dataSource }}'
+    <h2 *ngIf="!formResult">
+        Record #{{ formParams.recordId }} Not Found in '{{ formParams.dataSource }}'
+    </h2>
+    <span *ngIf="formResult">Record #{{ formParams.recordId }} in '{{ formParams.dataSource }}'</span>
   </h3>
+  <sz-entity-record-viewer *ngIf="formResult" [record]="formResult" [parameters]="formParams"></sz-entity-record-viewer>
+
   <h3 *ngIf="formParams.entityId">
-    Entity #{{ formParams.recordId }}
+    <h2 *ngIf="!currentEntityData">
+      Entity #{{ formParams.entityId }} Not Found
+    </h2>
+    <span *ngIf="currentEntityData">Entity #{{ formParams.entityId }}</span>
   </h3>
-  <sz-entity-record-viewer [record]="formResult" [parameters]="formParams"></sz-entity-record-viewer>
+
+  <sz-entity-detail *ngIf="formParams.entityId && currentEntityData"
+  #entityByIdDetailComponent
+  [showGraphMatchKeys]="true"
+  [graphShowPopOutIcon]="true"
+  [data]="currentEntityData"></sz-entity-detail>
 </div>
 
 <!-- start graph context menu template -->

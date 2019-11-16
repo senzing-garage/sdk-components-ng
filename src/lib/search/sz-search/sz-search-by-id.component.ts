@@ -10,7 +10,9 @@ import {
   ConfigurationParameters as SzRestConfigurationParameters,
   SzEntityRecord,
   SzAttributeType,
-  EntityDataService as SzEntityDataService
+  EntityDataService as SzEntityDataService,
+  SzEntityData,
+  SzResolvedEntity
 } from '@senzing/rest-api-client-ng';
 import { SzEntitySearchParams } from '../../models/entity-search';
 import { SzSearchService } from '../../services/sz-search.service';
@@ -126,6 +128,9 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
    * @memberof SzSearchByIdComponent
    */
   @Output() resultChange: EventEmitter<SzEntityRecord> = new EventEmitter<SzEntityRecord>();
+
+  private _entity: SzEntityData;
+  @Output() entityChange: EventEmitter<SzEntityData> = new EventEmitter<SzEntityData>();
 
   /**
    * emmitted when parameters of the search have been changed.
@@ -318,9 +323,9 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
    * @returns SzAttributeType[]
    */
   public get filteredDataSources(): string[] {
-    if(this._datasources && this._datasources.filter){
+    if(this._datasources && this._datasources.filter && this.hiddenDataSources && this.hiddenDataSources.length > 0){
       const matchingDataSources =  this._datasources.filter((datasrc) => {
-        return true;
+        return this.hiddenDataSources.indexOf(datasrc) === -1;
       });
       return matchingDataSources;
     }
@@ -527,7 +532,27 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
     //console.log('submitSearch() ',JSON.parse(JSON.stringify(searchParams)), this);
     if(searchParams.entityId != undefined && searchParams.entityId != null) {
       // just go by entity id
+
+      // cast string entityId to number if not already number
+      const entityId: number = (typeof searchParams.entityId == 'number') ? searchParams.entityId : parseInt(searchParams.entityId);
+
       console.log('search by entity id: '+ searchParams.entityId +')' );
+      this.searchService.getEntityById(entityId, true).
+      pipe(
+        takeUntil(this.unsubscribe$)
+      ).
+      subscribe((res: SzEntityData) => {
+        console.log('sz-search-by-id.submitSearch.by-ent: ', res);
+        if (res && res.resolvedEntity) {
+          this._entity = res;
+          this.entityChange.emit(res);
+        }
+        const totalResults = res && res.resolvedEntity ? 1 : 0;
+        this.searchEnd.emit(totalResults);
+      }, (err)=> {
+        //this.requestEnd.emit( err );
+        this.exception.next( err );
+      });
     } else if(searchParams.recordId && searchParams.dataSource){
       // by ds / record id
       //console.log('search by record id: ', searchParams.dataSource, searchParams.recordId);
@@ -562,5 +587,8 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
     this.resultCleared.emit();
     this.entitySearchForm.reset();
     //this.searchService.clearSearchCriteria();
+    this._entityId = undefined;
+    this._recordId = undefined;
+    this._dataSource = undefined;
   }
 }
