@@ -32,12 +32,19 @@
   <sz-search-by-id #searchBox
   [dataSource]="'COMPANIES'"
   [recordId]="1001"
+  (parameterChange)="onSearchParameterChange($event)"
   (resultChange)="onResultChange($event)"></sz-search-by-id>
 </div>
 <!-- end search box -->
 <!-- start search result for sz-search-by-id -->
 <div *ngIf="formResult">
-  <sz-entity-record-viewer [data]="formResult"></sz-entity-record-viewer>
+  <h3 *ngIf="formParams.recordId">
+    Record #{{ formParams.recordId }} in '{{ formParams.dataSource }}'
+  </h3>
+  <h3 *ngIf="formParams.entityId">
+    Entity #{{ formParams.recordId }}
+  </h3>
+  <sz-entity-record-viewer [record]="formResult" [parameters]="formParams"></sz-entity-record-viewer>
 </div>
 
 <!-- start graph context menu template -->

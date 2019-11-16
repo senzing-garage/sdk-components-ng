@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import {
   SzEntityRecord
 } from '@senzing/rest-api-client-ng';
+import { SzSearchByIdFormParams } from '../search/sz-search/sz-search-by-id.component';
 
 /**
  * A component for displaying the result(s) of the sz-search-by-id
@@ -14,8 +15,13 @@ import {
   styleUrls: ['./sz-entity-record-viewer.component.scss']
 })
 export class SzEntityRecordViewerComponent implements OnInit {
-  @Input() data: SzEntityRecord;
+  @Input() record: SzEntityRecord;
+  @Input() datasource: string;
+  @Input() parameters: SzSearchByIdFormParams;
+  @Input() showJSON = true;
+  @Input() showNoResultMessage = true;
   public _layoutClasses: string[] = [];
+  private _activeView = 'overview';
 
   @Input() public set layoutClasses(value: string[] | string){
     if(value && value !== undefined) {
@@ -31,7 +37,20 @@ export class SzEntityRecordViewerComponent implements OnInit {
   }
   @Input() public forceLayout: boolean = false;
 
+  public get overViewActive(): boolean {
+    return (this._activeView === 'overview' || this._activeView === 'summary');
+  }
+  public get jsonViewActive(): boolean {
+    return !this.overViewActive;
+  }
+
   constructor() { }
-  ngOnInit() {
+  ngOnInit() {}
+
+  showTab(activeView: string) {
+    // check to make sure passed string is one of our allowed values
+    if (['json','overview','summary'].indexOf(activeView) > -1 ) {
+      this._activeView = activeView;
+    }
   }
 }

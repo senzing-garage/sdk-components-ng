@@ -17,7 +17,7 @@
           <div class="sz-row">
               <div class="field datasource">
                   <label for="entity-datasource">Get by Record ID</label>
-                  <select formControlName="DATASOURCE_NAME"
+                  <select formControlName="dataSource"
                   class="datasource-dropdown"
                   id="datasource-name"
                   name="datasource-name">
@@ -28,7 +28,7 @@
                   </select>
               </div>
               <div class="field recordid" [class.disabled]="disabledFields['recordId']" *ngIf="!hiddenFields['recordId']">
-                <input formControlName="RECORD_ID"
+                <input formControlName="recordId"
                         class="search-input"
                         id="record-id"
                         type="text"
@@ -45,7 +45,7 @@
           <div class="sz-row">
             <div class="field entityid">
               <label for="entity-id">Get by Entity ID</label>
-              <input formControlName="ENTITY_ID"
+              <input formControlName="entityId"
                       class="search-input"
                       id="entity-id"
                       type="text"

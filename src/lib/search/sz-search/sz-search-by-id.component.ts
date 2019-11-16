@@ -20,7 +20,7 @@ import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzDataSourcesService } from '../../services/sz-datasources.service';
 
 /** @internal */
-export interface SzByIdFormParams {
+export interface SzSearchByIdFormParams {
   recordId?: string | number;
   entityId?: string | number;
   dataSource?: string;
@@ -78,7 +78,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   /**
    * populate the search fields with an pre-existing set of search parameters.
    */
-  @Input() searchValue: SzByIdFormParams;
+  @Input() searchValue: SzSearchByIdFormParams;
 
   /**
    * whether or not to show the search box label
@@ -98,7 +98,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
    * @returns SzByIdFormParams
    * @memberof SzSearchByIdComponent
    */
-  @Output() searchStart: EventEmitter<SzByIdFormParams> = new EventEmitter<SzByIdFormParams>();
+  @Output() searchStart: EventEmitter<SzSearchByIdFormParams> = new EventEmitter<SzSearchByIdFormParams>();
   /**
    * emitted when a search is done being performed.
    * @returns the number of total results returned from the search.
@@ -133,7 +133,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
    * @memberof SzSearchByIdComponent
    */
   @Output('parameterChange')
-  searchParameters: Subject<SzByIdFormParams> = new Subject<SzByIdFormParams>();
+  searchParameters: Subject<SzSearchByIdFormParams> = new Subject<SzSearchByIdFormParams>();
 
   /**
    * @ignore
@@ -466,9 +466,9 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   */
   private createEntitySearchForm(): void {
     this.entitySearchForm = this.fb.group({
-      DATASOURCE_NAME: this._dataSource,
-      RECORD_ID: this._recordId,
-      ENTITY_ID: this._entityId
+      dataSource: this._dataSource,
+      recordId: this._recordId,
+      entityId: this._entityId
     });
   }
   /**
@@ -484,29 +484,29 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   /**
    * get the current search params from input values
    */
-  public getSearchParams(): any {
-    let searchParams = (this.entitySearchForm && this.entitySearchForm.value) ? JSONScrubber(this.entitySearchForm.value) : {};
+  public getSearchParams(): SzSearchByIdFormParams {
+    let searchParams: SzSearchByIdFormParams = (this.entitySearchForm && this.entitySearchForm.value) ? JSONScrubber((this.entitySearchForm.value as SzSearchByIdFormParams)) : {};
 
     // clear out record id fields if entity id is present
-    if(searchParams['ENTITY_ID'] || (searchParams['RECORD_ID'] && searchParams['DATASOURCE_NAME'])) {
-      if(searchParams['ENTITY_ID']){
+    if(searchParams.entityId || (searchParams.recordId && searchParams.dataSource)) {
+      if(searchParams.entityId){
         // clear this
-        searchParams['DATASOURCE_NAME'] =  undefined;
-        searchParams['RECORD_ID'] =  undefined;
+        searchParams.dataSource =  undefined;
+        searchParams.recordId =  undefined;
       }
       // clear out name fields if name field is empty
-      if(searchParams['RECORD_ID'] && searchParams['DATASOURCE_NAME']) {
-        searchParams['ENTITY_ID'] =  undefined;
+      if(searchParams.recordId && searchParams.dataSource) {
+        searchParams.entityId =  undefined;
       }
     } else {
       // get parameters from input param values
       console.log('get parameters from input parameters: ', this._entityId, this._dataSource, this._recordId);
 
       if( this._entityId && this._entityId != undefined && this._entityId !== null ) {
-        searchParams['ENTITY_ID'] = this._entityId;
+        searchParams.entityId = this._entityId;
       } else if(this._recordId && this._recordId != undefined && this._recordId !== null) {
-        searchParams['RECORD_ID'] = this._recordId;
-        searchParams['DATASOURCE_NAME'] = this._dataSource;
+        searchParams.recordId = this._recordId;
+        searchParams.dataSource = this._dataSource;
 
         console.log('get parameters from input parameters: ', searchParams);
       }
@@ -525,18 +525,22 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   public submitSearch(): void {
     const searchParams = this.getSearchParams();
     //console.log('submitSearch() ',JSON.parse(JSON.stringify(searchParams)), this);
-    if(searchParams['ENTITY_ID'] != undefined && searchParams['ENTITY_ID'] != null) {
+    if(searchParams.entityId != undefined && searchParams.entityId != null) {
       // just go by entity id
-      //console.log('search by entity id: '+ searchParams['ENTITY_ID'] +')' );
-    } else if(searchParams['RECORD_ID'] && searchParams['DATASOURCE_NAME']){
+      console.log('search by entity id: '+ searchParams.entityId +')' );
+    } else if(searchParams.recordId && searchParams.dataSource){
       // by ds / record id
-      //console.log('search by record id: ', searchParams['DATASOURCE_NAME'], searchParams['RECORD_ID']);
+      //console.log('search by record id: ', searchParams.dataSource, searchParams.recordId);
 
+      // cast string recordId to number if not already number
+      const recordId: number = (typeof searchParams.recordId == 'number') ? searchParams.recordId : parseInt(searchParams.recordId);
+      // emit search start
       this.searchStart.emit(searchParams);
-      this.searchService.getEntityByRecordId(searchParams['DATASOURCE_NAME'], searchParams['RECORD_ID'].toString()).pipe(
+      // make request
+      this.searchService.getEntityByRecordId(searchParams.dataSource, recordId).pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe((res: SzEntityRecord) => {
-        //console.warn('results of getEntityByRecordId('+ searchParams['RECORD_ID'] +')', res );
+        //console.warn('results of getEntityByRecordId('+ searchParams.recordId +')', res );
         this.resultChange.emit(res);
         const totalResults = res && res.recordId ? 1 : 0;
         this._result = res;
@@ -549,7 +553,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
       this.searchException.next(new Error("null criteria")); //TODO: remove in breaking change release
       this.exception.next( new Error("null criteria") );
     }
-    //this.searchParameters.next(this.searchService.getSearchParams());
+    this.searchParameters.next( searchParams );
   }
   /**
    * clear the search params and form inputs.

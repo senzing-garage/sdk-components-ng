@@ -11,7 +11,8 @@ import {
   SzSdkPrefsModel,
   SzConfigurationService,
   SzPreferencesComponent,
-  SzEntityRecord
+  SzEntityRecord,
+  SzSearchByIdFormParams
 } from '@senzing/sdk-components-ng';
 import { tap, filter, take, takeUntil } from 'rxjs/operators';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -31,6 +32,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   public currentlySelectedEntityId: number;
   /** reference to result of sz-search-by-id query */
   public formResult: SzEntityRecord;
+  /** reference to parameters of sz-search-by-id query */
+  public formParams: SzSearchByIdFormParams;
   public get formResultAsString(): string {
     return JSON.stringify( this.formResult );
   }
@@ -194,9 +197,20 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.currentlySelectedEntityId = undefined;
   }
   /** store the current parameters on scope */
-  public onSearchParameterChange(searchParams: SzEntitySearchParams) {
-    // console.log('onSearchParameterChange: ', searchParams);
-    this.currentSearchParameters = searchParams;
+  public onSearchParameterChange(searchParams: SzEntitySearchParams | SzSearchByIdFormParams) {
+    console.log('onSearchParameterChange: ', searchParams);
+    let isByIdParams = false;
+    const byIdParams = (searchParams as SzSearchByIdFormParams);
+    if ( byIdParams && ((byIdParams.dataSource && byIdParams.recordId) || byIdParams.entityId)  ) {
+      isByIdParams = true;
+    } else {
+      console.warn('not by id: ' + isByIdParams, byIdParams);
+    }
+    if (!isByIdParams) {
+      this.currentSearchParameters = (searchParams as SzEntitySearchParams);
+    } else {
+      this.formParams = (searchParams as SzSearchByIdFormParams);
+    }
   }
 
   onSearchException(err: Error) {
