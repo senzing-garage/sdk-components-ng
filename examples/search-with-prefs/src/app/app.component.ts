@@ -10,7 +10,8 @@ import {
   SzPrefsService,
   SzSdkPrefsModel,
   SzConfigurationService,
-  SzPreferencesComponent
+  SzPreferencesComponent,
+  SzEntityRecord
 } from '@senzing/sdk-components-ng';
 import { tap, filter, take, takeUntil } from 'rxjs/operators';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -28,6 +29,11 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   public currentSearchResults: SzAttributeSearchResult[];
   /** entity id to disply in detail component */
   public currentlySelectedEntityId: number;
+  /** reference to result of sz-search-by-id query */
+  public formResult: SzEntityRecord;
+  public get formResultAsString(): string {
+    return JSON.stringify( this.formResult );
+  }
   /** current search params being used */
   public currentSearchParameters: SzEntitySearchParams;
   /** show search results component. turned off until we have a search result */
@@ -195,6 +201,11 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   onSearchException(err: Error) {
     throw (err.message);
+  }
+  /** when the value from the sz-search-by-id component changes */
+  onResultChange(evt: SzEntityRecord){
+    console.log('onResultsChange: ', evt);
+    this.formResult = evt;
   }
   /** when search results come back from component update local value */
   onSearchResults(evt: SzAttributeSearchResult[]){

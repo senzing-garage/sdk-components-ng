@@ -20,7 +20,7 @@
 
 <!-- start search box -->
 <div class="component-example">
-  <sz-search
+  <!--<sz-search
     #searchBox
     name="Elizabeth Jones"
     disableIdentifierOptions="SSN_LAST4"
@@ -28,9 +28,17 @@
     (resultsChange)="onSearchResults($event)"
     (resultsCleared)="onSearchResultsCleared($event)"
     (exception)="onSearchException($event)"
-    (parameterChange)="onSearchParameterChange($event)"></sz-search>
+    (parameterChange)="onSearchParameterChange($event)"></sz-search>-->
+  <sz-search-by-id #searchBox
+  [dataSource]="'COMPANIES'"
+  [recordId]="1001"
+  (resultChange)="onResultChange($event)"></sz-search-by-id>
 </div>
 <!-- end search box -->
+<!-- start search result for sz-search-by-id -->
+<div *ngIf="formResult">
+  <h3>{{ formResultAsString }}</h3>
+</div>
 
 <!-- start graph context menu template -->
 <ng-template #graphContextMenu let-entityEvt>

@@ -8,38 +8,30 @@ import {
   ConfigService,
   Configuration as SzRestConfiguration,
   ConfigurationParameters as SzRestConfigurationParameters,
-  SzAttributeSearchResult,
+  SzEntityRecord,
   SzAttributeType,
-  SzAttributeTypesResponse,
-  SzAttributeTypesResponseData
+  EntityDataService as SzEntityDataService
 } from '@senzing/rest-api-client-ng';
 import { SzEntitySearchParams } from '../../models/entity-search';
 import { SzSearchService } from '../../services/sz-search.service';
 import { JSONScrubber } from '../../common/utils';
 import { SzConfigurationService } from '../../services/sz-configuration.service';
 import { SzPrefsService } from '../../services/sz-prefs.service';
+import { SzDataSourcesService } from '../../services/sz-datasources.service';
 
 /** @internal */
-interface SzSearchFormParams {
-  name?: string[];
-  email?: string[];
-  dob?: string[];
-  identifier?: string[];
-  address?: string[];
-  phoneNumber?: string[];
-  type?: string[];
+export interface SzByIdFormParams {
+  recordId?: string | number;
+  entityId?: string | number;
+  dataSource?: string;
 }
 /** @internal */
 interface SzBoolFieldMapByName {
   searchButton: boolean;
   resetButton: boolean;
-  name: boolean;
-  dob: boolean;
-  identifier: boolean;
-  email: boolean;
-  address: boolean;
-  phone: boolean;
-  identifierType: boolean;
+  datasource: boolean,
+  entityId: boolean,
+  recordId: boolean
 }
 
 /** @internal */
@@ -56,36 +48,23 @@ const parseBool = (value: any): boolean => {
  * Provides a search box component that can execute search queries and return results.
  *
  * @example <!-- (WC javascript) SzSearchByIdComponent -->
- * <sz-search
+ * <sz-search-by-id
  * id="sz-search"
- * name="Isa Creepr"></sz-search>
+ * name="Isa Creepr"></sz-search-by-id>
  * <script>
- *  document.getElementById('sz-search').addEventListener('resultsChange', (results) => {
- *    console.log('search results: ', results);
+ *  document.getElementById('sz-search').addEventListener('resultChange', (results) => {
+ *    console.log('results: ', results);
  *  });
  * </script>
  *
  * @example <!-- (Angular) SzSearchByIdComponent -->
- * <sz-search
+ * <sz-search-by-id
  * name="Isa Creepr"
- * (resultsChange)="myResultsHandler($event)"
+ * (resultChange)="myResultsHandler($event)"
  * (searchStart)="showSpinner()"
- * (searchEnd)="hideSpinner()"></sz-search>
+ * (searchEnd)="hideSpinner()"></sz-search-by-id>
  * @export
  *
- * @example <!-- (WC javascript) SzSearchByIdComponent and SzSearchResultsComponent combo -->
- * <sz-search
- * id="sz-search"
- * name="Isa Creepr"></sz-search>
- * <sz-search-results id="sz-search-results"></sz-search-results>
- * <script>
- *  var szSearchByIdComponent = document.getElementById('sz-search');
- *  var szSearchResultsComponent = document.getElementById('sz-search-results');
- *  szSearchByIdComponent.addEventListener('resultsChange', (evt) => {
- *    console.log('search results: ', evt);
- *    szSearchResultsComponent.results = evt.detail;
- *  });
- * </script>
  */
 @Component({
   selector: 'sz-search-by-id',
@@ -99,7 +78,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   /**
    * populate the search fields with an pre-existing set of search parameters.
    */
-  @Input() searchValue: SzEntitySearchParams;
+  @Input() searchValue: SzByIdFormParams;
 
   /**
    * whether or not to show the search box label
@@ -110,24 +89,16 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
    * collection of which mapping attributes to show in the identifiers pulldown.
    * @memberof SzSearchByIdComponent
    */
-  @Input() allowedTypeAttributes = [
-    'NIN_NUMBER',
-    'ACCOUNT_NUMBER',
-    'SSN_NUMBER',
-    'SSN_LAST4',
-    'DRIVERS_LICENSE_NUMBER',
-    'PASSPORT_NUMBER',
-    'NATIONAL_ID_NUMBER',
-    'OTHER_ID_NUMBER',
-    'TAX_ID_NUMBER',
-    'TRUSTED_ID_NUMBER'
-  ];
+  @Input() hiddenDataSources = [
+    'TEST',
+    'SEARCH'
+  ]
   /**
    * emitted when a search is being performed.
-   * @returns SzSearchFormParams
+   * @returns SzByIdFormParams
    * @memberof SzSearchByIdComponent
    */
-  @Output() searchStart: EventEmitter<SzSearchFormParams> = new EventEmitter<SzSearchFormParams>();
+  @Output() searchStart: EventEmitter<SzByIdFormParams> = new EventEmitter<SzByIdFormParams>();
   /**
    * emitted when a search is done being performed.
    * @returns the number of total results returned from the search.
@@ -149,19 +120,20 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
    * emmitted when the results have been cleared.
    * @memberof SzSearchByIdComponent
    */
-  @Output() resultsCleared: EventEmitter<void> = new EventEmitter<void>();
+  @Output() resultCleared: EventEmitter<void> = new EventEmitter<void>();
   /**
    * emmitted when the search results have been changed.
    * @memberof SzSearchByIdComponent
    */
-  @Output('resultsChange') searchResults: Subject<SzAttributeSearchResult[]> = new Subject<SzAttributeSearchResult[]>();
+  @Output() resultChange: EventEmitter<SzEntityRecord> = new EventEmitter<SzEntityRecord>();
+
   /**
    * emmitted when parameters of the search have been changed.
    *
    * @memberof SzSearchByIdComponent
    */
   @Output('parameterChange')
-  searchParameters: Subject<SzEntitySearchParams> = new Subject<SzEntitySearchParams>();
+  searchParameters: Subject<SzByIdFormParams> = new Subject<SzByIdFormParams>();
 
   /**
    * @ignore
@@ -170,88 +142,9 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   /**
    * @ignore
    */
-  public searchResultsJSON;
+  public _result: SzEntityRecord;
 
   /* start tag input setters */
-  /**
-   * the name field of the search form.
-   * @example
-   * <sz-search name="Good Guy">
-   *
-   * @memberof SzSearchByIdComponent
-   */
-  @Input('name')
-  public set inputName(value){
-    this.searchService.setSearchParam('NAME_FULL',value);
-
-    if(this.entitySearchForm){
-      this.entitySearchForm['NAME_FULL'] = value;
-    }
-  }
-  /**
-   * sets the value of the email field.
-   *
-   * @example
-   * <sz-search email="guy.i.am.looking&#64;for.com">
-   *
-   * @memberof SzSearchByIdComponent
-   */
-  @Input('email')
-  public set inputEmail(value){
-    this.searchService.setSearchParam('EMAIL_ADDRESS',value);
-
-    if(this.entitySearchForm){
-      this.entitySearchForm['EMAIL_ADDRESS'] = value;
-    }
-  }
-  /**
-   * sets the value of the address field
-   * @example
-   * <sz-search address="421 Rawling Str">
-   * @memberof SzSearchByIdComponent
-   */
-  @Input('address')
-  public set inputAddress(value){
-    this.searchService.setSearchParam('ADDR_FULL',value);
-
-    if(this.entitySearchForm){
-      this.entitySearchForm['ADDR_FULL'] = value;
-    }
-  }
-  /** sets the value of the phone field */
-  @Input('phone')
-  public set inputPhone(value){
-    this.searchService.setSearchParam('PHONE_NUMBER',value);
-
-    if(this.entitySearchForm){
-      this.entitySearchForm['PHONE_NUMBER'] = value;
-    }
-  }
-  /** sets the value of the identifier field */
-  @Input('identifier')
-  public set inputIdentifier(value){
-    this.searchService.setSearchParam('IDENTIFIER',value);
-
-    if(this.entitySearchForm){
-      this.entitySearchForm['IDENTIFIER'] = value;
-    }
-  }
-  /** sets the value of the date of birth form field */
-  @Input('dob')
-  public set inputDob(value){
-    this.searchService.setSearchParam('DATE_OF_BIRTH',value);
-
-    if(this.entitySearchForm){
-      this.entitySearchForm['DATE_OF_BIRTH'] = value;
-    }
-  }
-  /**
-   * collection of mapping attributes. this is usually populated from the mapping attributes
-   * query from the search service.
-   * @memberof SzSearchByIdComponent
-   * @internal
-   */
-  public matchingAttributes: SzAttributeType[];
 
   // ---------------------- individual field visibility setters ----------------------------------
   /** hide the search button */
@@ -260,20 +153,6 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   @Input() public set hideResetButton(value: any)    { this.hiddenFields.resetButton         = parseBool(value); }
   /** hide the clear button */
   @Input() public set hideClearButton(value: any)    { this.hiddenFields.resetButton         = parseBool(value); }
-  /** hide the "Name" input field */
-  @Input() public set hideName(value: any)           { this.hiddenFields.name                = parseBool(value); }
-  /** hide the "DOB" input field */
-  @Input() public set hideDob(value: any)            { this.hiddenFields.dob                 = parseBool(value); }
-  /** hide the "Identifier" input field */
-  @Input() public set hideIdentifier(value: any)     { this.hiddenFields.identifier          = parseBool(value); }
-  /** hide the "Email" input field */
-  @Input() public set hideEmail(value: any)          { this.hiddenFields.email               = parseBool(value); }
-  /** hide the "Address" input field */
-  @Input() public set hideAddress(value: any)        { this.hiddenFields.address             = parseBool(value); }
-  /** hide the "Phone Number" input field */
-  @Input() public set hidePhone(value: any)          { this.hiddenFields.phone               = parseBool(value); }
-  /** hide the "Identifier Type" input field */
-  @Input() public set hideIdentifierType(value: any) { this.hiddenFields.identifierType      = parseBool(value); }
 
   // ---------------------- individual field readonly setters ------------------------------------
   /** disable the search button. button is not clickable. */
@@ -282,111 +161,32 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   @Input() public set disableResetButton(value: any)    { this.disabledFields.resetButton    = parseBool(value); }
   /** disable the clear button. button is not clickable. */
   @Input() public set disableClearButton(value: any)    { this.disabledFields.resetButton    = parseBool(value); }
-  /** disable the "Name" field. input cannot be edited. */
-  @Input() public set disableName(value: any)           { this.disabledFields.name           = parseBool(value); }
-  /** disable the "Date of Birth" field. input cannot be edited. */
-  @Input() public set disableDob(value: any)            { this.disabledFields.dob            = parseBool(value); }
-  /** disable the "Identifier" field. input cannot be edited. */
-  @Input() public set disableIdentifier(value: any)     { this.disabledFields.identifier     = parseBool(value); }
-  /** disable the "Email" field. input cannot be edited. */
-  @Input() public set disableEmail(value: any)          { this.disabledFields.email          = parseBool(value); }
-  /** disable the "Address" field. input cannot be edited. */
-  @Input() public set disableAddress(value: any)        { this.disabledFields.address        = parseBool(value); }
-  /** disable the "Phone Number" field. input cannot be edited. */
-  @Input() public set disablePhone(value: any)          { this.disabledFields.phone          = parseBool(value); }
-  /** disable the "Identifier Type" field. input cannot be edited. */
-  @Input() public set disableIdentifierType(value: any) { this.disabledFields.identifierType = parseBool(value); }
-
-  // ---------------------- identifier type option visibility setters ----------------------------
-  /** disable the identifier type "NIN" option */
-  @Input() public set disableNINNumberOption(value: any) { if(value) {        this.disableIdentifierOption('NIN_NUMBER'); }}
-  /** disable the identifier type "ACCOUNT NUMBER" option */
-  @Input() public set disableACCTNUMOption(value: any) { if(value) {          this.disableIdentifierOption('ACCOUNT_NUMBER'); }}
-  /** disable the identifier type "SSN" option*/
-  @Input() public set disableSSNOption(value: any) { if(value) {              this.disableIdentifierOption('SSN_NUMBER'); }}
-  /** disable the identifier type "SSN Last 4" option */
-  @Input() public set disableSSNLAST4Option(value: any) { if(value) {         this.disableIdentifierOption('SSN_LAST4'); }}
-  /** disable the identifier type "DRLIC" option */
-  @Input() public set disableDRLICOption(value: any) { if(value) {            this.disableIdentifierOption('DRIVERS_LICENSE_NUMBER'); }}
-  /** disable the identifier type "Passport" option */
-  @Input() public set disablePassportOption(value: any) { if(value) {         this.disableIdentifierOption('PASSPORT_NUMBER'); }}
-  /** disable the identifier type "NationalID" option */
-  @Input() public set disableNationalIDOption(value: any) { if(value) {       this.disableIdentifierOption('NATIONAL_ID_NUMBER'); }}
-  /** disable the identifier type "Other ID" option */
-  @Input() public set disableOtherIDOption(value: any) { if(value) {          this.disableIdentifierOption('OTHER_ID_NUMBER'); }}
-  /** disable the identifier type "Tax ID" option*/
-  @Input() public set disableOtherTaxIDOption(value: any) { if(value) {       this.disableIdentifierOption('TAX_ID_NUMBER'); }}
-  /** disable the identifier type "Trusted ID" option */
-  @Input() public set disableTrustedIDOption(value: any) { if(value) {        this.disableIdentifierOption('TRUSTED_ID_NUMBER'); }}
-  /** enable the identifier type "NIN" option */
-  @Input() public set enableNINNumberOption(value: any) { if(value) {        this.enableIdentifierOption('NIN_NUMBER'); }}
-  /** enable the identifier type "ACCOUNT NUMBER" option */
-  @Input() public set enableACCTNUMOption(value: any) { if(value) {          this.enableIdentifierOption('ACCOUNT_NUMBER'); }}
-  /** enable the identifier type "SSN" option */
-  @Input() public set enableSSNOption(value: any) { if(value) {              this.enableIdentifierOption('SSN_NUMBER'); }}
-  /** enable the identifier type "SSN Last 4" option */
-  @Input() public set enableSSNLAST4Option(value: any) { if(value) {         this.enableIdentifierOption('SSN_LAST4'); }}
-  /** enable the identifier type "DRLIC" option */
-  @Input() public set enableDRLICOption(value: any) { if(value) {            this.enableIdentifierOption('DRIVERS_LICENSE_NUMBER'); }}
-  /** enable the identifier type "Passport" option */
-  @Input() public set enablePassportOption(value: any) { if(value) {         this.enableIdentifierOption('PASSPORT_NUMBER'); }}
-  /** enable the identifier type "NationalID" option */
-  @Input() public set enableNationalIDOption(value: any) { if(value) {       this.enableIdentifierOption('NATIONAL_ID_NUMBER'); }}
-  /** enable the identifier type "Other ID" option */
-  @Input() public set enableOtherIDOption(value: any) { if(value) {          this.enableIdentifierOption('OTHER_ID_NUMBER'); }}
-  /** enable the identifier type "Tax ID" option */
-  @Input() public set enableOtherTaxIDOption(value: any) { if(value) {       this.enableIdentifierOption('TAX_ID_NUMBER'); }}
-  /** enable the identifier type "Trusted ID" option */
-  @Input() public set enableTrustedIDOption(value: any) { if(value) {        this.enableIdentifierOption('TRUSTED_ID_NUMBER'); }}
+  /** disable the "record id" field. input cannot be edited. */
+  @Input() public set disableRecordId(value: any)       { this.disabledFields.recordId     = parseBool(value); }
 
   /**
-   * disable an individual identifier type option.
+   * disable an individual datasource type option.
    * @internal
    */
-  private disableIdentifierOption(value: string) {
+  private disableDataSourceOption(value: string) {
     value = value.trim();
-    const optionIndex = this.allowedTypeAttributes.indexOf(value);
+    const optionIndex = this._datasources.indexOf(value);
     if(optionIndex > -1) {
-      this.allowedTypeAttributes.splice(optionIndex, 1);
+      this._datasources.splice(optionIndex, 1);
     }
   }
   /**
-   * enable an individual identifier type option.
-   * @internal
-   */
-  private enableIdentifierOption(value: string) {
-    value = value.trim();
-    const optionIndex = this.allowedTypeAttributes.indexOf(value);
-    if(optionIndex < 0) {
-      this.allowedTypeAttributes.push(value);
-    }
-  }
-  /**
-   * enable a set of identifier type options.
+   * disable a set of datasource options.
    * format is "SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER" or array of strings
    */
   @Input()
-  public set enableIdentifierOptions(options: string[] | string) {
-    if(typeof options === 'string') {
-      options = options.trim().split(',');
-    }
-    // enable each option in collection
-    options.forEach((opt)=> {
-      this.enableIdentifierOption(opt);
-    });
-  }
-  /**
-   * disable a set of identifier type options.
-   * format is "SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER" or array of strings
-   */
-  @Input()
-  public set disableIdentifierOptions(options: string[] | string) {
+  public set disableDataSourceOptions(options: string[] | string) {
     if(typeof options === 'string') {
       options = options.split(',');
     }
     // enable each option in collection
     options.forEach((opt)=> {
-      this.disableIdentifierOption(opt);
+      this.disableDataSourceOption(opt);
     });
   }
   /** @interal */
@@ -410,25 +210,17 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   public disabledFields: SzBoolFieldMapByName = {
     searchButton: false,
     resetButton: false,
-    name: false,
-    dob: false,
-    identifier: false,
-    email: false,
-    address: false,
-    phone: false,
-    identifierType: false
+    datasource: false,
+    entityId: false,
+    recordId: false
   };
   /** @internal */
   public hiddenFields: SzBoolFieldMapByName = {
     searchButton: false,
     resetButton: false,
-    name: false,
-    dob: false,
-    identifier: false,
-    email: false,
-    address: false,
-    phone: false,
-    identifierType: false
+    datasource: false,
+    entityId: false,
+    recordId: false
   };
 
   // layout enforcers
@@ -481,34 +273,26 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
     return this._layoutClasses;
   }
 
-  private _attributeTypesFromServer: SzAttributeType[];
-  @Input('attributeTypes')
-  public set inputAttributeTypes(value: SzAttributeType[]) {
-    // strip out non-identifiers
-    value = value.filter( (attr: SzAttributeType) => {
-      return (attr.attributeClass === 'IDENTIFIER');
-    });
-
-    // store for caching
-    this._attributeTypesFromServer = value;
-
-    // filter out by specific codes
-    this.matchingAttributes = this.filterAttributeTypesByAllowedTypes(value, this.allowedTypeAttributes);
+  /** the datasources available to user */
+  public _datasources: string[] = [];
+  private _dataSource: string;
+  @Input() set dataSource(value: string) {
+    this._dataSource = value;
   }
-
-  public get inputAttributeTypes(): SzAttributeType[] {
-    return this._attributeTypesFromServer;
+  private _recordId: number | string;
+  @Input() set recordId(value: string | number) {
+    //if(this._recordId !== value && this._dataSource){
+      this.submitSearch();
+    //}
+    this._recordId = value;
   }
+  private _entityId: string | number;
+  @Input() set entityId(value: string | number) {
+    if(this._entityId !== value){
 
-  private filterAttributeTypesByAllowedTypes( attributeTypes: SzAttributeType[], allowedTypes: string[] ) {
-    let retTypes: SzAttributeType[] = attributeTypes;
-
-    if(allowedTypes && allowedTypes.length > 0) {
-      retTypes = attributeTypes.filter( (attr: SzAttributeType) => {
-        return (allowedTypes.indexOf( attr.attributeCode) > -1);
-      });
+      //this.submitSearch();
     }
-    return retTypes
+    this._recordId = value;
   }
 
   /**
@@ -516,25 +300,31 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
    * @internal
    * @returns SzAttributeType[]
    */
-  public orderedAttributes(): SzAttributeType[] {
-    if(this.matchingAttributes && this.matchingAttributes.sort){
-      const matchingAttrs =  this.matchingAttributes.sort((a, b) => {
+  public orderedDataSources(): string[] {
+    if(this._datasources && this._datasources.sort){
+      const matchingDataSources =  this._datasources.sort((a, b) => {
         let returnVal = 0;
-
-        if (a.attributeCode.match(/^PASSPORT/)) {
-          returnVal = returnVal - 1;
-        }
-
-        if (b.attributeCode.match(/^PASSPORT/)) {
-          returnVal = returnVal + 1;
-        }
-
+        returnVal = returnVal + 1;
         return returnVal;
       });
-      return matchingAttrs;
+      return matchingDataSources;
     }
+    return this._datasources;
+  }
 
-    return this.matchingAttributes;
+   /**
+   * returns an filtered list of datasources to use in the pulldown list.
+   * @internal
+   * @returns SzAttributeType[]
+   */
+  public get filteredDataSources(): string[] {
+    if(this._datasources && this._datasources.filter){
+      const matchingDataSources =  this._datasources.filter((datasrc) => {
+        return true;
+      });
+      return matchingDataSources;
+    }
+    return this._datasources;
   }
 
   /* end tag input setters */
@@ -542,34 +332,12 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private configService: ConfigService,
+    private entityDataService: SzEntityDataService,
+    private dataSourcesService: SzDataSourcesService,
     private cd: ChangeDetectorRef,
     private apiConfigService: SzConfigurationService,
-    private prefs: SzPrefsService,
     private searchService: SzSearchService,
-    public breakpointObserver: BreakpointObserver) {
-
-      this.prefs.searchForm.prefsChanged.pipe(
-        takeUntil(this.unsubscribe$)
-      ).subscribe( (pJson) => {
-        if(pJson && pJson.allowedTypeAttributes) {
-          // update the allowedTypeAttributes
-          this.allowedTypeAttributes = pJson.allowedTypeAttributes;
-          if(this.inputAttributeTypes){
-            // we already have response from server
-            // just re-filter result
-            this.matchingAttributes = this.filterAttributeTypesByAllowedTypes(this.inputAttributeTypes, this.allowedTypeAttributes);
-            /*console.warn('filtering attr list based on prefs change',
-            this.inputAttributeTypes,
-            this.allowedTypeAttributes,
-            this.matchingAttributes);*/
-
-            this.cd.markForCheck();
-            this.cd.detectChanges();
-          }
-          // otherwise wait for initial response
-        }
-      });
-  }
+    public breakpointObserver: BreakpointObserver) {}
 
   /**
    * @internal
@@ -591,7 +359,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
    * api server when a configuration change is detected
    * @memberof SzSearchByIdComponent
    */
-  @Input() getAttributesOnConfigChange = true;
+  @Input() getDataSourcesOnConfigChange = true;
 
   /**
    * do any additional component set up
@@ -602,17 +370,17 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
     this.apiConfigService.parametersChanged.pipe(
       takeUntil(this.unsubscribe$),
       filter( () => {
-        return this.getAttributesOnConfigChange;
+        return this.getDataSourcesOnConfigChange;
        })
     ).subscribe(
       (cfg: SzRestConfiguration) => {
         //console.info('@senzing/sdk-components-ng/sz-search[ngOnInit]->apiConfigService.parametersChanged: ', cfg);
-        this.updateAttributeTypes();
+        this.updateDataSources();
       }
     );
     // make immediate request
     if(!this.waitForConfigChange){
-      this.updateAttributeTypes();
+      this.updateDataSources();
     }
     // detect layout changes
     let bpSubArr = [];
@@ -666,24 +434,15 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Pull in the list of attribute types from the api server.
+   * Pull in the list of data sources from the api server.
    */
   @Input()
-  public updateAttributeTypes = (): void => {
-    // get attributes
-    this.configService.getAttributeTypes()
-    .pipe(
-      takeUntil(this.unsubscribe$),
-      map( (resp: SzAttributeTypesResponse) => resp.data.attributeTypes ),
-      first()
-    )
-    .subscribe((attributeTypes: SzAttributeType[]) => {
-      // yup
-      this.inputAttributeTypes = attributeTypes;
+  public updateDataSources = (): void => {
+    this.dataSourcesService.listDataSources().subscribe((dataSrc: string[]) => {
+      this._datasources = dataSrc;
       this.cd.markForCheck();
       this.cd.detectChanges();
     }, (err)=> {
-      this.searchException.next( err ); //TODO: remove in breaking change release
       this.exception.next( err );
     });
   }
@@ -706,45 +465,11 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
    * @internal
   */
   private createEntitySearchForm(): void {
-    const searchParams = this.searchService.getSearchParams();
-    //console.log('createEntitySearchForm: ',JSON.parse(JSON.stringify(searchParams)));
-
-    if (searchParams) {
-
-      const {
-        NAME_FULL,
-        DATE_OF_BIRTH,
-        IDENTIFIER,
-        IDENTIFIER_TYPE,
-        ADDR_FULL,
-        PHONE_NUMBER,
-        EMAIL_ADDRESS
-      } =  searchParams;
-
-      this.entitySearchForm = this.fb.group({
-        NAME_FULL: [NAME_FULL],
-        DATE_OF_BIRTH: [DATE_OF_BIRTH],
-        IDENTIFIER: [IDENTIFIER],
-        IDENTIFIER_TYPE: "PASSPORT_NUMBER",
-        ADDR_FULL: [ADDR_FULL],
-        PHONE_NUMBER: [PHONE_NUMBER],
-        EMAIL_ADDRESS: [EMAIL_ADDRESS],
-        NAME_TYPE: "PRIMARY"
-      });
-
-      //this.submitSearch();
-    } else {
-      this.entitySearchForm = this.fb.group({
-        NAME_FULL: [''],
-        DATE_OF_BIRTH: [''],
-        IDENTIFIER: [''],
-        ADDR_FULL: [''],
-        PHONE_NUMBER: [''],
-        EMAIL_ADDRESS: [''],
-        IDENTIFIER_TYPE: ['']
-      });
-    }
-
+    this.entitySearchForm = this.fb.group({
+      DATASOURCE_NAME: this._dataSource,
+      RECORD_ID: this._recordId,
+      ENTITY_ID: this._entityId
+    });
   }
   /**
    * submits search form on enter press
@@ -760,37 +485,31 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
    * get the current search params from input values
    */
   public getSearchParams(): any {
-    let searchParams = JSONScrubber(this.entitySearchForm.value);
+    let searchParams = (this.entitySearchForm && this.entitySearchForm.value) ? JSONScrubber(this.entitySearchForm.value) : {};
 
-    // clear out identifier fields if no identifier specified
-    if(searchParams['IDENTIFIER_TYPE'] && !searchParams['IDENTIFIER']){
-      // clear this
-      searchParams['IDENTIFIER_TYPE'] =  undefined;
-    }
-    // clear out name fields if name field is empty
-    if(searchParams['NAME_TYPE'] && (!searchParams['NAME_FULL'] && !searchParams['COMPANY_NAME_ORG'])) {
-      searchParams['NAME_TYPE'] =  undefined;
-    }
-    // proxy name value to company name
-    if (searchParams['NAME_FULL']) {
-      searchParams['COMPANY_NAME_ORG'] = searchParams['NAME_FULL'];
-    }
-    // default identifier type to passport if none selected
-    if(searchParams['IDENTIFIER_TYPE'] && searchParams['IDENTIFIER']){
-      // use the "IDENTIFIER_TYPE" as the key
-      // and the "IDENTIFIER" as the value
-      searchParams[ (searchParams['IDENTIFIER_TYPE']) ] = searchParams['IDENTIFIER'];
-      // after transmutation null out old key/value
-      searchParams['IDENTIFIER'] = undefined;
-      searchParams['IDENTIFIER_TYPE'] =  undefined;
-    }
-    if(searchParams['IDENTIFIER_TYPE'] && searchParams['IDENTIFIER']){
-      // use the "IDENTIFIER_TYPE" as the key
-      // and the "IDENTIFIER" as the value
-      searchParams[ (searchParams['IDENTIFIER_TYPE']) ] = searchParams['IDENTIFIER'];
-      // after transmutation null out old key/value
-      searchParams['IDENTIFIER'] = undefined;
-      searchParams['IDENTIFIER_TYPE'] =  undefined;
+    // clear out record id fields if entity id is present
+    if(searchParams['ENTITY_ID'] || (searchParams['RECORD_ID'] && searchParams['DATASOURCE_NAME'])) {
+      if(searchParams['ENTITY_ID']){
+        // clear this
+        searchParams['DATASOURCE_NAME'] =  undefined;
+        searchParams['RECORD_ID'] =  undefined;
+      }
+      // clear out name fields if name field is empty
+      if(searchParams['RECORD_ID'] && searchParams['DATASOURCE_NAME']) {
+        searchParams['ENTITY_ID'] =  undefined;
+      }
+    } else {
+      // get parameters from input param values
+      console.log('get parameters from input parameters: ', this._entityId, this._dataSource, this._recordId);
+
+      if( this._entityId && this._entityId != undefined && this._entityId !== null ) {
+        searchParams['ENTITY_ID'] = this._entityId;
+      } else if(this._recordId && this._recordId != undefined && this._recordId !== null) {
+        searchParams['RECORD_ID'] = this._recordId;
+        searchParams['DATASOURCE_NAME'] = this._dataSource;
+
+        console.log('get parameters from input parameters: ', searchParams);
+      }
     }
     // after mods scrub nulls
     searchParams = JSONScrubber(searchParams);
@@ -800,42 +519,43 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   /**
    * submit current search params to search service.
    * when search service returns a result it publishes the result
-   * through the resultsChange event emitter, and
+   * through the resultChange event emitter, and
    * any parameter changes through the paramsChange emmitter.
    */
   public submitSearch(): void {
     const searchParams = this.getSearchParams();
+    //console.log('submitSearch() ',JSON.parse(JSON.stringify(searchParams)), this);
+    if(searchParams['ENTITY_ID'] != undefined && searchParams['ENTITY_ID'] != null) {
+      // just go by entity id
+      //console.log('search by entity id: '+ searchParams['ENTITY_ID'] +')' );
+    } else if(searchParams['RECORD_ID'] && searchParams['DATASOURCE_NAME']){
+      // by ds / record id
+      //console.log('search by record id: ', searchParams['DATASOURCE_NAME'], searchParams['RECORD_ID']);
 
-    if(Object.keys(searchParams).length <= 0){
-      // do not perform search if criteria are empty
+      this.searchStart.emit(searchParams);
+      this.searchService.getEntityByRecordId(searchParams['DATASOURCE_NAME'], searchParams['RECORD_ID'].toString()).pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe((res: SzEntityRecord) => {
+        //console.warn('results of getEntityByRecordId('+ searchParams['RECORD_ID'] +')', res );
+        this.resultChange.emit(res);
+        const totalResults = res && res.recordId ? 1 : 0;
+        this._result = res;
+        this.searchEnd.emit(totalResults);
+      }, (err)=>{
+        this.searchEnd.emit();
+        this.exception.next( err );
+      });
+    } else {
       this.searchException.next(new Error("null criteria")); //TODO: remove in breaking change release
       this.exception.next( new Error("null criteria") );
-      return;
     }
-    this.searchStart.emit(searchParams);
-
-    this.searchService.searchByAttributes(searchParams).pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((res) => {
-      const totalResults = res ? res.length : 0;
-      this.searchResultsJSON = JSON.stringify(res, null, 4);
-      this.searchEnd.emit(totalResults);
-      this.searchService.setSearchResults(res);
-      this.searchResults.next(res);
-    }, (err)=>{
-      this.searchEnd.emit();
-      this.searchException.next( err ); //TODO: remove in breaking change release
-      this.exception.next( err );
-    });
-
-    this.searchParameters.next(this.searchService.getSearchParams());
+    //this.searchParameters.next(this.searchService.getSearchParams());
   }
   /**
    * clear the search params and form inputs.
    */
   public clearSearch(): void {
-    this.resultsCleared.emit();
+    this.resultCleared.emit();
     this.entitySearchForm.reset();
     //this.searchService.clearSearchCriteria();
   }

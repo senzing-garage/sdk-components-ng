@@ -9,7 +9,8 @@ import {
   SzEntityData,
   SzAttributeTypesResponse,
   SzAttributeType,
-  SzAttributeSearchResult
+  SzAttributeSearchResult,
+  SzEntityRecord
 } from '@senzing/rest-api-client-ng';
 import { SzEntitySearchParams } from '../models/entity-search';
 
@@ -125,6 +126,21 @@ export class SzSearchService {
     .pipe(
       tap(res => console.log('SzSearchService.getEntityById: ' + entityId, res.data)),
       map(res => (res.data as SzEntityData))
+    );
+  }
+
+  /**
+   * get an SzEntityData model by providing an datasource and record id.
+   *
+   * @memberof SzSearchService
+   */
+  public getEntityByRecordId(dsName: string, recordId: number, withRelated = false): Observable<SzEntityRecord> {
+    console.log('@senzing/sdk/services/sz-search[getEntityByRecordId('+ dsName +', '+ recordId +')] ', dsName, recordId);
+    const _recordId: string = recordId.toString();
+    return this.entityDataService.getDataSourceRecord(dsName, _recordId)
+    .pipe(
+      tap(res => console.log('SzSearchService.getEntityByRecordId: ' + dsName, res)),
+      map(res => (res.data as SzEntityRecord))
     );
   }
 

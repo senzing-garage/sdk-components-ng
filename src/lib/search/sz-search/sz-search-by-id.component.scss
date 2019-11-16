@@ -230,22 +230,20 @@
       margin: var(--sz-search-label-margin);
       font-size: var(--sz-search-label-font-size);
     }
-    &.name, &.address {
-      width: 35%;
+    &.entityid, &.datasource {
+      width: 15%;
       flex-grow: 3;
       min-width: 35%;
     }
-    &.dob, &.phone {
-      width: 15%;
-      max-width: 15%;
+    &.entityid {
+      flex-grow: 1;
+      min-width: 50%;
+      width: 50%;
+      input {
+        width: 50%;
+      }
     }
-    &.identifier {
-      width: 20%;
-    }
-    &.type {
-      width: 12%;
-    }
-    &.email {
+    &.recordid {
       width: 32%
     }
 
@@ -253,13 +251,14 @@
       /*width: 100%*/
     }
 
-    .identifier-dropdown {
+    .datasource-dropdown {
       height: 40px;
-      width: 117px;
+      width: 100%;
     }
     ::-webkit-input-placeholder {
       font-size: 13px;
     }
+
   }
 }
 
