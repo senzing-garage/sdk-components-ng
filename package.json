@@ -51,6 +51,7 @@
     "http-server": "^0.11.1",
     "json-query-string": "^1.0.0",
     "jspdf": "^1.5.3",
+    "ngx-json-viewer": "^2.4.0",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"

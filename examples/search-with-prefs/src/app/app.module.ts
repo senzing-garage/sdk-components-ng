@@ -6,7 +6,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { SenzingSdkModule, SzPrefsService, SzConfigurationService } from '@senzing/sdk-components-ng';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { StorageServiceModule } from 'ngx-webstorage-service';
-
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { AppComponent } from './app.component';
 import { SzPrefsManagerComponent } from './prefs/prefs-manager.component';
 
@@ -22,6 +22,7 @@ import { SzPrefsManagerComponent } from './prefs/prefs-manager.component';
     OverlayModule,
     ReactiveFormsModule,
     StorageServiceModule,
+    NgxJsonViewerModule,
     SenzingSdkModule.forRoot()
   ],
   providers: [
