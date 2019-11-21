@@ -14,15 +14,18 @@ import { SzSearchByIdFormParams } from '../search/sz-search/sz-search-by-id.comp
   templateUrl: './sz-entity-record-viewer.component.html',
   styleUrls: ['./sz-entity-record-viewer.component.scss']
 })
-export class SzEntityRecordViewerComponent implements OnInit {
+export class SzEntityRecordViewerComponent {
+  /** the record to display */
   @Input() record: SzEntityRecord;
-  @Input() datasource: string;
-  @Input() parameters: SzSearchByIdFormParams;
+  /** show the JSON data for this.record<SzEntityRecord> */
   @Input() showJSON = true;
+  /** show a message when a search has 0 results */
   @Input() showNoResultMessage = true;
+  /** the css classes being applied. layout-wide | layout-medium  | layout-narrow | layout-rail*/
   public _layoutClasses: string[] = [];
+  /** the tab to default to. "overview" | "json"*/
   private _activeView = 'overview';
-
+  /** setter for _layoutClasses  */
   @Input() public set layoutClasses(value: string[] | string){
     if(value && value !== undefined) {
       if(typeof value == 'string') {
@@ -32,21 +35,23 @@ export class SzEntityRecordViewerComponent implements OnInit {
       }
     }
   };
+  /** getter for _layoutClasses  */
   public get layoutClasses() {
     return this._layoutClasses;
   }
+  /** whether or not to force to a layout and ignore responsiveness */
   @Input() public forceLayout: boolean = false;
-
+  /** is the "Overview" tab the actively focused tab */
   public get overViewActive(): boolean {
     return (this._activeView === 'overview' || this._activeView === 'summary');
   }
+  /** is the "JSON" tab the actively focused tab */
   public get jsonViewActive(): boolean {
     return !this.overViewActive;
   }
-
   constructor() { }
-  ngOnInit() {}
 
+  /** activate a tab. 'json' | 'overview' | 'summary' */
   showTab(activeView: string) {
     // check to make sure passed string is one of our allowed values
     if (['json','overview','summary'].indexOf(activeView) > -1 ) {

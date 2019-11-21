@@ -47,12 +47,12 @@ const parseBool = (value: any): boolean => {
 };
 
 /**
- * Provides a search box component that can execute search queries and return results.
+ * Provides a search box component that can search by id and/or record ids.
  *
  * @example <!-- (WC javascript) SzSearchByIdComponent -->
  * <sz-search-by-id
- * id="sz-search"
- * name="Isa Creepr"></sz-search-by-id>
+ * dataSource="SAMPLE_PERSON"
+ * recordId="1001"></sz-search-by-id>
  * <script>
  *  document.getElementById('sz-search').addEventListener('resultChange', (results) => {
  *    console.log('results: ', results);
@@ -61,7 +61,7 @@ const parseBool = (value: any): boolean => {
  *
  * @example <!-- (Angular) SzSearchByIdComponent -->
  * <sz-search-by-id
- * name="Isa Creepr"
+ * entityId="1004"
  * (resultChange)="myResultsHandler($event)"
  * (searchStart)="showSpinner()"
  * (searchEnd)="hideSpinner()"></sz-search-by-id>
@@ -88,7 +88,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
    */
   @Input() showSearchLabel = true;
   /**
-   * collection of which mapping attributes to show in the identifiers pulldown.
+   * array of datasources to hide in the pulldown.
    * @memberof SzSearchByIdComponent
    */
   @Input() hiddenDataSources = [
@@ -129,7 +129,9 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
    */
   @Output() resultChange: EventEmitter<SzEntityRecord> = new EventEmitter<SzEntityRecord>();
 
+  /** the result of the get "by entity id" submitSearch query. */
   private _entity: SzEntityData;
+  /** event emmiter for when the _entity property has changed */
   @Output() entityChange: EventEmitter<SzEntityData> = new EventEmitter<SzEntityData>();
 
   /**
@@ -265,6 +267,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
     {cssClass: 'layout-medium', minWidth: 700, maxWidth: 1120 },
     {cssClass: 'layout-narrow', maxWidth: 699 }
   ]
+  /** css classes to apply to component */
   @Input() public set layoutClasses(value: string[] | string){
     if(value && value !== undefined) {
       if(typeof value == 'string') {
@@ -274,16 +277,19 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
       }
     }
   };
+  /** css classes to apply to component */
   public get layoutClasses() {
     return this._layoutClasses;
   }
-
   /** the datasources available to user */
   public _datasources: string[] = [];
+  /** the currently selected datasource */
   private _dataSource: string;
+  /** the currently selected datasource */
   @Input() set dataSource(value: string) {
     this._dataSource = value;
   }
+  /** the value of the "by record id" field */
   private _recordId: number | string;
   @Input() set recordId(value: string | number) {
     //if(this._recordId !== value && this._dataSource){
@@ -291,6 +297,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
     //}
     this._recordId = value;
   }
+  /** the value of the "by entity Id" field */
   private _entityId: string | number;
   @Input() set entityId(value: string | number) {
     if(this._entityId !== value){
@@ -356,6 +363,11 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   @Input() public set waitForConfigChange(value: any){
     this._waitForConfigChange = parseBool(value);
   }
+  /**
+   * whether or not to show the wait for the the api
+   * conf to change before fetching resources like the identifiers list
+   * @memberof SzSearchByIdComponent
+   */
   public get waitForConfigChange(): boolean | any {
     return this._waitForConfigChange;
   }
@@ -452,6 +464,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
     });
   }
 
+  /** get the responsive breakpoint string from min and max width */
   getCssQueryFromCriteria(minWidth?: number, maxWidth?: number): string | undefined {
     if(minWidth && maxWidth){
       // in between
