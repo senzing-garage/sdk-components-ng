@@ -505,15 +505,13 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
       }
     } else {
       // get parameters from input param values
-      console.log('get parameters from input parameters: ', this._entityId, this._dataSource, this._recordId);
+      // console.log('get parameters from input parameters: ', this._entityId, this._dataSource, this._recordId);
 
       if( this._entityId && this._entityId != undefined && this._entityId !== null ) {
         searchParams.entityId = this._entityId;
       } else if(this._recordId && this._recordId != undefined && this._recordId !== null) {
         searchParams.recordId = this._recordId;
         searchParams.dataSource = this._dataSource;
-
-        console.log('get parameters from input parameters: ', searchParams);
       }
     }
     // after mods scrub nulls
@@ -536,13 +534,13 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
       // cast string entityId to number if not already number
       const entityId: number = (typeof searchParams.entityId == 'number') ? searchParams.entityId : parseInt(searchParams.entityId);
 
-      console.log('search by entity id: '+ searchParams.entityId +')' );
+      // console.log('search by entity id: '+ searchParams.entityId );
       this.searchService.getEntityById(entityId, true).
       pipe(
         takeUntil(this.unsubscribe$)
       ).
       subscribe((res: SzEntityData) => {
-        console.log('sz-search-by-id.submitSearch.by-ent: ', res);
+        // console.log('sz-search-by-id.submitSearch.by-ent: ', res);
         if (res && res.resolvedEntity) {
           this._entity = res;
           this.entityChange.emit(res);

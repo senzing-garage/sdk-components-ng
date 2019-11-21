@@ -210,7 +210,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     if ( byIdParams && ((byIdParams.dataSource && byIdParams.recordId) || byIdParams.entityId)  ) {
       isByIdParams = true;
     } else {
-      console.warn('not by id: ' + isByIdParams, byIdParams);
+      // console.warn('not by id: ' + isByIdParams, byIdParams);
     }
     if (!isByIdParams) {
       this.currentSearchParameters = (searchParams as SzEntitySearchParams);
@@ -223,14 +223,14 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     throw (err.message);
   }
   onByIdException(err) {
-    console.warn('onByIdException: ', err);
+    // console.warn('onByIdException: ', err);
     if (err.message === 'null criteria'){
       // not enough information to construct query
       // ignore
     } else if (err && err.status === 404) {
       console.log('404 Error', );
       if (err && err.error && err.error.errors && err.error.errors.length > 0) {
-        switch(err.error.errors[0].code) {
+        switch (err.error.errors[0].code) {
           case '37':
             // did not find entity
             console.log('specifically entity not found Error', );
