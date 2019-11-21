@@ -338,13 +338,10 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
     }
     return this._datasources;
   }
-
   /* end tag input setters */
 
   constructor(
     private fb: FormBuilder,
-    private configService: ConfigService,
-    private entityDataService: SzEntityDataService,
     private dataSourcesService: SzDataSourcesService,
     private cd: ChangeDetectorRef,
     private apiConfigService: SzConfigurationService,

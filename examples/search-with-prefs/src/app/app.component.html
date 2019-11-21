@@ -46,7 +46,7 @@
     </h2>
     <span *ngIf="formResult">Record #{{ formParams.recordId }} in '{{ formParams.dataSource }}'</span>
   </h3>
-  <sz-entity-record-viewer *ngIf="formResult" [record]="formResult" [parameters]="formParams"></sz-entity-record-viewer>
+  <sz-entity-record-viewer *ngIf="formResult" [record]="formResult"></sz-entity-record-viewer>
 
   <h3 *ngIf="formParams.entityId">
     <h2 *ngIf="!currentEntityData">
