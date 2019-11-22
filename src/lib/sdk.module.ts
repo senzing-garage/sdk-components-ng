@@ -4,6 +4,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule, TitleCasePipe, Location, PathLocationStrategy, LocationStrategy } from '@angular/common';
 import { LayoutModule } from '@angular/cdk/layout';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
 import {
   ApiModule,
@@ -50,6 +51,8 @@ import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-car
 import { SzEntityRecordCardContentComponent } from './entity/sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
 
 import { SzSearchComponent } from './search/sz-search/sz-search.component';
+import { SzSearchByIdComponent } from './search/sz-search/sz-search-by-id.component';
+import { SzEntityRecordViewerComponent } from './record/sz-entity-record-viewer.component';
 import { SzSearchResultsComponent } from './search/sz-search-results/sz-search-results.component';
 import { SzSearchResultCardComponent } from './search/sz-search-result-card/sz-search-result-card.component';
 import { SzSearchResultCardContentComponent } from './search/sz-search-result-card/sz-search-result-card-content/sz-search-result-card-content.component';
@@ -88,6 +91,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
   declarations: [
     SzEntityDetailComponent,
     SzSearchComponent,
+    SzSearchByIdComponent,
     SzSearchResultsComponent,
     SzSearchResultCardComponent,
     SzSearchResultCardContentComponent,
@@ -103,6 +107,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzEntityDetailSectionCollapsibleCardComponent,
     SzEntityMatchPillComponent,
     SzEntityRecordCardComponent,
+    SzEntityRecordViewerComponent,
     SzEntityRecordCardHeaderComponent,
     SzEntityRecordCardContentComponent,
     SzSearchResultCardHeaderComponent,
@@ -119,11 +124,13 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     ReactiveFormsModule,
     LayoutModule,
     SenzingSdkGraphModule,
+    NgxJsonViewerModule,
     ApiModule
   ],
   exports: [
     SzEntityDetailComponent,
     SzSearchComponent,
+    SzSearchByIdComponent,
     SzSearchResultsComponent,
     SzSearchResultCardComponent,
     SzPoweredByComponent,
@@ -132,6 +139,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzEntityDetailGraphComponent,
     SzEntityDetailGraphControlComponent,
     SzEntityDetailGraphFilterComponent,
+    SzEntityRecordViewerComponent,
     SzStandaloneGraphComponent,
     SzPreferencesComponent
   ],
@@ -139,8 +147,10 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
   entryComponents: [
     SzEntityDetailComponent,
     SzEntityDetailGraphComponent,
+    SzEntityRecordViewerComponent,
     SzStandaloneGraphComponent,
     SzSearchComponent,
+    SzSearchByIdComponent,
     SzSearchResultsComponent,
     SzPoweredByComponent,
     SzConfigurationComponent,

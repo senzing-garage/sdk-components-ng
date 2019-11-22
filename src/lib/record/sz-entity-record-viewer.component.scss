@@ -1,0 +1,66 @@
+:host {
+  display: block;
+  --active-tab-color: #f7f7f7;
+  --inactive-tab-color: #999;
+
+  ngx-json-viewer, .ngx-json-viewer {
+    display: block;
+  }
+
+  sz-entity-record-card-content, .sz-entity-record-card-content {
+    display: block;
+  }
+
+  .tabset {
+    ul {
+      list-style-type:none; padding: 0; margin: 0;
+      li {
+        display: inline-block;
+        padding: .5em 2em;
+        background-color: var(--inactive-tab-color);
+        border-right: 1px solid #909090;
+        cursor: pointer;
+        border-top: 1px solid #f8f8f8;
+        border-bottom: 1px solid #717171;
+
+        &:last-child {
+          border-right: 1px solid #717171;
+        }
+      }
+    }
+    .tabset-view {
+      display: block;
+      padding: 1em 1em;
+      background-color: var(--active-tab-color);
+    }
+  }
+  .tabset.overview {
+    /* hide json view */
+    ngx-json-viewer, .ngx-json-viewer {
+      display: none;
+    }
+    li.overview {
+      border-top: 1px solid #e7e0e0;
+      border-bottom: 1px solid transparent;
+      background-color: var(--active-tab-color);
+      font-weight: bold;
+      cursor: default;
+    }
+  }
+  .tabset.json {
+    /* hide summary view */
+    sz-entity-record-card-content, .sz-entity-record-card-content {
+      display: none;
+    }
+    li.json {
+      border-top: 1px solid #e7e0e0;
+      border-bottom: 1px solid transparent;
+      background-color: var(--active-tab-color);
+      font-weight: bold;
+      cursor: default;
+      &:last-child {
+        border-right: 1px solid #ccc;
+      }
+    }
+  }
+}
