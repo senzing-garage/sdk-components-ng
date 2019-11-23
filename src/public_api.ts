@@ -15,6 +15,7 @@ export * from './lib/services/sz-search.service';  // updated to use rest
 export * from './lib/services/sz-message-bundle.service';
 export * from './lib/services/sz-configuration.service';
 export * from './lib/services/sz-ui.service';
+export { SzAdminService } from './lib/services/sz-admin.service';
 export * from './lib/services/sz-datasources.service';
 export * from './lib/services/sz-pdf-util.service';
 export {
@@ -40,12 +41,6 @@ export * from './lib/configuration/sz-preferences/sz-preferences.component';
 export * from '@senzing/sdk-graph-components';
 
 /** models */
-/*
-export * from './lib/models/responces/search-results/sz-search-result-entity-data';
-export * from './lib/models/entity-detail-section-data';
-export * from './lib/models/entity-search';
-export * from './lib/models/network-graph-inputs';
-*/
 
 /** export some members of rest client to ease type use */
 export {
@@ -86,7 +81,6 @@ export {
   SzLicenseInfo,
   SzLicenseResponse,
   SzLicenseResponseData,
-
   SzLoadRecordResponse,
   SzLoadRecordResponseData,
 
@@ -97,6 +91,9 @@ export {
   SzRelatedEntity,
   SzRelationshipType,
   SzResolvedEntity,
-  SzResponseWithRawData
+  SzResponseWithRawData,
+
+  SzVersionInfo,
+  SzVersionResponse
 
 } from '@senzing/rest-api-client-ng';
