@@ -11,16 +11,17 @@ export * from '@senzing/rest-api-client-ng';
 export * from './lib/common/utils';
 
 /** services */
-export * from './lib/services/sz-search.service';  // updated to use rest
-export * from './lib/services/sz-message-bundle.service';
-export * from './lib/services/sz-configuration.service';
-export * from './lib/services/sz-ui.service';
 export * from './lib/services/sz-datasources.service';
+export * from './lib/services/sz-configuration.service';
+export * from './lib/services/sz-folios.service';
+export * from './lib/services/sz-message-bundle.service';
 export * from './lib/services/sz-pdf-util.service';
 export {
   SzPrefsService,
   SzSdkPrefsModel
 } from './lib/services/sz-prefs.service';
+export * from './lib/services/sz-search.service';  // updated to use rest
+export * from './lib/services/sz-ui.service';
 
 /** components */
 export * from './lib/search/sz-search/sz-search.component';
@@ -40,6 +41,7 @@ export * from './lib/configuration/sz-preferences/sz-preferences.component';
 export * from '@senzing/sdk-graph-components';
 
 /** models */
+export * from './lib/models/folio';
 /*
 export * from './lib/models/responces/search-results/sz-search-result-entity-data';
 export * from './lib/models/entity-detail-section-data';

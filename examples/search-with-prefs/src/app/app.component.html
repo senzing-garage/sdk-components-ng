@@ -11,16 +11,16 @@
   <div class="burger-handle" (click)="showPrefs=!showPrefs"><div class="hamburger"></div></div>
   <div class="prefs-container">
     <!-- start prefs service box -->
-    <sz-preferences #prefsComponent
+    <!--<sz-preferences #prefsComponent
     showControls="true"
-    ></sz-preferences>
+    ></sz-preferences>-->
     <!--  end prefs service box  -->
   </div>
 </div>
 
 <!-- start search box -->
 <div class="component-example">
-  <!--<sz-search
+  <sz-search
     #searchBox
     name="Elizabeth Jones"
     disableIdentifierOptions="SSN_LAST4"
@@ -28,14 +28,7 @@
     (resultsChange)="onSearchResults($event)"
     (resultsCleared)="onSearchResultsCleared($event)"
     (exception)="onSearchException($event)"
-    (parameterChange)="onSearchParameterChange($event)"></sz-search>-->
-  <sz-search-by-id #searchBox
-  [dataSource]="'COMPANIES'"
-  (parameterChange)="onSearchParameterChange($event)"
-  (exception)="onByIdException($event)"
-  (entityChange)="onEntityResult($event)"
-  (resultCleared)="onSearchResultsCleared($event)"
-  (resultChange)="onResultChange($event)"></sz-search-by-id>
+    (parameterChange)="onSearchParameterChange($event)"></sz-search>
 </div>
 <!-- end search box -->
 <!-- start search result for sz-search-by-id -->

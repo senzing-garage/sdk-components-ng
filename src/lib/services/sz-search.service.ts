@@ -20,6 +20,9 @@ import { SzEntitySearchParams } from '../models/entity-search';
 export class SzSearchService {
   private currentSearchParams: SzEntitySearchParams = {};
   private currentSearchResults: SzAttributeSearchResult[] | null = null;
+  public parametersChanged = new Subject<SzEntitySearchParams>();
+  public resultsChanged = new Subject<SzAttributeSearchResult[]>();
+  public searchPerformed = new Subject<{params: SzEntitySearchParams, results: SzAttributeSearchResult[]}>();
 
   constructor(
     private entityDataService: EntityDataService,
@@ -37,7 +40,13 @@ export class SzSearchService {
     return this.entityDataService.searchByAttributes(JSON.stringify(searchParms))
     .pipe(
       tap((searchRes: SzAttributeSearchResponse) => console.log('SzSearchService.searchByAttributes: ', searchParms, searchRes)),
-      map((searchRes: SzAttributeSearchResponse) => searchRes.data.searchResults as SzAttributeSearchResult[])
+      map((searchRes: SzAttributeSearchResponse) => searchRes.data.searchResults as SzAttributeSearchResult[]),
+      tap((searchRes: SzAttributeSearchResult[]) => {
+        this.searchPerformed.next({
+          params: this.currentSearchParams,
+          results: searchRes
+        });
+      })
     );
   }
   /**
@@ -50,12 +59,13 @@ export class SzSearchService {
   }
 
   /**
-   * set the an individual search parameter.
+   * set an individual search parameter.
    * @memberof SzSearchService
    */
   public setSearchParam(paramName: any, value: any): void {
     try {
       this.currentSearchParams[paramName] = value;
+      this.parametersChanged.next(this.currentSearchParams);
     } catch(err) {}
   }
 
@@ -73,6 +83,7 @@ export class SzSearchService {
    */
   public setSearchResults(results: SzAttributeSearchResult[] | null) : void {
     this.currentSearchResults = results ? results : null;
+    this.resultsChanged.next( this.currentSearchResults );
   }
 
   /**
