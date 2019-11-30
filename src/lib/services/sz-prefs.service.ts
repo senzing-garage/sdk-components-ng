@@ -1,6 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject, BehaviorSubject, merge, timer } from 'rxjs';
 import { takeUntil, debounce, filter } from 'rxjs/operators';
+import { SzSearchHistoryFolio, SzSearchParamsFolio } from '../models/folio';
+import { SzSearchHistoryFolioItem } from '@senzing/sdk-components-ng/public_api';
 //import { Configuration as SzRestConfiguration, ConfigurationParameters as SzRestConfigurationParameters } from '@senzing/rest-api-client-ng';
 
 /*
@@ -48,7 +50,7 @@ export class SzSdkPrefsBase {
       this.jsonKeys.forEach((k: string) => {
         if( this[k] !== undefined){
           try{
-            retObj[k] = this[k];
+            retObj[k] = ( this[k] && this[k].toJSONObject ) ? this[k].toJSONObject() : this[k];
           } catch (err) {
             // console.warn('attempted to get prefVal, but pref unset. ', err)
           };
@@ -65,7 +67,7 @@ export class SzSdkPrefsBase {
       this.jsonKeys.forEach((k: string) => {
         if( value[k] !== undefined ){
           try{
-            this[k] = value[k];
+            this[k] = (value[k] && value[k].fromJSONObject ) ? value[k].fromJSONObject() : value[k];
             _isChanged = true;
           } catch (err) {
             // console.warn('attempted to get prefVal, but pref unset. ', err)
@@ -101,7 +103,8 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
   // --------------- private vars
   /** @internal */
   private _rememberLastSearches: number = 10;
-  private _savedSearches: [];
+  private _savedSearches: SzSearchParamsFolio[];
+  private _searchHistory: SzSearchHistoryFolio;
   private _allowedTypeAttributes: string[] = [
     'NIN_NUMBER',
     'ACCOUNT_NUMBER',
@@ -118,7 +121,10 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
    * to output in json, or to take as json input
    */
   jsonKeys = [
-    'allowedTypeAttributes'
+    'rememberLastSearches',
+    'allowedTypeAttributes',
+    'savedSearches',
+    'searchHistory'
   ]
 
   // ------------------- getters and setters
@@ -132,15 +138,23 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** get list of last searches performed. */
-  public get savedSearches(): [] {
+  public get savedSearches(): SzSearchParamsFolio[] {
     return this._savedSearches;
   }
   /** update list of last searches performed. */
-  public set savedSearches(value: []) {
+  public set savedSearches(value: SzSearchParamsFolio[]) {
     this._savedSearches = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
-
+  /** get list of last searches performed. */
+  public get searchHistory(): SzSearchHistoryFolio {
+    return this._searchHistory;
+  }
+  /** update list of last searches performed. */
+  public set searchHistory(value: SzSearchHistoryFolio) {
+    this._searchHistory = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
   /** the allowed identifier types to show in the identifier pulldown */
   public get allowedTypeAttributes(): string[] {
     return this._allowedTypeAttributes;
@@ -159,6 +173,60 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
      * instead of the empty superclass
      **/
     this.prefsChanged.next( this.toJSONObject() );
+  }
+
+  public fromJSONObject(value: string) {
+    this.bulkSet = true;
+    let _isChanged = false;
+    if (this.jsonKeys && this.jsonKeys.forEach) {
+      // console.warn('SzSearchFormPrefs.fromJSONObject: ', this.jsonKeys);
+      this.jsonKeys.forEach((k: string) => {
+        if( value[k] !== undefined ){
+          if( k === 'searchHistory'){
+            // special case: takes JSON in
+            // and creates SzSearchHistoryFolio with
+            // items inside it
+            const _searchHistoryFolio: SzSearchHistoryFolio = new SzSearchHistoryFolio();
+            _searchHistoryFolio.fromJSONObject(value[k]);
+
+            this._searchHistory = _searchHistoryFolio;
+            console.warn('SzSearchFormPrefs.fromJSONObject: _searchHistory = ', this._searchHistory);
+          } else {
+            try{
+              this[k] = (value[k] && value[k].fromJSONObject ) ? value[k].fromJSONObject() : value[k];
+              _isChanged = true;
+              //console.warn('SzSearchFormPrefs.fromJSONObject: "'+ k +'"', value[k].fromJSONObject());
+            } catch (err) {
+              // console.warn('attempted to get prefVal, but pref unset. ', err)
+            };
+          }
+        }
+      });
+    }
+    this.bulkSet = false;
+    if(_isChanged){
+      this.prefsChanged.next( this.toJSONObject() );
+    }
+  }
+
+  public toJSONObject() {
+    const retObj = {};
+
+    if (this.jsonKeys && this.jsonKeys.forEach) {
+      this.jsonKeys.forEach((k: string) => {
+        if( this[k] !== undefined){
+          try{
+
+            retObj[k] = ( this[k] && this[k].toJSONObject ) ? this[k].toJSONObject() : this[k];
+          } catch (err) {
+            // console.warn('attempted to get prefVal, but pref unset. ', err)
+          };
+        }
+      });
+    }
+    console.warn('SzSearchFormPrefs.toJSONObject: ', this._searchHistory, this);
+
+    return retObj;
   }
 
 }
@@ -901,8 +969,13 @@ export class SzPrefsService implements OnDestroy {
     _keys.forEach( (_k ) => {
       if( this[_k] && this[_k].fromJSONObject ){
         // object inheriting from 'SzSdkPrefsBase'
-        //console.log(`setting "${_k}" via this[_k].fromJSONObject`, value[_k]);
-        this[_k].fromJSONObject( value[_k] );
+        if( _k === 'searchForm') {
+          console.log(`setting "${_k}" via this[_k].fromJSONObject`, value[_k]);
+          this[_k].fromJSONObject( value[_k] );
+        } else {
+          this[_k].fromJSONObject( value[_k] );
+        }
+        console.log(`setting "${_k}" via this[_k].fromJSONObject`, value[_k]);
       } else {
         //   maybe top level property
         //   :-/

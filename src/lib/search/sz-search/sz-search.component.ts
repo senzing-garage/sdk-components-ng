@@ -18,6 +18,8 @@ import { SzSearchService } from '../../services/sz-search.service';
 import { JSONScrubber } from '../../common/utils';
 import { SzConfigurationService } from '../../services/sz-configuration.service';
 import { SzPrefsService } from '../../services/sz-prefs.service';
+import { SzFoliosService } from '../../services/sz-folios.service';
+import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio, SzSearchParamsFolioItem } from 'src/lib/models/folio';
 
 /** @internal */
 interface SzSearchFormParams {
@@ -122,6 +124,97 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     'TAX_ID_NUMBER',
     'TRUSTED_ID_NUMBER'
   ];
+
+  private rememberLastSearches: number = 20;
+
+  /** the folio items that holds last "X" searches performed */
+  public search_history: SzSearchHistoryFolioItem[];
+
+  public get searchHistoryName(): string[] {
+    return this.getHistoryOptions('NAME_FULL');
+  }
+
+  public get searchHistoryDob(): string[] {
+    return this.getHistoryOptions('DATE_OF_BIRTH');
+  }
+
+  public get searchHistoryIdentifier(): string[] {
+    return this.getHistoryOptions('IDENTIFIER');
+  }
+
+  public get searchHistoryAddress(): string[] {
+    return this.getHistoryOptions('ADDR_FULL');
+  }
+
+  public get searchHistoryPhone(): string[] {
+    return this.getHistoryOptions('PHONE_NUMBER');
+  }
+
+  public get searchHistoryEmail(): string[] {
+    return this.getHistoryOptions('EMAIL_ADDRESS');
+  }
+
+  private _searchHistoryParams: SzSearchFormParams;
+  public checkHistoryForMatchOnChange(event) {
+    const _currentSearchFormParams = this.getSearchParams();
+    if(_currentSearchFormParams && _currentSearchFormParams.NAME_FULL && _currentSearchFormParams.NAME_FULL !== this._searchHistoryParams) {
+      // last name search !== current value
+      // we need this change check to make sure no infinite loop when entry is applied
+      // check to see if name value in search history
+      const isInSearchHistory = this.searchHistoryName.some( (name) => name === _currentSearchFormParams.NAME_FULL);
+      if(isInSearchHistory) {
+        // get search history item
+        const currentHistoryEntry = this.search_history.find( (item: SzSearchHistoryFolioItem) => item.data.NAME_FULL === _currentSearchFormParams.NAME_FULL );
+        // populate any additional fields
+        if (currentHistoryEntry) {
+          // see note above on change check
+          this._searchHistoryParams = _currentSearchFormParams;
+          this.applyHistoryEntryToFields( currentHistoryEntry );
+        }
+      } else {
+        // console.warn('entry not in history! '+ _currentSearchFormParams.NAME_FULL, isInSearchHistory);
+      }
+    }
+    this._searchHistoryParams = _currentSearchFormParams;
+  }
+
+  /**
+   * reusable method for getting search history lists deduped, ordered,
+   * mapped from "search_history" property
+   */
+  public getHistoryOptions(fieldName: string): string[] {
+    let retVal = [];
+    if(this.search_history && this.search_history.map) {
+      retVal = this.search_history.filter( (folio: SzSearchHistoryFolioItem) => {
+        return folio && folio.data && folio.data[fieldName] && folio.data[fieldName] !== undefined && folio.data[fieldName] !== null;
+      }).map( (folio: SzSearchHistoryFolioItem ) => {
+        return folio.data[fieldName];
+      }).filter(function(elem, index, self) {
+        return index == self.indexOf(elem);
+      });
+    }
+    return retVal;
+  }
+  /** apply a search history entry to current form fields */
+  private applyHistoryEntryToFields(historyItem: SzSearchHistoryFolioItem) {
+    // specifically in the case of populating form fields
+    // from prior searches we want to reset fields not in use
+    const _values = Object.assign({
+      'NAME_FULL': undefined,
+      'DATE_OF_BIRTH': undefined,
+      'IDENTIFIER': undefined,
+      'IDENTIFIER_TYPE': undefined,
+      'ADDR_FULL': undefined,
+      'PHONE_NUMBER': undefined,
+      'EMAIL_ADDRESS': undefined
+    }, historyItem.data);
+
+    //console.warn('apply previous historical search to fields: ', _values, historyItem.data);
+    if( this.entitySearchForm ) {
+      this.entitySearchForm.patchValue( _values );
+    }
+  }
+
   /**
    * emitted when a search is being performed.
    * @returns SzSearchFormParams
@@ -546,11 +639,15 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     private apiConfigService: SzConfigurationService,
     private prefs: SzPrefsService,
     private searchService: SzSearchService,
+    private folios: SzFoliosService,
     public breakpointObserver: BreakpointObserver) {
 
       this.prefs.searchForm.prefsChanged.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe( (pJson) => {
+        if(pJson && pJson.rememberLastSearches) {
+          this.rememberLastSearches = pJson.rememberLastSearches;
+        }
         if(pJson && pJson.allowedTypeAttributes) {
           // update the allowedTypeAttributes
           this.allowedTypeAttributes = pJson.allowedTypeAttributes;
@@ -568,6 +665,22 @@ export class SzSearchComponent implements OnInit, OnDestroy {
           }
           // otherwise wait for initial response
         }
+        if(pJson && pJson.searchHistory) {
+          this.search_history = this.prefs.searchForm.searchHistory.items;
+
+          //this.search_history = pJson.searchHistory;
+          console.warn('sz-search.prefs.searchForm updated',  this.prefs.searchForm.searchHistory.items);
+        } else {
+          console.log('sz-search.prefs.searchForm not updated', pJson);
+
+        }
+      });
+
+      this.folios.searchHistoryUpdated.subscribe( (folio: SzSearchHistoryFolio) => {
+        if ( folio && folio.history) {
+          this.search_history = folio.history;
+        }
+        console.warn('search history from folio service updated: ', folio.history, this.search_history);
       });
   }
 

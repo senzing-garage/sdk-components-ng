@@ -14,6 +14,11 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzEntitySearchParams } from '../models/entity-search';
 
+export interface SzSearchEvent {
+  params: SzEntitySearchParams,
+  results: SzAttributeSearchResult[]
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,7 +27,7 @@ export class SzSearchService {
   private currentSearchResults: SzAttributeSearchResult[] | null = null;
   public parametersChanged = new Subject<SzEntitySearchParams>();
   public resultsChanged = new Subject<SzAttributeSearchResult[]>();
-  public searchPerformed = new Subject<{params: SzEntitySearchParams, results: SzAttributeSearchResult[]}>();
+  public searchPerformed = new Subject<SzSearchEvent>();
 
   constructor(
     private entityDataService: EntityDataService,
@@ -42,10 +47,12 @@ export class SzSearchService {
       tap((searchRes: SzAttributeSearchResponse) => console.log('SzSearchService.searchByAttributes: ', searchParms, searchRes)),
       map((searchRes: SzAttributeSearchResponse) => searchRes.data.searchResults as SzAttributeSearchResult[]),
       tap((searchRes: SzAttributeSearchResult[]) => {
+        //console.warn('SzSearchService.searchByAttributes 1: ', searchRes)
         this.searchPerformed.next({
           params: this.currentSearchParams,
           results: searchRes
         });
+        //console.warn('SzSearchService.searchByAttributes 2: ', searchRes)
       })
     );
   }
