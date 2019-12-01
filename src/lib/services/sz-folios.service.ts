@@ -5,7 +5,13 @@ import { SzSearchService } from './sz-search.service';
 import { SzSearchEvent } from '../services/sz-search.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { SzPrefsService } from './sz-prefs.service';
-
+/**
+ * A service providing access to top level Folios for things like
+ * "Saved Searches", "Search History", "Saved Projects"
+ *
+ * @export
+ * @class SzFoliosService
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -15,34 +21,32 @@ export class SzFoliosService {
 
   /** the top lvl folio that holds last "X" searches performed */
   public  search_history: SzSearchHistoryFolio = new SzSearchHistoryFolio();
+  /** the behavior subject used for broadcasting the searchHistoryUpdated event */
   private search_history$ = new BehaviorSubject( this.search_history );
+  /** the observeable that can be listend for when the search history is updated */
   public  searchHistoryUpdated: Observable<SzSearchHistoryFolio> = this.search_history$.asObservable();
 
   constructor(
     private prefs: SzPrefsService,
     public searchService: SzSearchService) {
+
     // on user search, add search params to history stack
-    this.searchService.resultsChanged.subscribe( (data) => {
-      //console.warn('SzFoliosService.searchService.resultsChanged: ', data);
-    });
-    this.searchService.parametersChanged.subscribe( (data) => {
-      //console.warn('SzFoliosService.searchService.parametersChanged', data);
-    });
     this.searchService.searchPerformed.subscribe( (evt: SzSearchEvent) => {
-      //console.warn('!!SzFoliosService!! searchPerformed', this.search_history.items);
+      // console.log('SzFoliosService searchPerformed', this.search_history.items);
       this.addToSearchHistory(evt);
     });
 
     // make sure initial value of "search_history" folios are current with that
     // from prefs storage
     this.search_history = this.prefs.searchForm.searchHistory;
-    console.warn('SzFoliosService.search_history ', this.prefs.searchForm.searchHistory);
-
+    // console.log('SzFoliosService.search_history ', this.prefs.searchForm.searchHistory);
+    /*
     this.prefs.prefsChanged.subscribe( (
       json
     ) => {
-      console.warn('SzFoliosService.prefsChanged: ', json, this.prefs.searchForm);
+      console.log('SzFoliosService.prefsChanged: ', json, this.prefs.searchForm);
     });
+    */
   }
 
   public addToSearchHistory(data: SzSearchEvent) {
@@ -51,6 +55,6 @@ export class SzFoliosService {
     this.search_history$.next( this.search_history );
     this.prefs.searchForm.searchHistory = this.search_history;
 
-    console.warn('!!SzFoliosService.addToSearchHistory !!\n\r', this.prefs.searchForm.searchHistory, this.search_history.toJSONObject());
+    // console.log('SzFoliosService.addToSearchHistory\n\r', this.prefs.searchForm.searchHistory, this.search_history.toJSONObject());
   }
 }

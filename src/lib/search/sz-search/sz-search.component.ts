@@ -125,36 +125,64 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     'TRUSTED_ID_NUMBER'
   ];
 
+  /** the default amount of searches to store in the search history folio. */
   private rememberLastSearches: number = 20;
 
   /** the folio items that holds last "X" searches performed */
   public search_history: SzSearchHistoryFolioItem[];
 
+  /**
+   * all the "Name" field search values from last X searches in history folio.
+   * @readonly
+   */
   public get searchHistoryName(): string[] {
     return this.getHistoryOptions('NAME_FULL');
   }
-
+  /**
+   * all the "Date of Birth" in the form from last X searches in history folio.
+   * @readonly
+   */
   public get searchHistoryDob(): string[] {
     return this.getHistoryOptions('DATE_OF_BIRTH');
   }
-
+  /**
+   * all the "Identifier" values in the form from last X searches in history folio.
+   * @readonly
+   */
   public get searchHistoryIdentifier(): string[] {
     return this.getHistoryOptions('IDENTIFIER');
   }
-
+  /**
+   * all the "Address" values in the form from last X searches in history folio.
+   * @readonly
+   */
   public get searchHistoryAddress(): string[] {
     return this.getHistoryOptions('ADDR_FULL');
   }
-
+  /**
+   * all the "Phone Number" values in the form  from last X searches in history folio.
+   * @readonly
+   */
   public get searchHistoryPhone(): string[] {
     return this.getHistoryOptions('PHONE_NUMBER');
   }
-
+  /**
+   * all the "Date of Birth" values in the form from last X searches in history folio.
+   * @readonly
+   */
   public get searchHistoryEmail(): string[] {
     return this.getHistoryOptions('EMAIL_ADDRESS');
   }
 
+  /** @internal */
   private _searchHistoryParams: SzSearchFormParams;
+  /** checks to see if a value in a field just changed due to the
+   * user selecting a value from a previous search.
+   *
+   * In the case of a "name" select the selection also populates
+   * any other parameters
+   * that were also in the form at the time of the search.
+   */
   public checkHistoryForMatchOnChange(event) {
     const _currentSearchFormParams = this.getSearchParams();
     if(_currentSearchFormParams && _currentSearchFormParams.NAME_FULL && _currentSearchFormParams.NAME_FULL !== this._searchHistoryParams) {
@@ -665,14 +693,10 @@ export class SzSearchComponent implements OnInit, OnDestroy {
           }
           // otherwise wait for initial response
         }
-        if(pJson && pJson.searchHistory) {
+        if(pJson && pJson.searchHistory && this.prefs && this.prefs.searchForm && this.prefs.searchForm.searchHistory) {
+          // getting current value from service prefs service for modality
           this.search_history = this.prefs.searchForm.searchHistory.items;
-
-          //this.search_history = pJson.searchHistory;
-          console.warn('sz-search.prefs.searchForm updated',  this.prefs.searchForm.searchHistory.items);
-        } else {
-          console.log('sz-search.prefs.searchForm not updated', pJson);
-
+          //console.log('sz-search.prefs.searchForm updated',  this.prefs.searchForm.searchHistory.items);
         }
       });
 
@@ -680,7 +704,7 @@ export class SzSearchComponent implements OnInit, OnDestroy {
         if ( folio && folio.history) {
           this.search_history = folio.history;
         }
-        console.warn('search history from folio service updated: ', folio.history, this.search_history);
+        //console.log('search history from folio service updated: ', folio.history, this.search_history);
       });
   }
 

@@ -175,6 +175,12 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
     this.prefsChanged.next( this.toJSONObject() );
   }
 
+  /**
+   * the search form prefs contain a folio collection that automagically update
+   * when a user executes a search. Because of this additional functionality
+   * the usual fromJSONObject needs to perform some special logic to initialize
+   * the prefs from JSON like create class instances etc.
+   */
   public fromJSONObject(value: string) {
     this.bulkSet = true;
     let _isChanged = false;
@@ -190,12 +196,12 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
             _searchHistoryFolio.fromJSONObject(value[k]);
 
             this._searchHistory = _searchHistoryFolio;
-            console.warn('SzSearchFormPrefs.fromJSONObject: _searchHistory = ', this._searchHistory);
+            // console.warn('SzSearchFormPrefs.fromJSONObject: _searchHistory = ', this._searchHistory);
           } else {
             try{
               this[k] = (value[k] && value[k].fromJSONObject ) ? value[k].fromJSONObject() : value[k];
               _isChanged = true;
-              //console.warn('SzSearchFormPrefs.fromJSONObject: "'+ k +'"', value[k].fromJSONObject());
+              // console.log('SzSearchFormPrefs.fromJSONObject: "'+ k +'"', value[k].fromJSONObject());
             } catch (err) {
               // console.warn('attempted to get prefVal, but pref unset. ', err)
             };
@@ -208,7 +214,7 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
       this.prefsChanged.next( this.toJSONObject() );
     }
   }
-
+  /*
   public toJSONObject() {
     const retObj = {};
 
@@ -224,10 +230,9 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
         }
       });
     }
-    console.warn('SzSearchFormPrefs.toJSONObject: ', this._searchHistory, this);
-
     return retObj;
   }
+  */
 
 }
 
