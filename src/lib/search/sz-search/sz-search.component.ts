@@ -695,8 +695,9 @@ export class SzSearchComponent implements OnInit, OnDestroy {
         }
         if(pJson && pJson.searchHistory && this.prefs && this.prefs.searchForm && this.prefs.searchForm.searchHistory) {
           // getting current value from service prefs service for modality
-          this.search_history = this.prefs.searchForm.searchHistory.items;
-          //console.log('sz-search.prefs.searchForm updated',  this.prefs.searchForm.searchHistory.items);
+          // note: history getter is "latest-first"
+          this.search_history = this.prefs.searchForm.searchHistory.history;
+          //console.log('sz-search.prefs.searchForm from JSON',  this.prefs.searchForm.searchHistory.items);
         }
       });
 

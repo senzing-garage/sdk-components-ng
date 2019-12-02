@@ -103,7 +103,9 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
   // --------------- private vars
   /** @internal */
   private _rememberLastSearches: number = 10;
+  /** @internal */
   private _savedSearches: SzSearchParamsFolio[];
+  /** @internal */
   private _searchHistory: SzSearchHistoryFolio;
   private _allowedTypeAttributes: string[] = [
     'NIN_NUMBER',
