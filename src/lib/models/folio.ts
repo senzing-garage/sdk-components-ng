@@ -1,4 +1,6 @@
 import { SzEntitySearchParams } from './entity-search';
+import { SzPrefsService } from '../services/sz-prefs.service';
+import { Inject } from '@angular/core';
 
 // -----------------------  start base folio classes -------------------------
 /**
@@ -48,8 +50,6 @@ export abstract class SzFolio {
  * a folio item representing a set of search parameters to save a set of
  * search parameters in a folio.
  * @export
- * @class SzSearchParamsFolioItem
- * @extends {SzFolioItem}
  */
 export class SzSearchParamsFolioItem extends SzFolioItem {
   _data: SzEntitySearchParams;
@@ -72,8 +72,6 @@ export class SzSearchParamsFolioItem extends SzFolioItem {
 /**
  * A folio representing a collection of searches
  * @export
- * @class SzSearchParamsFolio
- * @extends {SzFolio}
  */
 export class SzSearchParamsFolio extends SzFolio {
   /** the search parameter sets */
@@ -95,8 +93,6 @@ export class SzSearchParamsFolio extends SzFolio {
  * extends the SzSearchParamsFolioItem class.
  *
  * @export
- * @class SzSearchHistoryFolioItem
- * @extends {SzSearchParamsFolioItem}
  */
 export class SzSearchHistoryFolioItem extends SzSearchParamsFolioItem {
   public get name(): string {
@@ -114,8 +110,6 @@ export class SzSearchHistoryFolioItem extends SzSearchParamsFolioItem {
  * A specialized SzFolio class used for storing the user's search history.
  *
  * @export
- * @class SzSearchHistoryFolio
- * @extends {SzSearchParamsFolio}
  */
 export class SzSearchHistoryFolio extends SzSearchParamsFolio {
   /**
@@ -134,10 +128,12 @@ export class SzSearchHistoryFolio extends SzSearchParamsFolio {
     return _items;
   }
 
-  constructor( items?: SzSearchHistoryFolioItem[]) {
+  constructor(items?: SzSearchHistoryFolioItem[]) {
     super(); // must call super()
 
-    if (items) { this.items = items; }
+    if (items) {
+      this.items = items;
+    }
     if (name) { this.name = name; }
   }
   /**
@@ -145,11 +141,7 @@ export class SzSearchHistoryFolio extends SzSearchParamsFolio {
    */
   public add( item: SzSearchHistoryFolioItem ) {
     this.items.push( item );
-    if(this.maxItems && this.items.length > this.maxItems) {
-      // remove first item (which chronologically will be farthest back in time)
-      let removedItem = this.items.shift();
-      console.warn('tempArr : ', this.items);
-    }
+    this.items = this.trimItemsTo(this.maxItems);
   }
   /** get a json representation model of this class and its items. */
   public toJSONObject(): {name?: string, items: any} {
@@ -166,19 +158,25 @@ export class SzSearchHistoryFolio extends SzSearchParamsFolio {
   public fromJSONObject(data: {name?: string, items: any}) {
     if(data && data.name) { this.name = data.name;}
     if(data && data.items && data.items.map) {
-      /*
-      let _items = data.items.map( (item) => {
-        return new SzSearchHistoryFolioItem( item );
-      });*/
-      this.items = SzSearchHistoryFolio.FolioItemsFromJSON(data.items);
+      let _items = SzSearchHistoryFolio.FolioItemsFromJSON(data.items);
+      this.items = this.trimItemsTo(this.maxItems, _items);
     }
   }
+  /** used internally to keep stack at appropriate length */
+  public trimItemsTo(len: number, items?: SzSearchHistoryFolioItem[]): SzSearchHistoryFolioItem[] {
+    let _retVal = (items) ? items : this.items;
+    if(len && _retVal && _retVal.length > len) {
+      let _startIndex = (_retVal.length - len) - 1;
+      if(_startIndex >= 0 && _retVal[_startIndex] && _retVal.slice) {
+        _retVal = _retVal.slice( _startIndex );
+      }
+    }
+    return _retVal;
+  }
+
   /**
    * returns an array of "SzSearchHistoryFolio" that is created from the
    * 'items' model that 'toJSONObject' returns.
-   * @static
-   * @param {[]} itemsJson
-   * @returns {SzSearchHistoryFolioItem[]}
    */
   static FolioItemsFromJSON( itemsJson: [] ): SzSearchHistoryFolioItem[] {
     let _items = itemsJson.map( (item) => {

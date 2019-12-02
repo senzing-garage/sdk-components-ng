@@ -40,13 +40,16 @@ export class SzFoliosService {
     // from prefs storage
     this.search_history = this.prefs.searchForm.searchHistory;
     // console.log('SzFoliosService.search_history ', this.prefs.searchForm.searchHistory);
-    /*
-    this.prefs.prefsChanged.subscribe( (
-      json
-    ) => {
-      console.log('SzFoliosService.prefsChanged: ', json, this.prefs.searchForm);
-    });
-    */
+    if( this.prefs ) {
+      this.prefs.prefsChanged.subscribe( (
+        json
+      ) => {
+        if(json.searchForm && json.searchForm.rememberLastSearches) {
+          this.search_history.maxItems = json.searchForm.rememberLastSearches
+        }
+        console.log('SzSearchHistoryFolio.prefsChanged: ', json, this.prefs.searchForm.rememberLastSearches);
+      });
+    }
   }
 
   public addToSearchHistory(data: SzSearchEvent) {

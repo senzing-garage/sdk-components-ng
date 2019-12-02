@@ -427,7 +427,7 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
 
   /** which fields to explicitly not show to the user */
   @Input() public editableBlacklist = {
-    searchForm: [],
+    searchForm: ['allowedTypeAttributes','searchHistory'],
     searchResults: ['truncateRecordsAt','linkToEmbeddedGraph','showEmbeddedGraph','openInNewTab'],
     entityDetail: ['openLinksInNewTab'],
     graph: ['dataSourceColors','openInNewTab','openInSidePanel']

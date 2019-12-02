@@ -137,6 +137,7 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
   /** remember last X searches in autofill. */
   public set rememberLastSearches(value: number) {
     this._rememberLastSearches = value;
+    if( this._searchHistory && this._searchHistory.maxItems !== value) { this._searchHistory.maxItems = value; }
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** get list of last searches performed. */
@@ -977,12 +978,12 @@ export class SzPrefsService implements OnDestroy {
       if( this[_k] && this[_k].fromJSONObject ){
         // object inheriting from 'SzSdkPrefsBase'
         if( _k === 'searchForm') {
-          console.log(`setting "${_k}" via this[_k].fromJSONObject`, value[_k]);
+          //console.log(`setting "${_k}" via this[_k].fromJSONObject`, value[_k]);
           this[_k].fromJSONObject( value[_k] );
         } else {
           this[_k].fromJSONObject( value[_k] );
         }
-        console.log(`setting "${_k}" via this[_k].fromJSONObject`, value[_k]);
+        //console.log(`setting "${_k}" via this[_k].fromJSONObject`, value[_k]);
       } else {
         //   maybe top level property
         //   :-/
