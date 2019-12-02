@@ -1,23 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject, BehaviorSubject, merge, timer } from 'rxjs';
 import { takeUntil, debounce, filter } from 'rxjs/operators';
-import { SzSearchHistoryFolio, SzSearchParamsFolio } from '../models/folio';
-import { SzSearchHistoryFolioItem } from '@senzing/sdk-components-ng/public_api';
+import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio } from '../models/folio';
 //import { Configuration as SzRestConfiguration, ConfigurationParameters as SzRestConfigurationParameters } from '@senzing/rest-api-client-ng';
-
-/*
-import {
-  EntityDataService,
-  ConfigService,
-  SzAttributeSearchResponse,
-  SzEntityData,
-  SzAttributeTypesResponse,
-  SzAttributeType,
-  SzAttributeSearchResult
-} from '@senzing/rest-api-client-ng';
-import { SzEntitySearchParams } from '../models/entity-search';
-import { SzGraphConfigurationService } from '@senzing/sdk-graph-components';
-*/
 
 /**
  * preferences bus base class. provides common methods for
@@ -217,26 +202,6 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
       this.prefsChanged.next( this.toJSONObject() );
     }
   }
-  /*
-  public toJSONObject() {
-    const retObj = {};
-
-    if (this.jsonKeys && this.jsonKeys.forEach) {
-      this.jsonKeys.forEach((k: string) => {
-        if( this[k] !== undefined){
-          try{
-
-            retObj[k] = ( this[k] && this[k].toJSONObject ) ? this[k].toJSONObject() : this[k];
-          } catch (err) {
-            // console.warn('attempted to get prefVal, but pref unset. ', err)
-          };
-        }
-      });
-    }
-    return retObj;
-  }
-  */
-
 }
 
 /**
