@@ -32,6 +32,7 @@ import { SzUIEventService } from './services/sz-ui.service';
 import { SzPdfUtilService } from './services/sz-pdf-util.service';
 import { SzPrefsService } from './services/sz-prefs.service';
 import { SzDataSourcesService } from './services/sz-datasources.service';
+import { SzAdminService } from './services/sz-admin.service';
 
 /** components */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
@@ -161,6 +162,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
   ],
   providers: [
     SzMessageBundleService,
+    SzAdminService,
     SzSearchService,
     SzConfigurationService,
     SzDataSourcesService,

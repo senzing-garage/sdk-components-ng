@@ -1,0 +1,33 @@
+:host {
+  .prefs-ui-lists {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+  .prefs-ui-column {
+    display: inline-block;
+    widows: 100;
+    padding: 10px 20px 2em 1em;
+    margin: 0 2em 0 0;
+    /* width: 200px; */
+    border-radius: 5px;
+    background-color: #efefef;
+
+    .prefs-ui-column-inner {
+      display: inline-block;
+    }
+  }
+  .sep {
+    height: 1px;
+    display: block;
+    background-color: #bfbfbf;
+    margin: 2em 0 2em 0;
+    border: none;
+  }
+
+  input.ff-num {
+    width: 3em;
+  }
+}
