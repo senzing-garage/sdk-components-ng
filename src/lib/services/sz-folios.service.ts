@@ -10,7 +10,6 @@ import { SzPrefsService } from './sz-prefs.service';
  * "Saved Searches", "Search History", "Saved Projects"
  *
  * @export
- * @class SzFoliosService
  */
 @Injectable({
   providedIn: 'root'
@@ -47,7 +46,7 @@ export class SzFoliosService {
         if(json.searchForm && json.searchForm.rememberLastSearches) {
           this.search_history.maxItems = json.searchForm.rememberLastSearches
         }
-        console.log('SzSearchHistoryFolio.prefsChanged: ', json, this.prefs.searchForm.rememberLastSearches);
+        //console.log('SzSearchHistoryFolio.prefsChanged: ', json, this.prefs.searchForm.rememberLastSearches);
       });
     }
   }

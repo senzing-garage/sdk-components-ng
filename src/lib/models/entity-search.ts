@@ -3,7 +3,6 @@
  * api server.
  *
  * @export
- * @interface SzEntitySearchParams
  */
 export interface SzEntitySearchParams {
   "NAME_TYPE"?: string,
