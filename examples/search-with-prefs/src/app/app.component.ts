@@ -108,7 +108,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     ).subscribe( (srprefs) => {
       this._prefsJSON = srprefs;
       this.savePrefsToLocalStorage();
-      // console.warn('consumer prefs change: ', srprefs);
     });
   }
 

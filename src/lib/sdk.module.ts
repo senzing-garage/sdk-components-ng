@@ -27,6 +27,7 @@ import {
 import { SzMessageBundleService } from './services/sz-message-bundle.service';
 import { SzSearchService } from './services/sz-search.service';
 import { SzConfigurationService } from './services/sz-configuration.service';
+import { SzFoliosService } from './services/sz-folios.service';
 import { SzUIEventService } from './services/sz-ui.service';
 import { SzPdfUtilService } from './services/sz-pdf-util.service';
 import { SzPrefsService } from './services/sz-prefs.service';
@@ -63,6 +64,7 @@ import { SzConfigurationComponent } from './configuration/sz-configuration/sz-co
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
 import { SzPreferencesComponent } from './configuration/sz-preferences/sz-preferences.component';
 import { SzPrefDictComponent } from './configuration/sz-preferences/sz-pref-dict/sz-pref-dict.component';
+import { SzFolioItem, SzSearchParamsFolio, SzSearchParamsFolioItem } from './models/folio';
 
 /**
  * Sets up a default set of service parameters for use
@@ -164,6 +166,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchService,
     SzConfigurationService,
     SzDataSourcesService,
+    SzFoliosService,
     SzPrefsService,
     HttpClient,
     TitleCasePipe,
