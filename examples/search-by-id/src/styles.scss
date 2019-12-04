@@ -1,0 +1,54 @@
+@import "~@angular/cdk/overlay-prebuilt.css";
+/* You can add global styles to this file, and also import other style files */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.detail-wrapper {
+  background-color: #C0C0C0;
+  color: #3a3a3a;
+  padding: 10px 10px;
+  margin: 0 0 40px 0;
+  border: 1px solid #a3a3a3;
+  border-top: 1px solid #9d9d9d;
+  background-image: linear-gradient(#a4a4a4, #727272);
+
+  button {
+    padding: 10px 55px 10px 15px;
+    background-color: #424242;
+    border: none;
+    border-radius: 3px;
+    color: #ffffffd4;
+  }
+}
+
+.graph-context-menu {
+  display: block;
+  background-color: rgb(104, 104, 104);
+  padding: 0 1px 1px 1px;
+  width: 140px;
+  font-size: 12px;
+
+  li {
+    display: block;
+    background-color: #eaeaea;
+    text-align: left;
+    transition-duration: 0.2s;
+    color: rgb(58, 58, 58);
+    margin: 1px 0 1px 0;
+    padding: 4px 2px 2px 4px;
+  }
+  li:first-child {
+    border-top: 1px solid rgb(104, 104, 104);
+    margin-top: 0;
+  }
+  li:last-child {
+    margin-bottom: 0;
+  }
+  li:hover {
+    cursor: pointer;
+    background-color:rgb(58, 58, 58);
+    color:#c0c0c0;
+  }
+}

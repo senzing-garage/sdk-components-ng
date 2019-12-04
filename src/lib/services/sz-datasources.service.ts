@@ -33,7 +33,6 @@ export class SzDataSourcesService {
     // get attributes
     return this.configService.listDataSources()
     .pipe(
-      tap( (resp: SzDataSourcesResponse)=> console.log('SzSearchService.getMappingAttributes: ', resp.data.dataSources) ),
       map( (resp: SzDataSourcesResponse) => resp.data.dataSources )
     );
   }

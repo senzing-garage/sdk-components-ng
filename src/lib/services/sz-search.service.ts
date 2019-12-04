@@ -9,9 +9,15 @@ import {
   SzEntityData,
   SzAttributeTypesResponse,
   SzAttributeType,
-  SzAttributeSearchResult
+  SzAttributeSearchResult,
+  SzEntityRecord
 } from '@senzing/rest-api-client-ng';
 import { SzEntitySearchParams } from '../models/entity-search';
+
+export interface SzSearchEvent {
+  params: SzEntitySearchParams,
+  results: SzAttributeSearchResult[]
+}
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +25,9 @@ import { SzEntitySearchParams } from '../models/entity-search';
 export class SzSearchService {
   private currentSearchParams: SzEntitySearchParams = {};
   private currentSearchResults: SzAttributeSearchResult[] | null = null;
+  public parametersChanged = new Subject<SzEntitySearchParams>();
+  public resultsChanged = new Subject<SzAttributeSearchResult[]>();
+  public searchPerformed = new Subject<SzSearchEvent>();
 
   constructor(
     private entityDataService: EntityDataService,
@@ -36,7 +45,15 @@ export class SzSearchService {
     return this.entityDataService.searchByAttributes(JSON.stringify(searchParms))
     .pipe(
       tap((searchRes: SzAttributeSearchResponse) => console.log('SzSearchService.searchByAttributes: ', searchParms, searchRes)),
-      map((searchRes: SzAttributeSearchResponse) => searchRes.data.searchResults as SzAttributeSearchResult[])
+      map((searchRes: SzAttributeSearchResponse) => searchRes.data.searchResults as SzAttributeSearchResult[]),
+      tap((searchRes: SzAttributeSearchResult[]) => {
+        //console.warn('SzSearchService.searchByAttributes 1: ', searchRes)
+        this.searchPerformed.next({
+          params: this.currentSearchParams,
+          results: searchRes
+        });
+        //console.warn('SzSearchService.searchByAttributes 2: ', searchRes)
+      })
     );
   }
   /**
@@ -49,12 +66,13 @@ export class SzSearchService {
   }
 
   /**
-   * set the an individual search parameter.
+   * set an individual search parameter.
    * @memberof SzSearchService
    */
   public setSearchParam(paramName: any, value: any): void {
     try {
       this.currentSearchParams[paramName] = value;
+      this.parametersChanged.next(this.currentSearchParams);
     } catch(err) {}
   }
 
@@ -72,6 +90,7 @@ export class SzSearchService {
    */
   public setSearchResults(results: SzAttributeSearchResult[] | null) : void {
     this.currentSearchResults = results ? results : null;
+    this.resultsChanged.next( this.currentSearchResults );
   }
 
   /**
@@ -125,6 +144,21 @@ export class SzSearchService {
     .pipe(
       tap(res => console.log('SzSearchService.getEntityById: ' + entityId, res.data)),
       map(res => (res.data as SzEntityData))
+    );
+  }
+
+  /**
+   * get an SzEntityData model by providing an datasource and record id.
+   *
+   * @memberof SzSearchService
+   */
+  public getEntityByRecordId(dsName: string, recordId: number, withRelated = false): Observable<SzEntityRecord> {
+    console.log('@senzing/sdk/services/sz-search[getEntityByRecordId('+ dsName +', '+ recordId +')] ', dsName, recordId);
+    const _recordId: string = recordId.toString();
+    return this.entityDataService.getDataSourceRecord(dsName, _recordId)
+    .pipe(
+      tap(res => console.log('SzSearchService.getEntityByRecordId: ' + dsName, res)),
+      map(res => (res.data as SzEntityRecord))
     );
   }
 

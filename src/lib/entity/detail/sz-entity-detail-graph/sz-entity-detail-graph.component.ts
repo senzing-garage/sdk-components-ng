@@ -41,10 +41,45 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   @ViewChild(SzRelationshipNetworkComponent) graphNetworkComponent: SzRelationshipNetworkComponent;
 
   @Input() public title: string = "Relationships at a Glance";
-  @Input() public data: {
+
+  /** data passed in from parent component
+   * used in sz-entity-detail.component.
+   * passes in entity node data needed for context display
+   * @deprecated
+  */
+  private _data: {
     resolvedEntity: SzResolvedEntity,
     relatedEntities: SzRelatedEntity[]
-  };
+  }
+
+  /** data passed in from parent component
+   * used in sz-entity-detail.component.
+   * passes in entity node data needed for context display
+   * @deprecated
+  */
+  @Input() public set data(value: {
+    resolvedEntity: SzResolvedEntity,
+    relatedEntities: SzRelatedEntity[]
+  }) {
+    this._data = value;
+    if(value && value.resolvedEntity) {
+      this._graphIds = [ value.resolvedEntity.entityId ];
+    }
+  }
+
+  /** data passed in from parent component
+   * used in sz-entity-detail.component.
+   * passes in entity node data needed for context display
+   *
+   * @deprecated
+  */
+  public get data(): {
+    resolvedEntity: SzResolvedEntity,
+    relatedEntities: SzRelatedEntity[]
+  } {
+    return this._data;
+  }
+
   public _showMatchKeys = false;
   /** sets the visibility of edge labels on the node links */
   @Input() public set showMatchKeys(value: boolean) {
@@ -68,7 +103,10 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   @Input() dataSourcesFiltered: string[] = [];
   @Input() showPopOutIcon: boolean = false;
   @Input() showFiltersControl: boolean = false;
+  @Input() filterControlPosition: string = 'bottom-left';
+  @Input() filterWidth: number;
   private neverFilterQueriedEntityIds: boolean = true;
+  public filterShowDataSources: string[];
   private _showMatchKeyControl: boolean = true;
   @Input() set showMatchKeyControl(value: boolean | string) {
     if((value as string) == 'true' || (value as string) == 'True' || (value as string) == 'false' || (value as string) == 'False') {
@@ -110,6 +148,40 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
    */
   @Output() contextMenuClick: EventEmitter<any> = new EventEmitter<any>();
 
+  /** @internal */
+  private _requestStarted: Subject<boolean> = new Subject<boolean>();
+  /** @internal */
+  private _requestComplete: Subject<boolean> = new Subject<boolean>();
+  /** @internal */
+  private _renderComplete: Subject<boolean> = new Subject<boolean>();
+  /** @internal */
+  private _requestNoResults: Subject<boolean> = new Subject<boolean>();
+  /**
+   * Observeable stream for the event that occurs when a network
+   * request is initiated
+   */
+  @Output() public requestStarted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  /**
+   * Observeable stream for the event that occurs when a network
+   * request is completed
+   */
+  @Output() public requestComplete: EventEmitter<boolean> = new EventEmitter<boolean>();
+  /**
+   * Observeable stream for the event that occurs when a draw
+   * operation is completed
+   */
+  @Output() public renderComplete: EventEmitter<boolean> = new EventEmitter<boolean>();
+  /**
+   * Observeable stream for the event that occurs when a
+   * request completed but has no results
+   */
+  @Output() public requestNoResults: EventEmitter<boolean> = new EventEmitter<boolean>();
+  /**
+   * emitted when the player right clicks a entity node.
+   * @returns object with various entity and ui properties.
+   */
+  @Output() noResults: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   /**
    * emitted when the player right clicks a entity node.
    * @returns object with various entity and ui properties.
@@ -129,13 +201,18 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
 
   _inputs: SzNetworkGraphInputs;
 
-  public get graphIds(): number[] {
-    const _ret = [];
-    if(this.data && this.data.resolvedEntity) {
-      _ret.push(this.data.resolvedEntity.entityId);
+  private _graphIds: number[];
+  @Input() public set graphIds(value: number[]) {
+    const _oVal = this._graphIds;
+    this._graphIds = value;
+    // only reload graph if value has changed
+    if(_oVal !== value){
+      // console.log('set graphIds: ', this._graphIds, typeof this.graphIds, value, typeof value);
+      this.reload();
     }
-    //console.log('graphIds setter: ', _ret);
-    return _ret;
+  }
+  public get graphIds(): number[] | undefined {
+    return this._graphIds;
   }
 
   /** toggle collapsed/expanded state of graph */
@@ -145,6 +222,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
       this.prefs.entityDetail.graphSectionCollapsed = !this.expanded;
     }
   }
+
   /**
    * on entity node click in the graph.
    * proxies to synthetic "entityClick" event.
@@ -158,6 +236,17 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
    */
   public onEntityDblClick(event: any) {
     this.entityDblClick.emit(event);
+  }
+  /**
+   * on data received by api request and mapped to
+   * component input format model. when data has been loaded
+   * and parsed build list of distinct datasource names
+   * from data.
+  */
+  public onGraphDataLoaded(inputs: SzNetworkGraphInputs) {
+    if(inputs.data && inputs.data.entities) {
+      this.filterShowDataSources = SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data);
+    }
   }
   /**
    * on entity node right click in the graph.
@@ -196,13 +285,17 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   }
 
   public onOptionChange(event: {name: string, value: any}) {
+    console.log('onOptionChange: ', event);
     switch(event.name) {
       case 'showLinkLabels':
         this.showMatchKeys = event.value;
         break;
     }
   }
-
+  /**
+   * Older style data passing, comes from the SzNetworkInputs->XMLHTTPRequest->mutation->event
+   * @deprecated
+   */
   onNetworkLoaded(inputs: SzNetworkGraphInputs) {
     this._inputs = inputs;
   }
@@ -230,6 +323,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     ).subscribe( this.onPrefsChange.bind(this) );
 
     // entity prefs
+    /*
     this.prefs.entityDetail.prefsChanged.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe( (prefs: any) => {
@@ -248,12 +342,42 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
         }
       }
     });
+    */
 
     // keep track of whether or not the graph has been rendered
     // this is to get around publishing a new 0.0.7 sdk-graph-components
     // for a simple bugfix to the "rendered" property. There is a property called
     // "rendered" in the component but its not wired in to the lifecycle properly
     if(this.graphNetworkComponent){
+      this.graphNetworkComponent.requestStarted.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe( (args) => {
+        // console.log('[GRAPH] requestStarted', args);
+        this.requestStarted.emit(args);
+      });
+      this.graphNetworkComponent.requestComplete.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe( (args) => {
+        this.requestComplete.emit(args);
+      });
+      this.graphNetworkComponent.renderComplete.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe( (args) => {
+          // console.log('[GRAPH] renderComplete', args);
+        this.renderComplete.emit(args);
+      });
+      this.graphNetworkComponent.requestNoResults.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe( (args) => {
+        this.requestNoResults.emit(args);
+        this.noResults.emit(args);
+      });
+      this.graphNetworkComponent.onDataLoaded.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe( (args) => {
+          // console.log('[GRAPH] onDataLoaded', args);
+      });
+
       this.graphNetworkComponent.renderComplete.pipe(
         takeUntil(this.unsubscribe$),
         takeUntil(this._graphComponentRenderCompleted)
@@ -280,7 +404,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
    * initiates a redraw of the graph canvas inside the component
    */
   public reload(): void {
-    if(this.graph && this.graph.reload) {
+    if(this.graph && this.graph.reload && this._graphComponentRendered) {
       this.graph.reload();
     }
   }
@@ -310,6 +434,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
       this.graphNetworkComponent.maxEntities = this.maxEntities;
       this.graphNetworkComponent.buildOut = this.buildOut;
       if(this._graphComponentRendered){
+        //console.log('re-rendering graph');
         this.reload();
       }
     }
@@ -328,7 +453,9 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
         const _color = this.dataSourceColors[_key];
         return {
           selectorFn: this.isEntityNodeInDataSource.bind(this, _key),
-          modifierFn: this.setEntityNodeFillColor.bind(this, _color)
+          modifierFn: this.setEntityNodeFillColor.bind(this, _color),
+          selectorArgs: _key,
+          modifierArgs: _color
         };
       });
     }
@@ -430,7 +557,8 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   /** checks to see if entity node is one of the primary entities queried for*/
   private isEntityNodeInQuery(nodeData) {
     if(this.graphIds){
-      return this.graphIds.indexOf( nodeData.entityId ) >= 0;
+      const _dataEntityId = (nodeData && nodeData.d && nodeData.d.entityId) ? (nodeData && nodeData.d && nodeData.d.entityId) : nodeData.entityId ;
+      return (_dataEntityId) ? this.graphIds.indexOf( _dataEntityId ) >= 0 : false;
     } else {
       return false;
     }

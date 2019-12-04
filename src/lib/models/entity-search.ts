@@ -1,3 +1,9 @@
+/**
+ * A model of search parameters that can be sent to the
+ * api server.
+ *
+ * @export
+ */
 export interface SzEntitySearchParams {
   "NAME_TYPE"?: string,
   "NAME_FIRST"?: string,

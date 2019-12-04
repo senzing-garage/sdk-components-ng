@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzEntityDetailGraphComponent } from './sz-entity-detail-graph.component';
 import { SenzingSdkModule } from 'src/lib/sdk.module';
+import { SenzingSdkGraphModule } from '@senzing/sdk-graph-components';
 
 describe('SzEntityDetailGraphComponent', () => {
   let component: SzEntityDetailGraphComponent;
@@ -9,7 +10,7 @@ describe('SzEntityDetailGraphComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SenzingSdkModule.forRoot()]
+      imports: [SenzingSdkModule.forRoot(), SenzingSdkGraphModule.forRoot() ]
     })
     .compileComponents();
   }));
@@ -24,7 +25,9 @@ describe('SzEntityDetailGraphComponent', () => {
     fixture.destroy();
   });
 
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });

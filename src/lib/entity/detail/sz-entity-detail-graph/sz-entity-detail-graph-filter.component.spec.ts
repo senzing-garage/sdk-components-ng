@@ -31,8 +31,8 @@ describe('SzEntityDetailGraphFilterComponent', () => {
   it('should default to open', () => {
     expect(component.isOpen).toBeTruthy();
   });
-
-  it('graph should default to show link labels', () => {
-    expect(component.showLinkLabels).toBeTruthy();
+  // labels hidden by default
+  it('graph should default to hide link labels', () => {
+    expect(component.showLinkLabels).toBeFalsy();
   });
 });

@@ -10,7 +10,9 @@ import {
   SzPrefsService,
   SzSdkPrefsModel,
   SzConfigurationService,
-  SzPreferencesComponent
+  SzPreferencesComponent,
+  SzEntityRecord,
+  SzSearchByIdFormParams
 } from '@senzing/sdk-components-ng';
 import { tap, filter, take, takeUntil } from 'rxjs/operators';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -28,6 +30,15 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   public currentSearchResults: SzAttributeSearchResult[];
   /** entity id to disply in detail component */
   public currentlySelectedEntityId: number;
+  public currentEntityData: SzEntityData;
+  public showNoResultsMessage = false;
+  /** reference to result of sz-search-by-id query */
+  public formResult: SzEntityRecord;
+  /** reference to parameters of sz-search-by-id query */
+  public formParams: SzSearchByIdFormParams;
+  public get formResultAsString(): string {
+    return JSON.stringify( this.formResult );
+  }
   /** current search params being used */
   public currentSearchParameters: SzEntitySearchParams;
   /** show search results component. turned off until we have a search result */
@@ -97,7 +108,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     ).subscribe( (srprefs) => {
       this._prefsJSON = srprefs;
       this.savePrefsToLocalStorage();
-      // console.warn('consumer prefs change: ', srprefs);
     });
   }
 
@@ -183,21 +193,80 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   /** clear the current search results */
   public onSearchResultsCleared(searchParams: SzEntitySearchParams){
     // hide search results
+    this.showNoResultsMessage = false;
     this.showSearchResults = false;
     this.currentSearchResults = undefined;
     this.currentlySelectedEntityId = undefined;
+    this.currentEntityData = undefined;
+    this.formResult = undefined;
+    this.formParams = undefined;
   }
   /** store the current parameters on scope */
-  public onSearchParameterChange(searchParams: SzEntitySearchParams) {
-    // console.log('onSearchParameterChange: ', searchParams);
-    this.currentSearchParameters = searchParams;
+  public onSearchParameterChange(searchParams: SzEntitySearchParams | SzSearchByIdFormParams) {
+    console.log('onSearchParameterChange: ', searchParams);
+    let isByIdParams = false;
+    const byIdParams = (searchParams as SzSearchByIdFormParams);
+    if ( byIdParams && ((byIdParams.dataSource && byIdParams.recordId) || byIdParams.entityId)  ) {
+      isByIdParams = true;
+    } else {
+      // console.warn('not by id: ' + isByIdParams, byIdParams);
+    }
+    if (!isByIdParams) {
+      this.currentSearchParameters = (searchParams as SzEntitySearchParams);
+    } else {
+      this.formParams = (searchParams as SzSearchByIdFormParams);
+    }
   }
 
   onSearchException(err: Error) {
     throw (err.message);
   }
+  onByIdException(err) {
+    // console.warn('onByIdException: ', err);
+    if (err.message === 'null criteria'){
+      // not enough information to construct query
+      // ignore
+    } else if (err && err.status === 404) {
+      console.log('404 Error', );
+      if (err && err.error && err.error.errors && err.error.errors.length > 0) {
+        switch (err.error.errors[0].code) {
+          case '37':
+            // did not find entity
+            console.log('specifically entity not found Error', );
+            this.showNoResultsMessage = true;
+            this.currentEntityData = undefined;
+            this.formResult = undefined;
+            break;
+          case '33':
+            // did not find record
+            console.log('specifically record not found Error', );
+            this.showNoResultsMessage = true;
+            this.formResult = undefined;
+            this.currentEntityData = undefined;
+            break;
+        }
+        // this.currentEntityData = undefined;
+        // this.formResult = undefined;
+      }
+    } else {
+      throw (err.message);
+    }
+  }
+  /** when the value from the sz-search-by-id component changes */
+  onResultChange(evt: SzEntityRecord){
+    console.log('onResultsChange: ', evt);
+    this.showNoResultsMessage = false;
+    this.formResult = evt;
+    this.currentEntityData = undefined;
+  }
+  onEntityResult(evt: SzEntityData) {
+    this.showNoResultsMessage = false;
+    this.currentEntityData = evt;
+    this.formResult = undefined;
+  }
   /** when search results come back from component update local value */
   onSearchResults(evt: SzAttributeSearchResult[]){
+    this.showNoResultsMessage = false;
     // store on current scope
     this.currentSearchResults = evt;
     // results module is bound to this property

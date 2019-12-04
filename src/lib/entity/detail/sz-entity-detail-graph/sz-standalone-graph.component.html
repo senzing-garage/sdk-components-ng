@@ -1,6 +1,7 @@
 
 <div #graphContainer class="sz-standalone-graph-container">
   <sz-relationship-network #graph class="sz-relationship-network-graph"
+    [class.filters-showing]="this.showFiltersControl"
     svgViewBox="150 50 400 300"
     svgPreserveAspectRatio="xMinYMid meet"
     [entityIds]="graphIds"
