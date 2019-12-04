@@ -19,7 +19,7 @@ import { JSONScrubber } from '../../common/utils';
 import { SzConfigurationService } from '../../services/sz-configuration.service';
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzFoliosService } from '../../services/sz-folios.service';
-import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio, SzSearchParamsFolioItem } from 'src/lib/models/folio';
+import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio, SzSearchParamsFolioItem } from '../../models/folio';
 
 /** @internal */
 interface SzSearchFormParams {

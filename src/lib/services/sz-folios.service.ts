@@ -43,7 +43,7 @@ export class SzFoliosService {
       this.prefs.prefsChanged.subscribe( (
         json
       ) => {
-        if(json.searchForm && json.searchForm.rememberLastSearches) {
+        if(json.searchForm && json.searchForm.rememberLastSearches && this.search_history && this.search_history.maxItems) {
           this.search_history.maxItems = json.searchForm.rememberLastSearches
         }
         //console.log('SzSearchHistoryFolio.prefsChanged: ', json, this.prefs.searchForm.rememberLastSearches);
@@ -53,8 +53,10 @@ export class SzFoliosService {
 
   public addToSearchHistory(data: SzSearchEvent) {
     let newSearchHistoryItem = new SzSearchHistoryFolioItem(data.params);
-    this.search_history.add( newSearchHistoryItem );
-    this.search_history$.next( this.search_history );
+    if(this.search_history && this.search_history.add){
+      this.search_history.add( newSearchHistoryItem );
+      this.search_history$.next( this.search_history );
+    }
     this.prefs.searchForm.searchHistory = this.search_history;
 
     // console.log('SzFoliosService.addToSearchHistory\n\r', this.prefs.searchForm.searchHistory, this.search_history.toJSONObject());
