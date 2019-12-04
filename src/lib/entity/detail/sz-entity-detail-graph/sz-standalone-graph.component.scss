@@ -5,6 +5,8 @@
   display: block;
   transition: height 500ms;
 
+
+
   &.open {
     .arrow {
       transform: rotate(180deg);
@@ -40,9 +42,15 @@
 
   sz-relationship-network {
     height: 100%;
+
+    &.filters-showing {
+      sz-relationship-network-graph, .sz-relationship-network-graph {
+        width: calc(100% - 340px);
+      }
+    }
   }
   sz-relationship-network-graph, .sz-relationship-network-graph {
-    width: calc(100% - 340px);
+    width: 100%;
     height: 100%;
     display: block;
     background-color: #fff;

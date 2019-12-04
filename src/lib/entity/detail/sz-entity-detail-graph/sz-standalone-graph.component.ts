@@ -8,7 +8,8 @@ import {
   SzRelatedEntity,
   SzResolvedEntity,
   SzEntityRecord,
-  SzRelationshipType
+  SzRelationshipType,
+  SzEntityNetworkData
 } from '@senzing/rest-api-client-ng';
 import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
 import { SzEntityDetailGraphFilterComponent } from './sz-entity-detail-graph-filter.component';
@@ -194,6 +195,12 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   public onEntityDblClick(event: any) {
     this.entityDblClick.emit(event);
   }
+
+  /** event is emitted when the collection of datasources present in graph dislay */
+  @Output() dataSourcesChange: EventEmitter<any> = new EventEmitter<string[]>();
+  /** event is emitted when the graph components data is updated or loaded */
+  @Output() dataLoaded: EventEmitter<SzEntityNetworkData> = new EventEmitter<SzEntityNetworkData>();
+
   /**
    * on data received by api request and mapped to
    * component input format model. when data has been loaded
@@ -203,7 +210,12 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   public onGraphDataLoaded(inputs: SzNetworkGraphInputs) {
     if(inputs.data && inputs.data.entities) {
       this.filterShowDataSources = SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data);
+      this.dataSourcesChange.emit( SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data) );
     }
+    if(inputs.data) {
+      this.dataLoaded.emit( inputs.data );
+    }
+    // console.log('onGraphDataLoaded setter: ', inputs);
   }
   /**
    * on entity node right click in the graph.
@@ -303,7 +315,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
       this.graphNetworkComponent.requestStarted.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe( (args) => {
-        console.log('[STANDALONE GRAPH] requestStarted', args);
+        //console.log('[STANDALONE GRAPH] requestStarted', args);
         this.requestStarted.emit(args);
       });
       this.graphNetworkComponent.requestComplete.pipe(
@@ -314,7 +326,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
       this.graphNetworkComponent.renderComplete.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe( (args) => {
-          console.log('[STANDALONE GRAPH] renderComplete', args);
+          //console.log('[STANDALONE GRAPH] renderComplete', args);
         this.renderComplete.emit(args);
       });
       this.graphNetworkComponent.requestNoResults.pipe(
@@ -326,7 +338,8 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
       this.graphNetworkComponent.onDataLoaded.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe( (args) => {
-          console.log('[STANDALONE GRAPH] onDataLoaded', args);
+          //console.log('[STANDALONE GRAPH] onDataLoaded', args);
+          this.dataLoaded.emit(args.data);
       });
 
       this.graphNetworkComponent.renderComplete.pipe(
