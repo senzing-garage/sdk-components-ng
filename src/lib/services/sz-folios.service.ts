@@ -31,14 +31,14 @@ export class SzFoliosService {
 
     // on user search, add search params to history stack
     this.searchService.searchPerformed.subscribe( (evt: SzSearchEvent) => {
-      // console.log('SzFoliosService searchPerformed', this.search_history.items);
+      //console.log('SzFoliosService searchPerformed', this.search_history.items);
       this.addToSearchHistory(evt);
     });
 
     // make sure initial value of "search_history" folios are current with that
     // from prefs storage
-    this.search_history = this.prefs.searchForm.searchHistory;
-    // console.log('SzFoliosService.search_history ', this.prefs.searchForm.searchHistory);
+    this.search_history =  this.prefs.searchForm.searchHistory ? this.prefs.searchForm.searchHistory : new SzSearchHistoryFolio();
+    console.log('SzFoliosService.search_history ', this.prefs.searchForm.searchHistory, this.search_history);
     if( this.prefs ) {
       this.prefs.prefsChanged.subscribe( (
         json
