@@ -154,6 +154,10 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#search_history">search_history</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#unsubscribe$">unsubscribe$</a>
                             </li>
                         </ul>
@@ -170,6 +174,10 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#checkHistoryForMatchOnChange">checkHistoryForMatchOnChange</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#clearSearch">clearSearch</a>
                             </li>
                             <li>
@@ -182,6 +190,10 @@
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#getDisabled">getDisabled</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getHistoryOptions">getHistoryOptions</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -432,6 +444,24 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
+                                    <a href="#searchHistoryName">searchHistoryName</a>
+                                </li>
+                                <li>
+                                    <a href="#searchHistoryDob">searchHistoryDob</a>
+                                </li>
+                                <li>
+                                    <a href="#searchHistoryIdentifier">searchHistoryIdentifier</a>
+                                </li>
+                                <li>
+                                    <a href="#searchHistoryAddress">searchHistoryAddress</a>
+                                </li>
+                                <li>
+                                    <a href="#searchHistoryPhone">searchHistoryPhone</a>
+                                </li>
+                                <li>
+                                    <a href="#searchHistoryEmail">searchHistoryEmail</a>
+                                </li>
+                                <li>
                                     <a href="#inputName">inputName</a>
                                 </li>
                                 <li>
@@ -600,7 +630,7 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(fb: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>, configService: ConfigService, cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>, apiConfigService: <a href="../injectables/SzConfigurationService.html">SzConfigurationService</a>, prefs: <a href="../injectables/SzPrefsService.html">SzPrefsService</a>, searchService: <a href="../injectables/SzSearchService.html">SzSearchService</a>, breakpointObserver: BreakpointObserver)</code>
+<code>constructor(fb: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>, configService: ConfigService, cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>, apiConfigService: <a href="../injectables/SzConfigurationService.html">SzConfigurationService</a>, prefs: <a href="../injectables/SzPrefsService.html">SzPrefsService</a>, searchService: <a href="../injectables/SzSearchService.html">SzSearchService</a>, folios: <a href="../injectables/SzFoliosService.html">SzFoliosService</a>, breakpointObserver: BreakpointObserver)</code>
                     </td>
                 </tr>
 
@@ -682,6 +712,18 @@
                                                   
                                                         <td>
                                                                         <code><a href="../injectables/SzSearchService.html" target="_self" >SzSearchService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>folios</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SzFoliosService.html" target="_self" >SzFoliosService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -2117,6 +2159,74 @@ conf to change before fetching resources like the identifiers list</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="checkHistoryForMatchOnChange"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            checkHistoryForMatchOnChange
+                        </b>
+                        <a href="#checkHistoryForMatchOnChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkHistoryForMatchOnChange(event)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>checks to see if a value in a field just changed due to the
+user selecting a value from a previous search.</p>
+<p>In the case of a &quot;name&quot; select the selection also populates
+any other parameters
+that were also in the form at the time of the search.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="clearSearch"></a>
                     <span class="name">
                         <b>
@@ -2362,6 +2472,75 @@ conf to change before fetching resources like the identifiers list</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getHistoryOptions"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getHistoryOptions
+                        </b>
+                        <a href="#getHistoryOptions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getHistoryOptions(fieldName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>reusable method for getting search history lists deduped, ordered,
+mapped from &quot;search_history&quot; property</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>fieldName</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>string[]</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getSearchParams"></a>
                     <span class="name">
                         <b>
@@ -2541,6 +2720,35 @@ any parameter changes through the paramsChange emmitter.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="search_history"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            search_history</b>
+                            <a href="#search_history"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>SzSearchHistoryFolioItem[]</code>
+
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>the folio items that holds last &quot;X&quot; searches performed </p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="unsubscribe$"></a>
                         <span class="name">
                             <b>
@@ -2571,6 +2779,186 @@ any parameter changes through the paramsChange emmitter.</p>
     <h3 id="accessors">
         Accessors
     </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchHistoryName"></a>
+                        <span class="name"><b>searchHistoryName</b><a href="#searchHistoryName"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>searchHistoryName()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>all the &quot;Name&quot; field search values from last X searches in history folio.</p>
+</div>
+
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>string[]</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchHistoryDob"></a>
+                        <span class="name"><b>searchHistoryDob</b><a href="#searchHistoryDob"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>searchHistoryDob()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>all the &quot;Date of Birth&quot; in the form from last X searches in history folio.</p>
+</div>
+
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>string[]</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchHistoryIdentifier"></a>
+                        <span class="name"><b>searchHistoryIdentifier</b><a href="#searchHistoryIdentifier"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>searchHistoryIdentifier()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>all the &quot;Identifier&quot; values in the form from last X searches in history folio.</p>
+</div>
+
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>string[]</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchHistoryAddress"></a>
+                        <span class="name"><b>searchHistoryAddress</b><a href="#searchHistoryAddress"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>searchHistoryAddress()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>all the &quot;Address&quot; values in the form from last X searches in history folio.</p>
+</div>
+
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>string[]</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchHistoryPhone"></a>
+                        <span class="name"><b>searchHistoryPhone</b><a href="#searchHistoryPhone"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>searchHistoryPhone()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>all the &quot;Phone Number&quot; values in the form  from last X searches in history folio.</p>
+</div>
+
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>string[]</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchHistoryEmail"></a>
+                        <span class="name"><b>searchHistoryEmail</b><a href="#searchHistoryEmail"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>searchHistoryEmail()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>all the &quot;Date of Birth&quot; values in the form from last X searches in history folio.</p>
+</div>
+
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>string[]</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -5519,27 +5907,40 @@ lets bind the output of the search component to the input of the search results 
                       class&#x3D;&quot;search-input&quot;
                       id&#x3D;&quot;entity-name&quot;
                       type&#x3D;&quot;text&quot;
+                      list&#x3D;&quot;search-history-entity-name&quot;
                       [attr.disabled]&#x3D;&quot;getDisabled(&#x27;name&#x27;)&quot;
                       (keyup.enter)&#x3D;&quot;onKeyEnter()&quot;
-                      placeholder&#x3D;&quot;Search for Name&quot;&gt;
+                      placeholder&#x3D;&quot;Search for Name&quot;
+                      (input)&#x3D;&quot;checkHistoryForMatchOnChange($event)&quot;&gt;
+              &lt;datalist *ngIf&#x3D;&quot;searchHistoryName.length &gt; 0&quot; id&#x3D;&quot;search-history-entity-name&quot;&gt;
+                &lt;option *ngFor&#x3D;&quot;let item of searchHistoryName&quot; [value]&#x3D;&quot;item&quot;&gt;{{item}}&lt;/option&gt;
+              &lt;/datalist&gt;
             &lt;/div&gt;
             &lt;div class&#x3D;&quot;field dob&quot; [class.disabled]&#x3D;&quot;disabledFields[&#x27;dob&#x27;]&quot; *ngIf&#x3D;&quot;!hiddenFields[&#x27;dob&#x27;]&quot;&gt;
               &lt;label for&#x3D;&quot;entity-dob&quot;&gt;Date of Birth&lt;/label&gt;
               &lt;input formControlName&#x3D;&quot;DATE_OF_BIRTH&quot;
                       id&#x3D;&quot;entity-dob&quot;
                       type&#x3D;&quot;text&quot;
+                      list&#x3D;&quot;search-history-entity-dob&quot;
                       [attr.disabled]&#x3D;&quot;getDisabled(&#x27;dob&#x27;)&quot;
                       (keyup.enter)&#x3D;&quot;onKeyEnter()&quot;
                       placeholder&#x3D;&quot;mm/dd/yyyy&quot;&gt;
+              &lt;datalist *ngIf&#x3D;&quot;searchHistoryDob.length &gt; 0&quot; id&#x3D;&quot;search-history-entity-dob&quot;&gt;
+                &lt;option *ngFor&#x3D;&quot;let item of searchHistoryDob&quot; [value]&#x3D;&quot;item&quot;&gt;{{item}}&lt;/option&gt;
+              &lt;/datalist&gt;
             &lt;/div&gt;
             &lt;div class&#x3D;&quot;field identifier&quot; [class.disabled]&#x3D;&quot;disabledFields[&#x27;identifier&#x27;]&quot; *ngIf&#x3D;&quot;!hiddenFields[&#x27;identifier&#x27;]&quot;&gt;
               &lt;label for&#x3D;&quot;entity-identifier&quot;&gt;Identifier&lt;/label&gt;
               &lt;input formControlName&#x3D;&quot;IDENTIFIER&quot;
                       id&#x3D;&quot;entity-identifier&quot;
                       type&#x3D;&quot;text&quot;
+                      list&#x3D;&quot;search-history-entity-identifier&quot;
                       [attr.disabled]&#x3D;&quot;getDisabled(&#x27;identifier&#x27;)&quot;
                       (keyup.enter)&#x3D;&quot;onKeyEnter()&quot;
                       placeholder&#x3D;&quot;Number&quot;&gt;
+              &lt;datalist *ngIf&#x3D;&quot;searchHistoryIdentifier.length &gt; 0&quot; id&#x3D;&quot;search-history-entity-identifier&quot;&gt;
+                &lt;option *ngFor&#x3D;&quot;let item of searchHistoryIdentifier&quot; [value]&#x3D;&quot;item&quot;&gt;{{item}}&lt;/option&gt;
+              &lt;/datalist&gt;
             &lt;/div&gt;
             &lt;div class&#x3D;&quot;field type&quot; [class.disabled]&#x3D;&quot;disabledFields[&#x27;identifierType&#x27;] || disabledFields[&#x27;identifier&#x27;]&quot; *ngIf&#x3D;&quot;!hiddenFields[&#x27;identifier&#x27;] &amp;&amp; !hiddenFields[&#x27;identifierType&#x27;]&quot;&gt;
               &lt;label for&#x3D;&quot;entity-type&quot;&gt;Type&lt;/label&gt;
@@ -5567,26 +5968,38 @@ lets bind the output of the search component to the input of the search results 
               &lt;input formControlName&#x3D;&quot;ADDR_FULL&quot;
                       id&#x3D;&quot;entity-address&quot;
                       type&#x3D;&quot;text&quot;
+                      list&#x3D;&quot;search-history-entity-address&quot;
                       [attr.disabled]&#x3D;&quot;getDisabled(&#x27;address&#x27;)&quot;
                       (keyup.enter)&#x3D;&quot;onKeyEnter()&quot;
                       placeholder&#x3D;&quot;Search for Address&quot;&gt;
+              &lt;datalist *ngIf&#x3D;&quot;searchHistoryAddress.length &gt; 0&quot; id&#x3D;&quot;search-history-entity-address&quot;&gt;
+                &lt;option *ngFor&#x3D;&quot;let item of searchHistoryAddress&quot; [value]&#x3D;&quot;item&quot;&gt;{{item}}&lt;/option&gt;
+              &lt;/datalist&gt;
             &lt;/div&gt;
             &lt;div class&#x3D;&quot;field phone&quot; [class.disabled]&#x3D;&quot;disabledFields[&#x27;phone&#x27;]&quot; *ngIf&#x3D;&quot;!hiddenFields[&#x27;phone&#x27;]&quot;&gt;
               &lt;label for&#x3D;&quot;entity-phone&quot;&gt;Phone&lt;/label&gt;
               &lt;input formControlName&#x3D;&quot;PHONE_NUMBER&quot;
                       id&#x3D;&quot;entity-phone&quot;
                       type&#x3D;&quot;text&quot;
+                      list&#x3D;&quot;search-history-entity-phone&quot;
                       [attr.disabled]&#x3D;&quot;getDisabled(&#x27;phone&#x27;)&quot;
                       placeholder&#x3D;&quot;Phone #&quot;&gt;
+              &lt;datalist *ngIf&#x3D;&quot;searchHistoryPhone.length &gt; 0&quot; id&#x3D;&quot;search-history-entity-phone&quot;&gt;
+                &lt;option *ngFor&#x3D;&quot;let item of searchHistoryPhone&quot; [value]&#x3D;&quot;item&quot;&gt;{{item}}&lt;/option&gt;
+              &lt;/datalist&gt;
             &lt;/div&gt;
             &lt;div class&#x3D;&quot;field email&quot; [class.disabled]&#x3D;&quot;disabledFields[&#x27;email&#x27;]&quot; *ngIf&#x3D;&quot;!hiddenFields[&#x27;email&#x27;]&quot;&gt;
               &lt;label for&#x3D;&quot;entity-email&quot;&gt;Email&lt;/label&gt;
               &lt;input formControlName&#x3D;&quot;EMAIL_ADDRESS&quot;
                       id&#x3D;&quot;entity-email&quot;
                       type&#x3D;&quot;text&quot;
+                      list&#x3D;&quot;search-history-entity-email&quot;
                       [attr.disabled]&#x3D;&quot;getDisabled(&#x27;email&#x27;)&quot;
                       (keyup.enter)&#x3D;&quot;onKeyEnter()&quot;
                       placeholder&#x3D;&quot;Email Address&quot;&gt;
+              &lt;datalist *ngIf&#x3D;&quot;searchHistoryEmail.length &gt; 0&quot; id&#x3D;&quot;search-history-entity-email&quot;&gt;
+                &lt;option *ngFor&#x3D;&quot;let item of searchHistoryEmail&quot; [value]&#x3D;&quot;item&quot;&gt;{{item}}&lt;/option&gt;
+              &lt;/datalist&gt;
             &lt;/div&gt;
             &lt;div class&#x3D;&quot;field spacer&quot;&gt;
 
@@ -5896,8 +6309,8 @@ lets bind the output of the search component to the input of the search results 
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div>  <!-- @senzing/sdk/search/sz-search -->  <!--    NAME_FULL    DATE_OF_BIRTH    IDENTIFIER    IDENTIFIER_TYPE    ADDR_FULL    PHONE_NUMBER    EMAIL_ADDRESS  -->  <div class="content" *ngIf="true"  [ngClass]="_layoutClasses"  >      <section class="entity search" (ngSubmit)="submitSearch()">        <form class="form" [formGroup]="entitySearchForm" novalidate>          <div class="sz-row">            <div class="field name" [class.disabled]="disabledFields[\'name\']" *ngIf="!hiddenFields[\'name\']">              <label for="entity-name">Name</label>              <input formControlName="NAME_FULL"                      class="search-input"                      id="entity-name"                      type="text"                      [attr.disabled]="getDisabled(\'name\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Search for Name">            </div>            <div class="field dob" [class.disabled]="disabledFields[\'dob\']" *ngIf="!hiddenFields[\'dob\']">              <label for="entity-dob">Date of Birth</label>              <input formControlName="DATE_OF_BIRTH"                      id="entity-dob"                      type="text"                      [attr.disabled]="getDisabled(\'dob\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="mm/dd/yyyy">            </div>            <div class="field identifier" [class.disabled]="disabledFields[\'identifier\']" *ngIf="!hiddenFields[\'identifier\']">              <label for="entity-identifier">Identifier</label>              <input formControlName="IDENTIFIER"                      id="entity-identifier"                      type="text"                      [attr.disabled]="getDisabled(\'identifier\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Number">            </div>            <div class="field type" [class.disabled]="disabledFields[\'identifierType\'] || disabledFields[\'identifier\']" *ngIf="!hiddenFields[\'identifier\'] && !hiddenFields[\'identifierType\']">              <label for="entity-type">Type</label>              <select formControlName="IDENTIFIER_TYPE"                      class="identifier-dropdown"                      id="entity-type"                      [attr.disabled]="getAnyDisabled([\'identifierType\',\'identifier\'])"                      name="type">                <option [ngValue]="null" disabled>Choose ID type</option>                <option *ngFor="let type of orderedAttributes()"                        [value]="type.attributeCode"                        [selected]="type.attributeCode === \'PASSPORT_NUMBER\'">{{type.featureType}}                </option>              </select>            </div>            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">              <button mat-button class="button__search-go"              [attr.disabled]="getDisabled(\'searchButton\')"              (click)="submitSearch()">Search</button>            </div>          </div>          <div class="sz-row">            <div class="field address" [class.disabled]="disabledFields[\'address\']" *ngIf="!hiddenFields[\'address\']">              <label for="entity-address">Address</label>              <input formControlName="ADDR_FULL"                      id="entity-address"                      type="text"                      [attr.disabled]="getDisabled(\'address\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Search for Address">            </div>            <div class="field phone" [class.disabled]="disabledFields[\'phone\']" *ngIf="!hiddenFields[\'phone\']">              <label for="entity-phone">Phone</label>              <input formControlName="PHONE_NUMBER"                      id="entity-phone"                      type="text"                      [attr.disabled]="getDisabled(\'phone\')"                      placeholder="Phone #">            </div>            <div class="field email" [class.disabled]="disabledFields[\'email\']" *ngIf="!hiddenFields[\'email\']">              <label for="entity-email">Email</label>              <input formControlName="EMAIL_ADDRESS"                      id="entity-email"                      type="text"                      [attr.disabled]="getDisabled(\'email\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Email Address">            </div>            <div class="field spacer">            </div>            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">Clear Search Criteria</button>            </div>          </div>          <div class="sz-row bottom">            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">Clear</button>            </div>            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">              <button mat-button class="button__search-go"              [attr.disabled]="getDisabled(\'searchButton\')"              (click)="submitSearch()">Search</button>            </div>          </div>        </form>      </section>    </div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPrefDictComponent', 'selector': 'sz-pref-dict'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'}];
+        var COMPONENT_TEMPLATE = '<div>  <!-- @senzing/sdk/search/sz-search -->  <!--    NAME_FULL    DATE_OF_BIRTH    IDENTIFIER    IDENTIFIER_TYPE    ADDR_FULL    PHONE_NUMBER    EMAIL_ADDRESS  -->  <div class="content" *ngIf="true"  [ngClass]="_layoutClasses"  >      <section class="entity search" (ngSubmit)="submitSearch()">        <form class="form" [formGroup]="entitySearchForm" novalidate>          <div class="sz-row">            <div class="field name" [class.disabled]="disabledFields[\'name\']" *ngIf="!hiddenFields[\'name\']">              <label for="entity-name">Name</label>              <input formControlName="NAME_FULL"                      class="search-input"                      id="entity-name"                      type="text"                      list="search-history-entity-name"                      [attr.disabled]="getDisabled(\'name\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Search for Name"                      (input)="checkHistoryForMatchOnChange($event)">              <datalist *ngIf="searchHistoryName.length > 0" id="search-history-entity-name">                <option *ngFor="let item of searchHistoryName" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field dob" [class.disabled]="disabledFields[\'dob\']" *ngIf="!hiddenFields[\'dob\']">              <label for="entity-dob">Date of Birth</label>              <input formControlName="DATE_OF_BIRTH"                      id="entity-dob"                      type="text"                      list="search-history-entity-dob"                      [attr.disabled]="getDisabled(\'dob\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="mm/dd/yyyy">              <datalist *ngIf="searchHistoryDob.length > 0" id="search-history-entity-dob">                <option *ngFor="let item of searchHistoryDob" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field identifier" [class.disabled]="disabledFields[\'identifier\']" *ngIf="!hiddenFields[\'identifier\']">              <label for="entity-identifier">Identifier</label>              <input formControlName="IDENTIFIER"                      id="entity-identifier"                      type="text"                      list="search-history-entity-identifier"                      [attr.disabled]="getDisabled(\'identifier\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Number">              <datalist *ngIf="searchHistoryIdentifier.length > 0" id="search-history-entity-identifier">                <option *ngFor="let item of searchHistoryIdentifier" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field type" [class.disabled]="disabledFields[\'identifierType\'] || disabledFields[\'identifier\']" *ngIf="!hiddenFields[\'identifier\'] && !hiddenFields[\'identifierType\']">              <label for="entity-type">Type</label>              <select formControlName="IDENTIFIER_TYPE"                      class="identifier-dropdown"                      id="entity-type"                      [attr.disabled]="getAnyDisabled([\'identifierType\',\'identifier\'])"                      name="type">                <option [ngValue]="null" disabled>Choose ID type</option>                <option *ngFor="let type of orderedAttributes()"                        [value]="type.attributeCode"                        [selected]="type.attributeCode === \'PASSPORT_NUMBER\'">{{type.featureType}}                </option>              </select>            </div>            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">              <button mat-button class="button__search-go"              [attr.disabled]="getDisabled(\'searchButton\')"              (click)="submitSearch()">Search</button>            </div>          </div>          <div class="sz-row">            <div class="field address" [class.disabled]="disabledFields[\'address\']" *ngIf="!hiddenFields[\'address\']">              <label for="entity-address">Address</label>              <input formControlName="ADDR_FULL"                      id="entity-address"                      type="text"                      list="search-history-entity-address"                      [attr.disabled]="getDisabled(\'address\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Search for Address">              <datalist *ngIf="searchHistoryAddress.length > 0" id="search-history-entity-address">                <option *ngFor="let item of searchHistoryAddress" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field phone" [class.disabled]="disabledFields[\'phone\']" *ngIf="!hiddenFields[\'phone\']">              <label for="entity-phone">Phone</label>              <input formControlName="PHONE_NUMBER"                      id="entity-phone"                      type="text"                      list="search-history-entity-phone"                      [attr.disabled]="getDisabled(\'phone\')"                      placeholder="Phone #">              <datalist *ngIf="searchHistoryPhone.length > 0" id="search-history-entity-phone">                <option *ngFor="let item of searchHistoryPhone" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field email" [class.disabled]="disabledFields[\'email\']" *ngIf="!hiddenFields[\'email\']">              <label for="entity-email">Email</label>              <input formControlName="EMAIL_ADDRESS"                      id="entity-email"                      type="text"                      list="search-history-entity-email"                      [attr.disabled]="getDisabled(\'email\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Email Address">              <datalist *ngIf="searchHistoryEmail.length > 0" id="search-history-entity-email">                <option *ngFor="let item of searchHistoryEmail" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field spacer">            </div>            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">Clear Search Criteria</button>            </div>          </div>          <div class="sz-row bottom">            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">Clear</button>            </div>            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">              <button mat-button class="button__search-go"              [attr.disabled]="getDisabled(\'searchButton\')"              (click)="submitSearch()">Search</button>            </div>          </div>        </form>      </section>    </div></div>'
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzSearchComponent'};
 </script>

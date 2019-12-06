@@ -16,8 +16,42 @@ import { SzEntityDetailGraphFilterComponent } from './sz-entity-detail-graph-fil
 import { SzRelationshipNetworkComponent, NodeFilterPair, SzNetworkGraphInputs } from '@senzing/sdk-graph-components';
 
 /**
- * @internal
- * @export
+ * Embeddable Graph Component
+ * used to display a entity and its network relationships
+ * to other entities visually.
+ *
+ * Optionally can display a embedded filter control to allow user
+ * to change the components parameters of this component.
+ *
+ * @example <!-- (Angular) -->
+ * <sz-standalone-graph
+          filterWidth="320"
+          [graphIds]="graphIds"
+          [showPopOutIcon]="false"
+          [showMatchKeyControl]="false"
+          [showFiltersControl]="false"
+          [filterControlPosition]="'top-right'"
+          (entityClick)="onGraphEntityClick($event)"
+          [showMatchKeys]="true"
+      ></sz-standalone-graph>
+ *
+ * @example <!-- (WC) by attribute -->
+ * <sz-standalone-graph
+          filter-width="320"
+          graph-ids="1,1001,1002"
+          show-pop-out-icon="false"
+          show-match-key-control="false"
+          show-filters-control="false"
+          filter-control-position="top-right"
+          show-match-keys="true"
+      ></sz-standalone-graph>
+ *
+ * @example <!-- (WC) by DOM -->
+ * <sz-standalone-graph id="sz-standalone-graph"></sz-standalone-graph>
+ * <script>
+ * document.getElementById('sz-standalone-graph').graphIds = [1,1001,1002];
+ * document.getElementById('sz-standalone-graph').addEventListener('entityClick', (data) => { console.log('entity clicked on!', data); })
+ * </script>
  */
 @Component({
   selector: 'sz-standalone-graph',
