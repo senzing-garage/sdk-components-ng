@@ -18,10 +18,16 @@ export class SzFoliosService {
   /** the collection that holds the users saved searches */
   public searches: SzSearchParamsFolio[] = [];
 
-  /** the top lvl folio that holds last "X" searches performed */
-  public  search_history: SzSearchHistoryFolio = new SzSearchHistoryFolio();
+  /** convenience proxy getter to prefs search history location */
+  public get search_history(): SzSearchHistoryFolio {
+    return this.prefs.searchForm.searchHistory;
+  }
+  /** convenience proxy setter to prefs search history location */
+  public set search_history(value: SzSearchHistoryFolio) {
+    this.prefs.searchForm.searchHistory = value;
+  }
   /** the behavior subject used for broadcasting the searchHistoryUpdated event */
-  private search_history$ = new BehaviorSubject( this.search_history );
+  private search_history$ = new BehaviorSubject( this.prefs.searchForm.searchHistory );
   /** the observeable that can be listend for when the search history is updated */
   public  searchHistoryUpdated: Observable<SzSearchHistoryFolio> = this.search_history$.asObservable();
 
@@ -35,30 +41,57 @@ export class SzFoliosService {
       this.addToSearchHistory(evt);
     });
 
-    // make sure initial value of "search_history" folios are current with that
-    // from prefs storage
-    this.search_history =  this.prefs.searchForm.searchHistory ? this.prefs.searchForm.searchHistory : new SzSearchHistoryFolio();
-    console.log('SzFoliosService.search_history ', this.prefs.searchForm.searchHistory, this.search_history);
+    //console.log('SzFoliosService.search_history ', this.prefs.searchForm.searchHistory, this.search_history);
     if( this.prefs ) {
       this.prefs.prefsChanged.subscribe( (
         json
       ) => {
         if(json.searchForm && json.searchForm.rememberLastSearches && this.search_history && this.search_history.maxItems) {
-          this.search_history.maxItems = json.searchForm.rememberLastSearches
+          this.search_history.maxItems = json.searchForm.rememberLastSearches;
         }
-        //console.log('SzSearchHistoryFolio.prefsChanged: ', json, this.prefs.searchForm.rememberLastSearches);
+        //console.warn('SzSearchHistoryFolio.prefsChanged: ', json.searchForm, json, this.prefs.searchForm.rememberLastSearches);
       });
     }
   }
 
+  public searchHistoryChanged(source: SzSearchHistoryFolio, dest: SzSearchHistoryFolio) {
+    let retVal = false;
+    if(source && !dest){
+      // no previous value
+      retVal = true;
+    } else if(source && dest){
+      // compare values
+      if(source.toJSONObject && dest.toJSONObject) {
+        // most accurate
+        // json literal
+        if(source.toJSONObject() !== dest.toJSONObject()) {
+          retVal = true;
+        }
+      }
+    } else if(!source && dest) {
+      // no new value
+      // erase existing one
+      retVal = true
+    }
+    return retVal;
+  }
+  /** add search to history stack */
   public addToSearchHistory(data: SzSearchEvent) {
     let newSearchHistoryItem = new SzSearchHistoryFolioItem(data.params);
-    if(this.search_history && this.search_history.add){
-      this.search_history.add( newSearchHistoryItem );
-      this.search_history$.next( this.search_history );
+    if (!this.search_history) {
+      // WHAAAAAAHHHHHH??? o.O
+      // ummm.. no. make it so.
+      this.prefs.searchForm.searchHistory = new SzSearchHistoryFolio( [newSearchHistoryItem] );
+      console.log('SzFoliosService.addToSearchHistory: CREATED BRAND NEW FOLIO!!', this.search_history );
+    } else if(this.search_history && this.search_history.add) {
+      const _added = this.search_history.add( newSearchHistoryItem, false );
+      if( _added ){
+        this.search_history$.next( this.search_history );
+        console.log('SzFoliosService.addToSearchHistory: ('+ _added +')', this.search_history, this.prefs.searchForm);
+        // emit change event manually since we are not using built in prefs setter
+        // ie: "this.prefs.searchForm.searchHistory = SzSearchHistoryFolio"
+        this.prefs.searchForm.prefsChanged.next( this.prefs.searchForm.toJSONObject() );
+      }
     }
-    this.prefs.searchForm.searchHistory = this.search_history;
-
-    // console.log('SzFoliosService.addToSearchHistory\n\r', this.prefs.searchForm.searchHistory, this.search_history.toJSONObject());
   }
 }
