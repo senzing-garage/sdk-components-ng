@@ -87,13 +87,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="modules/SenzingSdkModule.html" data-type="entity-link">SenzingSdkModule</a>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#components-links-module-SenzingSdkModule-2de1d4a17edcc2ac98176575954aee83"' : 'data-target="#xs-components-links-module-SenzingSdkModule-2de1d4a17edcc2ac98176575954aee83"' }>
+                                            'data-target="#components-links-module-SenzingSdkModule-529f339316fb79d2afd25b47dfcd8996"' : 'data-target="#xs-components-links-module-SenzingSdkModule-529f339316fb79d2afd25b47dfcd8996"' }>
                                             <span class="icon ion-md-cog"></span>
                                             <span>Components</span>
                                             <span class="icon ion-ios-arrow-down"></span>
                                         </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-SenzingSdkModule-2de1d4a17edcc2ac98176575954aee83"' :
-                                            'id="xs-components-links-module-SenzingSdkModule-2de1d4a17edcc2ac98176575954aee83"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-SenzingSdkModule-529f339316fb79d2afd25b47dfcd8996"' :
+                                            'id="xs-components-links-module-SenzingSdkModule-529f339316fb79d2afd25b47dfcd8996"' }>
                                             <li class="link">
                                                 <a href="components/SzConfigurationAboutComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzConfigurationAboutComponent</a>
@@ -111,16 +111,20 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzEntityDetailGraphFilterComponent</a>
                                             </li>
                                             <li class="link">
+                                                <a href="components/SzEntityRecordViewerComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzEntityRecordViewerComponent</a>
+                                            </li>
+                                            <li class="link">
                                                 <a href="components/SzPoweredByComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzPoweredByComponent</a>
                                             </li>
                                             <li class="link">
-                                                <a href="components/SzPrefDictComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzPrefDictComponent</a>
-                                            </li>
-                                            <li class="link">
                                                 <a href="components/SzPreferencesComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzPreferencesComponent</a>
+                                            </li>
+                                            <li class="link">
+                                                <a href="components/SzSearchByIdComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzSearchByIdComponent</a>
                                             </li>
                                             <li class="link">
                                                 <a href="components/SzSearchComponent.html"
@@ -130,17 +134,25 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                                 <a href="components/SzSearchResultsComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzSearchResultsComponent</a>
                                             </li>
+                                            <li class="link">
+                                                <a href="components/SzStandaloneGraphComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzStandaloneGraphComponent</a>
+                                            </li>
                                         </ul>
                                     </li>
                                 <li class="chapter inner">
                                     <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                        'data-target="#injectables-links-module-SenzingSdkModule-2de1d4a17edcc2ac98176575954aee83"' : 'data-target="#xs-injectables-links-module-SenzingSdkModule-2de1d4a17edcc2ac98176575954aee83"' }>
+                                        'data-target="#injectables-links-module-SenzingSdkModule-529f339316fb79d2afd25b47dfcd8996"' : 'data-target="#xs-injectables-links-module-SenzingSdkModule-529f339316fb79d2afd25b47dfcd8996"' }>
                                         <span class="icon ion-md-arrow-round-down"></span>
                                         <span>Injectables</span>
                                         <span class="icon ion-ios-arrow-down"></span>
                                     </div>
-                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-SenzingSdkModule-2de1d4a17edcc2ac98176575954aee83"' :
-                                        'id="xs-injectables-links-module-SenzingSdkModule-2de1d4a17edcc2ac98176575954aee83"' }>
+                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-SenzingSdkModule-529f339316fb79d2afd25b47dfcd8996"' :
+                                        'id="xs-injectables-links-module-SenzingSdkModule-529f339316fb79d2afd25b47dfcd8996"' }>
+                                        <li class="link">
+                                            <a href="injectables/SzAdminService.html"
+                                                data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>SzAdminService</a>
+                                        </li>
                                         <li class="link">
                                             <a href="injectables/SzConfigurationService.html"
                                                 data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>SzConfigurationService</a>
@@ -148,6 +160,10 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                         <li class="link">
                                             <a href="injectables/SzDataSourcesService.html"
                                                 data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>SzDataSourcesService</a>
+                                        </li>
+                                        <li class="link">
+                                            <a href="injectables/SzFoliosService.html"
+                                                data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>SzFoliosService</a>
                                         </li>
                                         <li class="link">
                                             <a href="injectables/SzPdfUtilService.html"
@@ -182,6 +198,12 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="classes/SzEntityDetailPrefs.html" data-type="entity-link">SzEntityDetailPrefs</a>
                             </li>
                             <li class="link">
+                                <a href="classes/SzFolio.html" data-type="entity-link">SzFolio</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/SzFolioItem.html" data-type="entity-link">SzFolioItem</a>
+                            </li>
+                            <li class="link">
                                 <a href="classes/SzGraphPrefs.html" data-type="entity-link">SzGraphPrefs</a>
                             </li>
                             <li class="link">
@@ -189,6 +211,18 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             </li>
                             <li class="link">
                                 <a href="classes/SzSearchFormPrefs.html" data-type="entity-link">SzSearchFormPrefs</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/SzSearchHistoryFolio.html" data-type="entity-link">SzSearchHistoryFolio</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/SzSearchHistoryFolioItem.html" data-type="entity-link">SzSearchHistoryFolioItem</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/SzSearchParamsFolio.html" data-type="entity-link">SzSearchParamsFolio</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/SzSearchParamsFolioItem.html" data-type="entity-link">SzSearchParamsFolioItem</a>
                             </li>
                             <li class="link">
                                 <a href="classes/SzSearchResultsPrefs.html" data-type="entity-link">SzSearchResultsPrefs</a>
@@ -207,10 +241,16 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             </div>
                             <ul class="links collapse " ${ isNormalMode ? 'id="injectables-links"' : 'id="xs-injectables-links"' }>
                                 <li class="link">
+                                    <a href="injectables/SzAdminService.html" data-type="entity-link">SzAdminService</a>
+                                </li>
+                                <li class="link">
                                     <a href="injectables/SzConfigurationService.html" data-type="entity-link">SzConfigurationService</a>
                                 </li>
                                 <li class="link">
                                     <a href="injectables/SzDataSourcesService.html" data-type="entity-link">SzDataSourcesService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="injectables/SzFoliosService.html" data-type="entity-link">SzFoliosService</a>
                                 </li>
                                 <li class="link">
                                     <a href="injectables/SzPdfUtilService.html" data-type="entity-link">SzPdfUtilService</a>
@@ -257,6 +297,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             </li>
                             <li class="link">
                                 <a href="interfaces/SzSdkPrefsModel.html" data-type="entity-link">SzSdkPrefsModel</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/SzSearchEvent.html" data-type="entity-link">SzSearchEvent</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/SzSearchResultEntityData.html" data-type="entity-link">SzSearchResultEntityData</a>

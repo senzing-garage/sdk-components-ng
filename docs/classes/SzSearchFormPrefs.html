@@ -135,6 +135,10 @@ Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsS
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#fromJSONObject">fromJSONObject</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#toJSONObject">toJSONObject</a>
                             </li>
                             <li>
@@ -162,6 +166,9 @@ Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsS
                                 </li>
                                 <li>
                                     <a href="#savedSearches">savedSearches</a>
+                                </li>
+                                <li>
+                                    <a href="#searchHistory">searchHistory</a>
                                 </li>
                                 <li>
                                     <a href="#allowedTypeAttributes">allowedTypeAttributes</a>
@@ -213,7 +220,10 @@ Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsS
                     <tr>
                         <td class="col-md-4">
                             <i>Default value : </i><code>[
-    &#x27;allowedTypeAttributes&#x27;
+    &#x27;rememberLastSearches&#x27;,
+    &#x27;allowedTypeAttributes&#x27;,
+    &#x27;savedSearches&#x27;,
+    &#x27;searchHistory&#x27;
   ]</code>
                         </td>
                     </tr>
@@ -339,6 +349,77 @@ notifications.</p>
     <h3 id="methods">
         Methods
     </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fromJSONObject"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            fromJSONObject
+                        </b>
+                        <a href="#fromJSONObject"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>fromJSONObject(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>the search form prefs contain a folio collection that automagically update
+when a user executes a search. Because of this additional functionality
+the usual fromJSONObject needs to perform some special logic to initialize
+the prefs from JSON like create class instances etc.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -582,12 +663,88 @@ notifications.</p>
                                 <div class="io-description"><p>get list of last searches performed. </p>
 </div>
 
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../classes/SzSearchParamsFolio.html" target="_self" >SzSearchParamsFolio[]</a></code>
+
+                                </div>
                         </td>
                     </tr>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>savedSearches(value)</code></span>
+                        <span class="accessor"><b>set</b><code>savedSearches(value: [])</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>update list of last searches performed. </p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code>[]</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchHistory"></a>
+                        <span class="name"><b>searchHistory</b><a href="#searchHistory"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>searchHistory()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>get list of last searches performed. </p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../classes/SzSearchHistoryFolio.html" target="_self" >SzSearchHistoryFolio</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>searchHistory(value)</code></span>
                     </td>
                 </tr>
                     <tr>
