@@ -54,27 +54,6 @@ export class SzFoliosService {
     }
   }
 
-  public searchHistoryChanged(source: SzSearchHistoryFolio, dest: SzSearchHistoryFolio) {
-    let retVal = false;
-    if(source && !dest){
-      // no previous value
-      retVal = true;
-    } else if(source && dest){
-      // compare values
-      if(source.toJSONObject && dest.toJSONObject) {
-        // most accurate
-        // json literal
-        if(source.toJSONObject() !== dest.toJSONObject()) {
-          retVal = true;
-        }
-      }
-    } else if(!source && dest) {
-      // no new value
-      // erase existing one
-      retVal = true
-    }
-    return retVal;
-  }
   /** add search to history stack */
   public addToSearchHistory(data: SzSearchEvent) {
     let newSearchHistoryItem = new SzSearchHistoryFolioItem(data.params);
