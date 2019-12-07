@@ -6,8 +6,27 @@ import { SzSearchByIdFormParams } from '../search/sz-search/sz-search-by-id.comp
 
 /**
  * A component for displaying the result(s) of the sz-search-by-id
- * when the results are of type SzEntityRecord
+ * when the results are of type SzEntityRecord. The fragment only displays information
+ * that was present in the record itself. The easiest way to use this component is to pair it
+ * with the <sz-search-by-id> component.
  * @export
+ *
+ * @example <!-- (Angular) -->
+ * <sz-search-by-id #searchBox
+  [dataSource]="'COMPANIES'"
+  (resultChange)="formResult = $event"></sz-search-by-id>
+ * <sz-entity-record-viewer *ngIf="formResult" [record]="formResult"></sz-entity-record-viewer>
+ *
+ * @example <!-- (WC) -->
+ * <sz-search-by-id id="formInput"
+  data-source="COMPANIES"></sz-search-by-id>
+ * <sz-entity-record-viewer id="formResult">
+ * </sz-entity-record-viewer>
+ * <script>
+ * document.getElementById('formInput').addEventListener('resultChange', function(evt) {
+ *     document.getElementById('formResult').record = evt.data;
+ * });
+ * </script>
  */
 @Component({
   selector: 'sz-entity-record-viewer',

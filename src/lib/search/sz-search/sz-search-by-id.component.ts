@@ -51,10 +51,11 @@ const parseBool = (value: any): boolean => {
  *
  * @example <!-- (WC javascript) SzSearchByIdComponent -->
  * <sz-search-by-id
- * dataSource="SAMPLE_PERSON"
- * recordId="1001"></sz-search-by-id>
+ * id="sz-search"
+ * data-source="SAMPLE_PERSON"
+ * record-id="1001"></sz-search-by-id>
  * <script>
- *  document.getElementById('sz-search').addEventListener('resultChange', (results) => {
+ *  document.getElementById('sz-search').addEventListener('resultChange', function(results) {
  *    console.log('results: ', results);
  *  });
  * </script>

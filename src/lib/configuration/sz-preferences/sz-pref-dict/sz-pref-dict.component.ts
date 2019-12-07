@@ -2,13 +2,10 @@ import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular
 import { Configuration as SzRestConfiguration } from '@senzing/rest-api-client-ng';
 
 /**
- * Provides a component that lists all current API connection config parameters as
- * a human readable table.
+ * A special object that abstracts away the model management and eventing
+ * for linking specific preferences data(SzPrefsModel) to object of key value pairs. )
  *
- * @example
- * <sz-configuration-about></sz-configuration-about>
- *
- * @export
+ * @internal
  */
 @Component({
   selector: 'sz-pref-dict',

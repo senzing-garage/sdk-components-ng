@@ -9,7 +9,19 @@ import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@ang
  * Control Component allowing UI friendly changes
  * to filtering, colors, and parameters of graph control.
  *
- * integrated with graph preferences and prefBUS
+ * integrated with graph preferences and prefBUS.
+ *
+ * @example <!-- (Angular) -->
+ * <sz-entity-detail-graph-filter #graphFilter
+      [showLinkLabels]="true"
+      (optionChanged)="onOptionChange($event)"
+      ></sz-entity-detail-graph-filter>
+ *
+ * @example <!-- (WC) -->
+ * <sz-entity-detail-graph-filter id="sz-entity-detail-graph-filter"></sz-entity-detail-graph-filter>
+ * <script>
+ * document.getElementById('sz-entity-detail-graph-filter').addEventListener('optionChanged', function(data) { console.log('filter(s) changed', data); });
+ * </script>
  */
 @Component({
   selector: 'sz-entity-detail-graph-filter',

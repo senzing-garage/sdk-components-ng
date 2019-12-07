@@ -139,9 +139,20 @@ export class SzSearchHistoryFolio extends SzSearchParamsFolio {
   /**
    * Add a new search parameter set to the stack
    */
-  public add( item: SzSearchHistoryFolioItem ) {
-    this.items.push( item );
-    this.items = this.trimItemsTo(this.maxItems);
+  public add( item: SzSearchHistoryFolioItem, overwrite:boolean = true ): Boolean {
+    let _exists = this.exists(item);
+    let retVal = false;
+    if( overwrite || !_exists){
+      this.items.push( item );
+      this.items = this.trimItemsTo(this.maxItems);
+      retVal = true;
+      // console.log('added SzSearchHistoryFolioItem: ', item);
+    } else if (_exists) {
+      // already exists
+      // console.warn('tried to add already existing item: ', item);
+      retVal = false;
+    }
+    return retVal;
   }
   /** get a json representation model of this class and its items. */
   public toJSONObject(): {name?: string, items: any} {
@@ -172,6 +183,27 @@ export class SzSearchHistoryFolio extends SzSearchParamsFolio {
       }
     }
     return _retVal;
+  }
+
+  /** whether or not the folio item passed in already exists in collection */
+  exists(item: SzSearchHistoryFolioItem): boolean {
+    let retVal = false;
+    if(item && this.items && this.items.length > 0) {
+      retVal = this.items.some( (hItem: SzSearchHistoryFolioItem) => {
+        return (JSON.stringify(hItem.data) == JSON.stringify(item.data));
+      });
+    }
+    return retVal;
+  }
+  /** returns the index position of an existing folio item */
+  indexOf(item: SzSearchHistoryFolioItem): number {
+    let retVal = -1;
+    if(item && this.items && this.items.length > 0 && this.items.findIndex) {
+      retVal = this.items.findIndex( (hItem: SzSearchHistoryFolioItem) => {
+        return (JSON.stringify(hItem.data) == JSON.stringify(item.data));
+      });
+    }
+    return retVal;
   }
 
   /**
