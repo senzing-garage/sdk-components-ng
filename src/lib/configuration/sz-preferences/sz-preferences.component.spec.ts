@@ -42,10 +42,10 @@ describe('SzPreferencesComponent', () => {
   });
 
   describe('should have column: ', () => {
-    it('search results', () => {
+    it('search', () => {
       fixture.componentInstance.showControls = true;
       fixture.detectChanges();
-      let dbgEle = fixture.debugElement.query( By.css('.prefs-ui-column-search-results'));
+      let dbgEle = fixture.debugElement.query( By.css('.prefs-ui-column-search'));
       expect(dbgEle).toBeTruthy();
     });
     it('entity detail', () => {
