@@ -26,7 +26,7 @@
                       (keyup.enter)="onKeyEnter()"
                       placeholder="Search for Name"
                       (input)="checkHistoryForMatchOnChange($event)">
-              <datalist *ngIf="searchHistoryName.length > 0" id="search-history-entity-name">
+              <datalist *ngIf="searchHistoryName.length > 0 && !searchHistoryDisabled" id="search-history-entity-name">
                 <option *ngFor="let item of searchHistoryName" [value]="item">{{item}}</option>
               </datalist>
             </div>
@@ -39,7 +39,7 @@
                       [attr.disabled]="getDisabled('dob')"
                       (keyup.enter)="onKeyEnter()"
                       placeholder="mm/dd/yyyy">
-              <datalist *ngIf="searchHistoryDob.length > 0" id="search-history-entity-dob">
+              <datalist *ngIf="searchHistoryDob.length > 0 && !searchHistoryDisabled" id="search-history-entity-dob">
                 <option *ngFor="let item of searchHistoryDob" [value]="item">{{item}}</option>
               </datalist>
             </div>
@@ -52,7 +52,7 @@
                       [attr.disabled]="getDisabled('identifier')"
                       (keyup.enter)="onKeyEnter()"
                       placeholder="Number">
-              <datalist *ngIf="searchHistoryIdentifier.length > 0" id="search-history-entity-identifier">
+              <datalist *ngIf="searchHistoryIdentifier.length > 0 && !searchHistoryDisabled" id="search-history-entity-identifier">
                 <option *ngFor="let item of searchHistoryIdentifier" [value]="item">{{item}}</option>
               </datalist>
             </div>
@@ -86,7 +86,7 @@
                       [attr.disabled]="getDisabled('address')"
                       (keyup.enter)="onKeyEnter()"
                       placeholder="Search for Address">
-              <datalist *ngIf="searchHistoryAddress.length > 0" id="search-history-entity-address">
+              <datalist *ngIf="searchHistoryAddress.length > 0 && !searchHistoryDisabled" id="search-history-entity-address">
                 <option *ngFor="let item of searchHistoryAddress" [value]="item">{{item}}</option>
               </datalist>
             </div>
@@ -98,7 +98,7 @@
                       list="search-history-entity-phone"
                       [attr.disabled]="getDisabled('phone')"
                       placeholder="Phone #">
-              <datalist *ngIf="searchHistoryPhone.length > 0" id="search-history-entity-phone">
+              <datalist *ngIf="searchHistoryPhone.length > 0 && !searchHistoryDisabled" id="search-history-entity-phone">
                 <option *ngFor="let item of searchHistoryPhone" [value]="item">{{item}}</option>
               </datalist>
             </div>
@@ -111,7 +111,7 @@
                       [attr.disabled]="getDisabled('email')"
                       (keyup.enter)="onKeyEnter()"
                       placeholder="Email Address">
-              <datalist *ngIf="searchHistoryEmail.length > 0" id="search-history-entity-email">
+              <datalist *ngIf="searchHistoryEmail.length > 0 && !searchHistoryDisabled" id="search-history-entity-email">
                 <option *ngFor="let item of searchHistoryEmail" [value]="item">{{item}}</option>
               </datalist>
             </div>

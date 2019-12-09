@@ -128,6 +128,14 @@ export class SzSearchComponent implements OnInit, OnDestroy {
   /** the default amount of searches to store in the search history folio. */
   private rememberLastSearches: number = 20;
 
+  /** whether or not to display search history drop downs. set from searchform prefs */
+  public get searchHistoryDisabled(): boolean {
+    if(this.prefs && this.prefs.searchForm) {
+      return this.prefs.searchForm.disableSearchHistory;
+    }
+    return false;
+  }
+
   /** the folio items that holds last "X" searches performed */
   public search_history: SzSearchHistoryFolioItem[];
 
