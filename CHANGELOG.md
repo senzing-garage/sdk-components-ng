@@ -10,8 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added to 1.1.0
 
-## [1.0.9] - 2019-09-23
-
 - pop out graph icon
 - new "example/search-in-graph" project to show search integrating directly with graph
 - new *[SzPrefDictComponent](https://senzing.github.io/sdk-components-ng/components/SzPrefDictComponent.html)* for displaying pref(s) that are object/key/value based(ie json object)
@@ -24,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - relevant tickets
   - [#105](https://github.com/Senzing/sdk-components-ng/issues/105)
   - [#104](https://github.com/Senzing/sdk-components-ng/issues/104)
+
+## [1.0.9] - 2019-09-23
 
 ### Added to 1.0.9
 
