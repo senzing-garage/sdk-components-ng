@@ -89,6 +89,8 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _rememberLastSearches: number = 10;
   /** @internal */
+  private _disableSearchHistory: boolean = false;
+  /** @internal */
   private _savedSearches: SzSearchParamsFolio[];
   /** @internal */
   private _searchHistory: SzSearchHistoryFolio;
@@ -109,6 +111,7 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
    */
   jsonKeys = [
     'rememberLastSearches',
+    'disableSearchHistory',
     'allowedTypeAttributes',
     'savedSearches',
     'searchHistory'
@@ -123,6 +126,15 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
   public set rememberLastSearches(value: number) {
     this._rememberLastSearches = value;
     if( this._searchHistory && this._searchHistory.maxItems !== value) { this._searchHistory.maxItems = value; }
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** whether or not to disable search form history drop downs. */
+  public get disableSearchHistory(): boolean {
+    return this._disableSearchHistory;
+  }
+  /** whether or not to disable search form history drop downs. */
+  public set disableSearchHistory(value: boolean) {
+    this._disableSearchHistory = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** get list of last searches performed. */

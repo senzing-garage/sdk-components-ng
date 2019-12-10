@@ -54,6 +54,9 @@
 
     .prefs-ui-column-inner {
       display: inline-block;
+      &.prefs-ui-column-inner-search {
+        margin-bottom: 20px;
+      }
     }
   }
 }
