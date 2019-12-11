@@ -1,9 +1,10 @@
 <div *ngIf="showControls" class="sz-preferences">
     <div class="prefs-ui-lists">
-        <!-- start search form prefs -->
-        <div class="prefs-ui-column prefs-ui-column-search-form">
+        <!-- start search prefs -->
+        <div class="prefs-ui-column prefs-ui-column-search">
+            <!-- start search form prefs -->
             <h4 class="title">Search</h4>
-            <ul class="prefs-ui-column-inner">
+            <ul class="prefs-ui-column-inner prefs-ui-column-inner-search">
                 <li *ngFor="let opt of searchFormOptions; let i = index" [attr.pref-key]="opt.name">
                     <input *ngIf="opt.inputType == 'checkbox'" [attr.id]="'c1-opts-search-form-'+ i" type="checkbox"
                     [checked]="boolPrefChecked('searchForm', opt.name)"
@@ -16,10 +17,8 @@
                     <label [attr.for]="'c1-opts-search-form-'+ i">{{ toSentenceCase(opt.name) | titlecase }}</label>
                 </li>
             </ul>
-        </div>
-        <!-- end search form prefs -->
-        <!-- start search results prefs -->
-        <div class="prefs-ui-column prefs-ui-column-search-results">
+            <!-- end search form prefs -->
+            <!-- start search results prefs -->
             <h4 class="title">Search Results</h4>
             <ul class="prefs-ui-column-inner">
                 <li *ngFor="let opt of searchResultsOptions; let i = index" [attr.pref-key]="opt.name">
@@ -34,8 +33,9 @@
                     <label [attr.for]="'c2-opts-search-results-'+ i">{{ toSentenceCase(opt.name) | titlecase }}<!-- <span class="pref-key">({{opt.name}})</span> --></label>
                 </li>
             </ul>
+            <!-- end search results prefs -->
         </div>
-        <!-- end search results prefs -->
+        <!-- end search prefs -->
         <!-- start entity detail prefs -->
         <div class="prefs-ui-column prefs-ui-column-entity-detail">
             <h4 class="title">Entity Detail</h4>
