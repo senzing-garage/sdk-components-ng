@@ -120,6 +120,11 @@ export class SzSearchHistoryFolio extends SzSearchParamsFolio {
   public name: string = 'Search History';
   /** The number of searches back to store in the folio */
   public maxItems: number = 20;
+  /** update mode. when a user searches for something that is already
+   * in the search history should the item be moved to the top of the
+   * stack, updated in place, or ignored. possible values are -1(ignore), 0(replace), 1(update position)
+   */
+  public updateMode = 1;
 
   /** gets the history folio items in decending chronological order */
   public get history(): SzSearchHistoryFolioItem[] {
@@ -149,8 +154,22 @@ export class SzSearchHistoryFolio extends SzSearchParamsFolio {
       // console.log('added SzSearchHistoryFolioItem: ', item);
     } else if (_exists) {
       // already exists
-      // console.warn('tried to add already existing item: ', item);
-      retVal = false;
+      let _indexOf = this.indexOf(item);
+      retVal = false; // set to false, but if we replace set to true
+
+      if(this.updateMode === 0 && this.items && this.items[ _indexOf ]) {
+        // just update
+        this.items[ _indexOf ] = item;
+      } else if (this.updateMode === 1){
+        // remove from existing position
+        if(_indexOf > -1 && this.items.splice && _indexOf < (this.items.length - 1)) {
+          this.items.splice(_indexOf, 1);
+        }
+        // add at new index
+        this.items.push( item );
+        console.warn('updated already existing item('+ _indexOf +'). moved to top of stack ', this.items );
+        retVal = true;
+      }
     }
     return retVal;
   }
