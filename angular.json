@@ -249,7 +249,8 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "example/admin-importing:build",
-            "port": 4300
+            "port": 4300,
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {
@@ -463,7 +464,8 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "example/search-with-results-and-details:build",
-            "port": 4300
+            "port": 4300,
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {
