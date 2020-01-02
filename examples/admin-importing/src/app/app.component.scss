@@ -1,12 +1,22 @@
 
 :host {
-  .download-pdf {
-    padding: 5px 10px;
-    display: inline-flex;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
+  .server-info {
+    display: flex;
+    flex-direction: row;
+    * {
+      display: inline-flex;
+      border: 1px solid #c0c0c0;
+      padding: 5px 10px;
+      margin: 0 10px;
+      background-color: #eee;
 
-    svg { margin-right: 5px; }
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &.active {
+        background-color: green;
+      }
+    }
   }
 }

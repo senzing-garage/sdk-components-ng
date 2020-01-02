@@ -6,4 +6,8 @@
   when the <b>senzing-rest-api-server</b> is running in <b><i>admin mode</i></b>.
 </div>
 
-<h2>TAGS GO HERE</h2>
+<div class="server-info">
+  <div [class.active]="adminEnabled">Admin Enabled: {{adminEnabled}}</div>
+  <div [class.active]="!readOnly">Read Only: {{readOnly}}</div>
+</div>
+<hr/>

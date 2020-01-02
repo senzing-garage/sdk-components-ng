@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import {
   AdminService, ConfigService,
   Body2 as SzBaseResponseBody,
@@ -46,6 +46,18 @@ export class SzAdminService {
   /** server information from the api server interface */
   public serverInfo: SzServerInfo;
 
+  /** properties from serverInfo endpoint */
+  public concurrency: number;
+  public activeConfigId: number;
+  public dynamicConfig: boolean;
+  public readOnly: boolean = true;
+  public adminEnabled: boolean = false;
+
+  /** event broadcasters */
+  public onVersionInfo: Subject<SzVersionInfo> = new Subject<SzVersionInfo>();
+  public onLicenseInfo: Subject<SzLicenseInfo> = new Subject<SzLicenseInfo>();
+  public onServerInfo: Subject<SzServerInfo> = new Subject<SzServerInfo>();
+
   constructor(
     private adminService: AdminService,
     private configService: ConfigService,
@@ -60,9 +72,19 @@ export class SzAdminService {
       this.nativeApiBuildDate = info.nativeApiBuildDate;
       this.nativeApiBuildNumber = info.nativeApiBuildNumber;
       this.nativeApiVersion = info.nativeApiVersion;
+      this.onVersionInfo.next(this.versionInfo);
     });
     this.getLicenseInfo().subscribe( (info: SzLicenseInfo) => {
-      this.licenseInfo = info;
+      this.onLicenseInfo.next(this.licenseInfo);
+    });
+    this.getServerInfo().subscribe( (info: SzServerInfo) => {
+      console.info('SzAdminService.getServerInfo: ', info);
+      this.concurrency = info.concurrency;
+      this.activeConfigId = info.activeConfigId;
+      this.dynamicConfig = info.dynamicConfig;
+      this.readOnly = info.readOnly;
+      this.adminEnabled = info.adminEnabled;
+      this.onServerInfo.next(this.serverInfo);
     });
   }
 
