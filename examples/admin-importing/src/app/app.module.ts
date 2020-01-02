@@ -41,7 +41,7 @@ export function SzRestConfigurationFactory() {
     ReactiveFormsModule,
     SenzingSdkModule.forRoot( SzRestConfigurationFactory ),
     SenzingSdkGraphModule.forRoot( SzRestConfigurationFactory ),
-    SenzingDataServiceModule.forRoot( SzRestConfigurationFactory ),
+    SenzingDataServiceModule.forRoot( SzRestConfigurationFactory )
   ],
   providers: [
     SzPrefsService,

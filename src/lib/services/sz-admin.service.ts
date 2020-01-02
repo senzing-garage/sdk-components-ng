@@ -1,9 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AdminService,
+import {
+  AdminService, ConfigService,
+  Body2 as SzBaseResponseBody,
+  SzAttributeClass, SzAttributeTypesResponse, SzAttributeTypesResponseData,
+  SzEntityClassDescriptor,
+  SzEntityTypeResponse, SzEntityTypeResponseData, SzEntityTypeDescriptor,
+  SzDataSourcesResponse,
   SzBaseResponse, SzBaseResponseMeta,
   SzLicenseResponse, SzLicenseInfo,
-  SzVersionResponse, SzVersionInfo } from '@senzing/rest-api-client-ng';
+  SzVersionResponse, SzVersionInfo, SzAttributeTypeResponse, SzAttributeTypeResponseData, SzAttributeType, SzConfigResponse, SzEntityClassResponse, SzDataSourceResponse, SzEntityClassesResponse, SzEntityTypesResponse, BulkDataService, SzBulkDataAnalysisResponse, SzBulkDataLoadResponse, SzServerInfo, SzServerInfoResponse, SzDataSourcesResponseData, SzEntityClassesResponseData, SzEntityTypesResponseData } from '@senzing/rest-api-client-ng';
 import { map, tap } from 'rxjs/operators';
 
 /**
@@ -37,8 +43,14 @@ export class SzAdminService {
   public versionInfo: SzVersionInfo;
   /** license information from the api server interface */
   public licenseInfo: SzLicenseInfo;
+  /** server information from the api server interface */
+  public serverInfo: SzServerInfo;
 
-  constructor(private adminService: AdminService) {
+  constructor(
+    private adminService: AdminService,
+    private configService: ConfigService,
+    private bulkDataService: BulkDataService
+    ) {
     // this.sdkComponentsVersion = sdkVersion;
     // get information from api server from adminService
     this.getVersionInfo().subscribe( (info: SzVersionInfo) => {
@@ -78,6 +90,134 @@ export class SzAdminService {
     .pipe(
       map( (resp: SzVersionResponse) => resp.data ),
       tap( (versInfo: SzVersionInfo ) => { this.versionInfo = versInfo; })
+    );
+  }
+  /** get server information from the rest-api-server host */
+  public getServerInfo(): Observable<SzServerInfo> {
+    // get attributes
+    return this.adminService.getServerInfo()
+    .pipe(
+      map( (resp: SzServerInfoResponse) => resp.data ),
+      tap( (data: SzServerInfo ) => { this.serverInfo = data; })
+    );
+  }
+  public addDataSources(body?: string | Body, dataSource?: string, withRaw?: boolean, observe?: "body", reportProgress?: boolean): Observable<SzDataSourcesResponseData> {
+    // get attribute type
+    return this.configService.addDataSources(body, dataSource, withRaw, observe, reportProgress)
+    .pipe(
+      map( (resp: SzDataSourcesResponse) => resp.data )
+    );
+  }
+  public addEntityClasses(body?: SzEntityClassDescriptor[], entityClass?: string, resolving?: boolean, observe?: "body", reportProgress?: boolean): Observable<SzEntityClassesResponseData> {
+    // get attribute type
+    return this.configService.addEntityClasses(body, entityClass, resolving, observe, reportProgress)
+    .pipe(
+      map( (resp: SzEntityClassesResponse) => resp.data )
+    );
+  }
+  public addEntityTypes(body?: SzBaseResponseBody, entityType?: string, entityClass?: string, observe?: "body", reportProgress?: boolean): Observable<SzEntityTypesResponseData> {
+    // get attribute type
+    return this.configService.addEntityTypes(body, entityType, entityClass, observe, reportProgress)
+    .pipe(
+      map( (resp: SzEntityTypesResponse) => resp.data )
+    );
+  }
+  public addEntityTypesForClass(entityClassCode?: string, body?: string | SzEntityTypeDescriptor[], entityType?: string, observe?: "body", reportProgress?: boolean): Observable<SzEntityTypesResponseData> {
+    // get attribute type
+    return this.configService.addEntityTypesForClass(entityClassCode, body, entityType, observe, reportProgress)
+    .pipe(
+      map( (resp: SzEntityTypesResponse) => resp.data )
+    );
+  }
+  public getAttributeType(attrCode: string, withRaw?): Observable<SzAttributeType> {
+    // get attribute type
+    return this.configService.getAttributeType(attrCode, withRaw)
+    .pipe(
+      map( (resp: SzAttributeTypeResponse) => resp.data.attributeType )
+    );
+  }
+  public getAttributeTypes(withInternal?: boolean, attributeClass?: SzAttributeClass, featureType?: string, withRaw?: boolean, observe?: "body", reportProgress?: boolean): Observable<SzAttributeTypesResponseData> {
+    // get attribute type
+    return this.configService.getAttributeTypes(withInternal, attributeClass, featureType, withRaw, observe, reportProgress)
+    .pipe(
+      map( (resp: SzAttributeTypesResponse) => resp.data )
+    );
+  }
+  public getCurrentConfig(observe?: "body", reportProgress?: boolean): Observable<SzConfigResponse> {
+    // get attribute type
+    return this.configService.getCurrentConfig(observe, reportProgress)
+    .pipe(
+      map( (resp: SzConfigResponse) => resp )
+    );
+  }
+  public getDefaultConfig(observe?: "body", reportProgress?: boolean): Observable<SzConfigResponse> {
+    // get attribute type
+    return this.configService.getDefaultConfig(observe, reportProgress)
+    .pipe(
+      map( (resp: SzConfigResponse) => resp )
+    );
+  }
+  public getEntityClass(entityClassCode: string, withRaw?: boolean, observe?: "body", reportProgress?: boolean): Observable<SzEntityClassResponse> {
+    // get attribute type
+    return this.configService.getEntityClass(entityClassCode, withRaw, observe, reportProgress)
+    .pipe(
+      map( (resp: SzEntityClassResponse) => resp )
+    );
+  }
+  public getEntityType(entityTypeCode: string, withRaw?: boolean, observe?: "body", reportProgress?: boolean): Observable<SzEntityTypeResponse> {
+    // get attribute type
+    return this.configService.getEntityType(entityTypeCode, withRaw, observe, reportProgress)
+    .pipe(
+      map( (resp: SzEntityTypeResponse) => resp )
+    );
+  }
+  public getEntityTypeByClass(entityClassCode: string, entityTypeCode: string, withRaw?: boolean, observe?: "body", reportProgress?: boolean): Observable<SzEntityTypeResponse> {
+    // get attribute type
+    return this.configService.getEntityTypeByClass(entityClassCode, entityTypeCode, withRaw, observe, reportProgress)
+    .pipe(
+      map( (resp: SzEntityTypeResponse) => resp )
+    );
+  }
+  public listDataSources(withRaw?: boolean, observe?: "body", reportProgress?: boolean): Observable<SzDataSourcesResponse> {
+    // get attribute type
+    return this.configService.listDataSources(withRaw, observe, reportProgress)
+    .pipe(
+      map( (resp: SzDataSourcesResponse) => resp )
+    );
+  }
+  public listEntityClasses(withRaw?: boolean, observe?: "body", reportProgress?: boolean): Observable<SzEntityClassesResponse> {
+    // get attribute type
+    return this.configService.listEntityClasses(withRaw, observe, reportProgress)
+    .pipe(
+      map( (resp: SzEntityClassesResponse) => resp )
+    );
+  }
+  public listEntityTypes(entityClass?: SzAttributeClass, withRaw?: boolean, observe?: "body", reportProgress?: boolean): Observable<SzEntityTypesResponse> {
+    // get attribute type
+    return this.configService.listEntityTypes(entityClass, withRaw, observe, reportProgress)
+    .pipe(
+      map( (resp: SzEntityTypesResponse) => resp )
+    );
+  }
+  public listEntityTypesByClass(entityClassCode: string, withRaw?: boolean, observe?: "body", reportProgress?: boolean): Observable<SzEntityTypesResponse> {
+    // get attribute type
+    return this.configService.listEntityTypesByClass(entityClassCode, withRaw, observe, reportProgress)
+    .pipe(
+      map( (resp: SzEntityTypesResponse) => resp )
+    );
+  }
+  public analyzeBulkRecords(body: string | Blob, observe?: "body", reportProgress?: boolean): Observable<SzBulkDataAnalysisResponse> {
+    // get attribute type
+    return this.bulkDataService.analyzeBulkRecords(body, observe, reportProgress)
+    .pipe(
+      map( (resp: SzBulkDataAnalysisResponse) => resp )
+    );
+  }
+  public loadBulkRecords(body: string | Blob, dataSource?: string, observe?: "body", reportProgress?: boolean): Observable<SzBulkDataLoadResponse> {
+    // get attribute type
+    return this.bulkDataService.loadBulkRecords(body, dataSource, observe, reportProgress)
+    .pipe(
+      map( (resp: SzBulkDataLoadResponse) => resp )
     );
   }
 
