@@ -40,6 +40,8 @@ import { SzAdminService } from './services/sz-admin.service';
 import { SzBulkDataService } from './services/sz-bulk-data.service';
 
 /** components */
+import { SzBulkDataAnalysisComponent } from './bulk-data/sz-bulk-data-analysis.component';
+import { SzBulkDataLoadComponent } from './bulk-data/sz-bulk-data-load.component';
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
 import { SzEntityDetailHeaderComponent } from './entity/detail/sz-entity-detail-header/header.component';
 import { SzEntityDetailSectionSummaryComponent } from './entity/detail/sz-entity-detail-header/summary.component';
@@ -96,6 +98,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
  */
 @NgModule({
   declarations: [
+    SzBulkDataAnalysisComponent,
+    SzBulkDataLoadComponent,
     SzEntityDetailComponent,
     SzSearchComponent,
     SzSearchByIdComponent,
@@ -135,6 +139,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     ApiModule
   ],
   exports: [
+    SzBulkDataAnalysisComponent,
+    SzBulkDataLoadComponent,
     SzEntityDetailComponent,
     SzSearchComponent,
     SzSearchByIdComponent,
@@ -152,6 +158,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
   ],
   /** for components being exported as web components */
   entryComponents: [
+    SzBulkDataAnalysisComponent,
+    SzBulkDataLoadComponent,
     SzEntityDetailComponent,
     SzEntityDetailGraphComponent,
     SzEntityRecordViewerComponent,

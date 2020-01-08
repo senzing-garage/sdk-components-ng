@@ -10,6 +10,10 @@
   <div [class.active]="adminEnabled">Admin Enabled: {{adminEnabled}}</div>
   <div [class.active]="!readOnly">Read Only: {{readOnly}}</div>
 </div>
+
+<sz-bulk-data-analysis></sz-bulk-data-analysis>
+<sz-bulk-data-load></sz-bulk-data-load>
+
 <hr/>
 <datalist #dataSourceOptions id="ds-name">
   <option *ngFor="let dataSource of dataSources" [value]="dataSource" (click)="handleDataSourceChange(dsa.dataSource,  dataSource)">{{dataSource}}</option>

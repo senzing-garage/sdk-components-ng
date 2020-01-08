@@ -1,5 +1,3 @@
-//import { Configuration } from '@senzing/rest-api-client-ng';
-
 /*
  * Public API Surface of sdk
  */
@@ -21,14 +19,13 @@ export * from './lib/services/sz-configuration.service';
 export * from './lib/services/sz-folios.service';
 export * from './lib/services/sz-message-bundle.service';
 export * from './lib/services/sz-pdf-util.service';
-export {
-  SzPrefsService,
-  SzSdkPrefsModel
-} from './lib/services/sz-prefs.service';
+export { SzPrefsService, SzSdkPrefsModel} from './lib/services/sz-prefs.service';
 export * from './lib/services/sz-search.service';  // updated to use rest
 export * from './lib/services/sz-ui.service';
 
 /** components */
+export { SzBulkDataAnalysisComponent } from './lib/bulk-data/sz-bulk-data-analysis.component';
+export { SzBulkDataLoadComponent } from './lib/bulk-data/sz-bulk-data-load.component';
 export * from './lib/search/sz-search/sz-search.component';
 export { SzSearchByIdComponent, SzSearchByIdFormParams } from './lib/search/sz-search/sz-search-by-id.component';
 export { SzEntityRecordViewerComponent } from './lib/record/sz-entity-record-viewer.component';
