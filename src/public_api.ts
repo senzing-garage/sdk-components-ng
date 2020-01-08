@@ -14,6 +14,8 @@ export * from './lib/common/utils';
 export * from './lib/services/sz-message-bundle.service';
 export * from './lib/services/sz-configuration.service';
 export { SzAdminService } from './lib/services/sz-admin.service';
+export { SzBulkDataService } from './lib/services/sz-bulk-data.service';
+
 export * from './lib/services/sz-datasources.service';
 export * from './lib/services/sz-configuration.service';
 export * from './lib/services/sz-folios.service';
@@ -45,6 +47,9 @@ export * from '@senzing/sdk-graph-components';
 
 /** models */
 export * from './lib/models/folio';
+export { SzBulkDataAnalysis } from './lib/models/data-analysis';
+export { SzBulkLoadStatus } from './lib/models/data-importing';
+export { SzDataSourceRecordAnalysis } from './lib/models/data-sources';
 
 /** export some members of rest client to ease type use */
 export {

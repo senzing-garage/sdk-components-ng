@@ -22,6 +22,10 @@ import {
 /** models */
 // import { SzEntityDetailSectionData } from './models/entity-detail-section-data';
 // import { SzEntitySearchParams } from './models/entity-search';
+// import { SzBulkDataAnalysis } from './models/data-analysis';
+// import { SzBulkLoadStatus } from './models/data-importing';
+// import { SzDataSourceRecordAnalysis } from './models/data-sources';
+// import { SzFolioItem, SzSearchParamsFolio, SzSearchParamsFolioItem } from './models/folio';
 
 /** services */
 import { SzMessageBundleService } from './services/sz-message-bundle.service';
@@ -33,6 +37,7 @@ import { SzPdfUtilService } from './services/sz-pdf-util.service';
 import { SzPrefsService } from './services/sz-prefs.service';
 import { SzDataSourcesService } from './services/sz-datasources.service';
 import { SzAdminService } from './services/sz-admin.service';
+import { SzBulkDataService } from './services/sz-bulk-data.service';
 
 /** components */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
@@ -64,7 +69,6 @@ import { SzConfigurationComponent } from './configuration/sz-configuration/sz-co
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
 import { SzPreferencesComponent } from './configuration/sz-preferences/sz-preferences.component';
 import { SzPrefDictComponent } from './configuration/sz-preferences/sz-pref-dict/sz-pref-dict.component';
-import { SzFolioItem, SzSearchParamsFolio, SzSearchParamsFolioItem } from './models/folio';
 
 /**
  * Sets up a default set of service parameters for use
@@ -163,6 +167,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
   providers: [
     SzMessageBundleService,
     SzAdminService,
+    SzBulkDataService,
     SzSearchService,
     SzConfigurationService,
     SzDataSourcesService,

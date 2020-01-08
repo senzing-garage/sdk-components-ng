@@ -25,7 +25,7 @@ export class SzDataSourcesService {
     private configService: ConfigService) {}
 
   /**
-   * get list of characteristics as attribute types
+   * get an array of datasources.
    *
    * @memberof SzDataSourcesService
    */
@@ -35,5 +35,14 @@ export class SzDataSourcesService {
     .pipe(
       map( (resp: SzDataSourcesResponse) => resp.data.dataSources )
     );
+  }
+  /**
+   * add datasources and return a array of datasources after the operation.
+   */
+  public addDataSources(dataSources: string[]): Observable<string[]> {
+    return this.configService.addDataSources(dataSources)
+    .pipe(
+      map( (resp: SzDataSourcesResponse) => resp.data.dataSources )
+    )
   }
 }
