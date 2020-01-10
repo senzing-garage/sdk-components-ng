@@ -2,6 +2,8 @@ import { Component, AfterViewInit, ViewContainerRef, OnInit, ElementRef, ViewChi
 import {
   SzPrefsService,
   SzAdminService,
+  SzBulkDataAnalysisComponent,
+  SzBulkDataLoadComponent,
   SzDataSourcesService,
   SzConfigurationService,
   SzBulkDataService
@@ -33,11 +35,10 @@ import {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements AfterViewInit, OnInit {
-  @ViewChild('filePicker')
-  private filePicker: ElementRef;
+  @ViewChild(SzBulkDataAnalysisComponent) public bulkDataAnalysisComponent: SzBulkDataAnalysisComponent;
+  @ViewChild(SzBulkDataLoadComponent) public bulkDataLoadComponent: SzBulkDataLoadComponent;
 
   analysis: SzBulkDataAnalysis;
-
   loadResult: SzBulkLoadResult;
 
   currentFile: File;
@@ -63,76 +64,10 @@ export class AppComponent implements AfterViewInit, OnInit {
     this.adminService.onServerInfo.subscribe((info) => {
       console.log('ServerInfo obtained: ', info);
     });
-    this.updateDataSources();
   }
 
   ngAfterViewInit() {
+    // console.log('ViewChild analysis component: ', this.bulkDataAnalysisComponent);
   }
 
-  public get dataSources(): string[] {
-    return this._dataSources;
-  }
-
-  public updateDataSources() {
-    this.dataSourcesService.listDataSources().subscribe((datasources: string[]) => {
-      console.log('datasources obtained: ', datasources);
-      this._dataSources = datasources.filter(s => s !== 'TEST' && s !== 'SEARCH');
-    });
-  }
-
-  protected handleDataSourceChange(fromDataSource: string, toDataSource: string) {
-    console.log('MAP ' + fromDataSource + ' TO ' + toDataSource);
-    this.dataSourceMap[fromDataSource] = toDataSource;
-  }
-
-  protected handleFileChange(event: Event) {
-    this.analysis = null;
-    const target: HTMLInputElement = <HTMLInputElement> event.target;
-    const fileList = target.files;
-    this.currentFile = fileList.item(0);
-    console.log('handleFileChange: ', this.currentFile.name);
-    this.loadResult = null;
-    const promise = this.bulkDataService.analyze(this.currentFile).toPromise();
-    promise.then(response => {
-      console.log('RESPONSE', response);
-      this.analysis = response.data;
-      this.dataSourceMap = {};
-      this.analysis.analysisByDataSource.forEach(a => {
-        if (this._dataSources.indexOf(a.dataSource) >= 0) {
-          this.dataSourceMap[a.dataSource] = a.dataSource;
-        }
-      });
-    });
-  }
-
-  public handleFileClick(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.updateDataSources();
-    this.filePicker.nativeElement.click();
-  }
-
-  public handleFileLoad(event: Event) {
-    const newDataSources = [];
-    this.analysis.analysisByDataSource.forEach(a => {
-      const targetDS = this.dataSourceMap[a.dataSource];
-      if (targetDS && this._dataSources.indexOf(targetDS) < 0) {
-        newDataSources.push(targetDS);
-      }
-    });
-    let promise = Promise.resolve([]);
-    if (newDataSources.length > 0) {
-      const p1 = this.bulkDataService.createDataSources(newDataSources).toPromise();
-      const p2 = this.bulkDataService.createEntityTypes(newDataSources).toPromise();
-      promise = Promise.all([p1, p2]);
-    }
-    promise.then(() => {
-      this.bulkDataService.load(
-        this.currentFile, this.dataSourceMap).toPromise().then(response => {
-        console.log('RESPONSE', response);
-        this.loadResult = response.data;
-      });
-
-    });
-  }
 }

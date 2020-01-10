@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SzBulkDataAnalysisComponent } from './sz-bulk-data-analysis.component';
+import { SzBulkDataLoadComponent } from './sz-bulk-data-load.component';
 import { SenzingSdkModule } from 'src/lib/sdk.module';
 
-describe('SzBulkDataAnalysisComponent', () => {
-  let component: SzBulkDataAnalysisComponent;
-  let fixture: ComponentFixture<SzBulkDataAnalysisComponent>;
+describe('SzBulkDataLoadComponent', () => {
+  let component: SzBulkDataLoadComponent;
+  let fixture: ComponentFixture<SzBulkDataLoadComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -15,7 +15,7 @@ describe('SzBulkDataAnalysisComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SzBulkDataAnalysisComponent);
+    fixture = TestBed.createComponent(SzBulkDataLoadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

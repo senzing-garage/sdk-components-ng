@@ -3,6 +3,11 @@
   border: 1px solid #000;
   border-radius: 3px;
   display: inline-table;
+
+  .hidden-file-picker {
+    visibility: hidden;
+    position: absolute;
+  }
 }
 
 .header {
