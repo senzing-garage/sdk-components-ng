@@ -1,0 +1,9 @@
+<!-- start BulkDataLoadSummary -->
+<table class="general-stats" *ngIf="loadResult">
+  <tr><th>Character Encoding:</th><td>{{ loadResult.characterEncoding }}</td></tr>
+  <tr><th>Media Type:</th><td>{{ loadResult.mediaType }}</td></tr>
+  <tr><th>Total Number of Records:</th><td>{{ loadResult.recordCount }}</td></tr>
+  <tr><th>Number of Loaded Records:</th><td>{{ loadResult.loadedRecordCount }}</td></tr>
+  <tr><th>Number of Failed Records:</th><td>{{ loadResult.failedRecordCount }}</td></tr>
+</table>
+<!-- end BulkDataLoadSummary -->

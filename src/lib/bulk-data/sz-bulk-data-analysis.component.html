@@ -1,56 +1,11 @@
-<table class="general-stats" *ngIf="analysis && !loadResult">
-  <tr><th>Character Encoding:</th><td>{{ analysis.characterEncoding }}</td></tr>
-  <tr><th>Media Type:</th><td>{{ analysis.mediaType }}</td></tr>
-  <tr><th>Total Number of Records:</th><td>{{ analysis.recordCount }}</td></tr>
-  <tr><th>Number of Records with Data Source:</th><td>{{ analysis.recordsWithDataSourceCount }}</td></tr>
-  <tr><th>Number of Records with Record ID:</th><td>{{ analysis.recordsWithRecordIdCount }}</td></tr>
-</table>
-<table class="general-stats" *ngIf="loadResult">
-  <tr><th>Character Encoding:</th><td>{{ loadResult.characterEncoding }}</td></tr>
-  <tr><th>Media Type:</th><td>{{ loadResult.mediaType }}</td></tr>
-  <tr><th>Total Number of Records:</th><td>{{ loadResult.recordCount }}</td></tr>
-  <tr><th>Number of Loaded Records:</th><td>{{ loadResult.loadedRecordCount }}</td></tr>
-  <tr><th>Number of Failed Records:</th><td>{{ loadResult.failedRecordCount }}</td></tr>
-</table>
-
-<table class="data-source-mapping" *ngIf="analysis && !loadResult">
-  <tr>
-    <th>Record Data Source</th>
-    <th>Number of Records</th>
-    <th>Records with Record ID</th>
-    <th>Map to Data Source</th>
-  </tr>
-  <tr *ngFor="let dsa of analysis.analysisByDataSource; let l = index;">
-    <td>{{ dsa.dataSource && dsa.dataSource.trim().length > 0 ? dsa.dataSource : '[NONE]' }}</td>
-    <td>{{ dsa.recordCount }}</td>
-    <td>{{ dsa.recordsWithRecordIdCount }}</td>
-    <td class="data-source-map">
-      <input type="text" placeholder="Choose a Data Source" matInput #targetDS
-             [value]="dataSources.indexOf(dsa.dataSource) >= 0 ? dsa.dataSource : ''"
-             [attr.list]="'ds-name-'+l"
-             (change)="handleDataSourceChange(dsa.dataSource, targetDS.value)">
-      <datalist #dataSourceOptions [id]="'ds-name-'+l">
-        <option *ngFor="let dataSource of dataSources" [value]="dataSource" (click)="handleDataSourceChange(dsa.dataSource,  dataSource)">{{dataSource}}</option>
-      </datalist>
-      <span *ngIf="targetDS.value && (targetDS.value.trim().length > 0) && (dataSources.indexOf(targetDS.value) < 0)">new</span>
-    </td>
-  </tr>
-</table>
-<table class="data-source-mapping" *ngIf="loadResult">
-  <tr>
-    <th>Data Source</th>
-    <th>Number of Records</th>
-    <th>Number of Loaded Records</th>
-    <th>Number of Failed Records</th>
-  </tr>
-  <tr *ngFor="let dsa of loadResult.resultsByDataSource; let l = index;">
-    <td>{{ dsa.dataSource && dsa.dataSource.trim().length > 0 ? dsa.dataSource : '[NONE]' }}</td>
-    <td>{{ dsa.recordCount }}</td>
-    <td>{{ dsa.loadedRecordCount }}</td>
-    <td>{{ dsa.failedRecordCount }}</td>
-  </tr>
-</table>
-
+<!-- start summary data -->
+<sz-bulk-data-analysis-summary *ngIf="analysis && !loadResult"></sz-bulk-data-analysis-summary>
+<sz-bulk-data-load-summary *ngIf="loadResult"></sz-bulk-data-load-summary>
+<!--  end summary data  -->
+<!-- start tabular display -->
+<sz-bulk-data-analysis-report *ngIf="analysis && !loadResult"></sz-bulk-data-analysis-report>
+<sz-bulk-data-load-report *ngIf="loadResult"></sz-bulk-data-load-report>
+<!--  end tabular display  -->
 <!-- start spinner overlay -->
 <div class="mat-background" *ngIf="analyzingFile || loadingFile">
   <div class="spinner">

@@ -35,18 +35,15 @@ export class SzBulkDataLoadComponent implements OnInit {
   /** file picker element */
   @ViewChild('filePicker')
   private filePicker: ElementRef;
-  /** */
+  /** get the current analysis from service */
   get analysis(): SzBulkDataAnalysis {
     return this.bulkDataService.currentAnalysis;
   };
-
-  //loadResult: SzBulkLoadResult;
-  //dataSourceMap: { [key: string]: string };
-  //_dataSources: string[];
-
+  /** does user have admin rights */
   public get adminEnabled() {
     return this.adminService.adminEnabled;
   }
+  /** is the current server instance read only */
   public get readOnly() {
     return this.adminService.readOnly;
   }
@@ -69,29 +66,34 @@ export class SzBulkDataLoadComponent implements OnInit {
 
     ngOnInit() {
       this.adminService.onServerInfo.subscribe((info) => {
-        console.log('ServerInfo obtained: ', info);
+        //console.log('ServerInfo obtained: ', info);
       });
       this.bulkDataService.onAnalysisChange.subscribe( (analysis) => {
-        console.log('SzBulkDataLoadComponent.onAnalysisChange: ', analysis);
+        //console.log('SzBulkDataLoadComponent.onAnalysisChange: ', analysis);
       });
     }
 
     ngAfterViewInit() {}
-
+    /** take the current file focus and pass to api load endpoint */
     public onFileInputChange(event: Event) {
+      this.bulkDataService.analyzingFile.next(true);
       const target: HTMLInputElement = <HTMLInputElement> event.target;
       const fileList = target.files;
       this.bulkDataService.file = fileList.item(0);
     }
-
+    /** upload a file for analytics */
     public chooseFileInput(event: Event) {
       event.preventDefault();
       event.stopPropagation();
       this.filePicker.nativeElement.click();
     }
-
+    /** take the current file focus and pass to api load endpoint */
     public loadFile(event: Event) {
       this.bulkDataService.load();
+    }
+    /** clear the current bulkloader focal state */
+    public clear() {
+      this.bulkDataService.clear();
     }
 
 }

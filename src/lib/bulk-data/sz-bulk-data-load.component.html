@@ -4,10 +4,5 @@
        xmlns="http://www.w3.org/1999/html">
 <button (click)="chooseFileInput($event)" *ngIf="!analysis">Analyze File</button>
 <button (click)="loadFile($event)"  *ngIf="analysis && !result">Load File</button>
-<table *ngIf="result" class="general-stats">
-  <tr><th>Character Encoding:</th><td>{{ result.characterEncoding }}</td></tr>
-  <tr><th>Media Type:</th><td>{{ result.mediaType }}</td></tr>
-  <tr><th>Total Number of Records:</th><td>{{ result.recordCount }}</td></tr>
-  <tr><th>Number of Loaded Records:</th><td>{{ result.loadedRecordCount }}</td></tr>
-  <tr><th>Number of Failed Records:</th><td>{{ result.failedRecordCount }}</td></tr>
-</table>
+<button (click)="clear()"  *ngIf="analysis || result">Clear</button>
+<sz-bulk-data-load-summary *ngIf="result"></sz-bulk-data-load-summary>

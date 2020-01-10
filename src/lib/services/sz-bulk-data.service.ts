@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, of } from 'rxjs';
+import { Observable, Subject, of, BehaviorSubject } from 'rxjs';
 
 import {
 
@@ -35,9 +35,9 @@ export class SzBulkDataService {
   _dataSources: string[];
 
   public onCurrentFileChange = new Subject<File>();
-  public onAnalysisChange = new Subject<SzBulkDataAnalysis>();
+  public onAnalysisChange = new BehaviorSubject<SzBulkDataAnalysis>(undefined);
   public onDataSourceMapChange = new Subject<{ [key: string]: string }>();
-  public onLoadResult = new Subject<SzBulkLoadResult>();
+  public onLoadResult = new BehaviorSubject<SzBulkLoadResult>(undefined);
   public onError = new Subject<Error>();
   public analyzingFile = new Subject<boolean>();
   public isAnalyzingFile = false;
@@ -61,8 +61,12 @@ export class SzBulkDataService {
     private bulkDataService: BulkDataService
   ) {
     this.onCurrentFileChange.subscribe( (file: File) => {
+      if(!file){ return; }
+      this.analyzingFile.next(true);
+
       this.analyze(file).toPromise().then( (analysisResp: SzBulkDataAnalysisResponse) => {
         console.log('autowire analysis resp on file change: ', analysisResp, this.currentAnalysis);
+        this.analyzingFile.next(false);
       });
     });
     this.analyzingFile.subscribe( (isAnalyzing: boolean) => {
@@ -226,6 +230,15 @@ export class SzBulkDataService {
     console.log('MAP ' + fromDataSource + ' TO ' + toDataSource, this.dataSourceMap);
     this.dataSourceMap = this.dataSourceMap
     this.dataSourceMap[fromDataSource] = toDataSource;
+  }
+
+  public clear(): void {
+    this.currentAnalysis = undefined;
+    this.currentLoadResult = undefined;
+    this.currentFile = undefined;
+    this.onAnalysisChange.next( this.currentAnalysis );
+    this.onLoadResult.next( this.currentLoadResult );
+    this.onCurrentFileChange.next( this.currentFile );
   }
 
 }
