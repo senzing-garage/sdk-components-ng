@@ -25,19 +25,23 @@ export class SzBulkDataAnalysisSummaryComponent implements OnInit {
     return undefined;
   }
   /** result of last analysis operation */
-  public analysis: SzBulkDataAnalysis;
-  /** result of the last load operation */
-  public loadResult: SzBulkLoadResult;
+  public get analysis(): SzBulkDataAnalysis {
+    return this.bulkDataService.currentAnalysis;
+  }
+  /** get result of load operation from service */
+  public get result(): SzBulkLoadResult {
+    return this.bulkDataService.currentLoadResult;
+  }
 
   constructor(
     private adminService: SzAdminService,
     private bulkDataService: SzBulkDataService) {}
 
     ngOnInit() {
-
       this.adminService.onServerInfo.subscribe((info) => {
         //console.log('SzBulkDataAnalysisSummaryComponent.ServerInfo obtained: ', info);
       });
+      /*
       this.bulkDataService.onAnalysisChange.subscribe( (res: SzBulkDataAnalysis) => {
         //console.log('SzBulkDataAnalysisSummaryComponent.onAnalysisChange ', res);
         this.analysis = res;
@@ -45,7 +49,7 @@ export class SzBulkDataAnalysisSummaryComponent implements OnInit {
       this.bulkDataService.onLoadResult.subscribe( (res: SzBulkLoadResult) => {
         //console.log('SzBulkDataAnalysisSummaryComponent.onLoadResult ', res);
         this.loadResult = res;
-      });
+      });*/
     }
 
     ngAfterViewInit() {}

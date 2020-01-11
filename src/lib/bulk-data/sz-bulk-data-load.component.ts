@@ -8,18 +8,14 @@ import { SzBulkDataService } from '../services/sz-bulk-data.service';
 
 import {
   SzBulkDataAnalysis,
-  Configuration as SzRestConfiguration,
+  SzBulkDataAnalysisResponse,
   SzDataSourceRecordAnalysis,
   SzBulkLoadResult,
-  SzBulkLoadError,
-  SzBulkLoadStatus,
-  SzError
 } from '@senzing/rest-api-client-ng';
 
 /**
  * Provides an interface for loading files in to a datasource.
  * allowed file types are:
- *
  *
  * @example
  * <sz-bulk-data-load></sz-bulk-data-load>
@@ -32,6 +28,11 @@ import {
   styleUrls: ['./sz-bulk-data-load.component.scss']
 })
 export class SzBulkDataLoadComponent implements OnInit {
+  /** show the analysis summary embedded in component */
+  private _showAnalysis = true;
+  /** show the load summary embedded in component */
+  private _showResults = true;
+
   /** file picker element */
   @ViewChild('filePicker')
   private filePicker: ElementRef;
@@ -47,7 +48,6 @@ export class SzBulkDataLoadComponent implements OnInit {
   public get readOnly() {
     return this.adminService.readOnly;
   }
-
   /** set result of load operation from service */
   @Input() public set result(value: SzBulkLoadResult) {
     if(value){ this.bulkDataService.currentLoadResult = value; }
@@ -55,6 +55,23 @@ export class SzBulkDataLoadComponent implements OnInit {
   /** get result of load operation from service */
   public get result(): SzBulkLoadResult {
     return this.bulkDataService.currentLoadResult;
+  }
+  /** show the analysis summary embedded in component */
+  public get showAnalysis(): boolean {
+    return this._showAnalysis;
+  }
+  /** show the load summary embedded in component */
+  public get showResults(): boolean {
+    return this._showResults;
+  }
+  /** @alias showSummary */
+  @Input() public set showSummaries(value: boolean) {
+    this.showSummary = value;
+  }
+  /** whether or not to show the analysis and load summaries embedded in component */
+  @Input() public set showSummary(value: boolean) {
+    this._showAnalysis = value;
+    this._showResults = value;
   }
 
   constructor(
@@ -65,12 +82,14 @@ export class SzBulkDataLoadComponent implements OnInit {
     public viewContainerRef: ViewContainerRef){}
 
     ngOnInit() {
+      /*
       this.adminService.onServerInfo.subscribe((info) => {
         //console.log('ServerInfo obtained: ', info);
       });
       this.bulkDataService.onAnalysisChange.subscribe( (analysis) => {
         //console.log('SzBulkDataLoadComponent.onAnalysisChange: ', analysis);
       });
+      */
     }
 
     ngAfterViewInit() {}

@@ -7,12 +7,7 @@ import { SzBulkDataService } from '../services/sz-bulk-data.service';
 
 import {
   SzBulkDataAnalysis,
-  Configuration as SzRestConfiguration,
-  SzDataSourceRecordAnalysis,
-  SzBulkLoadResult,
-  SzBulkLoadError,
-  SzBulkLoadStatus,
-  SzError
+  SzBulkLoadResult
 } from '@senzing/rest-api-client-ng';
 import { tap, map } from 'rxjs/operators';
 
@@ -31,16 +26,31 @@ import { tap, map } from 'rxjs/operators';
 })
 export class SzBulkDataAnalysisReportComponent implements OnInit {
   /** result of last analysis operation */
-  public analysis: SzBulkDataAnalysis;
+  //public analysis: SzBulkDataAnalysis;
   /** result of the last load operation */
-  public loadResult: SzBulkLoadResult;
+  //public loadResult: SzBulkLoadResult;
+  /** get the file reference currently loaded in the the bulk data service */
+  public get file(): File {
+    if(this.bulkDataService) {
+      return this.bulkDataService.currentFile;
+    }
+    return undefined;
+  }
+  /** result of last analysis operation */
+  public get analysis(): SzBulkDataAnalysis {
+    return this.bulkDataService.currentAnalysis;
+  }
+  /** get result of load operation from service */
+  public get result(): SzBulkLoadResult {
+    return this.bulkDataService.currentLoadResult;
+  }
   /**
    * when the user changes the file dest for a datasource
    * this is updated to reflect src to target
   */
   public _dataSourceMap: { [key: string]: string };
   /** collection of datasources */
-  _dataSources: string[];
+  //_dataSources: string[];
   /** whether or not a file is being analyzed */
   public get analyzingFile() {
     return this.bulkDataService.isAnalyzingFile;
@@ -52,14 +62,14 @@ export class SzBulkDataAnalysisReportComponent implements OnInit {
   constructor( public prefs: SzPrefsService,
     private adminService: SzAdminService,
     private bulkDataService: SzBulkDataService,
-    private dataSourcesService: SzDataSourcesService,
     public viewContainerRef: ViewContainerRef) {}
 
     ngOnInit() {
       this.adminService.onServerInfo.subscribe((info) => {
         //console.log('SzBulkDataAnalysisReportComponent.ServerInfo obtained: ', info);
       });
-      this.updateDataSources();
+      //this.updateDataSources();
+      /*
       this.bulkDataService.onAnalysisChange.subscribe( (res: SzBulkDataAnalysis) => {
         //console.log('SzBulkDataAnalysisReportComponent.onAnalysisChange: ', res);
         this.analysis = res;
@@ -67,7 +77,7 @@ export class SzBulkDataAnalysisReportComponent implements OnInit {
       this.bulkDataService.onLoadResult.subscribe( (res: SzBulkLoadResult) => {
         //console.log('SzBulkDataAnalysisReportComponent.onLoadResult: ', res);
         this.loadResult = res;
-      });
+      });*/
     }
 
     ngAfterViewInit() {}
@@ -79,12 +89,13 @@ export class SzBulkDataAnalysisReportComponent implements OnInit {
       return undefined;
     }
     /** get the current datasources from the api server and cache list */
+    /*
     public updateDataSources() {
       this.dataSourcesService.listDataSources().subscribe((datasources: string[]) => {
         //console.log('datasources obtained: ', datasources);
         this._dataSources = datasources.filter(s => s !== 'TEST' && s !== 'SEARCH');
       });
-    }
+    }*/
     /** when user changes the destination for a datasource */
     public handleDataSourceChange(fromDataSource: string, toDataSource: string) {
       this.bulkDataService.changeDataSourceName(fromDataSource, toDataSource);

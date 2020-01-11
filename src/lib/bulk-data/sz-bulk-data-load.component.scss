@@ -1,8 +1,6 @@
 
 :host {
-  border: 1px solid #000;
-  border-radius: 3px;
-  display: inline-table;
+  display: inline-block;
 
   .hidden-file-picker {
     visibility: hidden;

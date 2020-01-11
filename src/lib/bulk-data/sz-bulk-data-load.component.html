@@ -5,4 +5,5 @@
 <button (click)="chooseFileInput($event)" *ngIf="!analysis">Analyze File</button>
 <button (click)="loadFile($event)"  *ngIf="analysis && !result">Load File</button>
 <button (click)="clear()"  *ngIf="analysis || result">Clear</button>
-<sz-bulk-data-load-summary *ngIf="result"></sz-bulk-data-load-summary>
+<sz-bulk-data-analysis-summary *ngIf="showAnalysis && analysis"></sz-bulk-data-analysis-summary>
+<sz-bulk-data-load-summary *ngIf="showResults && result"></sz-bulk-data-load-summary>

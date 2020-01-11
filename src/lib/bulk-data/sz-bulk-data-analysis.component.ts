@@ -1,18 +1,11 @@
 import { Component, OnInit, Inject, ViewContainerRef, Input } from '@angular/core';
 import { SzPrefsService } from '../services/sz-prefs.service';
 import { SzAdminService } from '../services/sz-admin.service';
-import { SzDataSourcesService } from '../services/sz-datasources.service';
-import { SzConfigurationService } from '../services/sz-configuration.service';
 import { SzBulkDataService } from '../services/sz-bulk-data.service';
 
 import {
   SzBulkDataAnalysis,
-  Configuration as SzRestConfiguration,
-  SzDataSourceRecordAnalysis,
-  SzBulkLoadResult,
-  SzBulkLoadError,
-  SzBulkLoadStatus,
-  SzError
+  SzBulkLoadResult
 } from '@senzing/rest-api-client-ng';
 import { tap, map } from 'rxjs/operators';
 
@@ -30,21 +23,49 @@ import { tap, map } from 'rxjs/operators';
   styleUrls: ['./sz-bulk-data-analysis.component.scss']
 })
 export class SzBulkDataAnalysisComponent implements OnInit {
-  analysis: SzBulkDataAnalysis;
-  loadResult: SzBulkLoadResult;
-  public _dataSourceMap: { [key: string]: string };
-  _dataSources: string[];
-  public get analyzingFile() {
+  /** show the textual summaries for analyze and  */
+  private _showSummary = true;
+  /** get the current analysis from service */
+  get analysis(): SzBulkDataAnalysis {
+    return this.bulkDataService.currentAnalysis;
+  };
+  /** does user have admin rights */
+  public get adminEnabled() {
+    return this.adminService.adminEnabled;
+  }
+  /** is the current server instance read only */
+  public get readOnly() {
+    return this.adminService.readOnly;
+  }
+  /** whether or not a file is being analysed */
+  public get analyzingFile(): boolean {
     return this.bulkDataService.isAnalyzingFile;
   }
-  public get loadingFile() {
+  /** whenther or not a file is being loaded */
+  public get loadingFile(): boolean {
     return this.bulkDataService.isLoadingFile;
   }
-
-  public get dataSourceMap(): { [key: string]: string } {
-    return this._dataSourceMap;
+  /** set result of load operation from service */
+  @Input() public set result(value: SzBulkLoadResult) {
+    if(value){ this.bulkDataService.currentLoadResult = value; }
   }
-
+  /** get result of load operation from service */
+  public get result(): SzBulkLoadResult {
+    return this.bulkDataService.currentLoadResult;
+  }
+  /** @alias showSummary */
+  @Input() public set showSummaries(value: boolean) {
+    this.showSummary = value;
+  }
+  /** whether or not to show the analysis and load summaries embedded in component */
+  @Input() public set showSummary(value: boolean) {
+    this._showSummary = value;
+  }
+  /** whether or not the analysis and load summaries are shown in component */
+  public get showSummary(): boolean {
+    return this._showSummary;
+  }
+  /** set the file to be analyzed */
   @Input() public set file(value: File) {
     if(value){ this.analyzeFile(value); }
   }
@@ -52,67 +73,24 @@ export class SzBulkDataAnalysisComponent implements OnInit {
   constructor( public prefs: SzPrefsService,
     private adminService: SzAdminService,
     private bulkDataService: SzBulkDataService,
-    private dataSourcesService: SzDataSourcesService,
     public viewContainerRef: ViewContainerRef) {}
 
     ngOnInit() {
       this.adminService.onServerInfo.subscribe((info) => {
         console.log('ServerInfo obtained: ', info);
       });
-      this.updateDataSources();
+      /*
       this.bulkDataService.onAnalysisChange.subscribe( (res: SzBulkDataAnalysis) => {
         this.analysis = res;
       });
       this.bulkDataService.onLoadResult.subscribe( (res: SzBulkLoadResult) => {
-        this.loadResult = res;
-      });
+        this.result = res;
+      });*/
 
     }
 
-    ngAfterViewInit() {
-    }
-
-    public get dataSources(): string[] {
-      return this._dataSources;
-    }
-
-    public updateDataSources() {
-      this.dataSourcesService.listDataSources().subscribe((datasources: string[]) => {
-        console.log('datasources obtained: ', datasources);
-        this._dataSources = datasources.filter(s => s !== 'TEST' && s !== 'SEARCH');
-      });
-    }
-
-    public handleDataSourceChange(fromDataSource: string, toDataSource: string) {
-      this.bulkDataService.changeDataSourceName(fromDataSource, toDataSource);
-    }
-
-    public clear() {
-      this.analysis = null;
-    }
-
+    /** convenience method to analyze a file. used by file setter. */
     public analyzeFile(file: File) {
-      /*
-      return this.bulkDataService.analyze(file).pipe(
-        tap( function(result) {
-          this.analysis = result.data;
-          this._dataSourceMap = this.getDataSourceMapFromAnalysis( this.analysis.analysisByDataSource );
-          console.log('analyzeFile: ', this._dataSourceMap, this.analysis);
-        }.bind(this)),
-        map( (result) => result.data )
-      )*/
       return this.bulkDataService.analyze(file);
-    }
-
-    public getDataSourceMapFromAnalysis(analysisArray: SzDataSourceRecordAnalysis[]): { [key: string]: string } {
-      let _dsMap: { [key: string]: string } = {};
-      analysisArray.forEach(a => {
-        if (this._dataSources.indexOf(a.dataSource) >= 0) {
-          _dsMap[a.dataSource] = a.dataSource;
-        } else {
-          //_dsMap[a.dataSource] = a.dataSource;
-        }
-      });
-      return _dsMap;
     }
 }
