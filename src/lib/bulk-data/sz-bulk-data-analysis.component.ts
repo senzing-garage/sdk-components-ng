@@ -7,7 +7,8 @@ import {
   SzBulkDataAnalysis,
   SzBulkLoadResult
 } from '@senzing/rest-api-client-ng';
-import { tap, map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * Provides a component that analyzes a datasource characteristics and mapping.
@@ -23,6 +24,8 @@ import { tap, map } from 'rxjs/operators';
   styleUrls: ['./sz-bulk-data-analysis.component.scss']
 })
 export class SzBulkDataAnalysisComponent implements OnInit {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
   /** show the textual summaries for analyze and  */
   private _showSummary = true;
   /** get the current analysis from service */
@@ -75,22 +78,23 @@ export class SzBulkDataAnalysisComponent implements OnInit {
     private bulkDataService: SzBulkDataService,
     public viewContainerRef: ViewContainerRef) {}
 
-    ngOnInit() {
-      this.adminService.onServerInfo.subscribe((info) => {
-        console.log('ServerInfo obtained: ', info);
-      });
-      /*
-      this.bulkDataService.onAnalysisChange.subscribe( (res: SzBulkDataAnalysis) => {
-        this.analysis = res;
-      });
-      this.bulkDataService.onLoadResult.subscribe( (res: SzBulkLoadResult) => {
-        this.result = res;
-      });*/
+  ngOnInit() {
+    this.adminService.onServerInfo.pipe(
+      takeUntil( this.unsubscribe$ )
+    ).subscribe((info) => {
+      console.log('ServerInfo obtained: ', info);
+    });
+  }
 
-    }
-
-    /** convenience method to analyze a file. used by file setter. */
-    public analyzeFile(file: File) {
-      return this.bulkDataService.analyze(file);
-    }
+  /** convenience method to analyze a file. used by file setter. */
+  public analyzeFile(file: File) {
+    return this.bulkDataService.analyze(file);
+  }
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }

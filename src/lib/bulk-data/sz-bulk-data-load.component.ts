@@ -3,15 +3,13 @@ import { Component, OnInit, Inject, ViewContainerRef, Input, ViewChild, ElementR
 import { SzPrefsService } from '../services/sz-prefs.service';
 import { SzAdminService } from '../services/sz-admin.service';
 import { SzDataSourcesService } from '../services/sz-datasources.service';
-import { SzConfigurationService } from '../services/sz-configuration.service';
 import { SzBulkDataService } from '../services/sz-bulk-data.service';
 
 import {
   SzBulkDataAnalysis,
-  SzBulkDataAnalysisResponse,
-  SzDataSourceRecordAnalysis,
   SzBulkLoadResult,
 } from '@senzing/rest-api-client-ng';
+import { Subject } from 'rxjs';
 
 /**
  * Provides an interface for loading files in to a datasource.
@@ -28,6 +26,8 @@ import {
   styleUrls: ['./sz-bulk-data-load.component.scss']
 })
 export class SzBulkDataLoadComponent implements OnInit {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
   /** show the analysis summary embedded in component */
   private _showAnalysis = true;
   /** show the load summary embedded in component */
@@ -78,21 +78,18 @@ export class SzBulkDataLoadComponent implements OnInit {
     public prefs: SzPrefsService,
     private adminService: SzAdminService,
     private bulkDataService: SzBulkDataService,
-    private dataSourcesService: SzDataSourcesService,
     public viewContainerRef: ViewContainerRef){}
 
-    ngOnInit() {
-      /*
-      this.adminService.onServerInfo.subscribe((info) => {
-        //console.log('ServerInfo obtained: ', info);
-      });
-      this.bulkDataService.onAnalysisChange.subscribe( (analysis) => {
-        //console.log('SzBulkDataLoadComponent.onAnalysisChange: ', analysis);
-      });
-      */
+    ngOnInit() {}
+    ngAfterViewInit() {}
+    /**
+     * unsubscribe when component is destroyed
+     */
+    ngOnDestroy() {
+      this.unsubscribe$.next();
+      this.unsubscribe$.complete();
     }
 
-    ngAfterViewInit() {}
     /** take the current file focus and pass to api load endpoint */
     public onFileInputChange(event: Event) {
       this.bulkDataService.analyzingFile.next(true);

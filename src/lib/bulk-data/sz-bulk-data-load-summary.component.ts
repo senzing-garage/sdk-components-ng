@@ -2,6 +2,7 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { SzPrefsService } from '../services/sz-prefs.service';
 import { SzBulkDataService } from '../services/sz-bulk-data.service';
 import {SzBulkDataAnalysis, SzBulkLoadResult } from '@senzing/rest-api-client-ng';
+import { Subject } from 'rxjs';
 
 /**
  * show textual summary of data load operation.
@@ -17,6 +18,8 @@ import {SzBulkDataAnalysis, SzBulkLoadResult } from '@senzing/rest-api-client-ng
   styleUrls: ['./sz-bulk-data-load-summary.component.scss']
 })
 export class SzBulkDataLoadSummaryComponent implements OnInit {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
   /** get the file reference currently loaded in the the bulk data service */
   public get file(): File {
     if(this.bulkDataService) {
@@ -37,11 +40,12 @@ export class SzBulkDataLoadSummaryComponent implements OnInit {
     private bulkDataService: SzBulkDataService,
     public viewContainerRef: ViewContainerRef) {}
 
-    ngOnInit() {
-      /** get the result of the last load operation */
-      /*
-      this.bulkDataService.onLoadResult.subscribe( (res: SzBulkLoadResult) => {
-        this.loadResult = res;
-      });*/
-    }
+  ngOnInit() {}
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }

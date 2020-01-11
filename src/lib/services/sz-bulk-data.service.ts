@@ -8,14 +8,12 @@ import {
   SzBulkDataAnalysisResponse,
   SzDataSourceRecordAnalysis,
   SzBulkLoadResult,
-  SzBulkLoadError,
   SzBulkLoadResponse,
-  SzError
 } from '@senzing/rest-api-client-ng';
 
 import { SzDataSourcesService } from './sz-datasources.service';
 import { SzAdminService } from './sz-admin.service';
-import { tap, map, catchError } from 'rxjs/operators';
+import { tap, map, catchError, takeUntil } from 'rxjs/operators';
 /**
  * methods used to manipulate data is bulk, ie
  * import, analyze, map, and load data from a parseable format.
@@ -26,6 +24,8 @@ import { tap, map, catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class SzBulkDataService {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
   /** current file to analyze or load */
   public currentFile: File;
   /**  current result of last analysis operation */
@@ -76,7 +76,9 @@ export class SzBulkDataService {
     private datasourcesService: SzDataSourcesService,
     private bulkDataService: BulkDataService
   ) {
-    this.onCurrentFileChange.subscribe( (file: File) => {
+    this.onCurrentFileChange.pipe(
+      takeUntil( this.unsubscribe$ )
+    ).subscribe( (file: File) => {
       if(!file){ return; }
       this.analyzingFile.next(true);
 
@@ -85,13 +87,19 @@ export class SzBulkDataService {
         this.analyzingFile.next(false);
       });
     });
-    this.analyzingFile.subscribe( (isAnalyzing: boolean) => {
+    this.analyzingFile.pipe(
+      takeUntil( this.unsubscribe$ )
+    ).subscribe( (isAnalyzing: boolean) => {
       this.isAnalyzingFile = isAnalyzing;
     });
-    this.loadingFile.subscribe( (isLoading: boolean) => {
+    this.loadingFile.pipe(
+      takeUntil( this.unsubscribe$ )
+    ).subscribe( (isLoading: boolean) => {
       this.isLoadingFile = isLoading;
     });
-    this.adminService.onServerInfo.subscribe((info) => {
+    this.adminService.onServerInfo.pipe(
+      takeUntil( this.unsubscribe$ )
+    ).subscribe((info) => {
       //console.log('ServerInfo obtained: ', info);
     });
     this.updateDataSources();
@@ -100,24 +108,26 @@ export class SzBulkDataService {
    * @internal
    */
   private updateDataSources() {
-    this.datasourcesService.listDataSources().subscribe((datasources: string[]) => {
+    this.datasourcesService.listDataSources().pipe(
+      takeUntil( this.unsubscribe$ )
+    ).subscribe((datasources: string[]) => {
       //console.log('datasources obtained: ', datasources);
       this._dataSources = datasources.filter(s => s !== 'TEST' && s !== 'SEARCH');
     });
   }
   /** create a new datasource */
   public createDataSources(dataSources: string[]): Observable<string[]> {
-    console.log('SzBulkDataService.createDataSources: ', dataSources);
+    //console.log('SzBulkDataService.createDataSources: ', dataSources);
     return this.datasourcesService.addDataSources(dataSources);
   }
   /** create a new entity type */
   public createEntityTypes(entityTypes: string[]): Observable<string[]> {
-    console.log('SzBulkDataService.createEntityTypes: ', entityTypes, "ACTOR");
+    //console.log('SzBulkDataService.createEntityTypes: ', entityTypes, "ACTOR");
     return this.adminService.addEntityTypes(entityTypes, "ACTOR");
   }
   /** analze a file and prep for mapping */
   public analyze(file: File): Observable<SzBulkDataAnalysisResponse> {
-    console.log('SzBulkDataService.analyze: ', file);
+    //console.log('SzBulkDataService.analyze: ', file);
     this.analyzingFile.next(true);
     return this.bulkDataService.analyzeBulkRecords(file).pipe(
       catchError(err => {
@@ -182,6 +192,8 @@ export class SzBulkDataService {
           map((response: SzBulkLoadResponse) => {
             return response.data;
           })
+        ).pipe(
+          takeUntil( this.unsubscribe$ )
         ).subscribe();
       });
       return retVal.asObservable();
@@ -210,7 +222,7 @@ export class SzBulkDataService {
    * change the destination datasource of a file currently being mapped to datasource.
    */
   public changeDataSourceName(fromDataSource: string, toDataSource: string) {
-    console.log('MAP ' + fromDataSource + ' TO ' + toDataSource, this.dataSourceMap);
+    //console.log('MAP ' + fromDataSource + ' TO ' + toDataSource, this.dataSourceMap);
     this.dataSourceMap = this.dataSourceMap
     this.dataSourceMap[fromDataSource] = toDataSource;
   }
@@ -223,5 +235,11 @@ export class SzBulkDataService {
     this.onLoadResult.next( this.currentLoadResult );
     this.onCurrentFileChange.next( this.currentFile );
   }
-
+  /**
+   * unsubscribe event streams
+   */
+  destroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }
