@@ -40,6 +40,8 @@ export class SzBulkDataService {
   public onCurrentFileChange = new Subject<File>();
   /** when the analysis result changes this behavior subject is broadcast */
   public onAnalysisChange = new BehaviorSubject<SzBulkDataAnalysis>(undefined);
+  /** when the analysis result changes this behavior subject is broadcast */
+  public onDataSourcesChange = new BehaviorSubject<string[]>(undefined);
   /** when a datasrc destination changes this subject is broadcast */
   public onDataSourceMapChange = new Subject<{ [key: string]: string }>();
   /** when the result of a load operation changes this behavior subject is broadcast */
@@ -54,6 +56,7 @@ export class SzBulkDataService {
   public loadingFile = new Subject<boolean>();
   /** when a file is being loaded in to the engine on thread*/
   public isLoadingFile = false;
+  public currentError: Error;
 
   /** the file to analyze, map, or load */
   public set file(value: File) {
@@ -85,6 +88,8 @@ export class SzBulkDataService {
       this.analyze(file).toPromise().then( (analysisResp: SzBulkDataAnalysisResponse) => {
         //console.log('autowire analysis resp on file change: ', analysisResp, this.currentAnalysis);
         this.analyzingFile.next(false);
+      }, (err) => {
+        console.warn('analyzing of file threw..', err);
       });
     });
     this.analyzingFile.pipe(
@@ -96,6 +101,18 @@ export class SzBulkDataService {
       takeUntil( this.unsubscribe$ )
     ).subscribe( (isLoading: boolean) => {
       this.isLoadingFile = isLoading;
+    });
+    // update datasources in case new ones were added on load
+    this.onLoadResult.pipe(
+      takeUntil( this.unsubscribe$ )
+    ).subscribe( (resp: SzBulkLoadResult) => {
+      this.updateDataSources();
+    });
+    this.onError.pipe(
+      takeUntil( this.unsubscribe$ )
+    ).subscribe( (err: Error) => {
+      console.log('error happened: ', err);
+      this.currentError = err;
     });
     this.adminService.onServerInfo.pipe(
       takeUntil( this.unsubscribe$ )
@@ -113,32 +130,32 @@ export class SzBulkDataService {
     ).subscribe((datasources: string[]) => {
       //console.log('datasources obtained: ', datasources);
       this._dataSources = datasources.filter(s => s !== 'TEST' && s !== 'SEARCH');
+      this.onDataSourcesChange.next(this._dataSources);
     });
   }
   /** create a new datasource */
   public createDataSources(dataSources: string[]): Observable<string[]> {
-    //console.log('SzBulkDataService.createDataSources: ', dataSources);
+    console.log('SzBulkDataService.createDataSources: ', dataSources);
     return this.datasourcesService.addDataSources(dataSources);
   }
   /** create a new entity type */
   public createEntityTypes(entityTypes: string[]): Observable<string[]> {
-    //console.log('SzBulkDataService.createEntityTypes: ', entityTypes, "ACTOR");
+    console.log('SzBulkDataService.createEntityTypes: ', entityTypes, "ACTOR");
     return this.adminService.addEntityTypes(entityTypes, "ACTOR");
   }
   /** analze a file and prep for mapping */
   public analyze(file: File): Observable<SzBulkDataAnalysisResponse> {
     //console.log('SzBulkDataService.analyze: ', file);
+    this.currentError = undefined;
     this.analyzingFile.next(true);
     return this.bulkDataService.analyzeBulkRecords(file).pipe(
       catchError(err => {
-        console.warn('Handling error locally and rethrowing it...', err);
-        this.analyzingFile.next(false);
-        this.onError.next();
+        this.onError.next(err);
         return of(undefined);
       }),
       tap( (result: SzBulkDataAnalysisResponse) => {
         this.analyzingFile.next(false);
-        this.currentAnalysis = result.data;
+        this.currentAnalysis = (result && result.data) ? result.data : {};
         this.dataSourceMap = this.getDataSourceMapFromAnalysis( this.currentAnalysis.analysisByDataSource );
         this.onDataSourceMapChange.next( this.dataSourceMap );
         this.onAnalysisChange.next( this.currentAnalysis );
@@ -153,6 +170,7 @@ export class SzBulkDataService {
   public load(file?: File, dataSourceMap?: { [key: string]: string }, analysis?: SzBulkDataAnalysis ): Observable<SzBulkLoadResult> | undefined {
     //console.log('SzBulkDataService.load: ', dataSourceMap, file);
     file = file ? file : this.currentFile;
+    this.currentError = undefined;
     dataSourceMap = dataSourceMap ? dataSourceMap : this.dataSourceMap;
     analysis = analysis ? analysis : this.currentAnalysis;
 
@@ -168,6 +186,7 @@ export class SzBulkDataService {
       let retVal: Subject<SzBulkLoadResult> =  new Subject<SzBulkLoadResult>();
       // create new datasources if needed
       if (newDataSources.length > 0) {
+        console.log('create new datasources: ', newDataSources);
         const p1 = this.createDataSources(newDataSources).toPromise();
         const p2 = this.createEntityTypes(newDataSources).toPromise();
         promise = Promise.all([p1, p2]);
@@ -209,13 +228,15 @@ export class SzBulkDataService {
    */
   public getDataSourceMapFromAnalysis(analysisArray: SzDataSourceRecordAnalysis[]): { [key: string]: string } {
     let _dsMap: { [key: string]: string } = {};
-    analysisArray.forEach(a => {
-      if (this._dataSources.indexOf(a.dataSource) >= 0) {
-        _dsMap[a.dataSource] = a.dataSource;
-      } else {
-        //_dsMap[a.dataSource] = a.dataSource;
-      }
-    });
+    if(analysisArray && analysisArray.forEach) {
+      analysisArray.forEach(a => {
+        if (this._dataSources.indexOf(a.dataSource) >= 0) {
+          _dsMap[a.dataSource] = a.dataSource;
+        } else {
+          //_dsMap[a.dataSource] = a.dataSource;
+        }
+      });
+    }
     return _dsMap;
   }
   /**

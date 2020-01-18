@@ -5,7 +5,8 @@ import {
   ConfigService,
   SzResolvedEntity,
   SzRelatedEntity,
-  SzDataSourcesResponse
+  SzDataSourcesResponse,
+  SzDataSourcesResponseData
 } from '@senzing/rest-api-client-ng';
 import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
@@ -34,6 +35,18 @@ export class SzDataSourcesService {
     return this.configService.listDataSources()
     .pipe(
       map( (resp: SzDataSourcesResponse) => resp.data.dataSources )
+    );
+  }
+  /**
+   * get an array of datasources.
+   *
+   * @memberof SzDataSourcesService
+   */
+  public listDataSourcesDetails(): Observable<SzDataSourcesResponseData> {
+    // get attributes
+    return this.configService.listDataSources()
+    .pipe(
+      map( (resp: SzDataSourcesResponse) => resp.data )
     );
   }
   /**
