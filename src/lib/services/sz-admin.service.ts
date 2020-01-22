@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import {
   AdminService, ConfigService,
   Body2 as SzBaseResponseBody,
@@ -54,9 +54,9 @@ export class SzAdminService {
   public adminEnabled: boolean = false;
 
   /** event broadcasters */
-  public onVersionInfo: Subject<SzVersionInfo> = new Subject<SzVersionInfo>();
-  public onLicenseInfo: Subject<SzLicenseInfo> = new Subject<SzLicenseInfo>();
-  public onServerInfo: Subject<SzServerInfo> = new Subject<SzServerInfo>();
+  public onVersionInfo: Subject<SzVersionInfo> = new BehaviorSubject<SzVersionInfo>({});
+  public onLicenseInfo: Subject<SzLicenseInfo> = new BehaviorSubject<SzLicenseInfo>({});
+  public onServerInfo: Subject<SzServerInfo> = new BehaviorSubject<SzServerInfo>({});
 
   constructor(
     private adminService: AdminService,
