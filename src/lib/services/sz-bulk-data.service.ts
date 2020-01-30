@@ -7,6 +7,7 @@ import {
   SzBulkDataAnalysis,
   SzBulkDataAnalysisResponse,
   SzDataSourceRecordAnalysis,
+  SzEntityTypeRecordAnalysis,
   SzBulkLoadResult,
   SzBulkLoadResponse,
 } from '@senzing/rest-api-client-ng';
@@ -14,6 +15,7 @@ import {
 import { SzDataSourcesService } from './sz-datasources.service';
 import { SzAdminService } from './sz-admin.service';
 import { tap, map, catchError, takeUntil } from 'rxjs/operators';
+import { SzEntityTypesService } from './sz-entitytypes.service';
 /**
  * methods used to manipulate data is bulk, ie
  * import, analyze, map, and load data from a parseable format.
@@ -34,16 +36,24 @@ export class SzBulkDataService {
   public currentLoadResult: SzBulkLoadResult;
   /** map of current datasource name to new datasource names */
   public dataSourceMap: { [key: string]: string };
+  /** map of current entity type name to new entity type names */
+  public entityTypeMap: { [key: string]: string };
   /** current datasources */
   _dataSources: string[];
+  /** current entity types */
+  _entityTypes: string[];
   /** when the file input changes this subject is broadcast */
   public onCurrentFileChange = new Subject<File>();
   /** when the analysis result changes this behavior subject is broadcast */
   public onAnalysisChange = new BehaviorSubject<SzBulkDataAnalysis>(undefined);
-  /** when the analysis result changes this behavior subject is broadcast */
+  /** when the datasources change this behavior subject is broadcast */
   public onDataSourcesChange = new BehaviorSubject<string[]>(undefined);
+  /** when the entity types change this behavior subject is broadcast */
+  public onEntityTypesChange = new BehaviorSubject<string[]>(undefined);
   /** when a datasrc destination changes this subject is broadcast */
   public onDataSourceMapChange = new Subject<{ [key: string]: string }>();
+  /** when a enity type destination changes this subject is broadcast */
+  public onEntityTypeMapChange = new Subject<{ [key: string]: string }>();
   /** when the result of a load operation changes this behavior subject is broadcast */
   public onLoadResult = new BehaviorSubject<SzBulkLoadResult>(undefined);
   /** when the file input changes this subject is broadcast */
@@ -73,10 +83,15 @@ export class SzBulkDataService {
   private get dataSources(): string[] {
     return this._dataSources;
   }
+  /** the entity types currently present */
+  private get entityTypes(): string[] {
+    return this._entityTypes;
+  }
 
   constructor(
     private adminService: SzAdminService,
     private datasourcesService: SzDataSourcesService,
+    private entityTypesService: SzEntityTypesService,
     private bulkDataService: BulkDataService
   ) {
     this.onCurrentFileChange.pipe(
@@ -108,6 +123,12 @@ export class SzBulkDataService {
     ).subscribe( (resp: SzBulkLoadResult) => {
       this.updateDataSources();
     });
+    // update entity types in case new ones were added on load
+    this.onLoadResult.pipe(
+      takeUntil( this.unsubscribe$ )
+    ).subscribe( (resp: SzBulkLoadResult) => {
+      this.updateEntityTypes();
+    });
     this.onError.pipe(
       takeUntil( this.unsubscribe$ )
     ).subscribe( (err: Error) => {
@@ -120,6 +141,7 @@ export class SzBulkDataService {
       //console.log('ServerInfo obtained: ', info);
     });
     this.updateDataSources();
+    this.updateEntityTypes();
   }
   /** update the internal list of datasources
    * @internal
@@ -133,6 +155,18 @@ export class SzBulkDataService {
       this.onDataSourcesChange.next(this._dataSources);
     });
   }
+  /** update the internal list of datasources
+   * @internal
+   */
+  private updateEntityTypes() {
+    this.entityTypesService.listEntityTypes().pipe(
+      takeUntil( this.unsubscribe$ )
+    ).subscribe((entityTypes: string[]) => {
+      console.log('entity types obtained: ', entityTypes);
+      this._entityTypes = entityTypes.filter(s => s !== 'TEST' && s !== 'SEARCH');
+      this.onEntityTypesChange.next(this._entityTypes);
+    });
+  }
   /** create a new datasource */
   public createDataSources(dataSources: string[]): Observable<string[]> {
     console.log('SzBulkDataService.createDataSources: ', dataSources);
@@ -140,8 +174,8 @@ export class SzBulkDataService {
   }
   /** create a new entity type */
   public createEntityTypes(entityTypes: string[]): Observable<string[]> {
-    console.log('SzBulkDataService.createEntityTypes: ', entityTypes, "ACTOR");
-    return this.adminService.addEntityTypes(entityTypes, "ACTOR");
+    console.log('SzBulkDataService.createEntityTypes: ', entityTypes);
+    return this.entityTypesService.addEntityTypes(entityTypes, "ACTOR");
   }
   /** analze a file and prep for mapping */
   public analyze(file: File): Observable<SzBulkDataAnalysisResponse> {
@@ -157,9 +191,11 @@ export class SzBulkDataService {
         this.analyzingFile.next(false);
         this.currentAnalysis = (result && result.data) ? result.data : {};
         this.dataSourceMap = this.getDataSourceMapFromAnalysis( this.currentAnalysis.analysisByDataSource );
+        this.entityTypeMap = this.getEntityTypeMapFromAnalysis( this.currentAnalysis.analysisByEntityType );
         this.onDataSourceMapChange.next( this.dataSourceMap );
+        this.onEntityTypeMapChange.next( this.entityTypeMap );
         this.onAnalysisChange.next( this.currentAnalysis );
-        console.log('analyze set analysis respose: ', this.dataSourceMap, this.currentAnalysis);
+        console.log('analyze set analysis respose: ', this.dataSourceMap, this.entityTypeMap, this.currentAnalysis);
       })
     )
   }
@@ -167,12 +203,13 @@ export class SzBulkDataService {
    * load a files contents in to a datasource.
    * @TODO show usage example.
    */
-  public load(file?: File, dataSourceMap?: { [key: string]: string }, analysis?: SzBulkDataAnalysis ): Observable<SzBulkLoadResult> | undefined {
-    //console.log('SzBulkDataService.load: ', dataSourceMap, file);
+  public load(file?: File, dataSourceMap?: { [key: string]: string }, entityTypeMap?: { [key: string]: string }, analysis?: SzBulkDataAnalysis ): Observable<SzBulkLoadResult> | undefined {
+    console.log('SzBulkDataService.load: ', dataSourceMap, entityTypeMap, file);
     file = file ? file : this.currentFile;
     this.currentError = undefined;
     dataSourceMap = dataSourceMap ? dataSourceMap : this.dataSourceMap;
-    analysis = analysis ? analysis : this.currentAnalysis;
+    entityTypeMap = entityTypeMap ? entityTypeMap : this.entityTypeMap;
+    analysis      = analysis ?      analysis      : this.currentAnalysis;
 
     if(file && dataSourceMap && analysis) {
       const newDataSources = this.currentAnalysis.analysisByDataSource.filter(a => {
@@ -181,20 +218,34 @@ export class SzBulkDataService {
       }).map( (b) => {
         return this.dataSourceMap[b.dataSource];
       });
+      const newEntityTypes = this.currentAnalysis.analysisByEntityType.filter(a => {
+        const targetET = this.entityTypeMap[a.entityType];
+        return (targetET && this._entityTypes.indexOf(targetET) < 0);
+      }).map( (b) => {
+        return this.entityTypeMap[b.entityType];
+      });
 
       let promise = Promise.resolve([]);
+      let promises = [];
       let retVal: Subject<SzBulkLoadResult> =  new Subject<SzBulkLoadResult>();
       // create new datasources if needed
       if (newDataSources.length > 0) {
         console.log('create new datasources: ', newDataSources);
-        const p1 = this.createDataSources(newDataSources).toPromise();
-        const p2 = this.createEntityTypes(newDataSources).toPromise();
-        promise = Promise.all([p1, p2]);
+        const pTemp = this.createDataSources(newDataSources).toPromise();
+        promises.push( pTemp );
       }
+      // create new entity types if needed
+      if (newEntityTypes.length > 0) {
+        console.log('create new entity types: ', newEntityTypes);
+        const pTemp = this.createEntityTypes(newEntityTypes).toPromise();
+        promises.push( pTemp );
+      }
+      promise = Promise.all( promises );
+
       // no new datasources or already avail
       this.loadingFile.next(true);
       promise.then(() => {
-        this.bulkDataService.loadBulkRecords(file, dataSourceMap ).pipe(
+        this.bulkDataService.loadBulkRecords(file, dataSourceMap, entityTypeMap ).pipe(
           catchError((err: Error) => {
             console.warn('Handling error locally and rethrowing it...', err);
             this.loadingFile.next(false);
@@ -206,14 +257,17 @@ export class SzBulkDataService {
             this.currentLoadResult = response.data;
             this.onLoadResult.next( this.currentLoadResult );
             this.loadingFile.next(false);
-            retVal.next(response.data);
+            //retVal.next(response.data);
           }),
           map((response: SzBulkLoadResponse) => {
             return response.data;
           })
         ).pipe(
           takeUntil( this.unsubscribe$ )
-        ).subscribe();
+        ).subscribe( (data: SzBulkDataAnalysis) => {
+          console.log('SzBulkDataService.load', this.currentLoadResult, data);
+          retVal.next(data);
+        });
       });
       return retVal.asObservable();
     } else {
@@ -232,7 +286,8 @@ export class SzBulkDataService {
       analysisArray.forEach(a => {
         if (this._dataSources.indexOf(a.dataSource) >= 0) {
           _dsMap[a.dataSource] = a.dataSource;
-        } else {
+        } else if(a.dataSource !== null) {
+          // this will automatically get mapped to specified datasource
           //_dsMap[a.dataSource] = a.dataSource;
         }
       });
@@ -240,12 +295,40 @@ export class SzBulkDataService {
     return _dsMap;
   }
   /**
+   * Used to keep a internal map of source type to target entity type names.
+   * @internal
+   */
+  public getEntityTypeMapFromAnalysis(analysisArray: SzEntityTypeRecordAnalysis[]): { [key: string]: string } {
+    let _etMap: { [key: string]: string } = {};
+
+    if(analysisArray && analysisArray.forEach) {
+      analysisArray.forEach(a => {
+        if (this._entityTypes.indexOf(a.entityType) >= 0) {
+          _etMap[a.entityType] = a.entityType;
+        } else if(a.entityType !== null) {
+          _etMap[a.entityType] = a.entityType;
+        } else if(a.entityType === null) {
+          _etMap[a.entityType] = 'GENERIC';
+        }
+      });
+    }
+    return _etMap;
+  }
+  /**
    * change the destination datasource of a file currently being mapped to datasource.
    */
   public changeDataSourceName(fromDataSource: string, toDataSource: string) {
-    //console.log('MAP ' + fromDataSource + ' TO ' + toDataSource, this.dataSourceMap);
+    console.log('DS MAP ' + fromDataSource + ' TO ' + toDataSource, this.dataSourceMap);
     this.dataSourceMap = this.dataSourceMap
     this.dataSourceMap[fromDataSource] = toDataSource;
+  }
+  /**
+   * change the destination entity type of a file currently being mapped to a entity type.
+   */
+  public changeEntityTypeName(fromEntityType: string, toEntityType: string) {
+    console.log('ET MAP ' + fromEntityType + ' TO ' + toEntityType, this.entityTypeMap);
+    this.entityTypeMap = this.entityTypeMap;
+    this.entityTypeMap[fromEntityType] = toEntityType;
   }
   /** clear any file and associated data. removes file focus context */
   public clear(): void {

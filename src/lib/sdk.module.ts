@@ -38,6 +38,7 @@ import { SzPrefsService } from './services/sz-prefs.service';
 import { SzDataSourcesService } from './services/sz-datasources.service';
 import { SzAdminService } from './services/sz-admin.service';
 import { SzBulkDataService } from './services/sz-bulk-data.service';
+import { SzEntityTypesService } from './services/sz-entitytypes.service';
 
 /** components */
 import { SzBulkDataAnalysisComponent } from './bulk-data/sz-bulk-data-analysis.component';
@@ -192,11 +193,12 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzMessageBundleService,
     SzAdminService,
     SzBulkDataService,
-    SzSearchService,
     SzConfigurationService,
     SzDataSourcesService,
+    SzEntityTypesService,
     SzFoliosService,
     SzPrefsService,
+    SzSearchService,
     HttpClient,
     TitleCasePipe,
     SzUIEventService,

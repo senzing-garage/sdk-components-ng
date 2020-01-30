@@ -235,11 +235,11 @@ export class SzAdminService {
       map( (resp: SzBulkDataAnalysisResponse) => resp )
     );
   }
-  public loadBulkRecords(body: string | Blob, dataSource?: string, observe?: "body", reportProgress?: boolean): Observable<SzBulkDataLoadResponse> {
+  public loadBulkRecords(body: string | Blob, dataSource?: string, entityType?: string, observe?: "body", reportProgress?: boolean): Observable<SzBulkDataLoadResponse> {
     if (!this.adminEnabled || this.readOnly) {
       throw new Error('admin operation not permitted.');
     }
-    return this.bulkDataService.loadBulkRecords(body, dataSource, observe, reportProgress)
+    return this.bulkDataService.loadBulkRecords(body, dataSource, entityType, observe, reportProgress)
     .pipe(
       map( (resp: SzBulkDataLoadResponse) => resp )
     );
