@@ -270,10 +270,15 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
         phone?: string
         x?: number
         y?: number
+        expandable: boolean;
+        removable: boolean;
       }
 
       const pos: {x, y} = this.graphContainerEle.nativeElement.getBoundingClientRect();
       const evtSynth: evtModel = Object.assign({}, event);
+
+      evtSynth.expandable = this.graph.canExpandNode(evtSynth.entityId);
+      evtSynth.removable = this.graph.canRemoveNode(evtSynth.entityId);
       // change x/y to include element relative offset
       evtSynth.x = (Math.floor(pos.x) + Math.floor(event.x));
       evtSynth.y = (Math.floor(pos.y) + Math.floor(event.y));
