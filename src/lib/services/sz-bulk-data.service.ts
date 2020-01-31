@@ -162,7 +162,7 @@ export class SzBulkDataService {
     this.entityTypesService.listEntityTypes().pipe(
       takeUntil( this.unsubscribe$ )
     ).subscribe((entityTypes: string[]) => {
-      console.log('entity types obtained: ', entityTypes);
+      //console.log('entity types obtained: ', entityTypes);
       this._entityTypes = entityTypes.filter(s => s !== 'TEST' && s !== 'SEARCH');
       this.onEntityTypesChange.next(this._entityTypes);
     });
@@ -288,7 +288,7 @@ export class SzBulkDataService {
           _dsMap[a.dataSource] = a.dataSource;
         } else if(a.dataSource !== null) {
           // this will automatically get mapped to specified datasource
-          //_dsMap[a.dataSource] = a.dataSource;
+          _dsMap[a.dataSource] = a.dataSource;
         }
       });
     }
