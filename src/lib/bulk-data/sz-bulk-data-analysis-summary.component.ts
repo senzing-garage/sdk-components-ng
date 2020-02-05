@@ -61,7 +61,7 @@ export class SzBulkDataAnalysisSummaryComponent implements OnInit, OnDestroy {
       takeUntil( this.unsubscribe$ )
     ).subscribe((info) => {
       //console.log('SzBulkDataAnalysisSummaryComponent.ServerInfo obtained: ', info);
-    });
+    }, (error) => {});
   }
   /**
    * unsubscribe when component is destroyed
