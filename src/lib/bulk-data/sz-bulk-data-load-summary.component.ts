@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
 import { SzPrefsService } from '../services/sz-prefs.service';
 import { SzBulkDataService } from '../services/sz-bulk-data.service';
 import {SzBulkDataAnalysis, SzBulkLoadResult } from '@senzing/rest-api-client-ng';
@@ -17,7 +17,7 @@ import { Subject } from 'rxjs';
   templateUrl: './sz-bulk-data-load-summary.component.html',
   styleUrls: ['./sz-bulk-data-load-summary.component.scss']
 })
-export class SzBulkDataLoadSummaryComponent implements OnInit {
+export class SzBulkDataLoadSummaryComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
   /** get the file reference currently loaded in the the bulk data service */
@@ -26,6 +26,23 @@ export class SzBulkDataLoadSummaryComponent implements OnInit {
       return this.bulkDataService.currentFile;
     }
     return undefined;
+  }
+  /** get the file size for computer notation to display */
+  public getFileSize(sizeInBytes: number): string {
+    let _retVal = '';
+    if(sizeInBytes > 999999999) {
+      // gb
+      _retVal = (sizeInBytes / 1000000000 ).toFixed(1) + ' GB';
+    } else if (sizeInBytes > 999999) {
+      // mb
+      _retVal = (sizeInBytes / 1000000 ).toFixed(1) + ' MB';
+    } else if (sizeInBytes > 999) {
+      // mb
+      _retVal = (sizeInBytes / 1000 ).toFixed(1) + ' KB';
+    } else if(sizeInBytes > 0) {
+      _retVal = sizeInBytes + ' Bytes';
+    }
+    return _retVal;
   }
   /** result of last analysis operation */
   public get analysis(): SzBulkDataAnalysis {

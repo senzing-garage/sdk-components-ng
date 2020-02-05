@@ -1,41 +1,48 @@
 :host {
   display: block;
 
-  table.data-source-mapping {
+  table.data-source-mapping, table.entity-type-mapping {
     border-collapse: collapse;
+    width: 100%;
+
+    th {
+      border: 1px solid grey;
+      padding: 5px 10px;
+      width: 20%;
+    }
+
+    td {
+      border: 1px solid grey;
+      padding: 5px 10px;
+      text-align: center;
+    }
+
+    td input {
+      width: 200px;
+      font-size: 16px;
+      padding: 4px;
+    }
+
+   td span {
+      background-color: #000000;
+      color: white;
+      border-radius: 50%;
+      padding: 3px 8px;
+      margin: 0px 10px;
+      font-size: 14px;
+    }
   }
 
-  table.data-source-mapping th {
-    border: 1px solid grey;
-    padding: 5px 10px;
-  }
-
-  table.data-source-mapping td {
-    border: 1px solid grey;
-    padding: 5px 10px;
-  }
-
-  table.data-source-mapping td {
-    text-align: center;
-  }
-
-  table.data-source-mapping td.data-source-map {
-    width: 300px;
-    text-align: left;
-  }
-
-  table.data-source-mapping td input {
-    width: 200px;
-    font-size: 16px;
-    padding: 4px;
-  }
-
-  table.data-source-mapping td span {
-    background-color: #000000;
-    color: white;
-    border-radius: 50%;
-    padding: 3px 8px;
-    margin: 0px 10px;
-    font-size: 14px;
+  .mat-table-error {
+    width: unset;
+    .mat-table-full-width {
+      width: 100.1%;
+    }
+    .message {
+      text-align: center;
+      padding: 14px 0 14px 0;
+      font-weight: 600;
+      color: #525252;
+    }
   }
 }

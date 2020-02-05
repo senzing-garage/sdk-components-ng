@@ -1,41 +1,61 @@
 :host {
   display: block;
 
-  table.data-source-mapping {
+  table.data-source-mapping, table.entity-type-mapping {
     border-collapse: collapse;
-  }
+    width: 100%;
 
-  table.data-source-mapping th {
-    border: 1px solid grey;
-    padding: 5px 10px;
-  }
+    th {
+      border: 1px solid grey;
+      padding: 5px 10px;
+      width: 20%;
+    }
 
-  table.data-source-mapping td {
-    border: 1px solid grey;
-    padding: 5px 10px;
-  }
+    td {
+      border: 1px solid grey;
+      padding: 5px 10px;
+      text-align: center;
+    }
 
-  table.data-source-mapping td {
-    text-align: center;
-  }
+    td input {
+      width: 200px;
+      font-size: 16px;
+      padding: 4px;
+    }
 
-  table.data-source-mapping td.data-source-map {
-    width: 300px;
-    text-align: left;
+   td span {
+      background-color: #000000;
+      color: white;
+      border-radius: 50%;
+      padding: 3px 8px;
+      margin: 0px 10px;
+      font-size: 14px;
+    }
   }
+}
 
-  table.data-source-mapping td input {
-    width: 200px;
-    font-size: 16px;
-    padding: 4px;
+:host {
+  display: block;
+  width: 100%;
+
+  /* angular material data table */
+  .mat-table-full-width {
+    width: 100%;
   }
+  .mat-badge {
+    display: inline-block;
+    width: 25px;
 
-  table.data-source-mapping td span {
-    background-color: #000000;
-    color: white;
-    border-radius: 50%;
-    padding: 3px 8px;
-    margin: 0px 10px;
-    font-size: 14px;
+    .mat-badge-content {
+      width: 25px;
+      height: 23px;
+      border: 1px solid #e0a800;
+      font-size: 10px;
+      color: #4a4a4a;
+      box-shadow: 1px 1px 5px #888888;
+    }
+    .mat-badge-active {
+      /*border: 2px dotted red;*/
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewContainerRef, Input } from '@angular/core';
+import { Component, OnInit, Inject, ViewContainerRef, Input, OnDestroy } from '@angular/core';
 import { SzPrefsService } from '../services/sz-prefs.service';
 import { SzAdminService } from '../services/sz-admin.service';
 import { SzBulkDataService } from '../services/sz-bulk-data.service';
@@ -23,7 +23,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './sz-bulk-data-analysis.component.html',
   styleUrls: ['./sz-bulk-data-analysis.component.scss']
 })
-export class SzBulkDataAnalysisComponent implements OnInit {
+export class SzBulkDataAnalysisComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
   /** show the textual summaries for analyze and  */
@@ -31,7 +31,7 @@ export class SzBulkDataAnalysisComponent implements OnInit {
   /** get the current analysis from service */
   get analysis(): SzBulkDataAnalysis {
     return this.bulkDataService.currentAnalysis;
-  };
+  }
   /** does user have admin rights */
   public get adminEnabled() {
     return this.adminService.adminEnabled;
@@ -50,7 +50,7 @@ export class SzBulkDataAnalysisComponent implements OnInit {
   }
   /** set result of load operation from service */
   @Input() public set result(value: SzBulkLoadResult) {
-    if(value){ this.bulkDataService.currentLoadResult = value; }
+    if(value) { this.bulkDataService.currentLoadResult = value; }
   }
   /** get result of load operation from service */
   public get result(): SzBulkLoadResult {
@@ -70,7 +70,7 @@ export class SzBulkDataAnalysisComponent implements OnInit {
   }
   /** set the file to be analyzed */
   @Input() public set file(value: File) {
-    if(value){ this.analyzeFile(value); }
+    if(value) { this.analyzeFile(value); }
   }
 
   constructor( public prefs: SzPrefsService,
@@ -83,6 +83,9 @@ export class SzBulkDataAnalysisComponent implements OnInit {
       takeUntil( this.unsubscribe$ )
     ).subscribe((info) => {
       console.log('ServerInfo obtained: ', info);
+    });
+    this.bulkDataService.onError.subscribe((err) => {
+      console.warn('SHOW ERROR MESSAGE!', err);
     });
   }
 

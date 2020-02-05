@@ -1,8 +1,7 @@
-import { Component, OnInit, Inject, ViewContainerRef, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 
 import { SzPrefsService } from '../services/sz-prefs.service';
 import { SzAdminService } from '../services/sz-admin.service';
-import { SzDataSourcesService } from '../services/sz-datasources.service';
 import { SzBulkDataService } from '../services/sz-bulk-data.service';
 
 import {
@@ -25,7 +24,7 @@ import { Subject } from 'rxjs';
   templateUrl: './sz-bulk-data-load.component.html',
   styleUrls: ['./sz-bulk-data-load.component.scss']
 })
-export class SzBulkDataLoadComponent implements OnInit {
+export class SzBulkDataLoadComponent implements OnInit, AfterViewInit, OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
   /** show the analysis summary embedded in component */
@@ -39,7 +38,7 @@ export class SzBulkDataLoadComponent implements OnInit {
   /** get the current analysis from service */
   get analysis(): SzBulkDataAnalysis {
     return this.bulkDataService.currentAnalysis;
-  };
+  }
   /** does user have admin rights */
   public get adminEnabled() {
     return this.adminService.adminEnabled;
@@ -50,7 +49,7 @@ export class SzBulkDataLoadComponent implements OnInit {
   }
   /** set result of load operation from service */
   @Input() public set result(value: SzBulkLoadResult) {
-    if(value){ this.bulkDataService.currentLoadResult = value; }
+    if(value) { this.bulkDataService.currentLoadResult = value; }
   }
   /** get result of load operation from service */
   public get result(): SzBulkLoadResult {
@@ -73,12 +72,15 @@ export class SzBulkDataLoadComponent implements OnInit {
     this._showAnalysis = value;
     this._showResults = value;
   }
+  public get currentError(): Error {
+    return this.bulkDataService.currentError;
+  }
 
   constructor(
     public prefs: SzPrefsService,
     private adminService: SzAdminService,
     private bulkDataService: SzBulkDataService,
-    public viewContainerRef: ViewContainerRef){}
+    public viewContainerRef: ViewContainerRef) {}
 
     ngOnInit() {}
     ngAfterViewInit() {}
@@ -92,6 +94,7 @@ export class SzBulkDataLoadComponent implements OnInit {
 
     /** take the current file focus and pass to api load endpoint */
     public onFileInputChange(event: Event) {
+      this.bulkDataService.isAnalyzingFile = true;
       this.bulkDataService.analyzingFile.next(true);
       const target: HTMLInputElement = <HTMLInputElement> event.target;
       const fileList = target.files;

@@ -14,7 +14,7 @@ import {
   SzDataSourceRecordAnalysis,
   SzBulkLoadResult,
   SzBulkLoadError,
-  SzBulkLoadStatus,
+  SzBulkDataStatus,
   SzError
 } from '@senzing/rest-api-client-ng';
 

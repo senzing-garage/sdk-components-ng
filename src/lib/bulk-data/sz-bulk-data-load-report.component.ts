@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SzBulkDataService } from '../services/sz-bulk-data.service';
 import { SzBulkDataAnalysis, SzBulkLoadResult } from '@senzing/rest-api-client-ng';
 import { Subject } from 'rxjs';
@@ -16,9 +16,10 @@ import { Subject } from 'rxjs';
   templateUrl: './sz-bulk-data-load-report.component.html',
   styleUrls: ['./sz-bulk-data-load-report.component.scss']
 })
-export class SzBulkDataLoadReportComponent implements OnInit {
+export class SzBulkDataLoadReportComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
+  displayedColumns: string[] = ['dataSource', 'recordCount', 'loadedRecordCount', 'failedRecordCount', 'incompleteRecordCount'];
   /** get the file reference currently loaded in the the bulk data service */
   public get file(): File {
     if(this.bulkDataService) {
