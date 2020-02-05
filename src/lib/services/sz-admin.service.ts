@@ -73,10 +73,10 @@ export class SzAdminService {
       this.nativeApiBuildNumber = info.nativeApiBuildNumber;
       this.nativeApiVersion = info.nativeApiVersion;
       this.onVersionInfo.next(this.versionInfo);
-    });
+    }, (error) => {});
     this.getLicenseInfo().subscribe( (info: SzLicenseInfo) => {
       this.onLicenseInfo.next(this.licenseInfo);
-    });
+    }, (error) => {});
     this.getServerInfo().subscribe( (info: SzServerInfo) => {
       console.info('SzAdminService.getServerInfo: ', info);
       this.concurrency = info.concurrency;
@@ -85,7 +85,7 @@ export class SzAdminService {
       this.readOnly = info.readOnly;
       this.adminEnabled = info.adminEnabled;
       this.onServerInfo.next(this.serverInfo);
-    });
+    }, (error) => {});
   }
 
   /** get diagnostic information from the rest-api-server host */
