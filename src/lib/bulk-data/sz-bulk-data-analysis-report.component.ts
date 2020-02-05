@@ -119,7 +119,7 @@ export class SzBulkDataAnalysisReportComponent implements OnInit {
       this.bulkDataService.onDataSourcesChange.pipe(
         takeUntil( this.unsubscribe$ )
       ).subscribe((datasources: string[]) => {
-        console.warn('UPDATE DATASOURCES! ', datasources, this.bulkDataService._dataSources);
+        //console.warn('UPDATE DATASOURCES! ', datasources, this.bulkDataService._dataSources);
       });
       this.bulkDataService.onError.subscribe((err) => {
         console.warn('AdminBulkDataAnalysisReportComponent.onError SHOW Err MSG: ', err);

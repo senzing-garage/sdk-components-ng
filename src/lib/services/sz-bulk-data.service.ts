@@ -153,6 +153,9 @@ export class SzBulkDataService {
       //console.log('datasources obtained: ', datasources);
       this._dataSources = datasources.filter(s => s !== 'TEST' && s !== 'SEARCH');
       this.onDataSourcesChange.next(this._dataSources);
+    },
+    (err) => {
+      // ignore errors since this is a auto-req
     });
   }
   /** update the internal list of datasources
@@ -165,6 +168,9 @@ export class SzBulkDataService {
       //console.log('entity types obtained: ', entityTypes);
       this._entityTypes = entityTypes.filter(s => s !== 'TEST' && s !== 'SEARCH');
       this.onEntityTypesChange.next(this._entityTypes);
+    },
+    (err) => {
+      // ignore errors since this is a auto-req
     });
   }
   /** create a new datasource */
