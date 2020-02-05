@@ -79,11 +79,6 @@ export class SzBulkDataAnalysisComponent implements OnInit, OnDestroy {
     public viewContainerRef: ViewContainerRef) {}
 
   ngOnInit() {
-    this.adminService.onServerInfo.pipe(
-      takeUntil( this.unsubscribe$ )
-    ).subscribe((info) => {
-      console.log('ServerInfo obtained: ', info);
-    });
     this.bulkDataService.onError.subscribe((err) => {
       console.warn('SHOW ERROR MESSAGE!', err);
     });
