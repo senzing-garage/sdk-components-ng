@@ -880,7 +880,7 @@
       }
     }
   },
-  "defaultProject": "example/admin-importing",
+  "defaultProject": "example/search-with-results-and-details",
   "schematics": {
     "@schematics/angular:component": {
       "styleext": "scss"
