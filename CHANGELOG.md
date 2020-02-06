@@ -6,6 +6,78 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2020-2-6
+
+### Added to 1.3.0
+
+Added in components that can be used for bulk analysis and bulk loading. The components and services are specifically to facilitate admin functionality.
+
+- new components:
+  - [SzBulkDataAnalysisReportComponent](https://senzing.github.io/sdk-components-ng/components/SzBulkDataAnalysisReportComponent.html)
+  - [SzBulkDataAnalysisSummaryComponent](https://senzing.github.io/sdk-components-ng/components/SzBulkDataAnalysisSummaryComponent.html)
+  - [SzBulkDataAnalysisComponent](https://senzing.github.io/sdk-components-ng/components/SzBulkDataAnalysisComponent.html)
+  - [SzBulkDataLoadReportComponent](https://senzing.github.io/sdk-components-ng/components/SzBulkDataLoadReportComponent.html)
+  - [SzBulkDataLoadSummaryComponent](https://senzing.github.io/sdk-components-ng/components/SzBulkDataLoadSummaryComponent.html)
+  - [SzBulkDataLoadComponent](https://senzing.github.io/sdk-components-ng/components/SzBulkDataLoadComponent.html)
+- new models/classes:
+  - [SzBaseBulkLoadResult](https://senzing.github.io/rest-api-client-ng/interfaces/SzBaseBulkLoadResult.html)
+  - [SzBulkDataAnalysis](https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkDataAnalysis.html)
+  - [SzBulkDataAnalysisResponse](https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkDataAnalysisResponse.html)
+  - [SzBulkDataLoadResponse](https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkDataLoadResponse.html)
+  - [SzBulkLoadError](https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkLoadError.html)
+  - [SzBulkLoadResponse](https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkLoadResponse.html)
+  - [SzBulkLoadResult](https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkLoadResult.html)
+  - [SzDataSourceBulkLoadResult](https://senzing.github.io/rest-api-client-ng/interfaces/SzDataSourceBulkLoadResult.html)
+  - [SzDataSourceRecordAnalysis](https://senzing.github.io/rest-api-client-ng/interfaces/SzDataSourceRecordAnalysis.html)
+  - [SzEntityTypeBulkLoadResult](https://senzing.github.io/rest-api-client-ng/interfaces/SzEntityTypeBulkLoadResult.html)
+  - [SzEntityTypeRecordAnalysis](https://senzing.github.io/rest-api-client-ng/interfaces/SzEntityTypeRecordAnalysis.html)
+- new services:
+  - [SzAdminService](https://senzing.github.io/sdk-components-ng/injectables/SzAdminService.html)
+  - [SzBulkDataService](https://senzing.github.io/sdk-components-ng/injectables/SzBulkDataService.html)
+- new examples:
+  - example/admin-importing
+- relevant tickets
+  - [#133](https://github.com/Senzing/sdk-components-ng/issues/133)
+
+## [1.2.0] - 2019-12-11
+
+### Added to 1.2.0
+
+New *"Search By Id"* component, *"record viewer"* component, search history type-ahead, various bugfixes, rest-client updates, admin service, and basic folio models.
+
+- new components:
+  - SzSearchByIdComponent Component
+  - SzEntityRecordViewerComponent
+- new models/classes:
+  - SzSearchByIdFormParams interface
+  - SzAdminService
+  - SzFolioItem
+  - SzFolio
+  - SzSearchParamsFolioItem extends SzFolioItem
+  - SzSearchParamsFolio extends SzFolio
+  - SzSearchHistoryFolioItem extends SzSearchParamsFolioItem
+  - SzSearchHistoryFolio extends SzSearchParamsFolio
+- new services:
+  - SzFoliosService
+- new events:
+  - SzSearchService.parametersChanged
+  - SzSearchService.resultsChanged
+  - SzSearchService.searchPerformed
+- new dependencies:
+  - ngx-json-viewer
+- new examples:
+  - search-by-id
+- relevant tickets
+  - [#109](https://github.com/Senzing/sdk-components-ng/issues/109)
+  - [#110](https://github.com/Senzing/sdk-components-ng/issues/110)
+  - [#112](https://github.com/Senzing/sdk-components-ng/issues/112)
+  - [#114](https://github.com/Senzing/sdk-components-ng/issues/114)
+  - [#115](https://github.com/Senzing/sdk-components-ng/issues/115)
+  - [#121](https://github.com/Senzing/sdk-components-ng/issues/121)
+  - [#123](https://github.com/Senzing/sdk-components-ng/issues/123)
+  - [#125](https://github.com/Senzing/sdk-components-ng/issues/125)
+  - [#126](https://github.com/Senzing/sdk-components-ng/issues/126)
+
 ## [1.1.0] - 2019-11-11
 
 ### Added to 1.1.0

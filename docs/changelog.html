@@ -35,6 +35,98 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 <a href="https://dlaa.me/markdownlint/">markdownlint</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<h2 id="130---2020-2-6">[1.3.0] - 2020-2-6</h2>
+<h3 id="added-to-130">Added to 1.3.0</h3>
+<p>Added in components that can be used for bulk analysis and bulk loading. The components and services are specifically to facilitate admin functionality.</p>
+<ul>
+<li>new components:<ul>
+<li><a href="https://senzing.github.io/sdk-components-ng/components/SzBulkDataAnalysisReportComponent.html">SzBulkDataAnalysisReportComponent</a></li>
+<li><a href="https://senzing.github.io/sdk-components-ng/components/SzBulkDataAnalysisSummaryComponent.html">SzBulkDataAnalysisSummaryComponent</a></li>
+<li><a href="https://senzing.github.io/sdk-components-ng/components/SzBulkDataAnalysisComponent.html">SzBulkDataAnalysisComponent</a></li>
+<li><a href="https://senzing.github.io/sdk-components-ng/components/SzBulkDataLoadReportComponent.html">SzBulkDataLoadReportComponent</a></li>
+<li><a href="https://senzing.github.io/sdk-components-ng/components/SzBulkDataLoadSummaryComponent.html">SzBulkDataLoadSummaryComponent</a></li>
+<li><a href="https://senzing.github.io/sdk-components-ng/components/SzBulkDataLoadComponent.html">SzBulkDataLoadComponent</a></li>
+</ul>
+</li>
+<li>new models/classes:<ul>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzBaseBulkLoadResult.html">SzBaseBulkLoadResult</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkDataAnalysis.html">SzBulkDataAnalysis</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkDataAnalysisResponse.html">SzBulkDataAnalysisResponse</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkDataLoadResponse.html">SzBulkDataLoadResponse</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkLoadError.html">SzBulkLoadError</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkLoadResponse.html">SzBulkLoadResponse</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkLoadResult.html">SzBulkLoadResult</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzDataSourceBulkLoadResult.html">SzDataSourceBulkLoadResult</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzDataSourceRecordAnalysis.html">SzDataSourceRecordAnalysis</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzEntityTypeBulkLoadResult.html">SzEntityTypeBulkLoadResult</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzEntityTypeRecordAnalysis.html">SzEntityTypeRecordAnalysis</a></li>
+</ul>
+</li>
+<li>new services:<ul>
+<li><a href="https://senzing.github.io/sdk-components-ng/injectables/SzAdminService.html">SzAdminService</a></li>
+<li><a href="https://senzing.github.io/sdk-components-ng/injectables/SzBulkDataService.html">SzBulkDataService</a></li>
+</ul>
+</li>
+<li>new examples:<ul>
+<li>example/admin-importing</li>
+</ul>
+</li>
+<li>relevant tickets<ul>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/133">#133</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="120---2019-12-11">[1.2.0] - 2019-12-11</h2>
+<h3 id="added-to-120">Added to 1.2.0</h3>
+<p>New *&quot;Search By Id&quot;* component, *&quot;record viewer&quot;* component, search history type-ahead, various bugfixes, rest-client updates, admin service, and basic folio models.</p>
+<ul>
+<li>new components:<ul>
+<li>SzSearchByIdComponent Component</li>
+<li>SzEntityRecordViewerComponent</li>
+</ul>
+</li>
+<li>new models/classes:<ul>
+<li>SzSearchByIdFormParams interface</li>
+<li>SzAdminService</li>
+<li>SzFolioItem</li>
+<li>SzFolio</li>
+<li>SzSearchParamsFolioItem extends SzFolioItem</li>
+<li>SzSearchParamsFolio extends SzFolio</li>
+<li>SzSearchHistoryFolioItem extends SzSearchParamsFolioItem</li>
+<li>SzSearchHistoryFolio extends SzSearchParamsFolio</li>
+</ul>
+</li>
+<li>new services:<ul>
+<li>SzFoliosService</li>
+</ul>
+</li>
+<li>new events:<ul>
+<li>SzSearchService.parametersChanged</li>
+<li>SzSearchService.resultsChanged</li>
+<li>SzSearchService.searchPerformed</li>
+</ul>
+</li>
+<li>new dependencies:<ul>
+<li>ngx-json-viewer</li>
+</ul>
+</li>
+<li>new examples:<ul>
+<li>search-by-id</li>
+</ul>
+</li>
+<li>relevant tickets<ul>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/109">#109</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/110">#110</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/112">#112</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/114">#114</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/115">#115</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/121">#121</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/123">#123</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/125">#125</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/126">#126</a></li>
+</ul>
+</li>
+</ul>
 <h2 id="110---2019-11-11">[1.1.0] - 2019-11-11</h2>
 <h3 id="added-to-110">Added to 1.1.0</h3>
 <ul>
