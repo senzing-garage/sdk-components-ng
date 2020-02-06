@@ -22,6 +22,10 @@ import {
 /** models */
 // import { SzEntityDetailSectionData } from './models/entity-detail-section-data';
 // import { SzEntitySearchParams } from './models/entity-search';
+// import { SzBulkDataAnalysis } from './models/data-analysis';
+// import { SzBulkLoadStatus } from './models/data-importing';
+// import { SzDataSourceRecordAnalysis } from './models/data-sources';
+// import { SzFolioItem, SzSearchParamsFolio, SzSearchParamsFolioItem } from './models/folio';
 
 /** services */
 import { SzMessageBundleService } from './services/sz-message-bundle.service';
@@ -33,8 +37,16 @@ import { SzPdfUtilService } from './services/sz-pdf-util.service';
 import { SzPrefsService } from './services/sz-prefs.service';
 import { SzDataSourcesService } from './services/sz-datasources.service';
 import { SzAdminService } from './services/sz-admin.service';
+import { SzBulkDataService } from './services/sz-bulk-data.service';
+import { SzEntityTypesService } from './services/sz-entitytypes.service';
 
 /** components */
+import { SzBulkDataAnalysisComponent } from './bulk-data/sz-bulk-data-analysis.component';
+import { SzBulkDataAnalysisReportComponent } from './bulk-data/sz-bulk-data-analysis-report.component';
+import { SzBulkDataAnalysisSummaryComponent } from './bulk-data/sz-bulk-data-analysis-summary.component';
+import { SzBulkDataLoadComponent } from './bulk-data/sz-bulk-data-load.component';
+import { SzBulkDataLoadReportComponent } from './bulk-data/sz-bulk-data-load-report.component';
+import { SzBulkDataLoadSummaryComponent } from './bulk-data/sz-bulk-data-load-summary.component';
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
 import { SzEntityDetailHeaderComponent } from './entity/detail/sz-entity-detail-header/header.component';
 import { SzEntityDetailSectionSummaryComponent } from './entity/detail/sz-entity-detail-header/summary.component';
@@ -64,7 +76,6 @@ import { SzConfigurationComponent } from './configuration/sz-configuration/sz-co
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
 import { SzPreferencesComponent } from './configuration/sz-preferences/sz-preferences.component';
 import { SzPrefDictComponent } from './configuration/sz-preferences/sz-pref-dict/sz-pref-dict.component';
-import { SzFolioItem, SzSearchParamsFolio, SzSearchParamsFolioItem } from './models/folio';
 
 /**
  * Sets up a default set of service parameters for use
@@ -92,6 +103,12 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
  */
 @NgModule({
   declarations: [
+    SzBulkDataAnalysisComponent,
+    SzBulkDataAnalysisReportComponent,
+    SzBulkDataAnalysisSummaryComponent,
+    SzBulkDataLoadComponent,
+    SzBulkDataLoadReportComponent,
+    SzBulkDataLoadSummaryComponent,
     SzEntityDetailComponent,
     SzSearchComponent,
     SzSearchByIdComponent,
@@ -131,6 +148,12 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     ApiModule
   ],
   exports: [
+    SzBulkDataAnalysisComponent,
+    SzBulkDataAnalysisReportComponent,
+    SzBulkDataAnalysisSummaryComponent,
+    SzBulkDataLoadComponent,
+    SzBulkDataLoadReportComponent,
+    SzBulkDataLoadSummaryComponent,
     SzEntityDetailComponent,
     SzSearchComponent,
     SzSearchByIdComponent,
@@ -148,6 +171,12 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
   ],
   /** for components being exported as web components */
   entryComponents: [
+    SzBulkDataAnalysisComponent,
+    SzBulkDataAnalysisReportComponent,
+    SzBulkDataAnalysisSummaryComponent,
+    SzBulkDataLoadComponent,
+    SzBulkDataLoadReportComponent,
+    SzBulkDataLoadSummaryComponent,
     SzEntityDetailComponent,
     SzEntityDetailGraphComponent,
     SzEntityRecordViewerComponent,
@@ -163,11 +192,13 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
   providers: [
     SzMessageBundleService,
     SzAdminService,
-    SzSearchService,
+    SzBulkDataService,
     SzConfigurationService,
     SzDataSourcesService,
+    SzEntityTypesService,
     SzFoliosService,
     SzPrefsService,
+    SzSearchService,
     HttpClient,
     TitleCasePipe,
     SzUIEventService,

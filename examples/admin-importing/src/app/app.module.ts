@@ -6,8 +6,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ApiModule as SenzingDataServiceModule } from '@senzing/rest-api-client-ng';
 import { SenzingSdkGraphModule } from '@senzing/sdk-graph-components';
-import { SenzingSdkModule, SzRestConfiguration, SzPoweredByComponent, SzPrefsService, SzConfigurationService  } from '@senzing/sdk-components-ng';
-
+import { SenzingSdkModule, SzBulkDataService, SzConfigurationService, SzPrefsService, SzPoweredByComponent, SzRestConfiguration  } from '@senzing/sdk-components-ng';
 import { AppComponent } from './app.component';
 
 /**
@@ -45,6 +44,7 @@ export function SzRestConfigurationFactory() {
     SenzingDataServiceModule.forRoot( SzRestConfigurationFactory )
   ],
   providers: [
+    SzBulkDataService,
     SzPrefsService,
     SzConfigurationService
   ],

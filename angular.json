@@ -170,6 +170,114 @@
         }
       }
     },
+    "example/admin-importing": {
+      "root": "examples/admin-importing/",
+      "sourceRoot": "examples/admin-importing/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss",
+          "spec": false
+        },
+        "@schematics/angular:class": {
+          "spec": false
+        },
+        "@schematics/angular:directive": {
+          "spec": false
+        },
+        "@schematics/angular:guard": {
+          "spec": false
+        },
+        "@schematics/angular:module": {
+          "spec": false
+        },
+        "@schematics/angular:pipe": {
+          "spec": false
+        },
+        "@schematics/angular:service": {
+          "spec": false
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/@senzing/examples/admin-importing",
+            "index": "examples/admin-importing/src/index.html",
+            "main": "examples/admin-importing/src/main.ts",
+            "polyfills": "examples/admin-importing/src/polyfills.ts",
+            "tsConfig": "examples/admin-importing/tsconfig.app.json",
+            "assets": [
+              "examples/admin-importing/src/favicon.ico",
+              "examples/admin-importing/src/assets"
+            ],
+            "styles": [
+              "src/lib/scss/styles.scss",
+              "examples/admin-importing/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "examples/admin-importing/src/environments/environment.ts",
+                  "with": "examples/admin-importing/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "example/admin-importing:build",
+            "port": 4300,
+            "proxyConfig": "proxy.conf.json"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "example/admin-importing:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "example/admin-importing:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "examples/admin-importing/tsconfig.app.json",
+              "examples/admin-importing/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
     "example/search-in-graph": {
       "root": "examples/search-in-graph/",
       "sourceRoot": "examples/search-in-graph/src",
@@ -356,7 +464,8 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "example/search-with-results-and-details:build",
-            "port": 4300
+            "port": 4300,
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {
@@ -771,7 +880,7 @@
       }
     }
   },
-  "defaultProject": "example/search-with-prefs",
+  "defaultProject": "example/search-with-results-and-details",
   "schematics": {
     "@schematics/angular:component": {
       "styleext": "scss"

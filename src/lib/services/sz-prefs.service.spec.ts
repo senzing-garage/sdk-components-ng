@@ -101,8 +101,8 @@ describe('SzPrefsService', () => {
       // filter because the first publish is always empty object
       debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
-      console.log('------------------- DEBUG (output) ------------', Object.keys(g).join(', '));
-      console.log('2', JSON.stringify(g, null, 2) );
+      //console.log('------------------- DEBUG (output) ------------', Object.keys(g).join(', '));
+      //console.log('2', JSON.stringify(g, null, 2) );
        expect(g.searchResults.showOtherData).toEqual(true);
        done();
     });
