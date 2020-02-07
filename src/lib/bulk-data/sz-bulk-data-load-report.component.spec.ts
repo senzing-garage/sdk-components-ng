@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzBulkDataLoadReportComponent } from './sz-bulk-data-load-report.component';
-import { SenzingSdkModule } from 'src/lib/sdk.module';
+import { SenzingSdkModule } from './../../../src/lib/sdk.module';
 
 describe('SzBulkDataLoadReportComponent', () => {
   let component: SzBulkDataLoadReportComponent;

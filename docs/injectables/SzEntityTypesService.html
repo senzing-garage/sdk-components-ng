@@ -38,7 +38,7 @@
 
 <ol class="breadcrumb">
   <li>Injectables</li>
-  <li>SzDataSourcesService</li>
+  <li>SzEntityTypesService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -53,14 +53,14 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/lib/services/sz-datasources.service.ts</code>
+            <code>src/lib/services/sz-entitytypes.service.ts</code>
         </p>
 
             <p class="comment">
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Provides access to the /datasources api path.
+                <p>Provides access to the /entitytypes api path.
 See <a href="https://github.com/Senzing/senzing-rest-api/blob/master/senzing-rest-api.yaml#L172">https://github.com/Senzing/senzing-rest-api/blob/master/senzing-rest-api.yaml#L172</a></p>
 
             </p>
@@ -87,15 +87,15 @@ See <a href="https://github.com/Senzing/senzing-rest-api/blob/master/senzing-res
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#addDataSources">addDataSources</a>
+                                <a href="#addEntityTypes">addEntityTypes</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#listDataSources">listDataSources</a>
+                                <a href="#listEntityTypes">listEntityTypes</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#listDataSourcesDetails">listDataSourcesDetails</a>
+                                <a href="#listEntityTypesDetails">listEntityTypesDetails</a>
                             </li>
                         </ul>
                     </td>
@@ -162,20 +162,20 @@ See <a href="https://github.com/Senzing/senzing-rest-api/blob/master/senzing-res
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="addDataSources"></a>
+                    <a name="addEntityTypes"></a>
                     <span class="name">
                         <b>
                             <span class="modifier">Public</span>
-                            addDataSources
+                            addEntityTypes
                         </b>
-                        <a href="#addDataSources"><span class="icon ion-ios-link"></span></a>
+                        <a href="#addEntityTypes"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>addDataSources(dataSources: string[])</code>
+                    <code>addEntityTypes(entityTypes: string[], entityClass?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
@@ -184,7 +184,7 @@ See <a href="https://github.com/Senzing/senzing-rest-api/blob/master/senzing-res
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>add datasources and return a array of datasources after the operation.</p>
+                    <div class="io-description"><p>add entity type and return a array of entity types after the operation.</p>
 </div>
 
                     <div class="io-description">
@@ -199,13 +199,25 @@ See <a href="https://github.com/Senzing/senzing-rest-api/blob/master/senzing-res
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>dataSources</td>
+                                    <td>entityTypes</td>
                                     <td>
                                             <code>string[]</code>
                                     </td>
 
                                     <td>
                                         No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>entityClass</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
                                     </td>
 
 
@@ -230,20 +242,20 @@ See <a href="https://github.com/Senzing/senzing-rest-api/blob/master/senzing-res
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="listDataSources"></a>
+                    <a name="listEntityTypes"></a>
                     <span class="name">
                         <b>
                             <span class="modifier">Public</span>
-                            listDataSources
+                            listEntityTypes
                         </b>
-                        <a href="#listDataSources"><span class="icon ion-ios-link"></span></a>
+                        <a href="#listEntityTypes"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>listDataSources()</code>
+                    <code>listEntityTypes()</code>
                 </td>
             </tr>
 
@@ -252,7 +264,7 @@ See <a href="https://github.com/Senzing/senzing-rest-api/blob/master/senzing-res
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>get an array of datasources.</p>
+                    <div class="io-description"><p>get an array of entity types.</p>
 </div>
 
                     <div class="io-description">
@@ -267,20 +279,20 @@ See <a href="https://github.com/Senzing/senzing-rest-api/blob/master/senzing-res
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="listDataSourcesDetails"></a>
+                    <a name="listEntityTypesDetails"></a>
                     <span class="name">
                         <b>
                             <span class="modifier">Public</span>
-                            listDataSourcesDetails
+                            listEntityTypesDetails
                         </b>
-                        <a href="#listDataSourcesDetails"><span class="icon ion-ios-link"></span></a>
+                        <a href="#listEntityTypesDetails"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>listDataSourcesDetails()</code>
+                    <code>listEntityTypesDetails()</code>
                 </td>
             </tr>
 
@@ -289,11 +301,11 @@ See <a href="https://github.com/Senzing/senzing-rest-api/blob/master/senzing-res
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>get an array of datasources.</p>
+                    <div class="io-description"><p>get an array of entity types.</p>
 </div>
 
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;SzDataSourcesResponseData&gt;</code>
+                        <b>Returns : </b>    <code>Observable&lt;literal type&gt;</code>
 
                     </div>
                 </td>
@@ -336,7 +348,7 @@ See <a href="https://github.com/Senzing/senzing-rest-api/blob/master/senzing-res
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'SzDataSourcesService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'SzEntityTypesService.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
