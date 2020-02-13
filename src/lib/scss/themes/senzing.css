@@ -118,7 +118,7 @@ body {
   --sz-entity-detail-name-font-size: 20px;
   --sz-entity-detail-section-record-card-display: block;
   --sz-entity-detail-section-record-card-background-color: #FFFFFF;
-  --sz-entity-detail-section-record-card-margin: 8px;
+  --sz-entity-detail-section-record-card-margin: 8px 0 8px 0;
   --sz-entity-detail-section-record-card-padding: 15px;
   --sz-entity-detail-section-record-card-border-radius: 5px;
   --sz-entity-detail-section-record-card-border: 1px solid #eaeaea;
@@ -130,4 +130,56 @@ body {
   --sz-entity-detail-pill-background-color: #808285;
   --sz-entity-detail-pill-color: #FFFFFF;
   --sz-entity-detail-pill-border-radius: 5px;
+  /* special overrides for entity detail component view since it coexists with primary detail view */
+    --sz-entity-detail-section-header-lo-rail-font-size: 12px;
+    --sz-entity-detail-section-header-lo-rail-font-weight: 400px;
+    --sz-entity-detail-section-lo-rail-border: none;
+    --sz-entity-detail-section-lo-rail-font-size: 14px;
+    --sz-entity-detail-section-lo-rail-font-weight: normal;
+    --sz-entity-detail-section-lo-rail-border-radius: 0;
+    --sz-entity-detail-section-lo-rail-border-left: var(--sz-entity-detail-section-lo-rail-border);
+    --sz-entity-detail-section-lo-rail-border-right: var(--sz-entity-detail-section-lo-rail-border);
+    --sz-entity-detail-section-lo-rail-border-top: var(--sz-entity-detail-section-lo-rail-border);
+    --sz-entity-detail-section-lo-rail-border-bottom: 1px solid #ddd;
+    --sz-entity-detail-header-lo-rail-totals-font-size: 9px;
+    --sz-entity-detail-header-lo-rail-totals-number-font-size: 26px;
+    --sz-entity-detail-header-lo-rail-padding: 0 0 0 20px;
+    --sz-entity-detail-header-lo-rail-border: none;
+    --sz-entity-detail-header-lo-rail-name-font-size: 2em;
+    --sz-entity-detail-header-lo-rail-name-font-weight: 600;
+    --sz-entity-detail-header-lo-rail-name-padding: var(--sz-entity-detail-header-lo-rail-padding);
+    --sz-entity-detail-pill-lo-rail-font-size: 11px;
+    --sz-entity-detail-pill-lo-rail-border-radius: 5px;
+    --sz-entity-detail-pill-lo-rail-padding: 2px 5px;
+
+  /* graph */
+  --sz-entity-graph-control-border: 1px solid #d3d3d3;
+  --sz-entity-graph-control-position: absolute;
+  --sz-entity-graph-control-display: block;
+  --sz-entity-graph-control-cursor: default;
+  --sz-entity-graph-control-z-index : 200;
+  --sz-entity-graph-control-top: auto;
+  --sz-entity-graph-control-left: auto;
+  --sz-entity-graph-control-right: 0px;
+  --sz-entity-graph-control-bottom: 0px;
+  --sz-entity-graph-control-font-size: 13px;
+  --sz-entity-graph-control-color: #979797;
+  --sz-entity-graph-control-background-color: #fff;
+  --sz-entity-graph-control-padding-top: 1px;
+  --sz-entity-graph-control-padding-right: 3px;
+  --sz-entity-graph-control-padding-bottom: 0px;
+  --sz-entity-graph-control-padding-left: 3px;
+  --sz-entity-graph-overlay-color: #9d9d9d;
+  /* control borders */
+  --sz-entity-graph-control-border-top: 1px solid #d3d3d3;
+  --sz-entity-graph-control-border-right: none;
+  --sz-entity-graph-control-border-bottom: none;
+  --sz-entity-graph-control-border-left: 1px solid #d3d3d3;
+  --sz-entity-graph-control-border-top-left-radius: 7px;
+  --sz-entity-graph-control-border-top-right-radius: 0;
+  --sz-entity-graph-control-border-bottom-left-radius: 0;
+  --sz-entity-graph-control-border-bottom-right-radius: 0;
+  --sz-entity-graph-control-item-cursor: pointer;
+  --sz-entity-graph-control-item-background-color: #fff;
+  --sz-entity-graph-control-item-margin: 0;
 }

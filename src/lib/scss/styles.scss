@@ -26,7 +26,7 @@ body {
   }
 
   .sz-graph-link-label {
-    font-size: 10px;
+    font-size: 7px;
   }
 
   .sz-graph-bbox {
@@ -52,7 +52,7 @@ body {
     }
   }
 
-  .sz-graph-icon-enclosure {
+  .sz-graph-icon-enclosure, .sz-graph-business-icon-enclosure {
     fill: white;
     opacity: .5;
 
@@ -70,12 +70,13 @@ body {
 
   .sz-graph-tooltip {
     position: absolute;
-    background-color: white;
-    max-width: 200px;
+    font-size: var(--sz-graph-tooltip-font-size);
+    background-color: var(--sz-graph-tooltip-background-color);
+    max-width: var(--sz-graph-tooltip-max-width);
     height: auto;
-    padding: 1px;
-    border-radius: 4px;
-    border: 1px solid;
+    padding: var(--sz-graph-tooltip-padding);
+    border-radius: var(--sz-graph-tooltip-border-radius);
+    border: var(--sz-graph-tooltip-border);
     box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
     pointer-events: none;
   }

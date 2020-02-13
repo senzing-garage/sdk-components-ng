@@ -1,0 +1,103 @@
+<div class="drawer-wrapper">
+  <h3>{{ sectionTitles[0] }}</h3>
+
+  <form [formGroup]="slidersForm">
+  <ul class="sliders-list">
+    <li class="has-tooltip block-level-src">
+      <span class="tooltip">display match keys on relationship lines</span>
+      <label>
+        <!-- start graph match keys checkbox -->
+        <input type="checkbox"
+          id="sz-graph-toggle-match-keys" name="sz-graph-toggle-match-keys"
+          [checked]="showLinkLabels"
+          (change)="onCheckboxPrefToggle('showLinkLabels',$event)">
+        <!-- end graph match keys checkbox -->
+        Show Match Keys
+      </label>
+    </li>
+
+    <li>
+      <label>
+        <div>
+          <span class="has-tooltip">
+            Scope
+            <span class="tooltip tooptip-left">number of relationship hops away from focused entity</span>
+          </span>
+        </div>
+        <input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut" (change)="onIntParameterChange('buildOut', $event.target.value)" required>
+        <span class="intVal">({{ buildOut }})</span>
+      </label>
+    </li>
+    <li *ngIf="showMaxEntities">
+      <label>
+        <div>
+          <span class="has-tooltip">
+            Max
+            <span class="tooltip tooptip-left">hard limit on how many entities will be displayed</span>
+          </span>
+        </div>
+        <input type="range" min="1" max="99" step="3" [value]="maxEntities" formControlName="maxEntities" (change)="onIntParameterChange('maxEntities', $event.target.value)" required>
+        <span class="intVal">({{ maxEntities }})</span>
+      </label>
+    </li>
+    <li *ngIf="showMaxDegreesOfSeparation">
+      <label>
+        <div>
+          <span class="has-tooltip">
+            Degrees
+            <span class="tooltip tooptip-left">maximum degrees of separation between nodes and focus</span>
+          </span>
+        </div>
+        <input type="range" min="1" max="5" [value]="maxDegreesOfSeparation" formControlName="maxDegreesOfSeparation" (change)="onIntParameterChange('maxDegreesOfSeparation', $event.target.value)" required>
+        <span class="intVal">({{ maxDegreesOfSeparation }})</span>
+      </label>
+    </li>
+  </ul>
+  </form>
+
+  <hr>
+  <h3>{{ sectionTitles[1] }}</h3>
+  <form [formGroup]="filterByDataSourcesForm">
+  <ul class="filters-list">
+    <ng-container *ngFor="let ds of filterByDataSourcesData.controls; let i = index">
+        <ng-container *ngIf="shouldDataSourceBeDisplayed(_datasources[i])">
+            <li formArrayName="datasources">
+              <label>
+                <input type="checkbox" [formControlName]="i" (change)="onDsFilterChange()">{{_datasources[i]}}
+              </label>
+            </li>
+        </ng-container>
+    </ng-container>
+  </ul>
+  </form>
+  <hr>
+  <h3>{{ sectionTitles[2] }}</h3>
+  <form [formGroup]="colorsByDataSourcesForm">
+  <ul class="colors-list">
+    <ng-container *ngFor="let ds of colorsByDataSourcesData.controls; let i = index">
+        <ng-container *ngIf="shouldDataSourceBeDisplayed(_datasources[i])">
+          <li formArrayName="datasources">
+            <label>
+              <input type="color" [formControlName]="i" (change)="onDsColorChange()">{{_datasources[i]}}
+            </label>
+          </li>
+        </ng-container>
+    </ng-container>
+  </ul>
+  </form>
+  <hr>
+  <h3>{{ sectionTitles[3] }}</h3>
+  <form [formGroup]="colorsMiscForm">
+  <ul class="other-colors-list">
+    <li>
+      <label>
+        <input formControlName="queriedEntitiesColor" type="color" (change)="onColorParameterChange('queriedEntitiesColor', $event.target.value)">
+        <span class="has-tooltip block-level-src">
+          Active/Focused Enitity
+          <span class="tooltip tooptip-left">The color of the current entity or entities</span>
+        </span>
+      </label>
+    </li>
+  </ul>
+  </form>
+</div>

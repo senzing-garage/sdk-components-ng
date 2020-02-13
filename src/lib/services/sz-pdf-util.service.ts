@@ -48,7 +48,7 @@ export class SzPdfUtilService {
         let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
         var position = 0;
         pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-        pdf.save('MYPdf.pdf'); // Generated PDF
+        pdf.save(filename); // Generated PDF
 
         res(true);
       }, (err)=>{
@@ -167,7 +167,7 @@ export class SzPdfUtilService {
     // search criteria header
     if(searchParams){
       let attributes = this.getDisplayAttributes(searchParams);
-      console.warn('search header: ', attributes, searchResults);
+      // console.warn('search header: ', attributes, searchResults);
       let headerStr = (searchResults && searchResults.length) ? `${searchResults.length} Results found for` : `Results for`;
       doc.text(headerStr, 10, yPos); yPos=yPos+2;
       yPos = yPos+5;

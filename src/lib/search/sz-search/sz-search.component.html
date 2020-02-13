@@ -9,7 +9,9 @@
     PHONE_NUMBER
     EMAIL_ADDRESS
   -->
-  <div class="content" *ngIf="true">
+  <div class="content" *ngIf="true"
+  [ngClass]="_layoutClasses"
+  >
       <section class="entity search" (ngSubmit)="submitSearch()">
         <form class="form" [formGroup]="entitySearchForm" novalidate>
           <div class="sz-row">
@@ -19,27 +21,40 @@
                       class="search-input"
                       id="entity-name"
                       type="text"
+                      list="search-history-entity-name"
                       [attr.disabled]="getDisabled('name')"
                       (keyup.enter)="onKeyEnter()"
-                      placeholder="Search for Name">
+                      placeholder="Search for Name"
+                      (input)="checkHistoryForMatchOnChange($event)">
+              <datalist *ngIf="searchHistoryName.length > 0 && !searchHistoryDisabled" id="search-history-entity-name">
+                <option *ngFor="let item of searchHistoryName" [value]="item">{{item}}</option>
+              </datalist>
             </div>
             <div class="field dob" [class.disabled]="disabledFields['dob']" *ngIf="!hiddenFields['dob']">
               <label for="entity-dob">Date of Birth</label>
               <input formControlName="DATE_OF_BIRTH"
                       id="entity-dob"
                       type="text"
+                      list="search-history-entity-dob"
                       [attr.disabled]="getDisabled('dob')"
                       (keyup.enter)="onKeyEnter()"
                       placeholder="mm/dd/yyyy">
+              <datalist *ngIf="searchHistoryDob.length > 0 && !searchHistoryDisabled" id="search-history-entity-dob">
+                <option *ngFor="let item of searchHistoryDob" [value]="item">{{item}}</option>
+              </datalist>
             </div>
             <div class="field identifier" [class.disabled]="disabledFields['identifier']" *ngIf="!hiddenFields['identifier']">
               <label for="entity-identifier">Identifier</label>
               <input formControlName="IDENTIFIER"
                       id="entity-identifier"
                       type="text"
+                      list="search-history-entity-identifier"
                       [attr.disabled]="getDisabled('identifier')"
                       (keyup.enter)="onKeyEnter()"
                       placeholder="Number">
+              <datalist *ngIf="searchHistoryIdentifier.length > 0 && !searchHistoryDisabled" id="search-history-entity-identifier">
+                <option *ngFor="let item of searchHistoryIdentifier" [value]="item">{{item}}</option>
+              </datalist>
             </div>
             <div class="field type" [class.disabled]="disabledFields['identifierType'] || disabledFields['identifier']" *ngIf="!hiddenFields['identifier'] && !hiddenFields['identifierType']">
               <label for="entity-type">Type</label>
@@ -55,7 +70,7 @@
                 </option>
               </select>
             </div>
-            <div class="action-button__wrapper" [class.disabled]="disabledFields['searchButton']" *ngIf="!hiddenFields['searchButton']">
+            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields['searchButton']" *ngIf="!hiddenFields['searchButton']">
               <button mat-button class="button__search-go"
               [attr.disabled]="getDisabled('searchButton')"
               (click)="submitSearch()">Search</button>
@@ -67,37 +82,60 @@
               <input formControlName="ADDR_FULL"
                       id="entity-address"
                       type="text"
+                      list="search-history-entity-address"
                       [attr.disabled]="getDisabled('address')"
                       (keyup.enter)="onKeyEnter()"
                       placeholder="Search for Address">
+              <datalist *ngIf="searchHistoryAddress.length > 0 && !searchHistoryDisabled" id="search-history-entity-address">
+                <option *ngFor="let item of searchHistoryAddress" [value]="item">{{item}}</option>
+              </datalist>
             </div>
             <div class="field phone" [class.disabled]="disabledFields['phone']" *ngIf="!hiddenFields['phone']">
               <label for="entity-phone">Phone</label>
               <input formControlName="PHONE_NUMBER"
                       id="entity-phone"
                       type="text"
+                      list="search-history-entity-phone"
                       [attr.disabled]="getDisabled('phone')"
                       placeholder="Phone #">
+              <datalist *ngIf="searchHistoryPhone.length > 0 && !searchHistoryDisabled" id="search-history-entity-phone">
+                <option *ngFor="let item of searchHistoryPhone" [value]="item">{{item}}</option>
+              </datalist>
             </div>
             <div class="field email" [class.disabled]="disabledFields['email']" *ngIf="!hiddenFields['email']">
               <label for="entity-email">Email</label>
               <input formControlName="EMAIL_ADDRESS"
                       id="entity-email"
                       type="text"
+                      list="search-history-entity-email"
                       [attr.disabled]="getDisabled('email')"
                       (keyup.enter)="onKeyEnter()"
                       placeholder="Email Address">
+              <datalist *ngIf="searchHistoryEmail.length > 0 && !searchHistoryDisabled" id="search-history-entity-email">
+                <option *ngFor="let item of searchHistoryEmail" [value]="item">{{item}}</option>
+              </datalist>
             </div>
             <div class="field spacer">
 
             </div>
-            <div class="action-button__wrapper" [class.disabled]="disabledFields['resetButton']" *ngIf="!hiddenFields['resetButton']">
+            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields['resetButton']" *ngIf="!hiddenFields['resetButton']">
               <button mat-button class="button__search-clear"
               [attr.disabled]="getDisabled('resetButton')"
               (click)="clearSearch()">Clear Search Criteria</button>
             </div>
           </div>
-          <div class="sz-row bottom"></div>
+          <div class="sz-row bottom">
+            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields['resetButton']" *ngIf="!hiddenFields['resetButton']">
+              <button mat-button class="button__search-clear"
+              [attr.disabled]="getDisabled('resetButton')"
+              (click)="clearSearch()">Clear</button>
+            </div>
+            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields['searchButton']" *ngIf="!hiddenFields['searchButton']">
+              <button mat-button class="button__search-go"
+              [attr.disabled]="getDisabled('searchButton')"
+              (click)="submitSearch()">Search</button>
+            </div>
+          </div>
         </form>
       </section>
 

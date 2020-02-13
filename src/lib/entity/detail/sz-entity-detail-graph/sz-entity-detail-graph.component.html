@@ -1,6 +1,5 @@
 
 <div data-html2canvas-ignore class="section-header__wrapper graph-relationships"
-  [ngClass]="{'open': expanded, 'closed': !expanded}"
   (click)="toggleExpanded($event)"
 >
   <div class="section-header__left-content">
@@ -8,21 +7,52 @@
       viewBox="0 0 386.257 386.257" width="12" xml:space="preserve">
       <polygon points="0,96.879 193.129,289.379 386.257,96.879 "/></svg>
     <svg xmlns="http://www.w3.org/2000/svg" class="mat-icon" width="24" height="24" viewBox="0 0 24 24"><circle cx="7.2" cy="14.4" r="3.2"/><circle cx="14.8" cy="18" r="2"/><circle cx="15.2" cy="8.8" r="4.8"/></svg>
-    <span>{{ this.title }}</span>
+    <span class="section-header__title">{{ this.title }}</span>
   </div>
   <div class="section-header__right-content">
     <span class="section-header__count">{{ data?.relatedEntities.length }}</span>
     <span class="section-header__countLabel">Relationships</span>
   </div>
 </div>
-<div class="sz-entity-detail-section-collapsible-card">
-  <sz-relationship-network class="sz-relationship-network-graph"
+<div #graphContainer class="sz-entity-detail-section-collapsible-card">
+  <sz-relationship-network #graph class="sz-relationship-network-graph"
     svgViewBox="150 50 400 300"
     svgPreserveAspectRatio="xMinYMid meet"
     [entityIds]="graphIds"
     [maxDegrees]="maxDegrees"
-    buildOut=1
+    [buildOut]="buildOut"
     [linkGravity]="5"
-    [showLinkLabels]="true"
+    [highlight]="entityNodeColors"
+    [filter]="entityNodeFilterByDataSource"
+    [showLinkLabels]="_showMatchKeys"
+    (contextMenuClick)="onRightClick($event)"
+    (entityClick)="onEntityClick($event)"
+    (noResults)="onNoResults($event)"
+    (onDataLoaded)="onGraphDataLoaded($event)"
     [maxEntities]="maxEntities"></sz-relationship-network>
+
+    <sz-entity-detail-graph-control *ngIf="showMatchKeyControl" class="sz-entity-detail-graph-control"
+    [showLinkLabels]="_showMatchKeys"
+    (optionChanged)="onOptionChange($event)"
+    ></sz-entity-detail-graph-control>
+
+    <sz-entity-detail-graph-filter *ngIf="showFiltersControl" class="sz-entity-detail-graph-filter"
+    [showLinkLabels]="_showMatchKeys"
+    (optionChanged)="onOptionChange($event)"
+    ></sz-entity-detail-graph-filter>
+
+    <svg class="popout-icon"
+      [class.top-left]="popOutIconPosition == 'top-left'"
+      [class.top-right]="popOutIconPosition == 'top-right'"
+      [class.bottom-right]="popOutIconPosition == 'bottom-right'"
+      [class.bottom-left]="popOutIconPosition == 'bottom-left'" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+      viewBox="0 0 64 64"
+      (click)="onPopOutClick()"
+      *ngIf="showPopOutIcon"
+      enable-background="new 0 0 64 64" xml:space="preserve">
+      <g>
+        <g><g><polygon points="53,56 8,56 8,11 30,11 30,3 0,3 0,64 61,64 61,34 53,34"/></g></g>
+        <g><g><polygon points="42,0 50,8 33,25 39,31 56,14 64,23 64,0"/></g></g>
+      </g>
+    </svg>
 </div>

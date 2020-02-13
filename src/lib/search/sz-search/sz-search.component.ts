@@ -1,10 +1,13 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef, Inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject  } from 'rxjs';
-import { map, tap, mapTo, first } from 'rxjs/operators';
+import { map, tap, mapTo, first, filter, takeUntil } from 'rxjs/operators';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 
 import {
   ConfigService,
+  Configuration as SzRestConfiguration,
+  ConfigurationParameters as SzRestConfigurationParameters,
   SzAttributeSearchResult,
   SzAttributeType,
   SzAttributeTypesResponse,
@@ -13,6 +16,10 @@ import {
 import { SzEntitySearchParams } from '../../models/entity-search';
 import { SzSearchService } from '../../services/sz-search.service';
 import { JSONScrubber } from '../../common/utils';
+import { SzConfigurationService } from '../../services/sz-configuration.service';
+import { SzPrefsService } from '../../services/sz-prefs.service';
+import { SzFoliosService } from '../../services/sz-folios.service';
+import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio, SzSearchParamsFolioItem } from '../../models/folio';
 
 /** @internal */
 interface SzSearchFormParams {
@@ -50,20 +57,47 @@ const parseBool = (value: any): boolean => {
 /**
  * Provides a search box component that can execute search queries and return results.
  *
- * @example
+ * @example <!-- (WC javascript) SzSearchComponent -->
+ * <sz-search
+ * id="sz-search"
+ * name="Isa Creepr"></sz-search>
+ * <script>
+ *  document.getElementById('sz-search').addEventListener('resultsChange', (results) => {
+ *    console.log('search results: ', results);
+ *  });
+ * </script>
+ *
+ * @example <!-- (Angular) SzSearchComponent -->
  * <sz-search
  * name="Isa Creepr"
  * (resultsChange)="myResultsHandler($event)"
  * (searchStart)="showSpinner()"
- * (searchEnd)="hideSpinner()">
+ * (searchEnd)="hideSpinner()"></sz-search>
  * @export
+ *
+ * @example <!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo -->
+ * <sz-search
+ * id="sz-search"
+ * name="Isa Creepr"></sz-search>
+ * <sz-search-results id="sz-search-results"></sz-search-results>
+ * <script>
+ *  var szSearchComponent = document.getElementById('sz-search');
+ *  var szSearchResultsComponent = document.getElementById('sz-search-results');
+ *  szSearchComponent.addEventListener('resultsChange', (evt) => {
+ *    console.log('search results: ', evt);
+ *    szSearchResultsComponent.results = evt.detail;
+ *  });
+ * </script>
  */
 @Component({
   selector: 'sz-search',
   templateUrl: './sz-search.component.html',
   styleUrls: ['./sz-search.component.scss']
 })
-export class SzSearchComponent implements OnInit {
+export class SzSearchComponent implements OnInit, OnDestroy {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
+
   /**
    * populate the search fields with an pre-existing set of search parameters.
    */
@@ -90,6 +124,133 @@ export class SzSearchComponent implements OnInit {
     'TAX_ID_NUMBER',
     'TRUSTED_ID_NUMBER'
   ];
+
+  /** the default amount of searches to store in the search history folio. */
+  private rememberLastSearches: number = 20;
+
+  /** whether or not to display search history drop downs. set from searchform prefs */
+  public get searchHistoryDisabled(): boolean {
+    if(this.prefs && this.prefs.searchForm) {
+      return this.prefs.searchForm.disableSearchHistory;
+    }
+    return false;
+  }
+
+  /** the folio items that holds last "X" searches performed */
+  public search_history: SzSearchHistoryFolioItem[];
+
+  /**
+   * all the "Name" field search values from last X searches in history folio.
+   * @readonly
+   */
+  public get searchHistoryName(): string[] {
+    return this.getHistoryOptions('NAME_FULL');
+  }
+  /**
+   * all the "Date of Birth" in the form from last X searches in history folio.
+   * @readonly
+   */
+  public get searchHistoryDob(): string[] {
+    return this.getHistoryOptions('DATE_OF_BIRTH');
+  }
+  /**
+   * all the "Identifier" values in the form from last X searches in history folio.
+   * @readonly
+   */
+  public get searchHistoryIdentifier(): string[] {
+    return this.getHistoryOptions('IDENTIFIER');
+  }
+  /**
+   * all the "Address" values in the form from last X searches in history folio.
+   * @readonly
+   */
+  public get searchHistoryAddress(): string[] {
+    return this.getHistoryOptions('ADDR_FULL');
+  }
+  /**
+   * all the "Phone Number" values in the form  from last X searches in history folio.
+   * @readonly
+   */
+  public get searchHistoryPhone(): string[] {
+    return this.getHistoryOptions('PHONE_NUMBER');
+  }
+  /**
+   * all the "Date of Birth" values in the form from last X searches in history folio.
+   * @readonly
+   */
+  public get searchHistoryEmail(): string[] {
+    return this.getHistoryOptions('EMAIL_ADDRESS');
+  }
+
+  /** @internal */
+  private _searchHistoryParams: SzSearchFormParams;
+  /** checks to see if a value in a field just changed due to the
+   * user selecting a value from a previous search.
+   *
+   * In the case of a "name" select the selection also populates
+   * any other parameters
+   * that were also in the form at the time of the search.
+   */
+  public checkHistoryForMatchOnChange(event) {
+    const _currentSearchFormParams = this.getSearchParams();
+    if(_currentSearchFormParams && _currentSearchFormParams.NAME_FULL && _currentSearchFormParams.NAME_FULL !== this._searchHistoryParams) {
+      // last name search !== current value
+      // we need this change check to make sure no infinite loop when entry is applied
+      // check to see if name value in search history
+      const isInSearchHistory = this.searchHistoryName.some( (name) => name === _currentSearchFormParams.NAME_FULL);
+      if(isInSearchHistory) {
+        // get search history item
+        const currentHistoryEntry = this.search_history.find( (item: SzSearchHistoryFolioItem) => item.data.NAME_FULL === _currentSearchFormParams.NAME_FULL );
+        // populate any additional fields
+        if (currentHistoryEntry) {
+          // see note above on change check
+          this._searchHistoryParams = _currentSearchFormParams;
+          this.applyHistoryEntryToFields( currentHistoryEntry );
+        }
+      } else {
+        // console.warn('entry not in history! '+ _currentSearchFormParams.NAME_FULL, isInSearchHistory);
+      }
+    }
+    this._searchHistoryParams = _currentSearchFormParams;
+  }
+
+  /**
+   * reusable method for getting search history lists deduped, ordered,
+   * mapped from "search_history" property
+   */
+  public getHistoryOptions(fieldName: string): string[] {
+    let retVal = [];
+    if(this.search_history && this.search_history.map) {
+      retVal = this.search_history.filter( (folio: SzSearchHistoryFolioItem) => {
+        return folio && folio.data && folio.data[fieldName] && folio.data[fieldName] !== undefined && folio.data[fieldName] !== null;
+      }).map( (folio: SzSearchHistoryFolioItem ) => {
+        return folio.data[fieldName];
+      }).filter(function(elem, index, self) {
+        return index == self.indexOf(elem);
+      });
+    }
+    return retVal;
+  }
+  /** apply a search history entry to current form fields */
+  private applyHistoryEntryToFields(historyItem: SzSearchHistoryFolioItem) {
+    // specifically in the case of populating form fields
+    // from prior searches we want to reset fields not in use
+    const _values = Object.assign({
+      'NAME_FULL': undefined,
+      'DATE_OF_BIRTH': undefined,
+      'IDENTIFIER': undefined,
+      'IDENTIFIER_TYPE': undefined,
+      'ADDR_FULL': undefined,
+      'PHONE_NUMBER': undefined,
+      'EMAIL_ADDRESS': undefined
+    }, historyItem.data);
+
+    //console.warn('apply previous historical search to fields: ', _values, historyItem.data);
+    if( this.entitySearchForm ) {
+      this.entitySearchForm.patchValue( _values );
+    }
+  }
+
   /**
    * emitted when a search is being performed.
    * @returns SzSearchFormParams
@@ -122,8 +283,7 @@ export class SzSearchComponent implements OnInit {
    * emmitted when the search results have been changed.
    * @memberof SzSearchComponent
    */
-  @Output('resultsChange')
-  searchResults: Subject<SzAttributeSearchResult[]> = new Subject<SzAttributeSearchResult[]>();
+  @Output('resultsChange') searchResults: Subject<SzAttributeSearchResult[]> = new Subject<SzAttributeSearchResult[]>();
   /**
    * emmitted when parameters of the search have been changed.
    *
@@ -400,6 +560,57 @@ export class SzSearchComponent implements OnInit {
     identifierType: false
   };
 
+  // layout enforcers
+  /** @internal */
+  public _layoutEnforcers: string[] = [''];
+  /** @internal */
+  public _forceLayout = false;
+  /** @internal */
+  public _layoutClasses: string[] = [];
+
+  /**
+   * Takes a collection or a single value of layout enum css classnames to pass
+   * to all children components. this value overrides auto-responsive css adjustments.
+   *
+   * @example forceLayout="layout-narrow"
+   *
+   * @memberof SzEntityDetailComponent
+   */
+  @Input() public set forceLayout(value: string | string[]) {
+    if(value){
+      this._forceLayout = true;
+      if(typeof value == 'string'){
+        if(value.indexOf(',') > -1){
+          this._layoutEnforcers = value.split(',');
+        } else {
+          this._layoutEnforcers = [value];
+        }
+      } else {
+        this._layoutEnforcers = value;
+      }
+    }
+
+  }
+  /** the width to switch from wide to narrow layout */
+  @Input() public layoutBreakpoints = [
+    {cssClass: 'layout-wide', minWidth: 1021 },
+    {cssClass: 'layout-medium', minWidth: 700, maxWidth: 1120 },
+    {cssClass: 'layout-narrow', maxWidth: 699 }
+  ]
+  @Input() public set layoutClasses(value: string[] | string){
+    if(value && value !== undefined) {
+      if(typeof value == 'string') {
+        this._layoutClasses = [value];
+      } else {
+        this._layoutClasses = value;
+      }
+    }
+  };
+  public get layoutClasses() {
+    return this._layoutClasses;
+  }
+
+  private _attributeTypesFromServer: SzAttributeType[];
   @Input('attributeTypes')
   public set inputAttributeTypes(value: SzAttributeType[]) {
     // strip out non-identifiers
@@ -407,14 +618,28 @@ export class SzSearchComponent implements OnInit {
       return (attr.attributeClass === 'IDENTIFIER');
     });
 
+    // store for caching
+    this._attributeTypesFromServer = value;
+
     // filter out by specific codes
-    if(this.allowedTypeAttributes && this.allowedTypeAttributes.length > 0) {
-      value = value.filter( (attr: SzAttributeType) => {
-        return (this.allowedTypeAttributes.indexOf( attr.attributeCode) > -1);
+    this.matchingAttributes = this.filterAttributeTypesByAllowedTypes(value, this.allowedTypeAttributes);
+  }
+
+  public get inputAttributeTypes(): SzAttributeType[] {
+    return this._attributeTypesFromServer;
+  }
+
+  private filterAttributeTypesByAllowedTypes( attributeTypes: SzAttributeType[], allowedTypes: string[] ) {
+    let retTypes: SzAttributeType[] = attributeTypes;
+
+    if(allowedTypes && allowedTypes.length > 0) {
+      retTypes = attributeTypes.filter( (attr: SzAttributeType) => {
+        return (allowedTypes.indexOf( attr.attributeCode) > -1);
       });
     }
-    this.matchingAttributes = value;
+    return retTypes
   }
+
   /**
    * returns an ordered list of identifier fields to use in the pulldown list.
    * @internal
@@ -446,10 +671,73 @@ export class SzSearchComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private configService: ConfigService,
-    private ref: ChangeDetectorRef,
-    private searchService: SzSearchService) {
+    private cd: ChangeDetectorRef,
+    private apiConfigService: SzConfigurationService,
+    private prefs: SzPrefsService,
+    private searchService: SzSearchService,
+    private folios: SzFoliosService,
+    public breakpointObserver: BreakpointObserver) {
 
+      this.prefs.searchForm.prefsChanged.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe( (pJson) => {
+        if(pJson && pJson.rememberLastSearches) {
+          this.rememberLastSearches = pJson.rememberLastSearches;
+        }
+        if(pJson && pJson.allowedTypeAttributes) {
+          // update the allowedTypeAttributes
+          this.allowedTypeAttributes = pJson.allowedTypeAttributes;
+          if(this.inputAttributeTypes){
+            // we already have response from server
+            // just re-filter result
+            this.matchingAttributes = this.filterAttributeTypesByAllowedTypes(this.inputAttributeTypes, this.allowedTypeAttributes);
+            /*console.warn('filtering attr list based on prefs change',
+            this.inputAttributeTypes,
+            this.allowedTypeAttributes,
+            this.matchingAttributes);*/
+
+            this.cd.markForCheck();
+            this.cd.detectChanges();
+          }
+          // otherwise wait for initial response
+        }
+        if(pJson && pJson.searchHistory && this.prefs && this.prefs.searchForm && this.prefs.searchForm.searchHistory) {
+          // getting current value from service prefs service for modality
+          // note: history getter is "latest-first"
+          this.search_history = this.prefs.searchForm.searchHistory.history;
+          //console.log('sz-search.prefs.searchForm from JSON',  this.prefs.searchForm.searchHistory.items);
+        }
+      });
+
+      this.folios.searchHistoryUpdated.subscribe( (folio: SzSearchHistoryFolio) => {
+        if ( folio && folio.history) {
+          this.search_history = folio.history;
+        }
+        //console.log('search history from folio service updated: ', folio.history, this.search_history);
+      });
   }
+
+  /**
+   * @internal
+  */
+  private _waitForConfigChange = false;
+  /**
+   * whether or not to show the wait for the the api
+   * conf to change before fetching resources like the identifiers list
+   * @memberof SzSearchComponent
+   */
+  @Input() public set waitForConfigChange(value: any){
+    this._waitForConfigChange = parseBool(value);
+  }
+  public get waitForConfigChange(): boolean | any {
+    return this._waitForConfigChange;
+  }
+  /**
+   * whether or not to fetch new attributes from the
+   * api server when a configuration change is detected
+   * @memberof SzSearchComponent
+   */
+  @Input() getAttributesOnConfigChange = true;
 
   /**
    * do any additional component set up
@@ -457,7 +745,70 @@ export class SzSearchComponent implements OnInit {
    */
   public ngOnInit(): void {
     this.createEntitySearchForm();
-    this.updateAttributeTypes();
+    this.apiConfigService.parametersChanged.pipe(
+      takeUntil(this.unsubscribe$),
+      filter( () => {
+        return this.getAttributesOnConfigChange;
+       })
+    ).subscribe(
+      (cfg: SzRestConfiguration) => {
+        //console.info('@senzing/sdk-components-ng/sz-search[ngOnInit]->apiConfigService.parametersChanged: ', cfg);
+        this.updateAttributeTypes();
+      }
+    );
+    // make immediate request
+    if(!this.waitForConfigChange){
+      this.updateAttributeTypes();
+    }
+    // detect layout changes
+    let bpSubArr = [];
+    this.layoutBreakpoints.forEach( (bpObj: any) => {
+      if(bpObj.minWidth && bpObj.maxWidth){
+        // in between
+        bpSubArr.push(`(min-width: ${bpObj.minWidth}px) and (max-width: ${bpObj.maxWidth}px)`);
+      } else if(bpObj.minWidth){
+        bpSubArr.push(`(min-width: ${bpObj.minWidth}px)`);
+      } else if(bpObj.maxWidth){
+        bpSubArr.push(`(max-width: ${bpObj.maxWidth}px)`);
+      }
+    });
+    const layoutChanges = this.breakpointObserver.observe(bpSubArr);
+
+    layoutChanges.pipe(
+      takeUntil(this.unsubscribe$),
+      filter( () => { return !this.forceLayout })
+    ).subscribe( (state: BreakpointState) => {
+
+      const cssQueryMatches = [];
+      // get array of media query matches
+      for(let k in state.breakpoints){
+        const val = state.breakpoints[k];
+        if(val == true) {
+          // find key in layoutBreakpoints
+          cssQueryMatches.push( k )
+        }
+      }
+      // get array of layoutBreakpoints objects that match media queries
+      const _matches = this.layoutBreakpoints.filter( (_bp) => {
+        const _mq = this.getCssQueryFromCriteria(_bp.minWidth, _bp.maxWidth);
+        if(cssQueryMatches.indexOf(_mq) >= 0) {
+          return true;
+        }
+        return false;
+      });
+      // assign matches to local prop
+      this.layoutClasses = _matches.map( (_bp) => {
+        return _bp.cssClass;
+      })
+    })
+  }
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   /**
@@ -468,18 +819,31 @@ export class SzSearchComponent implements OnInit {
     // get attributes
     this.configService.getAttributeTypes()
     .pipe(
+      takeUntil(this.unsubscribe$),
       map( (resp: SzAttributeTypesResponse) => resp.data.attributeTypes ),
       first()
     )
     .subscribe((attributeTypes: SzAttributeType[]) => {
       // yup
       this.inputAttributeTypes = attributeTypes;
-      this.ref.markForCheck();
-      this.ref.detectChanges();
+      this.cd.markForCheck();
+      this.cd.detectChanges();
     }, (err)=> {
       this.searchException.next( err ); //TODO: remove in breaking change release
       this.exception.next( err );
     });
+  }
+
+  getCssQueryFromCriteria(minWidth?: number, maxWidth?: number): string | undefined {
+    if(minWidth && maxWidth){
+      // in between
+      return (`(min-width: ${minWidth}px) and (max-width: ${maxWidth}px)`);
+    } else if(minWidth){
+      return (`(min-width: ${minWidth}px)`);
+    } else if(maxWidth){
+      return (`(max-width: ${maxWidth}px)`);
+    }
+    return
   }
 
   /**
@@ -488,7 +852,7 @@ export class SzSearchComponent implements OnInit {
    * @internal
   */
   private createEntitySearchForm(): void {
-    let searchParams = this.searchService.getSearchParams();
+    const searchParams = this.searchService.getSearchParams();
     //console.log('createEntitySearchForm: ',JSON.parse(JSON.stringify(searchParams)));
 
     if (searchParams) {
@@ -558,8 +922,21 @@ export class SzSearchComponent implements OnInit {
       searchParams['COMPANY_NAME_ORG'] = searchParams['NAME_FULL'];
     }
     // default identifier type to passport if none selected
-    if (searchParams['IDENTIFIER'] && !searchParams['IDENTIFIER_TYPE']) {
-      searchParams['IDENTIFIER_TYPE'] = 'PASSPORT_NUMBER';
+    if(searchParams['IDENTIFIER_TYPE'] && searchParams['IDENTIFIER']){
+      // use the "IDENTIFIER_TYPE" as the key
+      // and the "IDENTIFIER" as the value
+      searchParams[ (searchParams['IDENTIFIER_TYPE']) ] = searchParams['IDENTIFIER'];
+      // after transmutation null out old key/value
+      searchParams['IDENTIFIER'] = undefined;
+      searchParams['IDENTIFIER_TYPE'] =  undefined;
+    }
+    if(searchParams['IDENTIFIER_TYPE'] && searchParams['IDENTIFIER']){
+      // use the "IDENTIFIER_TYPE" as the key
+      // and the "IDENTIFIER" as the value
+      searchParams[ (searchParams['IDENTIFIER_TYPE']) ] = searchParams['IDENTIFIER'];
+      // after transmutation null out old key/value
+      searchParams['IDENTIFIER'] = undefined;
+      searchParams['IDENTIFIER_TYPE'] =  undefined;
     }
     // after mods scrub nulls
     searchParams = JSONScrubber(searchParams);
@@ -583,11 +960,14 @@ export class SzSearchComponent implements OnInit {
     }
     this.searchStart.emit(searchParams);
 
-    this.searchService.searchByAttributes(searchParams)
+    this.searchService.searchByAttributes(searchParams).pipe(
+      takeUntil(this.unsubscribe$)
+    )
     .subscribe((res) => {
       const totalResults = res ? res.length : 0;
       this.searchResultsJSON = JSON.stringify(res, null, 4);
       this.searchEnd.emit(totalResults);
+      this.searchService.setSearchResults(res);
       this.searchResults.next(res);
     }, (err)=>{
       this.searchEnd.emit();

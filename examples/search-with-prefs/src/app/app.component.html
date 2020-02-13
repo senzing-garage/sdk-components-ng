@@ -1,0 +1,63 @@
+<div class="static-header" [class.expanded]="showPrefs">
+  <div class="primary-row">
+      <div style="text-align:left; font-weight: bold; font-size: 1.5em">
+        @senzing/sdk-components-ng/examples/search-with-prefs
+      </div>
+      <div style="text-align:left; text-decoration: italic; font-size: 0.8em; margin: 2px 0 10px 0;">
+        An example Angular app showing usage of the sz-search, sz-search-results,
+        and prefs service.
+      </div>
+  </div>
+  <div class="burger-handle" (click)="showPrefs=!showPrefs"><div class="hamburger"></div></div>
+  <div class="prefs-container">
+    <!-- start prefs service box -->
+    <sz-preferences #prefsComponent
+    showControls="true"
+    ></sz-preferences>
+    <!--  end prefs service box  -->
+  </div>
+</div>
+
+<!-- start search box -->
+<div class="component-example">
+  <sz-search
+    #searchBox
+    name="Elizabeth Jones"
+    disableIdentifierOptions="SSN_LAST4"
+    enableIdentifierOptions="SOCIAL_NETWORK"
+    (resultsChange)="onSearchResults($event)"
+    (resultsCleared)="onSearchResultsCleared($event)"
+    (exception)="onSearchException($event)"
+    (parameterChange)="onSearchParameterChange($event)"></sz-search>
+</div>
+<!-- end search box -->
+
+<!-- start graph context menu template -->
+<ng-template #graphContextMenu let-entityEvt>
+    <ul class="graph-context-menu">
+        <li>#{{entityEvt?.entityId}}</li>
+        <li (click)="openGraphItemInNewMenu(entityEvt.entityId)">Open in new tab</li>
+    </ul>
+</ng-template>
+<!-- end graph context menu template -->
+
+<!-- start search results -->
+<div class="component-example">
+  <sz-search-results *ngIf="showSearchResults" [results]="currentSearchResults" [parameters]="currentSearchParameters" (resultClick)="onSearchResultClick($event)"></sz-search-results>
+</div>
+<!-- end search results -->
+<!-- start entity detail -->
+<div *ngIf="showSearchResultDetail">
+  <div class="detail-wrapper">
+      <button (click)="onBackToSearchResultsClick($event)">&lt;&lt; Go Back to Search Results</button>
+  </div>
+  <sz-entity-detail
+    #entityDetailComponent
+    (graphEntityClick)="onGraphEntityClick($event)"
+    (graphEntityDblClick)="onGraphEntityDblClick($event)"
+    (graphContextMenuClick)="onGraphContextClick($event)"
+    [showGraphMatchKeys]="true"
+    [graphShowPopOutIcon]="true"
+    [entityId]="currentlySelectedEntityId"></sz-entity-detail>
+</div>
+<!-- end entity detail -->

@@ -1,0 +1,70 @@
+
+:host {
+  border-radius: 3px;
+  display: block;
+
+  input[type=text], input.text {
+    padding: 4px;
+    border-radius: 0;
+    border: 0;
+  }
+
+  .value-pair {
+    display: block;
+
+    .value-pair-header {
+      background-color: #a5a5a5;
+      display: flex;
+      flex-wrap: nowrap;
+      /* justify-content: flex-end;*/
+      flex-direction: row;
+      align-content: space-around;
+      justify-content: space-evenly;
+
+      .value-pair-header-cell {
+        border-right: 1px solid #5e5e5e;
+        padding: 1px 8px 1px 8px;
+        width: 50%;
+      }
+      .value-pair-header-cell:last-child {
+        border-right: 0;
+      }
+    }
+
+    .value-pair-row {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: flex-end;
+      flex-direction: row;
+      border-bottom: 1px solid #5e5e5e;
+      margin-bottom: .3em;
+
+      .button-del {
+        width: 20px;
+      }
+
+      .value-pair-row-cell {
+        border: 0;
+        border-right: 1px solid #5e5e5e;
+        padding: 1px 8px 1px 8px;
+        width: 50%;
+      }
+      .value-pair-row-cell:first-child,
+      .value-pair-row-cell.first-child {
+        /* the first item should include space for button */
+        width: calc(50% - 21px);
+      }
+      .value-pair-row-cell:last-child {
+        border-right: 0;
+      }
+
+      label {
+        margin-right: .8em;
+      }
+    }
+    .value-pair-row:last-child {
+      margin-bottom: 0;
+      border-bottom: 0;
+    }
+  }
+}

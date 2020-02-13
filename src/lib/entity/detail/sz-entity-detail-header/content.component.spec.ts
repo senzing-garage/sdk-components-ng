@@ -12,15 +12,19 @@ describe('SzEntityDetailHeaderContentComponent', () => {
       imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(SzEntityDetailHeaderContentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  }));
+
+  afterEach(() => {
+    fixture.destroy();
   });
 
   it('should create', () => {
+    // test fails on CI only (issue #75)
+    // temporarily removing until more is known
     expect(component).toBeTruthy();
   });
 });

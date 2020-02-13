@@ -14,6 +14,20 @@ export class SzEntityMatchPillComponent implements OnInit {
   @Input() text: string;
   @Input() plusMinus: string;
   @Input() ambiguous: boolean;
+  public _layoutClasses: string[] = [];
+  @Input() public set layoutClasses(value: string[] | string){
+    if(value && value !== undefined) {
+      if(typeof value == 'string') {
+        this._layoutClasses = [value];
+      } else {
+        this._layoutClasses = value;
+      }
+    }
+  };
+  public get layoutClasses() {
+    return this._layoutClasses;
+  }
+  @Input() public forceLayout: boolean = false;
 
   constructor() { }
   /**
@@ -26,6 +40,9 @@ export class SzEntityMatchPillComponent implements OnInit {
     if(this.ambiguous) { classes.push('is-ambiguous'); }
     if(this.text && this.text.toLowerCase && this.text.replace) {
       classes.push('key-'+ this.text.toLowerCase().replace('+', '').replace('-', '') );
+    }
+    if( this._layoutClasses && this._layoutClasses.concat && this._layoutClasses.length > 0){
+      classes = classes.concat(this._layoutClasses);
     }
     return classes.join(' ');
   }

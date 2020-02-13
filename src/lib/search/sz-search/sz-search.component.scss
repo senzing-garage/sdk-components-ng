@@ -19,6 +19,41 @@
     text-transform: uppercase;
   }
 
+  .layout-narrow {
+    .hide-on-narrow {
+      display: none;
+    }
+
+    /* actions buttons are in different spot in narrow layout*/
+    .action-button__wrapper {
+      width: auto;
+      min-width: unset;
+      margin: 0 1em 0 0;
+    }
+    .sz-row {
+      flex-wrap: wrap;
+
+      &.bottom {
+        justify-content: flex-end;
+        flex-flow: row;
+      }
+    }
+    .field.identifier, .field.email {
+      width: unset;
+    }
+    .field.email { flex-grow: 2; padding-right: 0; margin-right: 10px; }
+  }
+  .layout-medium {
+    .hide-on-medium {
+      display: none;
+    }
+  }
+  .layout-wide {
+    .hide-on-wide {
+      display: none;
+    }
+  }
+
   .main-card__label {
     min-height: 150px;
     width: 200px;

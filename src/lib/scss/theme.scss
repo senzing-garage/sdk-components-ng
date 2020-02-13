@@ -101,7 +101,10 @@ body {
     --sz-entity-detail-icon-width: 175px;
     --sz-entity-detail-icon-border: 3px solid #82848647;
     --sz-entity-detail-icon-border-radius: 50%;
-    --sz-entity-detail-icon-margin: 0 30px 30px 20px;
+    --sz-entity-detail-icon-person-fill: #353535;
+    --sz-entity-detail-icon-company-fill: #565656;
+    --sz-entity-detail-icon-background-color: #f3f3f3;
+    --sz-entity-detail-icon-margin: 0 30px 0 20px;
 
     --sz-entity-detail-header-entity-name-font-size: 34px;
     --sz-entity-detail-header-entity-name-font-weight: 600;
@@ -122,7 +125,7 @@ body {
     /* start relationship section list vars */
     --sz-entity-detail-name-font-size: 1.7em;
     --sz-entity-detail-name-line-height: 1.7em;
-    --sz-entity-detail-name-margin: 0 0 18px 0;
+    --sz-entity-detail-name-margin: 0 0 14px 0;
     --sz-entity-detail-name-display: block;
     --sz-entity-detail-section-header-margin: 1em 0 0;
     --sz-entity-detail-section-header-padding: .4em 1em;
@@ -151,7 +154,7 @@ body {
     --sz-entity-detail-section-padding: 0 24px;
     --sz-entity-detail-section-record-card-display: block;
     --sz-entity-detail-section-record-card-background-color: #FFFFFF;
-    --sz-entity-detail-section-record-card-margin: 8px;
+    --sz-entity-detail-section-record-card-margin: 8px 0 8px 0;
     --sz-entity-detail-section-record-card-padding: 15px;
     --sz-entity-detail-section-record-card-border-radius: 5px;
     --sz-entity-detail-section-record-card-border: 1px solid #dedede;
@@ -163,7 +166,70 @@ body {
     --sz-entity-detail-pill-background-color: #{$sz-dark-grey};
     --sz-entity-detail-pill-color: #{$sz-white};
     --sz-entity-detail-pill-border-radius: 5px;
+    /* special overrides for component view since it coexists with primary detail view */
+    --sz-entity-detail-section-header-lo-rail-font-size: 12px;
+    --sz-entity-detail-section-header-lo-rail-font-weight: 400px;
+    --sz-entity-detail-section-lo-rail-border: none;
+    --sz-entity-detail-section-lo-rail-font-size: 14px;
+    --sz-entity-detail-section-lo-rail-font-weight: normal;
+    --sz-entity-detail-section-lo-rail-border-radius: 0;
+    --sz-entity-detail-section-lo-rail-border-left: var(--sz-entity-detail-section-lo-rail-border);
+    --sz-entity-detail-section-lo-rail-border-right: var(--sz-entity-detail-section-lo-rail-border);
+    --sz-entity-detail-section-lo-rail-border-top: var(--sz-entity-detail-section-lo-rail-border);
+    --sz-entity-detail-section-lo-rail-border-bottom: 1px solid #ddd;
+    --sz-entity-detail-header-lo-rail-totals-font-size: 9px;
+    --sz-entity-detail-header-lo-rail-totals-number-font-size: 26px;
+    --sz-entity-detail-header-lo-rail-padding: 0 0 0 20px;
+    --sz-entity-detail-header-lo-rail-border: none;
+    --sz-entity-detail-header-lo-rail-name-font-size: 2em;
+    --sz-entity-detail-header-lo-rail-name-font-weight: 600;
+    --sz-entity-detail-header-lo-rail-name-padding: var(--sz-entity-detail-header-lo-rail-padding);
+    --sz-entity-detail-pill-lo-rail-font-size: 11px;
+    --sz-entity-detail-pill-lo-rail-border-radius: 5px;
+    --sz-entity-detail-pill-lo-rail-padding: 2px 5px;
     /* end relationship section list vars */
+
+    /* graph */
+    --sz-entity-graph-control-border: 1px solid #d3d3d3;
+    --sz-entity-graph-control-position: absolute;
+    --sz-entity-graph-control-display: block;
+    --sz-entity-graph-control-cursor: default;
+    --sz-entity-graph-control-z-index : 200;
+    --sz-entity-graph-control-top: auto;
+    --sz-entity-graph-control-left: auto;
+    --sz-entity-graph-control-right: 0px;
+    --sz-entity-graph-control-bottom: 0px;
+    --sz-entity-graph-control-font-size: 13px;
+    --sz-entity-graph-control-color: #979797;
+    --sz-entity-graph-control-background-color: #fff;
+    --sz-entity-graph-control-padding-top: 1px;
+    --sz-entity-graph-control-padding-right: 3px;
+    --sz-entity-graph-control-padding-bottom: 0px;
+    --sz-entity-graph-control-padding-left: 3px;
+    --sz-entity-graph-overlay-color: #9d9d9d;
+    /* tooltip */
+    --sz-graph-tooltip-font-size: 10px;
+    --sz-graph-tooltip-background-color: #fff;
+    --sz-graph-tooltip-max-width: 200px;
+    --sz-graph-tooltip-padding: 10px;
+    --sz-graph-tooltip-border-radius: 4px;
+    --sz-graph-tooltip-border: 1px solid rgb(214, 214, 214);
+    /* large graph */
+    --sz-large-graph-height: 100%;
+
+    /* control borders */
+    --sz-entity-graph-control-border-top: 1px solid #d3d3d3;
+    --sz-entity-graph-control-border-right: none;
+    --sz-entity-graph-control-border-bottom: none;
+    --sz-entity-graph-control-border-left: 1px solid #d3d3d3;
+    --sz-entity-graph-control-border-top-left-radius: 7px;
+    --sz-entity-graph-control-border-top-right-radius: 0;
+    --sz-entity-graph-control-border-bottom-left-radius: 0;
+    --sz-entity-graph-control-border-bottom-right-radius: 0;
+
+    --sz-entity-graph-control-item-cursor: pointer;
+    --sz-entity-graph-control-item-background-color: #fff;
+    --sz-entity-graph-control-item-margin: 0;
 
   /* end entity detail vars */
 

@@ -21,7 +21,15 @@
       height: 6px;
     }
 
+    sz-entity-detail-graph-control, .sz-entity-detail-graph-control {
+      display: none;
+    }
+
     sz-relationship-network, .sz-relationship-network {
+      display: none;
+    }
+
+    .popout-icon {
       display: none;
     }
   }
@@ -38,6 +46,39 @@
     height: 100%;
   }
 
+  .popout-icon {
+    display: block;
+    bottom: 10px;
+    left: 10px;
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    z-index: 2000;
+    color: var(--sz-entity-graph-overlay-color);
+    fill: var(--sz-entity-graph-overlay-color);
+    cursor: pointer;
+
+    &.top-left {
+      top: 10px;
+      left: 10px;
+    }
+    &.top-right {
+      top: 10px;
+      left: unset;
+      right: 10px;
+    }
+    &.bottom-left {
+      top: unset;
+      bottom: 10px;
+      left: 10px;
+    }
+    &.bottom-right {
+      top: unset;
+      bottom: 10px;
+      left: unset;
+      right: 10px;
+    }
+  }
 
   sz-entity-detail-section-collapsible-card, .sz-entity-detail-section-collapsible-card {
     width: 100%;
@@ -52,14 +93,14 @@
     border-left: var(--sz-entity-detail-section-border-left);
     border-right: var(--sz-entity-detail-section-border-right);
     border-bottom: var(--sz-entity-detail-section-border-bottom);
-    overflow: hidden;
+    /*overflow: hidden;*/
 
     &:last-child {
       border-radius: var(--sz-entity-detail-section-border-radius);
     }
   }
 }
-
+/* header */
 .section-header__wrapper {
   display: flex;
   align-items: center;
@@ -97,5 +138,53 @@
       margin: 0 4px 0 8px;
     }
   }
-}
+  .section-header__left-content {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 70%;
 
+    .section-header__title {
+      overflow: hidden;
+      white-space: nowrap;
+      width: 100%;
+      text-overflow: ellipsis;
+    }
+  }
+}
+/* control surface */
+.sz-entity-detail-section-collapsible-card {
+  position: relative;
+}
+sz-entity-detail-graph-control, .sz-entity-detail-graph-control, .sz-entity-detail-graph-filter {
+  background-color: var(--sz-entity-graph-control-background-color);
+  display: var(--sz-entity-graph-control-display);
+  z-index: var(--sz-entity-graph-control-z-index);
+  position: var(--sz-entity-graph-control-position);
+  top: var(--sz-entity-graph-control-top);
+  left: var(--sz-entity-graph-control-left);
+  right: var(--sz-entity-graph-control-right);
+  bottom: var(--sz-entity-graph-control-bottom);
+  font-size: var(--sz-entity-graph-control-font-size);
+  color: var(--sz-entity-graph-control-color);
+  padding-top: var(--sz-entity-graph-control-padding-top);
+  padding-right: var(--sz-entity-graph-control-padding-right);
+  padding-bottom: var(--sz-entity-graph-control-padding-bottom);
+  padding-left: var(--sz-entity-graph-control-padding-left);
+
+  border: var(--sz-entity-graph-control-border);
+  border-top: var(--sz-entity-graph-control-border-top);
+  border-right: var(--sz-entity-graph-control-border-right);
+  border-left: var(--sz-entity-graph-control-border-left);
+  border-bottom: var(--sz-entity-graph-control-border-bottom);
+  border-bottom-left-radius: var(--sz-entity-graph-control-border-bottom-left-radius);
+  border-bottom-right-radius: var(--sz-entity-graph-control-border-bottom-right-radius);
+  border-top-left-radius: var(--sz-entity-graph-control-border-top-left-radius);
+  border-top-right-radius: var(--sz-entity-graph-control-border-top-right-radius);
+
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer */
+  -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
+  -webkit-user-select: none; /* Chrome, Safari, and Opera */
+  -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
+}

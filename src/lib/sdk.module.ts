@@ -2,25 +2,37 @@ import { NgModule, Injector, ModuleWithProviders, SkipSelf, Optional, Provider, 
 /* import { BrowserModule } from '@angular/platform-browser'; */
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { CommonModule, TitleCasePipe } from '@angular/common';
+import { CommonModule, TitleCasePipe, Location, PathLocationStrategy, LocationStrategy } from '@angular/common';
+import { LayoutModule } from '@angular/cdk/layout';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
+
 import {
   ApiModule,
   Configuration as SzRestConfiguration,
   ConfigurationParameters as SzRestConfigurationParameters
 } from '@senzing/rest-api-client-ng';
 
+import {
+  SenzingSdkGraphModule
+} from '@senzing/sdk-graph-components';
+
 /** utilities */
-import { JSONScrubber } from './common/utils';
+// import { JSONScrubber } from './common/utils';
 
 /** models */
-import { SzEntityDetailSectionData } from './models/entity-detail-section-data';
-import { SzEntitySearchParams } from './models/entity-search';
+// import { SzEntityDetailSectionData } from './models/entity-detail-section-data';
+// import { SzEntitySearchParams } from './models/entity-search';
 
 /** services */
 import { SzMessageBundleService } from './services/sz-message-bundle.service';
 import { SzSearchService } from './services/sz-search.service';
+import { SzConfigurationService } from './services/sz-configuration.service';
+import { SzFoliosService } from './services/sz-folios.service';
 import { SzUIEventService } from './services/sz-ui.service';
 import { SzPdfUtilService } from './services/sz-pdf-util.service';
+import { SzPrefsService } from './services/sz-prefs.service';
+import { SzDataSourcesService } from './services/sz-datasources.service';
+import { SzAdminService } from './services/sz-admin.service';
 
 /** components */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
@@ -32,12 +44,17 @@ import { SzEntityDetailSectionHeaderComponent } from './entity/detail/sz-entity-
 import { SzEntityDetailSectionCollapsibleCardComponent } from './entity/detail/sz-entity-details-section/collapsible-card.component';
 
 import { SzEntityDetailGraphComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
+import { SzEntityDetailGraphControlComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-control.component';
+import { SzEntityDetailGraphFilterComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-filter.component';
 import { SzEntityMatchPillComponent } from './entity/sz-entity-match-pill/sz-entity-match-pill.component';
+import { SzStandaloneGraphComponent } from './entity/detail/sz-entity-detail-graph/sz-standalone-graph.component';
 import { SzEntityRecordCardComponent } from './entity/sz-entity-record-card/sz-entity-record-card.component';
 import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-card/sz-entity-record-card-header/sz-entity-record-card-header.component';
 import { SzEntityRecordCardContentComponent } from './entity/sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
 
 import { SzSearchComponent } from './search/sz-search/sz-search.component';
+import { SzSearchByIdComponent } from './search/sz-search/sz-search-by-id.component';
+import { SzEntityRecordViewerComponent } from './record/sz-entity-record-viewer.component';
 import { SzSearchResultsComponent } from './search/sz-search-results/sz-search-results.component';
 import { SzSearchResultCardComponent } from './search/sz-search-result-card/sz-search-result-card.component';
 import { SzSearchResultCardContentComponent } from './search/sz-search-result-card/sz-search-result-card-content/sz-search-result-card-content.component';
@@ -45,19 +62,9 @@ import { SzSearchResultCardHeaderComponent } from './search/sz-search-result-car
 import { SzConfigurationAboutComponent } from './configuration/sz-configuration-about/sz-configuration-about.component';
 import { SzConfigurationComponent } from './configuration/sz-configuration/sz-configuration.component';
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
-
-/*
-import { SzRelationshipNetworkComponent } from './graph/sz-relationship-network/sz-relationship-network.component';
-import { SzRelationshipNetworkInputComponent } from './graph/sz-relationship-network-input/sz-relationship-network-input.component';
-import { SzRelationshipNetworkLookupComponent } from './graph/sz-relationship-network-lookup/sz-relationship-network-lookup.component';
-import { SzRelationshipNetworkUploadComponent } from './graph/sz-relationship-network-upload/sz-relationship-network-upload.component';
-import { SzRelationshipPathComponent } from './graph/sz-relationship-path/sz-relationship-path.component';
-*/
-
-import {
-  SenzingSdkGraphModule
-} from '@senzing/sdk-graph-components';
-
+import { SzPreferencesComponent } from './configuration/sz-preferences/sz-preferences.component';
+import { SzPrefDictComponent } from './configuration/sz-preferences/sz-pref-dict/sz-pref-dict.component';
+import { SzFolioItem, SzSearchParamsFolio, SzSearchParamsFolioItem } from './models/folio';
 
 /**
  * Sets up a default set of service parameters for use
@@ -79,14 +86,22 @@ export function SzDefaultRestConfigurationFactory(): SzRestConfiguration {
  */
 const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzRestConfiguration");
 
+/**
+ * Senzing SDK Components Module.
+ * Add to your applications module imports array.
+ */
 @NgModule({
   declarations: [
     SzEntityDetailComponent,
     SzSearchComponent,
+    SzSearchByIdComponent,
     SzSearchResultsComponent,
     SzSearchResultCardComponent,
     SzSearchResultCardContentComponent,
     SzEntityDetailGraphComponent,
+    SzEntityDetailGraphControlComponent,
+    SzEntityDetailGraphFilterComponent,
+    SzStandaloneGraphComponent,
     SzEntityDetailHeaderComponent,
     SzEntityDetailsSectionComponent,
     SzEntityDetailSectionSummaryComponent,
@@ -95,46 +110,69 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzEntityDetailSectionCollapsibleCardComponent,
     SzEntityMatchPillComponent,
     SzEntityRecordCardComponent,
+    SzEntityRecordViewerComponent,
     SzEntityRecordCardHeaderComponent,
     SzEntityRecordCardContentComponent,
     SzSearchResultCardHeaderComponent,
     SzConfigurationAboutComponent,
     SzConfigurationComponent,
-    SzPoweredByComponent
+    SzPoweredByComponent,
+    SzPreferencesComponent,
+    SzPrefDictComponent
   ],
   imports: [
     CommonModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    LayoutModule,
     SenzingSdkGraphModule,
+    NgxJsonViewerModule,
     ApiModule
   ],
   exports: [
     SzEntityDetailComponent,
     SzSearchComponent,
+    SzSearchByIdComponent,
     SzSearchResultsComponent,
     SzSearchResultCardComponent,
     SzPoweredByComponent,
     SzConfigurationComponent,
-    SzConfigurationAboutComponent
+    SzConfigurationAboutComponent,
+    SzEntityDetailGraphComponent,
+    SzEntityDetailGraphControlComponent,
+    SzEntityDetailGraphFilterComponent,
+    SzEntityRecordViewerComponent,
+    SzStandaloneGraphComponent,
+    SzPreferencesComponent
   ],
   /** for components being exported as web components */
   entryComponents: [
     SzEntityDetailComponent,
+    SzEntityDetailGraphComponent,
+    SzEntityRecordViewerComponent,
+    SzStandaloneGraphComponent,
     SzSearchComponent,
+    SzSearchByIdComponent,
     SzSearchResultsComponent,
     SzPoweredByComponent,
     SzConfigurationComponent,
-    SzConfigurationAboutComponent
+    SzConfigurationAboutComponent,
+    SzPreferencesComponent
   ],
   providers: [
     SzMessageBundleService,
+    SzAdminService,
     SzSearchService,
+    SzConfigurationService,
+    SzDataSourcesService,
+    SzFoliosService,
+    SzPrefsService,
     HttpClient,
     TitleCasePipe,
     SzUIEventService,
-    SzPdfUtilService
+    SzPdfUtilService,
+    Location
   ]
 })
 export class SenzingSdkModule {
@@ -156,7 +194,8 @@ export class SenzingSdkModule {
           {
             provide: SzRestConfiguration,
             useFactory: apiConfigFactory ? apiConfigFactory : SzDefaultRestConfigurationFactory
-          }
+          },
+          {provide: LocationStrategy, useClass: PathLocationStrategy}
         ]
     };
   }

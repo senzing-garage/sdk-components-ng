@@ -1,8 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Subject, BehaviorSubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
-import { SzEntityRecord } from '@senzing/rest-api-client-ng';
+import { SzEntityRecord, SzEntityFeature } from '@senzing/rest-api-client-ng';
+import { SzPrefsService } from '../../../services/sz-prefs.service';
 
 /**
  * @internal
@@ -13,10 +16,17 @@ import { SzEntityRecord } from '@senzing/rest-api-client-ng';
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.scss']
 })
-export class SzEntityDetailHeaderContentComponent implements OnInit {
+export class SzEntityDetailHeaderContentComponent implements OnDestroy, OnInit {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
+  private _truncateOtherDataAt: number = 3;
+  @Input() public showOtherData: boolean = true;
+  @Input() public showRecordIdWhenNative: boolean = false;
+
   //@Input() entity: ResolvedEntityData | SearchResultEntityData | EntityDetailSectionData | EntityRecord;
   @Input() entity: any; // the strong typing is making it impossible to handle all variations
   @Input() maxLinesToDisplay = 3;
+  @Input() truncateOtherDataAt = 3;
   @Input() set parentEntity( value ) {
     this._parentEntity = value;
     if(value && value.matchKey) {
@@ -38,21 +48,52 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
   @ViewChild('columnFour')
   private columnFour: ElementRef;
 
+  /** 0 = wide layout. 1 = narrow layout */
+  @Input() public layout = 0;
+  @Input() public layoutClasses: string[] = [];
+
+  /** subscription breakpoint changes */
+  private layoutChange$ = new BehaviorSubject<number>(this.layout);
+
   _parentEntity: any;
   _matchKeys: string[];
 
-  constructor(private ref: ChangeDetectorRef) {
+  constructor(
+    public prefs: SzPrefsService,
+    private cd: ChangeDetectorRef
+  ) {}
+
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   ngOnInit() {
-    setTimeout(() => {
-      //this.columnOneTotal = this.columnOne ? this.columnOne.nativeElement.children.length : 0;
-      //this.columnTwoTotal = this.columnTwo.nativeElement.children.length;
-      //this.columnThreeTotal = this.columnThree.nativeElement.children.length;
-      //this.columnFourTotal = this.columnFour.nativeElement.children.length;
+    // subscribe to pref changes
+    this.prefs.entityDetail.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( this.onPrefsChange.bind(this) );
+  }
 
-      this.ref.markForCheck();
-    });
+  /** proxy handler for when prefs have changed externally */
+  private onPrefsChange(prefs: any) {
+    this.showOtherData = prefs.showOtherDataInSummary;
+    this.showRecordIdWhenNative = prefs.showRecordIdWhenNative;
+    this.truncateOtherDataAt = prefs.truncateSummaryAt;
+    this.maxLinesToDisplay = prefs.truncateSummaryAt;
+
+    // update view manually (for web components redraw reliability)
+    this.cd.detectChanges();
+  }
+
+  public get hasRecordId(): boolean {
+    if(this.entity && this.entity.recordId){
+      return (this.entity.recordId !== undefined && this.entity.recordId !== null) ? true: false;
+    }
+    return false;
   }
 
   getNameAndAttributeData(nameData: string[], attributeData: string[]): string[] {
@@ -71,7 +112,7 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
     return 0;
   }
   get showColumnOne(): boolean {
-    return (this.entity && this.entity.otherData && this.entity.otherData.length > 0);
+    return (this.entity && this.entity.otherData && this.entity.otherData.length > 0) && this.showOtherData;
   }
   get columnTwoTotal(): number {
     return (this.nameData.concat(this.attributeData).length);
@@ -83,7 +124,11 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
     return this.identifierData.length;
   }
   public get showColumnFour(): boolean {
-    return this.identifierData.length > 0;
+    try {
+      const ret = (this.identifierData.length > 0);
+      return ret;
+    } catch(err){}
+    return false;
   }
   // -----------------  end total getters  -------------------
 
@@ -145,7 +190,6 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
 
   getMatchKeysAsArray(pEntity: any): string[] {
     let ret = [];
-
     if(pEntity && pEntity.matchKey) {
       const mkeys = pEntity.matchKey
       .split(/[-](?=\w)/)
@@ -163,7 +207,6 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
 
       return ret;
     }
-
     return ret;
   }
 
@@ -172,11 +215,12 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
       return this._matchKeys;
     }
     // no match keys, should we retest?
+    return [];
   }
 
   isLinkedAttribute(attrValue: string): boolean {
     const matchArr = this.matchKeys;
-    if(attrValue && matchArr && matchArr.length > 0) {
+    if(attrValue && matchArr && matchArr.some && matchArr.length > 0) {
 
       const keyMatch = matchArr.some( (mkey) => {
         return attrValue.indexOf(mkey+':') >=0 ;
@@ -189,19 +233,39 @@ export class SzEntityDetailHeaderContentComponent implements OnInit {
     }
     return false;
   }
+  /**
+   * toggle the truncated expand/collapse
+   * state of the content element
+   */
+  public toggleTruncation(event: any) {
+    if(window && window.getSelection){
+      var selection = window.getSelection();
+      if(selection.toString().length === 0) {
+        // evt proxy
+        this.truncateResults=!this.truncateResults;
+      }
+    } else {
+      this.truncateResults=!this.truncateResults;
+    }
+  }
 
   get identifierData(): string[] {
-    if (this.entity) {
-      if (this.entity.identifierData) {
-        return this.entity.identifierData;
-      } else if (this.entity.topIdentifiers) {
-        return this.entity.topIdentifiers;
+    try{
+      if (this.entity) {
+        if (this.entity.identifierData && this.entity.identifierData.length > 0) {
+          return this.entity.identifierData;
+        } else if (this.entity.topIdentifiers && this.entity.topIdentifiers.length > 0) {
+          return this.entity.topIdentifiers;
+        } else {
+          return [];
+        }
       } else {
         return [];
       }
-    } else {
-      return [];
+    }catch(err){
+      console.warn('\tSzEntityDetailHeaderContentComponent.identifierData error', err.message);
     }
+    return [];
   }
 
   /**

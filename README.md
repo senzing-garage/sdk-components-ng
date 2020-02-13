@@ -1,10 +1,13 @@
 # @senzing/sdk-components-ng
 
-[![Build Status](https://travis-ci.com/senzingiris/sdk-components-ng.svg?token=WxmiqA9RBhXENsrx41xE&branch=master)](https://travis-ci.com/senzingiris/sdk-components-ng)
-
 ## Overview
 
 This project is for the Senzing&reg; SDK components that can be used in other projects using Angular 7.X.X.
+
+[![Build Status](https://travis-ci.com/Senzing/sdk-components-ng.svg?branch=master)](https://travis-ci.com/Senzing/sdk-components-ng)
+[![npm version](https://badge.fury.io/js/%40senzing%2Fsdk-components-ng.svg)](https://badge.fury.io/js/%40senzing%2Fsdk-components-ng)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/senzing/sdk-components-ng?color=%2300c4ff&logo=latest%20tag)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/senzing/sdk-components-ng?color=orange&logo=latest&logoColor=blue)
 
 ## Dependencies
 

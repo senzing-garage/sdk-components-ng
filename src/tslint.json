@@ -45,7 +45,7 @@
       "ignore-for-loop"
     ],
     "callable-types": true,
-    "class-name": true,
+    "class-name": false,
     "comment-format": [
       false,
       "check-space"
@@ -104,8 +104,7 @@
     "one-line": [
       true,
       "check-catch",
-      "check-else",
-      "check-whitespace"
+      "check-else"
     ],
     "prefer-const": true,
     "quotemark": [
@@ -116,7 +115,8 @@
     "radix": false,
     "semicolon": [
       true,
-      "always"
+      "always",
+      "ignore-interfaces"
     ],
     "triple-equals": [
       false,
@@ -140,7 +140,7 @@
       "check-format"
     ],
     "whitespace": [
-      true,
+      false,
       /*"check-branch",*/
       /*"check-decl",*/
       /*"check-operator",*/

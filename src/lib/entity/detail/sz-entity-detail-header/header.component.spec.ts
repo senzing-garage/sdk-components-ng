@@ -12,12 +12,14 @@ describe('SzEntityDetailHeaderComponent', () => {
       imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(SzEntityDetailHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  }));
+
+  afterEach(() => {
+    fixture.destroy();
   });
 
   it('should create', () => {

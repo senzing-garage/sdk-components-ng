@@ -1,4 +1,11 @@
-<div class="search-card__content--wrapper">
+<div class="search-card__content--wrapper"
+  [class.collapsed]="truncateResults"
+  [class.columns-two]="!showColumnOne && !showColumnFour"
+  [class.columns-three]="showColumnOne && !showColumnFour || showColumnFour && !showColumnOne"
+  [class.columns-four]="showColumnOne && showColumnFour"
+  [ngClass]="layoutClasses"
+  (click)="truncateResults=!truncateResults">
+
   <div class="search-card__content--column name-data" #columnTwo>
     <div class="line" *ngFor="let nameAttributeData of getNameAndAttributeData(nameData, attributeData); let i = index">
       <span
@@ -24,30 +31,26 @@
     </div>
     <span class="ellipsis-toggle" *ngIf="columnThreeTotal > maxLinesToDisplay">...</span>
   </div>
-
   <div class="search-card__content--column identifier-data" #columnFour *ngIf="showColumnFour">
-    <ng-container *ngFor="let identificationData of identifierData; let i = index">
-      <span
-        class="break-for-print"
-        [ngClass]="{
-          'ellipsis': collapsed,
-          'hidden': (i >= maxLinesToDisplay)}"
-          >{{identificationData}}</span>
-    </ng-container>
-    <span *ngIf="columnFourTotal > maxLinesToDisplay">...</span>
+    <div class="line" [class.truncated]="i >= truncateIdentifierDataAt && truncateResults" *ngFor="let identificationData of identifierData; let i = index">
+      <span *ngIf="(i < truncateIdentifierDataAt || truncateIdentifierDataAt < 0 || !truncateResults) && showOtherData"
+      [class.ellipsis]="truncateResults"
+        class="break-for-print">{{identificationData}}</span>
+    </div>
+    <span *ngIf="columnFourTotal > truncateIdentifierDataAt">...</span>
   </div>
 
-  <div class="search-card__content--column other-data" #columnFive *ngIf="showColumnFive">
-    <div class="line" *ngFor="let otherData of otherData; let i = index">
-      <span
-      [ngClass]="{
-        'ellipsis': collapsed,
-        'hidden': (i >= maxLinesToDisplay)}">
+  <div class="search-card__content--column" #columnFive  *ngIf="showColumnFive">
+    <!-- <div class="line" *ngIf="entity?.recordId && showRecordIdWhenNative"><span [class.ellipsis]="truncateResults">Record Id: {{entity.recordId}}</span></div> -->
+    <div class="line" [class.truncated]="i >= truncateOtherDataAt && truncateResults"
+      *ngFor="let otherData of otherData; let i = index">
+      <span *ngIf="(i < truncateOtherDataAt || truncateOtherDataAt < 0 || !truncateResults) && showOtherData" [class.ellipsis]="truncateResults">
         {{otherData}}
       </span>
     </div>
-    <span class="ellipsis-toggle"
-    *ngIf="columnFiveTotal > maxLinesToDisplay">...</span>
+    <span class="ellipsis-toggle" matTooltip="truncatedTooltip"
+    matTooltipPosition="left"
+    *ngIf="columnOneTotal > truncateOtherDataAt && truncateResults">...</span>
   </div>
 
 </div>

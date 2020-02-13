@@ -58,15 +58,36 @@
     <code>src/lib/search/sz-search-results/sz-search-results.component.ts</code>
 </p>
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Provides a graphical search results component. Data can be provided a number of ways.
+The simplest of which is to bind the results input setter to the output of the
+<a href="../components/SzSearchComponent.html">SzSearchComponent</a> resultsChange event.</p>
+
+    </p>
 
 
     <p class="comment">
         <h3>Implements</h3>
     </p>
     <p class="comment">
-                <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+                    <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
     </p>
 
+    <p class="comment">
+        <h3>Example</h3>
+    </p>
+    <div class="io-description">
+                <div>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) SzSearchComponent --&gt;&lt;sz-searchname=&quot;Isa Creepr&quot;(resultsChange)=&quot;resultsOfSearch=$event&quot;&gt;&lt;/sz-search&gt;&lt;sz-search-results [results]=&quot;resultsOfSearch&quot;&gt;&lt;/sz-search-results&gt;</code></pre>
+                </div>
+                <div>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo --&gt;&lt;sz-searchid=&quot;sz-search&quot;name=&quot;Isa Creepr&quot;&gt;&lt;/sz-search&gt;&lt;sz-search-results id=&quot;sz-search-results&quot;&gt;&lt;/sz-search-results&gt;&lt;script&gt;var szSearchComponent = document.getElementById('sz-search');var szSearchResultsComponent = document.getElementById('sz-search-results');szSearchComponent.addEventListener('resultsChange', (evt) =&gt; {console.log('search results: ', evt);szSearchResultsComponent.results = evt.detail;});&lt;/script&gt;</code></pre>
+                </div>
+    </div>
 
 <section>
     <h3>Metadata</h3>
@@ -139,6 +160,10 @@
                                     <span class="modifier">Public</span>
                                 <a href="#searchResultsJSON">searchResultsJSON</a>
                             </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#unsubscribe$">unsubscribe$</a>
+                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -151,6 +176,9 @@
                 <tr>
                     <td class="col-md-4">
                         <ul class="index-list">
+                            <li>
+                                <a href="#ngOnDestroy">ngOnDestroy</a>
+                            </li>
                             <li>
                                 <a href="#ngOnInit">ngOnInit</a>
                             </li>
@@ -242,7 +270,7 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(titleCasePipe: <a href="https://angular.io/api/common/TitleCasePipe" target="_blank">TitleCasePipe</a>)</code>
+<code>constructor(titleCasePipe: <a href="https://angular.io/api/common/TitleCasePipe" target="_blank">TitleCasePipe</a>, prefs: <a href="../injectables/SzPrefsService.html">SzPrefsService</a>, cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>)</code>
                     </td>
                 </tr>
 
@@ -263,7 +291,31 @@
                                                         <td>titleCasePipe</td>
                                                   
                                                         <td>
-                                                                    <code><a href="https://angular.io/api/common/TitleCasePipe" target="_blank" >TitleCasePipe</a></code>
+                                                                        <code><a href="https://angular.io/api/common/TitleCasePipe" target="_blank" >TitleCasePipe</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>prefs</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SzPrefsService.html" target="_self" >SzPrefsService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>cd</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank" >ChangeDetectorRef</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -285,12 +337,14 @@
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <td class="col-md-2">
+                    <td class="col-md-4">
                         <a name="parameters"></a>
-                        <code>parameters</code>
+                        <b>parameters</b>
                     </td>
-                    <td class="col-md-10">
-                        <div><p>The current search parameters being used.
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>The current search parameters being used.
 used for displaying the parameters being searched on above result list.</p>
 </div>
                     </td>
@@ -300,17 +354,21 @@ used for displaying the parameters being searched on above result list.</p>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <td class="col-md-2">
+                    <td class="col-md-4">
                         <a name="results"></a>
-                        <code>results</code>
+                        <b>results</b>
                     </td>
-                    <td class="col-md-10">
-                        <div><p>The results of a search response to display in the component.</p>
-</div>
-                            <p>
-                            <em>Type :</em>    <code>[]</code>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
 
-                            </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>The results of a search response to display in the component.</p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -318,20 +376,26 @@ used for displaying the parameters being searched on above result list.</p>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <td class="col-md-2">
+                    <td class="col-md-4">
                         <a name="showDataSources"></a>
-                        <code>showDataSources</code>
+                        <b>showDataSources</b>
                     </td>
-                    <td class="col-md-10">
-                        <div><p>Shows or hides the datasource lists in the result items header.</p>
-</div>
-                            <p>
-                            <em>Type :</em>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 
-                            </p>
-                        <p>
-                            <em>Default value : </em><code>true</code>
-                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Shows or hides the datasource lists in the result items header.</p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -342,15 +406,21 @@ used for displaying the parameters being searched on above result list.</p>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <td class="col-md-2">
+                    <td class="col-md-4">
                         <a name="resultClick"></a>
-                        <code>resultClick</code>
+                        <b>resultClick</b>
                     </td>
-                    <td class="col-md-10">
-                        <div><p>Occurs when a search result item is clicked.</p>
-</div>
-                        <em><code>$event</code> Type:</em>    <code>EventEmitter&lt;SzAttributeSearchResult&gt;</code>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter&lt;SzAttributeSearchResult&gt;</code>
 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Occurs when a search result item is clicked.</p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -360,124 +430,158 @@ used for displaying the parameters being searched on above result list.</p>
 
     <section>
     
-        <h3 id="methods">
-            Methods
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="ngOnInit"></a>
-                        <span class="name">
-                            <b>
-                            ngOnInit
-                            </b>
-                            <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-<code>ngOnInit()</code>
-                    </td>
-                </tr>
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <b>
+                            ngOnDestroy
+                        </b>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
 
 
 
 
-                <tr>
-                    <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="onResultClick"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            onResultClick
-                            </b>
-                            <a href="#onResultClick"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>onResultClick(evt: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, resData: SzAttributeSearchResult)</code>
-                    </td>
-                </tr>
-
-
-
-
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>DOM click handler which then triggers the &quot;resultClick&quot; event emitter.</p>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>unsubscribe when component is destroyed</p>
 </div>
 
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>evt</td>
-                                                        <td>
-                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                                                </tr>
-                                                <tr>
-                                                        <td>resData</td>
-                                                        <td>
-                                                                    <code>SzAttributeSearchResult</code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
 
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                            </div>
-                                <div class="io-description">
-                                    
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onResultClick"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            onResultClick
+                        </b>
+                        <a href="#onResultClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onResultClick(evt: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, resData: SzAttributeSearchResult)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>DOM click handler which then triggers the &quot;resultClick&quot; event emitter.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>evt</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>resData</td>
+                                    <td>
+                                            <code>SzAttributeSearchResult</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>
-
     <section>
     
         <h3 id="inputs">
@@ -491,16 +595,9 @@ used for displaying the parameters being searched on above result list.</p>
                         <span class="name">
                             <b>
                                 <span class="modifier">Public</span>
-                            _searchResults
-                            </b>
+                            _searchResults</b>
                             <a href="#_searchResults"><span class="icon ion-ios-link"></span></a>
                         </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span><code>_searchResults:     <code>SzAttributeSearchResult[]</code>
-</code>
                     </td>
                 </tr>
                     <tr>
@@ -521,21 +618,14 @@ used for displaying the parameters being searched on above result list.</p>
                         <span class="name">
                             <b>
                                 <span class="modifier">Public</span>
-                            _searchValue
-                            </b>
+                            _searchValue</b>
                             <a href="#_searchValue"><span class="icon ion-ios-link"></span></a>
                         </span>
                     </td>
                 </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span><code>_searchValue:     <code><a href="../interfaces/SzEntitySearchParams.html" target="_self" >SzEntitySearchParams</a></code>
-</code>
-                    </td>
-                </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>    <code><a href="../interfaces/SzEntitySearchParams.html" target="_self" >SzEntitySearchParams</a></code>
+                            <i>Type : </i>        <code><a href="../interfaces/SzEntitySearchParams.html" target="_self" >SzEntitySearchParams</a></code>
 
                         </td>
                     </tr>
@@ -551,16 +641,9 @@ used for displaying the parameters being searched on above result list.</p>
                         <span class="name">
                             <b>
                                 <span class="modifier">Public</span>
-                            attributeDisplay
-                            </b>
+                            attributeDisplay</b>
                             <a href="#attributeDisplay"><span class="icon ion-ios-link"></span></a>
                         </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span><code>attributeDisplay:     <code>literal type[]</code>
-</code>
                     </td>
                 </tr>
                     <tr>
@@ -581,19 +664,40 @@ used for displaying the parameters being searched on above result list.</p>
                         <span class="name">
                             <b>
                                 <span class="modifier">Public</span>
-                            searchResultsJSON
-                            </b>
+                            searchResultsJSON</b>
                             <a href="#searchResultsJSON"><span class="icon ion-ios-link"></span></a>
                         </span>
                     </td>
                 </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span><code>searchResultsJSON:     <code></code>
-</code>
+                        <a name="unsubscribe$"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            unsubscribe$</b>
+                            <a href="#unsubscribe$"><span class="icon ion-ios-link"></span></a>
+                        </span>
                     </td>
                 </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>new Subject&lt;void&gt;()</code>
+                        </td>
+                    </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>subscription to notify subscribers to unbind </p>
+</div>
+                    </td>
+                </tr>
 
             </tbody>
         </table>
@@ -670,7 +774,7 @@ used for displaying the parameters being searched on above result list.</p>
                                 <div>
                                 </div>
                                 <div class="io-description">
-                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                                 </div>
                         </td>
@@ -819,7 +923,7 @@ used for displaying the parameters being searched on above result list.</p>
                                 <div>
                                 </div>
                                 <div class="io-description">
-                                    <b>Returns : </b>    <code><a href="../interfaces/SzEntitySearchParams.html" target="_self" >SzEntitySearchParams</a></code>
+                                    <b>Returns : </b>        <code><a href="../interfaces/SzEntitySearchParams.html" target="_self" >SzEntitySearchParams</a></code>
 
                                 </div>
                         </td>
@@ -861,7 +965,7 @@ used for displaying the parameters being searched on above result list.</p>
                                 <div>
                                 </div>
                                 <div class="io-description">
-                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                                 </div>
                         </td>
@@ -890,7 +994,7 @@ used for displaying the parameters being searched on above result list.</p>
                                 <div>
                                 </div>
                                 <div class="io-description">
-                                    <b>Returns : </b>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 
                                 </div>
                         </td>
@@ -1069,7 +1173,7 @@ used for displaying the parameters being searched on above result list.</p>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><div>    <!-- @senzing/sdk/search/sz-search-results -->    <div class="sz-search-results-total-summary">        <div class="sz-search-results-total" *ngIf="searchResults && searchValue">          <span class="sz-search-results-total-bold">{{searchResultsTotal}} Results </span>found for          <div>            <ng-container *ngFor="let attribute of attributeDisplay">{{attribute?.attr}}              <span *ngIf="attribute?.value">:</span>              <span class="sz-search-results-parameter-value">{{attribute?.value}}&nbsp;</span>            </ng-container>          </div>        </div>    </div>    <div class="search-result__section-header matches"      *ngIf="this.matches?.length > 0">Matches</div>    <sz-search-result-card      *ngFor="let searchResult of this.matches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Match\'"      [showDataSources]="showDataSources">    </sz-search-result-card>    <div class="search-result__section-header possible-match"      *ngIf="this.possibleMatches?.length > 0">Possible Match</div>    <sz-search-result-card      *ngFor="let searchResult of this.possibleMatches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Possible Matches\'"      [showDataSources]="showDataSources">    </sz-search-result-card>    <div class="search-result__section-header possibly-related"      *ngIf="this.discoveredRelationships?.length > 0">Possibly Related</div>    <sz-search-result-card      *ngFor="let searchResult of this.discoveredRelationships; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Discovered Relationships\'"      [showDataSources]="showDataSources">    </sz-search-result-card>    <div class="search-result__section-header name-only-matches"      *ngIf="this.nameOnlyMatches?.length > 0">Name Only Matches</div>    <sz-search-result-card      *ngFor="let searchResult of this.nameOnlyMatches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Name Only Matches\'"      [showDataSources]="showDataSources"></sz-search-result-card></div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'}];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzSearchResultsComponent'};
 </script>
@@ -1084,6 +1188,7 @@ used for displaying the parameters being searched on above result list.</p>
 
 
 
+                   
 
 
 
