@@ -1,0 +1,324 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Senzing SDK Components</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	      <link rel="stylesheet" href="./styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="./" class="navbar-brand">Senzing SDK Components</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content getting-started">
+                   <div class="content-data">
+
+<h1 id="changelog">Changelog</h1>
+<p>All notable changes to this project will be documented in this file.</p>
+<p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
+<a href="https://dlaa.me/markdownlint/">markdownlint</a>,
+and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<h2 id="130---2020-2-6">[1.3.0] - 2020-2-6</h2>
+<h3 id="added-to-130">Added to 1.3.0</h3>
+<p>Added in components that can be used for bulk analysis and bulk loading. The components and services are specifically to facilitate admin functionality.</p>
+<ul>
+<li>new components:<ul>
+<li><a href="https://senzing.github.io/sdk-components-ng/components/SzBulkDataAnalysisReportComponent.html">SzBulkDataAnalysisReportComponent</a></li>
+<li><a href="https://senzing.github.io/sdk-components-ng/components/SzBulkDataAnalysisSummaryComponent.html">SzBulkDataAnalysisSummaryComponent</a></li>
+<li><a href="https://senzing.github.io/sdk-components-ng/components/SzBulkDataAnalysisComponent.html">SzBulkDataAnalysisComponent</a></li>
+<li><a href="https://senzing.github.io/sdk-components-ng/components/SzBulkDataLoadReportComponent.html">SzBulkDataLoadReportComponent</a></li>
+<li><a href="https://senzing.github.io/sdk-components-ng/components/SzBulkDataLoadSummaryComponent.html">SzBulkDataLoadSummaryComponent</a></li>
+<li><a href="https://senzing.github.io/sdk-components-ng/components/SzBulkDataLoadComponent.html">SzBulkDataLoadComponent</a></li>
+</ul>
+</li>
+<li>new models/classes:<ul>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzBaseBulkLoadResult.html">SzBaseBulkLoadResult</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkDataAnalysis.html">SzBulkDataAnalysis</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkDataAnalysisResponse.html">SzBulkDataAnalysisResponse</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkDataLoadResponse.html">SzBulkDataLoadResponse</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkLoadError.html">SzBulkLoadError</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkLoadResponse.html">SzBulkLoadResponse</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzBulkLoadResult.html">SzBulkLoadResult</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzDataSourceBulkLoadResult.html">SzDataSourceBulkLoadResult</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzDataSourceRecordAnalysis.html">SzDataSourceRecordAnalysis</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzEntityTypeBulkLoadResult.html">SzEntityTypeBulkLoadResult</a></li>
+<li><a href="https://senzing.github.io/rest-api-client-ng/interfaces/SzEntityTypeRecordAnalysis.html">SzEntityTypeRecordAnalysis</a></li>
+</ul>
+</li>
+<li>new services:<ul>
+<li><a href="https://senzing.github.io/sdk-components-ng/injectables/SzAdminService.html">SzAdminService</a></li>
+<li><a href="https://senzing.github.io/sdk-components-ng/injectables/SzBulkDataService.html">SzBulkDataService</a></li>
+</ul>
+</li>
+<li>new examples:<ul>
+<li>example/admin-importing</li>
+</ul>
+</li>
+<li>relevant tickets<ul>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/133">#133</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="120---2019-12-11">[1.2.0] - 2019-12-11</h2>
+<h3 id="added-to-120">Added to 1.2.0</h3>
+<p>New *&quot;Search By Id&quot;* component, *&quot;record viewer&quot;* component, search history type-ahead, various bugfixes, rest-client updates, admin service, and basic folio models.</p>
+<ul>
+<li>new components:<ul>
+<li>SzSearchByIdComponent Component</li>
+<li>SzEntityRecordViewerComponent</li>
+</ul>
+</li>
+<li>new models/classes:<ul>
+<li>SzSearchByIdFormParams interface</li>
+<li>SzAdminService</li>
+<li>SzFolioItem</li>
+<li>SzFolio</li>
+<li>SzSearchParamsFolioItem extends SzFolioItem</li>
+<li>SzSearchParamsFolio extends SzFolio</li>
+<li>SzSearchHistoryFolioItem extends SzSearchParamsFolioItem</li>
+<li>SzSearchHistoryFolio extends SzSearchParamsFolio</li>
+</ul>
+</li>
+<li>new services:<ul>
+<li>SzFoliosService</li>
+</ul>
+</li>
+<li>new events:<ul>
+<li>SzSearchService.parametersChanged</li>
+<li>SzSearchService.resultsChanged</li>
+<li>SzSearchService.searchPerformed</li>
+</ul>
+</li>
+<li>new dependencies:<ul>
+<li>ngx-json-viewer</li>
+</ul>
+</li>
+<li>new examples:<ul>
+<li>search-by-id</li>
+</ul>
+</li>
+<li>relevant tickets<ul>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/109">#109</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/110">#110</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/112">#112</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/114">#114</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/115">#115</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/121">#121</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/123">#123</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/125">#125</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/126">#126</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="110---2019-11-11">[1.1.0] - 2019-11-11</h2>
+<h3 id="added-to-110">Added to 1.1.0</h3>
+<ul>
+<li>pop out graph icon</li>
+<li>new &quot;example/search-in-graph&quot; project to show search integrating directly with graph</li>
+<li>new <em><a href="https://senzing.github.io/sdk-components-ng/components/SzPrefDictComponent.html">SzPrefDictComponent</a></em> for displaying pref(s) that are object/key/value based(ie json object)</li>
+<li>added <em><a href="https://senzing.github.io/sdk-components-ng/classes/SzGraphPrefs.html#dataSourceColors">dataSourceColors</a></em> configuration to SzPreferencesComponent</li>
+<li>added <em><a href="https://senzing.github.io/sdk-components-ng/components/SzEntityDetailGraphFilterComponent.html">SzEntityDetailGraphFilterComponent</a></em></li>
+<li>added <em>SzStandaloneGraphComponent</em>, a embeddable graph components designed to run in it&#39;s own context or near-to.</li>
+<li>added new <a href="https://senzing.github.io/sdk-components-ng/injectables/SzDataSourcesService.html">SzDataSourcesService</a> class for retrieving the datasources from the api server instance.</li>
+<li>modified existing SzGraphComponent code, adding all new properties to keep feature parity with SzStandaloneGraphComponent&#39;s implementation.</li>
+<li>added new <em>layout-rail</em> layout for ... well, exactly what it sounds like, a rail version of the entity detail component.</li>
+<li>relevant tickets<ul>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/105">#105</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/104">#104</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="109---2019-09-23">[1.0.9] - 2019-09-23</h2>
+<h3 id="added-to-109">Added to 1.0.9</h3>
+<ul>
+<li>Added <a href="https://senzing.github.io/sdk-components-ng/injectables/SzPrefsService.html">SzPrefsService</a></li>
+<li>Added <a href="https://senzing.github.io/sdk-components-ng/components/SzPreferencesComponent.html">SzPreferencesComponent</a></li>
+<li>CSS for responsive breakpoint(s) and/or reflow on narrow width</li>
+<li>Various UI/UX layout bugfixes</li>
+<li>Graph should reload on entityIdChange</li>
+<li>Graph should collapse on <em>0</em> results</li>
+<li>Include &quot;other data&quot; in records area.</li>
+<li>Text highlighting no longer triggers click-thru</li>
+<li>Search identifiers drop-down should auto-update on api config change</li>
+<li>relevant tickets:<ul>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/102">#102</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/100">#100</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/96">#96</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/94">#94</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/92">#92</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/90">#90</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/88">#88</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/86">#86</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/84">#84</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/82">#82</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/79">#79</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/78">#78</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="108---2019-07-30">[1.0.8] - 2019-07-30</h2>
+<h3 id="added-to-108">Added to 1.0.8</h3>
+<ul>
+<li>Graph decoupling</li>
+<li>Graph enhancements</li>
+<li>Bring graph dependency up to 0.0.4</li>
+<li>smarter entity icon inference</li>
+<li>fix for identifier searches sending the wrong parameter format to the api server</li>
+<li>fix for PDF service ignoring filename parameter</li>
+<li>relevant issues:<ul>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/74">#74</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/71">#71</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/70">#70</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/65">#65</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/67">#67</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/69">#69</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="107---2019-07-19">[1.0.7] - 2019-07-19</h2>
+<h3 id="added-to-107">Added to 1.0.7</h3>
+<ul>
+<li>Allow title of At a Glance graph component to be set from outside</li>
+<li>At a Glance now Relationships at a Glance</li>
+<li>Consume version of sdk-graph-components with fixes for node drifting</li>
+<li>Change Relationships at a Glance buildout to 1</li>
+</ul>
+<h2 id="106---2019-07-11">[1.0.6] - 2019-07-11</h2>
+<h3 id="added-to-106">Added to 1.0.6</h3>
+<ul>
+<li>added &quot;print to PDF&quot; service.</li>
+<li>now uses separate <a href="https://github.com/senzing/sdk-graph-components">sdk-graph-components</a> package for embedded graphs.</li>
+<li>Removed all graph components from package and moved code to /deprecated folder. will be removed in future release.</li>
+<li>Update all graph component references to use separate package namespace</li>
+<li>Changed default api server port to 8080, this way you can run the services directly against a default docker image of the senzing-api-server. factors in to e2e.</li>
+<li>Updated documentation to reflect changes</li>
+<li>Added better css classes to components to allow for more precise e2e test cases</li>
+<li>bugfix for constant redraw issue on &quot;possible matches&quot; node #47</li>
+<li>relevant issues:<ul>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/39">#39</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/47">#47</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/56">#56</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/60">#60</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/63">#63</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="105---2019-06-05">[1.0.5] - 2019-06-05</h2>
+<h3 id="added-to-105">Added to 1.0.5</h3>
+<p>fixes, features for:</p>
+<ul>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/26">#26</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/38">#38</a></li>
+<li><a href="https://github.com/Senzing/sdk-components-ng/issues/40">#40</a></li>
+</ul>
+<p><img src="https://user-images.githubusercontent.com/13721038/58986445-3f63f080-8792-11e9-913e-137253d54b7e.png" alt="2019-06-05_130246" class="img-responsive"></p>
+<ul>
+<li>D3 integration in to Entity Detail component as &quot;At a Glance&quot;</li>
+<li>Src Path updates and refactoring to support automated building on windows</li>
+<li>SzRelationshipNetworkInputComponent</li>
+<li>SzRelationshipNetworkLookupComponent component</li>
+<li>SzRelationshipNetworkUploadComponent component</li>
+<li>remove extraneous div in sz-search markup</li>
+<li>remove extra padding/margins from search component wrapper</li>
+<li>add onKeyEnter handler to submit search when search button is hidden/not present</li>
+<li>Add New  CSS Theme Variables:<ul>
+<li>--sz-search-results-name-color</li>
+<li>--sz-search-results-name-hover-color</li>
+<li>--sz-search-results-name-font-weight</li>
+<li>--sz-search-input-hover-border-color</li>
+<li>--sz-search-input-focus-border-color</li>
+<li>--sz-search-results-color</li>
+<li>--sz-search-results-a-hover-color</li>
+<li>--sz-search-results-name-color</li>
+<li>--sz-search-results-name-hover-color</li>
+<li>--sz-search-results-name-font-weight</li>
+<li>--sz-search-results-name-min-width</li>
+<li>--sz-search-results-transition</li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'getting-started';
+            var COMPODOC_CURRENT_PAGE_URL = 'changelog.html';
+       </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="./js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="./js/menu-wc.js" defer></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+       <script src="./js/libs/zepto.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

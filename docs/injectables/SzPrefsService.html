@@ -78,16 +78,33 @@ other than in memory by default. the third example shows how to load from locals
             </p>
             <div class="io-description">
                         <div>
-                            <pre class="line-numbers"><code class="language-html">// --- subscribe to prefs changesconstructor(private prefs: SzPrefsService) {this.prefs.prefsChanged.subscribe((prefs: SzSdkPrefsModel) =&gt; { console.log('prefs changed!', prefs); })}</code></pre>
+                            <pre class="line-numbers"><code class="language-html">// --- subscribe to prefs changes
+constructor(private prefs: SzPrefsService) {
+this.prefs.prefsChanged.subscribe((prefs: SzSdkPrefsModel) =&gt; { console.log('prefs changed!', prefs); })
+}</code></pre>
                         </div>
                         <div>
-                            <pre class="line-numbers"><code class="language-html">// --- get current state representationconstructor(private prefs: SzPrefsService) {currentState = this.prefs.toJSONObject();}</code></pre>
+                            <pre class="line-numbers"><code class="language-html">// --- get current state representation
+constructor(private prefs: SzPrefsService) {
+currentState = this.prefs.toJSONObject();
+}</code></pre>
                         </div>
                         <div>
-                            <pre class="line-numbers"><code class="language-html">// --- get and set from local storageconstructor(private prefs: SzPrefsService, Inject(LOCAL_STORAGE) private storage: StorageService) {// get from lslet _ls = this.storage.get(&quot;name_of_local_storage_store&quot;);this.prefs.fromJSONString( _ls );// store in lsthis.prefs.prefsChanged.subscribe((prefs: SzSdkPrefsModel) =&gt; { this.storage.set(&quot;name_of_local_storage_store&quot;, prefs); })}</code></pre>
+                            <pre class="line-numbers"><code class="language-html">// --- get and set from local storage
+constructor(private prefs: SzPrefsService, Inject(LOCAL_STORAGE) private storage: StorageService) {
+// get from ls
+let _ls = this.storage.get(&quot;name_of_local_storage_store&quot;);
+this.prefs.fromJSONString( _ls );
+// store in ls
+this.prefs.prefsChanged.subscribe((prefs: SzSdkPrefsModel) =&gt; { this.storage.set(&quot;name_of_local_storage_store&quot;, prefs); })
+}</code></pre>
                         </div>
                         <div>
-                            <pre class="line-numbers"><code class="language-html">// --- set graph section in ent detail to collapsed by defaultconstructor(private prefs: SzPrefsService) {// set graph to collapsed by defaultthis.prefs.entityDetail.graphSectionCollapsed = true;}</code></pre>
+                            <pre class="line-numbers"><code class="language-html">// --- set graph section in ent detail to collapsed by default
+constructor(private prefs: SzPrefsService) {
+// set graph to collapsed by default
+this.prefs.entityDetail.graphSectionCollapsed = true;
+}</code></pre>
                         </div>
             </div>
 

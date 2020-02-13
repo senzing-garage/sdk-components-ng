@@ -1,5 +1,3 @@
-//import { Configuration } from '@senzing/rest-api-client-ng';
-
 /*
  * Public API Surface of sdk
  */
@@ -14,19 +12,26 @@ export * from './lib/common/utils';
 export * from './lib/services/sz-message-bundle.service';
 export * from './lib/services/sz-configuration.service';
 export { SzAdminService } from './lib/services/sz-admin.service';
+export { SzBulkDataService } from './lib/services/sz-bulk-data.service';
+
 export * from './lib/services/sz-datasources.service';
 export * from './lib/services/sz-configuration.service';
 export * from './lib/services/sz-folios.service';
 export * from './lib/services/sz-message-bundle.service';
 export * from './lib/services/sz-pdf-util.service';
-export {
-  SzPrefsService,
-  SzSdkPrefsModel
-} from './lib/services/sz-prefs.service';
+export { SzPrefsService, SzSdkPrefsModel} from './lib/services/sz-prefs.service';
 export * from './lib/services/sz-search.service';  // updated to use rest
 export * from './lib/services/sz-ui.service';
 
 /** components */
+  /** bulk data related */
+  export { SzBulkDataAnalysisComponent } from './lib/bulk-data/sz-bulk-data-analysis.component';
+  export { SzBulkDataAnalysisReportComponent } from './lib/bulk-data/sz-bulk-data-analysis-report.component';
+  export { SzBulkDataAnalysisSummaryComponent } from './lib/bulk-data/sz-bulk-data-analysis-summary.component';
+  export { SzBulkDataLoadComponent } from './lib/bulk-data/sz-bulk-data-load.component';
+  export { SzBulkDataLoadReportComponent } from './lib/bulk-data/sz-bulk-data-load-report.component';
+  export { SzBulkDataLoadSummaryComponent } from './lib/bulk-data/sz-bulk-data-load-summary.component';
+
 export * from './lib/search/sz-search/sz-search.component';
 export { SzSearchByIdComponent, SzSearchByIdFormParams } from './lib/search/sz-search/sz-search-by-id.component';
 export { SzEntityRecordViewerComponent } from './lib/record/sz-entity-record-viewer.component';
@@ -45,6 +50,9 @@ export * from '@senzing/sdk-graph-components';
 
 /** models */
 export * from './lib/models/folio';
+export { SzBulkDataAnalysis } from './lib/models/data-analysis';
+export { SzBulkLoadStatus } from './lib/models/data-importing';
+export { SzDataSourceRecordAnalysis } from './lib/models/data-sources';
 
 /** export some members of rest client to ease type use */
 export {
