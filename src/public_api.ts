@@ -25,12 +25,14 @@ export * from './lib/services/sz-ui.service';
 
 /** components */
   /** bulk data related */
+  /*
   export { SzBulkDataAnalysisComponent } from './lib/bulk-data/sz-bulk-data-analysis.component';
   export { SzBulkDataAnalysisReportComponent } from './lib/bulk-data/sz-bulk-data-analysis-report.component';
   export { SzBulkDataAnalysisSummaryComponent } from './lib/bulk-data/sz-bulk-data-analysis-summary.component';
   export { SzBulkDataLoadComponent } from './lib/bulk-data/sz-bulk-data-load.component';
   export { SzBulkDataLoadReportComponent } from './lib/bulk-data/sz-bulk-data-load-report.component';
   export { SzBulkDataLoadSummaryComponent } from './lib/bulk-data/sz-bulk-data-load-summary.component';
+  */
 
 export * from './lib/search/sz-search/sz-search.component';
 export { SzSearchByIdComponent, SzSearchByIdFormParams } from './lib/search/sz-search/sz-search-by-id.component';

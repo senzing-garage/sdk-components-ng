@@ -35,8 +35,8 @@ import {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements AfterViewInit, OnInit {
-  @ViewChild(SzBulkDataAnalysisComponent) public bulkDataAnalysisComponent: SzBulkDataAnalysisComponent;
-  @ViewChild(SzBulkDataLoadComponent) public bulkDataLoadComponent: SzBulkDataLoadComponent;
+  //@ViewChild(SzBulkDataAnalysisComponent) public bulkDataAnalysisComponent: SzBulkDataAnalysisComponent;
+  //@ViewChild(SzBulkDataLoadComponent) public bulkDataLoadComponent: SzBulkDataLoadComponent;
 
   analysis: SzBulkDataAnalysis;
   loadResult: SzBulkLoadResult;

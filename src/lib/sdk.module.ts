@@ -41,12 +41,14 @@ import { SzBulkDataService } from './services/sz-bulk-data.service';
 import { SzEntityTypesService } from './services/sz-entitytypes.service';
 
 /** components */
+/*
 import { SzBulkDataAnalysisComponent } from './bulk-data/sz-bulk-data-analysis.component';
 import { SzBulkDataAnalysisReportComponent } from './bulk-data/sz-bulk-data-analysis-report.component';
 import { SzBulkDataAnalysisSummaryComponent } from './bulk-data/sz-bulk-data-analysis-summary.component';
 import { SzBulkDataLoadComponent } from './bulk-data/sz-bulk-data-load.component';
 import { SzBulkDataLoadReportComponent } from './bulk-data/sz-bulk-data-load-report.component';
 import { SzBulkDataLoadSummaryComponent } from './bulk-data/sz-bulk-data-load-summary.component';
+*/
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
 import { SzEntityDetailHeaderComponent } from './entity/detail/sz-entity-detail-header/header.component';
 import { SzEntityDetailSectionSummaryComponent } from './entity/detail/sz-entity-detail-header/summary.component';
@@ -103,12 +105,6 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
  */
 @NgModule({
   declarations: [
-    SzBulkDataAnalysisComponent,
-    SzBulkDataAnalysisReportComponent,
-    SzBulkDataAnalysisSummaryComponent,
-    SzBulkDataLoadComponent,
-    SzBulkDataLoadReportComponent,
-    SzBulkDataLoadSummaryComponent,
     SzEntityDetailComponent,
     SzSearchComponent,
     SzSearchByIdComponent,
@@ -148,12 +144,6 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     ApiModule
   ],
   exports: [
-    SzBulkDataAnalysisComponent,
-    SzBulkDataAnalysisReportComponent,
-    SzBulkDataAnalysisSummaryComponent,
-    SzBulkDataLoadComponent,
-    SzBulkDataLoadReportComponent,
-    SzBulkDataLoadSummaryComponent,
     SzEntityDetailComponent,
     SzSearchComponent,
     SzSearchByIdComponent,
@@ -171,12 +161,6 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
   ],
   /** for components being exported as web components */
   entryComponents: [
-    SzBulkDataAnalysisComponent,
-    SzBulkDataAnalysisReportComponent,
-    SzBulkDataAnalysisSummaryComponent,
-    SzBulkDataLoadComponent,
-    SzBulkDataLoadReportComponent,
-    SzBulkDataLoadSummaryComponent,
     SzEntityDetailComponent,
     SzEntityDetailGraphComponent,
     SzEntityRecordViewerComponent,
