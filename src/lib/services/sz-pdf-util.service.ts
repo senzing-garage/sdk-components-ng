@@ -39,15 +39,15 @@ export class SzPdfUtilService {
     return new Promise((res, reject) => {
       html2canvas(node).then(canvas => {
         // Few necessary setting options
-        var imgWidth = 208;
-        var pageHeight = 295;
-        var imgHeight = canvas.height * imgWidth / canvas.width;
-        var heightLeft = imgHeight;
+        const imgWidth = 208;
+        const pageHeight = 295;
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        const heightLeft = imgHeight;
 
         const contentDataURL = canvas.toDataURL('image/png');
-        let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
-        var position = 0;
-        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+        const pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
+        const position = 0;
+        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
         pdf.save(filename); // Generated PDF
 
         res(true);
@@ -93,8 +93,8 @@ export class SzPdfUtilService {
       doc.setFontSize(rNameHeight);
       doc.text(entity.entityName, pMarginLeft, pLineY); pLineY = pLineY+(rNameHeight - (rNameHeight / 2));
 
-      let nameAndAddrData = entity.nameData.concat(entity.attributeData).concat( entity.addressData );
-      let addrAndPhoneData = entity.addressData.concat( entity.phoneData );
+      const nameAndAddrData = entity.nameData.concat(entity.characteristicData).concat( entity.addressData );
+      const addrAndPhoneData = entity.addressData.concat( entity.phoneData );
 
       doc.setFontSize(rAddrHeight);
       nameAndAddrData.forEach( (line: string) => {
@@ -117,7 +117,7 @@ export class SzPdfUtilService {
   }
 
   private getDisplayAttributes(value: SzEntitySearchParams): { attr: string, value: string }[] {
-    let attributeDisplay = Object.keys(value)
+    const attributeDisplay = Object.keys(value)
       .filter((key, index, self) => {
         if(key === 'IDENTIFIER_TYPE'){
           return Object.keys(self).includes('IDENTIFIER');
@@ -148,11 +148,11 @@ export class SzPdfUtilService {
           'SSN_NUMBER':'SSN',
           'DRIVERS_LICENSE_NUMBER':'DL#'
         }
-        let retVal = {'attr': key, 'value': value[key]};                  // temp const
+        const retVal = {'attr': key, 'value': value[key]};                  // temp const
         if(humanKeys[retVal.attr]){ retVal.attr = humanKeys[retVal.attr]; };      // repl enum val with human readable
         retVal.attr = this.titleCasePipe.transform(retVal.attr.replace(/_/g,' ')); // titlecase trans
 
-        return retVal
+        return retVal;
       })
       .filter(i => !!i);
     return attributeDisplay;
@@ -166,9 +166,9 @@ export class SzPdfUtilService {
 
     // search criteria header
     if(searchParams){
-      let attributes = this.getDisplayAttributes(searchParams);
+      const attributes = this.getDisplayAttributes(searchParams);
       // console.warn('search header: ', attributes, searchResults);
-      let headerStr = (searchResults && searchResults.length) ? `${searchResults.length} Results found for` : `Results for`;
+      const headerStr = (searchResults && searchResults.length) ? `${searchResults.length} Results found for` : `Results for`;
       doc.text(headerStr, 10, yPos); yPos=yPos+2;
       yPos = yPos+5;
       attributes.forEach((attribute) => {
