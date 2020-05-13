@@ -249,7 +249,6 @@ export class SzAdminService {
       map( (resp: SzEntityTypesResponse) => resp )
     );
   }
-
   public analyzeBulkRecords(body: string | Blob | File | { [key: string]: any}[], progressPeriod?: string, observe?: 'body', reportProgress?: boolean): Observable<SzBulkDataAnalysisResponse> {
   //public analyzeBulkRecords(body: string | Blob, observe?: "body", reportProgress?: boolean): Observable<SzBulkDataAnalysisResponse> {
     if (!this.adminEnabled || this.readOnly) {
