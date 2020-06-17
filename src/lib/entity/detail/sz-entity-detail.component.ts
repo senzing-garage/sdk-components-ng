@@ -177,6 +177,15 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    * @returns object with various entity and ui properties.
    */
   @Output() graphPopOutClick: EventEmitter<any> = new EventEmitter<any>();
+  /**
+   * emitted when the user double clicks a graph entity node.
+   * @returns object with various entity and ui properties.
+   */
+  @Output() graphScrollWheelEvent: EventEmitter<any> = new EventEmitter<any>();
+  /**
+   * Allow users to scroll to zoom the graph area
+   */
+  @Input() graphAllowScrollingZoom: boolean = false;
 
   /** what position the pop-out icon should be displayed
    * ('top-left' | 'top-right' | 'bottom-right' | 'bottom-left')
