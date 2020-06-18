@@ -67,7 +67,10 @@ body {
   --sz-search-results-a-color: #{$sz-blue};
   --sz-search-results-a-cursor: pointer;
   --sz-search-results-a-font-size: 1.8em;
+  --sz-search-results-col-name-min-width: 300px;
+  --sz-search-results-col-margin-right: 2em;
 
+  --sz-search-results-header-width: calc(100% - 40px);
   --sz-search-results-header-display: block;
   --sz-search-results-header-padding: 0;
   --sz-search-results-header-margin: 20px 0 30px 0;
