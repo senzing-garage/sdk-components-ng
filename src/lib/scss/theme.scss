@@ -161,6 +161,10 @@ body {
     --sz-entity-detail-section-record-card-padding: 15px;
     --sz-entity-detail-section-record-card-border-radius: 5px;
     --sz-entity-detail-section-record-card-border: 1px solid #dedede;
+    --sz-entity-detail-section-record-card-one-cols-min-width: 80%;
+    --sz-entity-detail-section-record-card-two-cols-min-width: 40%;
+    --sz-entity-detail-section-record-card-three-cols-min-width: 30%;
+    --sz-entity-detail-section-record-card-four-cols-min-width: 20%;
     --sz-entity-detail-pill-display: inline-block;
     --sz-entity-detail-pill-font-size: 20px;
     --sz-entity-detail-pill-text-transform: uppercase;
@@ -190,6 +194,8 @@ body {
     --sz-entity-detail-pill-lo-rail-font-size: 11px;
     --sz-entity-detail-pill-lo-rail-border-radius: 5px;
     --sz-entity-detail-pill-lo-rail-padding: 2px 5px;
+
+
     /* end relationship section list vars */
 
     /* graph */

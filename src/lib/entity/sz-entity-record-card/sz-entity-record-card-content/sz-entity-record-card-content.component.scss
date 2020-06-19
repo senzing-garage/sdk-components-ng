@@ -32,15 +32,23 @@
 
   /* set hard column perc widths based on how many cols are showing */
   .search-card__content--wrapper.columns-one {
-    .search-card__content--column   { min-width: 80%; }
+    .search-card__content--column   {
+      min-width: var(--sz-entity-detail-section-record-card-one-cols-min-width);
+    }
   }
   .search-card__content--wrapper.columns-two {
-    .search-card__content--column   { min-width: 40%; }
+    .search-card__content--column   {
+      min-width: var(--sz-entity-detail-section-record-card-two-cols-min-width);
+    }
   }
   .search-card__content--wrapper.columns-three {
-    .search-card__content--column   { min-width: 30%; }
+    .search-card__content--column   {
+      min-width: var(--sz-entity-detail-section-record-card-three-cols-min-width);
+    }
   }
   .search-card__content--wrapper.columns-four {
-    .search-card__content--column   { min-width: 20%; }
+    .search-card__content--column   {
+      min-width: var(--sz-entity-detail-section-record-card-four-cols-min-width);
+    }
   }
 }
