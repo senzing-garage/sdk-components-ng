@@ -1,5 +1,13 @@
 @import "../../../scss/variables";
 
+:host {
+  transition: 300ms color cubic-bezier(0.24, 0.04, 0.12, 0.84);
+  &:hover, &:active {
+    color: var(--sz-entity-detail-name-hover-color);
+    cursor: var(--sz-search-results-a-cursor);
+  }
+}
+
 .search-card__header--wrapper {
   display: block;
   color: var(--sz-entity-detail-name-color);

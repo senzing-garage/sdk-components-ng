@@ -5,7 +5,7 @@
   [class.columns-four]="showColumnOne && showColumnFour"
   [ngClass]="layoutClasses"
   (click)="truncateResults=!truncateResults">
-    <div class="search-card__content--column" #columnOne  *ngIf="showColumnOne">
+    <div class="search-card__content--column otherData" #columnOne  *ngIf="showColumnOne">
       <div class="line" *ngIf="entity?.recordId && showRecordIdWhenNative"><span [class.ellipsis]="truncateResults">Record Id: {{entity.recordId}}</span></div>
       <div class="line" [class.truncated]="i >= truncateOtherDataAt && truncateResults"
         *ngFor="let otherData of otherData; let i = index">
@@ -17,7 +17,7 @@
       matTooltipPosition="left"
       *ngIf="columnOneTotal > truncateOtherDataAt && truncateResults">...</span>
     </div>
-    <div class="search-card__content--column" #columnTwo>
+    <div class="search-card__content--column nameData attrData" #columnTwo *ngIf="showColumnTwo">
       <div class="line" [class.truncated]="i >= maxLinesToDisplay && truncateResults" *ngFor="let nameAttributeData of getNameAndAttributeData(nameData, attributeData); let i = index">
         <span *ngIf="i < maxLinesToDisplay || !truncateResults" [class.ellipsis]="truncateResults">
           {{nameAttributeData}}
@@ -27,7 +27,7 @@
       matTooltipPosition="left"
       *ngIf="columnTwoTotal > maxLinesToDisplay && truncateResults">...</span>
     </div>
-    <div class="search-card__content--column addressData addressPhoneData" #columnThree>
+    <div class="search-card__content--column addressData addressPhoneData" #columnThree *ngIf="showColumnThree">
       <div class="line" [class.truncated]="i >= maxLinesToDisplay && truncateResults" *ngFor="let addressPhoneData of getAddressAndPhoneData(addressData, phoneData);
       let i = index">
         <span *ngIf="i < maxLinesToDisplay || !truncateResults"
@@ -40,7 +40,7 @@
       matTooltipPosition="left"
       *ngIf="columnThreeTotal > maxLinesToDisplay && truncateResults">...</span>
     </div>
-    <div class="search-card__content--column" #columnFour *ngIf="showColumnFour">
+    <div class="search-card__content--column identificationData" #columnFour *ngIf="showColumnFour">
       <div class="line" [class.truncated]="i >= maxLinesToDisplay && truncateResults" *ngFor="let identificationData of identifierData; let i = index">
         <span *ngIf="i < maxLinesToDisplay || !truncateResults"
         [class.linked-attribute]="isLinkedAttribute(identificationData)"

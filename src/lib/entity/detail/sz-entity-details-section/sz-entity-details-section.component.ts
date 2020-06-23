@@ -35,6 +35,10 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
   @Input() sectionTitle: string;
   @Input() sectionCount: number;
   @Input() sectionId: string;
+  @Input() showOtherDataInEntities: boolean;
+  @Input() showBestNameOnlyInEntities: boolean;
+  @Input() showNameDataInEntities: boolean;
+
   /** when the user collapses or expands the ui toggle */
   @Output() onCollapsedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() public collapsedStatePrefsKey: string = 'borgledeerger';

@@ -29,6 +29,8 @@ export class SzEntityRecordCardContentComponent implements OnInit {
 
   private _truncateOtherDataAt: number = -1;
   private _showOtherData: boolean = false;
+  private _showNameData: boolean = true;
+  private _showBestNameOnly: boolean = false;
   private _ignorePrefOtherDataChanges = false;
   @Input() public showRecordIdWhenNative: boolean = false;
   @Input() public set ignorePrefOtherDataChanges(value: boolean) {
@@ -48,6 +50,18 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   }
   get truncateOtherDataAt(): number {
     return this._truncateOtherDataAt;
+  }
+  @Input() set showNameData(value: boolean) {
+    this._showNameData = value;
+  }
+  get showNameData(): boolean {
+    return this._showNameData;
+  }
+  @Input() set showBestNameOnly(value: boolean) {
+    this._showBestNameOnly = value;
+  }
+  get showBestNameOnly(): boolean {
+    return this._showBestNameOnly;
   }
 
   @Input() set entity(value) {
@@ -115,7 +129,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   private onPrefsChange(prefs: any) {
     //console.warn(`SzEntityDetailSectionCollapsibleCardComponent.onPrefsChange: `, prefs.truncateOtherDataInRecordsAt, this.truncateOtherDataAt);
     if( prefs.truncateOtherDataInRecordsAt) {
-      this._truncateOtherDataAt = prefs.truncateOtherDataInRecordsAt
+      this._truncateOtherDataAt = prefs.truncateOtherDataInRecordsAt;
     }
     if( !this.ignorePrefOtherDataChanges && typeof prefs.showOtherData == 'boolean') {
       this._showOtherData = prefs.showOtherDataInRecords;
@@ -154,8 +168,16 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   get columnTwoTotal(): number {
     return (this.nameData.concat(this.attributeData).length);
   }
+  get showColumnTwo(): boolean {
+    const nameAndAttrData = this.getNameAndAttributeData(this.nameData, this.attributeData);
+    return this._showNameData && nameAndAttrData.length > 0;
+  }
   get columnThreeTotal(): number {
     return (this.addressData.concat(this.phoneData).length);
+  }
+  get showColumnThree(): boolean {
+    const phoneAndAddrData = this.getAddressAndPhoneData(this.addressData, this.phoneData);
+    return (phoneAndAddrData && phoneAndAddrData.length > 0);
   }
   get columnFourTotal(): number {
     return this.identifierData.length;
@@ -183,11 +205,11 @@ export class SzEntityRecordCardContentComponent implements OnInit {
 
   get nameData(): string[] {
     if (this.entity) {
-      if (this.entity && this.entity.nameData && this.entity.nameData.length > 0) {
+      if (this.entity && this.entity.nameData && this.entity.nameData.length > 0 && !this._showBestNameOnly) {
         return this.entity.nameData;
       } else if (this.entity && this.entity.bestName) {
         return [this.entity.bestName];
-      } else if (this.entity && this.entity.entityName) {
+      } else if (this.entity && this.entity.entityName && !this._showBestNameOnly) {
         return [this.entity.entityName];
       } else {
         return [];

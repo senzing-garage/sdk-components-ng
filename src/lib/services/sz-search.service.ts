@@ -142,7 +142,7 @@ export class SzSearchService {
    */
   public getEntityById(entityId: number, withRelated = false): Observable<SzEntityData> {
     console.log('@senzing/sdk/services/sz-search[getEntityById('+ entityId +', '+ withRelated +')] ');
-    const withRelatedStr = withRelated ? 'PARTIAL' : 'NONE';
+    const withRelatedStr = withRelated ? 'FULL' : 'NONE';
     //return this.entityDataService.getEntityByEntityId(entityId, featureMo, forceMini, withFeatu, withDeriv, withRelated?: 'NONE' | 'PARTIAL' | 'FULL', withRaw?: boolean, observe?: 'body', reportProgress?: boolean): Observable<SzEntityResponse>;
     return this.entityDataService.getEntityByEntityId(entityId, undefined, undefined, undefined, undefined, withRelatedStr)
     .pipe(

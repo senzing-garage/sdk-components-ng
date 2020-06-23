@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
 import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
 import { SzResolvedEntity, SzDataSourceRecordSummary } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
@@ -29,6 +29,11 @@ export class SzEntityRecordCardHeaderComponent implements OnInit, OnDestroy {
 
   @Output()
   public entityRecordClick: EventEmitter<number> = new EventEmitter<number>();
+
+  /** listen for click even on entire header */
+  @HostListener('click', ['$event.target']) public onHeaderNameClick(event: MouseEvent) {
+    if(this.entityDetailsId) { this.onEntityDetailLinkClick( this.entityDetailsId ); }
+  }
 
   constructor(
     public prefs: SzPrefsService,

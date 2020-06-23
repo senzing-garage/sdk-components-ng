@@ -190,7 +190,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   /** what position the pop-out icon should be displayed
    * ('top-left' | 'top-right' | 'bottom-right' | 'bottom-left')
   */
-  @Input() graphPopOutIconPosition = 'bottom-left'
+  @Input() graphPopOutIconPosition = 'bottom-left';
   /** show the small 'show match keys' control in the bottom right */
   @Input() graphShowMatchKeyControl = true;
   /** show the pop-out icon control */
@@ -288,6 +288,59 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     return this._showDisclosedSection;
   }
 
+
+  /** there is a use case where we dont want to show name data, like when it's already listing names in the headers */
+  private _showBestNameOnlyInMatchesSection               = false;
+  private _showBestNameOnlyInDisclosedSection             = this._showBestNameOnlyInMatchesSection;
+  private _showBestNameOnlyInPossibleMatchesSection       = this._showBestNameOnlyInMatchesSection;
+  private _showBestNameOnlyInPossibleRelationshipsSection = this._showBestNameOnlyInMatchesSection;
+  private _showNameDataInMatchesSection                   = true;
+  private _showNameDataInDisclosedSection                 = this._showNameDataInMatchesSection;
+  private _showNameDataInPossibleMatchesSection           = this._showNameDataInMatchesSection;
+  private _showNameDataInPossibleRelationshipsSection     = this._showNameDataInMatchesSection;
+  private _showOtherDataInMatchesSection                  = false;
+  private _showOtherDataInDisclosedSection                = this._showOtherDataInMatchesSection;
+  private _showOtherDataInPossibleMatchesSection          = this._showOtherDataInMatchesSection;
+  private _showOtherDataInPossibleRelationshipsSection    = this._showOtherDataInMatchesSection;
+
+  @Input()
+  public set showBestNameOnlyInMatchesSection(value: any)                 { this._showBestNameOnlyInMatchesSection = parseBool(value);}
+  public get showBestNameOnlyInMatchesSection(): any                      { return this._showBestNameOnlyInMatchesSection; }
+  @Input()
+  public set showBestNameOnlyInDisclosedSection(value: any)               { this._showBestNameOnlyInDisclosedSection = parseBool(value);}
+  public get showBestNameOnlyInDisclosedSection(): any                    { return this._showBestNameOnlyInDisclosedSection; }
+  @Input()
+  public set showBestNameOnlyInPossibleMatchesSection(value: any)         { this._showBestNameOnlyInPossibleMatchesSection = parseBool(value);}
+  public get showBestNameOnlyInPossibleMatchesSection(): any              { return this._showBestNameOnlyInPossibleMatchesSection; }
+  @Input()
+  public set showBestNameOnlyInPossibleRelationshipsSection(value: any)   { this._showBestNameOnlyInPossibleRelationshipsSection = parseBool(value);}
+  public get showBestNameOnlyInPossibleRelationshipsSection(): any        { return this._showBestNameOnlyInPossibleRelationshipsSection; }
+
+  @Input()
+  public set showNameDataInMatchesSection(value: any)                     { this._showNameDataInMatchesSection = parseBool(value);}
+  public get showNameDataInMatchesSection(): any                          { return this._showNameDataInMatchesSection; }
+  @Input()
+  public set showNameDataInDisclosedSection(value: any)                   { this._showNameDataInDisclosedSection = parseBool(value);}
+  public get showNameDataInDisclosedSection(): any                        { return this._showNameDataInDisclosedSection; }
+  @Input()
+  public set showNameDataInPossibleMatchesSection(value: any)             { this._showNameDataInPossibleMatchesSection = parseBool(value);}
+  public get showNameDataInPossibleMatchesSection(): any                  { return this._showNameDataInPossibleMatchesSection; }
+  @Input()
+  public set showNameDataInPossibleRelationshipsSection(value: any)       { this._showNameDataInPossibleRelationshipsSection = parseBool(value);}
+  public get showNameDataInPossibleRelationshipsSection(): any            { return this._showNameDataInPossibleRelationshipsSection; }
+
+  @Input()
+  public set showOtherDataInMatchesSection(value: any)                    { this._showOtherDataInMatchesSection = parseBool(value);}
+  public get showOtherDataInMatchesSection(): any                         { return this._showOtherDataInMatchesSection; }
+  @Input()
+  public set showOtherDataInDisclosedSection(value: any)                  { this._showOtherDataInDisclosedSection = parseBool(value);}
+  public get showOtherDataInDisclosedSection(): any                       { return this._showOtherDataInDisclosedSection; }
+  @Input()
+  public set showOtherDataInPossibleMatchesSection(value: any)            { this._showOtherDataInPossibleMatchesSection = parseBool(value);}
+  public get showOtherDataInPossibleMatchesSection(): any                 { return this._showOtherDataInPossibleMatchesSection; }
+  @Input()
+  public set showOtherDataInPossibleRelationshipsSection(value: any)      { this._showOtherDataInPossibleRelationshipsSection = parseBool(value);}
+  public get showOtherDataInPossibleRelationshipsSection(): any           { return this._showOtherDataInPossibleRelationshipsSection; }
 
   /**
    * collapse or expand the "At a Glance" section.
@@ -461,7 +514,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     // get and listen for prefs change
     this.prefs.entityDetail.prefsChanged.pipe(
       takeUntil(this.unsubscribe$),
-      filter( () => { return this._updatePrefsOnChange }),
+      filter( () => this._updatePrefsOnChange ),
     ).subscribe( this.onPrefsChange.bind(this) );
   }
 
