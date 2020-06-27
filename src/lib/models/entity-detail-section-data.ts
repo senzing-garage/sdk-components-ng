@@ -12,7 +12,7 @@ export interface SzEntityDetailSectionData {
     [key: string] : SzEntityFeature[]
   }
   'bestName': string;
-  'attributeData': string[];
+  'characteristicData': string[];
   'phoneData': string[];
   'nameData': string[];
   'lensId': number;

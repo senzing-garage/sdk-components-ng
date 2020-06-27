@@ -186,7 +186,7 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
   }
 
   get attributeData(): string[] | undefined {
-        return this.entity && this.entity.attributeData && this._showAttributeData ? this.entity.attributeData : undefined;
+        return this.entity && this.entity.characteristicData && this._showAttributeData ? this.entity.characteristicData : undefined;
   }
 
   get addressData(): string[] | undefined {
