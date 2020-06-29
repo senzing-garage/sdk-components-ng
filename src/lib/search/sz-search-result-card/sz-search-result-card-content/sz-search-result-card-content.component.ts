@@ -47,6 +47,7 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
   private _truncateOtherDataAt: number = 3;
   private _truncateIdentifierDataAt: number = 2;
   private _showOtherData: boolean = true;
+  private _showIdentifierData: boolean = true;
   private _ignorePrefOtherDataChanges = false;
   @Input() public showRecordIdWhenNative: boolean = false;
   @Input() public set ignorePrefOtherDataChanges(value: boolean) {
@@ -60,6 +61,12 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
   }
   get showOtherData(): boolean {
     return this._showOtherData;
+  }
+  @Input() set showIdentifierData(value: boolean) {
+    this._showIdentifierData = value;
+  }
+  get showIdentifierData(): boolean {
+    return this._showIdentifierData;
   }
   @Input() set truncateOtherDataAt(value: number) {
     this._truncateOtherDataAt = value;
@@ -81,6 +88,7 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // get and listen for prefs change
     this._showOtherData = this.prefs.searchResults.showOtherData;
+    this._showIdentifierData = this.prefs.searchResults.showIdentifierData;
     this._showAttributeData = this.prefs.searchResults.showAttributeData;
     this._truncateOtherDataAt = this.prefs.searchResults.truncateOtherDataAt;
     this._truncateAttributeDataAt = this.prefs.searchResults.truncateAttributeDataAt;
@@ -104,6 +112,7 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
     this._showOtherData = prefs.showOtherData;
+    this._showIdentifierData = prefs.showIdentifierData;
     this._showAttributeData = prefs.showAttributeData;
     this._truncateOtherDataAt = prefs.truncateOtherDataAt;
     this._truncateAttributeDataAt = prefs.truncateAttributeDataAt;
@@ -135,7 +144,7 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
     return this.identifierData ? this.identifierData.length : 0;
   }
   public get showColumnFour(): boolean {
-    return this.identifierData ? this.identifierData.length > 0 : false;
+    return (this.columnFourTotal > 0 && this._showIdentifierData);
   }
   get columnFiveTotal(): number {
     return this.otherData ? this.otherData.length : 0;

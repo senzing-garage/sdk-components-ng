@@ -31,16 +31,17 @@
     </div>
     <span class="ellipsis-toggle" *ngIf="columnThreeTotal > maxLinesToDisplay">...</span>
   </div>
+
   <div class="search-card__content--column identifier-data" #columnFour *ngIf="showColumnFour">
     <div class="line" [class.truncated]="i >= truncateIdentifierDataAt && truncateResults" *ngFor="let identificationData of identifierData; let i = index">
-      <span *ngIf="(i < truncateIdentifierDataAt || truncateIdentifierDataAt < 0 || !truncateResults) && showOtherData"
+      <span *ngIf="(i < truncateIdentifierDataAt || truncateIdentifierDataAt < 0 || !truncateResults) && showIdentifierData"
       [class.ellipsis]="truncateResults"
         class="break-for-print">{{identificationData}}</span>
     </div>
     <span *ngIf="columnFourTotal > truncateIdentifierDataAt">...</span>
   </div>
 
-  <div class="search-card__content--column" #columnFive  *ngIf="showColumnFive">
+  <div class="search-card__content--column other-data" #columnFive  *ngIf="showColumnFive">
     <!-- <div class="line" *ngIf="entity?.recordId && showRecordIdWhenNative"><span [class.ellipsis]="truncateResults">Record Id: {{entity.recordId}}</span></div> -->
     <div class="line" [class.truncated]="i >= truncateOtherDataAt && truncateResults"
       *ngFor="let otherData of otherData; let i = index">

@@ -237,6 +237,8 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _showOtherData: boolean = false;
   /** @internal */
+  private _showIdentifierData: boolean = false;
+  /** @internal */
   private _truncateRecordsAt: number = 3;
   /** @internal */
   private _showEmbeddedGraph?: boolean = false;
@@ -259,6 +261,7 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   jsonKeys = [
     'openInNewTab',
     'showOtherData',
+    'showIdentifierData',
     'showAttributeData',
     'truncateRecordsAt',
     'truncateOtherDataAt',
@@ -267,7 +270,7 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
     'showRecordIds',
     'linkToEmbeddedGraph',
     'truncateIdentifierDataAt'
-  ]
+  ];
 
   // -------------------- getters and setters
   /** open entity detail in new tab when link clicked */
@@ -286,6 +289,15 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   /** show "other data" in search results */
   public set showOtherData(value: boolean) {
     this._showOtherData = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** show "other data" in search results */
+  public get showIdentifierData(): boolean {
+    return this._showIdentifierData;
+  }
+  /** show "other data" in search results */
+  public set showIdentifierData(value: boolean) {
+    this._showIdentifierData = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** show "attribute data" in search results. ie DOB, favorite cat */
