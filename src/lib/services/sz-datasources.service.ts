@@ -32,7 +32,7 @@ export class SzDataSourcesService {
    */
   public listDataSources(): Observable<string[]> {
     // get attributes
-    return this.configService.listDataSources()
+    return this.configService.getDataSources()
     .pipe(
       map( (resp: SzDataSourcesResponse) => resp.data.dataSources )
     );
@@ -44,7 +44,7 @@ export class SzDataSourcesService {
    */
   public listDataSourcesDetails(): Observable<SzDataSourcesResponseData> {
     // get attributes
-    return this.configService.listDataSources()
+    return this.configService.getDataSources()
     .pipe(
       map( (resp: SzDataSourcesResponse) => resp.data )
     );
