@@ -14,7 +14,7 @@ import {
   SzVersionResponse, SzVersionInfo, SzAttributeTypeResponse, SzAttributeTypeResponseData,
   SzAttributeType, SzConfigResponse, SzEntityClassResponse, SzDataSourceResponse,
   SzEntityClassesResponse, SzEntityTypesResponse, BulkDataService, SzBulkDataAnalysisResponse,
-  SzBulkDataLoadResponse, SzServerInfo, SzServerInfoResponse, SzDataSourcesResponseData,
+  SzServerInfo, SzServerInfoResponse, SzDataSourcesResponseData,
   SzEntityClassesResponseData, SzEntityTypesResponseData } from '@senzing/rest-api-client-ng';
 import { map, tap } from 'rxjs/operators';
 
@@ -201,8 +201,11 @@ export class SzAdminService {
   public getDataSource(dataSourceCode: string, withRaw?: boolean, observe?: 'body', reportProgress?: boolean): Observable<SzDataSourceResponse> {
     return this.configService.getDataSource(dataSourceCode, withRaw, observe, reportProgress);
   }
+  /**
+   * deprecated as of 2.0.0 use getActiveConfig instead
+   */
   public getDefaultConfig(observe?: "body", reportProgress?: boolean): Observable<SzConfigResponse> {
-    return this.configService.getDefaultConfig(observe, reportProgress);
+    return this.getActiveConfig(observe, reportProgress);
   }
   public getEntityClass(entityClassCode: string, withRaw?: boolean, observe?: "body", reportProgress?: boolean): Observable<SzEntityClassResponse> {
     return this.configService.getEntityClass(entityClassCode, withRaw, observe, reportProgress)
@@ -222,29 +225,30 @@ export class SzAdminService {
       map( (resp: SzEntityTypeResponse) => resp )
     );
   }
+  /*
   public getTemplateConfig(observe?: 'body', reportProgress?: boolean): Observable<SzConfigResponse> {
     return this.configService.getTemplateConfig(observe, reportProgress);
-  }
+  }*/
   public listDataSources(withRaw?: boolean, observe?: "body", reportProgress?: boolean): Observable<SzDataSourcesResponse> {
-    return this.configService.listDataSources(withRaw, observe, reportProgress)
+    return this.configService.getDataSources(withRaw, observe, reportProgress)
     .pipe(
       map( (resp: SzDataSourcesResponse) => resp )
     );
   }
   public listEntityClasses(withRaw?: boolean, observe?: "body", reportProgress?: boolean): Observable<SzEntityClassesResponse> {
-    return this.configService.listEntityClasses(withRaw, observe, reportProgress)
+    return this.configService.getEntityClasses(withRaw, observe, reportProgress)
     .pipe(
       map( (resp: SzEntityClassesResponse) => resp )
     );
   }
   public listEntityTypes(entityClass?: SzAttributeClass, withRaw?: boolean, observe?: "body", reportProgress?: boolean): Observable<SzEntityTypesResponse> {
-    return this.configService.listEntityTypes(entityClass, withRaw, observe, reportProgress)
+    return this.configService.getEntityTypes(entityClass, withRaw, observe, reportProgress)
     .pipe(
       map( (resp: SzEntityTypesResponse) => resp )
     );
   }
   public listEntityTypesByClass(entityClassCode: string, withRaw?: boolean, observe?: "body", reportProgress?: boolean): Observable<SzEntityTypesResponse> {
-    return this.configService.listEntityTypesByClass(entityClassCode, withRaw, observe, reportProgress)
+    return this.configService.getEntityTypesByClass(entityClassCode, withRaw, observe, reportProgress)
     .pipe(
       map( (resp: SzEntityTypesResponse) => resp )
     );
@@ -260,7 +264,7 @@ export class SzAdminService {
     );
   }
   public loadBulkRecords(body: string | Blob | File | { [key: string]: any}[], dataSource?: string, mapDataSources?: string, mapDataSource?: string[], entityType?: string, mapEntityTypes?: string, mapEntityType?: string[], progressPeriod?: string, observe?: 'body', reportProgress?: boolean): Observable<SzBulkLoadResponse> {
-  //public loadBulkRecords(body: string | Blob, dataSource?: string, entityType?: string, observe?: "body", reportProgress?: boolean): Observable<SzBulkDataLoadResponse> {
+  //public loadBulkRecords(body: string | Blob, dataSource?: string, entityType?: string, observe?: "body", reportProgress?: boolean): Observable<SzBulkLoadResponse> {
     if (!this.adminEnabled || this.readOnly) {
       throw new Error('admin operation not permitted.');
     }

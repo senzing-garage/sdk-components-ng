@@ -161,7 +161,7 @@ export class SzSearchService {
     const _recordId: string = recordId.toString();
     //return this.entityDataService.getDataSourceRecord(dataSourceCode: string, recordId: string, withRaw?: boolean, observe?: 'body', reportProgress?: boolean): Observable<SzRecordResponse>;
 
-    return this.entityDataService.getDataSourceRecord(dsName, _recordId)
+    return this.entityDataService.getRecord(dsName, _recordId)
     .pipe(
       tap((res: SzRecordResponse) => console.log('SzSearchService.getEntityByRecordId: ' + dsName, res)),
       map((res: SzRecordResponse) => (res.data as SzRecordResponseData).record )

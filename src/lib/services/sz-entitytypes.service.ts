@@ -35,7 +35,7 @@ export class SzEntityTypesService {
    */
   public listEntityTypes(): Observable<string[]> {
     // get attributes
-    return this.configService.listEntityTypes()
+    return this.configService.getEntityTypes()
     .pipe(
       map( (resp: SzEntityTypesResponse) => resp.data.entityTypes )
     );
@@ -47,7 +47,7 @@ export class SzEntityTypesService {
    */
   public listEntityTypesDetails(): Observable<{[key: string]: SzEntityType}> {
     // get attributes
-    return this.configService.listEntityTypes()
+    return this.configService.getEntityTypes()
     .pipe(
       map( (resp: SzEntityTypesResponse) => resp.data.entityTypeDetails )
     );
