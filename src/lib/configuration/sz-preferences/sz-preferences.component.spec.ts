@@ -112,12 +112,12 @@ describe('SzPreferencesComponent', () => {
       });
       fixture.componentInstance.SearchResultsShowOtherData = true;
     });
-    it('search results "showAttributeData" changes to true', (done) => {
+    it('search results "showCharacteristicData" changes to true', (done) => {
       fixture.componentInstance.prefsChange.subscribe((g: SzSdkPrefsModel) => {
-         expect(g.searchResults.showAttributeData).toEqual(true);
+         expect(g.searchResults.showCharacteristicData).toEqual(true);
          done();
       });
-      fixture.componentInstance.SearchResultsShowAttributeData = true;
+      fixture.componentInstance.SearchResultsShowCharacteristicData = true;
     });
     it('search results "truncateRecordsAt" changes to 9', (done) => {
       fixture.componentInstance.prefsChange.subscribe((g: SzSdkPrefsModel) => {
@@ -133,12 +133,12 @@ describe('SzPreferencesComponent', () => {
       });
       fixture.componentInstance.SearchResultsTruncateOtherDataAt = 9;
     });
-    it('search results "truncateAttributeDataAt" changes to 9', (done) => {
+    it('search results "truncateCharacteristicDataAt" changes to 9', (done) => {
       fixture.componentInstance.prefsChange.subscribe((g: SzSdkPrefsModel) => {
-         expect(g.searchResults.truncateAttributeDataAt).toEqual(9);
+         expect(g.searchResults.truncateCharacteristicDataAt).toEqual(9);
          done();
       });
-      fixture.componentInstance.SearchResultsTruncateAttributeDataAt = 9;
+      fixture.componentInstance.SearchResultsTruncateCharacteristicDataAt = 9;
     });
     it('search results "showEmbeddedGraph" changes to true', (done) => {
       fixture.componentInstance.prefsChange.subscribe((g: SzSdkPrefsModel) => {

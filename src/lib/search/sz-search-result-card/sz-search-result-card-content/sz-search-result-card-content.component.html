@@ -7,12 +7,12 @@
   (click)="truncateResults=!truncateResults">
 
   <div class="search-card__content--column name-data" #columnTwo>
-    <div class="line" *ngFor="let nameAttributeData of getNameAndAttributeData(nameData, attributeData); let i = index">
+    <div class="line" *ngFor="let nameCharacteristicData of getNameAndCharacteristicData(nameData, characteristicData); let i = index">
       <span
       [ngClass]="{
         'ellipsis': collapsed,
         'hidden': (i >= maxLinesToDisplay)}">
-        {{nameAttributeData}}
+        {{nameCharacteristicData}}
       </span>
     </div>
     <span class="ellipsis-toggle" *ngIf="columnTwoTotal > maxLinesToDisplay">...</span>

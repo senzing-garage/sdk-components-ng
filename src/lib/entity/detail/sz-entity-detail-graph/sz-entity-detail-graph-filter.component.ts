@@ -61,6 +61,14 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
     'Color by: '
   ];
 
+  @HostBinding('class.showing-link-labels') public get showingLinkLabels(): boolean {
+    return this._showLinkLabels;
+  }
+  @HostBinding('class.not-showing-link-labels') public get hidingLinkLabels(): boolean {
+    return !this._showLinkLabels;
+  }
+
+
   // ------------------------------------  getters and setters --------------------------
 
   /** get data from reactive form control array */
@@ -172,6 +180,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
     } else if (event.srcElement) {
       _checked = event.srcElement.checked;
     }
+    console.log('@senzing/sdk-components-ng/SzEntityDetailGraphFilterComponent.onCheckboxPrefToggle: ', _checked, optName, event);
     this.optionChanged.emit({'name': optName, value: _checked});
   }
   /** proxy handler for when prefs have changed externally */

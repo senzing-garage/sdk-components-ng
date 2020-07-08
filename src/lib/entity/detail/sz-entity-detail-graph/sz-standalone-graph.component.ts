@@ -138,6 +138,13 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     return this.isOpen;
   }
 
+  @HostBinding('class.showing-link-labels') public get showingLinkLabels(): boolean {
+    return this.showMatchKeys;
+  }
+  @HostBinding('class.not-showing-link-labels') public get hidingLinkLabels(): boolean {
+    return !this.showMatchKeys;
+  }
+
   //@HostBinding('class.open') get cssClssOpen() { return this.expanded; };
   //@HostBinding('class.closed') get cssClssClosed() { return !this.expanded; };
   @ViewChild('graphContainer') graphContainerEle: ElementRef;
