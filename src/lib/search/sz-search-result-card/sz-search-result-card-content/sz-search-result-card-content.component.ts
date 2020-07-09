@@ -47,6 +47,7 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
   private _truncateOtherDataAt: number = 3;
   private _truncateIdentifierDataAt: number = 2;
   private _showOtherData: boolean = true;
+  private _showIdentifierData: boolean = true;
   private _ignorePrefOtherDataChanges = false;
   @Input() public showRecordIdWhenNative: boolean = false;
   @Input() public set ignorePrefOtherDataChanges(value: boolean) {
@@ -60,6 +61,12 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
   }
   get showOtherData(): boolean {
     return this._showOtherData;
+  }
+  @Input() set showIdentifierData(value: boolean) {
+    this._showIdentifierData = value;
+  }
+  get showIdentifierData(): boolean {
+    return this._showIdentifierData;
   }
   @Input() set truncateOtherDataAt(value: number) {
     this._truncateOtherDataAt = value;
@@ -81,9 +88,10 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // get and listen for prefs change
     this._showOtherData = this.prefs.searchResults.showOtherData;
-    this._showAttributeData = this.prefs.searchResults.showAttributeData;
+    this._showIdentifierData = this.prefs.searchResults.showIdentifierData;
+    this._showCharacteristicData = this.prefs.searchResults.showCharacteristicData;
     this._truncateOtherDataAt = this.prefs.searchResults.truncateOtherDataAt;
-    this._truncateAttributeDataAt = this.prefs.searchResults.truncateAttributeDataAt;
+    this._truncateCharacteristicDataAt = this.prefs.searchResults.truncateCharacteristicDataAt;
 
     setTimeout(() => {
       this.cd.markForCheck();
@@ -104,9 +112,10 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
     this._showOtherData = prefs.showOtherData;
-    this._showAttributeData = prefs.showAttributeData;
+    this._showIdentifierData = prefs.showIdentifierData;
+    this._showCharacteristicData = prefs.showCharacteristicData;
     this._truncateOtherDataAt = prefs.truncateOtherDataAt;
-    this._truncateAttributeDataAt = prefs.truncateAttributeDataAt;
+    this._truncateCharacteristicDataAt = prefs.truncateCharacteristicDataAt;
     this._truncateIdentifierDataAt = prefs.truncateIdentifierDataAt;
     // update view manually (for web components redraw reliability)
     this.cd.detectChanges();
@@ -118,7 +127,7 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
     return totalData && totalData.length ? totalData.length : 0;
   }
   get columnTwoTotal(): number {
-    const totalData = this.getNameAndAttributeData(this.nameData, this.attributeData);
+    const totalData = this.getNameAndCharacteristicData(this.nameData, this.characteristicData);
     return totalData && totalData.length ? totalData.length : 0;
   }
   get showColumnTwo(): boolean {
@@ -135,7 +144,7 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
     return this.identifierData ? this.identifierData.length : 0;
   }
   public get showColumnFour(): boolean {
-    return this.identifierData ? this.identifierData.length > 0 : false;
+    return (this.columnFourTotal > 0 && this._showIdentifierData);
   }
   get columnFiveTotal(): number {
     return this.otherData ? this.otherData.length : 0;
@@ -152,18 +161,18 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
     }
     return retVal;
   }
-  public _showAttributeData = false;
-  public _truncateAttributeDataAt = 2;
+  public _showCharacteristicData = false;
+  public _truncateCharacteristicDataAt = 2;
 
   // -----------------  end total getters  -------------------
 
-  getNameAndAttributeData(nameData: string[], attributeData: string[]): string[] {
-    if(nameData && nameData.concat && attributeData) {
-      return (this._truncateAttributeDataAt > 0) ? nameData.concat(attributeData.slice(0, this._truncateAttributeDataAt)) : nameData.concat(attributeData);
+  getNameAndCharacteristicData(nameData: string[], characteristicData: string[]): string[] {
+    if(nameData && nameData.concat && characteristicData) {
+      return (this._truncateCharacteristicDataAt > 0) ? nameData.concat(characteristicData.slice(0, this._truncateCharacteristicDataAt)) : nameData.concat(characteristicData);
     } else if(nameData) {
       return nameData;
-    } else if(attributeData) {
-      return (this._truncateAttributeDataAt > 0) ? attributeData.slice(0, this._truncateAttributeDataAt) : attributeData;
+    } else if(characteristicData) {
+      return (this._truncateCharacteristicDataAt > 0) ? characteristicData.slice(0, this._truncateCharacteristicDataAt) : characteristicData;
     }
     return [];
   }
@@ -185,8 +194,8 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
         return this.entity && this.entity.nameData ? this.entity.nameData : undefined;
   }
 
-  get attributeData(): string[] | undefined {
-        return this.entity && this.entity.attributeData && this._showAttributeData ? this.entity.attributeData : undefined;
+  get characteristicData(): string[] | undefined {
+        return this.entity && this.entity.characteristicData && this._showCharacteristicData ? this.entity.characteristicData : undefined;
   }
 
   get addressData(): string[] | undefined {

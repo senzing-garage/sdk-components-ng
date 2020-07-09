@@ -21,10 +21,10 @@ describe('SzPrefsService', () => {
     "searchResults":{
         "openInNewTab":false,
         "showOtherData":true,
-        "showAttributeData":true,
+        "showCharacteristicData":true,
         "truncateRecordsAt":4,
         "truncateOtherDataAt":3,
-        "truncateAttributeDataAt":6,
+        "truncateCharacteristicDataAt":6,
         "showEmbeddedGraph":false,
         "showRecordIds":true,
         "linkToEmbeddedGraph":false,
@@ -163,14 +163,14 @@ describe('SzPrefsService', () => {
     });
     service.searchResults.showOtherData = true;
   });
-  it('search results "showAttributeData" changes to true', (done) => {
+  it('search results "showCharacteristicData" changes to true', (done) => {
     service.prefsChanged.pipe(
       debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
-      expect(g.searchResults.showAttributeData).toEqual(true);
+      expect(g.searchResults.showCharacteristicData).toEqual(true);
       done();
     });
-    service.searchResults.showAttributeData = true;
+    service.searchResults.showCharacteristicData = true;
   });
   it('search results "truncateRecordsAt" changes to 9', (done) => {
     service.prefsChanged.pipe(
@@ -190,14 +190,14 @@ describe('SzPrefsService', () => {
     });
     service.searchResults.truncateOtherDataAt = 9;
   });
-  it('search results "truncateAttributeDataAt" changes to 9', (done) => {
+  it('search results "truncateCharacteristicDataAt" changes to 9', (done) => {
     service.prefsChanged.pipe(
       debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
-      expect(g.searchResults.truncateAttributeDataAt).toEqual(9);
+      expect(g.searchResults.truncateCharacteristicDataAt).toEqual(9);
       done();
     });
-    service.searchResults.truncateAttributeDataAt = 9;
+    service.searchResults.truncateCharacteristicDataAt = 9;
   });
   it('search results "showEmbeddedGraph" changes to true', (done) => {
     service.prefsChanged.pipe(

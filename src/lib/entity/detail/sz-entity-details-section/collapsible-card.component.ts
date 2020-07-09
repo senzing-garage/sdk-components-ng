@@ -24,8 +24,10 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   @Input() cardTitle: string;
   @Input() public layoutClasses: string[] = [];
 
-  public showOtherDataInDatasourceRecords: boolean = true;
-  public showOtherDataInEntities: boolean = false;
+  @Input() public showNameDataInEntities: boolean = true;
+  @Input() public showBestNameOnlyinEntities: boolean = false;
+  @Input() public showOtherDataInDatasourceRecords: boolean = true;
+  @Input() public showOtherDataInEntities: boolean = false;
   public truncateOtherDataInRecordsAt: number = -1; // < 0 is unlimited
 
   /**

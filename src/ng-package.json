@@ -12,6 +12,7 @@
     "jspdf",
     "html2canvas",
     "@types/d3",
-    "@types/jspdf"
+    "@types/jspdf",
+    "mustache"
   ]
 }

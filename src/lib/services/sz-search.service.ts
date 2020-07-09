@@ -10,7 +10,10 @@ import {
   SzAttributeTypesResponse,
   SzAttributeType,
   SzAttributeSearchResult,
-  SzEntityRecord
+  SzEntityRecord,
+  SzEntityResponse,
+  SzRecordResponse,
+  SzRecordResponseData
 } from '@senzing/rest-api-client-ng';
 import { SzEntitySearchParams } from '../models/entity-search';
 
@@ -41,7 +44,7 @@ export class SzSearchService {
    */
   public searchByAttributes(searchParms: SzEntitySearchParams): Observable<SzAttributeSearchResult[]> {
     this.currentSearchParams = searchParms;
-
+    //return this.entityDataService.searchByAttributes(attrs?: string, attr?: Array<string>, withRelationships?: boolean, featureMode?: string, withFeatureStats?: boolean, withDerivedFeatures?: boolean, forceMinimal?: boolean, withRaw?: boolean, observe?: 'body', reportProgress?: boolean): Observable<SzAttributeSearchResponse>;
     return this.entityDataService.searchByAttributes(JSON.stringify(searchParms))
     .pipe(
       tap((searchRes: SzAttributeSearchResponse) => console.log('SzSearchService.searchByAttributes: ', searchParms, searchRes)),
@@ -139,11 +142,12 @@ export class SzSearchService {
    */
   public getEntityById(entityId: number, withRelated = false): Observable<SzEntityData> {
     console.log('@senzing/sdk/services/sz-search[getEntityById('+ entityId +', '+ withRelated +')] ');
-
-    return this.entityDataService.getEntityByEntityId(entityId, withRelated)
+    const withRelatedStr = withRelated ? 'FULL' : 'NONE';
+    //return this.entityDataService.getEntityByEntityId(entityId, featureMo, forceMini, withFeatu, withDeriv, withRelated?: 'NONE' | 'PARTIAL' | 'FULL', withRaw?: boolean, observe?: 'body', reportProgress?: boolean): Observable<SzEntityResponse>;
+    return this.entityDataService.getEntityByEntityId(entityId, undefined, undefined, undefined, undefined, withRelatedStr)
     .pipe(
-      tap(res => console.log('SzSearchService.getEntityById: ' + entityId, res.data)),
-      map(res => (res.data as SzEntityData))
+      tap((res: SzEntityResponse) => console.log('SzSearchService.getEntityById: ' + entityId, res.data)),
+      map((res: SzEntityResponse) => (res.data as SzEntityData))
     );
   }
 
@@ -155,10 +159,12 @@ export class SzSearchService {
   public getEntityByRecordId(dsName: string, recordId: number, withRelated = false): Observable<SzEntityRecord> {
     console.log('@senzing/sdk/services/sz-search[getEntityByRecordId('+ dsName +', '+ recordId +')] ', dsName, recordId);
     const _recordId: string = recordId.toString();
-    return this.entityDataService.getDataSourceRecord(dsName, _recordId)
+    //return this.entityDataService.getDataSourceRecord(dataSourceCode: string, recordId: string, withRaw?: boolean, observe?: 'body', reportProgress?: boolean): Observable<SzRecordResponse>;
+
+    return this.entityDataService.getRecord(dsName, _recordId)
     .pipe(
-      tap(res => console.log('SzSearchService.getEntityByRecordId: ' + dsName, res)),
-      map(res => (res.data as SzEntityRecord))
+      tap((res: SzRecordResponse) => console.log('SzSearchService.getEntityByRecordId: ' + dsName, res)),
+      map((res: SzRecordResponse) => (res.data as SzRecordResponseData).record )
     );
   }
 

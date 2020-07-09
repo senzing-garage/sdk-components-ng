@@ -18,6 +18,7 @@ export interface SzSearchResultEntityData {
   rawDataMatches?: SzRawDataMatches;
   nameDataMatches?: any[];
   attributeDataMatches?: any[];
+  characteristicDataMatches?: any[];
   addressDataMatches?: any[];
   resolvedEntity: SzResolvedEntity;
   topIdentifiers?: string[];

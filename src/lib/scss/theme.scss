@@ -67,7 +67,11 @@ body {
   --sz-search-results-a-color: #{$sz-blue};
   --sz-search-results-a-cursor: pointer;
   --sz-search-results-a-font-size: 1.8em;
+  --sz-search-results-col-name-min-width: 300px;
+  --sz-search-results-col-margin-right: 2em;
+  --sz-search-results-datasources-spacing: 8px;
 
+  --sz-search-results-header-width: calc(100% - 40px);
   --sz-search-results-header-display: block;
   --sz-search-results-header-padding: 0;
   --sz-search-results-header-margin: 20px 0 30px 0;
@@ -127,6 +131,7 @@ body {
     --sz-entity-detail-name-line-height: 1.7em;
     --sz-entity-detail-name-margin: 0 0 14px 0;
     --sz-entity-detail-name-display: block;
+    --sz-entity-detail-name-hover-color: #979797;
     --sz-entity-detail-section-header-margin: 1em 0 0;
     --sz-entity-detail-section-header-padding: .4em 1em;
     --sz-entity-detail-section-header-color: #FFFFFF;
@@ -158,6 +163,11 @@ body {
     --sz-entity-detail-section-record-card-padding: 15px;
     --sz-entity-detail-section-record-card-border-radius: 5px;
     --sz-entity-detail-section-record-card-border: 1px solid #dedede;
+    --sz-entity-detail-section-record-card-one-cols-min-width: 80%;
+    --sz-entity-detail-section-record-card-two-cols-min-width: 40%;
+    --sz-entity-detail-section-record-card-three-cols-min-width: 30%;
+    --sz-entity-detail-section-record-card-four-cols-min-width: 20%;
+
     --sz-entity-detail-pill-display: inline-block;
     --sz-entity-detail-pill-font-size: 20px;
     --sz-entity-detail-pill-text-transform: uppercase;
@@ -187,6 +197,8 @@ body {
     --sz-entity-detail-pill-lo-rail-font-size: 11px;
     --sz-entity-detail-pill-lo-rail-border-radius: 5px;
     --sz-entity-detail-pill-lo-rail-padding: 2px 5px;
+
+
     /* end relationship section list vars */
 
     /* graph */
@@ -207,6 +219,13 @@ body {
     --sz-entity-graph-control-padding-bottom: 0px;
     --sz-entity-graph-control-padding-left: 3px;
     --sz-entity-graph-overlay-color: #9d9d9d;
+    /* tooltip */
+    --sz-graph-tooltip-font-size: 10px;
+    --sz-graph-tooltip-background-color: #fff;
+    --sz-graph-tooltip-max-width: 200px;
+    --sz-graph-tooltip-padding: 10px;
+    --sz-graph-tooltip-border-radius: 4px;
+    --sz-graph-tooltip-border: 1px solid rgb(214, 214, 214);
     /* large graph */
     --sz-large-graph-height: 100%;
 

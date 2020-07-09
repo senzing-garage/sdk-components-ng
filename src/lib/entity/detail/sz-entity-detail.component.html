@@ -11,6 +11,7 @@
     *ngIf="graphData && this.showGraphSection"
     [data]="graphData"
     [title]="this.graphTitle"
+    [captureMouseWheel]="graphAllowScrollingZoom"
     [showPopOutIcon]="graphShowPopOutIcon"
     [popOutIconPosition]="graphPopOutIconPosition"
     (popoutClick)="onGraphPopoutClick($event)"
@@ -18,6 +19,7 @@
     [showFiltersControl]="graphShowFiltersControl"
     [showMatchKeys]="this._showGraphMatchKeys"
     (contextMenuClick)="onGraphRightClick($event)"
+    (scrollWheelEvent)="graphScrollWheelEvent.emit($event)"
     (entityClick)="onGraphEntityClick($event)"
   ></sz-entity-detail-graph>
 
@@ -31,6 +33,7 @@
     [sectionCount]="entity?.resolvedEntity?.records?.length"
     [forceLayout]="_forceLayout"
     [layoutClasses]="_layoutEnforcers"
+    [showNameDataInEntities]="showNameDataInMatchesSection"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
 
@@ -44,6 +47,7 @@
     [sectionCount]="this._possibleMatches?.length"
     [forceLayout]="_forceLayout"
     [layoutClasses]="_layoutEnforcers"
+    [showNameDataInEntities]="showNameDataInPossibleMatchesSection"
     (onCollapsedChange)="this.onSectionCollapsedChange('possibleMatches', $event)"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
@@ -57,6 +61,7 @@
     [sectionCount]="this._discoveredRelationships?.length"
     [forceLayout]="_forceLayout"
     [layoutClasses]="_layoutEnforcers"
+    [showNameDataInEntities]="showNameDataInPossibleRelationshipsSection"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
   <sz-entity-details-section class="details-section disclosed"
@@ -69,6 +74,7 @@
     [sectionCount]="this._disclosedRelationships?.length"
     [forceLayout]="_forceLayout"
     [layoutClasses]="_layoutEnforcers"
+    [showNameDataInEntities]="showNameDataInDisclosedSection"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
 </div>

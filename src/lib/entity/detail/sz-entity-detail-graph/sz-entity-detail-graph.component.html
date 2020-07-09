@@ -25,6 +25,8 @@
     [highlight]="entityNodeColors"
     [filter]="entityNodeFilterByDataSource"
     [showLinkLabels]="_showMatchKeys"
+    [captureMouseWheel]="captureMouseWheel"
+    (onWheelScroll)="scrollWheelEvent.emit($event)"
     (contextMenuClick)="onRightClick($event)"
     (entityClick)="onEntityClick($event)"
     (noResults)="onNoResults($event)"

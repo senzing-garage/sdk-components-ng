@@ -138,6 +138,13 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     return this.isOpen;
   }
 
+  @HostBinding('class.showing-link-labels') public get showingLinkLabels(): boolean {
+    return this.showMatchKeys;
+  }
+  @HostBinding('class.not-showing-link-labels') public get hidingLinkLabels(): boolean {
+    return !this.showMatchKeys;
+  }
+
   //@HostBinding('class.open') get cssClssOpen() { return this.expanded; };
   //@HostBinding('class.closed') get cssClssClosed() { return !this.expanded; };
   @ViewChild('graphContainer') graphContainerEle: ElementRef;
@@ -270,10 +277,15 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
         phone?: string
         x?: number
         y?: number
+        expandable: boolean;
+        removable: boolean;
       }
 
       const pos: {x, y} = this.graphContainerEle.nativeElement.getBoundingClientRect();
       const evtSynth: evtModel = Object.assign({}, event);
+
+      evtSynth.expandable = this.graph.canExpandNode(evtSynth.entityId);
+      evtSynth.removable = this.graph.canRemoveNode(evtSynth.entityId);
       // change x/y to include element relative offset
       evtSynth.x = (Math.floor(pos.x) + Math.floor(event.x));
       evtSynth.y = (Math.floor(pos.y) + Math.floor(event.y));
@@ -409,7 +421,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
 
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    //console.log('@senzing/sdk-components-ng/sz-standalone-graph.onPrefsChange(): ', prefs, this.prefs.graph);
+    console.log('@senzing/sdk-components-ng/sz-standalone-graph.onPrefsChange(): ', prefs, this.prefs.graph);
     let queryParamChanged = false;
     if(this.maxDegrees != prefs.maxDegreesOfSeparation ||
       this.maxEntities != prefs.maxEntities ||

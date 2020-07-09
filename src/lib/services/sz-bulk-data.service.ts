@@ -183,6 +183,25 @@ export class SzBulkDataService {
     console.log('SzBulkDataService.createEntityTypes: ', entityTypes);
     return this.entityTypesService.addEntityTypes(entityTypes, "ACTOR");
   }
+  /*
+  public analyzeBulkRecords(body: string | Blob | File | { [key: string]: any}[], progressPeriod?: string, observe?: 'body', reportProgress?: boolean): Observable<SzBulkDataAnalysisResponse> {
+    //public analyzeBulkRecords(body: string | Blob, observe?: "body", reportProgress?: boolean): Observable<SzBulkDataAnalysisResponse> {
+      if (!this.adminEnabled || this.readOnly) {
+        throw new Error('admin operation not permitted.');
+      }
+      return this.bulkDataService.analyzeBulkRecords(body, progressPeriod, observe, reportProgress)
+      .pipe(
+        map( (resp: SzBulkDataAnalysisResponse) => resp )
+      );
+    }
+    public loadBulkRecords(body: string | Blob | File | { [key: string]: any}[], dataSource?: string, mapDataSources?: string, mapDataSource?: string[], entityType?: string, mapEntityTypes?: string, mapEntityType?: string[], progressPeriod?: string, observe?: 'body', reportProgress?: boolean): Observable<SzBulkLoadResponse> {
+    //public loadBulkRecords(body: string | Blob, dataSource?: string, entityType?: string, observe?: "body", reportProgress?: boolean): Observable<SzBulkDataLoadResponse> {
+      if (!this.adminEnabled || this.readOnly) {
+        throw new Error('admin operation not permitted.');
+      }
+      return this.bulkDataService.loadBulkRecords(body, dataSource, mapDataSources, mapDataSource, entityType, mapEntityTypes, mapEntityType, progressPeriod, observe, reportProgress);
+  }
+  */
   /** analze a file and prep for mapping */
   public analyze(file: File): Observable<SzBulkDataAnalysisResponse> {
     //console.log('SzBulkDataService.analyze: ', file);
@@ -232,8 +251,8 @@ export class SzBulkDataService {
       });
 
       let promise = Promise.resolve([]);
-      let promises = [];
-      let retVal: Subject<SzBulkLoadResult> =  new Subject<SzBulkLoadResult>();
+      const promises = [];
+      const retVal: Subject<SzBulkLoadResult> =  new Subject<SzBulkLoadResult>();
       // create new datasources if needed
       if (newDataSources.length > 0) {
         console.log('create new datasources: ', newDataSources);
@@ -251,7 +270,10 @@ export class SzBulkDataService {
       // no new datasources or already avail
       this.loadingFile.next(true);
       promise.then(() => {
-        this.bulkDataService.loadBulkRecords(file, dataSourceMap, entityTypeMap ).pipe(
+        //this.bulkDataService.loadBulkRecords(file, dataSource?: string, mapDataSources?: string, mapDataSource?: Array<string>, entityType?: string, mapEntityTypes?: string, mapEntityType?: Array<string>, progressPeriod?: string, observe?: 'body', reportProgress?: boolean)
+        //this.bulkDataService.loadBulkRecords(file, dataSource, mapDataSources, mapDataSource, entityType?: string, mapEntityTypes, mapEntityType, progressPeriod, observe, reportProgress)
+        this.bulkDataService.loadBulkRecords  (file, undefined,  JSON.stringify(dataSourceMap),  undefined,     undefined,           JSON.stringify(entityTypeMap)).pipe(
+        //this.bulkDataService.loadBulkRecords(file, dataSourceMap, entityTypeMap ).pipe(
           catchError((err: Error) => {
             console.warn('Handling error locally and rethrowing it...', err);
             this.loadingFile.next(false);
@@ -287,7 +309,7 @@ export class SzBulkDataService {
    * @internal
    */
   public getDataSourceMapFromAnalysis(analysisArray: SzDataSourceRecordAnalysis[]): { [key: string]: string } {
-    let _dsMap: { [key: string]: string } = {};
+    const _dsMap: { [key: string]: string } = {};
     if(analysisArray && analysisArray.forEach) {
       analysisArray.forEach(a => {
         if (this._dataSources.indexOf(a.dataSource) >= 0) {
@@ -305,7 +327,7 @@ export class SzBulkDataService {
    * @internal
    */
   public getEntityTypeMapFromAnalysis(analysisArray: SzEntityTypeRecordAnalysis[]): { [key: string]: string } {
-    let _etMap: { [key: string]: string } = {};
+    const _etMap: { [key: string]: string } = {};
 
     if(analysisArray && analysisArray.forEach) {
       analysisArray.forEach(a => {
@@ -325,7 +347,7 @@ export class SzBulkDataService {
    */
   public changeDataSourceName(fromDataSource: string, toDataSource: string) {
     console.log('DS MAP ' + fromDataSource + ' TO ' + toDataSource, this.dataSourceMap);
-    this.dataSourceMap = this.dataSourceMap
+    this.dataSourceMap = this.dataSourceMap;
     this.dataSourceMap[fromDataSource] = toDataSource;
   }
   /**

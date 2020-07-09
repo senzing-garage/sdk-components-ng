@@ -33,6 +33,9 @@
       [truncateResults]="true"
       [collapsedStatePrefsKey]="this.collapsedStatePrefsKey"
       [layoutClasses]="_layoutClasses"
+      [showOtherDataInEntities]="showOtherDataInEntities"
+      [showBestNameOnlyinEntities]="showBestNameOnlyInEntities"
+      [showNameDataInEntities]="showNameDataInEntities"
       (onCollapsedChange)="this.onCollapsibleCardStateChange($event)"
       (entityRecordClick)="onEntityRecordClick($event)"
       class="by-match-key">
@@ -50,6 +53,8 @@
       [layoutClasses]="_layoutClasses"
       (onCollapsedChange)="this.onCollapsibleCardStateChange($event)"
       [truncateResults]="true"
+      [showBestNameOnlyinEntities]="showBestNameOnlyInEntities"
+      [showNameDataInEntities]="showNameDataInEntities"
       (entityRecordClick)="onEntityRecordClick($event)">
     </sz-entity-detail-section-collapsible-card>
   </ng-container>

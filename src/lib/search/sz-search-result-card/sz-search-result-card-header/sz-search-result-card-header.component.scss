@@ -40,6 +40,10 @@
     .search-card__header--breakdown {
       max-width: 300px;
       display: inline-block;
+      margin-right: var(--sz-search-results-datasources-spacing);
+      &:last-child {
+        margin-right: 0;
+      }
     }
 
     .ellipsis {

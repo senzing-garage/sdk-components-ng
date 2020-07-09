@@ -104,12 +104,12 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
     this.prefs.searchResults.showOtherData = value;
   }
   /** show "attribute data" ie "login id, email address etc" in search results */
-  public get SearchResultsShowAttributeData(): boolean {
-    return this.prefs.searchResults.showAttributeData;
+  public get SearchResultsShowCharacteristicData(): boolean {
+    return this.prefs.searchResults.showCharacteristicData;
   }
   /** show "attribute data" ie "login id, email address etc" in search results */
-  @Input() public set SearchResultsShowAttributeData(value: boolean) {
-    this.prefs.searchResults.showAttributeData = value;
+  @Input() public set SearchResultsShowCharacteristicData(value: boolean) {
+    this.prefs.searchResults.showCharacteristicData = value;
   }
   /** show "record ids" in search results */
   public get SearchResultsShowRecordIds(): boolean {
@@ -136,12 +136,12 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
     this.prefs.searchResults.truncateOtherDataAt = value;
   }
   /** number of lines of "attribute data" shown before ellipsis in search results */
-  public get SearchResultsTruncateAttributeDataAt(): number {
-    return this.prefs.searchResults.truncateAttributeDataAt;
+  public get SearchResultsTruncateCharacteristicDataAt(): number {
+    return this.prefs.searchResults.truncateCharacteristicDataAt;
   }
   /** number of lines of "attribute data" shown before ellipsis in search results */
-  @Input() public set SearchResultsTruncateAttributeDataAt(value: number) {
-    this.prefs.searchResults.truncateAttributeDataAt = value;
+  @Input() public set SearchResultsTruncateCharacteristicDataAt(value: number) {
+    this.prefs.searchResults.truncateCharacteristicDataAt = value;
   }
   /** show embedded graph in search results */
   public get SearchResultsShowEmbeddedGraph(): boolean {

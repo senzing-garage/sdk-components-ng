@@ -6,7 +6,8 @@
     flex-wrap: wrap;
 
     .search-card__content--column {
-      margin-right: 2em;
+
+      margin-right: var(--sz-search-results-col-margin-right);
       margin-bottom: 1em;
 
       &:last-child {
@@ -18,7 +19,7 @@
         flex-grow: 1;
       }
       &.name-data {
-        min-width: 300px;
+        min-width: var(--sz-search-results-col-name-min-width);
       }
 
       .line {

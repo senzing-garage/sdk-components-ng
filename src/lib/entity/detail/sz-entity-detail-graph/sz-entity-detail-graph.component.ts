@@ -8,8 +8,10 @@ import {
   SzRelatedEntity,
   SzResolvedEntity,
   SzEntityRecord,
-  SzRelationshipType
+  SzRelationshipType,
+  SzEntityNetworkData
 } from '@senzing/rest-api-client-ng';
+
 import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
 import { SzNetworkGraphInputs } from '../../../models/network-graph-inputs';
 import { SzRelationshipNetworkComponent, NodeFilterPair } from '@senzing/sdk-graph-components';
@@ -84,17 +86,17 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   /** sets the visibility of edge labels on the node links */
   @Input() public set showMatchKeys(value: boolean) {
     this._showMatchKeys = value;
-  };
+  }
   private _openInNewTab: boolean = false;
   /** whether or not to open entity clicks in new tab */
   @Input() public set openInNewTab(value: boolean) {
     this._openInNewTab = value;
-  };
+  }
   public _openInSidePanel = false;
   /** whether or not to open entity clicks in side drawer */
   @Input() public set openInSidePanel(value: boolean) {
     this._openInSidePanel = value;
-  };
+  }
   @Input() sectionIcon: string;
   @Input() maxDegrees: number = 1;
   @Input() maxEntities: number = 20;
@@ -136,8 +138,11 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     return this.isOpen;
   }
 
-  @HostBinding('class.open') get cssClssOpen() { return this.expanded; };
-  @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; };
+  @Input() public captureMouseWheel: boolean = true;
+  @Output() public scrollWheelEvent: EventEmitter<MouseWheelEvent> = new EventEmitter<MouseWheelEvent>()
+
+  @HostBinding('class.open') get cssClssOpen() { return this.expanded; }
+  @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; }
   @ViewChild('graphContainer') graphContainerEle: ElementRef;
   @ViewChild(SzEntityDetailGraphControlComponent) graphControlComponent: SzEntityDetailGraphControlComponent;
   @ViewChild(SzRelationshipNetworkComponent) graph : SzRelationshipNetworkComponent;
@@ -237,17 +242,28 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   public onEntityDblClick(event: any) {
     this.entityDblClick.emit(event);
   }
+
+  /** event is emitted when the collection of datasources present in graph dislay */
+  @Output() dataSourcesChange: EventEmitter<any> = new EventEmitter<string[]>();
+  /** event is emitted when the graph components data is updated or loaded */
+  @Output() dataLoaded: EventEmitter<SzEntityNetworkData> = new EventEmitter<SzEntityNetworkData>();
+
   /**
    * on data received by api request and mapped to
    * component input format model. when data has been loaded
    * and parsed build list of distinct datasource names
    * from data.
   */
-  public onGraphDataLoaded(inputs: SzNetworkGraphInputs) {
-    if(inputs.data && inputs.data.entities) {
-      this.filterShowDataSources = SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data);
-    }
+ public onGraphDataLoaded(inputs: SzNetworkGraphInputs) {
+  if(inputs.data && inputs.data.entities) {
+    this.filterShowDataSources = SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data);
+    this.dataSourcesChange.emit( SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data) );
   }
+  if(inputs.data) {
+    this.dataLoaded.emit( inputs.data );
+  }
+  console.log('onGraphDataLoaded: ', inputs);
+}
   /**
    * on entity node right click in the graph.
    * proxies to synthetic "contextMenuClick" event.
@@ -258,19 +274,25 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
       interface evtModel {
         address?: string
         entityId?: number
-        iconType?: string
-        index?: number
-        isCoreNode?: false
-        isQueriedNode?: false
-        name?: string
-        orgName?: string
-        phone?: string
-        x?: number
-        y?: number
+        iconType?: string;
+        index?: number;
+        isCoreNode?: false;
+        isQueriedNode?: false;
+        name?: string;
+        orgName?: string;
+        phone?: string;
+        x?: number;
+        y?: number;
+        expandable: boolean;
+        removable: boolean;
       }
 
       const pos: {x, y} = this.graphContainerEle.nativeElement.getBoundingClientRect();
       const evtSynth: evtModel = Object.assign({}, event);
+
+      evtSynth.expandable = this.graph.canExpandNode(evtSynth.entityId);
+      evtSynth.removable = this.graph.canRemoveNode(evtSynth.entityId);
+
       // change x/y to include element relative offset
       evtSynth.x = (Math.floor(pos.x) + Math.floor(event.x));
       evtSynth.y = (Math.floor(pos.y) + Math.floor(event.y));
@@ -299,7 +321,6 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   onNetworkLoaded(inputs: SzNetworkGraphInputs) {
     this._inputs = inputs;
   }
-
   constructor(
     public prefs: SzPrefsService,
     private cd: ChangeDetectorRef
@@ -342,7 +363,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
           this.isOpen = !prefs.graphSectionCollapsed;
         }
       }
-    })
+    });
     */
 
     // keep track of whether or not the graph has been rendered

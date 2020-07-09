@@ -148,7 +148,9 @@ export class SzEntityDetailHeaderContentComponent implements OnDestroy, OnInit {
 
   get attributeData(): string[] {
     if (this.entity) {
-      if ( this.entity.attributeData) {
+      if ( this.entity.characteristicData ) {
+        return this.entity.characteristicData;
+      } else if ( this.entity.attributeData) {
         return this.entity.attributeData;
       } else if ( this.entity.topAttributes) {
         return this.entity.topAttributes;

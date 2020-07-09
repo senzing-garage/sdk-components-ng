@@ -237,17 +237,19 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _showOtherData: boolean = false;
   /** @internal */
+  private _showIdentifierData: boolean = false;
+  /** @internal */
   private _truncateRecordsAt: number = 3;
   /** @internal */
   private _showEmbeddedGraph?: boolean = false;
   /** @internal */
   private _linkToEmbeddedGraph?: boolean = false;
   /** @internal */
-  private _showAttributeData: boolean = false;
+  private _showCharacteristicData: boolean = false;
   /** @internal */
   private _truncateOtherDataAt: number = 3;
   /** @internal */
-  private _truncateAttributeDataAt: number = 3;
+  private _truncateCharacteristicDataAt: number = 3;
   /** @internal */
   private _showRecordIds: boolean = false;
   /** @internal */
@@ -259,15 +261,16 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   jsonKeys = [
     'openInNewTab',
     'showOtherData',
-    'showAttributeData',
+    'showIdentifierData',
+    'showCharacteristicData',
     'truncateRecordsAt',
     'truncateOtherDataAt',
-    'truncateAttributeDataAt',
+    'truncateCharacteristicDataAt',
     'showEmbeddedGraph',
     'showRecordIds',
     'linkToEmbeddedGraph',
     'truncateIdentifierDataAt'
-  ]
+  ];
 
   // -------------------- getters and setters
   /** open entity detail in new tab when link clicked */
@@ -288,13 +291,22 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
     this._showOtherData = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
-  /** show "attribute data" in search results. ie DOB, favorite cat */
-  public get showAttributeData(): boolean {
-    return this._showAttributeData;
+  /** show "other data" in search results */
+  public get showIdentifierData(): boolean {
+    return this._showIdentifierData;
+  }
+  /** show "other data" in search results */
+  public set showIdentifierData(value: boolean) {
+    this._showIdentifierData = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** show "attribute data" in search results. ie DOB, favorite cat */
-  public set showAttributeData(value: boolean) {
-    this._showAttributeData = value;
+  public get showCharacteristicData(): boolean {
+    return this._showCharacteristicData;
+  }
+  /** show "attribute data" in search results. ie DOB, favorite cat */
+  public set showCharacteristicData(value: boolean) {
+    this._showCharacteristicData = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** show "record ids" in search results. currently not implemented in view */
@@ -325,12 +337,12 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** truncate "attribute data" shown before ellipsis in search results. */
-  public get truncateAttributeDataAt(): number {
-    return this._truncateAttributeDataAt;
+  public get truncateCharacteristicDataAt(): number {
+    return this._truncateCharacteristicDataAt;
   }
   /** truncate "attribute data" shown before ellipsis in search results. */
-  public set truncateAttributeDataAt(value: number) {
-    this._truncateAttributeDataAt = value;
+  public set truncateCharacteristicDataAt(value: number) {
+    this._truncateCharacteristicDataAt = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** show embedded graph component in search results. currently not implemented */
