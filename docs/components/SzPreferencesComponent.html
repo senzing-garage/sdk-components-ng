@@ -83,22 +83,36 @@ provides the more robust solution.</p>
     </p>
     <div class="io-description">
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) javascript --&gt;&lt;sz-preferences id=&quot;prefsIntf&quot;&gt;&lt;/sz-preferences&gt;&lt;script&gt;document.getElementById('prefsIntf').GraphBuildOut = 5;&lt;/script&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) javascript --&gt;
+&lt;sz-preferences id=&quot;prefsIntf&quot;&gt;&lt;/sz-preferences&gt;
+&lt;script&gt;document.getElementById('prefsIntf').GraphBuildOut = 5;&lt;/script&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) By attribute: --&gt;&lt;sz-preferencesgraph-build-out=&quot;20&quot;&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) By attribute: --&gt;
+&lt;sz-preferences
+graph-build-out=&quot;20&quot;&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) javascript bulk initialize from local storage: --&gt;&lt;sz-preferences id=&quot;prefsIntf&quot; show-controls=&quot;true&quot;&gt;&lt;script&gt;document.getElementById('prefsIntf').prefsFromJSONString = localStorage.getItem('NAME_OF_LS_KEY');&lt;/script&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) javascript bulk initialize from local storage: --&gt;
+&lt;sz-preferences id=&quot;prefsIntf&quot; show-controls=&quot;true&quot;&gt;
+&lt;script&gt;
+document.getElementById('prefsIntf').prefsFromJSONString = localStorage.getItem('NAME_OF_LS_KEY');
+&lt;/script&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) show other data in search results: --&gt;&lt;sz-preferencessearch-results-show-other-data=&quot;true&quot;&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) show other data in search results: --&gt;
+&lt;sz-preferences
+search-results-show-other-data=&quot;true&quot;&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) show interactive UI: --&gt;&lt;sz-preferencesshow-controls=&quot;true&quot;&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) show interactive UI: --&gt;
+&lt;sz-preferences
+show-controls=&quot;true&quot;&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;&lt;sz-preferences(prefsChange)=&quot;myPrefsChangeHandler($event)&quot;&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;
+&lt;sz-preferences
+(prefsChange)=&quot;myPrefsChangeHandler($event)&quot;&gt;</code></pre>
                 </div>
     </div>
 
@@ -347,7 +361,7 @@ provides the more robust solution.</p>
                                 <a href="#SearchResultsOpenInNewTab">SearchResultsOpenInNewTab</a>
                             </li>
                             <li>
-                                <a href="#SearchResultsShowAttributeData">SearchResultsShowAttributeData</a>
+                                <a href="#SearchResultsShowCharacteristicData">SearchResultsShowCharacteristicData</a>
                             </li>
                             <li>
                                 <a href="#SearchResultsShowEmbeddedGraph">SearchResultsShowEmbeddedGraph</a>
@@ -359,7 +373,7 @@ provides the more robust solution.</p>
                                 <a href="#SearchResultsShowRecordIds">SearchResultsShowRecordIds</a>
                             </li>
                             <li>
-                                <a href="#SearchResultsTruncateAttributeDataAt">SearchResultsTruncateAttributeDataAt</a>
+                                <a href="#SearchResultsTruncateCharacteristicDataAt">SearchResultsTruncateCharacteristicDataAt</a>
                             </li>
                             <li>
                                 <a href="#SearchResultsTruncateIdentifierDataAt">SearchResultsTruncateIdentifierDataAt</a>
@@ -412,7 +426,7 @@ provides the more robust solution.</p>
                                     <a href="#SearchResultsShowOtherData">SearchResultsShowOtherData</a>
                                 </li>
                                 <li>
-                                    <a href="#SearchResultsShowAttributeData">SearchResultsShowAttributeData</a>
+                                    <a href="#SearchResultsShowCharacteristicData">SearchResultsShowCharacteristicData</a>
                                 </li>
                                 <li>
                                     <a href="#SearchResultsShowRecordIds">SearchResultsShowRecordIds</a>
@@ -424,7 +438,7 @@ provides the more robust solution.</p>
                                     <a href="#SearchResultsTruncateOtherDataAt">SearchResultsTruncateOtherDataAt</a>
                                 </li>
                                 <li>
-                                    <a href="#SearchResultsTruncateAttributeDataAt">SearchResultsTruncateAttributeDataAt</a>
+                                    <a href="#SearchResultsTruncateCharacteristicDataAt">SearchResultsTruncateCharacteristicDataAt</a>
                                 </li>
                                 <li>
                                     <a href="#SearchResultsShowEmbeddedGraph">SearchResultsShowEmbeddedGraph</a>
@@ -1365,8 +1379,8 @@ provides the more robust solution.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="SearchResultsShowAttributeData"></a>
-                        <b>SearchResultsShowAttributeData</b>
+                        <a name="SearchResultsShowCharacteristicData"></a>
+                        <b>SearchResultsShowCharacteristicData</b>
                     </td>
                 </tr>
                 <tr>
@@ -1453,8 +1467,8 @@ provides the more robust solution.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="SearchResultsTruncateAttributeDataAt"></a>
-                        <b>SearchResultsTruncateAttributeDataAt</b>
+                        <a name="SearchResultsTruncateCharacteristicDataAt"></a>
+                        <b>SearchResultsTruncateCharacteristicDataAt</b>
                     </td>
                 </tr>
                 <tr>
@@ -2631,14 +2645,14 @@ search-results-open-in-new-tab=&quot;true&quot;&gt;</code></pre>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="SearchResultsShowAttributeData"></a>
-                        <span class="name"><b>SearchResultsShowAttributeData</b><a href="#SearchResultsShowAttributeData"><span class="icon ion-ios-link"></span></a></span>
+                        <a name="SearchResultsShowCharacteristicData"></a>
+                        <span class="name"><b>SearchResultsShowCharacteristicData</b><a href="#SearchResultsShowCharacteristicData"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>SearchResultsShowAttributeData()</code></span>
+                        <span class="accessor"><b>get</b><code>SearchResultsShowCharacteristicData()</code></span>
                     </td>
                 </tr>
                     <tr>
@@ -2655,7 +2669,7 @@ search-results-open-in-new-tab=&quot;true&quot;&gt;</code></pre>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>SearchResultsShowAttributeData(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                        <span class="accessor"><b>set</b><code>SearchResultsShowCharacteristicData(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
                     </td>
                 </tr>
                     <tr>
@@ -2919,14 +2933,14 @@ search-results-open-in-new-tab=&quot;true&quot;&gt;</code></pre>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="SearchResultsTruncateAttributeDataAt"></a>
-                        <span class="name"><b>SearchResultsTruncateAttributeDataAt</b><a href="#SearchResultsTruncateAttributeDataAt"><span class="icon ion-ios-link"></span></a></span>
+                        <a name="SearchResultsTruncateCharacteristicDataAt"></a>
+                        <span class="name"><b>SearchResultsTruncateCharacteristicDataAt</b><a href="#SearchResultsTruncateCharacteristicDataAt"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>SearchResultsTruncateAttributeDataAt()</code></span>
+                        <span class="accessor"><b>get</b><code>SearchResultsTruncateCharacteristicDataAt()</code></span>
                     </td>
                 </tr>
                     <tr>
@@ -2943,7 +2957,7 @@ search-results-open-in-new-tab=&quot;true&quot;&gt;</code></pre>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>SearchResultsTruncateAttributeDataAt(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code></span>
+                        <span class="accessor"><b>set</b><code>SearchResultsTruncateCharacteristicDataAt(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code></span>
                     </td>
                 </tr>
                     <tr>
@@ -5584,7 +5598,7 @@ search-results-open-in-new-tab=&quot;true&quot;&gt;</code></pre>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><div *ngIf="showControls" class="sz-preferences">    <div class="prefs-ui-lists">        <!-- start search prefs -->        <div class="prefs-ui-column prefs-ui-column-search">            <!-- start search form prefs -->            <h4 class="title">Search</h4>            <ul class="prefs-ui-column-inner prefs-ui-column-inner-search">                <li *ngFor="let opt of searchFormOptions; let i = index" [attr.pref-key]="opt.name">                    <input *ngIf="opt.inputType == \'checkbox\'" [attr.id]="\'c1-opts-search-form-\'+ i" type="checkbox"                    [checked]="boolPrefChecked(\'searchForm\', opt.name)"                    (change)="updateBoolPrefValue(\'searchForm\', opt.name, $event)">                    <input *ngIf="opt.inputType == \'number\'" [attr.id]="\'c1-opts-search-form-\'+ i" type="number"                    min="1" max="90" size="2"                    [value]="prefValAsInt(\'searchForm\', opt.name)"                    (change)="updateIntPrefValue(\'searchForm\', opt.name, $event)">                    <label [attr.for]="\'c1-opts-search-form-\'+ i">{{ toSentenceCase(opt.name) | titlecase }}</label>                </li>            </ul>            <!-- end search form prefs -->            <!-- start search results prefs -->            <h4 class="title">Search Results</h4>            <ul class="prefs-ui-column-inner">                <li *ngFor="let opt of searchResultsOptions; let i = index" [attr.pref-key]="opt.name">                    <input *ngIf="opt.inputType == \'checkbox\'" [attr.id]="\'c2-opts-search-results-\'+ i" type="checkbox"                    [checked]="boolPrefChecked(\'searchResults\', opt.name)"                    (change)="updateBoolPrefValue(\'searchResults\', opt.name, $event)">                    <input *ngIf="opt.inputType == \'number\'" [attr.id]="\'c2-opts-search-results-\'+ i" type="number"                    min="1" max="90" size="2"                    [value]="prefValAsInt(\'searchResults\', opt.name)"                    (change)="updateIntPrefValue(\'searchResults\', opt.name, $event)">                    <label [attr.for]="\'c2-opts-search-results-\'+ i">{{ toSentenceCase(opt.name) | titlecase }}<!-- <span class="pref-key">({{opt.name}})</span> --></label>                </li>            </ul>            <!-- end search results prefs -->        </div>        <!-- end search prefs -->        <!-- start entity detail prefs -->        <div class="prefs-ui-column prefs-ui-column-entity-detail">            <h4 class="title">Entity Detail</h4>            <ul class="prefs-ui-column-inner">                <li *ngFor="let opt of entityDetailOptions; let i = index" [attr.pref-key]="opt.name">                    <input *ngIf="opt.inputType == \'checkbox\'" [attr.id]="\'c3-opts-entityDetail-\'+ i" type="checkbox"                    [checked]="boolPrefChecked(\'entityDetail\', opt.name)"                    (change)="updateBoolPrefValue(\'entityDetail\', opt.name, $event)">                    <input *ngIf="opt.inputType == \'number\'" [attr.id]="\'c3-opts-entityDetail-\'+ i" type="number"                    min="1" max="90" size="2"                    [value]="prefValAsInt(\'entityDetail\', opt.name)"                    (change)="updateIntPrefValue(\'entityDetail\', opt.name, $event)">                    <label [attr.for]="\'c3-opts-entityDetail-\'+ i">{{ toSentenceCase(opt.name) | titlecase }}</label>                </li>            </ul>        </div>        <!-- end entity detail prefs -->        <!-- start graph prefs -->        <div class="prefs-ui-column prefs-ui-column-graph">            <h4 class="title">Graph</h4>            <ul class="prefs-ui-column-inner">                <li *ngFor="let opt of graphOptions; let i = index" [attr.pref-key]="opt.name">                    <input *ngIf="opt.inputType == \'checkbox\'" [attr.id]="\'c4-opts-graph-\'+ i" type="checkbox"                    [checked]="boolPrefChecked(\'graph\', opt.name)"                    (change)="updateBoolPrefValue(\'graph\', opt.name, $event)">                    <input *ngIf="opt.inputType == \'number\'" [attr.id]="\'c4-opts-graph-\'+ i" type="number"                    min="1" max="90" size="2"                    [value]="prefValAsInt(\'graph\', opt.name)"                    (change)="updateIntPrefValue(\'graph\', opt.name, $event)">                    <label [attr.for]="\'c4-opts-graph-\'+ i">{{ toSentenceCase(opt.name) | titlecase }}</label>                </li>            </ul>            <h4 class="title">Datasource Colors</h4>            <sz-pref-dict [value]="GraphDataSourceColors" (dataChange)="GraphDataSourceColors = $event" valueType="color"></sz-pref-dict>        </div>        <!-- end graph prefs -->    </div></div></div>'
-    var COMPONENTS = [{'name': 'SzBulkDataAnalysisComponent', 'selector': 'sz-bulk-data-analysis'},{'name': 'SzBulkDataAnalysisReportComponent', 'selector': 'sz-bulk-data-analysis-report'},{'name': 'SzBulkDataAnalysisSummaryComponent', 'selector': 'sz-bulk-data-analysis-summary'},{'name': 'SzBulkDataLoadComponent', 'selector': 'sz-bulk-data-load'},{'name': 'SzBulkDataLoadReportComponent', 'selector': 'sz-bulk-data-load-report'},{'name': 'SzBulkDataLoadSummaryComponent', 'selector': 'sz-bulk-data-load-summary'},{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzPreferencesComponent'};
 </script>
@@ -5622,6 +5636,7 @@ search-results-open-in-new-tab=&quot;true&quot;&gt;</code></pre>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
             var COMPODOC_CURRENT_PAGE_URL = 'SzPreferencesComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

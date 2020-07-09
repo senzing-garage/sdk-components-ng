@@ -73,10 +73,13 @@ provides the more robust solution.</p>
     </p>
     <div class="io-description">
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) SzConfigurationComponent Example - javascript --&gt;&lt;sz-configuration id=&quot;sz-api-conf&quot;&gt;&lt;/sz-preferences&gt;document.getElementById('sz-conf').basePath = 'http://apis.mydomain.com';</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) SzConfigurationComponent Example - javascript --&gt;
+&lt;sz-configuration id=&quot;sz-api-conf&quot;&gt;&lt;/sz-preferences&gt;
+document.getElementById('sz-conf').basePath = 'http://apis.mydomain.com';</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) SzConfigurationComponent Example - By attribute --&gt;&lt;sz-configuration base-path=&quot;http://apis.mydomain.com/api&quot;&gt;&lt;/sz-configuration&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) SzConfigurationComponent Example - By attribute --&gt;
+&lt;sz-configuration base-path=&quot;http://apis.mydomain.com/api&quot;&gt;&lt;/sz-configuration&gt;</code></pre>
                 </div>
     </div>
 
@@ -758,7 +761,7 @@ protocol://hostname:port string that your api server can be accessed through</p>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div></div>'
-    var COMPONENTS = [{'name': 'SzBulkDataAnalysisComponent', 'selector': 'sz-bulk-data-analysis'},{'name': 'SzBulkDataAnalysisReportComponent', 'selector': 'sz-bulk-data-analysis-report'},{'name': 'SzBulkDataAnalysisSummaryComponent', 'selector': 'sz-bulk-data-analysis-summary'},{'name': 'SzBulkDataLoadComponent', 'selector': 'sz-bulk-data-load'},{'name': 'SzBulkDataLoadReportComponent', 'selector': 'sz-bulk-data-load-report'},{'name': 'SzBulkDataLoadSummaryComponent', 'selector': 'sz-bulk-data-load-summary'},{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzConfigurationComponent'};
 </script>
@@ -796,6 +799,7 @@ protocol://hostname:port string that your api server can be accessed through</p>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
             var COMPODOC_CURRENT_PAGE_URL = 'SzConfigurationComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
