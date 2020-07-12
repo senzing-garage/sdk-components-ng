@@ -429,7 +429,7 @@ a human readable table.</p>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><div class="sz-configuration-about">  <div class="header">      <div class="column">Property Name</div>      <div class="column">Property Value</div>  </div>    <div *ngFor=" let propObj of this.apiProperties" class="row">      <div class="column cell">{{propObj[\'key\']}}</div>      <div class="column cell">{{propObj[\'value\']}}</div>    </div></div></div>'
-    var COMPONENTS = [{'name': 'SzBulkDataAnalysisComponent', 'selector': 'sz-bulk-data-analysis'},{'name': 'SzBulkDataAnalysisReportComponent', 'selector': 'sz-bulk-data-analysis-report'},{'name': 'SzBulkDataAnalysisSummaryComponent', 'selector': 'sz-bulk-data-analysis-summary'},{'name': 'SzBulkDataLoadComponent', 'selector': 'sz-bulk-data-load'},{'name': 'SzBulkDataLoadReportComponent', 'selector': 'sz-bulk-data-load-report'},{'name': 'SzBulkDataLoadSummaryComponent', 'selector': 'sz-bulk-data-load-summary'},{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzConfigurationAboutComponent'};
 </script>
@@ -467,6 +467,7 @@ a human readable table.</p>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
             var COMPODOC_CURRENT_PAGE_URL = 'SzConfigurationAboutComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
