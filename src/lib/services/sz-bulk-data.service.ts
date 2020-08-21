@@ -356,6 +356,7 @@ export class SzBulkDataService {
    * change the destination entity type of a file currently being mapped to a entity type.
    */
   public changeEntityTypeName(fromEntityType: string, toEntityType: string) {
+    fromEntityType = (fromEntityType === null || fromEntityType === undefined) ? "" : fromEntityType;
     console.log('ET MAP ' + fromEntityType + ' TO ' + toEntityType, this.entityTypeMap);
     this.entityTypeMap = this.entityTypeMap;
     this.entityTypeMap[fromEntityType] = toEntityType;
