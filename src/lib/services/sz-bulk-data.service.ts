@@ -229,7 +229,7 @@ export class SzBulkDataService {
    * @TODO show usage example.
    */
   public load(file?: File, dataSourceMap?: { [key: string]: string }, entityTypeMap?: { [key: string]: string }, analysis?: SzBulkDataAnalysis ): Observable<SzBulkLoadResult> | undefined {
-    console.log('SzBulkDataService.load: ', dataSourceMap, entityTypeMap, file);
+    //console.log('SzBulkDataService.load: ', dataSourceMap, entityTypeMap, file, this.currentFile);
     file = file ? file : this.currentFile;
     this.currentError = undefined;
     dataSourceMap = dataSourceMap ? dataSourceMap : this.dataSourceMap;
@@ -336,7 +336,8 @@ export class SzBulkDataService {
         } else if(a.entityType !== null) {
           _etMap[a.entityType] = a.entityType;
         } else if(a.entityType === null) {
-          _etMap[a.entityType] = 'GENERIC';
+          _etMap[""] = 'GENERIC';
+          //_etMap[a.entityType] = 'GENERIC';
         }
       });
     }
@@ -346,9 +347,10 @@ export class SzBulkDataService {
    * change the destination datasource of a file currently being mapped to datasource.
    */
   public changeDataSourceName(fromDataSource: string, toDataSource: string) {
-    console.log('DS MAP ' + fromDataSource + ' TO ' + toDataSource, this.dataSourceMap);
+    fromDataSource = (fromDataSource === null || fromDataSource === undefined) ? "" : fromDataSource;
     this.dataSourceMap = this.dataSourceMap;
     this.dataSourceMap[fromDataSource] = toDataSource;
+    //console.log('DS MAP ' + fromDataSource + ' TO ' + toDataSource, this.dataSourceMap);
   }
   /**
    * change the destination entity type of a file currently being mapped to a entity type.
