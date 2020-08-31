@@ -1,13 +1,21 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
-  "extends": "../tsconfig.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
-    "module": "commonjs",
-    "target": "es5",
     "types": [
       "jasmine",
       "jasminewd2",
       "node"
     ]
-  }
+  },
+  "files": [
+    "harness/src/main.ts",
+    "harness/src/polyfills.ts"
+  ],
+  "include": [
+    "harness/src/**/*.d.ts",
+    "tests/**/*.spec.ts",
+    "tests/**/*.d.ts"
+  ]
 }

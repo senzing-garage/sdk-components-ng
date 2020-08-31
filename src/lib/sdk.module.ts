@@ -202,7 +202,7 @@ export class SenzingSdkModule {
    SenzingSdkModule.forRoot( SzRestConfigurationFactory )
    *
    */
-  public static forRoot(apiConfigFactory?: () => SzRestConfiguration): ModuleWithProviders {
+  public static forRoot(apiConfigFactory?: () => SzRestConfiguration): ModuleWithProviders<SenzingSdkModule> {
     return {
         ngModule: SenzingSdkModule,
         providers: [

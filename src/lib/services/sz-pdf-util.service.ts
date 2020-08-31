@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
 import { Observable, fromEventPattern, Subject } from 'rxjs';
 import { map, tap, mapTo } from 'rxjs/operators';
-import * as jsPDF from 'jspdf';
+import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 
 import {

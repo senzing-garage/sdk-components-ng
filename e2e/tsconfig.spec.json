@@ -4,14 +4,17 @@
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "types": [
-      "jasmine"
+      "jasmine",
+      "jasminewd2",
+      "node"
     ]
   },
   "files": [
-    "./test.ts"
+    "harness/src/test.ts",
+    "harness/src/polyfills.ts"
   ],
   "include": [
-    "**/*.spec.ts",
-    "**/*.d.ts"
+    "tests/**/*.spec.ts",
+    "tests/**/*.d.ts"
   ]
 }
