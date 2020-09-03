@@ -969,18 +969,18 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/e2e",
-            "index": "examples/e2e/src/index.html",
-            "main": "examples/e2e/src/main.ts",
-            "polyfills": "examples/e2e/src/polyfills.ts",
-            "tsConfig": "examples/e2e/tsconfig.app.json",
+            "index": "e2e/harness/src/index.html",
+            "main": "e2e/harness/src/main.ts",
+            "polyfills": "e2e/harness/src/polyfills.ts",
+            "tsConfig": "e2e/tsconfig.e2e.json",
             "aot": true,
             "assets": [
-              "examples/e2e/src/favicon.ico",
-              "examples/e2e/src/assets"
+              "e2e/harness/src/favicon.ico",
+              "e2e/harness/src/assets"
             ],
             "styles": [
               "src/lib/scss/styles.scss",
-              "examples/e2e/src/styles.scss"
+              "e2e/harness/src/styles.scss"
             ],
             "scripts": []
           },
@@ -988,8 +988,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "e2e/src/environments/environment.ts",
-                  "with": "e2e/src/environments/environment.prod.ts"
+                  "replace": "e2e/harness/src/environments/environment.ts",
+                  "with": "e2e/harness/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -1018,31 +1018,31 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "e2e:build",
+            "browserTarget": "@senzing/sdk-components-ng/e2e:build",
             "port": 4300
           },
           "configurations": {
             "production": {
-              "browserTarget": "e2e:build:production"
+              "browserTarget": "@senzing/sdk-components-ng/e2e:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "e2e:build"
+            "browserTarget": "@senzing/sdk-components-ng/e2e:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "examples/e2e/src/test.ts",
-            "polyfills": "examples/e2e/src/polyfills.ts",
-            "tsConfig": "examples/e2e/tsconfig.spec.json",
-            "karmaConfig": "examples/e2e/karma.conf.js",
+            "main": "e2e/harness/src/test.ts",
+            "polyfills": "e2e/harness/src/polyfills.ts",
+            "tsConfig": "e2e/harness/src/tsconfig.spec.json",
+            "karmaConfig": "e2e/harness/src/karma.conf.js",
             "assets": [
-              "examples/e2e/src/favicon.ico",
-              "examples/e2e/src/assets"
+              "e2e/harness/src/favicon.ico",
+              "e2e/harness/src/assets"
             ],
             "styles": [
               "src/lib/scss/styles.scss",
