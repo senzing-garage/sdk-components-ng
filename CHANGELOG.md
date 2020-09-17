@@ -6,6 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2020-9-21
+
+Maintenence release for framework upgrade to Angular 10: see [https://blog.angular.io/version-10-of-angular-now-available-78960babd41](https://blog.angular.io/version-10-of-angular-now-available-78960babd41)
+
+Major updates to most dependency versions have also been made which should improve file sizes, security, and stability.
+
+The following Senzing projects have also been updated to operate on Angular 10,
+see the following links for associated tickets:
+- [sdk-components-ng/issues/143](https://github.com/Senzing/sdk-components-ng/issues/143)
+- [rest-api-client-ng/issues/39](https://github.com/Senzing/rest-api-client-ng/issues/39)
+- [sdk-graph-components/issues/37](https://github.com/Senzing/sdk-graph-components/issues/37)
+
+## [2.0.0] - 2020-7-12
+
+Compatibility release for interacting with the 2.0.0 [senzing-rest-api-spec](https://github.com/Senzing/senzing-rest-api-specification) and [senzing-api-server](https://github.com/Senzing/senzing-api-server). For information on specifics of endpoint changes see below:
+
+- [@senzing/rest-api-client-ng@2.0.0](https://github.com/Senzing/rest-api-client-ng/releases/tag/2.0.0)
+- [senzing-rest-api-specification PR #44](https://github.com/Senzing/senzing-rest-api-specification/pull/44)
+- [senzing-api-server PR #172](https://github.com/Senzing/senzing-api-server/pull/172)
+
 ## [1.3.0] - 2020-2-6
 
 ### Added to 1.3.0
