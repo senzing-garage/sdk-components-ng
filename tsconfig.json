@@ -14,12 +14,6 @@
       "path": "./src/tsconfig.spec.json"
     },
     {
-      "path": "./examples/ng10-test/tsconfig.app.json"
-    },
-    {
-      "path": "./examples/ng10-test/tsconfig.spec.json"
-    },
-    {
       "path": "./examples/search-with-results-and-details/tsconfig.app.json"
     },
     {

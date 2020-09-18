@@ -11,9 +11,11 @@ module.exports = function (config) {
     plugins: [
       require('karma-jasmine'),
       require('karma-brief-reporter'),
+      require('karma-summary-reporter'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
+      require('karma-mocha-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
@@ -24,15 +26,39 @@ module.exports = function (config) {
       reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true
     },
-    reporters: ['brief'],
+    reporters: ['brief','mocha'],
+    mochaReporter: { 
+      output: 'minimal',
+      symbols: {
+        success: '*',
+        info: '#',
+        warning: '!',
+        error: 'x'
+      }
+    },
+    summaryReporter: {
+      // 'failed', 'skipped' or 'all'
+      show: 'all',
+      // Limit the spec label to this length
+      specLength: 50,
+      // Show an 'all' column as a summary
+      overviewColumn: true,
+      symbols: {
+        success: '*',
+        info: '#',
+        warning: '!',
+        error: 'x'
+      }
+    },
+    briefReporter: {
+      suppressBrowserLogs: true,
+      renderOnRunCompleteOnly: true
+    },
     port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
     autoWatch: false,
     browsers: ['Chrome'],
     customLaunchers: {
       ChromeHeadlessCI: {
-        base: 'Chrome',
         base: 'Chrome',
         flags: [
           '--headless',
