@@ -8,6 +8,12 @@ export const environment = {
   production: false
 };
 
+// api configuration parameters
+export const apiConfig: SzRestConfigurationParameters = {
+  'basePath': '/api',
+  'withCredentials': true
+};
+
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

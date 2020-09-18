@@ -23,7 +23,7 @@ import { SzPrefsManagerComponent } from './prefs/prefs-manager.component';
     ReactiveFormsModule,
     StorageServiceModule,
     NgxJsonViewerModule,
-    SenzingSdkModule.forRoot()
+    SenzingSdkModule.forRoot( SzRestConfigurationFactory )
   ],
   providers: [
     SzPrefsService,

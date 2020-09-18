@@ -177,6 +177,11 @@
             "main": "src/test.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "src/tsconfig.spec.prod.json"
+            }
           }
         },
         "lint": {
@@ -349,166 +354,6 @@
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "@senzing/sdk-components-ng/examples/search-with-results-and-details:build"
-          }
-        }
-      }
-    },
-    "@senzing/sdk-components-ng/examples/admin-importing": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "inlineTemplate": true,
-          "inlineStyle": true,
-          "style": "scss",
-          "skipTests": true
-        },
-        "@schematics/angular:class": {
-          "skipTests": true
-        },
-        "@schematics/angular:directive": {
-          "skipTests": true
-        },
-        "@schematics/angular:guard": {
-          "skipTests": true
-        },
-        "@schematics/angular:interceptor": {
-          "skipTests": true
-        },
-        "@schematics/angular:module": {
-          "skipTests": true
-        },
-        "@schematics/angular:pipe": {
-          "skipTests": true
-        },
-        "@schematics/angular:service": {
-          "skipTests": true
-        }
-      },
-      "root": "examples/admin-importing",
-      "sourceRoot": "examples/admin-importing/src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "outputPath": "dist/examples/admin-importing",
-            "index": "examples/admin-importing/src/index.html",
-            "main": "examples/admin-importing/src/main.ts",
-            "polyfills": "examples/admin-importing/src/polyfills.ts",
-            "tsConfig": "examples/admin-importing/tsconfig.app.json",
-            "aot": true,
-            "allowedCommonJsDependencies": [
-              "corejs",
-              "zone.js/dist/zone-error",
-              "jspdf",
-              "canvg",
-              "core-js/modules/es.array.map",
-              "core-js/modules/es.reflect.get-prototype-of",
-              "core-js/modules/es.reflect.apply",
-              "core-js/modules/es.map",
-              "core-js/modules/es.array.slice",
-              "core-js/modules/es.symbol",
-              "core-js/modules/es.symbol.iterator",
-              "core-js/modules/es.symbol.description",
-              "core-js/modules/web.dom-collections.iterator",
-              "core-js/modules/es.array.iterator",
-              "core-js/modules/es.reflect.delete-property",
-              "core-js/modules/es.array.fill",
-              "core-js/modules/es.number.constructor",
-              "core-js/modules/es.array.reverse",
-              "core-js/modules/es.array.index-of",
-              "core-js/modules/es.string.trim",
-              "core-js/modules/es.string.iterator",
-              "core-js/modules/es.string.includes",
-              "core-js/modules/es.array.for-each",
-              "core-js/modules/es.array.some",
-              "core-js/modules/es.array.includes",
-              "core-js/modules/es.array.from",
-              "core-js/modules/es.regexp.exec",
-              "core-js/modules/es.regexp.to-string",
-              "core-js/modules/es.reflect.construct",
-              "core-js/modules/es.function.name",
-              "core-js/modules/es.string.match",
-              "core-js/modules/es.string.replace",
-              "core-js/modules/es.string.split",
-              "core-js/modules/es.string.starts-with",
-              "core-js/modules/es.promise",
-              "core-js/modules/es.object.to-string",
-              "core-js/modules/es.array.filter",
-              "core-js/modules/es.array.join",
-              "core-js/modules/es.array.reduce",
-              "core-js/modules/es.array.every",
-              "core-js/modules/es.array.concat",
-              "core-js/modules/web.dom-collections.for-each",
-              "core-js/modules/es.object.keys",
-              "core-js/modules/es.object.get-own-property-descriptor",
-              "core-js/modules/es.object.get-own-property-descriptors",
-              "@babel/runtime/helpers/get",
-              "@babel/runtime/helpers/toConsumableArray",
-              "@babel/runtime/helpers/inherits",
-              "@babel/runtime/helpers/possibleConstructorReturn",
-              "@babel/runtime/helpers/slicedToArray",
-              "@babel/runtime/regenerator",
-              "raf"
-            ],
-            "assets": [
-              "examples/admin-importing/src/favicon.ico",
-              "examples/admin-importing/src/assets"
-            ],
-            "styles": [
-              "src/lib/scss/styles.scss",
-              "examples/admin-importing/src/styles.scss"
-            ],
-            "scripts": []
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "examples/admin-importing/src/environments/environment.ts",
-                  "with": "examples/admin-importing/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/admin-importing:build",
-            "port": 4300,
-            "proxyConfig": "proxy.conf.json"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/admin-importing:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/admin-importing:build"
           }
         }
       }
