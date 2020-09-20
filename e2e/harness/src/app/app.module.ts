@@ -4,7 +4,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from '../../../../e2e/data/services/in-memory-data.service';
+import { InMemoryDataService } from '../../../data/services/in-memory-data.service';
 
 import { SenzingSdkModule, SzRestConfiguration, SzPoweredByComponent } from '@senzing/sdk-components-ng';
 import { AppComponent } from './app.component';

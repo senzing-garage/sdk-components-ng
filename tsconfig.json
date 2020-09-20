@@ -36,9 +36,6 @@
     },
     {
       "path": "./e2e/tsconfig.e2e.json"
-    },
-    {
-      "path": "./e2e/tsconfig.spec.json"
     }
   ],
   "exclude": [
