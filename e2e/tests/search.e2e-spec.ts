@@ -33,5 +33,4 @@ describe('@senzing/sdk-components-ng/sz-search tests', () => {
     expect( $$('sz-search-result-card').count() ).toBeGreaterThan(0);
   });*/
 
-
 });

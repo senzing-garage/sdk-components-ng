@@ -23,6 +23,7 @@
     (parameterChange)="onSearchParameterChange($event)"></sz-search>-->
   <sz-search-by-id #searchBox
   [dataSource]="'COMPANIES'"
+  [hiddenDataSources]="[]"
   (parameterChange)="onSearchParameterChange($event)"
   (exception)="onByIdException($event)"
   (entityChange)="onEntityResult($event)"

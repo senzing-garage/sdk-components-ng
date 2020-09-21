@@ -7,6 +7,26 @@ import { SenzingSdkModule, SzRestConfiguration, SzPoweredByComponent  } from '@s
 import { SenzingSdkGraphModule } from '@senzing/sdk-graph-components';
 import { AppComponent } from './app.component';
 
+/**
+* Pull in api configuration(SzRestConfigurationParameters)
+* from: environments/environment
+*
+* @example
+* ng build -c production
+* ng serve -c docker
+*/
+import { apiConfig, environment } from './../environments/environment';
+
+/**
+ * create exportable config factory
+ * for AOT compilation.
+ *
+ * @export
+ */
+export function SzRestConfigurationFactory() {
+  return new SzRestConfiguration( (apiConfig ? apiConfig : undefined) );
+}
+
 @NgModule({
   declarations: [
     AppComponent
@@ -16,8 +36,8 @@ import { AppComponent } from './app.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    SenzingSdkModule.forRoot(),
-    SenzingSdkGraphModule.forRoot()
+    SenzingSdkModule.forRoot( SzRestConfigurationFactory ),
+    SenzingSdkGraphModule.forRoot( SzRestConfigurationFactory )
   ],
   providers: [],
   bootstrap: [AppComponent]

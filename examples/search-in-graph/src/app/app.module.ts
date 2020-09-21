@@ -8,11 +8,25 @@ import { OverlayModule } from '@angular/cdk/overlay';
 
 import { AppComponent } from './app.component';
 
-/*
-import {
-  SenzingSdkGraphModule
-} from '@senzing/sdk-graph-components';
+/**
+* Pull in api configuration(SzRestConfigurationParameters)
+* from: environments/environment
+*
+* @example
+* ng build -c production
+* ng serve -c docker
 */
+import { apiConfig, environment } from './../environments/environment';
+
+/**
+ * create exportable config factory
+ * for AOT compilation.
+ *
+ * @export
+ */
+export function SzRestConfigurationFactory() {
+  return new SzRestConfiguration( (apiConfig ? apiConfig : undefined) );
+}
 
 @NgModule({
   declarations: [
@@ -24,7 +38,7 @@ import {
     FormsModule,
     OverlayModule,
     ReactiveFormsModule,
-    SenzingSdkModule.forRoot()
+    SenzingSdkModule.forRoot( SzRestConfigurationFactory )
   ],
   providers: [
     SzPrefsService,

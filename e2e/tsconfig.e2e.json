@@ -1,13 +1,22 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../out-tsc/app",
+    "outDir": "../out-tsc/e2e",
     "module": "commonjs",
-    "target": "es5",
+    "target": "es2018",
     "types": [
       "jasmine",
       "jasminewd2",
       "node"
     ]
-  }
+  },
+  "files": [
+    "harness/src/main.ts",
+    "harness/src/polyfills.ts"
+  ],
+  "include": [
+    "harness/src/**/*.d.ts",
+    "tests/**/*.spec.ts",
+    "tests/**/*.d.ts"
+  ]
 }

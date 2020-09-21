@@ -16,7 +16,7 @@ cache:
 
 install:
   - travis_wait npm install
-  - travis_wait npm install -g @angular/cli@7.1.4
+  - travis_wait npm install -g @angular/cli@10.0.0
   - ng version
 #  - chromedriver --version
 
