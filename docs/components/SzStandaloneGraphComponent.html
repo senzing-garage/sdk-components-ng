@@ -84,37 +84,13 @@ to change the components parameters of this component.</p>
     </p>
     <div class="io-description">
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;
-&lt;sz-standalone-graph
-filterWidth=&quot;320&quot;
-[graphIds]=&quot;graphIds&quot;
-[showPopOutIcon]=&quot;false&quot;
-[showMatchKeyControl]=&quot;false&quot;
-[showFiltersControl]=&quot;false&quot;
-[filterControlPosition]=&quot;'top-right'&quot;
-(entityClick)=&quot;onGraphEntityClick($event)&quot;
-[showMatchKeys]=&quot;true&quot;
-&gt;&lt;/sz-standalone-graph&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;&lt;sz-standalone-graphfilterWidth=&quot;320&quot;[graphIds]=&quot;graphIds&quot;[showPopOutIcon]=&quot;false&quot;[showMatchKeyControl]=&quot;false&quot;[showFiltersControl]=&quot;false&quot;[filterControlPosition]=&quot;'top-right'&quot;(entityClick)=&quot;onGraphEntityClick($event)&quot;[showMatchKeys]=&quot;true&quot;&gt;&lt;/sz-standalone-graph&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) by attribute --&gt;
-&lt;sz-standalone-graph
-filter-width=&quot;320&quot;
-graph-ids=&quot;1,1001,1002&quot;
-show-pop-out-icon=&quot;false&quot;
-show-match-key-control=&quot;false&quot;
-show-filters-control=&quot;false&quot;
-filter-control-position=&quot;top-right&quot;
-show-match-keys=&quot;true&quot;
-&gt;&lt;/sz-standalone-graph&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) by attribute --&gt;&lt;sz-standalone-graphfilter-width=&quot;320&quot;graph-ids=&quot;1,1001,1002&quot;show-pop-out-icon=&quot;false&quot;show-match-key-control=&quot;false&quot;show-filters-control=&quot;false&quot;filter-control-position=&quot;top-right&quot;show-match-keys=&quot;true&quot;&gt;&lt;/sz-standalone-graph&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) by DOM --&gt;
-&lt;sz-standalone-graph id=&quot;sz-standalone-graph&quot;&gt;&lt;/sz-standalone-graph&gt;
-&lt;script&gt;
-document.getElementById('sz-standalone-graph').graphIds = [1,1001,1002];
-document.getElementById('sz-standalone-graph').addEventListener('entityClick', (data) =&gt; { console.log('entity clicked on!', data); })
-&lt;/script&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) by DOM --&gt;&lt;sz-standalone-graph id=&quot;sz-standalone-graph&quot;&gt;&lt;/sz-standalone-graph&gt;&lt;script&gt;document.getElementById('sz-standalone-graph').graphIds = [1,1001,1002];document.getElementById('sz-standalone-graph').addEventListener('entityClick', (data) =&gt; { console.log('entity clicked on!', data); })&lt;/script&gt;</code></pre>
                 </div>
     </div>
 

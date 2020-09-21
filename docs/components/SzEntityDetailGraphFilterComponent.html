@@ -82,18 +82,10 @@ to filtering, colors, and parameters of graph control.</p>
     </p>
     <div class="io-description">
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;
-&lt;sz-entity-detail-graph-filter #graphFilter
-[showLinkLabels]=&quot;true&quot;
-(optionChanged)=&quot;onOptionChange($event)&quot;
-&gt;&lt;/sz-entity-detail-graph-filter&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;&lt;sz-entity-detail-graph-filter #graphFilter[showLinkLabels]=&quot;true&quot;(optionChanged)=&quot;onOptionChange($event)&quot;&gt;&lt;/sz-entity-detail-graph-filter&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) --&gt;
-&lt;sz-entity-detail-graph-filter id=&quot;sz-entity-detail-graph-filter&quot;&gt;&lt;/sz-entity-detail-graph-filter&gt;
-&lt;script&gt;
-document.getElementById('sz-entity-detail-graph-filter').addEventListener('optionChanged', function(data) { console.log('filter(s) changed', data); });
-&lt;/script&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) --&gt;&lt;sz-entity-detail-graph-filter id=&quot;sz-entity-detail-graph-filter&quot;&gt;&lt;/sz-entity-detail-graph-filter&gt;&lt;script&gt;document.getElementById('sz-entity-detail-graph-filter').addEventListener('optionChanged', function(data) { console.log('filter(s) changed', data); });&lt;/script&gt;</code></pre>
                 </div>
     </div>
 

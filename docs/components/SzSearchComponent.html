@@ -83,38 +83,13 @@
     </p>
     <div class="io-description">
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC javascript) SzSearchComponent --&gt;
-&lt;sz-search
-id=&quot;sz-search&quot;
-name=&quot;Isa Creepr&quot;&gt;&lt;/sz-search&gt;
-&lt;script&gt;
-document.getElementById('sz-search').addEventListener('resultsChange', (results) =&gt; {
-console.log('search results: ', results);
-});
-&lt;/script&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC javascript) SzSearchComponent --&gt;&lt;sz-searchid=&quot;sz-search&quot;name=&quot;Isa Creepr&quot;&gt;&lt;/sz-search&gt;&lt;script&gt;document.getElementById('sz-search').addEventListener('resultsChange', (results) =&gt; {console.log('search results: ', results);});&lt;/script&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) SzSearchComponent --&gt;
-&lt;sz-search
-name=&quot;Isa Creepr&quot;
-(resultsChange)=&quot;myResultsHandler($event)&quot;
-(searchStart)=&quot;showSpinner()&quot;
-(searchEnd)=&quot;hideSpinner()&quot;&gt;&lt;/sz-search&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) SzSearchComponent --&gt;&lt;sz-searchname=&quot;Isa Creepr&quot;(resultsChange)=&quot;myResultsHandler($event)&quot;(searchStart)=&quot;showSpinner()&quot;(searchEnd)=&quot;hideSpinner()&quot;&gt;&lt;/sz-search&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo --&gt;
-&lt;sz-search
-id=&quot;sz-search&quot;
-name=&quot;Isa Creepr&quot;&gt;&lt;/sz-search&gt;
-&lt;sz-search-results id=&quot;sz-search-results&quot;&gt;&lt;/sz-search-results&gt;
-&lt;script&gt;
-var szSearchComponent = document.getElementById('sz-search');
-var szSearchResultsComponent = document.getElementById('sz-search-results');
-szSearchComponent.addEventListener('resultsChange', (evt) =&gt; {
-console.log('search results: ', evt);
-szSearchResultsComponent.results = evt.detail;
-});
-&lt;/script&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo --&gt;&lt;sz-searchid=&quot;sz-search&quot;name=&quot;Isa Creepr&quot;&gt;&lt;/sz-search&gt;&lt;sz-search-results id=&quot;sz-search-results&quot;&gt;&lt;/sz-search-results&gt;&lt;script&gt;var szSearchComponent = document.getElementById('sz-search');var szSearchResultsComponent = document.getElementById('sz-search-results');szSearchComponent.addEventListener('resultsChange', (evt) =&gt; {console.log('search results: ', evt);szSearchResultsComponent.results = evt.detail;});&lt;/script&gt;</code></pre>
                 </div>
     </div>
 
