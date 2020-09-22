@@ -50,6 +50,19 @@ The relevant source for for each example is located in the examples/{name of exa
       <td>An example Angular app showing a usage of the graph components.</td>
     </tr>
     <tr>
+      <td>search-by-id</td>
+      <td>`npm run example:search-by-id`</td>
+      <td>
+        An example illustrating usage of SzSearchByIdComponent which allows searching by a datasource+recordId or an entityId
+      </td>
+    </tr>
+        <tr>
+      <td>search-in-graph</td>
+      <td>`npm run example:search-in-graph`</td>
+      <td>An example illustrating how to power the SzStandaloneGraphComponent component from a sz-seach tag result.
+      </td>
+    </tr>
+    <tr>
       <td>search-with-prefs</td>
       <td>`npm run example:search-with-prefs`</td>
       <td>Same as the "search-with-results-and-details" example, but binding to the SzPrefsService class eventbus. Has an example component that listens for pref change events, saves any 

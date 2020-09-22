@@ -76,23 +76,10 @@ with the <sz-search-by-id> component.</p>
     </p>
     <div class="io-description">
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;
-&lt;sz-search-by-id #searchBox
-[dataSource]=&quot;'COMPANIES'&quot;
-(resultChange)=&quot;formResult = $event&quot;&gt;&lt;/sz-search-by-id&gt;
-&lt;sz-entity-record-viewer *ngIf=&quot;formResult&quot; [record]=&quot;formResult&quot;&gt;&lt;/sz-entity-record-viewer&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;&lt;sz-search-by-id #searchBox[dataSource]=&quot;'COMPANIES'&quot;(resultChange)=&quot;formResult = $event&quot;&gt;&lt;/sz-search-by-id&gt;&lt;sz-entity-record-viewer *ngIf=&quot;formResult&quot; [record]=&quot;formResult&quot;&gt;&lt;/sz-entity-record-viewer&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) --&gt;
-&lt;sz-search-by-id id=&quot;formInput&quot;
-data-source=&quot;COMPANIES&quot;&gt;&lt;/sz-search-by-id&gt;
-&lt;sz-entity-record-viewer id=&quot;formResult&quot;&gt;
-&lt;/sz-entity-record-viewer&gt;
-&lt;script&gt;
-document.getElementById('formInput').addEventListener('resultChange', function(evt) {
-document.getElementById('formResult').record = evt.data;
-});
-&lt;/script&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) --&gt;&lt;sz-search-by-id id=&quot;formInput&quot;data-source=&quot;COMPANIES&quot;&gt;&lt;/sz-search-by-id&gt;&lt;sz-entity-record-viewer id=&quot;formResult&quot;&gt;&lt;/sz-entity-record-viewer&gt;&lt;script&gt;document.getElementById('formInput').addEventListener('resultChange', function(evt) {document.getElementById('formResult').record = evt.data;});&lt;/script&gt;</code></pre>
                 </div>
     </div>
 

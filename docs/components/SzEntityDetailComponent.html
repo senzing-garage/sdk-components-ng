@@ -82,25 +82,13 @@ Generates a complex detail page from input parameters.</p>
     </p>
     <div class="io-description">
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;
-&lt;sz-entity-detail
-[showGraphMatchKeys]=&quot;true&quot;
-(entityIdChanged)=&quot;entityChangedHandler($event)&quot;
-[entityId]=&quot;currentlySelectedEntityId&quot;&gt;&lt;/sz-entity-detail&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;&lt;sz-entity-detail[showGraphMatchKeys]=&quot;true&quot;(entityIdChanged)=&quot;entityChangedHandler($event)&quot;[entityId]=&quot;currentlySelectedEntityId&quot;&gt;&lt;/sz-entity-detail&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) by attribute --&gt;
-&lt;sz-entity-detail
-show-graph-match-keys=&quot;true&quot;
-entity-id=&quot;1002&quot;&gt;&lt;/sz-entity-detail&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) by attribute --&gt;&lt;sz-entity-detailshow-graph-match-keys=&quot;true&quot;entity-id=&quot;1002&quot;&gt;&lt;/sz-entity-detail&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) by DOM --&gt;
-&lt;sz-entity-detail id=&quot;sz-ent-detail&quot;&gt;&lt;/sz-entity-detail&gt;
-&lt;script&gt;
-document.getElementById('sz-ent-detail').entityId = 1002;
-document.getElementById('sz-ent-detail').addEventListener('entityIdChanged', (entId) =&gt; { console.log('entity id changed!', entId); })
-&lt;/script&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) by DOM --&gt;&lt;sz-entity-detail id=&quot;sz-ent-detail&quot;&gt;&lt;/sz-entity-detail&gt;&lt;script&gt;document.getElementById('sz-ent-detail').entityId = 1002;document.getElementById('sz-ent-detail').addEventListener('entityIdChanged', (entId) =&gt; { console.log('entity id changed!', entId); })&lt;/script&gt;</code></pre>
                 </div>
     </div>
 
