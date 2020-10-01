@@ -127,6 +127,9 @@
       font-size: var(--sz-entity-detail-header-entity-name-font-size);
       font-weight: var(--sz-entity-detail-header-entity-name-font-weight);
     }
+    .detail-header__entity-id {
+      /* font-size: 12px; */
+    }
     .detail-header__last-seen {
       font-size: 24px;
     }

@@ -15,7 +15,7 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzEntitySearchParams } from '../../models/entity-search';
 import { SzSearchService } from '../../services/sz-search.service';
-import { JSONScrubber } from '../../common/utils';
+import { JSONScrubber, parseBool } from '../../common/utils';
 import { SzConfigurationService } from '../../services/sz-configuration.service';
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzFoliosService } from '../../services/sz-folios.service';
@@ -44,15 +44,6 @@ interface SzBoolFieldMapByName {
   identifierType: boolean;
 }
 
-/** @internal */
-const parseBool = (value: any): boolean => {
-  if (!value || value === undefined) {
-    return false;
-  } else if (typeof value === 'string') {
-    return (value.toLowerCase().trim() === 'true') ? true : false;
-  } else if (value > 0) { return true; }
-  return false;
-};
 
 /**
  * Provides a search box component that can execute search queries and return results.

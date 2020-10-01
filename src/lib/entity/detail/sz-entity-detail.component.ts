@@ -13,16 +13,7 @@ import {
 import { SzEntityDetailGraphComponent } from './sz-entity-detail-graph/sz-entity-detail-graph.component';
 
 import { SzPrefsService } from '../../services/sz-prefs.service';
-
-/** @internal */
-const parseBool = (value: any): boolean => {
-  if (!value || value === undefined) {
-    return false;
-  } else if (typeof value === 'string') {
-    return (value.toLowerCase().trim() === 'true') ? true : false;
-  } else if (value > 0) { return true; }
-  return false;
-};
+import { parseBool } from '../../common/utils';
 
 /**
  * The Entity Detail Component.

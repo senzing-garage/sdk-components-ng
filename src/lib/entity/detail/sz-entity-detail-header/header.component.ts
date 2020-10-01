@@ -103,6 +103,14 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     }
     return "";
   }
+  /** get the entity id if available, otherwise undefined */
+  public get entityId(): number | undefined {
+    if(this.entity && this.entity.resolvedEntity && this.entity.resolvedEntity.entityId) {
+      return this.entity.resolvedEntity.entityId;
+    }
+    return undefined;
+  }
+
   /**
    * returns "M", "F", or undefined if gender cannot be determined.
    * @param features
