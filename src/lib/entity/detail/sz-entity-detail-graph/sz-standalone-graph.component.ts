@@ -413,9 +413,9 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   /**
    * initiates a redraw of the graph canvas inside the component
    */
-  public reload(): void {
+  public reload(entityIds?: string | number | number[] ): void {
     if(this.graph && this.graph.reload && this._graphComponentRendered) {
-      this.graph.reload();
+      this.graph.reload(entityIds);
     }
   }
 
