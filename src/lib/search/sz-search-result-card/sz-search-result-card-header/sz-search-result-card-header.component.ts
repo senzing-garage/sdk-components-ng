@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { SzEntityRecord, SzAttributeSearchResult, SzDataSourceRecordSummary } from '@senzing/rest-api-client-ng';
+import { bestEntityName } from '../../../entity/entity-utils';
 
 /**
  * @internal
@@ -32,7 +33,7 @@ export class SzSearchResultCardHeaderComponent implements OnInit {
     if(this.searchResult && this.searchResult.recordSummaries){
       return this.searchResult.recordSummaries.length > 0;
     }
-    return false
+    return false;
   }
 
   public get recordSummaries(): SzDataSourceRecordSummary[] | boolean {
@@ -42,13 +43,12 @@ export class SzSearchResultCardHeaderComponent implements OnInit {
     return false
   }
 
-  public get entityDetailsLinkName(): string {
-    //console.log('sz-search-result-card-header.getEntityDetailsLinkName: ', this._searchResult);
-    if (this._searchResult && this._searchResult.entityName) {
-      return this._searchResult.entityName;
-    } else if(this._searchResult && this._searchResult.bestName) {
-      return this._searchResult.bestName;
-    }
+  public get bestName() : string {
+    return bestEntityName(this._searchResult);
+  }
+
+  public get entityDetailsLinkName(): string { 
+    return this.bestName;
   }
 
   public get entityDetailsLink(): string | boolean {
