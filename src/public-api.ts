@@ -7,6 +7,7 @@ export * from '@senzing/rest-api-client-ng';
 
 /** utilities */
 export * from './lib/common/utils';
+export * from './lib/entity/entity-utils';
 
 /** services */
 export * from './lib/services/sz-message-bundle.service';

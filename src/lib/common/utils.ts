@@ -15,3 +15,12 @@ export function JSONScrubber(value: any): any {
     return JSON.parse(JSON.stringify(value, _repl));
   }
 }
+
+export function parseBool(value: any): boolean {
+  if (!value || value === undefined) {
+    return false;
+  } else if (typeof value === 'string') {
+    return (value.toLowerCase().trim() === 'true') ? true : false;
+  } else if (value > 0) { return true; }
+  return false;
+};
