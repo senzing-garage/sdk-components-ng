@@ -9,8 +9,12 @@ import {
   SzRelatedEntity,
   SzEntityRecord,
   SzRelationshipType,
-  SzEntityFeature
+  SzEntityFeature,
+  SzResolvedEntity
 } from '@senzing/rest-api-client-ng';
+import { SzRelationshipNetworkComponent } from '@senzing/sdk-graph-components';
+
+import { bestEntityName } from '../../entity-utils';
 
 /**
  * @internal
@@ -23,7 +27,19 @@ import {
 })
 export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
   @Input() public searchTerm: string;
-  @Input() public entity: SzEntityData;
+  /** the entity to display */
+  private _entity: SzEntityData;
+  /** set the entity to display */
+  @Input() public set entity(value: SzEntityData) {
+    this._entity = value;
+    if(value && value.resolvedEntity) {
+      this.setIconClassesFromEntity( value.resolvedEntity );
+    }
+  }
+  /** get the entity being displayed */
+  public get entity(): SzEntityData {
+    return this._entity;
+  }
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
   /** the width to switch from wide to narrow layout */
@@ -46,6 +62,9 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     return this._layoutClasses;
   }
   @Input() public forceLayout: boolean = false;
+
+  private _bestName: string = null;
+  private _bestNameEntity: SzEntityData = null;
 
   /**
    * A list of the search results that are matches.
@@ -86,22 +105,21 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     }) : undefined;
   }
 
-  /**
+/**
    * Best name to use for entity
    *
    * @readonly
    */
   public get bestName(): string {
-    if(this.entity) {
-      if(this.entity.resolvedEntity.bestName) {
-        return this.entity.resolvedEntity.bestName.trim();
-      } else if(this.entity.resolvedEntity.entityName) {
-        return this.entity.resolvedEntity.entityName.trim();
-      } else if(this.entity.resolvedEntity.nameData.length > 0) {
-        return this.entity.resolvedEntity.nameData[1];
-      }
+    if (this._bestName && this._bestNameEntity === this.entity) {
+      return this._bestName;
     }
-    return "";
+    if (!this.entity) {
+      return bestEntityName(null);
+    }
+    this._bestName = bestEntityName(this.entity.resolvedEntity);
+    this._bestNameEntity = this.entity;
+    return this._bestName;
   }
   /** get the entity id if available, otherwise undefined */
   public get entityId(): number | undefined {
@@ -171,33 +189,37 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     }
     return ret;
   }
+  /** @internal */
+  private _iconClasses = ['icon-user', 'icon-inline'];
   /**
    * returns string[] of classes to be applied to icon svg element
    * @readonly
    */
-  public get iconClasses() {
-    let ret = ['icon-user', 'icon-inline'];
-    if(this.entity && this.entity.resolvedEntity.features) {
-      let isPerson = this.isPerson(this.entity.resolvedEntity.features);
-      let gender = this.getGenderFromFeatures(this.entity.resolvedEntity.features);
-      //console.warn('gender: ', gender);
-      if(gender) {
-        ret.push( (gender == 'F' ? 'female' : 'male') );
-        if(gender == 'M'){
-          ret.push('icon-flip');
-        }
-      } else if(!isPerson) {
-        ret.push('company');
-      } else {
-        ret.push('default'); ret.push('icon-flip');
-      }
-    } else {
-      // default
-      ret.push('default'); ret.push('icon-flip');
-    }
-    //console.log('iconClasses: ', ret);
-    return ret
+  public get iconClasses(): string[] {
+    return this._iconClasses;
   }
+  /** sets the appropriate icon to show for the entity in the header */
+  private setIconClassesFromEntity(entity: SzResolvedEntity) {
+    const iconClasses = ['icon-user', 'icon-inline'];
+    if(entity) {
+      const iconType    = SzRelationshipNetworkComponent.getIconType(entity);
+      const gender      = entity && entity.features ? this.getGenderFromFeatures(entity.features) : undefined;
+
+      if(iconType && iconType !== undefined){
+        if (iconType === 'business') {
+          iconClasses.push('company');
+        } else if (iconType === 'userFemale' || iconType === 'userMale') {
+          iconClasses.push( (gender == 'F' || iconType === 'userFemale' ? 'female' : 'male') );
+          iconClasses.push('icon-flip');
+        } else if (iconType === 'default') {
+          iconClasses.push('default'); iconClasses.push('icon-flip');
+        }
+      }
+    }
+    this._iconClasses = iconClasses;
+    //console.warn('SzEntityDetailHeaderComponent.setIconClassesFromEntity: ', iconType, iconClasses, entity);
+  }
+
   /**
    * return the gender to be used for the icon.
    * @returns none | F | M

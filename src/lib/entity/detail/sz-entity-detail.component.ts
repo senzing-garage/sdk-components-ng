@@ -560,7 +560,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     });
     // redraw graph on entity change
     if(this.graphComponent && this.graphComponent.reload) {
-      this.graphComponent.reload();
+      this.graphComponent.reload(this.entityId);
     }
     this.dataChanged.next(this.entity);
   }
