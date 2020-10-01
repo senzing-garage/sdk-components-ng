@@ -445,7 +445,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
       this.graphNetworkComponent.buildOut = this.buildOut;
       if(this._graphComponentRendered){
         //console.log('re-rendering graph');
-        this.reload();
+        this.reload( this._graphIds );
       }
     }
 
