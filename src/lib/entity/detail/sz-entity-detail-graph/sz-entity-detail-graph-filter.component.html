@@ -91,7 +91,7 @@
   <ul class="other-colors-list">
     <li>
       <label>
-        <input formControlName="queriedEntitiesColor" type="color" (change)="onColorParameterChange('queriedEntitiesColor', $event.target.value)">
+        <input #queriedNodesColorInput formControlName="queriedEntitiesColor" type="color" [style.background-color]="queriedNodesColorInput.value" (change)="onColorParameterChange('queriedEntitiesColor', $event.target.value)">
         <span class="has-tooltip block-level-src">
           Active/Focused Enitity
           <span class="tooltip tooptip-left">The color of the current entity or entities</span>
