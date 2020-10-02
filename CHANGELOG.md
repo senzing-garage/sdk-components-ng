@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2020-10-2
+
+- Bugfixes for graph node filtering, color application by datasource, tooltips, redraw and source race conditions.
+- Added *Entity Id* to entity detail component
+
+relevant tickets: #162, #159, #152, #137
+
 ## [2.1.0] - 2020-9-21
 
 Maintenence release for framework upgrade to Angular 10: see [https://blog.angular.io/version-10-of-angular-now-available-78960babd41](https://blog.angular.io/version-10-of-angular-now-available-78960babd41)

@@ -58,7 +58,16 @@
                 <td class="col-md-4">
                     <ul class="index-list">
                         <li>
+                            <a href="#bestEntityName" title="src/lib/entity/entity-utils.ts"><b>bestEntityName</b>&nbsp;&nbsp;&nbsp;(src/.../entity-utils.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#checkEmailPattern" title="src/lib/entity/entity-utils.ts"><b>checkEmailPattern</b>&nbsp;&nbsp;&nbsp;(src/.../entity-utils.ts)</a>
+                        </li>
+                        <li>
                             <a href="#JSONScrubber" title="src/lib/common/utils.ts"><b>JSONScrubber</b>&nbsp;&nbsp;&nbsp;(src/.../utils.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#parseBool" title="src/lib/common/utils.ts"><b>parseBool</b>&nbsp;&nbsp;&nbsp;(src/.../utils.ts)</a>
                         </li>
                     </ul>
                 </td>
@@ -67,7 +76,150 @@
     </table>
 </section>
 
-    <h3>src/lib/common/utils.ts</h3>
+    <h3>src/lib/entity/entity-utils.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="bestEntityName"></a>
+                    <span class="name">
+                        <b>
+                            bestEntityName
+                        </b>
+                        <a href="#bestEntityName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>bestEntityName(entity)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>A reusable function to obtain the best displayable name for
+an instance of SzResolvedEntity.  This will first attempt to
+leverage the &quot;bestName&quot; and &quot;entityName&quot; fields if they exist
+on the specified parameter and are non-empty.  Otherwise, it
+will do its best to find a name among the features of the entity.
+As a fall back a name is created using the entity ID.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>entity</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>The SzResolvedEntity to get the name for.</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>This returns the best name for the specified entity, or
+&quot;-&quot; if the specified entity is null or undefined.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkEmailPattern"></a>
+                    <span class="name">
+                        <b>
+                            checkEmailPattern
+                        </b>
+                        <a href="#checkEmailPattern"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>checkEmailPattern(identifier)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Internal function for checking if an identifier matches an email pattern.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>identifier</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>The identifier to check.</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>RegExp | null</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/lib/common/utils.ts</h3>
     <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
@@ -128,6 +280,70 @@ used internally.</p>
                     </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="parseBool"></a>
+                    <span class="name">
+                        <b>
+                            parseBool
+                        </b>
+                        <a href="#parseBool"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>parseBool(value: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 
                     </div>
                     <div class="io-description">
