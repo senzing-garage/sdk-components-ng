@@ -140,8 +140,29 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
     this.prefs.graph.dataSourcesFiltered = filteredDataSourceNames;
     //console.log('onDsFilterChange: ', filteredDataSourceNames, this.prefs.graph.dataSourcesFiltered);
   }
+  /**
+   * method for getting the selected pref color for a datasource 
+   * by the datasource name. used for applying background color to 
+   * input[type=color] to make them look fancier
+   */
+  getDataSourceColor(dsValue) {
+    const coloredDataSourceNames = this.colorsByDataSourcesForm.value.datasources
+      .map((v, i) => {
+        const hasColor = v ? true : false;
+        return v ? {'key': this._datasources[i], 'value': v} : null;
+      })
+      .filter(v => v !== null);
+    
+    let dsFormValMatch = coloredDataSourceNames.find( (_keyValPair) => {
+      return _keyValPair.key === dsValue ? true : false;
+    });
+    if(dsFormValMatch) {
+      return dsFormValMatch.value;
+    }
+    return 'transparent';
+  }
   /** handler for when a color value for a source in the "colorsByDataSourcesForm" has changed */
-  onDsColorChange() {
+  onDsColorChange(src?: any, evt?) {
     const coloredDataSourceNames = this.colorsByDataSourcesForm.value.datasources
       .map((v, i) => {
         const hasColor = v ? true : false;
@@ -149,11 +170,14 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
       })
       .filter(v => v !== null);
 
-      coloredDataSourceNames.forEach( (pair) => {
-        this.dataSourceColors[pair.key] = pair.value;
-      });
+    coloredDataSourceNames.forEach( (pair) => {
+      this.dataSourceColors[pair.key] = pair.value;
+    });
+    // update color swatch bg color(for prettier boxes)
+    if(src && src.style && src.style.setProperty){
+      src.style.setProperty('background-color', src.value);
+    }
     // update colors pref
-    //console.log('onDsColorChange: ', this.dataSourceColors, coloredDataSourceNames);
     if( this.prefs && this.prefs.graph) {
       // there is some sort of mem reference clone issue
       // forcing update seems to fix it
@@ -180,7 +204,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
     } else if (event.srcElement) {
       _checked = event.srcElement.checked;
     }
-    console.log('@senzing/sdk-components-ng/SzEntityDetailGraphFilterComponent.onCheckboxPrefToggle: ', _checked, optName, event);
+    //console.log('@senzing/sdk-components-ng/SzEntityDetailGraphFilterComponent.onCheckboxPrefToggle: ', _checked, optName, event);
     this.optionChanged.emit({'name': optName, value: _checked});
   }
   /** proxy handler for when prefs have changed externally */
