@@ -78,7 +78,7 @@
         <ng-container *ngIf="shouldDataSourceBeDisplayed(_datasources[i])">
           <li formArrayName="datasources">
             <label>
-              <input type="color" [formControlName]="i" (change)="onDsColorChange()">{{_datasources[i]}}
+              <input type="color" [formControlName]="i" [style.background-color]="getDataSourceColor(_datasources[i])" (change)="onDsColorChange($event.target, $event)">{{_datasources[i]}}
             </label>
           </li>
         </ng-container>
@@ -96,6 +96,7 @@
           Active/Focused Enitity
           <span class="tooltip tooptip-left">The color of the current entity or entities</span>
         </span>
+        <small class="note-sub">(*note overrides datasource member color if selected)</small>
       </label>
     </li>
   </ul>

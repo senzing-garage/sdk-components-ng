@@ -437,7 +437,9 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     this.dataSourceColors = prefs.dataSourceColors;
     this.dataSourcesFiltered = prefs.dataSourcesFiltered;
     this.neverFilterQueriedEntityIds = prefs.neverFilterQueriedEntityIds;
-    this.queriedEntitiesColor = prefs.queriedEntitiesColor;
+    if(prefs.queriedEntitiesColor && prefs.queriedEntitiesColor !== undefined && prefs.queriedEntitiesColor !== null) {
+      this.queriedEntitiesColor = prefs.queriedEntitiesColor;
+    }
     if(this.graphNetworkComponent && queryParamChanged) {
       // update graph with new properties
       this.graphNetworkComponent.maxDegrees = this.maxDegrees;
@@ -462,7 +464,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
       _ret = _keys.map( (_key) => {
         const _color = this.dataSourceColors[_key];
         return {
-          selectorFn: this.isEntityNodeInDataSource.bind(this, _key),
+          selectorFn: this.isEntityNodeInDataSource.bind(this, true, _key),
           modifierFn: this.setEntityNodeFillColor.bind(this, _color),
           selectorArgs: _key,
           modifierArgs: _color
@@ -478,7 +480,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
       if( this.graph && this.graph.isD3) {
         _ret = this.dataSourcesFiltered.map( (_name) => {
           return {
-            selectorFn: this.isEntityNodeInDataSource.bind(this, _name),
+            selectorFn: this.isEntityNodeInDataSource.bind(this, false, _name),
             selectorArgs: _name
           };
         });
@@ -498,7 +500,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   /** get an array of NodeFilterPair to use for highlighting certain graph nodes specific colors */
   public get entityNodeColors(): NodeFilterPair[] {
     const _ret = this.entityNodecolorsByDataSource;
-    if( this.queriedEntitiesColor && this.queriedEntitiesColor !== undefined){
+    if( this.queriedEntitiesColor && this.queriedEntitiesColor !== undefined && this.queriedEntitiesColor !== null){
       // add special color for active/primary nodes
       _ret.push( {
         selectorFn: this.isEntityNodeInQuery.bind(this),
@@ -510,10 +512,12 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     return _ret;
   }
   /** used by "entityNodecolorsByDataSource" getter to query nodes as belonging to a datasource */
-  private isEntityNodeInDataSource(dataSource, nodeData) {
-    // console.log('fromOwners: ', nodeData);
+  private isEntityNodeInDataSource(isColorQuery, dataSource, nodeData) {
     const _retVal = false;
-    if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
+    const _hasActiveEntColorSet = ( this.queriedEntitiesColor && this.queriedEntitiesColor !== undefined && this.queriedEntitiesColor !== null) ? true : false;
+
+    if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0 && 
+    ((isColorQuery && _hasActiveEntColorSet) || !isColorQuery)){
       return false;
     } else {
       if(nodeData && nodeData.dataSources && nodeData.dataSources.indexOf){
@@ -525,6 +529,8 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
       }
     }
   }
+  /*
+  @deprecated
   private isEntityNodeInDataSources(dataSources, nodeData) {
     // console.log('fromOwners: ', nodeData);
     console.log('isEntityNodeInDataSources: ', dataSources, nodeData);
@@ -544,7 +550,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
         return false;
       }
     }
-  }
+  }*/
   private isEntityNodeNotInDataSources(dataSources, nodeData) {
     //console.log('isEntityNodeNotInDataSources: ', dataSources, nodeData);
     if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
