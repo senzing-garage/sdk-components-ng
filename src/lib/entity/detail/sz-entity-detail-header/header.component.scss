@@ -65,6 +65,9 @@
           font-weight: var(--sz-entity-detail-header-lo-rail-name-font-weight);
           padding: var(--sz-entity-detail-header-lo-rail-name-padding);
         }
+        .detail-header__entity-id {
+          padding: var(--sz-entity-detail-header-lo-rail-name-padding);
+        }
         sz-entity-detail-section-summary, .sz-entity-detail-section-summary {
           flex: 1 25%;
         }
