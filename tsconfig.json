@@ -36,6 +36,9 @@
     },
     {
       "path": "./e2e/tsconfig.e2e.json"
+    },
+    {
+      "path": "./sdk-components-web/tsconfig.app.json"
     }
   ],
   "exclude": [
