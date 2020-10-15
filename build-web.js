@@ -5,18 +5,22 @@ const cheerio = require('cheerio');
 (async function build() {
   const files = [
     './dist/@senzing/sdk-components-web/runtime.js',
-    './dist/@senzing/sdk-components-web/polyfills.js',
-    './dist/@senzing/sdk-components-web/main.js'
+    './dist/@senzing/sdk-components-web/main.js',
+    './dist/@senzing/sdk-components-web/polyfills.js'
   ];
 
   await fs.ensureDir('./dist/@senzing/sdk-components-web/');
   // files may or may not exist depending on type of build
-  if(await fs.exists('./dist/@senzing/sdk-components-web/styles.js')){
+  if(await fs.exists('./dist/@senzing/sdk-components-web/4.js')){
+    files.push('./dist/@senzing/sdk-components-web/4.js');
+  } else if(await fs.exists('./dist/@senzing/sdk-components-web/styles.js')){
     files.push('./dist/@senzing/sdk-components-web/styles.js');
   }
-  if(await fs.exists('./dist/@senzing/sdk-components-web/vendor.js')){
+  if(await fs.exists('./dist/@senzing/sdk-components-web/5.js')){
+    files.push('./dist/@senzing/sdk-components-web/5.js');
+  } else if(await fs.exists('./dist/@senzing/sdk-components-web/vendor.js')){
     files.push('./dist/@senzing/sdk-components-web/vendor.js');
-  }
+  }  
   // concat all files together
   await concat(files, './dist/@senzing/sdk-components-web/senzing-components-web.js');
   // copy styles
@@ -53,20 +57,26 @@ const cheerio = require('cheerio');
   if(await fs.exists('./dist/@senzing/sdk-components-web/favicon.ico')){
     await fs.remove('./dist/@senzing/sdk-components-web/favicon.ico').catch(()=>{ console.log('build error #5'); });
   }
-  if(await fs.exists('./dist/@senzing/sdk-components-web/polyfills.js')){
-    await fs.remove('./dist/@senzing/sdk-components-web/polyfills.js').catch(()=>{ console.log('build error #6'); });
-  }
   if(await fs.exists('./dist/@senzing/sdk-components-web/runtime.js')){
     await fs.remove('./dist/@senzing/sdk-components-web/runtime.js').catch(()=>{ console.log('build error #7'); });
+  }
+  if(await fs.exists('./dist/@senzing/sdk-components-web/main.js')){
+    await fs.remove('./dist/@senzing/sdk-components-web/main.js').catch(()=>{ console.log('build error #10'); });
+  }
+  if(await fs.exists('./dist/@senzing/sdk-components-web/polyfills.js')){
+    await fs.remove('./dist/@senzing/sdk-components-web/polyfills.js').catch(()=>{ console.log('build error #6'); });
   }
   if(await fs.exists('./dist/@senzing/sdk-components-web/styles.js')){
     await fs.remove('./dist/@senzing/sdk-components-web/styles.js').catch(()=>{ console.log('build error #8'); });
   }
+  if(await fs.exists('./dist/@senzing/sdk-components-web/4.js')){
+    await fs.remove('./dist/@senzing/sdk-components-web/4.js').catch(()=>{ console.log('build error #9'); });
+  }
+  if(await fs.exists('./dist/@senzing/sdk-components-web/5.js')){
+    await fs.remove('./dist/@senzing/sdk-components-web/5.js').catch(()=>{ console.log('build error #10'); });
+  }
   if(await fs.exists('./dist/@senzing/sdk-components-web/vendor.js')){
     await fs.remove('./dist/@senzing/sdk-components-web/vendor.js').catch(()=>{ console.log('build error #9'); });
-  }
-  if(await fs.exists('./dist/@senzing/sdk-components-web/main.js')){
-    await fs.remove('./dist/@senzing/sdk-components-web/main.js').catch(()=>{ console.log('build error #10'); });
   }
 
   // rename index.html to example.html
