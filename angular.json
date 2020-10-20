@@ -1533,5 +1533,5 @@
       }
     }
   },
-  "defaultProject": "@senzing/sdk-components-ng/examples/search-in-graph"
+  "defaultProject": "@senzing/sdk-components-ng/examples/search-with-results-and-details"
 }
