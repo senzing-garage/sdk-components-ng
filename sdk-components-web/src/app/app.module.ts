@@ -72,8 +72,8 @@ export class AppModule {
 
     // small embedded graph 
     // ! breaks entity detail graph. not sure why
-    //const WC_GRAPH_SMALL = createCustomElement(SzEntityDetailGraphComponent, { injector });
-    //customElements.define('sz-entity-detail-graph', WC_GRAPH_SMALL);
+    const WC_GRAPH_SMALL = createCustomElement(SzEntityDetailGraphComponent, { injector });
+    customElements.define('sz-embedded-graph', WC_GRAPH_SMALL);
 
     // view a entity record information (json tree/summary)
     const WC_ENT_REC_VIEWER = createCustomElement(SzEntityRecordViewerComponent, { injector });
@@ -104,13 +104,13 @@ export class AppModule {
     customElements.define('sz-standalone-graph', WC_GRAPH_LARGE);
     
     // relationship network graph tag
-    // ! breaks entity detail graph. not sure why
-    //const WC_GRAPH_NETWORK = createCustomElement(SzRelationshipNetworkComponent, { injector });
-    //customElements.define('sz-relationship-network', WC_GRAPH_NETWORK);
+    // !! DO NOT use the same tag name as defined in the class, it will break nested component rendering !!
+    const WC_GRAPH_NETWORK = createCustomElement(SzRelationshipNetworkComponent, { injector });
+    customElements.define('sz-wc-relationship-network', WC_GRAPH_NETWORK);
     
     // relationship path graph tag
-    //const WC_GRAPH_PATH = createCustomElement(SzRelationshipPathComponent, {injector});
-    //customElements.define('sz-relationship-path', WC_GRAPH_PATH);
+    const WC_GRAPH_PATH = createCustomElement(SzRelationshipPathComponent, {injector});
+    customElements.define('sz-wc-relationship-path', WC_GRAPH_PATH);
   }
   ngDoBootstrap() {}
 }
