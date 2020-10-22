@@ -14,7 +14,7 @@ import {
 import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
 import { SzEntityDetailGraphFilterComponent } from './sz-entity-detail-graph-filter.component';
 import { SzRelationshipNetworkComponent, NodeFilterPair, SzNetworkGraphInputs } from '@senzing/sdk-graph-components';
-
+import { parseBool } from '../../../common/utils';
 /**
  * Embeddable Graph Component
  * used to display a entity and its network relationships
@@ -36,7 +36,7 @@ import { SzRelationshipNetworkComponent, NodeFilterPair, SzNetworkGraphInputs } 
       ></sz-standalone-graph>
  *
  * @example <!-- (WC) by attribute -->
- * <sz-standalone-graph
+ * <sz-wc-standalone-graph
           filter-width="320"
           graph-ids="1,1001,1002"
           show-pop-out-icon="false"
@@ -44,13 +44,13 @@ import { SzRelationshipNetworkComponent, NodeFilterPair, SzNetworkGraphInputs } 
           show-filters-control="false"
           filter-control-position="top-right"
           show-match-keys="true"
-      ></sz-standalone-graph>
+      ></sz-wc-standalone-graph>
  *
  * @example <!-- (WC) by DOM -->
- * <sz-standalone-graph id="sz-standalone-graph"></sz-standalone-graph>
+ * <sz-wc-standalone-graph id="sz-wc-standalone-graph"></sz-wc-standalone-graph>
  * <script>
- * document.getElementById('sz-standalone-graph').graphIds = [1,1001,1002];
- * document.getElementById('sz-standalone-graph').addEventListener('entityClick', (data) => { console.log('entity clicked on!', data); })
+ * document.getElementById('sz-wc-standalone-graph').graphIds = [1,1001,1002];
+ * document.getElementById('sz-wc-standalone-graph').addEventListener('entityClick', (data) => { console.log('entity clicked on!', data); })
  * </script>
  */
 @Component({
@@ -82,16 +82,19 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     resolvedEntity: SzResolvedEntity,
     relatedEntities: SzRelatedEntity[]
   }*/
+  /** @internal */
   public _showMatchKeys = false;
   /** sets the visibility of edge labels on the node links */
-  @Input() public set showMatchKeys(value: boolean) {
-    this._showMatchKeys = value;
+  @Input() public set showMatchKeys(value: boolean | string) {
+    this._showMatchKeys = parseBool(value);
   };
+  /** @internal */
   private _openInNewTab: boolean = false;
   /** whether or not to open entity clicks in new tab */
   @Input() public set openInNewTab(value: boolean) {
     this._openInNewTab = value;
   };
+  /** @internal */
   public _openInSidePanel = false;
   /** whether or not to open entity clicks in side drawer */
   @Input() public set openInSidePanel(value: boolean) {
@@ -103,25 +106,32 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   @Input() buildOut: number = 1;
   @Input() dataSourceColors: any = {};
   @Input() dataSourcesFiltered: string[] = [];
-  @Input() showPopOutIcon: boolean = false;
-  @Input() showFiltersControl: boolean = false;
+  /** @internal */
+  private _showPopOutIcon = false;
+  /** whether or not to show the pop-out icon */
+  @Input() public set showPopOutIcon(value: boolean | string) {
+    this._showPopOutIcon = parseBool(value);
+  }
+  /** @internal */
+  private _showFiltersControl = false;
+  /** whether or not to show the filters drawer */
+  @Input() public set showFiltersControl(value: boolean | string) {
+    this._showFiltersControl = parseBool(value);
+  }
+  /** whether or not to show the filters drawer 
+   * @returns boolean
+  */
+  public get showFiltersControl(): boolean | string {
+    return this._showFiltersControl;
+  }
   @Input() filterControlPosition: string = 'bottom-left';
   @Input() filterWidth: number;
   private neverFilterQueriedEntityIds: boolean = true;
   public filterShowDataSources: string[];
   private _showMatchKeyControl: boolean = true;
+  /** whether or not to show match keys toggle control */
   @Input() set showMatchKeyControl(value: boolean | string) {
-    if((value as string) == 'true' || (value as string) == 'True' || (value as string) == 'false' || (value as string) == 'False') {
-      switch((value as string).toLowerCase()) {
-        case 'true':
-          value = true;
-          break;
-        case 'false':
-          value = false;
-          break;
-      }
-    }
-    this._showMatchKeyControl = (value as boolean);
+    this._showMatchKeyControl = parseBool(value);    
   }
   get showMatchKeyControl(): boolean | string {
     return this._showMatchKeyControl;
@@ -139,10 +149,10 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   }
 
   @HostBinding('class.showing-link-labels') public get showingLinkLabels(): boolean {
-    return this.showMatchKeys;
+    return this._showMatchKeys;
   }
   @HostBinding('class.not-showing-link-labels') public get hidingLinkLabels(): boolean {
-    return !this.showMatchKeys;
+    return !this._showMatchKeys;
   }
 
   //@HostBinding('class.open') get cssClssOpen() { return this.expanded; };
@@ -215,7 +225,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     // only reload graph if value has changed
     if(_oVal !== value){
       // console.log('set graphIds: ', this._graphIds, typeof this.graphIds, value, typeof value);
-      this.reload();
+      this.reload( this._graphIds );
     }
   }
   public get graphIds(): number[] | undefined {

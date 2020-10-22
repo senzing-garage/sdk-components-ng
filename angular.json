@@ -1516,6 +1516,22 @@
                   "with": "sdk-components-web/src/examples/search-by-record-id.html"
                 }
               ]
+            },
+            "largeGraph": {
+              "fileReplacements": [
+                {
+                  "replace": "sdk-components-web/src/index.html",
+                  "with": "sdk-components-web/src/examples/large-graph.html"
+                }
+              ]
+            },
+            "smallGraph": {
+              "fileReplacements": [
+                {
+                  "replace": "sdk-components-web/src/index.html",
+                  "with": "sdk-components-web/src/examples/small-graph.html"
+                }
+              ]
             }
           }
         },
@@ -1532,6 +1548,12 @@
             },
             "searchById": {
               "browserTarget": "@senzing/sdk-components-web:build:searchById"
+            },
+            "largeGraph": {
+              "browserTarget": "@senzing/sdk-components-web:build:largeGraph"
+            },
+            "smallGraph": {
+              "browserTarget": "@senzing/sdk-components-web:build:smallGraph"
             }
           }
         },

@@ -101,7 +101,7 @@ export class AppModule {
     
     // large format graph
     const WC_GRAPH_LARGE = createCustomElement(SzStandaloneGraphComponent, { injector });
-    customElements.define('sz-standalone-graph', WC_GRAPH_LARGE);
+    customElements.define('sz-wc-standalone-graph', WC_GRAPH_LARGE);
     
     // relationship network graph tag
     // !! DO NOT use the same tag name as defined in the class, it will break nested component rendering !!

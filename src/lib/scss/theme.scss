@@ -220,6 +220,7 @@ body {
     --sz-entity-graph-control-padding-bottom: 0px;
     --sz-entity-graph-control-padding-left: 3px;
     --sz-entity-graph-overlay-color: #9d9d9d;
+    
     /* tooltip */
     --sz-graph-tooltip-font-size: 10px;
     --sz-graph-tooltip-background-color: #fff;
@@ -241,8 +242,11 @@ body {
     --sz-entity-graph-control-border-bottom-right-radius: 0;
 
     --sz-entity-graph-control-item-cursor: pointer;
-    --sz-entity-graph-control-item-background-color: #fff;
+    --sz-entity-graph-control-item-background-color: var(--sz-graph-filter-control-background-color);
     --sz-entity-graph-control-item-margin: 0;
+
+    /* graph filters */
+    --sz-graph-filter-control-background-color: transparent;
 
   /* end entity detail vars */
 
