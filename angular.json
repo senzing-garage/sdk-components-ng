@@ -1508,6 +1508,14 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "searchById": {
+              "fileReplacements": [
+                {
+                  "replace": "sdk-components-web/src/index.html",
+                  "with": "sdk-components-web/src/examples/search-by-record-id.html"
+                }
+              ]
             }
           }
         },
@@ -1521,6 +1529,9 @@
           "configurations": {
             "production": {
               "browserTarget": "@senzing/sdk-components-web:build:production"
+            },
+            "searchById": {
+              "browserTarget": "@senzing/sdk-components-web:build:searchById"
             }
           }
         },

@@ -156,10 +156,9 @@ export class SzSearchService {
    *
    * @memberof SzSearchService
    */
-  public getEntityByRecordId(dsName: string, recordId: number, withRelated = false): Observable<SzEntityRecord> {
+  public getEntityByRecordId(dsName: string, recordId: string | number, withRelated = false): Observable<SzEntityRecord> {
     console.log('@senzing/sdk/services/sz-search[getEntityByRecordId('+ dsName +', '+ recordId +')] ', dsName, recordId);
     const _recordId: string = recordId.toString();
-    //return this.entityDataService.getDataSourceRecord(dataSourceCode: string, recordId: string, withRaw?: boolean, observe?: 'body', reportProgress?: boolean): Observable<SzRecordResponse>;
 
     return this.entityDataService.getRecord(dsName, _recordId)
     .pipe(

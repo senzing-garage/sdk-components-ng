@@ -24,7 +24,7 @@ import { SzSearchByIdFormParams } from '../search/sz-search/sz-search-by-id.comp
  * </sz-entity-record-viewer>
  * <script>
  * document.getElementById('formInput').addEventListener('resultChange', function(evt) {
- *     document.getElementById('formResult').record = evt.data;
+ *     document.getElementById('formResult').record = evt.detail;
  * });
  * </script>
  */
@@ -35,7 +35,20 @@ import { SzSearchByIdFormParams } from '../search/sz-search/sz-search-by-id.comp
 })
 export class SzEntityRecordViewerComponent {
   /** the record to display */
-  @Input() record: SzEntityRecord;
+  private _record: SzEntityRecord;
+  /** set the record to display */
+  @Input() public set record(value: SzEntityRecord | string) {
+    if((value as SzEntityRecord).recordId) {
+      this._record = (value as SzEntityRecord);
+    } else {
+      // assume string
+      this._record = JSON.parse(value as string);
+    }
+  };
+  /** return the record data */
+  public get record() {
+    return this._record;
+  }
   /** show the JSON data for this.record<SzEntityRecord> */
   @Input() showJSON = true;
   /** show a message when a search has 0 results */

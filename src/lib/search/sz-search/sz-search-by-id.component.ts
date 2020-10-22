@@ -566,8 +566,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
       // by ds / record id
       //console.log('search by record id: ', searchParams.dataSource, searchParams.recordId);
 
-      // cast string recordId to number if not already number
-      const recordId: number = (typeof searchParams.recordId == 'number') ? searchParams.recordId : parseInt(searchParams.recordId);
+      const recordId: string | number = searchParams.recordId;
       // emit search start
       this.searchStart.emit(searchParams);
       // make request
