@@ -5,10 +5,11 @@ import { Configuration as SzRestConfiguration } from '@senzing/rest-api-client-n
  * Provides a component that lists all current API connection config parameters as
  * a human readable table.
  *
- * @example
+ * @example <!-- (Angular) -->
  * <sz-configuration-about></sz-configuration-about>
  *
- * @export
+ * @example <!-- (WC) by attribute -->
+ * <sz-wc-configuration-about></sz-wc-configuration-about>
  */
 @Component({
   selector: 'sz-configuration-about',

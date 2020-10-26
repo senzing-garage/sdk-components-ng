@@ -14,26 +14,26 @@ import { takeUntil } from 'rxjs/operators';
  * provides the more robust solution.
  *
  * @example <!-- (WC) javascript -->
- * <sz-preferences id="prefsIntf"></sz-preferences>
+ * <sz-wc-preferences id="prefsIntf"></sz-wc-preferences>
  * <script>document.getElementById('prefsIntf').GraphBuildOut = 5;</script>
  *
  * @example <!-- (WC) By attribute: -->
- * <sz-preferences
+ * <sz-wc-preferences
  * graph-build-out="20">
  *
  * @example <!-- (WC) javascript bulk initialize from local storage: -->
- * <sz-preferences id="prefsIntf" show-controls="true">
+ * <sz-wc-preferences id="prefsIntf" show-controls="true"></sz-wc-preferences>
  * <script>
  * document.getElementById('prefsIntf').prefsFromJSONString = localStorage.getItem('NAME_OF_LS_KEY');
  * </script>
  *
  * @example <!-- (WC) show other data in search results: -->
- * <sz-preferences
- * search-results-show-other-data="true">
+ * <sz-wc-preferences
+ * search-results-show-other-data="true"></sz-wc-preferences>
  *
  * @example <!-- (WC) show interactive UI: -->
- * <sz-preferences
- * show-controls="true">
+ * <sz-wc-preferences
+ * show-controls="true"></sz-wc-preferences>
  *
  * @example <!-- (Angular) -->
  * <sz-preferences

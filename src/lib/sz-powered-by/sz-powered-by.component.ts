@@ -5,8 +5,11 @@ import { Component, OnInit, Input } from '@angular/core';
  * Used for configuration debugging since this does
  * not require any Rest API communication.
  *
- * @example
+ * @example <!-- (Angular) -->
  * <sz-powered-by></sz-powered-by>
+ *
+ * @example <!-- (WC) -->
+ * <sz-wc-powered-by></sz-wc-powered-by>
  */
 @Component({
   selector: 'sz-powered-by',

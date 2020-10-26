@@ -26,12 +26,12 @@ import { parseBool } from '../../common/utils';
  *   [entityId]="currentlySelectedEntityId"></sz-entity-detail>
  *
  * @example <!-- (WC) by attribute -->
- * <sz-entity-detail
+ * <sz-wc-entity-detail
  *   show-graph-match-keys="true"
- *   entity-id="1002"></sz-entity-detail>
+ *   entity-id="1002"></sz-wc-entity-detail>
  *
  * @example <!-- (WC) by DOM -->
- * <sz-entity-detail id="sz-ent-detail"></sz-entity-detail>
+ * <sz-wc-entity-detail id="sz-ent-detail"></sz-wc-entity-detail>
  * <script>
  * document.getElementById('sz-ent-detail').entityId = 1002;
  * document.getElementById('sz-ent-detail').addEventListener('entityIdChanged', (entId) => { console.log('entity id changed!', entId); })

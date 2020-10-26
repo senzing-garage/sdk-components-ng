@@ -1,5 +1,55 @@
 [
   {
+    "title": "Web Components",
+    "file": "web-components/README.md",
+    "children": [
+      {
+        "title": "Setup",
+        "file": "web-components/setup.md"
+      },
+      {
+        "title": "Examples",
+        "file": "web-components/README.md",
+        "children": [
+          {
+            "title": "Attribute Search with Results",
+            "file": "web-components/examples/search-by-attribute.md"
+          },
+          {
+            "title": "Id Search with Record Viewer",
+            "file": "web-components/examples/search-by-record-id.md"
+          },
+          {
+            "title": "Attribute Search with Details",
+            "file": "web-components/examples/search-with-details.md"
+          },
+          {
+            "title": "Large Graph with Filtering",
+            "file": "web-components/examples/large-graph.md"
+          },
+          {
+            "title": "Small Graph (for embedding)",
+            "file": "web-components/examples/small-graph.md"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Graph Components",
+    "file": "graph-components/README.md",
+    "children": [
+      {
+        "title": "SzRelationshipNetworkComponent",
+        "file": "graph-components/SzRelationshipNetworkComponent.md"
+      },
+      {
+        "title": "SzRelationshipPathComponent",
+        "file": "graph-components/SzRelationshipPathComponent.html"
+      }
+    ]
+  },
+  {
     "title": "Themes",
     "file": "themes/README.md",
     "children": [

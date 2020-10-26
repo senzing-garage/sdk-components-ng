@@ -1473,7 +1473,8 @@
             ],
             "assets": [
               "sdk-components-web/src/favicon.ico",
-              "sdk-components-web/src/assets"
+              "sdk-components-web/src/assets",
+              "sdk-components-web/src/examples"
             ],
             "styles": [
               "sdk-components-web/src/styles.scss"
@@ -1509,14 +1510,6 @@
                 }
               ]
             },
-            "searchById": {
-              "fileReplacements": [
-                {
-                  "replace": "sdk-components-web/src/index.html",
-                  "with": "sdk-components-web/src/examples/search-by-record-id.html"
-                }
-              ]
-            },
             "largeGraph": {
               "fileReplacements": [
                 {
@@ -1530,6 +1523,30 @@
                 {
                   "replace": "sdk-components-web/src/index.html",
                   "with": "sdk-components-web/src/examples/small-graph.html"
+                }
+              ]
+            },
+            "searchByAttribute": {
+              "fileReplacements": [
+                {
+                  "replace": "sdk-components-web/src/index.html",
+                  "with": "sdk-components-web/src/examples/search-by-attribute.html"
+                }
+              ]
+            },
+            "searchById": {
+              "fileReplacements": [
+                {
+                  "replace": "sdk-components-web/src/index.html",
+                  "with": "sdk-components-web/src/examples/search-by-record-id.html"
+                }
+              ]
+            },
+            "searchWithDetail": {
+              "fileReplacements": [
+                {
+                  "replace": "sdk-components-web/src/index.html",
+                  "with": "sdk-components-web/src/examples/search-with-detail.html"
                 }
               ]
             }

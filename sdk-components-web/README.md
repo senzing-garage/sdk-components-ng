@@ -34,7 +34,7 @@ Add the script tag to your html document like so:
 
 And include the component tag in your document like so:
 ```html
-<sz-search name="Guy To LookFor"
+<sz-wc-search name="Guy To LookFor"
   email="GuysEmail@MAIL.COM"></sz-search>
 ```
 

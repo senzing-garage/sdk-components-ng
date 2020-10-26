@@ -10,9 +10,9 @@
   <script>
     // wire up senzing web components to event handlers
     window.onload = function() {
-      var searchBoxEle    = document.querySelector('sz-search-by-id');
-      var entityDetailEle = document.querySelector('sz-entity-detail');
-      var recordDetailEle = document.querySelector('sz-entity-record-viewer');
+      var searchBoxEle    = document.querySelector('sz-wc-search-by-id');
+      var entityDetailEle = document.querySelector('sz-wc-entity-detail');
+      var recordDetailEle = document.querySelector('sz-wc-entity-record-viewer');
       var noResultsEle    = document.querySelector('#no-results');
 
       document.getElementById('api-config').addEventListener('parametersChanged', function(event){
@@ -80,10 +80,10 @@
   </style>
 </head>
 <body>
-  <sz-configuration id="api-config"></sz-configuration>
-  <sz-search-by-id></sz-search-by-id>
+  <sz-wc-configuration id="api-config"></sz-wc-configuration>
+  <sz-wc-search-by-id></sz-wc-search-by-id>
   <h2 id="no-results" class="hidden">No Results Found</h2>
-  <sz-entity-detail class="hidden"></sz-entity-detail>
-  <sz-entity-record-viewer></sz-entity-record-viewer>
+  <sz-wc-entity-detail class="hidden"></sz-wc-entity-detail>
+  <sz-wc-entity-record-viewer></sz-wc-entity-record-viewer>
 </body>
 </html>

@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const concat = require('concat');
 const cheerio = require('cheerio');
+const path = require('path');
 
 (async function build() {
   const files = [
@@ -79,13 +80,43 @@ const cheerio = require('cheerio');
     await fs.remove('./dist/@senzing/sdk-components-web/vendor.js').catch(()=>{ console.log('build error #9'); });
   }
 
+  // add scripts to examples
+  const examplesDir = path.join(__dirname, 'dist/@senzing/sdk-components-web/examples');
+  await fs.readdir(examplesDir, function(err, files) {
+    if (err) {
+      console.log("Error getting directory information.")
+    } else {
+      files.forEach(function(file) {
+        console.log('add scripts to:',file);
+        fs.readFile( path.join(examplesDir, file), {encoding: 'utf8'}, (error, data) => {
+          if(error){
+            console.log('build error #11');
+            return;
+          }
+          var $ = cheerio.load(data); // load in the HTML into cheerio
+          $('base').remove();
+          $('head').append('<link rel="stylesheet" href="/node_modules/\\@senzing/sdk-components-web/senzing-components-web.css"></head>');
+          $('body').append('<script src="/node_modules/\\@senzing/sdk-components-web/senzing-components-web.js" defer></script>');
+
+          // write file
+          fs.writeFile(path.join(examplesDir, file), $.html(), (error) => {
+            if(error){
+              console.error('build error #12');
+              return;
+            }
+          });
+        });
+      })
+    }
+  })
+
   // rename index.html to example.html
   await fs.rename('./dist/@senzing/sdk-components-web/index.html','./dist/@senzing/sdk-components-web/dev.html').catch(()=>{ console.log('build error #8'); });
 
   // replace script refs in example.html
   await fs.readFile((__dirname + '/dist/@senzing/sdk-components-web/dev.html'), {encoding: 'utf8'}, (error, data) => {
     if(error){
-      console.log('build error #11');
+      console.log('build error #13');
       return;
     }
     var $ = cheerio.load(data); // load in the HTML into cheerio
@@ -107,7 +138,7 @@ const cheerio = require('cheerio');
     // write file
     fs.writeFile((__dirname + '/dist/@senzing/sdk-components-web/index.html'), $.html(), (error) => {
       if(error){
-        console.error('build error #12');
+        console.error('build error #14');
         return;
       }
       // now remove original
