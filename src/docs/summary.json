@@ -4,10 +4,6 @@
     "file": "web-components/README.md",
     "children": [
       {
-        "title": "Setup",
-        "file": "web-components/setup.md"
-      },
-      {
         "title": "Examples",
         "file": "web-components/README.md",
         "children": [
