@@ -1,11 +1,18 @@
 # Large Graph with Filtering
 
+This is an example of how to wire the large graph used to display entity relationships to a attribute search form. You submit the search, it sends it to the api server, returns and results. Then those results are iterated over and fed in to the `graphIds` setter for the component.
+
+![screen shot of SzStandaloneGraphComponent](../../../images/ss-graph-large.png)
+<br/><br/><br/><br/>
+
+## Source
+
 ```html
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>@senzing/sdk-components-web</title>
+  <title>@senzing/sdk-components-web (SzStandaloneGraph)</title>
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -55,6 +62,7 @@
       }     
     };
   </script>
+  <link rel="stylesheet" href="/node_modules/\@senzing/sdk-components-web/senzing-components-web.css">
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -80,7 +88,10 @@
       filter-control-position="top-right"
       show-match-keys="true"
   ></sz-wc-standalone-graph>
+  <script src="/node_modules/\@senzing/sdk-components-web/senzing-components-web.js" defer></script>
 </body>
 </html>
 
 ```
+
+<br/><br/><br/><br/>

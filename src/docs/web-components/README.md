@@ -7,57 +7,58 @@ For more information on the subject see the following sites:
 * [Web Components | MDN](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
 * [Building Components | Web Fundamentals | Google Developers](https://developers.google.com/web/fundamentals/web-components/)
 
-# Preparation
-
-You should set up a working directory, and initialize it.
-
-```terminal
-mkdir wc-example-spa && cd wc-example-spa
-git init
-npm init -y
-```
-
-If you get an error on `git --version` you don't have git installed. If you get an error on `npm -v` you do not have node installed. While you can run the components without either of these tools it's beyond the purposes of illustrating how to get things up and running quickly  ;)
-
-- [Download NodeJS](https://nodejs.org/)
-- [Download Git](https://git-scm.com/download)
-
-# Installation
-```terminal
-npm install @senzing/sdk-components-web --save
-```
-
-# Create an HTML document
-
-So you can either create a html document from scratch or just grab one from the `node_modules/@senzing/sdk-components-web/examples` directory. For the sake of brevity I'm going to illustrate the latter option. Open up a terminal to your working project directory and type:
-
-```terminal
-cp -r node_modules/\@senzing/sdk-components-web/examples/* ./
-```
-
-This should copy all of the example .html file from the package in to your working directory.
-
-## Set the components to your API Server address
-
-Open up the example file and update the `sz-wc-configuration` tag, or add the following to the top of the document `<body>` tag contents:
-```html
-<sz-wc-configuration id="api-config" base-path="http://localhost:8080"></sz-wc-configuration>
-```
-This will tell the components to redirect all api server calls to `localhost:8080`. The next step will set up a redirect to forward any unresolved requests to your api server hostname.
-
-#### Serve your HTML
-
-Go to your terminal and execute the following command. Replace the `http://americium.local:8250` part with the address to your API Rest Server address.
-
-```terminal
-npx http-server --proxy http://americium.local:8250
-```
-
-By default http-server will run on [localhost:8080](http://localhost:8080), and any resources that it can't find will be redirected to the address specified in the `--proxy` parameter.
-
-Now open up [localhost:8080](http://localhost:8080) and browse to the file/example being worked on.
 
 # Web Components Vs. Angular
 
+- Tag Attributes are kabob-case
+- Tag names are prefixed with `sz-wc`
+- DOM events are camel-case
+- DOM properties are camel-case
+
 All Web Component tag names are prefixed with `sz-wc`. This is to prevent tag namespace collision/pollution. When browsing any of the online documentation examples, and you see a tag start with `sz-`, just remember if you are using the `@senzing/sdk-components-web` package your tag name should start with `sz-wc` instead.
 
+The other main difference between the two implementations is that if using angular the attributes are [Camel Case](https://en.wikipedia.org/wiki/Camel_case), and if using web components the attributes are kabob case. See [https://en.wikipedia.org/wiki/Letter_case#Special_case_styles](https://en.wikipedia.org/wiki/Letter_case#Special_case_styles)
+
+When accessing a method or setter through the DOM on a web component programatically however, you access the setter/method in camel case ie:
+
+```html
+<sz-wc-standalone-graph
+    filter-width="320"
+    graph-ids="1,1001,1002"
+    show-pop-out-icon="false"
+    show-match-key-control="false"
+    show-filters-control="false"
+    filter-control-position="top-right"
+    show-match-keys="true"></sz-wc-standalone-graph>
+
+<script>
+    // hide graph filter control programatically
+    document.querySelector('sz-wc-standalone-graph').showFiltersControl = false;
+</script>
+```
+
+# Getting Started
+
+Getting set up to work with the Senzing SDK Components can be done in as little as 10 minutes if you already have an Senzing REST API Server installation running. 
+
+See the [Quick Start Guide](web-components/quick-start.html) for instructions.
+
+# Compatibility
+
+Any web page or application that can render web component tags can be enabled by adding the `@senzing/sdk-components-web` package to it's dependencies. The basic requirement is that the application hosting the tags can parse javascript and supports rendering custom component tags. All modern web browsers, some mobile browsers, and any native applications that support embedded web views should be able to render these components.
+
+Add the css file to your document:
+```html
+<link rel="stylesheet" href="/node_modules/\@senzing/sdk-components-web/senzing-components-web.css">
+```
+Add the javascript to your document:
+```html
+<script src="/node_modules/\@senzing/sdk-components-web/senzing-components-web.js" defer></script>
+```
+
+<div style="border-radius: 5px; border: 1px solid #000; padding: 8px; margin-top: 10px">
+  <div><b>Note*</b></div>
+  You may have to change the paths pointing to each of these files depending on how your application is layed out. These files can be moved to wherever your other assets are stored, the examples above are just directly referencing the files from the node modules location.
+</div>
+
+<br/><br/><br/><br/>

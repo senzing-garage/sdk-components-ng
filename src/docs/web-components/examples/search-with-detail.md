@@ -1,4 +1,11 @@
-# Search with Results List
+# Search with Results List and Detail
+
+This is an example of how to wire the attribute search form to a results list, and the results list to a entity detail viewer. You submit the search, it sends it to the api server, returns the results, then those results are fed in to the result list component. 
+
+When the user clicks on a individual result in the list the `resultClick` event is emitted, in the handler for this event the code grabs the `entityId` property from the json and sets the `entity-id` attribute on the detail viewer tag.
+
+![screen shot of Search By Attribute example](../../../images/ss-search-by-attributes.png)
+<br/><br/><br/><br/>
 
 ```html
 <!doctype html>
@@ -107,6 +114,7 @@
       });
     };
   </script>
+  <link rel="stylesheet" href="/node_modules/\@senzing/sdk-components-web/senzing-components-web.css">
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -174,11 +182,7 @@
   <sz-wc-entity-detail
     entity-id="1002"
   ></sz-wc-entity-detail>
-  <sz-wc-embedded-graph
-    graph-ids="1,1001,1002"
-  ></sz-wc-embedded-graph>
-  <sz-wc-powered-by format="small" style="margin-top: 4em;"></sz-wc-powered-by>
-  <sz-wc-configuration-about></sz-wc-configuration-about>
+  <script src="/node_modules/\@senzing/sdk-components-web/senzing-components-web.js" defer></script>
 </body>
 </html>
 

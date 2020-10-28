@@ -1,11 +1,17 @@
 # Embeddable Graph
 
+This is an example of how to wire the relationship graph base component to a attribute search form. You submit the search, it sends it to the api server, returns the results. Then those results are iterated over and fed in to the `entityIds` setter for the component.
+
+![screen shot of SzRelationshipNetworkGraph](../../../images/ss-graph-small.png)
+<br/><br/><br/><br/>
+
+## Source
 ```html
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>@senzing/sdk-components-web</title>
+  <title>@senzing/sdk-components-web (SzRelationshipNetworkGraph)</title>
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -51,6 +57,7 @@
       }
     };
   </script>
+  <link rel="stylesheet" href="/node_modules/\@senzing/sdk-components-web/senzing-components-web.css">
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -72,7 +79,10 @@
     build-out="5"
     show-link-labels="true"
   ></sz-wc-relationship-network-graph>
+  <script src="/node_modules/\@senzing/sdk-components-web/senzing-components-web.js" defer></script>
 </body>
 </html>
 
 ```
+
+<br/><br/><br/><br/>

@@ -4,6 +4,10 @@
     "file": "web-components/README.md",
     "children": [
       {
+        "title": "Quick Start",
+        "file": "web-components/quick-start.md"
+      },
+      {
         "title": "Examples",
         "file": "web-components/README.md",
         "children": [
@@ -18,10 +22,6 @@
           {
             "title": "Id Search with Record Viewer",
             "file": "web-components/examples/search-by-record-id.md"
-          },
-          {
-            "title": "Attribute Search with Details",
-            "file": "web-components/examples/search-with-detail.md"
           },
           {
             "title": "Large Graph with Filtering",

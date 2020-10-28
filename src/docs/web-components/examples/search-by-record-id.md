@@ -1,5 +1,11 @@
 # Search By Record Id and Datasource, or EntityId
 
+This is an example of how to wire the datasource/record/entityid search form to the record viewer component, or in the case of the entityId, a detail view component. 
+
+![screen shot of Search By Record Id example](../../../images/ss-search-by-id.png)
+<br/><br/><br/><br/>
+
+## Source
 ```html
 <!doctype html>
 <html lang="en">
@@ -20,13 +26,7 @@
 
       document.getElementById('api-config').addEventListener('parametersChanged', function(event){
         console.log('a value in the config tag has emitted a change: ', event);
-        searchBoxEle.updateAttributeTypes();
-      });
-
-
-      searchBoxEle.addEventListener('searchException', function(evt) {
-        console.log('search error', evt);
-        searchBoxEle.updateAttributeTypes();
+        searchBoxEle.updateDataSources();
       });
 
       searchBoxEle.addEventListener('entityChange', function(evt) {
@@ -72,6 +72,7 @@
       }
     };
   </script>
+  <link rel="stylesheet" href="/node_modules/\@senzing/sdk-components-web/senzing-components-web.css">
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -88,7 +89,8 @@
   <h2 id="no-results" class="hidden">No Results Found</h2>
   <sz-wc-entity-detail class="hidden"></sz-wc-entity-detail>
   <sz-wc-entity-record-viewer></sz-wc-entity-record-viewer>
+  <script src="/node_modules/\@senzing/sdk-components-web/senzing-components-web.js" defer></script>
 </body>
 </html>
-
 ```
+<br/><br/><br/><br/>
