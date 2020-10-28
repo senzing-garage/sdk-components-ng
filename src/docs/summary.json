@@ -7,7 +7,6 @@
         "title": "Examples",
         "file": "web-components/README.md",
         "children": [
-          
           {
             "title": "Configure Rest Server Connection Properties",
             "file": "web-components/examples/config-api-server.md"
@@ -31,10 +30,6 @@
           {
             "title": "Small Graph (for embedding)",
             "file": "web-components/examples/graph-small.md"
-          },
-          {
-            "title": "Find Path Relationships Graph",
-            "file": "web-components/examples/graph-find-path.md"
           }
         ]
       }
@@ -51,10 +46,6 @@
       {
         "title": "SzRelationshipNetworkComponent",
         "file": "graph-components/SzRelationshipNetworkComponent.md"
-      },
-      {
-        "title": "SzRelationshipPathComponent",
-        "file": "graph-components/SzRelationshipPathComponent.md"
       }
     ]
   },

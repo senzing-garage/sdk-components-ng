@@ -115,4 +115,4 @@ All examples can be rendered in a *Live* edit state by checking out the main sdk
 - `ng serve @senzing/sdk-components-web -c searchWithDetail`
 - `ng serve @senzing/sdk-components-web -c largeGraph`
 - `ng serve @senzing/sdk-components-web -c smallGraph`
-- `ng serve @senzing/sdk-components-web -c findPathGraph`
+<!-- - `ng serve @senzing/sdk-components-web -c findPathGraph` -->
