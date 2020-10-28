@@ -1510,11 +1510,19 @@
                 }
               ]
             },
+            "apiServerConfig": {
+              "fileReplacements": [
+                {
+                  "replace": "sdk-components-web/src/index.html",
+                  "with": "sdk-components-web/src/examples/config-api-server.html"
+                }
+              ]
+            },
             "largeGraph": {
               "fileReplacements": [
                 {
                   "replace": "sdk-components-web/src/index.html",
-                  "with": "sdk-components-web/src/examples/large-graph.html"
+                  "with": "sdk-components-web/src/examples/graph-large.html"
                 }
               ]
             },
@@ -1522,7 +1530,15 @@
               "fileReplacements": [
                 {
                   "replace": "sdk-components-web/src/index.html",
-                  "with": "sdk-components-web/src/examples/small-graph.html"
+                  "with": "sdk-components-web/src/examples/graph-small.html"
+                }
+              ]
+            },
+            "findPathGraph": {
+              "fileReplacements": [
+                {
+                  "replace": "sdk-components-web/src/index.html",
+                  "with": "sdk-components-web/src/examples/graph-find-path.html"
                 }
               ]
             },
@@ -1563,14 +1579,26 @@
             "production": {
               "browserTarget": "@senzing/sdk-components-web:build:production"
             },
+            "apiServerConfig": {
+              "browserTarget": "@senzing/sdk-components-web:build:apiServerConfig"
+            },
+            "searchByAttribute": {
+              "browserTarget": "@senzing/sdk-components-web:build:searchByAttribute"
+            },
             "searchById": {
               "browserTarget": "@senzing/sdk-components-web:build:searchById"
+            },
+            "searchWithDetail": {
+              "browserTarget": "@senzing/sdk-components-web:build:searchWithDetail"
             },
             "largeGraph": {
               "browserTarget": "@senzing/sdk-components-web:build:largeGraph"
             },
             "smallGraph": {
               "browserTarget": "@senzing/sdk-components-web:build:smallGraph"
+            },
+            "findPathGraph": {
+              "browserTarget": "@senzing/sdk-components-web:build:findPathGraph"
             }
           }
         },

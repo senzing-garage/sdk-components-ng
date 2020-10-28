@@ -17,13 +17,7 @@
 
       document.getElementById('api-config').addEventListener('parametersChanged', function(event){
         console.log('a value in the config tag has emitted a change: ', event);
-        searchBoxEle.updateAttributeTypes();
-      });
-
-
-      searchBoxEle.addEventListener('searchException', function(evt) {
-        console.log('search error', evt);
-        searchBoxEle.updateAttributeTypes();
+        searchBoxEle.updateDataSources();
       });
 
       searchBoxEle.addEventListener('entityChange', function(evt) {

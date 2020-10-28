@@ -1,3 +1,6 @@
+# Embeddable Graph
+
+```html
 <!doctype html>
 <html lang="en">
 <head>
@@ -69,21 +72,7 @@
     build-out="5"
     show-link-labels="true"
   ></sz-wc-relationship-network-graph>
-  <!--<sz-wc-relationship-network #graph class="sz-relationship-network-graph"
-    [class.filters-showing]="this.showFiltersControl"
-    svgViewBox="150 50 400 300"
-    svgPreserveAspectRatio="xMinYMid meet"
-    [entityIds]="graphIds"
-    [maxDegrees]="maxDegrees"
-    [buildOut]="buildOut"
-    [linkGravity]="5"
-    [highlight]="entityNodeColors"
-    [filter]="entityNodeFilterByDataSource"
-    [showLinkLabels]="_showMatchKeys"
-    (contextMenuClick)="onRightClick($event)"
-    (entityClick)="onEntityClick($event)"
-    (noResults)="onNoResults($event)"
-    (onDataLoaded)="onGraphDataLoaded($event)"
-    [maxEntities]="maxEntities"></sz-relationship-network>-->
 </body>
 </html>
+
+```

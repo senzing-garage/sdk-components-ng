@@ -7,6 +7,11 @@
         "title": "Examples",
         "file": "web-components/README.md",
         "children": [
+          
+          {
+            "title": "Configure Rest Server Connection Properties",
+            "file": "web-components/examples/config-api-server.md"
+          },
           {
             "title": "Attribute Search with Results",
             "file": "web-components/examples/search-by-attribute.md"
@@ -17,15 +22,19 @@
           },
           {
             "title": "Attribute Search with Details",
-            "file": "web-components/examples/search-with-details.md"
+            "file": "web-components/examples/search-with-detail.md"
           },
           {
             "title": "Large Graph with Filtering",
-            "file": "web-components/examples/large-graph.md"
+            "file": "web-components/examples/graph-large.md"
           },
           {
             "title": "Small Graph (for embedding)",
-            "file": "web-components/examples/small-graph.md"
+            "file": "web-components/examples/graph-small.md"
+          },
+          {
+            "title": "Find Path Relationships Graph",
+            "file": "web-components/examples/graph-find-path.md"
           }
         ]
       }
@@ -36,12 +45,16 @@
     "file": "graph-components/README.md",
     "children": [
       {
+        "title": "SzStandaloneGraphComponent",
+        "file": "graph-components/SzStandaloneGraphComponent.md"
+      },
+      {
         "title": "SzRelationshipNetworkComponent",
         "file": "graph-components/SzRelationshipNetworkComponent.md"
       },
       {
         "title": "SzRelationshipPathComponent",
-        "file": "graph-components/SzRelationshipPathComponent.html"
+        "file": "graph-components/SzRelationshipPathComponent.md"
       }
     ]
   },

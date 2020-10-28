@@ -1,3 +1,6 @@
+# Search with Results List
+
+```html
 <!doctype html>
 <html lang="en">
 <head>
@@ -171,5 +174,12 @@
   <sz-wc-entity-detail
     entity-id="1002"
   ></sz-wc-entity-detail>
+  <sz-wc-embedded-graph
+    graph-ids="1,1001,1002"
+  ></sz-wc-embedded-graph>
+  <sz-wc-powered-by format="small" style="margin-top: 4em;"></sz-wc-powered-by>
+  <sz-wc-configuration-about></sz-wc-configuration-about>
 </body>
 </html>
+
+```

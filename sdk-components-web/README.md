@@ -103,3 +103,16 @@ Besides, it's a super easy problem to solve.
 npm install http-server
 ./node_modules/.bin/http-server node_modules/@senzing/sdk-components-web/example.html --cors
 ```
+
+
+### Running examples from the SDK Components codebase
+
+All examples can be rendered in a *Live* edit state by checking out the main sdk components codebase, doing an npm install, then running one of the following commands from the repository root.
+
+- `ng serve @senzing/sdk-components-web -c apiServerConfig`
+- `ng serve @senzing/sdk-components-web -c searchByAttribute`
+- `ng serve @senzing/sdk-components-web -c searchById`
+- `ng serve @senzing/sdk-components-web -c searchWithDetail`
+- `ng serve @senzing/sdk-components-web -c largeGraph`
+- `ng serve @senzing/sdk-components-web -c smallGraph`
+- `ng serve @senzing/sdk-components-web -c findPathGraph`

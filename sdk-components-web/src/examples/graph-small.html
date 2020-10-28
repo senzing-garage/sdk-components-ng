@@ -1,11 +1,8 @@
-# Search By Attribute
-
-```html
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>@senzing/sdk-components-web (Search by Attribute)</title>
+  <title>@senzing/sdk-components-web</title>
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,8 +11,9 @@
     // wire up senzing web components to event handlers
     window.onload = function() {
       var searchBoxEle    = document.querySelector('sz-wc-search');
-      var searchResEle    = document.querySelector('sz-wc-search-results');
-      var entityDetailEle = document.querySelector('sz-wc-entity-detail');
+      var graphEle        = document.querySelector('sz-wc-relationship-network-graph');
+
+      graphEle.reloadOnIdChange = true;
 
       document.getElementById('api-config').addEventListener('parametersChanged', function(event){
         console.log('a value in the config tag has emitted a change: ', event);
@@ -31,28 +29,20 @@
         if(evt.detail){
           // has payload
           var searchResults = evt.detail;
-          console.log('results from search: ',searchResults);
+          var graphIds      = searchResults.map( (searchRes) => {
+            return searchRes.entityId;
+          });
+          console.log('results from search: ', graphIds, searchResults);
           if(searchResults.length <= 0){
-            searchResEle.setAttribute('class','hidden');
-            entityDetailEle.setAttribute('class','hidden');
+            graphEle.setAttribute('class','hidden');
           } else {
-            searchResEle.removeAttribute('class');
-            entityDetailEle.setAttribute('class','hidden');
+            graphEle.removeAttribute('class');
           }
-          searchResEle.setAttribute('results', JSON.stringify(searchResults));
+          graphEle.entityIds = graphIds.join(',');
+          //graphEle.reload( graphIds );
         }
       });
-      searchResEle.addEventListener('resultClick', function(evt){
-        if(evt.detail && evt.detail.entityId){
-          //has payload
-          showDetailView(evt.detail.entityId);
-        }
-      });
-      function showDetailView(entityId) {
-        entityDetailEle.setAttribute('entity-id', entityId);
-        searchResEle.setAttribute('class','hidden');
-        entityDetailEle.removeAttribute('class');
-      }
+      
       function onError(err){
         console.log('something weird happened: ', err);
       }
@@ -69,13 +59,15 @@
   </style>
 </head>
 <body>
-  <sz-wc-configuration id="api-config"></sz-configuration>
+  <sz-wc-configuration id="api-config"></sz-wc-configuration>
   <sz-wc-search></sz-wc-search>
-  <sz-wc-search-results class="hidden"></sz-search-results>
-  <sz-wc-entity-detail
-    entity-id="1002"
-  ></sz-entity-detail>
+  <sz-wc-relationship-network-graph
+    entity-ids="1,1001,1002"
+    svg-view-box="150 50 400 300"
+    svg-preserve-aspect-ratio="xMinYMid meet"
+    max-degrees="2"
+    build-out="5"
+    show-link-labels="true"
+  ></sz-wc-relationship-network-graph>
 </body>
 </html>
-
-```

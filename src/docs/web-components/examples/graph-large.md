@@ -1,8 +1,11 @@
+# Large Graph with Filtering
+
+```html
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>@senzing/sdk-components-web (Search by Attribute)</title>
+  <title>@senzing/sdk-components-web</title>
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,13 +14,18 @@
     // wire up senzing web components to event handlers
     window.onload = function() {
       var searchBoxEle    = document.querySelector('sz-wc-search');
-      var searchResEle    = document.querySelector('sz-wc-search-results');
-      var entityDetailEle = document.querySelector('sz-wc-entity-detail');
+      var graphEle        = document.querySelector('sz-wc-standalone-graph');
+      var noResultsEle    = document.querySelector('#no-results');
+      var filterControlToggle = document.querySelector('#toggleFiltersDrawerEle');
 
       document.getElementById('api-config').addEventListener('parametersChanged', function(event){
         console.log('a value in the config tag has emitted a change: ', event);
         searchBoxEle.updateAttributeTypes();
       });
+
+      filterControlToggle.addEventListener('click', function(evt) {
+        graphEle.showFiltersControl = !graphEle.showFiltersControl;
+      })
 
       searchBoxEle.addEventListener('searchException', function(evt) {
         console.log('search error', evt);
@@ -28,37 +36,30 @@
         if(evt.detail){
           // has payload
           var searchResults = evt.detail;
-          console.log('results from search: ',searchResults);
+          var graphIds      = searchResults.map( (searchRes) => {
+            return searchRes.entityId;
+          });
+          console.log('results from search: ', graphIds, searchResults);
           if(searchResults.length <= 0){
-            searchResEle.setAttribute('class','hidden');
-            entityDetailEle.setAttribute('class','hidden');
+            noResultsEle.removeAttribute('class');
+            graphEle.setAttribute('class','hidden');
           } else {
-            searchResEle.removeAttribute('class');
-            entityDetailEle.setAttribute('class','hidden');
+            noResultsEle.setAttribute('class','hidden');
+            graphEle.removeAttribute('class');
           }
-          searchResEle.setAttribute('results', JSON.stringify(searchResults));
+          graphEle.graphIds = graphIds;
         }
       });
-      searchResEle.addEventListener('resultClick', function(evt){
-        if(evt.detail && evt.detail.entityId){
-          //has payload
-          showDetailView(evt.detail.entityId);
-        }
-      });
-      function showDetailView(entityId) {
-        entityDetailEle.setAttribute('entity-id', entityId);
-        searchResEle.setAttribute('class','hidden');
-        entityDetailEle.removeAttribute('class');
-      }
       function onError(err){
         console.log('something weird happened: ', err);
-      }
+      }     
     };
   </script>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: rgb(46, 46, 46);
+      --sz-graph-filter-control-background-color: rgb(236, 236, 236) !important;
     }
     .no-results, .hidden {
       display: none !important;
@@ -68,9 +69,18 @@
 <body>
   <sz-wc-configuration id="api-config"></sz-wc-configuration>
   <sz-wc-search></sz-wc-search>
-  <sz-wc-search-results class="hidden"></sz-wc-search-results>
-  <sz-wc-entity-detail
-    entity-id="1002"
-  ></sz-wc-entity-detail>
+  <button id="toggleFiltersDrawerEle">Toggle Filters</button>
+  <h2 id="no-results">No Results Found</h2>
+  <sz-wc-standalone-graph
+      filter-width="320"
+      graph-ids="1,1001,1002"
+      show-pop-out-icon="false"
+      show-match-key-control="false"
+      show-filters-control="true"
+      filter-control-position="top-right"
+      show-match-keys="true"
+  ></sz-wc-standalone-graph>
 </body>
 </html>
+
+```
