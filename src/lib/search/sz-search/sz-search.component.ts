@@ -49,9 +49,9 @@ interface SzBoolFieldMapByName {
  * Provides a search box component that can execute search queries and return results.
  *
  * @example <!-- (WC javascript) SzSearchComponent -->
- * <sz-search
+ * <sz-wc-search
  * id="sz-search"
- * name="Isa Creepr"></sz-search>
+ * name="Isa Creepr"></sz-wc-search>
  * <script>
  *  document.getElementById('sz-search').addEventListener('resultsChange', (results) => {
  *    console.log('search results: ', results);
@@ -67,10 +67,10 @@ interface SzBoolFieldMapByName {
  * @export
  *
  * @example <!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo -->
- * <sz-search
+ * <sz-wc-search
  * id="sz-search"
- * name="Isa Creepr"></sz-search>
- * <sz-search-results id="sz-search-results"></sz-search-results>
+ * name="Isa Creepr"></sz-wc-search>
+ * <sz-wc-search-results id="sz-search-results"></sz-wc-search-results>
  * <script>
  *  var szSearchComponent = document.getElementById('sz-search');
  *  var szSearchResultsComponent = document.getElementById('sz-search-results');

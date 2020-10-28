@@ -2,6 +2,8 @@
 @import "../../../scss/_mixins";
 
 :host {
+  background-color: var(--sz-graph-filter-control-background-color);
+
   .drawer-wrapper {
     margin: 1em 0;
   }

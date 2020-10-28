@@ -1,0 +1,12 @@
+{
+  "name": "@senzing/sdk-components-web",
+  "version": "2.1.2-beta",
+  "private": false,
+  "keywords" :["WebComponent","Library","Senzing"],
+  "license" : "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Senzing/sdk-components-sdk/sdk-compnents-web"
+  },
+  "homepage" :"https://senzing.github.io/sdk-components-sdk/sdk-compnents-web/"
+}

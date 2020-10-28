@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input, OnInit, OnDestroy, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, HostBinding, Input, OnInit, AfterViewInit, OnDestroy, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { SzPrefsService, SzSdkPrefsModel } from '../../../services/sz-prefs.service';
 import { SzDataSourcesService } from '../../../services/sz-datasources.service';
 import { tap, takeUntil } from 'rxjs/operators';
@@ -18,9 +18,9 @@ import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@ang
       ></sz-entity-detail-graph-filter>
  *
  * @example <!-- (WC) -->
- * <sz-entity-detail-graph-filter id="sz-entity-detail-graph-filter"></sz-entity-detail-graph-filter>
+ * <sz-wc-standalone-graph-filters id="sz-entity-detail-graph-filter"></sz-wc-standalone-graph-filters>
  * <script>
- * document.getElementById('sz-entity-detail-graph-filter').addEventListener('optionChanged', function(data) { console.log('filter(s) changed', data); });
+ * document.getElementById('sz-wc-standalone-graph-filters').addEventListener('optionChanged', function(data) { console.log('filter(s) changed', data); });
  * </script>
  */
 @Component({
@@ -28,7 +28,7 @@ import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@ang
   templateUrl: './sz-entity-detail-graph-filter.component.html',
   styleUrls: ['./sz-entity-detail-graph-filter.component.scss']
 })
-export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
+export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy {
   isOpen: boolean = true;
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
@@ -237,9 +237,23 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
 
     // get datasources
     // then create filter and color control lists
+    this.initializeDataSourceFormControls();
+  }
+
+  ngAfterViewInit() {
+    let hasZeroDsControls = (Object.keys(this.filterByDataSourcesForm.controls).length <= 0) && (Object.keys(this.colorsByDataSourcesForm.controls).length <= 0);
+    if(hasZeroDsControls) {
+      // try updating ds filters one more time
+      this.initializeDataSourceFormControls();
+    }
+  }
+
+  /** initializes filter form controls */
+  private initializeDataSourceFormControls() {
     this.getDataSources().subscribe((dataSrc: string[]) => {
       this._datasources = dataSrc;
       // init form controls for filter by datasource
+      console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.initializeDataSourceFormControls(): ', dataSrc);
       this._datasources.forEach((o, i) => {
         const dsFilterVal = !(this.dataSourcesFiltered.indexOf(o) >= 0);
         const dsColorVal  = this.dataSourceColors[o];
@@ -251,8 +265,10 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, OnDestroy {
         // add control for colored by list
         (this.colorsByDataSourcesForm.controls.datasources as FormArray).push(control2);
       });
+
     });
   }
+
   /** helper method for retrieving list of datasources */
   public getDataSources() {
     return this.datasources.listDataSources();

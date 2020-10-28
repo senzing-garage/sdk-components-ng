@@ -19,6 +19,10 @@
       "@senzing/sdk-components-ng": [
         "dist/@senzing/sdk-components-ng/senzing-sdk-components-ng",
         "dist/@senzing/sdk-components-ng"
+      ],
+      "@senzing/sdk-components-web": [
+        "dist/@senzing/sdk-components-web/senzing-sdk-components-web",
+        "dist/@senzing/sdk-components-web"
       ]
     }
   }

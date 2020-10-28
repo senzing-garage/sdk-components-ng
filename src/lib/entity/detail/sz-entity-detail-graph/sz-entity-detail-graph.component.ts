@@ -213,7 +213,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     // only reload graph if value has changed
     if(_oVal !== value){
       // console.log('set graphIds: ', this._graphIds, typeof this.graphIds, value, typeof value);
-      this.reload();
+      this.reload( this._graphIds );
     }
   }
   public get graphIds(): number[] | undefined {
@@ -457,7 +457,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
       this.graphNetworkComponent.buildOut = this.buildOut;
       if(this._graphComponentRendered){
         //console.log('re-rendering graph');
-        this.reload();
+        this.reload( this._graphIds );
       }
     }
 

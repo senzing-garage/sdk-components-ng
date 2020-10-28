@@ -50,10 +50,10 @@ const parseBool = (value: any): boolean => {
  * Provides a search box component that can search by id and/or record ids.
  *
  * @example <!-- (WC javascript) SzSearchByIdComponent -->
- * <sz-search-by-id
+ * <sz-wc-search-by-id
  * id="sz-search"
  * data-source="SAMPLE_PERSON"
- * record-id="1001"></sz-search-by-id>
+ * record-id="1001"></sz-wc-search-by-id>
  * <script>
  *  document.getElementById('sz-search').addEventListener('resultChange', function(results) {
  *    console.log('results: ', results);
@@ -566,8 +566,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
       // by ds / record id
       //console.log('search by record id: ', searchParams.dataSource, searchParams.recordId);
 
-      // cast string recordId to number if not already number
-      const recordId: number = (typeof searchParams.recordId == 'number') ? searchParams.recordId : parseInt(searchParams.recordId);
+      const recordId: string | number = searchParams.recordId;
       // emit search start
       this.searchStart.emit(searchParams);
       // make request

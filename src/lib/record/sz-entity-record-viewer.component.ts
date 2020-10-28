@@ -5,10 +5,10 @@ import {
 import { SzSearchByIdFormParams } from '../search/sz-search/sz-search-by-id.component';
 
 /**
- * A component for displaying the result(s) of the sz-search-by-id
+ * A component for displaying the result(s) of the sz-search-by-id component
  * when the results are of type SzEntityRecord. The fragment only displays information
  * that was present in the record itself. The easiest way to use this component is to pair it
- * with the <sz-search-by-id> component.
+ * with the <sz-search-by-id>/<sz-wc-search-by-id> component(s).
  * @export
  *
  * @example <!-- (Angular) -->
@@ -18,13 +18,13 @@ import { SzSearchByIdFormParams } from '../search/sz-search/sz-search-by-id.comp
  * <sz-entity-record-viewer *ngIf="formResult" [record]="formResult"></sz-entity-record-viewer>
  *
  * @example <!-- (WC) -->
- * <sz-search-by-id id="formInput"
-  data-source="COMPANIES"></sz-search-by-id>
- * <sz-entity-record-viewer id="formResult">
- * </sz-entity-record-viewer>
+ * <sz-wc-search-by-id id="formInput"
+  data-source="COMPANIES"></sz-wc-search-by-id>
+ * <sz-wc-entity-record-viewer id="formResult">
+ * </sz-wc-entity-record-viewer>
  * <script>
  * document.getElementById('formInput').addEventListener('resultChange', function(evt) {
- *     document.getElementById('formResult').record = evt.data;
+ *     document.getElementById('formResult').record = evt.detail;
  * });
  * </script>
  */
@@ -35,7 +35,20 @@ import { SzSearchByIdFormParams } from '../search/sz-search/sz-search-by-id.comp
 })
 export class SzEntityRecordViewerComponent {
   /** the record to display */
-  @Input() record: SzEntityRecord;
+  private _record: SzEntityRecord;
+  /** set the record to display */
+  @Input() public set record(value: SzEntityRecord | string) {
+    if((value as SzEntityRecord).recordId) {
+      this._record = (value as SzEntityRecord);
+    } else {
+      // assume string
+      this._record = JSON.parse(value as string);
+    }
+  };
+  /** return the record data */
+  public get record() {
+    return this._record;
+  }
   /** show the JSON data for this.record<SzEntityRecord> */
   @Input() showJSON = true;
   /** show a message when a search has 0 results */

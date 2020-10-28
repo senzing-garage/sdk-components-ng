@@ -1,5 +1,55 @@
 [
   {
+    "title": "Web Components",
+    "file": "web-components/README.md",
+    "children": [
+      {
+        "title": "Quick Start",
+        "file": "web-components/quick-start.md"
+      },
+      {
+        "title": "Examples",
+        "file": "web-components/README.md",
+        "children": [
+          {
+            "title": "Configure Rest Server Connection Properties",
+            "file": "web-components/examples/config-api-server.md"
+          },
+          {
+            "title": "Attribute Search with Results",
+            "file": "web-components/examples/search-by-attribute.md"
+          },
+          {
+            "title": "Id Search with Record Viewer",
+            "file": "web-components/examples/search-by-record-id.md"
+          },
+          {
+            "title": "Large Graph with Filtering",
+            "file": "web-components/examples/graph-large.md"
+          },
+          {
+            "title": "Small Graph (for embedding)",
+            "file": "web-components/examples/graph-small.md"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Graph Components",
+    "file": "graph-components/README.md",
+    "children": [
+      {
+        "title": "SzStandaloneGraphComponent",
+        "file": "graph-components/SzStandaloneGraphComponent.md"
+      },
+      {
+        "title": "SzRelationshipNetworkComponent",
+        "file": "graph-components/SzRelationshipNetworkComponent.md"
+      }
+    ]
+  },
+  {
     "title": "Themes",
     "file": "themes/README.md",
     "children": [

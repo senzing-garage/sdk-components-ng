@@ -23,10 +23,10 @@ import { takeUntil } from 'rxjs/operators';
  * @export
  *
  * @example <!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo -->
- * <sz-search
+ * <sz-wc-search
  * id="sz-search"
- * name="Isa Creepr"></sz-search>
- * <sz-search-results id="sz-search-results"></sz-search-results>
+ * name="Isa Creepr"></sz-wc-search>
+ * <sz-wc-search-results id="sz-search-results"></sz-wc-search-results>
  * <script>
  *  var szSearchComponent = document.getElementById('sz-search');
  *  var szSearchResultsComponent = document.getElementById('sz-search-results');
