@@ -9,6 +9,7 @@ import {
   SzConfigurationComponent,
   SzEntityDetailComponent,
   SzEntityDetailGraphComponent,
+  SzEntityDetailGraphFilterComponent,
   SzEntityRecordViewerComponent,
   SzPoweredByComponent,
   SzPreferencesComponent,
@@ -97,6 +98,10 @@ export class AppModule {
     // large format graph
     const WC_GRAPH_LARGE = createCustomElement(SzStandaloneGraphComponent, { injector });
     customElements.define('sz-wc-standalone-graph', WC_GRAPH_LARGE);
+
+    // graph filter
+    const WC_GRAPH_LARGE_FILTERS = createCustomElement(SzEntityDetailGraphFilterComponent, { injector });
+    customElements.define('sz-wc-standalone-graph-filters', WC_GRAPH_LARGE_FILTERS);
     
     // relationship network graph tag
     // !! DO NOT use the same tag name as defined in the class, it will break nested component rendering !!

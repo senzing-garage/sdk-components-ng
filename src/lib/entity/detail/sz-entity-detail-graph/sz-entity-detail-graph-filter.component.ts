@@ -18,9 +18,9 @@ import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@ang
       ></sz-entity-detail-graph-filter>
  *
  * @example <!-- (WC) -->
- * <sz-entity-detail-graph-filter id="sz-entity-detail-graph-filter"></sz-entity-detail-graph-filter>
+ * <sz-wc-standalone-graph-filters id="sz-entity-detail-graph-filter"></sz-wc-standalone-graph-filters>
  * <script>
- * document.getElementById('sz-entity-detail-graph-filter').addEventListener('optionChanged', function(data) { console.log('filter(s) changed', data); });
+ * document.getElementById('sz-wc-standalone-graph-filters').addEventListener('optionChanged', function(data) { console.log('filter(s) changed', data); });
  * </script>
  */
 @Component({
