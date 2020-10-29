@@ -74,6 +74,7 @@ to filtering, colors, and parameters of graph control.</p>
     </p>
     <p class="comment">
                     <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+                    <code><a href="https://angular.io/api/core/AfterViewInit" target="_blank" >AfterViewInit</a></code>
                     <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
     </p>
 
@@ -85,7 +86,7 @@ to filtering, colors, and parameters of graph control.</p>
                     <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;&lt;sz-entity-detail-graph-filter #graphFilter[showLinkLabels]=&quot;true&quot;(optionChanged)=&quot;onOptionChange($event)&quot;&gt;&lt;/sz-entity-detail-graph-filter&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) --&gt;&lt;sz-entity-detail-graph-filter id=&quot;sz-entity-detail-graph-filter&quot;&gt;&lt;/sz-entity-detail-graph-filter&gt;&lt;script&gt;document.getElementById('sz-entity-detail-graph-filter').addEventListener('optionChanged', function(data) { console.log('filter(s) changed', data); });&lt;/script&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) --&gt;&lt;sz-wc-standalone-graph-filters id=&quot;sz-entity-detail-graph-filter&quot;&gt;&lt;/sz-wc-standalone-graph-filters&gt;&lt;script&gt;document.getElementById('sz-wc-standalone-graph-filters').addEventListener('optionChanged', function(data) { console.log('filter(s) changed', data); });&lt;/script&gt;</code></pre>
                 </div>
     </div>
 
@@ -197,6 +198,9 @@ to filtering, colors, and parameters of graph control.</p>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#getDataSources">getDataSources</a>
+                            </li>
+                            <li>
+                                <a href="#ngAfterViewInit">ngAfterViewInit</a>
                             </li>
                             <li>
                                 <a href="#ngOnDestroy">ngOnDestroy</a>
@@ -876,6 +880,39 @@ input[type=color] to make them look fancier</p>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngAfterViewInit"></a>
+                    <span class="name">
+                        <b>
+                            ngAfterViewInit
+                        </b>
+                        <a href="#ngAfterViewInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngAfterViewInit()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                     </div>
                 </td>
@@ -1746,7 +1783,7 @@ input[type=color] to make them look fancier</p>
 
   &lt;form [formGroup]&#x3D;&quot;slidersForm&quot;&gt;
   &lt;ul class&#x3D;&quot;sliders-list&quot;&gt;
-    &lt;li class&#x3D;&quot;has-tooltip block-level-src&quot;&gt;
+    &lt;li class&#x3D;&quot;has-tooltip block-level-src no-text-selection&quot;&gt;
       &lt;span class&#x3D;&quot;tooltip&quot;&gt;display match keys on relationship lines&lt;/span&gt;
       &lt;label&gt;
         &lt;!-- start graph match keys checkbox --&gt;
@@ -1852,7 +1889,12 @@ input[type=color] to make them look fancier</p>
                 <p class="comment">
                     <code>./sz-entity-detail-graph-filter.component.scss</code>
                 </p>
-                <pre class="line-numbers"><code class="language-scss">:host {
+                <pre class="line-numbers"><code class="language-scss">@import &quot;../../../scss/_variables&quot;;
+@import &quot;../../../scss/_mixins&quot;;
+
+:host {
+  background-color: var(--sz-graph-filter-control-background-color);
+
   .drawer-wrapper {
     margin: 1em 0;
   }
@@ -1951,6 +1993,10 @@ input[type=color] to make them look fancier</p>
   font-style: italic;
 }
 
+.no-text-selection {
+  @include no-text-selection;
+}
+
 .has-tooltip {
   position: relative;
   .tooltip {
@@ -2004,7 +2050,7 @@ input[type=color] to make them look fancier</p>
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="drawer-wrapper">  <h3>{{ sectionTitles[0] }}</h3>  <form [formGroup]="slidersForm">  <ul class="sliders-list">    <li class="has-tooltip block-level-src">      <span class="tooltip">display match keys on relationship lines</span>      <label>        <!-- start graph match keys checkbox -->        <input type="checkbox"          id="sz-graph-toggle-match-keys" name="sz-graph-toggle-match-keys"          [checked]="showLinkLabels"          (change)="onCheckboxPrefToggle(\'showLinkLabels\',$event)">        <!-- end graph match keys checkbox -->        Show Match Keys      </label>    </li>    <li>      <label>        <div>          <span class="has-tooltip">            Scope            <span class="tooltip tooptip-left">number of relationship hops away from focused entity</span>          </span>        </div>        <input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut" (change)="onIntParameterChange(\'buildOut\', $event.target.value)" required>        <span class="intVal">({{ buildOut }})</span>      </label>    </li>    <li *ngIf="showMaxEntities">      <label>        <div>          <span class="has-tooltip">            Max            <span class="tooltip tooptip-left">hard limit on how many entities will be displayed</span>          </span>        </div>        <input type="range" min="1" max="99" step="3" [value]="maxEntities" formControlName="maxEntities" (change)="onIntParameterChange(\'maxEntities\', $event.target.value)" required>        <span class="intVal">({{ maxEntities }})</span>      </label>    </li>    <li *ngIf="showMaxDegreesOfSeparation">      <label>        <div>          <span class="has-tooltip">            Degrees            <span class="tooltip tooptip-left">maximum degrees of separation between nodes and focus</span>          </span>        </div>        <input type="range" min="1" max="5" [value]="maxDegreesOfSeparation" formControlName="maxDegreesOfSeparation" (change)="onIntParameterChange(\'maxDegreesOfSeparation\', $event.target.value)" required>        <span class="intVal">({{ maxDegreesOfSeparation }})</span>      </label>    </li>  </ul>  </form>  <hr>  <h3>{{ sectionTitles[1] }}</h3>  <form [formGroup]="filterByDataSourcesForm">  <ul class="filters-list">    <ng-container *ngFor="let ds of filterByDataSourcesData.controls; let i = index">        <ng-container *ngIf="shouldDataSourceBeDisplayed(_datasources[i])">            <li formArrayName="datasources">              <label>                <input type="checkbox" [formControlName]="i" (change)="onDsFilterChange()">{{_datasources[i]}}              </label>            </li>        </ng-container>    </ng-container>  </ul>  </form>  <hr>  <h3>{{ sectionTitles[2] }}</h3>  <form [formGroup]="colorsByDataSourcesForm">  <ul class="colors-list">    <ng-container *ngFor="let ds of colorsByDataSourcesData.controls; let i = index">        <ng-container *ngIf="shouldDataSourceBeDisplayed(_datasources[i])">          <li formArrayName="datasources">            <label>              <input type="color" [formControlName]="i" [style.background-color]="getDataSourceColor(_datasources[i])" (change)="onDsColorChange($event.target, $event)">{{_datasources[i]}}            </label>          </li>        </ng-container>    </ng-container>  </ul>  </form>  <hr>  <h3>{{ sectionTitles[3] }}</h3>  <form [formGroup]="colorsMiscForm">  <ul class="other-colors-list">    <li>      <label>        <input #queriedNodesColorInput formControlName="queriedEntitiesColor" type="color" [style.background-color]="queriedNodesColorInput.value" (change)="onColorParameterChange(\'queriedEntitiesColor\', $event.target.value)">        <span class="has-tooltip block-level-src">          Active/Focused Enitity          <span class="tooltip tooptip-left">The color of the current entity or entities</span>        </span>        <small class="note-sub">(*note overrides datasource member color if selected)</small>      </label>    </li>  </ul>  </form></div></div>'
+        var COMPONENT_TEMPLATE = '<div><div class="drawer-wrapper">  <h3>{{ sectionTitles[0] }}</h3>  <form [formGroup]="slidersForm">  <ul class="sliders-list">    <li class="has-tooltip block-level-src no-text-selection">      <span class="tooltip">display match keys on relationship lines</span>      <label>        <!-- start graph match keys checkbox -->        <input type="checkbox"          id="sz-graph-toggle-match-keys" name="sz-graph-toggle-match-keys"          [checked]="showLinkLabels"          (change)="onCheckboxPrefToggle(\'showLinkLabels\',$event)">        <!-- end graph match keys checkbox -->        Show Match Keys      </label>    </li>    <li>      <label>        <div>          <span class="has-tooltip">            Scope            <span class="tooltip tooptip-left">number of relationship hops away from focused entity</span>          </span>        </div>        <input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut" (change)="onIntParameterChange(\'buildOut\', $event.target.value)" required>        <span class="intVal">({{ buildOut }})</span>      </label>    </li>    <li *ngIf="showMaxEntities">      <label>        <div>          <span class="has-tooltip">            Max            <span class="tooltip tooptip-left">hard limit on how many entities will be displayed</span>          </span>        </div>        <input type="range" min="1" max="99" step="3" [value]="maxEntities" formControlName="maxEntities" (change)="onIntParameterChange(\'maxEntities\', $event.target.value)" required>        <span class="intVal">({{ maxEntities }})</span>      </label>    </li>    <li *ngIf="showMaxDegreesOfSeparation">      <label>        <div>          <span class="has-tooltip">            Degrees            <span class="tooltip tooptip-left">maximum degrees of separation between nodes and focus</span>          </span>        </div>        <input type="range" min="1" max="5" [value]="maxDegreesOfSeparation" formControlName="maxDegreesOfSeparation" (change)="onIntParameterChange(\'maxDegreesOfSeparation\', $event.target.value)" required>        <span class="intVal">({{ maxDegreesOfSeparation }})</span>      </label>    </li>  </ul>  </form>  <hr>  <h3>{{ sectionTitles[1] }}</h3>  <form [formGroup]="filterByDataSourcesForm">  <ul class="filters-list">    <ng-container *ngFor="let ds of filterByDataSourcesData.controls; let i = index">        <ng-container *ngIf="shouldDataSourceBeDisplayed(_datasources[i])">            <li formArrayName="datasources">              <label>                <input type="checkbox" [formControlName]="i" (change)="onDsFilterChange()">{{_datasources[i]}}              </label>            </li>        </ng-container>    </ng-container>  </ul>  </form>  <hr>  <h3>{{ sectionTitles[2] }}</h3>  <form [formGroup]="colorsByDataSourcesForm">  <ul class="colors-list">    <ng-container *ngFor="let ds of colorsByDataSourcesData.controls; let i = index">        <ng-container *ngIf="shouldDataSourceBeDisplayed(_datasources[i])">          <li formArrayName="datasources">            <label>              <input type="color" [formControlName]="i" [style.background-color]="getDataSourceColor(_datasources[i])" (change)="onDsColorChange($event.target, $event)">{{_datasources[i]}}            </label>          </li>        </ng-container>    </ng-container>  </ul>  </form>  <hr>  <h3>{{ sectionTitles[3] }}</h3>  <form [formGroup]="colorsMiscForm">  <ul class="other-colors-list">    <li>      <label>        <input #queriedNodesColorInput formControlName="queriedEntitiesColor" type="color" [style.background-color]="queriedNodesColorInput.value" (change)="onColorParameterChange(\'queriedEntitiesColor\', $event.target.value)">        <span class="has-tooltip block-level-src">          Active/Focused Enitity          <span class="tooltip tooptip-left">The color of the current entity or entities</span>        </span>        <small class="note-sub">(*note overrides datasource member color if selected)</small>      </label>    </li>  </ul>  </form></div></div>'
     var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzEntityDetailGraphFilterComponent'};

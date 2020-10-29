@@ -83,13 +83,13 @@
     </p>
     <div class="io-description">
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC javascript) SzSearchComponent --&gt;&lt;sz-searchid=&quot;sz-search&quot;name=&quot;Isa Creepr&quot;&gt;&lt;/sz-search&gt;&lt;script&gt;document.getElementById('sz-search').addEventListener('resultsChange', (results) =&gt; {console.log('search results: ', results);});&lt;/script&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC javascript) SzSearchComponent --&gt;&lt;sz-wc-searchid=&quot;sz-search&quot;name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;&lt;script&gt;document.getElementById('sz-search').addEventListener('resultsChange', (results) =&gt; {console.log('search results: ', results);});&lt;/script&gt;</code></pre>
                 </div>
                 <div>
                     <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) SzSearchComponent --&gt;&lt;sz-searchname=&quot;Isa Creepr&quot;(resultsChange)=&quot;myResultsHandler($event)&quot;(searchStart)=&quot;showSpinner()&quot;(searchEnd)=&quot;hideSpinner()&quot;&gt;&lt;/sz-search&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo --&gt;&lt;sz-searchid=&quot;sz-search&quot;name=&quot;Isa Creepr&quot;&gt;&lt;/sz-search&gt;&lt;sz-search-results id=&quot;sz-search-results&quot;&gt;&lt;/sz-search-results&gt;&lt;script&gt;var szSearchComponent = document.getElementById('sz-search');var szSearchResultsComponent = document.getElementById('sz-search-results');szSearchComponent.addEventListener('resultsChange', (evt) =&gt; {console.log('search results: ', evt);szSearchResultsComponent.results = evt.detail;});&lt;/script&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo --&gt;&lt;sz-wc-searchid=&quot;sz-search&quot;name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;&lt;sz-wc-search-results id=&quot;sz-search-results&quot;&gt;&lt;/sz-wc-search-results&gt;&lt;script&gt;var szSearchComponent = document.getElementById('sz-search');var szSearchResultsComponent = document.getElementById('sz-search-results');szSearchComponent.addEventListener('resultsChange', (evt) =&gt; {console.log('search results: ', evt);szSearchResultsComponent.results = evt.detail;});&lt;/script&gt;</code></pre>
                 </div>
     </div>
 
@@ -5900,16 +5900,55 @@ conf to change before fetching resources like the identifiers list</p>
         <p><p>The search box component and the search results component are split up. this is done for some practical reasons. most noteably, so results can be placed wherever it makes sense to put them. This does complicate set up a tiny bit, but the tradeoff in flexibility is well worth it.</p>
 <p>So, lets get down to business.
 lets bind the output of the search component to the input of the search results component.</p>
-<p>first add a method to your component(or app.component.ts) that will handle the output:</p>
-<div><pre class="line-numbers"><code class="language-typescript">onSearchResults(evt: SzSearchResults) {
+<h2 id="angular">Angular</h2>
+<p>first two methods to your component(or app.component.ts) that will handle the output of our search component:</p>
+<div><pre class="line-numbers"><code class="language-typescript">  public onSearchResults(evt: SzSearchResults) {
     console.log(&#39;&#64;senzing/sdk-components-ng/sz-search/searchResults: &#39;, evt);
     // store on current scope
     this.currentSearchResults = evt;
-    // results module is bound to this property
-  }</code></pre></div><p>now lets bind the sz-search tag to the method we just created. Add the following to your app.component.html file:</p>
+  }
+
+  public onSearchParameterChange(searchParams: SzEntitySearchParams) {
+    // store search parameter on current scope
+    this.currentSearchParameters = searchParams;
+  }</code></pre></div><p>and the property <code>currentSearchResults</code> and import the <code>SzAttributeSearchResult</code> model:</p>
+<div><pre class="line-numbers"><code class="language-typescript">public currentSearchResults: SzAttributeSearchResult[];</code></pre></div><p>your app.component.ts up to this point should look something like this:</p>
+<div><pre class="line-numbers"><code class="language-typescript">import {
+  SzAttributeSearchResult,
+  SzEntitySearchParams,
+  SzSearchComponent
+} from &#39;&#64;senzing/sdk-components-ng&#39;;
+
+&#64;Component({
+  selector: &#39;app-root&#39;,
+  templateUrl: &#39;./app.component.html&#39;,
+  styleUrls: [&#39;./app.component.scss&#39;]
+})
+export class AppComponent implements AfterViewInit {
+  public currentSearchResults: SzAttributeSearchResult[];
+  public currentSearchParameters: SzEntitySearchParams;
+
+  constructor(){}
+
+  public onSearchResults(evt: SzAttributeSearchResult[]){
+    // store on current scope
+    this.currentSearchResults = evt;
+  }
+
+  public onSearchParameterChange(searchParams: SzEntitySearchParams) {
+    // store search parameter on current scope
+    this.currentSearchParameters = searchParams;
+  }
+}</code></pre></div><p>now lets add the attrribute search component(sz-search) to the method we just created. Add the following to your app.component.html file:</p>
 <div><pre class="line-numbers"><code class="language-html">&lt;!-- start search box --&gt;
-&lt;sz-search (resultsChange)=&quot;onSearchResults($event)&quot;&gt;&lt;/sz-search&gt;
+&lt;sz-search 
+  (resultsChange)=&quot;onSearchResults($event)&quot;
+  (parameterChange)=&quot;onSearchParameterChange($event)&quot;&gt;&lt;/sz-search&gt;
 &lt;!-- end search box --&gt;</code></pre></div><p>the attribute in parens just tells angular that it&#39;s an event and not just an attribute.</p>
+<p>Now we should be getting the results of the search, and assigning it to the class property <code>currentSearchResults</code>. The next step is to do something with that data, so add the following to your app.component.html file:</p>
+<div><pre class="line-numbers"><code class="language-html">&lt;!-- start search results --&gt;
+&lt;sz-search-results [results]=&quot;currentSearchResults&quot; [parameters]=&quot;currentSearchParameters&quot;&gt;&lt;/sz-search-results&gt;
+&lt;!-- end search results --&gt;</code></pre></div><h2 id="web-components">Web Components</h2>
 </p>
     </div>
 
