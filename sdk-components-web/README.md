@@ -7,8 +7,9 @@ off of the components found in [@senzing/sdk-components-ng](https://github.com/S
 The idea is to provide a framework agnostic option of those same components. 
 
 [![Build Status](https://travis-ci.com/Senzing/sdk-components-ng.svg?branch=master)](https://travis-ci.com/Senzing/sdk-components-ng)
-![GitHub package.json version](https://img.shields.io/github/package-json/v/senzing/sdk-components-web?color=orange&logo=latest&logoColor=blue)
-
+[![npm version](https://badge.fury.io/js/%40senzing%2Fsdk-components-web.svg)](https://badge.fury.io/js/%40senzing%2Fsdk-components-web)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/senzing/sdk-components-ng?color=%2300c4ff&logo=latest%20tag)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/senzing/sdk-components-ng?color=orange&logo=latest&logoColor=blue)
 
 ### Web Components
 Web components are a set of web platform APIs that allow you to create new custom, reusable, encapsulated HTML tags to use in web pages and web apps. Custom components and widgets build on the Web Component standards, will work across modern browsers, and can be used with any JavaScript library or framework that works with HTML.
