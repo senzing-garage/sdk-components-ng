@@ -27,4 +27,5 @@ script:
   - npm run test:headless
   - npm run build:docs
   - npm run build
+  - npm run build:web
 #  - npm run e2e:headless
