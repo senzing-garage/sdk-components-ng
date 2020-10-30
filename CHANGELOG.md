@@ -6,10 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.1.2] - 2020-10-22
+## [2.1.2] - 2020-10-30
 
 - API Client package updated to the [Senzing OAS 2.2.0](https://github.com/Senzing/senzing-rest-api-specification/releases/tag/2.2.0) specification.
-- Web Components code integrated as a child project in to the the `sdk-components-ng` repository. see ticket [#169](https://github.com/Senzing/sdk-components-ng/issues/169)
+- Web Components code integrated as a child project in to the the `sdk-components-ng` repository. see ticket [#169](https://github.com/Senzing/sdk-components-ng/issues/169).
+Documentation for `@senzing/sdk-components-web` now [available here](http://certified.senzing.com/sdk-components-ng/additional-documentation/web-components.html).
+- Bugfixes: #169, #170, #173, #174, #175, #176, #177, #178, #179, #180, #181
 
 ## [2.1.1] - 2020-10-2
 

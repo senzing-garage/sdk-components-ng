@@ -1,0 +1,125 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Senzing SDK Components</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+	      <link rel="stylesheet" href="../../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../../" class="navbar-brand">Senzing SDK Components</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content additional-page">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+<h1 id="quick-start-guide">Quick Start Guide</h1>
+<p>Getting set up to work with the Senzing SDK Components can be done in as little as 10 minutes if you already have an Senzing REST API Server installation running. </p>
+<p>When working with web components you are really just working with HTML tags, so you should set up your project just as you would any web application. We could add things like api request proxy authentication, ssl, react app, electron shell etc. </p>
+<p>This guide is meant purely to get you from zero to working example as quickly as possible.</p>
+<h1 id="preparation">Preparation</h1>
+<p>You should set up a working directory, and initialize it.</p>
+<div><pre class="line-numbers"><code class="language-terminal">mkdir wc-example-spa &amp;&amp; cd wc-example-spa
+git init
+npm init -y</code></pre></div><p>If you get an error on <code>git --version</code> you don&#39;t have git installed. If you get an error on <code>npm -v</code> you do not have node installed. While you can run the components without either of these tools it&#39;s beyond the purposes of illustrating how to get things up and running quickly  ;)</p>
+<ul>
+<li><a href="https://nodejs.org/">Download NodeJS</a></li>
+<li><a href="https://git-scm.com/download">Download Git</a></li>
+</ul>
+<h1 id="installation">Installation</h1>
+<div><pre class="line-numbers"><code class="language-terminal">npm install &#64;senzing/sdk-components-web --save</code></pre></div><h1 id="create-an-html-document">Create an HTML document</h1>
+<p>So you can either create a html document from scratch or just grab one from the <code>node_modules/@senzing/sdk-components-web/examples</code> directory. For the sake of brevity I&#39;m going to illustrate the latter option. Open up a terminal to your working project directory and type:</p>
+<div><pre class="line-numbers"><code class="language-terminal">cp -r node_modules/\&#64;senzing/sdk-components-web/examples/* ./</code></pre></div><p>This should copy all of the example .html files from the package in to your working directory.</p>
+<h2 id="set-the-components-to-your-api-server-address">Set the components to your API Server address</h2>
+<p>Open up the example file and update the <code>sz-wc-configuration</code> tag, or add the following to the top of the document <code>&lt;body&gt;</code> tag contents:</p>
+<div><pre class="line-numbers"><code class="language-html">&lt;sz-wc-configuration id=&quot;api-config&quot; base-path=&quot;http://localhost:8080&quot;&gt;&lt;/sz-wc-configuration&gt;</code></pre></div><p>This will tell the components to redirect all api server calls to <code>localhost:8080</code>. The next step will set up a redirect to forward any unresolved requests to your api server hostname.</p>
+<h4 id="serve-your-html">Serve your HTML</h4>
+<p>Go to your terminal and execute the following command. Replace the <code>http://americium.local:8250</code> part with the address to your API Rest Server address.</p>
+<div><pre class="line-numbers"><code class="language-terminal">npx http-server --proxy http://americium.local:8250</code></pre></div><p>By default http-server will run on <a href="http://localhost:8080">localhost:8080</a>, and any resources that it can&#39;t find will be redirected to the address specified in the <code>--proxy</code> parameter.</p>
+<p>Now open up <a href="http://localhost:8080">localhost:8080</a> and browse to the file/example being worked on.</p>
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 2;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'additional-page';
+            var COMPODOC_CURRENT_PAGE_URL = 'quick-start.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../../js/libs/custom-elements.min.js"></script>
+       <script src="../../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../../js/menu-wc.js" defer></script>
+
+       <script src="../../js/libs/bootstrap-native.js"></script>
+
+       <script src="../../js/libs/es6-shim.min.js"></script>
+       <script src="../../js/libs/EventDispatcher.js"></script>
+       <script src="../../js/libs/promise.min.js"></script>
+       <script src="../../js/libs/zepto.min.js"></script>
+
+       <script src="../../js/compodoc.js"></script>
+
+       <script src="../../js/tabs.js"></script>
+       <script src="../../js/menu.js"></script>
+       <script src="../../js/libs/clipboard.min.js"></script>
+       <script src="../../js/libs/prism.js"></script>
+       <script src="../../js/sourceCode.js"></script>
+          <script src="../../js/search/search.js"></script>
+          <script src="../../js/search/lunr.min.js"></script>
+          <script src="../../js/search/search-lunr.js"></script>
+          <script src="../../js/search/search_index.js"></script>
+       <script src="../../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

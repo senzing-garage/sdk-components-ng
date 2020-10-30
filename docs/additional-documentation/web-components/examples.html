@@ -1,0 +1,144 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Senzing SDK Components</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+	      <link rel="stylesheet" href="../../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../../" class="navbar-brand">Senzing SDK Components</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content additional-page">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+<h1 id="what-are-web-components-">What are Web Components ?</h1>
+<p>Web components are a set of web platform APIs that allow you to create new custom, reusable, encapsulated HTML tags to use in web pages and web apps. Custom components and widgets built on the Web Component standards, will work across modern browsers, and can be used with any JavaScript library or framework that work with HTML.</p>
+<p>For more information on the subject see the following sites:</p>
+<ul>
+<li><a href="https://www.webcomponents.org/introduction">WebComponents.org</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components">Web Components | MDN</a></li>
+<li><a href="https://developers.google.com/web/fundamentals/web-components/">Building Components | Web Fundamentals | Google Developers</a></li>
+</ul>
+<h1 id="web-components-vs-angular">Web Components Vs. Angular</h1>
+<ul>
+<li>Tag Attributes are kabob-case</li>
+<li>Tag names are prefixed with <code>sz-wc</code></li>
+<li>DOM events are camel-case</li>
+<li>DOM properties are camel-case</li>
+</ul>
+<p>All Web Component tag names are prefixed with <code>sz-wc</code>. This is to prevent tag namespace collision/pollution. When browsing any of the online documentation examples, and you see a tag start with <code>sz-</code>, just remember if you are using the <code>@senzing/sdk-components-web</code> package your tag name should start with <code>sz-wc</code> instead.</p>
+<p>The other main difference between the two implementations is that if using angular the attributes are <a href="https://en.wikipedia.org/wiki/Camel_case">Camel Case</a>, and if using web components the attributes are kabob case. See <a href="https://en.wikipedia.org/wiki/Letter_case#Special_case_styles">https://en.wikipedia.org/wiki/Letter_case#Special_case_styles</a></p>
+<p>When accessing a method or setter through the DOM on a web component programatically however, you access the setter/method in camel case ie:</p>
+<div><pre class="line-numbers"><code class="language-html">&lt;sz-wc-standalone-graph
+    filter-width=&quot;320&quot;
+    graph-ids=&quot;1,1001,1002&quot;
+    show-pop-out-icon=&quot;false&quot;
+    show-match-key-control=&quot;false&quot;
+    show-filters-control=&quot;false&quot;
+    filter-control-position=&quot;top-right&quot;
+    show-match-keys=&quot;true&quot;&gt;&lt;/sz-wc-standalone-graph&gt;
+
+&lt;script&gt;
+    // hide graph filter control programatically
+    document.querySelector(&#39;sz-wc-standalone-graph&#39;).showFiltersControl = false;
+&lt;/script&gt;</code></pre></div><h1 id="getting-started">Getting Started</h1>
+<p>Getting set up to work with the Senzing SDK Components can be done in as little as 10 minutes if you already have an Senzing REST API Server installation running. </p>
+<p>See the <a href="web-components/quick-start.html">Quick Start Guide</a> for instructions.</p>
+<h1 id="compatibility">Compatibility</h1>
+<p>Any web page or application that can render web component tags can be enabled by adding the <code>@senzing/sdk-components-web</code> package to it&#39;s dependencies. The basic requirement is that the application hosting the tags can parse javascript and supports rendering custom component tags. All modern web browsers, some mobile browsers, and any native applications that support embedded web views should be able to render these components.</p>
+<p>Add the css file to your document:</p>
+<div><pre class="line-numbers"><code class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;/node_modules/\&#64;senzing/sdk-components-web/senzing-components-web.css&quot;&gt;</code></pre></div><p>Add the javascript to your document:</p>
+<div><pre class="line-numbers"><code class="language-html">&lt;script src=&quot;/node_modules/\&#64;senzing/sdk-components-web/senzing-components-web.js&quot; defer&gt;&lt;/script&gt;</code></pre></div><div style="border-radius: 5px; border: 1px solid #000; padding: 8px; margin-top: 10px">
+  <div><b>Note*</b></div>
+  You may have to change the paths pointing to each of these files depending on how your application is layed out. These files can be moved to wherever your other assets are stored, the examples above are just directly referencing the files from the node modules location.
+</div>
+
+<p><br/><br/><br/><br/></p>
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 2;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'additional-page';
+            var COMPODOC_CURRENT_PAGE_URL = 'examples.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../../js/libs/custom-elements.min.js"></script>
+       <script src="../../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../../js/menu-wc.js" defer></script>
+
+       <script src="../../js/libs/bootstrap-native.js"></script>
+
+       <script src="../../js/libs/es6-shim.min.js"></script>
+       <script src="../../js/libs/EventDispatcher.js"></script>
+       <script src="../../js/libs/promise.min.js"></script>
+       <script src="../../js/libs/zepto.min.js"></script>
+
+       <script src="../../js/compodoc.js"></script>
+
+       <script src="../../js/tabs.js"></script>
+       <script src="../../js/menu.js"></script>
+       <script src="../../js/libs/clipboard.min.js"></script>
+       <script src="../../js/libs/prism.js"></script>
+       <script src="../../js/sourceCode.js"></script>
+          <script src="../../js/search/search.js"></script>
+          <script src="../../js/search/lunr.min.js"></script>
+          <script src="../../js/search/search-lunr.js"></script>
+          <script src="../../js/search/search_index.js"></script>
+       <script src="../../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

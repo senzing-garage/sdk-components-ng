@@ -1,0 +1,131 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Senzing SDK Components</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+	      <link rel="stylesheet" href="../../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../../" class="navbar-brand">Senzing SDK Components</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content additional-page">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+<h1 id="szstandalonegraphcomponent">SzStandaloneGraphComponent</h1>
+<p>The <code>SzStandaloneGraphComponent</code> creates a graphical representation of an entity and it&#39;s relationships to other entities and includes optional filtering and parameter control tray.</p>
+<p><img src="../../images/ss-graph-large.png" alt="screen shot of SzRelationshipNetworkComponent" class="img-responsive">
+<br/><br/><br/><br/></p>
+<h2 id="properties-and-methods">Properties and Methods</h2>
+<p>see the component <code>sdk-graph-components</code> documentation for the full list of component methods and properties: <a href="http://certified.senzing.com/sdk-components-ng/components/SzStandaloneGraphComponent.html">http://certified.senzing.com/sdk-components-ng/components/SzStandaloneGraphComponent.html</a></p>
+<h2 id="examples">Examples</h2>
+<h4 id="angular">Angular</h4>
+<div><pre class="line-numbers"><code class="language-html">  &lt;sz-standalone-graph
+    filterWidth=&quot;320&quot;
+    [graphIds]=&quot;graphIds&quot;
+    [showPopOutIcon]=&quot;false&quot;
+    [showMatchKeyControl]=&quot;false&quot;
+    [showFiltersControl]=&quot;false&quot;
+    [filterControlPosition]=&quot;&#39;top-right&#39;&quot;
+    (entityClick)=&quot;onGraphEntityClick($event)&quot;
+    [showMatchKeys]=&quot;true&quot;
+    &gt;&lt;/sz-standalone-graph&gt;</code></pre></div><h4 id="web-component">Web Component</h4>
+<div><pre class="line-numbers"><code class="language-html">  &lt;sz-wc-standalone-graph
+    filter-width=&quot;320&quot;
+    graph-ids=&quot;1,1001,1002&quot;
+    show-pop-out-icon=&quot;false&quot;
+    show-match-key-control=&quot;false&quot;
+    show-filters-control=&quot;false&quot;
+    filter-control-position=&quot;top-right&quot;
+    show-match-keys=&quot;true&quot;&gt;&lt;/sz-wc-standalone-graph&gt;</code></pre></div><h1 id="differences-between-web-components-and-angular-implementations">Differences between Web Components and Angular Implementations</h1>
+<p>If using the <code>sdk-components-ng</code> package the tag is called <code>sz-standalone-graph</code>.
+If using the <code>sdk-components-web</code> package the tag is called <code>sz-wc-standalone-graph</code>.</p>
+<p>The other main difference between the two implementations is that if using angular the attributes are <a href="https://en.wikipedia.org/wiki/Camel_case">Camel Case</a>, and if using web components the attributes are kabob case. See <a href="https://en.wikipedia.org/wiki/Letter_case#Special_case_styles">https://en.wikipedia.org/wiki/Letter_case#Special_case_styles</a></p>
+<p><br/><br/><br/><br/></p>
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 2;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'additional-page';
+            var COMPODOC_CURRENT_PAGE_URL = 'szstandalonegraphcomponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../../js/libs/custom-elements.min.js"></script>
+       <script src="../../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../../js/menu-wc.js" defer></script>
+
+       <script src="../../js/libs/bootstrap-native.js"></script>
+
+       <script src="../../js/libs/es6-shim.min.js"></script>
+       <script src="../../js/libs/EventDispatcher.js"></script>
+       <script src="../../js/libs/promise.min.js"></script>
+       <script src="../../js/libs/zepto.min.js"></script>
+
+       <script src="../../js/compodoc.js"></script>
+
+       <script src="../../js/tabs.js"></script>
+       <script src="../../js/menu.js"></script>
+       <script src="../../js/libs/clipboard.min.js"></script>
+       <script src="../../js/libs/prism.js"></script>
+       <script src="../../js/sourceCode.js"></script>
+          <script src="../../js/search/search.js"></script>
+          <script src="../../js/search/lunr.min.js"></script>
+          <script src="../../js/search/search-lunr.js"></script>
+          <script src="../../js/search/search_index.js"></script>
+       <script src="../../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

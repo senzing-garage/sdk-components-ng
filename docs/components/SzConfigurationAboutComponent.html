@@ -73,6 +73,7 @@ a human readable table.</p>
     </p>
     <p class="comment">
                     <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+                    <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
     </p>
 
     <p class="comment">
@@ -80,7 +81,10 @@ a human readable table.</p>
     </p>
     <div class="io-description">
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;sz-configuration-about&gt;&lt;/sz-configuration-about&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;&lt;sz-configuration-about&gt;&lt;/sz-configuration-about&gt;</code></pre>
+                </div>
+                <div>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) by attribute --&gt;&lt;sz-wc-configuration-about&gt;&lt;/sz-wc-configuration-about&gt;</code></pre>
                 </div>
     </div>
 
@@ -147,6 +151,10 @@ a human readable table.</p>
                                     <span class="modifier">Public</span>
                                 <a href="#apiProperties">apiProperties</a>
                             </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#unsubscribe$">unsubscribe$</a>
+                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -162,6 +170,9 @@ a human readable table.</p>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#getPropsAsArray">getPropsAsArray</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy">ngOnDestroy</a>
                             </li>
                             <li>
                                 <a href="#ngOnInit">ngOnInit</a>
@@ -184,7 +195,7 @@ a human readable table.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(apiConfiguration: SzRestConfiguration)</code>
+<code>constructor(apiConfiguration: SzRestConfiguration, apiConfigService: <a href="../injectables/SzConfigurationService.html">SzConfigurationService</a>)</code>
                     </td>
                 </tr>
 
@@ -206,6 +217,18 @@ a human readable table.</p>
                                                   
                                                         <td>
                                                                     <code>SzRestConfiguration</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>apiConfigService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SzConfigurationService.html" target="_self" >SzConfigurationService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -248,7 +271,7 @@ a human readable table.</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getPropsAsArray()</code>
+                    <code>getPropsAsArray(config: SzRestConfiguration)</code>
                 </td>
             </tr>
 
@@ -259,7 +282,73 @@ a human readable table.</p>
                 <td class="col-md-4">
 
                     <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>config</td>
+                                    <td>
+                                            <code>SzRestConfiguration</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
                         <b>Returns : </b>    <code>object[]</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <b>
+                            ngOnDestroy
+                        </b>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>unsubscribe when component is destroyed</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                     </div>
                 </td>
@@ -357,6 +446,34 @@ a human readable table.</p>
                         </td>
                     </tr>
 
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="unsubscribe$"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            unsubscribe$</b>
+                            <a href="#unsubscribe$"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>new Subject&lt;void&gt;()</code>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>subscription to notify subscribers to unbind </p>
+</div>
+                    </td>
+                </tr>
 
             </tbody>
         </table>

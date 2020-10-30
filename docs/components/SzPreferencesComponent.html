@@ -83,19 +83,19 @@ provides the more robust solution.</p>
     </p>
     <div class="io-description">
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) javascript --&gt;&lt;sz-preferences id=&quot;prefsIntf&quot;&gt;&lt;/sz-preferences&gt;&lt;script&gt;document.getElementById('prefsIntf').GraphBuildOut = 5;&lt;/script&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) javascript --&gt;&lt;sz-wc-preferences id=&quot;prefsIntf&quot;&gt;&lt;/sz-wc-preferences&gt;&lt;script&gt;document.getElementById('prefsIntf').GraphBuildOut = 5;&lt;/script&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) By attribute: --&gt;&lt;sz-preferencesgraph-build-out=&quot;20&quot;&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) By attribute: --&gt;&lt;sz-wc-preferencesgraph-build-out=&quot;20&quot;&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) javascript bulk initialize from local storage: --&gt;&lt;sz-preferences id=&quot;prefsIntf&quot; show-controls=&quot;true&quot;&gt;&lt;script&gt;document.getElementById('prefsIntf').prefsFromJSONString = localStorage.getItem('NAME_OF_LS_KEY');&lt;/script&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) javascript bulk initialize from local storage: --&gt;&lt;sz-wc-preferences id=&quot;prefsIntf&quot; show-controls=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;&lt;script&gt;document.getElementById('prefsIntf').prefsFromJSONString = localStorage.getItem('NAME_OF_LS_KEY');&lt;/script&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) show other data in search results: --&gt;&lt;sz-preferencessearch-results-show-other-data=&quot;true&quot;&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) show other data in search results: --&gt;&lt;sz-wc-preferencessearch-results-show-other-data=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;</code></pre>
                 </div>
                 <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) show interactive UI: --&gt;&lt;sz-preferencesshow-controls=&quot;true&quot;&gt;</code></pre>
+                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) show interactive UI: --&gt;&lt;sz-wc-preferencesshow-controls=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;</code></pre>
                 </div>
                 <div>
                     <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;&lt;sz-preferences(prefsChange)=&quot;myPrefsChangeHandler($event)&quot;&gt;</code></pre>

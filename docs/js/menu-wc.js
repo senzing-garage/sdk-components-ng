@@ -65,6 +65,55 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         </div>
                         <ul class="links collapse " ${ isNormalMode ? 'id="additional-pages"' : 'id="xs-additional-pages"' }>
                                     <li class="chapter inner">
+                                        <a data-type="chapter-link" href="additional-documentation/web-components.html" data-context-id="additional">
+                                            <div class="menu-toggler linked" data-toggle="collapse" ${ isNormalMode ?
+                                            'data-target="#additional-page-398a8175f9ed9001d53e375aefa4a54d"' : 'data-target="#xs-additional-page-398a8175f9ed9001d53e375aefa4a54d"' }>
+                                                <span class="link-name">Web Components</span>
+                                                <span class="icon ion-ios-arrow-down"></span>
+                                            </div>
+                                        </a>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="additional-page-398a8175f9ed9001d53e375aefa4a54d"' : 'id="xs-additional-page-398a8175f9ed9001d53e375aefa4a54d"' }>
+                                            <li class="link for-chapter2">
+                                                <a href="additional-documentation/web-components/quick-start.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Quick Start</a>
+                                            </li>
+                                            <li class="link for-chapter2">
+                                                <a href="additional-documentation/web-components/examples.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Examples</a>
+                                            </li>
+                                            <li class="link for-chapter3">
+                                                <a href="additional-documentation/web-components/examples/configure-rest-server-connection-properties.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Configure Rest Server Connection Properties</a>
+                                            </li>
+                                            <li class="link for-chapter3">
+                                                <a href="additional-documentation/web-components/examples/attribute-search-with-results.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Attribute Search with Results</a>
+                                            </li>
+                                            <li class="link for-chapter3">
+                                                <a href="additional-documentation/web-components/examples/id-search-with-record-viewer.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Id Search with Record Viewer</a>
+                                            </li>
+                                            <li class="link for-chapter3">
+                                                <a href="additional-documentation/web-components/examples/large-graph-with-filtering.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Large Graph with Filtering</a>
+                                            </li>
+                                            <li class="link for-chapter3">
+                                                <a href="additional-documentation/web-components/examples/small-graph-(for-embedding).html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Small Graph (for embedding)</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="chapter inner">
+                                        <a data-type="chapter-link" href="additional-documentation/graph-components.html" data-context-id="additional">
+                                            <div class="menu-toggler linked" data-toggle="collapse" ${ isNormalMode ?
+                                            'data-target="#additional-page-5d4c09cdd51d860cd174c6f9d6aa8187"' : 'data-target="#xs-additional-page-5d4c09cdd51d860cd174c6f9d6aa8187"' }>
+                                                <span class="link-name">Graph Components</span>
+                                                <span class="icon ion-ios-arrow-down"></span>
+                                            </div>
+                                        </a>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="additional-page-5d4c09cdd51d860cd174c6f9d6aa8187"' : 'id="xs-additional-page-5d4c09cdd51d860cd174c6f9d6aa8187"' }>
+                                            <li class="link for-chapter2">
+                                                <a href="additional-documentation/graph-components/szstandalonegraphcomponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">SzStandaloneGraphComponent</a>
+                                            </li>
+                                            <li class="link for-chapter2">
+                                                <a href="additional-documentation/graph-components/szrelationshipnetworkcomponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">SzRelationshipNetworkComponent</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="chapter inner">
                                         <a data-type="chapter-link" href="additional-documentation/themes.html" data-context-id="additional">
                                             <div class="menu-toggler linked" data-toggle="collapse" ${ isNormalMode ?
                                             'data-target="#additional-page-247b91889b4cfdb46d99aa0ed55b635b"' : 'data-target="#xs-additional-page-247b91889b4cfdb46d99aa0ed55b635b"' }>
