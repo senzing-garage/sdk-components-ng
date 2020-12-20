@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef, Inject, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable, Subject  } from 'rxjs';
-import { map, tap, mapTo, first, filter, takeUntil } from 'rxjs/operators';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectorRef, Inject, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Subject  } from 'rxjs';
+import { map, first, filter, takeUntil } from 'rxjs/operators';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import {MatDialog} from '@angular/material/dialog';
 
 import {
   ConfigService,
@@ -13,6 +14,7 @@ import {
   SzAttributeTypesResponse,
   SzAttributeTypesResponseData
 } from '@senzing/rest-api-client-ng';
+
 import { SzEntitySearchParams } from '../../models/entity-search';
 import { SzSearchService } from '../../services/sz-search.service';
 import { JSONScrubber, parseBool } from '../../common/utils';
@@ -20,6 +22,7 @@ import { SzConfigurationService } from '../../services/sz-configuration.service'
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzFoliosService } from '../../services/sz-folios.service';
 import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio, SzSearchParamsFolioItem } from '../../models/folio';
+import { SzSearchIdentifiersPickerDialogComponent } from './sz-search-identifiers-picker.component';
 
 /** @internal */
 interface SzSearchFormParams {
@@ -43,7 +46,6 @@ interface SzBoolFieldMapByName {
   phone: boolean;
   identifierType: boolean;
 }
-
 
 /**
  * Provides a search box component that can execute search queries and return results.
@@ -613,6 +615,8 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     this._attributeTypesFromServer = value;
 
     // filter out by specific codes
+    this.matchingAttributes = value;
+    //console.log(`SzSearchComponent.inputAttributeTypes(${JSON.stringify(value, undefined, 2)})`);
     this.matchingAttributes = this.filterAttributeTypesByAllowedTypes(value, this.allowedTypeAttributes);
   }
 
@@ -629,6 +633,31 @@ export class SzSearchComponent implements OnInit, OnDestroy {
       });
     }
     return retTypes
+  }
+
+  public chooseIdentifiers(event: Event) {
+    //console.log(`SzSearchComponent.chooseIdentifiers ${JSON.stringify(this._attributeTypesFromServer, undefined, 2)}`);
+
+    const dialogRef = this.dialog.open(SzSearchIdentifiersPickerDialogComponent, {
+      width: '375px',
+      height: '50vh',
+      data: {
+        attributeTypes: this._attributeTypesFromServer,
+        selected: this.allowedTypeAttributes
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: SzAttributeType[]) => {
+      console.log('The dialog was closed', result);
+      if(result) {
+        let newAllowedList = result.map((attrObj: SzAttributeType) => {
+          return attrObj.attributeCode;
+        });
+        console.log('new allowed types: ', newAllowedList, this.allowedTypeAttributes);
+        this.prefs.searchForm.allowedTypeAttributes = newAllowedList;
+        //this.allowedTypeAttributes = newAllowedList;
+      }
+    });
   }
 
   /**
@@ -667,6 +696,7 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     private prefs: SzPrefsService,
     private searchService: SzSearchService,
     private folios: SzFoliosService,
+    public dialog: MatDialog,
     public breakpointObserver: BreakpointObserver) {
 
       this.prefs.searchForm.prefsChanged.pipe(
@@ -682,6 +712,8 @@ export class SzSearchComponent implements OnInit, OnDestroy {
             // we already have response from server
             // just re-filter result
             this.matchingAttributes = this.filterAttributeTypesByAllowedTypes(this.inputAttributeTypes, this.allowedTypeAttributes);
+            //console.log(`SzSearchComponent(${this.matchingAttributes})`);
+
             /*console.warn('filtering attr list based on prefs change',
             this.inputAttributeTypes,
             this.allowedTypeAttributes,

@@ -198,6 +198,21 @@
       padding-bottom: 20px;
     }
   }
+  .flex-type-row {
+    display: flex;
+    flex-direction: row;;
+  }
+  .identifier-type-icon {
+    cursor: pointer;
+    align-self: end;
+    background-color: #0c9bf4;
+    border-radius: 50%;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    padding: 2px 2px 2px 3px;
+    margin-top: 7px;
+  }
   .field {
     display: inline-block;
     flex-direction: column;

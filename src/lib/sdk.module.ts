@@ -16,6 +16,10 @@ import {
   SenzingSdkGraphModule
 } from '@senzing/sdk-graph-components';
 
+import { SzSdkMaterialModule } from './sdk.material.module';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+
 /** utilities */
 // import { JSONScrubber } from './common/utils';
 
@@ -67,6 +71,7 @@ import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-car
 import { SzEntityRecordCardContentComponent } from './entity/sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
 
 import { SzSearchComponent } from './search/sz-search/sz-search.component';
+import { SzSearchIdentifiersPickerDialogComponent } from './search/sz-search/sz-search-identifiers-picker.component';
 import { SzSearchByIdComponent } from './search/sz-search/sz-search-by-id.component';
 import { SzEntityRecordViewerComponent } from './record/sz-entity-record-viewer.component';
 import { SzSearchResultsComponent } from './search/sz-search-results/sz-search-results.component';
@@ -131,7 +136,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzConfigurationComponent,
     SzPoweredByComponent,
     SzPreferencesComponent,
-    SzPrefDictComponent
+    SzPrefDictComponent,
+    SzSearchIdentifiersPickerDialogComponent
   ],
   imports: [
     CommonModule,
@@ -141,7 +147,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     LayoutModule,
     SenzingSdkGraphModule,
     NgxJsonViewerModule,
-    ApiModule
+    ApiModule,
+    SzSdkMaterialModule
   ],
   exports: [
     SzEntityDetailComponent,
@@ -171,7 +178,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzPoweredByComponent,
     SzConfigurationComponent,
     SzConfigurationAboutComponent,
-    SzPreferencesComponent
+    SzPreferencesComponent,
+    SzSearchIdentifiersPickerDialogComponent
   ],
   providers: [
     SzMessageBundleService,

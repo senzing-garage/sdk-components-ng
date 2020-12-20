@@ -1,0 +1,19 @@
+<h1 mat-dialog-title class="mat-dialog-title">Identifier Types</h1>
+<div mat-dialog-content class="mat-dialog-content">
+  <p>Select which identifiers appear in the dropdown</p>
+  <!--<mat-form-field>
+    <mat-label>Favorite Animal</mat-label>
+    <input matInput [(ngModel)]="data.animal">
+  </mat-form-field>-->
+  <div class="value-pair" *ngFor="let attrRow of orderedData">
+    <div class="value-pair-row">
+      <mat-checkbox [(ngModel)]="attrRow.checked">
+        {{attributeCodeAsText(attrRow.attributeCode)}}
+      </mat-checkbox>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions class="mat-dialog-actions">
+  <button mat-button class="cancel" color="basic" (click)="onNoClick()">Cancel</button>
+  <button mat-stroked-button class="accept" color="primary" [mat-dialog-close]="checkedAttributeTypes" cdkFocusInitial>Apply</button>
+</div>
