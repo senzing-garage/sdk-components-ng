@@ -59,6 +59,7 @@
             <div class="field type" [class.disabled]="disabledFields['identifierType'] || disabledFields['identifier']" *ngIf="!hiddenFields['identifier'] && !hiddenFields['identifierType']">
               <label for="entity-type">Type</label>
               <div class="flex-type-row">
+                <mat-icon *ngIf="showIdentifierTypesPicker" class="identifier-type-icon left hide-on-medium hide-on-wide" matTooltipPosition="above" matTooltip="Choose Identifiers in List" aria-hidden="false" aria-label="Choose Identifiers in List" (click)="chooseIdentifiers($event)">filter_list</mat-icon>
                 <select formControlName="IDENTIFIER_TYPE"
                         class="identifier-dropdown"
                         [class.filterShowing]="showIdentifierTypesPicker"
@@ -71,7 +72,7 @@
                           [selected]="type.attributeCode === 'PASSPORT_NUMBER'">{{type.featureType}}
                   </option>
                 </select>
-                <mat-icon *ngIf="showIdentifierTypesPicker" class="identifier-type-icon" matTooltipPosition="above" matTooltip="Choose Identifiers in List" aria-hidden="false" aria-label="Choose Identifiers in List" (click)="chooseIdentifiers($event)">filter_list</mat-icon>
+                <mat-icon *ngIf="showIdentifierTypesPicker" class="identifier-type-icon right  hide-on-narrow" matTooltipPosition="above" matTooltip="Choose Identifiers in List" aria-hidden="false" aria-label="Choose Identifiers in List" (click)="chooseIdentifiers($event)">filter_list</mat-icon>
               </div>
             </div>
             <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields['searchButton']" *ngIf="!hiddenFields['searchButton']">
