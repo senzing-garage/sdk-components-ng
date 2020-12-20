@@ -117,6 +117,16 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     'TAX_ID_NUMBER',
     'TRUSTED_ID_NUMBER'
   ];
+  private _showIdentifierTypesPicker:boolean = false;
+  /** whether or not to show the identifier types picker button */
+  @Input('showIdentifierTypesPicker')
+  public set inputIdentifierTypesPicker(value){
+    this._showIdentifierTypesPicker = parseBool(value);
+  }
+  /** whether or not to show the identifier types picker button */
+  public get showIdentifierTypesPicker(): boolean {
+    return this._showIdentifierTypesPicker;
+  }
 
   /** the default amount of searches to store in the search history folio. */
   private rememberLastSearches: number = 20;
@@ -587,8 +597,8 @@ export class SzSearchComponent implements OnInit, OnDestroy {
   /** the width to switch from wide to narrow layout */
   @Input() public layoutBreakpoints = [
     {cssClass: 'layout-wide', minWidth: 1021 },
-    {cssClass: 'layout-medium', minWidth: 700, maxWidth: 1120 },
-    {cssClass: 'layout-narrow', maxWidth: 699 }
+    {cssClass: 'layout-medium', minWidth: 830, maxWidth: 1120 },
+    {cssClass: 'layout-narrow', maxWidth: 829 }
   ]
   @Input() public set layoutClasses(value: string[] | string){
     if(value && value !== undefined) {

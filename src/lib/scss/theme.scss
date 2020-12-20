@@ -21,7 +21,7 @@ body {
   --sz-search-button-submit-background-color: #{$sz-blue};
   --sz-search-button-clear-background-color: #{$sz-grey};
   --sz-search-button-border: 1px solid #{$sz-dark-grey};
-  --sz-search-button-submit-border: 1px solid #{$sz-dark-blue};
+  --sz-search-button-submit-border: 1px outset #{$sz-blue};
   --sz-search-button-clear-padding: 0 10px 0 10px;
   --sz-search-button-submit-padding: 0 30px 0 30px;
   --sz-search-button-margin: 0;
@@ -29,6 +29,17 @@ body {
   /* --sz-search-button-submit-font-size: 10px;*/
   --sz-search-button-clear-font-size: 10px;
 
+  --sz-search-button-filter-color: #{$sz-white};
+  --sz-search-button-filter-background-color: #{$sz-blue};
+  --sz-search-button-filter-border-color: #{$sz-blue}; // #0c9bf4
+  --sz-search-button-filter-border-style: outset;
+  --sz-search-button-filter-border-radius: 50%;
+  --sz-search-button-filter-border-width: 1px;
+  --sz-search-button-filter-font-size: 18px;
+  --sz-search-button-filter-width: 18px;
+  --sz-search-button-filter-height: 18px;
+  --sz-search-button-filter-padding: 2px 3px 2px 2px;
+  --sz-search-button-filter-margin-top: 7px;
 
   --sz-search-input-color: #{$sz-input-font-color};
   --sz-search-input-background-color: #{$sz-input-background-color};
