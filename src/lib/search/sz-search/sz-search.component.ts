@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject  } from 'rxjs';
 import { map, first, filter, takeUntil } from 'rxjs/operators';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 import {
   ConfigService,
@@ -22,7 +23,7 @@ import { SzConfigurationService } from '../../services/sz-configuration.service'
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzFoliosService } from '../../services/sz-folios.service';
 import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio, SzSearchParamsFolioItem } from '../../models/folio';
-import { SzSearchIdentifiersPickerDialogComponent } from './sz-search-identifiers-picker.component';
+import { SzSearchIdentifiersPickerDialogComponent, SzSearchIdentifiersPickerSheetComponent } from './sz-search-identifiers-picker.component';
 
 /** @internal */
 interface SzSearchFormParams {
@@ -646,28 +647,58 @@ export class SzSearchComponent implements OnInit, OnDestroy {
   }
 
   public chooseIdentifiers(event: Event) {
+    const isNarrowLayout = this.layoutClasses.indexOf('layout-narrow') > -1;
     //console.log(`SzSearchComponent.chooseIdentifiers ${JSON.stringify(this._attributeTypesFromServer, undefined, 2)}`);
+    console.log('layout: ', isNarrowLayout);
 
-    const dialogRef = this.dialog.open(SzSearchIdentifiersPickerDialogComponent, {
-      width: '375px',
-      height: '50vh',
-      data: {
-        attributeTypes: this._attributeTypesFromServer,
-        selected: this.allowedTypeAttributes
-      }
-    });
+    if(!isNarrowLayout){
+      const dialogRef = this.dialog.open(SzSearchIdentifiersPickerDialogComponent, {
+        width: '375px',
+        height: '50vh',
+        data: {
+          attributeTypes: this._attributeTypesFromServer,
+          selected: this.allowedTypeAttributes
+        }
+      });
+  
+      dialogRef.afterClosed().subscribe((result: SzAttributeType[]) => {
+        console.log('The dialog was closed', result);
+        if(result) {
+          let newAllowedList = result.map((attrObj: SzAttributeType) => {
+            return attrObj.attributeCode;
+          });
+          console.log('new allowed types: ', newAllowedList, this.allowedTypeAttributes);
+          this.prefs.searchForm.allowedTypeAttributes = newAllowedList;
+          //this.allowedTypeAttributes = newAllowedList;
+        }
+      });
+    } else {
+      const bottomSheetRef = this.bottomSheet.open(SzSearchIdentifiersPickerSheetComponent, {
+        ariaLabel: 'Identifier Types',
+        panelClass: ['sz-search-identifiers-picker-sheet'],
+        backdropClass: 'sz-search-identifiers-picker-sheet-backdrop',
+        hasBackdrop: false,
+        data: {
+          attributeTypes: this._attributeTypesFromServer,
+          selected: this.allowedTypeAttributes
+        }
+      });
 
-    dialogRef.afterClosed().subscribe((result: SzAttributeType[]) => {
-      console.log('The dialog was closed', result);
-      if(result) {
-        let newAllowedList = result.map((attrObj: SzAttributeType) => {
-          return attrObj.attributeCode;
-        });
-        console.log('new allowed types: ', newAllowedList, this.allowedTypeAttributes);
-        this.prefs.searchForm.allowedTypeAttributes = newAllowedList;
-        //this.allowedTypeAttributes = newAllowedList;
-      }
-    });
+      bottomSheetRef.afterDismissed().pipe(
+        first()
+      ).subscribe((result: SzAttributeType[]) => {
+        console.log('Bottom sheet has been dismissed.', result);
+        
+        if(result) {
+          let newAllowedList = result.map((attrObj: SzAttributeType) => {
+            return attrObj.attributeCode;
+          });
+          console.log('new allowed types: ', newAllowedList, this.allowedTypeAttributes);
+          this.prefs.searchForm.allowedTypeAttributes = newAllowedList;
+          //this.allowedTypeAttributes = newAllowedList;
+        }
+      });
+    }
   }
 
   /**
@@ -706,7 +737,8 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     private prefs: SzPrefsService,
     private searchService: SzSearchService,
     private folios: SzFoliosService,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
+    private bottomSheet: MatBottomSheet,
     public breakpointObserver: BreakpointObserver) {
 
       this.prefs.searchForm.prefsChanged.pipe(

@@ -1,6 +1,8 @@
 
-import { Component, Inject } from '@angular/core';
+import { Component, HostBinding, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
+
 import { SzAttributeType } from '@senzing/rest-api-client-ng';
 import { retry } from 'rxjs/operators';
 
@@ -20,25 +22,27 @@ templateUrl: './sz-search-identifiers-picker.component.html',
 styleUrls: ['./sz-search-identifiers-picker.component.scss']
 })
 export class SzSearchIdentifiersPickerDialogComponent {
-    private _dataModel: AttrRow[];
-
+    protected _dataModel: AttrRow[];
+    public showButtons: boolean = true;
     constructor(
-        public dialogRef: MatDialogRef<SzSearchIdentifiersPickerDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: {
+        public dialogRef?: MatDialogRef<SzSearchIdentifiersPickerDialogComponent>,
+        @Inject(MAT_DIALOG_DATA) public data?: {
             attributeTypes: SzAttributeType[]
             selected: string[]
         }) {
-
-        this._dataModel = this.extendInputData(this.data.attributeTypes, this.data.selected).sort((a: AttrRow, b: AttrRow) => {
-            if (a.attributeCode < b.attributeCode) 
-                return -1; 
-            if (a.attributeCode > b.attributeCode) 
-                return 1; 
-            return 0; 
-        });
+        
+        if(this.data) {
+            this._dataModel = this.extendInputData(this.data.attributeTypes, this.data.selected).sort((a: AttrRow, b: AttrRow) => {
+                if (a.attributeCode < b.attributeCode) 
+                    return -1; 
+                if (a.attributeCode > b.attributeCode) 
+                    return 1; 
+                return 0; 
+            });
+        }
     }
 
-    private extendInputData(value: SzAttributeType[], selected: string[]) {
+    protected extendInputData(value: SzAttributeType[], selected: string[]) {
         console.log('extendInputData: ', value, selected);
         let retVal: Array<AttrRow> = [];
         if(value && value.map) {
@@ -56,7 +60,18 @@ export class SzSearchIdentifiersPickerDialogComponent {
     }
 
     onNoClick(): void {
-        this.dialogRef.close();
+        console.log('SzSearchIdentifiersPickerDialogComponent.onNoClick');
+
+        if(this.dialogRef && this.dialogRef.close){
+            this.dialogRef.close();
+        }
+    }
+
+    onApplyClick(): void {
+        if(this.dialogRef && this.dialogRef.close){
+            console.log('SzSearchIdentifiersPickerDialogComponent.onApplyClick');
+            this.dialogRef.close(this.checkedAttributeTypes);
+        }
     }
 
     public attributeCodeAsText(value: string) {
@@ -68,4 +83,46 @@ export class SzSearchIdentifiersPickerDialogComponent {
     }
 
 }
-  
+
+@Component({
+    selector: 'sz-search-identifiers-picker-sheet',
+    templateUrl: './sz-search-identifiers-picker.component.html',
+    styleUrls: ['./sz-search-identifiers-picker.component.scss']
+})
+export class SzSearchIdentifiersPickerSheetComponent extends SzSearchIdentifiersPickerDialogComponent {
+    @HostBinding('class.isMatSheet') true;
+
+    constructor(
+        public sheetRef: MatBottomSheetRef<SzSearchIdentifiersPickerSheetComponent>,
+        @Inject(MAT_BOTTOM_SHEET_DATA) public data: {
+            attributeTypes: SzAttributeType[]
+            selected: string[]
+        }) {
+        
+        super();
+
+        if(this.data) {
+            this._dataModel = this.extendInputData(this.data.attributeTypes, this.data.selected).sort((a: AttrRow, b: AttrRow) => {
+                if (a.attributeCode < b.attributeCode) 
+                    return -1; 
+                if (a.attributeCode > b.attributeCode) 
+                    return 1; 
+                return 0; 
+            });
+        }
+    }
+
+    onNoClick(): void { 
+        if(this.sheetRef && this.sheetRef.dismiss){
+            console.log('SzSearchIdentifiersPickerSheetComponent.onNoClick');
+            this.sheetRef.dismiss();
+        }
+    }
+
+    onApplyClick(): void {
+        if(this.sheetRef && this.sheetRef.dismiss){
+            console.log('SzSearchIdentifiersPickerSheetComponent.onApplyClick');
+            this.sheetRef.dismiss(this.checkedAttributeTypes);
+        }
+    }
+}

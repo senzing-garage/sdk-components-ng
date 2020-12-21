@@ -71,7 +71,7 @@ import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-car
 import { SzEntityRecordCardContentComponent } from './entity/sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
 
 import { SzSearchComponent } from './search/sz-search/sz-search.component';
-import { SzSearchIdentifiersPickerDialogComponent } from './search/sz-search/sz-search-identifiers-picker.component';
+import { SzSearchIdentifiersPickerDialogComponent, SzSearchIdentifiersPickerSheetComponent } from './search/sz-search/sz-search-identifiers-picker.component';
 import { SzSearchByIdComponent } from './search/sz-search/sz-search-by-id.component';
 import { SzEntityRecordViewerComponent } from './record/sz-entity-record-viewer.component';
 import { SzSearchResultsComponent } from './search/sz-search-results/sz-search-results.component';
@@ -113,6 +113,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzEntityDetailComponent,
     SzSearchComponent,
     SzSearchByIdComponent,
+    SzSearchIdentifiersPickerDialogComponent,
+    SzSearchIdentifiersPickerSheetComponent,
     SzSearchResultsComponent,
     SzSearchResultCardComponent,
     SzSearchResultCardContentComponent,
@@ -136,8 +138,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzConfigurationComponent,
     SzPoweredByComponent,
     SzPreferencesComponent,
-    SzPrefDictComponent,
-    SzSearchIdentifiersPickerDialogComponent
+    SzPrefDictComponent
   ],
   imports: [
     CommonModule,
@@ -174,12 +175,13 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzStandaloneGraphComponent,
     SzSearchComponent,
     SzSearchByIdComponent,
+    SzSearchIdentifiersPickerDialogComponent,
+    SzSearchIdentifiersPickerSheetComponent,
     SzSearchResultsComponent,
     SzPoweredByComponent,
     SzConfigurationComponent,
     SzConfigurationAboutComponent,
-    SzPreferencesComponent,
-    SzSearchIdentifiersPickerDialogComponent
+    SzPreferencesComponent
   ],
   providers: [
     SzMessageBundleService,
