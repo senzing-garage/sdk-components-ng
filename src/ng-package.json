@@ -18,6 +18,7 @@
     "html2canvas",
     "@types/d3",
     "@types/jspdf",
+    "schematics-utilities",
     "mustache"
   ]
 }
