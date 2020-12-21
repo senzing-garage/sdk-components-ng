@@ -69,7 +69,7 @@
                   <option [ngValue]="null" disabled>Choose ID type</option>
                   <option *ngFor="let type of orderedAttributes()"
                           [value]="type.attributeCode"
-                          [selected]="type.attributeCode === 'PASSPORT_NUMBER'">{{type.featureType}}
+                          [selected]="type.attributeCode === 'PASSPORT_NUMBER'">{{ attributeCodeAsHumanReadable(type.attributeCode) | uppercase }}
                   </option>
                 </select>
                 <mat-icon *ngIf="showIdentifierTypesPicker" class="identifier-type-icon right  hide-on-narrow" matTooltipPosition="above" matTooltip="Choose Identifiers in List" aria-hidden="false" aria-label="Choose Identifiers in List" (click)="chooseIdentifiers($event)">filter_list</mat-icon>

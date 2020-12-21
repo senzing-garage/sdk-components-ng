@@ -1,6 +1,7 @@
 @import "../../scss/_variables";
 @import "../../scss/_mixins";
 
+/* default view is modal */
 :host {
     /*position: relative;
     display: block;
@@ -8,26 +9,50 @@
     height: 100%;
     overflow: hidden;*/
 
+    .hide-on-modal {
+        display: none;
+    }
+
     .mat-dialog-actions {
         /*position: absolute;
         bottom: 0px;
         display: flex;*/
         flex-direction: row;
         justify-content: flex-end;
+        position: relative;
     }
 
     button.mat-primary {
         background-color: $sz-blue;
         color: $sz-white;
     }
+    button.toggle-all {
+        left: 0px;
+        position: absolute;
+        top: 15px;
+    }
 }
 
+/* 
+    when the size view is narrow(ie mobile) modal is opened as a full panel
+*/
 :host.isMatSheet {
     display: block;
     height: calc(100vh - 13px);
     position: relative;
     margin: 0;
     /*overflow: auto;*/
+
+    .hide-on-sheet {
+        display: none;
+    }
+    .hide-on-modal {
+        display: unset;
+    }
+    .toggle-all-list-header {
+        display: block;
+        margin-bottom: 20px;
+    }
 
     .mat-dialog-actions {
         display: flex;
@@ -49,6 +74,10 @@
 :host.isMatSheet ::ng-deep .mat-dialog-content {
     height: calc(100vh - 32px - 0.67em - 0.67em - 16px);
     overflow: auto;
+}
+
+:host mat-checkbox.toggle-all ::ng-deep .mat-ripple-element {
+    background-color: transparent;
 }
 
 ::ng-deep .mat-bottom-sheet-container.sz-search-identifiers-picker-sheet {

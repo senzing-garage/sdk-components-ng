@@ -727,6 +727,17 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     return this.matchingAttributes;
   }
 
+  /** 
+   * returns text displayed in the "identifier type" drop-down
+   * @internal 
+   */
+  public attributeCodeAsHumanReadable(attrCode: string): string {
+    if(attrCode && attrCode.replace) {
+      return attrCode.replace(/_/g,' ');
+    }
+    return attrCode;
+  }
+
   /* end tag input setters */
 
   constructor(

@@ -59,6 +59,25 @@ export class SzSearchIdentifiersPickerDialogComponent {
         });
     }
 
+    public get allOptionsSelected(): boolean {
+        return this._dataModel.every((attr: AttrRow) => {
+            return attr.checked === true;
+        });
+    }
+    public set allOptionsSelected(value: boolean) {
+        console.log('SzSearchIdentifiersPickerDialogComponent.allOptionsSelected.set:', value);
+        
+        this._dataModel.forEach((attr: AttrRow) => {
+            attr.checked = value;
+        });
+    }
+
+    public get anyOptionsSelected(): boolean {
+        return this._dataModel.some((attr: AttrRow) => {
+            return attr.checked === true;
+        });
+    }
+
     onNoClick(): void {
         console.log('SzSearchIdentifiersPickerDialogComponent.onNoClick');
 
@@ -74,8 +93,23 @@ export class SzSearchIdentifiersPickerDialogComponent {
         }
     }
 
-    public attributeCodeAsText(value: string) {
-        return value;
+    onToggleAllSelectedClick(event: Event) {
+        if(this.anyOptionsSelected) {
+            this._dataModel.forEach((attr: AttrRow) => {
+                attr.checked = false;
+            });
+        } else {
+            this._dataModel.forEach((attr: AttrRow) => {
+                attr.checked = true;
+            });
+        }
+    }
+
+    public attributeCodeAsText(attrCode: string) {
+        if(attrCode && attrCode.replace) {
+            return attrCode.replace(/_/g,' ');
+        }
+        return attrCode;
     }
 
     public get orderedData(): SzAttributeType[] {
