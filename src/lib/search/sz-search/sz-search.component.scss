@@ -1,4 +1,5 @@
-@import "../../scss/styles";
+@import "../../scss/_variables";
+@import "../../scss/_mixins";
 
 :host {
   display: flex;
