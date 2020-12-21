@@ -649,7 +649,6 @@ export class SzSearchComponent implements OnInit, OnDestroy {
   public chooseIdentifiers(event: Event) {
     const isNarrowLayout = this.layoutClasses.indexOf('layout-narrow') > -1;
     //console.log(`SzSearchComponent.chooseIdentifiers ${JSON.stringify(this._attributeTypesFromServer, undefined, 2)}`);
-    console.log('layout: ', isNarrowLayout);
 
     if(!isNarrowLayout){
       const dialogRef = this.dialog.open(SzSearchIdentifiersPickerDialogComponent, {
@@ -662,12 +661,10 @@ export class SzSearchComponent implements OnInit, OnDestroy {
       });
   
       dialogRef.afterClosed().subscribe((result: SzAttributeType[]) => {
-        console.log('The dialog was closed', result);
         if(result) {
           let newAllowedList = result.map((attrObj: SzAttributeType) => {
             return attrObj.attributeCode;
           });
-          console.log('new allowed types: ', newAllowedList, this.allowedTypeAttributes);
           this.prefs.searchForm.allowedTypeAttributes = newAllowedList;
           //this.allowedTypeAttributes = newAllowedList;
         }
@@ -686,16 +683,12 @@ export class SzSearchComponent implements OnInit, OnDestroy {
 
       bottomSheetRef.afterDismissed().pipe(
         first()
-      ).subscribe((result: SzAttributeType[]) => {
-        console.log('Bottom sheet has been dismissed.', result);
-        
+      ).subscribe((result: SzAttributeType[]) => {        
         if(result) {
           let newAllowedList = result.map((attrObj: SzAttributeType) => {
             return attrObj.attributeCode;
           });
-          console.log('new allowed types: ', newAllowedList, this.allowedTypeAttributes);
           this.prefs.searchForm.allowedTypeAttributes = newAllowedList;
-          //this.allowedTypeAttributes = newAllowedList;
         }
       });
     }
