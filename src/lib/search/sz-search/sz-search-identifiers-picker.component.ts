@@ -15,6 +15,11 @@ export interface DialogData {
 interface AttrRow extends SzAttributeType {
     checked: boolean;
 }
+
+interface AttrData {
+    attributeTypes: SzAttributeType[]
+    selected: string[]
+}
   
 @Component({
 selector: 'sz-search-identifiers-picker-dialog',
@@ -26,10 +31,7 @@ export class SzSearchIdentifiersPickerDialogComponent {
     public showButtons: boolean = true;
     constructor(
         public dialogRef?: MatDialogRef<SzSearchIdentifiersPickerDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data?: {
-            attributeTypes: SzAttributeType[]
-            selected: string[]
-        }) {
+        @Inject(MAT_DIALOG_DATA) public data?: AttrData) {
         
         if(this.data) {
             this._dataModel = this.extendInputData(this.data.attributeTypes, this.data.selected).sort((a: AttrRow, b: AttrRow) => {
@@ -128,10 +130,7 @@ export class SzSearchIdentifiersPickerSheetComponent extends SzSearchIdentifiers
 
     constructor(
         public sheetRef: MatBottomSheetRef<SzSearchIdentifiersPickerSheetComponent>,
-        @Inject(MAT_BOTTOM_SHEET_DATA) public data: {
-            attributeTypes: SzAttributeType[]
-            selected: string[]
-        }) {
+        @Inject(MAT_BOTTOM_SHEET_DATA) public data: AttrData) {
         
         super();
 
