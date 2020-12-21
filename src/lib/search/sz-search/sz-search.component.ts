@@ -1,8 +1,10 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef, Inject, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable, Subject  } from 'rxjs';
-import { map, tap, mapTo, first, filter, takeUntil } from 'rxjs/operators';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectorRef, Inject, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Subject  } from 'rxjs';
+import { map, first, filter, takeUntil } from 'rxjs/operators';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { MatDialog } from '@angular/material/dialog';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 import {
   ConfigService,
@@ -13,6 +15,7 @@ import {
   SzAttributeTypesResponse,
   SzAttributeTypesResponseData
 } from '@senzing/rest-api-client-ng';
+
 import { SzEntitySearchParams } from '../../models/entity-search';
 import { SzSearchService } from '../../services/sz-search.service';
 import { JSONScrubber, parseBool } from '../../common/utils';
@@ -20,6 +23,7 @@ import { SzConfigurationService } from '../../services/sz-configuration.service'
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzFoliosService } from '../../services/sz-folios.service';
 import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio, SzSearchParamsFolioItem } from '../../models/folio';
+import { SzSearchIdentifiersPickerDialogComponent, SzSearchIdentifiersPickerSheetComponent } from './sz-search-identifiers-picker.component';
 
 /** @internal */
 interface SzSearchFormParams {
@@ -43,7 +47,6 @@ interface SzBoolFieldMapByName {
   phone: boolean;
   identifierType: boolean;
 }
-
 
 /**
  * Provides a search box component that can execute search queries and return results.
@@ -115,6 +118,16 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     'TAX_ID_NUMBER',
     'TRUSTED_ID_NUMBER'
   ];
+  private _showIdentifierTypesPicker:boolean = false;
+  /** whether or not to show the identifier types picker button */
+  @Input('showIdentifierTypesPicker')
+  public set inputIdentifierTypesPicker(value){
+    this._showIdentifierTypesPicker = parseBool(value);
+  }
+  /** whether or not to show the identifier types picker button */
+  public get showIdentifierTypesPicker(): boolean {
+    return this._showIdentifierTypesPicker;
+  }
 
   /** the default amount of searches to store in the search history folio. */
   private rememberLastSearches: number = 20;
@@ -585,8 +598,8 @@ export class SzSearchComponent implements OnInit, OnDestroy {
   /** the width to switch from wide to narrow layout */
   @Input() public layoutBreakpoints = [
     {cssClass: 'layout-wide', minWidth: 1021 },
-    {cssClass: 'layout-medium', minWidth: 700, maxWidth: 1120 },
-    {cssClass: 'layout-narrow', maxWidth: 699 }
+    {cssClass: 'layout-medium', minWidth: 830, maxWidth: 1120 },
+    {cssClass: 'layout-narrow', maxWidth: 829 }
   ]
   @Input() public set layoutClasses(value: string[] | string){
     if(value && value !== undefined) {
@@ -613,6 +626,8 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     this._attributeTypesFromServer = value;
 
     // filter out by specific codes
+    this.matchingAttributes = value;
+    //console.log(`SzSearchComponent.inputAttributeTypes(${JSON.stringify(value, undefined, 2)})`);
     this.matchingAttributes = this.filterAttributeTypesByAllowedTypes(value, this.allowedTypeAttributes);
   }
 
@@ -629,6 +644,61 @@ export class SzSearchComponent implements OnInit, OnDestroy {
       });
     }
     return retTypes
+  }
+
+  public chooseIdentifiers(event: Event) {
+    const isNarrowLayout = this.layoutClasses.indexOf('layout-narrow') > -1;
+    //console.log(`SzSearchComponent.chooseIdentifiers ${JSON.stringify(this._attributeTypesFromServer, undefined, 2)}`);
+    console.log('layout: ', isNarrowLayout);
+
+    if(!isNarrowLayout){
+      const dialogRef = this.dialog.open(SzSearchIdentifiersPickerDialogComponent, {
+        width: '375px',
+        height: '50vh',
+        data: {
+          attributeTypes: this._attributeTypesFromServer,
+          selected: this.allowedTypeAttributes
+        }
+      });
+  
+      dialogRef.afterClosed().subscribe((result: SzAttributeType[]) => {
+        console.log('The dialog was closed', result);
+        if(result) {
+          let newAllowedList = result.map((attrObj: SzAttributeType) => {
+            return attrObj.attributeCode;
+          });
+          console.log('new allowed types: ', newAllowedList, this.allowedTypeAttributes);
+          this.prefs.searchForm.allowedTypeAttributes = newAllowedList;
+          //this.allowedTypeAttributes = newAllowedList;
+        }
+      });
+    } else {
+      const bottomSheetRef = this.bottomSheet.open(SzSearchIdentifiersPickerSheetComponent, {
+        ariaLabel: 'Identifier Types',
+        panelClass: ['sz-search-identifiers-picker-sheet'],
+        backdropClass: 'sz-search-identifiers-picker-sheet-backdrop',
+        hasBackdrop: false,
+        data: {
+          attributeTypes: this._attributeTypesFromServer,
+          selected: this.allowedTypeAttributes
+        }
+      });
+
+      bottomSheetRef.afterDismissed().pipe(
+        first()
+      ).subscribe((result: SzAttributeType[]) => {
+        console.log('Bottom sheet has been dismissed.', result);
+        
+        if(result) {
+          let newAllowedList = result.map((attrObj: SzAttributeType) => {
+            return attrObj.attributeCode;
+          });
+          console.log('new allowed types: ', newAllowedList, this.allowedTypeAttributes);
+          this.prefs.searchForm.allowedTypeAttributes = newAllowedList;
+          //this.allowedTypeAttributes = newAllowedList;
+        }
+      });
+    }
   }
 
   /**
@@ -657,6 +727,17 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     return this.matchingAttributes;
   }
 
+  /** 
+   * returns text displayed in the "identifier type" drop-down
+   * @internal 
+   */
+  public attributeCodeAsHumanReadable(attrCode: string): string {
+    if(attrCode && attrCode.replace) {
+      return attrCode.replace(/_/g,' ');
+    }
+    return attrCode;
+  }
+
   /* end tag input setters */
 
   constructor(
@@ -667,6 +748,8 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     private prefs: SzPrefsService,
     private searchService: SzSearchService,
     private folios: SzFoliosService,
+    private dialog: MatDialog,
+    private bottomSheet: MatBottomSheet,
     public breakpointObserver: BreakpointObserver) {
 
       this.prefs.searchForm.prefsChanged.pipe(
@@ -682,6 +765,8 @@ export class SzSearchComponent implements OnInit, OnDestroy {
             // we already have response from server
             // just re-filter result
             this.matchingAttributes = this.filterAttributeTypesByAllowedTypes(this.inputAttributeTypes, this.allowedTypeAttributes);
+            //console.log(`SzSearchComponent(${this.matchingAttributes})`);
+
             /*console.warn('filtering attr list based on prefs change',
             this.inputAttributeTypes,
             this.allowedTypeAttributes,

@@ -1,4 +1,5 @@
-@import "../../scss/styles";
+@import "../../scss/_variables";
+@import "../../scss/_mixins";
 
 :host {
   display: flex;
@@ -38,19 +39,38 @@
         flex-flow: row;
       }
     }
-    .field.identifier, .field.email {
+    /*.field.email {
       width: unset;
+    }*/
+    .field.identifier {
+      width: 50%;
     }
-    .field.email { flex-grow: 2; padding-right: 0; margin-right: 10px; }
+    .field.type { 
+      padding-right: 0px;
+      margin-right: 0px;
+      width: 45%; 
+    }
+    .field.email { 
+      width: 38%;
+      flex-grow: 2; 
+      padding-right: 0; 
+      margin-right: 10px; 
+    }
   }
   .layout-medium {
     .hide-on-medium {
       display: none;
     }
+    .field.email {
+      width: 40%;
+    }
   }
   .layout-wide {
     .hide-on-wide {
       display: none;
+    }
+    .field.email {
+      width: 32%;
     }
   }
 
@@ -198,6 +218,26 @@
       padding-bottom: 20px;
     }
   }
+  .flex-type-row {
+    display: flex;
+    flex-direction: row;
+    flex-flow: nowrap;
+  }
+  .identifier-type-icon {
+    cursor: pointer;
+    align-self: end;
+    color: var(--sz-search-button-filter-color);
+    background-color: var(--sz-search-button-filter-background-color);
+    border-color: var(--sz-search-button-filter-border-color);
+    border-style: var(--sz-search-button-filter-border-style);
+    border-radius: var(--sz-search-button-filter-border-radius);
+    border-width: var(--sz-search-button-filter-border-width);
+    font-size: var(--sz-search-button-filter-font-size);
+    width: var(--sz-search-button-filter-width);
+    height: var(--sz-search-button-filter-height);
+    padding: var(--sz-search-button-filter-padding);
+    margin-top: var(--sz-search-button-filter-margin-top);
+  }
   .field {
     display: inline-block;
     flex-direction: column;
@@ -244,9 +284,11 @@
     }
     &.type {
       width: 12%;
+      min-width: 160px;
+      /*border: 1px solid orange;*/
     }
     &.email {
-      width: 32%
+      width: 31%
     }
 
     .search-input {
@@ -255,7 +297,10 @@
 
     .identifier-dropdown {
       height: 40px;
-      width: 117px;
+      width: 100%; //117px;
+      &.filter-showing {
+        width: calc(100% - 20px);
+      }
     }
     ::-webkit-input-placeholder {
       font-size: 13px;
