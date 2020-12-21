@@ -73,6 +73,8 @@
 
 :host.isMatSheet ::ng-deep .mat-dialog-content {
     height: calc(100vh - 32px - 0.67em - 0.67em - 16px);
+    max-height: calc(100vh - 32px - 0.67em - 0.67em - 16px);
+
     overflow: auto;
 }
 
