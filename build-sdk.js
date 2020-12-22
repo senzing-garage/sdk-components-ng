@@ -6,7 +6,7 @@ var sass = require('node-sass');
   // do styles first
   await sass.render({
     file: "./src/lib/scss/styles.scss",
-    includePaths: ["./src/lib/scss/"]
+    includePaths: ["./src/lib/scss/","./node_modules"]
   }, function(err, result) {
     if(err){
       console.log('SASSY ERROR: ',err.message);

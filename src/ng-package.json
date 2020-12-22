@@ -4,9 +4,14 @@
   "lib": {
     "entryFile": "public-api.ts"
   },
+  "assets": [
+    "./lib/scss/*",
+    "./lib/scss/**/*"
+  ],
   "whitelistedNonPeerDependencies": [
     "@senzing/rest-api-client-ng",
     "@senzing/sdk-graph-components",
+    "@angular/material",
     "ngx-json-viewer",
     "d3",
     "jspdf",
