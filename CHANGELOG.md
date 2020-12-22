@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.2.0] - 2020-12-22
 - Select Identifiers in Search Form feature added. #191
 - Angular Material added to `peerDependencies`. #192
+- Package now supports basic install schematics: `ng add @senzing/sdk-components-ng`. #190
 
 ## [2.1.2] - 2020-11-3
 
