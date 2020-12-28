@@ -146,13 +146,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="modules/SenzingSdkModule.html" data-type="entity-link">SenzingSdkModule</a>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#components-links-module-SenzingSdkModule-3c326b4b9a4f77398cba507c71dc262f"' : 'data-target="#xs-components-links-module-SenzingSdkModule-3c326b4b9a4f77398cba507c71dc262f"' }>
+                                            'data-target="#components-links-module-SenzingSdkModule-6ef5f7057836f9c93d0e065e2539b963"' : 'data-target="#xs-components-links-module-SenzingSdkModule-6ef5f7057836f9c93d0e065e2539b963"' }>
                                             <span class="icon ion-md-cog"></span>
                                             <span>Components</span>
                                             <span class="icon ion-ios-arrow-down"></span>
                                         </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-SenzingSdkModule-3c326b4b9a4f77398cba507c71dc262f"' :
-                                            'id="xs-components-links-module-SenzingSdkModule-3c326b4b9a4f77398cba507c71dc262f"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-SenzingSdkModule-6ef5f7057836f9c93d0e065e2539b963"' :
+                                            'id="xs-components-links-module-SenzingSdkModule-6ef5f7057836f9c93d0e065e2539b963"' }>
                                             <li class="link">
                                                 <a href="components/SzConfigurationAboutComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzConfigurationAboutComponent</a>
@@ -190,6 +190,14 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzSearchComponent</a>
                                             </li>
                                             <li class="link">
+                                                <a href="components/SzSearchIdentifiersPickerDialogComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzSearchIdentifiersPickerDialogComponent</a>
+                                            </li>
+                                            <li class="link">
+                                                <a href="components/SzSearchIdentifiersPickerSheetComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzSearchIdentifiersPickerSheetComponent</a>
+                                            </li>
+                                            <li class="link">
                                                 <a href="components/SzSearchResultsComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzSearchResultsComponent</a>
                                             </li>
@@ -201,13 +209,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     </li>
                                 <li class="chapter inner">
                                     <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                        'data-target="#injectables-links-module-SenzingSdkModule-3c326b4b9a4f77398cba507c71dc262f"' : 'data-target="#xs-injectables-links-module-SenzingSdkModule-3c326b4b9a4f77398cba507c71dc262f"' }>
+                                        'data-target="#injectables-links-module-SenzingSdkModule-6ef5f7057836f9c93d0e065e2539b963"' : 'data-target="#xs-injectables-links-module-SenzingSdkModule-6ef5f7057836f9c93d0e065e2539b963"' }>
                                         <span class="icon ion-md-arrow-round-down"></span>
                                         <span>Injectables</span>
                                         <span class="icon ion-ios-arrow-down"></span>
                                     </div>
-                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-SenzingSdkModule-3c326b4b9a4f77398cba507c71dc262f"' :
-                                        'id="xs-injectables-links-module-SenzingSdkModule-3c326b4b9a4f77398cba507c71dc262f"' }>
+                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-SenzingSdkModule-6ef5f7057836f9c93d0e065e2539b963"' :
+                                        'id="xs-injectables-links-module-SenzingSdkModule-6ef5f7057836f9c93d0e065e2539b963"' }>
                                         <li class="link">
                                             <a href="injectables/SzAdminService.html"
                                                 data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>SzAdminService</a>
@@ -250,6 +258,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                         </li>
                                     </ul>
                                 </li>
+                            </li>
+                            <li class="link">
+                                <a href="modules/SzSdkMaterialModule.html" data-type="entity-link">SzSdkMaterialModule</a>
                             </li>
                 </ul>
                 </li>
