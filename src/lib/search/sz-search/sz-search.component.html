@@ -51,7 +51,7 @@
                       list="search-history-entity-identifier"
                       [attr.disabled]="getDisabled('identifier')"
                       (keyup.enter)="onKeyEnter()"
-                      placeholder="Number">
+                      [placeholder]="placeHolderTextForIdentifierField">
               <datalist *ngIf="searchHistoryIdentifier.length > 0 && !searchHistoryDisabled" id="search-history-entity-identifier">
                 <option *ngFor="let item of searchHistoryIdentifier" [value]="item">{{item}}</option>
               </datalist>

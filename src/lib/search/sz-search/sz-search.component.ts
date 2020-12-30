@@ -646,6 +646,129 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     return retTypes
   }
 
+  /**
+   * Returns the placeholder text to show in the "Identifier" field for the 
+   * selected "Identifier Type".
+   * @returns string
+   */
+  public get placeHolderTextForIdentifierField(): string {
+    let retVal = ""; // value to return
+    let selectedValue = this.entitySearchForm.value['IDENTIFIER_TYPE']; // value of type
+    // attrCodes that are numbers
+    let attrsAreNumbers = [
+      "PASSPORT_NUMBER",
+      "DRIVERS_LICENSE_NUMBER",
+      "DUNS_NUMBER",
+      "ACCOUNT_NUMBER",
+      "LEI_NUMBER",
+      "NPI_NUMBER",
+      "NATIONAL_ID_NUMBER",
+      "OTHER_ID_NUMBER",
+      "PHONE_NUMBER",
+      "RECORD_ID",
+      "SSN_NUMBER",
+      "SSN_LAST4",
+      "TAX_ID_NUMBER",
+      "TRUSTED_ID_NUMBER",
+      "VEHICLE_LICENSE_PLATE_NUMBER",
+      "VEHICLE_VIN_NUMBER"
+    ];
+    // attrCodes that are screen names
+    let attrsAreScreenNames = [
+      "FACEBOOK",
+      "INSTAGRAM",
+      "LINKEDIN",
+      "SIGNAL",
+      "SKYPE",
+      "SOCIAL_HANDLE",
+      "SOCIAL_NETWORK",
+      "TELEGRAM",
+      "TWITTER",
+      "VIBER",
+      "WECHAT",
+      "WHATSAPP",
+      "ZOOMROOM"
+    ];
+    // attrCodes that are places
+    let attrsArePlace = [
+      "GEO_LATITUDE",
+      "GEO_LONGITUDE",
+      "GEO_LATLONG",
+      "PLACE_OF_BIRTH"
+    ]
+    // attrCodes that expect countries
+    let attrsAreCountry = [
+      "ADDR_COUNTRY",
+      "COUNTRY_OF_ASSOCIATION",
+      "NATIONAL_ID_COUNTRY",
+      "OTHER_ID_COUNTRY",
+      "PASSPORT_COUNTRY",
+      "REGISTRATION_COUNTRY",
+      "TAX_ID_COUNTRY"
+    ]
+    // attr codes that expect date and or datetime
+    let attrsAreDateTime = [
+      "DRIVERS_LICENSE_EXPIRE_DT",
+      "DRIVERS_LICENSE_ISSUE_DT",
+      "ADDR_THRU_DATE",
+      "ADDR_FROM_DATE",
+      "DATE_OF_BIRTH",
+      "DATE_OF_DEATH",
+      "EMAIL_FROM_DATE",
+      "EMAIL_THRU_DATE",
+      "OTHER_ID_EXPIRE_DT",
+      "OTHER_ID_ISSUE_DT",
+      "PASSPORT_EXPIRE_DT",
+      "PASSPORT_ISSUE_DT",
+      "PHONE_FROM_DATE",
+      "PHONE_THRU_DATE",
+      "REGISTRATION_DATE",
+      "RELATED_FROM_DATE",
+      "RELATED_THRU_DATE",
+      "SOCIAL_FROM_DATE",
+      "SOCIAL_THRU_DATE",
+      "TAX_ID_EXPIRE_DT",
+      "TAX_ID_ISSUE_DT"
+    ]
+
+    if(this.matchingAttributes && this.matchingAttributes.find) {
+      let matchingAttribute = this.matchingAttributes.find((attr: SzAttributeType) => {
+        return attr.attributeCode === selectedValue;
+      });
+      
+      // primary checks
+      if(attrsAreNumbers.indexOf && attrsAreNumbers.indexOf(matchingAttribute.attributeCode) > -1) {
+        retVal = "Number";
+      } else if(attrsAreScreenNames.indexOf && attrsAreScreenNames.indexOf(matchingAttribute.attributeCode) > -1) {
+        retVal = "Screen Name";
+      } else if(attrsArePlace.indexOf && attrsArePlace.indexOf(matchingAttribute.attributeCode) > -1) {
+        retVal = "Place";
+      } else if(attrsAreCountry.indexOf && attrsAreCountry.indexOf(matchingAttribute.attributeCode) > -1) {
+        retVal = "Country";
+      } else if(attrsAreDateTime.indexOf && attrsAreDateTime.indexOf(matchingAttribute.attributeCode) > -1) {
+        retVal = "Date Time";
+      }
+      // fallthrough checks
+      if(retVal === "" && matchingAttribute.attributeCode && matchingAttribute.attributeCode.indexOf) {
+        // check code itself for clue
+        if(matchingAttribute.attributeCode.indexOf("_DT") > -1) {
+          retVal = "Date Time"
+        } else if(matchingAttribute.attributeCode.indexOf("_NUMBER") > -1) {
+          retVal = "Number"
+        } else if(matchingAttribute.attributeCode.indexOf("_DATE") > -1) {
+          retVal = "Date"
+        } else if(matchingAttribute.attributeCode.indexOf("_STATE") > -1) {
+          retVal = "State"
+        } else if(matchingAttribute.attributeCode.indexOf("EMAIL_ADDRESS") > -1) {
+          retVal = "user@domain.com"
+        } else if(matchingAttribute.attributeCode.indexOf("WEBSITE_ADDRESS") > -1) {
+          retVal = "http://www.website.com"
+        }
+      }
+    }
+    return retVal;
+  }
+
   public chooseIdentifiers(event: Event) {
     const isNarrowLayout = this.layoutClasses.indexOf('layout-narrow') > -1;
     //console.log(`SzSearchComponent.chooseIdentifiers ${JSON.stringify(this._attributeTypesFromServer, undefined, 2)}`);
