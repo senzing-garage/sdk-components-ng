@@ -735,34 +735,36 @@ export class SzSearchComponent implements OnInit, OnDestroy {
       let matchingAttribute = this.matchingAttributes.find((attr: SzAttributeType) => {
         return attr.attributeCode === selectedValue;
       });
-      
-      // primary checks
-      if(attrsAreNumbers.indexOf && attrsAreNumbers.indexOf(matchingAttribute.attributeCode) > -1) {
-        retVal = "Number";
-      } else if(attrsAreScreenNames.indexOf && attrsAreScreenNames.indexOf(matchingAttribute.attributeCode) > -1) {
-        retVal = "Screen Name";
-      } else if(attrsArePlace.indexOf && attrsArePlace.indexOf(matchingAttribute.attributeCode) > -1) {
-        retVal = "Place";
-      } else if(attrsAreCountry.indexOf && attrsAreCountry.indexOf(matchingAttribute.attributeCode) > -1) {
-        retVal = "Country";
-      } else if(attrsAreDateTime.indexOf && attrsAreDateTime.indexOf(matchingAttribute.attributeCode) > -1) {
-        retVal = "Date Time";
-      }
-      // fallthrough checks
-      if(retVal === "" && matchingAttribute.attributeCode && matchingAttribute.attributeCode.indexOf) {
-        // check code itself for clue
-        if(matchingAttribute.attributeCode.indexOf("_DT") > -1) {
-          retVal = "Date Time"
-        } else if(matchingAttribute.attributeCode.indexOf("_NUMBER") > -1) {
-          retVal = "Number"
-        } else if(matchingAttribute.attributeCode.indexOf("_DATE") > -1) {
-          retVal = "Date"
-        } else if(matchingAttribute.attributeCode.indexOf("_STATE") > -1) {
-          retVal = "State"
-        } else if(matchingAttribute.attributeCode.indexOf("EMAIL_ADDRESS") > -1) {
-          retVal = "user@domain.com"
-        } else if(matchingAttribute.attributeCode.indexOf("WEBSITE_ADDRESS") > -1) {
-          retVal = "http://www.website.com"
+
+      if(matchingAttribute && matchingAttribute.attributeCode) {
+        // primary checks
+        if(attrsAreNumbers.indexOf && attrsAreNumbers.indexOf(matchingAttribute.attributeCode) > -1) {
+          retVal = "Number";
+        } else if(attrsAreScreenNames.indexOf && attrsAreScreenNames.indexOf(matchingAttribute.attributeCode) > -1) {
+          retVal = "Screen Name";
+        } else if(attrsArePlace.indexOf && attrsArePlace.indexOf(matchingAttribute.attributeCode) > -1) {
+          retVal = "Place";
+        } else if(attrsAreCountry.indexOf && attrsAreCountry.indexOf(matchingAttribute.attributeCode) > -1) {
+          retVal = "Country";
+        } else if(attrsAreDateTime.indexOf && attrsAreDateTime.indexOf(matchingAttribute.attributeCode) > -1) {
+          retVal = "Date Time";
+        }
+        // fallthrough checks
+        if(retVal === "" && matchingAttribute.attributeCode && matchingAttribute.attributeCode.indexOf) {
+          // check code itself for clue
+          if(matchingAttribute.attributeCode.indexOf("_DT") > -1) {
+            retVal = "Date Time"
+          } else if(matchingAttribute.attributeCode.indexOf("_NUMBER") > -1) {
+            retVal = "Number"
+          } else if(matchingAttribute.attributeCode.indexOf("_DATE") > -1) {
+            retVal = "Date"
+          } else if(matchingAttribute.attributeCode.indexOf("_STATE") > -1) {
+            retVal = "State"
+          } else if(matchingAttribute.attributeCode.indexOf("EMAIL_ADDRESS") > -1) {
+            retVal = "user@domain.com"
+          } else if(matchingAttribute.attributeCode.indexOf("WEBSITE_ADDRESS") > -1) {
+            retVal = "http://www.website.com"
+          }
         }
       }
     }
