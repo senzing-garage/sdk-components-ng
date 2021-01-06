@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - API Client package updated to the [Senzing OAS 2.2.0](https://github.com/Senzing/senzing-rest-api-specification/releases/tag/2.2.0) specification.
 - Web Components code integrated as a child project in to the the `sdk-components-ng` repository. see ticket [#169](https://github.com/Senzing/sdk-components-ng/issues/169).
-Documentation for `@senzing/sdk-components-web` now [available here](http://certified.senzing.com/sdk-components-ng/additional-documentation/web-components.html).
+Documentation for `@senzing/sdk-components-web` now [available here](http://hub.senzing.com/sdk-components-ng/additional-documentation/web-components.html).
 - Bugfixes: #169, #170, #173, #174, #175, #176, #177, #178, #179, #180, #181
 
 ## [2.1.1] - 2020-10-2
