@@ -79,7 +79,7 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
    * @readonly
    */
   public get possibleMatches(): SzRelatedEntity[] {
-    return this.entity && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
+    return this.entity && this.entity.relatedEntities && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
       return sr.relationType == SzRelationshipType.POSSIBLEMATCH;
     }) : undefined;
   }
@@ -89,7 +89,7 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
    * @readonly
    */
   public get discoveredRelationships(): SzRelatedEntity[] {
-    return this.entity && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
+    return this.entity && this.entity.relatedEntities && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
       return sr.relationType == SzRelationshipType.POSSIBLERELATION;
     }) : undefined;
   }
@@ -100,7 +100,7 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
    */
   public get disclosedRelationships(): SzRelatedEntity[] {
 
-    return this.entity && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
+    return this.entity && this.entity.relatedEntities && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
       return sr.relationType == SzRelationshipType.DISCLOSEDRELATION;
     }) : undefined;
   }
@@ -304,20 +304,20 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     if (this.entity) {
       return [
         {
-          total: this.entity.resolvedEntity.records.length,
-          title: 'Matched Record'+ (this.entity.resolvedEntity.records.length === 1 ? '' : 's')
+          total: ((this.entity && this.entity.resolvedEntity && this.entity.resolvedEntity.records && this.entity.resolvedEntity.records.length) ? this.entity.resolvedEntity.records.length : 0),
+          title: 'Matched Record'+ ((this.entity && this.entity.resolvedEntity && this.entity.resolvedEntity.records && this.entity.resolvedEntity.records.length === 1) ? '' : 's')
         },
         {
-          total: this.possibleMatches.length,
-          title: 'Possible Match'+ (this.possibleMatches.length === 1 ? '' : 'es')
+          total: ((this.possibleMatches && this.possibleMatches.length) ? this.possibleMatches.length : 0),
+          title: 'Possible Match'+ ((this.possibleMatches && this.possibleMatches.length === 1) ? '' : 'es')
         },
         {
-          total: this.discoveredRelationships.length,
-          title: 'Possible Relationship'+ (this.discoveredRelationships.length === 1 ? '' : 's')
+          total: ((this.discoveredRelationships && this.discoveredRelationships.length) ? this.discoveredRelationships.length : 0),
+          title: 'Possible Relationship'+ (this.discoveredRelationships && this.discoveredRelationships.length === 1 ? '' : 's')
         },
         {
-          total: this.disclosedRelationships.length,
-          title: 'Disclosed Relationship'+ (this.disclosedRelationships.length === 1 ? '' : 's')
+          total: ((this.disclosedRelationships && this.disclosedRelationships.length) ? this.disclosedRelationships.length : 0),
+          title: 'Disclosed Relationship'+ (this.disclosedRelationships && this.disclosedRelationships.length === 1 ? '' : 's')
         },
       ];
     }
