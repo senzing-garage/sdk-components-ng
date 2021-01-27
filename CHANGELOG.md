@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.1] - 2021-1-27
+
+- Entities with no "relatedEntities" present in data model cause blank UI on detail view
+
+relevant tickets: #202
+
 ## [2.2.0] - 2020-12-31
 - Select Identifiers in Search Form feature added. #191
 - Angular Material added to `peerDependencies`. #192
