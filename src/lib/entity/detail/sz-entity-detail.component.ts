@@ -460,7 +460,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    * @readonly
    */
   public get possibleMatches(): SzRelatedEntity[] {
-    return this.entity && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
+    return this.entity && this.entity.relatedEntities && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
       return sr.relationType == SzRelationshipType.POSSIBLEMATCH;
     }) : undefined;
   }
@@ -470,7 +470,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    * @readonly
    */
   public get discoveredRelationships(): SzRelatedEntity[] {
-    return this.entity && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
+    return this.entity && this.entity.relatedEntities && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
       return sr.relationType == SzRelationshipType.POSSIBLERELATION;
     }) : undefined;
   }
@@ -481,7 +481,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    */
   public get disclosedRelationships(): SzRelatedEntity[] {
 
-    return this.entity && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
+    return this.entity && this.entity.relatedEntities && this.entity.relatedEntities.filter ? this.entity.relatedEntities.filter( (sr) => {
       return sr.relationType == SzRelationshipType.DISCLOSEDRELATION;
     }) : undefined;
   }
@@ -548,14 +548,14 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private onEntityDataChanged() {
     // doing the set on these manually because pulling directly from setter(s)
     // causes render change cycle to break mem and hammer redraw
-    if(this.entity && this.entity.resolvedEntity.records) this._matches = this.entity.resolvedEntity.records;
-    if(this.entity && this.entity.relatedEntities.filter) this._possibleMatches = this.entity.relatedEntities.filter( (sr) => {
+    if(this.entity && this.entity.resolvedEntity && this.entity.resolvedEntity.records) this._matches = this.entity.resolvedEntity.records;
+    if(this.entity && this.entity.relatedEntities && this.entity.relatedEntities.filter) this._possibleMatches = this.entity.relatedEntities.filter( (sr) => {
       return sr.relationType == SzRelationshipType.POSSIBLEMATCH;
     });
-    if(this.entity && this.entity.relatedEntities.filter) this._discoveredRelationships = this.entity.relatedEntities.filter( (sr) => {
+    if(this.entity && this.entity.relatedEntities && this.entity.relatedEntities.filter) this._discoveredRelationships = this.entity.relatedEntities.filter( (sr) => {
       return sr.relationType == SzRelationshipType.POSSIBLERELATION;
     });
-    if(this.entity && this.entity.relatedEntities.filter) this._disclosedRelationships = this.entity.relatedEntities.filter( (sr) => {
+    if(this.entity && this.entity.relatedEntities && this.entity.relatedEntities.filter) this._disclosedRelationships = this.entity.relatedEntities.filter( (sr) => {
       return sr.relationType == SzRelationshipType.DISCLOSEDRELATION;
     });
     // redraw graph on entity change
