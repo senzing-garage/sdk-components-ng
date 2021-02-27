@@ -2,6 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Subject, BehaviorSubject, merge, timer } from 'rxjs';
 import { takeUntil, debounce, filter } from 'rxjs/operators';
 import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio } from '../models/folio';
+import { AdminStreamConnProperties } from '../models/data-admin';
 //import { Configuration as SzRestConfiguration, ConfigurationParameters as SzRestConfigurationParameters } from '@senzing/rest-api-client-ng';
 
 /**
@@ -68,6 +69,126 @@ export class SzSdkPrefsBase {
   /** get object state representation as a string */
   public toJSONString(): string {
     return JSON.stringify(this.toJSONObject());
+  }
+}
+
+/**
+ * search form related preferences bus class.
+ * used by {@link SzPrefsService} to store it's
+ * admin area related prefs.
+ * Should really be used from {@link SzPrefsService} context, not on its own.
+ *
+ * @example
+ * this.prefs.admin.streamConnectionProperties = {
+    connected: boolean;
+    clientId?: string;
+    hostname: string;
+    sampleSize: number;
+    port?: number;
+    connectionTest: boolean;
+    reconnectOnClose: boolean;
+ * };
+ *
+ * @example
+ * this.prefs.searchResults.prefsChanged.subscribe( (prefs) => { console.log('search form pref change happened.', prefs); })
+
+ */
+export class SzAdminPrefs extends SzSdkPrefsBase {
+  // --------------- private vars
+  /** @internal */
+  private _streamConnectionProperties: AdminStreamConnProperties | undefined;
+  /** @internal */
+  private _useStreamingForAnalysis: boolean = false;
+  /** @internal */
+  private _useStreamingForLoad: boolean = false;
+
+  /** the keys of member setters or variables in the object
+   * to output in json, or to take as json input
+   */
+  jsonKeys = [
+    'streamConnectionProperties',
+    'useStreamingForAnalysis',
+    'useStreamingForLoad',
+  ]
+
+  // ------------------- getters and setters
+  /** remember last X searches in autofill. */
+  public get streamConnectionProperties(): AdminStreamConnProperties | undefined {
+    return this._streamConnectionProperties;
+  }
+  /** remember last X searches in autofill. */
+  public set streamConnectionProperties(value: AdminStreamConnProperties | undefined) {
+    this._streamConnectionProperties = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** whether or not to use the streamConnectionProperties to do analysis through websocket stream. */
+  public get useStreamingForAnalysis(): boolean {
+    return this._useStreamingForAnalysis;
+  }
+  /** whether or not to use the streamConnectionProperties to do analysis through websocket stream. */
+  public set useStreamingForAnalysis(value: boolean) {
+    this._useStreamingForAnalysis = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** whether or not to use the streamConnectionProperties to do analysis through websocket stream. */
+  public get useStreamingForLoad(): boolean {
+    return this._useStreamingForLoad;
+  }
+  /** whether or not to use the streamConnectionProperties to do record importing through websocket stream. */
+  public set useStreamingForLoad(value: boolean) {
+    this._useStreamingForLoad = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+
+  constructor(){
+    super();
+    /**
+     * publish out a "first" real payload so that
+     * subscribers get an initial payload from this subclass
+     * instead of the empty superclass
+     **/
+    this.prefsChanged.next( this.toJSONObject() );
+  }
+
+  /**
+   * the search form prefs contain a folio collection that automagically update
+   * when a user executes a search. Because of this additional functionality
+   * the usual fromJSONObject needs to perform some special logic to initialize
+   * the prefs from JSON like create class instances etc.
+   */
+  public fromJSONObject(value: string) {
+    this.bulkSet = true;
+    let _isChanged = false;
+    if (this.jsonKeys && this.jsonKeys.forEach) {
+      // console.warn('SzSearchFormPrefs.fromJSONObject: ', this.jsonKeys);
+      this.jsonKeys.forEach((k: string) => {
+        if( value[k] !== undefined ){
+          //if( k === 'streamConnectionProperties'){
+            // special case: takes JSON in
+            // and creates AdminStreamConnProperties with
+            // items inside it
+          //  const _streamConnectionProperties: AdminStreamConnProperties = {
+
+          //  };
+
+          //  this._streamConnectionProperties = _streamConnectionProperties;
+            // console.warn('SzSearchFormPrefs.fromJSONObject: _searchHistory = ', this._searchHistory);
+          //} else {
+            try{
+              this[k] = (value[k] && value[k].fromJSONObject ) ? value[k].fromJSONObject() : value[k];
+              _isChanged = true;
+              // console.log('SzSearchFormPrefs.fromJSONObject: "'+ k +'"', value[k].fromJSONObject());
+            } catch (err) {
+              // console.warn('attempted to get prefVal, but pref unset. ', err)
+            };
+          //}
+        }
+      });
+    }
+    this.bulkSet = false;
+    if(_isChanged){
+      this.prefsChanged.next( this.toJSONObject() );
+    }
   }
 }
 
@@ -871,7 +992,8 @@ export interface SzSdkPrefsModel {
   searchForm?: any,
   searchResults?: any,
   entityDetail?: any,
-  graph?: any
+  graph?: any,
+  admin?: any
 };
 
 
@@ -929,6 +1051,8 @@ export class SzPrefsService implements OnDestroy {
   public entityDetail?: SzEntityDetailPrefs   = new SzEntityDetailPrefs();
   /** instance of {@link SzGraphPrefs} */
   public graph?: SzGraphPrefs                 = new SzGraphPrefs();
+  /** instance of {@link SzAdminPrefs} */
+  public admin?: SzAdminPrefs                 = new SzAdminPrefs();
 
   /**
    * subscribe for state change representation. */
@@ -956,6 +1080,9 @@ export class SzPrefsService implements OnDestroy {
     }
     if(this.graph){
       retObj.graph = this.graph.toJSONObject();
+    }
+    if(this.admin){
+      retObj.admin = this.admin.toJSONObject();
     }
     return retObj;
   }
@@ -1004,6 +1131,12 @@ export class SzPrefsService implements OnDestroy {
     if(_sVal.entityDetail){
       this.entityDetail.fromJSONObject( _sVal.entityDetail );
     }
+    if(_sVal.graph){
+      this.graph.fromJSONObject( _sVal.graph );
+    }
+    if(_sVal.admin){
+      this.entityDetail.fromJSONObject( _sVal.admin );
+    }
   }
   /** get a serialized JSON string from current instance. bulk export. */
   public toJSONString(): string {
@@ -1017,7 +1150,8 @@ export class SzPrefsService implements OnDestroy {
       this.searchForm.prefsChanged,
       this.searchResults.prefsChanged,
       this.entityDetail.prefsChanged,
-      this.graph.prefsChanged
+      this.graph.prefsChanged,
+      this.admin.prefsChanged,
     );
     // now filter and debounce
     // so that any back to back changes are

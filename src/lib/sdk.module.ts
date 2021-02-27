@@ -30,6 +30,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 // import { SzBulkLoadStatus } from './models/data-importing';
 // import { SzDataSourceRecordAnalysis } from './models/data-sources';
 // import { SzFolioItem, SzSearchParamsFolio, SzSearchParamsFolioItem } from './models/folio';
+// import { AdminStreamConnProperties } from './lib/models/data-admin';
 
 /** services */
 import { SzMessageBundleService } from './services/sz-message-bundle.service';

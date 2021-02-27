@@ -23,6 +23,7 @@ export * from './lib/services/sz-pdf-util.service';
 export { SzPrefsService, SzSdkPrefsModel} from './lib/services/sz-prefs.service';
 export * from './lib/services/sz-search.service';  // updated to use rest
 export * from './lib/services/sz-ui.service';
+export { SzEntityTypesService } from './lib/services/sz-entitytypes.service';
 
 /** components */
   /** bulk data related */
@@ -57,6 +58,7 @@ export * from './lib/models/folio';
 export { SzBulkDataAnalysis } from './lib/models/data-analysis';
 export { SzBulkLoadStatus } from './lib/models/data-importing';
 export { SzDataSourceRecordAnalysis } from './lib/models/data-sources';
+export { AdminStreamConnProperties } from './lib/models/data-admin';
 
 /** export some members of rest client to ease type use */
 export {
