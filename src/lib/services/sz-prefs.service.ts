@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Subject, BehaviorSubject, merge, timer } from 'rxjs';
 import { takeUntil, debounce, filter } from 'rxjs/operators';
 import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio } from '../models/folio';
-import { AdminStreamConnProperties } from '../models/data-admin';
+import { AdminStreamAnalysisConfig, AdminStreamConnProperties, AdminStreamLoadConfig } from '../models/data-admin';
 //import { Configuration as SzRestConfiguration, ConfigurationParameters as SzRestConfigurationParameters } from '@senzing/rest-api-client-ng';
 
 /**
@@ -96,7 +96,15 @@ export class SzSdkPrefsBase {
 export class SzAdminPrefs extends SzSdkPrefsBase {
   // --------------- private vars
   /** @internal */
+  private _streamAnalysisConfig: AdminStreamAnalysisConfig = {
+    sampleSize: 10000
+  };
+  /** @internal */
   private _streamConnectionProperties: AdminStreamConnProperties | undefined;
+  /** @internal */
+  private _streamLoadConfig: AdminStreamLoadConfig = {
+    autoCreateMissingDataSources: false
+  };
   /** @internal */
   private _useStreamingForAnalysis: boolean = false;
   /** @internal */
@@ -106,19 +114,39 @@ export class SzAdminPrefs extends SzSdkPrefsBase {
    * to output in json, or to take as json input
    */
   jsonKeys = [
+    'streamAnalysisConfig',
     'streamConnectionProperties',
+    'streamLoadConfig',
     'useStreamingForAnalysis',
     'useStreamingForLoad',
   ]
 
   // ------------------- getters and setters
-  /** remember last X searches in autofill. */
+  /** configuration parameters for doing analysis on a file stream prior to importing */
+  public get streamAnalysisConfig(): AdminStreamAnalysisConfig {
+    return this._streamAnalysisConfig;
+  }
+  /** configuration parameters for doing analysis on a file stream prior to importing */
+  public set streamAnalysisConfig(value: AdminStreamAnalysisConfig) {
+    this._streamAnalysisConfig = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** connection parameters defining how and where to stream to bulk-loading endpoints */
   public get streamConnectionProperties(): AdminStreamConnProperties | undefined {
     return this._streamConnectionProperties;
   }
-  /** remember last X searches in autofill. */
+  /** connection parameters defining how and where to stream to bulk-loading endpoints */
   public set streamConnectionProperties(value: AdminStreamConnProperties | undefined) {
     this._streamConnectionProperties = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** configuration parameters for related to importing records using the stream connection */
+  public get streamLoadConfig(): AdminStreamLoadConfig {
+    return this._streamLoadConfig;
+  }
+  /** configuration parameters for related to importing records using the stream connection */
+  public set streamLoadConfig(value: AdminStreamLoadConfig) {
+    this._streamLoadConfig = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** whether or not to use the streamConnectionProperties to do analysis through websocket stream. */
