@@ -177,47 +177,6 @@ export class SzAdminPrefs extends SzSdkPrefsBase {
      **/
     this.prefsChanged.next( this.toJSONObject() );
   }
-
-  /**
-   * the search form prefs contain a folio collection that automagically update
-   * when a user executes a search. Because of this additional functionality
-   * the usual fromJSONObject needs to perform some special logic to initialize
-   * the prefs from JSON like create class instances etc.
-   */
-  public fromJSONObject(value: string) {
-    this.bulkSet = true;
-    let _isChanged = false;
-    if (this.jsonKeys && this.jsonKeys.forEach) {
-      // console.warn('SzSearchFormPrefs.fromJSONObject: ', this.jsonKeys);
-      this.jsonKeys.forEach((k: string) => {
-        if( value[k] !== undefined ){
-          //if( k === 'streamConnectionProperties'){
-            // special case: takes JSON in
-            // and creates AdminStreamConnProperties with
-            // items inside it
-          //  const _streamConnectionProperties: AdminStreamConnProperties = {
-
-          //  };
-
-          //  this._streamConnectionProperties = _streamConnectionProperties;
-            // console.warn('SzSearchFormPrefs.fromJSONObject: _searchHistory = ', this._searchHistory);
-          //} else {
-            try{
-              this[k] = (value[k] && value[k].fromJSONObject ) ? value[k].fromJSONObject() : value[k];
-              _isChanged = true;
-              // console.log('SzSearchFormPrefs.fromJSONObject: "'+ k +'"', value[k].fromJSONObject());
-            } catch (err) {
-              // console.warn('attempted to get prefVal, but pref unset. ', err)
-            };
-          //}
-        }
-      });
-    }
-    this.bulkSet = false;
-    if(_isChanged){
-      this.prefsChanged.next( this.toJSONObject() );
-    }
-  }
 }
 
 /**

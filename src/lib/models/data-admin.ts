@@ -4,6 +4,7 @@ export interface AdminStreamConnProperties {
     clientId?: string;
     hostname: string;
     port?: number;
+    secure?: boolean;
     connectionTest: boolean;
     reconnectOnClose: boolean;
     reconnectConsecutiveAttemptLimit: number;
