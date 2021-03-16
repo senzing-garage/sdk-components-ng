@@ -9,6 +9,7 @@ import {
 function addPackageJsonDependencies(): Rule {
   return (host: Tree, context: SchematicContext) => {
     const dependencies: NodeDependency[] = [
+      { type: NodeDependencyType.Default, version: '~10.1.3', name: '@angular/material' },
       { type: NodeDependencyType.Default, version: '~2.2.0', name: '@senzing/rest-api-client-ng' },
       { type: NodeDependencyType.Default, version: '~2.1.2', name: '@senzing/sdk-graph-components' },
       { type: NodeDependencyType.Default, version: '~2.1.2', name: '@senzing/sdk-components-ng' }
