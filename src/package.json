@@ -13,7 +13,7 @@
     "schematics-utilities": "^2.0.2",
     "@senzing/rest-api-client-ng": "^2.2.0",
     "d3": "^5.9.1",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.3.1",
     "html2canvas": "^1.0.0-rc.3",
     "ngx-json-viewer": "^2.4.0",
     "@types/d3": "^5.7.1",
