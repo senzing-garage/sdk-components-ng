@@ -1,9 +1,0 @@
-<form id="jsonFile" name="jsonFile" enctype="multipart/form-data" method="post">
-  <fieldset>
-    <h2>Graph Network Using Exported Entity Network File</h2>
-
-    <label id="checkboxLabel" for="showMatchKeysCheckbox">Show Match Keys </label>
-    <input type="checkbox" id="showMatchKeysCheckbox" checked [(ngModel)]="showLinkLabels" name="showLabels"><br/>
-    <input type='file' (change)="loadNetwork($event)" value="Choose File">
-  </fieldset>
-</form>
