@@ -8,7 +8,7 @@ import { Inject } from '@angular/core';
  */
 export abstract class SzFolioItem {
   /** the name of the folio item */
-  abstract name: string;
+  abstract _name: string;
   /** the data representing this folio item */
   abstract _data;
   /** the data representing this folio item */
@@ -18,6 +18,12 @@ export abstract class SzFolioItem {
   /** the data representing this folio item */
   public set data (value: any) {
     this._data = value;
+  }
+  public get name (): string {
+    return this._name;
+  }
+  public set name (value: string) {
+    this._name = value;
   }
 }
 
@@ -54,13 +60,19 @@ export abstract class SzFolio {
 export class SzSearchParamsFolioItem extends SzFolioItem {
   _data: SzEntitySearchParams;
   /** if set the name should be used when displaying the item to the user */
-  name: string;
+  _name: string;
 
   public get data (): SzEntitySearchParams {
     return this._data;
   }
   public set data (value: SzEntitySearchParams) {
     this._data = value;
+  }
+  public get name (): string {
+    return this._name;
+  }
+  public set name (value: string) {
+    this._name = value;
   }
 
   constructor(data: SzEntitySearchParams) {
@@ -83,7 +95,6 @@ export class SzSearchParamsFolio extends SzFolio {
     super(); // must call super()
 
     if (items) { this.items = items; }
-    if (name) { this.name = name; }
   }
 }
 // -----------------------    end search form folios   -------------------------
@@ -117,7 +128,7 @@ export class SzSearchHistoryFolio extends SzSearchParamsFolio {
    */
   items: SzSearchHistoryFolioItem[];
   /** hardcoded to 'Search History' */
-  public name: string = 'Search History';
+  public _name: string = 'Search History';
   /** The number of searches back to store in the folio */
   public maxItems: number = 20;
   /** update mode. when a user searches for something that is already
@@ -139,7 +150,6 @@ export class SzSearchHistoryFolio extends SzSearchParamsFolio {
     if (items) {
       this.items = items;
     }
-    if (name) { this.name = name; }
   }
   /**
    * Add a new search parameter set to the stack
