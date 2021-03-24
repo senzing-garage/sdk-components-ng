@@ -58,7 +58,7 @@ export * from './lib/models/folio';
 export { SzBulkDataAnalysis } from './lib/models/data-analysis';
 export { SzBulkLoadStatus } from './lib/models/data-importing';
 export { SzDataSourceRecordAnalysis } from './lib/models/data-sources';
-export { AdminStreamConnProperties, AdminStreamAnalysisConfig, AdminStreamLoadConfig } from './lib/models/data-admin';
+export { AdminStreamConnProperties, AdminStreamAnalysisConfig, AdminStreamLoadConfig, AdminStreamUploadRates } from './lib/models/data-admin';
 
 /** export some members of rest client to ease type use */
 export {

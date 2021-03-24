@@ -97,13 +97,15 @@ export class SzAdminPrefs extends SzSdkPrefsBase {
   // --------------- private vars
   /** @internal */
   private _streamAnalysisConfig: AdminStreamAnalysisConfig = {
-    sampleSize: 10000
+    sampleSize: 10000,
+    uploadRate: -1
   };
   /** @internal */
   private _streamConnectionProperties: AdminStreamConnProperties | undefined;
   /** @internal */
   private _streamLoadConfig: AdminStreamLoadConfig = {
-    autoCreateMissingDataSources: false
+    autoCreateMissingDataSources: false,
+    uploadRate: -1
   };
   /** @internal */
   private _useStreamingForAnalysis: boolean = false;
