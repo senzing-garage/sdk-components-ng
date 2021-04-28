@@ -4,7 +4,8 @@ import { SzEntityDetailSectionData } from '../../../models/entity-detail-section
 import {
   SzEntityData,
   SzResolvedEntity,
-  SzEntityRecord
+  SzEntityRecord,
+  SzRelatedEntity
 } from '@senzing/rest-api-client-ng';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { tap, takeUntil } from 'rxjs/operators';
@@ -185,6 +186,36 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   public get showColumnFour(): boolean {
     return this.identifierData.length > 0;
   }
+  /**
+   * static method so we can figure out what columns would be displayed for a record outside 
+   * of the context of the component itself.
+   */
+  public static getColumnsThatWouldBeDisplayedForData(entity: SzEntityRecord | SzRelatedEntity): string[] {
+    let retVal = [];
+    if(entity) {
+      // other data
+      if(entity.otherData && entity.otherData.length > 0) {
+        retVal.push('1');
+      }
+      // name and attr data
+      let nameAndAttrData = SzEntityRecordCardContentComponent.getNameDataFromEntity(entity).concat(SzEntityRecordCardContentComponent.getAattributeDataFromEntity(entity));
+      if(nameAndAttrData.length > 0) {
+        retVal.push('2');
+      }
+      // address and phone data
+      let phoneAndAddrData = SzEntityRecordCardContentComponent.getAddressDataFromEntity(entity).concat(SzEntityRecordCardContentComponent.getPhoneDataFromEntity(entity));
+      // addressData.concat(phoneData);
+      if(phoneAndAddrData && phoneAndAddrData.length > 0) {
+        retVal.push('3');
+      }
+      // identifier data
+      let identifierData = SzEntityRecordCardContentComponent.getIdentifierDataFromEntity(entity); 
+      if(identifierData.length > 0) {
+        retVal.push('4');
+      }
+    }
+    return retVal;
+  }
   // -----------------  end total getters  -------------------
 
   get otherData(): string[] {
@@ -204,6 +235,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   }
 
   get nameData(): string[] {
+    /*
     if (this.entity) {
       if (this.entity && this.entity.nameData && this.entity.nameData.length > 0 && !this._showBestNameOnly) {
         return this.entity.nameData;
@@ -216,10 +248,27 @@ export class SzEntityRecordCardContentComponent implements OnInit {
       }
     } else {
       return [];
+    }*/
+    return SzEntityRecordCardContentComponent.getNameDataFromEntity(this.entity, this._showBestNameOnly);
+  }
+  public static getNameDataFromEntity(entity, showBestNameOnly?: boolean): string[] {
+    if (entity) {
+      if (entity && entity.nameData && entity.nameData.length > 0 && !showBestNameOnly) {
+        return entity.nameData;
+      } else if (entity && entity.bestName) {
+        return [entity.bestName];
+      } else if (entity && entity.entityName && !showBestNameOnly) {
+        return [entity.entityName];
+      } else {
+        return [];
+      }
+    } else {
+      return [];
     }
   }
 
   get attributeData(): string[] {
+    /*
     if (this.entity) {
       if ( this.entity.characteristicData) {
         return this.entity.characteristicData;
@@ -230,10 +279,26 @@ export class SzEntityRecordCardContentComponent implements OnInit {
       }
     } else {
       return [];
+    }*/
+    return SzEntityRecordCardContentComponent.getAattributeDataFromEntity(this.entity);
+  }
+
+  public static getAattributeDataFromEntity(entity): string[] {
+    if (entity) {
+      if ( entity.characteristicData) {
+        return entity.characteristicData;
+      } else if ( entity.attributeData) {
+        return entity.attributeData;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
     }
   }
 
   get addressData(): string[] {
+    /*
     if (this.entity) {
       if (this.entity.addressData) {
         return this.entity.addressData;
@@ -244,15 +309,76 @@ export class SzEntityRecordCardContentComponent implements OnInit {
       }
     } else {
       return [];
+    }*/
+    return SzEntityRecordCardContentComponent.getAddressDataFromEntity(this.entity);
+  }
+
+  public static getAddressDataFromEntity(entity): string[] {
+    if (entity) {
+      if (entity.addressData) {
+        return entity.addressData;
+      } else if (entity.addressData) {
+        return entity.addressData;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
     }
   }
 
   get phoneData(): string[] {
+    /*
     if (this.entity) {
       if (this.entity.phoneData) {
         return this.entity.phoneData;
       } else if (this.entity.phoneData) {
         return this.entity.phoneData;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }*/
+    return SzEntityRecordCardContentComponent.getPhoneDataFromEntity(this.entity); 
+  }
+
+  public static getPhoneDataFromEntity(entity): string[] {
+    if (entity) {
+      if (entity.phoneData) {
+        return entity.phoneData;
+      } else if (entity.phoneData) {
+        return entity.phoneData;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
+  get identifierData(): string[] {
+    /*
+    if (this.entity) {
+      if (this.entity.identifierData) {
+        return this.entity.identifierData;
+      } else if (this.entity.identifierData) {
+        return this.entity.identifierData;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }*/
+    return SzEntityRecordCardContentComponent.getIdentifierDataFromEntity(this.entity); 
+  }
+
+  public static getIdentifierDataFromEntity(entity): string[] {
+    if (entity) {
+      if (entity.identifierData) {
+        return entity.identifierData;
+      } else if (entity.identifierData) {
+        return entity.identifierData;
       } else {
         return [];
       }
@@ -306,20 +432,6 @@ export class SzEntityRecordCardContentComponent implements OnInit {
       //console.warn('isLinkedAttribute issue. ', attrValue, matchArr);
     }
     return false;
-  }
-
-  get identifierData(): string[] {
-    if (this.entity) {
-      if (this.entity.identifierData) {
-        return this.entity.identifierData;
-      } else if (this.entity.identifierData) {
-        return this.entity.identifierData;
-      } else {
-        return [];
-      }
-    } else {
-      return [];
-    }
   }
 
   /**

@@ -4,6 +4,12 @@ import { SzEntityDetailSectionCollapsibleCardComponent } from './collapsible-car
 import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { SzEntityRecordCardContentComponent } from '../../sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
+
+interface SectionDataByDataSource {
+  dataSource?: string;
+  records?: SzEntityRecord[] | SzRelatedEntity[]
+}
 
 /**
  * @internal
@@ -18,7 +24,7 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
   _sectionData: SzEntityRecord[] | SzRelatedEntity[];
-  _sectionDataByDataSource: SzEntityRecord[] | SzRelatedEntity[];
+  _sectionDataByDataSource: SectionDataByDataSource[];
   _sectionDataByMatchKey: SzEntityRecord[] | SzRelatedEntity[];
 
   @Input() entity: SzEntityRecord | SzRelatedEntity;
@@ -28,6 +34,11 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
     this._sectionData = value;
     this._sectionDataByDataSource = this.getSectionDataByDataSource(value);
     this._sectionDataByMatchKey = this.getSectionDataByMatchKey(value);
+
+    // figure out what columns are displayed for each row
+    let displayedColumns = this.sectionsShownColumns;
+    console.log('shown columns for matched records: ', displayedColumns, this._sectionData, this._sectionDataByDataSource);
+    
   }
   get sectionData() {
     return this._sectionData;
@@ -89,6 +100,25 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
 
   constructor(public breakpointObserver: BreakpointObserver) { }
 
+  public get sectionsShownColumns(): string[] {
+    let retVal = [];
+    if(this.showByDataSource){
+      let sectionDataRecords  = []; // we just want all possible displayed columns anyway
+      this._sectionDataByDataSource.forEach( (sectionData: SectionDataByDataSource) => {
+        if(sectionData && sectionData.records) {
+          sectionDataRecords  = sectionDataRecords.concat( sectionData.records );
+        }
+      });
+      sectionDataRecords.forEach((sectionData: SzEntityRecord | SzRelatedEntity) => {
+        retVal.push( SzEntityRecordCardContentComponent.getColumnsThatWouldBeDisplayedForData( sectionData ) );
+      });
+      
+    } else {
+
+    }
+    return retVal;
+  }
+
   /**
    * unsubscribe when component is destroyed
    */
@@ -139,7 +169,6 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
         return _bp.cssClass;
       })
     })
-
   }
 
   get showByDataSource(): boolean {
@@ -161,7 +190,7 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
     return false;
   }
 
-  private getSectionDataByDataSource(sectionData) {
+  private getSectionDataByDataSource(sectionData): SectionDataByDataSource[] {
     const _ret = sectionData;
     const byDS = {};
     const dsAsArray = [];
