@@ -34,11 +34,6 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
     this._sectionData = value;
     this._sectionDataByDataSource = this.getSectionDataByDataSource(value);
     this._sectionDataByMatchKey = this.getSectionDataByMatchKey(value);
-
-    // figure out what columns are displayed for each row
-    let displayedColumns = this.sectionsShownColumns;
-    console.log('shown columns for matched records: ', displayedColumns, this._sectionData, this._sectionDataByDataSource);
-    
   }
   get sectionData() {
     return this._sectionData;
