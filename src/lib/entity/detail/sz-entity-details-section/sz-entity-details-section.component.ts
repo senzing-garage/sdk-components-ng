@@ -100,8 +100,14 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
 
   constructor(public breakpointObserver: BreakpointObserver) { }
 
-  public get sectionsShownColumns(): string[] {
-    let retVal = [];
+  /**
+   * This is used to query for all columns displayed for an  
+   * individual records, then flatten the result in to a array of booleans so 
+   * we can use that to fill empty columns for records that lack data of other 
+   * records. this is for grid alignment.
+   */
+  public get sectionsShownColumns(): boolean[] {
+    let retVal = [false, false, false, false];
     if(this.showByDataSource){
       let sectionDataRecords  = []; // we just want all possible displayed columns anyway
       this._sectionDataByDataSource.forEach( (sectionData: SectionDataByDataSource) => {
@@ -109,12 +115,20 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
           sectionDataRecords  = sectionDataRecords.concat( sectionData.records );
         }
       });
+      let _allRecordCols = [];
       sectionDataRecords.forEach((sectionData: SzEntityRecord | SzRelatedEntity) => {
-        retVal.push( SzEntityRecordCardContentComponent.getColumnsThatWouldBeDisplayedForData( sectionData ) );
+        _allRecordCols.push( SzEntityRecordCardContentComponent.getColumnsThatWouldBeDisplayedForData( sectionData ) );
       });
-      
+      // now condense to flattened array
+      _allRecordCols.forEach((recordCols: boolean[]) => {
+        if(recordCols[0] === true) { retVal[0] = true;}
+        if(recordCols[1] === true) { retVal[1] = true;}
+        if(recordCols[2] === true) { retVal[2] = true;}
+        if(recordCols[3] === true) { retVal[3] = true;}
+        if(recordCols[4] === true) { retVal[4] = true;}
+      });
     } else {
-
+      // TODO: do alignment for other sections
     }
     return retVal;
   }

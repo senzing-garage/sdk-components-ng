@@ -34,6 +34,8 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   private _showBestNameOnly: boolean = false;
   private _ignorePrefOtherDataChanges = false;
   @Input() public showRecordIdWhenNative: boolean = false;
+  /** allows records with empty columns to match up with records with non-empty columns. format is [true,false,true,true,true] */
+  @Input() public columnsShown: boolean[] = undefined;
   @Input() public set ignorePrefOtherDataChanges(value: boolean) {
     this._ignorePrefOtherDataChanges = value;
   }
@@ -164,6 +166,10 @@ export class SzEntityRecordCardContentComponent implements OnInit {
         retVal = true;
       }
     }
+    // check "columnsShown[0]" for override
+    if(this.columnsShown && this.columnsShown[0] === true) {
+      retVal = true;
+    }
     return retVal;
   }
   get columnTwoTotal(): number {
@@ -171,47 +177,64 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   }
   get showColumnTwo(): boolean {
     const nameAndAttrData = this.getNameAndAttributeData(this.nameData, this.attributeData);
-    return this._showNameData && nameAndAttrData.length > 0;
+    let retVal = this._showNameData && nameAndAttrData.length > 0;
+    // check "columnsShown[1]" for override
+    if(this.columnsShown && this.columnsShown[0] === true) {
+      retVal = true;
+    }
+    return retVal;
   }
   get columnThreeTotal(): number {
     return (this.addressData.concat(this.phoneData).length);
   }
   get showColumnThree(): boolean {
     const phoneAndAddrData = this.getAddressAndPhoneData(this.addressData, this.phoneData);
-    return (phoneAndAddrData && phoneAndAddrData.length > 0);
+    let retVal  = (phoneAndAddrData && phoneAndAddrData.length > 0);
+    // check "columnsShown[2]" for override
+    if(this.columnsShown && this.columnsShown[2] === true) {
+      retVal = true;
+    }
+    return retVal;
   }
   get columnFourTotal(): number {
     return this.identifierData.length;
   }
   public get showColumnFour(): boolean {
-    return this.identifierData.length > 0;
+    let retVal  = (this.identifierData.length > 0);
+    // check "columnsShown[3]" for override
+    if(this.columnsShown && this.columnsShown[3] === true) {
+      retVal = true;
+    }
+    return retVal;
   }
   /**
    * static method so we can figure out what columns would be displayed for a record outside 
-   * of the context of the component itself.
+   * of the context of the component itself. This is used to query for all columns displayed for an  
+   * individual record, then fed back in to ALL records via "columnsShown" so that columns 
+   * are always aligned properly.
    */
-  public static getColumnsThatWouldBeDisplayedForData(entity: SzEntityRecord | SzRelatedEntity): string[] {
-    let retVal = [];
+  public static getColumnsThatWouldBeDisplayedForData(entity: SzEntityRecord | SzRelatedEntity): boolean[] {
+    let retVal = [false,false,false,false];
     if(entity) {
       // other data
       if(entity.otherData && entity.otherData.length > 0) {
-        retVal.push('1');
+        retVal[0] = true;
       }
       // name and attr data
       let nameAndAttrData = SzEntityRecordCardContentComponent.getNameDataFromEntity(entity).concat(SzEntityRecordCardContentComponent.getAattributeDataFromEntity(entity));
       if(nameAndAttrData.length > 0) {
-        retVal.push('2');
+        retVal[1] = true;
       }
       // address and phone data
       let phoneAndAddrData = SzEntityRecordCardContentComponent.getAddressDataFromEntity(entity).concat(SzEntityRecordCardContentComponent.getPhoneDataFromEntity(entity));
       // addressData.concat(phoneData);
       if(phoneAndAddrData && phoneAndAddrData.length > 0) {
-        retVal.push('3');
+        retVal[2] = true;
       }
       // identifier data
       let identifierData = SzEntityRecordCardContentComponent.getIdentifierDataFromEntity(entity); 
       if(identifierData.length > 0) {
-        retVal.push('4');
+        retVal[3] = true;
       }
     }
     return retVal;

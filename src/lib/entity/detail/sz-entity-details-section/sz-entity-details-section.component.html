@@ -17,6 +17,7 @@
       displayType="record"
       [cardData]="dataSourceRecords"
       [collapsedStatePrefsKey]="this.collapsedStatePrefsKey"
+      [columnsShown]="this.sectionsShownColumns"
       [layoutClasses]="_layoutClasses"
       (onCollapsedChange)="this.onCollapsibleCardStateChange($event)"
       [truncateResults]="true"
