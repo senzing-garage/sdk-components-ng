@@ -50,5 +50,14 @@
     .search-card__content--column   {
       min-width: var(--sz-entity-detail-section-record-card-four-cols-min-width);
     }
+    /* lock first and last so other cols can expand properly */
+    .search-card__content--column:first-child,
+    .search-card__content--column:last-child,
+    .search-card__content--column.nameData {
+      max-width: calc(25% - 2em);
+    }
+    .search-card__content--column.addressPhoneData {
+      width: 100%;
+    }
   }
 }
