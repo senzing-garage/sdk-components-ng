@@ -4,6 +4,12 @@ import { SzEntityDetailSectionCollapsibleCardComponent } from './collapsible-car
 import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { SzEntityRecordCardContentComponent } from '../../sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
+
+interface SectionDataByDataSource {
+  dataSource?: string;
+  records?: SzEntityRecord[] | SzRelatedEntity[]
+}
 
 /**
  * @internal
@@ -18,7 +24,7 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
   _sectionData: SzEntityRecord[] | SzRelatedEntity[];
-  _sectionDataByDataSource: SzEntityRecord[] | SzRelatedEntity[];
+  _sectionDataByDataSource: SectionDataByDataSource[];
   _sectionDataByMatchKey: SzEntityRecord[] | SzRelatedEntity[];
 
   @Input() entity: SzEntityRecord | SzRelatedEntity;
@@ -90,6 +96,39 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
   constructor(public breakpointObserver: BreakpointObserver) { }
 
   /**
+   * This is used to query for all columns displayed for an  
+   * individual records, then flatten the result in to a array of booleans so 
+   * we can use that to fill empty columns for records that lack data of other 
+   * records. this is for grid alignment.
+   */
+  public get sectionsShownColumns(): boolean[] {
+    let retVal = [false, false, false, false];
+    if(this.showByDataSource){
+      let sectionDataRecords  = []; // we just want all possible displayed columns anyway
+      this._sectionDataByDataSource.forEach( (sectionData: SectionDataByDataSource) => {
+        if(sectionData && sectionData.records) {
+          sectionDataRecords  = sectionDataRecords.concat( sectionData.records );
+        }
+      });
+      let _allRecordCols = [];
+      sectionDataRecords.forEach((sectionData: SzEntityRecord | SzRelatedEntity) => {
+        _allRecordCols.push( SzEntityRecordCardContentComponent.getColumnsThatWouldBeDisplayedForData( sectionData ) );
+      });
+      // now condense to flattened array
+      _allRecordCols.forEach((recordCols: boolean[]) => {
+        if(recordCols[0] === true) { retVal[0] = true;}
+        if(recordCols[1] === true) { retVal[1] = true;}
+        if(recordCols[2] === true) { retVal[2] = true;}
+        if(recordCols[3] === true) { retVal[3] = true;}
+        if(recordCols[4] === true) { retVal[4] = true;}
+      });
+    } else {
+      // TODO: do alignment for other sections
+    }
+    return retVal;
+  }
+
+  /**
    * unsubscribe when component is destroyed
    */
   ngOnDestroy() {
@@ -139,7 +178,6 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
         return _bp.cssClass;
       })
     })
-
   }
 
   get showByDataSource(): boolean {
@@ -161,7 +199,7 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
     return false;
   }
 
-  private getSectionDataByDataSource(sectionData) {
+  private getSectionDataByDataSource(sectionData): SectionDataByDataSource[] {
     const _ret = sectionData;
     const byDS = {};
     const dsAsArray = [];
