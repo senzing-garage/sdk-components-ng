@@ -71,7 +71,7 @@
   </ul>
   </form>
   <hr>
-  <h3>{{ sectionTitles[2] }}</h3>
+  <!--<h3>{{ sectionTitles[2] }}</h3>
   <form [formGroup]="colorsByDataSourcesForm">
   <ul class="colors-list">
     <ng-container *ngFor="let ds of colorsByDataSourcesData.controls; let i = index">
@@ -84,7 +84,29 @@
         </ng-container>
     </ng-container>
   </ul>
-  </form>
+  </form>-->
+  <hr>
+  <h3>{{ sectionTitles[2] }}</h3>
+  <!--<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let movie of movies" cdkDrag>
+      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+      {{movie}}
+    </div>
+  </div>-->
+  
+  <div cdkDropList class="example-list" (cdkDropListDropped)="onColorOrderDrop($event)">
+    <div class="example-box" *ngFor="let ds of dataSourceColorsOrdered; let i = index" cdkDrag>
+      <ng-container *ngIf="shouldDataSourceBeDisplayed(dataSourceColorsOrdered[i].datasource)">
+        <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+        <label>
+          <input type="color" [formControlName]="i" [style.background-color]="dataSourceColorsOrdered[i].color" (change)="onDsColorChange($event.target, $event)">
+          {{dataSourceColorsOrdered[i].datasource}}
+        </label>
+      </ng-container>
+    </div>
+  </div>
+
+
   <hr>
   <h3>{{ sectionTitles[3] }}</h3>
   <form [formGroup]="colorsMiscForm">

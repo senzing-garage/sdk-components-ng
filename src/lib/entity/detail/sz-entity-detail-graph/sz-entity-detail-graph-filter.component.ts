@@ -4,6 +4,7 @@ import { SzDataSourcesService } from '../../../services/sz-datasources.service';
 import { tap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 /**
  * Control Component allowing UI friendly changes
@@ -42,6 +43,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   @Input() buildOutMax: number = 5;
   @Input() showDataSources: string[];
   @Input() dataSourceColors: any = {};
+  @Input() dataSourceColorsOrdered: any[] = [];
   @Input() dataSourcesFiltered: string[] = [];
   @Input() queriedEntitiesColor: string;
   public _datasources: string[] = [];
@@ -163,6 +165,13 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   }
   /** handler for when a color value for a source in the "colorsByDataSourcesForm" has changed */
   onDsColorChange(src?: any, evt?) {
+    console.log('onDsColorChange: ', src, evt);
+    // update color swatch bg color(for prettier boxes)
+    if(src && src.style && src.style.setProperty){
+      src.style.setProperty('background-color', src.value);
+    }
+  }
+  onDsColorChangeOld(src?: any, evt?) {
     const coloredDataSourceNames = this.colorsByDataSourcesForm.value.datasources
       .map((v, i) => {
         const hasColor = v ? true : false;
@@ -215,10 +224,15 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
     this.maxEntities = prefs.maxEntities;
     this.buildOut = prefs.buildOut;
     this.dataSourceColors = prefs.dataSourceColors;
+    this.dataSourceColorsOrdered  = prefs.dataSourceColorsOrdered ? prefs.dataSourceColorsOrdered : this.dataSourceColorsOrdered;
     this.dataSourcesFiltered = prefs.dataSourcesFiltered;
     this.queriedEntitiesColor = prefs.queriedEntitiesColor;
     // update view manually (for web components redraw reliability)
     this.cd.detectChanges();
+  }
+
+  onColorOrderDrop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.dataSourceColorsOrdered, event.previousIndex, event.currentIndex);
   }
 
   /**
@@ -248,15 +262,45 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
     }
   }
 
+  movies = [
+    'Episode I - The Phantom Menace',
+    'Episode II - Attack of the Clones',
+    'Episode III - Revenge of the Sith',
+    'Episode IV - A New Hope',
+    'Episode V - The Empire Strikes Back',
+    'Episode VI - Return of the Jedi',
+    'Episode VII - The Force Awakens',
+    'Episode VIII - The Last Jedi',
+    'Episode IX – The Rise of Skywalker'
+  ];
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
+  }
+
   /** initializes filter form controls */
   private initializeDataSourceFormControls() {
     this.getDataSources().subscribe((dataSrc: string[]) => {
       this._datasources = dataSrc;
+
       // init form controls for filter by datasource
       console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.initializeDataSourceFormControls(): ', dataSrc);
       this._datasources.forEach((o, i) => {
         const dsFilterVal = !(this.dataSourcesFiltered.indexOf(o) >= 0);
         const dsColorVal  = this.dataSourceColors[o];
+        // check to see if value is already in "this.dataSourceColorsOrdered" array
+        let indexInColoredOrderArray = this.dataSourceColorsOrdered.findIndex((item: {datasource: string, color: string, index: number }) => {
+          if(item && item.datasource === o){
+            return true;
+          }
+          return false;
+        });
+        if(indexInColoredOrderArray < 0) {
+          // add to ds colors array
+          this.dataSourceColorsOrdered.push({
+            datasource: o,
+            color: null
+          });
+        }
 
         const control1 = new FormControl(dsFilterVal); // if first item set to true, else false
         const control2 = new FormControl(dsColorVal); // color value if any
