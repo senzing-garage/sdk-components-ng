@@ -93,19 +93,19 @@
       {{movie}}
     </div>
   </div>-->
-  
-  <div cdkDropList class="example-list" (cdkDropListDropped)="onColorOrderDrop($event)">
-    <div class="example-box" *ngFor="let ds of dataSourceColorsOrdered; let i = index" cdkDrag>
-      <ng-container *ngIf="shouldDataSourceBeDisplayed(dataSourceColorsOrdered[i].datasource)">
+  <form [formGroup]="colorsByDataSourcesForm">
+  <ul cdkDropList class="example-list" (cdkDropListDropped)="onColorOrderDrop($event)">
+    <ng-container *ngFor="let ds of dataSourceColorsOrdered; let i = index">
+      <li class="example-box" formArrayName="datasources" *ngIf="shouldDataSourceBeDisplayed(dataSourceColorsOrdered[i].datasource)" cdkDrag>
         <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
         <label>
           <input type="color" [formControlName]="i" [style.background-color]="dataSourceColorsOrdered[i].color" (change)="onDsColorChange($event.target, $event)">
           {{dataSourceColorsOrdered[i].datasource}}
         </label>
-      </ng-container>
-    </div>
-  </div>
-
+      </li>
+    </ng-container>
+  </ul>
+  </form>
 
   <hr>
   <h3>{{ sectionTitles[3] }}</h3>

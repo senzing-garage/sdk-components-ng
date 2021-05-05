@@ -232,7 +232,9 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   }
 
   onColorOrderDrop(event: CdkDragDrop<string[]>) {
+    console.log('onColorOrderDrop: ', event, this.dataSourceColorsOrdered.map((ds: {datasource: string, color?: string, index?: number}) => { return ds.datasource}).join(','));
     moveItemInArray(this.dataSourceColorsOrdered, event.previousIndex, event.currentIndex);
+    console.log('onColorOrderDrop: ', event, this.dataSourceColorsOrdered.map((ds: {datasource: string, color?: string, index?: number}) => { return ds.datasource}).join(','));
   }
 
   /**
