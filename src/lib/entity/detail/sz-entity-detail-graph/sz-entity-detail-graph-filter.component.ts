@@ -5,6 +5,7 @@ import { tap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { SzDataSourceComposite } from '../../../models/data-sources';
 
 /**
  * Control Component allowing UI friendly changes
@@ -42,11 +43,60 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   @Input() buildOutMin: number = 0;
   @Input() buildOutMax: number = 5;
   @Input() showDataSources: string[];
-  @Input() dataSourceColors: any = {};
-  @Input() dataSourceColorsOrdered: any[] = [];
   @Input() dataSourcesFiltered: string[] = [];
   @Input() queriedEntitiesColor: string;
   public _datasources: string[] = [];
+  private _datasourcesFull: SzDataSourceComposite[] = [];
+  @Input() dataSourceColors: SzDataSourceComposite[] = [];
+  public get dataSourceColorsOrdered(): SzDataSourceComposite[] {
+    // return _datasourcesFull sorted by index
+    let retVal: SzDataSourceComposite[] = this._datasourcesFull;
+    retVal = this.sortDataSourcesByIndex(retVal);
+    return retVal;
+  };
+
+  private sortDataSourcesByIndex(value: SzDataSourceComposite[]): SzDataSourceComposite[] {
+    let retVal  = value;
+    if(retVal && retVal.sort) {
+      // first sort by any existing indexes
+      retVal = retVal.sort((a, b) => {    
+          if (a.index > b.index) {
+              return 1;
+          } else if (a.index < b.index) {    
+              return -1;
+          } else {
+            // sort by name
+          }
+          return 0;
+      });
+      // now update index values to same as array
+      retVal  = retVal.map((_dsVal: SzDataSourceComposite, _index: number) => {
+        let _reIndexed  = _dsVal;
+        _reIndexed.index = _index;
+        return _reIndexed;
+      });
+    }
+    return retVal;
+  }
+
+  public getOrderedColors():void {
+    let retVal  = "Data Sources:\n\r";
+    let ordered = this.dataSourceColorsOrdered;
+    if(ordered && ordered.forEach) {
+      ordered.forEach( (dsVal: SzDataSourceComposite) => {
+        retVal = retVal + dsVal.index + ': '+ dsVal.name + '\n';
+      });
+    }
+    /*
+    if(this._datasourcesFull && this._datasourcesFull.sort) {
+      this._datasourcesFull.forEach((_dsVal: SzDataSourceComposite) => {
+        retVal  = retVal + _dsVal.index + ': '+ _dsVal.name +'\n';
+      });
+      console.log('getOrderedColors: ', this._datasourcesFull);
+    }*/
+    alert(retVal);
+  }
+
   /** show match keys */
   public _showLinkLabels = true;
   @Input() public set showLinkLabels(value){
@@ -147,7 +197,8 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
    * by the datasource name. used for applying background color to 
    * input[type=color] to make them look fancier
    */
-  getDataSourceColor(dsValue) {
+  /*
+  getDataSourceColorOld(dsValue) {
     const coloredDataSourceNames = this.colorsByDataSourcesForm.value.datasources
       .map((v, i) => {
         const hasColor = v ? true : false;
@@ -162,6 +213,18 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
       return dsFormValMatch.value;
     }
     return 'transparent';
+  }*/
+  getDataSourceColor(dsValue) {
+    let retVal = null;
+    if(this._datasourcesFull && this._datasourcesFull.find){
+      let dsObj = this._datasourcesFull.find((_ds: SzDataSourceComposite) => {
+        return _ds.name === dsValue;
+      });
+      if(dsObj && dsObj.color) {
+        retVal = dsObj.color;
+      }
+    }
+    return retVal;
   }
   /** handler for when a color value for a source in the "colorsByDataSourcesForm" has changed */
   onDsColorChange(src?: any, evt?) {
@@ -171,6 +234,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
       src.style.setProperty('background-color', src.value);
     }
   }
+  /*
   onDsColorChangeOld(src?: any, evt?) {
     const coloredDataSourceNames = this.colorsByDataSourcesForm.value.datasources
       .map((v, i) => {
@@ -193,6 +257,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
       this.prefs.graph.dataSourceColors = this.dataSourceColors;
     }
   }
+  */
   /** handler for when an integer pref value has changed. ie: buildOut  */
   onIntParameterChange(prefName, value) {
     if(this.prefs.graph[prefName] !== undefined) {
@@ -224,7 +289,6 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
     this.maxEntities = prefs.maxEntities;
     this.buildOut = prefs.buildOut;
     this.dataSourceColors = prefs.dataSourceColors;
-    this.dataSourceColorsOrdered  = prefs.dataSourceColorsOrdered ? prefs.dataSourceColorsOrdered : this.dataSourceColorsOrdered;
     this.dataSourcesFiltered = prefs.dataSourcesFiltered;
     this.queriedEntitiesColor = prefs.queriedEntitiesColor;
     // update view manually (for web components redraw reliability)
@@ -232,9 +296,62 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   }
 
   onColorOrderDrop(event: CdkDragDrop<string[]>) {
-    console.log('onColorOrderDrop: ', event, this.dataSourceColorsOrdered.map((ds: {datasource: string, color?: string, index?: number}) => { return ds.datasource}).join(','));
-    moveItemInArray(this.dataSourceColorsOrdered, event.previousIndex, event.currentIndex);
-    console.log('onColorOrderDrop: ', event, this.dataSourceColorsOrdered.map((ds: {datasource: string, color?: string, index?: number}) => { return ds.datasource}).join(','));
+    let displayedList = this.dataSourceColorsOrdered;
+    if(displayedList && displayedList.filter) {
+      displayedList = displayedList.filter((dsVal: SzDataSourceComposite) => {
+        return this.shouldDataSourceBeDisplayed(dsVal.name);
+      });
+    }
+    let existingItem    = displayedList[event.previousIndex];
+    let itemAtPosition  = displayedList[event.currentIndex];
+    if(event && event.item && event.item.data) {
+      if(existingItem && event.item.data !== existingItem.name) {
+        let _existingByName = this._datasourcesFull.find( (_ds: SzDataSourceComposite) => {
+          return _ds.name === event.item.data;
+        });
+        console.warn('whaoooo there! hold up. not the right item! ', existingItem, _existingByName);
+        
+      }
+    }
+    console.log('onColorOrderDrop: ', existingItem, itemAtPosition);
+    // now update index values after slicing array
+    let _sortedExistingArray  = this.dataSourceColorsOrdered;
+    let newArray              = this.dataSourceColorsOrdered;
+    // value of "0" means they moved up. value of "1" means they moved down
+    let direction             = event.currentIndex < event.previousIndex ? 0 : 1;
+    // we se this here because it will be bumped if we reference during loop
+    let newIndex              = itemAtPosition.index;
+
+    newArray = newArray.map((_dsVal: SzDataSourceComposite) => {
+      if(direction === 0){
+        // moved up
+        if(_dsVal.name !== existingItem.name) {
+          if(_dsVal.index >= itemAtPosition.index) {
+            // add "1" to index
+            _dsVal.index  = _dsVal.index + 1;
+          }
+        } else {
+          // is item
+          _dsVal.index = newIndex;
+          console.log('updated item index to '+ _dsVal.index, newArray);
+        }
+      } else if(direction === 1) {
+        //moved down
+        if(_dsVal.name !== existingItem.name) {
+          if(_dsVal.index <= itemAtPosition.index) {
+            // subtract "1" from index
+            _dsVal.index  = _dsVal.index - 1;
+          }
+        } else {
+          // is item
+          _dsVal.index = newIndex;
+        }
+      }
+      return _dsVal;
+    });
+    let _sortedNewArray       = this.sortDataSourcesByIndex(newArray);
+    console.log("direction? "+ direction +" | item slice: ", newArray, _sortedExistingArray, _sortedNewArray);
+    console.log('onColorOrderDrop: ', event, newArray);
   }
 
   /**
@@ -283,26 +400,29 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   private initializeDataSourceFormControls() {
     this.getDataSources().subscribe((dataSrc: string[]) => {
       this._datasources = dataSrc;
+      let _datasourceColorsMap  = {};
+      if(this.dataSourceColorsOrdered) {
+        this.dataSourceColorsOrdered.forEach((_dsObj: SzDataSourceComposite) => {
+          _datasourceColorsMap[ _dsObj.name ] = _dsObj;
+        });
+      }
+      this._datasourcesFull = dataSrc.map((_dsStr: string) => {
+        let retVal = {
+          name: _dsStr,
+          index: 0
+        };
+        // check to see if we have entry for this in prefs
+        if( _datasourceColorsMap && _datasourceColorsMap[ _dsStr ]) {
+          retVal  = _datasourceColorsMap[ _dsStr ];
+        }
+        return retVal;
+      });
 
       // init form controls for filter by datasource
-      console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.initializeDataSourceFormControls(): ', dataSrc);
+      console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.initializeDataSourceFormControls(): ', dataSrc, this._datasourcesFull);
       this._datasources.forEach((o, i) => {
         const dsFilterVal = !(this.dataSourcesFiltered.indexOf(o) >= 0);
         const dsColorVal  = this.dataSourceColors[o];
-        // check to see if value is already in "this.dataSourceColorsOrdered" array
-        let indexInColoredOrderArray = this.dataSourceColorsOrdered.findIndex((item: {datasource: string, color: string, index: number }) => {
-          if(item && item.datasource === o){
-            return true;
-          }
-          return false;
-        });
-        if(indexInColoredOrderArray < 0) {
-          // add to ds colors array
-          this.dataSourceColorsOrdered.push({
-            datasource: o,
-            color: null
-          });
-        }
 
         const control1 = new FormControl(dsFilterVal); // if first item set to true, else false
         const control2 = new FormControl(dsColorVal); // color value if any

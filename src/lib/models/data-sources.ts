@@ -4,3 +4,9 @@ export class SzDataSourceRecordAnalysis {
   recordCount: number;
   recordsWithRecordIdCount: number;
 }
+
+export interface SzDataSourceComposite {
+  name: string,
+  color?: string,
+  index?: number
+}

@@ -96,16 +96,17 @@
   <form [formGroup]="colorsByDataSourcesForm">
   <ul cdkDropList class="example-list" (cdkDropListDropped)="onColorOrderDrop($event)">
     <ng-container *ngFor="let ds of dataSourceColorsOrdered; let i = index">
-      <li class="example-box" formArrayName="datasources" *ngIf="shouldDataSourceBeDisplayed(dataSourceColorsOrdered[i].datasource)" cdkDrag>
+      <li class="example-box" formArrayName="datasources" *ngIf="shouldDataSourceBeDisplayed(dataSourceColorsOrdered[i].name)" cdkDrag [cdkDragData]="dataSourceColorsOrdered[i].name">
         <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
         <label>
-          <input type="color" [formControlName]="i" [style.background-color]="dataSourceColorsOrdered[i].color" (change)="onDsColorChange($event.target, $event)">
-          {{dataSourceColorsOrdered[i].datasource}}
+          <input type="color" [formControlName]="i" [style.background-color]="getDataSourceColor(dataSourceColorsOrdered[i].name)" (change)="onDsColorChange($event.target, $event)">
+          {{dataSourceColorsOrdered[i].name}}
         </label>
       </li>
     </ng-container>
   </ul>
   </form>
+  <button (click)="getOrderedColors()">Get Ordered</button>
 
   <hr>
   <h3>{{ sectionTitles[3] }}</h3>
