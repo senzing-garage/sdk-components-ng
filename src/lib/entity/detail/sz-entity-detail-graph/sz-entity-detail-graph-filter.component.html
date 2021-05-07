@@ -57,19 +57,20 @@
 
   <hr>
   <h3>{{ sectionTitles[1] }}</h3>
-  <!--<form [formGroup]="filterByDataSourcesForm">
+  <form [formGroup]="filterByDataSourcesForm">
   <ul class="filters-list">
     <ng-container *ngFor="let ds of filterByDataSourcesData.controls; let i = index">
-        <ng-container *ngIf="shouldDataSourceBeDisplayed(_datasources[i])">
+        <ng-container *ngIf="shouldDataSourceBeDisplayed(dataSourcesOrdered[i].name)">
             <li formArrayName="datasources">
               <label>
-                <input type="checkbox" [formControlName]="i" (change)="onDsFilterChange()">{{_datasources[i]}}
+                <input type="checkbox" [formControlName]="i" (change)="onDsFilterChange(dataSourcesOrdered[i].name, $event)">{{dataSourcesOrdered[i].name}}
               </label>
             </li>
         </ng-container>
     </ng-container>
   </ul>
-  </form>-->
+  </form>
+  <!--
   <ul class="filters-list">
     <ng-container *ngFor="let ds of dataSourcesOrdered; let i = index">
         <ng-container *ngIf="shouldDataSourceBeDisplayed(ds.name)">
@@ -81,6 +82,7 @@
         </ng-container>
     </ng-container>
   </ul>
+  -->
   <hr>
   <h3>{{ sectionTitles[2] }}</h3>
   <ul cdkDropList class="colors-list" (cdkDropListDropped)="onColorOrderDrop($event)">

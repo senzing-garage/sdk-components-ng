@@ -45,7 +45,6 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   @Input() showDataSources: string[];
   @Input() dataSourcesFiltered: string[] = [];
   @Input() queriedEntitiesColor: string;
-  public _datasources: string[] = [];
   private _datasourcesFull: SzDataSourceComposite[] = [];
   private _dataSourceColors: SzDataSourceComposite[] = [];
   @Input() set dataSourceColors(value: SzDataSourceComposite[]) {
@@ -209,27 +208,12 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
 
   /** handler for when a filter by datasouce value in the "filterByDataSourcesForm" has changed */
   onDsFilterChange(dsValue: string, evt?) {
-    let checkedValue      = evt && !evt.checked ? false : true;
-    let _dsIndex          = this._datasourcesFull.findIndex( (ds: SzDataSourceComposite) => {
-      return ds.name === dsValue;
-    });
-    /*
-    if(_dsIndex >= 0 && this._datasourcesFull[_dsIndex]) {
-      // update item
-      this._datasourcesFull[_dsIndex].hidden = !checkedValue;
-    }*/
-    
-    console.warn('onDsFilterChange: ', checkedValue, evt.target.value, this.dataSourcesOrdered, this._datasourcesFull);
-
-
-    /*
     const filteredDataSourceNames = this.filterByDataSourcesForm.value.datasources
-      .map((v, i) => v ? null : this._datasources[i])
+      .map((v, i) => v ? null : this.dataSourcesOrdered[i].name)
       .filter(v => v !== null);
     // update filters pref
     this.prefs.graph.dataSourcesFiltered = filteredDataSourceNames;
-    //console.log('onDsFilterChange: ', filteredDataSourceNames, this.prefs.graph.dataSourcesFiltered);
-    */
+    console.log('onDsFilterChange: ', filteredDataSourceNames, this.prefs.graph.dataSourcesFiltered);
   }
   /**
    * method for getting the selected pref color for a datasource 
@@ -455,6 +439,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   /** initializes filter form controls */
   private initializeDataSourceFormControls() {
     this.getDataSources().subscribe((dataSrc: string[]) => {
+      // this._datasources = dataSrc;
       // lets create a quick lookup map
       let _datasourceColorsMap  = {};
       if(this.dataSourceColorsOrdered) {
@@ -485,7 +470,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
       // init form controls for filter by datasource
       //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.initializeDataSourceFormControls(): ', dataSrc, this._datasourcesFull);
       
-      this._datasourcesFull.forEach((o, i) => {
+      this.dataSourcesOrdered.forEach((o, i) => {
         const dsFilterVal = !(this.dataSourcesFiltered.indexOf(o.name) >= 0);
         const control1 = new FormControl(dsFilterVal); // if first item set to true, else false
         // add control for filtered by list
