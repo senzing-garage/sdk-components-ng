@@ -8,5 +8,6 @@ export class SzDataSourceRecordAnalysis {
 export interface SzDataSourceComposite {
   name: string,
   color?: string,
-  index?: number
+  index?: number,
+  hidden?: boolean
 }
