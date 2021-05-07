@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SzDataSourceComposite } from '../../../models/data-sources';
+import { sortDataSourcesByIndex } from '../../../common/utils';
 
 /**
  * Control Component allowing UI friendly changes
@@ -45,6 +46,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   @Input() showDataSources: string[];
   @Input() dataSourcesFiltered: string[] = [];
   @Input() queriedEntitiesColor: string;
+  
   private _datasourcesFull: SzDataSourceComposite[] = [];
   private _dataSourceColors: SzDataSourceComposite[] = [];
   @Input() set dataSourceColors(value: SzDataSourceComposite[]) {
@@ -73,55 +75,13 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   }
   public get dataSourceColorsOrdered(): SzDataSourceComposite[] {
     let retVal: SzDataSourceComposite[] = this._datasourcesFull;
-    retVal = this.sortDataSourcesByIndex(retVal);
+    retVal = sortDataSourcesByIndex(retVal);
     return retVal;
   };
   public get dataSourcesOrdered(): SzDataSourceComposite[] {
     let retVal: SzDataSourceComposite[] = this._datasourcesFull;
-    retVal = this.sortDataSourcesByIndex(retVal);
+    retVal = sortDataSourcesByIndex(retVal);
     return retVal;
-  }
-
-  private sortDataSourcesByIndex(value: SzDataSourceComposite[]): SzDataSourceComposite[] {
-    let retVal  = value;
-    if(retVal && retVal.sort) {
-      // first sort by any existing indexes
-      retVal = retVal.sort((a, b) => {    
-          if (a.index > b.index) {
-              return 1;
-          } else if (a.index < b.index) {    
-              return -1;
-          } else {
-            // sort by name
-          }
-          return 0;
-      });
-      // now update index values to same as array
-      retVal  = retVal.map((_dsVal: SzDataSourceComposite, _index: number) => {
-        let _reIndexed  = _dsVal;
-        _reIndexed.index = _index;
-        return _reIndexed;
-      });
-    }
-    return retVal;
-  }
-
-  public getOrderedColors():void {
-    let retVal  = "Data Sources:\n\r";
-    let ordered = this.dataSourceColorsOrdered;
-    if(ordered && ordered.forEach) {
-      ordered.forEach( (dsVal: SzDataSourceComposite) => {
-        retVal = retVal + dsVal.index + ': '+ dsVal.name + '\n';
-      });
-    }
-    /*
-    if(this._datasourcesFull && this._datasourcesFull.sort) {
-      this._datasourcesFull.forEach((_dsVal: SzDataSourceComposite) => {
-        retVal  = retVal + _dsVal.index + ': '+ _dsVal.name +'\n';
-      });
-      console.log('getOrderedColors: ', this._datasourcesFull);
-    }*/
-    alert(retVal);
   }
 
   /** show match keys */
@@ -389,7 +349,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
       }
       return _dsVal;
     });
-    let _sortedNewArray       = this.sortDataSourcesByIndex(newArray);
+    let _sortedNewArray       = sortDataSourcesByIndex(newArray);
     console.log("direction? "+ direction +" | item slice: ", newArray, _sortedExistingArray, _sortedNewArray);
     console.log('onColorOrderDrop: ', event, newArray);
   }

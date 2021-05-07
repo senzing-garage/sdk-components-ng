@@ -14,7 +14,9 @@ import {
 import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
 import { SzEntityDetailGraphFilterComponent } from './sz-entity-detail-graph-filter.component';
 import { SzRelationshipNetworkComponent, NodeFilterPair, SzNetworkGraphInputs } from '@senzing/sdk-graph-components';
-import { parseBool } from '../../../common/utils';
+import { parseBool, sortDataSourcesByIndex } from '../../../common/utils';
+import { SzDataSourceComposite } from '../../../models/data-sources';
+
 /**
  * Embeddable Graph Component
  * used to display a entity and its network relationships
@@ -104,7 +106,16 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   @Input() maxDegrees: number = 1;
   @Input() maxEntities: number = 20;
   @Input() buildOut: number = 1;
-  @Input() dataSourceColors: any = {};
+  private _dataSourceColors: SzDataSourceComposite[] = [];
+  @Input() public set dataSourceColors(value: SzDataSourceComposite[]) {
+    this._dataSourceColors  = value;
+  }
+  public get dataSourceColors(): SzDataSourceComposite[] {
+    let retVal: SzDataSourceComposite[] = this._dataSourceColors;
+    retVal = sortDataSourcesByIndex(retVal);
+    return retVal;
+  };
+
   @Input() dataSourcesFiltered: string[] = [];
   /** @internal */
   private _showPopOutIcon = false;
@@ -470,6 +481,16 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   public get entityNodecolorsByDataSource(): NodeFilterPair[] {
     let _ret = [];
     if(this.dataSourceColors) {
+      _ret = this.dataSourceColors.reverse().map((dsVal: SzDataSourceComposite) => {
+        return {
+          selectorFn: this.isEntityNodeInDataSource.bind(this, true, dsVal.name),
+          modifierFn: this.setEntityNodeFillColor.bind(this, dsVal.color),
+          selectorArgs: dsVal.name,
+          modifierArgs: dsVal.color
+        };
+      });
+
+      /*
       const _keys = Object.keys(this.dataSourceColors);
       _ret = _keys.map( (_key) => {
         const _color = this.dataSourceColors[_key];
@@ -480,6 +501,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
           modifierArgs: _color
         };
       });
+      */
     }
     return _ret;
   }
