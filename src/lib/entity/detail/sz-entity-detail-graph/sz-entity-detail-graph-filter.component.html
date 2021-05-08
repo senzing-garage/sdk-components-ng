@@ -60,10 +60,10 @@
   <form [formGroup]="filterByDataSourcesForm">
   <ul class="filters-list">
     <ng-container *ngFor="let ds of filterByDataSourcesData.controls; let i = index">
-        <ng-container *ngIf="shouldDataSourceBeDisplayed(dataSourcesOrdered[i].name)">
+        <ng-container *ngIf="shouldDataSourceBeDisplayed(dataSources[i].name)">
             <li formArrayName="datasources">
               <label>
-                <input type="checkbox" [formControlName]="i" (change)="onDsFilterChange(dataSourcesOrdered[i].name, $event)">{{dataSourcesOrdered[i].name}}
+                <input type="checkbox" [formControlName]="i" (change)="onDsFilterChange(dataSources[i].name, $event)">{{dataSources[i].name}}
               </label>
             </li>
         </ng-container>
@@ -72,7 +72,7 @@
   </form>
   <!--
   <ul class="filters-list">
-    <ng-container *ngFor="let ds of dataSourcesOrdered; let i = index">
+    <ng-container *ngFor="let ds of dataSources; let i = index">
         <ng-container *ngIf="shouldDataSourceBeDisplayed(ds.name)">
             <li>
               <label>
@@ -86,7 +86,7 @@
   <hr>
   <h3>{{ sectionTitles[2] }}</h3>
   <ul cdkDropList class="colors-list" (cdkDropListDropped)="onColorOrderDrop($event)">
-    <ng-container *ngFor="let ds of dataSourceColorsOrdered; let i = index">
+    <ng-container *ngFor="let ds of dataSourceColors; let i = index">
       <li class="color-box" *ngIf="shouldDataSourceBeDisplayed(ds.name)" cdkDrag [cdkDragData]="ds.name">
         <div class="color-box-placeholder" *cdkDragPlaceholder></div>
         <label>

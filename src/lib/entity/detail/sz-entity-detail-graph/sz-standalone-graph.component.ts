@@ -72,6 +72,11 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
    */
   private _graphComponentRenderCompleted: Subject<boolean> = new Subject<boolean>();
   private _graphComponentRendered = false;
+  /**
+   * list of datasources with color and order information
+   * @internal
+   */
+  private _dataSourceColors: SzDataSourceComposite[] = [];
 
   /**
    * @internal
@@ -106,10 +111,11 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   @Input() maxDegrees: number = 1;
   @Input() maxEntities: number = 20;
   @Input() buildOut: number = 1;
-  private _dataSourceColors: SzDataSourceComposite[] = [];
+  /** array of datasources with color and order information */
   @Input() public set dataSourceColors(value: SzDataSourceComposite[]) {
     this._dataSourceColors  = value;
   }
+  /** array of datasources with color and order information. ordered ASC by index property */
   public get dataSourceColors(): SzDataSourceComposite[] {
     let retVal: SzDataSourceComposite[] = this._dataSourceColors;
     retVal = sortDataSourcesByIndex(retVal);
@@ -166,8 +172,6 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     return !this._showMatchKeys;
   }
 
-  //@HostBinding('class.open') get cssClssOpen() { return this.expanded; };
-  //@HostBinding('class.closed') get cssClssClosed() { return !this.expanded; };
   @ViewChild('graphContainer') graphContainerEle: ElementRef;
   @ViewChild(SzEntityDetailGraphControlComponent) graphControlComponent: SzEntityDetailGraphControlComponent;
   @ViewChild(SzRelationshipNetworkComponent) graph : SzRelationshipNetworkComponent;
@@ -321,7 +325,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   }
 
   public onOptionChange(event: {name: string, value: any}) {
-    console.log('onOptionChange: ', event);
+    //console.log('onOptionChange: ', event);
     switch(event.name) {
       case 'showLinkLabels':
         this.showMatchKeys = event.value;
@@ -489,19 +493,6 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
           modifierArgs: dsVal.color
         };
       });
-
-      /*
-      const _keys = Object.keys(this.dataSourceColors);
-      _ret = _keys.map( (_key) => {
-        const _color = this.dataSourceColors[_key];
-        return {
-          selectorFn: this.isEntityNodeInDataSource.bind(this, true, _key),
-          modifierFn: this.setEntityNodeFillColor.bind(this, _color),
-          selectorArgs: _key,
-          modifierArgs: _color
-        };
-      });
-      */
     }
     return _ret;
   }
@@ -561,28 +552,6 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
       }
     }
   }
-  /*
-  @deprecated
-  private isEntityNodeInDataSources(dataSources, nodeData) {
-    // console.log('fromOwners: ', nodeData);
-    console.log('isEntityNodeInDataSources: ', dataSources, nodeData);
-    if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
-      return false;
-    } else {
-      if(nodeData && nodeData.dataSources && nodeData.dataSources.indexOf){
-        // D3 filter query
-        return (nodeData.dataSources.some( (dsName) => {
-          return dataSources.indexOf(dsName) > -1;
-        }));
-      } else if (nodeData && nodeData.d && nodeData.d.dataSources && nodeData.d.dataSources.indexOf) {
-        return (nodeData.d.dataSources.some( (dsName) => {
-            return dataSources.indexOf(dsName) > -1;
-        }));
-      } else {
-        return false;
-      }
-    }
-  }*/
   private isEntityNodeNotInDataSources(dataSources, nodeData) {
     //console.log('isEntityNodeNotInDataSources: ', dataSources, nodeData);
     if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
