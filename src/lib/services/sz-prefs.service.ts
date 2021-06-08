@@ -1,6 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject, BehaviorSubject, merge, timer } from 'rxjs';
 import { takeUntil, debounce, filter } from 'rxjs/operators';
+import { SzDataSourceComposite } from '../models/data-sources';
 import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio } from '../models/folio';
 //import { Configuration as SzRestConfiguration, ConfigurationParameters as SzRestConfigurationParameters } from '@senzing/rest-api-client-ng';
 
@@ -706,9 +707,9 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _openInSidePanel: boolean = false;
   /** @internal */
-  private _dataSourceColors = {
-    'owners':'#0088ff'
-  };
+  private _dataSourceColors: SzDataSourceComposite[] = [
+    {name: 'owners', color: '#0088ff', index: 0}
+  ];
   /** @internal */
   private _showMatchKeys: boolean = false;
   /** @internal */
@@ -765,11 +766,11 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
   }
   /** colors to apply to entity node when belonging to particular datasources */
-  public get dataSourceColors(): any {
+  public get dataSourceColors(): SzDataSourceComposite[] {
     return this._dataSourceColors;
   }
   /** colors to apply to entity node when belonging to particular datasources */
-  public set dataSourceColors(value: any) {
+  public set dataSourceColors(value: SzDataSourceComposite[]) {
     this._dataSourceColors = value;
     if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
   }

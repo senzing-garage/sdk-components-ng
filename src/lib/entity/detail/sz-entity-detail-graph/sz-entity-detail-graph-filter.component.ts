@@ -4,6 +4,9 @@ import { SzDataSourcesService } from '../../../services/sz-datasources.service';
 import { tap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { SzDataSourceComposite } from '../../../models/data-sources';
+import { sortDataSourcesByIndex } from '../../../common/utils';
 
 /**
  * Control Component allowing UI friendly changes
@@ -32,6 +35,14 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   isOpen: boolean = true;
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
+  /** private list of datasource records augmented by SzDataSourceComposite shape 
+   * @internal
+  */
+  private _dataSources: SzDataSourceComposite[]       = [];
+  /** private list of SzDataSourceComposite as stored in local storage 
+   * @internal
+  */
+  private _dataSourceColors: SzDataSourceComposite[]  = [];
 
   @Input() maxDegreesOfSeparation: number = 1;
   @Input() showMaxDegreesOfSeparation: boolean = false;
@@ -41,10 +52,46 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   @Input() buildOutMin: number = 0;
   @Input() buildOutMax: number = 5;
   @Input() showDataSources: string[];
-  @Input() dataSourceColors: any = {};
   @Input() dataSourcesFiltered: string[] = [];
   @Input() queriedEntitiesColor: string;
-  public _datasources: string[] = [];
+
+  /** 
+   * set the internal list of datasource colors from local storage or input value
+   * and update any changed members also present in "_dataSources" with 
+   * current properties
+   */
+  @Input() set dataSourceColors(value: SzDataSourceComposite[]) {
+    // update value
+    this._dataSourceColors  = value;
+    // update any values in composites list
+    if(this._dataSources && this._dataSources.map) {
+      let tempDsFull = this._dataSources.map( (dsVal: SzDataSourceComposite) => {
+        // check to see if datasource has entry in value
+        let dsColorValueByName = value.find((dsColorValue: SzDataSourceComposite) => {
+          return dsColorValue.name === dsVal.name;
+        })
+        if(dsColorValueByName) {
+          dsVal.color = dsColorValueByName.color;
+          dsVal.index = dsColorValueByName.index; // pull this out once we make this more granular
+        }
+        return dsVal;
+      });
+      this._dataSources = tempDsFull;
+    }
+  }
+  /** get list of  "SzDataSourceComposite" reflecting current state of datasource colors and order. ordered ASC by "index" */
+  get dataSourceColors(): SzDataSourceComposite[] {
+    let retVal: SzDataSourceComposite[] = this._dataSources;
+    retVal = sortDataSourcesByIndex(retVal);
+    return retVal;
+  }
+  /** get list of  "SzDataSourceComposite" reflecting datasources pulled from API and augmented with state information in shape of "SzDataSourceComposite". ordered ASC by "index" */
+  public get dataSources(): SzDataSourceComposite[] {
+    let retVal: SzDataSourceComposite[] = this._dataSources;
+    retVal = sortDataSourcesByIndex(retVal);
+    return retVal;
+  }
+
   /** show match keys */
   public _showLinkLabels = true;
   @Input() public set showLinkLabels(value){
@@ -68,16 +115,11 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
     return !this._showLinkLabels;
   }
 
-
   // ------------------------------------  getters and setters --------------------------
 
   /** get data from reactive form control array */
   public get filterByDataSourcesData() {
     return <FormArray>this.filterByDataSourcesForm.get('datasources');
-  }
-  /** get data from reactive form control array */
-  public get colorsByDataSourcesData() {
-    return <FormArray>this.colorsByDataSourcesForm.get('datasources');
   }
 
   // --------------------------------- event emmitters and subjects ----------------------
@@ -102,7 +144,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
 
   constructor(
     public prefs: SzPrefsService,
-    public datasources: SzDataSourcesService,
+    public dataSourcesService: SzDataSourcesService,
     private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef
   ) {
@@ -132,47 +174,41 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   // --------------------------------- start event handlers -----------------------
 
   /** handler for when a filter by datasouce value in the "filterByDataSourcesForm" has changed */
-  onDsFilterChange() {
+  onDsFilterChange(dsValue: string, evt?) {
     const filteredDataSourceNames = this.filterByDataSourcesForm.value.datasources
-      .map((v, i) => v ? null : this._datasources[i])
+      .map((v, i) => v ? null : this.dataSources[i].name)
       .filter(v => v !== null);
     // update filters pref
     this.prefs.graph.dataSourcesFiltered = filteredDataSourceNames;
-    //console.log('onDsFilterChange: ', filteredDataSourceNames, this.prefs.graph.dataSourcesFiltered);
   }
   /**
    * method for getting the selected pref color for a datasource 
    * by the datasource name. used for applying background color to 
    * input[type=color] to make them look fancier
    */
-  getDataSourceColor(dsValue) {
-    const coloredDataSourceNames = this.colorsByDataSourcesForm.value.datasources
-      .map((v, i) => {
-        const hasColor = v ? true : false;
-        return v ? {'key': this._datasources[i], 'value': v} : null;
-      })
-      .filter(v => v !== null);
-    
-    let dsFormValMatch = coloredDataSourceNames.find( (_keyValPair) => {
-      return _keyValPair.key === dsValue ? true : false;
-    });
-    if(dsFormValMatch) {
-      return dsFormValMatch.value;
+  getDataSourceColor(dsValue: string) {
+    let retVal = null;
+    if(this._dataSources && this._dataSources.find){
+      let dsObj = this._dataSources.find((_ds: SzDataSourceComposite) => {
+        return _ds.name === dsValue;
+      });
+      if(dsObj && dsObj.color) {
+        retVal = dsObj.color;
+      }
     }
-    return 'transparent';
+    return retVal;
   }
   /** handler for when a color value for a source in the "colorsByDataSourcesForm" has changed */
-  onDsColorChange(src?: any, evt?) {
-    const coloredDataSourceNames = this.colorsByDataSourcesForm.value.datasources
-      .map((v, i) => {
-        const hasColor = v ? true : false;
-        return v ? {'key': this._datasources[i], 'value': v} : null;
-      })
-      .filter(v => v !== null);
-
-    coloredDataSourceNames.forEach( (pair) => {
-      this.dataSourceColors[pair.key] = pair.value;
-    });
+  onDsColorChange(dsValue: string, src?: any, evt?) {
+    // update color value in array
+    if(this._dataSources) {
+      let _dsIndex = this._dataSources.findIndex((dsVal: SzDataSourceComposite) => {
+        return dsVal.name === dsValue;
+      });
+      if(_dsIndex && this._dataSources && this._dataSources[ _dsIndex ]) {
+        this._dataSources[ _dsIndex ].color = src.value;
+      }
+    }
     // update color swatch bg color(for prettier boxes)
     if(src && src.style && src.style.setProperty){
       src.style.setProperty('background-color', src.value);
@@ -209,7 +245,6 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   }
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    // console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onPrefsChange(): ', prefs, this.prefs.graph);
     this._showLinkLabels = prefs.showMatchKeys;
     this.maxDegreesOfSeparation = prefs.maxDegreesOfSeparation;
     this.maxEntities = prefs.maxEntities;
@@ -217,8 +252,67 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
     this.dataSourceColors = prefs.dataSourceColors;
     this.dataSourcesFiltered = prefs.dataSourcesFiltered;
     this.queriedEntitiesColor = prefs.queriedEntitiesColor;
+    //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onPrefsChange(): ', prefs, this.dataSourceColors);
     // update view manually (for web components redraw reliability)
     this.cd.detectChanges();
+  }
+
+  /** 
+   * when user changes the order of a color by dragging it to 
+   * a different position in list update internal list "index"
+   * values and save state to prefs.
+   */
+  onColorOrderDrop(event: CdkDragDrop<string[]>) {
+    let displayedList = this.dataSourceColors;
+    if(displayedList && displayedList.filter) {
+      displayedList = displayedList.filter((dsVal: SzDataSourceComposite) => {
+        return this.shouldDataSourceBeDisplayed(dsVal.name);
+      });
+    }
+    let existingItem    = displayedList[event.previousIndex];
+    let itemAtPosition  = displayedList[event.currentIndex];
+    if(event && event.item && event.item.data) {
+      if(existingItem && event.item.data !== existingItem.name) {
+        let _existingByName = this._dataSources.find( (_ds: SzDataSourceComposite) => {
+          return _ds.name === event.item.data;
+        });        
+      }
+    }
+    // now update index values after slicing array
+    let newArray              = this.dataSourceColors;
+    // value of "0" means they moved up. value of "1" means they moved down
+    let direction             = event.currentIndex < event.previousIndex ? 0 : 1;
+    // we se this here because it will be bumped if we reference during loop
+    let newIndex              = itemAtPosition.index;
+    newArray = newArray.map((_dsVal: SzDataSourceComposite) => {
+      if(direction === 0){
+        // moved up
+        if(_dsVal.name !== existingItem.name) {
+          if(_dsVal.index >= itemAtPosition.index) {
+            // add "1" to index
+            _dsVal.index  = _dsVal.index + 1;
+          }
+        } else {
+          // is item
+          _dsVal.index = newIndex;
+        }
+      } else if(direction === 1) {
+        //moved down
+        if(_dsVal.name !== existingItem.name) {
+          if(_dsVal.index <= itemAtPosition.index) {
+            // subtract "1" from index
+            _dsVal.index  = _dsVal.index - 1;
+          }
+        } else {
+          // is item
+          _dsVal.index = newIndex;
+        }
+      }
+      return _dsVal;
+    });
+    //let _sortedNewArray       = sortDataSourcesByIndex(newArray);
+    //console.log("direction? "+ direction +" | item slice: ", newArray, _sortedExistingArray, _sortedNewArray);
+    //console.log('onColorOrderDrop: ', event, newArray);
   }
 
   /**
@@ -251,19 +345,33 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   /** initializes filter form controls */
   private initializeDataSourceFormControls() {
     this.getDataSources().subscribe((dataSrc: string[]) => {
-      this._datasources = dataSrc;
-      // init form controls for filter by datasource
-      console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.initializeDataSourceFormControls(): ', dataSrc);
-      this._datasources.forEach((o, i) => {
-        const dsFilterVal = !(this.dataSourcesFiltered.indexOf(o) >= 0);
-        const dsColorVal  = this.dataSourceColors[o];
-
+      // lets create a quick lookup map
+      let _datasourceColorsMap  = {};
+      if(this._dataSourceColors && this._dataSourceColors.forEach) {
+        this._dataSourceColors.forEach((_dsObj: SzDataSourceComposite) => {
+          _datasourceColorsMap[ _dsObj.name ] = _dsObj;
+        });
+      }
+      // now lets make sure that the current local _dataSources var
+      // is up to date with what came from the api
+      this._dataSources = dataSrc.map((_dsStr: string) => {
+        let retVal = {
+          name: _dsStr,
+          index: 0
+        };
+        // check to see if we have entry for this in prefs
+        // if we do use the state meta data from that(index, color, etc)
+        if( _datasourceColorsMap && _datasourceColorsMap[ _dsStr ]) {
+          retVal  = _datasourceColorsMap[ _dsStr ];
+        }
+        return retVal;
+      });
+      // init form controls for filter by datasource      
+      this.dataSources.forEach((o, i) => {
+        const dsFilterVal = !(this.dataSourcesFiltered.indexOf(o.name) >= 0);
         const control1 = new FormControl(dsFilterVal); // if first item set to true, else false
-        const control2 = new FormControl(dsColorVal); // color value if any
         // add control for filtered by list
         (this.filterByDataSourcesForm.controls.datasources as FormArray).push(control1);
-        // add control for colored by list
-        (this.colorsByDataSourcesForm.controls.datasources as FormArray).push(control2);
       });
 
     });
@@ -271,7 +379,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
 
   /** helper method for retrieving list of datasources */
   public getDataSources() {
-    return this.datasources.listDataSources();
+    return this.dataSourcesService.listDataSources();
   }
   /** if "showDataSources" array is specified, check that string name is present in list */
   public shouldDataSourceBeDisplayed( dsName: string) {
