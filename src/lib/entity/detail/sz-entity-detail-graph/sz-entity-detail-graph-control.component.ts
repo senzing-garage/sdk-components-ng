@@ -1,6 +1,5 @@
-import { Component, HostBinding, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
-import { tap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 /**

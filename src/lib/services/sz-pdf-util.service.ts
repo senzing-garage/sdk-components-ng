@@ -1,21 +1,13 @@
 import { Injectable } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
-import { Observable, fromEventPattern, Subject } from 'rxjs';
-import { map, tap, mapTo } from 'rxjs/operators';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 
 import {
-  EntityDataService,
-  ConfigService,
-  SzAttributeSearchResponse,
-  SzEntityData,
-  SzAttributeTypesResponse,
-  SzAttributeType,
   SzAttributeSearchResult
 } from '@senzing/rest-api-client-ng';
 import { SzEntitySearchParams } from '../models/entity-search';
-import { SzEntityDetailComponent } from '../entity/detail/sz-entity-detail.component';
+
 /**
  * Utility service for creating and manipulating PDF files from components and models.
  *
@@ -26,9 +18,8 @@ import { SzEntityDetailComponent } from '../entity/detail/sz-entity-detail.compo
 })
 export class SzPdfUtilService {
   constructor(
-    private entityDataService: EntityDataService,
-    private titleCasePipe: TitleCasePipe,
-    private configService: ConfigService) {}
+    private titleCasePipe: TitleCasePipe
+  ) {}
 
   /**
    * Create a downloadable PDF from an HTMLElement node. Uses canvas as an intermediary.

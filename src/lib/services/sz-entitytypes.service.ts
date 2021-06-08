@@ -1,4 +1,4 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import {
   EntityDataService,
@@ -12,7 +12,7 @@ import {
   SzDataSourcesResponseData
 } from '@senzing/rest-api-client-ng';
 import { Observable } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 /**
  * Provides access to the /entitytypes api path.

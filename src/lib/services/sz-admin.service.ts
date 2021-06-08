@@ -126,13 +126,10 @@ export class SzAdminService {
     );
   }
   public addDataSources(body?: Body | string, dataSource?: string[], withRaw?: boolean, observe?: 'body', reportProgress?: boolean): Observable<SzDataSourcesResponseData> {
-  //public addDataSources(body?: Body | string, dataSource?: string | string[], withRaw?: boolean, observe?: 'body', reportProgress?: boolean): Observable<SzDataSourcesResponseData> {
-  //public addDataSources(body?: string | Body, dataSource?: string, withRaw?: boolean, observe?: "body", reportProgress?: boolean): Observable<SzDataSourcesResponseData> {
     if (!this.adminEnabled || this.readOnly) {
       throw new Error('admin operation not permitted.');
     }
     return this.configService.addDataSources(body, dataSource, withRaw, observe, reportProgress)
-    //return this.configService.addDataSources(body, dataSource, withRaw, observe, reportProgress)
     .pipe(
       map( (resp: SzDataSourcesResponse) => resp.data )
     );
@@ -153,22 +150,18 @@ export class SzAdminService {
     );*/
   }
   public addEntityTypes(body?: Body2 | string, entityType?: string | string[], entityClass?: string, observe?: 'body', reportProgress?: boolean): Observable<string[]> {
-  //public addEntityTypes(entityTypes: string[], entityClass?: string): Observable<string[]> {
     if (!this.adminEnabled || this.readOnly) {
       throw new Error('admin operation not permitted.');
     }
     return this.configService.addEntityTypes(body, entityType, entityClass, observe, reportProgress)
-    //return this.configService.addEntityTypes(null, entityTypes, entityClass)
     .pipe(
       map( (resp: SzEntityTypesResponse) => resp.data.entityTypes )
     );
   }
   public addEntityTypesForClass(entityClassCode: string, body?: SzEntityTypeDescriptor[] | string, entityType?: string[], observe?: 'body', reportProgress?: boolean): Observable<SzEntityTypesResponseData> {
-  //public addEntityTypesForClass(entityClassCode?: string, body?: string | SzEntityTypeDescriptor[], entityType?: string, observe?: "body", reportProgress?: boolean): Observable<SzEntityTypesResponseData> {
     if (!this.adminEnabled || this.readOnly) {
       throw new Error('admin operation not permitted.');
     }
-    //return this.configService.addEntityTypesForClass(entityClassCode, body, entityType, observe, reportProgress)
     return this.configService.addEntityTypesForClass(entityClassCode, body, entityType, observe, reportProgress)
     .pipe(
       map( (resp: SzEntityTypesResponse) => resp.data )
@@ -254,7 +247,6 @@ export class SzAdminService {
     );
   }
   public analyzeBulkRecords(body: string | Blob | File | { [key: string]: any}[], progressPeriod?: string, observe?: 'body', reportProgress?: boolean): Observable<SzBulkDataAnalysisResponse> {
-  //public analyzeBulkRecords(body: string | Blob, observe?: "body", reportProgress?: boolean): Observable<SzBulkDataAnalysisResponse> {
     if (!this.adminEnabled || this.readOnly) {
       throw new Error('admin operation not permitted.');
     }
@@ -264,7 +256,6 @@ export class SzAdminService {
     );
   }
   public loadBulkRecords(body: string | Blob | File | { [key: string]: any}[], dataSource?: string, mapDataSources?: string, mapDataSource?: string[], entityType?: string, mapEntityTypes?: string, mapEntityType?: string[], progressPeriod?: string, observe?: 'body', reportProgress?: boolean): Observable<SzBulkLoadResponse> {
-  //public loadBulkRecords(body: string | Blob, dataSource?: string, entityType?: string, observe?: "body", reportProgress?: boolean): Observable<SzBulkLoadResponse> {
     if (!this.adminEnabled || this.readOnly) {
       throw new Error('admin operation not permitted.');
     }
