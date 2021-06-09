@@ -484,7 +484,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   /** function used to generate entity node fill colors from those saved in preferences */
   public get entityNodecolorsByDataSource(): NodeFilterPair[] {
     let _ret = [];
-    if(this.dataSourceColors) {
+    if(this.dataSourceColors && this.dataSourceColors.reverse) {
       _ret = this.dataSourceColors.reverse().map((dsVal: SzDataSourceComposite) => {
         return {
           selectorFn: this.isEntityNodeInDataSource.bind(this, true, dsVal.name),
@@ -493,6 +493,9 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
           modifierArgs: dsVal.color
         };
       });
+    } else if(this.dataSourceColors) {
+      // somethings not right, maybe old format
+      console.warn('datasource colors not in correct format', this.dataSourceColors);
     }
     return _ret;
   }
