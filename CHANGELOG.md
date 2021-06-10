@@ -6,13 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.2.2] - 2021-3-17
+## [2.2.3] - 2021-06-10
+
+- Passing additional or custom headers are necessary in certain operation scenario's, ie: passing `X-Amz-Security-Token` to a [Cognito](https://aws.amazon.com/cognito/) enabled [API Gateway](https://aws.amazon.com/api-gateway/) address after user authentication.
+  - Methods added to SzConfigurationService :
+    - addHeaderToApiRequests
+    - removeHeaderFromApiRequests
+  - Accessors added to SzConfigurationService :
+    - additionalApiRequestHeaders
+  - @Input() Accessor added to SzConfigurationComponent : 
+    - additionalHeaders
+- Code Cleanup (various commented out or unused variables removed)
+- Graph entity datasource colors are now reorderable via drag. Color with highest priority is shown when a graph entity belongs to multiple datasources.
+
+relevant tickets: #111, #219, #223
+
+## [2.2.2] - 2021-03-17
 
 - Patch release for @angular@~11.0.0 compatibility. See #207
 
 relevant tickets: #207
 
-## [2.2.1] - 2021-1-27
+## [2.2.1] - 2021-01-27
 
 - Entities with no "relatedEntities" present in data model cause blank UI on detail view
 
@@ -23,21 +38,21 @@ relevant tickets: #202
 - Angular Material added to `peerDependencies`. #192
 - Package now supports basic install schematics: `ng add @senzing/sdk-components-ng`. #190
 
-## [2.1.2] - 2020-11-3
+## [2.1.2] - 2020-11-03
 
 - API Client package updated to the [Senzing OAS 2.2.0](https://github.com/Senzing/senzing-rest-api-specification/releases/tag/2.2.0) specification.
 - Web Components code integrated as a child project in to the the `sdk-components-ng` repository. see ticket [#169](https://github.com/Senzing/sdk-components-ng/issues/169).
 Documentation for `@senzing/sdk-components-web` now [available here](http://hub.senzing.com/sdk-components-ng/additional-documentation/web-components.html).
 - Bugfixes: #169, #170, #173, #174, #175, #176, #177, #178, #179, #180, #181
 
-## [2.1.1] - 2020-10-2
+## [2.1.1] - 2020-10-02
 
 - Bugfixes for graph node filtering, color application by datasource, tooltips, redraw and source race conditions.
 - Added *Entity Id* to entity detail component
 
 relevant tickets: #162, #159, #152, #137
 
-## [2.1.0] - 2020-9-21
+## [2.1.0] - 2020-09-21
 
 Maintenence release for framework upgrade to Angular 10: see [https://blog.angular.io/version-10-of-angular-now-available-78960babd41](https://blog.angular.io/version-10-of-angular-now-available-78960babd41)
 
@@ -49,7 +64,7 @@ see the following links for associated tickets:
 - [rest-api-client-ng/issues/39](https://github.com/Senzing/rest-api-client-ng/issues/39)
 - [sdk-graph-components/issues/37](https://github.com/Senzing/sdk-graph-components/issues/37)
 
-## [2.0.0] - 2020-7-12
+## [2.0.0] - 2020-07-12
 
 Compatibility release for interacting with the 2.0.0 [senzing-rest-api-spec](https://github.com/Senzing/senzing-rest-api-specification) and [senzing-api-server](https://github.com/Senzing/senzing-api-server). For information on specifics of endpoint changes see below:
 
@@ -57,7 +72,7 @@ Compatibility release for interacting with the 2.0.0 [senzing-rest-api-spec](htt
 - [senzing-rest-api-specification PR #44](https://github.com/Senzing/senzing-rest-api-specification/pull/44)
 - [senzing-api-server PR #172](https://github.com/Senzing/senzing-api-server/pull/172)
 
-## [1.3.0] - 2020-2-6
+## [1.3.0] - 2020-02-6
 
 ### Added to 1.3.0
 
