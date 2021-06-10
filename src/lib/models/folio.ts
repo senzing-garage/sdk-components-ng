@@ -1,6 +1,4 @@
 import { SzEntitySearchParams } from './entity-search';
-import { SzPrefsService } from '../services/sz-prefs.service';
-import { Inject } from '@angular/core';
 
 // -----------------------  start base folio classes -------------------------
 /**

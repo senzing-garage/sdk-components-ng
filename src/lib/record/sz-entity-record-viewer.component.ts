@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
   SzEntityRecord
 } from '@senzing/rest-api-client-ng';
-import { SzSearchByIdFormParams } from '../search/sz-search/sz-search-by-id.component';
 
 /**
  * A component for displaying the result(s) of the sz-search-by-id component

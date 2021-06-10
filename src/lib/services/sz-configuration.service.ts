@@ -36,6 +36,29 @@ import { SzPrefsService } from './sz-prefs.service';
   providedIn: 'root'
 })
 export class SzConfigurationService {
+  /** add an additional header to all outgoing API requests */
+  public addHeaderToApiRequests(header: {[key: string]: string}): void {
+    this.apiConfiguration.addAdditionalRequestHeader( header );
+  }
+  /** remove an additional header from all outgoing API requests */
+  public removeHeaderFromApiRequests(header: {[key: string]: string} | string): void {
+    this.apiConfiguration.removeAdditionalRequestHeader( header );
+  }
+  /** 
+   * additional http/https request headers that will be added by default to 
+   * all outbound api server requests.
+   */
+  public get additionalApiRequestHeaders(): {[key: string]: string} | undefined {
+    return this.apiConfiguration.additionalHeaders;
+  }
+  /** 
+   * set additional http/https request headers to be added by default to 
+   * all outbound api server requests. most commonly used for adding custom 
+   * or required non-standard headers like jwt session tokens, auth id etc.
+   */
+  public set additionalApiRequestHeaders(value: {[key: string]: string} | undefined) {
+    this.apiConfiguration.additionalHeaders = value;
+  }
   /**
    * emmitted when a property has been changed.
    * used mostly for diagnostics.
@@ -46,7 +69,6 @@ export class SzConfigurationService {
   private onParameterChange(): void {
     this.parametersChanged.next(this.apiConfiguration);
   }
-
   /**
    * apiKeys to use when connnecting to Api Server
    */
@@ -58,7 +80,6 @@ export class SzConfigurationService {
     }
     this.onParameterChange();
   }
-
   /**
    * Username to use when using challenge response authentication.
    */
@@ -70,7 +91,6 @@ export class SzConfigurationService {
     }
     this.onParameterChange();
   }
-
   /** password used for challenge respose. */
   @Input()
   set password(value: string) {
@@ -80,7 +100,6 @@ export class SzConfigurationService {
     }
     this.onParameterChange();
   }
-
   @Input()
   set accessToken(value: string | (() => string)) {
     this.apiConfiguration.accessToken = value;
@@ -89,7 +108,6 @@ export class SzConfigurationService {
     }
     this.onParameterChange();
   }
-
   /** prefix all api requests with this value. most commonly a http or https
    * protocol://hostname:port string that your api server can be accessed through
    */
@@ -104,7 +122,6 @@ export class SzConfigurationService {
   public get basePath(): string {
     return this.apiConfiguration.basePath;
   }
-
   /** whether or not to use CORs for api requests */
   @Input()
   set withCredentials(value: boolean) {
@@ -114,7 +131,6 @@ export class SzConfigurationService {
     }
     this.onParameterChange();
   }
-
   /** bulk runtime set of sdk configuration */
   public fromParameters(value: SzRestConfigurationParameters) {
     const propKeys = Object.keys(value);

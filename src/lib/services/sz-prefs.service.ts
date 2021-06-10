@@ -1,9 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject, BehaviorSubject, merge, timer } from 'rxjs';
-import { takeUntil, debounce, filter } from 'rxjs/operators';
+import { takeUntil, debounce } from 'rxjs/operators';
 import { SzDataSourceComposite } from '../models/data-sources';
 import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio } from '../models/folio';
-//import { Configuration as SzRestConfiguration, ConfigurationParameters as SzRestConfigurationParameters } from '@senzing/rest-api-client-ng';
 
 /**
  * preferences bus base class. provides common methods for

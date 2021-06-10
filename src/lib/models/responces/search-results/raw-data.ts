@@ -1,4 +1,4 @@
-import {SzResponseWithRawData} from '@senzing/rest-api-client-ng';
+//import {SzResponseWithRawData} from '@senzing/rest-api-client-ng';
 
 export interface SzRawData {
   DATA_SOURCE: string;

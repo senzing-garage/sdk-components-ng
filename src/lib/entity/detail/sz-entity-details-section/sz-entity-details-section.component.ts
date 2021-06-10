@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnInit, AfterViewInit, ViewChildren, QueryList, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChildren, QueryList, OnDestroy } from '@angular/core';
 import { SzRelatedEntity, SzEntityRecord } from '@senzing/rest-api-client-ng';
 import { SzEntityDetailSectionCollapsibleCardComponent } from './collapsible-card.component';
 import { Subject } from 'rxjs';
