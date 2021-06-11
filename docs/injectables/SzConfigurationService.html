@@ -120,11 +120,19 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#addHeaderToApiRequests">addHeaderToApiRequests</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#asConfigurationParameters">asConfigurationParameters</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#fromParameters">fromParameters</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#removeHeaderFromApiRequests">removeHeaderFromApiRequests</a>
                             </li>
                         </ul>
                     </td>
@@ -142,6 +150,9 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
                     <tr>
                         <td class="col-md-4">
                             <ul class="index-list">
+                                <li>
+                                    <a href="#additionalApiRequestHeaders">additionalApiRequestHeaders</a>
+                                </li>
                                 <li>
                                     <a href="#apiKeys">apiKeys</a>
                                 </li>
@@ -244,6 +255,74 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="addHeaderToApiRequests"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            addHeaderToApiRequests
+                        </b>
+                        <a href="#addHeaderToApiRequests"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>addHeaderToApiRequests(header: literal type)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>add an additional header to all outgoing API requests </p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>header</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="asConfigurationParameters"></a>
                     <span class="name">
                         <b>
@@ -321,6 +400,74 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
                                     <td>value</td>
                                     <td>
                                             <code>SzRestConfigurationParameters</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="removeHeaderFromApiRequests"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            removeHeaderFromApiRequests
+                        </b>
+                        <a href="#removeHeaderFromApiRequests"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>removeHeaderFromApiRequests(header: literal type | string)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>remove an additional header from all outgoing API requests </p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>header</td>
+                                    <td>
+                                            <code>literal type | string</code>
                                     </td>
 
                                     <td>
@@ -435,6 +582,77 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
     <h3 id="accessors">
         Accessors
     </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="additionalApiRequestHeaders"></a>
+                        <span class="name"><b>additionalApiRequestHeaders</b><a href="#additionalApiRequestHeaders"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>additionalApiRequestHeaders()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>additional http/https request headers that will be added by default to 
+all outbound api server requests.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>literal type | undefined</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>additionalApiRequestHeaders(value)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>set additional http/https request headers to be added by default to 
+all outbound api server requests. most commonly used for adding custom 
+or required non-standard headers like jwt session tokens, auth id etc.</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>

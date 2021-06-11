@@ -147,10 +147,6 @@ to filtering, colors, and parameters of graph control.</p>
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#_datasources">_datasources</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
                                 <a href="#_showLinkLabels">_showLinkLabels</a>
                             </li>
                             <li>
@@ -161,7 +157,7 @@ to filtering, colors, and parameters of graph control.</p>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#datasources">datasources</a>
+                                <a href="#dataSourcesService">dataSourcesService</a>
                             </li>
                             <li>
                                 <a href="#filterByDataSourcesForm">filterByDataSourcesForm</a>
@@ -211,6 +207,9 @@ to filtering, colors, and parameters of graph control.</p>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#onCheckboxPrefToggle">onCheckboxPrefToggle</a>
+                            </li>
+                            <li>
+                                <a href="#onColorOrderDrop">onColorOrderDrop</a>
                             </li>
                             <li>
                                 <a href="#onColorParameterChange">onColorParameterChange</a>
@@ -329,13 +328,16 @@ to filtering, colors, and parameters of graph control.</p>
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
+                                    <a href="#dataSourceColors">dataSourceColors</a>
+                                </li>
+                                <li>
+                                    <a href="#dataSources">dataSources</a>
+                                </li>
+                                <li>
                                     <a href="#showLinkLabels">showLinkLabels</a>
                                 </li>
                                 <li>
                                     <a href="#filterByDataSourcesData">filterByDataSourcesData</a>
-                                </li>
-                                <li>
-                                    <a href="#colorsByDataSourcesData">colorsByDataSourcesData</a>
                                 </li>
                             </ul>
                         </td>
@@ -350,7 +352,7 @@ to filtering, colors, and parameters of graph control.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(prefs: <a href="../injectables/SzPrefsService.html">SzPrefsService</a>, datasources: <a href="../injectables/SzDataSourcesService.html">SzDataSourcesService</a>, formBuilder: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>, cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>)</code>
+<code>constructor(prefs: <a href="../injectables/SzPrefsService.html">SzPrefsService</a>, dataSourcesService: <a href="../injectables/SzDataSourcesService.html">SzDataSourcesService</a>, formBuilder: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>, cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>)</code>
                     </td>
                 </tr>
 
@@ -380,7 +382,7 @@ to filtering, colors, and parameters of graph control.</p>
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>datasources</td>
+                                                        <td>dataSourcesService</td>
                                                   
                                                         <td>
                                                                         <code><a href="../injectables/SzDataSourcesService.html" target="_self" >SzDataSourcesService</a></code>
@@ -499,13 +501,16 @@ to filtering, colors, and parameters of graph control.</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <i>Type : </i>    <code>[]</code>
 
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>{}</code>
+                        <div class="io-description"><p>set the internal list of datasource colors from local storage or input value
+and update any changed members also present in &quot;_dataSources&quot; with 
+current properties</p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -800,7 +805,7 @@ used mostly for diagnostics.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getDataSourceColor(dsValue)</code>
+<code>getDataSourceColor(dsValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
@@ -820,12 +825,16 @@ input[type=color] to make them look fancier</p>
                             <thead>
                                 <tr>
                                     <td>Name</td>
+                                    <td>Type</td>
                                     <td>Optional</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>dsValue</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
                                     <td>
                                         No
@@ -1070,6 +1079,74 @@ input[type=color] to make them look fancier</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="onColorOrderDrop"></a>
+                    <span class="name">
+                        <b>
+                            onColorOrderDrop
+                        </b>
+                        <a href="#onColorOrderDrop"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onColorOrderDrop(event: CdkDragDrop<string[]>)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>when user changes the order of a color by dragging it to 
+a different position in list update internal list &quot;index&quot;
+values and save state to prefs.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                            <code>CdkDragDrop&lt;string[]&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="onColorParameterChange"></a>
                     <span class="name">
                         <b>
@@ -1152,7 +1229,7 @@ input[type=color] to make them look fancier</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>onDsColorChange(src?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, evt?)</code>
+<code>onDsColorChange(dsValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, src?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, evt?)</code>
                 </td>
             </tr>
 
@@ -1175,6 +1252,18 @@ input[type=color] to make them look fancier</p>
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr>
+                                    <td>dsValue</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
                                 <tr>
                                     <td>src</td>
                                     <td>
@@ -1229,7 +1318,7 @@ input[type=color] to make them look fancier</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>onDsFilterChange()</code>
+<code>onDsFilterChange(dsValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, evt?)</code>
                 </td>
             </tr>
 
@@ -1242,8 +1331,50 @@ input[type=color] to make them look fancier</p>
 </div>
 
                     <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>dsValue</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>evt</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -1398,34 +1529,6 @@ input[type=color] to make them look fancier</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="_datasources"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            _datasources</b>
-                            <a href="#_datasources"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>string[]</code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>[]</code>
-                        </td>
-                    </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
                         <a name="_showLinkLabels"></a>
                         <span class="name">
                             <b>
@@ -1510,12 +1613,12 @@ input[type=color] to make them look fancier</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="datasources"></a>
+                        <a name="dataSourcesService"></a>
                         <span class="name">
                             <b>
                                 <span class="modifier">Public</span>
-                            datasources</b>
-                            <a href="#datasources"><span class="icon ion-ios-link"></span></a>
+                            dataSourcesService</b>
+                            <a href="#dataSourcesService"><span class="icon ion-ios-link"></span></a>
                         </span>
                     </td>
                 </tr>
@@ -1673,6 +1776,108 @@ input[type=color] to make them look fancier</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="dataSourceColors"></a>
+                        <span class="name"><b>dataSourceColors</b><a href="#dataSourceColors"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>dataSourceColors()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>get list of  &quot;SzDataSourceComposite&quot; reflecting current state of datasource colors and order. ordered ASC by &quot;index&quot; </p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../interfaces/SzDataSourceComposite.html" target="_self" >SzDataSourceComposite[]</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>dataSourceColors(value: [])</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>set the internal list of datasource colors from local storage or input value
+and update any changed members also present in &quot;_dataSources&quot; with 
+current properties</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code>[]</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dataSources"></a>
+                        <span class="name"><b>dataSources</b><a href="#dataSources"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>dataSources()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>get list of  &quot;SzDataSourceComposite&quot; reflecting datasources pulled from API and augmented with state information in shape of &quot;SzDataSourceComposite&quot;. ordered ASC by &quot;index&quot; </p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../interfaces/SzDataSourceComposite.html" target="_self" >SzDataSourceComposite[]</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="showLinkLabels"></a>
                         <span class="name"><b>showLinkLabels</b><a href="#showLinkLabels"><span class="icon ion-ios-link"></span></a></span>
                     </td>
@@ -1736,30 +1941,6 @@ input[type=color] to make them look fancier</p>
                 <tr>
                     <td class="col-md-4">
                         <span class="accessor"><b>get</b><code>filterByDataSourcesData()</code></span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description"><p>get data from reactive form control array </p>
-</div>
-
-                        </td>
-                    </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="colorsByDataSourcesData"></a>
-                        <span class="name"><b>colorsByDataSourcesData</b><a href="#colorsByDataSourcesData"><span class="icon ion-ios-link"></span></a></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>colorsByDataSourcesData()</code></span>
                     </td>
                 </tr>
                     <tr>
@@ -1840,31 +2021,46 @@ input[type=color] to make them look fancier</p>
   &lt;form [formGroup]&#x3D;&quot;filterByDataSourcesForm&quot;&gt;
   &lt;ul class&#x3D;&quot;filters-list&quot;&gt;
     &lt;ng-container *ngFor&#x3D;&quot;let ds of filterByDataSourcesData.controls; let i &#x3D; index&quot;&gt;
-        &lt;ng-container *ngIf&#x3D;&quot;shouldDataSourceBeDisplayed(_datasources[i])&quot;&gt;
+        &lt;ng-container *ngIf&#x3D;&quot;shouldDataSourceBeDisplayed(dataSources[i].name)&quot;&gt;
             &lt;li formArrayName&#x3D;&quot;datasources&quot;&gt;
               &lt;label&gt;
-                &lt;input type&#x3D;&quot;checkbox&quot; [formControlName]&#x3D;&quot;i&quot; (change)&#x3D;&quot;onDsFilterChange()&quot;&gt;{{_datasources[i]}}
+                &lt;input type&#x3D;&quot;checkbox&quot; [formControlName]&#x3D;&quot;i&quot; (change)&#x3D;&quot;onDsFilterChange(dataSources[i].name, $event)&quot;&gt;{{dataSources[i].name}}
               &lt;/label&gt;
             &lt;/li&gt;
         &lt;/ng-container&gt;
     &lt;/ng-container&gt;
   &lt;/ul&gt;
   &lt;/form&gt;
-  &lt;hr&gt;
-  &lt;h3&gt;{{ sectionTitles[2] }}&lt;/h3&gt;
-  &lt;form [formGroup]&#x3D;&quot;colorsByDataSourcesForm&quot;&gt;
-  &lt;ul class&#x3D;&quot;colors-list&quot;&gt;
-    &lt;ng-container *ngFor&#x3D;&quot;let ds of colorsByDataSourcesData.controls; let i &#x3D; index&quot;&gt;
-        &lt;ng-container *ngIf&#x3D;&quot;shouldDataSourceBeDisplayed(_datasources[i])&quot;&gt;
-          &lt;li formArrayName&#x3D;&quot;datasources&quot;&gt;
-            &lt;label&gt;
-              &lt;input type&#x3D;&quot;color&quot; [formControlName]&#x3D;&quot;i&quot; [style.background-color]&#x3D;&quot;getDataSourceColor(_datasources[i])&quot; (change)&#x3D;&quot;onDsColorChange($event.target, $event)&quot;&gt;{{_datasources[i]}}
-            &lt;/label&gt;
-          &lt;/li&gt;
+  &lt;!--
+  &lt;ul class&#x3D;&quot;filters-list&quot;&gt;
+    &lt;ng-container *ngFor&#x3D;&quot;let ds of dataSources; let i &#x3D; index&quot;&gt;
+        &lt;ng-container *ngIf&#x3D;&quot;shouldDataSourceBeDisplayed(ds.name)&quot;&gt;
+            &lt;li&gt;
+              &lt;label&gt;
+                &lt;input type&#x3D;&quot;checkbox&quot; [(ngModel)]&#x3D;&quot;!ds.hidden&quot; (change)&#x3D;&quot;onDsFilterChange(ds.name, $event)&quot;&gt;{{ds.name}}
+              &lt;/label&gt;
+            &lt;/li&gt;
         &lt;/ng-container&gt;
     &lt;/ng-container&gt;
   &lt;/ul&gt;
-  &lt;/form&gt;
+  --&gt;
+  &lt;hr&gt;
+  &lt;h3&gt;{{ sectionTitles[2] }}&lt;/h3&gt;
+  &lt;ul cdkDropList class&#x3D;&quot;colors-list&quot; (cdkDropListDropped)&#x3D;&quot;onColorOrderDrop($event)&quot;&gt;
+    &lt;ng-container *ngFor&#x3D;&quot;let ds of dataSourceColors; let i &#x3D; index&quot;&gt;
+      &lt;li class&#x3D;&quot;color-box&quot; *ngIf&#x3D;&quot;shouldDataSourceBeDisplayed(ds.name)&quot; cdkDrag [cdkDragData]&#x3D;&quot;ds.name&quot;&gt;
+        &lt;div class&#x3D;&quot;color-box-placeholder&quot; *cdkDragPlaceholder&gt;&lt;/div&gt;
+        &lt;label&gt;
+          &lt;input type&#x3D;&quot;color&quot; [(ngModel)]&#x3D;&quot;ds.color&quot; [style.background-color]&#x3D;&quot;getDataSourceColor(ds.name)&quot; (change)&#x3D;&quot;onDsColorChange(ds.name, $event.target, $event)&quot;&gt;
+          {{ds.name}}
+        &lt;/label&gt;
+        &lt;div class&#x3D;&quot;color-box-handle&quot; cdkDragHandle&gt;
+          &lt;mat-icon aria-hidden&#x3D;&quot;false&quot; aria-label&#x3D;&quot;drag option&quot;&gt;drag_handle&lt;/mat-icon&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ng-container&gt;
+  &lt;/ul&gt;
+
   &lt;hr&gt;
   &lt;h3&gt;{{ sectionTitles[3] }}&lt;/h3&gt;
   &lt;form [formGroup]&#x3D;&quot;colorsMiscForm&quot;&gt;
@@ -1957,6 +2153,38 @@ input[type=color] to make them look fancier</p>
     }
   }
   ul.colors-list, ul.other-colors-list  {
+    max-width: 100%;
+    display: block;
+    overflow: hidden;
+
+    .color-box {
+      /* padding: 20px 10px; */
+      /* border-bottom: solid 1px #ccc; */
+      display: flex;
+      position: relative;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      box-sizing: border-box;
+    }
+    .color-box-handle {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: #ccc;
+      cursor: move;
+      width: 24px;
+      height: 24px;
+    }
+    .color-box-placeholder {
+      /*background: rgb(250, 250, 250);*/
+      min-height: 26px;
+      border-top: solid 1px #dadada;
+      border-bottom: solid 1px #dadada;
+      height: 2px;
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
+
     li {
       margin-bottom: 2px;
       padding-bottom: 0;
@@ -2039,6 +2267,43 @@ input[type=color] to make them look fancier</p>
   visibility: visible;
   opacity: 1;
 }
+
+.cdk-drag-preview {
+  background-color: #ccc;
+  opacity: .4;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  /*border: 2px solid blueviolet;*/
+  box-sizing: border-box;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  input[type&#x3D;color] {
+    border-color: #676767;
+    border-image: none;
+    border-radius: 3px;
+    border-width: 2px;
+    cursor: pointer;
+    display: inline-block;
+    gap: revert;
+    height: 14px;
+    margin: 0 7px 0 0;
+    padding: 0 7px ;
+    text-decoration: none;
+    width: 0px;
+  }
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.color-list.cdk-drop-list-dragging .color-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
 </code></pre>
     </div>
 
@@ -2050,7 +2315,7 @@ input[type=color] to make them look fancier</p>
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="drawer-wrapper">  <h3>{{ sectionTitles[0] }}</h3>  <form [formGroup]="slidersForm">  <ul class="sliders-list">    <li class="has-tooltip block-level-src no-text-selection">      <span class="tooltip">display match keys on relationship lines</span>      <label>        <!-- start graph match keys checkbox -->        <input type="checkbox"          id="sz-graph-toggle-match-keys" name="sz-graph-toggle-match-keys"          [checked]="showLinkLabels"          (change)="onCheckboxPrefToggle(\'showLinkLabels\',$event)">        <!-- end graph match keys checkbox -->        Show Match Keys      </label>    </li>    <li>      <label>        <div>          <span class="has-tooltip">            Scope            <span class="tooltip tooptip-left">number of relationship hops away from focused entity</span>          </span>        </div>        <input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut" (change)="onIntParameterChange(\'buildOut\', $event.target.value)" required>        <span class="intVal">({{ buildOut }})</span>      </label>    </li>    <li *ngIf="showMaxEntities">      <label>        <div>          <span class="has-tooltip">            Max            <span class="tooltip tooptip-left">hard limit on how many entities will be displayed</span>          </span>        </div>        <input type="range" min="1" max="99" step="3" [value]="maxEntities" formControlName="maxEntities" (change)="onIntParameterChange(\'maxEntities\', $event.target.value)" required>        <span class="intVal">({{ maxEntities }})</span>      </label>    </li>    <li *ngIf="showMaxDegreesOfSeparation">      <label>        <div>          <span class="has-tooltip">            Degrees            <span class="tooltip tooptip-left">maximum degrees of separation between nodes and focus</span>          </span>        </div>        <input type="range" min="1" max="5" [value]="maxDegreesOfSeparation" formControlName="maxDegreesOfSeparation" (change)="onIntParameterChange(\'maxDegreesOfSeparation\', $event.target.value)" required>        <span class="intVal">({{ maxDegreesOfSeparation }})</span>      </label>    </li>  </ul>  </form>  <hr>  <h3>{{ sectionTitles[1] }}</h3>  <form [formGroup]="filterByDataSourcesForm">  <ul class="filters-list">    <ng-container *ngFor="let ds of filterByDataSourcesData.controls; let i = index">        <ng-container *ngIf="shouldDataSourceBeDisplayed(_datasources[i])">            <li formArrayName="datasources">              <label>                <input type="checkbox" [formControlName]="i" (change)="onDsFilterChange()">{{_datasources[i]}}              </label>            </li>        </ng-container>    </ng-container>  </ul>  </form>  <hr>  <h3>{{ sectionTitles[2] }}</h3>  <form [formGroup]="colorsByDataSourcesForm">  <ul class="colors-list">    <ng-container *ngFor="let ds of colorsByDataSourcesData.controls; let i = index">        <ng-container *ngIf="shouldDataSourceBeDisplayed(_datasources[i])">          <li formArrayName="datasources">            <label>              <input type="color" [formControlName]="i" [style.background-color]="getDataSourceColor(_datasources[i])" (change)="onDsColorChange($event.target, $event)">{{_datasources[i]}}            </label>          </li>        </ng-container>    </ng-container>  </ul>  </form>  <hr>  <h3>{{ sectionTitles[3] }}</h3>  <form [formGroup]="colorsMiscForm">  <ul class="other-colors-list">    <li>      <label>        <input #queriedNodesColorInput formControlName="queriedEntitiesColor" type="color" [style.background-color]="queriedNodesColorInput.value" (change)="onColorParameterChange(\'queriedEntitiesColor\', $event.target.value)">        <span class="has-tooltip block-level-src">          Active/Focused Enitity          <span class="tooltip tooptip-left">The color of the current entity or entities</span>        </span>        <small class="note-sub">(*note overrides datasource member color if selected)</small>      </label>    </li>  </ul>  </form></div></div>'
+        var COMPONENT_TEMPLATE = '<div><div class="drawer-wrapper">  <h3>{{ sectionTitles[0] }}</h3>  <form [formGroup]="slidersForm">  <ul class="sliders-list">    <li class="has-tooltip block-level-src no-text-selection">      <span class="tooltip">display match keys on relationship lines</span>      <label>        <!-- start graph match keys checkbox -->        <input type="checkbox"          id="sz-graph-toggle-match-keys" name="sz-graph-toggle-match-keys"          [checked]="showLinkLabels"          (change)="onCheckboxPrefToggle(\'showLinkLabels\',$event)">        <!-- end graph match keys checkbox -->        Show Match Keys      </label>    </li>    <li>      <label>        <div>          <span class="has-tooltip">            Scope            <span class="tooltip tooptip-left">number of relationship hops away from focused entity</span>          </span>        </div>        <input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut" (change)="onIntParameterChange(\'buildOut\', $event.target.value)" required>        <span class="intVal">({{ buildOut }})</span>      </label>    </li>    <li *ngIf="showMaxEntities">      <label>        <div>          <span class="has-tooltip">            Max            <span class="tooltip tooptip-left">hard limit on how many entities will be displayed</span>          </span>        </div>        <input type="range" min="1" max="99" step="3" [value]="maxEntities" formControlName="maxEntities" (change)="onIntParameterChange(\'maxEntities\', $event.target.value)" required>        <span class="intVal">({{ maxEntities }})</span>      </label>    </li>    <li *ngIf="showMaxDegreesOfSeparation">      <label>        <div>          <span class="has-tooltip">            Degrees            <span class="tooltip tooptip-left">maximum degrees of separation between nodes and focus</span>          </span>        </div>        <input type="range" min="1" max="5" [value]="maxDegreesOfSeparation" formControlName="maxDegreesOfSeparation" (change)="onIntParameterChange(\'maxDegreesOfSeparation\', $event.target.value)" required>        <span class="intVal">({{ maxDegreesOfSeparation }})</span>      </label>    </li>  </ul>  </form>  <hr>  <h3>{{ sectionTitles[1] }}</h3>  <form [formGroup]="filterByDataSourcesForm">  <ul class="filters-list">    <ng-container *ngFor="let ds of filterByDataSourcesData.controls; let i = index">        <ng-container *ngIf="shouldDataSourceBeDisplayed(dataSources[i].name)">            <li formArrayName="datasources">              <label>                <input type="checkbox" [formControlName]="i" (change)="onDsFilterChange(dataSources[i].name, $event)">{{dataSources[i].name}}              </label>            </li>        </ng-container>    </ng-container>  </ul>  </form>  <!--  <ul class="filters-list">    <ng-container *ngFor="let ds of dataSources; let i = index">        <ng-container *ngIf="shouldDataSourceBeDisplayed(ds.name)">            <li>              <label>                <input type="checkbox" [(ngModel)]="!ds.hidden" (change)="onDsFilterChange(ds.name, $event)">{{ds.name}}              </label>            </li>        </ng-container>    </ng-container>  </ul>  -->  <hr>  <h3>{{ sectionTitles[2] }}</h3>  <ul cdkDropList class="colors-list" (cdkDropListDropped)="onColorOrderDrop($event)">    <ng-container *ngFor="let ds of dataSourceColors; let i = index">      <li class="color-box" *ngIf="shouldDataSourceBeDisplayed(ds.name)" cdkDrag [cdkDragData]="ds.name">        <div class="color-box-placeholder" *cdkDragPlaceholder></div>        <label>          <input type="color" [(ngModel)]="ds.color" [style.background-color]="getDataSourceColor(ds.name)" (change)="onDsColorChange(ds.name, $event.target, $event)">          {{ds.name}}        </label>        <div class="color-box-handle" cdkDragHandle>          <mat-icon aria-hidden="false" aria-label="drag option">drag_handle</mat-icon>        </div>      </li>    </ng-container>  </ul>  <hr>  <h3>{{ sectionTitles[3] }}</h3>  <form [formGroup]="colorsMiscForm">  <ul class="other-colors-list">    <li>      <label>        <input #queriedNodesColorInput formControlName="queriedEntitiesColor" type="color" [style.background-color]="queriedNodesColorInput.value" (change)="onColorParameterChange(\'queriedEntitiesColor\', $event.target.value)">        <span class="has-tooltip block-level-src">          Active/Focused Enitity          <span class="tooltip tooptip-left">The color of the current entity or entities</span>        </span>        <small class="note-sub">(*note overrides datasource member color if selected)</small>      </label>    </li>  </ul>  </form></div></div>'
     var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzEntityDetailGraphFilterComponent'};
