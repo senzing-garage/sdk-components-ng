@@ -39,10 +39,16 @@ export class SzConfigurationService {
   /** add an additional header to all outgoing API requests */
   public addHeaderToApiRequests(header: {[key: string]: string}): void {
     this.apiConfiguration.addAdditionalRequestHeader( header );
+    if(this.graphApiConfigService && this.graphApiConfigService.addHeaderToApiRequests){
+      this.graphApiConfigService.addHeaderToApiRequests( header );
+    }
   }
   /** remove an additional header from all outgoing API requests */
   public removeHeaderFromApiRequests(header: {[key: string]: string} | string): void {
     this.apiConfiguration.removeAdditionalRequestHeader( header );
+    if(this.graphApiConfigService && this.graphApiConfigService.removeHeaderFromApiRequests){
+      this.graphApiConfigService.removeHeaderFromApiRequests( header );
+    }
   }
   /** 
    * additional http/https request headers that will be added by default to 
@@ -58,6 +64,9 @@ export class SzConfigurationService {
    */
   public set additionalApiRequestHeaders(value: {[key: string]: string} | undefined) {
     this.apiConfiguration.additionalHeaders = value;
+    if(this.graphApiConfigService && this.graphApiConfigService.additionalApiRequestHeaders) {
+      this.graphApiConfigService.additionalApiRequestHeaders = this.apiConfiguration.additionalHeaders;
+    }
   }
   /**
    * emmitted when a property has been changed.
