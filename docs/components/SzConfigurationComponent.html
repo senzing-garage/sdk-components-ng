@@ -137,6 +137,9 @@ provides the more robust solution.</p>
                                 <a href="#accessToken">accessToken</a>
                             </li>
                             <li>
+                                <a href="#additionalHeaders">additionalHeaders</a>
+                            </li>
+                            <li>
                                 <a href="#apiKeys">apiKeys</a>
                             </li>
                             <li>
@@ -198,6 +201,9 @@ provides the more robust solution.</p>
                                 <li>
                                     <a href="#withCredentials">withCredentials</a>
                                 </li>
+                                <li>
+                                    <a href="#additionalHeaders">additionalHeaders</a>
+                                </li>
                             </ul>
                         </td>
                     </tr>
@@ -257,6 +263,24 @@ provides the more robust solution.</p>
                     <td class="col-md-4">
                         <a name="accessToken"></a>
                         <b>accessToken</b>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="additionalHeaders"></a>
+                        <b>additionalHeaders</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>set additional http/https request headers to be added by default to 
+all outbound api server requests. most commonly used for adding custom 
+or required non-standard headers like jwt session tokens, auth id etc.</p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -719,6 +743,60 @@ protocol://hostname:port string that your api server can be accessed through</p>
                                                             <td>
                                                                             <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
                                                             </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="additionalHeaders"></a>
+                        <span class="name"><b>additionalHeaders</b><a href="#additionalHeaders"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>additionalHeaders(value)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>set additional http/https request headers to be added by default to 
+all outbound api server requests. most commonly used for adding custom 
+or required non-standard headers like jwt session tokens, auth id etc.</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
                                                     
                                                         <td>
                                                                 No

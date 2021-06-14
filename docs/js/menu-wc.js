@@ -365,6 +365,12 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         </div>
                         <ul class="links collapse " ${ isNormalMode ? ' id="interfaces-links"' : 'id="xs-interfaces-links"' }>
                             <li class="link">
+                                <a href="interfaces/SectionDataByDataSource.html" data-type="entity-link">SectionDataByDataSource</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/SzDataSourceComposite.html" data-type="entity-link">SzDataSourceComposite</a>
+                            </li>
+                            <li class="link">
                                 <a href="interfaces/SzEntityDetailSectionData.html" data-type="entity-link">SzEntityDetailSectionData</a>
                             </li>
                             <li class="link">
