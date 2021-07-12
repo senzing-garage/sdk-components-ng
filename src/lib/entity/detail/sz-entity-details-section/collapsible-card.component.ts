@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnInit, OnDestroy, AfterViewInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 import { SzEntityRecord } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
@@ -28,6 +28,8 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   @Input() public showBestNameOnlyinEntities: boolean = false;
   @Input() public showOtherDataInDatasourceRecords: boolean = true;
   @Input() public showOtherDataInEntities: boolean = false;
+  @Input() public columnsShown: boolean[] = undefined;
+  
   public truncateOtherDataInRecordsAt: number = -1; // < 0 is unlimited
 
   /**

@@ -69,6 +69,7 @@
         <sz-entity-record-card-content
           *ngFor="let _cardData of cardData?.records"
           [showOtherData]="showOtherDataInDatasourceRecords"
+          [columnsShown]="columnsShown"
           [truncateOtherDataAt]="truncateOtherDataInRecordsAt"
           [entity]="_cardData"
           [parentEntity]="cardData"

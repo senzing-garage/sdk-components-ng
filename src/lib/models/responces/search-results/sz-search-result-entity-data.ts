@@ -1,5 +1,5 @@
 import { SzRawDataMatches } from './raw-data-matches';
-import { SzResolvedEntity, SzRelatedEntity, SzDataSourceRecordSummary } from '@senzing/rest-api-client-ng';
+import { SzResolvedEntity, SzRelatedEntity } from '@senzing/rest-api-client-ng';
 
 export interface SzSearchResultEntityData {
   // required

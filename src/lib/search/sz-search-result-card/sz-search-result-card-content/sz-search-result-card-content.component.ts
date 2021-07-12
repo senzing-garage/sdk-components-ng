@@ -186,8 +186,6 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
       return phoneData;
     }
     return [];
-
-    return addressData.concat(phoneData);
   }
 
   get nameData(): string[] | undefined {

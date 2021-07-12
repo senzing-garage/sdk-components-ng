@@ -15,6 +15,9 @@ import {
 import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
 import { SzNetworkGraphInputs } from '../../../models/network-graph-inputs';
 import { SzRelationshipNetworkComponent, NodeFilterPair } from '@senzing/sdk-graph-components';
+import { sortDataSourcesByIndex } from '../../../common/utils';
+import { SzDataSourceComposite } from '../../../models/data-sources';
+
 /**
  * @internal
  * @export
@@ -36,6 +39,11 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
    */
   private _graphComponentRenderCompleted: Subject<boolean> = new Subject<boolean>();
   private _graphComponentRendered = false;
+  /**
+   * list of datasources with color and order information
+   * @internal
+   */
+  private _dataSourceColors: SzDataSourceComposite[] = [];
 
   /**
    * @internal
@@ -101,7 +109,16 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   @Input() maxDegrees: number = 1;
   @Input() maxEntities: number = 20;
   @Input() buildOut: number = 1;
-  @Input() dataSourceColors: any = {};
+  /** array of datasources with color and order information */
+  @Input() public set dataSourceColors(value: SzDataSourceComposite[]) {
+    this._dataSourceColors  = value;
+  }
+  /** array of datasources with color and order information. ordered ASC by index property */
+  public get dataSourceColors(): SzDataSourceComposite[] {
+    let retVal: SzDataSourceComposite[] = this._dataSourceColors;
+    retVal = sortDataSourcesByIndex(retVal);
+    return retVal;
+  };
   @Input() dataSourcesFiltered: string[] = [];
   @Input() showPopOutIcon: boolean = false;
   @Input() showFiltersControl: boolean = false;
@@ -433,7 +450,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
 
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    // console.log('@senzing/sdk-components-ng/sz-entity-detail-graph.onPrefsChange(): ', prefs, this.prefs.graph);
+    //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph.onPrefsChange(): ', prefs, this.prefs.graph);
     let queryParamChanged = false;
     if(this.maxDegrees != prefs.maxDegreesOfSeparation ||
       this.maxEntities != prefs.maxEntities ||
@@ -469,18 +486,20 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   /** function used to generate entity node fill colors from those saved in preferences */
   public get entityNodecolorsByDataSource(): NodeFilterPair[] {
     let _ret = [];
-    if(this.dataSourceColors) {
-      const _keys = Object.keys(this.dataSourceColors);
-      _ret = _keys.map( (_key) => {
-        const _color = this.dataSourceColors[_key];
+    if(this.dataSourceColors && this.dataSourceColors.reverse) {
+      _ret = this.dataSourceColors.reverse().map((dsVal: SzDataSourceComposite) => {
         return {
-          selectorFn: this.isEntityNodeInDataSource.bind(this, _key),
-          modifierFn: this.setEntityNodeFillColor.bind(this, _color),
-          selectorArgs: _key,
-          modifierArgs: _color
+          selectorFn: this.isEntityNodeInDataSource.bind(this, dsVal.name),
+          modifierFn: this.setEntityNodeFillColor.bind(this, dsVal.color),
+          selectorArgs: dsVal.name,
+          modifierArgs: dsVal.color
         };
       });
+    } else if(this.dataSourceColors) {
+      // somethings not right, maybe old format
+      console.warn('datasource colors not in correct format', this.dataSourceColors);
     }
+    //console.warn('entityNodecolorsByDataSource: ', _ret);
     return _ret;
   }
   /** get the list of filters to apply to inner graph component */

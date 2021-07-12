@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, fromEventPattern, Subject } from 'rxjs';
-import { map, tap, mapTo } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 import {
   EntityDataService,
@@ -105,16 +105,6 @@ export class SzSearchService {
     this.currentSearchResults = null;
   }
 
-  /*
-  loadSearchResults(queryParams: SzEntitySearchParams, projectId: number): void {
-    //this.store.dispatch(new Search.LoadSearchResultsAction({queryParams, projectId}));
-  }
-
-  loadSearchResultsByAttributes(queryParams: SzEntitySearchParams, projectId: number): void {
-    //this.store.dispatch(new Search.LoadSearchResultsByAttributesAction({queryParams, projectId}));
-  }
-  */
-
   /**
    * @alias getAttributeTypes
   */
@@ -143,7 +133,6 @@ export class SzSearchService {
   public getEntityById(entityId: number, withRelated = false): Observable<SzEntityData> {
     console.log('@senzing/sdk/services/sz-search[getEntityById('+ entityId +', '+ withRelated +')] ');
     const withRelatedStr = withRelated ? 'FULL' : 'NONE';
-    //return this.entityDataService.getEntityByEntityId(entityId, featureMo, forceMini, withFeatu, withDeriv, withRelated?: 'NONE' | 'PARTIAL' | 'FULL', withRaw?: boolean, observe?: 'body', reportProgress?: boolean): Observable<SzEntityResponse>;
     return this.entityDataService.getEntityByEntityId(entityId, undefined, undefined, undefined, undefined, withRelatedStr)
     .pipe(
       tap((res: SzEntityResponse) => console.log('SzSearchService.getEntityById: ' + entityId, res.data)),

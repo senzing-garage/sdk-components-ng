@@ -1,4 +1,4 @@
-import { Component, Inject, Input, Output } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { Configuration as SzRestConfiguration } from '@senzing/rest-api-client-ng';
 import { Subject } from 'rxjs';
 import { SzConfigurationService } from '../../services/sz-configuration.service';
@@ -80,6 +80,36 @@ export class SzConfigurationComponent {
   @Input()
   set withCredentials(value: boolean) {
     this.apiConfigService.withCredentials = value;
+    this.onParameterChange();
+  }
+
+  /** 
+   * set additional http/https request headers to be added by default to 
+   * all outbound api server requests. most commonly used for adding custom 
+   * or required non-standard headers like jwt session tokens, auth id etc.
+   */
+  @Input()
+  set additionalHeaders(value: {[key: string]: string} | string) {
+    if((value as string).indexOf && (value as string).indexOf(',') > -1) {
+      // assume string in format of "key=value,key=value"
+      try{
+        let _additionalHeaders = {};
+        let _pairs =  (value as string).split(',');
+        if(_pairs && _pairs.forEach) {
+          _pairs.forEach((_pair)=>{
+            let _pairAsArr = _pair.split('=').map((tok) => {
+              return (tok && tok.trim) ?  tok.trim() : tok;
+            });
+            if(_pairAsArr && _pairAsArr.length >= 2) {
+              _additionalHeaders[ _pairAsArr[0] ] = _pairAsArr[1];
+            }
+          });
+        }
+      }catch(err){}
+    } else {
+      // assume object with key-value pairs
+      this.apiConfigService.additionalApiRequestHeaders = (value as {[key: string]: string});
+    }
     this.onParameterChange();
   }
 
