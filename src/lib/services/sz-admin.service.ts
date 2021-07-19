@@ -125,6 +125,12 @@ export class SzAdminService {
       tap( (data: SzServerInfo ) => { this.serverInfo = data; })
     );
   }
+  public getServerInfoMetadata(): Observable<SzBaseResponseMeta> {
+    return this.adminService.getServerInfo()
+    .pipe(
+      map( (resp: SzServerInfoResponse) => resp.meta )
+    );
+  }
   public addDataSources(body?: Body | string, dataSource?: string[], withRaw?: boolean, observe?: 'body', reportProgress?: boolean): Observable<SzDataSourcesResponseData> {
     if (!this.adminEnabled || this.readOnly) {
       throw new Error('admin operation not permitted.');
