@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import {
   AdminService, ConfigService,
-  Body,
-  Body2,
+  DatasourcesBody,
+  EntitytypesBody,
   SzAttributeClass, SzAttributeTypesResponse, SzAttributeTypesResponseData,
   SzEntityClassDescriptor,
   SzEntityTypeResponse, SzEntityTypeResponseData, SzEntityTypeDescriptor,
   SzDataSourcesResponse,
-  SzBaseResponse, SzBaseResponseMeta,
+  SzBaseResponse, SzMeta,
   SzBulkLoadResponse,
   SzLicenseResponse, SzLicenseInfo,
   SzVersionResponse, SzVersionInfo, SzAttributeTypeResponse, SzAttributeTypeResponseData,
@@ -95,7 +95,7 @@ export class SzAdminService {
   }
 
   /** get diagnostic information from the rest-api-server host */
-  public getHeartbeat(): Observable<SzBaseResponseMeta> {
+  public getHeartbeat(): Observable<SzMeta> {
     return this.adminService.heartbeat()
     .pipe(
       map( (resp: SzBaseResponse) => resp.meta )
@@ -125,13 +125,13 @@ export class SzAdminService {
       tap( (data: SzServerInfo ) => { this.serverInfo = data; })
     );
   }
-  public getServerInfoMetadata(): Observable<SzBaseResponseMeta> {
+  public getServerInfoMetadata(): Observable<SzMeta> {
     return this.adminService.getServerInfo()
     .pipe(
       map( (resp: SzServerInfoResponse) => resp.meta )
     );
   }
-  public addDataSources(body?: Body | string, dataSource?: string[], withRaw?: boolean, observe?: 'body', reportProgress?: boolean): Observable<SzDataSourcesResponseData> {
+  public addDataSources(body?: DatasourcesBody | string, dataSource?: string[], withRaw?: boolean, observe?: 'body', reportProgress?: boolean): Observable<SzDataSourcesResponseData> {
     if (!this.adminEnabled || this.readOnly) {
       throw new Error('admin operation not permitted.');
     }
@@ -155,7 +155,7 @@ export class SzAdminService {
       map( (resp: SzEntityClassesResponse) => resp.data )
     );*/
   }
-  public addEntityTypes(body?: Body2 | string, entityType?: string | string[], entityClass?: string, observe?: 'body', reportProgress?: boolean): Observable<string[]> {
+  public addEntityTypes(body?: EntitytypesBody | string, entityType?: string | string[], entityClass?: string, observe?: 'body', reportProgress?: boolean): Observable<string[]> {
     if (!this.adminEnabled || this.readOnly) {
       throw new Error('admin operation not permitted.');
     }
@@ -256,16 +256,16 @@ export class SzAdminService {
     if (!this.adminEnabled || this.readOnly) {
       throw new Error('admin operation not permitted.');
     }
-    return this.bulkDataService.analyzeBulkRecords(body, progressPeriod, observe, reportProgress)
+    return this.bulkDataService.analyzeBulkRecords(body, progressPeriod, undefined, observe, reportProgress)
     .pipe(
       map( (resp: SzBulkDataAnalysisResponse) => resp )
     );
   }
-  public loadBulkRecords(body: string | Blob | File | { [key: string]: any}[], dataSource?: string, mapDataSources?: string, mapDataSource?: string[], entityType?: string, mapEntityTypes?: string, mapEntityType?: string[], progressPeriod?: string, observe?: 'body', reportProgress?: boolean): Observable<SzBulkLoadResponse> {
+  public loadBulkRecords(body: string | Blob | File | { [key: string]: any}[], dataSource?: string, mapDataSources?: string, mapDataSource?: string[], entityType?: string, mapEntityTypes?: string, mapEntityType?: string[], maxFailures?: string | number, progressPeriod?: string, eofSendFileTimeout?: string | number, observe?: 'body', reportProgress?: boolean): Observable<SzBulkLoadResponse> {
     if (!this.adminEnabled || this.readOnly) {
       throw new Error('admin operation not permitted.');
     }
-    return this.bulkDataService.loadBulkRecords(body, dataSource, mapDataSources, mapDataSource, entityType, mapEntityTypes, mapEntityType, progressPeriod, observe, reportProgress);
+    return this.bulkDataService.loadBulkRecords(body, dataSource, mapDataSources, mapDataSource, entityType, mapEntityTypes, mapEntityType, maxFailures, progressPeriod, eofSendFileTimeout, observe, reportProgress);
   }
 
 }
