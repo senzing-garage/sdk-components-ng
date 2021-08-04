@@ -1,6 +1,6 @@
 {
   "name": "@senzing/sdk-components-ng",
-  "version": "2.2.4-alpha",
+  "version": "2.2.4",
   "private": false,
   "keywords" :["Angular","Library","Senzing"],
   "license" : "SEE LICENSE IN LICENSE",
@@ -11,7 +11,7 @@
   "homepage" :"https://senzing.github.io/sdk-components-ng/",
   "dependencies": {
     "schematics-utilities": "^2.0.2",
-    "@senzing/rest-api-client-ng": "^2.2.2",
+    "@senzing/rest-api-client-ng": "^2.3.0",
     "d3": "^5.9.1",
     "jspdf": "^2.3.1",
     "html2canvas": "^1.0.0-rc.3",

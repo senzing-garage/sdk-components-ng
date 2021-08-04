@@ -1,6 +1,6 @@
 {
   "name": "@senzing/sdk-components-ng",
-  "version": "2.2.4-alpha",
+  "version": "2.2.4",
   "scripts": {
     "ng": "ng",
     "start": "ng build @senzing/sdk-components-ng && ng serve",
@@ -59,7 +59,7 @@
     "@angular/platform-browser": "~10.0.9",
     "@angular/platform-browser-dynamic": "~10.0.9",
     "@angular/router": "~10.0.9",
-    "@senzing/rest-api-client-ng": "^2.2.2",
+    "@senzing/rest-api-client-ng": "^2.3.0",
     "@senzing/sdk-graph-components": "^2.2.0",
     "d3": "^5.9.1",
     "document-register-element": "^1.14.5",
