@@ -3,6 +3,8 @@ import { Subject, BehaviorSubject, merge, timer } from 'rxjs';
 import { takeUntil, debounce } from 'rxjs/operators';
 import { SzDataSourceComposite } from '../models/data-sources';
 import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio } from '../models/folio';
+import { AdminStreamAnalysisConfig, AdminStreamConnProperties, AdminStreamLoadConfig } from '../models/data-admin';
+//import { Configuration as SzRestConfiguration, ConfigurationParameters as SzRestConfigurationParameters } from '@senzing/rest-api-client-ng';
 
 /**
  * preferences bus base class. provides common methods for
@@ -68,6 +70,115 @@ export class SzSdkPrefsBase {
   /** get object state representation as a string */
   public toJSONString(): string {
     return JSON.stringify(this.toJSONObject());
+  }
+}
+
+/**
+ * search form related preferences bus class.
+ * used by {@link SzPrefsService} to store it's
+ * admin area related prefs.
+ * Should really be used from {@link SzPrefsService} context, not on its own.
+ *
+ * @example
+ * this.prefs.admin.streamConnectionProperties = {
+    connected: boolean;
+    clientId?: string;
+    hostname: string;
+    sampleSize: number;
+    port?: number;
+    connectionTest: boolean;
+    reconnectOnClose: boolean;
+ * };
+ *
+ * @example
+ * this.prefs.searchResults.prefsChanged.subscribe( (prefs) => { console.log('search form pref change happened.', prefs); })
+
+ */
+export class SzAdminPrefs extends SzSdkPrefsBase {
+  // --------------- private vars
+  /** @internal */
+  private _streamAnalysisConfig: AdminStreamAnalysisConfig = {
+    sampleSize: 10000,
+    uploadRate: -1
+  };
+  /** @internal */
+  private _streamConnectionProperties: AdminStreamConnProperties | undefined;
+  /** @internal */
+  private _streamLoadConfig: AdminStreamLoadConfig = {
+    autoCreateMissingDataSources: false,
+    uploadRate: -1
+  };
+  /** @internal */
+  private _useStreamingForAnalysis: boolean = false;
+  /** @internal */
+  private _useStreamingForLoad: boolean = false;
+
+  /** the keys of member setters or variables in the object
+   * to output in json, or to take as json input
+   */
+  jsonKeys = [
+    'streamAnalysisConfig',
+    'streamConnectionProperties',
+    'streamLoadConfig',
+    'useStreamingForAnalysis',
+    'useStreamingForLoad',
+  ]
+
+  // ------------------- getters and setters
+  /** configuration parameters for doing analysis on a file stream prior to importing */
+  public get streamAnalysisConfig(): AdminStreamAnalysisConfig {
+    return this._streamAnalysisConfig;
+  }
+  /** configuration parameters for doing analysis on a file stream prior to importing */
+  public set streamAnalysisConfig(value: AdminStreamAnalysisConfig) {
+    this._streamAnalysisConfig = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** connection parameters defining how and where to stream to bulk-loading endpoints */
+  public get streamConnectionProperties(): AdminStreamConnProperties | undefined {
+    return this._streamConnectionProperties;
+  }
+  /** connection parameters defining how and where to stream to bulk-loading endpoints */
+  public set streamConnectionProperties(value: AdminStreamConnProperties | undefined) {
+    this._streamConnectionProperties = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** configuration parameters for related to importing records using the stream connection */
+  public get streamLoadConfig(): AdminStreamLoadConfig {
+    return this._streamLoadConfig;
+  }
+  /** configuration parameters for related to importing records using the stream connection */
+  public set streamLoadConfig(value: AdminStreamLoadConfig) {
+    this._streamLoadConfig = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** whether or not to use the streamConnectionProperties to do analysis through websocket stream. */
+  public get useStreamingForAnalysis(): boolean {
+    return this._useStreamingForAnalysis;
+  }
+  /** whether or not to use the streamConnectionProperties to do analysis through websocket stream. */
+  public set useStreamingForAnalysis(value: boolean) {
+    this._useStreamingForAnalysis = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** whether or not to use the streamConnectionProperties to do analysis through websocket stream. */
+  public get useStreamingForLoad(): boolean {
+    return this._useStreamingForLoad;
+  }
+  /** whether or not to use the streamConnectionProperties to do record importing through websocket stream. */
+  public set useStreamingForLoad(value: boolean) {
+    this._useStreamingForLoad = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+
+  constructor(){
+    super();
+    /**
+     * publish out a "first" real payload so that
+     * subscribers get an initial payload from this subclass
+     * instead of the empty superclass
+     **/
+    this.prefsChanged.next( this.toJSONObject() );
   }
 }
 
@@ -871,7 +982,8 @@ export interface SzSdkPrefsModel {
   searchForm?: any,
   searchResults?: any,
   entityDetail?: any,
-  graph?: any
+  graph?: any,
+  admin?: any
 };
 
 
@@ -929,6 +1041,8 @@ export class SzPrefsService implements OnDestroy {
   public entityDetail?: SzEntityDetailPrefs   = new SzEntityDetailPrefs();
   /** instance of {@link SzGraphPrefs} */
   public graph?: SzGraphPrefs                 = new SzGraphPrefs();
+  /** instance of {@link SzAdminPrefs} */
+  public admin?: SzAdminPrefs                 = new SzAdminPrefs();
 
   /**
    * subscribe for state change representation. */
@@ -956,6 +1070,9 @@ export class SzPrefsService implements OnDestroy {
     }
     if(this.graph){
       retObj.graph = this.graph.toJSONObject();
+    }
+    if(this.admin){
+      retObj.admin = this.admin.toJSONObject();
     }
     return retObj;
   }
@@ -1004,6 +1121,12 @@ export class SzPrefsService implements OnDestroy {
     if(_sVal.entityDetail){
       this.entityDetail.fromJSONObject( _sVal.entityDetail );
     }
+    if(_sVal.graph){
+      this.graph.fromJSONObject( _sVal.graph );
+    }
+    if(_sVal.admin){
+      this.entityDetail.fromJSONObject( _sVal.admin );
+    }
   }
   /** get a serialized JSON string from current instance. bulk export. */
   public toJSONString(): string {
@@ -1017,7 +1140,8 @@ export class SzPrefsService implements OnDestroy {
       this.searchForm.prefsChanged,
       this.searchResults.prefsChanged,
       this.entityDetail.prefsChanged,
-      this.graph.prefsChanged
+      this.graph.prefsChanged,
+      this.admin.prefsChanged,
     );
     // now filter and debounce
     // so that any back to back changes are
