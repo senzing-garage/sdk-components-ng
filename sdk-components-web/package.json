@@ -1,6 +1,6 @@
 {
   "name": "@senzing/sdk-components-web",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "private": false,
   "keywords" :["WebComponent","Library","Senzing"],
   "license" : "SEE LICENSE IN LICENSE",

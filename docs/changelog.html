@@ -35,7 +35,19 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 <a href="https://dlaa.me/markdownlint/">markdownlint</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="223---2021-06-10">[2.2.3] - 2021-06-10</h2>
+<h2 id="224---2021-08-06">[2.2.4] - 2021-08-06</h2>
+<ul>
+<li><a href="https://github.com/Senzing/rest-api-client-ng/releases">API Client package</a> updated to version <a href="https://github.com/Senzing/rest-api-client-ng/releases/tag/2.3.0">2.3.0</a></li>
+<li>Compatibility updates for <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/master/CHANGELOG.md#270---2021-07-22">Senzing OAS 2.7.0</a> specification</li>
+<li>Compatibility updates for <a href="https://github.com/Senzing/senzing-api-server/blob/master/CHANGELOG.md#270---2021-07-22">Senzing Rest Server@2.7.0</a></li>
+<li>Preferences has several models added to facilitate stateful storage of <strong>Stream Loading</strong> features found in the [POC Server] extensions:<ul>
+<li><code>AdminStreamConnProperties</code>, <code>AdminStreamAnalysisConfig</code>, <code>AdminStreamLoadConfig</code>, <code>AdminStreamUploadRates</code> in src/lib/models/data-admin.ts</li>
+<li><code>SzAdminPrefs</code> added to <code>src/lib/services/sz-prefs.service.ts</code></li>
+</ul>
+</li>
+</ul>
+<p>relevant tickets: #204 #226</p>
+<h2 id="223---2021-06-14">[2.2.3] - 2021-06-14</h2>
 <ul>
 <li>Passing additional or custom headers are necessary in certain operation scenario&#39;s, ie: passing <code>X-Amz-Security-Token</code> to a <a href="https://aws.amazon.com/cognito/">Cognito</a> enabled <a href="https://aws.amazon.com/api-gateway/">API Gateway</a> address after user authentication.<ul>
 <li>Methods added to SzConfigurationService :<ul>

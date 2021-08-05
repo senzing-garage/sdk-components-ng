@@ -11,7 +11,7 @@ function addPackageJsonDependencies(): Rule {
     const dependencies: NodeDependency[] = [
       { type: NodeDependencyType.Default, version: '~2.3.0', name: '@senzing/rest-api-client-ng' },
       { type: NodeDependencyType.Default, version: '~2.2.0', name: '@senzing/sdk-graph-components' },
-      { type: NodeDependencyType.Default, version: '~2.2.3', name: '@senzing/sdk-components-ng' }
+      { type: NodeDependencyType.Default, version: '~2.2.4', name: '@senzing/sdk-components-ng' }
     ];
 
     dependencies.forEach(dependency => {

@@ -43,7 +43,7 @@
 
 <ol class="breadcrumb">
   <li>Interfaces</li>
-  <li>SzSdkPrefsModel</li>
+  <li>AdminStreamLoadConfig</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -58,17 +58,9 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/lib/services/sz-prefs.service.ts</code>
+            <code>src/lib/models/data-admin.ts</code>
         </p>
 
-            <p class="comment">
-                <h3>Description</h3>
-            </p>
-            <p class="comment">
-                <p>top level prefs model used for publishing preference
-events.</p>
-
-            </p>
 
 
         <section>
@@ -85,23 +77,13 @@ events.</p>
                             <ul class="index-list">
                                 <li>
                                             <span class="modifier">Optional</span>
-                                        <a href="#admin">admin</a>
+                                        <a href="#assignMissingDataSourceRecordsToStaticTarget">assignMissingDataSourceRecordsToStaticTarget</a>
                                 </li>
                                 <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#entityDetail">entityDetail</a>
+                                        <a href="#autoCreateMissingDataSources">autoCreateMissingDataSources</a>
                                 </li>
                                 <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#graph">graph</a>
-                                </li>
-                                <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#searchForm">searchForm</a>
-                                </li>
-                                <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#searchResults">searchResults</a>
+                                        <a href="#uploadRate">uploadRate</a>
                                 </li>
                             </ul>
                         </td>
@@ -118,13 +100,13 @@ events.</p>
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="admin"></a>
-                                        <span class="name"><b>admin</b><a href="#admin"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="assignMissingDataSourceRecordsToStaticTarget"></a>
+                                        <span class="name"><b>assignMissingDataSourceRecordsToStaticTarget</b><a href="#assignMissingDataSourceRecordsToStaticTarget"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>admin:         <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                        <code>assignMissingDataSourceRecordsToStaticTarget:     <code>string | undefined | boolean</code>
 </code>
                                     </td>
                                 </tr>
@@ -132,7 +114,7 @@ events.</p>
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            <i>Type : </i>    <code>string | undefined | boolean</code>
 
                                         </td>
                                     </tr>
@@ -152,13 +134,13 @@ events.</p>
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="entityDetail"></a>
-                                        <span class="name"><b>entityDetail</b><a href="#entityDetail"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="autoCreateMissingDataSources"></a>
+                                        <span class="name"><b>autoCreateMissingDataSources</b><a href="#autoCreateMissingDataSources"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>entityDetail:         <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                        <code>autoCreateMissingDataSources:     <code>boolean | undefined</code>
 </code>
                                     </td>
                                 </tr>
@@ -166,16 +148,11 @@ events.</p>
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            <i>Type : </i>    <code>boolean | undefined</code>
 
                                         </td>
                                     </tr>
 
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
 
 
 
@@ -186,13 +163,13 @@ events.</p>
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="graph"></a>
-                                        <span class="name"><b>graph</b><a href="#graph"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="uploadRate"></a>
+                                        <span class="name"><b>uploadRate</b><a href="#uploadRate"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>graph:         <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                        <code>uploadRate:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -200,84 +177,11 @@ events.</p>
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 
                                         </td>
                                     </tr>
 
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="searchForm"></a>
-                                        <span class="name"><b>searchForm</b><a href="#searchForm"><span class="icon ion-ios-link"></span></a></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>searchForm:         <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="searchResults"></a>
-                                        <span class="name"><b>searchResults</b><a href="#searchResults"><span class="icon ion-ios-link"></span></a></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>searchResults:         <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
 
 
 
@@ -313,7 +217,7 @@ events.</p>
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'SzSdkPrefsModel.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'AdminStreamLoadConfig.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 
