@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.4] - 2021-08-04
+
+- [API Client package](https://github.com/Senzing/rest-api-client-ng/releases) updated to version [2.3.0](https://github.com/Senzing/rest-api-client-ng/releases/tag/2.3.0)
+- Compatibility updates for [Senzing OAS 2.7.0](https://github.com/Senzing/senzing-rest-api-specification/blob/master/CHANGELOG.md#270---2021-07-22) specification
+- Compatibility updates for [Senzing Rest Server@2.7.0](https://github.com/Senzing/senzing-api-server/blob/master/CHANGELOG.md#270---2021-07-22)
+- Preferences has several models added to facilitate stateful storage of **Stream Loading** features found in the [POC Server] extensions:
+  - `AdminStreamConnProperties`, `AdminStreamAnalysisConfig`, `AdminStreamLoadConfig`, `AdminStreamUploadRates` in src/lib/models/data-admin.ts
+  - `SzAdminPrefs` added to `src/lib/services/sz-prefs.service.ts`
+
+relevant tickets: #204 #226
+
 ## [2.2.3] - 2021-06-14
 
 - Passing additional or custom headers are necessary in certain operation scenario's, ie: passing `X-Amz-Security-Token` to a [Cognito](https://aws.amazon.com/cognito/) enabled [API Gateway](https://aws.amazon.com/api-gateway/) address after user authentication.
