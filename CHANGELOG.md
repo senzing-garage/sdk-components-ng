@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.2.4] - 2021-08-04
+## [2.2.4] - 2021-08-06
 
 - [API Client package](https://github.com/Senzing/rest-api-client-ng/releases) updated to version [2.3.0](https://github.com/Senzing/rest-api-client-ng/releases/tag/2.3.0)
 - Compatibility updates for [Senzing OAS 2.7.0](https://github.com/Senzing/senzing-rest-api-specification/blob/master/CHANGELOG.md#270---2021-07-22) specification

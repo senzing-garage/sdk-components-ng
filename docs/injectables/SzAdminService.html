@@ -242,6 +242,10 @@ and license info.</p>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#getServerInfoMetadata">getServerInfoMetadata</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#getVersionInfo">getVersionInfo</a>
                             </li>
                             <li>
@@ -366,7 +370,7 @@ and license info.</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>addDataSources(body?: Body | string, dataSource?: string[], withRaw?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, observe?, reportProgress?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                    <code>addDataSources(body?: DatasourcesBody | string, dataSource?: string[], withRaw?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, observe?, reportProgress?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
@@ -390,7 +394,7 @@ and license info.</p>
                                 <tr>
                                     <td>body</td>
                                     <td>
-                                            <code>Body | string</code>
+                                            <code>DatasourcesBody | string</code>
                                     </td>
 
                                     <td>
@@ -592,7 +596,7 @@ and license info.</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>addEntityTypes(body?: Body2 | string, entityType?: string | string[], entityClass?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, observe?, reportProgress?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                    <code>addEntityTypes(body?: EntitytypesBody | string, entityType?: string | string[], entityClass?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, observe?, reportProgress?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
@@ -616,7 +620,7 @@ and license info.</p>
                                 <tr>
                                     <td>body</td>
                                     <td>
-                                            <code>Body2 | string</code>
+                                            <code>EntitytypesBody | string</code>
                                     </td>
 
                                     <td>
@@ -1785,7 +1789,7 @@ and license info.</p>
 </div>
 
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;SzBaseResponseMeta&gt;</code>
+                        <b>Returns : </b>    <code>Observable&lt;SzMeta&gt;</code>
 
                     </div>
                 </td>
@@ -1860,6 +1864,41 @@ and license info.</p>
 
                     <div class="io-description">
                         <b>Returns : </b>    <code>Observable&lt;SzServerInfo&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getServerInfoMetadata"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getServerInfoMetadata
+                        </b>
+                        <a href="#getServerInfoMetadata"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getServerInfoMetadata()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;SzMeta&gt;</code>
 
                     </div>
                 </td>
@@ -2300,7 +2339,7 @@ and license info.</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>loadBulkRecords(body: string | Blob | File | literal type[], dataSource?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, mapDataSources?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, mapDataSource?: string[], entityType?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, mapEntityTypes?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, mapEntityType?: string[], progressPeriod?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, observe?, reportProgress?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                    <code>loadBulkRecords(body: string | Blob | File | literal type[], dataSource?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, mapDataSources?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, mapDataSource?: string[], entityType?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, mapEntityTypes?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, mapEntityType?: string[], maxFailures?: string | number, progressPeriod?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, eofSendFileTimeout?: string | number, observe?, reportProgress?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
@@ -2406,9 +2445,33 @@ and license info.</p>
 
                                 </tr>
                                 <tr>
+                                    <td>maxFailures</td>
+                                    <td>
+                                            <code>string | number</code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                                <tr>
                                     <td>progressPeriod</td>
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>eofSendFileTimeout</td>
+                                    <td>
+                                            <code>string | number</code>
                                     </td>
 
                                     <td>
