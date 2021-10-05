@@ -1,6 +1,7 @@
 :host {
   box-shadow: none;
   background: none;
+  color: var(--sz-entity-detail-section-record-card-color);
 
   &:not([class*=mat-elevation-z]){
     box-shadow: none;
@@ -48,7 +49,6 @@
   }
 
   sz-entity-record-card-content, .sz-entity-record-card-content {
-
     display: var(--sz-entity-detail-section-record-card-display);
     background-color: var(--sz-entity-detail-section-record-card-background-color);
     margin: var(--sz-entity-detail-section-record-card-margin);
@@ -61,6 +61,17 @@
       padding: 0;
       border: none;
     }
+  }
+
+  &:hover {
+    color: var(--sz-entity-detail-section-record-card-hover-color);
+    /*
+    sz-entity-record-card-content, .sz-entity-record-card-content { 
+      color: var(--sz-entity-detail-section-record-card-hover-color);
+    }
+    sz-entity-record-card-header, .sz-entity-record-card-header {
+
+    }*/
   }
 
   .mat-expansion-panel-header {

@@ -88,6 +88,13 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
    * @memberof SzSearchByIdComponent
    */
   @Input() showSearchLabel = true;
+  /** text that shows up in buttons */
+  @Input() searchButtonLabel = "Search";
+  @Input() searchButtonLabelShort = "Search";
+  @Input() cancelButtonLabel = "Clear Search Criteria";
+  @Input() cancelButtonLabelShort = "Clear";
+  @Input() enforceModalSearch = true;
+
   /**
    * array of datasources to hide in the pulldown.
    * @memberof SzSearchByIdComponent
@@ -541,6 +548,8 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
     //console.log('submitSearch() ',JSON.parse(JSON.stringify(searchParams)), this);
     if(searchParams.entityId != undefined && searchParams.entityId != null) {
       // just go by entity id
+      // emit search start
+      this.searchStart.emit(searchParams);
 
       // cast string entityId to number if not already number
       const entityId: number = (typeof searchParams.entityId == 'number') ? searchParams.entityId : parseInt(searchParams.entityId);

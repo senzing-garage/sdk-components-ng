@@ -155,6 +155,8 @@ body {
   --sz-search-results-card-cursor: default;
   --sz-search-results-card-hover-cursor: default;
   --sz-search-results-card-hover-color: inherit;
+  --sz-search-results-card-margin: 20px 0;
+  --sz-search-results-card-padding: 0px 20px 20px 10px;
   --sz-search-results-matches-card-hover-color: var(--sz-search-results-card-hover-color);
   --sz-search-results-possible-match-card-hover-color: var(--sz-search-results-card-hover-color);
   --sz-search-results-possibly-related-card-hover-color: var(--sz-search-results-card-hover-color);
@@ -231,6 +233,8 @@ body {
     --sz-entity-detail-section-border-bottom: var(--sz-entity-detail-section-border);
     --sz-entity-detail-section-title-font-size: 20px;
     --sz-entity-detail-section-padding: 0 24px;
+    --sz-entity-detail-section-record-card-color: inherit;
+    --sz-entity-detail-section-record-card-hover-color: var(--sz-entity-detail-section-record-card-color);
     --sz-entity-detail-section-record-card-display: block;
     --sz-entity-detail-section-record-card-background-color: #FFFFFF;
     --sz-entity-detail-section-record-card-margin: 8px 0 8px 0;
