@@ -70,10 +70,14 @@
 
   .section-summary__top {
     font-size: var(--sz-entity-detail-header-section-totals-font-size);
+    opacity: var(--sz-entity-detail-header-section-totals-opacity);
     .section-summary__count {
       font-size: var(--sz-entity-detail-header-section-totals-font-size);
       font-weight: 600;
     }
+  }
+  .section-summary__bottom {
+    opacity: var(--sz-entity-detail-header-section-totals-opacity);
   }
 
   svg {

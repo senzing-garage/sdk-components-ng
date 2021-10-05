@@ -137,6 +137,7 @@
         border: var(--sz-search-button-submit-border);
         white-space: nowrap;
         padding: var(--sz-search-button-submit-padding);
+        font-family: var(--sz-search-button-submit-font-family);
         font-size: var(--sz-search-button-submit-font-size);
         font-weight: var(--sz-search-button-submit-font-weight);
       }
@@ -145,6 +146,7 @@
         color: var(--sz-search-button-clear-color);
         white-space: nowrap;
         padding: var(--sz-search-button-clear-padding);
+        font-family: var(--sz-search-button-clear-font-family);
         font-size: var(--sz-search-button-clear-font-size);
         font-weight: var(--sz-search-button-clear-font-weight);
       }

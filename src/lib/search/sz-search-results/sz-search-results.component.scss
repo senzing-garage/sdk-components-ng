@@ -46,6 +46,9 @@
     align-items: center;
     color: var(--sz-search-results-section-header-color);
     padding: var(--sz-search-results-section-header-padding);
+    span {
+      opacity: var(--sz-search-results-section-header-text-opacity);
+    }
 
     &.matches {
       background-color: var(--sz-search-results-matches-header-background-color);
@@ -58,6 +61,27 @@
     }
     &.name-only-matches {
       background-color: var(--sz-search-results-name-only-matches-header-background-color);
+    }
+  }
+
+  sz-search-result-card {
+    cursor: var(--sz-search-results-card-cursor);
+    &:hover {
+      color: var(--sz-search-results-card-hover-color);
+      cursor: var(--sz-search-results-card-hover-cursor);
+      /* give implementers option of "per-type" rollover colors */      
+      &.matches {
+        color: var(--sz-search-results-matches-card-hover-color);
+      }
+      &.possible-match {
+        color: var(--sz-search-results-possible-match-card-hover-color);
+      }
+      &.possibly-related {
+        color: var(--sz-search-results-possibly-related-card-hover-color);
+      }
+      &.name-only {
+        color: var(--sz-search-results-name-only-matches-card-hover-color);
+      }
     }
   }
 
