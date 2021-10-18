@@ -1,6 +1,6 @@
 {
   "name": "@senzing/sdk-components-ng",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "scripts": {
     "ng": "ng",
     "start": "ng build @senzing/sdk-components-ng && ng serve",
