@@ -57,7 +57,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   @Input() showDataSources: string[];
   @Input() public set showMatchKeys(value: string[]) {
     console.log('showMatchKeys.set()', value, Object.keys(this.filterByMatchKeysForm.controls), (<FormArray>this.filterByMatchKeysForm.get('matchkeys')));
-    if(value && value.map) {
+    if(value && value.map && value !== undefined) {
       this._matchKeys = value.map((strMatchKey: string, ind: number) => {
         return {
           'name': strMatchKey,
@@ -65,12 +65,12 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
           'hidden': false
         }
       });
-      let matchKeyControls = (<FormArray>this.filterByMatchKeysForm.get('matchkeys'));
-      let hasZeroMkControls = matchKeyControls && matchKeyControls.length && matchKeyControls.length <= 0;
-      if(hasZeroMkControls) {
+      //let matchKeyControls = (<FormArray>this.filterByMatchKeysForm.get('matchkeys'));
+      //let hasZeroMkControls = matchKeyControls && matchKeyControls.length && matchKeyControls.length <= 0;
+      //if(hasZeroMkControls) {
         console.log('initializing match keys from setter: ', this._matchKeys);
         this.initializeMatchKeysFormControls();
-      }
+      //}
     }
   }
   public get showMatchKeys(): string[] {
@@ -236,8 +236,9 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
     const filteredMatchKeyNames = this.filterByMatchKeysForm.value.matchkeys
       .map((v, i) => v ? null : this.matchKeys[i].name)
       .filter(v => v !== null);
-    // update filters pref
+    // update filters pref    
     this.prefs.graph.matchKeysFiltered = filteredMatchKeyNames;
+    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkFilterChange',this.prefs.graph.matchKeysFiltered);
   }
   
   /**
@@ -397,16 +398,16 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
 
   ngAfterViewInit() {
     let hasZeroDsControls = (Object.keys(this.filterByDataSourcesForm.controls).length <= 0) && (Object.keys(this.colorsByDataSourcesForm.controls).length <= 0);
-    let hasZeroMkControls = (Object.keys(this.filterByMatchKeysForm.controls).length <= 0);
+    //let hasZeroMkControls = (Object.keys(this.filterByMatchKeysForm.controls).length <= 0);
 
     if(hasZeroDsControls) {
       // try updating ds filters one more time
       this.initializeDataSourceFormControls();
     }
-    if(hasZeroMkControls) {
+    //if(hasZeroMkControls) {
       console.warn('zero match key controls... initializing..');
       this.initializeMatchKeysFormControls();
-    }
+    //}
   }
 
   /** initializes filter form controls */
@@ -444,9 +445,19 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
     });
   }
 
+  private removeAllMatchKeyControls() {
+    while(this.filterByMatchKeysData.length > 0){
+      this.filterByMatchKeysData.removeAt(this.filterByMatchKeysData.length - 1);
+    }
+    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.removeAllMatchKeyControls: ', this.filterByMatchKeysData, this.matchKeysFiltered);
+  }
+
   private initializeMatchKeysFormControls() {
     console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.initializeMatchKeysFormControls: ', this.matchKeys, this.showMatchKeys, this.matchKeysFiltered);
     if(this.matchKeys) {
+      // remove old controls
+      this.removeAllMatchKeyControls();
+
       // init form controls for filter by match keys
       this.matchKeys.forEach((o, i) => {
         const mkFilterVal = !(this.matchKeysFiltered.indexOf(o.name) >= 0);

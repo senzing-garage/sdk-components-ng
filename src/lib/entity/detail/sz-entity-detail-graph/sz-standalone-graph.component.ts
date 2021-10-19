@@ -123,6 +123,8 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   };
 
   @Input() dataSourcesFiltered: string[] = [];
+  @Input() matchKeysFiltered: string[] = [];
+  
   /** @internal */
   private _showPopOutIcon = false;
   /** whether or not to show the pop-out icon */
@@ -450,7 +452,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
 
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    //console.log('@senzing/sdk-components-ng/sz-standalone-graph.onPrefsChange(): ', prefs, this.prefs.graph);
+    console.log('@senzing/sdk-components-ng/sz-standalone-graph.onPrefsChange(): ', prefs, this.prefs.graph);
     let queryParamChanged = false;
     if(this.maxDegrees != prefs.maxDegreesOfSeparation ||
       this.maxEntities != prefs.maxEntities ||
@@ -465,6 +467,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     this.buildOut = prefs.buildOut;
     this.dataSourceColors = prefs.dataSourceColors;
     this.dataSourcesFiltered = prefs.dataSourcesFiltered;
+    this.matchKeysFiltered = prefs.matchKeysFiltered;
     this.neverFilterQueriedEntityIds = prefs.neverFilterQueriedEntityIds;
     if(prefs.queriedEntitiesColor && prefs.queriedEntitiesColor !== undefined && prefs.queriedEntitiesColor !== null) {
       this.queriedEntitiesColor = prefs.queriedEntitiesColor;
@@ -504,7 +507,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     return _ret;
   }
   /** get the list of filters to apply to inner graph component */
-  public get entityNodeFilterByDataSource(): NodeFilterPair[] {
+  public get entityNodeFilters(): NodeFilterPair[] {
     let _ret = [];
     if(this.dataSourcesFiltered) {
       if( this.graph && this.graph.isD3) {
@@ -525,8 +528,18 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     } else {
       //console.log('entityNodeFilterByDataSource: ',this._lastFilterConfig, JSON.stringify(_ret));
     }
+    if(this.matchKeysFiltered) {
+      let matchKeyFilters = this.matchKeysFiltered.map((_name) => {
+        return {
+          selectorFn: this.isMatchKeyInEntityNode.bind(this, _name),
+          selectorArgs: _name
+        };
+      });
+      _ret = _ret.concat(matchKeyFilters);
+    }
     return _ret;
   }
+
   /** get an array of NodeFilterPair to use for highlighting certain graph nodes specific colors */
   public get entityNodeColors(): NodeFilterPair[] {
     const _ret = this.entityNodecolorsByDataSource;
@@ -577,6 +590,21 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
         return false;
       }
     }
+  }
+  private isMatchKeyInEntityNode(matchKeys?, nodeData?) {
+    console.log('isMatchKeyInEntityNode: ', matchKeys, nodeData);
+    //return false;
+    if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
+      return false;
+    } else {
+      if(nodeData && nodeData.relationshipMatchKeys && nodeData.relationshipMatchKeys.indexOf){
+        // D3 filter query
+        return !(nodeData.relationshipMatchKeys.some( (mkName) => {
+          return matchKeys.indexOf(mkName) > -1;
+        }));
+      }
+    }
+    return true;
   }
   /** checks to see if entity node is one of the primary entities queried for*/
   private isEntityNodeInQuery(nodeData) {
