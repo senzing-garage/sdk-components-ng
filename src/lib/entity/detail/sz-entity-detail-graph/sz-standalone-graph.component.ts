@@ -267,6 +267,9 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   /** event is emitted when the graph components data is updated or loaded */
   @Output() dataLoaded: EventEmitter<SzEntityNetworkData> = new EventEmitter<SzEntityNetworkData>();
 
+  /** event is emitted when the collection of datasources present in graph dislay */
+  @Output() matchKeysChange: EventEmitter<any> = new EventEmitter<string[]>();
+
   /**
    * on data received by api request and mapped to
    * component input format model. when data has been loaded
@@ -277,6 +280,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     if(inputs.data && inputs.data.entities) {
       this.filterShowDataSources = SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data);
       this.dataSourcesChange.emit( SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data) );
+      this.matchKeysChange.emit( SzRelationshipNetworkComponent.getMatchKeysFromEntityNetworkData(inputs.data) )
     }
     if(inputs.data) {
       this.dataLoaded.emit( inputs.data );

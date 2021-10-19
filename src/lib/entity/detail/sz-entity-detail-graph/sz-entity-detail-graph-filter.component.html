@@ -116,4 +116,21 @@
     </li>
   </ul>
   </form>
+  <div *ngIf="showMatchKeys">
+    <hr>
+    <h3>{{ sectionTitles[4] }}</h3>
+    <form [formGroup]="filterByMatchKeysForm">
+    <ul class="filters-list">
+      <ng-container *ngFor="let ds of filterByMatchKeysData.controls; let i = index">
+          <ng-container *ngIf="shouldMatchKeyBeDisplayed(matchKeys[i].name)">
+              <li formArrayName="matchkeys">
+                <label>
+                  <input type="checkbox" [formControlName]="i" (change)="onMkFilterChange(matchKeys[i].name, $event)">{{matchKeys[i].name}}
+                </label>
+              </li>
+          </ng-container>
+      </ng-container>
+    </ul>
+    </form>
+  </div>
 </div>

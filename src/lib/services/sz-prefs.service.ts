@@ -835,6 +835,9 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     'SAMPLE PERSON'
   ];
   /** @internal */
+  private _matchKeysFiltered: string[] = [];
+
+  /** @internal */
   private _neverFilterQueriedEntityIds: boolean = true;
   /** @internal */
   private _queriedEntitiesColor: string | undefined;
@@ -852,6 +855,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     'maxEntities',
     'buildOut',
     'dataSourcesFiltered',
+    'matchKeysFiltered',
     'neverFilterQueriedEntityIds',
     'queriedEntitiesColor'
   ]
@@ -941,6 +945,15 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** hide any entity node when belonging to particular datasources */
   public set dataSourcesFiltered(value: string[]) {
     this._dataSourcesFiltered = value;
+    if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** hide any entity node when relationship does not contain a particular match key */
+  public get matchKeysFiltered(): string[] {
+    return this._matchKeysFiltered;
+  }
+  /** hide any entity node when relationship does not contain a particular match key */
+  public set matchKeysFiltered(value: string[]) {
+    this._matchKeysFiltered = value;
     if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
   }
   /** never filter out the entities that were explicity declared in query */
