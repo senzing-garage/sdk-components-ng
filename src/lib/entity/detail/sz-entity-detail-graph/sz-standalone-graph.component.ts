@@ -452,7 +452,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
 
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    console.log('@senzing/sdk-components-ng/sz-standalone-graph.onPrefsChange(): ', prefs, this.prefs.graph);
+    //console.log('@senzing/sdk-components-ng/sz-standalone-graph.onPrefsChange(): ', prefs, this.prefs.graph);
     let queryParamChanged = false;
     if(this.maxDegrees != prefs.maxDegreesOfSeparation ||
       this.maxEntities != prefs.maxEntities ||
@@ -608,7 +608,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   private isMatchKeyInEntityNode(matchKeys?, nodeData?) {
     let retVal = false;
     if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
-      return false;
+      return true;
     } else {
       if(nodeData && nodeData.relationshipMatchKeys && nodeData.relationshipMatchKeys.indexOf){
         // D3 filter query 
@@ -617,7 +617,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
         }));
       }
     }
-    console.log('isMatchKeyInEntityNode: ', matchKeys, nodeData, retVal);
+    //console.log('isMatchKeyInEntityNode: ', matchKeys, nodeData, retVal);
     return retVal;
   }
   /** checks to see if entity node is one of the primary entities queried for*/
