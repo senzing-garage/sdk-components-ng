@@ -84,7 +84,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   }
 
   @Input() dataSourcesFiltered: string[] = [];
-  @Input() matchKeysFiltered: string[] = [];
+  @Input() matchKeysIncluded: string[] = [];
   @Input() queriedEntitiesColor: string;
 
   /** 
@@ -233,12 +233,12 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   }
   /** handler for when a filter by datasouce value in the "filterByDataSourcesForm" has changed */
   onMkFilterChange(mkValue: string, evt?) {
-    const filteredMatchKeyNames = this.filterByMatchKeysForm.value.matchkeys
-      .map((v, i) => v ? null : this.matchKeys[i].name)
+    const includedMatchKeyNames = this.filterByMatchKeysForm.value.matchkeys
+      .map((v, i) => v ? this.matchKeys[i].name :  null)
       .filter(v => v !== null);
     // update filters pref    
-    this.prefs.graph.matchKeysFiltered = filteredMatchKeyNames;
-    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkFilterChange',this.prefs.graph.matchKeysFiltered);
+    this.prefs.graph.matchKeysIncluded = includedMatchKeyNames;
+    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkFilterChange',this.prefs.graph.matchKeysIncluded);
   }
   
   /**
@@ -311,7 +311,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
     this.buildOut = prefs.buildOut;
     this.dataSourceColors = prefs.dataSourceColors;
     this.dataSourcesFiltered = prefs.dataSourcesFiltered;
-    this.matchKeysFiltered = prefs.matchKeysFiltered;
+    this.matchKeysIncluded = prefs.matchKeysIncluded;
     this.queriedEntitiesColor = prefs.queriedEntitiesColor;
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onPrefsChange(): ', prefs, this.dataSourceColors);
     // update view manually (for web components redraw reliability)
@@ -449,18 +449,18 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
     while(this.filterByMatchKeysData.length > 0){
       this.filterByMatchKeysData.removeAt(this.filterByMatchKeysData.length - 1);
     }
-    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.removeAllMatchKeyControls: ', this.filterByMatchKeysData, this.matchKeysFiltered);
+    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.removeAllMatchKeyControls: ', this.filterByMatchKeysData, this.matchKeysIncluded);
   }
 
   private initializeMatchKeysFormControls() {
-    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.initializeMatchKeysFormControls: ', this.matchKeys, this.showMatchKeys, this.matchKeysFiltered);
+    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.initializeMatchKeysFormControls: ', this.matchKeys, this.showMatchKeys, this.matchKeysIncluded);
     if(this.matchKeys) {
       // remove old controls
       this.removeAllMatchKeyControls();
 
       // init form controls for filter by match keys
       this.matchKeys.forEach((o, i) => {
-        const mkFilterVal = !(this.matchKeysFiltered.indexOf(o.name) >= 0);
+        const mkFilterVal = !(this.matchKeysIncluded.indexOf(o.name) >= 0);
         const control1 = new FormControl(mkFilterVal); // if first item set to true, else false
         // add control for filtered by list
         (this.filterByMatchKeysForm.controls.matchkeys as FormArray).push(control1);

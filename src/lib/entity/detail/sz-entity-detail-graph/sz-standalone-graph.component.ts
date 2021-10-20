@@ -123,7 +123,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   };
 
   @Input() dataSourcesFiltered: string[] = [];
-  @Input() matchKeysFiltered: string[] = [];
+  @Input() matchKeysIncluded: string[] = [];
   
   /** @internal */
   private _showPopOutIcon = false;
@@ -467,7 +467,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     this.buildOut = prefs.buildOut;
     this.dataSourceColors = prefs.dataSourceColors;
     this.dataSourcesFiltered = prefs.dataSourcesFiltered;
-    this.matchKeysFiltered = prefs.matchKeysFiltered;
+    this.matchKeysIncluded = prefs.matchKeysIncluded;
     this.neverFilterQueriedEntityIds = prefs.neverFilterQueriedEntityIds;
     if(prefs.queriedEntitiesColor && prefs.queriedEntitiesColor !== undefined && prefs.queriedEntitiesColor !== null) {
       this.queriedEntitiesColor = prefs.queriedEntitiesColor;
@@ -528,17 +528,31 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     } else {
       //console.log('entityNodeFilterByDataSource: ',this._lastFilterConfig, JSON.stringify(_ret));
     }
-    if(this.matchKeysFiltered) {
-      let matchKeyFilters = this.matchKeysFiltered.map((_name) => {
+    /*
+    if(this.matchKeysIncluded) {
+      let matchKeyFilters = this.matchKeysIncluded.map((_name) => {
         return {
           selectorFn: this.isMatchKeyInEntityNode.bind(this, _name),
           selectorArgs: _name
         };
       });
       _ret = _ret.concat(matchKeyFilters);
+    }*/
+    return _ret;
+  }
+  public get entityMatchFilter(): NodeFilterPair {
+    let _ret: NodeFilterPair;
+    if(this.matchKeysIncluded) {
+      //let matchKeyFilters = this.matchKeysIncluded.map((_name) => {
+        _ret = {
+          selectorFn: this.isMatchKeyInEntityNode.bind(this, this.matchKeysIncluded),
+          selectorArgs: this.matchKeysIncluded
+        };
+      //});
     }
     return _ret;
   }
+  
 
   /** get an array of NodeFilterPair to use for highlighting certain graph nodes specific colors */
   public get entityNodeColors(): NodeFilterPair[] {
@@ -592,19 +606,19 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     }
   }
   private isMatchKeyInEntityNode(matchKeys?, nodeData?) {
-    console.log('isMatchKeyInEntityNode: ', matchKeys, nodeData);
-    //return false;
+    let retVal = false;
     if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
       return false;
     } else {
       if(nodeData && nodeData.relationshipMatchKeys && nodeData.relationshipMatchKeys.indexOf){
-        // D3 filter query
-        return !(nodeData.relationshipMatchKeys.some( (mkName) => {
+        // D3 filter query 
+        retVal = (nodeData.relationshipMatchKeys.some( (mkName) => {
           return matchKeys.indexOf(mkName) > -1;
         }));
       }
     }
-    return true;
+    console.log('isMatchKeyInEntityNode: ', matchKeys, nodeData, retVal);
+    return retVal;
   }
   /** checks to see if entity node is one of the primary entities queried for*/
   private isEntityNodeInQuery(nodeData) {
