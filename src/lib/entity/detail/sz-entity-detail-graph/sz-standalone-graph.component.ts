@@ -147,6 +147,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   @Input() filterWidth: number;
   private neverFilterQueriedEntityIds: boolean = true;
   public filterShowDataSources: string[];
+  public filterShowMatchKeys: string[];
   private _showMatchKeyControl: boolean = true;
   /** whether or not to show match keys toggle control */
   @Input() set showMatchKeyControl(value: boolean | string) {
@@ -264,12 +265,11 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     this.entityDblClick.emit(event);
   }
 
-  /** event is emitted when the collection of datasources present in graph dislay */
+  /** event is emitted when the collection of datasources present in graph dislay change*/
   @Output() dataSourcesChange: EventEmitter<any> = new EventEmitter<string[]>();
   /** event is emitted when the graph components data is updated or loaded */
   @Output() dataLoaded: EventEmitter<SzEntityNetworkData> = new EventEmitter<SzEntityNetworkData>();
-
-  /** event is emitted when the collection of datasources present in graph dislay */
+  /** event is emitted when the collection of matchkeys present in graph dislay change */
   @Output() matchKeysChange: EventEmitter<any> = new EventEmitter<string[]>();
 
   /**
@@ -338,6 +338,11 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
         break;
     }
   }
+  
+  /** when match keys are load */
+  onMatchKeysChange(data: string[]) {
+    this.filterShowMatchKeys = data;
+  }
 
   constructor(
     public prefs: SzPrefsService,
@@ -383,6 +388,11 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
       }
     })
     */
+
+    // listen for match key changes
+    this.matchKeysChange.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( this.onMatchKeysChange.bind(this) )
 
     // keep track of whether or not the graph has been rendered
     // this is to get around publishing a new 0.0.7 sdk-graph-components
@@ -633,6 +643,11 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   private setEntityNodeFillColor(color, nodeList, scope) {
     if (nodeList && nodeList.style) {
       nodeList.style('fill', color);
+      // check to see if we can sub-select "circle" filler
+      let _icoEnc = nodeList.select('.sz-graph-icon-enclosure');
+      if(_icoEnc) {
+        _icoEnc.style('fill', color);
+      }
     } else if ( scope && nodeList instanceof Array && nodeList.every && nodeList.every( (nodeItem) => nodeItem.type === 'node')) {
       const modifierList = nodeList.map((item) => {
         return { id: item.id, c: color };

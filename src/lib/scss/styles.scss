@@ -43,12 +43,20 @@ body {
     stroke: #999;
     stroke-width: 1px;
   }
+  .sz-graph-primary-node{
+    color: var(--sz-entity-graph-primary-entity-default-color);
+    fill: var(--sz-entity-graph-primary-entity-default-color);
+    
+    .graph-node-rel-primary {
+      fill: var(--sz-entity-graph-primary-entity-default-color);
+    }
+  }
 
   .sz-graph-node-icon {
     fill: lighten( $sz-dark2, 10% );
 
     &.graph-node-rel-primary {
-      fill: $sz-dark2;
+      fill: var(--sz-entity-graph-primary-entity-default-color);
     }
   }
 

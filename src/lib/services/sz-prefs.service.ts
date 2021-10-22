@@ -817,9 +817,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _openInSidePanel: boolean = false;
   /** @internal */
-  private _dataSourceColors: SzDataSourceComposite[] = [
-    {name: 'owners', color: '#0088ff', index: 0}
-  ];
+  private _dataSourceColors: SzDataSourceComposite[] = [];
   /** @internal */
   private _showMatchKeys: boolean = false;
   /** @internal */
@@ -840,7 +838,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _neverFilterQueriedEntityIds: boolean = true;
   /** @internal */
-  private _queriedEntitiesColor: string | undefined;
+  private _queriedEntitiesColor: string | undefined = "#465BA8";
 
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
