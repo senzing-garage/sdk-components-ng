@@ -338,8 +338,10 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
         break;
     }
   }
-  
-  /** when match keys are load */
+
+  /** when match keys are loaded in graph view, this handler is invoked to 
+   * transfer to filters component list 
+   */
   onMatchKeysChange(data: string[]) {
     this.filterShowMatchKeys = data;
   }

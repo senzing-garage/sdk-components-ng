@@ -32,6 +32,8 @@ export class AppComponent implements AfterViewInit {
   public currentSearchParameters: SzEntitySearchParams;
   public showSearchResults = false;
   public showSpinner = false;
+  public _showMatchKeysInFilter: string[];
+  
   // prefs related vars
   /** localstorage key to store pref data in */
   public STORAGE_KEY = 'senzing-web-app';
@@ -122,6 +124,10 @@ export class AppComponent implements AfterViewInit {
   onRenderComplete(evt: any) {
     console.log('onRenderComplete: ', evt);
     this.showSpinner = false;
+  }
+  onMatchKeysChange(data: string[]) {
+    console.warn('onMatchKeysChange: ', data);
+    this._showMatchKeysInFilter = data;
   }
 
   onSearchResults(evt: SzAttributeSearchResult[]){
