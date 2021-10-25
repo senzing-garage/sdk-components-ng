@@ -141,18 +141,35 @@ export class SzSearchService {
   }
 
   /**
-   * get an SzEntityData model by providing an datasource and record id.
+   * get an SzEntityRecord model by providing an datasource and record id.
    *
    * @memberof SzSearchService
    */
-  public getEntityByRecordId(dsName: string, recordId: string | number, withRelated = false): Observable<SzEntityRecord> {
-    console.log('@senzing/sdk/services/sz-search[getEntityByRecordId('+ dsName +', '+ recordId +')] ', dsName, recordId);
+  public getRecordById(dsName: string, recordId: string | number, withRelated = false): Observable<SzEntityRecord> {
+    //console.log('@senzing/sdk/services/sz-search[getRecordById('+ dsName +', '+ recordId +')] ', dsName, recordId);
     const _recordId: string = recordId.toString();
 
     return this.entityDataService.getRecord(dsName, _recordId)
     .pipe(
       tap((res: SzRecordResponse) => console.log('SzSearchService.getEntityByRecordId: ' + dsName, res)),
       map((res: SzRecordResponse) => (res.data as SzRecordResponseData).record )
+    );
+  }
+
+  /**
+   * get an SzEntityData model by providing an datasource and record id.
+   *
+   * @memberof SzSearchService
+   */
+   public getEntityByRecordId(dsName: string, recordId: string | number, withRelated = false): Observable<SzEntityData> {
+    console.log('@senzing/sdk/services/sz-search[getEntityByRecordId('+ dsName +', '+ recordId +')] ', dsName, recordId);
+    const _recordId: string = recordId.toString();
+
+    return this.entityDataService.getEntityByRecordId(dsName, _recordId)
+    .pipe(
+      map( (res: SzEntityResponse) => {
+        return res.data
+      })
     );
   }
 

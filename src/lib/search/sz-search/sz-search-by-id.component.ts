@@ -546,17 +546,26 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   public submitSearch(): void {
     const searchParams = this.getSearchParams();
     //console.log('submitSearch() ',JSON.parse(JSON.stringify(searchParams)), this);
-    if(searchParams.entityId != undefined && searchParams.entityId != null) {
-      // just go by entity id
+    if(
+      (searchParams.entityId != undefined && searchParams.entityId != null) || 
+      (searchParams.recordId && searchParams.dataSource)
+    ) {
       // emit search start
       this.searchStart.emit(searchParams);
-
-      // cast string entityId to number if not already number
-      const entityId: number = (typeof searchParams.entityId == 'number') ? searchParams.entityId : parseInt(searchParams.entityId);
-
-      // console.log('search by entity id: '+ searchParams.entityId );
-      this.searchService.getEntityById(entityId, true).
-      pipe(
+      let observableCall: Observable<SzEntityData>;
+      // decide which endpoint to hit
+      if(searchParams.entityId != undefined && searchParams.entityId != null) {
+        // just go by entity id
+        // cast string entityId to number if not already number
+        const entityId: number = (typeof searchParams.entityId == 'number') ? searchParams.entityId : parseInt(searchParams.entityId);
+        observableCall = this.searchService.getEntityById(entityId, true);
+      } else if(searchParams.recordId && searchParams.dataSource) {
+        // by ds / record id
+        const recordId: string | number = searchParams.recordId;
+        observableCall = this.searchService.getEntityByRecordId(searchParams.dataSource, recordId);
+      }
+      // make request
+      observableCall.pipe(
         takeUntil(this.unsubscribe$)
       ).
       subscribe((res: SzEntityData) => {
@@ -571,26 +580,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
         //this.requestEnd.emit( err );
         this.exception.next( err );
       });
-    } else if(searchParams.recordId && searchParams.dataSource){
-      // by ds / record id
-      //console.log('search by record id: ', searchParams.dataSource, searchParams.recordId);
 
-      const recordId: string | number = searchParams.recordId;
-      // emit search start
-      this.searchStart.emit(searchParams);
-      // make request
-      this.searchService.getEntityByRecordId(searchParams.dataSource, recordId).pipe(
-        takeUntil(this.unsubscribe$)
-      ).subscribe((res: SzEntityRecord) => {
-        //console.warn('results of getEntityByRecordId('+ searchParams.recordId +')', res );
-        this.resultChange.emit(res);
-        const totalResults = res && res.recordId ? 1 : 0;
-        this._result = res;
-        this.searchEnd.emit(totalResults);
-      }, (err)=>{
-        this.searchEnd.emit();
-        this.exception.next( err );
-      });
     } else {
       this.searchException.next(new Error("null criteria")); //TODO: remove in breaking change release
       this.exception.next( new Error("null criteria") );
