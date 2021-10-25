@@ -14,8 +14,9 @@
     </div>
 
     <div class="search-result__section-header matches"
-      *ngIf="this.matches?.length > 0">Matches</div>
+      *ngIf="this.matches?.length > 0"><span>Matches</span></div>
     <sz-search-result-card
+      class="matches"
       *ngFor="let searchResult of this.matches; let i = index"
       (click)="onResultClick($event, searchResult)"
       [searchResult]="searchResult"
@@ -24,8 +25,9 @@
     </sz-search-result-card>
 
     <div class="search-result__section-header possible-match"
-      *ngIf="this.possibleMatches?.length > 0">Possible Match</div>
+      *ngIf="this.possibleMatches?.length > 0"><span>Possible Match</span></div>
     <sz-search-result-card
+      class="possible-match"
       *ngFor="let searchResult of this.possibleMatches; let i = index"
       (click)="onResultClick($event, searchResult)"
       [searchResult]="searchResult"
@@ -34,8 +36,9 @@
     </sz-search-result-card>
 
     <div class="search-result__section-header possibly-related"
-      *ngIf="this.discoveredRelationships?.length > 0">Possibly Related</div>
+      *ngIf="this.discoveredRelationships?.length > 0"><span>Possibly Related</span></div>
     <sz-search-result-card
+      class="possibly-related"
       *ngFor="let searchResult of this.discoveredRelationships; let i = index"
       (click)="onResultClick($event, searchResult)"
       [searchResult]="searchResult"
@@ -44,8 +47,9 @@
     </sz-search-result-card>
 
     <div class="search-result__section-header name-only-matches"
-      *ngIf="this.nameOnlyMatches?.length > 0">Name Only Matches</div>
+      *ngIf="this.nameOnlyMatches?.length > 0"><span>Name Only Matches</span></div>
     <sz-search-result-card
+      class="name-only"
       *ngFor="let searchResult of this.nameOnlyMatches; let i = index"
       (click)="onResultClick($event, searchResult)"
       [searchResult]="searchResult"

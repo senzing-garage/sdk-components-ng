@@ -78,7 +78,7 @@
             <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields['searchButton']" *ngIf="!hiddenFields['searchButton']">
               <button mat-button class="button__search-go"
               [attr.disabled]="getDisabled('searchButton')"
-              (click)="submitSearch()">Search</button>
+              (click)="submitSearch()">{{searchButtonLabel}}</button>
             </div>
           </div>
           <div class="sz-row">
@@ -126,19 +126,19 @@
             <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields['resetButton']" *ngIf="!hiddenFields['resetButton']">
               <button mat-button class="button__search-clear"
               [attr.disabled]="getDisabled('resetButton')"
-              (click)="clearSearch()">Clear Search Criteria</button>
+              (click)="clearSearch()">{{cancelButtonLabel}}</button>
             </div>
           </div>
           <div class="sz-row bottom">
             <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields['resetButton']" *ngIf="!hiddenFields['resetButton']">
               <button mat-button class="button__search-clear"
               [attr.disabled]="getDisabled('resetButton')"
-              (click)="clearSearch()">Clear</button>
+              (click)="clearSearch()">{{cancelButtonLabelShort}}</button>
             </div>
             <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields['searchButton']" *ngIf="!hiddenFields['searchButton']">
               <button mat-button class="button__search-go"
               [attr.disabled]="getDisabled('searchButton')"
-              (click)="submitSearch()">Search</button>
+              (click)="submitSearch()">{{searchButtonLabelShort}}</button>
             </div>
           </div>
         </form>

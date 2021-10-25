@@ -49,8 +49,11 @@
     padding: 10px 20px 2em 1em;
     margin: 0 2em 0 0;
     /* width: 200px; */
-    border-radius: 5px;
-    background-color: #efefef;
+    /* border-radius: 5px;
+    background-color: #efefef; */
+    border-radius: var(--sz-preferences-column-border-radius);
+    border-color: var(--sz-preferences-column-background-color);
+
 
     .prefs-ui-column-inner {
       display: inline-block;

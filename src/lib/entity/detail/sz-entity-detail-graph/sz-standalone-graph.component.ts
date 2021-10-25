@@ -123,6 +123,8 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   };
 
   @Input() dataSourcesFiltered: string[] = [];
+  @Input() matchKeysIncluded: string[] = [];
+  
   /** @internal */
   private _showPopOutIcon = false;
   /** whether or not to show the pop-out icon */
@@ -145,6 +147,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   @Input() filterWidth: number;
   private neverFilterQueriedEntityIds: boolean = true;
   public filterShowDataSources: string[];
+  public filterShowMatchKeys: string[];
   private _showMatchKeyControl: boolean = true;
   /** whether or not to show match keys toggle control */
   @Input() set showMatchKeyControl(value: boolean | string) {
@@ -262,10 +265,12 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     this.entityDblClick.emit(event);
   }
 
-  /** event is emitted when the collection of datasources present in graph dislay */
+  /** event is emitted when the collection of datasources present in graph dislay change*/
   @Output() dataSourcesChange: EventEmitter<any> = new EventEmitter<string[]>();
   /** event is emitted when the graph components data is updated or loaded */
   @Output() dataLoaded: EventEmitter<SzEntityNetworkData> = new EventEmitter<SzEntityNetworkData>();
+  /** event is emitted when the collection of matchkeys present in graph dislay change */
+  @Output() matchKeysChange: EventEmitter<any> = new EventEmitter<string[]>();
 
   /**
    * on data received by api request and mapped to
@@ -277,6 +282,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     if(inputs.data && inputs.data.entities) {
       this.filterShowDataSources = SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data);
       this.dataSourcesChange.emit( SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data) );
+      this.matchKeysChange.emit( SzRelationshipNetworkComponent.getMatchKeysFromEntityNetworkData(inputs.data) )
     }
     if(inputs.data) {
       this.dataLoaded.emit( inputs.data );
@@ -332,6 +338,11 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
         break;
     }
   }
+  
+  /** when match keys are load */
+  onMatchKeysChange(data: string[]) {
+    this.filterShowMatchKeys = data;
+  }
 
   constructor(
     public prefs: SzPrefsService,
@@ -377,6 +388,11 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
       }
     })
     */
+
+    // listen for match key changes
+    this.matchKeysChange.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( this.onMatchKeysChange.bind(this) )
 
     // keep track of whether or not the graph has been rendered
     // this is to get around publishing a new 0.0.7 sdk-graph-components
@@ -461,6 +477,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     this.buildOut = prefs.buildOut;
     this.dataSourceColors = prefs.dataSourceColors;
     this.dataSourcesFiltered = prefs.dataSourcesFiltered;
+    this.matchKeysIncluded = prefs.matchKeysIncluded;
     this.neverFilterQueriedEntityIds = prefs.neverFilterQueriedEntityIds;
     if(prefs.queriedEntitiesColor && prefs.queriedEntitiesColor !== undefined && prefs.queriedEntitiesColor !== null) {
       this.queriedEntitiesColor = prefs.queriedEntitiesColor;
@@ -500,7 +517,7 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     return _ret;
   }
   /** get the list of filters to apply to inner graph component */
-  public get entityNodeFilterByDataSource(): NodeFilterPair[] {
+  public get entityNodeFilters(): NodeFilterPair[] {
     let _ret = [];
     if(this.dataSourcesFiltered) {
       if( this.graph && this.graph.isD3) {
@@ -521,8 +538,32 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     } else {
       //console.log('entityNodeFilterByDataSource: ',this._lastFilterConfig, JSON.stringify(_ret));
     }
+    /*
+    if(this.matchKeysIncluded) {
+      let matchKeyFilters = this.matchKeysIncluded.map((_name) => {
+        return {
+          selectorFn: this.isMatchKeyInEntityNode.bind(this, _name),
+          selectorArgs: _name
+        };
+      });
+      _ret = _ret.concat(matchKeyFilters);
+    }*/
     return _ret;
   }
+  public get entityMatchFilter(): NodeFilterPair {
+    let _ret: NodeFilterPair;
+    if(this.matchKeysIncluded) {
+      //let matchKeyFilters = this.matchKeysIncluded.map((_name) => {
+        _ret = {
+          selectorFn: this.isMatchKeyInEntityNode.bind(this, this.matchKeysIncluded),
+          selectorArgs: this.matchKeysIncluded
+        };
+      //});
+    }
+    return _ret;
+  }
+  
+
   /** get an array of NodeFilterPair to use for highlighting certain graph nodes specific colors */
   public get entityNodeColors(): NodeFilterPair[] {
     const _ret = this.entityNodecolorsByDataSource;
@@ -574,6 +615,21 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
       }
     }
   }
+  private isMatchKeyInEntityNode(matchKeys?, nodeData?) {
+    let retVal = false;
+    if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
+      return true;
+    } else {
+      if(nodeData && nodeData.relationshipMatchKeys && nodeData.relationshipMatchKeys.indexOf){
+        // D3 filter query 
+        retVal = (nodeData.relationshipMatchKeys.some( (mkName) => {
+          return matchKeys.indexOf(mkName) > -1;
+        }));
+      }
+    }
+    //console.log('isMatchKeyInEntityNode: ', matchKeys, nodeData, retVal);
+    return retVal;
+  }
   /** checks to see if entity node is one of the primary entities queried for*/
   private isEntityNodeInQuery(nodeData) {
     if(this.graphIds){
@@ -587,6 +643,11 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   private setEntityNodeFillColor(color, nodeList, scope) {
     if (nodeList && nodeList.style) {
       nodeList.style('fill', color);
+      // check to see if we can sub-select "circle" filler
+      let _icoEnc = nodeList.select('.sz-graph-icon-enclosure');
+      if(_icoEnc) {
+        _icoEnc.style('fill', color);
+      }
     } else if ( scope && nodeList instanceof Array && nodeList.every && nodeList.every( (nodeItem) => nodeItem.type === 'node')) {
       const modifierList = nodeList.map((item) => {
         return { id: item.id, c: color };

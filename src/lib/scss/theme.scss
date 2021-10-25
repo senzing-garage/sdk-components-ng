@@ -73,6 +73,8 @@ body {
   --sz-search-button-submit-padding: 0 30px 0 30px;
   --sz-search-button-margin: 0;
   --sz-search-button-border-radius: 6px;
+  --sz-search-button-submit-font-family: var(--sz-font-family);
+  --sz-search-button-clear-font-family: var(--sz-font-family);
   /* --sz-search-button-submit-font-size: 10px;*/
   --sz-search-button-clear-font-size: 10px;
 
@@ -125,6 +127,8 @@ body {
   --sz-search-results-color: #{$sz-font-color-1};
   --sz-search-results-font-family: #{$sz-font-family};
   --sz-search-results-a-color: #{$sz-blue};
+  --sz-search-results-a-hover-color: var(--sz-search-results-a-color);
+  --sz-search-results-name-hover-color: var(--sz-search-results-a-color);
   --sz-search-results-a-cursor: pointer;
   --sz-search-results-a-font-size: 1.8em;
   --sz-search-results-col-name-min-width: 300px;
@@ -142,11 +146,22 @@ body {
   /* match key colors */
   --sz-search-results-section-header-color: #{$sz-font-color-2};
   --sz-search-results-section-header-padding: 2px 20px;
+  --sz-search-results-section-header-text-opacity: 1;
   --sz-search-results-matches-header-background-color: var(--sz-color-matches);
   --sz-search-results-possible-match-header-background-color: var(--sz-color-possible-match);
   --sz-search-results-possibly-related-header-background-color: var(--sz-color-possibly-related);
   --sz-search-results-name-only-matches-header-background-color: var(--sz-color-name-only-matches);
 
+  --sz-search-results-card-cursor: default;
+  --sz-search-results-card-hover-cursor: default;
+  --sz-search-results-card-hover-color: inherit;
+  --sz-search-results-card-margin: 20px 0;
+  --sz-search-results-card-padding: 0px 20px 20px 10px;
+  --sz-search-results-matches-card-hover-color: var(--sz-search-results-card-hover-color);
+  --sz-search-results-possible-match-card-hover-color: var(--sz-search-results-card-hover-color);
+  --sz-search-results-possibly-related-card-hover-color: var(--sz-search-results-card-hover-color);
+  --sz-search-results-disclosed-card-hover-color: var(--sz-search-results-card-hover-color);
+  --sz-search-results-name-only-matches-card-hover-color: var(--sz-search-results-card-hover-color);
   --sz-search-results-matches-card-border-left: var(--sz-search-results-matches-header-background-color) 10px solid;
   --sz-search-results-possible-match-card-border-left: var(--sz-search-results-possible-match-header-background-color) 10px solid;
   --sz-search-results-possibly-related-card-border-left: var(--sz-search-results-possibly-related-header-background-color) 10px solid;
@@ -176,6 +191,7 @@ body {
     --sz-entity-detail-header-section-totals-margin: 0 20px 0 0;
     --sz-entity-detail-header-section-totals-padding: 0 0 .5em 0;
     --sz-entity-detail-header-section-totals-display: flex;
+    --sz-entity-detail-header-section-totals-opacity: 1;
 
     --sz-entity-detail-header-section-totals-border: none;
     --sz-entity-detail-header-section-totals-border-radius: 2px;
@@ -217,6 +233,8 @@ body {
     --sz-entity-detail-section-border-bottom: var(--sz-entity-detail-section-border);
     --sz-entity-detail-section-title-font-size: 20px;
     --sz-entity-detail-section-padding: 0 24px;
+    --sz-entity-detail-section-record-card-color: inherit;
+    --sz-entity-detail-section-record-card-hover-color: var(--sz-entity-detail-section-record-card-color);
     --sz-entity-detail-section-record-card-display: block;
     --sz-entity-detail-section-record-card-background-color: #FFFFFF;
     --sz-entity-detail-section-record-card-margin: 8px 0 8px 0;
@@ -229,6 +247,7 @@ body {
     --sz-entity-detail-section-record-card-four-cols-min-width: 20%;
 
     --sz-entity-detail-pill-display: inline-block;
+    --sz-entity-detail-pill-font-family: inherit;
     --sz-entity-detail-pill-font-size: 20px;
     --sz-entity-detail-pill-text-transform: uppercase;
     --sz-entity-detail-pill-padding: 8px 8px 9px 8px;
@@ -262,6 +281,7 @@ body {
     /* end relationship section list vars */
 
     /* graph */
+    --sz-entity-graph-primary-entity-default-color: #465BA8;
     --sz-entity-graph-control-border: 1px solid #d3d3d3;
     --sz-entity-graph-control-position: absolute;
     --sz-entity-graph-control-display: block;
@@ -308,6 +328,10 @@ body {
     --sz-graph-filter-control-background-color: transparent;
 
   /* end entity detail vars */
+  /* start preferences component */
+    --sz-preferences-column-border-radius: 5px;
+    --sz-preferences-column-background-color: #d3d3d3;
+  /* end preferences component */
 
 }
 

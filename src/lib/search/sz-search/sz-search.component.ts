@@ -102,6 +102,13 @@ export class SzSearchComponent implements OnInit, OnDestroy {
    * @memberof SzSearchComponent
    */
   @Input() showSearchLabel = true;
+
+  /** text that shows up in buttons */
+  @Input() searchButtonLabel = "Search";
+  @Input() searchButtonLabelShort = "Search";
+  @Input() cancelButtonLabel = "Clear Search Criteria";
+  @Input() cancelButtonLabelShort = "Clear";
+
   /**
    * collection of which mapping attributes to show in the identifiers pulldown.
    * @memberof SzSearchComponent

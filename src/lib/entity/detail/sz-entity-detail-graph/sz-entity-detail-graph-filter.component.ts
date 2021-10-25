@@ -6,7 +6,8 @@ import { Subject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SzDataSourceComposite } from '../../../models/data-sources';
-import { sortDataSourcesByIndex } from '../../../common/utils';
+import { SzMatchKeyComposite } from '../../../models/graph';
+import { sortDataSourcesByIndex, sortMatchKeysByIndex } from '../../../common/utils';
 
 /**
  * Control Component allowing UI friendly changes
@@ -39,6 +40,8 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
    * @internal
   */
   private _dataSources: SzDataSourceComposite[]       = [];
+  private _matchKeys: SzMatchKeyComposite[]           = [];
+
   /** private list of SzDataSourceComposite as stored in local storage 
    * @internal
   */
@@ -52,7 +55,31 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   @Input() buildOutMin: number = 0;
   @Input() buildOutMax: number = 5;
   @Input() showDataSources: string[];
+  @Input() public set showMatchKeys(value: string[]) {
+    //console.log('showMatchKeys.set()', value, Object.keys(this.filterByMatchKeysForm.controls), (<FormArray>this.filterByMatchKeysForm.get('matchkeys')));
+    if(value && value.map && value !== undefined) {
+      this._matchKeys = value.map((strMatchKey: string, ind: number) => {
+        return {
+          'name': strMatchKey,
+          'index': ind,
+          'hidden': false
+        }
+      });
+      this.initializeMatchKeysFormControls();
+    }
+  }
+  public get showMatchKeys(): string[] {
+    let retVal;
+    if(this._matchKeys && this._matchKeys.length) {
+      retVal = this._matchKeys.map((mkComposite) => {
+        return mkComposite.name;
+      });
+    }
+    return retVal;
+  }
+
   @Input() dataSourcesFiltered: string[] = [];
+  @Input() matchKeysIncluded: string[] = [];
   @Input() queriedEntitiesColor: string;
 
   /** 
@@ -92,6 +119,13 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
     return retVal;
   }
 
+  /** get list of  "SzDataSourceComposite" reflecting datasources pulled from API and augmented with state information in shape of "SzDataSourceComposite". ordered ASC by "index" */
+  public get matchKeys(): SzDataSourceComposite[] {
+    let retVal: SzMatchKeyComposite[] = this._matchKeys;
+    retVal = sortMatchKeysByIndex(retVal);
+    return retVal;
+  }
+
   /** show match keys */
   public _showLinkLabels = true;
   @Input() public set showLinkLabels(value){
@@ -105,7 +139,8 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
     'Filters',
     'Filter by Source',
     'Colors by Source',
-    'Color by: '
+    'Color by: ',
+    'Filter by Match Key'
   ];
 
   @HostBinding('class.showing-link-labels') public get showingLinkLabels(): boolean {
@@ -121,6 +156,10 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   public get filterByDataSourcesData() {
     return <FormArray>this.filterByDataSourcesForm.get('datasources');
   }
+    /** get data from reactive form control array */
+    public get filterByMatchKeysData() {
+      return <FormArray>this.filterByMatchKeysForm.get('matchkeys');
+    }
 
   // --------------------------------- event emmitters and subjects ----------------------
   /**
@@ -135,6 +174,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   // ------------------------------ forms, form groups, and handlers ---------------------
   /** the form group for the filters by datasource list */
   filterByDataSourcesForm: FormGroup;
+  filterByMatchKeysForm: FormGroup;
   /** the form group for colors by datasource list */
   colorsByDataSourcesForm: FormGroup;
   /** the form group for maxDegreesOfSeparation, maxEntities, buildOut parameter sliders */
@@ -160,6 +200,11 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
     this.filterByDataSourcesForm = this.formBuilder.group({
       datasources: new FormArray([])
     });
+    // filter by matchkeys
+    this.filterByMatchKeysForm = this.formBuilder.group({
+      matchkeys: new FormArray([])
+    });
+        
     // colors by datasources
     this.colorsByDataSourcesForm = this.formBuilder.group({
       datasources: new FormArray([])
@@ -181,6 +226,16 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
     // update filters pref
     this.prefs.graph.dataSourcesFiltered = filteredDataSourceNames;
   }
+  /** handler for when a filter by datasouce value in the "filterByDataSourcesForm" has changed */
+  onMkFilterChange(mkValue: string, evt?) {
+    const includedMatchKeyNames = this.filterByMatchKeysForm.value.matchkeys
+      .map((v, i) => v ? this.matchKeys[i].name :  null)
+      .filter(v => v !== null);
+    // update filters pref    
+    this.prefs.graph.matchKeysIncluded = includedMatchKeyNames;
+    //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkFilterChange',this.prefs.graph.matchKeysIncluded);
+  }
+  
   /**
    * method for getting the selected pref color for a datasource 
    * by the datasource name. used for applying background color to 
@@ -251,6 +306,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
     this.buildOut = prefs.buildOut;
     this.dataSourceColors = prefs.dataSourceColors;
     this.dataSourcesFiltered = prefs.dataSourcesFiltered;
+    this.matchKeysIncluded = prefs.matchKeysIncluded;
     this.queriedEntitiesColor = prefs.queriedEntitiesColor;
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onPrefsChange(): ', prefs, this.dataSourceColors);
     // update view manually (for web components redraw reliability)
@@ -332,14 +388,18 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
     // get datasources
     // then create filter and color control lists
     this.initializeDataSourceFormControls();
+    this.initializeMatchKeysFormControls();
   }
 
   ngAfterViewInit() {
     let hasZeroDsControls = (Object.keys(this.filterByDataSourcesForm.controls).length <= 0) && (Object.keys(this.colorsByDataSourcesForm.controls).length <= 0);
+    //let hasZeroMkControls = (Object.keys(this.filterByMatchKeysForm.controls).length <= 0);
+
     if(hasZeroDsControls) {
       // try updating ds filters one more time
       this.initializeDataSourceFormControls();
     }
+    this.initializeMatchKeysFormControls();
   }
 
   /** initializes filter form controls */
@@ -377,6 +437,30 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
     });
   }
 
+  private removeAllMatchKeyControls() {
+    while(this.filterByMatchKeysData.length > 0){
+      this.filterByMatchKeysData.removeAt(this.filterByMatchKeysData.length - 1);
+    }
+    //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.removeAllMatchKeyControls: ', this.filterByMatchKeysData, this.matchKeysIncluded);
+  }
+
+  private initializeMatchKeysFormControls() {
+    //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.initializeMatchKeysFormControls: ', this.matchKeys, this.showMatchKeys, this.matchKeysIncluded);
+    if(this.matchKeys) {
+      // remove old controls
+      this.removeAllMatchKeyControls();
+
+      // init form controls for filter by match keys
+      this.matchKeys.forEach((o, i) => {
+        const mkFilterVal = (this.matchKeysIncluded.indexOf(o.name) >= 0);
+        const control1 = new FormControl(mkFilterVal); // if first item set to true, else false
+        // add control for filtered by list
+        (this.filterByMatchKeysForm.controls.matchkeys as FormArray).push(control1);
+      });
+    }
+  }
+
+
   /** helper method for retrieving list of datasources */
   public getDataSources() {
     return this.dataSourcesService.listDataSources();
@@ -385,4 +469,9 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
   public shouldDataSourceBeDisplayed( dsName: string) {
     return (this.showDataSources && this.showDataSources.length > 0) ? (this.showDataSources.indexOf( dsName ) > -1) : true;
   }
+  /** if "showMatchKeys" array is specified, check that string name is present in list */
+  public shouldMatchKeyBeDisplayed( mkName: string) {
+    return (this.showMatchKeys && this.showMatchKeys.length > 0) ? (this.showMatchKeys.indexOf( mkName ) > -1) : true;
+  }
+  
 }
