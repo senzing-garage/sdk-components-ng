@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.5] - 2021-11-01
+
+- Graph now allows the user to be able to show/hide entities on the graph control whos' relationships belong to specific match keys present in the graph in the filters control.
+- *Search by Datasource/RecordId* now gets the full `SzEntityData` instead of just the `SzEntityRecord`
+- Old behavior(to return just `SzEntityRecord` instead of `SzEntityData`) relocated from `SzSearchService.getEntityByRecordId` to `SzSearchService.getRecordById`
+- Various new CSS Variables added for styling granularity relevant to https://github.com/Senzing/entity-search-web-app/issues/213
+
+relevant tickets: #232 #233 #235
+
 ## [2.2.4] - 2021-08-06
 
 - [API Client package](https://github.com/Senzing/rest-api-client-ng/releases) updated to version [2.3.0](https://github.com/Senzing/rest-api-client-ng/releases/tag/2.3.0)
