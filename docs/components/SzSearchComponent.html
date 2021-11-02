@@ -236,6 +236,12 @@
                                 <a href="#attributeTypes">attributeTypes</a>
                             </li>
                             <li>
+                                <a href="#cancelButtonLabel">cancelButtonLabel</a>
+                            </li>
+                            <li>
+                                <a href="#cancelButtonLabelShort">cancelButtonLabelShort</a>
+                            </li>
+                            <li>
                                 <a href="#disableACCTNUMOption">disableACCTNUMOption</a>
                             </li>
                             <li>
@@ -387,6 +393,12 @@
                             </li>
                             <li>
                                 <a href="#phone">phone</a>
+                            </li>
+                            <li>
+                                <a href="#searchButtonLabel">searchButtonLabel</a>
+                            </li>
+                            <li>
+                                <a href="#searchButtonLabelShort">searchButtonLabelShort</a>
                             </li>
                             <li>
                                 <a href="#searchValue">searchValue</a>
@@ -857,6 +869,36 @@
                     <td class="col-md-4">
                         <i>Type : </i>    <code>[]</code>
 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="cancelButtonLabel"></a>
+                        <b>cancelButtonLabel</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;Clear Search Criteria&quot;</code>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="cancelButtonLabelShort"></a>
+                        <b>cancelButtonLabelShort</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;Clear&quot;</code>
                     </td>
                 </tr>
             </tbody>
@@ -1925,6 +1967,42 @@ api server when a configuration change is detected</p>
                     <td class="col-md-4">
                         <div class="io-description"><p>sets the value of the phone field </p>
 </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchButtonLabel"></a>
+                        <b>searchButtonLabel</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;Search&quot;</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>text that shows up in buttons </p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchButtonLabelShort"></a>
+                        <b>searchButtonLabelShort</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;Search&quot;</code>
                     </td>
                 </tr>
             </tbody>
@@ -6267,7 +6345,7 @@ export class AppComponent implements AfterViewInit {
             &lt;div class&#x3D;&quot;action-button__wrapper hide-on-narrow&quot; [class.disabled]&#x3D;&quot;disabledFields[&#x27;searchButton&#x27;]&quot; *ngIf&#x3D;&quot;!hiddenFields[&#x27;searchButton&#x27;]&quot;&gt;
               &lt;button mat-button class&#x3D;&quot;button__search-go&quot;
               [attr.disabled]&#x3D;&quot;getDisabled(&#x27;searchButton&#x27;)&quot;
-              (click)&#x3D;&quot;submitSearch()&quot;&gt;Search&lt;/button&gt;
+              (click)&#x3D;&quot;submitSearch()&quot;&gt;{{searchButtonLabel}}&lt;/button&gt;
             &lt;/div&gt;
           &lt;/div&gt;
           &lt;div class&#x3D;&quot;sz-row&quot;&gt;
@@ -6315,19 +6393,19 @@ export class AppComponent implements AfterViewInit {
             &lt;div class&#x3D;&quot;action-button__wrapper hide-on-narrow&quot; [class.disabled]&#x3D;&quot;disabledFields[&#x27;resetButton&#x27;]&quot; *ngIf&#x3D;&quot;!hiddenFields[&#x27;resetButton&#x27;]&quot;&gt;
               &lt;button mat-button class&#x3D;&quot;button__search-clear&quot;
               [attr.disabled]&#x3D;&quot;getDisabled(&#x27;resetButton&#x27;)&quot;
-              (click)&#x3D;&quot;clearSearch()&quot;&gt;Clear Search Criteria&lt;/button&gt;
+              (click)&#x3D;&quot;clearSearch()&quot;&gt;{{cancelButtonLabel}}&lt;/button&gt;
             &lt;/div&gt;
           &lt;/div&gt;
           &lt;div class&#x3D;&quot;sz-row bottom&quot;&gt;
             &lt;div class&#x3D;&quot;action-button__wrapper hide-on-medium hide-on-wide&quot; [class.disabled]&#x3D;&quot;disabledFields[&#x27;resetButton&#x27;]&quot; *ngIf&#x3D;&quot;!hiddenFields[&#x27;resetButton&#x27;]&quot;&gt;
               &lt;button mat-button class&#x3D;&quot;button__search-clear&quot;
               [attr.disabled]&#x3D;&quot;getDisabled(&#x27;resetButton&#x27;)&quot;
-              (click)&#x3D;&quot;clearSearch()&quot;&gt;Clear&lt;/button&gt;
+              (click)&#x3D;&quot;clearSearch()&quot;&gt;{{cancelButtonLabelShort}}&lt;/button&gt;
             &lt;/div&gt;
             &lt;div class&#x3D;&quot;action-button__wrapper hide-on-medium hide-on-wide&quot; [class.disabled]&#x3D;&quot;disabledFields[&#x27;searchButton&#x27;]&quot; *ngIf&#x3D;&quot;!hiddenFields[&#x27;searchButton&#x27;]&quot;&gt;
               &lt;button mat-button class&#x3D;&quot;button__search-go&quot;
               [attr.disabled]&#x3D;&quot;getDisabled(&#x27;searchButton&#x27;)&quot;
-              (click)&#x3D;&quot;submitSearch()&quot;&gt;Search&lt;/button&gt;
+              (click)&#x3D;&quot;submitSearch()&quot;&gt;{{searchButtonLabelShort}}&lt;/button&gt;
             &lt;/div&gt;
           &lt;/div&gt;
         &lt;/form&gt;
@@ -6480,6 +6558,7 @@ export class AppComponent implements AfterViewInit {
         border: var(--sz-search-button-submit-border);
         white-space: nowrap;
         padding: var(--sz-search-button-submit-padding);
+        font-family: var(--sz-search-button-submit-font-family);
         font-size: var(--sz-search-button-submit-font-size);
         font-weight: var(--sz-search-button-submit-font-weight);
       }
@@ -6488,6 +6567,7 @@ export class AppComponent implements AfterViewInit {
         color: var(--sz-search-button-clear-color);
         white-space: nowrap;
         padding: var(--sz-search-button-clear-padding);
+        font-family: var(--sz-search-button-clear-font-family);
         font-size: var(--sz-search-button-clear-font-size);
         font-weight: var(--sz-search-button-clear-font-weight);
       }
@@ -6634,10 +6714,6 @@ export class AppComponent implements AfterViewInit {
       width: 31%
     }
 
-    .search-input {
-      /*width: 100%*/
-    }
-
     .identifier-dropdown {
       height: 40px;
       width: 100%; //117px;
@@ -6662,7 +6738,7 @@ export class AppComponent implements AfterViewInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div>  <!-- @senzing/sdk/search/sz-search -->  <!--    NAME_FULL    DATE_OF_BIRTH    IDENTIFIER    IDENTIFIER_TYPE    ADDR_FULL    PHONE_NUMBER    EMAIL_ADDRESS  -->  <div class="content" *ngIf="true"  [ngClass]="_layoutClasses"  >      <section class="entity search" (ngSubmit)="submitSearch()">        <form class="form" [formGroup]="entitySearchForm" novalidate>          <div class="sz-row">            <div class="field name" [class.disabled]="disabledFields[\'name\']" *ngIf="!hiddenFields[\'name\']">              <label for="entity-name">Name</label>              <input formControlName="NAME_FULL"                      class="search-input"                      id="entity-name"                      type="text"                      list="search-history-entity-name"                      [attr.disabled]="getDisabled(\'name\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Search for Name"                      (input)="checkHistoryForMatchOnChange($event)">              <datalist *ngIf="searchHistoryName.length > 0 && !searchHistoryDisabled" id="search-history-entity-name">                <option *ngFor="let item of searchHistoryName" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field dob" [class.disabled]="disabledFields[\'dob\']" *ngIf="!hiddenFields[\'dob\']">              <label for="entity-dob">Date of Birth</label>              <input formControlName="DATE_OF_BIRTH"                      id="entity-dob"                      type="text"                      list="search-history-entity-dob"                      [attr.disabled]="getDisabled(\'dob\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="mm/dd/yyyy">              <datalist *ngIf="searchHistoryDob.length > 0 && !searchHistoryDisabled" id="search-history-entity-dob">                <option *ngFor="let item of searchHistoryDob" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field identifier" [class.disabled]="disabledFields[\'identifier\']" *ngIf="!hiddenFields[\'identifier\']">              <label for="entity-identifier">Identifier</label>              <input formControlName="IDENTIFIER"                      id="entity-identifier"                      type="text"                      list="search-history-entity-identifier"                      [attr.disabled]="getDisabled(\'identifier\')"                      (keyup.enter)="onKeyEnter()"                      [placeholder]="placeHolderTextForIdentifierField">              <datalist *ngIf="searchHistoryIdentifier.length > 0 && !searchHistoryDisabled" id="search-history-entity-identifier">                <option *ngFor="let item of searchHistoryIdentifier" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field type" [class.disabled]="disabledFields[\'identifierType\'] || disabledFields[\'identifier\']" *ngIf="!hiddenFields[\'identifier\'] && !hiddenFields[\'identifierType\']">              <label for="entity-type">Type</label>              <div class="flex-type-row">                <mat-icon *ngIf="showIdentifierTypesPicker" class="identifier-type-icon left hide-on-medium hide-on-wide" matTooltipPosition="above" matTooltip="Choose Identifiers in List" aria-hidden="false" aria-label="Choose Identifiers in List" (click)="chooseIdentifiers($event)">filter_list</mat-icon>                <select formControlName="IDENTIFIER_TYPE"                        class="identifier-dropdown"                        [class.filterShowing]="showIdentifierTypesPicker"                        id="entity-type"                        [attr.disabled]="getAnyDisabled([\'identifierType\',\'identifier\'])"                        name="type">                  <option [ngValue]="null" disabled>Choose ID type</option>                  <option *ngFor="let type of orderedAttributes()"                          [value]="type.attributeCode"                          [selected]="type.attributeCode === \'PASSPORT_NUMBER\'">{{ attributeCodeAsHumanReadable(type.attributeCode) | uppercase }}                  </option>                </select>                <mat-icon *ngIf="showIdentifierTypesPicker" class="identifier-type-icon right  hide-on-narrow" matTooltipPosition="left" matTooltip="Choose Identifiers in List" aria-hidden="false" aria-label="Choose Identifiers in List" (click)="chooseIdentifiers($event)">filter_list</mat-icon>              </div>            </div>            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">              <button mat-button class="button__search-go"              [attr.disabled]="getDisabled(\'searchButton\')"              (click)="submitSearch()">Search</button>            </div>          </div>          <div class="sz-row">            <div class="field address" [class.disabled]="disabledFields[\'address\']" *ngIf="!hiddenFields[\'address\']">              <label for="entity-address">Address</label>              <input formControlName="ADDR_FULL"                      id="entity-address"                      type="text"                      list="search-history-entity-address"                      [attr.disabled]="getDisabled(\'address\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Search for Address">              <datalist *ngIf="searchHistoryAddress.length > 0 && !searchHistoryDisabled" id="search-history-entity-address">                <option *ngFor="let item of searchHistoryAddress" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field phone" [class.disabled]="disabledFields[\'phone\']" *ngIf="!hiddenFields[\'phone\']">              <label for="entity-phone">Phone</label>              <input formControlName="PHONE_NUMBER"                      id="entity-phone"                      type="text"                      list="search-history-entity-phone"                      [attr.disabled]="getDisabled(\'phone\')"                      placeholder="Phone #">              <datalist *ngIf="searchHistoryPhone.length > 0 && !searchHistoryDisabled" id="search-history-entity-phone">                <option *ngFor="let item of searchHistoryPhone" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field email" [class.disabled]="disabledFields[\'email\']" *ngIf="!hiddenFields[\'email\']">              <label for="entity-email">Email</label>              <input formControlName="EMAIL_ADDRESS"                      id="entity-email"                      type="text"                      list="search-history-entity-email"                      [attr.disabled]="getDisabled(\'email\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Email Address">              <datalist *ngIf="searchHistoryEmail.length > 0 && !searchHistoryDisabled" id="search-history-entity-email">                <option *ngFor="let item of searchHistoryEmail" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field spacer">            </div>            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">Clear Search Criteria</button>            </div>          </div>          <div class="sz-row bottom">            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">Clear</button>            </div>            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">              <button mat-button class="button__search-go"              [attr.disabled]="getDisabled(\'searchButton\')"              (click)="submitSearch()">Search</button>            </div>          </div>        </form>      </section>    </div></div>'
+        var COMPONENT_TEMPLATE = '<div>  <!-- @senzing/sdk/search/sz-search -->  <!--    NAME_FULL    DATE_OF_BIRTH    IDENTIFIER    IDENTIFIER_TYPE    ADDR_FULL    PHONE_NUMBER    EMAIL_ADDRESS  -->  <div class="content" *ngIf="true"  [ngClass]="_layoutClasses"  >      <section class="entity search" (ngSubmit)="submitSearch()">        <form class="form" [formGroup]="entitySearchForm" novalidate>          <div class="sz-row">            <div class="field name" [class.disabled]="disabledFields[\'name\']" *ngIf="!hiddenFields[\'name\']">              <label for="entity-name">Name</label>              <input formControlName="NAME_FULL"                      class="search-input"                      id="entity-name"                      type="text"                      list="search-history-entity-name"                      [attr.disabled]="getDisabled(\'name\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Search for Name"                      (input)="checkHistoryForMatchOnChange($event)">              <datalist *ngIf="searchHistoryName.length > 0 && !searchHistoryDisabled" id="search-history-entity-name">                <option *ngFor="let item of searchHistoryName" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field dob" [class.disabled]="disabledFields[\'dob\']" *ngIf="!hiddenFields[\'dob\']">              <label for="entity-dob">Date of Birth</label>              <input formControlName="DATE_OF_BIRTH"                      id="entity-dob"                      type="text"                      list="search-history-entity-dob"                      [attr.disabled]="getDisabled(\'dob\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="mm/dd/yyyy">              <datalist *ngIf="searchHistoryDob.length > 0 && !searchHistoryDisabled" id="search-history-entity-dob">                <option *ngFor="let item of searchHistoryDob" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field identifier" [class.disabled]="disabledFields[\'identifier\']" *ngIf="!hiddenFields[\'identifier\']">              <label for="entity-identifier">Identifier</label>              <input formControlName="IDENTIFIER"                      id="entity-identifier"                      type="text"                      list="search-history-entity-identifier"                      [attr.disabled]="getDisabled(\'identifier\')"                      (keyup.enter)="onKeyEnter()"                      [placeholder]="placeHolderTextForIdentifierField">              <datalist *ngIf="searchHistoryIdentifier.length > 0 && !searchHistoryDisabled" id="search-history-entity-identifier">                <option *ngFor="let item of searchHistoryIdentifier" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field type" [class.disabled]="disabledFields[\'identifierType\'] || disabledFields[\'identifier\']" *ngIf="!hiddenFields[\'identifier\'] && !hiddenFields[\'identifierType\']">              <label for="entity-type">Type</label>              <div class="flex-type-row">                <mat-icon *ngIf="showIdentifierTypesPicker" class="identifier-type-icon left hide-on-medium hide-on-wide" matTooltipPosition="above" matTooltip="Choose Identifiers in List" aria-hidden="false" aria-label="Choose Identifiers in List" (click)="chooseIdentifiers($event)">filter_list</mat-icon>                <select formControlName="IDENTIFIER_TYPE"                        class="identifier-dropdown"                        [class.filterShowing]="showIdentifierTypesPicker"                        id="entity-type"                        [attr.disabled]="getAnyDisabled([\'identifierType\',\'identifier\'])"                        name="type">                  <option [ngValue]="null" disabled>Choose ID type</option>                  <option *ngFor="let type of orderedAttributes()"                          [value]="type.attributeCode"                          [selected]="type.attributeCode === \'PASSPORT_NUMBER\'">{{ attributeCodeAsHumanReadable(type.attributeCode) | uppercase }}                  </option>                </select>                <mat-icon *ngIf="showIdentifierTypesPicker" class="identifier-type-icon right  hide-on-narrow" matTooltipPosition="left" matTooltip="Choose Identifiers in List" aria-hidden="false" aria-label="Choose Identifiers in List" (click)="chooseIdentifiers($event)">filter_list</mat-icon>              </div>            </div>            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">              <button mat-button class="button__search-go"              [attr.disabled]="getDisabled(\'searchButton\')"              (click)="submitSearch()">{{searchButtonLabel}}</button>            </div>          </div>          <div class="sz-row">            <div class="field address" [class.disabled]="disabledFields[\'address\']" *ngIf="!hiddenFields[\'address\']">              <label for="entity-address">Address</label>              <input formControlName="ADDR_FULL"                      id="entity-address"                      type="text"                      list="search-history-entity-address"                      [attr.disabled]="getDisabled(\'address\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Search for Address">              <datalist *ngIf="searchHistoryAddress.length > 0 && !searchHistoryDisabled" id="search-history-entity-address">                <option *ngFor="let item of searchHistoryAddress" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field phone" [class.disabled]="disabledFields[\'phone\']" *ngIf="!hiddenFields[\'phone\']">              <label for="entity-phone">Phone</label>              <input formControlName="PHONE_NUMBER"                      id="entity-phone"                      type="text"                      list="search-history-entity-phone"                      [attr.disabled]="getDisabled(\'phone\')"                      placeholder="Phone #">              <datalist *ngIf="searchHistoryPhone.length > 0 && !searchHistoryDisabled" id="search-history-entity-phone">                <option *ngFor="let item of searchHistoryPhone" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field email" [class.disabled]="disabledFields[\'email\']" *ngIf="!hiddenFields[\'email\']">              <label for="entity-email">Email</label>              <input formControlName="EMAIL_ADDRESS"                      id="entity-email"                      type="text"                      list="search-history-entity-email"                      [attr.disabled]="getDisabled(\'email\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Email Address">              <datalist *ngIf="searchHistoryEmail.length > 0 && !searchHistoryDisabled" id="search-history-entity-email">                <option *ngFor="let item of searchHistoryEmail" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field spacer">            </div>            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">{{cancelButtonLabel}}</button>            </div>          </div>          <div class="sz-row bottom">            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">{{cancelButtonLabelShort}}</button>            </div>            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">              <button mat-button class="button__search-go"              [attr.disabled]="getDisabled(\'searchButton\')"              (click)="submitSearch()">{{searchButtonLabelShort}}</button>            </div>          </div>        </form>      </section>    </div></div>'
     var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzSearchComponent'};

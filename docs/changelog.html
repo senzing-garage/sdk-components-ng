@@ -35,6 +35,14 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 <a href="https://dlaa.me/markdownlint/">markdownlint</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<h2 id="225---2021-11-01">[2.2.5] - 2021-11-01</h2>
+<ul>
+<li>Graph now allows the user to be able to show/hide entities on the graph control whos&#39; relationships belong to specific match keys present in the graph in the filters control.</li>
+<li><em>Search by Datasource/RecordId</em> now gets the full <code>SzEntityData</code> instead of just the <code>SzEntityRecord</code></li>
+<li>Old behavior(to return just <code>SzEntityRecord</code> instead of <code>SzEntityData</code>) relocated from <code>SzSearchService.getEntityByRecordId</code> to <code>SzSearchService.getRecordById</code></li>
+<li>Various new CSS Variables added for styling granularity relevant to <a href="https://github.com/Senzing/entity-search-web-app/issues/213">https://github.com/Senzing/entity-search-web-app/issues/213</a></li>
+</ul>
+<p>relevant tickets: #232 #233 #235</p>
 <h2 id="224---2021-08-06">[2.2.4] - 2021-08-06</h2>
 <ul>
 <li><a href="https://github.com/Senzing/rest-api-client-ng/releases">API Client package</a> updated to version <a href="https://github.com/Senzing/rest-api-client-ng/releases/tag/2.3.0">2.3.0</a></li>
