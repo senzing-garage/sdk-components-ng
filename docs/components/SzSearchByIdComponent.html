@@ -209,6 +209,12 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#cancelButtonLabel">cancelButtonLabel</a>
+                            </li>
+                            <li>
+                                <a href="#cancelButtonLabelShort">cancelButtonLabelShort</a>
+                            </li>
+                            <li>
                                 <a href="#dataSource">dataSource</a>
                             </li>
                             <li>
@@ -225,6 +231,9 @@
                             </li>
                             <li>
                                 <a href="#disableSearchButton">disableSearchButton</a>
+                            </li>
+                            <li>
+                                <a href="#enforceModalSearch">enforceModalSearch</a>
                             </li>
                             <li>
                                 <a href="#entityId">entityId</a>
@@ -255,6 +264,12 @@
                             </li>
                             <li>
                                 <a href="#recordId">recordId</a>
+                            </li>
+                            <li>
+                                <a href="#searchButtonLabel">searchButtonLabel</a>
+                            </li>
+                            <li>
+                                <a href="#searchButtonLabelShort">searchButtonLabelShort</a>
                             </li>
                             <li>
                                 <a href="#searchValue">searchValue</a>
@@ -477,6 +492,36 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="cancelButtonLabel"></a>
+                        <b>cancelButtonLabel</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;Clear Search Criteria&quot;</code>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="cancelButtonLabelShort"></a>
+                        <b>cancelButtonLabelShort</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;Clear&quot;</code>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="dataSource"></a>
                         <b>dataSource</b>
                     </td>
@@ -596,6 +641,21 @@ format is &quot;SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER&quot; or array of strings
                     <td class="col-md-4">
                         <div class="io-description"><p>disable the search button. button is not clickable. </p>
 </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="enforceModalSearch"></a>
+                        <b>enforceModalSearch</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
                     </td>
                 </tr>
             </tbody>
@@ -786,6 +846,42 @@ api server when a configuration change is detected</p>
                     <td class="col-md-4">
                         <a name="recordId"></a>
                         <b>recordId</b>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchButtonLabel"></a>
+                        <b>searchButtonLabel</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;Search&quot;</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>text that shows up in buttons </p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchButtonLabelShort"></a>
+                        <b>searchButtonLabelShort</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;Search&quot;</code>
                     </td>
                 </tr>
             </tbody>
@@ -2411,7 +2507,7 @@ conf to change before fetching resources like the identifiers list</p>
               &lt;div class&#x3D;&quot;action-button__wrapper hide-on-narrow&quot; [class.disabled]&#x3D;&quot;disabledFields[&#x27;searchButton&#x27;]&quot; *ngIf&#x3D;&quot;!hiddenFields[&#x27;searchButton&#x27;]&quot;&gt;
                 &lt;button mat-button class&#x3D;&quot;button__search-go&quot;
                 [attr.disabled]&#x3D;&quot;getDisabled(&#x27;searchButton&#x27;)&quot;
-                (click)&#x3D;&quot;submitSearch()&quot;&gt;Get&lt;/button&gt;
+                (click)&#x3D;&quot;submitSearch()&quot;&gt;{{searchButtonLabel}}&lt;/button&gt;
               &lt;/div&gt;
           &lt;/div&gt;
           &lt;div class&#x3D;&quot;sz-row&quot;&gt;
@@ -2428,19 +2524,19 @@ conf to change before fetching resources like the identifiers list</p>
             &lt;div class&#x3D;&quot;action-button__wrapper hide-on-narrow&quot; [class.disabled]&#x3D;&quot;disabledFields[&#x27;resetButton&#x27;]&quot; *ngIf&#x3D;&quot;!hiddenFields[&#x27;resetButton&#x27;]&quot;&gt;
               &lt;button mat-button class&#x3D;&quot;button__search-clear&quot;
               [attr.disabled]&#x3D;&quot;getDisabled(&#x27;resetButton&#x27;)&quot;
-              (click)&#x3D;&quot;clearSearch()&quot;&gt;Clear Get Criteria&lt;/button&gt;
+              (click)&#x3D;&quot;clearSearch()&quot;&gt;{{cancelButtonLabel}}&lt;/button&gt;
             &lt;/div&gt;
           &lt;/div&gt;
           &lt;div class&#x3D;&quot;sz-row bottom&quot;&gt;
             &lt;div class&#x3D;&quot;action-button__wrapper hide-on-medium hide-on-wide&quot; [class.disabled]&#x3D;&quot;disabledFields[&#x27;resetButton&#x27;]&quot; *ngIf&#x3D;&quot;!hiddenFields[&#x27;resetButton&#x27;]&quot;&gt;
               &lt;button mat-button class&#x3D;&quot;button__search-clear&quot;
               [attr.disabled]&#x3D;&quot;getDisabled(&#x27;resetButton&#x27;)&quot;
-              (click)&#x3D;&quot;clearSearch()&quot;&gt;Clear&lt;/button&gt;
+              (click)&#x3D;&quot;clearSearch()&quot;&gt;{{cancelButtonLabelShort}}&lt;/button&gt;
             &lt;/div&gt;
             &lt;div class&#x3D;&quot;action-button__wrapper hide-on-medium hide-on-wide&quot; [class.disabled]&#x3D;&quot;disabledFields[&#x27;searchButton&#x27;]&quot; *ngIf&#x3D;&quot;!hiddenFields[&#x27;searchButton&#x27;]&quot;&gt;
               &lt;button mat-button class&#x3D;&quot;button__search-go&quot;
               [attr.disabled]&#x3D;&quot;getDisabled(&#x27;searchButton&#x27;)&quot;
-              (click)&#x3D;&quot;submitSearch()&quot;&gt;Get&lt;/button&gt;
+              (click)&#x3D;&quot;submitSearch()&quot;&gt;{{searchButtonLabelShort}}&lt;/button&gt;
             &lt;/div&gt;
           &lt;/div&gt;
         &lt;/form&gt;
@@ -2729,7 +2825,7 @@ conf to change before fetching resources like the identifiers list</p>
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div>  <!-- @senzing/sdk/search/sz-search-by-id -->  <!--    NAME_FULL    DATE_OF_BIRTH    IDENTIFIER    IDENTIFIER_TYPE    ADDR_FULL    PHONE_NUMBER    EMAIL_ADDRESS  -->  <div class="content" *ngIf="true"  [ngClass]="_layoutClasses"  >      <section class="entity search" (ngSubmit)="submitSearch()">        <form class="form" [formGroup]="entitySearchForm" novalidate>          <div class="sz-row">              <div class="field datasource">                  <label for="entity-datasource">Get by Record ID</label>                  <select formControlName="dataSource"                  class="datasource-dropdown"                  id="datasource-name"                  name="datasource-name">                    <option [ngValue]="null" disabled [selected]="true">Data Source Name</option>                    <option *ngFor="let dsName of filteredDataSources"                            [value]="dsName">{{ dsName }}                    </option>                  </select>              </div>              <div class="field recordid" [class.disabled]="disabledFields[\'recordId\']" *ngIf="!hiddenFields[\'recordId\']">                <input formControlName="recordId"                        class="search-input"                        id="record-id"                        type="text"                        [attr.disabled]="getDisabled(\'recordId\')"                        (keyup.enter)="onKeyEnter()"                        placeholder="Record ID">              </div>              <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">                <button mat-button class="button__search-go"                [attr.disabled]="getDisabled(\'searchButton\')"                (click)="submitSearch()">Get</button>              </div>          </div>          <div class="sz-row">            <div class="field entityid">              <label for="entity-id">Get by Entity ID</label>              <input formControlName="entityId"                      class="search-input"                      id="entity-id"                      type="text"                      [attr.disabled]="getDisabled(\'entityId\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Entity ID">            </div>            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">Clear Get Criteria</button>            </div>          </div>          <div class="sz-row bottom">            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">Clear</button>            </div>            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">              <button mat-button class="button__search-go"              [attr.disabled]="getDisabled(\'searchButton\')"              (click)="submitSearch()">Get</button>            </div>          </div>        </form>      </section>    </div></div>'
+        var COMPONENT_TEMPLATE = '<div>  <!-- @senzing/sdk/search/sz-search-by-id -->  <!--    NAME_FULL    DATE_OF_BIRTH    IDENTIFIER    IDENTIFIER_TYPE    ADDR_FULL    PHONE_NUMBER    EMAIL_ADDRESS  -->  <div class="content" *ngIf="true"  [ngClass]="_layoutClasses"  >      <section class="entity search" (ngSubmit)="submitSearch()">        <form class="form" [formGroup]="entitySearchForm" novalidate>          <div class="sz-row">              <div class="field datasource">                  <label for="entity-datasource">Get by Record ID</label>                  <select formControlName="dataSource"                  class="datasource-dropdown"                  id="datasource-name"                  name="datasource-name">                    <option [ngValue]="null" disabled [selected]="true">Data Source Name</option>                    <option *ngFor="let dsName of filteredDataSources"                            [value]="dsName">{{ dsName }}                    </option>                  </select>              </div>              <div class="field recordid" [class.disabled]="disabledFields[\'recordId\']" *ngIf="!hiddenFields[\'recordId\']">                <input formControlName="recordId"                        class="search-input"                        id="record-id"                        type="text"                        [attr.disabled]="getDisabled(\'recordId\')"                        (keyup.enter)="onKeyEnter()"                        placeholder="Record ID">              </div>              <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">                <button mat-button class="button__search-go"                [attr.disabled]="getDisabled(\'searchButton\')"                (click)="submitSearch()">{{searchButtonLabel}}</button>              </div>          </div>          <div class="sz-row">            <div class="field entityid">              <label for="entity-id">Get by Entity ID</label>              <input formControlName="entityId"                      class="search-input"                      id="entity-id"                      type="text"                      [attr.disabled]="getDisabled(\'entityId\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Entity ID">            </div>            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">{{cancelButtonLabel}}</button>            </div>          </div>          <div class="sz-row bottom">            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">{{cancelButtonLabelShort}}</button>            </div>            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">              <button mat-button class="button__search-go"              [attr.disabled]="getDisabled(\'searchButton\')"              (click)="submitSearch()">{{searchButtonLabelShort}}</button>            </div>          </div>        </form>      </section>    </div></div>'
     var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzSearchByIdComponent'};

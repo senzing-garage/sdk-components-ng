@@ -1024,8 +1024,9 @@ used for displaying the parameters being searched on above result list.</p>
     &lt;/div&gt;
 
     &lt;div class&#x3D;&quot;search-result__section-header matches&quot;
-      *ngIf&#x3D;&quot;this.matches?.length &gt; 0&quot;&gt;Matches&lt;/div&gt;
+      *ngIf&#x3D;&quot;this.matches?.length &gt; 0&quot;&gt;&lt;span&gt;Matches&lt;/span&gt;&lt;/div&gt;
     &lt;sz-search-result-card
+      class&#x3D;&quot;matches&quot;
       *ngFor&#x3D;&quot;let searchResult of this.matches; let i &#x3D; index&quot;
       (click)&#x3D;&quot;onResultClick($event, searchResult)&quot;
       [searchResult]&#x3D;&quot;searchResult&quot;
@@ -1034,8 +1035,9 @@ used for displaying the parameters being searched on above result list.</p>
     &lt;/sz-search-result-card&gt;
 
     &lt;div class&#x3D;&quot;search-result__section-header possible-match&quot;
-      *ngIf&#x3D;&quot;this.possibleMatches?.length &gt; 0&quot;&gt;Possible Match&lt;/div&gt;
+      *ngIf&#x3D;&quot;this.possibleMatches?.length &gt; 0&quot;&gt;&lt;span&gt;Possible Match&lt;/span&gt;&lt;/div&gt;
     &lt;sz-search-result-card
+      class&#x3D;&quot;possible-match&quot;
       *ngFor&#x3D;&quot;let searchResult of this.possibleMatches; let i &#x3D; index&quot;
       (click)&#x3D;&quot;onResultClick($event, searchResult)&quot;
       [searchResult]&#x3D;&quot;searchResult&quot;
@@ -1044,8 +1046,9 @@ used for displaying the parameters being searched on above result list.</p>
     &lt;/sz-search-result-card&gt;
 
     &lt;div class&#x3D;&quot;search-result__section-header possibly-related&quot;
-      *ngIf&#x3D;&quot;this.discoveredRelationships?.length &gt; 0&quot;&gt;Possibly Related&lt;/div&gt;
+      *ngIf&#x3D;&quot;this.discoveredRelationships?.length &gt; 0&quot;&gt;&lt;span&gt;Possibly Related&lt;/span&gt;&lt;/div&gt;
     &lt;sz-search-result-card
+      class&#x3D;&quot;possibly-related&quot;
       *ngFor&#x3D;&quot;let searchResult of this.discoveredRelationships; let i &#x3D; index&quot;
       (click)&#x3D;&quot;onResultClick($event, searchResult)&quot;
       [searchResult]&#x3D;&quot;searchResult&quot;
@@ -1054,8 +1057,9 @@ used for displaying the parameters being searched on above result list.</p>
     &lt;/sz-search-result-card&gt;
 
     &lt;div class&#x3D;&quot;search-result__section-header name-only-matches&quot;
-      *ngIf&#x3D;&quot;this.nameOnlyMatches?.length &gt; 0&quot;&gt;Name Only Matches&lt;/div&gt;
+      *ngIf&#x3D;&quot;this.nameOnlyMatches?.length &gt; 0&quot;&gt;&lt;span&gt;Name Only Matches&lt;/span&gt;&lt;/div&gt;
     &lt;sz-search-result-card
+      class&#x3D;&quot;name-only&quot;
       *ngFor&#x3D;&quot;let searchResult of this.nameOnlyMatches; let i &#x3D; index&quot;
       (click)&#x3D;&quot;onResultClick($event, searchResult)&quot;
       [searchResult]&#x3D;&quot;searchResult&quot;
@@ -1117,6 +1121,9 @@ used for displaying the parameters being searched on above result list.</p>
     align-items: center;
     color: var(--sz-search-results-section-header-color);
     padding: var(--sz-search-results-section-header-padding);
+    span {
+      opacity: var(--sz-search-results-section-header-text-opacity);
+    }
 
     &amp;.matches {
       background-color: var(--sz-search-results-matches-header-background-color);
@@ -1129,6 +1136,27 @@ used for displaying the parameters being searched on above result list.</p>
     }
     &amp;.name-only-matches {
       background-color: var(--sz-search-results-name-only-matches-header-background-color);
+    }
+  }
+
+  sz-search-result-card {
+    cursor: var(--sz-search-results-card-cursor);
+    &amp;:hover {
+      color: var(--sz-search-results-card-hover-color);
+      cursor: var(--sz-search-results-card-hover-cursor);
+      /* give implementers option of &quot;per-type&quot; rollover colors */      
+      &amp;.matches {
+        color: var(--sz-search-results-matches-card-hover-color);
+      }
+      &amp;.possible-match {
+        color: var(--sz-search-results-possible-match-card-hover-color);
+      }
+      &amp;.possibly-related {
+        color: var(--sz-search-results-possibly-related-card-hover-color);
+      }
+      &amp;.name-only {
+        color: var(--sz-search-results-name-only-matches-card-hover-color);
+      }
     }
   }
 
@@ -1172,7 +1200,7 @@ used for displaying the parameters being searched on above result list.</p>
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div>    <!-- @senzing/sdk/search/sz-search-results -->    <div class="sz-search-results-total-summary">        <div class="sz-search-results-total" *ngIf="searchResults && searchValue">          <span class="sz-search-results-total-bold">{{searchResultsTotal}} Results </span>found for          <div>            <ng-container *ngFor="let attribute of attributeDisplay">{{attribute?.attr}}              <span *ngIf="attribute?.value">:</span>              <span class="sz-search-results-parameter-value">{{attribute?.value}}&nbsp;</span>            </ng-container>          </div>        </div>    </div>    <div class="search-result__section-header matches"      *ngIf="this.matches?.length > 0">Matches</div>    <sz-search-result-card      *ngFor="let searchResult of this.matches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Match\'"      [showDataSources]="showDataSources">    </sz-search-result-card>    <div class="search-result__section-header possible-match"      *ngIf="this.possibleMatches?.length > 0">Possible Match</div>    <sz-search-result-card      *ngFor="let searchResult of this.possibleMatches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Possible Matches\'"      [showDataSources]="showDataSources">    </sz-search-result-card>    <div class="search-result__section-header possibly-related"      *ngIf="this.discoveredRelationships?.length > 0">Possibly Related</div>    <sz-search-result-card      *ngFor="let searchResult of this.discoveredRelationships; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Discovered Relationships\'"      [showDataSources]="showDataSources">    </sz-search-result-card>    <div class="search-result__section-header name-only-matches"      *ngIf="this.nameOnlyMatches?.length > 0">Name Only Matches</div>    <sz-search-result-card      *ngFor="let searchResult of this.nameOnlyMatches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Name Only Matches\'"      [showDataSources]="showDataSources"></sz-search-result-card></div></div>'
+        var COMPONENT_TEMPLATE = '<div><div>    <!-- @senzing/sdk/search/sz-search-results -->    <div class="sz-search-results-total-summary">        <div class="sz-search-results-total" *ngIf="searchResults && searchValue">          <span class="sz-search-results-total-bold">{{searchResultsTotal}} Results </span>found for          <div>            <ng-container *ngFor="let attribute of attributeDisplay">{{attribute?.attr}}              <span *ngIf="attribute?.value">:</span>              <span class="sz-search-results-parameter-value">{{attribute?.value}}&nbsp;</span>            </ng-container>          </div>        </div>    </div>    <div class="search-result__section-header matches"      *ngIf="this.matches?.length > 0"><span>Matches</span></div>    <sz-search-result-card      class="matches"      *ngFor="let searchResult of this.matches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Match\'"      [showDataSources]="showDataSources">    </sz-search-result-card>    <div class="search-result__section-header possible-match"      *ngIf="this.possibleMatches?.length > 0"><span>Possible Match</span></div>    <sz-search-result-card      class="possible-match"      *ngFor="let searchResult of this.possibleMatches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Possible Matches\'"      [showDataSources]="showDataSources">    </sz-search-result-card>    <div class="search-result__section-header possibly-related"      *ngIf="this.discoveredRelationships?.length > 0"><span>Possibly Related</span></div>    <sz-search-result-card      class="possibly-related"      *ngFor="let searchResult of this.discoveredRelationships; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Discovered Relationships\'"      [showDataSources]="showDataSources">    </sz-search-result-card>    <div class="search-result__section-header name-only-matches"      *ngIf="this.nameOnlyMatches?.length > 0"><span>Name Only Matches</span></div>    <sz-search-result-card      class="name-only"      *ngFor="let searchResult of this.nameOnlyMatches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Name Only Matches\'"      [showDataSources]="showDataSources"></sz-search-result-card></div></div>'
     var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzSearchResultsComponent'};

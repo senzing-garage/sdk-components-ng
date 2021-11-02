@@ -185,6 +185,9 @@ Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsS
                                     <a href="#dataSourcesFiltered">dataSourcesFiltered</a>
                                 </li>
                                 <li>
+                                    <a href="#matchKeysIncluded">matchKeysIncluded</a>
+                                </li>
+                                <li>
                                     <a href="#neverFilterQueriedEntityIds">neverFilterQueriedEntityIds</a>
                                 </li>
                                 <li>
@@ -254,6 +257,7 @@ instead of the empty superclass</p>
     &#x27;maxEntities&#x27;,
     &#x27;buildOut&#x27;,
     &#x27;dataSourcesFiltered&#x27;,
+    &#x27;matchKeysIncluded&#x27;,
     &#x27;neverFilterQueriedEntityIds&#x27;,
     &#x27;queriedEntitiesColor&#x27;
   ]</code>
@@ -1145,6 +1149,78 @@ useful for not getting notified on bulk property sets.</p>
                     <tr>
                         <td class="col-md-4">
                                 <div class="io-description"><p>hide any entity node when belonging to particular datasources </p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code>[]</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="matchKeysIncluded"></a>
+                        <span class="name"><b>matchKeysIncluded</b><a href="#matchKeysIncluded"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>matchKeysIncluded()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>hide any entity node when relationship does not contain a particular match key </p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>string[]</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>matchKeysIncluded(value: [])</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>hide any entity node when relationship does not contain a particular match key </p>
 </div>
 
                                 <div class="io-description">

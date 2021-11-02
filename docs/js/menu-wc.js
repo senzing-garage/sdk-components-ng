@@ -395,6 +395,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/SzMatchFields.html" data-type="entity-link">SzMatchFields</a>
                             </li>
                             <li class="link">
+                                <a href="interfaces/SzMatchKeyComposite.html" data-type="entity-link">SzMatchKeyComposite</a>
+                            </li>
+                            <li class="link">
                                 <a href="interfaces/SzNetworkGraphInputs.html" data-type="entity-link">SzNetworkGraphInputs</a>
                             </li>
                             <li class="link">
