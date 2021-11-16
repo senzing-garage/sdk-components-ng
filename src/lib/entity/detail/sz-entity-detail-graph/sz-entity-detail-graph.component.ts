@@ -143,8 +143,40 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   get showMatchKeyControl(): boolean | string {
     return this._showMatchKeyControl;
   }
+  private _showZoomControl: boolean = true;
+  /** the whether or not the zoom control is shown */
+  @Input() set showZoomControl(value: boolean | string) {
+    if((value as string) == 'true' || (value as string) == 'True' || (value as string) == 'false' || (value as string) == 'False') {
+      switch((value as string).toLowerCase()) {
+        case 'true':
+          value = true;
+          break;
+        case 'false':
+          value = false;
+          break;
+      }
+    }
+    this._showZoomControl = (value as boolean);
+  }
+  /** the whether or not the zoom control is shown */
+  get showZoomControl(): boolean | string {
+    return this._showZoomControl;
+  }
+  private _popOutIconPosition: string = 'bottom-left';
   /** the position of the pop-out icon ('top-left' | 'top-right' | 'bottom-right' | 'bottom-left') */
-  @Input() popOutIconPosition: string = 'bottom-left';
+  @Input() public set popOutIconPosition(value: string){
+    this._popOutIconPosition = value;
+    console.log('popOutIconPosition: '+ value, this._zoomControlPosition);
+    if(value == 'top-left' && this._zoomControlPosition == 'top-left') {
+      // move zoom control to bottom-right
+      this._zoomControlPosition = 'bottom-right';
+      console.log('popOutIconPosition: '+ value, this._zoomControlPosition);
+    }
+  }
+  /** the position of the pop-out icon ('top-left' | 'top-right' | 'bottom-right' | 'bottom-left') */
+  public get popOutIconPosition(): string {
+    return this._popOutIconPosition;
+  }
   @Input() public queriedEntitiesColor;
 
   @Input()
@@ -154,9 +186,28 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   get expanded(): boolean {
     return this.isOpen;
   }
+  private _zoomControlPosition = 'top-left';
+  /** the position of the zoom control ('top-left' | 'top-right' | 'bottom-right' | 'bottom-left') */
+  @Input() public set zoomControlPosition(value: string){
+    this._zoomControlPosition = value;
+  }
+  /** the position of the zoom control ('top-left' | 'top-right' | 'bottom-right' | 'bottom-left') */
+  public get zoomControlPosition(): string {
+    return this._zoomControlPosition;
+  }
+
+  private _graphZoom = 75;
+  /** get current zoom level */
+  public get graphZoom(): number {
+    return this._graphZoom;
+  }
+  /** current zoom level */
+  public set graphZoom(value: number) {
+    this._graphZoom = value;
+  }
 
   @Input() public captureMouseWheel: boolean = true;
-  @Output() public scrollWheelEvent: EventEmitter<MouseWheelEvent> = new EventEmitter<MouseWheelEvent>()
+  @Output() public scrollWheelEvent: EventEmitter<WheelEvent> = new EventEmitter<WheelEvent>()
 
   @HostBinding('class.open') get cssClssOpen() { return this.expanded; }
   @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; }
@@ -271,16 +322,28 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
    * and parsed build list of distinct datasource names
    * from data.
   */
- public onGraphDataLoaded(inputs: SzNetworkGraphInputs) {
-  if(inputs.data && inputs.data.entities) {
-    this.filterShowDataSources = SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data);
-    this.dataSourcesChange.emit( SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data) );
+  public onGraphDataLoaded(inputs: SzNetworkGraphInputs) {
+    if(inputs.data && inputs.data.entities) {
+      this.filterShowDataSources = SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data);
+      this.dataSourcesChange.emit( SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data) );
+    }
+    if(inputs.data) {
+      this.dataLoaded.emit( inputs.data );
+    }
+    console.log('onGraphDataLoaded: ', inputs);
   }
-  if(inputs.data) {
-    this.dataLoaded.emit( inputs.data );
+  /** when scale of graph changes, store value for control indicators */
+  public onGraphZoom(value) {
+    this._graphZoom = value;
   }
-  console.log('onGraphDataLoaded: ', inputs);
-}
+  
+
+  public zoomIn() {
+    this.graph.zoomIn();
+  }
+  public zoomOut() {
+    this.graph.zoomOut();
+  }
   /**
    * on entity node right click in the graph.
    * proxies to synthetic "contextMenuClick" event.
