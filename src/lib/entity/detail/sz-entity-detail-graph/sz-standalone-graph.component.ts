@@ -156,6 +156,25 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   get showMatchKeyControl(): boolean | string {
     return this._showMatchKeyControl;
   }
+  private _showZoomControl: boolean = true;
+  /** the whether or not the zoom control is shown */
+  @Input() set showZoomControl(value: boolean | string) {
+    if((value as string) == 'true' || (value as string) == 'True' || (value as string) == 'false' || (value as string) == 'False') {
+      switch((value as string).toLowerCase()) {
+        case 'true':
+          value = true;
+          break;
+        case 'false':
+          value = false;
+          break;
+      }
+    }
+    this._showZoomControl = (value as boolean);
+  }
+  /** the whether or not the zoom control is shown */
+  get showZoomControl(): boolean | string {
+    return this._showZoomControl;
+  }
   /** the position of the pop-out icon ('top-left' | 'top-right' | 'bottom-right' | 'bottom-left') */
   @Input() popOutIconPosition: string = 'bottom-left';
   @Input() public queriedEntitiesColor;
@@ -167,7 +186,25 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
   get expanded(): boolean {
     return this.isOpen;
   }
+  private _zoomControlPosition = 'top-left';
+  /** the position of the zoom control ('top-left' | 'top-right' | 'bottom-right' | 'bottom-left') */
+  @Input() public set zoomControlPosition(value: string){
+    this._zoomControlPosition = value;
+  }
+  /** the position of the zoom control ('top-left' | 'top-right' | 'bottom-right' | 'bottom-left') */
+  public get zoomControlPosition(): string {
+    return this._zoomControlPosition;
+  }
 
+  private _graphZoom = 75;
+  /** get current zoom level */
+  public get graphZoom(): number {
+    return this._graphZoom;
+  }
+  /** current zoom level */
+  public set graphZoom(value: number) {
+    this._graphZoom = value;
+  }
   @HostBinding('class.showing-link-labels') public get showingLinkLabels(): boolean {
     return this._showMatchKeys;
   }
@@ -288,6 +325,18 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
       this.dataLoaded.emit( inputs.data );
     }
     // console.log('onGraphDataLoaded setter: ', inputs);
+  }
+  /** when scale of graph changes, store value for control indicators */
+  public onGraphZoom(value) {
+    this._graphZoom = value;
+  }
+  /** zoom in to the graph */
+  public zoomIn() {
+    this.graph.zoomIn();
+  }
+  /** zoom out of the graph */
+  public zoomOut() {
+    this.graph.zoomOut();
   }
   /**
    * on entity node right click in the graph.

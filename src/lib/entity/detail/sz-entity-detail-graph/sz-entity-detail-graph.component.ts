@@ -337,7 +337,6 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     this._graphZoom = value;
   }
   
-
   public zoomIn() {
     this.graph.zoomIn();
   }

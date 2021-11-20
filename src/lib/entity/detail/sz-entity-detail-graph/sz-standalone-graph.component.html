@@ -1,5 +1,14 @@
 
 <div #graphContainer class="sz-standalone-graph-container">
+  <div *ngIf="showZoomControl" class="zoom-control-container"
+  [class.top-left]="zoomControlPosition == 'top-left'"
+  [class.top-right]="zoomControlPosition == 'top-right'"
+  [class.bottom-right]="zoomControlPosition == 'bottom-right'"
+  [class.bottom-left]="zoomControlPosition == 'bottom-left'">
+    <span><button class="zoom-out" (click)="zoomOut()"></button></span>
+    <input disabled="disabled" type="range" min="1" max="100" [value]="graphZoom" class="slider">
+    <span><button class="zoom-in" (click)="zoomIn()"></button></span>
+  </div>
   <sz-relationship-network #graph class="sz-relationship-network-graph"
     [class.filters-showing]="this.showFiltersControl"
     svgViewBox="150 50 400 300"
@@ -16,6 +25,7 @@
     (entityClick)="onEntityClick($event)"
     (noResults)="onNoResults($event)"
     (onDataLoaded)="onGraphDataLoaded($event)"
+    (scaleChanged)="onGraphZoom($event)"
     [maxEntities]="maxEntities"></sz-relationship-network>
 
     <sz-entity-detail-graph-control *ngIf="showMatchKeyControl" class="sz-entity-detail-graph-control"

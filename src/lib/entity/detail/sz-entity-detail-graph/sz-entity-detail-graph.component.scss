@@ -1,7 +1,5 @@
 @import "../../../scss/variables";
 
-$slider-width: 150px;
-
 :host {
   height: var(--sz-entity-detail-section-graph-height);
   display: block;
@@ -193,9 +191,9 @@ sz-entity-detail-graph-control, .sz-entity-detail-graph-control, .sz-entity-deta
 
 .zoom-control-container {
   position: absolute;
-  width: $slider-width;
-  top: calc(#{$slider-width} / 2 + 30px);
-  left: calc(30px - (#{$slider-width} / 2));
+  width: $graph-zoom-slider-width;
+  top: calc(#{$graph-zoom-slider-width} / 2 + 30px);
+  left: calc(30px - (#{$graph-zoom-slider-width} / 2));
   z-index: 100;
   -webkit-transform: rotate(270deg);
   -moz-transform: rotate(270deg);
@@ -205,24 +203,24 @@ sz-entity-detail-graph-control, .sz-entity-detail-graph-control, .sz-entity-deta
   flex-direction: row;
 
   &.top-left {
-    top: calc(#{$slider-width} / 2 + 30px);
-    left: calc(30px - (#{$slider-width} / 2 + 4px));
+    top: calc(#{$graph-zoom-slider-width} / 2 + 30px);
+    left: calc(30px - (#{$graph-zoom-slider-width} / 2 + 4px));
   }
   &.top-right {
-    top: calc(#{$slider-width} / 2 + 30px);
+    top: calc(#{$graph-zoom-slider-width} / 2 + 30px);
     left: unset;
-    right: calc(30px - (#{$slider-width} / 2));
+    right: calc(30px - (#{$graph-zoom-slider-width} / 2));
   }
   &.bottom-left {
     top: unset;
-    bottom: calc(#{$slider-width} / 2 + 40px);
-    left: calc(30px - (#{$slider-width} / 2 + 4px));
+    bottom: calc(#{$graph-zoom-slider-width} / 2 + 40px);
+    left: calc(30px - (#{$graph-zoom-slider-width} / 2 + 4px));
   }
   &.bottom-right {
     top: unset;
     left: unset;
-    bottom: calc(#{$slider-width} / 2 + 40px);
-    right: calc(30px - (#{$slider-width} / 2));
+    bottom: calc(#{$graph-zoom-slider-width} / 2 + 40px);
+    right: calc(30px - (#{$graph-zoom-slider-width} / 2));
   }
 
   button.zoom-in,
