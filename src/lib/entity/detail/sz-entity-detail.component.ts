@@ -182,12 +182,18 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    * ('top-left' | 'top-right' | 'bottom-right' | 'bottom-left')
   */
   @Input() graphPopOutIconPosition = 'bottom-left';
+  /** what position the pop-out icon should be displayed
+   * ('top-left' | 'top-right' | 'bottom-right' | 'bottom-left')
+  */
+  @Input() graphZoomControlPosition = 'top-left';
   /** show the small 'show match keys' control in the bottom right */
   @Input() graphShowMatchKeyControl = true;
   /** show the pop-out icon control */
   @Input() graphShowPopOutIcon = false;
   /** show the pop-out icon control */
   @Input() graphShowFiltersControl = false;
+  /** show the pop-out icon control */
+  @Input() graphShowZoomControl = false;
 
   /**
    * set the entity data directly, instead of via entityId lookup.

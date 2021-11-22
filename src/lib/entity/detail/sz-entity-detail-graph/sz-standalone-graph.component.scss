@@ -245,3 +245,102 @@ sz-entity-detail-graph-control, .sz-entity-detail-graph-control, .sz-entity-deta
     right: 0px;
   }
 }
+
+.zoom-control-container {
+  position: absolute;
+  width: $graph-zoom-slider-width;
+  top: calc(#{$graph-zoom-slider-width} / 2 + 30px);
+  left: calc(30px - (#{$graph-zoom-slider-width} / 2));
+  z-index: 100;
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  transform: rotate(270deg);
+  display: flex;
+  flex-direction: row;
+
+  &.top-left {
+    top: calc(#{$graph-zoom-slider-width} / 2 + 30px);
+    left: calc(30px - (#{$graph-zoom-slider-width} / 2 + 4px));
+  }
+  &.top-right {
+    top: calc(#{$graph-zoom-slider-width} / 2 + 30px);
+    left: unset;
+    right: calc(30px - (#{$graph-zoom-slider-width} / 2));
+  }
+  &.bottom-left {
+    top: unset;
+    bottom: calc(#{$graph-zoom-slider-width} / 2 + 40px);
+    left: calc(30px - (#{$graph-zoom-slider-width} / 2 + 4px));
+  }
+  &.bottom-right {
+    top: unset;
+    left: unset;
+    bottom: calc(#{$graph-zoom-slider-width} / 2 + 40px);
+    right: calc(30px - (#{$graph-zoom-slider-width} / 2));
+  }
+
+  button.zoom-in,
+  button.zoom-out {
+      border: 1px solid #bbb;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      line-height: 18px;
+      font-size: 18px;
+      display: block;
+      overflow: hidden;
+      color: #858585;
+      cursor: pointer;
+      position: relative;
+      top: calc(0px - (20px / 2) + 5.5px);
+      font-weight: bold;
+      background-repeat: no-repeat;
+  }
+
+  a.zoom-in, button.zoom-in {
+      right: -3px;
+      background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' viewBox='-4 -4 24 24' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xml:space='preserve' xmlns:serif='http://www.serif.com/' style='fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;'%3E%3Cg%3E%3Crect x='7' y='0' width='6' height='20' style='fill:%23707070;'/%3E%3C/g%3E%3Cg%3E%3Crect x='0' y='7' width='20' height='6' style='fill:%23707070;'/%3E%3C/g%3E%3C/svg%3E");
+      background-position: 1px 1px;
+      background-size: 12px;
+  }
+  a.zoom-out, button.zoom-out {
+      right: 3px;
+      background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' viewBox='0 5 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xml:space='preserve' xmlns:serif='http://www.serif.com/' style='fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;'%3E%3Crect x='7' y='0' width='6' height='20' style='fill: %23707070'/%3E%3C/svg%3E");
+      background-position: 2px 3px;
+      background-size: 12px 13px;
+  }
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 5px;
+  border-radius: 1px;  
+  background-color: #fff;
+  outline: solid 1px #707070;
+  /*opacity: 0.7;*/
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='25 -25 250 150' xmlns='http://www.w3.org/2000/svg' fill='%23bbbbbb'%3E%3Ccircle cx='50' cy='50' r='50'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 1px; 
+  background: #707070;
+  border: 1px solid #707070;
+  cursor: default;
+}
+
+.slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #7a7a7a;
+  cursor: default;
+}
