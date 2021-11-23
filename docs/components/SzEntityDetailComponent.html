@@ -278,7 +278,13 @@ Generates a complex detail page from input parameters.</p>
                                 <a href="#graphShowPopOutIcon">graphShowPopOutIcon</a>
                             </li>
                             <li>
+                                <a href="#graphShowZoomControl">graphShowZoomControl</a>
+                            </li>
+                            <li>
                                 <a href="#graphTitle">graphTitle</a>
+                            </li>
+                            <li>
+                                <a href="#graphZoomControlPosition">graphZoomControlPosition</a>
                             </li>
                             <li>
                                 <a href="#possibleMatchesSectionCollapsed">possibleMatchesSectionCollapsed</a>
@@ -802,6 +808,27 @@ to all children components. this value overrides auto-responsive css adjustments
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="graphShowZoomControl"></a>
+                        <b>graphShowZoomControl</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>show the pop-out icon control </p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="graphTitle"></a>
                         <b>graphTitle</b>
                     </td>
@@ -815,6 +842,28 @@ to all children components. this value overrides auto-responsive css adjustments
                 <tr>
                     <td class="col-md-4">
                         <div class="io-description"><p>graph section title</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="graphZoomControlPosition"></a>
+                        <b>graphZoomControlPosition</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;top-left&#x27;</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>what position the pop-out icon should be displayed
+(&#39;top-left&#39; | &#39;top-right&#39; | &#39;bottom-right&#39; | &#39;bottom-left&#39;)</p>
 </div>
                     </td>
                 </tr>
@@ -4278,6 +4327,8 @@ instance that shouldnt be updating pref state.</p>
     [captureMouseWheel]&#x3D;&quot;graphAllowScrollingZoom&quot;
     [showPopOutIcon]&#x3D;&quot;graphShowPopOutIcon&quot;
     [popOutIconPosition]&#x3D;&quot;graphPopOutIconPosition&quot;
+    [showZoomControl]&#x3D;&quot;graphShowZoomControl&quot;
+    [zoomControlPosition]&#x3D;&quot;graphZoomControlPosition&quot;
     (popoutClick)&#x3D;&quot;onGraphPopoutClick($event)&quot;
     [showMatchKeyControl]&#x3D;&quot;graphShowMatchKeyControl&quot;
     [showFiltersControl]&#x3D;&quot;graphShowFiltersControl&quot;
@@ -4369,7 +4420,7 @@ instance that shouldnt be updating pref state.</p>
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><!-- @senzing/sdk/entity/detail/sz-entity-detail --><div #nativeElementRef>  <sz-entity-detail-header  [entity]="entity"  [forceLayout]="_forceLayout"  [layoutClasses]="_layoutEnforcers">  </sz-entity-detail-header>  <sz-entity-detail-graph data-html2canvas-ignore    *ngIf="graphData && this.showGraphSection"    [data]="graphData"    [title]="this.graphTitle"    [captureMouseWheel]="graphAllowScrollingZoom"    [showPopOutIcon]="graphShowPopOutIcon"    [popOutIconPosition]="graphPopOutIconPosition"    (popoutClick)="onGraphPopoutClick($event)"    [showMatchKeyControl]="graphShowMatchKeyControl"    [showFiltersControl]="graphShowFiltersControl"    [showMatchKeys]="this._showGraphMatchKeys"    (contextMenuClick)="onGraphRightClick($event)"    (scrollWheelEvent)="graphScrollWheelEvent.emit($event)"    (entityClick)="onGraphEntityClick($event)"  ></sz-entity-detail-graph>  <sz-entity-details-section class="details-section datasources"    *ngIf="entity?.resolvedEntity?.records?.length && this.showMatchesSection"    collapsedStatePrefsKey="recordsSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'recordsSectionCollapsed\', $event)"    [sectionData]="entity?.resolvedEntity?.records"    [sectionTitle]="\'Matched Records\'"    sectionId="detail-section-1"    [sectionCount]="entity?.resolvedEntity?.records?.length"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInMatchesSection"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section possible"    *ngIf="this._possibleMatches?.length && this.showPossibleMatchesSection"    collapsedStatePrefsKey="possibleMatchesSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'possibleMatchesSectionCollapsed\', $event)"    [sectionData]="this._possibleMatches"    [sectionTitle]="\'Possible Matches\'"    sectionId="detail-section-2"    [sectionCount]="this._possibleMatches?.length"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInPossibleMatchesSection"    (onCollapsedChange)="this.onSectionCollapsedChange(\'possibleMatches\', $event)"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section discovered"    *ngIf="this._discoveredRelationships?.length && this.showPossibleRelationshipsSection"    collapsedStatePrefsKey="possibleRelationshipsSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'possibleRelationshipsSectionCollapsed\', $event)"    [sectionData]="this._discoveredRelationships"    [sectionTitle]="\'Possible Relationships\'"    sectionId="detail-section-3"    [sectionCount]="this._discoveredRelationships?.length"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInPossibleRelationshipsSection"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section disclosed"    *ngIf="this._disclosedRelationships?.length && this.showDisclosedSection"    collapsedStatePrefsKey="disclosedRelationshipsSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'disclosedRelationshipsSectionCollapsed\', $event)"    [sectionData]="this._disclosedRelationships"    [sectionTitle]="\'Disclosed Relationships\'"    sectionId="detail-section-4"    [sectionCount]="this._disclosedRelationships?.length"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInDisclosedSection"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section></div></div>'
+        var COMPONENT_TEMPLATE = '<div><!-- @senzing/sdk/entity/detail/sz-entity-detail --><div #nativeElementRef>  <sz-entity-detail-header  [entity]="entity"  [forceLayout]="_forceLayout"  [layoutClasses]="_layoutEnforcers">  </sz-entity-detail-header>  <sz-entity-detail-graph data-html2canvas-ignore    *ngIf="graphData && this.showGraphSection"    [data]="graphData"    [title]="this.graphTitle"    [captureMouseWheel]="graphAllowScrollingZoom"    [showPopOutIcon]="graphShowPopOutIcon"    [popOutIconPosition]="graphPopOutIconPosition"    [showZoomControl]="graphShowZoomControl"    [zoomControlPosition]="graphZoomControlPosition"    (popoutClick)="onGraphPopoutClick($event)"    [showMatchKeyControl]="graphShowMatchKeyControl"    [showFiltersControl]="graphShowFiltersControl"    [showMatchKeys]="this._showGraphMatchKeys"    (contextMenuClick)="onGraphRightClick($event)"    (scrollWheelEvent)="graphScrollWheelEvent.emit($event)"    (entityClick)="onGraphEntityClick($event)"  ></sz-entity-detail-graph>  <sz-entity-details-section class="details-section datasources"    *ngIf="entity?.resolvedEntity?.records?.length && this.showMatchesSection"    collapsedStatePrefsKey="recordsSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'recordsSectionCollapsed\', $event)"    [sectionData]="entity?.resolvedEntity?.records"    [sectionTitle]="\'Matched Records\'"    sectionId="detail-section-1"    [sectionCount]="entity?.resolvedEntity?.records?.length"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInMatchesSection"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section possible"    *ngIf="this._possibleMatches?.length && this.showPossibleMatchesSection"    collapsedStatePrefsKey="possibleMatchesSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'possibleMatchesSectionCollapsed\', $event)"    [sectionData]="this._possibleMatches"    [sectionTitle]="\'Possible Matches\'"    sectionId="detail-section-2"    [sectionCount]="this._possibleMatches?.length"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInPossibleMatchesSection"    (onCollapsedChange)="this.onSectionCollapsedChange(\'possibleMatches\', $event)"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section discovered"    *ngIf="this._discoveredRelationships?.length && this.showPossibleRelationshipsSection"    collapsedStatePrefsKey="possibleRelationshipsSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'possibleRelationshipsSectionCollapsed\', $event)"    [sectionData]="this._discoveredRelationships"    [sectionTitle]="\'Possible Relationships\'"    sectionId="detail-section-3"    [sectionCount]="this._discoveredRelationships?.length"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInPossibleRelationshipsSection"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section disclosed"    *ngIf="this._disclosedRelationships?.length && this.showDisclosedSection"    collapsedStatePrefsKey="disclosedRelationshipsSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'disclosedRelationshipsSectionCollapsed\', $event)"    [sectionData]="this._disclosedRelationships"    [sectionTitle]="\'Disclosed Relationships\'"    sectionId="detail-section-4"    [sectionCount]="this._disclosedRelationships?.length"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInDisclosedSection"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section></div></div>'
     var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzEntityDetailComponent'};

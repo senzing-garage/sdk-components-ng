@@ -6,6 +6,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.6] - 2021-11-23
+### Added
+- `SzEntityDetailGraphComponent`
+   - `showZoomControl` input setter for whether or not to show zoom controls.
+   - `showZoomControl` getter for whether or not zoom controls are shown.
+   - `zoomControlPosition` input setter for where the zoom control shows up on the embedded graph.
+   - `zoomControlPosition` getter for where the zoom control shows up on the embedded graph.
+   - `graphZoom` input setter for the current zoom level of the graph.
+   - `graphZoom` getter for the current zoom level of the graph.
+   - `onGraphZoom()` handler for proxying zoom state of graph component to local scope.
+   - `zoomIn()` zooms the graph in.
+   - `zoomOut()` zooms the graph out.
+- `SzStandaloneGraphComponent`
+   - `showZoomControl` input setter for whether or not to show zoom controls.
+   - `showZoomControl` getter for whether or not zoom controls are shown.
+   - `zoomControlPosition` input setter for where the zoom control shows up on the embedded graph.
+   - `zoomControlPosition` getter for where the zoom control shows up on the embedded graph.
+   - `graphZoom` input setter for the current zoom level of the graph.
+   - `graphZoom` getter for the current zoom level of the graph.
+   - `onGraphZoom()` handler for proxying zoom state of graph component to local scope.
+   - `zoomIn()` zooms the graph in.
+   - `zoomOut()` zooms the graph out.
+- `SzEntityDetailComponent`
+   - `graphZoomControlPosition` input setter for where the zoom control shows up on the embedded graph.
+   - `graphShowZoomControl` input setter for whether or not to show zoom controls on embedded graph.
+
+relevant tickets: #245 #240
+
 ## [2.2.5] - 2021-11-01
 
 - Graph now allows the user to be able to show/hide entities on the graph control whos' relationships belong to specific match keys present in the graph in the filters control.

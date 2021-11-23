@@ -209,6 +209,10 @@ to change the components parameters of this component.</p>
                                 <a href="#onGraphDataLoaded">onGraphDataLoaded</a>
                             </li>
                             <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#onGraphZoom">onGraphZoom</a>
+                            </li>
+                            <li>
                                 <a href="#onMatchKeysChange">onMatchKeysChange</a>
                             </li>
                             <li>
@@ -230,6 +234,14 @@ to change the components parameters of this component.</p>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#reload">reload</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#zoomIn">zoomIn</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#zoomOut">zoomOut</a>
                             </li>
                         </ul>
                     </td>
@@ -301,7 +313,13 @@ to change the components parameters of this component.</p>
                                 <a href="#showPopOutIcon">showPopOutIcon</a>
                             </li>
                             <li>
+                                <a href="#showZoomControl">showZoomControl</a>
+                            </li>
+                            <li>
                                 <a href="#title">title</a>
+                            </li>
+                            <li>
+                                <a href="#zoomControlPosition">zoomControlPosition</a>
                             </li>
                         </ul>
                     </td>
@@ -404,7 +422,16 @@ to change the components parameters of this component.</p>
                                     <a href="#showMatchKeyControl">showMatchKeyControl</a>
                                 </li>
                                 <li>
+                                    <a href="#showZoomControl">showZoomControl</a>
+                                </li>
+                                <li>
                                     <a href="#expanded">expanded</a>
+                                </li>
+                                <li>
+                                    <a href="#zoomControlPosition">zoomControlPosition</a>
+                                </li>
+                                <li>
+                                    <a href="#graphZoom">graphZoom</a>
                                 </li>
                                 <li>
                                     <a href="#graphIds">graphIds</a>
@@ -841,6 +868,22 @@ to change the components parameters of this component.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="showZoomControl"></a>
+                        <b>showZoomControl</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>the whether or not the zoom control is shown </p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="title"></a>
                         <b>title</b>
                     </td>
@@ -854,6 +897,28 @@ to change the components parameters of this component.</p>
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>&quot;Relationships at a Glance&quot;</code>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="zoomControlPosition"></a>
+                        <b>zoomControlPosition</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>the position of the zoom control (&#39;top-left&#39; | &#39;top-right&#39; | &#39;bottom-right&#39; | &#39;bottom-left&#39;) </p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -1464,6 +1529,70 @@ from data.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="onGraphZoom"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            onGraphZoom
+                        </b>
+                        <a href="#onGraphZoom"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onGraphZoom(value)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>when scale of graph changes, store value for control indicators </p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>value</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="onMatchKeysChange"></a>
                     <span class="name">
                         <b>
@@ -1863,6 +1992,80 @@ automatically adds the container ele page x/y to relative svg x/y for total x/y 
                     </div>
                     <div class="io-description">
                         
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="zoomIn"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            zoomIn
+                        </b>
+                        <a href="#zoomIn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>zoomIn()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>zoom in to the graph </p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="zoomOut"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            zoomOut
+                        </b>
+                        <a href="#zoomOut"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>zoomOut()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>zoom out of the graph </p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
                     </div>
                 </td>
             </tr>
@@ -2517,6 +2720,74 @@ automatically adds the container ele page x/y to relative svg x/y for total x/y 
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="showZoomControl"></a>
+                        <span class="name"><b>showZoomControl</b><a href="#showZoomControl"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>showZoomControl()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>the whether or not the zoom control is shown </p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>boolean | string</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>showZoomControl(value)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>the whether or not the zoom control is shown </p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="expanded"></a>
                         <span class="name"><b>expanded</b><a href="#expanded"><span class="icon ion-ios-link"></span></a></span>
                     </td>
@@ -2549,6 +2820,150 @@ automatically adds the container ele page x/y to relative svg x/y for total x/y 
                                                     <tr>
                                                             <td>value</td>
                                                     
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="zoomControlPosition"></a>
+                        <span class="name"><b>zoomControlPosition</b><a href="#zoomControlPosition"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>zoomControlPosition()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>the position of the zoom control (&#39;top-left&#39; | &#39;top-right&#39; | &#39;bottom-right&#39; | &#39;bottom-left&#39;) </p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>zoomControlPosition(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>the position of the zoom control (&#39;top-left&#39; | &#39;top-right&#39; | &#39;bottom-right&#39; | &#39;bottom-left&#39;) </p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="graphZoom"></a>
+                        <span class="name"><b>graphZoom</b><a href="#graphZoom"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>graphZoom()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>get current zoom level </p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>graphZoom(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>current zoom level </p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -2736,6 +3151,15 @@ automatically adds the container ele page x/y to relative svg x/y for total x/y 
     <div class="tab-pane fade " id="c-templateData">
         <pre class="line-numbers"><code class="language-html">
 &lt;div #graphContainer class&#x3D;&quot;sz-standalone-graph-container&quot;&gt;
+  &lt;div *ngIf&#x3D;&quot;showZoomControl&quot; class&#x3D;&quot;zoom-control-container&quot;
+  [class.top-left]&#x3D;&quot;zoomControlPosition &#x3D;&#x3D; &#x27;top-left&#x27;&quot;
+  [class.top-right]&#x3D;&quot;zoomControlPosition &#x3D;&#x3D; &#x27;top-right&#x27;&quot;
+  [class.bottom-right]&#x3D;&quot;zoomControlPosition &#x3D;&#x3D; &#x27;bottom-right&#x27;&quot;
+  [class.bottom-left]&#x3D;&quot;zoomControlPosition &#x3D;&#x3D; &#x27;bottom-left&#x27;&quot;&gt;
+    &lt;span&gt;&lt;button class&#x3D;&quot;zoom-out&quot; (click)&#x3D;&quot;zoomOut()&quot;&gt;&lt;/button&gt;&lt;/span&gt;
+    &lt;input disabled&#x3D;&quot;disabled&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;1&quot; max&#x3D;&quot;100&quot; [value]&#x3D;&quot;graphZoom&quot; class&#x3D;&quot;slider&quot;&gt;
+    &lt;span&gt;&lt;button class&#x3D;&quot;zoom-in&quot; (click)&#x3D;&quot;zoomIn()&quot;&gt;&lt;/button&gt;&lt;/span&gt;
+  &lt;/div&gt;
   &lt;sz-relationship-network #graph class&#x3D;&quot;sz-relationship-network-graph&quot;
     [class.filters-showing]&#x3D;&quot;this.showFiltersControl&quot;
     svgViewBox&#x3D;&quot;150 50 400 300&quot;
@@ -2752,6 +3176,7 @@ automatically adds the container ele page x/y to relative svg x/y for total x/y 
     (entityClick)&#x3D;&quot;onEntityClick($event)&quot;
     (noResults)&#x3D;&quot;onNoResults($event)&quot;
     (onDataLoaded)&#x3D;&quot;onGraphDataLoaded($event)&quot;
+    (scaleChanged)&#x3D;&quot;onGraphZoom($event)&quot;
     [maxEntities]&#x3D;&quot;maxEntities&quot;&gt;&lt;/sz-relationship-network&gt;
 
     &lt;sz-entity-detail-graph-control *ngIf&#x3D;&quot;showMatchKeyControl&quot; class&#x3D;&quot;sz-entity-detail-graph-control&quot;
@@ -3043,7 +3468,105 @@ sz-entity-detail-graph-control, .sz-entity-detail-graph-control, .sz-entity-deta
     right: 0px;
   }
 }
-</code></pre>
+
+.zoom-control-container {
+  position: absolute;
+  width: $graph-zoom-slider-width;
+  top: calc(#{$graph-zoom-slider-width} / 2 + 30px);
+  left: calc(30px - (#{$graph-zoom-slider-width} / 2));
+  z-index: 100;
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  transform: rotate(270deg);
+  display: flex;
+  flex-direction: row;
+
+  &amp;.top-left {
+    top: calc(#{$graph-zoom-slider-width} / 2 + 30px);
+    left: calc(30px - (#{$graph-zoom-slider-width} / 2 + 4px));
+  }
+  &amp;.top-right {
+    top: calc(#{$graph-zoom-slider-width} / 2 + 30px);
+    left: unset;
+    right: calc(30px - (#{$graph-zoom-slider-width} / 2));
+  }
+  &amp;.bottom-left {
+    top: unset;
+    bottom: calc(#{$graph-zoom-slider-width} / 2 + 40px);
+    left: calc(30px - (#{$graph-zoom-slider-width} / 2 + 4px));
+  }
+  &amp;.bottom-right {
+    top: unset;
+    left: unset;
+    bottom: calc(#{$graph-zoom-slider-width} / 2 + 40px);
+    right: calc(30px - (#{$graph-zoom-slider-width} / 2));
+  }
+
+  button.zoom-in,
+  button.zoom-out {
+      border: 1px solid #bbb;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      line-height: 18px;
+      font-size: 18px;
+      display: block;
+      overflow: hidden;
+      color: #858585;
+      cursor: pointer;
+      position: relative;
+      top: calc(0px - (20px / 2) + 5.5px);
+      font-weight: bold;
+      background-repeat: no-repeat;
+  }
+
+  a.zoom-in, button.zoom-in {
+      right: -3px;
+      background-image: url(&quot;data:image/svg+xml,%3Csvg width&#x3D;&#x27;100%25&#x27; height&#x3D;&#x27;100%25&#x27; viewBox&#x3D;&#x27;-4 -4 24 24&#x27; version&#x3D;&#x27;1.1&#x27; xmlns&#x3D;&#x27;http://www.w3.org/2000/svg&#x27; xmlns:xlink&#x3D;&#x27;http://www.w3.org/1999/xlink&#x27; xml:space&#x3D;&#x27;preserve&#x27; xmlns:serif&#x3D;&#x27;http://www.serif.com/&#x27; style&#x3D;&#x27;fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;&#x27;%3E%3Cg%3E%3Crect x&#x3D;&#x27;7&#x27; y&#x3D;&#x27;0&#x27; width&#x3D;&#x27;6&#x27; height&#x3D;&#x27;20&#x27; style&#x3D;&#x27;fill:%23707070;&#x27;/%3E%3C/g%3E%3Cg%3E%3Crect x&#x3D;&#x27;0&#x27; y&#x3D;&#x27;7&#x27; width&#x3D;&#x27;20&#x27; height&#x3D;&#x27;6&#x27; style&#x3D;&#x27;fill:%23707070;&#x27;/%3E%3C/g%3E%3C/svg%3E&quot;);
+      background-position: 1px 1px;
+      background-size: 12px;
+  }
+  a.zoom-out, button.zoom-out {
+      right: 3px;
+      background-image: url(&quot;data:image/svg+xml,%3Csvg width&#x3D;&#x27;100%25&#x27; height&#x3D;&#x27;100%25&#x27; viewBox&#x3D;&#x27;0 5 20 20&#x27; version&#x3D;&#x27;1.1&#x27; xmlns&#x3D;&#x27;http://www.w3.org/2000/svg&#x27; xmlns:xlink&#x3D;&#x27;http://www.w3.org/1999/xlink&#x27; xml:space&#x3D;&#x27;preserve&#x27; xmlns:serif&#x3D;&#x27;http://www.serif.com/&#x27; style&#x3D;&#x27;fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;&#x27;%3E%3Crect x&#x3D;&#x27;7&#x27; y&#x3D;&#x27;0&#x27; width&#x3D;&#x27;6&#x27; height&#x3D;&#x27;20&#x27; style&#x3D;&#x27;fill: %23707070&#x27;/%3E%3C/svg%3E&quot;);
+      background-position: 2px 3px;
+      background-size: 12px 13px;
+  }
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 5px;
+  border-radius: 1px;  
+  background-color: #fff;
+  outline: solid 1px #707070;
+  /*opacity: 0.7;*/
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox&#x3D;&#x27;25 -25 250 150&#x27; xmlns&#x3D;&#x27;http://www.w3.org/2000/svg&#x27; fill&#x3D;&#x27;%23bbbbbb&#x27;%3E%3Ccircle cx&#x3D;&#x27;50&#x27; cy&#x3D;&#x27;50&#x27; r&#x3D;&#x27;50&#x27;/%3E%3C/svg%3E&quot;);
+  background-repeat: repeat-x;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 1px; 
+  background: #707070;
+  border: 1px solid #707070;
+  cursor: default;
+}
+
+.slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #7a7a7a;
+  cursor: default;
+}</code></pre>
     </div>
 
 
@@ -3054,7 +3577,7 @@ sz-entity-detail-graph-control, .sz-entity-detail-graph-control, .sz-entity-deta
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div #graphContainer class="sz-standalone-graph-container">  <sz-relationship-network #graph class="sz-relationship-network-graph"    [class.filters-showing]="this.showFiltersControl"    svgViewBox="150 50 400 300"    svgPreserveAspectRatio="xMinYMid meet"    [entityIds]="graphIds"    [maxDegrees]="maxDegrees"    [buildOut]="buildOut"    [linkGravity]="5"    [highlight]="entityNodeColors"    [filter]="entityNodeFilters"    [includes]="entityMatchFilter"    [showLinkLabels]="_showMatchKeys"    (contextMenuClick)="onRightClick($event)"    (entityClick)="onEntityClick($event)"    (noResults)="onNoResults($event)"    (onDataLoaded)="onGraphDataLoaded($event)"    [maxEntities]="maxEntities"></sz-relationship-network>    <sz-entity-detail-graph-control *ngIf="showMatchKeyControl" class="sz-entity-detail-graph-control"    [showLinkLabels]="_showMatchKeys"    (optionChanged)="onOptionChange($event)"    ></sz-entity-detail-graph-control>    <sz-entity-detail-graph-filter *ngIf="showFiltersControl" class="sz-entity-detail-graph-filter"      [ngStyle]="{\'width.px\': filterWidth}"      [class.top-left]="filterControlPosition == \'top-left\'"      [class.top-right]="filterControlPosition == \'top-right\'"      [class.bottom-right]="filterControlPosition == \'bottom-right\'"      [class.bottom-left]="filterControlPosition == \'bottom-left\'"      [showLinkLabels]="_showMatchKeys"      (optionChanged)="onOptionChange($event)"      [showDataSources]="filterShowDataSources"      [showMatchKeys]="filterShowMatchKeys"    ></sz-entity-detail-graph-filter>    <svg class="popout-icon"      [class.top-left]="popOutIconPosition == \'top-left\'"      [class.top-right]="popOutIconPosition == \'top-right\'"      [class.bottom-right]="popOutIconPosition == \'bottom-right\'"      [class.bottom-left]="popOutIconPosition == \'bottom-left\'" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"      viewBox="0 0 64 64"      (click)="onPopOutClick()"      *ngIf="showPopOutIcon"      enable-background="new 0 0 64 64" xml:space="preserve">      <g>        <g><g><polygon points="53,56 8,56 8,11 30,11 30,3 0,3 0,64 61,64 61,34 53,34"/></g></g>        <g><g><polygon points="42,0 50,8 33,25 39,31 56,14 64,23 64,0"/></g></g>      </g>    </svg></div><!--  filterControlPosition: "{{ filterControlPosition }}"<br/>  entityIds: {{ graphIds }} --></div>'
+        var COMPONENT_TEMPLATE = '<div><div #graphContainer class="sz-standalone-graph-container">  <div *ngIf="showZoomControl" class="zoom-control-container"  [class.top-left]="zoomControlPosition == \'top-left\'"  [class.top-right]="zoomControlPosition == \'top-right\'"  [class.bottom-right]="zoomControlPosition == \'bottom-right\'"  [class.bottom-left]="zoomControlPosition == \'bottom-left\'">    <span><button class="zoom-out" (click)="zoomOut()"></button></span>    <input disabled="disabled" type="range" min="1" max="100" [value]="graphZoom" class="slider">    <span><button class="zoom-in" (click)="zoomIn()"></button></span>  </div>  <sz-relationship-network #graph class="sz-relationship-network-graph"    [class.filters-showing]="this.showFiltersControl"    svgViewBox="150 50 400 300"    svgPreserveAspectRatio="xMinYMid meet"    [entityIds]="graphIds"    [maxDegrees]="maxDegrees"    [buildOut]="buildOut"    [linkGravity]="5"    [highlight]="entityNodeColors"    [filter]="entityNodeFilters"    [includes]="entityMatchFilter"    [showLinkLabels]="_showMatchKeys"    (contextMenuClick)="onRightClick($event)"    (entityClick)="onEntityClick($event)"    (noResults)="onNoResults($event)"    (onDataLoaded)="onGraphDataLoaded($event)"    (scaleChanged)="onGraphZoom($event)"    [maxEntities]="maxEntities"></sz-relationship-network>    <sz-entity-detail-graph-control *ngIf="showMatchKeyControl" class="sz-entity-detail-graph-control"    [showLinkLabels]="_showMatchKeys"    (optionChanged)="onOptionChange($event)"    ></sz-entity-detail-graph-control>    <sz-entity-detail-graph-filter *ngIf="showFiltersControl" class="sz-entity-detail-graph-filter"      [ngStyle]="{\'width.px\': filterWidth}"      [class.top-left]="filterControlPosition == \'top-left\'"      [class.top-right]="filterControlPosition == \'top-right\'"      [class.bottom-right]="filterControlPosition == \'bottom-right\'"      [class.bottom-left]="filterControlPosition == \'bottom-left\'"      [showLinkLabels]="_showMatchKeys"      (optionChanged)="onOptionChange($event)"      [showDataSources]="filterShowDataSources"      [showMatchKeys]="filterShowMatchKeys"    ></sz-entity-detail-graph-filter>    <svg class="popout-icon"      [class.top-left]="popOutIconPosition == \'top-left\'"      [class.top-right]="popOutIconPosition == \'top-right\'"      [class.bottom-right]="popOutIconPosition == \'bottom-right\'"      [class.bottom-left]="popOutIconPosition == \'bottom-left\'" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"      viewBox="0 0 64 64"      (click)="onPopOutClick()"      *ngIf="showPopOutIcon"      enable-background="new 0 0 64 64" xml:space="preserve">      <g>        <g><g><polygon points="53,56 8,56 8,11 30,11 30,3 0,3 0,64 61,64 61,34 53,34"/></g></g>        <g><g><polygon points="42,0 50,8 33,25 39,31 56,14 64,23 64,0"/></g></g>      </g>    </svg></div><!--  filterControlPosition: "{{ filterControlPosition }}"<br/>  entityIds: {{ graphIds }} --></div>'
     var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzStandaloneGraphComponent'};

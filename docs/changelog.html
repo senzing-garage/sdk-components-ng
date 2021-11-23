@@ -35,6 +35,40 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 <a href="https://dlaa.me/markdownlint/">markdownlint</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<h2 id="226---2021-11-23">[2.2.6] - 2021-11-23</h2>
+<h3 id="added">Added</h3>
+<ul>
+<li><code>SzEntityDetailGraphComponent</code><ul>
+<li><code>showZoomControl</code> input setter for whether or not to show zoom controls.</li>
+<li><code>showZoomControl</code> getter for whether or not zoom controls are shown.</li>
+<li><code>zoomControlPosition</code> input setter for where the zoom control shows up on the embedded graph.</li>
+<li><code>zoomControlPosition</code> getter for where the zoom control shows up on the embedded graph.</li>
+<li><code>graphZoom</code> input setter for the current zoom level of the graph.</li>
+<li><code>graphZoom</code> getter for the current zoom level of the graph.</li>
+<li><code>onGraphZoom()</code> handler for proxying zoom state of graph component to local scope.</li>
+<li><code>zoomIn()</code> zooms the graph in.</li>
+<li><code>zoomOut()</code> zooms the graph out.</li>
+</ul>
+</li>
+<li><code>SzStandaloneGraphComponent</code><ul>
+<li><code>showZoomControl</code> input setter for whether or not to show zoom controls.</li>
+<li><code>showZoomControl</code> getter for whether or not zoom controls are shown.</li>
+<li><code>zoomControlPosition</code> input setter for where the zoom control shows up on the embedded graph.</li>
+<li><code>zoomControlPosition</code> getter for where the zoom control shows up on the embedded graph.</li>
+<li><code>graphZoom</code> input setter for the current zoom level of the graph.</li>
+<li><code>graphZoom</code> getter for the current zoom level of the graph.</li>
+<li><code>onGraphZoom()</code> handler for proxying zoom state of graph component to local scope.</li>
+<li><code>zoomIn()</code> zooms the graph in.</li>
+<li><code>zoomOut()</code> zooms the graph out.</li>
+</ul>
+</li>
+<li><code>SzEntityDetailComponent</code><ul>
+<li><code>graphZoomControlPosition</code> input setter for where the zoom control shows up on the embedded graph.</li>
+<li><code>graphShowZoomControl</code> input setter for whether or not to show zoom controls on embedded graph.</li>
+</ul>
+</li>
+</ul>
+<p>relevant tickets: #245 #240</p>
 <h2 id="225---2021-11-01">[2.2.5] - 2021-11-01</h2>
 <ul>
 <li>Graph now allows the user to be able to show/hide entities on the graph control whos&#39; relationships belong to specific match keys present in the graph in the filters control.</li>
