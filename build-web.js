@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const concat = require('concat');
-const cheerio = require('cheerio');
+const cheerio = require('Cheerio');
 const path = require('path');
 
 (async function build() {
