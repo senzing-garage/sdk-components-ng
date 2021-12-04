@@ -1,32 +1,191 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, ViewContainerRef, TemplateRef, Input } from '@angular/core';
+import {
+  SzEntitySearchParams,
+  SzAttributeSearchResult,
+  SzSearchComponent,
+  SzPdfUtilService,
+  SzSearchService,
+  SzEntityDetailComponent,
+  SzEntityData,
+  SzPrefsService,
+  SzConfigurationService
+} from '@senzing/sdk-components-ng';
+import { tap, filter, take } from 'rxjs/operators';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
+import { Subscription, fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  template: `
-    <!--The content below is only a placeholder and can be replaced.-->
-    <div style="text-align:center" class="content">
-      <h1>
-        Welcome to {{title}}!
-      </h1>
-      <span style="display: block">{{ title }} app is running!</span>
-      <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-    </div>
-    <h2>Here are some links to help you start: </h2>
-    <ul>
-      <li>
-        <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-      </li>
-      <li>
-        <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-      </li>
-      <li>
-        <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-      </li>
-    </ul>
-    
-  `,
+  templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title = 'ng11-webapp';
+export class AppComponent implements AfterViewInit {
+  public currentSearchResults: SzAttributeSearchResult[];
+  public currentlySelectedEntityId: number = 6;
+  public currentSearchParameters: SzEntitySearchParams;
+  public showSearchResults = false;
+  public set showGraphMatchKeys(value: boolean) {
+    if (this.entityDetailComponent){
+      this.entityDetailComponent.showGraphMatchKeys = value;
+    }
+  }
+  public get showGraphMatchKeys(): boolean {
+    if (this.entityDetailComponent){
+      // console.log('showGraphMatchKeys: ', this.entityDetailComponent.showGraphMatchKeys);
+      return this.entityDetailComponent.showGraphMatchKeys;
+    }
+   return false;
+  }
+
+  public get showSearchResultDetail(): boolean {
+    if (this.currentlySelectedEntityId && this.currentlySelectedEntityId > 0) {
+      return true;
+    }
+    return false;
+  }
+  @ViewChild('searchBox') searchBox: SzSearchComponent;
+  @ViewChild(SzEntityDetailComponent) entityDetailComponent: SzEntityDetailComponent;
+  @ViewChild('graphContextMenu') graphContextMenu: TemplateRef<any>;
+  sub: Subscription;
+  overlayRef: OverlayRef | null;
+
+  public get showPdfDownloadButton(): boolean {
+    return (this.currentSearchResults !== undefined && this.currentSearchResults && this.currentSearchResults.length > 0);
+  }
+
+  constructor(
+    public pdfUtil: SzPdfUtilService,
+    public searchService: SzSearchService,
+    public overlay: Overlay,
+    public prefs: SzPrefsService,
+    public viewContainerRef: ViewContainerRef){}
+
+  ngAfterViewInit() {
+    const searchParams = this.searchBox.getSearchParams();
+    if (searchParams){
+      if ( Object.keys(searchParams).length > 0) {
+        // do auto search
+        this.searchBox.submitSearch();
+      }
+    }
+  }
+
+  onSearchException(err: Error) {
+    throw (err.message);
+  }
+
+  onSearchResults(evt: SzAttributeSearchResult[]){
+    // store on current scope
+    this.currentSearchResults = evt;
+    // results module is bound to this property
+
+    // show results
+    this.showSearchResults = true;
+  }
+
+  public onBackToSearchResultsClick($event): void {
+    this.showSearchResults = true;
+    this.currentlySelectedEntityId = undefined;
+  }
+
+  public onPDFDownloadClick(): void {
+    this.pdfUtil.createPdfFromAttributeSearch( this.currentSearchResults, this.currentSearchParameters );
+  }
+
+  public onEntityPDFDownloadClick(): void {
+    const filename = this.entityDetailComponent.entity.resolvedEntity.entityName.toLowerCase().replace(' ', '-entity') + '.pdf';
+    this.pdfUtil.createPdfFromHtmlElement(this.entityDetailComponent.nativeElement, filename);
+  }
+
+  public onGraphEntityClick(event: any): void {
+    console.log('clicked on graph entity #' + event.entityId);
+  }
+  public onGraphEntityDblClick(event: any): void {
+    console.log('double clicked on graph entity #' + event.entityId);
+  }
+  public onGraphContextClick(event: any): void {
+    this.openContextMenu(event);
+  }
+
+  openGraphItemInNewMenu(entityId: number) {
+    window.open('/entity/' + entityId, '_blank');
+  }
+  openContextMenu(event: any) {
+    console.log('openContextMenu: ', event);
+    this.closeContextMenu();
+    const positionStrategy = this.overlay.position()
+      .flexibleConnectedTo({ x: Math.ceil(event.x) + 80, y: Math.ceil(event.y) })
+      .withPositions([
+        {
+          originX: 'end',
+          originY: 'bottom',
+          overlayX: 'end',
+          overlayY: 'top',
+        }
+      ]);
+
+    this.overlayRef = this.overlay.create({
+      positionStrategy,
+      scrollStrategy: this.overlay.scrollStrategies.close()
+    });
+
+    this.overlayRef.attach(new TemplatePortal(this.graphContextMenu, this.viewContainerRef, {
+      $implicit: event
+    }));
+
+    this.sub = fromEvent<MouseEvent>(document, 'click')
+      .pipe(
+        filter(evt => {
+          const clickTarget = evt.target as HTMLElement;
+          return !!this.overlayRef && !this.overlayRef.overlayElement.contains(clickTarget);
+        }),
+        take(1)
+      ).subscribe(() => this.closeContextMenu());
+
+    return false;
+  }
+
+  closeContextMenu() {
+    if (this.sub){
+      this.sub.unsubscribe();
+    }
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+      this.overlayRef = null;
+    }
+  }
+
+  public toggleGraphMatchKeys(event): void {
+    let _checked = false;
+    if (event.target) {
+      _checked = event.target.checked;
+    } else if (event.srcElement) {
+      _checked = event.srcElement.checked;
+    }
+    this.showGraphMatchKeys = _checked;
+  }
+
+  public onSearchResultClick(entityData: SzAttributeSearchResult){
+    // console.log('onSearchResultClick: ', entityData);
+    if (entityData && entityData.entityId > 0) {
+      this.currentlySelectedEntityId = entityData.entityId;
+      this.showSearchResults = false;
+    } else {
+      this.currentlySelectedEntityId = undefined;
+      this.showSearchResults = true;
+    }
+  }
+
+  public onSearchResultsCleared(searchParams: SzEntitySearchParams){
+    // hide search results
+    this.showSearchResults = false;
+    this.currentSearchResults = undefined;
+    this.currentlySelectedEntityId = undefined;
+  }
+
+  public onSearchParameterChange(searchParams: SzEntitySearchParams) {
+    console.log('onSearchParameterChange: ', searchParams);
+    this.currentSearchParameters = searchParams;
+  }
 }
