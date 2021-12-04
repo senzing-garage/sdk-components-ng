@@ -1459,6 +1459,149 @@
           }
         }
       }
+    },
+    "ng11-lib": {
+      "projectType": "library",
+      "root": "examples/ng11-lib",
+      "sourceRoot": "examples/ng11-lib/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "examples/ng11-lib/tsconfig.lib.json",
+            "project": "examples/ng11-lib/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "examples/ng11-lib/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "examples/ng11-lib/src/test.ts",
+            "tsConfig": "examples/ng11-lib/tsconfig.spec.json",
+            "karmaConfig": "examples/ng11-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "examples/ng11-lib/tsconfig.lib.json",
+              "examples/ng11-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "ng11-webapp": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "inlineTemplate": true,
+          "style": "scss",
+          "skipTests": true
+        },
+        "@schematics/angular:class": {
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": true
+        },
+        "@schematics/angular:module": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
+        }
+      },
+      "root": "examples/ng11-webapp",
+      "sourceRoot": "examples/ng11-webapp/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/ng11-webapp",
+            "index": "examples/ng11-webapp/src/index.html",
+            "main": "examples/ng11-webapp/src/main.ts",
+            "polyfills": "examples/ng11-webapp/src/polyfills.ts",
+            "tsConfig": "examples/ng11-webapp/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "examples/ng11-webapp/src/favicon.ico",
+              "examples/ng11-webapp/src/assets"
+            ],
+            "styles": [
+              "examples/ng11-webapp/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "examples/ng11-webapp/src/environments/environment.ts",
+                  "with": "examples/ng11-webapp/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "ng11-webapp:build",
+            "port": 4300,
+            "proxyConfig": "proxy.conf.json"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ng11-webapp:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ng11-webapp:build"
+          }
+        }
+      }
     }
   },
   "defaultProject": "@senzing/sdk-components-ng/examples/search-with-results-and-details",
