@@ -8,7 +8,7 @@
     "./lib/scss/*",
     "./lib/scss/**/*"
   ],
-  "whitelistedNonPeerDependencies": [
+  "allowedNonPeerDependencies": [
     "@senzing/rest-api-client-ng",
     "@senzing/sdk-graph-components",
     "@angular/material",
