@@ -32,7 +32,7 @@ export abstract class SzFolioItem {
  */
 export abstract class SzFolio {
   /** the collection of SzFolioItem's */
-  abstract items: SzFolioItem[] = [];
+  abstract items: SzFolioItem[];
   /** the name of the folio */
   public name: string;
 
