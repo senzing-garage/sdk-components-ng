@@ -190,6 +190,7 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
       });
       return pills;
     }
+    return undefined;
   }
 
   private createMatchPillInfo(data: any): { text: string, plusMinus: string }[] {
@@ -208,5 +209,6 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
         }
         if(pills) { return pills; }
     }
+    return undefined;
   }
 }

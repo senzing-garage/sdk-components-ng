@@ -4,18 +4,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "downlevelIteration": true,
-    "experimentalDecorators": true,
-    "moduleResolution": "node",
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "es2020",
-    "lib": [
-      "es2018",
-      "dom"
-    ],
+    "forceConsistentCasingInFileNames": true,
     "paths": {
       "ng11-lib": [
         "dist/ng11-lib/ng11-lib",
@@ -29,54 +18,27 @@
         "dist/@senzing/sdk-components-web/senzing-sdk-components-web",
         "dist/@senzing/sdk-components-web"
       ]
-    }
+    },
+    "strict": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2017",
+    "module": "es2020",
+    "lib": [
+      "es2018",
+      "dom"
+    ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false
   },
   "exclude": [
-    "node_modules",
-    "deprecated"
-  ],
-  "references": [
-    {
-      "path": "./src/tsconfig.lib.json"
-    },
-    {
-      "path": "./src/tsconfig.spec.json"
-    },
-    {
-      "path": "./examples/ng11-lib/tsconfig.lib.json"
-    },
-    {
-      "path": "./sexamples/ng11-lib/tsconfig.spec.json"
-    },
-    {
-      "path": "./examples/search-with-results-and-details/tsconfig.app.json"
-    },
-    {
-      "path": "./examples/admin-importing/tsconfig.app.json"
-    },
-    {
-      "path": "./examples/search-in-graph/tsconfig.app.json"
-    },
-    {
-      "path": "./examples/search-with-spinner/tsconfig.app.json"
-    },
-    {
-      "path": "./examples/graph/tsconfig.app.json"
-    },
-    {
-      "path": "./examples/search-with-prefs/tsconfig.app.json"
-    },
-    {
-      "path": "./examples/search-by-id/tsconfig.app.json"
-    },
-    {
-      "path": "./e2e/tsconfig.e2e.json"
-    },
-    {
-      "path": "./sdk-components-web/tsconfig.app.json"
-    }
-  ],
+    "node_modules"
+  ]
 }

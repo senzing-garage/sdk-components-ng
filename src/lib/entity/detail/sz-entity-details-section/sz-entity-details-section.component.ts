@@ -288,7 +288,7 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
     } else if(maxWidth){
       return (`(max-width: ${maxWidth}px)`);
     }
-    return
+    return undefined;
   }
 
 }

@@ -11,7 +11,6 @@
   "homepage" :"https://senzing.github.io/sdk-components-ng/",
   "dependencies": {
     "schematics-utilities": "^2.0.2",
-    "@senzing/rest-api-client-ng": "^2.4.0",
     "d3": "^5.9.1",
     "jspdf": "^2.3.1",
     "html2canvas": "^1.0.0-rc.3",
@@ -24,6 +23,7 @@
     "@angular/common": "~12.2.14",
     "@angular/core": "~12.2.14",
     "@angular/material": "^12.2.13",
+    "@senzing/rest-api-client-ng": "^2.4.0",
     "@senzing/sdk-graph-components": "^2.5.0"
   },
   "schematics": "./schematics/collection.json"

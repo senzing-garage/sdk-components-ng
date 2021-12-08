@@ -439,6 +439,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
       return this._matchKeys;
     }
     // no match keys, should we retest?
+    return undefined;
   }
 
   isLinkedAttribute(attrValue: string): boolean {
@@ -464,6 +465,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
     if (data) {
       return (<SzEntityRecord>data).relationshipData !== undefined && (<SzEntityRecord>data).relationshipData.length > 0;
     }
+    return false;
   }
   /**
    * @deprecated
@@ -472,5 +474,6 @@ export class SzEntityRecordCardContentComponent implements OnInit {
     if (data) {
       return (<SzEntityDetailSectionData>data).matchLevel !== undefined;
     }
+    return false;
   }
 }

@@ -151,6 +151,7 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
         }
       }
     }
+    return undefined;
   }
   /**
    * returns true if a Entities features collection can identify it as a person.
@@ -171,6 +172,7 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
       }
       return (!hasBusinessKey && hasPersonKey);
     }
+    return false;
   }
   /**
    * returns the svg view box to use for the primary icon
@@ -244,7 +246,7 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     } else if(maxWidth){
       return (`(max-width: ${maxWidth}px)`);
     }
-    return
+    return undefined;
   }
 
   ngOnInit() {

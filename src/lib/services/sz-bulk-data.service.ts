@@ -279,7 +279,7 @@ export class SzBulkDataService {
     } else {
       console.warn('missing required parameter: ', file, dataSourceMap);
       throw new Error('missing required parameter: '+ file.name);
-      return;
+      return undefined;
     }
   }
   /**

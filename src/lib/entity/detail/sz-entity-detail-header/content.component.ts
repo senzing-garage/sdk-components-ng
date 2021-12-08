@@ -277,6 +277,7 @@ export class SzEntityDetailHeaderContentComponent implements OnDestroy, OnInit {
     if (data) {
       return (<SzEntityRecord>data).relationshipData !== undefined && (<SzEntityRecord>data).relationshipData.length > 0;
     }
+    return false;
   }
   /**
    * @deprecated
@@ -285,5 +286,6 @@ export class SzEntityDetailHeaderContentComponent implements OnDestroy, OnInit {
     if (data) {
       return (<SzEntityDetailSectionData>data).matchLevel !== undefined;
     }
+    return false;
   }
 }

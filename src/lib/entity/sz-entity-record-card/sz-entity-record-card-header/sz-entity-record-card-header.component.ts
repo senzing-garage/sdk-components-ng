@@ -90,6 +90,7 @@ export class SzEntityRecordCardHeaderComponent implements OnInit, OnDestroy {
     } else if(this.entityData && this.entityData.recordSummaries) {
       return this.entityData.recordSummaries;
     }
+    return undefined;
   }
 
   get entityDetailsLinkName(): string {
@@ -100,6 +101,7 @@ export class SzEntityRecordCardHeaderComponent implements OnInit, OnDestroy {
     } else if(this.entityData && this.entityData.entityName) {
       return this.entityData.entityName;
     }
+    return undefined;
   }
 
   get entityDetailsLink(): string | boolean {
