@@ -1,0 +1,27 @@
+name: CI Angular app through Github Actions
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Setup
+        run: npm ci
+
+      - name: Run Static Tests
+        run: |
+          npm test -- --no-watch --watch=false --progress=false --no-progress --browsers=ChromeHeadlessCI
+      - name: Ensure Documentation is Buildable
+        run: |
+          npm run build:docs
+      - name: Ensure Angular Components Package Compiles
+        run: |
+          npm run build
+      - name: Ensure Web Components Package Compiles
+        run: |
+          npm run build
