@@ -136,9 +136,9 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
   private getGenderFromFeatures(features: {[key: string] : SzEntityFeature[]} | undefined | null): string | undefined {
     if(features){
       //console.warn('getGenderFromFeatures: ', features.GENDER);
-      if(features.GENDER){
+      if(features['GENDER']){
         // has gender
-        let _gender = features.GENDER;
+        let _gender = features['GENDER'];
         if(_gender.some) {
           let _female = _gender.some( (val: {primaryValue: string, usageType: any, duplicateValues: any} ) => {
             return val.primaryValue === "F";
@@ -167,7 +167,7 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
           hasPersonKey = true; // has key
         }
       });
-      if(features && (features.ORG || features.NAME_ORG)){
+      if(features && (features['ORG'] || features['NAME_ORG'])){
         hasBusinessKey = true;
       }
       return (!hasBusinessKey && hasPersonKey);

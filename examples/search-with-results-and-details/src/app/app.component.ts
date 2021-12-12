@@ -89,11 +89,11 @@ export class AppComponent implements AfterViewInit {
     this.currentlySelectedEntityId = undefined;
   }
 
-  public onPDFDownloadClick(): void {
+  public onPDFDownloadClick(event?): void {
     this.pdfUtil.createPdfFromAttributeSearch( this.currentSearchResults, this.currentSearchParameters );
   }
 
-  public onEntityPDFDownloadClick(): void {
+  public onEntityPDFDownloadClick(event?): void {
     const filename = this.entityDetailComponent.entity.resolvedEntity.entityName.toLowerCase().replace(' ', '-entity') + '.pdf';
     this.pdfUtil.createPdfFromHtmlElement(this.entityDetailComponent.nativeElement, filename);
   }
@@ -177,7 +177,7 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-  public onSearchResultsCleared(searchParams: SzEntitySearchParams){
+  public onSearchResultsCleared(searchParams: SzEntitySearchParams | void){
     // hide search results
     this.showSearchResults = false;
     this.currentSearchResults = undefined;

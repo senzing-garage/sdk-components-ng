@@ -332,6 +332,13 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
     }
     console.log('onGraphDataLoaded: ', inputs);
   }
+  /**
+   * handler for when the user performs a mouse wheel scroll event
+   */
+  public onGraphScrollEvent(evt: Event) {
+    //this.scrollWheelEvent.emit(evt);
+  }
+
   /** when scale of graph changes, store value for control indicators */
   public onGraphZoom(value) {
     this._graphZoom = value;

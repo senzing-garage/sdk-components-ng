@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy } 
 import { SzEntityDetailSectionData } from '../../models/entity-detail-section-data';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Subject, BehaviorSubject } from 'rxjs';
+import { SzAttributeSearchResult } from '@senzing/rest-api-client-ng';
 
 /**
  * @internal
@@ -13,7 +14,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
   styleUrls: ['./sz-search-result-card.component.scss']
 })
 export class SzSearchResultCardComponent implements OnInit, OnDestroy {
-  @Input()searchResult: SzEntityDetailSectionData;
+  @Input()searchResult: SzEntityDetailSectionData | SzAttributeSearchResult;
   @Input()searchValue: string;
   @Input()cardTitle: string;
   @Input()index: number;

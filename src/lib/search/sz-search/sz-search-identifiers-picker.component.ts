@@ -142,7 +142,7 @@ export class SzSearchIdentifiersPickerDialogComponent {
         return attrCode;
     }
     /** get the current attribute list ordered alphabetically*/
-    public get orderedData(): SzAttributeType[] {
+    public get orderedData(): AttrRow[] {
         return this._dataModel;
     }
 
@@ -178,7 +178,7 @@ export class SzSearchIdentifiersPickerSheetComponent extends SzSearchIdentifiers
 
     constructor(
         public sheetRef: MatBottomSheetRef<SzSearchIdentifiersPickerSheetComponent>,
-        @Inject(MAT_BOTTOM_SHEET_DATA) public data: AttrData) {
+        @Inject(MAT_BOTTOM_SHEET_DATA) public override data: AttrData) {
         
         super();
 
@@ -193,7 +193,7 @@ export class SzSearchIdentifiersPickerSheetComponent extends SzSearchIdentifiers
         }
     }
     /** when the user clicks the Cancel button */
-    onNoClick(): void { 
+    override onNoClick(): void { 
         if(this.sheetRef && this.sheetRef.dismiss){
             this.sheetRef.dismiss();
         }
@@ -201,7 +201,7 @@ export class SzSearchIdentifiersPickerSheetComponent extends SzSearchIdentifiers
     /**
      * when the user clicks the Apply button
      */
-    onApplyClick(): void {
+    override onApplyClick(): void {
         if(this.sheetRef && this.sheetRef.dismiss){
             this.sheetRef.dismiss(this.checkedAttributeTypes);
         }

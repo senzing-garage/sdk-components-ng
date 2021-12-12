@@ -116,7 +116,7 @@ export class SzAdminPrefs extends SzSdkPrefsBase {
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
    */
-  jsonKeys = [
+  override jsonKeys = [
     'streamAnalysisConfig',
     'streamConnectionProperties',
     'streamLoadConfig',
@@ -220,7 +220,7 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
    */
-  jsonKeys = [
+  override jsonKeys = [
     'rememberLastSearches',
     'disableSearchHistory',
     'allowedTypeAttributes',
@@ -292,7 +292,7 @@ export class SzSearchFormPrefs extends SzSdkPrefsBase {
    * the usual fromJSONObject needs to perform some special logic to initialize
    * the prefs from JSON like create class instances etc.
    */
-  public fromJSONObject(value: string) {
+  public override fromJSONObject(value: string) {
     this.bulkSet = true;
     let _isChanged = false;
     if (this.jsonKeys && this.jsonKeys.forEach) {
@@ -369,7 +369,7 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
    */
-  jsonKeys = [
+  override jsonKeys = [
     'openInNewTab',
     'showOtherData',
     'showIdentifierData',
@@ -557,7 +557,7 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
    */
-  jsonKeys = [
+  override jsonKeys = [
     'showGraphSection',
     'showMatchesSection',
     'showPossibleMatchesSection',
@@ -843,7 +843,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
    */
-  jsonKeys = [
+  override jsonKeys = [
     'openInNewTab',
     'openInSidePanel',
     'dataSourceColors',

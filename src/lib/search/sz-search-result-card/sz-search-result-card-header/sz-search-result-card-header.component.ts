@@ -36,11 +36,11 @@ export class SzSearchResultCardHeaderComponent implements OnInit {
     return false;
   }
 
-  public get recordSummaries(): SzDataSourceRecordSummary[] | boolean {
+  public get recordSummaries(): SzDataSourceRecordSummary[] {
     if(this.searchResult && this.searchResult.recordSummaries){
       return this.searchResult.recordSummaries;
     }
-    return false
+    return []
   }
 
   public get bestName() : string {

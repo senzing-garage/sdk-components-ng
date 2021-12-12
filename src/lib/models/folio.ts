@@ -60,16 +60,16 @@ export class SzSearchParamsFolioItem extends SzFolioItem {
   /** if set the name should be used when displaying the item to the user */
   _name: string;
 
-  public get data (): SzEntitySearchParams {
+  public override get data (): SzEntitySearchParams {
     return this._data;
   }
-  public set data (value: SzEntitySearchParams) {
+  public override set data (value: SzEntitySearchParams) {
     this._data = value;
   }
-  public get name (): string {
+  public override get name (): string {
     return this._name;
   }
-  public set name (value: string) {
+  public override set name (value: string) {
     this._name = value;
   }
 
@@ -87,7 +87,7 @@ export class SzSearchParamsFolio extends SzFolio {
   /** the search parameter sets */
   items: SzSearchParamsFolioItem[];
   /** the name of the search set */
-  name: string;
+  override name: string;
 
   constructor( items?: SzSearchParamsFolioItem[]) {
     super(); // must call super()
@@ -104,7 +104,7 @@ export class SzSearchParamsFolio extends SzFolio {
  * @export
  */
 export class SzSearchHistoryFolioItem extends SzSearchParamsFolioItem {
-  public get name(): string {
+  public override get name(): string {
     let retVal;
     if (this.data) {
       if(this.data.NAME_FULL) { retVal = this.data.NAME_FULL; }
@@ -124,7 +124,7 @@ export class SzSearchHistoryFolio extends SzSearchParamsFolio {
   /**
    * the collection of search parameters used in the last X searches
    */
-  items: SzSearchHistoryFolioItem[];
+  override items: SzSearchHistoryFolioItem[];
   /** hardcoded to 'Search History' */
   public _name: string = 'Search History';
   /** The number of searches back to store in the folio */
@@ -152,7 +152,7 @@ export class SzSearchHistoryFolio extends SzSearchParamsFolio {
   /**
    * Add a new search parameter set to the stack
    */
-  public add( item: SzSearchHistoryFolioItem, overwrite:boolean = true ): Boolean {
+  public override add( item: SzSearchHistoryFolioItem, overwrite:boolean = true ): Boolean {
     let _exists = this.exists(item);
     let retVal = false;
     if( overwrite || !_exists){

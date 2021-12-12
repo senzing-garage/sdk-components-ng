@@ -5,11 +5,18 @@
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
+    "strict": false,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
     "paths": {
-      "ng11-lib": [
-        "dist/ng11-lib/ng11-lib",
-        "dist/ng11-lib"
-      ],
       "@senzing/sdk-components-ng": [
         "dist/@senzing/sdk-components-ng/senzing-sdk-components-ng",
         "dist/@senzing/sdk-components-ng"
@@ -19,15 +26,6 @@
         "dist/@senzing/sdk-components-web"
       ]
     },
-    "strict": false,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "sourceMap": true,
-    "declaration": false,
-    "downlevelIteration": true,
-    "experimentalDecorators": true,
-    "moduleResolution": "node",
-    "importHelpers": true,
     "target": "es2017",
     "module": "es2020",
     "lib": [
@@ -36,7 +34,10 @@
     ]
   },
   "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
   },
   "exclude": [
     "node_modules"

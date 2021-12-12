@@ -24,7 +24,8 @@
             <span class="tooltip tooptip-left">number of relationship hops away from focused entity</span>
           </span>
         </div>
-        <input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut" (change)="onIntParameterChange('buildOut', $event.target.value)" required>
+        <input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut" 
+          (change)="onIntParameterChange('buildOut', getValueFromEventTarget($event))" required>
         <span class="intVal">({{ buildOut }})</span>
       </label>
     </li>
@@ -36,7 +37,8 @@
             <span class="tooltip tooptip-left">hard limit on how many entities will be displayed</span>
           </span>
         </div>
-        <input type="range" min="1" max="99" step="3" [value]="maxEntities" formControlName="maxEntities" (change)="onIntParameterChange('maxEntities', $event.target.value)" required>
+        <input type="range" min="1" max="99" step="3" [value]="maxEntities" formControlName="maxEntities" 
+          (change)="onIntParameterChange('maxEntities', getValueFromEventTarget($event))" required>
         <span class="intVal">({{ maxEntities }})</span>
       </label>
     </li>
@@ -48,7 +50,8 @@
             <span class="tooltip tooptip-left">maximum degrees of separation between nodes and focus</span>
           </span>
         </div>
-        <input type="range" min="1" max="5" [value]="maxDegreesOfSeparation" formControlName="maxDegreesOfSeparation" (change)="onIntParameterChange('maxDegreesOfSeparation', $event.target.value)" required>
+        <input type="range" min="1" max="5" [value]="maxDegreesOfSeparation" formControlName="maxDegreesOfSeparation" 
+          (change)="onIntParameterChange('maxDegreesOfSeparation', getValueFromEventTarget($event))" required>
         <span class="intVal">({{ maxDegreesOfSeparation }})</span>
       </label>
     </li>
@@ -63,7 +66,8 @@
         <ng-container *ngIf="shouldDataSourceBeDisplayed(dataSources[i].name)">
             <li formArrayName="datasources">
               <label>
-                <input type="checkbox" [formControlName]="i" (change)="onDsFilterChange(dataSources[i].name, $event)">{{dataSources[i].name}}
+                <input type="checkbox" [formControlName]="i" 
+                  (change)="onDsFilterChange(dataSources[i].name, $event)">{{dataSources[i].name}}
               </label>
             </li>
         </ng-container>
@@ -106,7 +110,8 @@
   <ul class="other-colors-list">
     <li>
       <label>
-        <input #queriedNodesColorInput formControlName="queriedEntitiesColor" type="color" [style.background-color]="queriedNodesColorInput.value" (change)="onColorParameterChange('queriedEntitiesColor', $event.target.value)">
+        <input #queriedNodesColorInput formControlName="queriedEntitiesColor" type="color" [style.background-color]="queriedNodesColorInput.value" 
+          (change)="onColorParameterChange('queriedEntitiesColor', getValueFromEventTarget($event))">
         <span class="has-tooltip block-level-src">
           Active/Focused Enitity
           <span class="tooltip tooptip-left">The color of the current entity or entities</span>

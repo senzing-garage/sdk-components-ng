@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
+import { SzSectionDataByDataSource, SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 import { SzEntityRecord } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
@@ -56,7 +56,7 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   @Input() displayType: string = 'entity';
   @Input() truncateResults: boolean = true;
 
-  @Input() cardData: SzEntityDetailSectionData;
+  @Input() cardData: SzEntityDetailSectionData | SzSectionDataByDataSource;
   isOpen: boolean = false;
   matchPills: { text: string, ambiguous: boolean, plusMinus: string }[];
   headerTitleText: string;
@@ -179,9 +179,9 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
     return false;
   }
 
-  private createPillInfo(data: SzEntityDetailSectionData): { text: string, ambiguous: boolean, plusMinus: string }[] {
-    if(data && data.matchKey) {
-      const pills = data.matchKey
+  private createPillInfo(data: SzEntityDetailSectionData | SzSectionDataByDataSource): { text: string, ambiguous: boolean, plusMinus: string }[] {
+    if(data && ((data as SzEntityDetailSectionData).matchKey)) {
+      const pills = (data as SzEntityDetailSectionData).matchKey
       .split(/[-](?=\w)/)
       .filter(i => !!i)
       .map(item => item.startsWith('+') ? item : `-${item}`)

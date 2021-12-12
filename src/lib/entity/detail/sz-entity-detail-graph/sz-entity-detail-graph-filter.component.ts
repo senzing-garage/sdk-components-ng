@@ -281,6 +281,12 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
       this.prefs.graph[prefName] = parseInt(value, 10);
     }
   }
+  public getValueFromEventTarget(event): any {
+    if(event.target && (event.target as HTMLInputElement).value !== undefined) {
+      return (event.target as HTMLInputElement).value;
+    }
+    return undefined;
+  }
   /** handler for when an string color pref value has changed. ie: queriedEntitiesColor  */
   onColorParameterChange(prefName, value) {
     try {
@@ -431,7 +437,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
         const dsFilterVal = !(this.dataSourcesFiltered.indexOf(o.name) >= 0);
         const control1 = new FormControl(dsFilterVal); // if first item set to true, else false
         // add control for filtered by list
-        (this.filterByDataSourcesForm.controls.datasources as FormArray).push(control1);
+        (this.filterByDataSourcesForm.controls['datasources'] as FormArray).push(control1);
       });
 
     });
@@ -455,7 +461,7 @@ export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit
         const mkFilterVal = (this.matchKeysIncluded.indexOf(o.name) >= 0);
         const control1 = new FormControl(mkFilterVal); // if first item set to true, else false
         // add control for filtered by list
-        (this.filterByMatchKeysForm.controls.matchkeys as FormArray).push(control1);
+        (this.filterByMatchKeysForm.controls['matchkeys'] as FormArray).push(control1);
       });
     }
   }
