@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, ViewContainerRef, TemplateRef, Input, OnDestroy, HostBinding, Inject } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ViewContainerRef, TemplateRef, OnDestroy, HostBinding, Inject } from '@angular/core';
 import {
   SzEntitySearchParams,
   SzAttributeSearchResult,
@@ -9,7 +9,6 @@ import {
   SzEntityData,
   SzPrefsService,
   SzSdkPrefsModel,
-  SzConfigurationService,
   SzPreferencesComponent,
   SzEntityRecord,
   SzSearchByIdFormParams
@@ -192,7 +191,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     }
   }
   /** clear the current search results */
-  public onSearchResultsCleared(searchParams: SzEntitySearchParams){
+  public onSearchResultsCleared(searchParams?: SzEntitySearchParams | void){
     // hide search results
     this.showNoResultsMessage = false;
     this.showSearchResults = false;
