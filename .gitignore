@@ -18,6 +18,9 @@ sdk-components-ng.iml
 .settings/
 *.sublime-workspace
 
+# Testing
+/docs/coverage
+
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json

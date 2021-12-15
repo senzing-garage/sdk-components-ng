@@ -10,51 +10,35 @@ module.exports = function (config) {
     browserDisconnectTolerance: 3,
     plugins: [
       require('karma-jasmine'),
-      require('karma-brief-reporter'),
-      require('karma-summary-reporter'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
-      require('karma-coverage-istanbul-reporter'),
-      require('karma-mocha-reporter'),
+      require('karma-coverage'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
-      clearContext: false
+      jasmine: {
+        // you can add configuration options for Jasmine here
+        // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
+        // for example, you can disable the random execution with `random: false`
+        // or set a specific seed with `seed: 4321`
+      },
+      clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
-    coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, '../coverage'),
-      reports: ['html', 'lcovonly'],
-      fixWebpackSourcePaths: true
+    jasmineHtmlReporter: {
+      suppressAll: true // removes the duplicated traces
     },
-    reporters: ['brief','mocha'],
-    mochaReporter: { 
-      output: 'minimal',
-      symbols: {
-        success: '*',
-        info: '#',
-        warning: '!',
-        error: 'x'
-      }
+    coverageReporter: {
+      dir: require('path').join(__dirname, '../docs/coverage'),
+      subdir: '.',
+      reporters: [
+        { type: 'html' },
+        { type: 'text-summary' }
+      ]
     },
-    summaryReporter: {
-      // 'failed', 'skipped' or 'all'
-      show: 'all',
-      // Limit the spec label to this length
-      specLength: 50,
-      // Show an 'all' column as a summary
-      overviewColumn: true,
-      symbols: {
-        success: '*',
-        info: '#',
-        warning: '!',
-        error: 'x'
-      }
-    },
-    briefReporter: {
-      suppressBrowserLogs: true,
-      renderOnRunCompleteOnly: true
-    },
+    reporters: ['progress', 'kjhtml'],
     port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
     autoWatch: false,
     browsers: ['Chrome'],
     customLaunchers: {
