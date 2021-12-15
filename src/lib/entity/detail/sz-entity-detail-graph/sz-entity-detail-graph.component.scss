@@ -22,18 +22,36 @@
     }
 
     sz-entity-detail-graph-control, .sz-entity-detail-graph-control {
-      display: none;
+      opacity: 0;
+      height: 0px;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      border: 0;
     }
 
     sz-relationship-network, .sz-relationship-network {
       display: none;
     }
+    .zoom-control-container {
+      opacity: 0;
+      width: 0px;
+    }
 
     .popout-icon {
       display: none;
     }
+    
+    .sz-entity-detail-section-collapsible-card:last-child {
+      background: var(--sz-color-graph-relationships);
+      border-radius: var(--sz-entity-detail-graph-section-collapsed-border-bottom-radius);
+      border: 1px solid;
+      border-color: var(--sz-color-graph-relationships);
+    }
   }
+
   .arrow, .icon-inline {
+    cursor: pointer;
     margin: 0 10px 0 0;
     color: var(--sz-entity-detail-section-header-color);
     fill: var(--sz-entity-detail-section-header-color);
@@ -187,6 +205,9 @@ sz-entity-detail-graph-control, .sz-entity-detail-graph-control, .sz-entity-deta
   -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
   -webkit-user-select: none; /* Chrome, Safari, and Opera */
   -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
+  /* make control less jarring on container collapse/expand */
+  transition: opacity 500ms linear;
+  opacity: 1;
 }
 
 .zoom-control-container {
@@ -201,6 +222,10 @@ sz-entity-detail-graph-control, .sz-entity-detail-graph-control, .sz-entity-deta
   transform: rotate(270deg);
   display: flex;
   flex-direction: row;
+
+  /* make zoom control less jarring on container collapse/expand */
+  transition: opacity 500ms linear;
+  opacity: 1;
 
   &.top-left {
     top: calc(#{$graph-zoom-slider-width} / 2 + 30px);

@@ -219,6 +219,7 @@ body {
 
     --sz-entity-detail-section-header-font-family: $sz-font-family;
     --sz-entity-detail-section-header-border-radius: 4px 4px 0 0;
+    --sz-entity-detail-graph-section-collapsed-border-bottom-radius: 0 0 4px 4px;
     --sz-entity-detail-section-graph-height: 500px;
     --sz-entity-detail-section-graph-collapsed-height: 70px;
     --sz-entity-detail-section-color: #2e2e2d;
@@ -320,7 +321,7 @@ body {
     --sz-entity-graph-control-border-top-left-radius: 7px;
     --sz-entity-graph-control-border-top-right-radius: 0;
     --sz-entity-graph-control-border-bottom-left-radius: 0;
-    --sz-entity-graph-control-border-bottom-right-radius: 0;
+    --sz-entity-graph-control-border-bottom-right-radius: 8px;
 
     --sz-entity-graph-control-item-cursor: pointer;
     --sz-entity-graph-control-item-background-color: var(--sz-graph-filter-control-background-color);
