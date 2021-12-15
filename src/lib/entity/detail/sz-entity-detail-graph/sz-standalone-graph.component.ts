@@ -144,7 +144,15 @@ export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
     return this._showFiltersControl;
   }
   @Input() filterControlPosition: string = 'bottom-left';
-  @Input() filterWidth: number;
+  /** @internal */
+  private _filterWidth: number;
+  /** how wide the filters tray is */
+  @Input() set filterWidth(value: number | string) {
+    if(typeof value == 'string') {
+      value = parseInt((value as string));
+    }
+    this._filterWidth = value;
+  }
   private neverFilterQueriedEntityIds: boolean = true;
   public filterShowDataSources: string[];
   public filterShowMatchKeys: string[];
