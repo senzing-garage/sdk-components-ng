@@ -16,7 +16,6 @@
     "html2canvas": "^1.0.0-rc.3",
     "jspdf": "^2.3.1",
     "ngx-json-viewer": "^2.4.0",
-    "schematics-utilities": "^2.0.2",
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
@@ -26,6 +25,5 @@
     "@angular/material": "~13.0.3",
     "@senzing/rest-api-client-ng": "^3.0.0",
     "@senzing/sdk-graph-components": "^3.0.0"
-  },
-  "schematics": "./schematics/collection.json"
+  }
 }
