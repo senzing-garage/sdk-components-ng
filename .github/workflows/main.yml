@@ -24,4 +24,4 @@ jobs:
           npm run build
       - name: Ensure Web Components Package Compiles
         run: |
-          npm run build
+          npm run build:web

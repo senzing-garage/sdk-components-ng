@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const concat = require('concat');
-const cheerio = require('Cheerio');
+const cheerio = require('cheerio');
 const path = require('path');
 
 (async function build() {
@@ -12,27 +12,27 @@ const path = require('path');
 
   await fs.ensureDir('./dist/@senzing/sdk-components-web/');
   // files may or may not exist depending on type of build
-  if(await fs.exists('./dist/@senzing/sdk-components-web/4.js')){
+  if(fs.existsSync('./dist/@senzing/sdk-components-web/4.js')){
     files.push('./dist/@senzing/sdk-components-web/4.js');
-  } else if(await fs.exists('./dist/@senzing/sdk-components-web/styles.js')){
+  } else if(fs.existsSync('./dist/@senzing/sdk-components-web/styles.js')){
     files.push('./dist/@senzing/sdk-components-web/styles.js');
   }
-  if(await fs.exists('./dist/@senzing/sdk-components-web/5.js')){
+  if(fs.existsSync('./dist/@senzing/sdk-components-web/5.js')){
     files.push('./dist/@senzing/sdk-components-web/5.js');
-  } else if(await fs.exists('./dist/@senzing/sdk-components-web/vendor.js')){
+  } else if(fs.existsSync('./dist/@senzing/sdk-components-web/vendor.js')){
     files.push('./dist/@senzing/sdk-components-web/vendor.js');
   }  
   // concat all files together
   await concat(files, './dist/@senzing/sdk-components-web/senzing-components-web.js');
   // copy styles
-  if(await fs.exists('./node_modules/@senzing/sdk-components-ng/styles')){
+  if(fs.existsSync('./node_modules/@senzing/sdk-components-ng/styles')){
     await fs.copy(
       './node_modules/@senzing/sdk-components-ng/styles',
       './dist/@senzing/sdk-components-web/styles'
     ).catch(()=>{ console.log('build error #1'); });
   }
 
-  if(await fs.exists('./dist/@senzing/sdk-components-web/styles.css')){
+  if(fs.existsSync('./dist/@senzing/sdk-components-web/styles.css')){
     // concat
     fs.rename('./dist/@senzing/sdk-components-web/styles.css', './dist/@senzing/sdk-components-web/senzing-components-web.css');
     /*
@@ -55,28 +55,28 @@ const path = require('path');
   ).catch(()=>{ console.log('build error #4'); });
 
   // remove extraneous files
-  if(await fs.exists('./dist/@senzing/sdk-components-web/favicon.ico')){
+  if( fs.existsSync('./dist/@senzing/sdk-components-web/favicon.ico')){
     await fs.remove('./dist/@senzing/sdk-components-web/favicon.ico').catch(()=>{ console.log('build error #5'); });
   }
-  if(await fs.exists('./dist/@senzing/sdk-components-web/runtime.js')){
+  if( fs.existsSync('./dist/@senzing/sdk-components-web/runtime.js')){
     await fs.remove('./dist/@senzing/sdk-components-web/runtime.js').catch(()=>{ console.log('build error #7'); });
   }
-  if(await fs.exists('./dist/@senzing/sdk-components-web/main.js')){
+  if( fs.existsSync('./dist/@senzing/sdk-components-web/main.js')){
     await fs.remove('./dist/@senzing/sdk-components-web/main.js').catch(()=>{ console.log('build error #10'); });
   }
-  if(await fs.exists('./dist/@senzing/sdk-components-web/polyfills.js')){
+  if( fs.existsSync('./dist/@senzing/sdk-components-web/polyfills.js')){
     await fs.remove('./dist/@senzing/sdk-components-web/polyfills.js').catch(()=>{ console.log('build error #6'); });
   }
-  if(await fs.exists('./dist/@senzing/sdk-components-web/styles.js')){
+  if( fs.existsSync('./dist/@senzing/sdk-components-web/styles.js')){
     await fs.remove('./dist/@senzing/sdk-components-web/styles.js').catch(()=>{ console.log('build error #8'); });
   }
-  if(await fs.exists('./dist/@senzing/sdk-components-web/4.js')){
+  if( fs.existsSync('./dist/@senzing/sdk-components-web/4.js')){
     await fs.remove('./dist/@senzing/sdk-components-web/4.js').catch(()=>{ console.log('build error #9'); });
   }
-  if(await fs.exists('./dist/@senzing/sdk-components-web/5.js')){
+  if( fs.existsSync('./dist/@senzing/sdk-components-web/5.js')){
     await fs.remove('./dist/@senzing/sdk-components-web/5.js').catch(()=>{ console.log('build error #10'); });
   }
-  if(await fs.exists('./dist/@senzing/sdk-components-web/vendor.js')){
+  if( fs.existsSync('./dist/@senzing/sdk-components-web/vendor.js')){
     await fs.remove('./dist/@senzing/sdk-components-web/vendor.js').catch(()=>{ console.log('build error #9'); });
   }
 
