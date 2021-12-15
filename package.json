@@ -37,8 +37,6 @@
     "e2e:headless": "ng e2e e2e-harness --configuration=e2e --protractor-config=e2e/protractor.ci.conf.js",
     "example:aws-amplify-cognito": "ng serve @senzing/sdk-components-ng/examples/aws-amplify-cognito",
     "example:graph": "ng serve @senzing/sdk-components-ng/examples/graph",
-    "example:ng11": "ng serve ng11-webapp",
-    "example:ng12": "ng serve ng12-webapp",
     "example:search-by-id": "ng serve @senzing/sdk-components-ng/examples/search-by-id",
     "example:search-in-graph": "ng serve @senzing/sdk-components-ng/examples/search-in-graph",
     "example:search-with-prefs": "ng serve @senzing/sdk-components-ng/examples/search-with-prefs",
