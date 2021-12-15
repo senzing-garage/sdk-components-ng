@@ -8,7 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
 
@@ -35,7 +36,9 @@
 
 <ol class="breadcrumb">
   <li>Components</li>
-  <li>SzSearchByIdComponent</li>
+  <li
+  >
+  SzSearchByIdComponent</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -58,11 +61,27 @@
     <code>src/lib/search/sz-search/sz-search-by-id.component.ts</code>
 </p>
 
+
     <p class="comment">
         <h3>Description</h3>
     </p>
     <p class="comment">
         <p>Provides a search box component that can search by id and/or record ids.</p>
+<p><sz-wc-search-by-id
+id="sz-search"
+data-source="SAMPLE_PERSON"
+record-id="1001"></sz-wc-search-by-id></p>
+<script>
+ document.getElementById('sz-search').addEventListener('resultChange', function(results) {
+   console.log('results: ', results);
+ });
+</script>
+
+<p>&lt;sz-search-by-id
+entityId=&quot;1004&quot;
+(resultChange)=&quot;myResultsHandler($event)&quot;
+(searchStart)=&quot;showSpinner()&quot;
+(searchEnd)=&quot;hideSpinner()&quot;&gt;</sz-search-by-id></p>
 
     </p>
 
@@ -75,21 +94,10 @@
                     <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
     </p>
 
-    <p class="comment">
-        <h3>Example</h3>
-    </p>
-    <div class="io-description">
-                <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC javascript) SzSearchByIdComponent --&gt;&lt;sz-wc-search-by-idid=&quot;sz-search&quot;data-source=&quot;SAMPLE_PERSON&quot;record-id=&quot;1001&quot;&gt;&lt;/sz-wc-search-by-id&gt;&lt;script&gt;document.getElementById('sz-search').addEventListener('resultChange', function(results) {console.log('results: ', results);});&lt;/script&gt;</code></pre>
-                </div>
-                <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) SzSearchByIdComponent --&gt;&lt;sz-search-by-identityId=&quot;1004&quot;(resultChange)=&quot;myResultsHandler($event)&quot;(searchStart)=&quot;showSpinner()&quot;(searchEnd)=&quot;hideSpinner()&quot;&gt;&lt;/sz-search-by-id&gt;</code></pre>
-                </div>
-    </div>
 
 <section>
     <h3>Metadata</h3>
-    <table class="table table-sm table-hover">
+    <table class="table table-sm table-hover metadata">
         <tbody>
 
 
@@ -144,15 +152,15 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#_datasources">_datasources</a>
+                                <a href="#_datasources" >_datasources</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#breakpointObserver">breakpointObserver</a>
+                                <a href="#breakpointObserver" >breakpointObserver</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#unsubscribe$">unsubscribe$</a>
+                                <a href="#unsubscribe$" >unsubscribe$</a>
                             </li>
                         </ul>
                     </td>
@@ -168,33 +176,33 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#clearSearch">clearSearch</a>
+                                <a href="#clearSearch" >clearSearch</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#getAnyDisabled">getAnyDisabled</a>
+                                <a href="#getAnyDisabled" >getAnyDisabled</a>
                             </li>
                             <li>
-                                <a href="#getCssQueryFromCriteria">getCssQueryFromCriteria</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#getDisabled">getDisabled</a>
+                                <a href="#getCssQueryFromCriteria" >getCssQueryFromCriteria</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#getSearchParams">getSearchParams</a>
-                            </li>
-                            <li>
-                                <a href="#ngOnDestroy">ngOnDestroy</a>
+                                <a href="#getDisabled" >getDisabled</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#onKeyEnter">onKeyEnter</a>
+                                <a href="#getSearchParams" >getSearchParams</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#submitSearch">submitSearch</a>
+                                <a href="#onKeyEnter" >onKeyEnter</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#submitSearch" >submitSearch</a>
                             </li>
                         </ul>
                     </td>
@@ -209,79 +217,79 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#cancelButtonLabel">cancelButtonLabel</a>
+                                <a href="#cancelButtonLabel" >cancelButtonLabel</a>
                             </li>
                             <li>
-                                <a href="#cancelButtonLabelShort">cancelButtonLabelShort</a>
+                                <a href="#cancelButtonLabelShort" >cancelButtonLabelShort</a>
                             </li>
                             <li>
-                                <a href="#dataSource">dataSource</a>
+                                <a href="#dataSource" >dataSource</a>
                             </li>
                             <li>
-                                <a href="#disableClearButton">disableClearButton</a>
+                                <a href="#disableClearButton" >disableClearButton</a>
                             </li>
                             <li>
-                                <a href="#disableDataSourceOptions">disableDataSourceOptions</a>
+                                <a href="#disableDataSourceOptions" >disableDataSourceOptions</a>
                             </li>
                             <li>
-                                <a href="#disableRecordId">disableRecordId</a>
+                                <a href="#disableRecordId" >disableRecordId</a>
                             </li>
                             <li>
-                                <a href="#disableResetButton">disableResetButton</a>
+                                <a href="#disableResetButton" >disableResetButton</a>
                             </li>
                             <li>
-                                <a href="#disableSearchButton">disableSearchButton</a>
+                                <a href="#disableSearchButton" >disableSearchButton</a>
                             </li>
                             <li>
-                                <a href="#enforceModalSearch">enforceModalSearch</a>
+                                <a href="#enforceModalSearch" >enforceModalSearch</a>
                             </li>
                             <li>
-                                <a href="#entityId">entityId</a>
+                                <a href="#entityId" >entityId</a>
                             </li>
                             <li>
-                                <a href="#forceLayout">forceLayout</a>
+                                <a href="#forceLayout" >forceLayout</a>
                             </li>
                             <li>
-                                <a href="#getDataSourcesOnConfigChange">getDataSourcesOnConfigChange</a>
+                                <a href="#getDataSourcesOnConfigChange" >getDataSourcesOnConfigChange</a>
                             </li>
                             <li>
-                                <a href="#hiddenDataSources">hiddenDataSources</a>
+                                <a href="#hiddenDataSources" >hiddenDataSources</a>
                             </li>
                             <li>
-                                <a href="#hideClearButton">hideClearButton</a>
+                                <a href="#hideClearButton" >hideClearButton</a>
                             </li>
                             <li>
-                                <a href="#hideResetButton">hideResetButton</a>
+                                <a href="#hideResetButton" >hideResetButton</a>
                             </li>
                             <li>
-                                <a href="#hideSearchButton">hideSearchButton</a>
+                                <a href="#hideSearchButton" >hideSearchButton</a>
                             </li>
                             <li>
-                                <a href="#layoutBreakpoints">layoutBreakpoints</a>
+                                <a href="#layoutBreakpoints" >layoutBreakpoints</a>
                             </li>
                             <li>
-                                <a href="#layoutClasses">layoutClasses</a>
+                                <a href="#layoutClasses" >layoutClasses</a>
                             </li>
                             <li>
-                                <a href="#recordId">recordId</a>
+                                <a href="#recordId" >recordId</a>
                             </li>
                             <li>
-                                <a href="#searchButtonLabel">searchButtonLabel</a>
+                                <a href="#searchButtonLabel" >searchButtonLabel</a>
                             </li>
                             <li>
-                                <a href="#searchButtonLabelShort">searchButtonLabelShort</a>
+                                <a href="#searchButtonLabelShort" >searchButtonLabelShort</a>
                             </li>
                             <li>
-                                <a href="#searchValue">searchValue</a>
+                                <a href="#searchValue" >searchValue</a>
                             </li>
                             <li>
-                                <a href="#showSearchLabel">showSearchLabel</a>
+                                <a href="#showSearchLabel" >showSearchLabel</a>
                             </li>
                             <li>
-                                <a href="#updateDataSources">updateDataSources</a>
+                                <a href="#updateDataSources" >updateDataSources</a>
                             </li>
                             <li>
-                                <a href="#waitForConfigChange">waitForConfigChange</a>
+                                <a href="#waitForConfigChange" >waitForConfigChange</a>
                             </li>
                         </ul>
                     </td>
@@ -296,28 +304,28 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#entityChange">entityChange</a>
+                                <a href="#entityChange" >entityChange</a>
                             </li>
                             <li>
-                                <a href="#exception">exception</a>
+                                <a href="#exception" >exception</a>
                             </li>
                             <li>
-                                <a href="#parameterChange">parameterChange</a>
+                                <a href="#parameterChange" >parameterChange</a>
                             </li>
                             <li>
-                                <a href="#resultChange">resultChange</a>
+                                <a href="#resultChange" >resultChange</a>
                             </li>
                             <li>
-                                <a href="#resultCleared">resultCleared</a>
+                                <a href="#resultCleared" >resultCleared</a>
                             </li>
                             <li>
-                                <a href="#searchEnd">searchEnd</a>
+                                <a href="#searchEnd" >searchEnd</a>
                             </li>
                             <li>
-                                <a href="#searchException">searchException</a>
+                                <a href="#searchException" class="deprecated-name">searchException</a>
                             </li>
                             <li>
-                                <a href="#searchStart">searchStart</a>
+                                <a href="#searchStart" >searchStart</a>
                             </li>
                         </ul>
                     </td>
@@ -334,46 +342,46 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#hideSearchButton">hideSearchButton</a>
+                                    <a href="#hideSearchButton" >hideSearchButton</a>
                                 </li>
                                 <li>
-                                    <a href="#hideResetButton">hideResetButton</a>
+                                    <a href="#hideResetButton" >hideResetButton</a>
                                 </li>
                                 <li>
-                                    <a href="#hideClearButton">hideClearButton</a>
+                                    <a href="#hideClearButton" >hideClearButton</a>
                                 </li>
                                 <li>
-                                    <a href="#disableSearchButton">disableSearchButton</a>
+                                    <a href="#disableSearchButton" >disableSearchButton</a>
                                 </li>
                                 <li>
-                                    <a href="#disableResetButton">disableResetButton</a>
+                                    <a href="#disableResetButton" >disableResetButton</a>
                                 </li>
                                 <li>
-                                    <a href="#disableClearButton">disableClearButton</a>
+                                    <a href="#disableClearButton" >disableClearButton</a>
                                 </li>
                                 <li>
-                                    <a href="#disableRecordId">disableRecordId</a>
+                                    <a href="#disableRecordId" >disableRecordId</a>
                                 </li>
                                 <li>
-                                    <a href="#disableDataSourceOptions">disableDataSourceOptions</a>
+                                    <a href="#disableDataSourceOptions" >disableDataSourceOptions</a>
                                 </li>
                                 <li>
-                                    <a href="#forceLayout">forceLayout</a>
+                                    <a href="#forceLayout" >forceLayout</a>
                                 </li>
                                 <li>
-                                    <a href="#layoutClasses">layoutClasses</a>
+                                    <a href="#layoutClasses" >layoutClasses</a>
                                 </li>
                                 <li>
-                                    <a href="#dataSource">dataSource</a>
+                                    <a href="#dataSource" >dataSource</a>
                                 </li>
                                 <li>
-                                    <a href="#recordId">recordId</a>
+                                    <a href="#recordId" >recordId</a>
                                 </li>
                                 <li>
-                                    <a href="#entityId">entityId</a>
+                                    <a href="#entityId" >entityId</a>
                                 </li>
                                 <li>
-                                    <a href="#waitForConfigChange">waitForConfigChange</a>
+                                    <a href="#waitForConfigChange" >waitForConfigChange</a>
                                 </li>
                             </ul>
                         </td>
@@ -388,7 +396,7 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(fb: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>, dataSourcesService: <a href="../injectables/SzDataSourcesService.html">SzDataSourcesService</a>, cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>, apiConfigService: <a href="../injectables/SzConfigurationService.html">SzConfigurationService</a>, searchService: <a href="../injectables/SzSearchService.html">SzSearchService</a>, breakpointObserver: BreakpointObserver)</code>
+<code>constructor(fb: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>, dataSourcesService: <a href="../injectables/SzDataSourcesService.html" target="_self">SzDataSourcesService</a>, cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>, apiConfigService: <a href="../injectables/SzConfigurationService.html" target="_self">SzConfigurationService</a>, searchService: <a href="../injectables/SzSearchService.html" target="_self">SzSearchService</a>, breakpointObserver: BreakpointObserver)</code>
                     </td>
                 </tr>
 
@@ -498,6 +506,12 @@
                 </tr>
                 <tr>
                     <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
                         <i>Default value : </i><code>&quot;Clear Search Criteria&quot;</code>
                     </td>
                 </tr>
@@ -509,6 +523,12 @@
                     <td class="col-md-4">
                         <a name="cancelButtonLabelShort"></a>
                         <b>cancelButtonLabelShort</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
                     </td>
                 </tr>
                 <tr>
@@ -534,7 +554,7 @@
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>the currently selected datasource </p>
+                        <div class="io-description"><p>the currently selected datasource</p>
 </div>
                     </td>
                 </tr>
@@ -556,7 +576,7 @@
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>disable the clear button. button is not clickable. </p>
+                        <div class="io-description"><p>disable the clear button. button is not clickable.</p>
 </div>
                     </td>
                 </tr>
@@ -595,7 +615,7 @@ format is &quot;SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER&quot; or array of strings
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>disable the &quot;record id&quot; field. input cannot be edited. </p>
+                        <div class="io-description"><p>disable the &quot;record id&quot; field. input cannot be edited.</p>
 </div>
                     </td>
                 </tr>
@@ -617,7 +637,7 @@ format is &quot;SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER&quot; or array of strings
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>disable the reset button. button is not clickable. </p>
+                        <div class="io-description"><p>disable the reset button. button is not clickable.</p>
 </div>
                     </td>
                 </tr>
@@ -639,7 +659,7 @@ format is &quot;SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER&quot; or array of strings
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>disable the search button. button is not clickable. </p>
+                        <div class="io-description"><p>disable the search button. button is not clickable.</p>
 </div>
                     </td>
                 </tr>
@@ -651,6 +671,12 @@ format is &quot;SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER&quot; or array of strings
                     <td class="col-md-4">
                         <a name="enforceModalSearch"></a>
                         <b>enforceModalSearch</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
                     </td>
                 </tr>
                 <tr>
@@ -697,6 +723,12 @@ to all children components. this value overrides auto-responsive css adjustments
                 </tr>
                 <tr>
                     <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
                         <i>Default value : </i><code>true</code>
                     </td>
                 </tr>
@@ -715,6 +747,12 @@ api server when a configuration change is detected</p>
                     <td class="col-md-4">
                         <a name="hiddenDataSources"></a>
                         <b>hiddenDataSources</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>{}</code>
+
                     </td>
                 </tr>
                 <tr>
@@ -749,7 +787,7 @@ api server when a configuration change is detected</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>hide the clear button </p>
+                        <div class="io-description"><p>hide the clear button</p>
 </div>
                     </td>
                 </tr>
@@ -771,7 +809,7 @@ api server when a configuration change is detected</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>hide the reset button </p>
+                        <div class="io-description"><p>hide the reset button</p>
 </div>
                     </td>
                 </tr>
@@ -793,7 +831,7 @@ api server when a configuration change is detected</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>hide the search button </p>
+                        <div class="io-description"><p>hide the search button</p>
 </div>
                     </td>
                 </tr>
@@ -809,6 +847,12 @@ api server when a configuration change is detected</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
+                        <i>Type : </i>    <code>{}</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
                         <i>Default value : </i><code>[
     {cssClass: &#x27;layout-wide&#x27;, minWidth: 1021 },
     {cssClass: &#x27;layout-medium&#x27;, minWidth: 700, maxWidth: 1120 },
@@ -818,7 +862,7 @@ api server when a configuration change is detected</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>the width to switch from wide to narrow layout </p>
+                        <div class="io-description"><p>the width to switch from wide to narrow layout</p>
 </div>
                     </td>
                 </tr>
@@ -834,7 +878,7 @@ api server when a configuration change is detected</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>css classes to apply to component </p>
+                        <div class="io-description"><p>css classes to apply to component</p>
 </div>
                     </td>
                 </tr>
@@ -860,12 +904,18 @@ api server when a configuration change is detected</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
                         <i>Default value : </i><code>&quot;Search&quot;</code>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>text that shows up in buttons </p>
+                        <div class="io-description"><p>text that shows up in buttons</p>
 </div>
                     </td>
                 </tr>
@@ -877,6 +927,12 @@ api server when a configuration change is detected</p>
                     <td class="col-md-4">
                         <a name="searchButtonLabelShort"></a>
                         <b>searchButtonLabelShort</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
                     </td>
                 </tr>
                 <tr>
@@ -918,6 +974,12 @@ api server when a configuration change is detected</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
                         <i>Default value : </i><code>true</code>
                     </td>
                 </tr>
@@ -935,6 +997,12 @@ api server when a configuration change is detected</p>
                     <td class="col-md-4">
                         <a name="updateDataSources"></a>
                         <b>updateDataSources</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>() &#x3D;&gt; void</code>
+
                     </td>
                 </tr>
                 <tr>
@@ -1000,7 +1068,7 @@ conf to change before fetching resources like the identifiers list</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>event emmiter for when the _entity property has changed </p>
+                        <div class="io-description"><p>event emmiter for when the _entity property has changed</p>
 </div>
                     </td>
                 </tr>
@@ -1174,10 +1242,8 @@ conf to change before fetching resources like the identifiers list</p>
                 <td class="col-md-4">
                     <a name="clearSearch"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            clearSearch
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>clearSearch</b></span>
                         <a href="#clearSearch"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1211,10 +1277,8 @@ conf to change before fetching resources like the identifiers list</p>
                 <td class="col-md-4">
                     <a name="getAnyDisabled"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            getAnyDisabled
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>getAnyDisabled</b></span>
                         <a href="#getAnyDisabled"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1234,6 +1298,7 @@ conf to change before fetching resources like the identifiers list</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1277,9 +1342,7 @@ conf to change before fetching resources like the identifiers list</p>
                 <td class="col-md-4">
                     <a name="getCssQueryFromCriteria"></a>
                     <span class="name">
-                        <b>
-                            getCssQueryFromCriteria
-                        </b>
+                        <span ><b>getCssQueryFromCriteria</b></span>
                         <a href="#getCssQueryFromCriteria"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1295,11 +1358,12 @@ conf to change before fetching resources like the identifiers list</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>get the responsive breakpoint string from min and max width </p>
+                    <div class="io-description"><p>get the responsive breakpoint string from min and max width</p>
 </div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1355,10 +1419,8 @@ conf to change before fetching resources like the identifiers list</p>
                 <td class="col-md-4">
                     <a name="getDisabled"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            getDisabled
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>getDisabled</b></span>
                         <a href="#getDisabled"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1378,6 +1440,7 @@ conf to change before fetching resources like the identifiers list</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1421,10 +1484,8 @@ conf to change before fetching resources like the identifiers list</p>
                 <td class="col-md-4">
                     <a name="getSearchParams"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            getSearchParams
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>getSearchParams</b></span>
                         <a href="#getSearchParams"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1458,9 +1519,7 @@ conf to change before fetching resources like the identifiers list</p>
                 <td class="col-md-4">
                     <a name="ngOnDestroy"></a>
                     <span class="name">
-                        <b>
-                            ngOnDestroy
-                        </b>
+                        <span ><b>ngOnDestroy</b></span>
                         <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1493,10 +1552,8 @@ conf to change before fetching resources like the identifiers list</p>
                 <td class="col-md-4">
                     <a name="onKeyEnter"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            onKeyEnter
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>onKeyEnter</b></span>
                         <a href="#onKeyEnter"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1531,10 +1588,8 @@ if the submit button is currently hidden</p>
                 <td class="col-md-4">
                     <a name="submitSearch"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            submitSearch
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>submitSearch</b></span>
                         <a href="#submitSearch"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1568,94 +1623,91 @@ any parameter changes through the paramsChange emmitter.</p>
 </section>
     <section>
     
-        <h3 id="inputs">
-            Properties
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_datasources"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>_datasources</b></span>
+                        <a href="#_datasources"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="_datasources"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            _datasources</b>
-                            <a href="#_datasources"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>    <code>string[]</code>
+
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>string[]</code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>[]</code>
-                        </td>
-                    </tr>
-
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>the datasources available to user </p>
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>the datasources available to user</p>
 </div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="breakpointObserver"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>breakpointObserver</b></span>
+                        <a href="#breakpointObserver"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>BreakpointObserver</code>
+
                     </td>
                 </tr>
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unsubscribe$"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>unsubscribe$</b></span>
+                        <a href="#unsubscribe$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="breakpointObserver"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            breakpointObserver</b>
-                            <a href="#breakpointObserver"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Default value : </i><code>new Subject&lt;void&gt;()</code>
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>BreakpointObserver</code>
 
-                        </td>
-                    </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="unsubscribe$"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            unsubscribe$</b>
-                            <a href="#unsubscribe$"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>new Subject&lt;void&gt;()</code>
-                        </td>
-                    </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>subscription to notify subscribers to unbind </p>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>subscription to notify subscribers to unbind</p>
 </div>
-                    </td>
-                </tr>
+                </td>
+            </tr>
 
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 </section>
 
     <section>
@@ -1679,7 +1731,7 @@ any parameter changes through the paramsChange emmitter.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>hide the search button </p>
+                                <div class="io-description"><p>hide the search button</p>
 </div>
 
                                 <div class="io-description">
@@ -1735,7 +1787,7 @@ any parameter changes through the paramsChange emmitter.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>hide the reset button </p>
+                                <div class="io-description"><p>hide the reset button</p>
 </div>
 
                                 <div class="io-description">
@@ -1791,7 +1843,7 @@ any parameter changes through the paramsChange emmitter.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>hide the clear button </p>
+                                <div class="io-description"><p>hide the clear button</p>
 </div>
 
                                 <div class="io-description">
@@ -1847,7 +1899,7 @@ any parameter changes through the paramsChange emmitter.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>disable the search button. button is not clickable. </p>
+                                <div class="io-description"><p>disable the search button. button is not clickable.</p>
 </div>
 
                                 <div class="io-description">
@@ -1903,7 +1955,7 @@ any parameter changes through the paramsChange emmitter.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>disable the reset button. button is not clickable. </p>
+                                <div class="io-description"><p>disable the reset button. button is not clickable.</p>
 </div>
 
                                 <div class="io-description">
@@ -1959,7 +2011,7 @@ any parameter changes through the paramsChange emmitter.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>disable the clear button. button is not clickable. </p>
+                                <div class="io-description"><p>disable the clear button. button is not clickable.</p>
 </div>
 
                                 <div class="io-description">
@@ -2015,7 +2067,7 @@ any parameter changes through the paramsChange emmitter.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>disable the &quot;record id&quot; field. input cannot be edited. </p>
+                                <div class="io-description"><p>disable the &quot;record id&quot; field. input cannot be edited.</p>
 </div>
 
                                 <div class="io-description">
@@ -2066,7 +2118,7 @@ any parameter changes through the paramsChange emmitter.</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>disableDataSourceOptions(options)</code></span>
+                        <span class="accessor"><b>set</b><code>disableDataSourceOptions(options: string[] | string)</code></span>
                     </td>
                 </tr>
                     <tr>
@@ -2081,6 +2133,7 @@ format is &quot;SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER&quot; or array of strings
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
+                                                        <td>Type</td>
                                                     <td>Optional</td>
                                                 </tr>
                                             </thead>
@@ -2088,6 +2141,9 @@ format is &quot;SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER&quot; or array of strings
                                                     <tr>
                                                             <td>options</td>
                                                     
+                                                            <td>
+                                                                        <code>string[] | string</code>
+                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -2119,7 +2175,7 @@ format is &quot;SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER&quot; or array of strings
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>forceLayout(value)</code></span>
+                        <span class="accessor"><b>set</b><code>forceLayout(value: string | string[])</code></span>
                     </td>
                 </tr>
                     <tr>
@@ -2134,6 +2190,7 @@ to all children components. this value overrides auto-responsive css adjustments
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
+                                                        <td>Type</td>
                                                     <td>Optional</td>
                                                 </tr>
                                             </thead>
@@ -2141,6 +2198,9 @@ to all children components. this value overrides auto-responsive css adjustments
                                                     <tr>
                                                             <td>value</td>
                                                     
+                                                            <td>
+                                                                        <code>string | string[]</code>
+                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -2180,7 +2240,7 @@ to all children components. this value overrides auto-responsive css adjustments
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>css classes to apply to component </p>
+                                <div class="io-description"><p>css classes to apply to component</p>
 </div>
 
                         </td>
@@ -2188,12 +2248,12 @@ to all children components. this value overrides auto-responsive css adjustments
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>layoutClasses(value)</code></span>
+                        <span class="accessor"><b>set</b><code>layoutClasses(value: string[] | string)</code></span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>css classes to apply to component </p>
+                                <div class="io-description"><p>css classes to apply to component</p>
 </div>
 
                                 <div class="io-description">
@@ -2202,6 +2262,7 @@ to all children components. this value overrides auto-responsive css adjustments
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
+                                                        <td>Type</td>
                                                     <td>Optional</td>
                                                 </tr>
                                             </thead>
@@ -2209,6 +2270,9 @@ to all children components. this value overrides auto-responsive css adjustments
                                                     <tr>
                                                             <td>value</td>
                                                     
+                                                            <td>
+                                                                        <code>string[] | string</code>
+                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -2245,7 +2309,7 @@ to all children components. this value overrides auto-responsive css adjustments
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>the currently selected datasource </p>
+                                <div class="io-description"><p>the currently selected datasource</p>
 </div>
 
                                 <div class="io-description">
@@ -2296,7 +2360,7 @@ to all children components. this value overrides auto-responsive css adjustments
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>recordId(value)</code></span>
+                        <span class="accessor"><b>set</b><code>recordId(value: string | number)</code></span>
                     </td>
                 </tr>
                     <tr>
@@ -2308,6 +2372,7 @@ to all children components. this value overrides auto-responsive css adjustments
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
+                                                        <td>Type</td>
                                                     <td>Optional</td>
                                                 </tr>
                                             </thead>
@@ -2315,6 +2380,9 @@ to all children components. this value overrides auto-responsive css adjustments
                                                     <tr>
                                                             <td>value</td>
                                                     
+                                                            <td>
+                                                                        <code>string | number</code>
+                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -2346,7 +2414,7 @@ to all children components. this value overrides auto-responsive css adjustments
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>entityId(value)</code></span>
+                        <span class="accessor"><b>set</b><code>entityId(value: string | number)</code></span>
                     </td>
                 </tr>
                     <tr>
@@ -2358,6 +2426,7 @@ to all children components. this value overrides auto-responsive css adjustments
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
+                                                        <td>Type</td>
                                                     <td>Optional</td>
                                                 </tr>
                                             </thead>
@@ -2365,6 +2434,9 @@ to all children components. this value overrides auto-responsive css adjustments
                                                     <tr>
                                                             <td>value</td>
                                                     
+                                                            <td>
+                                                                        <code>string | number</code>
+                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -2841,14 +2913,14 @@ conf to change before fetching resources like the identifiers list</p>
 
 
 
-                   
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -2860,6 +2932,15 @@ conf to change before fetching resources like the identifiers list</p>
            </div>
        </div>
 
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
@@ -2869,9 +2950,9 @@ conf to change before fetching resources like the identifiers list</p>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

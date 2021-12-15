@@ -1,6 +1,5 @@
 'use strict';
 
-
 customElements.define('compodoc-menu', class extends HTMLElement {
     constructor() {
         super();
@@ -67,12 +66,12 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     <li class="chapter inner">
                                         <a data-type="chapter-link" href="additional-documentation/web-components.html" data-context-id="additional">
                                             <div class="menu-toggler linked" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#additional-page-398a8175f9ed9001d53e375aefa4a54d"' : 'data-target="#xs-additional-page-398a8175f9ed9001d53e375aefa4a54d"' }>
+                                            'data-target="#additional-page-768cd47719cd7b77f76b0103a56efea9ba083120f5789a266e65d76038964159db972d34552a09e348eb5bb4d9166bb02c14f16e7b9674217b7c68d13b5c2c40"' : 'data-target="#xs-additional-page-768cd47719cd7b77f76b0103a56efea9ba083120f5789a266e65d76038964159db972d34552a09e348eb5bb4d9166bb02c14f16e7b9674217b7c68d13b5c2c40"' }>
                                                 <span class="link-name">Web Components</span>
                                                 <span class="icon ion-ios-arrow-down"></span>
                                             </div>
                                         </a>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="additional-page-398a8175f9ed9001d53e375aefa4a54d"' : 'id="xs-additional-page-398a8175f9ed9001d53e375aefa4a54d"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="additional-page-768cd47719cd7b77f76b0103a56efea9ba083120f5789a266e65d76038964159db972d34552a09e348eb5bb4d9166bb02c14f16e7b9674217b7c68d13b5c2c40"' : 'id="xs-additional-page-768cd47719cd7b77f76b0103a56efea9ba083120f5789a266e65d76038964159db972d34552a09e348eb5bb4d9166bb02c14f16e7b9674217b7c68d13b5c2c40"' }>
                                             <li class="link for-chapter2">
                                                 <a href="additional-documentation/web-components/quick-start.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Quick Start</a>
                                             </li>
@@ -99,12 +98,12 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     <li class="chapter inner">
                                         <a data-type="chapter-link" href="additional-documentation/graph-components.html" data-context-id="additional">
                                             <div class="menu-toggler linked" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#additional-page-5d4c09cdd51d860cd174c6f9d6aa8187"' : 'data-target="#xs-additional-page-5d4c09cdd51d860cd174c6f9d6aa8187"' }>
+                                            'data-target="#additional-page-1016512b99746cf77d3cb983f6694bbb59a918da0300ec40dcaee7d23e92249a31692d0530c5475338d8cea43f0226697a9473f58625c4886d6460a5d5f7de1d"' : 'data-target="#xs-additional-page-1016512b99746cf77d3cb983f6694bbb59a918da0300ec40dcaee7d23e92249a31692d0530c5475338d8cea43f0226697a9473f58625c4886d6460a5d5f7de1d"' }>
                                                 <span class="link-name">Graph Components</span>
                                                 <span class="icon ion-ios-arrow-down"></span>
                                             </div>
                                         </a>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="additional-page-5d4c09cdd51d860cd174c6f9d6aa8187"' : 'id="xs-additional-page-5d4c09cdd51d860cd174c6f9d6aa8187"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="additional-page-1016512b99746cf77d3cb983f6694bbb59a918da0300ec40dcaee7d23e92249a31692d0530c5475338d8cea43f0226697a9473f58625c4886d6460a5d5f7de1d"' : 'id="xs-additional-page-1016512b99746cf77d3cb983f6694bbb59a918da0300ec40dcaee7d23e92249a31692d0530c5475338d8cea43f0226697a9473f58625c4886d6460a5d5f7de1d"' }>
                                             <li class="link for-chapter2">
                                                 <a href="additional-documentation/graph-components/szstandalonegraphcomponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">SzStandaloneGraphComponent</a>
                                             </li>
@@ -116,12 +115,12 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     <li class="chapter inner">
                                         <a data-type="chapter-link" href="additional-documentation/themes.html" data-context-id="additional">
                                             <div class="menu-toggler linked" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#additional-page-247b91889b4cfdb46d99aa0ed55b635b"' : 'data-target="#xs-additional-page-247b91889b4cfdb46d99aa0ed55b635b"' }>
+                                            'data-target="#additional-page-5bdf190992f365a97e5e6e1b19634869fd78af263a77665c23c38f5a0e19009c3beb8d89140e1e7c967871444aebf6bfebf6bdab6135fd7967c9429b8b611e6d"' : 'data-target="#xs-additional-page-5bdf190992f365a97e5e6e1b19634869fd78af263a77665c23c38f5a0e19009c3beb8d89140e1e7c967871444aebf6bfebf6bdab6135fd7967c9429b8b611e6d"' }>
                                                 <span class="link-name">Themes</span>
                                                 <span class="icon ion-ios-arrow-down"></span>
                                             </div>
                                         </a>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="additional-page-247b91889b4cfdb46d99aa0ed55b635b"' : 'id="xs-additional-page-247b91889b4cfdb46d99aa0ed55b635b"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="additional-page-5bdf190992f365a97e5e6e1b19634869fd78af263a77665c23c38f5a0e19009c3beb8d89140e1e7c967871444aebf6bfebf6bdab6135fd7967c9429b8b611e6d"' : 'id="xs-additional-page-5bdf190992f365a97e5e6e1b19634869fd78af263a77665c23c38f5a0e19009c3beb8d89140e1e7c967871444aebf6bfebf6bdab6135fd7967c9429b8b611e6d"' }>
                                             <li class="link for-chapter2">
                                                 <a href="additional-documentation/themes/pre-built.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Pre Built</a>
                                             </li>
@@ -143,124 +142,101 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         </a>
                         <ul class="links collapse " ${ isNormalMode ? 'id="modules-links"' : 'id="xs-modules-links"' }>
                             <li class="link">
-                                <a href="modules/SenzingSdkModule.html" data-type="entity-link">SenzingSdkModule</a>
+                                <a href="modules/SenzingSdkModule.html" data-type="entity-link" >SenzingSdkModule</a>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#components-links-module-SenzingSdkModule-90e9abace6d0d109084065f5a2294b0a"' : 'data-target="#xs-components-links-module-SenzingSdkModule-90e9abace6d0d109084065f5a2294b0a"' }>
+                                            'data-target="#components-links-module-SenzingSdkModule-2a7ae69ec06c573c9fdbd0466ed5d238f2805800d59831f7b0b21459fcc40b44c379152b1977616e44ae1d4ccd5c1e2d17e619c9f9ba8271a7baf93bf9e1d092"' : 'data-target="#xs-components-links-module-SenzingSdkModule-2a7ae69ec06c573c9fdbd0466ed5d238f2805800d59831f7b0b21459fcc40b44c379152b1977616e44ae1d4ccd5c1e2d17e619c9f9ba8271a7baf93bf9e1d092"' }>
                                             <span class="icon ion-md-cog"></span>
                                             <span>Components</span>
                                             <span class="icon ion-ios-arrow-down"></span>
                                         </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-SenzingSdkModule-90e9abace6d0d109084065f5a2294b0a"' :
-                                            'id="xs-components-links-module-SenzingSdkModule-90e9abace6d0d109084065f5a2294b0a"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-SenzingSdkModule-2a7ae69ec06c573c9fdbd0466ed5d238f2805800d59831f7b0b21459fcc40b44c379152b1977616e44ae1d4ccd5c1e2d17e619c9f9ba8271a7baf93bf9e1d092"' :
+                                            'id="xs-components-links-module-SenzingSdkModule-2a7ae69ec06c573c9fdbd0466ed5d238f2805800d59831f7b0b21459fcc40b44c379152b1977616e44ae1d4ccd5c1e2d17e619c9f9ba8271a7baf93bf9e1d092"' }>
                                             <li class="link">
-                                                <a href="components/SzConfigurationAboutComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzConfigurationAboutComponent</a>
+                                                <a href="components/SzConfigurationAboutComponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzConfigurationAboutComponent</a>
                                             </li>
                                             <li class="link">
-                                                <a href="components/SzConfigurationComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzConfigurationComponent</a>
+                                                <a href="components/SzConfigurationComponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzConfigurationComponent</a>
                                             </li>
                                             <li class="link">
-                                                <a href="components/SzEntityDetailComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzEntityDetailComponent</a>
+                                                <a href="components/SzEntityDetailComponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzEntityDetailComponent</a>
                                             </li>
                                             <li class="link">
-                                                <a href="components/SzEntityDetailGraphFilterComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzEntityDetailGraphFilterComponent</a>
+                                                <a href="components/SzEntityDetailGraphFilterComponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzEntityDetailGraphFilterComponent</a>
                                             </li>
                                             <li class="link">
-                                                <a href="components/SzEntityRecordViewerComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzEntityRecordViewerComponent</a>
+                                                <a href="components/SzEntityRecordViewerComponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzEntityRecordViewerComponent</a>
                                             </li>
                                             <li class="link">
-                                                <a href="components/SzPoweredByComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzPoweredByComponent</a>
+                                                <a href="components/SzPoweredByComponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzPoweredByComponent</a>
                                             </li>
                                             <li class="link">
-                                                <a href="components/SzPreferencesComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzPreferencesComponent</a>
+                                                <a href="components/SzPreferencesComponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzPreferencesComponent</a>
                                             </li>
                                             <li class="link">
-                                                <a href="components/SzSearchByIdComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzSearchByIdComponent</a>
+                                                <a href="components/SzSearchByIdComponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzSearchByIdComponent</a>
                                             </li>
                                             <li class="link">
-                                                <a href="components/SzSearchComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzSearchComponent</a>
+                                                <a href="components/SzSearchComponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzSearchComponent</a>
                                             </li>
                                             <li class="link">
-                                                <a href="components/SzSearchIdentifiersPickerDialogComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzSearchIdentifiersPickerDialogComponent</a>
+                                                <a href="components/SzSearchIdentifiersPickerDialogComponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzSearchIdentifiersPickerDialogComponent</a>
                                             </li>
                                             <li class="link">
-                                                <a href="components/SzSearchIdentifiersPickerSheetComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzSearchIdentifiersPickerSheetComponent</a>
+                                                <a href="components/SzSearchIdentifiersPickerSheetComponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzSearchIdentifiersPickerSheetComponent</a>
                                             </li>
                                             <li class="link">
-                                                <a href="components/SzSearchResultsComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzSearchResultsComponent</a>
+                                                <a href="components/SzSearchResultsComponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzSearchResultsComponent</a>
                                             </li>
                                             <li class="link">
-                                                <a href="components/SzStandaloneGraphComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SzStandaloneGraphComponent</a>
+                                                <a href="components/SzStandaloneGraphComponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzStandaloneGraphComponent</a>
                                             </li>
                                         </ul>
                                     </li>
                                 <li class="chapter inner">
                                     <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                        'data-target="#injectables-links-module-SenzingSdkModule-90e9abace6d0d109084065f5a2294b0a"' : 'data-target="#xs-injectables-links-module-SenzingSdkModule-90e9abace6d0d109084065f5a2294b0a"' }>
+                                        'data-target="#injectables-links-module-SenzingSdkModule-2a7ae69ec06c573c9fdbd0466ed5d238f2805800d59831f7b0b21459fcc40b44c379152b1977616e44ae1d4ccd5c1e2d17e619c9f9ba8271a7baf93bf9e1d092"' : 'data-target="#xs-injectables-links-module-SenzingSdkModule-2a7ae69ec06c573c9fdbd0466ed5d238f2805800d59831f7b0b21459fcc40b44c379152b1977616e44ae1d4ccd5c1e2d17e619c9f9ba8271a7baf93bf9e1d092"' }>
                                         <span class="icon ion-md-arrow-round-down"></span>
                                         <span>Injectables</span>
                                         <span class="icon ion-ios-arrow-down"></span>
                                     </div>
-                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-SenzingSdkModule-90e9abace6d0d109084065f5a2294b0a"' :
-                                        'id="xs-injectables-links-module-SenzingSdkModule-90e9abace6d0d109084065f5a2294b0a"' }>
+                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-SenzingSdkModule-2a7ae69ec06c573c9fdbd0466ed5d238f2805800d59831f7b0b21459fcc40b44c379152b1977616e44ae1d4ccd5c1e2d17e619c9f9ba8271a7baf93bf9e1d092"' :
+                                        'id="xs-injectables-links-module-SenzingSdkModule-2a7ae69ec06c573c9fdbd0466ed5d238f2805800d59831f7b0b21459fcc40b44c379152b1977616e44ae1d4ccd5c1e2d17e619c9f9ba8271a7baf93bf9e1d092"' }>
                                         <li class="link">
-                                            <a href="injectables/SzAdminService.html"
-                                                data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>SzAdminService</a>
+                                            <a href="injectables/SzAdminService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzAdminService</a>
                                         </li>
                                         <li class="link">
-                                            <a href="injectables/SzBulkDataService.html"
-                                                data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>SzBulkDataService</a>
+                                            <a href="injectables/SzBulkDataService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzBulkDataService</a>
                                         </li>
                                         <li class="link">
-                                            <a href="injectables/SzConfigurationService.html"
-                                                data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>SzConfigurationService</a>
+                                            <a href="injectables/SzConfigurationService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzConfigurationService</a>
                                         </li>
                                         <li class="link">
-                                            <a href="injectables/SzDataSourcesService.html"
-                                                data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>SzDataSourcesService</a>
+                                            <a href="injectables/SzDataSourcesService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzDataSourcesService</a>
                                         </li>
                                         <li class="link">
-                                            <a href="injectables/SzEntityTypesService.html"
-                                                data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>SzEntityTypesService</a>
+                                            <a href="injectables/SzEntityTypesService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzEntityTypesService</a>
                                         </li>
                                         <li class="link">
-                                            <a href="injectables/SzFoliosService.html"
-                                                data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>SzFoliosService</a>
+                                            <a href="injectables/SzFoliosService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzFoliosService</a>
                                         </li>
                                         <li class="link">
-                                            <a href="injectables/SzPdfUtilService.html"
-                                                data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>SzPdfUtilService</a>
+                                            <a href="injectables/SzPdfUtilService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzPdfUtilService</a>
                                         </li>
                                         <li class="link">
-                                            <a href="injectables/SzPrefsService.html"
-                                                data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>SzPrefsService</a>
+                                            <a href="injectables/SzPrefsService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzPrefsService</a>
                                         </li>
                                         <li class="link">
-                                            <a href="injectables/SzSearchService.html"
-                                                data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>SzSearchService</a>
+                                            <a href="injectables/SzSearchService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzSearchService</a>
                                         </li>
                                         <li class="link">
-                                            <a href="injectables/SzUIEventService.html"
-                                                data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>SzUIEventService</a>
+                                            <a href="injectables/SzUIEventService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzUIEventService</a>
                                         </li>
                                     </ul>
                                 </li>
                             </li>
                             <li class="link">
-                                <a href="modules/SzSdkMaterialModule.html" data-type="entity-link">SzSdkMaterialModule</a>
+                                <a href="modules/SzSdkMaterialModule.html" data-type="entity-link" >SzSdkMaterialModule</a>
                             </li>
                 </ul>
                 </li>
@@ -273,92 +249,52 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         </div>
                         <ul class="links collapse " ${ isNormalMode ? 'id="classes-links"' : 'id="xs-classes-links"' }>
                             <li class="link">
-                                <a href="classes/SzAdminPrefs.html" data-type="entity-link">SzAdminPrefs</a>
+                                <a href="classes/SzAdminPrefs.html" data-type="entity-link" >SzAdminPrefs</a>
                             </li>
                             <li class="link">
-                                <a href="classes/SzBulkDataAnalysis.html" data-type="entity-link">SzBulkDataAnalysis</a>
+                                <a href="classes/SzBulkDataAnalysis.html" data-type="entity-link" >SzBulkDataAnalysis</a>
                             </li>
                             <li class="link">
-                                <a href="classes/SzDataSourceRecordAnalysis.html" data-type="entity-link">SzDataSourceRecordAnalysis</a>
+                                <a href="classes/SzDataSourceRecordAnalysis.html" data-type="entity-link" >SzDataSourceRecordAnalysis</a>
                             </li>
                             <li class="link">
-                                <a href="classes/SzEntityDetailPrefs.html" data-type="entity-link">SzEntityDetailPrefs</a>
+                                <a href="classes/SzEntityDetailPrefs.html" data-type="entity-link" >SzEntityDetailPrefs</a>
                             </li>
                             <li class="link">
-                                <a href="classes/SzFolio.html" data-type="entity-link">SzFolio</a>
+                                <a href="classes/SzFolio.html" data-type="entity-link" >SzFolio</a>
                             </li>
                             <li class="link">
-                                <a href="classes/SzFolioItem.html" data-type="entity-link">SzFolioItem</a>
+                                <a href="classes/SzFolioItem.html" data-type="entity-link" >SzFolioItem</a>
                             </li>
                             <li class="link">
-                                <a href="classes/SzGraphPrefs.html" data-type="entity-link">SzGraphPrefs</a>
+                                <a href="classes/SzGraphPrefs.html" data-type="entity-link" >SzGraphPrefs</a>
                             </li>
                             <li class="link">
-                                <a href="classes/SzSdkPrefsBase.html" data-type="entity-link">SzSdkPrefsBase</a>
+                                <a href="classes/SzSdkPrefsBase.html" data-type="entity-link" >SzSdkPrefsBase</a>
                             </li>
                             <li class="link">
-                                <a href="classes/SzSearchFormPrefs.html" data-type="entity-link">SzSearchFormPrefs</a>
+                                <a href="classes/SzSearchFormPrefs.html" data-type="entity-link" >SzSearchFormPrefs</a>
                             </li>
                             <li class="link">
-                                <a href="classes/SzSearchHistoryFolio.html" data-type="entity-link">SzSearchHistoryFolio</a>
+                                <a href="classes/SzSearchHistoryFolio.html" data-type="entity-link" >SzSearchHistoryFolio</a>
                             </li>
                             <li class="link">
-                                <a href="classes/SzSearchHistoryFolioItem.html" data-type="entity-link">SzSearchHistoryFolioItem</a>
+                                <a href="classes/SzSearchHistoryFolioItem.html" data-type="entity-link" >SzSearchHistoryFolioItem</a>
                             </li>
                             <li class="link">
-                                <a href="classes/SzSearchParamsFolio.html" data-type="entity-link">SzSearchParamsFolio</a>
+                                <a href="classes/SzSearchParamsFolio.html" data-type="entity-link" >SzSearchParamsFolio</a>
                             </li>
                             <li class="link">
-                                <a href="classes/SzSearchParamsFolioItem.html" data-type="entity-link">SzSearchParamsFolioItem</a>
+                                <a href="classes/SzSearchParamsFolioItem.html" data-type="entity-link" >SzSearchParamsFolioItem</a>
                             </li>
                             <li class="link">
-                                <a href="classes/SzSearchResultsPrefs.html" data-type="entity-link">SzSearchResultsPrefs</a>
+                                <a href="classes/SzSearchResultsPrefs.html" data-type="entity-link" >SzSearchResultsPrefs</a>
                             </li>
                             <li class="link">
-                                <a href="classes/SzServerError.html" data-type="entity-link">SzServerError</a>
+                                <a href="classes/SzServerError.html" data-type="entity-link" >SzServerError</a>
                             </li>
                         </ul>
                     </li>
-                        <li class="chapter">
-                            <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ? 'data-target="#injectables-links"' :
-                                'data-target="#xs-injectables-links"' }>
-                                <span class="icon ion-md-arrow-round-down"></span>
-                                <span>Injectables</span>
-                                <span class="icon ion-ios-arrow-down"></span>
-                            </div>
-                            <ul class="links collapse " ${ isNormalMode ? 'id="injectables-links"' : 'id="xs-injectables-links"' }>
-                                <li class="link">
-                                    <a href="injectables/SzAdminService.html" data-type="entity-link">SzAdminService</a>
-                                </li>
-                                <li class="link">
-                                    <a href="injectables/SzBulkDataService.html" data-type="entity-link">SzBulkDataService</a>
-                                </li>
-                                <li class="link">
-                                    <a href="injectables/SzConfigurationService.html" data-type="entity-link">SzConfigurationService</a>
-                                </li>
-                                <li class="link">
-                                    <a href="injectables/SzDataSourcesService.html" data-type="entity-link">SzDataSourcesService</a>
-                                </li>
-                                <li class="link">
-                                    <a href="injectables/SzEntityTypesService.html" data-type="entity-link">SzEntityTypesService</a>
-                                </li>
-                                <li class="link">
-                                    <a href="injectables/SzFoliosService.html" data-type="entity-link">SzFoliosService</a>
-                                </li>
-                                <li class="link">
-                                    <a href="injectables/SzPdfUtilService.html" data-type="entity-link">SzPdfUtilService</a>
-                                </li>
-                                <li class="link">
-                                    <a href="injectables/SzPrefsService.html" data-type="entity-link">SzPrefsService</a>
-                                </li>
-                                <li class="link">
-                                    <a href="injectables/SzSearchService.html" data-type="entity-link">SzSearchService</a>
-                                </li>
-                                <li class="link">
-                                    <a href="injectables/SzUIEventService.html" data-type="entity-link">SzUIEventService</a>
-                                </li>
-                            </ul>
-                        </li>
                     <li class="chapter">
                         <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ? 'data-target="#interfaces-links"' :
                             'data-target="#xs-interfaces-links"' }>
@@ -368,52 +304,52 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         </div>
                         <ul class="links collapse " ${ isNormalMode ? ' id="interfaces-links"' : 'id="xs-interfaces-links"' }>
                             <li class="link">
-                                <a href="interfaces/AdminStreamAnalysisConfig.html" data-type="entity-link">AdminStreamAnalysisConfig</a>
+                                <a href="interfaces/AdminStreamAnalysisConfig.html" data-type="entity-link" >AdminStreamAnalysisConfig</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/AdminStreamConnProperties.html" data-type="entity-link">AdminStreamConnProperties</a>
+                                <a href="interfaces/AdminStreamConnProperties.html" data-type="entity-link" >AdminStreamConnProperties</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/AdminStreamLoadConfig.html" data-type="entity-link">AdminStreamLoadConfig</a>
+                                <a href="interfaces/AdminStreamLoadConfig.html" data-type="entity-link" >AdminStreamLoadConfig</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/SectionDataByDataSource.html" data-type="entity-link">SectionDataByDataSource</a>
+                                <a href="interfaces/SzDataSourceComposite.html" data-type="entity-link" >SzDataSourceComposite</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/SzDataSourceComposite.html" data-type="entity-link">SzDataSourceComposite</a>
+                                <a href="interfaces/SzEntityDetailSectionData.html" data-type="entity-link" >SzEntityDetailSectionData</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/SzEntityDetailSectionData.html" data-type="entity-link">SzEntityDetailSectionData</a>
+                                <a href="interfaces/SzEntityDetailSectionSummary.html" data-type="entity-link" >SzEntityDetailSectionSummary</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/SzEntityDetailSectionSummary.html" data-type="entity-link">SzEntityDetailSectionSummary</a>
+                                <a href="interfaces/SzEntitySearchParams.html" data-type="entity-link" >SzEntitySearchParams</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/SzEntitySearchParams.html" data-type="entity-link">SzEntitySearchParams</a>
+                                <a href="interfaces/SzMatchFields.html" data-type="entity-link" >SzMatchFields</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/SzMatchFields.html" data-type="entity-link">SzMatchFields</a>
+                                <a href="interfaces/SzMatchKeyComposite.html" data-type="entity-link" >SzMatchKeyComposite</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/SzMatchKeyComposite.html" data-type="entity-link">SzMatchKeyComposite</a>
+                                <a href="interfaces/SzNetworkGraphInputs.html" data-type="entity-link" >SzNetworkGraphInputs</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/SzNetworkGraphInputs.html" data-type="entity-link">SzNetworkGraphInputs</a>
+                                <a href="interfaces/SzRawData.html" data-type="entity-link" >SzRawData</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/SzRawData.html" data-type="entity-link">SzRawData</a>
+                                <a href="interfaces/SzRawDataMatches.html" data-type="entity-link" >SzRawDataMatches</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/SzRawDataMatches.html" data-type="entity-link">SzRawDataMatches</a>
+                                <a href="interfaces/SzSdkPrefsModel.html" data-type="entity-link" >SzSdkPrefsModel</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/SzSdkPrefsModel.html" data-type="entity-link">SzSdkPrefsModel</a>
+                                <a href="interfaces/SzSearchEvent.html" data-type="entity-link" >SzSearchEvent</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/SzSearchEvent.html" data-type="entity-link">SzSearchEvent</a>
+                                <a href="interfaces/SzSearchResultEntityData.html" data-type="entity-link" >SzSearchResultEntityData</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/SzSearchResultEntityData.html" data-type="entity-link">SzSearchResultEntityData</a>
+                                <a href="interfaces/SzSectionDataByDataSource.html" data-type="entity-link" >SzSectionDataByDataSource</a>
                             </li>
                         </ul>
                     </li>

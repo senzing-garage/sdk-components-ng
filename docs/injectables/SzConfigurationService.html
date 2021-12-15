@@ -8,7 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
 
@@ -38,7 +39,7 @@
 
 <ol class="breadcrumb">
   <li>Injectables</li>
-  <li>SzConfigurationService</li>
+  <li >SzConfigurationService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -56,6 +57,7 @@
             <code>src/lib/services/sz-configuration.service.ts</code>
         </p>
 
+
             <p class="comment">
                 <h3>Description</h3>
             </p>
@@ -66,21 +68,12 @@ values that are passed throughout all components for API connection requests.</p
 change dynamically through the application lifecycle(ie changing request namespace from &#39;<a href="http://api.mydomain.com&#39;">http://api.mydomain.com&#39;</a> to &#39;<a href="http://api.mydomain.com/SUBSECTION&#39;">http://api.mydomain.com/SUBSECTION&#39;</a>).</p>
 <p>If your application just needs its values initialized that should be done by
 passing in a config factory to the <a href="../modules/SenzingSdkModule.html#forRoot">SenzingSdkModule</a> method.</p>
+<p>this.apiconf.basePath = &#39;<a href="http://apis.mydomain.com/&#39;">http://apis.mydomain.com/&#39;</a>;</p>
+<p>this.apiconf.parametersChanged.subscribe( (params) =&gt; { console.log(&#39;api connection params changed.&#39;, params); })</p>
 
             </p>
 
 
-            <p class="comment">
-                <h3>Example</h3>
-            </p>
-            <div class="io-description">
-                        <div>
-                            <pre class="line-numbers"><code class="language-html">this.apiconf.basePath = 'http://apis.mydomain.com/';</code></pre>
-                        </div>
-                        <div>
-                            <pre class="line-numbers"><code class="language-html">this.apiconf.parametersChanged.subscribe( (params) =&gt; { console.log('api connection params changed.', params); })</code></pre>
-                        </div>
-            </div>
 
             <section>
     <h3 id="index">Index</h3>
@@ -96,15 +89,15 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#apiConfiguration">apiConfiguration</a>
+                                <a href="#apiConfiguration" >apiConfiguration</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#graphApiConfigService">graphApiConfigService</a>
+                                <a href="#graphApiConfigService" >graphApiConfigService</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#prefs">prefs</a>
+                                <a href="#prefs" >prefs</a>
                             </li>
                         </ul>
                     </td>
@@ -120,19 +113,19 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#addHeaderToApiRequests">addHeaderToApiRequests</a>
+                                <a href="#addHeaderToApiRequests" >addHeaderToApiRequests</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#asConfigurationParameters">asConfigurationParameters</a>
+                                <a href="#asConfigurationParameters" >asConfigurationParameters</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#fromParameters">fromParameters</a>
+                                <a href="#fromParameters" >fromParameters</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#removeHeaderFromApiRequests">removeHeaderFromApiRequests</a>
+                                <a href="#removeHeaderFromApiRequests" >removeHeaderFromApiRequests</a>
                             </li>
                         </ul>
                     </td>
@@ -151,25 +144,25 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#additionalApiRequestHeaders">additionalApiRequestHeaders</a>
+                                    <a href="#additionalApiRequestHeaders" >additionalApiRequestHeaders</a>
                                 </li>
                                 <li>
-                                    <a href="#apiKeys">apiKeys</a>
+                                    <a href="#apiKeys" >apiKeys</a>
                                 </li>
                                 <li>
-                                    <a href="#username">username</a>
+                                    <a href="#username" >username</a>
                                 </li>
                                 <li>
-                                    <a href="#password">password</a>
+                                    <a href="#password" >password</a>
                                 </li>
                                 <li>
-                                    <a href="#accessToken">accessToken</a>
+                                    <a href="#accessToken" >accessToken</a>
                                 </li>
                                 <li>
-                                    <a href="#basePath">basePath</a>
+                                    <a href="#basePath" >basePath</a>
                                 </li>
                                 <li>
-                                    <a href="#withCredentials">withCredentials</a>
+                                    <a href="#withCredentials" >withCredentials</a>
                                 </li>
                             </ul>
                         </td>
@@ -184,7 +177,7 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(apiConfiguration: SzRestConfiguration, graphApiConfigService: SzGraphConfigurationService, prefs: <a href="../injectables/SzPrefsService.html">SzPrefsService</a>)</code>
+<code>constructor(apiConfiguration: SzRestConfiguration, graphApiConfigService: SzGraphConfigurationService, prefs: <a href="../injectables/SzPrefsService.html" target="_self">SzPrefsService</a>)</code>
                     </td>
                 </tr>
 
@@ -257,10 +250,8 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
                 <td class="col-md-4">
                     <a name="addHeaderToApiRequests"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            addHeaderToApiRequests
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>addHeaderToApiRequests</b></span>
                         <a href="#addHeaderToApiRequests"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -277,11 +268,12 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>add an additional header to all outgoing API requests </p>
+                    <div class="io-description"><p>add an additional header to all outgoing API requests</p>
 </div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -325,10 +317,8 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
                 <td class="col-md-4">
                     <a name="asConfigurationParameters"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            asConfigurationParameters
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>asConfigurationParameters</b></span>
                         <a href="#asConfigurationParameters"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -345,7 +335,7 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>bulk fetch of sdk configuration parameters. </p>
+                    <div class="io-description"><p>bulk fetch of sdk configuration parameters.</p>
 </div>
 
                     <div class="io-description">
@@ -362,10 +352,8 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
                 <td class="col-md-4">
                     <a name="fromParameters"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            fromParameters
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>fromParameters</b></span>
                         <a href="#fromParameters"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -382,11 +370,12 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>bulk runtime set of sdk configuration </p>
+                    <div class="io-description"><p>bulk runtime set of sdk configuration</p>
 </div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -430,10 +419,8 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
                 <td class="col-md-4">
                     <a name="removeHeaderFromApiRequests"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            removeHeaderFromApiRequests
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>removeHeaderFromApiRequests</b></span>
                         <a href="#removeHeaderFromApiRequests"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -450,11 +437,12 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>remove an additional header from all outgoing API requests </p>
+                    <div class="io-description"><p>remove an additional header from all outgoing API requests</p>
 </div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -495,87 +483,84 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
 </section>
             <section>
     
-        <h3 id="inputs">
-            Properties
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="apiConfiguration"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>apiConfiguration</b></span>
+                        <a href="#apiConfiguration"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="apiConfiguration"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            apiConfiguration</b>
-                            <a href="#apiConfiguration"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>    <code>SzRestConfiguration</code>
+
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>SzRestConfiguration</code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <b>Decorators : </b>
-                            <br />
-                            <code>
-                                @Inject(SzRestConfiguration)<br />
-                            </code>
-                        </td>
-                    </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="graphApiConfigService"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            graphApiConfigService</b>
-                            <a href="#graphApiConfigService"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @Inject(SzRestConfiguration)<br />
+                        </code>
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>SzGraphConfigurationService</code>
-
-                        </td>
-                    </tr>
 
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="graphApiConfigService"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>graphApiConfigService</b></span>
+                        <a href="#graphApiConfigService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="prefs"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            prefs</b>
-                            <a href="#prefs"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>    <code>SzGraphConfigurationService</code>
+
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="../injectables/SzPrefsService.html" target="_self" >SzPrefsService</a></code>
-
-                        </td>
-                    </tr>
 
 
-            </tbody>
-        </table>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prefs"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>prefs</b></span>
+                        <a href="#prefs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/SzPrefsService.html" target="_self" >SzPrefsService</a></code>
+
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
 </section>
 
             <section>
@@ -598,7 +583,7 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>additional http/https request headers that will be added by default to 
+                                <div class="io-description"><p>additional http/https request headers that will be added by default to
 all outbound api server requests.</p>
 </div>
 
@@ -611,13 +596,13 @@ all outbound api server requests.</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>additionalApiRequestHeaders(value)</code></span>
+                        <span class="accessor"><b>set</b><code>additionalApiRequestHeaders(value: literal type | undefined)</code></span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>set additional http/https request headers to be added by default to 
-all outbound api server requests. most commonly used for adding custom 
+                                <div class="io-description"><p>set additional http/https request headers to be added by default to
+all outbound api server requests. most commonly used for adding custom
 or required non-standard headers like jwt session tokens, auth id etc.</p>
 </div>
 
@@ -627,6 +612,7 @@ or required non-standard headers like jwt session tokens, auth id etc.</p>
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
+                                                        <td>Type</td>
                                                     <td>Optional</td>
                                                 </tr>
                                             </thead>
@@ -634,6 +620,9 @@ or required non-standard headers like jwt session tokens, auth id etc.</p>
                                                     <tr>
                                                             <td>value</td>
                                                     
+                                                            <td>
+                                                                        <code>literal type | undefined</code>
+                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -782,7 +771,7 @@ or required non-standard headers like jwt session tokens, auth id etc.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>password used for challenge respose. </p>
+                                <div class="io-description"><p>password used for challenge respose.</p>
 </div>
 
                                 <div class="io-description">
@@ -833,7 +822,7 @@ or required non-standard headers like jwt session tokens, auth id etc.</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>accessToken(value)</code></span>
+                        <span class="accessor"><b>set</b><code>accessToken(value: string | )</code></span>
                     </td>
                 </tr>
                     <tr>
@@ -845,6 +834,7 @@ or required non-standard headers like jwt session tokens, auth id etc.</p>
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
+                                                        <td>Type</td>
                                                     <td>Optional</td>
                                                 </tr>
                                             </thead>
@@ -852,6 +842,9 @@ or required non-standard headers like jwt session tokens, auth id etc.</p>
                                                     <tr>
                                                             <td>value</td>
                                                     
+                                                            <td>
+                                                                        <code>string | </code>
+                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -950,7 +943,7 @@ protocol://hostname:port string that your api server can be accessed through</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>whether or not to use CORs for api requests </p>
+                                <div class="io-description"><p>whether or not to use CORs for api requests</p>
 </div>
 
                                 <div class="io-description">
@@ -1002,14 +995,14 @@ protocol://hostname:port string that your api server can be accessed through</p>
 
 
 
-                   
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -1021,6 +1014,15 @@ protocol://hostname:port string that your api server can be accessed through</p>
            </div>
        </div>
 
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
@@ -1030,9 +1032,9 @@ protocol://hostname:port string that your api server can be accessed through</p>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

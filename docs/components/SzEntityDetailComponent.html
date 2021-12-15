@@ -8,7 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
 
@@ -35,7 +36,9 @@
 
 <ol class="breadcrumb">
   <li>Components</li>
-  <li>SzEntityDetailComponent</li>
+  <li
+  >
+  SzEntityDetailComponent</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -58,12 +61,25 @@
     <code>src/lib/entity/detail/sz-entity-detail.component.ts</code>
 </p>
 
+
     <p class="comment">
         <h3>Description</h3>
     </p>
     <p class="comment">
         <p>The Entity Detail Component.
 Generates a complex detail page from input parameters.</p>
+<p>&lt;sz-entity-detail
+  [showGraphMatchKeys]=&quot;true&quot;
+  (entityIdChanged)=&quot;entityChangedHandler($event)&quot;
+  [entityId]=&quot;currentlySelectedEntityId&quot;&gt;</sz-entity-detail></p>
+<p><sz-wc-entity-detail
+  show-graph-match-keys="true"
+  entity-id="1002"></sz-wc-entity-detail></p>
+<p><sz-wc-entity-detail id="sz-ent-detail"></sz-wc-entity-detail></p>
+<script>
+document.getElementById('sz-ent-detail').entityId = 1002;
+document.getElementById('sz-ent-detail').addEventListener('entityIdChanged', (entId) => { console.log('entity id changed!', entId); })
+</script>
 
     </p>
 
@@ -77,24 +93,10 @@ Generates a complex detail page from input parameters.</p>
                     <code><a href="https://angular.io/api/core/AfterViewInit" target="_blank" >AfterViewInit</a></code>
     </p>
 
-    <p class="comment">
-        <h3>Example</h3>
-    </p>
-    <div class="io-description">
-                <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;&lt;sz-entity-detail[showGraphMatchKeys]=&quot;true&quot;(entityIdChanged)=&quot;entityChangedHandler($event)&quot;[entityId]=&quot;currentlySelectedEntityId&quot;&gt;&lt;/sz-entity-detail&gt;</code></pre>
-                </div>
-                <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) by attribute --&gt;&lt;sz-wc-entity-detailshow-graph-match-keys=&quot;true&quot;entity-id=&quot;1002&quot;&gt;&lt;/sz-wc-entity-detail&gt;</code></pre>
-                </div>
-                <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) by DOM --&gt;&lt;sz-wc-entity-detail id=&quot;sz-ent-detail&quot;&gt;&lt;/sz-wc-entity-detail&gt;&lt;script&gt;document.getElementById('sz-ent-detail').entityId = 1002;document.getElementById('sz-ent-detail').addEventListener('entityIdChanged', (entId) =&gt; { console.log('entity id changed!', entId); })&lt;/script&gt;</code></pre>
-                </div>
-    </div>
 
 <section>
     <h3>Metadata</h3>
-    <table class="table table-sm table-hover">
+    <table class="table table-sm table-hover metadata">
         <tbody>
 
 
@@ -148,43 +150,43 @@ Generates a complex detail page from input parameters.</p>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#_disclosedRelationships">_disclosedRelationships</a>
+                                <a href="#_disclosedRelationships" >_disclosedRelationships</a>
                             </li>
                             <li>
-                                <a href="#_discoveredRelationships">_discoveredRelationships</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#_graphTitle">_graphTitle</a>
-                            </li>
-                            <li>
-                                <a href="#_matches">_matches</a>
-                            </li>
-                            <li>
-                                <a href="#_possibleMatches">_possibleMatches</a>
+                                <a href="#_discoveredRelationships" >_discoveredRelationships</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#_showGraphMatchKeys">_showGraphMatchKeys</a>
+                                <a href="#_graphTitle" >_graphTitle</a>
+                            </li>
+                            <li>
+                                <a href="#_matches" >_matches</a>
+                            </li>
+                            <li>
+                                <a href="#_possibleMatches" >_possibleMatches</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#entity">entity</a>
+                                <a href="#_showGraphMatchKeys" >_showGraphMatchKeys</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#graphComponent">graphComponent</a>
-                            </li>
-                            <li>
-                                <a href="#nativeElementRef">nativeElementRef</a>
+                                <a href="#entity" >entity</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#prefs">prefs</a>
+                                <a href="#graphComponent" >graphComponent</a>
+                            </li>
+                            <li>
+                                <a href="#nativeElementRef" >nativeElementRef</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#unsubscribe$">unsubscribe$</a>
+                                <a href="#prefs" >prefs</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#unsubscribe$" >unsubscribe$</a>
                             </li>
                         </ul>
                     </td>
@@ -199,41 +201,41 @@ Generates a complex detail page from input parameters.</p>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#ngAfterViewInit">ngAfterViewInit</a>
+                                <a href="#ngAfterViewInit" >ngAfterViewInit</a>
                             </li>
                             <li>
-                                <a href="#ngOnDestroy">ngOnDestroy</a>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
                             </li>
                             <li>
-                                <a href="#ngOnInit">ngOnInit</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#onEntityIdChange">onEntityIdChange</a>
+                                <a href="#ngOnInit" >ngOnInit</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#onEntityRecordClick">onEntityRecordClick</a>
+                                <a href="#onEntityIdChange" >onEntityIdChange</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#onGraphEntityClick">onGraphEntityClick</a>
+                                <a href="#onEntityRecordClick" >onEntityRecordClick</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#onGraphEntityDblClick">onGraphEntityDblClick</a>
+                                <a href="#onGraphEntityClick" >onGraphEntityClick</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#onGraphPopoutClick">onGraphPopoutClick</a>
+                                <a href="#onGraphEntityDblClick" >onGraphEntityDblClick</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#onGraphRightClick">onGraphRightClick</a>
+                                <a href="#onGraphPopoutClick" >onGraphPopoutClick</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#onSectionCollapsedChange">onSectionCollapsedChange</a>
+                                <a href="#onGraphRightClick" >onGraphRightClick</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#onSectionCollapsedChange" >onSectionCollapsedChange</a>
                             </li>
                         </ul>
                     </td>
@@ -248,112 +250,112 @@ Generates a complex detail page from input parameters.</p>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#data">data</a>
+                                <a href="#data" >data</a>
                             </li>
                             <li>
-                                <a href="#disclosedRelationshipsSectionCollapsed">disclosedRelationshipsSectionCollapsed</a>
+                                <a href="#disclosedRelationshipsSectionCollapsed" >disclosedRelationshipsSectionCollapsed</a>
                             </li>
                             <li>
-                                <a href="#entityId">entityId</a>
+                                <a href="#entityId" >entityId</a>
                             </li>
                             <li>
-                                <a href="#forceLayout">forceLayout</a>
+                                <a href="#forceLayout" >forceLayout</a>
                             </li>
                             <li>
-                                <a href="#graphAllowScrollingZoom">graphAllowScrollingZoom</a>
+                                <a href="#graphAllowScrollingZoom" >graphAllowScrollingZoom</a>
                             </li>
                             <li>
-                                <a href="#graphPopOutIconPosition">graphPopOutIconPosition</a>
+                                <a href="#graphPopOutIconPosition" >graphPopOutIconPosition</a>
                             </li>
                             <li>
-                                <a href="#graphSectionCollapsed">graphSectionCollapsed</a>
+                                <a href="#graphSectionCollapsed" >graphSectionCollapsed</a>
                             </li>
                             <li>
-                                <a href="#graphShowFiltersControl">graphShowFiltersControl</a>
+                                <a href="#graphShowFiltersControl" >graphShowFiltersControl</a>
                             </li>
                             <li>
-                                <a href="#graphShowMatchKeyControl">graphShowMatchKeyControl</a>
+                                <a href="#graphShowMatchKeyControl" >graphShowMatchKeyControl</a>
                             </li>
                             <li>
-                                <a href="#graphShowPopOutIcon">graphShowPopOutIcon</a>
+                                <a href="#graphShowPopOutIcon" >graphShowPopOutIcon</a>
                             </li>
                             <li>
-                                <a href="#graphShowZoomControl">graphShowZoomControl</a>
+                                <a href="#graphShowZoomControl" >graphShowZoomControl</a>
                             </li>
                             <li>
-                                <a href="#graphTitle">graphTitle</a>
+                                <a href="#graphTitle" >graphTitle</a>
                             </li>
                             <li>
-                                <a href="#graphZoomControlPosition">graphZoomControlPosition</a>
+                                <a href="#graphZoomControlPosition" >graphZoomControlPosition</a>
                             </li>
                             <li>
-                                <a href="#possibleMatchesSectionCollapsed">possibleMatchesSectionCollapsed</a>
+                                <a href="#possibleMatchesSectionCollapsed" >possibleMatchesSectionCollapsed</a>
                             </li>
                             <li>
-                                <a href="#possibleRelationshipsSectionCollapsed">possibleRelationshipsSectionCollapsed</a>
+                                <a href="#possibleRelationshipsSectionCollapsed" >possibleRelationshipsSectionCollapsed</a>
                             </li>
                             <li>
-                                <a href="#recordsSectionCollapsed">recordsSectionCollapsed</a>
+                                <a href="#recordsSectionCollapsed" >recordsSectionCollapsed</a>
                             </li>
                             <li>
-                                <a href="#requestDataOnIdChange">requestDataOnIdChange</a>
+                                <a href="#requestDataOnIdChange" >requestDataOnIdChange</a>
                             </li>
                             <li>
-                                <a href="#showBestNameOnlyInDisclosedSection">showBestNameOnlyInDisclosedSection</a>
+                                <a href="#showBestNameOnlyInDisclosedSection" >showBestNameOnlyInDisclosedSection</a>
                             </li>
                             <li>
-                                <a href="#showBestNameOnlyInMatchesSection">showBestNameOnlyInMatchesSection</a>
+                                <a href="#showBestNameOnlyInMatchesSection" >showBestNameOnlyInMatchesSection</a>
                             </li>
                             <li>
-                                <a href="#showBestNameOnlyInPossibleMatchesSection">showBestNameOnlyInPossibleMatchesSection</a>
+                                <a href="#showBestNameOnlyInPossibleMatchesSection" >showBestNameOnlyInPossibleMatchesSection</a>
                             </li>
                             <li>
-                                <a href="#showBestNameOnlyInPossibleRelationshipsSection">showBestNameOnlyInPossibleRelationshipsSection</a>
+                                <a href="#showBestNameOnlyInPossibleRelationshipsSection" >showBestNameOnlyInPossibleRelationshipsSection</a>
                             </li>
                             <li>
-                                <a href="#showDisclosedSection">showDisclosedSection</a>
+                                <a href="#showDisclosedSection" >showDisclosedSection</a>
                             </li>
                             <li>
-                                <a href="#showGraphMatchKeys">showGraphMatchKeys</a>
+                                <a href="#showGraphMatchKeys" >showGraphMatchKeys</a>
                             </li>
                             <li>
-                                <a href="#showGraphSection">showGraphSection</a>
+                                <a href="#showGraphSection" >showGraphSection</a>
                             </li>
                             <li>
-                                <a href="#showMatchesSection">showMatchesSection</a>
+                                <a href="#showMatchesSection" >showMatchesSection</a>
                             </li>
                             <li>
-                                <a href="#showNameDataInDisclosedSection">showNameDataInDisclosedSection</a>
+                                <a href="#showNameDataInDisclosedSection" >showNameDataInDisclosedSection</a>
                             </li>
                             <li>
-                                <a href="#showNameDataInMatchesSection">showNameDataInMatchesSection</a>
+                                <a href="#showNameDataInMatchesSection" >showNameDataInMatchesSection</a>
                             </li>
                             <li>
-                                <a href="#showNameDataInPossibleMatchesSection">showNameDataInPossibleMatchesSection</a>
+                                <a href="#showNameDataInPossibleMatchesSection" >showNameDataInPossibleMatchesSection</a>
                             </li>
                             <li>
-                                <a href="#showNameDataInPossibleRelationshipsSection">showNameDataInPossibleRelationshipsSection</a>
+                                <a href="#showNameDataInPossibleRelationshipsSection" >showNameDataInPossibleRelationshipsSection</a>
                             </li>
                             <li>
-                                <a href="#showOtherDataInDisclosedSection">showOtherDataInDisclosedSection</a>
+                                <a href="#showOtherDataInDisclosedSection" >showOtherDataInDisclosedSection</a>
                             </li>
                             <li>
-                                <a href="#showOtherDataInMatchesSection">showOtherDataInMatchesSection</a>
+                                <a href="#showOtherDataInMatchesSection" >showOtherDataInMatchesSection</a>
                             </li>
                             <li>
-                                <a href="#showOtherDataInPossibleMatchesSection">showOtherDataInPossibleMatchesSection</a>
+                                <a href="#showOtherDataInPossibleMatchesSection" >showOtherDataInPossibleMatchesSection</a>
                             </li>
                             <li>
-                                <a href="#showOtherDataInPossibleRelationshipsSection">showOtherDataInPossibleRelationshipsSection</a>
+                                <a href="#showOtherDataInPossibleRelationshipsSection" >showOtherDataInPossibleRelationshipsSection</a>
                             </li>
                             <li>
-                                <a href="#showPossibleMatchesSection">showPossibleMatchesSection</a>
+                                <a href="#showPossibleMatchesSection" >showPossibleMatchesSection</a>
                             </li>
                             <li>
-                                <a href="#showPossibleRelationshipsSection">showPossibleRelationshipsSection</a>
+                                <a href="#showPossibleRelationshipsSection" >showPossibleRelationshipsSection</a>
                             </li>
                             <li>
-                                <a href="#updatePrefsOnChange">updatePrefsOnChange</a>
+                                <a href="#updatePrefsOnChange" >updatePrefsOnChange</a>
                             </li>
                         </ul>
                     </td>
@@ -368,34 +370,34 @@ Generates a complex detail page from input parameters.</p>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#dataChanged">dataChanged</a>
+                                <a href="#dataChanged" >dataChanged</a>
                             </li>
                             <li>
-                                <a href="#entityIdChanged">entityIdChanged</a>
+                                <a href="#entityIdChanged" >entityIdChanged</a>
                             </li>
                             <li>
-                                <a href="#exception">exception</a>
+                                <a href="#exception" >exception</a>
                             </li>
                             <li>
-                                <a href="#graphContextMenuClick">graphContextMenuClick</a>
+                                <a href="#graphContextMenuClick" >graphContextMenuClick</a>
                             </li>
                             <li>
-                                <a href="#graphEntityClick">graphEntityClick</a>
+                                <a href="#graphEntityClick" >graphEntityClick</a>
                             </li>
                             <li>
-                                <a href="#graphEntityDblClick">graphEntityDblClick</a>
+                                <a href="#graphEntityDblClick" >graphEntityDblClick</a>
                             </li>
                             <li>
-                                <a href="#graphPopOutClick">graphPopOutClick</a>
+                                <a href="#graphPopOutClick" >graphPopOutClick</a>
                             </li>
                             <li>
-                                <a href="#graphScrollWheelEvent">graphScrollWheelEvent</a>
+                                <a href="#graphScrollWheelEvent" >graphScrollWheelEvent</a>
                             </li>
                             <li>
-                                <a href="#requestEnd">requestEnd</a>
+                                <a href="#requestEnd" >requestEnd</a>
                             </li>
                             <li>
-                                <a href="#requestStart">requestStart</a>
+                                <a href="#requestStart" >requestStart</a>
                             </li>
                         </ul>
                     </td>
@@ -412,109 +414,109 @@ Generates a complex detail page from input parameters.</p>
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#forceLayout">forceLayout</a>
+                                    <a href="#forceLayout" >forceLayout</a>
                                 </li>
                                 <li>
-                                    <a href="#updatePrefsOnChange">updatePrefsOnChange</a>
+                                    <a href="#updatePrefsOnChange" >updatePrefsOnChange</a>
                                 </li>
                                 <li>
-                                    <a href="#nativeElement">nativeElement</a>
+                                    <a href="#nativeElement" >nativeElement</a>
                                 </li>
                                 <li>
-                                    <a href="#entityData">entityData</a>
+                                    <a href="#entityData" >entityData</a>
                                 </li>
                                 <li>
-                                    <a href="#entityId">entityId</a>
+                                    <a href="#entityId" >entityId</a>
                                 </li>
                                 <li>
-                                    <a href="#showGraphSection">showGraphSection</a>
+                                    <a href="#showGraphSection" >showGraphSection</a>
                                 </li>
                                 <li>
-                                    <a href="#showMatchesSection">showMatchesSection</a>
+                                    <a href="#showMatchesSection" >showMatchesSection</a>
                                 </li>
                                 <li>
-                                    <a href="#showPossibleMatchesSection">showPossibleMatchesSection</a>
+                                    <a href="#showPossibleMatchesSection" >showPossibleMatchesSection</a>
                                 </li>
                                 <li>
-                                    <a href="#showPossibleRelationshipsSection">showPossibleRelationshipsSection</a>
+                                    <a href="#showPossibleRelationshipsSection" >showPossibleRelationshipsSection</a>
                                 </li>
                                 <li>
-                                    <a href="#showDisclosedSection">showDisclosedSection</a>
+                                    <a href="#showDisclosedSection" >showDisclosedSection</a>
                                 </li>
                                 <li>
-                                    <a href="#showBestNameOnlyInMatchesSection">showBestNameOnlyInMatchesSection</a>
+                                    <a href="#showBestNameOnlyInMatchesSection" >showBestNameOnlyInMatchesSection</a>
                                 </li>
                                 <li>
-                                    <a href="#showBestNameOnlyInDisclosedSection">showBestNameOnlyInDisclosedSection</a>
+                                    <a href="#showBestNameOnlyInDisclosedSection" >showBestNameOnlyInDisclosedSection</a>
                                 </li>
                                 <li>
-                                    <a href="#showBestNameOnlyInPossibleMatchesSection">showBestNameOnlyInPossibleMatchesSection</a>
+                                    <a href="#showBestNameOnlyInPossibleMatchesSection" >showBestNameOnlyInPossibleMatchesSection</a>
                                 </li>
                                 <li>
-                                    <a href="#showBestNameOnlyInPossibleRelationshipsSection">showBestNameOnlyInPossibleRelationshipsSection</a>
+                                    <a href="#showBestNameOnlyInPossibleRelationshipsSection" >showBestNameOnlyInPossibleRelationshipsSection</a>
                                 </li>
                                 <li>
-                                    <a href="#showNameDataInMatchesSection">showNameDataInMatchesSection</a>
+                                    <a href="#showNameDataInMatchesSection" >showNameDataInMatchesSection</a>
                                 </li>
                                 <li>
-                                    <a href="#showNameDataInDisclosedSection">showNameDataInDisclosedSection</a>
+                                    <a href="#showNameDataInDisclosedSection" >showNameDataInDisclosedSection</a>
                                 </li>
                                 <li>
-                                    <a href="#showNameDataInPossibleMatchesSection">showNameDataInPossibleMatchesSection</a>
+                                    <a href="#showNameDataInPossibleMatchesSection" >showNameDataInPossibleMatchesSection</a>
                                 </li>
                                 <li>
-                                    <a href="#showNameDataInPossibleRelationshipsSection">showNameDataInPossibleRelationshipsSection</a>
+                                    <a href="#showNameDataInPossibleRelationshipsSection" >showNameDataInPossibleRelationshipsSection</a>
                                 </li>
                                 <li>
-                                    <a href="#showOtherDataInMatchesSection">showOtherDataInMatchesSection</a>
+                                    <a href="#showOtherDataInMatchesSection" >showOtherDataInMatchesSection</a>
                                 </li>
                                 <li>
-                                    <a href="#showOtherDataInDisclosedSection">showOtherDataInDisclosedSection</a>
+                                    <a href="#showOtherDataInDisclosedSection" >showOtherDataInDisclosedSection</a>
                                 </li>
                                 <li>
-                                    <a href="#showOtherDataInPossibleMatchesSection">showOtherDataInPossibleMatchesSection</a>
+                                    <a href="#showOtherDataInPossibleMatchesSection" >showOtherDataInPossibleMatchesSection</a>
                                 </li>
                                 <li>
-                                    <a href="#showOtherDataInPossibleRelationshipsSection">showOtherDataInPossibleRelationshipsSection</a>
+                                    <a href="#showOtherDataInPossibleRelationshipsSection" >showOtherDataInPossibleRelationshipsSection</a>
                                 </li>
                                 <li>
-                                    <a href="#graphSectionCollapsed">graphSectionCollapsed</a>
+                                    <a href="#graphSectionCollapsed" >graphSectionCollapsed</a>
                                 </li>
                                 <li>
-                                    <a href="#recordsSectionCollapsed">recordsSectionCollapsed</a>
+                                    <a href="#recordsSectionCollapsed" >recordsSectionCollapsed</a>
                                 </li>
                                 <li>
-                                    <a href="#possibleMatchesSectionCollapsed">possibleMatchesSectionCollapsed</a>
+                                    <a href="#possibleMatchesSectionCollapsed" >possibleMatchesSectionCollapsed</a>
                                 </li>
                                 <li>
-                                    <a href="#possibleRelationshipsSectionCollapsed">possibleRelationshipsSectionCollapsed</a>
+                                    <a href="#possibleRelationshipsSectionCollapsed" >possibleRelationshipsSectionCollapsed</a>
                                 </li>
                                 <li>
-                                    <a href="#disclosedRelationshipsSectionCollapsed">disclosedRelationshipsSectionCollapsed</a>
+                                    <a href="#disclosedRelationshipsSectionCollapsed" >disclosedRelationshipsSectionCollapsed</a>
                                 </li>
                                 <li>
-                                    <a href="#graphTitle">graphTitle</a>
+                                    <a href="#graphTitle" >graphTitle</a>
                                 </li>
                                 <li>
-                                    <a href="#showGraphMatchKeys">showGraphMatchKeys</a>
+                                    <a href="#showGraphMatchKeys" >showGraphMatchKeys</a>
                                 </li>
                                 <li>
-                                    <a href="#requestDataOnIdChange">requestDataOnIdChange</a>
+                                    <a href="#requestDataOnIdChange" >requestDataOnIdChange</a>
                                 </li>
                                 <li>
-                                    <a href="#graphData">graphData</a>
+                                    <a href="#graphData" >graphData</a>
                                 </li>
                                 <li>
-                                    <a href="#matches">matches</a>
+                                    <a href="#matches" >matches</a>
                                 </li>
                                 <li>
-                                    <a href="#possibleMatches">possibleMatches</a>
+                                    <a href="#possibleMatches" >possibleMatches</a>
                                 </li>
                                 <li>
-                                    <a href="#discoveredRelationships">discoveredRelationships</a>
+                                    <a href="#discoveredRelationships" >discoveredRelationships</a>
                                 </li>
                                 <li>
-                                    <a href="#disclosedRelationships">disclosedRelationships</a>
+                                    <a href="#disclosedRelationships" >disclosedRelationships</a>
                                 </li>
                             </ul>
                         </td>
@@ -529,7 +531,7 @@ Generates a complex detail page from input parameters.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(searchService: <a href="../injectables/SzSearchService.html">SzSearchService</a>, prefs: <a href="../injectables/SzPrefsService.html">SzPrefsService</a>, cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>)</code>
+<code>constructor(searchService: <a href="../injectables/SzSearchService.html" target="_self">SzSearchService</a>, prefs: <a href="../injectables/SzPrefsService.html" target="_self">SzPrefsService</a>, cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>)</code>
                     </td>
                 </tr>
 
@@ -707,6 +709,12 @@ to all children components. this value overrides auto-responsive css adjustments
                 </tr>
                 <tr>
                     <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
                         <i>Default value : </i><code>&#x27;bottom-left&#x27;</code>
                     </td>
                 </tr>
@@ -751,12 +759,18 @@ to all children components. this value overrides auto-responsive css adjustments
                 </tr>
                 <tr>
                     <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
                         <i>Default value : </i><code>false</code>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>show the pop-out icon control </p>
+                        <div class="io-description"><p>show the pop-out icon control</p>
 </div>
                     </td>
                 </tr>
@@ -772,12 +786,18 @@ to all children components. this value overrides auto-responsive css adjustments
                 </tr>
                 <tr>
                     <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
                         <i>Default value : </i><code>true</code>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>show the small &#39;show match keys&#39; control in the bottom right </p>
+                        <div class="io-description"><p>show the small &#39;show match keys&#39; control in the bottom right</p>
 </div>
                     </td>
                 </tr>
@@ -793,12 +813,18 @@ to all children components. this value overrides auto-responsive css adjustments
                 </tr>
                 <tr>
                     <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
                         <i>Default value : </i><code>false</code>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>show the pop-out icon control </p>
+                        <div class="io-description"><p>show the pop-out icon control</p>
 </div>
                     </td>
                 </tr>
@@ -814,12 +840,18 @@ to all children components. this value overrides auto-responsive css adjustments
                 </tr>
                 <tr>
                     <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
                         <i>Default value : </i><code>false</code>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>show the pop-out icon control </p>
+                        <div class="io-description"><p>show the pop-out icon control</p>
 </div>
                     </td>
                 </tr>
@@ -853,6 +885,12 @@ to all children components. this value overrides auto-responsive css adjustments
                     <td class="col-md-4">
                         <a name="graphZoomControlPosition"></a>
                         <b>graphZoomControlPosition</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
                     </td>
                 </tr>
                 <tr>
@@ -1543,9 +1581,7 @@ instance that shouldnt be updating pref state.</p>
                 <td class="col-md-4">
                     <a name="ngAfterViewInit"></a>
                     <span class="name">
-                        <b>
-                            ngAfterViewInit
-                        </b>
+                        <span ><b>ngAfterViewInit</b></span>
                         <a href="#ngAfterViewInit"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1576,9 +1612,7 @@ instance that shouldnt be updating pref state.</p>
                 <td class="col-md-4">
                     <a name="ngOnDestroy"></a>
                     <span class="name">
-                        <b>
-                            ngOnDestroy
-                        </b>
+                        <span ><b>ngOnDestroy</b></span>
                         <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1611,9 +1645,7 @@ instance that shouldnt be updating pref state.</p>
                 <td class="col-md-4">
                     <a name="ngOnInit"></a>
                     <span class="name">
-                        <b>
-                            ngOnInit
-                        </b>
+                        <span ><b>ngOnInit</b></span>
                         <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1644,10 +1676,8 @@ instance that shouldnt be updating pref state.</p>
                 <td class="col-md-4">
                     <a name="onEntityIdChange"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            onEntityIdChange
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>onEntityIdChange</b></span>
                         <a href="#onEntityIdChange"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1682,10 +1712,8 @@ and display the result.</p>
                 <td class="col-md-4">
                     <a name="onEntityRecordClick"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            onEntityRecordClick
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>onEntityRecordClick</b></span>
                         <a href="#onEntityRecordClick"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1708,6 +1736,7 @@ clicked on.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1751,10 +1780,8 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="onGraphEntityClick"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            onGraphEntityClick
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>onGraphEntityClick</b></span>
                         <a href="#onGraphEntityClick"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1776,6 +1803,7 @@ clicked on.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1819,10 +1847,8 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="onGraphEntityDblClick"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            onGraphEntityDblClick
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>onGraphEntityDblClick</b></span>
                         <a href="#onGraphEntityDblClick"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1844,6 +1870,7 @@ clicked on.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1887,10 +1914,8 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="onGraphPopoutClick"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            onGraphPopoutClick
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>onGraphPopoutClick</b></span>
                         <a href="#onGraphPopoutClick"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1912,6 +1937,7 @@ clicked on.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1955,10 +1981,8 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="onGraphRightClick"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            onGraphRightClick
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>onGraphRightClick</b></span>
                         <a href="#onGraphRightClick"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1980,6 +2004,7 @@ clicked on.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2023,10 +2048,8 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="onSectionCollapsedChange"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            onSectionCollapsedChange
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>onSectionCollapsedChange</b></span>
                         <a href="#onSectionCollapsedChange"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2046,6 +2069,7 @@ clicked on.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2098,296 +2122,285 @@ clicked on.</p>
 </section>
     <section>
     
-        <h3 id="inputs">
-            Properties
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_disclosedRelationships"></a>
+                    <span class="name">
+                        <span ><b>_disclosedRelationships</b></span>
+                        <a href="#_disclosedRelationships"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="_disclosedRelationships"></a>
-                        <span class="name">
-                            <b>
-                            _disclosedRelationships</b>
-                            <a href="#_disclosedRelationships"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>    <code>SzRelatedEntity[]</code>
+
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>SzRelatedEntity[]</code>
-
-                        </td>
-                    </tr>
 
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_discoveredRelationships"></a>
+                    <span class="name">
+                        <span ><b>_discoveredRelationships</b></span>
+                        <a href="#_discoveredRelationships"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="_discoveredRelationships"></a>
-                        <span class="name">
-                            <b>
-                            _discoveredRelationships</b>
-                            <a href="#_discoveredRelationships"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>    <code>SzRelatedEntity[]</code>
+
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>SzRelatedEntity[]</code>
-
-                        </td>
-                    </tr>
 
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_graphTitle"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>_graphTitle</b></span>
+                        <a href="#_graphTitle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="_graphTitle"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            _graphTitle</b>
-                            <a href="#_graphTitle"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>&quot;Relationships at a Glance&quot;</code>
-                        </td>
-                    </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="_matches"></a>
-                        <span class="name">
-                            <b>
-                            _matches</b>
-                            <a href="#_matches"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Default value : </i><code>&quot;Relationships at a Glance&quot;</code>
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>SzEntityRecord[]</code>
-
-                        </td>
-                    </tr>
 
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_matches"></a>
+                    <span class="name">
+                        <span ><b>_matches</b></span>
+                        <a href="#_matches"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="_possibleMatches"></a>
-                        <span class="name">
-                            <b>
-                            _possibleMatches</b>
-                            <a href="#_possibleMatches"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>    <code>SzEntityRecord[]</code>
+
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>SzRelatedEntity[]</code>
-
-                        </td>
-                    </tr>
 
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_possibleMatches"></a>
+                    <span class="name">
+                        <span ><b>_possibleMatches</b></span>
+                        <a href="#_possibleMatches"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="_showGraphMatchKeys"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            _showGraphMatchKeys</b>
-                            <a href="#_showGraphMatchKeys"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>    <code>SzRelatedEntity[]</code>
+
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>true</code>
-                        </td>
-                    </tr>
 
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_showGraphMatchKeys"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>_showGraphMatchKeys</b></span>
+                        <a href="#_showGraphMatchKeys"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="entity"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            entity</b>
-                            <a href="#entity"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>SzEntityData</code>
-
-                        </td>
-                    </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="graphComponent"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            graphComponent</b>
-                            <a href="#graphComponent"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Default value : </i><code>true</code>
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>SzEntityDetailGraphComponent</code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <b>Decorators : </b>
-                            <br />
-                            <code>
-                                @ViewChild(SzEntityDetailGraphComponent)<br />
-                            </code>
-                        </td>
-                    </tr>
 
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="entity"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>entity</b></span>
+                        <a href="#entity"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="nativeElementRef"></a>
-                        <span class="name">
-                            <b>
-                            nativeElementRef</b>
-                            <a href="#nativeElementRef"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>    <code>SzEntityData</code>
+
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://angular.io/api/core/ElementRef" target="_blank" >ElementRef</a></code>
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <b>Decorators : </b>
-                            <br />
-                            <code>
-                                @ViewChild(&#x27;nativeElementRef&#x27;)<br />
-                            </code>
-                        </td>
-                    </tr>
 
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="graphComponent"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>graphComponent</b></span>
+                        <a href="#graphComponent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>used for print and pdf support, allows fetching DOM HTMLElement </p>
+                        <i>Type : </i>    <code>SzEntityDetailGraphComponent</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(SzEntityDetailGraphComponent)<br />
+                        </code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="nativeElementRef"></a>
+                    <span class="name">
+                        <span ><b>nativeElementRef</b></span>
+                        <a href="#nativeElementRef"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/ElementRef" target="_blank" >ElementRef</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;nativeElementRef&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>used for print and pdf support, allows fetching DOM HTMLElement</p>
 </div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prefs"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>prefs</b></span>
+                        <a href="#prefs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/SzPrefsService.html" target="_self" >SzPrefsService</a></code>
+
                     </td>
                 </tr>
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unsubscribe$"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>unsubscribe$</b></span>
+                        <a href="#unsubscribe$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="prefs"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            prefs</b>
-                            <a href="#prefs"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Default value : </i><code>new Subject&lt;void&gt;()</code>
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="../injectables/SzPrefsService.html" target="_self" >SzPrefsService</a></code>
 
-                        </td>
-                    </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="unsubscribe$"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            unsubscribe$</b>
-                            <a href="#unsubscribe$"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>new Subject&lt;void&gt;()</code>
-                        </td>
-                    </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>subscription to notify subscribers to unbind </p>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>subscription to notify subscribers to unbind</p>
 </div>
-                    </td>
-                </tr>
+                </td>
+            </tr>
 
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 </section>
 
     <section>
@@ -2406,7 +2419,7 @@ clicked on.</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>forceLayout(value)</code></span>
+                        <span class="accessor"><b>set</b><code>forceLayout(value: string | string[])</code></span>
                     </td>
                 </tr>
                     <tr>
@@ -2421,6 +2434,7 @@ to all children components. this value overrides auto-responsive css adjustments
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
+                                                        <td>Type</td>
                                                     <td>Optional</td>
                                                 </tr>
                                             </thead>
@@ -2428,6 +2442,9 @@ to all children components. this value overrides auto-responsive css adjustments
                                                     <tr>
                                                             <td>value</td>
                                                     
+                                                            <td>
+                                                                        <code>string | string[]</code>
+                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -2539,7 +2556,7 @@ instance that shouldnt be updating pref state.</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>entityData(value)</code></span>
+                        <span class="accessor"><b>set</b><code>entityData(value: SzEntityData)</code></span>
                     </td>
                 </tr>
                     <tr>
@@ -2553,6 +2570,7 @@ instance that shouldnt be updating pref state.</p>
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
+                                                        <td>Type</td>
                                                     <td>Optional</td>
                                                 </tr>
                                             </thead>
@@ -2560,6 +2578,9 @@ instance that shouldnt be updating pref state.</p>
                                                     <tr>
                                                             <td>value</td>
                                                     
+                                                            <td>
+                                                                        <code>SzEntityData</code>
+                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -4436,14 +4457,14 @@ instance that shouldnt be updating pref state.</p>
 
 
 
-                   
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -4455,6 +4476,15 @@ instance that shouldnt be updating pref state.</p>
            </div>
        </div>
 
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
@@ -4464,9 +4494,9 @@ instance that shouldnt be updating pref state.</p>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

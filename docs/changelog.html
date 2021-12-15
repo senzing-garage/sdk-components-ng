@@ -8,7 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
-	      <link rel="stylesheet" href="./styles/style.css">
+	   <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/dark.css">
     </head>
     <body>
 
@@ -35,6 +36,19 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 <a href="https://dlaa.me/markdownlint/">markdownlint</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<h2 id="300---2021-12-17">[3.0.0] - 2021-12-17</h2>
+<h3 id="modified">Modified</h3>
+<ul>
+<li>Angular Framework Updated to version 13. As of 3.0.0 release this package now requires <code>@angular@~13.0.0</code> to compile and run. Updating to angular 13 resolves major dependency compatibility issues so we can apply the latest security patches to the library. For information updating your project from a previous angular version to <code>~13.0.0</code> see the <a href="https://update.angular.io/">Angular Update Guide </a></li>
+<li>SzSearchComponent.resultCleared event emitter payload is now of type <code>void</code> and not <code>SzEntitySearchParams</code>.</li>
+<li>Small bugfix to properly clip the graph scale ui control when graph section in entity detail is collapsed.</li>
+</ul>
+<h3 id="deleted">Deleted</h3>
+<ul>
+<li>Admin Import example and related code. The admin load functionality has been deprecated since there is just too much movement of the methodology and complexity used to achieve this functionality for it be practical to expose it via the sdk-components-ng package. For a working example of how to implement load and analyze functionality see the consuming <a href="https://github.com/Senzing/entity-search-web-app">Entity Search Web App</a> repository.</li>
+<li>Angular Schematics support. see #253</li>
+</ul>
+<p>relevant tickets: #253 #252 #251 #250</p>
 <h2 id="226---2021-11-23">[2.2.6] - 2021-11-23</h2>
 <h3 id="added">Added</h3>
 <ul>
@@ -200,7 +214,7 @@ see the following links for associated tickets:</p>
 </ul>
 <h2 id="120---2019-12-11">[1.2.0] - 2019-12-11</h2>
 <h3 id="added-to-120">Added to 1.2.0</h3>
-<p>New *&quot;Search By Id&quot;* component, *&quot;record viewer&quot;* component, search history type-ahead, various bugfixes, rest-client updates, admin service, and basic folio models.</p>
+<p>New <em>&quot;Search By Id&quot;</em> component, <em>&quot;record viewer&quot;</em> component, search history type-ahead, various bugfixes, rest-client updates, admin service, and basic folio models.</p>
 <ul>
 <li>new components:<ul>
 <li>SzSearchByIdComponent Component</li>
@@ -390,14 +404,14 @@ see the following links for associated tickets:</p>
 
 
 
-                   
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -409,6 +423,15 @@ see the following links for associated tickets:</p>
            </div>
        </div>
 
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 0;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'getting-started';
@@ -418,9 +441,9 @@ see the following links for associated tickets:</p>
 
        <script src="./js/libs/custom-elements.min.js"></script>
        <script src="./js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="./js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="./js/menu-wc.js" defer></script>
+       <script nomodule src="./js/menu-wc_es5.js" defer></script>
 
        <script src="./js/libs/bootstrap-native.js"></script>
 
