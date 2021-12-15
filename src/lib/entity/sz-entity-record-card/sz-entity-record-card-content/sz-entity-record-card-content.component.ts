@@ -100,8 +100,22 @@ export class SzEntityRecordCardContentComponent implements OnInit {
 
   /** 0 = wide layout. 1 = narrow layout */
   @Input() public layout = 0;
-  @Input() public layoutClasses: string[] = [];
-
+  /** the css classes being applied. layout-wide | layout-medium  | layout-narrow | layout-rail*/
+  public _layoutClasses: string[] = [];
+  /** setter for _layoutClasses  */
+  @Input() public set layoutClasses(value: string[] | string){
+    if(value && value !== undefined) {
+      if(typeof value == 'string') {
+        this._layoutClasses = [value];
+      } else {
+        this._layoutClasses = value;
+      }
+    }
+  };
+  /** getter for _layoutClasses  */
+  public get layoutClasses() {
+    return this._layoutClasses;
+  }
   /** subscription breakpoint changes */
   private layoutChange$ = new BehaviorSubject<number>(this.layout);
 
@@ -439,6 +453,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
       return this._matchKeys;
     }
     // no match keys, should we retest?
+    return undefined;
   }
 
   isLinkedAttribute(attrValue: string): boolean {
@@ -464,6 +479,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
     if (data) {
       return (<SzEntityRecord>data).relationshipData !== undefined && (<SzEntityRecord>data).relationshipData.length > 0;
     }
+    return false;
   }
   /**
    * @deprecated
@@ -472,5 +488,6 @@ export class SzEntityRecordCardContentComponent implements OnInit {
     if (data) {
       return (<SzEntityDetailSectionData>data).matchLevel !== undefined;
     }
+    return false;
   }
 }

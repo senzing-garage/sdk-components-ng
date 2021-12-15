@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const concat = require('concat');
-var sass = require('node-sass');
+var sass = require('sass');
 
 (async function build() {
   // do styles first

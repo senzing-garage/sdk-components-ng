@@ -5,11 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { SzEntityRecordCardContentComponent } from '../../sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
-
-interface SectionDataByDataSource {
-  dataSource?: string;
-  records?: SzEntityRecord[] | SzRelatedEntity[]
-}
+import { SzSectionDataByDataSource, SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 
 /**
  * @internal
@@ -24,7 +20,7 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
   _sectionData: SzEntityRecord[] | SzRelatedEntity[];
-  _sectionDataByDataSource: SectionDataByDataSource[];
+  _sectionDataByDataSource: SzSectionDataByDataSource[];
   _sectionDataByMatchKey: SzEntityRecord[] | SzRelatedEntity[];
 
   @Input() entity: SzEntityRecord | SzRelatedEntity;
@@ -105,7 +101,7 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
     let retVal = [false, false, false, false];
     if(this.showByDataSource){
       let sectionDataRecords  = []; // we just want all possible displayed columns anyway
-      this._sectionDataByDataSource.forEach( (sectionData: SectionDataByDataSource) => {
+      this._sectionDataByDataSource.forEach( (sectionData: SzSectionDataByDataSource) => {
         if(sectionData && sectionData.records) {
           sectionDataRecords  = sectionDataRecords.concat( sectionData.records );
         }
@@ -199,7 +195,7 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
     return false;
   }
 
-  private getSectionDataByDataSource(sectionData): SectionDataByDataSource[] {
+  private getSectionDataByDataSource(sectionData): SzSectionDataByDataSource[] {
     const _ret = sectionData;
     const byDS = {};
     const dsAsArray = [];
@@ -288,7 +284,7 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
     } else if(maxWidth){
       return (`(max-width: ${maxWidth}px)`);
     }
-    return
+    return undefined;
   }
 
 }

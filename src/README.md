@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is for the Senzing&reg; SDK components that can be used in other projects. There are two flavors that the components come in. The [@senzing/sdk-components-ng](https://www.npmjs.com/package/@senzing/sdk-components-ng) package which is based around the Angular 10.x.x framework, and the [@senzing/sdk-components-web](https://www.npmjs.com/package/@senzing/sdk-components-web) package which is framework agnostic and based around the [Web Components](https://developers.google.com/web/fundamentals/web-components/) standard. The usage for both packages is noted in the [documentation examples](http://hub.senzing.com/sdk-components-ng/).
+This project is for the Senzing&reg; SDK components that can be used in other projects. There are two flavors that the components come in. The [@senzing/sdk-components-ng](https://www.npmjs.com/package/@senzing/sdk-components-ng) package which is based around the Angular 13.x.x framework, and the [@senzing/sdk-components-web](https://www.npmjs.com/package/@senzing/sdk-components-web) package which is framework agnostic and based around the [Web Components](https://developers.google.com/web/fundamentals/web-components/) standard. The usage for both packages is noted in the [documentation examples](http://hub.senzing.com/sdk-components-ng/).
 
 For information on the Web Components version see the [sdk-components-web guide](https://github.com/Senzing/sdk-components-ng/tree/master/sdk-components-web). 
 
@@ -43,13 +43,7 @@ version when available.
 ### SDK Components
 
 Open a terminal window to the location of your project and type:
-`ng add @angular/material`
-`ng add @senzing/sdk-components-ng`
-
-The components package, along with any missing dependencies will be added to your project. 
-
-Alternatively you can install the components and dependencies without the angular-cli via npm individually:
-`npm i @angular/material @angular/cdk @senzing/sdk-graph-components @senzing/sdk-components-ng --save`
+`npm i @angular/material @angular/cdk @senzing/rest-api-client-ng @senzing/sdk-graph-components @senzing/sdk-components-ng --save`
 
 Please take note that all the same [interfaces](https://senzing.github.io/rest-api-client-ng/), and [services](https://senzing.github.io/rest-api-client-ng/) from the [@senzing/rest-api-client-ng package](https://www.npmjs.com/package/@senzing/rest-api-client-ng) will also be available for convenience.
 

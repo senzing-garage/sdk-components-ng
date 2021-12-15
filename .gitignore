@@ -18,6 +18,9 @@ sdk-components-ng.iml
 .settings/
 *.sublime-workspace
 
+# Testing
+/docs/coverage
+
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
@@ -26,6 +29,7 @@ sdk-components-ng.iml
 !.vscode/extensions.json
 
 # misc
+/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage

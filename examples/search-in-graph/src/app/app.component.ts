@@ -270,7 +270,7 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-  public onSearchResultsCleared(searchParams: SzEntitySearchParams){
+  public onSearchResultsCleared(searchParams?: SzEntitySearchParams | void){
     // hide search results
     this.showSearchResults = false;
     this.currentSearchResults = undefined;

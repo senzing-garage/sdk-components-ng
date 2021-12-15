@@ -80,7 +80,7 @@ export class AppComponent {
   }
 
   /** when the "clear" button is clicked */
-  public onSearchResultsCleared(searchParams: SzEntitySearchParams){
+  public onSearchResultsCleared(searchParams?: SzEntitySearchParams | void){
     // hide search results
     this.showSearchResults = false;
     this.currentSearchResults = undefined;

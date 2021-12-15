@@ -1044,7 +1044,7 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     } else if(maxWidth){
       return (`(max-width: ${maxWidth}px)`);
     }
-    return
+    return undefined;
   }
 
   /**

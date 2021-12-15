@@ -1,48 +1,44 @@
-/*
-  This is a "Solution Style" tsconfig.json file, and is used by editors and TypeScript’s language server to improve development experience.
-  It is not intended to be used to perform a compilation.
-
-  To learn more about this file see: https://angular.io/config/solution-tsconfig.
-*/
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./src/tsconfig.lib.json"
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": false,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "paths": {
+      "@senzing/sdk-components-ng": [
+        "dist/@senzing/sdk-components-ng/senzing-sdk-components-ng",
+        "dist/@senzing/sdk-components-ng"
+      ],
+      "@senzing/sdk-components-web": [
+        "dist/@senzing/sdk-components-web/senzing-sdk-components-web",
+        "dist/@senzing/sdk-components-web"
+      ]
     },
-    {
-      "path": "./src/tsconfig.spec.json"
-    },
-    {
-      "path": "./examples/search-with-results-and-details/tsconfig.app.json"
-    },
-    {
-      "path": "./examples/admin-importing/tsconfig.app.json"
-    },
-    {
-      "path": "./examples/search-in-graph/tsconfig.app.json"
-    },
-    {
-      "path": "./examples/search-with-spinner/tsconfig.app.json"
-    },
-    {
-      "path": "./examples/graph/tsconfig.app.json"
-    },
-    {
-      "path": "./examples/search-with-prefs/tsconfig.app.json"
-    },
-    {
-      "path": "./examples/search-by-id/tsconfig.app.json"
-    },
-    {
-      "path": "./e2e/tsconfig.e2e.json"
-    },
-    {
-      "path": "./sdk-components-web/tsconfig.app.json"
-    }
-  ],
+    "target": "es2017",
+    "module": "es2020",
+    "lib": [
+      "es2018",
+      "dom"
+    ]
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  },
   "exclude": [
-    "node_modules",
-    "deprecated"
+    "node_modules"
   ]
 }

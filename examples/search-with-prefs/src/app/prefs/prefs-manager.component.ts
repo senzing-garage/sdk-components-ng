@@ -119,8 +119,11 @@ export class SzPrefsManagerComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateIntPrefValue(prefGroup: string, prefKey: string, prefVal: number): void {
+  updateIntPrefValue(prefGroup: string, prefKey: string, prefVal: number | string): void {
     //console.log(`updateIntPrefValue(${prefGroup}, ${prefKey})`, prefVal, typeof this.prefs[prefGroup][prefKey]);
+    if( typeof prefVal === 'string') {
+      prefVal = parseInt((prefVal as string));
+    }
     if (prefVal > 0 && this.prefs[prefGroup] && this.prefs[prefGroup][prefKey]){
       this.prefs[prefGroup][prefKey] = prefVal;
     }

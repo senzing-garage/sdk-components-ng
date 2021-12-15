@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2021-12-17
+### Modified
+- Angular Framework Updated to version 13. As of 3.0.0 release this package now requires `@angular@~13.0.0` to compile and run. Updating to angular 13 resolves major dependency compatibility issues so we can apply the latest security patches to the library. For information updating your project from a previous angular version to `~13.0.0` see the [Angular Update Guide ](https://update.angular.io/)
+- SzSearchComponent.resultCleared event emitter payload is now of type `void` and not `SzEntitySearchParams`.
+- Small bugfix to properly clip the graph scale ui control when graph section in entity detail is collapsed.
+
+### Deleted
+- Admin Import example and related code. The admin load functionality has been deprecated since there is just too much movement of the methodology and complexity used to achieve this functionality for it be practical to expose it via the sdk-components-ng package. For a working example of how to implement load and analyze functionality see the consuming [Entity Search Web App](https://github.com/Senzing/entity-search-web-app) repository.
+- Angular Schematics support. see #253
+
+relevant tickets: #253 #252 #251 #250
+
 ## [2.2.6] - 2021-11-23
 ### Added
 - `SzEntityDetailGraphComponent`

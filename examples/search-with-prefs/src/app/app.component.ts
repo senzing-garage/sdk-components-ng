@@ -191,7 +191,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     }
   }
   /** clear the current search results */
-  public onSearchResultsCleared(searchParams: SzEntitySearchParams){
+  public onSearchResultsCleared(searchParams: SzEntitySearchParams | void){
     // hide search results
     this.showNoResultsMessage = false;
     this.showSearchResults = false;

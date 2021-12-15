@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inpu
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { SzRelatedEntity, SzEntityRecord } from '@senzing/rest-api-client-ng';
+import { SzRelatedEntity, SzEntityRecord, SzAttributeSearchResult } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
 
 /**
@@ -17,7 +17,7 @@ import { SzPrefsService } from '../../../services/sz-prefs.service';
 export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
-  @Input() public entity: SzEntityDetailSectionData;
+  @Input() public entity: SzEntityDetailSectionData | SzAttributeSearchResult;
   @Input() public maxLinesToDisplay = 3;
   @Input() public showAllInfo: boolean;
   /** 0 = wide layout. 1 = narrow layout */

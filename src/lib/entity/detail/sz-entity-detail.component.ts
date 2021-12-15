@@ -438,7 +438,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    */
   public get graphData() {
     if(!this.entity || this.entity == null) {
-      return;
+      return undefined;
     }
     return {
       resolvedEntity: this.entity.resolvedEntity,

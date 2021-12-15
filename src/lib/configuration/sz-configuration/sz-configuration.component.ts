@@ -21,8 +21,7 @@ import { SzConfigurationService } from '../../services/sz-configuration.service'
  */
 @Component({
   selector: 'sz-configuration',
-  template: ``,
-  styles: ['']
+  template: ``
 })
 export class SzConfigurationComponent {
   /**

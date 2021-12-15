@@ -8,7 +8,7 @@
     "./lib/scss/*",
     "./lib/scss/**/*"
   ],
-  "whitelistedNonPeerDependencies": [
+  "allowedNonPeerDependencies": [
     "@senzing/rest-api-client-ng",
     "@senzing/sdk-graph-components",
     "@angular/material",
@@ -18,7 +18,6 @@
     "html2canvas",
     "@types/d3",
     "@types/jspdf",
-    "schematics-utilities",
-    "mustache"
+    "schematics-utilities"
   ]
 }

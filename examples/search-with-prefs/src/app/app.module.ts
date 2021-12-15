@@ -1,8 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-// import { CommonModule } from '@angular/common';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { SenzingSdkModule, SzPrefsService, SzConfigurationService, SzRestConfiguration } from '@senzing/sdk-components-ng';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { StorageServiceModule } from 'ngx-webstorage-service';

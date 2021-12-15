@@ -5,7 +5,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { SenzingSdkModule, SzPrefsService, SzConfigurationService, SzRestConfiguration } from '@senzing/sdk-components-ng';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { StorageServiceModule } from 'ngx-webstorage-service';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { AppComponent } from './app.component';
 import { SzPrefsManagerComponent } from './prefs/prefs-manager.component';
@@ -41,7 +40,6 @@ export function SzRestConfigurationFactory() {
     FormsModule,
     OverlayModule,
     ReactiveFormsModule,
-    StorageServiceModule,
     NgxJsonViewerModule,
     SenzingSdkModule.forRoot( SzRestConfigurationFactory )
   ],
