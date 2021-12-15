@@ -46,7 +46,15 @@ export class SzSearchResultCardComponent implements OnInit, OnDestroy {
   }
 
   get cardOpened(): boolean {
-    return this.isOpen[this.index];
+    return this.isOpen && this.isOpen[this.index] !== undefined ? this.isOpen[this.index] : false;
+  }
+
+  public get showAllInfo(): boolean {
+    let retVal = true;
+    if(this.isOpen && this.isOpen.every) {
+      retVal = true;
+    }
+    return retVal;
   }
 
   get moreThanOneSource(): boolean {
