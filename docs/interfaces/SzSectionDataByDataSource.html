@@ -46,7 +46,7 @@
   <li>Interfaces</li>
   <li
   >
-  AdminStreamLoadConfig</li>
+  SzSectionDataByDataSource</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -61,7 +61,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/lib/models/data-admin.ts</code>
+            <code>src/lib/models/entity-detail-section-data.ts</code>
         </p>
 
 
@@ -81,21 +81,16 @@
                             <ul class="index-list">
                                 <li>
                                             <span class="modifier">Optional</span>
-                                        <a href="#assignMissingDataSourceRecordsToStaticTarget" 
+                                        <a href="#dataSource" 
 >
-                                            assignMissingDataSourceRecordsToStaticTarget
+                                            dataSource
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#autoCreateMissingDataSources" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#records" 
 >
-                                            autoCreateMissingDataSources
-                                        </a>
-                                </li>
-                                <li>
-                                        <a href="#uploadRate" 
->
-                                            uploadRate
+                                            records
                                         </a>
                                 </li>
                             </ul>
@@ -113,9 +108,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="assignMissingDataSourceRecordsToStaticTarget"></a>
-                                        <span class="name "><b>assignMissingDataSourceRecordsToStaticTarget</b>
-                                            <a href="#assignMissingDataSourceRecordsToStaticTarget">
+                                        <a name="dataSource"></a>
+                                        <span class="name "><b>dataSource</b>
+                                            <a href="#dataSource">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -123,7 +118,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>assignMissingDataSourceRecordsToStaticTarget:     <code>string | undefined | boolean</code>
+                                        <code>dataSource:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -131,7 +126,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>string | undefined | boolean</code>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                                         </td>
                                     </tr>
@@ -151,9 +146,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="autoCreateMissingDataSources"></a>
-                                        <span class="name "><b>autoCreateMissingDataSources</b>
-                                            <a href="#autoCreateMissingDataSources">
+                                        <a name="records"></a>
+                                        <span class="name "><b>records</b>
+                                            <a href="#records">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -161,7 +156,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>autoCreateMissingDataSources:     <code>boolean | undefined</code>
+                                        <code>records:     <code>SzEntityRecord[] | SzRelatedEntity[]</code>
 </code>
                                     </td>
                                 </tr>
@@ -169,44 +164,16 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>boolean | undefined</code>
+                                            <i>Type : </i>    <code>SzEntityRecord[] | SzRelatedEntity[]</code>
 
                                         </td>
                                     </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="uploadRate"></a>
-                                        <span class="name "><b>uploadRate</b>
-                                            <a href="#uploadRate">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>uploadRate:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-</code>
-                                    </td>
-                                </tr>
-
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
+                                            <i>Optional</i>
                                         </td>
                                     </tr>
-
 
 
 
@@ -251,7 +218,7 @@
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'AdminStreamLoadConfig.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'SzSectionDataByDataSource.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

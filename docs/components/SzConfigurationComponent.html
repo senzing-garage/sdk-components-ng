@@ -8,7 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
 
@@ -35,15 +36,14 @@
 
 <ol class="breadcrumb">
   <li>Components</li>
-  <li>SzConfigurationComponent</li>
+  <li
+  >
+  SzConfigurationComponent</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
         <li class="active">
             <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
-        </li>
-        <li >
-            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
         </li>
 </ul>
 
@@ -55,6 +55,7 @@
     <code>src/lib/configuration/sz-configuration/sz-configuration.component.ts</code>
 </p>
 
+
     <p class="comment">
         <h3>Description</h3>
     </p>
@@ -63,26 +64,18 @@
 API configuration parameters used through all components.</p>
 <p>For Angular implementations we recommend using <a href="../injectables/SzConfigurationService.html">SzConfigurationService</a> as an injectable as it
 provides the more robust solution.</p>
+<p><sz-wc-configuration id="sz-api-conf"></sz-wc-configuration>
+document.getElementById(&#39;sz-api-conf&#39;).basePath = &#39;<a href="http://apis.mydomain.com&#39;">http://apis.mydomain.com&#39;</a>;</p>
+<p><sz-wc-configuration base-path="http://apis.mydomain.com/api"></sz-wc-configuration></p>
 
     </p>
 
 
 
-    <p class="comment">
-        <h3>Example</h3>
-    </p>
-    <div class="io-description">
-                <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) SzConfigurationComponent Example - javascript --&gt;&lt;sz-wc-configuration id=&quot;sz-api-conf&quot;&gt;&lt;/sz-wc-configuration&gt;document.getElementById('sz-api-conf').basePath = 'http://apis.mydomain.com';</code></pre>
-                </div>
-                <div>
-                    <pre class="line-numbers"><code class="language-html">&lt;!-- (WC) SzConfigurationComponent Example - By attribute --&gt;&lt;sz-wc-configuration base-path=&quot;http://apis.mydomain.com/api&quot;&gt;&lt;/sz-wc-configuration&gt;</code></pre>
-                </div>
-    </div>
 
 <section>
     <h3>Metadata</h3>
-    <table class="table table-sm table-hover">
+    <table class="table table-sm table-hover metadata">
         <tbody>
 
 
@@ -101,10 +94,6 @@ provides the more robust solution.</p>
             </tr>
 
 
-            <tr>
-                <td class="col-md-3">styles</td>
-                <td class="col-md-9"><code></code></td>
-            </tr>
 
 
 
@@ -134,25 +123,25 @@ provides the more robust solution.</p>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#accessToken">accessToken</a>
+                                <a href="#accessToken" >accessToken</a>
                             </li>
                             <li>
-                                <a href="#additionalHeaders">additionalHeaders</a>
+                                <a href="#additionalHeaders" >additionalHeaders</a>
                             </li>
                             <li>
-                                <a href="#apiKeys">apiKeys</a>
+                                <a href="#apiKeys" >apiKeys</a>
                             </li>
                             <li>
-                                <a href="#basePath">basePath</a>
+                                <a href="#basePath" >basePath</a>
                             </li>
                             <li>
-                                <a href="#password">password</a>
+                                <a href="#password" >password</a>
                             </li>
                             <li>
-                                <a href="#username">username</a>
+                                <a href="#username" >username</a>
                             </li>
                             <li>
-                                <a href="#withCredentials">withCredentials</a>
+                                <a href="#withCredentials" >withCredentials</a>
                             </li>
                         </ul>
                     </td>
@@ -167,7 +156,7 @@ provides the more robust solution.</p>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#parametersChanged">parametersChanged</a>
+                                <a href="#parametersChanged" >parametersChanged</a>
                             </li>
                         </ul>
                     </td>
@@ -184,25 +173,25 @@ provides the more robust solution.</p>
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#apiKeys">apiKeys</a>
+                                    <a href="#apiKeys" >apiKeys</a>
                                 </li>
                                 <li>
-                                    <a href="#username">username</a>
+                                    <a href="#username" >username</a>
                                 </li>
                                 <li>
-                                    <a href="#password">password</a>
+                                    <a href="#password" >password</a>
                                 </li>
                                 <li>
-                                    <a href="#accessToken">accessToken</a>
+                                    <a href="#accessToken" >accessToken</a>
                                 </li>
                                 <li>
-                                    <a href="#basePath">basePath</a>
+                                    <a href="#basePath" >basePath</a>
                                 </li>
                                 <li>
-                                    <a href="#withCredentials">withCredentials</a>
+                                    <a href="#withCredentials" >withCredentials</a>
                                 </li>
                                 <li>
-                                    <a href="#additionalHeaders">additionalHeaders</a>
+                                    <a href="#additionalHeaders" >additionalHeaders</a>
                                 </li>
                             </ul>
                         </td>
@@ -217,7 +206,7 @@ provides the more robust solution.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(apiConfigService: <a href="../injectables/SzConfigurationService.html">SzConfigurationService</a>)</code>
+<code>constructor(apiConfigService: <a href="../injectables/SzConfigurationService.html" target="_self">SzConfigurationService</a>)</code>
                     </td>
                 </tr>
 
@@ -277,8 +266,8 @@ provides the more robust solution.</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>set additional http/https request headers to be added by default to 
-all outbound api server requests. most commonly used for adding custom 
+                        <div class="io-description"><p>set additional http/https request headers to be added by default to
+all outbound api server requests. most commonly used for adding custom
 or required non-standard headers like jwt session tokens, auth id etc.</p>
 </div>
                     </td>
@@ -346,7 +335,7 @@ protocol://hostname:port string that your api server can be accessed through</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>password used for challenge respose. </p>
+                        <div class="io-description"><p>password used for challenge respose.</p>
 </div>
                     </td>
                 </tr>
@@ -390,7 +379,7 @@ protocol://hostname:port string that your api server can be accessed through</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>whether or not to use CORs for api requests </p>
+                        <div class="io-description"><p>whether or not to use CORs for api requests</p>
 </div>
                     </td>
                 </tr>
@@ -560,7 +549,7 @@ used mostly for diagnostics.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>password used for challenge respose. </p>
+                                <div class="io-description"><p>password used for challenge respose.</p>
 </div>
 
                                 <div class="io-description">
@@ -611,7 +600,7 @@ used mostly for diagnostics.</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>accessToken(value)</code></span>
+                        <span class="accessor"><b>set</b><code>accessToken(value: string | )</code></span>
                     </td>
                 </tr>
                     <tr>
@@ -623,6 +612,7 @@ used mostly for diagnostics.</p>
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
+                                                        <td>Type</td>
                                                     <td>Optional</td>
                                                 </tr>
                                             </thead>
@@ -630,6 +620,9 @@ used mostly for diagnostics.</p>
                                                     <tr>
                                                             <td>value</td>
                                                     
+                                                            <td>
+                                                                        <code>string | </code>
+                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -723,7 +716,7 @@ protocol://hostname:port string that your api server can be accessed through</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>whether or not to use CORs for api requests </p>
+                                <div class="io-description"><p>whether or not to use CORs for api requests</p>
 </div>
 
                                 <div class="io-description">
@@ -774,13 +767,13 @@ protocol://hostname:port string that your api server can be accessed through</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>additionalHeaders(value)</code></span>
+                        <span class="accessor"><b>set</b><code>additionalHeaders(value: literal type | string)</code></span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>set additional http/https request headers to be added by default to 
-all outbound api server requests. most commonly used for adding custom 
+                                <div class="io-description"><p>set additional http/https request headers to be added by default to
+all outbound api server requests. most commonly used for adding custom
 or required non-standard headers like jwt session tokens, auth id etc.</p>
 </div>
 
@@ -790,6 +783,7 @@ or required non-standard headers like jwt session tokens, auth id etc.</p>
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
+                                                        <td>Type</td>
                                                     <td>Optional</td>
                                                 </tr>
                                             </thead>
@@ -797,6 +791,9 @@ or required non-standard headers like jwt session tokens, auth id etc.</p>
                                                     <tr>
                                                             <td>value</td>
                                                     
+                                                            <td>
+                                                                        <code>literal type | string</code>
+                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -822,10 +819,6 @@ or required non-standard headers like jwt session tokens, auth id etc.</p>
 
 
 
-    <div class="tab-pane fade " id="c-styleData">
-            <pre class="line-numbers"><code class="language-scss">
-</code></pre>
-    </div>
 
 
     
@@ -851,14 +844,14 @@ or required non-standard headers like jwt session tokens, auth id etc.</p>
 
 
 
-                   
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -870,6 +863,15 @@ or required non-standard headers like jwt session tokens, auth id etc.</p>
            </div>
        </div>
 
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
@@ -879,9 +881,9 @@ or required non-standard headers like jwt session tokens, auth id etc.</p>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

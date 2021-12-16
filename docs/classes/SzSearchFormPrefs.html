@@ -8,7 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
 
@@ -42,7 +43,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li>SzSearchFormPrefs</li>
+  <li >SzSearchFormPrefs</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -60,6 +61,7 @@
             <code>src/lib/services/sz-prefs.service.ts</code>
         </p>
 
+
             <p class="comment">
                 <h3>Description</h3>
             </p>
@@ -68,6 +70,8 @@
 used by <a href="../injectables/SzPrefsService.html">SzPrefsService</a> to store it&#39;s
 search form related prefs.
 Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsService</a> context, not on its own.</p>
+<p>this.prefs.searchForm.allowedTypeAttributes = [&#39;SSN_NUMBER&#39;,&#39;DRIVERS_LICENSE_NUMBER&#39;];</p>
+<p>this.prefs.searchResults.prefsChanged.subscribe( (prefs) =&gt; { console.log(&#39;search form pref change happened.&#39;, prefs); })</p>
 
             </p>
 
@@ -79,17 +83,6 @@ Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsS
             </p>
 
 
-            <p class="comment">
-                <h3>Example</h3>
-            </p>
-            <div class="io-description">
-                        <div>
-                            <pre class="line-numbers"><code class="language-html">this.prefs.searchForm.allowedTypeAttributes = ['SSN_NUMBER','DRIVERS_LICENSE_NUMBER'];</code></pre>
-                        </div>
-                        <div>
-                            <pre class="line-numbers"><code class="language-html">this.prefs.searchResults.prefsChanged.subscribe( (prefs) =&gt; { console.log('search form pref change happened.', prefs); })</code></pre>
-                        </div>
-            </div>
 
             <section>
     <h3 id="index">Index</h3>
@@ -104,18 +97,16 @@ Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsS
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#jsonKeys">jsonKeys</a>
+                                    <span class="modifier"></span>
+                                <a href="#jsonKeys" >jsonKeys</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#bulkSet">bulkSet</a>
-                            </li>
-                            <li>
-                                <a href="#jsonKeys">jsonKeys</a>
+                                <a href="#bulkSet" >bulkSet</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#prefsChanged">prefsChanged</a>
+                                <a href="#prefsChanged" >prefsChanged</a>
                             </li>
                         </ul>
                     </td>
@@ -131,19 +122,16 @@ Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsS
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#fromJSONObject">fromJSONObject</a>
+                                    <span class="modifier"></span>
+                                <a href="#fromJSONObject" >fromJSONObject</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#fromJSONObject">fromJSONObject</a>
+                                <a href="#toJSONObject" >toJSONObject</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#toJSONObject">toJSONObject</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#toJSONString">toJSONString</a>
+                                <a href="#toJSONString" >toJSONString</a>
                             </li>
                         </ul>
                     </td>
@@ -162,19 +150,19 @@ Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsS
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#rememberLastSearches">rememberLastSearches</a>
+                                    <a href="#rememberLastSearches" >rememberLastSearches</a>
                                 </li>
                                 <li>
-                                    <a href="#disableSearchHistory">disableSearchHistory</a>
+                                    <a href="#disableSearchHistory" >disableSearchHistory</a>
                                 </li>
                                 <li>
-                                    <a href="#savedSearches">savedSearches</a>
+                                    <a href="#savedSearches" >savedSearches</a>
                                 </li>
                                 <li>
-                                    <a href="#searchHistory">searchHistory</a>
+                                    <a href="#searchHistory" >searchHistory</a>
                                 </li>
                                 <li>
-                                    <a href="#allowedTypeAttributes">allowedTypeAttributes</a>
+                                    <a href="#allowedTypeAttributes" >allowedTypeAttributes</a>
                                 </li>
                             </ul>
                         </td>
@@ -199,153 +187,117 @@ Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsS
 
             <section>
     
-        <h3 id="inputs">
-            Properties
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="jsonKeys"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>jsonKeys</b></span>
+                        <a href="#jsonKeys"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="jsonKeys"></a>
-                        <span class="name">
-                            <b>
-                            jsonKeys</b>
-                            <a href="#jsonKeys"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>    <code>[]</code>
+
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>[]</code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>[
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
     &#x27;rememberLastSearches&#x27;,
     &#x27;disableSearchHistory&#x27;,
     &#x27;allowedTypeAttributes&#x27;,
     &#x27;savedSearches&#x27;,
     &#x27;searchHistory&#x27;
   ]</code>
-                        </td>
-                    </tr>
+                    </td>
+                </tr>
 
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>the keys of member setters or variables in the object
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>the keys of member setters or variables in the object
 to output in json, or to take as json input</p>
 </div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="bulkSet"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>bulkSet</b></span>
+                        <a href="#bulkSet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
                     </td>
                 </tr>
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="bulkSet"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            bulkSet</b>
-                            <a href="#bulkSet"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>false</code>
-                        </td>
-                    </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>during a bulk property set, set this to true to
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>during a bulk property set, set this to true to
 not publish change events on every single value change</p>
 </div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prefsChanged"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>prefsChanged</b></span>
+                        <a href="#prefsChanged"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>BehaviorSubject&lt;any&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new BehaviorSubject&lt;any&gt;(this.toJSONObject())</code>
                     </td>
                 </tr>
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="jsonKeys"></a>
-                        <span class="name">
-                            <b>
-                            jsonKeys</b>
-                            <a href="#jsonKeys"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>[]</code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>[]</code>
-                        </td>
-                    </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>the keys of member setters or variables in the object
-to output in json, or to take as json input</p>
-</div>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="prefsChanged"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            prefsChanged</b>
-                            <a href="#prefsChanged"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>BehaviorSubject&lt;any&gt;</code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>new BehaviorSubject&lt;any&gt;(this.toJSONObject())</code>
-                        </td>
-                    </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>behavior subject that can be subscribed to for change
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>behavior subject that can be subscribed to for change
 notifications.</p>
 </div>
-                    </td>
-                </tr>
+                </td>
+            </tr>
 
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 </section>
 
             <section>
@@ -359,10 +311,9 @@ notifications.</p>
                 <td class="col-md-4">
                     <a name="fromJSONObject"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            fromJSONObject
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span class="modifier"></span>
+                        <span ><b>fromJSONObject</b></span>
                         <a href="#fromJSONObject"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -387,74 +338,7 @@ the prefs from JSON like create class instances etc.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>value</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
                         
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="fromJSONObject"></a>
-                    <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            fromJSONObject
-                        </b>
-                        <a href="#fromJSONObject"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>fromJSONObject(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>populate values by calling setters with the same names as json keys </p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
                         <table class="params">
                             <thead>
                                 <tr>
@@ -498,10 +382,8 @@ the prefs from JSON like create class instances etc.</p>
                 <td class="col-md-4">
                     <a name="toJSONObject"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            toJSONObject
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>toJSONObject</b></span>
                         <a href="#toJSONObject"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -518,7 +400,7 @@ the prefs from JSON like create class instances etc.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>get shallow JSON copy of object state. properties are filtered by members of <a href="jsonKeys">jsonKeys</a> </p>
+                    <div class="io-description"><p>get shallow JSON copy of object state. properties are filtered by members of <a href="jsonKeys">jsonKeys</a></p>
 </div>
 
                     <div class="io-description">
@@ -535,10 +417,8 @@ the prefs from JSON like create class instances etc.</p>
                 <td class="col-md-4">
                     <a name="toJSONString"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            toJSONString
-                        </b>
+                        <span class="modifier">Public</span>
+                        <span ><b>toJSONString</b></span>
                         <a href="#toJSONString"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -555,7 +435,7 @@ the prefs from JSON like create class instances etc.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>get object state representation as a string </p>
+                    <div class="io-description"><p>get object state representation as a string</p>
 </div>
 
                     <div class="io-description">
@@ -592,7 +472,7 @@ the prefs from JSON like create class instances etc.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>remember last X searches in autofill. </p>
+                                <div class="io-description"><p>remember last X searches in autofill.</p>
 </div>
 
                                 <div class="io-description">
@@ -609,7 +489,7 @@ the prefs from JSON like create class instances etc.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>remember last X searches in autofill. </p>
+                                <div class="io-description"><p>remember last X searches in autofill.</p>
 </div>
 
                                 <div class="io-description">
@@ -664,7 +544,7 @@ the prefs from JSON like create class instances etc.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>whether or not to disable search form history drop downs. </p>
+                                <div class="io-description"><p>whether or not to disable search form history drop downs.</p>
 </div>
 
                                 <div class="io-description">
@@ -681,7 +561,7 @@ the prefs from JSON like create class instances etc.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>whether or not to disable search form history drop downs. </p>
+                                <div class="io-description"><p>whether or not to disable search form history drop downs.</p>
 </div>
 
                                 <div class="io-description">
@@ -736,7 +616,7 @@ the prefs from JSON like create class instances etc.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>get list of last searches performed. </p>
+                                <div class="io-description"><p>get list of last searches performed.</p>
 </div>
 
                                 <div class="io-description">
@@ -748,12 +628,12 @@ the prefs from JSON like create class instances etc.</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>savedSearches(value: [])</code></span>
+                        <span class="accessor"><b>set</b><code>savedSearches(value: <a href="../classes/SzSearchParamsFolio.html" target="_self">SzSearchParamsFolio[]</a>)</code></span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>update list of last searches performed. </p>
+                                <div class="io-description"><p>update list of last searches performed.</p>
 </div>
 
                                 <div class="io-description">
@@ -771,7 +651,7 @@ the prefs from JSON like create class instances etc.</p>
                                                             <td>value</td>
                                                     
                                                             <td>
-                                                                        <code>[]</code>
+                                                                            <code><a href="../classes/SzSearchParamsFolio.html" target="_self" >SzSearchParamsFolio[]</a></code>
                                                             </td>
                                                     
                                                         <td>
@@ -808,7 +688,7 @@ the prefs from JSON like create class instances etc.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>get list of last searches performed. </p>
+                                <div class="io-description"><p>get list of last searches performed.</p>
 </div>
 
                                 <div class="io-description">
@@ -820,12 +700,12 @@ the prefs from JSON like create class instances etc.</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>searchHistory(value)</code></span>
+                        <span class="accessor"><b>set</b><code>searchHistory(value: <a href="../classes/SzSearchHistoryFolio.html" target="_self">SzSearchHistoryFolio</a>)</code></span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>update list of last searches performed. </p>
+                                <div class="io-description"><p>update list of last searches performed.</p>
 </div>
 
                                 <div class="io-description">
@@ -834,6 +714,7 @@ the prefs from JSON like create class instances etc.</p>
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
+                                                        <td>Type</td>
                                                     <td>Optional</td>
                                                 </tr>
                                             </thead>
@@ -841,6 +722,9 @@ the prefs from JSON like create class instances etc.</p>
                                                     <tr>
                                                             <td>value</td>
                                                     
+                                                            <td>
+                                                                            <code><a href="../classes/SzSearchHistoryFolio.html" target="_self" >SzSearchHistoryFolio</a></code>
+                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -876,7 +760,7 @@ the prefs from JSON like create class instances etc.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>the allowed identifier types to show in the identifier pulldown </p>
+                                <div class="io-description"><p>the allowed identifier types to show in the identifier pulldown</p>
 </div>
 
                                 <div class="io-description">
@@ -888,12 +772,12 @@ the prefs from JSON like create class instances etc.</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>allowedTypeAttributes(value: [])</code></span>
+                        <span class="accessor"><b>set</b><code>allowedTypeAttributes(value: string[])</code></span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>the allowed identifier types to show in the identifier pulldown </p>
+                                <div class="io-description"><p>the allowed identifier types to show in the identifier pulldown</p>
 </div>
 
                                 <div class="io-description">
@@ -911,7 +795,7 @@ the prefs from JSON like create class instances etc.</p>
                                                             <td>value</td>
                                                     
                                                             <td>
-                                                                        <code>[]</code>
+                                                                        <code>string[]</code>
                                                             </td>
                                                     
                                                         <td>
@@ -940,14 +824,14 @@ the prefs from JSON like create class instances etc.</p>
 
 
 
-                   
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -959,6 +843,15 @@ the prefs from JSON like create class instances etc.</p>
            </div>
        </div>
 
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
@@ -968,9 +861,9 @@ the prefs from JSON like create class instances etc.</p>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 
