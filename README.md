@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is for the Senzing&reg; SDK components that can be used in other projects. There are two flavors that the components come in. The [@senzing/sdk-components-ng](https://www.npmjs.com/package/@senzing/sdk-components-ng) package which is based around the Angular 10.x.x framework, and the [@senzing/sdk-components-web](https://www.npmjs.com/package/@senzing/sdk-components-web) package which is framework agnostic and based around the [Web Components](https://developers.google.com/web/fundamentals/web-components/) standard. The usage for both packages is noted in the [documentation examples](http://hub.senzing.com/sdk-components-ng/).
+This project is for the Senzing&reg; SDK components that can be used in other projects. There are two flavors that the components come in. The [@senzing/sdk-components-ng](https://www.npmjs.com/package/@senzing/sdk-components-ng) package which is based around the Angular 13.x.x framework, and the [@senzing/sdk-components-web](https://www.npmjs.com/package/@senzing/sdk-components-web) package which is framework agnostic and based around the [Web Components](https://developers.google.com/web/fundamentals/web-components/) standard. The usage for both packages is noted in the [documentation examples](http://hub.senzing.com/sdk-components-ng/).
 
 For information on the Web Components version see the [sdk-components-web guide](https://github.com/Senzing/sdk-components-ng/tree/master/sdk-components-web). 
 
