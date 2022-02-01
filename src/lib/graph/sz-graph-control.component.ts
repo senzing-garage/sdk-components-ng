@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { SzPrefsService } from '../../../services/sz-prefs.service';
+import { SzPrefsService } from '../services/sz-prefs.service';
 import { Subject } from 'rxjs';
 
 /**
@@ -7,11 +7,11 @@ import { Subject } from 'rxjs';
  * @export
  */
 @Component({
-  selector: 'sz-entity-detail-graph-control',
-  templateUrl: './sz-entity-detail-graph-control.component.html',
-  styleUrls: ['./sz-entity-detail-graph-control.component.scss']
+  selector: 'sz-graph-control',
+  templateUrl: './sz-graph-control.component.html',
+  styleUrls: ['./sz-graph-control.component.scss']
 })
-export class SzEntityDetailGraphControlComponent implements OnInit, OnDestroy {
+export class SzGraphControlComponent implements OnInit, OnDestroy {
   isOpen: boolean = true;
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();

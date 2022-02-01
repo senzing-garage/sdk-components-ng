@@ -63,13 +63,16 @@ import { SzEntityDetailSectionHeaderComponent } from './entity/detail/sz-entity-
 import { SzEntityDetailSectionCollapsibleCardComponent } from './entity/detail/sz-entity-details-section/collapsible-card.component';
 
 import { SzEntityDetailGraphComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
-import { SzEntityDetailGraphControlComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-control.component';
-import { SzEntityDetailGraphFilterComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-filter.component';
 import { SzEntityMatchPillComponent } from './entity/sz-entity-match-pill/sz-entity-match-pill.component';
 import { SzStandaloneGraphComponent } from './entity/detail/sz-entity-detail-graph/sz-standalone-graph.component';
 import { SzEntityRecordCardComponent } from './entity/sz-entity-record-card/sz-entity-record-card.component';
 import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-card/sz-entity-record-card-header/sz-entity-record-card-header.component';
 import { SzEntityRecordCardContentComponent } from './entity/sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
+
+// graph components
+import { SzGraphControlComponent } from './graph/sz-graph-control.component';
+import { SzGraphFilterComponent } from './graph/sz-graph-filter.component';
+import { SzGraphComponent } from './graph/sz-graph.component';
 
 import { SzSearchComponent } from './search/sz-search/sz-search.component';
 import { SzSearchIdentifiersPickerDialogComponent, SzSearchIdentifiersPickerSheetComponent } from './search/sz-search/sz-search-identifiers-picker.component';
@@ -120,8 +123,9 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultCardComponent,
     SzSearchResultCardContentComponent,
     SzEntityDetailGraphComponent,
-    SzEntityDetailGraphControlComponent,
-    SzEntityDetailGraphFilterComponent,
+    SzGraphComponent,
+    SzGraphControlComponent,
+    SzGraphFilterComponent,
     SzStandaloneGraphComponent,
     SzEntityDetailHeaderComponent,
     SzEntityDetailsSectionComponent,
@@ -162,8 +166,9 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzConfigurationComponent,
     SzConfigurationAboutComponent,
     SzEntityDetailGraphComponent,
-    SzEntityDetailGraphControlComponent,
-    SzEntityDetailGraphFilterComponent,
+    SzGraphComponent,
+    SzGraphControlComponent,
+    SzGraphFilterComponent,
     SzEntityRecordViewerComponent,
     SzStandaloneGraphComponent,
     SzPreferencesComponent

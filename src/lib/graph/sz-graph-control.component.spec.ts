@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
+import { SzEntityDetailGraphControlComponent } from './sz-graph-control.component';
 import { SenzingSdkModule } from 'src/lib/sdk.module';
 
 describe('SzEntityDetailGraphControlComponent', () => {

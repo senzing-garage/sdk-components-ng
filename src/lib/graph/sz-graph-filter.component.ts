@@ -1,13 +1,13 @@
 import { Component, HostBinding, Input, OnInit, AfterViewInit, OnDestroy, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { SzPrefsService, SzSdkPrefsModel } from '../../../services/sz-prefs.service';
-import { SzDataSourcesService } from '../../../services/sz-datasources.service';
+import { SzPrefsService, SzSdkPrefsModel } from '../services/sz-prefs.service';
+import { SzDataSourcesService } from '../services/sz-datasources.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { SzDataSourceComposite } from '../../../models/data-sources';
-import { SzMatchKeyComposite } from '../../../models/graph';
-import { sortDataSourcesByIndex, sortMatchKeysByIndex } from '../../../common/utils';
+import { SzDataSourceComposite } from '../models/data-sources';
+import { SzMatchKeyComposite } from '../models/graph';
+import { sortDataSourcesByIndex, sortMatchKeysByIndex } from '../common/utils';
 
 /**
  * Control Component allowing UI friendly changes
@@ -16,23 +16,23 @@ import { sortDataSourcesByIndex, sortMatchKeysByIndex } from '../../../common/ut
  * integrated with graph preferences and prefBUS.
  *
  * @example <!-- (Angular) -->
- * <sz-entity-detail-graph-filter #graphFilter
+ * <sz-graph-filter #graphFilter
       [showLinkLabels]="true"
       (optionChanged)="onOptionChange($event)"
-      ></sz-entity-detail-graph-filter>
+      ></sz-graph-filter>
  *
  * @example <!-- (WC) -->
- * <sz-wc-standalone-graph-filters id="sz-entity-detail-graph-filter"></sz-wc-standalone-graph-filters>
+ * <sz-wc-graph-filters id="sz-graph-filter"></sz-wc-graph-filters>
  * <script>
- * document.getElementById('sz-wc-standalone-graph-filters').addEventListener('optionChanged', function(data) { console.log('filter(s) changed', data); });
+ * document.getElementById('sz-wc-graph-filters').addEventListener('optionChanged', function(data) { console.log('filter(s) changed', data); });
  * </script>
  */
 @Component({
-  selector: 'sz-entity-detail-graph-filter',
-  templateUrl: './sz-entity-detail-graph-filter.component.html',
-  styleUrls: ['./sz-entity-detail-graph-filter.component.scss']
+  selector: 'sz-graph-filter',
+  templateUrl: './sz-graph-filter.component.html',
+  styleUrls: ['./sz-graph-filter.component.scss']
 })
-export class SzEntityDetailGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy {
   isOpen: boolean = true;
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();

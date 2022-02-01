@@ -1,4 +1,4 @@
-@import "../../../scss/variables";
+@import "../scss/variables";
 
 :host {
   height: var(--sz-large-graph-height);
@@ -107,7 +107,7 @@
       border-radius: var(--sz-entity-detail-section-border-radius);
     }
   }
-  sz-standalone-graph-container, .sz-standalone-graph-container {
+  sz-graph-container, .sz-graph-container {
     width: 100%;
     height: 100%;
     display: block;

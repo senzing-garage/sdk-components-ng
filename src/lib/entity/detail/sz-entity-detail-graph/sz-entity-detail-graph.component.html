@@ -43,15 +43,15 @@
     (scaleChanged)="onGraphZoom($event)"
     [maxEntities]="maxEntities"></sz-relationship-network>
 
-    <sz-entity-detail-graph-control *ngIf="showMatchKeyControl" class="sz-entity-detail-graph-control"
+    <sz-graph-control *ngIf="showMatchKeyControl" class="sz-graph-control"
     [showLinkLabels]="_showMatchKeys"
     (optionChanged)="onOptionChange($event)"
-    ></sz-entity-detail-graph-control>
+    ></sz-graph-control>
 
-    <sz-entity-detail-graph-filter *ngIf="showFiltersControl" class="sz-entity-detail-graph-filter"
+    <sz-graph-filter *ngIf="showFiltersControl" class="sz-graph-filter"
     [showLinkLabels]="_showMatchKeys"
     (optionChanged)="onOptionChange($event)"
-    ></sz-entity-detail-graph-filter>
+    ></sz-graph-filter>
 
     <svg class="popout-icon"
       [class.top-left]="popOutIconPosition == 'top-left'"

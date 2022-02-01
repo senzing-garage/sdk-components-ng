@@ -12,7 +12,7 @@ import {
   SzEntityNetworkData
 } from '@senzing/rest-api-client-ng';
 
-import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
+import { SzGraphControlComponent } from '../../../graph/sz-graph-control.component';
 import { SzNetworkGraphInputs } from '../../../models/network-graph-inputs';
 import { SzRelationshipNetworkComponent, NodeFilterPair } from '@senzing/sdk-graph-components';
 import { sortDataSourcesByIndex } from '../../../common/utils';
@@ -212,7 +212,7 @@ export class SzEntityDetailGraphComponent implements OnInit, OnDestroy {
   @HostBinding('class.open') get cssClssOpen() { return this.expanded; }
   @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; }
   @ViewChild('graphContainer') graphContainerEle: ElementRef;
-  @ViewChild(SzEntityDetailGraphControlComponent) graphControlComponent: SzEntityDetailGraphControlComponent;
+  @ViewChild(SzGraphControlComponent) graphControlComponent: SzGraphControlComponent;
   @ViewChild(SzRelationshipNetworkComponent) graph : SzRelationshipNetworkComponent;
 
   /**

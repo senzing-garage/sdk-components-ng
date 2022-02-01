@@ -1,5 +1,5 @@
 import { Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef } from '@angular/core';
-import { SzPrefsService } from '../../../services/sz-prefs.service';
+import { SzPrefsService } from '../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 
@@ -11,10 +11,10 @@ import {
   SzRelationshipType,
   SzEntityNetworkData
 } from '@senzing/rest-api-client-ng';
-import { SzGraphControlComponent } from '../../../graph/sz-graph-control.component';
+import { SzGraphControlComponent } from './sz-graph-control.component';
 import { SzRelationshipNetworkComponent, NodeFilterPair, SzNetworkGraphInputs } from '@senzing/sdk-graph-components';
-import { parseBool, sortDataSourcesByIndex } from '../../../common/utils';
-import { SzDataSourceComposite } from '../../../models/data-sources';
+import { parseBool, sortDataSourcesByIndex } from '../common/utils';
+import { SzDataSourceComposite } from '../models/data-sources';
 
 /**
  * Embeddable Graph Component
@@ -25,7 +25,7 @@ import { SzDataSourceComposite } from '../../../models/data-sources';
  * to change the components parameters of this component.
  *
  * @example <!-- (Angular) -->
- * <sz-standalone-graph
+ * <sz-graph
           filterWidth="320"
           [graphIds]="graphIds"
           [showPopOutIcon]="false"
@@ -34,10 +34,10 @@ import { SzDataSourceComposite } from '../../../models/data-sources';
           [filterControlPosition]="'top-right'"
           (entityClick)="onGraphEntityClick($event)"
           [showMatchKeys]="true"
-      ></sz-standalone-graph>
+      ></sz-graph>
  *
  * @example <!-- (WC) by attribute -->
- * <sz-wc-standalone-graph
+ * <sz-wc-graph
           filter-width="320"
           graph-ids="1,1001,1002"
           show-pop-out-icon="false"
@@ -45,21 +45,21 @@ import { SzDataSourceComposite } from '../../../models/data-sources';
           show-filters-control="false"
           filter-control-position="top-right"
           show-match-keys="true"
-      ></sz-wc-standalone-graph>
+      ></sz-wc-graph>
  *
  * @example <!-- (WC) by DOM -->
- * <sz-wc-standalone-graph id="sz-wc-standalone-graph"></sz-wc-standalone-graph>
+ * <sz-wc-graph id="sz-wc-standalone-graph"></sz-wc-graph>
  * <script>
- * document.getElementById('sz-wc-standalone-graph').graphIds = [1,1001,1002];
- * document.getElementById('sz-wc-standalone-graph').addEventListener('entityClick', (data) => { console.log('entity clicked on!', data); })
+ * document.getElementById('sz-wc-graph').graphIds = [1,1001,1002];
+ * document.getElementById('sz-wc-graph').addEventListener('entityClick', (data) => { console.log('entity clicked on!', data); })
  * </script>
  */
 @Component({
-  selector: 'sz-standalone-graph',
-  templateUrl: './sz-standalone-graph.component.html',
-  styleUrls: ['./sz-standalone-graph.component.scss']
+  selector: 'sz-graph',
+  templateUrl: './sz-graph.component.html',
+  styleUrls: ['./sz-graph.component.scss']
 })
-export class SzStandaloneGraphComponent implements OnInit, OnDestroy {
+export class SzGraphComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
   public isOpen: boolean = true;

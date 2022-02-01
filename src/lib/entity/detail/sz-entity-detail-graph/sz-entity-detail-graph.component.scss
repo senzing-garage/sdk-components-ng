@@ -174,7 +174,7 @@
 .sz-entity-detail-section-collapsible-card {
   position: relative;
 }
-sz-entity-detail-graph-control, .sz-entity-detail-graph-control, .sz-entity-detail-graph-filter {
+sz-graph-control, .sz-graph-control, .sz-graph-filter {
   background-color: var(--sz-entity-graph-control-background-color);
   display: var(--sz-entity-graph-control-display);
   z-index: var(--sz-entity-graph-control-z-index);
