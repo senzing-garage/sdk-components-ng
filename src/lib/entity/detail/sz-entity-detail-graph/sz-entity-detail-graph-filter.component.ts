@@ -30,9 +30,21 @@ import { SzGraphFilterComponent } from '../../../graph/sz-graph-filter.component
  */
 @Component({
   selector: 'sz-entity-detail-graph-filter',
-  templateUrl: './sz-entity-detail-graph-filter.component.html',
+  templateUrl: '../../../graph/sz-graph-filter.component.html',
   styleUrls: ['../../../graph/sz-graph-filter.component.scss']
 })
-export class SzEntityDetailGraphFilterComponent {
-  
+export class SzEntityDetailGraphFilterComponent extends SzGraphFilterComponent {
+  constructor(
+    _p_prefs: SzPrefsService,
+    _p_dataSourcesService: SzDataSourcesService,
+    _p_formBuilder: FormBuilder,
+    _p_cd: ChangeDetectorRef
+  ) {
+    super(
+      _p_prefs, 
+      _p_dataSourcesService, 
+      _p_formBuilder, 
+      _p_cd
+    );
+  }
 }
