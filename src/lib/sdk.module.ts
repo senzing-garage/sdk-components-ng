@@ -3,6 +3,7 @@ import { NgModule, Injector, ModuleWithProviders, SkipSelf, Optional, Provider, 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule, TitleCasePipe, Location, PathLocationStrategy, LocationStrategy } from '@angular/common';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { LayoutModule } from '@angular/cdk/layout';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
@@ -70,6 +71,8 @@ import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-car
 import { SzEntityRecordCardContentComponent } from './entity/sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
 
 // graph components
+import { SzEntityDetailGraphControlComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-control.component';
+import { SzEntityDetailGraphFilterComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-filter.component';
 import { SzGraphControlComponent } from './graph/sz-graph-control.component';
 import { SzGraphFilterComponent } from './graph/sz-graph-filter.component';
 import { SzGraphComponent } from './graph/sz-graph.component';
@@ -124,6 +127,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultCardContentComponent,
     SzEntityDetailGraphComponent,
     SzGraphComponent,
+    SzEntityDetailGraphControlComponent,
+    SzEntityDetailGraphFilterComponent,
     SzGraphControlComponent,
     SzGraphFilterComponent,
     SzStandaloneGraphComponent,
@@ -147,6 +152,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
   ],
   imports: [
     CommonModule,
+    DragDropModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
@@ -167,6 +173,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzConfigurationAboutComponent,
     SzEntityDetailGraphComponent,
     SzGraphComponent,
+    SzEntityDetailGraphControlComponent,
+    SzEntityDetailGraphFilterComponent,
     SzGraphControlComponent,
     SzGraphFilterComponent,
     SzEntityRecordViewerComponent,

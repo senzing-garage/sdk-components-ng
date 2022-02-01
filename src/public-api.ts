@@ -45,6 +45,8 @@ export * from './lib/entity/detail/sz-entity-detail.component';
 export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
 
 export { SzGraphComponent } from './lib/graph/sz-graph.component';
+export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-control.component';
+export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-filter.component';
 export * from './lib/graph/sz-graph-control.component';
 export * from './lib/graph/sz-graph-filter.component';
 export { SzEntityDetailGraphComponent } from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
