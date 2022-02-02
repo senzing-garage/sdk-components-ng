@@ -156,10 +156,10 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   public get filterByDataSourcesData() {
     return <FormArray>this.filterByDataSourcesForm.get('datasources');
   }
-    /** get data from reactive form control array */
-    public get filterByMatchKeysData() {
-      return <FormArray>this.filterByMatchKeysForm.get('matchkeys');
-    }
+  /** get data from reactive form control array */
+  public get filterByMatchKeysData() {
+    return <FormArray>this.filterByMatchKeysForm.get('matchkeys');
+  }
 
   // --------------------------------- event emmitters and subjects ----------------------
   /**

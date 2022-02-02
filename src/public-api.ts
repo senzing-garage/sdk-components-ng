@@ -44,13 +44,16 @@ export * from './lib/search/sz-search-result-card/sz-search-result-card.componen
 export * from './lib/entity/detail/sz-entity-detail.component';
 export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
 
+/** graph related */
 export { SzGraphComponent } from './lib/graph/sz-graph.component';
-export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-control.component';
-export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-filter.component';
 export * from './lib/graph/sz-graph-control.component';
 export * from './lib/graph/sz-graph-filter.component';
 export { SzEntityDetailGraphComponent } from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
 export { SzStandaloneGraphComponent } from './lib/entity/detail/sz-entity-detail-graph/sz-standalone-graph.component';
+/** remove after migrations */
+export { SzOldEntityDetailGraphComponent } from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component.old';
+export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-control.component';
+export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-filter.component';
 
 export * from './lib/sz-powered-by/sz-powered-by.component';
 export * from './lib/configuration/sz-configuration/sz-configuration.component';

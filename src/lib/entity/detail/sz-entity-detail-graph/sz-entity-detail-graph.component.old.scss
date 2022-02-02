@@ -1,7 +1,7 @@
 @import "../../../scss/variables";
 
 :host {
-  height: var(--sz-large-graph-height);
+  height: var(--sz-entity-detail-section-graph-height);
   display: block;
   transition: height 500ms;
 
@@ -21,15 +21,37 @@
       height: 6px;
     }
 
-    sz-graph-control, .sz-graph-control {
-      display: none;
+    sz-entity-detail-graph-control, .sz-entity-detail-graph-control {
+      opacity: 0;
+      height: 0px;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      border: 0;
     }
 
     sz-relationship-network, .sz-relationship-network {
       display: none;
     }
+    .zoom-control-container {
+      opacity: 0;
+      width: 0px;
+    }
+
+    .popout-icon {
+      display: none;
+    }
+    
+    .sz-entity-detail-section-collapsible-card:last-child {
+      background: var(--sz-color-graph-relationships);
+      border-radius: var(--sz-entity-detail-graph-section-collapsed-border-bottom-radius);
+      border: 1px solid;
+      border-color: var(--sz-color-graph-relationships);
+    }
   }
+
   .arrow, .icon-inline {
+    cursor: pointer;
     margin: 0 10px 0 0;
     color: var(--sz-entity-detail-section-header-color);
     fill: var(--sz-entity-detail-section-header-color);
@@ -40,18 +62,6 @@
 
   sz-relationship-network {
     height: 100%;
-
-    &.filters-showing {
-      sz-relationship-network-graph, .sz-relationship-network-graph {
-        width: calc(100% - 340px);
-      }
-    }
-  }
-  sz-relationship-network-graph, .sz-relationship-network-graph {
-    width: 100%;
-    height: 100%;
-    display: block;
-    background-color: #fff;
   }
 
   .popout-icon {
@@ -92,26 +102,6 @@
     width: 100%;
     height: calc( 100% - 60px);
     display: block;
-    background: var(--sz-entity-detail-section-graph-background);
-    color: var(--sz-entity-detail-section-color);
-    font-size: var(--sz-entity-detail-section-font-size);
-    line-height: var(--sz-entity-detail-section-line-height);
-
-    border-bottom: var(--sz-entity-detail-section-border-top);
-    border-left: var(--sz-entity-detail-section-border-left);
-    border-right: var(--sz-entity-detail-section-border-right);
-    border-bottom: var(--sz-entity-detail-section-border-bottom);
-    /*overflow: hidden;*/
-
-    &:last-child {
-      border-radius: var(--sz-entity-detail-section-border-radius);
-    }
-  }
-  sz-standalone-graph-container, .sz-standalone-graph-container {
-    width: 100%;
-    height: 100%;
-    display: block;
-    position: relative;
     background: var(--sz-entity-detail-section-graph-background);
     color: var(--sz-entity-detail-section-color);
     font-size: var(--sz-entity-detail-section-font-size);
@@ -181,17 +171,14 @@
   }
 }
 /* control surface */
-.sz-entity-detail-section-collapsible-card, .sz-entity-detail-section-collapsible-card {
+.sz-entity-detail-section-collapsible-card {
   position: relative;
 }
-
 sz-graph-control, .sz-graph-control, .sz-graph-filter {
-  /* background-color: var(--sz-entity-graph-control-background-color); */
+  background-color: var(--sz-entity-graph-control-background-color);
   display: var(--sz-entity-graph-control-display);
   z-index: var(--sz-entity-graph-control-z-index);
   position: var(--sz-entity-graph-control-position);
-  height: calc( 100% - 3px);
-  overflow-x: hidden;
   top: var(--sz-entity-graph-control-top);
   left: var(--sz-entity-graph-control-left);
   right: var(--sz-entity-graph-control-right);
@@ -218,32 +205,9 @@ sz-graph-control, .sz-graph-control, .sz-graph-filter {
   -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
   -webkit-user-select: none; /* Chrome, Safari, and Opera */
   -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
-}
-
-.sz-graph-filter {
-  &.top-left {
-    top: 21px;
-    left: 0px;
-    right: unset;
-  }
-  &.top-right {
-    top: 0px;
-    left: unset;
-    right: 0px;
-    bottom: unset;
-  }
-  &.bottom-left {
-    top: unset;
-    bottom: 0px;
-    left: 0px;
-    right: unset;
-  }
-  &.bottom-right {
-    top: unset;
-    bottom: 0px;
-    left: unset;
-    right: 0px;
-  }
+  /* make control less jarring on container collapse/expand */
+  transition: opacity 500ms linear;
+  opacity: 1;
 }
 
 .zoom-control-container {
@@ -258,6 +222,10 @@ sz-graph-control, .sz-graph-control, .sz-graph-filter {
   transform: rotate(270deg);
   display: flex;
   flex-direction: row;
+
+  /* make zoom control less jarring on container collapse/expand */
+  transition: opacity 500ms linear;
+  opacity: 1;
 
   &.top-left {
     top: calc(#{$graph-zoom-slider-width} / 2 + 30px);
