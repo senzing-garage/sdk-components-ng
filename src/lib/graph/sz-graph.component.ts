@@ -280,7 +280,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
    */
   @Output() entityDblClick: EventEmitter<any> = new EventEmitter<any>();
 
-  private _graphIds: number[];
+  protected _graphIds: number[];
   @Input() public set graphIds(value: number[]) {
     const _oVal = this._graphIds;
     this._graphIds = value;
@@ -649,6 +649,26 @@ export class SzGraphComponent implements OnInit, OnDestroy {
         return nodeData.dataSources.indexOf(dataSource) >= 0;
       } else if (nodeData && nodeData.d && nodeData.d.dataSources && nodeData.d.dataSources.indexOf) {
         return nodeData.d.dataSources.indexOf(dataSource) >= 0;
+      } else {
+        return false;
+      }
+    }
+  }
+  private isEntityNodeInDataSources(dataSources, nodeData) {
+    // console.log('fromOwners: ', nodeData);
+    console.log('isEntityNodeInDataSources: ', dataSources, nodeData);
+    if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
+      return false;
+    } else {
+      if(nodeData && nodeData.dataSources && nodeData.dataSources.indexOf){
+        // D3 filter query
+        return (nodeData.dataSources.some( (dsName) => {
+          return dataSources.indexOf(dsName) > -1;
+        }));
+      } else if (nodeData && nodeData.d && nodeData.d.dataSources && nodeData.d.dataSources.indexOf) {
+        return (nodeData.d.dataSources.some( (dsName) => {
+            return dataSources.indexOf(dsName) > -1;
+        }));
       } else {
         return false;
       }
