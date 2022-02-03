@@ -1,22 +1,12 @@
-import { Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef } from '@angular/core';
-import { SzPrefsService } from '../../../services/sz-prefs.service';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-
+import { Component, HostBinding, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import {
-  SzEntityData,
   SzRelatedEntity,
-  SzResolvedEntity,
-  SzEntityRecord,
-  SzRelationshipType,
-  SzEntityNetworkData
+  SzResolvedEntity
 } from '@senzing/rest-api-client-ng';
+import { NodeFilterPair } from '@senzing/sdk-graph-components';
 
-import { SzGraphControlComponent } from '../../../graph/sz-graph-control.component';
+import { SzPrefsService } from '../../../services/sz-prefs.service';
 import { SzNetworkGraphInputs } from '../../../models/network-graph-inputs';
-import { SzRelationshipNetworkComponent, NodeFilterPair } from '@senzing/sdk-graph-components';
-import { sortDataSourcesByIndex } from '../../../common/utils';
-import { SzDataSourceComposite } from '../../../models/data-sources';
 import { SzGraphComponent } from '../../../graph/sz-graph.component';
 
 /**

@@ -18,20 +18,6 @@ import {
 } from '@senzing/sdk-graph-components';
 
 import { SzSdkMaterialModule } from './sdk.material.module';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
-
-/** utilities */
-// import { JSONScrubber } from './common/utils';
-
-/** models */
-// import { SzEntityDetailSectionData } from './models/entity-detail-section-data';
-// import { SzEntitySearchParams } from './models/entity-search';
-// import { SzBulkDataAnalysis } from './models/data-analysis';
-// import { SzBulkLoadStatus } from './models/data-importing';
-// import { SzDataSourceRecordAnalysis } from './models/data-sources';
-// import { SzFolioItem, SzSearchParamsFolio, SzSearchParamsFolioItem } from './models/folio';
-// import { AdminStreamConnProperties } from './lib/models/data-admin';
 
 /** services */
 import { SzMessageBundleService } from './services/sz-message-bundle.service';
@@ -47,14 +33,7 @@ import { SzBulkDataService } from './services/sz-bulk-data.service';
 import { SzEntityTypesService } from './services/sz-entitytypes.service';
 
 /** components */
-/*
-import { SzBulkDataAnalysisComponent } from './bulk-data/sz-bulk-data-analysis.component';
-import { SzBulkDataAnalysisReportComponent } from './bulk-data/sz-bulk-data-analysis-report.component';
-import { SzBulkDataAnalysisSummaryComponent } from './bulk-data/sz-bulk-data-analysis-summary.component';
-import { SzBulkDataLoadComponent } from './bulk-data/sz-bulk-data-load.component';
-import { SzBulkDataLoadReportComponent } from './bulk-data/sz-bulk-data-load-report.component';
-import { SzBulkDataLoadSummaryComponent } from './bulk-data/sz-bulk-data-load-summary.component';
-*/
+/** entity resume related */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
 import { SzEntityDetailHeaderComponent } from './entity/detail/sz-entity-detail-header/header.component';
 import { SzEntityDetailSectionSummaryComponent } from './entity/detail/sz-entity-detail-header/summary.component';
@@ -62,10 +41,8 @@ import { SzEntityDetailHeaderContentComponent } from './entity/detail/sz-entity-
 import { SzEntityDetailsSectionComponent } from './entity/detail/sz-entity-details-section/sz-entity-details-section.component';
 import { SzEntityDetailSectionHeaderComponent } from './entity/detail/sz-entity-details-section/header.component';
 import { SzEntityDetailSectionCollapsibleCardComponent } from './entity/detail/sz-entity-details-section/collapsible-card.component';
-
 import { SzEntityDetailGraphComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
 import { SzEntityMatchPillComponent } from './entity/sz-entity-match-pill/sz-entity-match-pill.component';
-import { SzStandaloneGraphComponent } from './entity/detail/sz-entity-detail-graph/sz-standalone-graph.component';
 import { SzEntityRecordCardComponent } from './entity/sz-entity-record-card/sz-entity-record-card.component';
 import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-card/sz-entity-record-card-header/sz-entity-record-card-header.component';
 import { SzEntityRecordCardContentComponent } from './entity/sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
@@ -74,9 +51,10 @@ import { SzEntityRecordCardContentComponent } from './entity/sz-entity-record-ca
 import { SzEntityDetailGraphControlComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-control.component';
 import { SzEntityDetailGraphFilterComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-filter.component';
 import { SzGraphControlComponent } from './graph/sz-graph-control.component';
+import { SzStandaloneGraphComponent } from './entity/detail/sz-entity-detail-graph/sz-standalone-graph.component';
 import { SzGraphFilterComponent } from './graph/sz-graph-filter.component';
 import { SzGraphComponent } from './graph/sz-graph.component';
-
+// search related
 import { SzSearchComponent } from './search/sz-search/sz-search.component';
 import { SzSearchIdentifiersPickerDialogComponent, SzSearchIdentifiersPickerSheetComponent } from './search/sz-search/sz-search-identifiers-picker.component';
 import { SzSearchByIdComponent } from './search/sz-search/sz-search-by-id.component';

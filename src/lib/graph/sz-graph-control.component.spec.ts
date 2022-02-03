@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SzEntityDetailGraphControlComponent } from './sz-graph-control.component';
+import { SzGraphControlComponent } from './sz-graph-control.component';
 import { SenzingSdkModule } from 'src/lib/sdk.module';
 
 describe('SzEntityDetailGraphControlComponent', () => {
-  let component: SzEntityDetailGraphControlComponent;
-  let fixture: ComponentFixture<SzEntityDetailGraphControlComponent>;
+  let component: SzGraphControlComponent;
+  let fixture: ComponentFixture<SzGraphControlComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -15,7 +15,7 @@ describe('SzEntityDetailGraphControlComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SzEntityDetailGraphControlComponent);
+    fixture = TestBed.createComponent(SzGraphControlComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

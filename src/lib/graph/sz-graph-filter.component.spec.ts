@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SzEntityDetailGraphFilterComponent } from './sz-graph-filter.component';
+import { SzGraphFilterComponent } from './sz-graph-filter.component';
 import { SenzingSdkModule } from 'src/lib/sdk.module';
 
-describe('SzEntityDetailGraphFilterComponent', () => {
-  let component: SzEntityDetailGraphFilterComponent;
-  let fixture: ComponentFixture<SzEntityDetailGraphFilterComponent>;
+describe('SzGraphFilterComponent', () => {
+  let component: SzGraphFilterComponent;
+  let fixture: ComponentFixture<SzGraphFilterComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -15,7 +15,7 @@ describe('SzEntityDetailGraphFilterComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SzEntityDetailGraphFilterComponent);
+    fixture = TestBed.createComponent(SzGraphFilterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

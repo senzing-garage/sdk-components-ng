@@ -1,16 +1,8 @@
 import { Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { SzPrefsService } from '../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
-import { Subject, Observable } from 'rxjs';
-
-import {
-  SzEntityData,
-  SzRelatedEntity,
-  SzResolvedEntity,
-  SzEntityRecord,
-  SzRelationshipType,
-  SzEntityNetworkData
-} from '@senzing/rest-api-client-ng';
+import { Subject } from 'rxjs';
+import { SzEntityNetworkData } from '@senzing/rest-api-client-ng';
 import { SzGraphControlComponent } from './sz-graph-control.component';
 import { SzRelationshipNetworkComponent, NodeFilterPair, SzNetworkGraphInputs } from '@senzing/sdk-graph-components';
 import { parseBool, sortDataSourcesByIndex } from '../common/utils';
@@ -23,7 +15,8 @@ import { SzDataSourceComposite } from '../models/data-sources';
  *
  * Optionally can display a embedded filter control to allow user
  * to change the components parameters of this component.
- *
+ * 
+ * @internal
  * @example <!-- (Angular) -->
  * <sz-graph
           filterWidth="320"

@@ -1,13 +1,7 @@
-import { Component, HostBinding, Input, OnInit, AfterViewInit, OnDestroy, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { SzPrefsService, SzSdkPrefsModel } from '../../../services/sz-prefs.service';
+import { Component, ChangeDetectorRef } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { SzPrefsService } from '../../../services/sz-prefs.service';
 import { SzDataSourcesService } from '../../../services/sz-datasources.service';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { SzDataSourceComposite } from '../../../models/data-sources';
-import { SzMatchKeyComposite } from '../../../models/graph';
-import { sortDataSourcesByIndex, sortMatchKeysByIndex } from '../../../common/utils';
 import { SzGraphFilterComponent } from '../../../graph/sz-graph-filter.component';
 
 /**
