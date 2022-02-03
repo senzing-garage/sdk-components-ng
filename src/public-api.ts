@@ -50,8 +50,6 @@ export * from './lib/graph/sz-graph-control.component';
 export * from './lib/graph/sz-graph-filter.component';
 export { SzEntityDetailGraphComponent } from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
 export { SzStandaloneGraphComponent } from './lib/entity/detail/sz-entity-detail-graph/sz-standalone-graph.component';
-/** remove after migrations */
-export { SzOldEntityDetailGraphComponent } from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component.old';
 export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-control.component';
 export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-filter.component';
 
