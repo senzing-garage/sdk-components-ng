@@ -1,4 +1,4 @@
-@import "../../../scss/variables";
+@import "../scss/variables";
 
 :host {
   height: var(--sz-large-graph-height);
@@ -21,7 +21,7 @@
       height: 6px;
     }
 
-    sz-entity-detail-graph-control, .sz-entity-detail-graph-control {
+    sz-graph-control, .sz-graph-control {
       display: none;
     }
 
@@ -107,7 +107,7 @@
       border-radius: var(--sz-entity-detail-section-border-radius);
     }
   }
-  sz-standalone-graph-container, .sz-standalone-graph-container {
+  sz-graph-container, .sz-graph-container {
     width: 100%;
     height: 100%;
     display: block;
@@ -185,7 +185,7 @@
   position: relative;
 }
 
-sz-entity-detail-graph-control, .sz-entity-detail-graph-control, .sz-entity-detail-graph-filter {
+sz-graph-control, .sz-graph-control, .sz-graph-filter {
   /* background-color: var(--sz-entity-graph-control-background-color); */
   display: var(--sz-entity-graph-control-display);
   z-index: var(--sz-entity-graph-control-z-index);
@@ -220,7 +220,7 @@ sz-entity-detail-graph-control, .sz-entity-detail-graph-control, .sz-entity-deta
   -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
 }
 
-.sz-entity-detail-graph-filter {
+.sz-graph-filter {
   &.top-left {
     top: 21px;
     left: 0px;

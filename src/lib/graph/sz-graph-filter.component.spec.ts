@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SzEntityDetailGraphControlComponent } from './sz-entity-detail-graph-control.component';
+import { SzGraphFilterComponent } from './sz-graph-filter.component';
 import { SenzingSdkModule } from 'src/lib/sdk.module';
 
-describe('SzEntityDetailGraphControlComponent', () => {
-  let component: SzEntityDetailGraphControlComponent;
-  let fixture: ComponentFixture<SzEntityDetailGraphControlComponent>;
+describe('SzGraphFilterComponent', () => {
+  let component: SzGraphFilterComponent;
+  let fixture: ComponentFixture<SzGraphFilterComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -15,7 +15,7 @@ describe('SzEntityDetailGraphControlComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SzEntityDetailGraphControlComponent);
+    fixture = TestBed.createComponent(SzGraphFilterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -31,8 +31,8 @@ describe('SzEntityDetailGraphControlComponent', () => {
   it('should default to open', () => {
     expect(component.isOpen).toBeTruthy();
   });
-
-  it('graph should default to show link labels', () => {
-    expect(component.showLinkLabels).toBeTruthy();
+  // labels hidden by default
+  it('graph should default to hide link labels', () => {
+    expect(component.showLinkLabels).toBeFalsy();
   });
 });

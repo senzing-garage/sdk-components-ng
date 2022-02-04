@@ -8,7 +8,6 @@ import {
   SzConfigurationAboutComponent,
   SzConfigurationComponent,
   SzEntityDetailComponent,
-  SzEntityDetailGraphComponent,
   SzEntityDetailGraphFilterComponent,
   SzEntityRecordViewerComponent,
   SzPoweredByComponent,
