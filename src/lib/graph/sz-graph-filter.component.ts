@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@ang
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SzDataSourceComposite } from '../models/data-sources';
 import { SzMatchKeyComposite } from '../models/graph';
-import { sortDataSourcesByIndex, sortMatchKeysByIndex } from '../common/utils';
+import { sortDataSourcesByIndex, parseBool, sortMatchKeysByIndex } from '../common/utils';
 
 /**
  * Control Component allowing UI friendly changes
@@ -77,7 +77,13 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     }
     return retVal;
   }
-
+  private _showMatchKeysFilters: boolean = true;
+  @Input() public set showMatchKeyFilters(value: boolean | string) {
+    this._showMatchKeysFilters = parseBool(value);    
+  }
+  public get showMatchKeyFilters(): boolean | string {
+    return this._showMatchKeysFilters;
+  }
   @Input() dataSourcesFiltered: string[] = [];
   @Input() matchKeysIncluded: string[] = [];
   @Input() queriedEntitiesColor: string;

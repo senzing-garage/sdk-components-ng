@@ -6,6 +6,49 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0] - 2022-3-15
+
+This update brings the models in line with the changes for the `3.0.0` release of the [senzing rest api server](https://github.com/Senzing/senzing-api-server)
+and [rest api specification](https://github.com/Senzing/senzing-rest-api-specification/blob/caceres.version-3.0.0/senzing-rest-api.yaml).
+
+### Added
+- `showMatchKeyFilters` property added to `sz-standalone-graph` tag. specifying a value of `false` will hide the *Filter By Match Key* section of the embedded graph controls. (defaults to _true_)
+- `showMatchKeyFilters` property added to `sz-graph-filter` tag. specifying a value of `false` will hide the *Filter By Match Key* list of checkboxes. (defaults to _true_)
+
+### Removed
+- the following methods removed `SzAdminService`
+  - `addEntityClasses()`
+  - `addEntityTypes()`
+  - `addEntityTypesForClass()`
+  - `getCurrentConfig()`
+  - `getDefaultConfig()`
+  - `getEntityClass()`
+  - `getEntityType()`
+  - `getEntityTypeByClass()`
+  - `listEntityClasses()`
+  - `listEntityTypes()`
+  - `listEntityTypesByClass()`
+- the following parameters removed from `SzAdminService.loadBulkRecords()`
+  - `entityType`
+  - `mapEntityTypes`
+  - `mapEntityType`
+- the following properties removed from `SzBulkDataService`
+  - `_entityTypes`
+  - `entityTypeMap`
+  - `entityTypes`
+- the following event emitters from `SzBulkDataService`
+  - `onEntityTypesChange`
+  - `onEntityTypeMapChange`
+- the following methods removed from `SzBulkDataService`
+  - `updateEntityTypes()`
+  - `getEntityTypeMapFromAnalysis()`
+  - `changeEntityTypeName()`
+  - `createEntityTypes()`
+- the following parameters removed from `SzBulkDataService.load()`
+  - `entityTypeMap`
+- `SzEntityTypesService`
+- `SzSearchResultEntityData.matchScore` property
+
 ## [3.0.0] - 2021-12-17
 ### Modified
 - Angular Framework Updated to version 13. As of 3.0.0 release this package now requires `@angular@~13.0.0` to compile and run. Updating to angular 13 resolves major dependency compatibility issues so we can apply the latest security patches to the library. For information updating your project from a previous angular version to `~13.0.0` see the [Angular Update Guide ](https://update.angular.io/)

@@ -23,7 +23,6 @@ export * from './lib/services/sz-pdf-util.service';
 export { SzPrefsService, SzSdkPrefsModel} from './lib/services/sz-prefs.service';
 export * from './lib/services/sz-search.service';  // updated to use rest
 export * from './lib/services/sz-ui.service';
-export { SzEntityTypesService } from './lib/services/sz-entitytypes.service';
 
 /** components */
   /** bulk data related */

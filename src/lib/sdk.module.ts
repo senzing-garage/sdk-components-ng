@@ -30,7 +30,6 @@ import { SzPrefsService } from './services/sz-prefs.service';
 import { SzDataSourcesService } from './services/sz-datasources.service';
 import { SzAdminService } from './services/sz-admin.service';
 import { SzBulkDataService } from './services/sz-bulk-data.service';
-import { SzEntityTypesService } from './services/sz-entitytypes.service';
 
 /** components */
 /** entity resume related */
@@ -181,7 +180,6 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzBulkDataService,
     SzConfigurationService,
     SzDataSourcesService,
-    SzEntityTypesService,
     SzFoliosService,
     SzPrefsService,
     SzSearchService,

@@ -121,7 +121,7 @@
     </li>
   </ul>
   </form>
-  <div *ngIf="showMatchKeys">
+  <div *ngIf="showMatchKeys && showMatchKeyFilters">
     <hr>
     <h3>{{ sectionTitles[4] }}</h3>
     <form [formGroup]="filterByMatchKeysForm">

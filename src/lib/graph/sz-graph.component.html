@@ -27,6 +27,7 @@
       (onDataLoaded)="onGraphDataLoaded($event)"
       (scaleChanged)="onGraphZoom($event)"
       [maxEntities]="maxEntities"></sz-relationship-network>
+      entityMatchFilter: {{entityMatchFilter}}
   
       <sz-graph-control *ngIf="showMatchKeyControl" class="sz-graph-control"
       [showLinkLabels]="_showMatchKeys"
@@ -43,6 +44,7 @@
         (optionChanged)="onOptionChange($event)"
         [showDataSources]="filterShowDataSources"
         [showMatchKeys]="filterShowMatchKeys"
+        [showMatchKeyFilters]="showMatchKeyFilters"
       ></sz-graph-filter>
   
       <svg class="popout-icon"
@@ -60,6 +62,7 @@
         </g>
       </svg>
   </div>
+  the fuck?
   <!--
     filterControlPosition: "{{ filterControlPosition }}"<br/>
     entityIds: {{ graphIds }} -->

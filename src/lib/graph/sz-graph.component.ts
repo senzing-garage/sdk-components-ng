@@ -148,6 +148,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   private neverFilterQueriedEntityIds: boolean = true;
   public filterShowDataSources: string[];
   public filterShowMatchKeys: string[];
+  private _showMatchKeysFilters: boolean = true;
   private _showMatchKeyControl: boolean = true;
   /** whether or not to show match keys toggle control */
   @Input() set showMatchKeyControl(value: boolean | string) {
@@ -156,6 +157,13 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   get showMatchKeyControl(): boolean | string {
     return this._showMatchKeyControl;
   }
+  @Input() set showMatchKeyFilters(value: boolean | string) {
+    this._showMatchKeysFilters = parseBool(value);    
+  }
+  get showMatchKeyFilters(): boolean | string {
+    return this._showMatchKeysFilters;
+  }
+
   private _showZoomControl: boolean = true;
   /** the whether or not the zoom control is shown */
   @Input() set showZoomControl(value: boolean | string) {
@@ -603,7 +611,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   }
   public get entityMatchFilter(): NodeFilterPair {
     let _ret: NodeFilterPair;
-    if(this.matchKeysIncluded) {
+    if(this.matchKeysIncluded && this.showMatchKeyFilters) {
       //let matchKeyFilters = this.matchKeysIncluded.map((_name) => {
         _ret = {
           selectorFn: this.isMatchKeyInEntityNode.bind(this, this.matchKeysIncluded),
