@@ -123,6 +123,10 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @Input() public set showPopOutIcon(value: boolean | string) {
     this._showPopOutIcon = parseBool(value);
   }
+  /** whether or not to show the pop-out icon */
+  public get showPopOutIcon(): boolean {
+    return this._showPopOutIcon;
+  }
   /** @internal */
   private _showFiltersControl = false;
   /** whether or not to show the filters drawer */

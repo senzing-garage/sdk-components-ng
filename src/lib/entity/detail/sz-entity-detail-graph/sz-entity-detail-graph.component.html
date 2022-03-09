@@ -52,7 +52,9 @@
     [showLinkLabels]="_showMatchKeys"
     (optionChanged)="onOptionChange($event)"
     ></sz-graph-filter>
-
+    <!-- 
+      showPopOutIcon: {{ showPopOutIcon }}
+    -->
     <svg class="popout-icon"
       [class.top-left]="popOutIconPosition == 'top-left'"
       [class.top-right]="popOutIconPosition == 'top-right'"
