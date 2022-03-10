@@ -36,6 +36,61 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 <a href="https://dlaa.me/markdownlint/">markdownlint</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<h2 id="400---2022-3-15">[4.0.0] - 2022-3-15</h2>
+<p>This update brings the models in line with the changes for the <code>3.0.0</code> release of the <a href="https://github.com/Senzing/senzing-api-server">senzing rest api server</a>
+and <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/caceres.version-3.0.0/senzing-rest-api.yaml">rest api specification</a>.</p>
+<h3 id="added">Added</h3>
+<ul>
+<li><code>showMatchKeyFilters</code> property added to <code>sz-standalone-graph</code> tag. specifying a value of <code>false</code> will hide the <em>Filter By Match Key</em> section of the embedded graph controls. (defaults to <em>true</em>)</li>
+<li><code>showMatchKeyFilters</code> property added to <code>sz-graph-filter</code> tag. specifying a value of <code>false</code> will hide the <em>Filter By Match Key</em> list of checkboxes. (defaults to <em>true</em>)</li>
+</ul>
+<h3 id="removed">Removed</h3>
+<ul>
+<li>the following methods removed <code>SzAdminService</code><ul>
+<li><code>addEntityClasses()</code></li>
+<li><code>addEntityTypes()</code></li>
+<li><code>addEntityTypesForClass()</code></li>
+<li><code>getCurrentConfig()</code></li>
+<li><code>getDefaultConfig()</code></li>
+<li><code>getEntityClass()</code></li>
+<li><code>getEntityType()</code></li>
+<li><code>getEntityTypeByClass()</code></li>
+<li><code>listEntityClasses()</code></li>
+<li><code>listEntityTypes()</code></li>
+<li><code>listEntityTypesByClass()</code></li>
+</ul>
+</li>
+<li>the following parameters removed from <code>SzAdminService.loadBulkRecords()</code><ul>
+<li><code>entityType</code></li>
+<li><code>mapEntityTypes</code></li>
+<li><code>mapEntityType</code></li>
+</ul>
+</li>
+<li>the following properties removed from <code>SzBulkDataService</code><ul>
+<li><code>_entityTypes</code></li>
+<li><code>entityTypeMap</code></li>
+<li><code>entityTypes</code></li>
+</ul>
+</li>
+<li>the following event emitters from <code>SzBulkDataService</code><ul>
+<li><code>onEntityTypesChange</code></li>
+<li><code>onEntityTypeMapChange</code></li>
+</ul>
+</li>
+<li>the following methods removed from <code>SzBulkDataService</code><ul>
+<li><code>updateEntityTypes()</code></li>
+<li><code>getEntityTypeMapFromAnalysis()</code></li>
+<li><code>changeEntityTypeName()</code></li>
+<li><code>createEntityTypes()</code></li>
+</ul>
+</li>
+<li>the following parameters removed from <code>SzBulkDataService.load()</code><ul>
+<li><code>entityTypeMap</code></li>
+</ul>
+</li>
+<li><code>SzEntityTypesService</code></li>
+<li><code>SzSearchResultEntityData.matchScore</code> property</li>
+</ul>
 <h2 id="300---2021-12-17">[3.0.0] - 2021-12-17</h2>
 <h3 id="modified">Modified</h3>
 <ul>
@@ -50,7 +105,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 </ul>
 <p>relevant tickets: #253 #252 #251 #250</p>
 <h2 id="226---2021-11-23">[2.2.6] - 2021-11-23</h2>
-<h3 id="added">Added</h3>
+<h3 id="added-1">Added</h3>
 <ul>
 <li><code>SzEntityDetailGraphComponent</code><ul>
 <li><code>showZoomControl</code> input setter for whether or not to show zoom controls.</li>
@@ -390,6 +445,7 @@ see the following links for associated tickets:</p>
 </ul>
 </li>
 </ul>
+
 
 
 
