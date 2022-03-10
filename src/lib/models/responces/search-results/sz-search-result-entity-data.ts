@@ -23,7 +23,6 @@ export interface SzSearchResultEntityData {
   resolvedEntity: SzResolvedEntity;
   topIdentifiers?: string[];
   topAddresses?: string[];
-  matchScore?: number;
   topAttributes?: string[];
   topNames?: string[];
   identifierDataMatches?: any[];
