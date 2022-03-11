@@ -69,33 +69,37 @@
         <h3>Description</h3>
     </p>
     <p class="comment">
-        <p>Provides a search box component that can execute search queries and return results.</p>
-<p><sz-wc-search
-id="sz-search"
-name="Isa Creepr"></sz-wc-search></p>
-<script>
- document.getElementById('sz-search').addEventListener('resultsChange', (results) => {
-   console.log('search results: ', results);
- });
-</script>
-
-<p>&lt;sz-search
-name=&quot;Isa Creepr&quot;
-(resultsChange)=&quot;myResultsHandler($event)&quot;
-(searchStart)=&quot;showSpinner()&quot;
-(searchEnd)=&quot;hideSpinner()&quot;&gt;</sz-search></p>
-<p><sz-wc-search
-id="sz-search"
-name="Isa Creepr"></sz-wc-search>
-<sz-wc-search-results id="sz-search-results"></sz-wc-search-results></p>
-<script>
- var szSearchComponent = document.getElementById('sz-search');
- var szSearchResultsComponent = document.getElementById('sz-search-results');
- szSearchComponent.addEventListener('resultsChange', (evt) => {
-   console.log('search results: ', evt);
-   szSearchResultsComponent.results = evt.detail;
- });
-</script>
+        <p>Provides a search box component that can execute search queries and return results.
+<code>
+&lt;!-- (WC javascript) SzSearchComponent --&gt;<br/>
+&lt;sz-wc-search<br/>
+id="sz-search"<br/>
+name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
+&lt;script&gt;<br/>
+ document.getElementById('sz-search').addEventListener('resultsChange', (results) => {<br/>
+   console.log('search results: ', results);<br/>
+ });<br/>
+&lt;/script&gt;<br/><br/></p>
+<p>&lt;!-- (Angular) SzSearchComponent --&gt;<br/>
+&lt;sz-search<br/>
+name="Isa Creepr"<br/>
+(resultsChange)="myResultsHandler($event)"<br/>
+(searchStart)="showSpinner()"<br/>
+(searchEnd)="hideSpinner()"&gt;&lt;/sz-search&gt;<br/><br/></p>
+<p>&lt;!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo --&gt;<br/>
+&lt;sz-wc-search<br/>
+id="sz-search"<br/>
+name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
+&lt;sz-wc-search-results id="sz-search-results"&gt;&lt;/sz-wc-search-results&gt;<br/>
+&lt;script&gt;<br/>
+ var szSearchComponent = document.getElementById('sz-search');<br/>
+ var szSearchResultsComponent = document.getElementById('sz-search-results');<br/>
+ szSearchComponent.addEventListener('resultsChange', (evt) => {<br/>
+   console.log('search results: ', evt);<br/>
+   szSearchResultsComponent.results = evt.detail;<br/>
+ });<br/>
+&lt;/script&gt;<br/>
+</code></p>
 
     </p>
 

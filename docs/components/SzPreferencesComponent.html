@@ -70,22 +70,29 @@
 respoond to UI bus event/preference changes.</p>
 <p>For Angular implementations we recommend using <a href="../injectables/SzPrefsService.html">SzPrefsService</a> as an injectable as it
 provides the more robust solution.</p>
-<p><sz-wc-preferences id="prefsIntf"></sz-wc-preferences></p>
-<script>document.getElementById('prefsIntf').GraphBuildOut = 5;</script>
+<code>
+&lt;!-- (WC) javascript --&gt;<br/>
+&lt;sz-wc-preferences id="prefsIntf"&gt;&lt;/sz-wc-preferences&gt;<br/>
+&lt;script>document.getElementById('prefsIntf').GraphBuildOut = 5;&lt;/script&gt;<br/><br/>
 
-<p><sz-wc-preferences
-graph-build-out="20"></p>
-<p><sz-wc-preferences id="prefsIntf" show-controls="true"></sz-wc-preferences></p>
-<script>
-document.getElementById('prefsIntf').prefsFromJSONString = localStorage.getItem('NAME_OF_LS_KEY');
-</script>
-
-<p><sz-wc-preferences
-search-results-show-other-data="true"></sz-wc-preferences></p>
-<p><sz-wc-preferences
-show-controls="true"></sz-wc-preferences></p>
-<p>&lt;sz-preferences
-(prefsChange)=&quot;myPrefsChangeHandler($event)&quot;&gt;</p>
+<p>&lt;!-- (WC) By attribute: --&gt;<br/>
+&lt;sz-wc-preferences<br/>
+graph-build-out=&quot;20&quot;&gt;&lt;/sz-wc-preferences&gt;<br/><br/></p>
+<p>&lt;!-- (WC) javascript bulk initialize from local storage: --&gt;<br/>
+&lt;sz-wc-preferences id=&quot;prefsIntf&quot; show-controls=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;<br/>
+&lt;script&gt;<br/>
+document.getElementById(&#39;prefsIntf&#39;).prefsFromJSONString = localStorage.getItem(&#39;NAME_OF_LS_KEY&#39;);<br/>
+&lt;/script&gt;<br/><br/></p>
+<p>&lt;!-- (WC) show other data in search results: --&gt;<br/>
+&lt;sz-wc-preferences<br/>
+search-results-show-other-data=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;<br/><br/></p>
+<p>&lt;!-- (WC) show interactive UI: --&gt;<br/>
+&lt;sz-wc-preferences<br/>
+show-controls=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;<br/><br/></p>
+<p>&lt;!-- (Angular) --&gt;<br/>
+&lt;sz-preferences<br/>
+(prefsChange)=&quot;myPrefsChangeHandler($event)&quot;&gt;<br/><br/>
+</code></p>
 
     </p>
 

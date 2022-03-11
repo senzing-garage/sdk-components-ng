@@ -69,16 +69,19 @@
         <p>Control Component allowing UI friendly changes
 to filtering, colors, and parameters of graph control.</p>
 <p>integrated with graph preferences and prefBUS.</p>
-<p>&lt;sz-entity-detail-graph-filter #graphFilter
-[showLinkLabels]=&quot;true&quot;
-(optionChanged)=&quot;onOptionChange($event)&quot;</p>
-<blockquote>
-</sz-entity-detail-graph-filter>
-</blockquote>
-<p><sz-wc-standalone-graph-filters id="sz-entity-detail-graph-filter"></sz-wc-standalone-graph-filters></p>
-<script>
-document.getElementById('sz-wc-standalone-graph-filters').addEventListener('optionChanged', function(data) { console.log('filter(s) changed', data); });
-</script>
+<code>
+&lt;!-- (Angular) --&gt;<br/>
+&lt;sz-entity-detail-graph-filter #graphFilter<br/>
+[showLinkLabels]="true"<br/>
+(optionChanged)="onOptionChange($event)"<br/>
+&gt;&lt;/sz-entity-detail-graph-filter&gt;<br/><br/>
+
+<p>&lt;!-- (WC) --&gt;<br/>
+&lt;sz-wc-standalone-graph-filters id=&quot;sz-entity-detail-graph-filter&quot;&gt;&lt;/sz-wc-standalone-graph-filters&gt;<br/>
+&lt;script&gt;<br/>
+document.getElementById(&#39;sz-wc-standalone-graph-filters&#39;).addEventListener(&#39;optionChanged&#39;, function(data) { console.log(&#39;filter(s) changed&#39;, data); });<br/>
+&lt;/script&gt;<br/>
+</code></p>
 
     </p>
 
