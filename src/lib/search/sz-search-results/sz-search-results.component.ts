@@ -14,27 +14,30 @@ import { takeUntil } from 'rxjs/operators';
  * Provides a graphical search results component. Data can be provided a number of ways.
  * The simplest of which is to bind the results input setter to the output of the
  * {@link SzSearchComponent} resultsChange event.
- *
- * @example <!-- (Angular) SzSearchComponent -->
- * <sz-search
- * name="Isa Creepr"
- * (resultsChange)="resultsOfSearch=$event"></sz-search>
- * <sz-search-results [results]="resultsOfSearch"></sz-search-results>
  * @export
+ * 
+ * @example 
+ * <code><br/>
+ * &lt;!-- (Angular) SzSearchComponent --&gt;<br/>
+ * &lt;sz-search<br/>
+ * name="Isa Creepr"<br/>
+ * (resultsChange)="resultsOfSearch=$event"&gt;&lt;/sz-search&gt;<br/>
+ * &lt;sz-search-results [results]="resultsOfSearch"&gt;&lt;/sz-search-results&gt;<br/><br/>
  *
- * @example <!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo -->
- * <sz-wc-search
- * id="sz-search"
- * name="Isa Creepr"></sz-wc-search>
- * <sz-wc-search-results id="sz-search-results"></sz-wc-search-results>
- * <script>
- *  var szSearchComponent = document.getElementById('sz-search');
- *  var szSearchResultsComponent = document.getElementById('sz-search-results');
- *  szSearchComponent.addEventListener('resultsChange', (evt) => {
- *    console.log('search results: ', evt);
- *    szSearchResultsComponent.results = evt.detail;
- *  });
- * </script>
+ * &lt;!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo --&gt;<br/>
+ * &lt;sz-wc-search<br/>
+ * id="sz-search"<br/>
+ * name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
+ * &lt;sz-wc-search-results id="sz-search-results"&gt;&lt;/sz-wc-search-results&gt;<br/>
+ * &lt;script&gt;<br/>
+ *  var szSearchComponent = document.getElementById('sz-search');<br/>
+ *  var szSearchResultsComponent = document.getElementById('sz-search-results');<br/>
+ *  szSearchComponent.addEventListener('resultsChange', (evt) => {<br/>
+ *    console.log('search results: ', evt);<br/>
+ *    szSearchResultsComponent.results = evt.detail;<br/>
+ *  });<br/>
+ * &lt;/script&gt;<br/>
+ * </code>
  */
 @Component({
   selector: 'sz-search-results',
