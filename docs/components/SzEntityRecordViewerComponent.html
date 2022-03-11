@@ -69,20 +69,25 @@
         <p>A component for displaying the result(s) of the sz-search-by-id component
 when the results are of type SzEntityRecord. The fragment only displays information
 that was present in the record itself. The easiest way to use this component is to pair it
-with the <sz-search-by-id>/<sz-wc-search-by-id> component(s).</p>
-<p>&lt;sz-search-by-id #searchBox
-[dataSource]=&quot;&#39;COMPANIES&#39;&quot;
-(resultChange)=&quot;formResult = $event&quot;&gt;</sz-search-by-id>
-&lt;sz-entity-record-viewer *ngIf=&quot;formResult&quot; [record]=&quot;formResult&quot;&gt;</sz-entity-record-viewer></p>
-<p><sz-wc-search-by-id id="formInput"
-data-source="COMPANIES"></sz-wc-search-by-id>
-<sz-wc-entity-record-viewer id="formResult">
-</sz-wc-entity-record-viewer></p>
-<script>
-document.getElementById('formInput').addEventListener('resultChange', function(evt) {
-    document.getElementById('formResult').record = evt.detail;
-});
-</script>
+with the &lt;sz-search-by-id&gt;/&lt;sz-wc-search-by-id&gt; component(s).</p>
+<code>
+&lt;!-- (Angular) --&gt;<br/>
+&lt;sz-search-by-id #searchBox<br/>
+[dataSource]="'COMPANIES'"<br/>
+(resultChange)="formResult = $event"&gt;&lt;/sz-search-by-id&gt;<br/>
+&lt;sz-entity-record-viewer *ngIf="formResult" [record]="formResult"&gt;&lt;/sz-entity-record-viewer&gt;<br/><br/>
+
+<p>&lt;!-- (WC) --&gt;<br/>
+&lt;sz-wc-search-by-id id=&quot;formInput&quot;<br/>
+data-source=&quot;COMPANIES&quot;&gt;&lt;/sz-wc-search-by-id&gt;<br/>
+&lt;sz-wc-entity-record-viewer id=&quot;formResult&quot;&gt;<br/>
+&lt;/sz-wc-entity-record-viewer&gt;<br/>
+&lt;script&gt;<br/>
+document.getElementById(&#39;formInput&#39;).addEventListener(&#39;resultChange&#39;, function(evt) {<br/>
+    document.getElementById(&#39;formResult&#39;).record = evt.detail;<br/>
+});<br/>
+&lt;/script&gt;<br/>
+</code></p>
 
     </p>
 
@@ -781,11 +786,12 @@ document.getElementById('formInput').addEventListener('resultChange', function(e
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><!-- start json record viewer for sz-search-by-id --><div *ngIf="record">  <div class="tabset"    [class.overview]="overViewActive"    [class.json]="jsonViewActive"    >    <ul class="tabs">      <li class="overview" (click)="showTab(\'overview\')">Summary</li>      <li class="json" (click)="showTab(\'json\')">JSON</li>    </ul>    <div class="tabset-view">        <sz-entity-record-card-content        [showOtherData]="true"        [ignorePrefOtherDataChanges]="true"        [entity]="record"        [parentEntity]="record"        [layoutClasses]="layoutClasses"        [ngClass]="{\'open\': true, \'no-shade\': true}"        [truncateResults]="false"        [truncatedTooltip]="\'click to expand.\'"      ></sz-entity-record-card-content>      <ngx-json-viewer *ngIf="showJSON" [json]="record"></ngx-json-viewer>    </div>  </div></div><!-- start json record viewer for sz-search-by-id --></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzEntityRecordViewerComponent'};
 </script>
 <script src="../js/tree.js"></script>
+
 
 
 

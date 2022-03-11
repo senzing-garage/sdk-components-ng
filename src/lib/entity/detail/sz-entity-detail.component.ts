@@ -19,23 +19,26 @@ import { parseBool } from '../../common/utils';
  * The Entity Detail Component.
  * Generates a complex detail page from input parameters.
  *
- * @example <!-- (Angular) -->
- * <sz-entity-detail
- *   [showGraphMatchKeys]="true"
- *   (entityIdChanged)="entityChangedHandler($event)"
- *   [entityId]="currentlySelectedEntityId"></sz-entity-detail>
- *
- * @example <!-- (WC) by attribute -->
- * <sz-wc-entity-detail
- *   show-graph-match-keys="true"
- *   entity-id="1002"></sz-wc-entity-detail>
- *
- * @example <!-- (WC) by DOM -->
- * <sz-wc-entity-detail id="sz-ent-detail"></sz-wc-entity-detail>
- * <script>
- * document.getElementById('sz-ent-detail').entityId = 1002;
- * document.getElementById('sz-ent-detail').addEventListener('entityIdChanged', (entId) => { console.log('entity id changed!', entId); })
- * </script>
+ * @example 
+ * <code>
+ * &lt;!-- (Angular) --&gt;<br/>
+ * &lt;sz-entity-detail<br/>
+ *   [showGraphMatchKeys]="true"<br/>
+ *   (entityIdChanged)="entityChangedHandler($event)"<br/>
+ *   [entityId]="currentlySelectedEntityId"&gt;&lt;/sz-entity-detail&gt;<br/><br/>
+ *  
+ * &lt;!-- (WC) by attribute --&gt;<br/>
+ * &lt;sz-wc-entity-detail<br/>
+ *   show-graph-match-keys="true"<br/>
+ *   entity-id="1002">&lt;/sz-wc-entity-detail&gt;<br/><br/>
+ * 
+ * &lt;!-- (WC) by DOM --&gt;<br/>
+ * &lt;sz-wc-entity-detail id="sz-ent-detail"&gt;</sz-wc-entity-detail&gt;<br/>
+ * &lt;script&gt;<br/>
+ * document.getElementById('sz-ent-detail').entityId = 1002;<br/>
+ * document.getElementById('sz-ent-detail').addEventListener('entityIdChanged', (entId) => { console.log('entity id changed!', entId); })<br/>
+ * &lt;/script&gt;<br/>
+ * </code>
  */
 @Component({
   selector: 'sz-entity-detail',

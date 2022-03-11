@@ -38,7 +38,7 @@
   <li>Components</li>
   <li
   >
-  SzEntityDetailGraphFilterComponent</li>
+  SzGraphFilterComponent</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -58,7 +58,7 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>src/lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-filter.component.ts</code>
+    <code>src/lib/graph/sz-graph-filter.component.ts</code>
 </p>
 
 
@@ -71,27 +71,29 @@ to filtering, colors, and parameters of graph control.</p>
 <p>integrated with graph preferences and prefBUS.</p>
 <code>
 &lt;!-- (Angular) --&gt;<br/>
-&lt;sz-entity-detail-graph-filter #graphFilter<br/>
+&lt;sz-graph-filter #graphFilter<br/>
 [showLinkLabels]="true"<br/>
 (optionChanged)="onOptionChange($event)"<br/>
-&gt;&lt;/sz-entity-detail-graph-filter&gt;<br/><br/>
+&gt;&lt;/sz-graph-filter&gt;<br/><br/>
 
 <p>&lt;!-- (WC) --&gt;<br/>
-&lt;sz-wc-standalone-graph-filters id=&quot;sz-entity-detail-graph-filter&quot;&gt;&lt;/sz-wc-standalone-graph-filters&gt;<br/>
+&lt;sz-wc-graph-filters id=&quot;sz-graph-filter&quot;&gt;&lt;/sz-wc-graph-filters&gt;<br/>
 &lt;script&gt;<br/>
-document.getElementById(&#39;sz-wc-standalone-graph-filters&#39;).addEventListener(&#39;optionChanged&#39;, function(data) { console.log(&#39;filter(s) changed&#39;, data); });<br/>
-&lt;/script&gt;<br/>
+document.getElementById(&#39;sz-wc-graph-filters&#39;).addEventListener(&#39;optionChanged&#39;, function(data) { console.log(&#39;filter(s) changed&#39;, data); });<br/>
+&lt;/script&gt;<br/><br/>
 </code></p>
 
     </p>
 
-    <p class="comment">
-        <h3>Extends</h3>
-    </p>
-    <p class="comment">
-                <code><a href="../components/SzGraphFilterComponent.html" target="_self" >SzGraphFilterComponent</a></code>
-    </p>
 
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+                    <code><a href="https://angular.io/api/core/AfterViewInit" target="_blank" >AfterViewInit</a></code>
+                    <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
+    </p>
 
 
 <section>
@@ -111,19 +113,19 @@ document.getElementById(&#39;sz-wc-standalone-graph-filters&#39;).addEventListen
 
             <tr>
                 <td class="col-md-3">selector</td>
-                <td class="col-md-9"><code>sz-entity-detail-graph-filter</code></td>
+                <td class="col-md-9"><code>sz-graph-filter</code></td>
             </tr>
 
             <tr>
                 <td class="col-md-3">styleUrls</td>
-                <td class="col-md-9"><code>../../../graph/sz-graph-filter.component.scss</code></td>
+                <td class="col-md-9"><code>./sz-graph-filter.component.scss</code></td>
             </tr>
 
 
 
             <tr>
                 <td class="col-md-3">templateUrl</td>
-                <td class="col-md-9"><code>../../../graph/sz-graph-filter.component.html</code></td>
+                <td class="col-md-9"><code>./sz-graph-filter.component.html</code></td>
             </tr>
 
 
@@ -346,6 +348,47 @@ document.getElementById(&#39;sz-wc-standalone-graph-filters&#39;).addEventListen
                 </tr>
 
 
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#showMatchKeys" >showMatchKeys</a>
+                                </li>
+                                <li>
+                                    <a href="#showMatchKeyFilters" >showMatchKeyFilters</a>
+                                </li>
+                                <li>
+                                    <a href="#dataSourceColors" >dataSourceColors</a>
+                                </li>
+                                <li>
+                                    <a href="#dataSources" >dataSources</a>
+                                </li>
+                                <li>
+                                    <a href="#matchKeys" >matchKeys</a>
+                                </li>
+                                <li>
+                                    <a href="#showLinkLabels" >showLinkLabels</a>
+                                </li>
+                                <li>
+                                    <a href="#showingLinkLabels" >showingLinkLabels</a>
+                                </li>
+                                <li>
+                                    <a href="#hidingLinkLabels" >hidingLinkLabels</a>
+                                </li>
+                                <li>
+                                    <a href="#filterByDataSourcesData" >filterByDataSourcesData</a>
+                                </li>
+                                <li>
+                                    <a href="#filterByMatchKeysData" >filterByMatchKeysData</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
         </tbody>
     </table>
 </section>
@@ -356,7 +399,7 @@ document.getElementById(&#39;sz-wc-standalone-graph-filters&#39;).addEventListen
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(_p_prefs: <a href="../injectables/SzPrefsService.html" target="_self">SzPrefsService</a>, _p_dataSourcesService: <a href="../injectables/SzDataSourcesService.html" target="_self">SzDataSourcesService</a>, _p_formBuilder: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>, _p_cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>)</code>
+<code>constructor(prefs: <a href="../injectables/SzPrefsService.html" target="_self">SzPrefsService</a>, dataSourcesService: <a href="../injectables/SzDataSourcesService.html" target="_self">SzDataSourcesService</a>, formBuilder: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>, cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>)</code>
                     </td>
                 </tr>
 
@@ -374,7 +417,7 @@ document.getElementById(&#39;sz-wc-standalone-graph-filters&#39;).addEventListen
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>_p_prefs</td>
+                                                        <td>prefs</td>
                                                   
                                                         <td>
                                                                         <code><a href="../injectables/SzPrefsService.html" target="_self" >SzPrefsService</a></code>
@@ -386,7 +429,7 @@ document.getElementById(&#39;sz-wc-standalone-graph-filters&#39;).addEventListen
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>_p_dataSourcesService</td>
+                                                        <td>dataSourcesService</td>
                                                   
                                                         <td>
                                                                         <code><a href="../injectables/SzDataSourcesService.html" target="_self" >SzDataSourcesService</a></code>
@@ -398,7 +441,7 @@ document.getElementById(&#39;sz-wc-standalone-graph-filters&#39;).addEventListen
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>_p_formBuilder</td>
+                                                        <td>formBuilder</td>
                                                   
                                                         <td>
                                                                         <code><a href="https://angular.io/api/forms/FormBuilder" target="_blank" >FormBuilder</a></code>
@@ -410,7 +453,7 @@ document.getElementById(&#39;sz-wc-standalone-graph-filters&#39;).addEventListen
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>_p_cd</td>
+                                                        <td>cd</td>
                                                   
                                                         <td>
                                                                         <code><a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank" >ChangeDetectorRef</a></code>
@@ -2030,6 +2073,396 @@ values and save state to prefs.</p>
     </table>
 </section>
 
+    <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showMatchKeys"></a>
+                        <span class="name"><b>showMatchKeys</b><a href="#showMatchKeys"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>showMatchKeys()</code></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>showMatchKeys(value: string[])</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code>string[]</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showMatchKeyFilters"></a>
+                        <span class="name"><b>showMatchKeyFilters</b><a href="#showMatchKeyFilters"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>showMatchKeyFilters()</code></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>showMatchKeyFilters(value: boolean | string)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code>boolean | string</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dataSourceColors"></a>
+                        <span class="name"><b>dataSourceColors</b><a href="#dataSourceColors"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>dataSourceColors()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>get list of  &quot;SzDataSourceComposite&quot; reflecting current state of datasource colors and order. ordered ASC by &quot;index&quot;</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../interfaces/SzDataSourceComposite.html" target="_self" >SzDataSourceComposite[]</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>dataSourceColors(value: <a href="../interfaces/SzDataSourceComposite.html" target="_self">SzDataSourceComposite[]</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>set the internal list of datasource colors from local storage or input value
+and update any changed members also present in &quot;_dataSources&quot; with
+current properties</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="../interfaces/SzDataSourceComposite.html" target="_self" >SzDataSourceComposite[]</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dataSources"></a>
+                        <span class="name"><b>dataSources</b><a href="#dataSources"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>dataSources()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>get list of  &quot;SzDataSourceComposite&quot; reflecting datasources pulled from API and augmented with state information in shape of &quot;SzDataSourceComposite&quot;. ordered ASC by &quot;index&quot;</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../interfaces/SzDataSourceComposite.html" target="_self" >SzDataSourceComposite[]</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="matchKeys"></a>
+                        <span class="name"><b>matchKeys</b><a href="#matchKeys"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>matchKeys()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>get list of  &quot;SzDataSourceComposite&quot; reflecting datasources pulled from API and augmented with state information in shape of &quot;SzDataSourceComposite&quot;. ordered ASC by &quot;index&quot;</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../interfaces/SzDataSourceComposite.html" target="_self" >SzDataSourceComposite[]</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showLinkLabels"></a>
+                        <span class="name"><b>showLinkLabels</b><a href="#showLinkLabels"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>showLinkLabels()</code></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>showLinkLabels(value)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showingLinkLabels"></a>
+                        <span class="name"><b>showingLinkLabels</b><a href="#showingLinkLabels"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>showingLinkLabels()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="hidingLinkLabels"></a>
+                        <span class="name"><b>hidingLinkLabels</b><a href="#hidingLinkLabels"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>hidingLinkLabels()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="filterByDataSourcesData"></a>
+                        <span class="name"><b>filterByDataSourcesData</b><a href="#filterByDataSourcesData"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>filterByDataSourcesData()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>get data from reactive form control array</p>
+</div>
+
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="filterByMatchKeysData"></a>
+                        <span class="name"><b>filterByMatchKeysData</b><a href="#filterByMatchKeysData"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>filterByMatchKeysData()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>get data from reactive form control array</p>
+</div>
+
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
 </div>
 
 
@@ -2181,7 +2614,7 @@ values and save state to prefs.</p>
 
     <div class="tab-pane fade " id="c-styleData">
                 <p class="comment">
-                    <code>../../../graph/sz-graph-filter.component.scss</code>
+                    <code>./sz-graph-filter.component.scss</code>
                 </p>
                 <pre class="line-numbers"><code class="language-scss">@import &quot;../scss/_variables&quot;;
 @import &quot;../scss/_mixins&quot;;
@@ -2416,7 +2849,7 @@ values and save state to prefs.</p>
         var COMPONENT_TEMPLATE = '<div><div class="drawer-wrapper">  <h3>{{ sectionTitles[0] }}</h3>  <form [formGroup]="slidersForm">  <ul class="sliders-list">    <li class="has-tooltip block-level-src no-text-selection">      <span class="tooltip">display match keys on relationship lines</span>      <label>        <!-- start graph match keys checkbox -->        <input type="checkbox"          id="sz-graph-toggle-match-keys" name="sz-graph-toggle-match-keys"          [checked]="showLinkLabels"          (change)="onCheckboxPrefToggle(\'showLinkLabels\',$event)">        <!-- end graph match keys checkbox -->        Show Match Keys      </label>    </li>    <li>      <label>        <div>          <span class="has-tooltip">            Scope            <span class="tooltip tooptip-left">number of relationship hops away from focused entity</span>          </span>        </div>        <input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut"           (change)="onIntParameterChange(\'buildOut\', getValueFromEventTarget($event))" required>        <span class="intVal">({{ buildOut }})</span>      </label>    </li>    <li *ngIf="showMaxEntities">      <label>        <div>          <span class="has-tooltip">            Max            <span class="tooltip tooptip-left">hard limit on how many entities will be displayed</span>          </span>        </div>        <input type="range" min="1" max="99" step="3" [value]="maxEntities" formControlName="maxEntities"           (change)="onIntParameterChange(\'maxEntities\', getValueFromEventTarget($event))" required>        <span class="intVal">({{ maxEntities }})</span>      </label>    </li>    <li *ngIf="showMaxDegreesOfSeparation">      <label>        <div>          <span class="has-tooltip">            Degrees            <span class="tooltip tooptip-left">maximum degrees of separation between nodes and focus</span>          </span>        </div>        <input type="range" min="1" max="5" [value]="maxDegreesOfSeparation" formControlName="maxDegreesOfSeparation"           (change)="onIntParameterChange(\'maxDegreesOfSeparation\', getValueFromEventTarget($event))" required>        <span class="intVal">({{ maxDegreesOfSeparation }})</span>      </label>    </li>  </ul>  </form>  <hr>  <h3>{{ sectionTitles[1] }}</h3>  <form [formGroup]="filterByDataSourcesForm">  <ul class="filters-list">    <ng-container *ngFor="let ds of filterByDataSourcesData.controls; let i = index">        <ng-container *ngIf="shouldDataSourceBeDisplayed(dataSources[i].name)">            <li formArrayName="datasources">              <label>                <input type="checkbox" [formControlName]="i"                   (change)="onDsFilterChange(dataSources[i].name, $event)">{{dataSources[i].name}}              </label>            </li>        </ng-container>    </ng-container>  </ul>  </form>  <!--  <ul class="filters-list">    <ng-container *ngFor="let ds of dataSources; let i = index">        <ng-container *ngIf="shouldDataSourceBeDisplayed(ds.name)">            <li>              <label>                <input type="checkbox" [(ngModel)]="!ds.hidden" (change)="onDsFilterChange(ds.name, $event)">{{ds.name}}              </label>            </li>        </ng-container>    </ng-container>  </ul>  -->  <hr>  <h3>{{ sectionTitles[2] }}</h3>  <ul cdkDropList class="colors-list" (cdkDropListDropped)="onColorOrderDrop($event)">    <ng-container *ngFor="let ds of dataSourceColors; let i = index">      <li class="color-box" *ngIf="shouldDataSourceBeDisplayed(ds.name)" cdkDrag [cdkDragData]="ds.name">        <div class="color-box-placeholder" *cdkDragPlaceholder></div>        <label>          <input type="color" [(ngModel)]="ds.color" [style.background-color]="getDataSourceColor(ds.name)" (change)="onDsColorChange(ds.name, $event.target, $event)">          {{ds.name}}        </label>        <div class="color-box-handle" cdkDragHandle>          <mat-icon aria-hidden="false" aria-label="drag option">drag_handle</mat-icon>        </div>      </li>    </ng-container>  </ul>  <hr>  <h3>{{ sectionTitles[3] }}</h3>  <form [formGroup]="colorsMiscForm">  <ul class="other-colors-list">    <li>      <label>        <input #queriedNodesColorInput formControlName="queriedEntitiesColor" type="color" [style.background-color]="queriedNodesColorInput.value"           (change)="onColorParameterChange(\'queriedEntitiesColor\', getValueFromEventTarget($event))">        <span class="has-tooltip block-level-src">          Active/Focused Enitity          <span class="tooltip tooptip-left">The color of the current entity or entities</span>        </span>        <small class="note-sub">(*note overrides datasource member color if selected)</small>      </label>    </li>  </ul>  </form>  <div *ngIf="showMatchKeys && showMatchKeyFilters">    <hr>    <h3>{{ sectionTitles[4] }}</h3>    <form [formGroup]="filterByMatchKeysForm">    <ul class="filters-list">      <ng-container *ngFor="let ds of filterByMatchKeysData.controls; let i = index">          <ng-container *ngIf="shouldMatchKeyBeDisplayed(matchKeys[i].name)">              <li formArrayName="matchkeys">                <label>                  <input type="checkbox" [formControlName]="i" (change)="onMkFilterChange(matchKeys[i].name, $event)">{{matchKeys[i].name}}                </label>              </li>          </ng-container>      </ng-container>    </ul>    </form>  </div></div></div>'
     var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
     var DIRECTIVES = [];
-    var ACTUAL_COMPONENT = {'name': 'SzEntityDetailGraphFilterComponent'};
+    var ACTUAL_COMPONENT = {'name': 'SzGraphFilterComponent'};
 </script>
 <script src="../js/tree.js"></script>
 
@@ -2461,7 +2894,7 @@ values and save state to prefs.</p>
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
-            var COMPODOC_CURRENT_PAGE_URL = 'SzEntityDetailGraphFilterComponent.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'SzGraphFilterComponent.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

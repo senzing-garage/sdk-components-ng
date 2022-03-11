@@ -10,35 +10,38 @@ import { SzGraphComponent } from '../../../graph/sz-graph.component';
  * Optionally can display a embedded filter control to allow user
  * to change the components parameters of this component.
  *
- * @example <!-- (Angular) -->
- * <sz-standalone-graph
-          filterWidth="320"
-          [graphIds]="graphIds"
-          [showPopOutIcon]="false"
-          [showMatchKeyControl]="false"
-          [showFiltersControl]="false"
-          [filterControlPosition]="'top-right'"
-          (entityClick)="onGraphEntityClick($event)"
-          [showMatchKeys]="true"
-      ></sz-standalone-graph>
+ * @example 
+ * <code>
+ * &lt;!-- (Angular) --&gt;<br/>
+ * &lt;sz-standalone-graph<br/>
+          filterWidth="320"<br/>
+          [graphIds]="graphIds"<br/>
+          [showPopOutIcon]="false"<br/>
+          [showMatchKeyControl]="false"<br/>
+          [showFiltersControl]="false"<br/>
+          [filterControlPosition]="'top-right'"<br/>
+          (entityClick)="onGraphEntityClick($event)"<br/>
+          [showMatchKeys]="true"<br/>
+      &gt;&lt;/sz-standalone-graph&gt;<br/><br/>
  *
- * @example <!-- (WC) by attribute -->
- * <sz-wc-standalone-graph
-          filter-width="320"
-          graph-ids="1,1001,1002"
-          show-pop-out-icon="false"
-          show-match-key-control="false"
-          show-filters-control="false"
-          filter-control-position="top-right"
-          show-match-keys="true"
-      ></sz-wc-standalone-graph>
+ * &lt;!-- (WC) by attribute --&gt;<br/>
+ * &lt;sz-wc-standalone-graph<br/>
+          filter-width="320"<br/>
+          graph-ids="1,1001,1002"<br/>
+          show-pop-out-icon="false"<br/>
+          show-match-key-control="false"<br/>
+          show-filters-control="false"<br/>
+          filter-control-position="top-right"<br/>
+          show-match-keys="true"<br/>
+      &gt;&lt;/sz-wc-standalone-graph&gt;<br/><br/>
  *
- * @example <!-- (WC) by DOM -->
- * <sz-wc-standalone-graph id="sz-wc-standalone-graph"></sz-wc-standalone-graph>
- * <script>
- * document.getElementById('sz-wc-standalone-graph').graphIds = [1,1001,1002];
- * document.getElementById('sz-wc-standalone-graph').addEventListener('entityClick', (data) => { console.log('entity clicked on!', data); })
- * </script>
+ * &lt;!-- (WC) by DOM --&gt;<br/>
+ * &lt;sz-wc-standalone-graph id="sz-wc-standalone-graph"&gt;&lt;/sz-wc-standalone-graph&gt;<br/>
+ * &lt;script&gt;<br/>
+ * document.getElementById('sz-wc-standalone-graph').graphIds = [1,1001,1002];<br/>
+ * document.getElementById('sz-wc-standalone-graph').addEventListener('entityClick', (data) => { console.log('entity clicked on!', data); })<br/>
+ * &lt;/script&gt;<br/><br/>
+ * </code>
  */
 @Component({
   selector: 'sz-standalone-graph',

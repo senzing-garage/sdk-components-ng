@@ -70,22 +70,29 @@
 respoond to UI bus event/preference changes.</p>
 <p>For Angular implementations we recommend using <a href="../injectables/SzPrefsService.html">SzPrefsService</a> as an injectable as it
 provides the more robust solution.</p>
-<p><sz-wc-preferences id="prefsIntf"></sz-wc-preferences></p>
-<script>document.getElementById('prefsIntf').GraphBuildOut = 5;</script>
+<code>
+&lt;!-- (WC) javascript --&gt;<br/>
+&lt;sz-wc-preferences id="prefsIntf"&gt;&lt;/sz-wc-preferences&gt;<br/>
+&lt;script>document.getElementById('prefsIntf').GraphBuildOut = 5;&lt;/script&gt;<br/><br/>
 
-<p><sz-wc-preferences
-graph-build-out="20"></p>
-<p><sz-wc-preferences id="prefsIntf" show-controls="true"></sz-wc-preferences></p>
-<script>
-document.getElementById('prefsIntf').prefsFromJSONString = localStorage.getItem('NAME_OF_LS_KEY');
-</script>
-
-<p><sz-wc-preferences
-search-results-show-other-data="true"></sz-wc-preferences></p>
-<p><sz-wc-preferences
-show-controls="true"></sz-wc-preferences></p>
-<p>&lt;sz-preferences
-(prefsChange)=&quot;myPrefsChangeHandler($event)&quot;&gt;</p>
+<p>&lt;!-- (WC) By attribute: --&gt;<br/>
+&lt;sz-wc-preferences<br/>
+graph-build-out=&quot;20&quot;&gt;&lt;/sz-wc-preferences&gt;<br/><br/></p>
+<p>&lt;!-- (WC) javascript bulk initialize from local storage: --&gt;<br/>
+&lt;sz-wc-preferences id=&quot;prefsIntf&quot; show-controls=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;<br/>
+&lt;script&gt;<br/>
+document.getElementById(&#39;prefsIntf&#39;).prefsFromJSONString = localStorage.getItem(&#39;NAME_OF_LS_KEY&#39;);<br/>
+&lt;/script&gt;<br/><br/></p>
+<p>&lt;!-- (WC) show other data in search results: --&gt;<br/>
+&lt;sz-wc-preferences<br/>
+search-results-show-other-data=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;<br/><br/></p>
+<p>&lt;!-- (WC) show interactive UI: --&gt;<br/>
+&lt;sz-wc-preferences<br/>
+show-controls=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;<br/><br/></p>
+<p>&lt;!-- (Angular) --&gt;<br/>
+&lt;sz-preferences<br/>
+(prefsChange)=&quot;myPrefsChangeHandler($event)&quot;&gt;<br/><br/>
+</code></p>
 
     </p>
 
@@ -5585,11 +5592,12 @@ search-results-open-in-new-tab=&quot;true&quot;&gt;</code></pre>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><div *ngIf="showControls" class="sz-preferences">    <div class="prefs-ui-lists">        <!-- start search prefs -->        <div class="prefs-ui-column prefs-ui-column-search">            <!-- start search form prefs -->            <h4 class="title">Search</h4>            <ul class="prefs-ui-column-inner prefs-ui-column-inner-search">                <li *ngFor="let opt of searchFormOptions; let i = index" [attr.pref-key]="opt.name">                    <input *ngIf="opt.inputType == \'checkbox\'" [attr.id]="\'c1-opts-search-form-\'+ i" type="checkbox"                    [checked]="boolPrefChecked(\'searchForm\', opt.name)"                    (change)="updateBoolPrefValue(\'searchForm\', opt.name, $event)">                    <input *ngIf="opt.inputType == \'number\'" [attr.id]="\'c1-opts-search-form-\'+ i" type="number"                    min="1" max="90" size="2"                    [value]="prefValAsInt(\'searchForm\', opt.name)"                    (change)="updateIntPrefValue(\'searchForm\', opt.name, $event)">                    <label [attr.for]="\'c1-opts-search-form-\'+ i">{{ toSentenceCase(opt.name) | titlecase }}</label>                </li>            </ul>            <!-- end search form prefs -->            <!-- start search results prefs -->            <h4 class="title">Search Results</h4>            <ul class="prefs-ui-column-inner">                <li *ngFor="let opt of searchResultsOptions; let i = index" [attr.pref-key]="opt.name">                    <input *ngIf="opt.inputType == \'checkbox\'" [attr.id]="\'c2-opts-search-results-\'+ i" type="checkbox"                    [checked]="boolPrefChecked(\'searchResults\', opt.name)"                    (change)="updateBoolPrefValue(\'searchResults\', opt.name, $event)">                    <input *ngIf="opt.inputType == \'number\'" [attr.id]="\'c2-opts-search-results-\'+ i" type="number"                    min="1" max="90" size="2"                    [value]="prefValAsInt(\'searchResults\', opt.name)"                    (change)="updateIntPrefValue(\'searchResults\', opt.name, $event)">                    <label [attr.for]="\'c2-opts-search-results-\'+ i">{{ toSentenceCase(opt.name) | titlecase }}<!-- <span class="pref-key">({{opt.name}})</span> --></label>                </li>            </ul>            <!-- end search results prefs -->        </div>        <!-- end search prefs -->        <!-- start entity detail prefs -->        <div class="prefs-ui-column prefs-ui-column-entity-detail">            <h4 class="title">Entity Detail</h4>            <ul class="prefs-ui-column-inner">                <li *ngFor="let opt of entityDetailOptions; let i = index" [attr.pref-key]="opt.name">                    <input *ngIf="opt.inputType == \'checkbox\'" [attr.id]="\'c3-opts-entityDetail-\'+ i" type="checkbox"                    [checked]="boolPrefChecked(\'entityDetail\', opt.name)"                    (change)="updateBoolPrefValue(\'entityDetail\', opt.name, $event)">                    <input *ngIf="opt.inputType == \'number\'" [attr.id]="\'c3-opts-entityDetail-\'+ i" type="number"                    min="1" max="90" size="2"                    [value]="prefValAsInt(\'entityDetail\', opt.name)"                    (change)="updateIntPrefValue(\'entityDetail\', opt.name, $event)">                    <label [attr.for]="\'c3-opts-entityDetail-\'+ i">{{ toSentenceCase(opt.name) | titlecase }}</label>                </li>            </ul>        </div>        <!-- end entity detail prefs -->        <!-- start graph prefs -->        <div class="prefs-ui-column prefs-ui-column-graph">            <h4 class="title">Graph</h4>            <ul class="prefs-ui-column-inner">                <li *ngFor="let opt of graphOptions; let i = index" [attr.pref-key]="opt.name">                    <input *ngIf="opt.inputType == \'checkbox\'" [attr.id]="\'c4-opts-graph-\'+ i" type="checkbox"                    [checked]="boolPrefChecked(\'graph\', opt.name)"                    (change)="updateBoolPrefValue(\'graph\', opt.name, $event)">                    <input *ngIf="opt.inputType == \'number\'" [attr.id]="\'c4-opts-graph-\'+ i" type="number"                    min="1" max="90" size="2"                    [value]="prefValAsInt(\'graph\', opt.name)"                    (change)="updateIntPrefValue(\'graph\', opt.name, $event)">                    <label [attr.for]="\'c4-opts-graph-\'+ i">{{ toSentenceCase(opt.name) | titlecase }}</label>                </li>            </ul>            <!-- <h4 class="title">Datasource Colors</h4>            <sz-pref-dict [value]="GraphDataSourceColors" (dataChange)="GraphDataSourceColors = $event" valueType="color"></sz-pref-dict> -->        </div>        <!-- end graph prefs -->    </div></div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzPreferencesComponent'};
 </script>
 <script src="../js/tree.js"></script>
+
 
 
 

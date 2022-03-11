@@ -7,25 +7,29 @@ import {
  * A component for displaying the result(s) of the sz-search-by-id component
  * when the results are of type SzEntityRecord. The fragment only displays information
  * that was present in the record itself. The easiest way to use this component is to pair it
- * with the <sz-search-by-id>/<sz-wc-search-by-id> component(s).
+ * with the &lt;sz-search-by-id&gt;/&lt;sz-wc-search-by-id&gt; component(s).
  * @export
  *
- * @example <!-- (Angular) -->
- * <sz-search-by-id #searchBox
-  [dataSource]="'COMPANIES'"
-  (resultChange)="formResult = $event"></sz-search-by-id>
- * <sz-entity-record-viewer *ngIf="formResult" [record]="formResult"></sz-entity-record-viewer>
+ * @example 
+ * <code>
+ * &lt;!-- (Angular) --&gt;<br/>
+ * &lt;sz-search-by-id #searchBox<br/>
+  [dataSource]="'COMPANIES'"<br/>
+  (resultChange)="formResult = $event"&gt;&lt;/sz-search-by-id&gt;<br/>
+ * &lt;sz-entity-record-viewer *ngIf="formResult" [record]="formResult"&gt;&lt;/sz-entity-record-viewer&gt;<br/><br/>
  *
- * @example <!-- (WC) -->
- * <sz-wc-search-by-id id="formInput"
-  data-source="COMPANIES"></sz-wc-search-by-id>
- * <sz-wc-entity-record-viewer id="formResult">
- * </sz-wc-entity-record-viewer>
- * <script>
- * document.getElementById('formInput').addEventListener('resultChange', function(evt) {
- *     document.getElementById('formResult').record = evt.detail;
- * });
- * </script>
+ * &lt;!-- (WC) --&gt;<br/>
+ * &lt;sz-wc-search-by-id id="formInput"<br/>
+  data-source="COMPANIES"&gt;&lt;/sz-wc-search-by-id&gt;<br/>
+ * &lt;sz-wc-entity-record-viewer id="formResult"&gt;<br/>
+ * &lt;/sz-wc-entity-record-viewer&gt;<br/>
+ * &lt;script&gt;<br/>
+ * document.getElementById('formInput').addEventListener('resultChange', function(evt) {<br/>
+ *     document.getElementById('formResult').record = evt.detail;<br/>
+ * });<br/>
+ * &lt;/script&gt;<br/>
+ * </code>
+ * 
  */
 @Component({
   selector: 'sz-entity-record-viewer',

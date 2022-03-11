@@ -50,38 +50,40 @@ interface SzBoolFieldMapByName {
 
 /**
  * Provides a search box component that can execute search queries and return results.
- *
- * @example <!-- (WC javascript) SzSearchComponent -->
- * <sz-wc-search
- * id="sz-search"
- * name="Isa Creepr"></sz-wc-search>
- * <script>
- *  document.getElementById('sz-search').addEventListener('resultsChange', (results) => {
- *    console.log('search results: ', results);
- *  });
- * </script>
- *
- * @example <!-- (Angular) SzSearchComponent -->
- * <sz-search
- * name="Isa Creepr"
- * (resultsChange)="myResultsHandler($event)"
- * (searchStart)="showSpinner()"
- * (searchEnd)="hideSpinner()"></sz-search>
  * @export
+ * @example 
+ * <code>
+ * &lt;!-- (WC javascript) SzSearchComponent --&gt;<br/>
+ * &lt;sz-wc-search<br/>
+ * id="sz-search"<br/>
+ * name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
+ * &lt;script&gt;<br/>
+ *  document.getElementById('sz-search').addEventListener('resultsChange', (results) => {<br/>
+ *    console.log('search results: ', results);<br/>
+ *  });<br/>
+ * &lt;/script&gt;<br/><br/>
  *
- * @example <!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo -->
- * <sz-wc-search
- * id="sz-search"
- * name="Isa Creepr"></sz-wc-search>
- * <sz-wc-search-results id="sz-search-results"></sz-wc-search-results>
- * <script>
- *  var szSearchComponent = document.getElementById('sz-search');
- *  var szSearchResultsComponent = document.getElementById('sz-search-results');
- *  szSearchComponent.addEventListener('resultsChange', (evt) => {
- *    console.log('search results: ', evt);
- *    szSearchResultsComponent.results = evt.detail;
- *  });
- * </script>
+ * &lt;!-- (Angular) SzSearchComponent --&gt;<br/>
+ * &lt;sz-search<br/>
+ * name="Isa Creepr"<br/>
+ * (resultsChange)="myResultsHandler($event)"<br/>
+ * (searchStart)="showSpinner()"<br/>
+ * (searchEnd)="hideSpinner()"&gt;&lt;/sz-search&gt;<br/><br/>
+ *
+ * &lt;!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo --&gt;<br/>
+ * &lt;sz-wc-search<br/>
+ * id="sz-search"<br/>
+ * name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
+ * &lt;sz-wc-search-results id="sz-search-results"&gt;&lt;/sz-wc-search-results&gt;<br/>
+ * &lt;script&gt;<br/>
+ *  var szSearchComponent = document.getElementById('sz-search');<br/>
+ *  var szSearchResultsComponent = document.getElementById('sz-search-results');<br/>
+ *  szSearchComponent.addEventListener('resultsChange', (evt) => {<br/>
+ *    console.log('search results: ', evt);<br/>
+ *    szSearchResultsComponent.results = evt.detail;<br/>
+ *  });<br/>
+ * &lt;/script&gt;<br/>
+ * </code>
  */
 @Component({
   selector: 'sz-search',

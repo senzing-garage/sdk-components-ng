@@ -49,23 +49,26 @@ const parseBool = (value: any): boolean => {
 /**
  * Provides a search box component that can search by id and/or record ids.
  *
- * @example <!-- (WC javascript) SzSearchByIdComponent -->
- * <sz-wc-search-by-id
- * id="sz-search"
- * data-source="SAMPLE_PERSON"
- * record-id="1001"></sz-wc-search-by-id>
- * <script>
- *  document.getElementById('sz-search').addEventListener('resultChange', function(results) {
- *    console.log('results: ', results);
- *  });
- * </script>
+ * @example 
+ * <code>
+ * &lt;!-- (WC javascript) SzSearchByIdComponent --&gt;<br/>
+ * &lt;sz-wc-search-by-id<br/>
+ * id="sz-search"<br/>
+ * data-source="SAMPLE_PERSON"<br/>
+ * record-id="1001"&gt;&lt;/sz-wc-search-by-id&gt;<br/>
+ * &lt;script&gt;<br/>
+ *  document.getElementById('sz-search').addEventListener('resultChange', function(results) {<br/>
+ *    console.log('results: ', results);<br/>
+ *  });<br/>
+ * &lt;/script&gt;<br/><br/>
  *
- * @example <!-- (Angular) SzSearchByIdComponent -->
- * <sz-search-by-id
- * entityId="1004"
- * (resultChange)="myResultsHandler($event)"
- * (searchStart)="showSpinner()"
- * (searchEnd)="hideSpinner()"></sz-search-by-id>
+ * &lt;!-- (Angular) SzSearchByIdComponent --&gt;<br/>
+ * &lt;sz-search-by-id<br/>
+ * entityId="1004"<br/>
+ * (resultChange)="myResultsHandler($event)"<br/>
+ * (searchStart)="showSpinner()"<br/>
+ * (searchEnd)="hideSpinner()"&gt;&lt;/sz-search-by-id&gt;<br/>
+ * </code>
  * @export
  *
  */

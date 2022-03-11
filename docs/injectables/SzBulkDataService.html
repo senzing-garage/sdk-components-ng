@@ -37,6 +37,7 @@
 
 
 
+
 <ol class="breadcrumb">
   <li>Injectables</li>
   <li >SzBulkDataService</li>
@@ -85,9 +86,6 @@ import, analyze, map, and load data from a parseable format.</p>
                                 <a href="#_dataSources" >_dataSources</a>
                             </li>
                             <li>
-                                <a href="#_entityTypes" >_entityTypes</a>
-                            </li>
-                            <li>
                                     <span class="modifier">Public</span>
                                 <a href="#analyzingFile" >analyzingFile</a>
                             </li>
@@ -110,10 +108,6 @@ import, analyze, map, and load data from a parseable format.</p>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#dataSourceMap" >dataSourceMap</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#entityTypeMap" >entityTypeMap</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -142,14 +136,6 @@ import, analyze, map, and load data from a parseable format.</p>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#onDataSourcesChange" >onDataSourcesChange</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#onEntityTypeMapChange" >onEntityTypeMapChange</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#onEntityTypesChange" >onEntityTypesChange</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -185,19 +171,11 @@ import, analyze, map, and load data from a parseable format.</p>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#changeEntityTypeName" >changeEntityTypeName</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
                                 <a href="#clear" >clear</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#createDataSources" >createDataSources</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#createEntityTypes" >createEntityTypes</a>
                             </li>
                             <li>
                                 <a href="#destroy" >destroy</a>
@@ -238,7 +216,7 @@ import, analyze, map, and load data from a parseable format.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(adminService: <a href="../injectables/SzAdminService.html" target="_self">SzAdminService</a>, datasourcesService: <a href="../injectables/SzDataSourcesService.html" target="_self">SzDataSourcesService</a>, entityTypesService: <a href="../injectables/SzEntityTypesService.html" target="_self">SzEntityTypesService</a>, bulkDataService: BulkDataService)</code>
+<code>constructor(adminService: <a href="../injectables/SzAdminService.html" target="_self">SzAdminService</a>, datasourcesService: <a href="../injectables/SzDataSourcesService.html" target="_self">SzDataSourcesService</a>, bulkDataService: BulkDataService)</code>
                     </td>
                 </tr>
 
@@ -272,18 +250,6 @@ import, analyze, map, and load data from a parseable format.</p>
                                                   
                                                         <td>
                                                                         <code><a href="../injectables/SzDataSourcesService.html" target="_self" >SzDataSourcesService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>entityTypesService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/SzEntityTypesService.html" target="_self" >SzEntityTypesService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -467,85 +433,6 @@ import, analyze, map, and load data from a parseable format.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="changeEntityTypeName"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>changeEntityTypeName</b></span>
-                        <a href="#changeEntityTypeName"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>changeEntityTypeName(fromEntityType: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, toEntityType: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>change the destination entity type of a file currently being mapped to a entity type.</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>fromEntityType</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>toEntityType</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="clear"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
@@ -648,73 +535,6 @@ import, analyze, map, and load data from a parseable format.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="createEntityTypes"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>createEntityTypes</b></span>
-                        <a href="#createEntityTypes"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createEntityTypes(entityTypes: string[])</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>create a new entity type</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>entityTypes</td>
-                                    <td>
-                                            <code>string[]</code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;string[]&gt;</code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="destroy"></a>
                     <span class="name">
                         <span ><b>destroy</b></span>
@@ -759,7 +579,7 @@ import, analyze, map, and load data from a parseable format.</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>load(file?: File, dataSourceMap?: literal type, entityTypeMap?: literal type, analysis?: <a href="../classes/SzBulkDataAnalysis.html" target="_self">SzBulkDataAnalysis</a>)</code>
+                    <code>load(file?: File, dataSourceMap?: literal type, analysis?: <a href="../classes/SzBulkDataAnalysis.html" target="_self">SzBulkDataAnalysis</a>)</code>
                 </td>
             </tr>
 
@@ -797,18 +617,6 @@ import, analyze, map, and load data from a parseable format.</p>
                                 </tr>
                                 <tr>
                                     <td>dataSourceMap</td>
-                                    <td>
-                                            <code>literal type</code>
-                                    </td>
-
-                                    <td>
-                                        Yes
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>entityTypeMap</td>
                                     <td>
                                             <code>literal type</code>
                                     </td>
@@ -874,33 +682,6 @@ import, analyze, map, and load data from a parseable format.</p>
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>current datasources</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="_entityTypes"></a>
-                    <span class="name">
-                        <span ><b>_entityTypes</b></span>
-                        <a href="#_entityTypes"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>string[]</code>
-
-                    </td>
-                </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>current entity types</p>
 </div>
                 </td>
             </tr>
@@ -1062,34 +843,6 @@ import, analyze, map, and load data from a parseable format.</p>
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>map of current datasource name to new datasource names</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="entityTypeMap"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>entityTypeMap</b></span>
-                        <a href="#entityTypeMap"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>literal type</code>
-
-                    </td>
-                </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>map of current entity type name to new entity type names</p>
 </div>
                 </td>
             </tr>
@@ -1279,60 +1032,6 @@ import, analyze, map, and load data from a parseable format.</p>
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>when the datasources change this behavior subject is broadcast</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="onEntityTypeMapChange"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>onEntityTypeMapChange</b></span>
-                        <a href="#onEntityTypeMapChange"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>new Subject&lt;{ [key: string]: string }&gt;()</code>
-                    </td>
-                </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>when a enity type destination changes this subject is broadcast</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="onEntityTypesChange"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>onEntityTypesChange</b></span>
-                        <a href="#onEntityTypesChange"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>new BehaviorSubject&lt;string[]&gt;(undefined)</code>
-                    </td>
-                </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>when the entity types change this behavior subject is broadcast</p>
 </div>
                 </td>
             </tr>

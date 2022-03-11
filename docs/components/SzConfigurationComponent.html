@@ -64,9 +64,14 @@
 API configuration parameters used through all components.</p>
 <p>For Angular implementations we recommend using <a href="../injectables/SzConfigurationService.html">SzConfigurationService</a> as an injectable as it
 provides the more robust solution.</p>
-<p><sz-wc-configuration id="sz-api-conf"></sz-wc-configuration>
-document.getElementById(&#39;sz-api-conf&#39;).basePath = &#39;<a href="http://apis.mydomain.com&#39;">http://apis.mydomain.com&#39;</a>;</p>
-<p><sz-wc-configuration base-path="http://apis.mydomain.com/api"></sz-wc-configuration></p>
+<code>
+&lt;!-- (WC) SzConfigurationComponent Example - javascript --&gt;<br/>
+&lt;sz-wc-configuration id="sz-api-conf"&gt;&lt;/sz-wc-configuration&gt;<br/>
+document.getElementById('sz-api-conf').basePath = 'http://apis.mydomain.com';<br/><br/>
+
+<p>&lt;!-- (WC) SzConfigurationComponent Example - By attribute --&gt;<br/>
+&lt;sz-wc-configuration base-path=&quot;<a href="http://apis.mydomain.com/api&quot;&gt;&lt;/sz-wc-configuration">http://apis.mydomain.com/api&quot;&gt;&lt;/sz-wc-configuration</a>&gt;<br/>
+</code></p>
 
     </p>
 
@@ -829,11 +834,12 @@ or required non-standard headers like jwt session tokens, auth id etc.</p>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzConfigurationComponent'};
 </script>
 <script src="../js/tree.js"></script>
+
 
 
 
