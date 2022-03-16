@@ -67,6 +67,8 @@ import { SzConfigurationComponent } from './configuration/sz-configuration/sz-co
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
 import { SzPreferencesComponent } from './configuration/sz-preferences/sz-preferences.component';
 import { SzPrefDictComponent } from './configuration/sz-preferences/sz-pref-dict/sz-pref-dict.component';
+// why related
+import { SzWhyEntitiesComparisonComponent } from './why/sz-why-entities.component';
 
 /**
  * Sets up a default set of service parameters for use
@@ -125,7 +127,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzConfigurationComponent,
     SzPoweredByComponent,
     SzPreferencesComponent,
-    SzPrefDictComponent
+    SzPrefDictComponent,
+    SzWhyEntitiesComparisonComponent
   ],
   imports: [
     CommonModule,
@@ -156,7 +159,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzGraphFilterComponent,
     SzEntityRecordViewerComponent,
     SzStandaloneGraphComponent,
-    SzPreferencesComponent
+    SzPreferencesComponent,
+    SzWhyEntitiesComparisonComponent
   ],
   /** for components being exported as web components */
   entryComponents: [
@@ -172,7 +176,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzPoweredByComponent,
     SzConfigurationComponent,
     SzConfigurationAboutComponent,
-    SzPreferencesComponent
+    SzPreferencesComponent,
+    SzWhyEntitiesComparisonComponent
   ],
   providers: [
     SzMessageBundleService,
