@@ -68,7 +68,11 @@ import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
 import { SzPreferencesComponent } from './configuration/sz-preferences/sz-preferences.component';
 import { SzPrefDictComponent } from './configuration/sz-preferences/sz-pref-dict/sz-pref-dict.component';
 // why related
+import { SzWhyEntityComponent } from './why/sz-why-entity.component';
 import { SzWhyEntitiesComparisonComponent } from './why/sz-why-entities.component';
+import { SzWhyEntityDialog } from './why/sz-why-entity.component';
+import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
+//import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
 
 /**
  * Sets up a default set of service parameters for use
@@ -128,7 +132,10 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzPoweredByComponent,
     SzPreferencesComponent,
     SzPrefDictComponent,
-    SzWhyEntitiesComparisonComponent
+    SzWhyEntitiesComparisonComponent,
+    SzWhyEntityComponent,
+    SzWhyEntitiesDialog,
+    SzWhyEntityDialog
   ],
   imports: [
     CommonModule,
@@ -160,7 +167,10 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzEntityRecordViewerComponent,
     SzStandaloneGraphComponent,
     SzPreferencesComponent,
-    SzWhyEntitiesComparisonComponent
+    SzWhyEntitiesComparisonComponent,
+    SzWhyEntityComponent,
+    SzWhyEntitiesDialog,
+    SzWhyEntityDialog
   ],
   /** for components being exported as web components */
   entryComponents: [
@@ -177,7 +187,10 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzConfigurationComponent,
     SzConfigurationAboutComponent,
     SzPreferencesComponent,
-    SzWhyEntitiesComparisonComponent
+    SzWhyEntitiesComparisonComponent,
+    SzWhyEntityComponent,
+    SzWhyEntitiesDialog,
+    SzWhyEntityDialog
   ],
   providers: [
     SzMessageBundleService,

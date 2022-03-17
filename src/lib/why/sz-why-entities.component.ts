@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { EntityDataService } from '@senzing/rest-api-client-ng';
+import { Component, OnInit, Input, Inject } from '@angular/core';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { EntityDataService, SzAttributeSearchResult, SzEntityIdentifier } from '@senzing/rest-api-client-ng';
 
 /**
  * Display the "Why" information for entities
@@ -24,4 +25,36 @@ export class SzWhyEntitiesComparisonComponent implements OnInit {
 
   }
   ngOnInit() {}
+}
+/*
+@Component({
+  selector: 'sz-dialog-why-entities',
+  templateUrl: 'sz-why-entities-dialog.component.html'
+})
+export class SzWhyEntitiesDialog {
+  private _entities: SzEntityIdentifier[] = [];
+  public get entities(): SzEntityIdentifier[] {
+    return this._entities;
+  }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {entities: SzEntityIdentifier[]}) {
+    if(data && data.entities) {
+      this._entities = data.entities;
+    }
+  }
+}
+*/
+@Component({
+  selector: 'sz-dialog-why-entities',
+  templateUrl: 'sz-why-entities-dialog.component.html'
+})
+export class SzWhyEntitiesDialog {
+  private _entities: SzEntityIdentifier[] = [];
+  public get entities(): SzEntityIdentifier[] {
+    return this._entities;
+  }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
+    if(data && data.entities) {
+      this._entities = data.entities;
+    }
+  }
 }

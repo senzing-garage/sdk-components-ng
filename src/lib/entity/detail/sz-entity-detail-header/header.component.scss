@@ -80,6 +80,16 @@
     display: flex;
     margin-bottom: 1em;
 
+    .detail-header-left-icon-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .detail-header-why-button {
+        width: 145px;
+        margin-right: 10px;
+      }
+    }
+
     svg {
       display: none;
     }

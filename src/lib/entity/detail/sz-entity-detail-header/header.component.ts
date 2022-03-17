@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { SzEntityDetailSectionSummary } from '../../../models/entity-detail-section-data';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { MatDialog } from '@angular/material/dialog';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 
@@ -15,6 +16,7 @@ import {
 import { SzRelationshipNetworkComponent } from '@senzing/sdk-graph-components';
 
 import { bestEntityName } from '../../entity-utils';
+import { SzWhyEntityDialog } from '../../../why/sz-why-entity.component';
 
 /**
  * @internal
@@ -235,7 +237,7 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     return gender;
   }
 
-  constructor( public breakpointObserver: BreakpointObserver) {}
+  constructor( public breakpointObserver: BreakpointObserver, public dialog: MatDialog) {}
 
   getCssQueryFromCriteria(minWidth?: number, maxWidth?: number): string | undefined {
     if(minWidth && maxWidth){
@@ -324,6 +326,15 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
       ];
     }
     return [];
+  }
+
+  public onWhyButtonClick(event: any) {
+    console.log('Show Why Dialog for entity: ', this.entityId);
+    this.dialog.open(SzWhyEntityDialog, {
+      data: {
+        entityId: this._entity.resolvedEntity.entityId
+      }
+    });
   }
 
 }

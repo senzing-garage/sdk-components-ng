@@ -9,6 +9,8 @@ import {
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { SzWhyEntitiesDialog } from '../../why/sz-why-entities.component';
 
 /**
  * Provides a graphical search results component. Data can be provided a number of ways.
@@ -243,6 +245,15 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
 
   public onCompareClick(evt: any) {
     console.log('onCompareClicked: ', this._selectedEntities);
+    
+    this.dialog.open(SzWhyEntitiesDialog, {
+      data: {
+        entities: this._selectedEntities.map((entityResult: SzAttributeSearchResult) => {
+          return entityResult.entityId;
+        })
+      }
+    });
+    
   }
 
   public toggleSelected(entityResult: SzAttributeSearchResult) {
@@ -285,7 +296,8 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
   constructor(
     private titleCasePipe: TitleCasePipe,
     private prefs: SzPrefsService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
