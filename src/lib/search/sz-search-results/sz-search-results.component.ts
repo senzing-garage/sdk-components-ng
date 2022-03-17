@@ -59,6 +59,30 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
   @Input() showDataSources: boolean = true;
 
   /**
+   * Shows or hides the datasource lists in the result items header.
+   * @memberof SzSearchResultsComponent
+   */
+  @Input() showWhyIcon: boolean = true;
+  private _entitySelectActive = false;
+  public get entitySelectActive(): boolean {
+    return this._entitySelectActive;
+  }
+  private _selectedEntities:SzAttributeSearchResult[] = [];
+  public get selectedEntities():SzAttributeSearchResult[] {
+    return this._selectedEntities;
+  }
+
+  public get selectedEntitiesTooltipText(): string {
+    if(this._selectedEntities && this._selectedEntities.length > 1) {
+      return `${this._selectedEntities.length} entities selected. click compare to know why these entities didn't come together.`;
+    } else if(this._selectedEntities && this._selectedEntities.length === 1) {
+      return `${this._selectedEntities.length} entity selected. another must be selected for comparison.`;
+    } else {
+      return `0 entities selected. click each entity to select for comparison.`;
+    }
+  }
+
+  /**
    * The results of a search response to display in the component.
    * @memberof SzSearchResultsComponent
    */
@@ -196,6 +220,11 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
    */
   public onResultClick(evt: any, resData: SzAttributeSearchResult): void
   {
+    if(this._entitySelectActive){
+      this.toggleSelected( resData );
+      return;
+    }
+
     // preflight check to see if user is trying to select text
     if(window && window.getSelection){
       var selection = window.getSelection();
@@ -207,6 +236,42 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
       this.resultClick.emit(resData);
     }
   }
+
+  public onComparisonModeToggleClick(evt: any) {
+    this._entitySelectActive = !this._entitySelectActive;
+  }
+
+  public onCompareClick(evt: any) {
+    console.log('onCompareClicked: ', this._selectedEntities);
+  }
+
+  public toggleSelected(entityResult: SzAttributeSearchResult) {
+    if(entityResult) {
+      let existingPosition = this._selectedEntities.findIndex((entityToMatch: SzAttributeSearchResult) => {
+        return entityToMatch &&  entityResult && entityToMatch.entityId === entityResult.entityId;
+      })
+      if(existingPosition > -1 && this._selectedEntities && this._selectedEntities[ existingPosition ]) {
+        // remove from array
+        this._selectedEntities.splice(existingPosition, 1);
+      } else {
+        // add to array
+        this._selectedEntities.push( entityResult );
+      }
+    }
+  }
+
+  public isSelected(entityResult: SzAttributeSearchResult) {
+    if(entityResult) {
+      let existingPosition = this._selectedEntities.findIndex((entityToMatch: SzAttributeSearchResult) => {
+        return entityToMatch &&  entityResult && entityToMatch.entityId === entityResult.entityId;
+      })
+      if(existingPosition > -1) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /**
    * Total number of search results being displayed.
    *

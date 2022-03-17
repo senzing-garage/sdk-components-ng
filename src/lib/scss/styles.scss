@@ -89,6 +89,13 @@ body {
     pointer-events: none;
   }
 
+  .sz-search-results-head-why-mode-button-compare {
+    .mat-badge-content {
+      background-color: var(--sz-search-results-header-badge-selected-background-color);
+      color: var(--sz-search-results-header-badge-selected-color);
+    }
+  }
+
 }
 
 .senzing-alarm:before {

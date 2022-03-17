@@ -144,6 +144,8 @@ body {
   --sz-search-results-header-font-size: 1.5em;
   --sz-search-results-header-color: #{$sz-font-color-1};
   --sz-search-results-header-parameter-value-color: var(--sz-search-results-a-color);
+  --sz-search-results-header-badge-selected-background-color: var(--sz-search-results-header-parameter-value-color);
+  --sz-search-results-header-badge-selected-color: #fff;
 
   /* match key colors */
   --sz-search-results-section-header-color: #{$sz-font-color-2};
