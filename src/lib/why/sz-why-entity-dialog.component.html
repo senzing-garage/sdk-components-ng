@@ -1,2 +1,8 @@
-<h1>Why Entity Dialog</h1>
-<span>{{entity}}</span>
+<h1 mat-dialog-title>Why Report</h1>
+<div mat-dialog-content>
+  {{entityId}}
+  <sz-why-entity [entityId]="entityId"></sz-why-entity>
+</div>
+<div mat-dialog-actions>
+  <button mat-stroked-button mat-dialog-close color="primary">Ok</button>
+</div>

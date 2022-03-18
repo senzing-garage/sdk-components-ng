@@ -331,6 +331,8 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
   public onWhyButtonClick(event: any) {
     console.log('Show Why Dialog for entity: ', this.entityId);
     this.dialog.open(SzWhyEntityDialog, {
+      width: '1200px',
+      height: '800px',
       data: {
         entityId: this._entity.resolvedEntity.entityId
       }
