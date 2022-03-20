@@ -1,11 +1,12 @@
 
 :host {
-  display: inline-flex;
+  /* display: inline-flex;
   align-items: center;
   justify-content: center;
-  line-height: 14px;
+  line-height: 14px;*/
+  display: block;
   font-size: 14px;
-  margin: 2px 4px;
+  margin: 0px 4px;
 
   span {
     /* align-self: flex-start;*/
@@ -14,5 +15,42 @@
 
   svg {
     align-self: flex-end;
+  }
+}
+
+.demo-table {
+  width: 100%;
+}
+
+.demo-button-container {
+  padding-bottom: 16px;
+}
+
+.demo-button + .demo-button {
+  margin-left: 8px;
+}
+
+.mat-why-report-table {
+  width: 100%;
+}
+
+.mat-column-title {
+  padding-left: 16px;
+  padding-right: 16px;
+  color: #2977a7;
+  font-size: 16px;
+  border-right: 2px solid #dcdcdc;
+  background-color: #f5f5f5;
+  text-transform: uppercase;
+  font-family: inherit;
+}
+.mat-cell {
+  border-right: 2px solid #dcdcdc;
+  padding-left: 16px;
+  padding-right: 16px;
+  white-space: pre;
+  font-family: monospace;
+  &:last-child {
+    padding-right: 10px;
   }
 }

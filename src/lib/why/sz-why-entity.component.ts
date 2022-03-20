@@ -1,8 +1,50 @@
 import { Component, OnInit, Input, Inject, OnDestroy } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {DataSource} from '@angular/cdk/collections';
 import { EntityDataService, SzAttributeSearchResult, SzEntityData, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzMatchedRecord, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
-import { Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
+
+/*
+export interface PeriodicElement {
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
+}*/
+
+class ExampleDataSource extends DataSource<any> {
+  private _dataStream = new ReplaySubject<any[]>();
+
+  constructor(initialData: any[]) {
+    super();
+    this.setData(initialData);
+  }
+
+  connect(): Observable<any[]> {
+    return this._dataStream;
+  }
+
+  disconnect() {}
+
+  setData(data: any[]) {
+    this._dataStream.next(data);
+  }
+}
+
+/*
+const ELEMENT_DATA: PeriodicElement[] = [
+  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
+  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
+  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
+  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
+  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
+  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
+  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
+  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
+  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
+  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
+];*/
 
 /**
  * Display the "Why" information for entity
@@ -16,8 +58,8 @@ import { parseSzIdentifier } from '../common/utils';
  */
 @Component({
   selector: 'sz-why-entity',
-  templateUrl: './sz-why-entities.component.html',
-  styleUrls: ['./sz-why-entities.component.scss']
+  templateUrl: './sz-why-entity.component.html',
+  styleUrls: ['./sz-why-entity.component.scss']
 })
 export class SzWhyEntityComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */
@@ -25,6 +67,20 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
 
   @Input()
   entityId: SzEntityIdentifier;
+  private _tableData: any[] = [];
+
+  private _columnsToDisplay: string[] = [];
+  private _headerColumns: string[] = ['Why for entity '];
+  public get headerColumns(): string[] {
+    return ['Why for entity '+ this.entityId]
+  }
+  /*public columnsToDisplay: string[] = this._columnsToDisplay.slice();*/
+  public get displayedColumns(): string[] {
+    return this._columnsToDisplay;
+  }
+  private dataToDisplay = [];
+  public dataSource = new ExampleDataSource(this.dataToDisplay);
+  public gotColumnDefs = false;
 
   constructor(private entityData: EntityDataService) {
 
@@ -40,6 +96,12 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
         });
       }
       let formattedData = this.formatWhyDataForDataTable(resData.data.whyResults, matchedRecords);
+      //this.columnsToDisplay   = formattedData.columns;
+      this._columnsToDisplay  = formattedData.columns;
+      //this.columnsToDisplay   = formattedData.columns;
+      this.dataToDisplay      = formattedData.data;
+      this.dataSource.setData(this.dataToDisplay);
+      this.gotColumnDefs = true;  
       console.log('SzWhyEntityComponent.getWhyData: ', resData.data.whyResults, formattedData);
     })
   }
@@ -83,7 +145,7 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
       // why keys
       whyKeyRow[ matchWhyResult.perspective.internalId ]      = matchWhyResult.matchInfo.whyKey + '\n'+ matchWhyResult.matchInfo.resolutionRule;
       // for each member of matchInfo.featureScores create a new row to add to result
-      let featureRowKeys  = Object.keys( matchWhyResult.matchInfo.featureScores );
+      let featureRowKeys  = Object.keys( matchWhyResult.matchInfo.featureScores ); 
       featureRowKeys.forEach((keyStr) => {
         if(!featureKeys.includes( keyStr )){ featureKeys.push(keyStr); }
         let featValueForColumn = matchWhyResult.matchInfo.featureScores[ keyStr ].map((featScore: SzFeatureScore) => {
@@ -118,7 +180,10 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
       retVal.push( features[ featureKeyStr ] );
     });
 
-    return retVal;
+    return {
+      columns: ['title'].concat(columnKeys.map((kNum: number) => { return kNum.toString(); })),
+      data: retVal
+    };
   }
 }
 
