@@ -70,11 +70,6 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
   private _tableData: any[] = [];
 
   private _columnsToDisplay: string[] = [];
-  private _headerColumns: string[] = ['Why for entity '];
-  public get headerColumns(): string[] {
-    return ['Why for entity '+ this.entityId]
-  }
-  /*public columnsToDisplay: string[] = this._columnsToDisplay.slice();*/
   public get displayedColumns(): string[] {
     return this._columnsToDisplay;
   }
@@ -102,7 +97,7 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
       this.dataToDisplay      = formattedData.data;
       this.dataSource.setData(this.dataToDisplay);
       this.gotColumnDefs = true;  
-      console.log('SzWhyEntityComponent.getWhyData: ', resData.data.whyResults, formattedData);
+      console.log('SzWhyEntityComponent.getWhyData: ', resData.data, formattedData);
     })
   }
   /**
@@ -164,7 +159,46 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
         features[keyStr][ matchWhyResult.perspective.internalId ] = featValueForColumn;
       });
       
-
+      // see if we have any identifier data to show
+      if(entityRecords && matchWhyResult.perspective && matchWhyResult.perspective.focusRecords) {
+        let focusRecordIds = matchWhyResult.perspective.focusRecords.map((fRec) => { return fRec.recordId; })
+        let matchingRecord = entityRecords.find((entityRecord) => {
+          return focusRecordIds.indexOf(entityRecord.recordId) > -1;
+        });
+        if(matchingRecord && matchingRecord.identifierData) {
+          //console.log(`has entity records: ${matchingRecord.recordId}|${matchWhyResult.perspective.internalId}|${matchWhyResult.perspective.focusRecords.map((v)=>{ return v.recordId}).join(',')}`, matchingRecord.identifierData);
+          matchingRecord.identifierData.forEach((identifierField: string) => {
+            // should be `key:value` pair
+            if(identifierField && identifierField.indexOf(':') > -1) {
+              // has key
+              let identifierFields = identifierField.split(':');
+              let keyStr = identifierFields[0];
+              if(!featureKeys.includes( keyStr )){ featureKeys.push(keyStr); }
+              if(!features[keyStr] || features[keyStr] === undefined) { features[keyStr] = {title: keyStr}; }
+              features[keyStr][ matchWhyResult.perspective.internalId ] = identifierFields[1];
+              //console.log(`added "${keyStr}" field for ${matchWhyResult.perspective.internalId}`, features[keyStr][ matchWhyResult.perspective.internalId ]);
+            } else {
+              // no key???
+              //console.log('no identifier field for '+matchWhyResult.perspective.internalId);
+            }
+          });
+        }
+      }
+      // now get the candidate key info
+      /*
+      if(matchWhyResult.matchInfo.candidateKeys) {
+        let candidateKeys = Object.keys(matchWhyResult.matchInfo.candidateKeys);
+        candidateKeys.forEach((kStr) => {
+          let cKeyArrValue = matchWhyResult.matchInfo.candidateKeys[ kStr ];
+          if(cKeyArrValue && cKeyArrValue.map) {
+            let cKeyValue = cKeyArrValue.map((ckArrVal) => {
+              return ckArrVal.featureValue;
+            }).join('\n');
+            if(!featureKeys.includes( kStr )){ featureKeys.push(kStr); }
+            features[kStr][ matchWhyResult.perspective.internalId ] = cKeyValue;
+          }
+        });
+      }*/
     });
 
     // we're reformatting for a horizontal datatable
