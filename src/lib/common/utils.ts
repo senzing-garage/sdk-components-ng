@@ -39,6 +39,11 @@ export function parseSzIdentifier(value: any): number {
   return retVal;
 }
 
+export function nonTextTrim(value: string): string {
+  let retVal = value;
+  return retVal;
+}
+
 /**
  * Function used to return an array of "SzDataSourceComposite" in the order 
  * specified by each members "index" property

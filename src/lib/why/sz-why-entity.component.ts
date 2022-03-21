@@ -185,20 +185,29 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
         }
       }
       // now get the candidate key info
-      /*
+      
       if(matchWhyResult.matchInfo.candidateKeys) {
-        let candidateKeys = Object.keys(matchWhyResult.matchInfo.candidateKeys);
+        let candidateKeys = Object.keys(matchWhyResult.matchInfo.candidateKeys).filter((cKeyName) => {
+          return cKeyName && cKeyName.substring && cKeyName.indexOf('_KEY') > -1;
+        });
         candidateKeys.forEach((kStr) => {
           let cKeyArrValue = matchWhyResult.matchInfo.candidateKeys[ kStr ];
           if(cKeyArrValue && cKeyArrValue.map) {
-            let cKeyValue = cKeyArrValue.map((ckArrVal) => {
-              return ckArrVal.featureValue;
+            let cKeyValue = cKeyArrValue.map((ckArrVal, ind) => {
+              //return (ckArrVal.featureValue && ckArrVal.featureValue.trim) ? ckArrVal.featureValue.trim() : ckArrVal.featureValue;
+              let rVal = ' '+ ckArrVal.featureValue.trim()
+              //return (ind === 0) ? ind+'|'+rVal : ' '+ rVal;
+              return rVal;
+            }).sort().map((cStrVal, ind) => {
+              return ind === 0 ? cStrVal : cStrVal;
             }).join('\n');
+            //console.log(`adding ${kStr} to features (${featureKeys.join('|')})`, cKeyValue, cKeyValue.substring(0,1));
             if(!featureKeys.includes( kStr )){ featureKeys.push(kStr); }
-            features[kStr][ matchWhyResult.perspective.internalId ] = cKeyValue;
+            if(!features[kStr] || features[kStr] === undefined) { features[kStr] = {title: kStr}; }
+            features[kStr][ matchWhyResult.perspective.internalId ] = cKeyValue.trim();
           }
         });
-      }*/
+      }
     });
 
     // we're reformatting for a horizontal datatable
