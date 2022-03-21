@@ -13,43 +13,28 @@
         </div>
       </div>
       <!-- start "entity select control" mechanism -->
-      <div class="sz-search-results-head-why-mode">
-        <div class="mat-icon-button-left" [class.active]="entitySelectActive">
-          <mat-icon (click)="onComparisonModeToggleClick($event)" 
-          aria-hidden="false" aria-label="Select Entities for Why comparison"
-          matTooltipPosition="above"
-          [matTooltip]="selectedEntitiesTooltipText">compare_arrows</mat-icon>
-        </div>
-        <button class="sz-search-results-head-why-mode-button-compare" *ngIf="entitySelectActive && this.selectedEntities.length > 1" mat-stroked-button 
-          (click)="onCompareClick($event)"
-          color="accent"
-          matTooltipPosition="above"
-          [matTooltip]="selectedEntitiesTooltipText"
-          [matBadge]="this.selectedEntities.length" 
-          matBadgePosition="before" 
-          matBadgeColor="warn">Compare</button>
-        <button class="sz-search-results-head-why-mode-button-compare" *ngIf="entitySelectActive && this.selectedEntities.length == 1" mat-stroked-button 
-            disabled="true"
-            color="accent"
-            matTooltipPosition="above"
-            [matTooltip]="selectedEntitiesTooltipText"
-            [matBadge]="this.selectedEntities.length" 
-            matBadgePosition="before" 
-            matBadgeColor="warn">Compare</button>
-        <button *ngIf="!entitySelectActive || this.selectedEntities.length <= 0" 
-          disabled="true" mat-stroked-button
-          matTooltipPosition="above"
-          [matTooltip]="selectedEntitiesTooltipText">Compare</button>
-      </div>
+      <sz-button-multi-select *ngIf="showWhyComparisonButton"
+        (onSelectActiveChange)="onComparisonModeActiveChange($event)"
+        (onSelectedClick)="onCompareClick($event)"
+        [selectedCount]="this.selectedEntities.length"
+        aria-hidden="false" 
+        aria-label="Select Entities for Why comparison"
+        text="Compare Entities"
+        selectedItemTypeSingular="entity"
+        selectedItemTypePlural="entities"
+        selectedActionVerb="why comparison"
+        selectedActionVerbCTA="compare Why"
+        mat-icon="compare_arrows"
+        ></sz-button-multi-select>
       <!-- end "entity select control" mechanism -->
     </div>
-    <div *ngIf="entitySelectActive">
+    <!--<div *ngIf="entitySelectActive">
       <ul>
         <li *ngFor="let selectedEntity of this.selectedEntities; let i = index">
           {{ selectedEntity.nameData }}
         </li>
       </ul>
-    </div>
+    </div>-->
     <div class="search-result__section-header matches"
       *ngIf="this.matches?.length > 0"><span>Matches</span></div>
     <sz-search-result-card

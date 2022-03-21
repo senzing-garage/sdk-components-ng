@@ -32,6 +32,7 @@ import { SzAdminService } from './services/sz-admin.service';
 import { SzBulkDataService } from './services/sz-bulk-data.service';
 
 /** components */
+import { SzMultiSelectButtonComponent } from './shared/multi-select-button/multi-select-button.component';
 /** entity resume related */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
 import { SzEntityDetailHeaderComponent } from './entity/detail/sz-entity-detail-header/header.component';
@@ -129,6 +130,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultCardHeaderComponent,
     SzConfigurationAboutComponent,
     SzConfigurationComponent,
+    SzMultiSelectButtonComponent,
     SzPoweredByComponent,
     SzPreferencesComponent,
     SzPrefDictComponent,

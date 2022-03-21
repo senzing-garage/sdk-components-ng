@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { SzWhyEntitiesDialog } from '../../why/sz-why-entities.component';
+import { parseBool } from '../../common/utils';
 
 /**
  * Provides a graphical search results component. Data can be provided a number of ways.
@@ -60,28 +61,29 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
    */
   @Input() showDataSources: boolean = true;
 
+  private _showWhyComparisonButton: boolean = true;
   /**
-   * Shows or hides the datasource lists in the result items header.
+   * Shows or hides the multi-select "Why" comparison button.
    * @memberof SzSearchResultsComponent
    */
-  @Input() showWhyIcon: boolean = true;
+  @Input() set showWhyComparisonButton(value: boolean | string) {
+    this._showWhyComparisonButton = parseBool(value);
+  }
+  public get showWhyComparisonButton(): boolean {
+    return this._showWhyComparisonButton;
+  }
   private _entitySelectActive = false;
   public get entitySelectActive(): boolean {
     return this._entitySelectActive;
   }
+  /** @internal */
   private _selectedEntities:SzAttributeSearchResult[] = [];
+  /**
+   * get the entities selected during a multi-select operation such as when 
+   * "Why" comparison mode select is active.
+   */
   public get selectedEntities():SzAttributeSearchResult[] {
     return this._selectedEntities;
-  }
-
-  public get selectedEntitiesTooltipText(): string {
-    if(this._selectedEntities && this._selectedEntities.length > 1) {
-      return `${this._selectedEntities.length} entities selected. click compare to know why these entities didn't come together.`;
-    } else if(this._selectedEntities && this._selectedEntities.length === 1) {
-      return `${this._selectedEntities.length} entity selected. another must be selected for comparison.`;
-    } else {
-      return `0 entities selected. click each entity to select for comparison.`;
-    }
   }
 
   /**
@@ -237,6 +239,10 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
     } else {
       this.resultClick.emit(resData);
     }
+  }
+
+  public onComparisonModeActiveChange(isActive: boolean) {
+    this._entitySelectActive = isActive;
   }
 
   public onComparisonModeToggleClick(evt: any) {
