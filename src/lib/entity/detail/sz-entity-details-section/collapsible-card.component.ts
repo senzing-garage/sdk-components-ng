@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { SzSectionDataByDataSource, SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
-import { SzEntityRecord } from '@senzing/rest-api-client-ng';
+import { SzEntityRecord, SzRecordId } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -29,6 +29,9 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   @Input() public showOtherDataInDatasourceRecords: boolean = true;
   @Input() public showOtherDataInEntities: boolean = false;
   @Input() public columnsShown: boolean[] = undefined;
+  @Input() public showWhyUtilities: boolean = false;
+
+  @Output() onCompareRecordsForWhy = new EventEmitter<SzRecordId[]>();
   
   public truncateOtherDataInRecordsAt: number = -1; // < 0 is unlimited
 
@@ -168,6 +171,11 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   public onEntityRecordClick(entityId: number): void {
     console.log('sz-entity-detail-section-collapsible-card: ', entityId);
     this.entityRecordClick.emit(entityId);
+  }
+
+  public onRecordsWhyButtonClick(event: any) {
+    console.log('SzEntityDetailSectionCollapsibleCardComponent.onRecordsWhyButtonClick() ', event);
+    this.onCompareRecordsForWhy.emit([]);
   }
 
   get hasAmbiguousMatch(): boolean {

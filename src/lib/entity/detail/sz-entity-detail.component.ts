@@ -8,9 +8,14 @@ import {
   SzRelatedEntity,
   SzResolvedEntity,
   SzEntityRecord,
-  SzRelationshipType
+  SzRelationshipType,
+  SzEntityIdentifier,
+  SzRecordId
 } from '@senzing/rest-api-client-ng';
+import { MatDialog } from '@angular/material/dialog';
+
 import { SzEntityDetailGraphComponent } from './sz-entity-detail-graph/sz-entity-detail-graph.component';
+import { SzWhyEntityDialog } from '../../why/sz-why-entity.component';
 
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { parseBool } from '../../common/utils';
@@ -117,6 +122,42 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private _possibleMatchesSectionCollapsed: boolean = false;
   private _possibleRelationshipsSectionCollapsed: boolean = false;
   private _disclosedRelationshipsSectionCollapsed: boolean = false;
+
+  // why utilities
+  private _showEntityWhyFunction: boolean = false;
+  private _showRecordWhyUtilities: boolean = false;
+  private _openWhyComparisonModalOnClick: boolean = true;
+
+  /** @internal */
+  private _headerWhyButtonClicked: Subject<SzEntityIdentifier> = new Subject<SzEntityIdentifier>();
+  /** (Observeable) when the user clicks on the "Why" button in header under the icon */
+  public headerWhyButtonClicked = this._headerWhyButtonClicked.asObservable();
+  /** (Event Emitter) when the user clicks on the "Why" button in header under the icon */
+  @Output() headerWhyButtonClick = new EventEmitter<SzEntityIdentifier>();
+  /** (Event Emitter) when the user clicks on the "Why" button in records section */
+  @Output() recordsWhyButtonClick = new EventEmitter<SzRecordId[]>();
+
+  /** whether or not to show the "why" comparison button for records */
+  public get showRecordWhyUtilities(): boolean {
+    return this._showRecordWhyUtilities;
+  }
+  @Input() set showRecordWhyUtilities(value: boolean) {
+    this._showRecordWhyUtilities = value;
+  }
+  /** whether or not the "why" comparison button for the entire entity is shown */
+  public get showEntityWhyFunction(): boolean {
+    return this._showEntityWhyFunction;
+  }
+  /** whether or not to show the "why" comparison button for the entire entity */
+  @Input() set showEntityWhyFunction(value: boolean) {
+    this._showEntityWhyFunction = value;
+  }
+  /** whether or not to automatically open a modal with the entity comparison on 
+   * "Why" button click. (disable for custom implementation/action)
+   */
+   @Input() openWhyComparisonModalOnClick(value: boolean) {
+    this._openWhyComparisonModalOnClick = value;
+  }
 
   /** used for print and pdf support, allows fetching DOM HTMLElement */
   @ViewChild('nativeElementRef') nativeElementRef: ElementRef;
@@ -498,7 +539,8 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   constructor(
     private searchService: SzSearchService,
     public prefs: SzPrefsService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -604,6 +646,37 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    */
   public onGraphPopoutClick(event: any) {
     this.graphPopOutClick.emit(event);
+  }
+  /**
+   * proxies internal "why button" header click to "graphPopOutClick" event.
+   */
+  public onHeaderWhyButtonClick(entityId: SzEntityIdentifier){
+    this.headerWhyButtonClick.emit(entityId);
+    console.log('SzEntityDetailComponent.onHeaderWhyButtonClick: ', entityId);
+    if(this._openWhyComparisonModalOnClick){
+      this.dialog.open(SzWhyEntityDialog, {
+        width: '1200px',
+        height: '800px',
+        data: {
+          entityId: entityId
+        }
+      });
+    }
+  }
+
+  public onCompareRecordsForWhy(records: SzRecordId[]) {
+    console.log('SzEntityDetailComponent.onCompareRecordsForWhy: ', records);
+    this.recordsWhyButtonClick.emit(records);
+    if(this._openWhyComparisonModalOnClick) {
+      this.dialog.open(SzWhyEntityDialog, {
+        width: '1200px',
+        height: '800px',
+        data: {
+          entityId: this.entity.resolvedEntity.entityId,
+          recordsToShow: records
+        }
+      });
+    }
   }
 
   public onSectionCollapsedChange(prefsKey: string, isCollapsed: boolean) {

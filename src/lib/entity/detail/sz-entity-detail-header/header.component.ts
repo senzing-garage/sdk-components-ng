@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { SzEntityDetailSectionSummary } from '../../../models/entity-detail-section-data';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,7 +11,8 @@ import {
   SzEntityRecord,
   SzRelationshipType,
   SzEntityFeature,
-  SzResolvedEntity
+  SzResolvedEntity,
+  SzEntityIdentifier
 } from '@senzing/rest-api-client-ng';
 import { SzRelationshipNetworkComponent } from '@senzing/sdk-graph-components';
 
@@ -293,7 +294,12 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
         return _bp.cssClass;
       })
     })
-
+    // proxy internal "Subject" to event emitter for tidyness
+    this._onWhyButtonClicked.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( (entityId: SzEntityIdentifier) => {
+      this.onWhyButtonClick.emit(entityId);
+    })
   }
 
   /**
@@ -328,15 +334,32 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     return [];
   }
 
-  public onWhyButtonClick(event: any) {
-    console.log('Show Why Dialog for entity: ', this.entityId);
-    this.dialog.open(SzWhyEntityDialog, {
-      width: '1200px',
-      height: '800px',
-      data: {
-        entityId: this._entity.resolvedEntity.entityId
-      }
-    });
+  /** 
+   * when the user clicks the "why" button (if enabled with "showWhyFunction") 
+   * @internal
+  */
+  private _onWhyButtonClicked = new Subject<SzEntityIdentifier>();
+  /** (Observeable Event) when the user clicks the "why" button (if enabled with "showWhyFunction") */
+  public onWhyButtonClicked   = this._onWhyButtonClicked.asObservable();
+  /** (Event Emitter) when the user clicks the "why" button (if enabled with "showWhyFunction") */
+  @Output() onWhyButtonClick: EventEmitter<SzEntityIdentifier> = new EventEmitter<SzEntityIdentifier>();
+  /** @internal */
+  private _showWhyFunction: boolean = false;
+  /** whether or not to show the "Why button" under the entity icon */
+  @Input() public set showWhyFunction(value: boolean) {
+    this._showWhyFunction = value;
+  }
+  /** whether or not the "Why button" under the entity icon is being shown*/
+  public get showWhyFunction(): boolean {
+    return this._showWhyFunction;
+  }
+  /**
+   * When user clicks the "Why" button this handler is invoked 
+   * which then proxies the event to observeables and emitters 
+   * @internal 
+  */
+  public onWhyButtonClickHandler(event: any) {
+    this._onWhyButtonClicked.next(this.entityId);
   }
 
 }

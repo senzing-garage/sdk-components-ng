@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ViewChildren, QueryList, OnDestroy } from '@angular/core';
-import { SzRelatedEntity, SzEntityRecord } from '@senzing/rest-api-client-ng';
+import { SzRelatedEntity, SzEntityRecord, SzRecordId } from '@senzing/rest-api-client-ng';
 import { SzEntityDetailSectionCollapsibleCardComponent } from './collapsible-card.component';
 import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
@@ -40,6 +40,9 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
   @Input() showOtherDataInEntities: boolean;
   @Input() showBestNameOnlyInEntities: boolean;
   @Input() showNameDataInEntities: boolean;
+  @Input() showWhyUtilities: boolean;
+
+  @Output() onCompareRecordsForWhy: EventEmitter<SzRecordId[]> = new EventEmitter<SzRecordId[]>();
 
   /** when the user collapses or expands the ui toggle */
   @Output() onCollapsedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -285,6 +288,11 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
       return (`(max-width: ${maxWidth}px)`);
     }
     return undefined;
+  }
+
+  public _onCompareRecordsForWhy(recordIds: SzRecordId[]) {
+    console.log('SzEntityDetailsSectionComponent.onCompareRecordsForWhy()', recordIds);
+    this.onCompareRecordsForWhy.emit(recordIds);
   }
 
 }

@@ -4,6 +4,8 @@
   <sz-entity-detail-header
   [entity]="entity"
   [forceLayout]="_forceLayout"
+  [showWhyFunction]="showEntityWhyFunction"
+  (onWhyButtonClick)="this.onHeaderWhyButtonClick($event)"
   [layoutClasses]="_layoutEnforcers">
   </sz-entity-detail-header>
 
@@ -33,6 +35,8 @@
     [sectionTitle]="'Matched Records'"
     sectionId="detail-section-1"
     [sectionCount]="entity?.resolvedEntity?.records?.length"
+    [showWhyUtilities]="showRecordWhyUtilities"
+    (onCompareRecordsForWhy)="onCompareRecordsForWhy($event)"
     [forceLayout]="_forceLayout"
     [layoutClasses]="_layoutEnforcers"
     [showNameDataInEntities]="showNameDataInMatchesSection"

@@ -66,6 +66,9 @@
     <!-- start is not entity record (datasource records) -->
     <ng-container *ngIf="!isEntityRecord(cardData)">
       <div class="search-card-records  mat-expansion-panel-body">
+        <div *ngIf="showWhyUtilities">
+          <button (click)="onRecordsWhyButtonClick($event)">Why Analysis</button>
+        </div>
         <sz-entity-record-card-content
           *ngFor="let _cardData of cardData?.records"
           [showOtherData]="showOtherDataInDatasourceRecords"
