@@ -22,6 +22,8 @@
       [layoutClasses]="_layoutClasses"
       (onCollapsedChange)="this.onCollapsibleCardStateChange($event)"
       [truncateResults]="true"
+      [dataSourceRecordsSelected]="selectedDataSourceRecords"
+      (dataSourceRecordClicked)="onDataSourceRecordClick($event)"
       (entityRecordClick)="onEntityRecordClick($event)">
     </sz-entity-detail-section-collapsible-card>
   </ng-container>

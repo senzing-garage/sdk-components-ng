@@ -83,6 +83,16 @@
     min-height: 64px;
     color: var(--sz-entity-detail-section-color);
 
+    .mat-title-bar {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+    }
+    sz-button-multi-select {
+      width: 162px;
+    }
 
     .mat-panel-title {
       display: flex;

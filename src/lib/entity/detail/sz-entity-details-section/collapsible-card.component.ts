@@ -4,6 +4,7 @@ import { SzEntityRecord, SzRecordId } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { SzDataSourceRecordsSelection } from '../../../models/data-source-record-selection';
 
 /**
  * @internal
@@ -30,6 +31,8 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   @Input() public showOtherDataInEntities: boolean = false;
   @Input() public columnsShown: boolean[] = undefined;
   @Input() public showWhyUtilities: boolean = false;
+
+  public recordWhyMultiselectActive: boolean = false;
 
   @Output() onCompareRecordsForWhy = new EventEmitter<SzRecordId[]>();
   
@@ -176,6 +179,37 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   public onRecordsWhyButtonClick(event: any) {
     console.log('SzEntityDetailSectionCollapsibleCardComponent.onRecordsWhyButtonClick() ', event);
     this.onCompareRecordsForWhy.emit([]);
+  }
+
+  public onWhyRecordComparisonModeActiveChange(isActive: boolean) {
+    this.recordWhyMultiselectActive = isActive;
+  }
+  @Output('dataSourceRecordClicked') onDataSourceRecordClickedEmitter = new EventEmitter<SzRecordId>();
+  public onDataSourceRecordClicked(recordIdentifier: SzRecordId | any) {
+    console.log('sz-entity-detail-section-collapsible-card: ', recordIdentifier);
+    
+    this.onDataSourceRecordClickedEmitter.emit(recordIdentifier);
+  }
+  public get selectedRecords(): SzRecordId[] {
+    let retVal = [];
+    let _dataSources = Object.keys(this.dataSourceRecordsSelected);
+    _dataSources.forEach((selectedDataSource) => {
+      retVal = retVal.concat( 
+        this.dataSourceRecordsSelected[selectedDataSource].map((selectedRecordId) => {
+          return {src: selectedDataSource, id: selectedRecordId}
+        }) 
+      )
+    })
+    return retVal
+  }
+
+  private _dataSourceRecordsSelected: SzDataSourceRecordsSelection = {}
+  @Input() set dataSourceRecordsSelected(records: SzDataSourceRecordsSelection) {
+    console.log('SzEntityDetailSectionCollapsibleCardComponent setting "dataSourceRecordsSelected"', records);
+    this._dataSourceRecordsSelected = records;
+  }
+  get dataSourceRecordsSelected(): SzDataSourceRecordsSelection {
+    return this._dataSourceRecordsSelected;
   }
 
   get hasAmbiguousMatch(): boolean {

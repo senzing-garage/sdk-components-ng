@@ -40,6 +40,7 @@
     [forceLayout]="_forceLayout"
     [layoutClasses]="_layoutEnforcers"
     [showNameDataInEntities]="showNameDataInMatchesSection"
+    (dataSourceRecordsSelected)="onDataSourceRecordsSelected($event)"
     (entityRecordClick)="onEntityRecordClick($event)">
   </sz-entity-details-section>
 

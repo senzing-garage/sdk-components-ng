@@ -6,6 +6,7 @@ import { takeUntil, filter } from 'rxjs/operators';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { SzEntityRecordCardContentComponent } from '../../sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
 import { SzSectionDataByDataSource, SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
+import { SzDataSourceRecordsSelection } from '../../../models/data-source-record-selection';
 
 /**
  * @internal
@@ -91,6 +92,9 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
 
   @Output()
   public entityRecordClick: EventEmitter<number> = new EventEmitter<number>();
+  @Output()
+  public dataSourceRecordClick: EventEmitter<SzRecordId> = new EventEmitter<SzRecordId>();
+  @Output() dataSourceRecordsSelected: EventEmitter<SzDataSourceRecordsSelection> = new EventEmitter();
 
   constructor(public breakpointObserver: BreakpointObserver) { }
 
@@ -273,9 +277,32 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
     return _className;
   }
 
+  public selectedDataSourceRecords: SzDataSourceRecordsSelection = {};
+
   public onEntityRecordClick(entityId: number): void {
     console.log('sz-entity-details-section: ', entityId);
     this.entityRecordClick.emit(entityId);
+  }
+
+  public onDataSourceRecordClick(recordId: SzRecordId | any): void {
+    let _recordId: SzRecordId = (recordId as SzRecordId);
+    console.log('sz-entity-details-section.onDataSourceRecordClick: ', recordId);
+    if(!this.selectedDataSourceRecords[_recordId.src] ) {
+      // no records at all, assume we're adding
+      this.selectedDataSourceRecords[_recordId.src] = [_recordId.id];
+    } else {
+      let existingIndexPosition = this.selectedDataSourceRecords[_recordId.src].indexOf(_recordId.id);
+      if(existingIndexPosition > -1) {
+        // deselect
+        this.selectedDataSourceRecords[_recordId.src].splice(existingIndexPosition, 1);
+      } else {
+        // select
+        this.selectedDataSourceRecords[_recordId.src].push(_recordId.id);
+      }
+    }
+    this.selectedDataSourceRecords[_recordId.src]
+    this.dataSourceRecordClick.emit(recordId);
+    this.dataSourceRecordsSelected.emit(this.selectedDataSourceRecords);
   }
 
   getCssQueryFromCriteria(minWidth?: number, maxWidth?: number): string | undefined {

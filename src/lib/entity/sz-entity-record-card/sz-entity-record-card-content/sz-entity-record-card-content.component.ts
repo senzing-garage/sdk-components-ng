@@ -1,11 +1,12 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 import {
   SzEntityData,
   SzResolvedEntity,
   SzEntityRecord,
-  SzRelatedEntity
+  SzRelatedEntity,
+  SzRecordId
 } from '@senzing/rest-api-client-ng';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -489,5 +490,18 @@ export class SzEntityRecordCardContentComponent implements OnInit {
       return (<SzEntityDetailSectionData>data).matchLevel !== undefined;
     }
     return false;
+  }
+  @Output('onDataSourceRecordClicked') 
+  onRecordCardContentClickedEmitter: EventEmitter<SzRecordId> = new EventEmitter<SzRecordId>();
+
+  public onRecordCardContentClicked(event: any) {
+    console.log('SzEntityRecordCardContentComponent.onRecordCardContentClicked()', this.entity, this);
+    
+    if(this.entity && this.entity.dataSource && this.entity.recordId) {
+      let recordId: SzRecordId = {src: this.entity.dataSource, id: this.entity.recordId};
+      this.onRecordCardContentClickedEmitter.emit(recordId);
+    } else {
+      console.error('SzEntityRecordCardContentComponent.onRecordCardContentClicked() ERROR: datasource or recordId missing');
+    }
   }
 }

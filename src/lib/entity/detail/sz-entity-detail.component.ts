@@ -19,6 +19,7 @@ import { SzWhyEntityDialog } from '../../why/sz-why-entity.component';
 
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { parseBool } from '../../common/utils';
+import { SzDataSourceRecordsSelection } from '../../models/data-source-record-selection';
 
 /**
  * The Entity Detail Component.
@@ -623,6 +624,10 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   public onEntityRecordClick(entityId: number): void {
     this.entityId = entityId;
   }
+  public onDataSourceRecordsSelected(records: SzDataSourceRecordsSelection) {
+    console.log('onDataSourceRecordsSelected: ', records);
+  }
+
   /**
    * proxies internal graph component entity click to "graphEntityClick" event.
    */
