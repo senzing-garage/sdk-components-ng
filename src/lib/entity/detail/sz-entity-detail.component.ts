@@ -19,7 +19,7 @@ import { SzWhyEntityDialog } from '../../why/sz-why-entity.component';
 
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { parseBool } from '../../common/utils';
-import { SzDataSourceRecordsSelection } from '../../models/data-source-record-selection';
+import { SzDataSourceRecordsSelection, SzWhySelectionModeBehavior, SzWhySelectionMode } from '../../models/data-source-record-selection';
 
 /**
  * The Entity Detail Component.
@@ -125,6 +125,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private _disclosedRelationshipsSectionCollapsed: boolean = false;
 
   // why utilities
+  private _whySelectionMode: SzWhySelectionModeBehavior = SzWhySelectionMode.NONE;
   private _showEntityWhyFunction: boolean = false;
   private _showRecordWhyUtilities: boolean = false;
   private _openWhyComparisonModalOnClick: boolean = true;
@@ -145,6 +146,16 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   @Input() set showRecordWhyUtilities(value: boolean) {
     this._showRecordWhyUtilities = value;
   }
+  /** if "showRecordWhyUtilities" set to true there is a "single-record" select behavior, and a 
+   * "multi-select" behavior. possible values are `SINGLE` and `MUTLI`
+  */
+  public get whySelectionMode(): SzWhySelectionModeBehavior {
+    return this._whySelectionMode;
+  }
+  @Input() set whySelectionMode(value: SzWhySelectionModeBehavior) {
+    this._whySelectionMode = value;
+  }
+
   /** whether or not the "why" comparison button for the entire entity is shown */
   public get showEntityWhyFunction(): boolean {
     return this._showEntityWhyFunction;

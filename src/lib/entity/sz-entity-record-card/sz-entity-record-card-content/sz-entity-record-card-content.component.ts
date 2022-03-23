@@ -11,6 +11,7 @@ import {
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
+import { SzWhySelectionMode, SzWhySelectionModeBehavior } from '../../../models/data-source-record-selection';
 
 
 /**
@@ -34,6 +35,8 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   private _showNameData: boolean = true;
   private _showBestNameOnly: boolean = false;
   private _ignorePrefOtherDataChanges = false;
+  @Input() public whySelectionMode: SzWhySelectionModeBehavior = SzWhySelectionMode.NONE;
+  @Input() public showWhyUtilities: boolean = false;
   @Input() public showRecordIdWhenNative: boolean = false;
   /** allows records with empty columns to match up with records with non-empty columns. format is [true,false,true,true,true] */
   @Input() public columnsShown: boolean[] = undefined;
@@ -66,6 +69,15 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   }
   get showBestNameOnly(): boolean {
     return this._showBestNameOnly;
+  }
+  public get isMultiSelect(): boolean {
+    return this.whySelectionMode === SzWhySelectionMode.MULTIPLE
+  }
+  public get isSingleSelect(): boolean {
+    return this.whySelectionMode === SzWhySelectionMode.SINGLE
+  }
+  public get isSelectModeActive(): boolean {
+    return this.whySelectionMode !== SzWhySelectionMode.NONE
   }
 
   @Input() set entity(value) {

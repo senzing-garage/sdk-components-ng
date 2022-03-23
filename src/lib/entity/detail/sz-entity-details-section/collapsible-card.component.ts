@@ -1,10 +1,11 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ViewChild, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { SzSectionDataByDataSource, SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 import { SzEntityRecord, SzRecordId } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { SzDataSourceRecordsSelection } from '../../../models/data-source-record-selection';
+import { SzDataSourceRecordsSelection, SzWhySelectionMode, SzWhySelectionModeBehavior } from '../../../models/data-source-record-selection';
+import { SzMultiSelectButtonComponent } from '../../../shared/multi-select-button/multi-select-button.component';
 
 /**
  * @internal
@@ -33,8 +34,25 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   @Input() public showWhyUtilities: boolean = false;
 
   public recordWhyMultiselectActive: boolean = false;
+  private _whySelectionMode: SzWhySelectionModeBehavior = SzWhySelectionMode.NONE;
 
   @Output() onCompareRecordsForWhy = new EventEmitter<SzRecordId[]>();
+  /** 
+   * if "showRecordWhyUtilities" set to true there is a "single-record" select behavior, and a 
+   * "multi-select" behavior. possible values are `SINGLE` and `MUTLI`
+   */
+  public get whySelectionMode(): SzWhySelectionModeBehavior {
+    return this._whySelectionMode;
+  }
+  @Input() set whySelectionMode(value: SzWhySelectionModeBehavior) {
+    this._whySelectionMode = value;
+  }
+  public get isMultiSelect(): boolean {
+    return this._whySelectionMode === SzWhySelectionMode.MULTIPLE
+  }
+  public get isSingleSelect(): boolean {
+    return this._whySelectionMode === SzWhySelectionMode.SINGLE
+  }
   
   public truncateOtherDataInRecordsAt: number = -1; // < 0 is unlimited
 
@@ -70,6 +88,9 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   @Output()
   public entityRecordClick: EventEmitter<number> = new EventEmitter<number>();
 
+  @ViewChild('multiSelectButton') private multiSelectButton: HTMLElement;
+  @ViewChild('multiSelectButtonWrapper') private multiSelectButtonWrapper: ElementRef;
+
   constructor(
     public prefs: SzPrefsService,
     private cd: ChangeDetectorRef
@@ -85,6 +106,17 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
 
   get recordCount() {
     return (this.cardData && this.cardData.records) ? this.cardData.records.length : 0;
+  }
+
+  public isRecordSelected(value: SzEntityRecord) {
+    if(value.dataSource && value.recordId) {
+      let dataSources = Object.keys(this._dataSourceRecordsSelected);
+      if(dataSources.indexOf(value.dataSource) > -1) {
+        // datasource exists, now check for record
+        return this._dataSourceRecordsSelected[value.dataSource].indexOf(value.recordId) > -1 ? true : false;
+      }
+    }
+    return false;
   }
 
   ngOnInit() {
@@ -130,6 +162,12 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
    * toggle the collapse/expand state
    */
   toggleExpanded(evt: Event) {
+    if(evt && evt.target) {
+      let isFromMultiSelectButton = (this.multiSelectButtonWrapper as ElementRef).nativeElement.contains(evt.target as HTMLElement)
+      if(isFromMultiSelectButton) {
+        return;
+      }
+    }
     this.expanded = !this.expanded;
   }
 
@@ -157,6 +195,14 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
         if(k.toLowerCase) { k = k.toLowerCase(); }
         retArr.push( 'key-'+ k );
       });
+    }
+    // check for "why" mode
+    if(this.showWhyUtilities) {
+      if(this.isMultiSelect) {
+        retArr.push('select-mode-multiple');
+      } else if(this.isSingleSelect) {
+        retArr.push('select-mode-single');
+      }
     }
     // check for layout classes, concat if exists
     if(this.layoutClasses && this.layoutClasses.length > 0){

@@ -8,7 +8,7 @@
   (onWhyButtonClick)="this.onHeaderWhyButtonClick($event)"
   [layoutClasses]="_layoutEnforcers">
   </sz-entity-detail-header>
-
+  
   <sz-entity-detail-graph data-html2canvas-ignore
     *ngIf="graphData && this.showGraphSection"
     [data]="graphData"
@@ -36,6 +36,7 @@
     sectionId="detail-section-1"
     [sectionCount]="entity?.resolvedEntity?.records?.length"
     [showWhyUtilities]="showRecordWhyUtilities"
+    [whySelectionMode]="whySelectionMode"
     (onCompareRecordsForWhy)="onCompareRecordsForWhy($event)"
     [forceLayout]="_forceLayout"
     [layoutClasses]="_layoutEnforcers"

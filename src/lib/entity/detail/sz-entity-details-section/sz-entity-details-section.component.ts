@@ -6,7 +6,7 @@ import { takeUntil, filter } from 'rxjs/operators';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { SzEntityRecordCardContentComponent } from '../../sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
 import { SzSectionDataByDataSource, SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
-import { SzDataSourceRecordsSelection } from '../../../models/data-source-record-selection';
+import { SzDataSourceRecordsSelection, SzWhySelectionMode, SzWhySelectionModeBehavior } from '../../../models/data-source-record-selection';
 
 /**
  * @internal
@@ -23,6 +23,7 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
   _sectionData: SzEntityRecord[] | SzRelatedEntity[];
   _sectionDataByDataSource: SzSectionDataByDataSource[];
   _sectionDataByMatchKey: SzEntityRecord[] | SzRelatedEntity[];
+  private _whySelectionMode: SzWhySelectionModeBehavior = SzWhySelectionMode.NONE;
 
   @Input() entity: SzEntityRecord | SzRelatedEntity;
   @Input()
@@ -42,7 +43,6 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
   @Input() showBestNameOnlyInEntities: boolean;
   @Input() showNameDataInEntities: boolean;
   @Input() showWhyUtilities: boolean;
-
   @Output() onCompareRecordsForWhy: EventEmitter<SzRecordId[]> = new EventEmitter<SzRecordId[]>();
 
   /** when the user collapses or expands the ui toggle */
@@ -95,6 +95,16 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
   @Output()
   public dataSourceRecordClick: EventEmitter<SzRecordId> = new EventEmitter<SzRecordId>();
   @Output() dataSourceRecordsSelected: EventEmitter<SzDataSourceRecordsSelection> = new EventEmitter();
+  /** 
+   * if "showRecordWhyUtilities" set to true there is a "single-record" select behavior, and a 
+   * "multi-select" behavior. possible values are `SINGLE` and `MUTLI`
+   */
+   public get whySelectionMode(): SzWhySelectionModeBehavior {
+    return this._whySelectionMode;
+  }
+  @Input() set whySelectionMode(value: SzWhySelectionModeBehavior) {
+    this._whySelectionMode = value;
+  }
 
   constructor(public breakpointObserver: BreakpointObserver) { }
 

@@ -16,21 +16,23 @@
           </svg>
           <span class="collapsible-card__title">{{cardData?.dataSource}}</span>
         </div>
+        <!--isMultiSelect: {{isMultiSelect}}<br/>
+        whySelectionMode: {{whySelectionMode}}-->
         <!-- start "entity select control" mechanism -->
-        <sz-button-multi-select *ngIf="showWhyUtilities"
+        <div #multiSelectButtonWrapper><sz-button-multi-select #multiSelectButton *ngIf="showWhyUtilities && isMultiSelect"
           (onSelectActiveChange)="onWhyRecordComparisonModeActiveChange($event)"
           (onSelectedClick)="onRecordsWhyButtonClick($event)"
           [selectedCount]="this.selectedRecords.length"
           aria-hidden="false" 
           aria-label="Select Records for Why comparison"
-          text="Compare Entities"
+          text="Why Comparison"
           [isSelectActive]="showWhyUtilities"
           selectedItemTypeSingular="record"
           selectedItemTypePlural="records"
           selectedActionVerb="why comparison"
           selectedActionVerbCTA="compare Why"
           mat-icon="compare_arrows"
-          ></sz-button-multi-select>
+          ></sz-button-multi-select></div>
         <!-- end "entity select control" mechanism -->
         <ng-container *ngIf="matchPills?.length > 0">
           <sz-entity-match-pill
@@ -81,10 +83,10 @@
     <!-- start is not entity record (datasource records) -->
     <ng-container *ngIf="!isEntityRecord(cardData)">
       <div class="search-card-records  mat-expansion-panel-body">
-        selectedRecords: 
+        <!--selectedRecords: 
         <ul>
           <li *ngFor="let _recId of selectedRecords">{{_recId.src}}/{{_recId.id}}</li>
-        </ul>
+        </ul>-->
         <sz-entity-record-card-content
           *ngFor="let _cardData of cardData?.records"
           [showOtherData]="showOtherDataInDatasourceRecords"
@@ -92,7 +94,8 @@
           [truncateOtherDataAt]="truncateOtherDataInRecordsAt"
           [entity]="_cardData"
           [parentEntity]="cardData"
-          [ngClass]="{'open': expanded}"
+          [ngClass]="{'open': expanded, 'selected': isRecordSelected(_cardData), 'selectModeSingle': isSingleSelect, 'select-mode-multiple': isMultiSelect}"
+          [whySelectionMode]="whySelectionMode"
           [layoutClasses]="layoutClasses"
           [truncateResults]="truncateResults"
           [truncatedTooltip]="'click to expand.'"
