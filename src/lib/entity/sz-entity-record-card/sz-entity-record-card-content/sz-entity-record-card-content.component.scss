@@ -28,6 +28,25 @@
       font-size: 14px;
     }
   }
+  .select-mode-single-hover-button {
+    /* margin-left: 50%; */
+    /*background-color: #f8f7f566;*/
+    display: none;
+    position: absolute;
+    /*width: 200px;
+    height: 50px;*/
+    right: 12px;
+    top: 12px;
+    border-radius: 6px;
+    /*border-color: #999;*/
+    /*border-width: 2px;*/
+    /*border: 1px dashed #d3d3d3;*/
+    padding: 4px 16px 4px 12px;
+    /*color: #999;*/
+    color: #0e2863;
+    background-color: #ffffff;
+    border-color: #dedede;
+  }
 
   &.select-mode-multiple:hover {
     cursor: pointer;
@@ -38,6 +57,14 @@
     }
     &.selected .select-mode-multiple-hover-mask {
       display: none;
+    }
+  }
+  &.select-mode-single:hover {
+    cursor: pointer;
+    background-color: #f0f8ffcc;
+
+    .select-mode-single-hover-button {
+      display: inline-block;
     }
   }
 

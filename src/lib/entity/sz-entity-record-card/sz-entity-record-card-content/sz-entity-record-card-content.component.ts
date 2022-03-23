@@ -516,4 +516,16 @@ export class SzEntityRecordCardContentComponent implements OnInit {
       console.error('SzEntityRecordCardContentComponent.onRecordCardContentClicked() ERROR: datasource or recordId missing');
     }
   }
+  @Output('onDataSourceRecordWhyClicked') 
+  onRecordCardWhyClickedEmitter: EventEmitter<SzRecordId> = new EventEmitter<SzRecordId>();
+
+  public onRecordCardWhyClicked(event: any) {
+    console.log('SzEntityRecordCardContentComponent.onRecordCardWhyClicked()', this.entity, this);
+    if(this.entity && this.entity.dataSource && this.entity.recordId) {
+      let recordId: SzRecordId = {src: this.entity.dataSource, id: this.entity.recordId};
+      this.onRecordCardWhyClickedEmitter.emit(recordId);
+    } else {
+      console.error('SzEntityRecordCardContentComponent.onRecordCardWhyClicked() ERROR: datasource or recordId missing');
+    }
+  }
 }

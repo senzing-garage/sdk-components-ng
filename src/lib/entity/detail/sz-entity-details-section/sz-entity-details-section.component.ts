@@ -294,6 +294,12 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
     this.entityRecordClick.emit(entityId);
   }
 
+  public onDataSourceRecordWhyClick(recordId: SzRecordId | any): void {
+    let _recordId: SzRecordId = (recordId as SzRecordId);
+    console.log('sz-entity-details-section.onDataSourceRecordWhyClick: ', recordId);
+    this._onCompareRecordsForWhy([recordId]);
+  }
+
   public onDataSourceRecordClick(recordId: SzRecordId | any): void {
     let _recordId: SzRecordId = (recordId as SzRecordId);
     console.log('sz-entity-details-section.onDataSourceRecordClick: ', recordId);

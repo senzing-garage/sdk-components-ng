@@ -233,9 +233,14 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   @Output('dataSourceRecordClicked') onDataSourceRecordClickedEmitter = new EventEmitter<SzRecordId>();
   public onDataSourceRecordClicked(recordIdentifier: SzRecordId | any) {
     console.log('sz-entity-detail-section-collapsible-card: ', recordIdentifier);
-    
     this.onDataSourceRecordClickedEmitter.emit(recordIdentifier);
   }
+  @Output('dataSourceRecordWhyClicked') onDataSourceRecordWhyClickedEmitter = new EventEmitter<SzRecordId>();
+  public onDataSourceRecordWhyClicked(recordIdentifier: SzRecordId | any) {
+    console.log('sz-entity-detail-section-collapsible-card: ', recordIdentifier);
+    this.onDataSourceRecordWhyClickedEmitter.emit(recordIdentifier);
+  }
+  
   public get selectedRecords(): SzRecordId[] {
     let retVal = [];
     let _dataSources = Object.keys(this.dataSourceRecordsSelected);

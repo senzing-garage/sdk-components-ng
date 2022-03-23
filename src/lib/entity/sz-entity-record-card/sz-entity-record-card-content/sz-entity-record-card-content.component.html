@@ -56,3 +56,15 @@
 <div class="select-mode-multiple-hover-mask">
   <div class="select-mode-multiple-hover-indicator">click to select</div>
 </div>
+<!--<div class="select-mode-single-hover-mask">-->
+  <button 
+      class="select-mode-single-hover-button"
+      mat-stroked-button
+      matTooltipPosition="above"
+      matTooltip="Perform Why Analysis on this record"
+      (click)="onRecordCardWhyClicked($event)">
+      <mat-icon  
+      aria-hidden="false" aria-label="Click to perform Why on record"
+      >compare_arrows</mat-icon> Why?
+  </button>
+<!--</div>-->

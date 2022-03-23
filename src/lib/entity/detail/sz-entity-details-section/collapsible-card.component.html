@@ -83,10 +83,10 @@
     <!-- start is not entity record (datasource records) -->
     <ng-container *ngIf="!isEntityRecord(cardData)">
       <div class="search-card-records  mat-expansion-panel-body">
-        <!--selectedRecords: 
+        selectedRecords: 
         <ul>
           <li *ngFor="let _recId of selectedRecords">{{_recId.src}}/{{_recId.id}}</li>
-        </ul>-->
+        </ul><br/>
         <sz-entity-record-card-content
           *ngFor="let _cardData of cardData?.records"
           [showOtherData]="showOtherDataInDatasourceRecords"
@@ -94,12 +94,13 @@
           [truncateOtherDataAt]="truncateOtherDataInRecordsAt"
           [entity]="_cardData"
           [parentEntity]="cardData"
-          [ngClass]="{'open': expanded, 'selected': isRecordSelected(_cardData), 'selectModeSingle': isSingleSelect, 'select-mode-multiple': isMultiSelect}"
+          [ngClass]="{'open': expanded, 'selected': isRecordSelected(_cardData), 'select-mode-single': isSingleSelect, 'select-mode-multiple': isMultiSelect}"
           [whySelectionMode]="whySelectionMode"
           [layoutClasses]="layoutClasses"
           [truncateResults]="truncateResults"
           [truncatedTooltip]="'click to expand.'"
           (onDataSourceRecordClicked)="onDataSourceRecordClicked($event)"
+          (onDataSourceRecordWhyClicked)="onDataSourceRecordWhyClicked($event)"
         ></sz-entity-record-card-content>
       </div>
     </ng-container>
