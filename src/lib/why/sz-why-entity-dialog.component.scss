@@ -47,6 +47,54 @@
         width: 100%;
         margin: 0px;
     }
+
+    .spinner-panel {
+        position: fixed;
+        display: block;
+        top: calc(50% - (60px / 2));
+        left: calc(50% - (60px / 2));
+        overflow: hidden;
+    }
+
+    .spinner {
+        /*margin: 50vh auto;*/
+        text-align: center;
+        font-size: 10px;
+        width: 60px;
+        height: 60px;
+
+  
+        div {
+            background-color: #6d738c;
+            height: 100%;
+            width: 9px;
+            display: inline-block;
+            margin: 0 3px 0 0;
+  
+            -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+            animation: sk-stretchdelay 1.2s infinite ease-in-out;
+        }
+  
+        .rect2 {
+        -webkit-animation-delay: -1.1s;
+        animation-delay: -1.1s;
+        }
+  
+        .rect3 {
+        -webkit-animation-delay: -1.0s;
+        animation-delay: -1.0s;
+        }
+  
+        .rect4 {
+        -webkit-animation-delay: -0.9s;
+        animation-delay: -0.9s;
+        }
+  
+        .rect5 {
+        -webkit-animation-delay: -0.8s;
+        animation-delay: -0.8s;
+        }
+    }
 }
 ::ng-deep.mat-dialog-container {
     resize: both; 

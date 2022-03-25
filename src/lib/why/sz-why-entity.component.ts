@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {DataSource} from '@angular/cdk/collections';
 import { EntityDataService, SzAttributeSearchResult, SzEntityData, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzMatchedRecord, SzRecordId, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { delay, Observable, ReplaySubject, Subject } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
 
 /*
@@ -68,20 +68,35 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
   @Input()
   entityId: SzEntityIdentifier;
   private _tableData: any[] = [];
+  private _isLoading = false;
+  @Output()
+  loading: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   private _columnsToDisplay: string[] = [];
   public get displayedColumns(): string[] {
     return this._columnsToDisplay;
+  }
+  public get isLoading(): boolean {
+    return this._isLoading;
+  }
+  public set isLoading(value: boolean) {
+    this._isLoading = value;
   }
   private dataToDisplay = [];
   public dataSource = new ExampleDataSource(this.dataToDisplay);
   public gotColumnDefs = false;
 
   constructor(private dialogRef: MatDialogRef<SzWhyEntityComponent>, private entityData: EntityDataService) {
-
   }
   ngOnInit() {
-    this.getWhyData().subscribe((resData: SzWhyEntityResponse) => {
+    this._isLoading = true;
+    this.loading.emit(true);
+
+    this.getWhyData().pipe(
+      delay(8000)
+    ).subscribe((resData: SzWhyEntityResponse) => {
+      this._isLoading = false;
+      this.loading.emit(false);
       let matchedRecords:SzMatchedRecord[] = [];
       if(resData.data.entities && resData.data.entities.length > 0) {
         resData.data.entities.forEach((_data: SzEntityData) => {
@@ -239,6 +254,12 @@ export class SzWhyEntityDialog {
   private _entityId: SzEntityIdentifier;
   private _recordsToShow: SzRecordId[];
   private _showOkButton = true;
+  private _isLoading = true;
+  public get isLoading(): boolean {
+    return this._isLoading;
+  }
+  @ViewChild('whyEntityTag') whyEntityTag: SzWhyEntityComponent;
+
   public okButtonText: string = "Ok";
   public get showDialogActions(): boolean {
     return this._showOkButton;
@@ -258,6 +279,13 @@ export class SzWhyEntityDialog {
       if(data.okButtonText) {
         this.okButtonText = data.okButtonText;
       }
+      if(data.showOkButton) {
+        this._showOkButton = data.showOkButton;
+      }
     }
+  }
+  public onDataLoading(isLoading: boolean) {
+    console.log('SzWhyEntityDialog.isLoading: ', isLoading);
+    this._isLoading = isLoading;
   }
 }
