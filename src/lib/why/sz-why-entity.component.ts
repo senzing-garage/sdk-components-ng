@@ -5,15 +5,7 @@ import { EntityDataService, SzAttributeSearchResult, SzEntityData, SzEntityIdent
 import { delay, Observable, ReplaySubject, Subject } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
 
-/*
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}*/
-
-class ExampleDataSource extends DataSource<any> {
+class SzWhyEntityDataSource extends DataSource<any> {
   private _dataStream = new ReplaySubject<any[]>();
 
   constructor(initialData: any[]) {
@@ -32,29 +24,15 @@ class ExampleDataSource extends DataSource<any> {
   }
 }
 
-/*
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];*/
-
 /**
  * Display the "Why" information for entity
  *
  * @example 
  * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-why-entity&gt;&lt;/sz-why-entity&gt;<br/><br/>
+ * &lt;sz-why-entity entityId="5"&gt;&lt;/sz-why-entity&gt;<br/><br/>
  *
  * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-wc-why-entity&gt;&lt;/sz-wc-why-entity&gt;<br/>
+ * &lt;sz-wc-why-entity entityId="5"&gt;&lt;/sz-wc-why-entity&gt;<br/>
  */
 @Component({
   selector: 'sz-why-entity',
@@ -83,18 +61,16 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
     this._isLoading = value;
   }
   private dataToDisplay = [];
-  public dataSource = new ExampleDataSource(this.dataToDisplay);
+  public dataSource = new SzWhyEntityDataSource(this.dataToDisplay);
   public gotColumnDefs = false;
 
-  constructor(private dialogRef: MatDialogRef<SzWhyEntityComponent>, private entityData: EntityDataService) {
+  constructor(private entityData: EntityDataService) {
   }
   ngOnInit() {
     this._isLoading = true;
     this.loading.emit(true);
 
-    this.getWhyData().pipe(
-      delay(8000)
-    ).subscribe((resData: SzWhyEntityResponse) => {
+    this.getWhyData().subscribe((resData: SzWhyEntityResponse) => {
       this._isLoading = false;
       this.loading.emit(false);
       let matchedRecords:SzMatchedRecord[] = [];
@@ -127,15 +103,6 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
     return this.entityData.whyEntityByEntityID(parseSzIdentifier(this.entityId), true, true, false, SzFeatureMode.NONE, false, false)
   }
   formatWhyDataForDataTable(data: SzWhyEntityResult[], entityRecords: SzMatchedRecord[]): any {
-    let retData = [];
-    let rows = [
-      'perspective.internalId',
-      'perspective.focusRecords',
-      'matchInfo.whyKey',
-      'matchInfo.resolutionRule',
-      'forEach(matchInfo.featureScores)',
-      'forEach((resolvedEntity.records.recordId == perspective.focusRecords.recordId).identifierData)'
-    ]
     let internalIds   = data.map((matchWhyResult) => { return matchWhyResult.perspective.internalId; });
     let columnKeys    = internalIds;
     let internalIdRow = {title:'Internal Id'};

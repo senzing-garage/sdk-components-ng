@@ -83,10 +83,6 @@
     <!-- start is not entity record (datasource records) -->
     <ng-container *ngIf="!isEntityRecord(cardData)">
       <div class="search-card-records  mat-expansion-panel-body">
-        selectedRecords: 
-        <ul>
-          <li *ngFor="let _recId of selectedRecords">{{_recId.src}}/{{_recId.id}}</li>
-        </ul><br/>
         <sz-entity-record-card-content
           *ngFor="let _cardData of cardData?.records"
           [showOtherData]="showOtherDataInDatasourceRecords"
