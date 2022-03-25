@@ -685,11 +685,12 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     this.recordsWhyButtonClick.emit(records);
     if(this._openWhyComparisonModalOnClick) {
       this.dialog.open(SzWhyEntityDialog, {
-        width: '1200px',
-        height: '800px',
+        panelClass: 'why-entity-dialog-panel',
         data: {
           entityId: this.entity.resolvedEntity.entityId,
-          recordsToShow: records
+          showOkButton: false,
+          okButtonText: 'Close',
+          records: records
         }
       });
     }

@@ -1,7 +1,7 @@
-<h1 mat-dialog-title>Why for entity {{entityId}}</h1>
+<h1 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>Why for entity {{entityId}}</h1>
 <div mat-dialog-content>
   <sz-why-entity [entityId]="entityId"></sz-why-entity>
 </div>
-<div mat-dialog-actions>
-  <button mat-stroked-button mat-dialog-close color="primary">Ok</button>
+<div mat-dialog-actions *ngIf="showDialogActions">
+  <button mat-stroked-button mat-dialog-close color="primary" class="ok">{{okButtonText}}</button>
 </div>

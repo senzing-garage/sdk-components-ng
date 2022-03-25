@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Inject, OnDestroy } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {DataSource} from '@angular/cdk/collections';
-import { EntityDataService, SzAttributeSearchResult, SzEntityData, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzMatchedRecord, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
+import { EntityDataService, SzAttributeSearchResult, SzEntityData, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzMatchedRecord, SzRecordId, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
 
@@ -77,7 +77,7 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
   public dataSource = new ExampleDataSource(this.dataToDisplay);
   public gotColumnDefs = false;
 
-  constructor(private entityData: EntityDataService) {
+  constructor(private dialogRef: MatDialogRef<SzWhyEntityComponent>, private entityData: EntityDataService) {
 
   }
   ngOnInit() {
@@ -237,12 +237,27 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
 })
 export class SzWhyEntityDialog {
   private _entityId: SzEntityIdentifier;
+  private _recordsToShow: SzRecordId[];
+  private _showOkButton = true;
+  public okButtonText: string = "Ok";
+  public get showDialogActions(): boolean {
+    return this._showOkButton;
+  }
+
   public get entityId(): SzEntityIdentifier {
     return this._entityId;
   }
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { entityId: SzEntityIdentifier }) {
-    if(data && data.entityId) {
-      this._entityId = data.entityId;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { entityId: SzEntityIdentifier, records?: SzRecordId[], okButtonText?: string, showOkButton?: boolean }) {
+    if(data) {
+      if(data.entityId) {
+        this._entityId = data.entityId;
+      }
+      if(data.records) {
+        this._recordsToShow = data.records;
+      }
+      if(data.okButtonText) {
+        this.okButtonText = data.okButtonText;
+      }
     }
   }
 }
