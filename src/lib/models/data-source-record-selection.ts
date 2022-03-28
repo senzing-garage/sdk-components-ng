@@ -1,6 +1,9 @@
 export interface SzDataSourceRecordsSelection { 
     [key: string]: Array<string|number> 
 }
+export interface SzDataSourceRecordSelection { 
+    [key: string]: Array<string|number> 
+}
 
 export type SzWhySelectionModeBehavior = 'SINGLE' | 'MULTI' | 'NONE';
 export const SzWhySelectionMode = {

@@ -8,7 +8,8 @@ import {
   SzEntityDetailComponent,
   SzEntityData,
   SzPrefsService,
-  SzConfigurationService
+  SzConfigurationService,
+  SzSearchResultsComponent
 } from '@senzing/sdk-components-ng';
 import { tap, filter, take } from 'rxjs/operators';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -45,6 +46,8 @@ export class AppComponent {
     return false;
   }
   @ViewChild('searchBox') searchBox: SzSearchComponent;
+  @ViewChild('searchResults') searchResults: SzSearchResultsComponent;
+
   @ViewChild(SzEntityDetailComponent) entityDetailComponent: SzEntityDetailComponent;
   @ViewChild('graphContextMenu') graphContextMenu: TemplateRef<any>;
   sub: Subscription;
@@ -82,6 +85,8 @@ export class AppComponent {
 
     // show results
     this.showSearchResults = true;
+    // clear any previous selection
+    if(this.searchResults && this.searchResults.clearSelected){ this.searchResults.clearSelected(); }
   }
 
   public onBackToSearchResultsClick($event): void {
@@ -182,6 +187,7 @@ export class AppComponent {
     this.showSearchResults = false;
     this.currentSearchResults = undefined;
     this.currentlySelectedEntityId = undefined;
+    if(this.searchResults && this.searchResults.clearSelected){ this.searchResults.clearSelected(); }
   }
 
   public onSearchParameterChange(searchParams: SzEntitySearchParams) {
