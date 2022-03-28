@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {DataSource} from '@angular/cdk/collections';
-import { EntityDataService, SzAttributeSearchResult, SzEntityData, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzMatchedRecord, SzRecordId, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
+import { EntityDataService, SzAttributeSearchResult, SzEntityData, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
 import { delay, Observable, ReplaySubject, Subject } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
 
@@ -49,6 +49,9 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
   private _isLoading = false;
   @Output()
   loading: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  /** if more than two records the view can be limited to just explicitly listed ones */
+  @Input() recordsToShow: SzRecordId[] | undefined;
 
   private _columnsToDisplay: string[] = [];
   public get displayedColumns(): string[] {
@@ -110,6 +113,26 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
     let whyKeyRow     = {title:'Why Result'};
     let featureKeys   = [];
     let features      = {};
+    if(this.recordsToShow && this.recordsToShow.length > 0) {
+      // only show specific records
+      let filteredInternalIds     = data.filter((matchWhyResult) => {
+        let hasSelectionMatch = matchWhyResult.perspective.focusRecords.some((frId: SzFocusRecordId) => {
+          let focusRecordInSelection = this.recordsToShow.find((rToShow: SzRecordId) => {
+            return rToShow.id == frId.recordId && rToShow.src == frId.dataSource;
+          })
+          return focusRecordInSelection !== undefined ? true : false;
+        })
+        return hasSelectionMatch ? true : false;
+      }).map((matchWhyResult) => {
+        return matchWhyResult.perspective.internalId;
+      });
+      if(filteredInternalIds && filteredInternalIds.length > 0) {
+        // we found at least one
+        internalIds   = filteredInternalIds;
+        columnKeys    = internalIds;
+      }
+      console.warn('formatWhyDataForDataTable: filtered internal ids? ',filteredInternalIds);
+    }
 
     columnKeys.forEach((colKey, _index) => {
       internalIdRow[ colKey ] = colKey;
@@ -225,7 +248,19 @@ export class SzWhyEntityDialog {
   public get isLoading(): boolean {
     return this._isLoading;
   }
+  public get recordsToShow(): SzRecordId[] | undefined {
+    return this._recordsToShow;
+  }
   @ViewChild('whyEntityTag') whyEntityTag: SzWhyEntityComponent;
+
+  public get title(): string {
+    let retVal = `Why for Entity ${this.entityId}`;
+    if(this._recordsToShow && this._recordsToShow.length > 0) {
+      // we're only showing specific record(s)
+      retVal = `Why for Record`
+    }
+    return retVal
+  }
 
   public okButtonText: string = "Ok";
   public get showDialogActions(): boolean {

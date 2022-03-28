@@ -1,6 +1,6 @@
-<h1 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>Why for entity {{entityId}}</h1>
+<h1 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>{{title}}</h1>
 <div mat-dialog-content>
-  <sz-why-entity #whyEntityTag [entityId]="entityId" (loading)="onDataLoading($event)"></sz-why-entity>
+  <sz-why-entity #whyEntityTag [entityId]="entityId" [recordsToShow]="recordsToShow" (loading)="onDataLoading($event)"></sz-why-entity>
   <!-- start spinner overlay -->
   <div class="mat-background spinner-panel" *ngIf="isLoading">
     <div class="spinner">

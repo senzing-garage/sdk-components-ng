@@ -138,11 +138,16 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   @Output() headerWhyButtonClick = new EventEmitter<SzEntityIdentifier>();
   /** (Event Emitter) when the user clicks on the "Why" button in records section */
   @Output() recordsWhyButtonClick = new EventEmitter<SzRecordId[]>();
+  /** (Event Emitter) when the user clicks on a datasource record for either single-select
+   * or multi-select operations.
+   */
+  @Output() dataSourceRecordsSelected = new EventEmitter<SzDataSourceRecordsSelection>();
 
   /** whether or not to show the "why" comparison button for records */
   public get showRecordWhyUtilities(): boolean {
     return this._showRecordWhyUtilities;
   }
+  /** whether or not to show the "why" comparison button for records */
   @Input() set showRecordWhyUtilities(value: boolean) {
     this._showRecordWhyUtilities = value;
   }
@@ -152,6 +157,9 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   public get whySelectionMode(): SzWhySelectionModeBehavior {
     return this._whySelectionMode;
   }
+  /** if "showRecordWhyUtilities" set to true there is a "single-record" select behavior, and a 
+   * "multi-select" behavior. possible values are `SINGLE` and `MUTLI`
+  */
   @Input() set whySelectionMode(value: SzWhySelectionModeBehavior) {
     this._whySelectionMode = value;
   }
@@ -637,6 +645,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   }
   public onDataSourceRecordsSelected(records: SzDataSourceRecordsSelection) {
     console.log('onDataSourceRecordsSelected: ', records);
+    this.dataSourceRecordsSelected.emit(records);
   }
 
   /**
@@ -671,8 +680,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     console.log('SzEntityDetailComponent.onHeaderWhyButtonClick: ', entityId);
     if(this._openWhyComparisonModalOnClick){
       this.dialog.open(SzWhyEntityDialog, {
-        width: '1200px',
-        height: '800px',
+        panelClass: 'why-entity-dialog-panel',
         data: {
           entityId: entityId
         }

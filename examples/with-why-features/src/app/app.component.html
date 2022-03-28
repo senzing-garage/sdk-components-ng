@@ -9,8 +9,7 @@
   <div class="component-example">
     <sz-search
       #searchBox
-      name="Jenny Smith"
-      address="1304 Poppy Hills Dr Blacklick OH 43004"
+      name="Ara Winters"
       showIdentifierTypesPicker="false"
       disableIdentifierOptions="SSN_LAST4"
       enableIdentifierOptions="SOCIAL_NETWORK"
@@ -44,7 +43,7 @@
       *ngIf="showSearchResults" 
       [results]="currentSearchResults" 
       [parameters]="currentSearchParameters" 
-      showWhyComparisonButton="false"
+      showWhyComparisonButton="true"
       (resultClick)="onSearchResultClick($event)"></sz-search-results>
   </div>
   <!-- end search results -->
@@ -58,7 +57,7 @@
       (graphEntityClick)="onGraphEntityClick($event)"
       (graphEntityDblClick)="onGraphEntityDblClick($event)"
       (graphContextMenuClick)="onGraphContextClick($event)"
-      [whySelectionMode]="'SINGLE'"
+      [whySelectionMode]="'MULTI'"
       [showEntityWhyFunction]="true"
       [showRecordWhyUtilities]="true"
       [showGraphMatchKeys]="true"

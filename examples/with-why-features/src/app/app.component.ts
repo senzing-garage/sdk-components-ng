@@ -22,7 +22,7 @@ import { Subscription, fromEvent } from 'rxjs';
 })
 export class AppComponent {
   public currentSearchResults: SzAttributeSearchResult[];
-  public currentlySelectedEntityId: number = 6;
+  public currentlySelectedEntityId: number = 39001;
   public currentSearchParameters: SzEntitySearchParams;
   public showSearchResults = false;
   public set showGraphMatchKeys(value: boolean) {
