@@ -258,6 +258,9 @@ export class SzWhyEntityDialog {
     if(this._recordsToShow && this._recordsToShow.length > 0) {
       // we're only showing specific record(s)
       retVal = `Why for Record`
+      if(this._recordsToShow.length > 1) {
+        retVal = `Why for Records`
+      }
     }
     return retVal
   }

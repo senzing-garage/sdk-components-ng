@@ -297,6 +297,7 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
   public onDataSourceRecordWhyClick(recordId: SzRecordId | any): void {
     let _recordId: SzRecordId = (recordId as SzRecordId);
     console.log('sz-entity-details-section.onDataSourceRecordWhyClick: ', recordId);
+    
     this._onCompareRecordsForWhy([recordId]);
   }
 
@@ -333,8 +334,24 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
     return undefined;
   }
 
+
+
   public _onCompareRecordsForWhy(recordIds: SzRecordId[]) {
-    console.log('SzEntityDetailsSectionComponent.onCompareRecordsForWhy()', recordIds);
+    if(this._whySelectionMode === SzWhySelectionMode.MULTIPLE) {
+      // grab from selected instead of direct event
+      let _rIds = [];
+      let _dsKeys = Object.keys(this.selectedDataSourceRecords);
+      _dsKeys.forEach((dsK) => {
+        let _rIdsForDs  = this.selectedDataSourceRecords[dsK]; // SzRecordId[]
+        let _rIdsAsRecordIds: SzRecordId[]  = _rIdsForDs.map((rId) => {
+          return {src: dsK, id: (rId as string)}
+        });
+        _rIds = _rIds.concat(_rIdsAsRecordIds);
+      });
+      console.warn('SzEntityDetailsSectionComponent.onCompareRecordsForWhy() selected records: ', _rIds, this.selectedDataSourceRecords);
+      recordIds = _rIds;
+    }
+    console.log('SzEntityDetailsSectionComponent.onCompareRecordsForWhy()', recordIds, this.selectedDataSourceRecords);
     this.onCompareRecordsForWhy.emit(recordIds);
   }
 
