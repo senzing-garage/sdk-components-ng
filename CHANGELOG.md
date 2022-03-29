@@ -14,6 +14,21 @@ and [rest api specification](https://github.com/Senzing/senzing-rest-api-specifi
 ### Added
 - `showMatchKeyFilters` property added to `sz-standalone-graph` tag. specifying a value of `false` will hide the *Filter By Match Key* section of the embedded graph controls. (defaults to _true_)
 - `showMatchKeyFilters` property added to `sz-graph-filter` tag. specifying a value of `false` will hide the *Filter By Match Key* list of checkboxes. (defaults to _true_)
+- `SzWhyEntityComponent` component for displaying results from the api server's respective why endpoints(`/entities/{entityId}/why`).
+- `parseSzIdentifier` function added to `src/lib/common/utils.ts`
+- `nonTextTrim` function added to `src/lib/common/utils.ts`
+- `SzWhySelectionMode` 
+- `showWhyFunction` input attribute added to `SzEntityDetailComponent`. Turns on the availability of "Why" related functions(Why button under icon, why buttons in the records section) in the entity detail component.
+- `whySelectionMode` input attribute added to `SzEntityDetailComponent`. Turns on the availability of "Why" related functions(Why button under icon, why buttons in the records section) in the entity detail component. values are `NONE`|`SINGLE`|`MULTI`
+-  `openWhyComparisonModalOnClick` input attribute added to `SzEntityDetailComponent`. setting to `false` will mean that the integrator will be responsible for responding to "Why" events(`recordsWhyButtonClick`,`headerWhyButtonClick`), the component will no longer display a modal on click by default. 
+- The following getters/setters, and methods to `SzEntityDetailComponent`
+  - `showRecordWhyUtilities` - explicitly hide or show the why buttons on individual records.
+  - `showEntityWhyFunction` - explicitly hide or show the why button under the icon.
+  - `onCompareRecordsForWhy()` - is what is called when a `recordsWhyButtonClick` event is invoked.
+  - `onHeaderWhyButtonClick()` - is what is called when a `headerWhyButtonClick` event is invoked.
+- The following event emitters to `SzEntityDetailComponent`
+  - `recordsWhyButtonClick` - is emitted when a user clicks a why button from within the context of a record.
+  - `headerWhyButtonClick` - is emitted when a user clicks a why button underneath the icon in the header.
 
 ### Removed
 - the following methods removed `SzAdminService`

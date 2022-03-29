@@ -1,7 +1,7 @@
-<div>
+<div [class.select-mode-active]="entitySelectActive">
     <!-- @senzing/sdk/search/sz-search-results -->
-
-    <div class="sz-search-results-total-summary">
+    <div class="sz-search-results-head">
+      <div class="sz-search-results-total-summary">
         <div class="sz-search-results-total" *ngIf="searchResults && searchValue">
           <span class="sz-search-results-total-bold">{{searchResultsTotal}} Results </span>found for
           <div>
@@ -11,8 +11,30 @@
             </ng-container>
           </div>
         </div>
+      </div>
+      <!-- start "entity select control" mechanism -->
+      <sz-button-multi-select *ngIf="showWhyComparisonButton"
+        (onSelectActiveChange)="onComparisonModeActiveChange($event)"
+        (onSelectedClick)="onCompareClick($event)"
+        [selectedCount]="this.selectedEntities.length"
+        aria-hidden="false" 
+        aria-label="Select Entities for Why comparison"
+        text="Compare Entities"
+        selectedItemTypeSingular="entity"
+        selectedItemTypePlural="entities"
+        selectedActionVerb="why comparison"
+        selectedActionVerbCTA="compare Why"
+        mat-icon="compare_arrows"
+        ></sz-button-multi-select>
+      <!-- end "entity select control" mechanism -->
     </div>
-
+    <!--<div *ngIf="entitySelectActive">
+      <ul>
+        <li *ngFor="let selectedEntity of this.selectedEntities; let i = index">
+          {{ selectedEntity.nameData }}
+        </li>
+      </ul>
+    </div>-->
     <div class="search-result__section-header matches"
       *ngIf="this.matches?.length > 0"><span>Matches</span></div>
     <sz-search-result-card
@@ -21,6 +43,7 @@
       (click)="onResultClick($event, searchResult)"
       [searchResult]="searchResult"
       [cardTitle]="'Match'"
+      [class.selected]="isSelected(searchResult)"
       [showDataSources]="showDataSources">
     </sz-search-result-card>
 
@@ -32,6 +55,7 @@
       (click)="onResultClick($event, searchResult)"
       [searchResult]="searchResult"
       [cardTitle]="'Possible Matches'"
+      [class.selected]="isSelected(searchResult)"
       [showDataSources]="showDataSources">
     </sz-search-result-card>
 
@@ -43,6 +67,7 @@
       (click)="onResultClick($event, searchResult)"
       [searchResult]="searchResult"
       [cardTitle]="'Discovered Relationships'"
+      [class.selected]="isSelected(searchResult)"
       [showDataSources]="showDataSources">
     </sz-search-result-card>
 
@@ -54,5 +79,6 @@
       (click)="onResultClick($event, searchResult)"
       [searchResult]="searchResult"
       [cardTitle]="'Name Only Matches'"
+      [class.selected]="isSelected(searchResult)"
       [showDataSources]="showDataSources"></sz-search-result-card>
 </div>

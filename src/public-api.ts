@@ -65,6 +65,12 @@ export { SzBulkLoadStatus } from './lib/models/data-importing';
 export { AdminStreamConnProperties, AdminStreamAnalysisConfig, AdminStreamLoadConfig, AdminStreamUploadRates } from './lib/models/data-admin';
 export { SzDataSourceRecordAnalysis, SzDataSourceComposite } from './lib/models/data-sources';
 
+/** why */
+export { SzWhyEntityComponent } from './lib/why/sz-why-entity.component';
+export { SzWhyEntitiesComparisonComponent } from './lib/why/sz-why-entities.component';
+export { SzWhyEntityDialog } from './lib/why/sz-why-entity.component';
+export { SzWhyEntitiesDialog } from './lib/why/sz-why-entities.component';
+
 /** export some members of rest client to ease type use */
 export {
   Configuration as SzRestConfiguration,

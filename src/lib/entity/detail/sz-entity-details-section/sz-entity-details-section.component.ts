@@ -1,11 +1,12 @@
 import { Component, Input, Output, EventEmitter, ViewChildren, QueryList, OnDestroy } from '@angular/core';
-import { SzRelatedEntity, SzEntityRecord } from '@senzing/rest-api-client-ng';
+import { SzRelatedEntity, SzEntityRecord, SzRecordId } from '@senzing/rest-api-client-ng';
 import { SzEntityDetailSectionCollapsibleCardComponent } from './collapsible-card.component';
 import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { SzEntityRecordCardContentComponent } from '../../sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
 import { SzSectionDataByDataSource, SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
+import { SzDataSourceRecordsSelection, SzWhySelectionMode, SzWhySelectionModeBehavior } from '../../../models/data-source-record-selection';
 
 /**
  * @internal
@@ -22,6 +23,7 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
   _sectionData: SzEntityRecord[] | SzRelatedEntity[];
   _sectionDataByDataSource: SzSectionDataByDataSource[];
   _sectionDataByMatchKey: SzEntityRecord[] | SzRelatedEntity[];
+  private _whySelectionMode: SzWhySelectionModeBehavior = SzWhySelectionMode.NONE;
 
   @Input() entity: SzEntityRecord | SzRelatedEntity;
   @Input()
@@ -40,6 +42,8 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
   @Input() showOtherDataInEntities: boolean;
   @Input() showBestNameOnlyInEntities: boolean;
   @Input() showNameDataInEntities: boolean;
+  @Input() showWhyUtilities: boolean;
+  @Output() onCompareRecordsForWhy: EventEmitter<SzRecordId[]> = new EventEmitter<SzRecordId[]>();
 
   /** when the user collapses or expands the ui toggle */
   @Output() onCollapsedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -88,6 +92,19 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
 
   @Output()
   public entityRecordClick: EventEmitter<number> = new EventEmitter<number>();
+  @Output()
+  public dataSourceRecordClick: EventEmitter<SzRecordId> = new EventEmitter<SzRecordId>();
+  @Output() dataSourceRecordsSelected: EventEmitter<SzDataSourceRecordsSelection> = new EventEmitter();
+  /** 
+   * if "showRecordWhyUtilities" set to true there is a "single-record" select behavior, and a 
+   * "multi-select" behavior. possible values are `SINGLE` and `MUTLI`
+   */
+   public get whySelectionMode(): SzWhySelectionModeBehavior {
+    return this._whySelectionMode;
+  }
+  @Input() set whySelectionMode(value: SzWhySelectionModeBehavior) {
+    this._whySelectionMode = value;
+  }
 
   constructor(public breakpointObserver: BreakpointObserver) { }
 
@@ -270,9 +287,39 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
     return _className;
   }
 
+  public selectedDataSourceRecords: SzDataSourceRecordsSelection = {};
+
   public onEntityRecordClick(entityId: number): void {
     console.log('sz-entity-details-section: ', entityId);
     this.entityRecordClick.emit(entityId);
+  }
+
+  public onDataSourceRecordWhyClick(recordId: SzRecordId | any): void {
+    let _recordId: SzRecordId = (recordId as SzRecordId);
+    console.log('sz-entity-details-section.onDataSourceRecordWhyClick: ', recordId);
+    
+    this._onCompareRecordsForWhy([recordId]);
+  }
+
+  public onDataSourceRecordClick(recordId: SzRecordId | any): void {
+    let _recordId: SzRecordId = (recordId as SzRecordId);
+    console.log('sz-entity-details-section.onDataSourceRecordClick: ', recordId);
+    if(!this.selectedDataSourceRecords[_recordId.src] ) {
+      // no records at all, assume we're adding
+      this.selectedDataSourceRecords[_recordId.src] = [_recordId.id];
+    } else {
+      let existingIndexPosition = this.selectedDataSourceRecords[_recordId.src].indexOf(_recordId.id);
+      if(existingIndexPosition > -1) {
+        // deselect
+        this.selectedDataSourceRecords[_recordId.src].splice(existingIndexPosition, 1);
+      } else {
+        // select
+        this.selectedDataSourceRecords[_recordId.src].push(_recordId.id);
+      }
+    }
+    this.selectedDataSourceRecords[_recordId.src]
+    this.dataSourceRecordClick.emit(recordId);
+    this.dataSourceRecordsSelected.emit(this.selectedDataSourceRecords);
   }
 
   getCssQueryFromCriteria(minWidth?: number, maxWidth?: number): string | undefined {
@@ -285,6 +332,27 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
       return (`(max-width: ${maxWidth}px)`);
     }
     return undefined;
+  }
+
+
+
+  public _onCompareRecordsForWhy(recordIds: SzRecordId[]) {
+    if(this._whySelectionMode === SzWhySelectionMode.MULTIPLE) {
+      // grab from selected instead of direct event
+      let _rIds = [];
+      let _dsKeys = Object.keys(this.selectedDataSourceRecords);
+      _dsKeys.forEach((dsK) => {
+        let _rIdsForDs  = this.selectedDataSourceRecords[dsK]; // SzRecordId[]
+        let _rIdsAsRecordIds: SzRecordId[]  = _rIdsForDs.map((rId) => {
+          return {src: dsK, id: (rId as string)}
+        });
+        _rIds = _rIds.concat(_rIdsAsRecordIds);
+      });
+      console.warn('SzEntityDetailsSectionComponent.onCompareRecordsForWhy() selected records: ', _rIds, this.selectedDataSourceRecords);
+      recordIds = _rIds;
+    }
+    console.log('SzEntityDetailsSectionComponent.onCompareRecordsForWhy()', recordIds, this.selectedDataSourceRecords);
+    this.onCompareRecordsForWhy.emit(recordIds);
   }
 
 }

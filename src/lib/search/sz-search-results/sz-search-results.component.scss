@@ -14,6 +14,15 @@
     text-transform: uppercase;
   }
 
+  .sz-search-results-head {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    sz-button-multi-select { width: 165px; }
+  }
+
   .sz-search-results-total-summary {
 
     color: var(--sz-search-results-header-color);
@@ -64,8 +73,25 @@
     }
   }
 
+  .select-mode-active {
+    sz-search-result-card { 
+      opacity: .5;
+      cursor: copy;
+      &:hover {
+        opacity: .9;
+      }
+      &.selected {
+        background-color: #0b95ed2e;
+        opacity: 1;
+        /*cursor: zoom-out;*/
+      }
+    }
+  }
+
   sz-search-result-card {
     cursor: var(--sz-search-results-card-cursor);
+    background: $sz-white;
+
     &:hover {
       color: var(--sz-search-results-card-hover-color);
       cursor: var(--sz-search-results-card-hover-cursor);

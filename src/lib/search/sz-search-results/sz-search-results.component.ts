@@ -4,11 +4,15 @@ import { SzEntitySearchParams } from '../../models/entity-search';
 import {
   EntityDataService,
   SzAttributeSearchResult,
-  SzAttributeSearchResultType
+  SzAttributeSearchResultType,
+  SzEntityIdentifier
 } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { SzWhyEntitiesDialog } from '../../why/sz-why-entities.component';
+import { parseBool } from '../../common/utils';
 
 /**
  * Provides a graphical search results component. Data can be provided a number of ways.
@@ -57,6 +61,41 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
    * @memberof SzSearchResultsComponent
    */
   @Input() showDataSources: boolean = true;
+
+  private _showWhyComparisonButton: boolean = false;
+  /**
+   * Shows or hides the multi-select "Why" comparison button.
+   * @memberof SzSearchResultsComponent
+   */
+  @Input() set showWhyComparisonButton(value: boolean | string) {
+    this._showWhyComparisonButton = parseBool(value);
+  }
+  public get showWhyComparisonButton(): boolean {
+    return this._showWhyComparisonButton;
+  }
+  private _openWhyComparisonModalOnClick: boolean = true;
+  /** whether or not to automatically open a modal with the entity comparison on 
+   * "Why" button click. (disable for custom implementation/action)
+   */
+   @Input() openWhyComparisonModalOnClick(value: boolean) {
+    this._openWhyComparisonModalOnClick = value;
+  }
+  /** (Event Emitter) when the user clicks on the "Why" button */
+  @Output() whyButtonClick = new EventEmitter<SzEntityIdentifier[]>();
+
+  private _entitySelectActive = false;
+  public get entitySelectActive(): boolean {
+    return this._entitySelectActive;
+  }
+  /** @internal */
+  private _selectedEntities:SzAttributeSearchResult[] = [];
+  /**
+   * get the entities selected during a multi-select operation such as when 
+   * "Why" comparison mode select is active.
+   */
+  public get selectedEntities():SzAttributeSearchResult[] {
+    return this._selectedEntities;
+  }
 
   /**
    * The results of a search response to display in the component.
@@ -196,6 +235,11 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
    */
   public onResultClick(evt: any, resData: SzAttributeSearchResult): void
   {
+    if(this._entitySelectActive){
+      this.toggleSelected( resData );
+      return;
+    }
+
     // preflight check to see if user is trying to select text
     if(window && window.getSelection){
       var selection = window.getSelection();
@@ -207,6 +251,67 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
       this.resultClick.emit(resData);
     }
   }
+  /** when the user clicks the multi-select button to enable/disable click to select behavior this handler is invoked */
+  public onComparisonModeActiveChange(isActive: boolean) {
+    this._entitySelectActive = isActive;
+  }
+  /** for multi-select the user has to click the button to change the default row behavior from 
+   * click->go to detail to click->select for comparison
+   */
+  public onComparisonModeToggleClick(evt: any) {
+    this._entitySelectActive = !this._entitySelectActive;
+  }
+  /** when the compare button is clicked */
+  public onCompareClick(evt: any) {
+    console.log('onCompareClicked: ', this._selectedEntities);
+    let selectedEntityIds = this._selectedEntities.map((entityResult: SzAttributeSearchResult) => {
+      return entityResult.entityId;
+    });
+
+    this.whyButtonClick.emit(selectedEntityIds);
+    if(this._openWhyComparisonModalOnClick) {
+      this.dialog.open(SzWhyEntitiesDialog, {
+        panelClass: 'why-entities-dialog-panel',
+        data: {
+          entities: selectedEntityIds,
+          showOkButton: false,
+          okButtonText: 'Close'
+        }
+      });
+    }
+  }
+  /** clear any selected entity results if "_showWhyComparisonButton" set to true */
+  public clearSelected() {
+    this._selectedEntities = [];
+  }
+  /** add entity to selection if not already in it. remove entity from selection if already in selection */
+  public toggleSelected(entityResult: SzAttributeSearchResult) {
+    if(entityResult) {
+      let existingPosition = this._selectedEntities.findIndex((entityToMatch: SzAttributeSearchResult) => {
+        return entityToMatch &&  entityResult && entityToMatch.entityId === entityResult.entityId;
+      })
+      if(existingPosition > -1 && this._selectedEntities && this._selectedEntities[ existingPosition ]) {
+        // remove from array
+        this._selectedEntities.splice(existingPosition, 1);
+      } else {
+        // add to array
+        this._selectedEntities.push( entityResult );
+      }
+    }
+  }
+  /** is a search result already selected */
+  public isSelected(entityResult: SzAttributeSearchResult) {
+    if(entityResult) {
+      let existingPosition = this._selectedEntities.findIndex((entityToMatch: SzAttributeSearchResult) => {
+        return entityToMatch &&  entityResult && entityToMatch.entityId === entityResult.entityId;
+      })
+      if(existingPosition > -1) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /**
    * Total number of search results being displayed.
    *
@@ -220,7 +325,8 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
   constructor(
     private titleCasePipe: TitleCasePipe,
     private prefs: SzPrefsService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {

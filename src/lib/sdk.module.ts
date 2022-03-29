@@ -32,6 +32,7 @@ import { SzAdminService } from './services/sz-admin.service';
 import { SzBulkDataService } from './services/sz-bulk-data.service';
 
 /** components */
+import { SzMultiSelectButtonComponent } from './shared/multi-select-button/multi-select-button.component';
 /** entity resume related */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
 import { SzEntityDetailHeaderComponent } from './entity/detail/sz-entity-detail-header/header.component';
@@ -67,6 +68,12 @@ import { SzConfigurationComponent } from './configuration/sz-configuration/sz-co
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
 import { SzPreferencesComponent } from './configuration/sz-preferences/sz-preferences.component';
 import { SzPrefDictComponent } from './configuration/sz-preferences/sz-pref-dict/sz-pref-dict.component';
+// why related
+import { SzWhyEntityComponent } from './why/sz-why-entity.component';
+import { SzWhyEntitiesComparisonComponent } from './why/sz-why-entities.component';
+import { SzWhyEntityDialog } from './why/sz-why-entity.component';
+import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
+//import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
 
 /**
  * Sets up a default set of service parameters for use
@@ -123,9 +130,14 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultCardHeaderComponent,
     SzConfigurationAboutComponent,
     SzConfigurationComponent,
+    SzMultiSelectButtonComponent,
     SzPoweredByComponent,
     SzPreferencesComponent,
-    SzPrefDictComponent
+    SzPrefDictComponent,
+    SzWhyEntitiesComparisonComponent,
+    SzWhyEntityComponent,
+    SzWhyEntitiesDialog,
+    SzWhyEntityDialog
   ],
   imports: [
     CommonModule,
@@ -156,7 +168,11 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzGraphFilterComponent,
     SzEntityRecordViewerComponent,
     SzStandaloneGraphComponent,
-    SzPreferencesComponent
+    SzPreferencesComponent,
+    SzWhyEntitiesComparisonComponent,
+    SzWhyEntityComponent,
+    SzWhyEntitiesDialog,
+    SzWhyEntityDialog
   ],
   /** for components being exported as web components */
   entryComponents: [
@@ -172,7 +188,11 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzPoweredByComponent,
     SzConfigurationComponent,
     SzConfigurationAboutComponent,
-    SzPreferencesComponent
+    SzPreferencesComponent,
+    SzWhyEntitiesComparisonComponent,
+    SzWhyEntityComponent,
+    SzWhyEntitiesDialog,
+    SzWhyEntityDialog
   ],
   providers: [
     SzMessageBundleService,

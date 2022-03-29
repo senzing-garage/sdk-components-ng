@@ -1,15 +1,17 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 import {
   SzEntityData,
   SzResolvedEntity,
   SzEntityRecord,
-  SzRelatedEntity
+  SzRelatedEntity,
+  SzRecordId
 } from '@senzing/rest-api-client-ng';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
+import { SzWhySelectionMode, SzWhySelectionModeBehavior } from '../../../models/data-source-record-selection';
 
 
 /**
@@ -33,6 +35,8 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   private _showNameData: boolean = true;
   private _showBestNameOnly: boolean = false;
   private _ignorePrefOtherDataChanges = false;
+  @Input() public whySelectionMode: SzWhySelectionModeBehavior = SzWhySelectionMode.NONE;
+  @Input() public showWhyUtilities: boolean = false;
   @Input() public showRecordIdWhenNative: boolean = false;
   /** allows records with empty columns to match up with records with non-empty columns. format is [true,false,true,true,true] */
   @Input() public columnsShown: boolean[] = undefined;
@@ -65,6 +69,15 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   }
   get showBestNameOnly(): boolean {
     return this._showBestNameOnly;
+  }
+  public get isMultiSelect(): boolean {
+    return this.whySelectionMode === SzWhySelectionMode.MULTIPLE
+  }
+  public get isSingleSelect(): boolean {
+    return this.whySelectionMode === SzWhySelectionMode.SINGLE
+  }
+  public get isSelectModeActive(): boolean {
+    return this.whySelectionMode !== SzWhySelectionMode.NONE
   }
 
   @Input() set entity(value) {
@@ -489,5 +502,30 @@ export class SzEntityRecordCardContentComponent implements OnInit {
       return (<SzEntityDetailSectionData>data).matchLevel !== undefined;
     }
     return false;
+  }
+  @Output('onDataSourceRecordClicked') 
+  onRecordCardContentClickedEmitter: EventEmitter<SzRecordId> = new EventEmitter<SzRecordId>();
+
+  public onRecordCardContentClicked(event: any) {
+    console.log('SzEntityRecordCardContentComponent.onRecordCardContentClicked()', this.entity, this);
+    
+    if(this.entity && this.entity.dataSource && this.entity.recordId) {
+      let recordId: SzRecordId = {src: this.entity.dataSource, id: this.entity.recordId};
+      this.onRecordCardContentClickedEmitter.emit(recordId);
+    } else {
+      console.error('SzEntityRecordCardContentComponent.onRecordCardContentClicked() ERROR: datasource or recordId missing');
+    }
+  }
+  @Output('onDataSourceRecordWhyClicked') 
+  onRecordCardWhyClickedEmitter: EventEmitter<SzRecordId> = new EventEmitter<SzRecordId>();
+
+  public onRecordCardWhyClicked(event: any) {
+    console.log('SzEntityRecordCardContentComponent.onRecordCardWhyClicked()', this.entity, this);
+    if(this.entity && this.entity.dataSource && this.entity.recordId) {
+      let recordId: SzRecordId = {src: this.entity.dataSource, id: this.entity.recordId};
+      this.onRecordCardWhyClickedEmitter.emit(recordId);
+    } else {
+      console.error('SzEntityRecordCardContentComponent.onRecordCardWhyClicked() ERROR: datasource or recordId missing');
+    }
   }
 }

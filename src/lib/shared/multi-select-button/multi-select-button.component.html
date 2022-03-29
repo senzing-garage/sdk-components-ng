@@ -1,0 +1,30 @@
+<!-- start "entity select control" mechanism -->
+<div class="sz-search-results-head-why-mode">
+    <div class="mat-icon-button-left" [class.active]="isSelectActive">
+      <mat-icon (click)="onIconClick($event)" 
+      aria-hidden="false" aria-label="ariaIconTooltipText"
+      matTooltipPosition="above"
+      [matTooltip]="tooltipText">{{maticon}}</mat-icon>
+    </div>
+    <button class="sz-search-results-head-why-mode-button-compare" *ngIf="isSelectActive && selectedCount > 1" mat-stroked-button 
+      (click)="onActionClick($event)"
+      color="accent"
+      matTooltipPosition="above"
+      [matTooltip]="tooltipText"
+      [matBadge]="selectedCount" 
+      matBadgePosition="before" 
+      matBadgeColor="warn">{{text}}</button>
+    <button class="sz-search-results-head-why-mode-button-compare" *ngIf="isSelectActive && selectedCount == 1" mat-stroked-button 
+        disabled="true"
+        color="accent"
+        matTooltipPosition="above"
+        [matTooltip]="tooltipText"
+        [matBadge]="selectedCount" 
+        matBadgePosition="before" 
+        matBadgeColor="warn">{{text}}</button>
+    <button *ngIf="!isSelectActive || selectedCount <= 0" 
+      disabled="true" mat-stroked-button
+      matTooltipPosition="above"
+      [matTooltip]="tooltipText">{{text}}</button>
+</div>
+ <!-- end "entity select control" mechanism -->

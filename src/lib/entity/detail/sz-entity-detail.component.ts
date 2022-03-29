@@ -8,12 +8,18 @@ import {
   SzRelatedEntity,
   SzResolvedEntity,
   SzEntityRecord,
-  SzRelationshipType
+  SzRelationshipType,
+  SzEntityIdentifier,
+  SzRecordId
 } from '@senzing/rest-api-client-ng';
+import { MatDialog } from '@angular/material/dialog';
+
 import { SzEntityDetailGraphComponent } from './sz-entity-detail-graph/sz-entity-detail-graph.component';
+import { SzWhyEntityDialog } from '../../why/sz-why-entity.component';
 
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { parseBool } from '../../common/utils';
+import { SzDataSourceRecordsSelection, SzWhySelectionModeBehavior, SzWhySelectionMode } from '../../models/data-source-record-selection';
 
 /**
  * The Entity Detail Component.
@@ -117,6 +123,61 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private _possibleMatchesSectionCollapsed: boolean = false;
   private _possibleRelationshipsSectionCollapsed: boolean = false;
   private _disclosedRelationshipsSectionCollapsed: boolean = false;
+
+  // why utilities
+  private _whySelectionMode: SzWhySelectionModeBehavior = SzWhySelectionMode.NONE;
+  private _showEntityWhyFunction: boolean = false;
+  private _showRecordWhyUtilities: boolean = false;
+  private _openWhyComparisonModalOnClick: boolean = true;
+
+  /** @internal */
+  private _headerWhyButtonClicked: Subject<SzEntityIdentifier> = new Subject<SzEntityIdentifier>();
+  /** (Observeable) when the user clicks on the "Why" button in header under the icon */
+  public headerWhyButtonClicked = this._headerWhyButtonClicked.asObservable();
+  /** (Event Emitter) when the user clicks on the "Why" button in header under the icon */
+  @Output() headerWhyButtonClick = new EventEmitter<SzEntityIdentifier>();
+  /** (Event Emitter) when the user clicks on the "Why" button in records section */
+  @Output() recordsWhyButtonClick = new EventEmitter<SzRecordId[]>();
+  /** (Event Emitter) when the user clicks on a datasource record for either single-select
+   * or multi-select operations.
+   */
+  @Output() dataSourceRecordsSelected = new EventEmitter<SzDataSourceRecordsSelection>();
+
+  /** whether or not to show the "why" comparison button for records */
+  public get showRecordWhyUtilities(): boolean {
+    return this._showRecordWhyUtilities;
+  }
+  /** whether or not to show the "why" comparison button for records */
+  @Input() set showRecordWhyUtilities(value: boolean) {
+    this._showRecordWhyUtilities = value;
+  }
+  /** if "showRecordWhyUtilities" set to true there is a "single-record" select behavior, and a 
+   * "multi-select" behavior. possible values are `SINGLE` and `MUTLI`
+  */
+  public get whySelectionMode(): SzWhySelectionModeBehavior {
+    return this._whySelectionMode;
+  }
+  /** if "showRecordWhyUtilities" set to true there is a "single-record" select behavior, and a 
+   * "multi-select" behavior. possible values are `SINGLE` and `MUTLI`
+  */
+  @Input() set whySelectionMode(value: SzWhySelectionModeBehavior) {
+    this._whySelectionMode = value;
+  }
+
+  /** whether or not the "why" comparison button for the entire entity is shown */
+  public get showEntityWhyFunction(): boolean {
+    return this._showEntityWhyFunction;
+  }
+  /** whether or not to show the "why" comparison button for the entire entity */
+  @Input() set showEntityWhyFunction(value: boolean) {
+    this._showEntityWhyFunction = value;
+  }
+  /** whether or not to automatically open a modal with the entity comparison on 
+   * "Why" button click. (disable for custom implementation/action)
+   */
+   @Input() openWhyComparisonModalOnClick(value: boolean) {
+    this._openWhyComparisonModalOnClick = value;
+  }
 
   /** used for print and pdf support, allows fetching DOM HTMLElement */
   @ViewChild('nativeElementRef') nativeElementRef: ElementRef;
@@ -498,7 +559,8 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   constructor(
     private searchService: SzSearchService,
     public prefs: SzPrefsService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -581,6 +643,11 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   public onEntityRecordClick(entityId: number): void {
     this.entityId = entityId;
   }
+  public onDataSourceRecordsSelected(records: SzDataSourceRecordsSelection) {
+    console.log('onDataSourceRecordsSelected: ', records);
+    this.dataSourceRecordsSelected.emit(records);
+  }
+
   /**
    * proxies internal graph component entity click to "graphEntityClick" event.
    */
@@ -604,6 +671,37 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    */
   public onGraphPopoutClick(event: any) {
     this.graphPopOutClick.emit(event);
+  }
+  /**
+   * proxies internal "why button" header click to "graphPopOutClick" event.
+   */
+  public onHeaderWhyButtonClick(entityId: SzEntityIdentifier){
+    this.headerWhyButtonClick.emit(entityId);
+    console.log('SzEntityDetailComponent.onHeaderWhyButtonClick: ', entityId);
+    if(this._openWhyComparisonModalOnClick){
+      this.dialog.open(SzWhyEntityDialog, {
+        panelClass: 'why-entity-dialog-panel',
+        data: {
+          entityId: entityId
+        }
+      });
+    }
+  }
+
+  public onCompareRecordsForWhy(records: SzRecordId[]) {
+    console.log('SzEntityDetailComponent.onCompareRecordsForWhy: ', records);
+    this.recordsWhyButtonClick.emit(records);
+    if(this._openWhyComparisonModalOnClick) {
+      this.dialog.open(SzWhyEntityDialog, {
+        panelClass: 'why-entity-dialog-panel',
+        data: {
+          entityId: this.entity.resolvedEntity.entityId,
+          showOkButton: false,
+          okButtonText: 'Close',
+          records: records
+        }
+      });
+    }
   }
 
   public onSectionCollapsedChange(prefsKey: string, isCollapsed: boolean) {

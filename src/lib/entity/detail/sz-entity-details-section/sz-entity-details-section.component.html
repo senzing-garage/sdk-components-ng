@@ -10,16 +10,22 @@
   <ng-container *ngIf="showByDataSource">
     <sz-entity-detail-section-collapsible-card
       class="by-datasource"
-      *ngFor="let dataSourceRecords of _sectionDataByDataSource"
+      *ngFor="let dataSourceRecords of _sectionDataByDataSource; let ind = index"
       [showIcon]="showIcon"
       [headerIcon]="headerIcon"
       displayType="record"
+      [showWhyUtilities]="showWhyUtilities && ind === 0"
+      (onCompareRecordsForWhy)="_onCompareRecordsForWhy($event)"
       [cardData]="dataSourceRecords"
       [collapsedStatePrefsKey]="this.collapsedStatePrefsKey"
       [columnsShown]="this.sectionsShownColumns"
       [layoutClasses]="_layoutClasses"
       (onCollapsedChange)="this.onCollapsibleCardStateChange($event)"
       [truncateResults]="true"
+      [dataSourceRecordsSelected]="selectedDataSourceRecords"
+      (dataSourceRecordClicked)="onDataSourceRecordClick($event)"
+      (dataSourceRecordWhyClicked)="onDataSourceRecordWhyClick($event)"
+      [whySelectionMode]="whySelectionMode"
       (entityRecordClick)="onEntityRecordClick($event)">
     </sz-entity-detail-section-collapsible-card>
   </ng-container>

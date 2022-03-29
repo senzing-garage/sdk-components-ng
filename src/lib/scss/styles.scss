@@ -89,6 +89,23 @@ body {
     pointer-events: none;
   }
 
+  .sz-search-results-head-why-mode-button-compare {
+    .mat-badge-content {
+      background-color: var(--sz-search-results-header-badge-selected-background-color);
+      color: var(--sz-search-results-header-badge-selected-color);
+    }
+  }
+
+}
+.why-entity-dialog-panel, .why-entities-dialog-panel {
+  max-width: 100vw;
+  max-height: 100vh;
+  .mat-dialog-container {
+    padding: 0px;
+    height: 500px;  /* this is actually min-height because of the way material-dialogs work */
+    width: 900px;   /* this is actually min-width because of the way material-dialogs work */
+    overflow: hidden;
+  }
 }
 
 .senzing-alarm:before {

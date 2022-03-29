@@ -4,7 +4,7 @@
   [class.columns-three]="showColumnOne && !showColumnFour || showColumnFour && !showColumnOne"
   [class.columns-four]="showColumnOne && showColumnFour"
   [ngClass]="layoutClasses"
-  (click)="truncateResults=!truncateResults">
+  (click)="onRecordCardContentClicked($event); truncateResults=!truncateResults">
     <div class="search-card__content--column otherData" #columnOne  *ngIf="showColumnOne">
       <div class="line" *ngIf="entity?.recordId && showRecordIdWhenNative"><span [class.ellipsis]="truncateResults">Record Id: {{entity.recordId}}</span></div>
       <div class="line" [class.truncated]="i >= truncateOtherDataAt && truncateResults"
@@ -52,4 +52,19 @@
       matTooltipPosition="left"
       *ngIf="columnFourTotal > maxLinesToDisplay && truncateResults">...</span>
     </div>
-  </div>
+</div>
+<div class="select-mode-multiple-hover-mask">
+  <div class="select-mode-multiple-hover-indicator">click to select</div>
+</div>
+<!--<div class="select-mode-single-hover-mask">-->
+  <button 
+      class="select-mode-single-hover-button"
+      mat-stroked-button
+      matTooltipPosition="above"
+      matTooltip="Perform Why Analysis on this record"
+      (click)="onRecordCardWhyClicked($event)">
+      <mat-icon  
+      aria-hidden="false" aria-label="Click to perform Why on record"
+      >compare_arrows</mat-icon> Why?
+  </button>
+<!--</div>-->

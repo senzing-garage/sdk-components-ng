@@ -27,6 +27,23 @@ export function parseBool(value: any): boolean {
   return false;
 };
 
+export function parseSzIdentifier(value: any): number {
+  let retVal = 0;
+  if (value && value !== undefined) {
+    try{
+      retVal = parseInt(value);
+    }catch(err){
+      console.error('parseSzIdentifier: error: '+ err);
+    }
+  }
+  return retVal;
+}
+
+export function nonTextTrim(value: string): string {
+  let retVal = value;
+  return retVal;
+}
+
 /**
  * Function used to return an array of "SzDataSourceComposite" in the order 
  * specified by each members "index" property
