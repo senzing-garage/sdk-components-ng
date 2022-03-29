@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, View
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
 import { EntityDataService, SzDataSourceRecordSummary, SzEntityData, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntitiesResponse, SzWhyEntitiesResult, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { catchError, Observable, of, ReplaySubject, Subject, throwError } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
 
 class SzWhyEntitiesDataSource extends DataSource<any> {
@@ -92,6 +92,8 @@ export class SzWhyEntitiesComparisonComponent implements OnInit, OnDestroy {
       this.dataSource.setData(this.dataToDisplay);
       this.gotColumnDefs = true;
       console.log('SzWhyEntitiesComparisonComponent.getWhyData()', formattedData, resData.data);
+    }, (error) => {
+      console.warn(error);
     });
   }
   /**
@@ -103,8 +105,10 @@ export class SzWhyEntitiesComparisonComponent implements OnInit, OnDestroy {
   }
 
   getWhyData() {
-    return this.entityData.whyEntities(this.entityIds[0].toString(), this.entityIds[1].toString(), true, true, false, SzFeatureMode.NONE, false, false)
-    //return this.entityData.whyEntityByEntityID(parseSzIdentifier(this.entityId), true, true, false, SzFeatureMode.NONE, false, false)
+    if(this.entityIds && this.entityIds.length == 2) {
+      return this.entityData.whyEntities(this.entityIds[0].toString(), this.entityIds[1].toString(), true, true, false, SzFeatureMode.NONE, false, false)
+    }
+    return throwError(()=> { return new Error("entity id's not specified")})
   }
   formatWhyDataForDataTable(data: SzEntityData[], whyResult: SzWhyEntitiesResult) {
     let entityIds       = data.map((entity)=>{ return entity.resolvedEntity.entityId});
