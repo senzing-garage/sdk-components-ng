@@ -16,3 +16,28 @@
     align-self: flex-end;
   }
 }
+
+.mat-why-report-table {
+  width: 100%;
+}
+
+.mat-column-title {
+  padding-left: 16px;
+  padding-right: 16px;
+  color: #2977a7;
+  font-size: 16px;
+  border-right: 2px solid #dcdcdc;
+  background-color: #f5f5f5;
+  text-transform: uppercase;
+  font-family: inherit;
+}
+.mat-cell {
+  border-right: 2px solid #dcdcdc;
+  padding-left: 16px;
+  padding-right: 16px;
+  white-space: pre;
+  font-family: monospace;
+  &:last-child {
+    padding-right: 10px;
+  }
+}
