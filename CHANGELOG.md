@@ -15,7 +15,6 @@ and [rest api specification](https://github.com/Senzing/senzing-rest-api-specifi
 - `showMatchKeyFilters` property added to `sz-standalone-graph` tag. specifying a value of `false` will hide the *Filter By Match Key* section of the embedded graph controls. (defaults to _true_)
 - `showMatchKeyFilters` property added to `sz-graph-filter` tag. specifying a value of `false` will hide the *Filter By Match Key* list of checkboxes. (defaults to _true_)
 - `SzWhyEntityComponent` component for displaying results from the api server's respective why endpoints(`/entities/{entityId}/why`).
-- `SzWhyEntitiesComponent` component for displaying results from the api server's respective why endpoints(`/why/entities?entity1={entity1Id}&entity2={entity2Id}`).
 - `parseSzIdentifier` function added to `src/lib/common/utils.ts`
 - `nonTextTrim` function added to `src/lib/common/utils.ts`
 - `SzWhySelectionMode` 

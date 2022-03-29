@@ -62,7 +62,7 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
    */
   @Input() showDataSources: boolean = true;
 
-  private _showWhyComparisonButton: boolean = true;
+  private _showWhyComparisonButton: boolean = false;
   /**
    * Shows or hides the multi-select "Why" comparison button.
    * @memberof SzSearchResultsComponent
