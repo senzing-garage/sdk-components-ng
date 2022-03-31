@@ -4,19 +4,19 @@
   /* by default hide the hover select effect */
   .select-mode-multiple-hover-mask {
     /* margin-left: 50%; */
-    background-color: #f8f7f566;
+    background-color: var(--sz-entity-detail-section-record-card-why-hover-message-background-color);
     display: none;
     position: absolute;
-    width: 200px;
-    height: 40px;
+    width: var(--sz-entity-detail-section-record-card-why-hover-message-width);
+    height: var(--sz-entity-detail-section-record-card-why-hover-message-height);
     right: 5px;
     top: 5px;
-    border-radius: 6px;
-    border-color: #999;
-    border-width: 2px;
-    border: 1px dashed #d3d3d3;
-    padding: 4px 10px;
-    color: #999;
+    border-radius: var(--sz-entity-detail-section-record-card-why-hover-message-border-radius);
+    border-color: var(--sz-entity-detail-section-record-card-why-hover-message-border-color);
+    border-width: var(--sz-entity-detail-section-record-card-why-hover-message-border-width);
+    border: var(--sz-entity-detail-section-record-card-why-hover-message-border);
+    padding: var(--sz-entity-detail-section-record-card-why-hover-message-padding);
+    color: var(--sz-entity-detail-section-record-card-why-hover-message-color);
 
     .select-mode-multiple-hover-indicator {
       position: relative;
@@ -24,28 +24,23 @@
       /* width: 50%; */
       text-align: center;
       top: calc(50% - 10px);
-      text-transform: uppercase;
-      font-size: 14px;
+      text-transform: var(--sz-entity-detail-section-record-card-why-hover-message-text-transform);
+      font-size: var(--sz-entity-detail-section-record-card-why-hover-message-font-size);
+      font-weight: var(--sz-entity-detail-section-record-card-why-hover-message-font-weight);
     }
   }
   .select-mode-single-hover-button {
-    /* margin-left: 50%; */
-    /*background-color: #f8f7f566;*/
     display: none;
     position: absolute;
-    /*width: 200px;
-    height: 50px;*/
-    right: 12px;
-    top: 12px;
-    border-radius: 6px;
-    /*border-color: #999;*/
+    right: var(--sz-entity-detail-section-record-card-why-button-margin-right);
+    top: var(--sz-entity-detail-section-record-card-why-button-margin-top);
+    border-radius: var(--sz-entity-detail-section-record-card-why-button-border-radius);
     /*border-width: 2px;*/
     /*border: 1px dashed #d3d3d3;*/
-    padding: 4px 16px 4px 12px;
-    /*color: #999;*/
-    color: #0e2863;
-    background-color: #ffffff;
-    border-color: #dedede;
+    padding: var(--sz-entity-detail-section-record-card-why-button-padding);
+    color: var(--sz-entity-detail-section-record-card-why-button-color);
+    background-color: var(--sz-entity-detail-section-record-card-why-button-background-color);
+    border-color: var(--sz-entity-detail-section-record-card-why-button-border-color);
   }
 
   &.select-mode-multiple:hover {

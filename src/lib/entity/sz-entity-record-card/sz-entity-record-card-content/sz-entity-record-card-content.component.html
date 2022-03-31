@@ -53,7 +53,7 @@
       *ngIf="columnFourTotal > maxLinesToDisplay && truncateResults">...</span>
     </div>
 </div>
-<div class="select-mode-multiple-hover-mask">
+<div class="select-mode-multiple-hover-mask" (click)="onRecordCardContentClicked($event);">
   <div class="select-mode-multiple-hover-indicator">click to select</div>
 </div>
 <!--<div class="select-mode-single-hover-mask">-->
