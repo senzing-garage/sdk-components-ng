@@ -250,6 +250,25 @@ body {
     --sz-entity-detail-section-record-card-two-cols-min-width: 40%;
     --sz-entity-detail-section-record-card-three-cols-min-width: 30%;
     --sz-entity-detail-section-record-card-four-cols-min-width: 20%;
+    --sz-entity-detail-section-record-card-why-button-margin-right: 8px;
+    --sz-entity-detail-section-record-card-why-button-margin-top: 7px;
+    --sz-entity-detail-section-record-card-why-button-border-radius: 6px;
+    --sz-entity-detail-section-record-card-why-button-padding: 4px 16px 4px 12px;
+    --sz-entity-detail-section-record-card-why-button-color: #0e2863;
+    --sz-entity-detail-section-record-card-why-button-background-color: #ffffff;
+    --sz-entity-detail-section-record-card-why-button-border-color: #dedede;
+    --sz-entity-detail-section-record-card-why-hover-message-background-color: #e9f4fcb5; /*#f8f7f566;*/
+    --sz-entity-detail-section-record-card-why-hover-message-width: calc(100% - 33px);
+    --sz-entity-detail-section-record-card-why-hover-message-height: calc(100% - 21px);
+    --sz-entity-detail-section-record-card-why-hover-message-border-radius: 6px;
+    --sz-entity-detail-section-record-card-why-hover-message-border-color: #999;
+    --sz-entity-detail-section-record-card-why-hover-message-border-width: 2px;
+    --sz-entity-detail-section-record-card-why-hover-message-border: 1px dashed #d3d3d3;
+    --sz-entity-detail-section-record-card-why-hover-message-padding: 4px 10px;
+    --sz-entity-detail-section-record-card-why-hover-message-color: #999;
+    --sz-entity-detail-section-record-card-why-hover-message-font-size: 16px;
+    --sz-entity-detail-section-record-card-why-hover-message-font-weight: bold;
+    --sz-entity-detail-section-record-card-why-hover-message-text-transform: uppercase;
 
     --sz-entity-detail-pill-display: inline-block;
     --sz-entity-detail-pill-font-family: inherit;
