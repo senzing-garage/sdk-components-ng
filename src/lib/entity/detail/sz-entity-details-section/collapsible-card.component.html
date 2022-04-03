@@ -16,7 +16,9 @@
           </svg>
           <span class="collapsible-card__title">{{cardData?.dataSource}}</span>
         </div>
-        <!--isMultiSelect: {{isMultiSelect}}<br/>
+        <!--recordWhyMultiselectActive: {{recordWhyMultiselectActive}}<br/>
+        showWhyUtilities: {{showWhyUtilities}}<br/>
+        isMultiSelect: {{isMultiSelect}}<br/>
         whySelectionMode: {{whySelectionMode}}-->
         <!-- start "entity select control" mechanism -->
         <div #multiSelectButtonWrapper><sz-button-multi-select #multiSelectButton *ngIf="showWhyUtilities && isMultiSelect"
@@ -26,7 +28,7 @@
           aria-hidden="false" 
           aria-label="Select Records for Why comparison"
           text="Why Comparison"
-          [isSelectActive]="showWhyUtilities"
+          [isSelectActive]="recordWhyMultiselectActive"
           selectedItemTypeSingular="record"
           selectedItemTypePlural="records"
           selectedActionVerb="why comparison"
@@ -90,7 +92,7 @@
           [truncateOtherDataAt]="truncateOtherDataInRecordsAt"
           [entity]="_cardData"
           [parentEntity]="cardData"
-          [ngClass]="{'open': expanded, 'selected': isRecordSelected(_cardData), 'select-mode-single': isSingleSelect, 'select-mode-multiple': isMultiSelect}"
+          [ngClass]="{'open': expanded, 'selected': isRecordSelected(_cardData), 'select-mode-single': isSingleSelect, 'select-mode-multiple': isMultiSelect, 'is-selectable': recordWhySelectActive}"
           [whySelectionMode]="whySelectionMode"
           [layoutClasses]="layoutClasses"
           [truncateResults]="truncateResults"

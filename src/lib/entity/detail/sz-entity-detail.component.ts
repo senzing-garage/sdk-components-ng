@@ -150,6 +150,12 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   /** whether or not to show the "why" comparison button for records */
   @Input() set showRecordWhyUtilities(value: boolean) {
     this._showRecordWhyUtilities = value;
+    // we default to selection mode "single" if set to true and selection mode not explicitly set
+    if(value && this._whySelectionMode === SzWhySelectionMode.NONE) {
+      this._whySelectionMode = SzWhySelectionMode.SINGLE;
+    } else if(!value && this._whySelectionMode !== SzWhySelectionMode.NONE) {
+      this._whySelectionMode = SzWhySelectionMode.NONE;
+    }
   }
   /** if "showRecordWhyUtilities" set to true there is a "single-record" select behavior, and a 
    * "multi-select" behavior. possible values are `SINGLE` and `MUTLI`

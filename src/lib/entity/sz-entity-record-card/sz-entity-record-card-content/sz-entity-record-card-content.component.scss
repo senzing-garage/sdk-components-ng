@@ -43,23 +43,25 @@
     border-color: var(--sz-entity-detail-section-record-card-why-button-border-color);
   }
 
-  &.select-mode-multiple:hover {
-    cursor: pointer;
-    background-color: #f0f8ffcc;
-
-    .select-mode-multiple-hover-mask {
-      display: inline-block;
+  &.is-selectable {
+    &.select-mode-multiple:hover {
+      cursor: pointer;
+      background-color: #f0f8ffcc;
+  
+      .select-mode-multiple-hover-mask {
+        display: inline-block;
+      }
+      &.selected .select-mode-multiple-hover-mask {
+        display: none;
+      }
     }
-    &.selected .select-mode-multiple-hover-mask {
-      display: none;
-    }
-  }
-  &.select-mode-single:hover {
-    cursor: pointer;
-    background-color: #f0f8ffcc;
-
-    .select-mode-single-hover-button {
-      display: inline-block;
+    &.select-mode-single:hover {
+      /*cursor: pointer;
+      background-color: #f0f8ffcc;*/
+  
+      .select-mode-single-hover-button {
+        display: inline-block;
+      }
     }
   }
 
