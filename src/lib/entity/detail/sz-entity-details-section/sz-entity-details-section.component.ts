@@ -23,7 +23,9 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
   _sectionData: SzEntityRecord[] | SzRelatedEntity[];
   _sectionDataByDataSource: SzSectionDataByDataSource[];
   _sectionDataByMatchKey: SzEntityRecord[] | SzRelatedEntity[];
+  private _showWhyUtilities: boolean = false;
   private _whySelectionMode: SzWhySelectionModeBehavior = SzWhySelectionMode.NONE;
+  public dataSourceIsSelectable: boolean = true;
 
   @Input() entity: SzEntityRecord | SzRelatedEntity;
   @Input()
@@ -42,31 +44,15 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
   @Input() showOtherDataInEntities: boolean;
   @Input() showBestNameOnlyInEntities: boolean;
   @Input() showNameDataInEntities: boolean;
-  @Input() showWhyUtilities: boolean;
+  @Input() public set showWhyUtilities(value: boolean) {
+    this._showWhyUtilities = value;
+  }
   @Output() onCompareRecordsForWhy: EventEmitter<SzRecordId[]> = new EventEmitter<SzRecordId[]>();
 
   /** when the user collapses or expands the ui toggle */
   @Output() onCollapsedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() public collapsedStatePrefsKey: string = 'borgledeerger';
-
-  public onCollapsibleCardStateChange(isCollapsed?: boolean) {
-    let totalInAll = this.collapsable.length;
-    const numExpanded: number = this.collapsable.filter( (colCard ) => {
-      return (colCard.expanded) == true;
-    }).length;
-    const numCollapsed: number = this.collapsable.filter( (colCard ) => {
-      return (colCard.expanded) == false;
-    }).length;
-    let allCollapsed = (numCollapsed == totalInAll);
-    let allExpanded = (numExpanded == totalInAll);
-
-    if(allCollapsed || allExpanded) {
-      // we only want to publish a state change if all the cards are in a uniform state
-      // so we can remember expanded state of entire sections.
-      // console.warn('onCollapsibleCardStateChange: ', allCollapsed, allExpanded, this.collapsedStatePrefsKey, this.collapsable);
-      this.onCollapsedChange.emit(isCollapsed);
-    }
-  }
+  
   @ViewChildren(SzEntityDetailSectionCollapsibleCardComponent) collapsable: QueryList<SzEntityDetailSectionCollapsibleCardComponent>
 
   /** the width to switch from wide to narrow layout */
@@ -139,6 +125,16 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
       // TODO: do alignment for other sections
     }
     return retVal;
+  }
+  public get showWhyUtilities(): boolean {
+    //return this._showWhyUtilities;
+    return (this._showWhyUtilities || this.isMultiSelect || this.isSingleSelect);
+  }
+  public get isMultiSelect(): boolean {
+    return this._whySelectionMode === SzWhySelectionMode.MULTIPLE
+  }
+  public get isSingleSelect(): boolean {
+    return this._whySelectionMode === SzWhySelectionMode.SINGLE
   }
 
   /**
@@ -303,23 +299,48 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
 
   public onDataSourceRecordClick(recordId: SzRecordId | any): void {
     let _recordId: SzRecordId = (recordId as SzRecordId);
-    console.log('sz-entity-details-section.onDataSourceRecordClick: ', recordId);
-    if(!this.selectedDataSourceRecords[_recordId.src] ) {
-      // no records at all, assume we're adding
-      this.selectedDataSourceRecords[_recordId.src] = [_recordId.id];
-    } else {
-      let existingIndexPosition = this.selectedDataSourceRecords[_recordId.src].indexOf(_recordId.id);
-      if(existingIndexPosition > -1) {
-        // deselect
-        this.selectedDataSourceRecords[_recordId.src].splice(existingIndexPosition, 1);
+    if(this.showWhyUtilities) {
+      console.log('sz-entity-details-section.onDataSourceRecordClick: ', recordId, this.showWhyUtilities, this.selectedDataSourceRecords);
+      if(!this.selectedDataSourceRecords[_recordId.src] ) {
+        // no records at all, assume we're adding
+        this.selectedDataSourceRecords[_recordId.src] = [_recordId.id];
       } else {
-        // select
-        this.selectedDataSourceRecords[_recordId.src].push(_recordId.id);
+        let existingIndexPosition = this.selectedDataSourceRecords[_recordId.src].indexOf(_recordId.id);
+        if(existingIndexPosition > -1) {
+          // deselect
+          this.selectedDataSourceRecords[_recordId.src].splice(existingIndexPosition, 1);
+        } else {
+          // select
+          this.selectedDataSourceRecords[_recordId.src].push(_recordId.id);
+        }
       }
+      this.selectedDataSourceRecords[_recordId.src]
     }
-    this.selectedDataSourceRecords[_recordId.src]
     this.dataSourceRecordClick.emit(recordId);
     this.dataSourceRecordsSelected.emit(this.selectedDataSourceRecords);
+  }
+
+  public onDataSourceSelectModeChanged(selectActive: boolean) {
+    this.dataSourceIsSelectable = selectActive;
+  }
+
+  public onCollapsibleCardStateChange(isCollapsed?: boolean) {
+    let totalInAll = this.collapsable.length;
+    const numExpanded: number = this.collapsable.filter( (colCard ) => {
+      return (colCard.expanded) == true;
+    }).length;
+    const numCollapsed: number = this.collapsable.filter( (colCard ) => {
+      return (colCard.expanded) == false;
+    }).length;
+    let allCollapsed = (numCollapsed == totalInAll);
+    let allExpanded = (numExpanded == totalInAll);
+
+    if(allCollapsed || allExpanded) {
+      // we only want to publish a state change if all the cards are in a uniform state
+      // so we can remember expanded state of entire sections.
+      // console.warn('onCollapsibleCardStateChange: ', allCollapsed, allExpanded, this.collapsedStatePrefsKey, this.collapsable);
+      this.onCollapsedChange.emit(isCollapsed);
+    }
   }
 
   getCssQueryFromCriteria(minWidth?: number, maxWidth?: number): string | undefined {

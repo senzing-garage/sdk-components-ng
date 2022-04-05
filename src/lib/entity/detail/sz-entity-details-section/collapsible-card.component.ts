@@ -32,10 +32,9 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   @Input() public showOtherDataInEntities: boolean = false;
   @Input() public columnsShown: boolean[] = undefined;
   @Input() public showWhyUtilities: boolean = false;
+  @Input() public recordWhyMultiselectActive: boolean = false;
 
-  public recordWhyMultiselectActive: boolean = false;
   private _whySelectionMode: SzWhySelectionModeBehavior = SzWhySelectionMode.NONE;
-
   @Output() onCompareRecordsForWhy = new EventEmitter<SzRecordId[]>();
   /** 
    * if "showRecordWhyUtilities" set to true there is a "single-record" select behavior, and a 
@@ -107,9 +106,11 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   get recordCount() {
     return (this.cardData && this.cardData.records) ? this.cardData.records.length : 0;
   }
-
+  /** is responsible for deciding whether or not the 'selected' css class is applied
+   * to the "sz-entity-record-card-content" component
+   */
   public isRecordSelected(value: SzEntityRecord) {
-    if(value.dataSource && value.recordId) {
+    if(this.isMultiSelect && value.dataSource && value.recordId) {
       let dataSources = Object.keys(this._dataSourceRecordsSelected);
       if(dataSources.indexOf(value.dataSource) > -1) {
         // datasource exists, now check for record
@@ -218,29 +219,41 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   }
 
   public onEntityRecordClick(entityId: number): void {
-    console.log('sz-entity-detail-section-collapsible-card: ', entityId);
+    //console.log('sz-entity-detail-section-collapsible-card: ', entityId);
     this.entityRecordClick.emit(entityId);
   }
-
+  /** handler is invoked when a "Why" button for a individual record is clicked */
   public onRecordsWhyButtonClick(event: any) {
-    console.log('SzEntityDetailSectionCollapsibleCardComponent.onRecordsWhyButtonClick() ', event);
+    //console.log('SzEntityDetailSectionCollapsibleCardComponent.onRecordsWhyButtonClick() ', event);
     this.onCompareRecordsForWhy.emit([]);
   }
-
+  /** when using the "MULTI" mode record select, the "click-to-select" behavior can be toggled, 
+   * when the icon is clicked to toggle the mode this event is emitted */
+  @Output('dataSourceSelectModeChanged') onDataSourceSelectModeChangedEmitter = new EventEmitter<boolean>();
+  /** when using the "MULTI" mode record select, the "click-to-select" behavior can be toggled, 
+   * when the icon is clicked this handler is invoked */
   public onWhyRecordComparisonModeActiveChange(isActive: boolean) {
-    this.recordWhyMultiselectActive = isActive;
+    this.onDataSourceSelectModeChangedEmitter.emit(isActive);
   }
+  /** are records selectable via a "click" user event */
+  public get recordWhySelectActive() {
+    return this.recordWhyMultiselectActive || this.isSingleSelect;
+  };
+  /** event that is emitted when a data source record is clicked */
   @Output('dataSourceRecordClicked') onDataSourceRecordClickedEmitter = new EventEmitter<SzRecordId>();
+  /** event handler that is invoked when a data source record is clicked */
   public onDataSourceRecordClicked(recordIdentifier: SzRecordId | any) {
-    console.log('sz-entity-detail-section-collapsible-card: ', recordIdentifier);
+    //console.log('sz-entity-detail-section-collapsible-card: ', recordIdentifier);
     this.onDataSourceRecordClickedEmitter.emit(recordIdentifier);
   }
+  /** event that is emitted when a data source records "Why" button is clicked */
   @Output('dataSourceRecordWhyClicked') onDataSourceRecordWhyClickedEmitter = new EventEmitter<SzRecordId>();
+  /** event handler that is invoked when a data source records "Why" button is clicked */
   public onDataSourceRecordWhyClicked(recordIdentifier: SzRecordId | any) {
-    console.log('sz-entity-detail-section-collapsible-card: ', recordIdentifier);
+    //console.log('sz-entity-detail-section-collapsible-card: ', recordIdentifier);
     this.onDataSourceRecordWhyClickedEmitter.emit(recordIdentifier);
   }
-  
+  /** get the user-selected "records" when multi-select "Why" feature is active  */
   public get selectedRecords(): SzRecordId[] {
     let retVal = [];
     let _dataSources = Object.keys(this.dataSourceRecordsSelected);
@@ -253,12 +266,14 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
     })
     return retVal
   }
-
+  /** @internal  */
   private _dataSourceRecordsSelected: SzDataSourceRecordsSelection = {}
+  /** get the user-selected "records" when multi-select "Why" feature is active  */
   @Input() set dataSourceRecordsSelected(records: SzDataSourceRecordsSelection) {
-    console.log('SzEntityDetailSectionCollapsibleCardComponent setting "dataSourceRecordsSelected"', records);
+    //console.log('SzEntityDetailSectionCollapsibleCardComponent setting "dataSourceRecordsSelected"', records);
     this._dataSourceRecordsSelected = records;
   }
+  /** get the user-selected "records" when multi-select "Why" feature is active  */
   get dataSourceRecordsSelected(): SzDataSourceRecordsSelection {
     return this._dataSourceRecordsSelected;
   }
