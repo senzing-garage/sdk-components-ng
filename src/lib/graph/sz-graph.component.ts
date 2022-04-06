@@ -117,6 +117,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
 
   @Input() dataSourcesFiltered: string[] = [];
   @Input() matchKeysIncluded: string[] = [];
+  @Input() matchKeyTokensIncluded: string[] = [];
   
   /** @internal */
   private _showPopOutIcon = false;
@@ -602,14 +603,15 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       // should trigger full redraw
       queryParamChanged = true;
     }
-    this._showMatchKeys = prefs.showMatchKeys;
-    this.maxDegrees = prefs.maxDegreesOfSeparation;
-    this.maxEntities = prefs.maxEntities;
-    this.buildOut = prefs.buildOut;
-    this.dataSourceColors = prefs.dataSourceColors;
-    this.dataSourcesFiltered = prefs.dataSourcesFiltered;
-    this.matchKeysIncluded = prefs.matchKeysIncluded;
-    this.neverFilterQueriedEntityIds = prefs.neverFilterQueriedEntityIds;
+    this._showMatchKeys               = prefs.showMatchKeys;
+    this.maxDegrees                   = prefs.maxDegreesOfSeparation;
+    this.maxEntities                  = prefs.maxEntities;
+    this.buildOut                     = prefs.buildOut;
+    this.dataSourceColors             = prefs.dataSourceColors;
+    this.dataSourcesFiltered          = prefs.dataSourcesFiltered;
+    this.matchKeysIncluded            = prefs.matchKeysIncluded;
+    this.matchKeyTokensIncluded       = prefs.matchKeyTokensIncluded;
+    this.neverFilterQueriedEntityIds  = prefs.neverFilterQueriedEntityIds;
     if(prefs.queriedEntitiesColor && prefs.queriedEntitiesColor !== undefined && prefs.queriedEntitiesColor !== null) {
       this.queriedEntitiesColor = prefs.queriedEntitiesColor;
     }
@@ -690,6 +692,17 @@ export class SzGraphComponent implements OnInit, OnDestroy {
           selectorArgs: this.matchKeysIncluded
         };
       //});
+    }
+    return _ret;
+  }
+
+  public get entityMatchTokenFilter(): NodeFilterPair {
+    let _ret: NodeFilterPair;
+    if(this.matchKeyTokensIncluded && this.showMatchKeyTokenFilters) {
+      _ret = {
+        selectorFn: this.isMatchKeyTokenInEntityNode.bind(this, this.matchKeyTokensIncluded),
+        selectorArgs: this.matchKeyTokensIncluded
+      };
     }
     return _ret;
   }
@@ -776,6 +789,23 @@ export class SzGraphComponent implements OnInit, OnDestroy {
         retVal = (nodeData.relationshipMatchKeys.some( (mkName) => {
           return matchKeys.indexOf(mkName) > -1;
         }));
+      }
+    }
+    //console.log('isMatchKeyInEntityNode: ', matchKeys, nodeData, retVal);
+    return retVal;
+  }
+  private isMatchKeyTokenInEntityNode(matchKeyTokens?, nodeData?) {
+    let retVal = false;
+    if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
+      return true;
+    } else {
+      if(nodeData && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf){
+        // D3 filter query 
+        retVal = (nodeData.relationshipMatchKeyTokens.some( (tokenName) => {
+          return matchKeyTokens.indexOf(tokenName) > -1;
+        }));
+        //console.log(`isMatchKeyTokenInEntityNode: checking for "${matchKeyTokens}"? ${retVal}`, nodeData.relationshipMatchKeyTokens, );
+        //return true;
       }
     }
     //console.log('isMatchKeyInEntityNode: ', matchKeys, nodeData, retVal);

@@ -280,7 +280,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     // update filters pref
     this.prefs.graph.dataSourcesFiltered = filteredDataSourceNames;
   }
-  /** handler for when a filter by datasouce value in the "filterByDataSourcesForm" has changed */
+  /** handler for when a filter by match key value in the "filterByMatchKeysForm" has changed */
   onMkFilterChange(mkValue: string, evt?) {
     const includedMatchKeyNames = this.filterByMatchKeysForm.value.matchkeys
       .map((v, i) => v ? this.matchKeys[i].name :  null)
@@ -289,7 +289,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     this.prefs.graph.matchKeysIncluded = includedMatchKeyNames;
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkFilterChange',this.prefs.graph.matchKeysIncluded);
   }
-  /** handler for when a filter by datasouce value in the "filterByDataSourcesForm" has changed */
+  /** handler for when a filter by match key token value in the "filterByMatchKeyTokensForm" has changed */
   onMkTagFilterChange(mkValue: string, evt?) {
     const includedMatchKeyTokenNames = this.filterByMatchKeyTokensForm.value.matchkeytokens
       .map((v, i) => v ? this.matchKeyTokens[i].name :  null)
