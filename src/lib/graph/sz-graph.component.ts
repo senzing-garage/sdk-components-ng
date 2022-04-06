@@ -4,9 +4,10 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { SzEntityNetworkData } from '@senzing/rest-api-client-ng';
 import { SzGraphControlComponent } from './sz-graph-control.component';
-import { SzRelationshipNetworkComponent, NodeFilterPair, SzNetworkGraphInputs } from '@senzing/sdk-graph-components';
+import { SzRelationshipNetworkComponent, NodeFilterPair, SzNetworkGraphInputs, SzEntityNetworkMatchKeyTokens } from '@senzing/sdk-graph-components';
 import { parseBool, sortDataSourcesByIndex } from '../common/utils';
 import { SzDataSourceComposite } from '../models/data-sources';
+import { SzMatchKeyTokenComposite } from '../models/graph';
 
 /**
  * Embeddable Graph Component
@@ -152,7 +153,9 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   private neverFilterQueriedEntityIds: boolean = true;
   public filterShowDataSources: string[];
   public filterShowMatchKeys: string[];
+  public filterShowMatchKeyTokens: Array<SzMatchKeyTokenComposite>;
   private _showMatchKeysFilters: boolean = true;
+  private _showMatchKeyTokenFilters: boolean = true;
   private _showMatchKeyControl: boolean = true;
   /** whether or not to show match keys toggle control */
   @Input() set showMatchKeyControl(value: boolean | string) {
@@ -166,6 +169,12 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   }
   get showMatchKeyFilters(): boolean | string {
     return this._showMatchKeysFilters;
+  }
+  @Input() set showMatchKeyTokenFilters(value: boolean | string) {
+    this._showMatchKeyTokenFilters = parseBool(value);    
+  }
+  get showMatchKeyTokenFilters(): boolean | string {
+    return this._showMatchKeyTokenFilters;
   }
 
   private _showZoomControl: boolean = true;
@@ -320,6 +329,53 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @Output() dataLoaded: EventEmitter<SzEntityNetworkData> = new EventEmitter<SzEntityNetworkData>();
   /** event is emitted when the collection of matchkeys present in graph dislay change */
   @Output() matchKeysChange: EventEmitter<any> = new EventEmitter<string[]>();
+  /** event is emitted when the collection of matchkey tokens present in graph dislay change */
+  @Output() matchKeyTokensChange: EventEmitter<any> = new EventEmitter<SzMatchKeyTokenComposite[]>();
+
+  private getMatchKeyTokenComposites(data: SzEntityNetworkMatchKeyTokens): Array<SzMatchKeyTokenComposite> {
+    let retVal: Array<SzMatchKeyTokenComposite> = [];
+    let _derivedKeys    = Object.keys(data.DERIVED);
+    let _disclosedKeys  = Object.keys(data.DISCLOSED)
+    // do derived first
+    _derivedKeys.forEach((dKey: string) => {
+      let _categoryEntityIds = data.DERIVED[ dKey ];
+      let _existingKeyPos    = retVal.findIndex((mkComposite: SzMatchKeyTokenComposite) => {
+        return mkComposite.name === dKey;
+      })
+      if(_existingKeyPos < 0) { 
+        retVal.push({
+          derived: true,
+          disclosed: false,
+          name: dKey,
+          count: _categoryEntityIds.length,
+          entityIds: _categoryEntityIds
+        })
+      } else {
+        retVal[_existingKeyPos].entityIds = retVal[_existingKeyPos].entityIds.concat(_categoryEntityIds);
+        retVal[_existingKeyPos].count     = retVal[_existingKeyPos].entityIds.length;
+      }
+    });
+    // do disclosed
+    _disclosedKeys.forEach((dKey: string) => {
+      let _categoryEntityIds = data.DISCLOSED[ dKey ];
+      let _existingKeyPos    = retVal.findIndex((mkComposite: SzMatchKeyTokenComposite) => {
+        return mkComposite.name === dKey;
+      })
+      if(_existingKeyPos < 0) { 
+        retVal.push({
+          derived: false,
+          disclosed: true,
+          name: dKey,
+          count: _categoryEntityIds.length,
+          entityIds: _categoryEntityIds
+        })
+      } else {
+        retVal[_existingKeyPos].entityIds = retVal[_existingKeyPos].entityIds.concat(_categoryEntityIds);
+        retVal[_existingKeyPos].count     = retVal[_existingKeyPos].entityIds.length;
+      }
+    });
+    return retVal;
+  }
 
   /**
    * on data received by api request and mapped to
@@ -332,6 +388,8 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       this.filterShowDataSources = SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data);
       this.dataSourcesChange.emit( SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data) );
       this.matchKeysChange.emit( SzRelationshipNetworkComponent.getMatchKeysFromEntityNetworkData(inputs.data) )
+      this.matchKeyTokensChange.emit( this.getMatchKeyTokenComposites( SzRelationshipNetworkComponent.getMatchKeyTokensFromEntityData(inputs.data) ) );
+      console.log('onGraphDataLoaded: ', this.filterShowMatchKeyTokens);
     }
     if(inputs.data) {
       this.dataLoaded.emit( inputs.data );
@@ -407,6 +465,13 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     this.filterShowMatchKeys = data;
   }
 
+  /** when match keys are loaded in graph view, this handler is invoked to 
+   * transfer to filters component list 
+   */
+   onMatchKeyTokensChange(data: SzMatchKeyTokenComposite[]) {
+    this.filterShowMatchKeyTokens = data;
+  }  
+
   constructor(
     public prefs: SzPrefsService,
     private cd: ChangeDetectorRef
@@ -456,6 +521,9 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     this.matchKeysChange.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe( this.onMatchKeysChange.bind(this) )
+    this.matchKeyTokensChange.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( this.onMatchKeyTokensChange.bind(this) )
 
     // keep track of whether or not the graph has been rendered
     // this is to get around publishing a new 0.0.7 sdk-graph-components

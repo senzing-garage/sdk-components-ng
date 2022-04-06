@@ -138,4 +138,21 @@
     </ul>
     </form>
   </div>
+  <div *ngIf="showMatchKeyTokens && showMatchKeyTokenFilters">
+    <hr>
+    <h3>{{ sectionTitles[5] }}</h3>
+    <form [formGroup]="filterByMatchKeyTokensForm">
+    <ul class="filters-list">
+      <ng-container *ngFor="let ds of filterByMatchKeyTokenData.controls; let i = index">
+          <ng-container *ngIf="shouldMatchKeyTokenBeDisplayed(matchKeyTokens[i].name)">
+              <li formArrayName="matchkeytokens">
+                <label>
+                  <input type="checkbox" [formControlName]="i" (change)="onMkTagFilterChange(matchKeyTokens[i].name, $event)">{{matchKeyTokens[i].name}}
+                </label>
+              </li>
+          </ng-container>
+      </ng-container>
+    </ul>
+    </form>
+  </div>
 </div>

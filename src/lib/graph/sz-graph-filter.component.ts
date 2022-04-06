@@ -6,8 +6,9 @@ import { Subject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SzDataSourceComposite } from '../models/data-sources';
-import { SzMatchKeyComposite } from '../models/graph';
-import { sortDataSourcesByIndex, parseBool, sortMatchKeysByIndex } from '../common/utils';
+import { SzMatchKeyComposite, SzMatchKeyTokenComposite } from '../models/graph';
+import { sortDataSourcesByIndex, parseBool, sortMatchKeysByIndex, sortMatchKeyTokensByIndex } from '../common/utils';
+import { SzEntityNetworkMatchKeyTokens } from '@senzing/sdk-graph-components';
 
 /**
  * Control Component allowing UI friendly changes
@@ -42,8 +43,9 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   /** private list of datasource records augmented by SzDataSourceComposite shape 
    * @internal
   */
-  private _dataSources: SzDataSourceComposite[]       = [];
-  private _matchKeys: SzMatchKeyComposite[]           = [];
+  private _dataSources: SzDataSourceComposite[]               = [];
+  private _matchKeys: SzMatchKeyComposite[]                   = [];
+  private _matchKeyTokens: SzMatchKeyTokenComposite[]      = [];
 
   /** private list of SzDataSourceComposite as stored in local storage 
    * @internal
@@ -80,6 +82,27 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     }
     return retVal;
   }
+  @Input() public set showMatchKeyTokens(value: Array<SzMatchKeyTokenComposite>) {
+    console.log('showMatchKeyTokens.set()', value, Object.keys(this.filterByMatchKeyTokensForm.controls), (<FormArray>this.filterByMatchKeysForm.get('matchkeys')));
+    if(value && value.map && value !== undefined) {
+      this._matchKeyTokens = value.map((matchKeyComposite: SzMatchKeyTokenComposite, ind: number) => {
+        return Object.assign(matchKeyComposite, {
+          'index': ind,
+          'hidden': false
+        });
+      });
+      this.initializeMatchKeyTokenFormControls();
+    }
+  }
+  public get showMatchKeyTokens(): Array<SzMatchKeyTokenComposite> {
+    let retVal;
+    if(this._matchKeyTokens && this._matchKeyTokens.length) {
+      retVal = this._matchKeyTokens.map((mkComposite) => {
+        return mkComposite.name;
+      });
+    }
+    return retVal;
+  }
   private _showMatchKeysFilters: boolean = true;
   @Input() public set showMatchKeyFilters(value: boolean | string) {
     this._showMatchKeysFilters = parseBool(value);    
@@ -87,8 +110,16 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   public get showMatchKeyFilters(): boolean | string {
     return this._showMatchKeysFilters;
   }
-  @Input() dataSourcesFiltered: string[] = [];
-  @Input() matchKeysIncluded: string[] = [];
+  private _showMatchKeyTokenFilters: boolean = true;
+  @Input() public set showMatchKeyTokenFilters(value: boolean | string) {
+    this._showMatchKeyTokenFilters = parseBool(value);    
+  }
+  public get showMatchKeyTokenFilters(): boolean | string {
+    return this._showMatchKeyTokenFilters;
+  }
+  @Input() dataSourcesFiltered: string[]        = [];
+  @Input() matchKeysIncluded: string[]          = [];
+  @Input() matchKeyTokensIncluded: string[]     = [];
   @Input() queriedEntitiesColor: string;
 
   /** 
@@ -127,11 +158,16 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     retVal = sortDataSourcesByIndex(retVal);
     return retVal;
   }
-
-  /** get list of  "SzDataSourceComposite" reflecting datasources pulled from API and augmented with state information in shape of "SzDataSourceComposite". ordered ASC by "index" */
-  public get matchKeys(): SzDataSourceComposite[] {
+  /** get list of  "SzDataSourceComposite" reflecting match keys pulled from API and augmented with state information in shape of "SzDataSourceComposite". ordered ASC by "index" */
+  public get matchKeys(): SzMatchKeyComposite[] {
     let retVal: SzMatchKeyComposite[] = this._matchKeys;
     retVal = sortMatchKeysByIndex(retVal);
+    return retVal;
+  }
+  /** get list of  "SzDataSourceComposite" reflecting datasources pulled from API and augmented with state information in shape of "SzDataSourceComposite". ordered ASC by "index" */
+  public get matchKeyTokens(): SzMatchKeyTokenComposite[] {
+    let retVal: SzMatchKeyTokenComposite[] = this._matchKeyTokens;
+    retVal = sortMatchKeyTokensByIndex(retVal);
     return retVal;
   }
 
@@ -149,6 +185,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     'Filter by Source',
     'Colors by Source',
     'Color by: ',
+    'Filter by Match Key',
     'Filter by Match Key'
   ];
 
@@ -169,6 +206,10 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   public get filterByMatchKeysData() {
     return <FormArray>this.filterByMatchKeysForm.get('matchkeys');
   }
+  /** get data from reactive form control array */
+  public get filterByMatchKeyTokenData() {
+    return <FormArray>this.filterByMatchKeyTokensForm.get('matchkeytokens');
+  }
 
   // --------------------------------- event emmitters and subjects ----------------------
   /**
@@ -184,6 +225,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   /** the form group for the filters by datasource list */
   filterByDataSourcesForm: FormGroup;
   filterByMatchKeysForm: FormGroup;
+  filterByMatchKeyTokensForm: FormGroup;
   /** the form group for colors by datasource list */
   colorsByDataSourcesForm: FormGroup;
   /** the form group for maxDegreesOfSeparation, maxEntities, buildOut parameter sliders */
@@ -213,7 +255,10 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     this.filterByMatchKeysForm = this.formBuilder.group({
       matchkeys: new FormArray([])
     });
-        
+    // filter by match keys tags
+    this.filterByMatchKeyTokensForm = this.formBuilder.group({
+      matchkeytokens: new FormArray([])
+    });
     // colors by datasources
     this.colorsByDataSourcesForm = this.formBuilder.group({
       datasources: new FormArray([])
@@ -243,6 +288,15 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     // update filters pref    
     this.prefs.graph.matchKeysIncluded = includedMatchKeyNames;
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkFilterChange',this.prefs.graph.matchKeysIncluded);
+  }
+  /** handler for when a filter by datasouce value in the "filterByDataSourcesForm" has changed */
+  onMkTagFilterChange(mkValue: string, evt?) {
+    const includedMatchKeyTokenNames = this.filterByMatchKeyTokensForm.value.matchkeytokens
+      .map((v, i) => v ? this.matchKeyTokens[i].name :  null)
+      .filter(v => v !== null);
+    // update filters pref    
+    this.prefs.graph.matchKeyTokensIncluded = includedMatchKeyTokenNames;
+    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterChange',this.prefs.graph.matchKeyTokensIncluded, includedMatchKeyTokenNames);
   }
   
   /**
@@ -322,6 +376,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     this.dataSourceColors = prefs.dataSourceColors;
     this.dataSourcesFiltered = prefs.dataSourcesFiltered;
     this.matchKeysIncluded = prefs.matchKeysIncluded;
+    this.matchKeyTokensIncluded = prefs.matchKeyTokensIncluded;
     this.queriedEntitiesColor = prefs.queriedEntitiesColor;
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onPrefsChange(): ', prefs, this.dataSourceColors);
     // update view manually (for web components redraw reliability)
@@ -458,6 +513,12 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     }
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.removeAllMatchKeyControls: ', this.filterByMatchKeysData, this.matchKeysIncluded);
   }
+  private removeAllMatchKeyTokenControls() {
+    while(this.filterByMatchKeyTokenData.length > 0){
+      this.filterByMatchKeyTokenData.removeAt(this.filterByMatchKeyTokenData.length - 1);
+    }
+    //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.removeAllMatchKeyControls: ', this.filterByMatchKeysData, this.matchKeysIncluded);
+  }
 
   private initializeMatchKeysFormControls() {
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.initializeMatchKeysFormControls: ', this.matchKeys, this.showMatchKeys, this.matchKeysIncluded);
@@ -474,7 +535,21 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
       });
     }
   }
+  private initializeMatchKeyTokenFormControls() {
+    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.initializeMatchKeysFormControls: ', this.matchKeyTokens, this.showMatchKeyTokens, this.matchKeyTokensIncluded);
+    if(this.matchKeyTokens) {
+      // remove old controls
+      this.removeAllMatchKeyTokenControls();
 
+      // init form controls for filter by match keys
+      this.matchKeyTokens.forEach((o, i) => {
+        const mkFilterVal = (this.matchKeyTokensIncluded.indexOf(o.name) >= 0);
+        const control1 = new FormControl(mkFilterVal); // if first item set to true, else false
+        // add control for filtered by list
+        (this.filterByMatchKeyTokensForm.controls['matchkeytokens'] as FormArray).push(control1);
+      });
+    }
+  }
 
   /** helper method for retrieving list of datasources */
   public getDataSources() {
@@ -487,6 +562,11 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   /** if "showMatchKeys" array is specified, check that string name is present in list */
   public shouldMatchKeyBeDisplayed( mkName: string) {
     return (this.showMatchKeys && this.showMatchKeys.length > 0) ? (this.showMatchKeys.indexOf( mkName ) > -1) : true;
+  }
+  /** if "showMatchKeys" array is specified, check that string name is present in list */
+  public shouldMatchKeyTokenBeDisplayed( mkName: string) {
+    return true;
+    return (this.showMatchKeyTokens && this.showMatchKeyTokens.length > 0) ? (this.showMatchKeyTokens.findIndex( (mkCat)=> { return mkCat.name === mkName; } ) > -1) : true;
   }
   
 }
