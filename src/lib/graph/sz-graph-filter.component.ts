@@ -83,7 +83,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     return retVal;
   }
   @Input() public set showMatchKeyTokens(value: Array<SzMatchKeyTokenComposite>) {
-    console.log('showMatchKeyTokens.set()', value, Object.keys(this.filterByMatchKeyTokensForm.controls), (<FormArray>this.filterByMatchKeysForm.get('matchkeys')));
+    console.log('showMatchKeyTokens.set()', value);
     if(value && value.map && value !== undefined) {
       this._matchKeyTokens = value.map((matchKeyComposite: SzMatchKeyTokenComposite, ind: number) => {
         return Object.assign(matchKeyComposite, {
@@ -91,7 +91,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
           'hidden': false
         });
       });
-      this.initializeMatchKeyTokenFormControls();
+      //this.initializeMatchKeyTokenFormControls();
     }
   }
   public get showMatchKeyTokens(): Array<SzMatchKeyTokenComposite> {
@@ -207,9 +207,10 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     return <FormArray>this.filterByMatchKeysForm.get('matchkeys');
   }
   /** get data from reactive form control array */
+  /*
   public get filterByMatchKeyTokenData() {
     return <FormArray>this.filterByMatchKeyTokensForm.get('matchkeytokens');
-  }
+  }*/
 
   // --------------------------------- event emmitters and subjects ----------------------
   /**
@@ -225,7 +226,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   /** the form group for the filters by datasource list */
   filterByDataSourcesForm: FormGroup;
   filterByMatchKeysForm: FormGroup;
-  filterByMatchKeyTokensForm: FormGroup;
+  //filterByMatchKeyTokensForm: FormGroup;
   /** the form group for colors by datasource list */
   colorsByDataSourcesForm: FormGroup;
   /** the form group for maxDegreesOfSeparation, maxEntities, buildOut parameter sliders */
@@ -256,9 +257,10 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
       matchkeys: new FormArray([])
     });
     // filter by match keys tags
+    /*
     this.filterByMatchKeyTokensForm = this.formBuilder.group({
       matchkeytokens: new FormArray([])
-    });
+    });*/
     // colors by datasources
     this.colorsByDataSourcesForm = this.formBuilder.group({
       datasources: new FormArray([])
@@ -290,6 +292,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkFilterChange',this.prefs.graph.matchKeysIncluded);
   }
   /** handler for when a filter by match key token value in the "filterByMatchKeyTokensForm" has changed */
+  /*
   onMkTagFilterChange(mkValue: string, evt?) {
     const includedMatchKeyTokenNames = this.filterByMatchKeyTokensForm.value.matchkeytokens
       .map((v, i) => v ? this.matchKeyTokens[i].name :  null)
@@ -297,6 +300,32 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     // update filters pref    
     this.prefs.graph.matchKeyTokensIncluded = includedMatchKeyTokenNames;
     console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterChange',this.prefs.graph.matchKeyTokensIncluded, includedMatchKeyTokenNames);
+  }*/
+  onMkTagFilterToggle( mkName: string ) {
+    let _matchKeyTokensIncludedMemCopy: string[] = [];
+    if(this.matchKeyTokensIncluded && this.matchKeyTokensIncluded.length) {
+      let _matchKeyTokensIncludedMemCopy = [].concat(this.matchKeyTokensIncluded);
+
+      let _existingKeyPos = _matchKeyTokensIncludedMemCopy.indexOf(mkName);
+      if(_existingKeyPos > -1 && _matchKeyTokensIncludedMemCopy[_existingKeyPos]) {
+        // remove from position
+        _matchKeyTokensIncludedMemCopy.splice(_existingKeyPos,1);
+        this.prefs.graph.matchKeyTokensIncluded = _matchKeyTokensIncludedMemCopy;
+        console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: removed ${mkName} from cloud value`,_matchKeyTokensIncludedMemCopy);
+      } else {
+        // add to included token list
+        _matchKeyTokensIncludedMemCopy.push( mkName );
+        this.prefs.graph.matchKeyTokensIncluded = _matchKeyTokensIncludedMemCopy;
+        console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: added ${mkName} to cloud value`,_matchKeyTokensIncludedMemCopy);
+      }
+    } else {
+      // add to included token list
+      _matchKeyTokensIncludedMemCopy.push( mkName );
+      this.prefs.graph.matchKeyTokensIncluded = _matchKeyTokensIncludedMemCopy;
+      console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: added ${mkName} to cloud value`,_matchKeyTokensIncludedMemCopy);
+    }
+    //this.prefs.graph.matchKeyTokensIncluded = _matchKeyTokensIncludedMemCopy;
+    //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle',this.prefs.graph.matchKeyTokensIncluded, _matchKeyTokensIncludedMemCopy);
   }
   
   /**
@@ -513,12 +542,13 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     }
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.removeAllMatchKeyControls: ', this.filterByMatchKeysData, this.matchKeysIncluded);
   }
+  /*
   private removeAllMatchKeyTokenControls() {
     while(this.filterByMatchKeyTokenData.length > 0){
       this.filterByMatchKeyTokenData.removeAt(this.filterByMatchKeyTokenData.length - 1);
     }
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.removeAllMatchKeyControls: ', this.filterByMatchKeysData, this.matchKeysIncluded);
-  }
+  }*/
 
   private initializeMatchKeysFormControls() {
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.initializeMatchKeysFormControls: ', this.matchKeys, this.showMatchKeys, this.matchKeysIncluded);
@@ -535,6 +565,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
       });
     }
   }
+  /*
   private initializeMatchKeyTokenFormControls() {
     console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.initializeMatchKeysFormControls: ', this.matchKeyTokens, this.showMatchKeyTokens, this.matchKeyTokensIncluded);
     if(this.matchKeyTokens) {
@@ -549,7 +580,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
         (this.filterByMatchKeyTokensForm.controls['matchkeytokens'] as FormArray).push(control1);
       });
     }
-  }
+  }*/
 
   /** helper method for retrieving list of datasources */
   public getDataSources() {
@@ -563,8 +594,19 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   public shouldMatchKeyBeDisplayed( mkName: string) {
     return (this.showMatchKeys && this.showMatchKeys.length > 0) ? (this.showMatchKeys.indexOf( mkName ) > -1) : true;
   }
+  public isMatchKeyTokenSelected( mkName: string ) {
+    let retVal = false;
+    if(this.matchKeyTokensIncluded && this.matchKeyTokensIncluded.length > 0) {
+      retVal = this.matchKeyTokensIncluded.indexOf(mkName) > -1 ? true : false;
+      //console.log(`#${mkName} in selected match keys? ${retVal}`, this.matchKeyTokensIncluded.indexOf(mkName), this.matchKeysIncluded);
+    } else {
+      //console.log(`#${mkName} not found in selected match keys: `, this.matchKeyTokensIncluded);
+    }
+    return retVal;
+  }
   /** if "showMatchKeys" array is specified, check that string name is present in list */
   public shouldMatchKeyTokenBeDisplayed( mkName: string) {
+    //console.log(`show "${mkName}" filter?`, this.showMatchKeyTokens);
     return true;
     return (this.showMatchKeyTokens && this.showMatchKeyTokens.length > 0) ? (this.showMatchKeyTokens.findIndex( (mkCat)=> { return mkCat.name === mkName; } ) > -1) : true;
   }

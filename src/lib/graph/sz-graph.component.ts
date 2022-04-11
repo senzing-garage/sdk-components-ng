@@ -2,7 +2,7 @@ import { Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, Ev
 import { SzPrefsService } from '../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { SzEntityNetworkData } from '@senzing/rest-api-client-ng';
+import { SzEntityData, SzEntityNetworkData } from '@senzing/rest-api-client-ng';
 import { SzGraphControlComponent } from './sz-graph-control.component';
 import { SzRelationshipNetworkComponent, NodeFilterPair, SzNetworkGraphInputs, SzEntityNetworkMatchKeyTokens } from '@senzing/sdk-graph-components';
 import { parseBool, sortDataSourcesByIndex } from '../common/utils';
@@ -118,6 +118,33 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @Input() dataSourcesFiltered: string[] = [];
   @Input() matchKeysIncluded: string[] = [];
   @Input() matchKeyTokensIncluded: string[] = [];
+  /*
+  private _matchKeyTokensIncluded: string[] = [];
+  @Input() set matchKeyTokensIncluded(value: string[]) {
+    let _applyMatchKeyTokenFilters  = false;
+    if(this._matchKeyTokensIncluded && this._matchKeyTokensIncluded.length && value && value.length) {
+      if(this._matchKeyTokensIncluded.length !== value.length) {
+        _applyMatchKeyTokenFilters = true;
+      } else {
+        // value is same length
+        let _oldValue = JSON.stringify(this._matchKeyTokensIncluded);
+        let _newValue = JSON.stringify(value);
+        if(_oldValue !== _newValue) {
+          _applyMatchKeyTokenFilters = true;
+        }
+      }
+    }
+    this._matchKeyTokensIncluded = value;
+    if(_applyMatchKeyTokenFilters) {
+      console.log('match key tokens changed. force filter reapplication: ', this.matchKeyTokensIncluded);
+      this.graph.applyIncludeFilters(this.entityMatchTokenFilter);
+    } else {
+      console.warn('no change in match key tokens. not updating filters..',JSON.stringify(this._matchKeyTokensIncluded), JSON.stringify(value));
+    }
+  }
+  public get matchKeyTokensIncluded(): string[] {
+    return this._matchKeyTokensIncluded;
+  }*/
   
   /** @internal */
   private _showPopOutIcon = false;
@@ -387,10 +414,29 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   public onGraphDataLoaded(inputs: SzNetworkGraphInputs) {
     if(inputs.data && inputs.data.entities) {
       this.filterShowDataSources = SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data);
+      let matchKeyTokens         = this.getMatchKeyTokenComposites( SzRelationshipNetworkComponent.getMatchKeyTokensFromEntityData(inputs.data) );
       this.dataSourcesChange.emit( SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data) );
       this.matchKeysChange.emit( SzRelationshipNetworkComponent.getMatchKeysFromEntityNetworkData(inputs.data) )
-      this.matchKeyTokensChange.emit( this.getMatchKeyTokenComposites( SzRelationshipNetworkComponent.getMatchKeyTokensFromEntityData(inputs.data) ) );
-      console.log('onGraphDataLoaded: ', this.filterShowMatchKeyTokens);
+      if(inputs.data && inputs.data.entities) {
+        // first build a array of all entity Ids present
+        let _onDeckEntityIds     = inputs.data.entities.map((entity: SzEntityData) => {
+          return entity.resolvedEntity.entityId;
+        });
+        // now update the "entitiesOnCanvas" property of the matchKeyToken entry with 
+        // just the entity ids that are present on the graph (from the "_onDeckEntityIds")
+        /*
+        matchKeyTokens = matchKeyTokens.map((mkToken: SzMatchKeyTokenComposite) => {
+          mkToken.entitiesOnCanvas = mkToken.entityIds.filter((entityId) => {
+            return _onDeckEntityIds.indexOf(entityId as number) > -1;
+          });
+          return mkToken;
+        })
+        .filter((mkToken: SzMatchKeyTokenComposite) => {
+          return mkToken && mkToken.entitiesOnCanvas && mkToken.entitiesOnCanvas.length > 0 ? true : false;
+        });*/
+      }
+      this.matchKeyTokensChange.emit( matchKeyTokens );
+      console.log('onGraphDataLoaded: ', this.filterShowMatchKeyTokens, inputs);
     }
     if(inputs.data) {
       this.dataLoaded.emit( inputs.data );
@@ -594,7 +640,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
 
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    //console.log('@senzing/sdk-components-ng/sz-standalone-graph.onPrefsChange(): ', prefs, this.prefs.graph);
+    console.log('@senzing/sdk-components-ng/sz-standalone-graph.onPrefsChange(): ', prefs, this.prefs.graph);
     let queryParamChanged = false;
     if(this.maxDegrees != prefs.maxDegreesOfSeparation ||
       this.maxEntities != prefs.maxEntities ||
@@ -808,7 +854,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
         //return true;
       }
     }
-    //console.log('isMatchKeyInEntityNode: ', matchKeys, nodeData, retVal);
+    //console.log('isMatchKeyTokenInEntityNode: ', matchKeyTokens, nodeData, retVal);
     return retVal;
   }
   /** checks to see if entity node is one of the primary entities queried for*/

@@ -17,12 +17,13 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatChipsModule } from '@angular/material/chips'
 
 @NgModule({
   declarations: [],
-  imports: [ NoopAnimationsModule, DragDropModule, MatDialogModule, MatBadgeModule, MatBottomSheetModule, MatInputModule, MatTableModule, MatPaginatorModule, MatSortModule, MatSidenavModule, MatButtonModule, MatCheckboxModule, MatToolbarModule, MatTooltipModule, MatMenuModule, MatIconModule, MatGridListModule],
+  imports: [ NoopAnimationsModule, DragDropModule, MatDialogModule, MatBadgeModule, MatBottomSheetModule, MatChipsModule, MatInputModule, MatTableModule, MatPaginatorModule, MatSortModule, MatSidenavModule, MatButtonModule, MatCheckboxModule, MatToolbarModule, MatTooltipModule, MatMenuModule, MatIconModule, MatGridListModule],
   exports: [ 
-    DragDropModule, MatDialogModule, MatBadgeModule, MatBottomSheetModule, MatInputModule, MatTableModule, MatPaginatorModule, MatSortModule, MatSidenavModule, MatButtonModule, MatCheckboxModule, MatToolbarModule, MatTooltipModule, MatMenuModule, MatIconModule, MatGridListModule
+    DragDropModule, MatDialogModule, MatBadgeModule, MatBottomSheetModule, MatChipsModule, MatInputModule, MatTableModule, MatPaginatorModule, MatSortModule, MatSidenavModule, MatButtonModule, MatCheckboxModule, MatToolbarModule, MatTooltipModule, MatMenuModule, MatIconModule, MatGridListModule
   ],
 })
 export class SzSdkMaterialModule { }

@@ -9,6 +9,8 @@ export interface SzMatchKeyTokenComposite {
   disclosed: boolean,
   name: string
   count: number,
+  visible?: number,
+  entitiesOnCanvas?: Array<string|number>,
   entityIds: Array<string|number>,
   index?: number,
   hidden?: boolean
