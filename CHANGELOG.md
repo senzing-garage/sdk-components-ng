@@ -29,6 +29,7 @@ and [rest api specification](https://github.com/Senzing/senzing-rest-api-specifi
 - The following event emitters to `SzEntityDetailComponent`
   - `recordsWhyButtonClick` - is emitted when a user clicks a why button from within the context of a record.
   - `headerWhyButtonClick` - is emitted when a user clicks a why button underneath the icon in the header.
+- The graph filters found in the `SzStandaloneGraphComponent` can now show a tag cloud of *Match Key Tokens*. If setting the `showMatchKeyTokenFilters="true"` you should also set the `showMatchKeyFilters]="false"` since the two options are exclusive and will interfere with proper function of the other.
 
 ### Removed
 - the following methods removed `SzAdminService`
