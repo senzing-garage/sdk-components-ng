@@ -138,4 +138,33 @@
     </ul>
     </form>
   </div>
+  <div *ngIf="showMatchKeyTokens && showMatchKeyTokenFilters">
+    <hr>
+    <h3>{{ sectionTitles[5] }}</h3>
+    <mat-chip-list 
+      #matchKeyChipList
+      class="match-keys mat-chip-list-stacked" 
+      aria-orientation="vertical" 
+      aria-label="Match Key Filters">
+      <mat-chip *ngFor="let mk of matchKeyTokens; let i = index"
+        [class.selected]="isMatchKeyTokenSelected(mk.name)"
+        (click)="onMkTagFilterToggle(mk.name)"
+        [matBadge]="mk.count" matBadgePosition="after" matBadgeColor="accent">
+        {{mk.name}}
+      </mat-chip>
+    </mat-chip-list>
+    <!--<form [formGroup]="filterByMatchKeyTokensForm">
+    <ul class="filters-list">
+      <ng-container *ngFor="let ds of filterByMatchKeyTokenData.controls; let i = index">
+          <ng-container *ngIf="shouldMatchKeyTokenBeDisplayed(matchKeyTokens[i].name)">
+              <li formArrayName="matchkeytokens">
+                <label>
+                  <input type="checkbox" [formControlName]="i" (change)="onMkTagFilterChange(matchKeyTokens[i].name, $event)">{{matchKeyTokens[i].name}}
+                </label>
+              </li>
+          </ng-container>
+      </ng-container>
+    </ul>
+    </form>-->
+  </div>
 </div>

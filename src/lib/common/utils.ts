@@ -1,5 +1,5 @@
 import { SzDataSourceComposite } from '../models/data-sources';
-import { SzMatchKeyComposite } from '../models/graph';
+import { SzMatchKeyTokenComposite, SzMatchKeyComposite } from '../models/graph';
 
 /**
  * A reusable function to remove any null or undefined values, and their
@@ -88,6 +88,30 @@ export function sortMatchKeysByIndex(value: SzMatchKeyComposite[]): SzMatchKeyCo
     });
     // now update index values to same as array
     retVal  = retVal.map((_mkVal: SzMatchKeyComposite, _index: number) => {
+      let _reIndexed  = _mkVal;
+      _reIndexed.index = _index;
+      return _reIndexed;
+    });
+  }
+  return retVal;
+}
+
+export function sortMatchKeyTokensByIndex(value: SzMatchKeyTokenComposite[]): SzMatchKeyTokenComposite[] {
+  let retVal  = value;
+  if(retVal && retVal.sort) {
+    // first sort by any existing indexes
+    retVal = retVal.sort((a, b) => {    
+        if (a.index > b.index) {
+            return 1;
+        } else if (a.index < b.index) {    
+            return -1;
+        } else {
+          // sort by name
+        }
+        return 0;
+    });
+    // now update index values to same as array
+    retVal  = retVal.map((_mkVal: SzMatchKeyTokenComposite, _index: number) => {
       let _reIndexed  = _mkVal;
       _reIndexed.index = _index;
       return _reIndexed;

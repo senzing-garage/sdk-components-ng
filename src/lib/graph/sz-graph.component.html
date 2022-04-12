@@ -19,7 +19,7 @@
       [linkGravity]="5"
       [highlight]="entityNodeColors"
       [filter]="entityNodeFilters"
-      [includes]="entityMatchFilter"
+      [includes]="entityMatchTokenFilter"
       [showLinkLabels]="_showMatchKeys"
       (contextMenuClick)="onRightClick($event)"
       (entityClick)="onEntityClick($event)"
@@ -43,7 +43,9 @@
         (optionChanged)="onOptionChange($event)"
         [showDataSources]="filterShowDataSources"
         [showMatchKeys]="filterShowMatchKeys"
+        [showMatchKeyTokens]="filterShowMatchKeyTokens"
         [showMatchKeyFilters]="showMatchKeyFilters"
+        [showMatchKeyTokenFilters]="showMatchKeyTokenFilters"
       ></sz-graph-filter>
   
       <svg class="popout-icon"
