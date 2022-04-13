@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, View
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
 import { EntityDataService, SzAttributeSearchResult, SzEntityData, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
-import { delay, Observable, ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
 
 class SzWhyEntityDataSource extends DataSource<any> {
@@ -144,25 +144,28 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
       }).join('\n');
       // why keys
       whyKeyRow[ matchWhyResult.perspective.internalId ]      = matchWhyResult.matchInfo.whyKey + '\n'+ matchWhyResult.matchInfo.resolutionRule;
-      // for each member of matchInfo.featureScores create a new row to add to result
-      let featureRowKeys  = Object.keys( matchWhyResult.matchInfo.featureScores ); 
-      featureRowKeys.forEach((keyStr) => {
-        if(!featureKeys.includes( keyStr )){ featureKeys.push(keyStr); }
-        let featValueForColumn = matchWhyResult.matchInfo.featureScores[ keyStr ].map((featScore: SzFeatureScore) => {
-          let retFeatValue = featScore.inboundFeature.featureValue;
-          if(featScore.featureType === 'NAME' && featScore.nameScoringDetails) {
-            retFeatValue = retFeatValue +'\n\t'+ featScore.candidateFeature.featureValue +`(full:${featScore.nameScoringDetails.fullNameScore}|giv:${featScore.nameScoringDetails.givenNameScore}|sur:${featScore.nameScoringDetails.surnameScore})`;
-          } else if(featScore.featureType === 'DOB' && featScore.scoringBucket == "SAME") {
-            retFeatValue = retFeatValue;
-          } else {
-            retFeatValue = retFeatValue +'\n\t'+ featScore.candidateFeature.featureValue;
-          }
-          return retFeatValue;
-        }).join('\n');
-        // append feature
-        if(!features[keyStr] || features[keyStr] === undefined) { features[keyStr] = {title: keyStr}; }
-        features[keyStr][ matchWhyResult.perspective.internalId ] = featValueForColumn;
-      });
+      // results with "NO_MATCH" may not have "featureScores"
+      if(matchWhyResult.matchInfo && matchWhyResult.matchInfo.featureScores) {
+        // for each member of matchInfo.featureScores create a new row to add to result
+        let featureRowKeys  = Object.keys( matchWhyResult.matchInfo.featureScores ); 
+        featureRowKeys.forEach((keyStr) => {
+          if(!featureKeys.includes( keyStr )){ featureKeys.push(keyStr); }
+          let featValueForColumn = matchWhyResult.matchInfo.featureScores[ keyStr ].map((featScore: SzFeatureScore) => {
+            let retFeatValue = featScore.inboundFeature.featureValue;
+            if(featScore.featureType === 'NAME' && featScore.nameScoringDetails) {
+              retFeatValue = retFeatValue +'\n\t'+ featScore.candidateFeature.featureValue +`(full:${featScore.nameScoringDetails.fullNameScore}|giv:${featScore.nameScoringDetails.givenNameScore}|sur:${featScore.nameScoringDetails.surnameScore})`;
+            } else if(featScore.featureType === 'DOB' && featScore.scoringBucket == "SAME") {
+              retFeatValue = retFeatValue;
+            } else {
+              retFeatValue = retFeatValue +'\n\t'+ featScore.candidateFeature.featureValue;
+            }
+            return retFeatValue;
+          }).join('\n');
+          // append feature
+          if(!features[keyStr] || features[keyStr] === undefined) { features[keyStr] = {title: keyStr}; }
+          features[keyStr][ matchWhyResult.perspective.internalId ] = featValueForColumn;
+        });
+      }
       
       // see if we have any identifier data to show
       if(entityRecords && matchWhyResult.perspective && matchWhyResult.perspective.focusRecords) {
