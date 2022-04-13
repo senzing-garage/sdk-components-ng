@@ -350,6 +350,25 @@ body {
 
     /* graph filters */
     --sz-graph-filter-control-background-color: transparent;
+    --sz-graph-filter-match-key-tags-display: inline-flex;
+    --sz-graph-filter-match-key-tags-flex-direction: column;
+    --sz-graph-filter-match-key-tags-align-items: flex-start;
+    --sz-graph-filter-match-key-tags-font-size: 10px;
+    --sz-graph-filter-match-key-tags-line-height: inherit;
+    --sz-graph-filter-match-key-tags-padding: 4px 30px 4px 12px;
+    --sz-graph-filter-match-key-tags-margin-right: 20px;
+    --sz-graph-filter-match-key-tags-width: unset;
+    --sz-graph-filter-match-key-tags-min-height: 26px;
+    --sz-graph-filter-match-key-tags-color: #525252;
+    --sz-graph-filter-match-key-tags-background-color: #e0e0e0;
+    --sz-graph-filter-match-key-tags-cursor: pointer;
+    --sz-graph-filter-match-key-tags-selected-background-color: rgb(208, 224, 228);
+    --sz-graph-filter-match-key-tags-selected-color: inherit;
+    --sz-graph-filter-match-key-tags-selected-cursor: pointer;
+    --sz-graph-filter-match-key-tags-count-badge-top: 2px;
+    --sz-graph-filter-match-key-tags-count-badge-right: 3px;
+    --sz-graph-filter-match-key-tags-count-badge-background-color: #ffffffbd;
+    --sz-graph-filter-match-key-tags-count-badge-color: inheirit;
 
   /* end entity detail vars */
   /* start preferences component */
