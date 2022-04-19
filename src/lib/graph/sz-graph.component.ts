@@ -2,10 +2,10 @@ import { Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, Ev
 import { SzPrefsService } from '../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { SzEntityData, SzEntityNetworkData } from '@senzing/rest-api-client-ng';
+import { SzEntityData, SzEntityIdentifier, SzEntityNetworkData } from '@senzing/rest-api-client-ng';
 import { SzGraphControlComponent } from './sz-graph-control.component';
 import { SzRelationshipNetworkComponent, NodeFilterPair, SzNetworkGraphInputs, SzEntityNetworkMatchKeyTokens } from '@senzing/sdk-graph-components';
-import { parseBool, sortDataSourcesByIndex } from '../common/utils';
+import { parseBool, parseSzIdentifier, sortDataSourcesByIndex } from '../common/utils';
 import { SzDataSourceComposite } from '../models/data-sources';
 import { SzMatchKeyTokenComposite } from '../models/graph';
 
@@ -118,6 +118,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @Input() dataSourcesFiltered: string[] = [];
   @Input() matchKeysIncluded: string[] = [];
   @Input() matchKeyTokensIncluded: string[] = [];
+  @Input() matchKeyCoreTokensIncluded: string[] = [];
   /*
   private _matchKeyTokensIncluded: string[] = [];
   @Input() set matchKeyTokensIncluded(value: string[]) {
@@ -185,6 +186,9 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   private _showMatchKeysFilters: boolean = true;
   private _showMatchKeyTokenFilters: boolean = true;
   private _showMatchKeyControl: boolean = true;
+  @Input() public showCoreMatchKeyTokenChips: boolean       = false;
+  @Input() public showExtraneousMatchKeyTokenChips: boolean = true;
+  
   /** whether or not to show match keys toggle control */
   @Input() set showMatchKeyControl(value: boolean | string) {
     this._showMatchKeyControl = parseBool(value);    
@@ -362,12 +366,25 @@ export class SzGraphComponent implements OnInit, OnDestroy {
 
   private getMatchKeyTokenComposites(data: SzEntityNetworkMatchKeyTokens): Array<SzMatchKeyTokenComposite> {
     let retVal: Array<SzMatchKeyTokenComposite> = [];
-    let _derivedKeys    = Object.keys(data.DERIVED);
-    let _disclosedKeys  = Object.keys(data.DISCLOSED)
+    let _derivedKeys        = Object.keys(data.DERIVED);
+    let _disclosedKeys      = Object.keys(data.DISCLOSED)
+
+    /** we use this to get the counts MINUS the core/focal entities(which are always shown) */
+    let stripCoreEntityIds = (entityIds: Array<SzEntityIdentifier>): Array<SzEntityIdentifier> => {
+      let _retVal = entityIds;
+      if(entityIds && entityIds.filter) {
+        _retVal = _retVal.filter((_eId) => {
+          return  this.graphIds.indexOf( parseSzIdentifier(_eId) ) < 0;
+        });
+      }
+      return _retVal;
+    }
+
     // do derived first
     _derivedKeys.forEach((dKey: string) => {
-      let _categoryEntityIds = data.DERIVED[ dKey ];
-      let _existingKeyPos    = retVal.findIndex((mkComposite: SzMatchKeyTokenComposite) => {
+      let _categoryEntityIds      = data.DERIVED[ dKey ];
+      let _coreCategoryEntityIds  = data.CORE && data.CORE.DERIVED && data.CORE.DERIVED[ dKey ] ? data.CORE.DERIVED[ dKey ] : [];
+      let _existingKeyPos         = retVal.findIndex((mkComposite: SzMatchKeyTokenComposite) => {
         return mkComposite.name === dKey;
       })
       if(_existingKeyPos < 0) { 
@@ -375,18 +392,24 @@ export class SzGraphComponent implements OnInit, OnDestroy {
           derived: true,
           disclosed: false,
           name: dKey,
-          count: _categoryEntityIds.length,
-          entityIds: _categoryEntityIds
+          count: stripCoreEntityIds(_categoryEntityIds).length,
+          coreCount: stripCoreEntityIds(_coreCategoryEntityIds).length,
+          entityIds: _categoryEntityIds,
+          coreEntityIds: _coreCategoryEntityIds
         })
       } else {
-        retVal[_existingKeyPos].entityIds = retVal[_existingKeyPos].entityIds.concat(_categoryEntityIds);
-        retVal[_existingKeyPos].count     = retVal[_existingKeyPos].entityIds.length;
+        // check if it's a core entity
+        retVal[_existingKeyPos].coreEntityIds = retVal[_existingKeyPos].coreEntityIds.concat(_coreCategoryEntityIds);
+        retVal[_existingKeyPos].entityIds     = retVal[_existingKeyPos].entityIds.concat(_categoryEntityIds);
+        retVal[_existingKeyPos].coreCount     = retVal[_existingKeyPos].coreEntityIds.length;
+        retVal[_existingKeyPos].count         = retVal[_existingKeyPos].entityIds.length;
       }
     });
     // do disclosed
     _disclosedKeys.forEach((dKey: string) => {
-      let _categoryEntityIds = data.DISCLOSED[ dKey ];
-      let _existingKeyPos    = retVal.findIndex((mkComposite: SzMatchKeyTokenComposite) => {
+      let _categoryEntityIds      = data.DISCLOSED[ dKey ];
+      let _coreCategoryEntityIds  = data.CORE && data.CORE.DISCLOSED && data.CORE.DISCLOSED[ dKey ] ? data.CORE.DISCLOSED[ dKey ] : [];
+      let _existingKeyPos         = retVal.findIndex((mkComposite: SzMatchKeyTokenComposite) => {
         return mkComposite.name === dKey;
       })
       if(_existingKeyPos < 0) { 
@@ -394,12 +417,16 @@ export class SzGraphComponent implements OnInit, OnDestroy {
           derived: false,
           disclosed: true,
           name: dKey,
-          count: _categoryEntityIds.length,
-          entityIds: _categoryEntityIds
+          count: stripCoreEntityIds(_categoryEntityIds).length,
+          coreCount: stripCoreEntityIds(_coreCategoryEntityIds).length,
+          entityIds: _categoryEntityIds,
+          coreEntityIds: _coreCategoryEntityIds
         })
       } else {
-        retVal[_existingKeyPos].entityIds = retVal[_existingKeyPos].entityIds.concat(_categoryEntityIds);
-        retVal[_existingKeyPos].count     = retVal[_existingKeyPos].entityIds.length;
+        retVal[_existingKeyPos].coreEntityIds = retVal[_existingKeyPos].coreEntityIds.concat(_coreCategoryEntityIds);
+        retVal[_existingKeyPos].entityIds     = retVal[_existingKeyPos].entityIds.concat(_categoryEntityIds);
+        retVal[_existingKeyPos].coreCount     = retVal[_existingKeyPos].coreEntityIds.length;
+        retVal[_existingKeyPos].count         = retVal[_existingKeyPos].entityIds.length;
       }
     });
     return retVal;
@@ -413,8 +440,9 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   */
   public onGraphDataLoaded(inputs: SzNetworkGraphInputs) {
     if(inputs.data && inputs.data.entities) {
-      this.filterShowDataSources = SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data);
-      let matchKeyTokens         = this.getMatchKeyTokenComposites( SzRelationshipNetworkComponent.getMatchKeyTokensFromEntityData(inputs.data) );
+      this.filterShowDataSources  = SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data);
+      let _matchKeyTokens         = SzRelationshipNetworkComponent.getMatchKeyTokensFromEntityData(inputs.data, this.graphIds);
+      let matchKeyTokens          = this.getMatchKeyTokenComposites( _matchKeyTokens );
       this.dataSourcesChange.emit( SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data) );
       this.matchKeysChange.emit( SzRelationshipNetworkComponent.getMatchKeysFromEntityNetworkData(inputs.data) )
       if(inputs.data && inputs.data.entities) {
@@ -436,7 +464,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
         });*/
       }
       this.matchKeyTokensChange.emit( matchKeyTokens );
-      console.log('onGraphDataLoaded: ', this.filterShowMatchKeyTokens, inputs);
+      console.log('onGraphDataLoaded: ', _matchKeyTokens, this.filterShowMatchKeyTokens, inputs);
     }
     if(inputs.data) {
       this.dataLoaded.emit( inputs.data );
@@ -517,7 +545,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
    */
    onMatchKeyTokensChange(data: SzMatchKeyTokenComposite[]) {
     this.filterShowMatchKeyTokens = data;
-  }  
+  } 
 
   constructor(
     public prefs: SzPrefsService,
@@ -657,6 +685,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     this.dataSourcesFiltered          = prefs.dataSourcesFiltered;
     this.matchKeysIncluded            = prefs.matchKeysIncluded;
     this.matchKeyTokensIncluded       = prefs.matchKeyTokensIncluded;
+    this.matchKeyCoreTokensIncluded   = prefs.matchKeyCoreTokensIncluded
     this.neverFilterQueriedEntityIds  = prefs.neverFilterQueriedEntityIds;
     if(prefs.queriedEntitiesColor && prefs.queriedEntitiesColor !== undefined && prefs.queriedEntitiesColor !== null) {
       this.queriedEntitiesColor = prefs.queriedEntitiesColor;
@@ -746,8 +775,8 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     let _ret: NodeFilterPair;
     if(this.matchKeyTokensIncluded && this.showMatchKeyTokenFilters) {
       _ret = {
-        selectorFn: this.isMatchKeyTokenInEntityNode.bind(this, this.matchKeyTokensIncluded),
-        selectorArgs: this.matchKeyTokensIncluded
+        selectorFn: this.isMatchKeyTokenInEntityNode.bind(this, this.matchKeyCoreTokensIncluded, this.matchKeyTokensIncluded),
+        selectorArgs: [this.matchKeyCoreTokensIncluded, this.matchKeyTokensIncluded]
       };
     }
     return _ret;
@@ -840,10 +869,20 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     //console.log('isMatchKeyInEntityNode: ', matchKeys, nodeData, retVal);
     return retVal;
   }
-  private isMatchKeyTokenInEntityNode(matchKeyTokens?, nodeData?) {
+  private isMatchKeyTokenInEntityNode(coreMatchKeyTokens?, matchKeyTokens?, nodeData?) {
+
     let retVal = false;
     if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
       return true;
+    } else if(coreMatchKeyTokens && coreMatchKeyTokens.length > 0) {
+      if(nodeData && (nodeData.isRelatedToPrimaryEntity || nodeData.isPrimaryEntity) && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf){
+        // D3 filter query 
+        retVal = (nodeData.relationshipMatchKeyTokens.some( (tokenName) => {
+          return coreMatchKeyTokens.indexOf(tokenName) > -1;
+        }));
+        //console.log(`isMatchKeyTokenInEntityNode: checking for "${matchKeyTokens}"? ${retVal}`, nodeData.relationshipMatchKeyTokens, );
+        //return true;
+      }
     } else {
       if(nodeData && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf){
         // D3 filter query 
@@ -854,7 +893,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
         //return true;
       }
     }
-    //console.log('isMatchKeyTokenInEntityNode: ', matchKeyTokens, nodeData, retVal);
+    console.log('isMatchKeyTokenInEntityNode: ', coreMatchKeyTokens, matchKeyTokens, nodeData, retVal);
     return retVal;
   }
   /** checks to see if entity node is one of the primary entities queried for*/

@@ -146,12 +146,24 @@
       class="match-keys mat-chip-list-stacked" 
       aria-orientation="vertical" 
       aria-label="Match Key Filters">
-      <mat-chip *ngFor="let mk of matchKeyTokens; let i = index"
-        [class.selected]="isMatchKeyTokenSelected(mk.name)"
-        (click)="onMkTagFilterToggle(mk.name)"
-        [matBadge]="mk.count" matBadgePosition="after" matBadgeColor="accent">
-        {{mk.name}}
-      </mat-chip>
+      
+      <div *ngIf="showCoreMatchKeyTokenChips" class="chip-group">
+        <mat-chip *ngFor="let mk of matchKeyCoreTokens; let i = index"
+          class="core-key"
+          [class.selected]="isMatchKeyCoreTokenSelected(mk.name)"
+          (click)="onCoreMkTagFilterToggle(mk.name)"
+          [matBadge]="mk.coreCount" matBadgePosition="after" matBadgeColor="accent">
+          {{mk.name}}
+        </mat-chip>
+      </div>
+      <div *ngIf="showExtraneousMatchKeyTokenChips" class="chip-group">
+        <mat-chip *ngFor="let mk of matchKeyTokens; let i = index"
+          [class.selected]="isMatchKeyTokenSelected(mk.name)"
+          (click)="onMkTagFilterToggle(mk.name)"
+          [matBadge]="mk.count" matBadgePosition="after" matBadgeColor="accent">
+          {{mk.name}}
+        </mat-chip>
+      </div>
     </mat-chip-list>
     <!--<form [formGroup]="filterByMatchKeyTokensForm">
     <ul class="filters-list">

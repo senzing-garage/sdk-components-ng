@@ -45,7 +45,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   */
   private _dataSources: SzDataSourceComposite[]               = [];
   private _matchKeys: SzMatchKeyComposite[]                   = [];
-  private _matchKeyTokens: SzMatchKeyTokenComposite[]      = [];
+  private _matchKeyTokens: SzMatchKeyTokenComposite[]         = [];
 
   /** private list of SzDataSourceComposite as stored in local storage 
    * @internal
@@ -117,9 +117,14 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   public get showMatchKeyTokenFilters(): boolean | string {
     return this._showMatchKeyTokenFilters;
   }
+  
+  @Input() public showCoreMatchKeyTokenChips: boolean       = false;
+  @Input() public showExtraneousMatchKeyTokenChips: boolean = true;
+
   @Input() dataSourcesFiltered: string[]        = [];
   @Input() matchKeysIncluded: string[]          = [];
   @Input() matchKeyTokensIncluded: string[]     = [];
+  @Input() matchKeyCoreTokensIncluded: string[] = [];
   @Input() queriedEntitiesColor: string;
 
   /** 
@@ -167,6 +172,13 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   /** get list of  "SzDataSourceComposite" reflecting datasources pulled from API and augmented with state information in shape of "SzDataSourceComposite". ordered ASC by "index" */
   public get matchKeyTokens(): SzMatchKeyTokenComposite[] {
     let retVal: SzMatchKeyTokenComposite[] = this._matchKeyTokens;
+    retVal = sortMatchKeyTokensByIndex(retVal);
+    return retVal;
+  }
+  public get matchKeyCoreTokens(): SzMatchKeyTokenComposite[] {
+    let retVal: SzMatchKeyTokenComposite[] = this._matchKeyTokens.filter((mkComposite) => {
+      return mkComposite.coreCount > 0;
+    });
     retVal = sortMatchKeyTokensByIndex(retVal);
     return retVal;
   }
@@ -291,16 +303,6 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     this.prefs.graph.matchKeysIncluded = includedMatchKeyNames;
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkFilterChange',this.prefs.graph.matchKeysIncluded);
   }
-  /** handler for when a filter by match key token value in the "filterByMatchKeyTokensForm" has changed */
-  /*
-  onMkTagFilterChange(mkValue: string, evt?) {
-    const includedMatchKeyTokenNames = this.filterByMatchKeyTokensForm.value.matchkeytokens
-      .map((v, i) => v ? this.matchKeyTokens[i].name :  null)
-      .filter(v => v !== null);
-    // update filters pref    
-    this.prefs.graph.matchKeyTokensIncluded = includedMatchKeyTokenNames;
-    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterChange',this.prefs.graph.matchKeyTokensIncluded, includedMatchKeyTokenNames);
-  }*/
   onMkTagFilterToggle( mkName: string ) {
     let _matchKeyTokensIncludedMemCopy: string[] = [];
     if(this.matchKeyTokensIncluded && this.matchKeyTokensIncluded.length) {
@@ -324,10 +326,31 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
       this.prefs.graph.matchKeyTokensIncluded = _matchKeyTokensIncludedMemCopy;
       console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: added ${mkName} to cloud value`,_matchKeyTokensIncludedMemCopy);
     }
-    //this.prefs.graph.matchKeyTokensIncluded = _matchKeyTokensIncludedMemCopy;
-    //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle',this.prefs.graph.matchKeyTokensIncluded, _matchKeyTokensIncludedMemCopy);
   }
-  
+  onCoreMkTagFilterToggle( mkName: string ) { 
+    let _matchKeyTokensIncludedMemCopy: string[] = [];
+    if(this.matchKeyCoreTokensIncluded && this.matchKeyCoreTokensIncluded.length) {
+      let _matchKeyTokensIncludedMemCopy = [].concat(this.matchKeyCoreTokensIncluded);
+
+      let _existingKeyPos = _matchKeyTokensIncludedMemCopy.indexOf(mkName);
+      if(_existingKeyPos > -1 && _matchKeyTokensIncludedMemCopy[_existingKeyPos]) {
+        // remove from position
+        _matchKeyTokensIncludedMemCopy.splice(_existingKeyPos,1);
+        this.prefs.graph.matchKeyCoreTokensIncluded = _matchKeyTokensIncludedMemCopy;
+        console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onCoreMkTagFilterToggle: removed ${mkName} from cloud value`,_matchKeyTokensIncludedMemCopy);
+      } else {
+        // add to included token list
+        _matchKeyTokensIncludedMemCopy.push( mkName );
+        this.prefs.graph.matchKeyCoreTokensIncluded = _matchKeyTokensIncludedMemCopy;
+        console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onCoreMkTagFilterToggle: addeded ${mkName}(${_existingKeyPos}) to cloud value`,_matchKeyTokensIncludedMemCopy);
+      }
+    } else {
+      // add to included token list
+      _matchKeyTokensIncludedMemCopy.push( mkName );
+      this.prefs.graph.matchKeyCoreTokensIncluded = _matchKeyTokensIncludedMemCopy;
+      console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onCoreMkTagFilterToggle: added ${mkName} to cloud value`,_matchKeyTokensIncludedMemCopy, this.matchKeyCoreTokensIncluded);
+    }
+  }
   /**
    * method for getting the selected pref color for a datasource 
    * by the datasource name. used for applying background color to 
@@ -406,6 +429,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     this.dataSourcesFiltered = prefs.dataSourcesFiltered;
     this.matchKeysIncluded = prefs.matchKeysIncluded;
     this.matchKeyTokensIncluded = prefs.matchKeyTokensIncluded;
+    this.matchKeyCoreTokensIncluded = prefs.matchKeyCoreTokensIncluded;
     this.queriedEntitiesColor = prefs.queriedEntitiesColor;
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onPrefsChange(): ', prefs, this.dataSourceColors);
     // update view manually (for web components redraw reliability)
@@ -598,6 +622,16 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     let retVal = false;
     if(this.matchKeyTokensIncluded && this.matchKeyTokensIncluded.length > 0) {
       retVal = this.matchKeyTokensIncluded.indexOf(mkName) > -1 ? true : false;
+      //console.log(`#${mkName} in selected match keys? ${retVal}`, this.matchKeyTokensIncluded.indexOf(mkName), this.matchKeysIncluded);
+    } else {
+      //console.log(`#${mkName} not found in selected match keys: `, this.matchKeyTokensIncluded);
+    }
+    return retVal;
+  }
+  public isMatchKeyCoreTokenSelected( mkName: string ) {
+    let retVal = false;
+    if(this.matchKeyCoreTokensIncluded && this.matchKeyCoreTokensIncluded.length > 0) {
+      retVal = this.matchKeyCoreTokensIncluded.indexOf(mkName) > -1 ? true : false;
       //console.log(`#${mkName} in selected match keys? ${retVal}`, this.matchKeyTokensIncluded.indexOf(mkName), this.matchKeysIncluded);
     } else {
       //console.log(`#${mkName} not found in selected match keys: `, this.matchKeyTokensIncluded);

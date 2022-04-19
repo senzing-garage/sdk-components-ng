@@ -258,7 +258,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -275,6 +274,49 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "debug": {
+              "fileReplacements": [
+                {
+                  "replace": "examples/search-in-graph/src/environments/environment.ts",
+                  "with": "examples/search-in-graph/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "sourceMap": {
+                "scripts": true,
+                "styles": true,
+                "vendor": true
+              },
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": {
+                "scripts": true,
+                "styles": true,
+                "vendor": true
+              },
+              "namedChunks": true,
+              "extractLicenses": false,
+              "vendorChunk": true,
+              "buildOptimizer": false,
+              "budgets": []
             }
           }
         },
@@ -288,6 +330,12 @@
           "configurations": {
             "production": {
               "browserTarget": "@senzing/sdk-components-ng/examples/search-in-graph:build:production"
+            },
+            "debug": {
+              "browserTarget": "@senzing/sdk-components-ng/examples/search-in-graph:build:debug"
+            },
+            "development": {
+              "browserTarget": "@senzing/sdk-components-ng/examples/search-in-graph:build:development"
             }
           }
         },

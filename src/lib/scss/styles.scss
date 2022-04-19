@@ -76,7 +76,8 @@ body {
 
   }
   /* match key tag cloud for standalone graph and filter(s) */
-  mat-chip-list.match-keys .mat-chip-list-wrapper {
+  mat-chip-list.match-keys .mat-chip-list-wrapper,
+  mat-chip-list.match-keys .chip-group {
     display: var(--sz-graph-filter-match-key-tags-display);
     flex-direction: var(--sz-graph-filter-match-key-tags-flex-direction);
     align-items: var(--sz-graph-filter-match-key-tags-align-items);
