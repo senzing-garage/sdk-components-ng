@@ -8,7 +8,7 @@
 <!-- start search box -->
 <div class="component-example">
   <sz-search
-    name="CHARLES SCERRI"
+    name="Jenny Smith"
     #searchBox
     disableIdentifierOptions="SSN_LAST4"
     enableIdentifierOptions="SOCIAL_NETWORK"
@@ -49,6 +49,8 @@
         [showMatchKeys]="true"
         [showMatchKeyFilters]="false"
         [showMatchKeyTokenFilters]="true"
+        [showCoreMatchKeyTokenChips]="true"
+        [showExtraneousMatchKeyTokenChips]="false"
         showZoomControl="true"
         (requestStarted)="onRequestStarted($event)"
         (renderComplete)="onRenderComplete($event)"
