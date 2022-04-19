@@ -119,6 +119,7 @@
   }
 
   mat-chip-list.match-keys {
+
     mat-chip {
       font-size: var(--sz-graph-filter-match-key-tags-font-size);
       line-height: var(--sz-graph-filter-match-key-tags-line-height);
@@ -136,6 +137,9 @@
         background-color: var(--sz-graph-filter-match-key-tags-selected-background-color); //rgb(208, 224, 228);
         color: var(--sz-graph-filter-match-key-tags-selected-color); // inheirit
         cursor: var(--sz-graph-filter-match-key-tags-selected-cursor);
+        &.core-key {
+          background-color: rgb(238, 238, 164);
+        }
       }
 
       .mat-badge-content {
