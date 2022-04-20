@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
-import { EntityDataService, SzAttributeSearchResult, SzEntityData, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
+import { EntityDataService, SzAttributeSearchResult, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
 
@@ -84,7 +84,7 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
           }
         });
       }
-      let formattedData = this.formatWhyDataForDataTable(resData.data.whyResults, matchedRecords);
+      let formattedData = this.formatWhyDataForDataTable(resData.data.whyResults, resData.data.entities, matchedRecords);
       //this.columnsToDisplay   = formattedData.columns;
       this._columnsToDisplay  = formattedData.columns;
       //this.columnsToDisplay   = formattedData.columns;
@@ -103,9 +103,9 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
   }
 
   getWhyData() {
-    return this.entityData.whyEntityByEntityID(parseSzIdentifier(this.entityId), true, true, false, SzFeatureMode.NONE, false, false)
+    return this.entityData.whyEntityByEntityID(parseSzIdentifier(this.entityId), true, true, false, SzFeatureMode.REPRESENTATIVE, false, false)
   }
-  formatWhyDataForDataTable(data: SzWhyEntityResult[], entityRecords: SzMatchedRecord[]): any {
+  formatWhyDataForDataTable(data: SzWhyEntityResult[], entities: SzEntityData[], entityRecords: SzMatchedRecord[]): any {
     let internalIds   = data.map((matchWhyResult) => { return matchWhyResult.perspective.internalId; });
     let columnKeys    = internalIds;
     let internalIdRow = {title:'Internal Id'};
@@ -143,7 +143,28 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
         return record.dataSource +':'+ record.recordId;
       }).join('\n');
       // why keys
-      whyKeyRow[ matchWhyResult.perspective.internalId ]      = matchWhyResult.matchInfo.whyKey + '\n'+ matchWhyResult.matchInfo.resolutionRule;
+      if(matchWhyResult.matchInfo.matchLevel !== 'NO_MATCH') {
+        whyKeyRow[ matchWhyResult.perspective.internalId ]      = matchWhyResult.matchInfo.whyKey + '\n '+ matchWhyResult.matchInfo.resolutionRule;
+      } else {
+        // -------------------- NO MATCH PULL FROM ENTITY INSTEAD --------------------
+        whyKeyRow[ matchWhyResult.perspective.internalId ]      = 'not found!'; // matchWhyResult.matchInfo.matchLevel;
+        if(entities && entities.length == 1 && entities[0].resolvedEntity && entities[0].resolvedEntity && entities[0].resolvedEntity.features) {
+          let entityData      = entities[0].resolvedEntity;
+          let entityFeatures  = entityData.features;
+          // for each member of entityData.features create a new row to add to result
+          let featureRowKeys  = Object.keys( entityFeatures );
+          featureRowKeys.forEach((keyStr) => {
+            if(!featureKeys.includes( keyStr )){ featureKeys.push(keyStr); }
+            let featValueForColumn = entityFeatures[ keyStr ].map((feature: SzEntityFeature) => {
+              let retFeatValue = feature.primaryValue;
+              return retFeatValue;
+            }).join('\n ');
+            // append feature
+            if(!features[keyStr] || features[keyStr] === undefined) { features[keyStr] = {title: keyStr}; }
+            features[keyStr][ matchWhyResult.perspective.internalId ] = featValueForColumn;
+          });
+        }
+      }
       // results with "NO_MATCH" may not have "featureScores"
       if(matchWhyResult.matchInfo && matchWhyResult.matchInfo.featureScores) {
         // for each member of matchInfo.featureScores create a new row to add to result
@@ -153,11 +174,18 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
           let featValueForColumn = matchWhyResult.matchInfo.featureScores[ keyStr ].map((featScore: SzFeatureScore) => {
             let retFeatValue = featScore.inboundFeature.featureValue;
             if(featScore.featureType === 'NAME' && featScore.nameScoringDetails) {
-              retFeatValue = retFeatValue +'\n\t'+ featScore.candidateFeature.featureValue +`(full:${featScore.nameScoringDetails.fullNameScore}|giv:${featScore.nameScoringDetails.givenNameScore}|sur:${featScore.nameScoringDetails.surnameScore})`;
+              let _nameScoreValues  = [];
+              if(featScore.nameScoringDetails.fullNameScore)    { _nameScoreValues.push(`full:${featScore.nameScoringDetails.fullNameScore}`);}
+              if(featScore.nameScoringDetails.orgNameScore)     { _nameScoreValues.push(`org:${featScore.nameScoringDetails.orgNameScore}`);}
+              if(featScore.nameScoringDetails.givenNameScore)   { _nameScoreValues.push(`giv:${featScore.nameScoringDetails.givenNameScore}`);}
+              if(featScore.nameScoringDetails.surnameScore)     { _nameScoreValues.push(`sur:${featScore.nameScoringDetails.surnameScore}`);}
+              if(featScore.nameScoringDetails.generationScore)  { _nameScoreValues.push(`gen:${featScore.nameScoringDetails.generationScore}`);}
+
+              retFeatValue = retFeatValue +'\n '+ featScore.candidateFeature.featureValue +(_nameScoreValues.length > 0 ? `(${_nameScoreValues.join('|')})` : '');
             } else if(featScore.featureType === 'DOB' && featScore.scoringBucket == "SAME") {
-              retFeatValue = retFeatValue;
+              retFeatValue = retFeatValue + (featScore.score? ` (${featScore.score})`: '');
             } else {
-              retFeatValue = retFeatValue +'\n\t'+ featScore.candidateFeature.featureValue;
+              retFeatValue = retFeatValue +'\n '+ featScore.candidateFeature.featureValue + (featScore.score? ` (${featScore.score})`: '');
             }
             return retFeatValue;
           }).join('\n');
@@ -226,6 +254,8 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
     retVal.push( internalIdRow );
     // datasources are the second row
     retVal.push( dataSourceRow );
+    // why result
+    retVal.push( whyKeyRow );
     // add feature rows
     featureKeys.forEach((featureKeyStr) => {
       retVal.push( features[ featureKeyStr ] );
