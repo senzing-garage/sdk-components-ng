@@ -137,8 +137,9 @@
         background-color: var(--sz-graph-filter-match-key-tags-selected-background-color); //rgb(208, 224, 228);
         color: var(--sz-graph-filter-match-key-tags-selected-color); // inheirit
         cursor: var(--sz-graph-filter-match-key-tags-selected-cursor);
+
         &.core-key {
-          background-color: rgb(238, 238, 164);
+          background-color: var(--sz-graph-filter-match-key-core-tags-selected-background-color);
         }
       }
 
