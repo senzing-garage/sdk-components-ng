@@ -28,3 +28,40 @@ body {
       -webkit-transform: scaleY(1.0);
   }
 }
+
+.graph-context-menu {
+  display: block;
+  background-color: rgb(104, 104, 104);
+  padding: 0;
+  margin: 0;
+  width: 140px;
+  font-size: 12px;
+  border-left: 1px solid #686868;
+  border-right: 1px solid #686868;
+  border-top: 0;
+  border-bottom: 0;
+
+  li {
+    display: block;
+    background-color: #eaeaea;
+    text-align: left;
+    transition-duration: 0.2s;
+    color: rgb(58, 58, 58);
+    margin: 1px 0 1px 0;
+    padding: 4px 2px 2px 4px;
+    border-top: 1px solid #686868;
+    border-bottom: 1px solid #686868;
+  }
+  li:first-child {
+    border-top: 1px solid rgb(104, 104, 104);
+    margin-top: 0;
+  }
+  li:last-child {
+    margin-bottom: 0;
+  }
+  li:hover {
+    cursor: pointer;
+    background-color:rgb(58, 58, 58);
+    color:#c0c0c0;
+  }
+}

@@ -1,0 +1,121 @@
+body {
+  .sz-graph-node,  .sz-graph-queried-node {
+    font-size: 12px;
+    &.has-collapsed-edges {
+      .sz-graph-icon-edge-glyph-expanded {
+        display: none;
+      }
+      .sz-graph-icon-edge-glyph-collapsed {
+        display: block;
+      }
+    }
+    &.sz-graph-node-loading {
+      fill: #3385d1;
+      cursor: wait;
+
+      .loading-glyph {
+        display: block;
+        stroke: #474747;
+      }
+    }
+  }
+
+  // for core non-removable nodes we dont want to show
+  // the "-" glyph, only the "+"
+  .sz-graph-primary-node {
+    &.sz-graph-all-related-visible {
+      .sz-graph-icon-edge-glyph-expanded {
+        display: none;
+      }
+      .sz-graph-icon-expand {
+        display: none;
+      }
+    }
+  }
+
+  .sz-graph-icon-edge-glyph-expanded {
+    display: block;
+  }
+  .sz-graph-icon-edge-glyph-collapsed {
+    display: none;
+  }
+  .sz-graph-icon-edge-toggle, .sz-graph-icon-expand, .sz-graph-icon-collapse {
+    fill: #3385d1;
+    stroke: #474747;
+    stroke-width: 1px;
+    cursor: pointer;
+  }
+  .sz-graph-icon-edge-glyph, .sz-graph-icon-edge-1k-glyph {
+    cursor: pointer;
+    font-weight: bold;
+    fill: #ffffff;
+  }
+  .sz-node-state-hidden {
+    visibility: hidden;
+  }
+
+  .sz-graph-label {
+    font-size: 10px;
+    font-weight: bold;
+
+    &.truncated {
+      cursor: pointer;
+    }
+  }
+
+  .sz-graph-link-label {
+    font-size: 10px;
+  }
+
+  .sz-graph-core-link {
+    stroke: #555;
+    stroke-width: 3px;
+  }
+
+  .sz-graph-link {
+    stroke: #999;
+    stroke-width: 1px;
+  }
+
+  .sz-graph-node-icon {
+    fill: lighten( $sz-dark2, 10% );
+
+    &.graph-node-rel-primary {
+      fill: $sz-dark2;
+    }
+  }
+
+  .sz-graph-icon-enclosure, .sz-graph-business-icon-enclosure {
+    fill: white;
+    opacity: .5;
+
+    &.graph-node-rel-prel {
+      fill: var(--sz-color-possibly-related);
+    }
+    &.graph-node-rel-pmatch {
+      fill: var(--sz-color-possible-match);
+    }
+    &.graph-node-rel-disclosed {
+      fill: var(--sz-color-disclosed);
+    }
+  }
+
+  .sz-graph-bbox {
+    fill: white;
+    fill-opacity: 0.7;
+  }
+
+  .sz-graph-tooltip {
+    position: absolute;
+    background-color: white;
+    max-width: 200px;
+    height: auto;
+    padding: 1px;
+    border-radius: 4px;
+    border: 1px solid;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
+    pointer-events: none;
+  }
+
+
+}

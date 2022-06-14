@@ -10,7 +10,8 @@ import {
   SzPrefsService,
   SzSdkPrefsModel,
   SzStandaloneGraphComponent,
-  SzConfigurationService
+  SzConfigurationService,
+  SzEntityIdentifier
 } from '@senzing/sdk-components-ng';
 import { tap, filter, take, takeUntil } from 'rxjs/operators';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -28,7 +29,7 @@ export class AppComponent implements AfterViewInit {
   public unsubscribe$ = new Subject<void>();
   public currentSearchResults: SzAttributeSearchResult[];
   public currentlySelectedEntityId: number;
-  public searchResultEntityIds: number[];
+  public searchResultEntityIds: SzEntityIdentifier[] = [41001,6];
   public currentSearchParameters: SzEntitySearchParams;
   public showSearchResults = false;
   public showSpinner = false;
@@ -137,9 +138,10 @@ export class AppComponent implements AfterViewInit {
 
     // console.log('onSearchResults: ', this.currentSearchResults);
 
+    /*
     this.searchResultEntityIds = this.currentSearchResults.map( (entityResult: SzAttributeSearchResult) => {
       return entityResult.entityId;
-    });
+    });*/
 
     // show results
     if (this.searchResultEntityIds && this.searchResultEntityIds.length > 0){
@@ -203,20 +205,18 @@ export class AppComponent implements AfterViewInit {
 
   openGraphItemInNewMenu(entityId: number) {
     window.open('/entity/' + entityId, '_blank');
-  }
-  openContextMenu(event: any) {
-    console.log('openContextMenu: ', event);
     this.closeContextMenu();
-    const positionStrategy = this.overlay.position()
-      .flexibleConnectedTo({ x: Math.ceil(event.x) + 80, y: Math.ceil(event.y) })
-      .withPositions([
-        {
-          originX: 'end',
-          originY: 'bottom',
-          overlayX: 'end',
-          overlayY: 'top',
-        }
-      ]);
+  }
+  /**
+   * create context menu for graph options
+   */
+   public openContextMenu(event: any) {
+    // console.log('openContextMenu: ', event);
+    this.closeContextMenu();
+    let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+    const positionStrategy = this.overlay.position().global();
+    positionStrategy.top(Math.ceil(event.eventPageY - scrollY)+'px');
+    positionStrategy.left(Math.ceil(event.eventPageX)+'px');
 
     this.overlayRef = this.overlay.create({
       positionStrategy,
@@ -227,6 +227,7 @@ export class AppComponent implements AfterViewInit {
       $implicit: event
     }));
 
+    console.warn('openContextMenu: ', event);
     this.sub = fromEvent<MouseEvent>(document, 'click')
       .pipe(
         filter(evt => {
@@ -247,6 +248,12 @@ export class AppComponent implements AfterViewInit {
       this.overlayRef.dispose();
       this.overlayRef = null;
     }
+  }
+  
+  hideGraphItem(event: any) {
+    console.log('hideGraphItem: ', event.entityId);
+    this.graphComponent.removeNode(event.entityId);
+    this.closeContextMenu();
   }
 
   public toggleGraphMatchKeys(event): void {

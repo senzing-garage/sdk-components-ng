@@ -1,4 +1,5 @@
 @import "./theme";
+@import "./graph";
 
 [class^="senzing-"], [class*=" senzing-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
@@ -16,65 +17,7 @@
 }
 
 body {
-  .sz-graph-node {
-    font-size: 12px;
-  }
-
-  .sz-graph-label {
-    font-size: 10px;
-    font-weight: bold;
-  }
-
-  .sz-graph-link-label {
-    font-size: 7px;
-  }
-
-  .sz-graph-bbox {
-    fill: white;
-    fill-opacity: 0.7;
-  }
-
-  .sz-graph-core-link {
-    stroke: #555;
-    stroke-width: 3px;
-  }
-
-  .sz-graph-link {
-    stroke: #999;
-    stroke-width: 1px;
-  }
-  .sz-graph-primary-node{
-    color: var(--sz-entity-graph-primary-entity-default-color);
-    fill: var(--sz-entity-graph-primary-entity-default-color);
-    
-    .graph-node-rel-primary {
-      fill: var(--sz-entity-graph-primary-entity-default-color);
-    }
-  }
-
-  .sz-graph-node-icon {
-    fill: lighten( $sz-dark2, 10% );
-
-    &.graph-node-rel-primary {
-      fill: var(--sz-entity-graph-primary-entity-default-color);
-    }
-  }
-
-  .sz-graph-icon-enclosure, .sz-graph-business-icon-enclosure {
-    fill: white;
-    opacity: .5;
-
-    &.graph-node-rel-prel {
-      fill: var(--sz-color-possibly-related);
-    }
-    &.graph-node-rel-pmatch {
-      fill: var(--sz-color-possible-match);
-    }
-    &.graph-node-rel-disclosed {
-      fill: var(--sz-color-disclosed);
-    }
-
-  }
+  
   /* match key tag cloud for standalone graph and filter(s) */
   mat-chip-list.match-keys .mat-chip-list-wrapper,
   mat-chip-list.match-keys .chip-group {

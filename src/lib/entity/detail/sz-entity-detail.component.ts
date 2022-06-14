@@ -753,5 +753,25 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
       });
     }
   }
+  /** can a specific entity node be removed from canvas */
+  public isGraphEntityRemovable(entityId: SzEntityIdentifier): boolean {
+    return this.graphComponent.canRemoveNode(entityId);
+  }
+  /** show any entities that are related to a specific entity that are 
+   * currently not on the canvas
+   */
+  public showGraphEntityRelationships(entityId: SzEntityIdentifier) {
+    this.graphComponent.expandNode(entityId);
+  }
+  /** hide all visible(expanded) entities related to a specific entity
+   * that are themselves not related to any other visible entities
+   */
+  public hideGraphEntityRelationships(entityId: SzEntityIdentifier) {
+    this.graphComponent.collapseNode(entityId);
+  }
+  /** remove single node and any directly related nodes that are only related to the entity specified */
+  public hideGraphEntity(entityId: SzEntityIdentifier) {
+    this.graphComponent.removeNode(entityId);
+  }
 
 }

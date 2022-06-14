@@ -8,7 +8,8 @@ import {
   SzEntityDetailComponent,
   SzEntityData,
   SzPrefsService,
-  SzConfigurationService
+  SzConfigurationService,
+  SzEntityIdentifier
 } from '@senzing/sdk-components-ng';
 import { tap, filter, take } from 'rxjs/operators';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -22,7 +23,7 @@ import { Subscription, fromEvent } from 'rxjs';
 })
 export class AppComponent implements AfterViewInit {
   public currentSearchResults: SzAttributeSearchResult[];
-  public currentlySelectedEntityId: number = 6;
+  public currentlySelectedEntityId: number = 39001;
   public currentSearchParameters: SzEntitySearchParams;
   public showSearchResults = false;
   public set showGraphMatchKeys(value: boolean) {
@@ -111,6 +112,7 @@ export class AppComponent implements AfterViewInit {
   openGraphItemInNewMenu(entityId: number) {
     window.open('/entity/' + entityId, '_blank');
   }
+  /*
   openContextMenu(event: any) {
     console.log('openContextMenu: ', event);
     this.closeContextMenu();
@@ -144,6 +146,38 @@ export class AppComponent implements AfterViewInit {
       ).subscribe(() => this.closeContextMenu());
 
     return false;
+  }*/
+  /**
+   * create context menu for graph options
+   */
+   public openContextMenu(event: any) {
+    // console.log('openContextMenu: ', event);
+    this.closeContextMenu();
+    let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+    const positionStrategy = this.overlay.position().global();
+    positionStrategy.top(Math.ceil(event.eventPageY - scrollY)+'px');
+    positionStrategy.left(Math.ceil(event.eventPageX)+'px');
+
+    this.overlayRef = this.overlay.create({
+      positionStrategy,
+      scrollStrategy: this.overlay.scrollStrategies.close()
+    });
+
+    this.overlayRef.attach(new TemplatePortal(this.graphContextMenu, this.viewContainerRef, {
+      $implicit: event
+    }));
+
+    console.warn('openContextMenu: ', event);
+    this.sub = fromEvent<MouseEvent>(document, 'click')
+      .pipe(
+        filter(evt => {
+          const clickTarget = evt.target as HTMLElement;
+          return !!this.overlayRef && !this.overlayRef.overlayElement.contains(clickTarget);
+        }),
+        take(1)
+      ).subscribe(() => this.closeContextMenu());
+
+    return false;
   }
 
   closeContextMenu() {
@@ -154,6 +188,22 @@ export class AppComponent implements AfterViewInit {
       this.overlayRef.dispose();
       this.overlayRef = null;
     }
+  }
+
+  public isGraphEntityRemovable(entityEvt: any): boolean {
+    return this.entityDetailComponent.isGraphEntityRemovable(entityEvt.entityId);
+  }
+  public showGraphEntityRelationships(entityEvt: any) {
+    this.entityDetailComponent.showGraphEntityRelationships(entityEvt.entityId);
+    this.closeContextMenu();
+  }
+  public hideGraphEntityRelationships(entityEvt: any) {
+    this.entityDetailComponent.hideGraphEntityRelationships(entityEvt.entityId);
+    this.closeContextMenu();
+  }
+  public hideGraphEntity(entityEvt: any) {
+    this.entityDetailComponent.hideGraphEntity(entityEvt.entityId);
+    this.closeContextMenu();
   }
 
   public toggleGraphMatchKeys(event): void {

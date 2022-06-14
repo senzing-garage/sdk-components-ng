@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.0] - 2022-06-20
+
+Thio release adds new functionality around expanding and collapsing related entities in *Network Graph* related components. We're also adding the *Why Not* component that can be embedded between two or more entities to generate a report to show why two entities/records did not resolve.
+
+### Added
+- The following methods added to `SzGraphComponent` and are inheirited by `SzStandaloneGraphComponent` and `SzEntityDetailGraphComponent`.
+  - `canRemoveNode(entityId: SzEntityIdentifier)` returns boolean if an entity on canvas can be removed(root nodes, and primary query nodes cannot).
+  - `canExpandNode(entityId: SzEntityIdentifier)` returns boolean if a node has hidden related entities that can be shown on canvas.
+  - `removeNode(entityId: SzEntityIdentifier)` removes a single node and any directly related nodes 
+  - `collapseNode(entityId: SzEntityIdentifier)` hide all visible(expanded) entities related to a specific entity that are themselves not related to any other visible entities.
+  - `expandNode(entityId: SzEntityIdentifier)` show any entities that are related to a specific entity that are currently not on the canvas.
+- The following methods added to `SzEntityDetailComponent`
+  - `isGraphEntityRemovable(entityId: SzEntityIdentifier)` can a specific entity node be removed from canvas.
+  - `showGraphEntityRelationships(entityId: SzEntityIdentifier)` show any entities that are related to a specific entity that are currently not on the canvas.
+  - `hideGraphEntityRelationships(entityId: SzEntityIdentifier)` hide all visible(expanded) entities related to a specific entity that are themselves not related to any other visible entities.
+  - `hideGraphEntity(entityId: SzEntityIdentifier)` remove single node and any directly related nodes that are only related to the entity specified.
+
+### Modified
+- `_graphIds` property on `SzGraphComponent` type changed from `number[]` to `SzEntityIdentifier[]`
+- `graphIds` property getter and setter on `SzGraphComponent` type changed from `number[]` to `SzEntityIdentifier[]`
+- `reload` method in `SzGraphComponent` parameter type changed to `string | number | SzEntityIdentifier | SzEntityIdentifier[]`
+
 ## [4.0.0] - 2022-05-09
 
 This update brings the models in line with the changes for the `3.0.0` release of the [senzing rest api server](https://github.com/Senzing/senzing-api-server)
