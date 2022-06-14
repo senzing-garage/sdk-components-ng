@@ -29,7 +29,7 @@ export class AppComponent implements AfterViewInit {
   public unsubscribe$ = new Subject<void>();
   public currentSearchResults: SzAttributeSearchResult[];
   public currentlySelectedEntityId: number;
-  public searchResultEntityIds: SzEntityIdentifier[] = [41001,6];
+  public searchResultEntityIds: SzEntityIdentifier[] = [40002];
   public currentSearchParameters: SzEntitySearchParams;
   public showSearchResults = false;
   public showSpinner = false;

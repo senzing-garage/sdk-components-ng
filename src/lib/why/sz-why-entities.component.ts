@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
-import { EntityDataService, SzDataSourceRecordSummary, SzEntityData, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntitiesResponse, SzWhyEntitiesResult, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
+import { EntityDataService, SzDataSourceRecordSummary, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntitiesResponse, SzWhyEntitiesResponseData, SzWhyEntitiesResult, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
 import { catchError, Observable, of, ReplaySubject, Subject, throwError } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
 
@@ -86,12 +86,11 @@ export class SzWhyEntitiesComparisonComponent implements OnInit, OnDestroy {
           }
         });
       }
-      let formattedData = this.formatWhyDataForDataTable(resData.data.entities, resData.data.whyResult);
+      let formattedData = this.formatWhyDataForDataTable(resData.data);
       this._columnsToDisplay  = formattedData.columns;
       this.dataToDisplay      = formattedData.data;
       this.dataSource.setData(this.dataToDisplay);
       this.gotColumnDefs = true;
-      console.log('SzWhyEntitiesComparisonComponent.getWhyData()', formattedData, resData.data);
     }, (error) => {
       console.warn(error);
     });
@@ -106,25 +105,30 @@ export class SzWhyEntitiesComparisonComponent implements OnInit, OnDestroy {
 
   getWhyData() {
     if(this.entityIds && this.entityIds.length == 2) {
-      return this.entityData.whyEntities(this.entityIds[0].toString(), this.entityIds[1].toString(), true, true, false, SzFeatureMode.NONE, false, false)
+      return this.entityData.whyEntities(this.entityIds[0].toString(), this.entityIds[1].toString(), true, true, true, SzFeatureMode.REPRESENTATIVE, false, false)
     }
     return throwError(()=> { return new Error("entity id's not specified")})
   }
-  formatWhyDataForDataTable(data: SzEntityData[], whyResult: SzWhyEntitiesResult) {
-    let entityIds       = data.map((entity)=>{ return entity.resolvedEntity.entityId});
-    let columnKeys      = entityIds;
+  formatWhyDataForDataTable(data: SzWhyEntitiesResponseData): any {
+    //let entityIds       = data.map((entity)=>{ return entity.resolvedEntity.entityId});
+    let whyResult       = (data && data.whyResult) ? data.whyResult : undefined;
+    let internalIds     = data.entities.map((entity) => { return entity.resolvedEntity.entityId; });
+    let columnKeys      = internalIds;
     let entityIdRow     = {title:'Entity ID'};
     let dataSourceRow   = {title:'Data Sources'};
     let reltionshipsRow = {title:'Relationships'};
     let whyResRow       = {title:'Why Result'};
     let featureKeys     = [];
-    let features        = {};
+    let features        = {}
 
     columnKeys.forEach((colKey, _index) => {
       entityIdRow[ colKey ] = colKey;
     });
 
-    data.forEach((entity: SzEntityData) => {
+
+    console.log(`Why Not result: `,internalIds, data);
+
+    data.entities.forEach((entity: SzEntityData) => {
       // first get all the datasources present in recods
       let _dsForEntity = [];
       entity.resolvedEntity.recordSummaries.forEach((rsum: SzDataSourceRecordSummary) => {
@@ -134,34 +138,58 @@ export class SzWhyEntitiesComparisonComponent implements OnInit, OnDestroy {
         _dsForEntity = _dsForEntity.concat(_entriesToAdd);
       });
       dataSourceRow[ entity.resolvedEntity.entityId ] = _dsForEntity.join('');
+
       // now do relationships
+      if(entity.relatedEntities && entity.relatedEntities.length > 0) {
+        // filter down to just the ones in the query
+        let relatedQueried = entity.relatedEntities.filter((relEnt) => { return internalIds.indexOf(relEnt.entityId) > -1; });
+        reltionshipsRow[ entity.resolvedEntity.entityId ] = '';
+        relatedQueried.forEach((relEnt) => {
+          reltionshipsRow[ entity.resolvedEntity.entityId ] += `${relEnt.matchKey}\n\r  to ${relEnt.entityId}`
+        });
+      }
       
       // now do why result
       if(whyResult) {
-        whyResRow[ entity.resolvedEntity.entityId ] = `${whyResult.matchInfo.whyKey}\n\r${whyResult.matchInfo.resolutionRule}`
+        if(whyResult.matchInfo && whyResult.matchInfo.matchLevel === 'NO_MATCH') {
+          whyResRow[ entity.resolvedEntity.entityId ] = 'not found!'; // matchWhyResult.matchInfo.matchLevel;
+        } else if(whyResult.matchInfo) {
+          whyResRow[ entity.resolvedEntity.entityId ] = `${whyResult.matchInfo.whyKey}`
+        } else {
+          whyResRow[ entity.resolvedEntity.entityId ] = '';
+        }
       }
-      // now do candidate keys
-      // for each member of matchInfo.featureScores create a new row to add to result
-      let featureRowKeys  = Object.keys( whyResult.matchInfo.featureScores ); 
-      featureRowKeys.forEach((keyStr) => {
-        if(!featureKeys.includes( keyStr )){ featureKeys.push(keyStr); }
-        let featValueForColumn = whyResult.matchInfo.featureScores[ keyStr ].map((featScore: SzFeatureScore) => {
-          let retFeatValue = featScore.inboundFeature.featureValue;
-          if(featScore.featureType === 'NAME' && featScore.nameScoringDetails) {
-            retFeatValue = retFeatValue +'\n\t'+ featScore.candidateFeature.featureValue +`(full:${featScore.nameScoringDetails.fullNameScore}|giv:${featScore.nameScoringDetails.givenNameScore}|sur:${featScore.nameScoringDetails.surnameScore})`;
-          } else if(featScore.featureType === 'PHONE' && featScore.scoringBucket == "SAME") {
-            retFeatValue = retFeatValue;
-          } else if(featScore.featureType === 'DOB' && featScore.scoringBucket == "SAME") {
-            retFeatValue = retFeatValue;
-          } else {
-            retFeatValue = retFeatValue +'\n\t'+ featScore.candidateFeature.featureValue;
-          }
-          return retFeatValue;
-        }).join('\n');
-        // append feature
-        if(!features[keyStr] || features[keyStr] === undefined) { features[keyStr] = {title: keyStr}; }
-        features[keyStr][ entity.resolvedEntity.entityId ] = featValueForColumn;
-      });
+
+      // do features
+      if(entity.resolvedEntity.features) {
+        // add each feature to list
+        let featureRowKeys = Object.keys(entity.resolvedEntity.features);
+        featureRowKeys.forEach((keyStr) => {
+          if(!featureKeys.includes( keyStr )){ featureKeys.push(keyStr); }
+
+          let featValueForColumn = entity.resolvedEntity.features[ keyStr ].map((entFeature: SzEntityFeature) => {
+            let retFeatValue = entFeature.primaryValue;
+            if(entFeature.featureDetails) {
+              // for each feature detail (should always be 1??)
+              entFeature.featureDetails.forEach((featDetail) => {
+                if(featDetail.statistics && featDetail.statistics.entityCount) {
+                  retFeatValue += ` [${featDetail.statistics.entityCount}]`;
+                }
+              });
+            }
+            /*
+            // do special formatting things for certain cases
+            switch(keyStr) {
+              case 'NAME':
+                break;
+            }*/
+            return retFeatValue;
+          }).join('\n');
+          // append feature
+          if(!features[keyStr] || features[keyStr] === undefined) { features[keyStr] = {title: keyStr}; }
+          features[keyStr][ entity.resolvedEntity.entityId ] = featValueForColumn;
+        });
+      }
     });
 
     // we're reformatting for a horizontal datatable
@@ -173,13 +201,28 @@ export class SzWhyEntitiesComparisonComponent implements OnInit, OnDestroy {
     // data sources are the second row
     retVal.push( dataSourceRow );
     // relationships are the third row
-    //retVal.push( reltionshipsRow );
+    retVal.push( reltionshipsRow );
     // why result(s) are the fourth row
     retVal.push( whyResRow );
     // add feature rows
-    featureKeys.forEach((featureKeyStr) => {
-      retVal.push( features[ featureKeyStr ] );
-    });
+    if(featureKeys) {
+      // reorder keys
+      let defaultOrder        = [
+        'AMBIGUOUS_ENTITY',
+        'NAME',
+        'DOB',
+        'ADDRESS',
+        'PHONE',
+        'NAME_KEY',
+        'ADDR_KEY',
+        'PHONE_KEY'
+      ].filter((oFeatKey) => { return featureKeys.indexOf(oFeatKey) > -1;});
+      let orderedFeatureKeys  = defaultOrder.concat(featureKeys.filter((uoFeatKey) => { return defaultOrder.indexOf(uoFeatKey) < 0; }));
+      
+      orderedFeatureKeys.forEach((featureKeyStr) => {
+        retVal.push( features[ featureKeyStr ] );
+      });
+    }
 
     return {
       columns: ['title'].concat(columnKeys.map((entityId: number) => { return entityId.toString(); })),
@@ -204,7 +247,7 @@ export class SzWhyEntitiesDialog {
   @ViewChild('whyEntitiesTag') whyEntitiesTag: SzWhyEntitiesComparisonComponent;
 
   public get title(): string {
-    let retVal = `Why for Entities (${this.entities.join(', ')})`;
+    let retVal = `Why NOT for Entities (${this.entities.join(', ')})`;
     return retVal
   }
 

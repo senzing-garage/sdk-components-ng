@@ -10,6 +10,9 @@
 <div class="component-example">
   <sz-search
     #searchBox
+    name="ABC Company"
+    phone="702-333-3333"
+    address="909 Jenga Way Las Vegas NV 89111"
     showIdentifierTypesPicker="false"
     disableIdentifierOptions="SSN_LAST4"
     enableIdentifierOptions="SOCIAL_NETWORK"
@@ -45,7 +48,11 @@
 
 <!-- start search results -->
 <div class="component-example">
-  <sz-search-results *ngIf="showSearchResults" [results]="currentSearchResults" [parameters]="currentSearchParameters" (resultClick)="onSearchResultClick($event)"></sz-search-results>
+  <sz-search-results *ngIf="showSearchResults" 
+  [results]="currentSearchResults" 
+  [parameters]="currentSearchParameters"
+  showWhyComparisonButton="true" 
+  (resultClick)="onSearchResultClick($event)"></sz-search-results>
 </div>
 <!-- end search results -->
 <!-- start entity detail -->
