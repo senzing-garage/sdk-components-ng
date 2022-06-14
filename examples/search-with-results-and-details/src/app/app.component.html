@@ -37,6 +37,8 @@
     <ul class="graph-context-menu">
         <li>#{{entityEvt?.entityId}}</li>
         <li (click)="openGraphItemInNewMenu(entityEvt.entityId)">Open in new tab</li>
+        <!--<li [class.disabled]="entityEvt.numberRelatedHidden == 0" (click)="showGraphEntityRelationships(entityEvt)">Show Hidden Relationships ({{ entityEvt.numberRelatedHidden }})</li>-->
+        <li [class.disabled]="!isGraphEntityRemovable(entityEvt)" (click)="hideGraphEntity(entityEvt)">Hide Entity</li>
     </ul>
 </ng-template>
 <!-- end graph context menu template -->

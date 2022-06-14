@@ -326,8 +326,8 @@ export class SzGraphComponent implements OnInit, OnDestroy {
    */
   @Output() entityDblClick: EventEmitter<any> = new EventEmitter<any>();
 
-  protected _graphIds: number[];
-  @Input() public set graphIds(value: number[]) {
+  protected _graphIds: SzEntityIdentifier[];
+  @Input() public set graphIds(value: Array<SzEntityIdentifier>) {
     const _oVal = this._graphIds;
     this._graphIds = value;
     // only reload graph if value has changed
@@ -336,7 +336,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       this.reload( this._graphIds );
     }
   }
-  public get graphIds(): number[] | undefined {
+  public get graphIds(): SzEntityIdentifier[] | undefined {
     return this._graphIds;
   }
 
@@ -660,7 +660,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   /**
    * initiates a redraw of the graph canvas inside the component
    */
-  public reload(entityIds?: string | number | number[] ): void {
+  public reload(entityIds?: string | number | SzEntityIdentifier | SzEntityIdentifier[] ): void {
     if(this.graph && this.graph.reload && this._graphComponentRendered) {
       this.graph.reload(entityIds);
     }
@@ -668,8 +668,10 @@ export class SzGraphComponent implements OnInit, OnDestroy {
 
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    console.log('@senzing/sdk-components-ng/sz-standalone-graph.onPrefsChange(): ', prefs, this.prefs.graph);
+    console.log('@senzing/sdk-components-ng/sz-graph-component.onPrefsChange(): ', prefs, this.prefs.graph);
     let queryParamChanged = false;
+    let _oldQueryParams = {maxDegrees: this.maxDegrees, maxEntities: this.maxEntities, buildOut: this.buildOut};
+    let _newQueryParams = {maxDegrees: prefs.maxDegreesOfSeparation, maxEntities: prefs.maxEntities, buildOut: prefs.buildOut};
     if(this.maxDegrees != prefs.maxDegreesOfSeparation ||
       this.maxEntities != prefs.maxEntities ||
       this.buildOut != prefs.buildOut){
@@ -698,7 +700,11 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       if(this._graphComponentRendered){
         //console.log('re-rendering graph');
         this.reload( this._graphIds );
+      } else {
+        //console.log('prefs changed but none of them require re-query.', _oldQueryParams, _newQueryParams, queryParamChanged);
       }
+    } else {
+      //console.log('prefs changed but no requery', _oldQueryParams, _newQueryParams, queryParamChanged, this._graphComponentRendered);
     }
 
     // update view manually (for web components redraw reliability)
@@ -893,7 +899,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
         //return true;
       }
     }
-    console.log('isMatchKeyTokenInEntityNode: ', coreMatchKeyTokens, matchKeyTokens, nodeData, retVal);
+    //console.log('isMatchKeyTokenInEntityNode: ', coreMatchKeyTokens, matchKeyTokens, nodeData, retVal);
     return retVal;
   }
   /** checks to see if entity node is one of the primary entities queried for*/
@@ -924,5 +930,37 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     } else {
       console.warn('cannot modify');
     }
+  }
+  /** can a specific entity node be removed from canvas */
+  public canRemoveNode(entityId: SzEntityIdentifier) {
+    //console.log(`@senzing/sdk-components-ng/sz-graph-component.canRemoveNode: `, entityId);
+    return this.graph.canRemoveNode(entityId);
+  }
+  /** does a specific entity have hidden relationships and are they collapsed */
+  public canExpandNode(entityId: SzEntityIdentifier) {
+    //console.log(`@senzing/sdk-components-ng/sz-graph-component.canExpandNode: `, entityId);
+    return this.graph.canExpandNode(entityId);
+  }
+  /** 
+   * remove single node and any directly related nodes that are 
+   * only related to the entity specified.
+   */
+  public removeNode(entityId: SzEntityIdentifier) {
+    console.log(`@senzing/sdk-components-ng/sz-graph-component.removeNode: `, entityId);
+    this.graph.removeNode(entityId);
+  }
+  /** hide all visible(expanded) entities related to a specific entity
+   * that are themselves not related to any other visible entities
+   */
+  public collapseNode(entityId: SzEntityIdentifier) {
+    console.log(`@senzing/sdk-components-ng/sz-graph-component.collapseNode: `, entityId);
+    this.graph.collapseNode(entityId);
+  }
+  /** show any entities that are related to a specific entity that are 
+   * currently not on the canvas
+   */
+  public expandNode(entityId: SzEntityIdentifier) {
+    console.log(`@senzing/sdk-components-ng/sz-graph-component.expandNode: `, entityId);
+    this.graph.expandNode(entityId);
   }
 }

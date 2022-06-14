@@ -1,12 +1,25 @@
 
 <div>
-  <sz-relationship-network
-  svgWidth=2000
-  svgHeight=1000
-  port=2080
-  entityIds="1001"
-  maxDegrees=3
-  buildOut=2
-  maxEntities=1000>
-  </sz-relationship-network>
+  <!-- start graph context menu template -->
+  <ng-template #graphContextMenu let-entityEvt>
+      <ul class="graph-context-menu">
+          <li>Open in new tab</li>
+          <li (click)="hideGraphItem(entityEvt)">Hide</li>
+      </ul>
+  </ng-template>
+
+  <!-- start graph control -->
+  <div class="graph-container" #graphContainer>
+    <sz-relationship-network #graphComponent
+    svgWidth=100%
+    svgHeight=1000
+    entityIds="41001,6"
+    maxDegrees=1
+    buildOut=4
+    maxEntities=200
+    (contextMenuClick)="onContextClick($event)"
+    (scaleChanged)="onGraphZoom($event)"
+    >
+    </sz-relationship-network>
+  </div>
 </div>

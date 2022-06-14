@@ -10,3 +10,10 @@
     svg { margin-right: 5px; }
   }
 }
+
+.graph-context-menu {
+  border: 1px solid #686868;
+  .disabled {
+    display: none;
+  }
+}
