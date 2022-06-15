@@ -17,6 +17,9 @@ Thio release adds new functionality around expanding and collapsing related enti
   - `removeNode(entityId: SzEntityIdentifier)` removes a single node and any directly related nodes 
   - `collapseNode(entityId: SzEntityIdentifier)` hide all visible(expanded) entities related to a specific entity that are themselves not related to any other visible entities.
   - `expandNode(entityId: SzEntityIdentifier)` show any entities that are related to a specific entity that are currently not on the canvas.
+- The following event emitters added to `SzGraphComponent`
+  - `relationshipContextMenuClick` is emitted when a user right clicks on relationship lines/labels in the embedded graph component. 
+  - `relationshipClick` is emitted when a user clicks on relationship lines/labels in the embedded graph component.
 - The following methods added to `SzEntityDetailComponent`
   - `isGraphEntityRemovable(entityId: SzEntityIdentifier)` can a specific entity node be removed from canvas.
   - `showGraphEntityRelationships(entityId: SzEntityIdentifier)` show any entities that are related to a specific entity that are currently not on the canvas.
