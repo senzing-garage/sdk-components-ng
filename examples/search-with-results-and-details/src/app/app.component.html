@@ -35,8 +35,8 @@
 -->
 <!-- end graph match keys checkbox -->
 
-<!-- start graph context menu template -->
-<ng-template #graphContextMenu let-entityEvt>
+<!-- start graph entity context menu template -->
+<ng-template #graphNodeContextMenu let-entityEvt>
     <ul class="graph-context-menu">
         <li>#{{entityEvt?.entityId}}</li>
         <li (click)="openGraphItemInNewMenu(entityEvt.entityId)">Open in new tab</li>
@@ -44,7 +44,15 @@
         <li [class.disabled]="!isGraphEntityRemovable(entityEvt)" (click)="hideGraphEntity(entityEvt)">Hide Entity</li>
     </ul>
 </ng-template>
-<!-- end graph context menu template -->
+<!-- end graph entity context menu template -->
+<!-- start graph link context menu template -->
+<ng-template #graphLinkContextMenu let-linkEvt>
+  <ul class="graph-context-menu">
+      <li>#{{linkEvt?.sourceEntityId}} to #{{linkEvt?.targetEntityId}}</li>
+      <li (click)="openWhyReportForGraphRelationship(linkEvt)">Show "Why Not" Report</li>
+  </ul>
+</ng-template>
+<!-- end graph link context menu template -->
 
 <!-- start search results -->
 <div class="component-example">
@@ -69,6 +77,7 @@
     (graphEntityDblClick)="onGraphEntityDblClick($event)"
     (graphContextMenuClick)="onGraphContextClick($event)"
     [showGraphMatchKeys]="true"
+    [showGraphLinkContextMenu]="true"
     [graphShowZoomControl]="true"
     graphZoomControlPosition="top-left"
     [showRecordWhyUtilities]="true"

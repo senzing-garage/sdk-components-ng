@@ -47,7 +47,9 @@ export class AppComponent implements AfterViewInit {
   }
   @ViewChild('searchBox') searchBox: SzSearchComponent;
   @ViewChild(SzEntityDetailComponent) entityDetailComponent: SzEntityDetailComponent;
-  @ViewChild('graphContextMenu') graphContextMenu: TemplateRef<any>;
+  @ViewChild('graphNodeContextMenu') graphNodeContextMenu: TemplateRef<any>;
+  @ViewChild('graphLinkContextMenu') graphLinkContextMenu: TemplateRef<any>;
+
   sub: Subscription;
   overlayRef: OverlayRef | null;
 
@@ -106,51 +108,20 @@ export class AppComponent implements AfterViewInit {
     console.log('double clicked on graph entity #' + event.entityId);
   }
   public onGraphContextClick(event: any): void {
-    this.openContextMenu(event);
+    this.openContextMenu(event, this.graphNodeContextMenu);
+  }
+  public onGraphRelationshipContextClick(event: any) {
+    console.log('onGraphRelationshipContextClick: ', event);
+    this.openContextMenu(event, this.graphLinkContextMenu);
   }
 
   openGraphItemInNewMenu(entityId: number) {
     window.open('/entity/' + entityId, '_blank');
   }
-  /*
-  openContextMenu(event: any) {
-    console.log('openContextMenu: ', event);
-    this.closeContextMenu();
-    const positionStrategy = this.overlay.position()
-      .flexibleConnectedTo({ x: Math.ceil(event.x) + 80, y: Math.ceil(event.y) })
-      .withPositions([
-        {
-          originX: 'end',
-          originY: 'bottom',
-          overlayX: 'end',
-          overlayY: 'top',
-        }
-      ]);
-
-    this.overlayRef = this.overlay.create({
-      positionStrategy,
-      scrollStrategy: this.overlay.scrollStrategies.close()
-    });
-
-    this.overlayRef.attach(new TemplatePortal(this.graphContextMenu, this.viewContainerRef, {
-      $implicit: event
-    }));
-
-    this.sub = fromEvent<MouseEvent>(document, 'click')
-      .pipe(
-        filter(evt => {
-          const clickTarget = evt.target as HTMLElement;
-          return !!this.overlayRef && !this.overlayRef.overlayElement.contains(clickTarget);
-        }),
-        take(1)
-      ).subscribe(() => this.closeContextMenu());
-
-    return false;
-  }*/
   /**
    * create context menu for graph options
    */
-   public openContextMenu(event: any) {
+   public openContextMenu(event: any, contextMenu: TemplateRef<any>) {
     // console.log('openContextMenu: ', event);
     this.closeContextMenu();
     let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
@@ -163,7 +134,7 @@ export class AppComponent implements AfterViewInit {
       scrollStrategy: this.overlay.scrollStrategies.close()
     });
 
-    this.overlayRef.attach(new TemplatePortal(this.graphContextMenu, this.viewContainerRef, {
+    this.overlayRef.attach(new TemplatePortal(contextMenu, this.viewContainerRef, {
       $implicit: event
     }));
 
@@ -204,6 +175,9 @@ export class AppComponent implements AfterViewInit {
   public hideGraphEntity(entityEvt: any) {
     this.entityDetailComponent.hideGraphEntity(entityEvt.entityId);
     this.closeContextMenu();
+  }
+  public openWhyReportForGraphRelationship(linkEvt: any) {
+    console.log('openWhyReportForGraphRelationship: ', linkEvt);
   }
 
   public toggleGraphMatchKeys(event): void {
