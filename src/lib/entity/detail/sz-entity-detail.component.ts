@@ -1,7 +1,9 @@
-import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit, OnInit, OnDestroy, ChangeDetectorRef, TemplateRef, ViewContainerRef } from '@angular/core';
 import { SzSearchService } from '../../services/sz-search.service';
-import { tap, takeUntil, filter } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { tap, takeUntil, filter, take } from 'rxjs/operators';
+import { fromEvent, Subject, Subscription } from 'rxjs';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
 
 import {
   SzEntityData,
@@ -16,6 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { SzEntityDetailGraphComponent } from './sz-entity-detail-graph/sz-entity-detail-graph.component';
 import { SzWhyEntityDialog } from '../../why/sz-why-entity.component';
+import { SzWhyEntitiesDialog } from '../../why/sz-why-entities.component';
 
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { parseBool } from '../../common/utils';
@@ -54,12 +57,14 @@ import { SzDataSourceRecordsSelection, SzWhySelectionModeBehavior, SzWhySelectio
 export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
+  /** @internal */
+  overlayRef: OverlayRef | null;
 
   private _entityId: number;
   private entityDetailJSON: string = "";
   private _requestDataOnIdChange = true;
-
   public entity: SzEntityData;
+  
 
   // layout enforcers
   /** @internal */
@@ -129,6 +134,9 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private _showEntityWhyFunction: boolean = false;
   private _showRecordWhyUtilities: boolean = false;
   private _openWhyComparisonModalOnClick: boolean = true;
+  // graph utilities
+  private _showGraphNodeContextMenu: boolean = false;
+  private _showGraphLinkContextMenu: boolean = false;
 
   /** @internal */
   private _headerWhyButtonClicked: Subject<SzEntityIdentifier> = new Subject<SzEntityIdentifier>();
@@ -143,6 +151,22 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    */
   @Output() dataSourceRecordsSelected = new EventEmitter<SzDataSourceRecordsSelection>();
 
+  /** whether or not to show the built-in context menu on graph link right-click */
+  public get showGraphLinkContextMenu(): boolean {
+    return this._showGraphLinkContextMenu;
+  }
+  /** whether or not to show the built-in context menu on graph link right-click */
+  @Input() set showGraphLinkContextMenu(value: boolean) {
+    this._showGraphLinkContextMenu = value;
+  }
+  /** whether or not to show the built-in context menu on graph entity right-click */
+  public get showGraphContextMenu(): boolean {
+    return this._showGraphNodeContextMenu;
+  }
+  /** whether or not to show the built-in context menu on graph entity right-click */
+  @Input() set showGraphContextMenu(value: boolean) {
+    this._showGraphNodeContextMenu = value;
+  }
   /** whether or not to show the "why" comparison button for records */
   public get showRecordWhyUtilities(): boolean {
     return this._showRecordWhyUtilities;
@@ -193,6 +217,10 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   @ViewChild(SzEntityDetailGraphComponent)
   public graphComponent: SzEntityDetailGraphComponent;
 
+  /** built-in graph context menus */
+  @ViewChild('graphNodeContextMenu') graphNodeContextMenu: TemplateRef<any>;
+  @ViewChild('graphLinkContextMenu') graphLinkContextMenu: TemplateRef<any>;
+
   /**
    * emitted when the component begins a request for an entities data.
    * @returns entityId of the request being made.
@@ -224,10 +252,21 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    */
   @Output() graphContextMenuClick: EventEmitter<any> = new EventEmitter<any>();
   /**
+   * emitted when the user right clicks a relationship link line or label.
+   * @returns object with various entity and ui properties.
+   */
+  @Output() graphRelationshipContextMenuClick: EventEmitter<any> = new EventEmitter<any>();
+
+  /**
    * emitted when the user clicks a graph entity node.
    * @returns object with various entity and ui properties.
    */
   @Output() graphEntityClick: EventEmitter<any> = new EventEmitter<any>();
+  /**
+   * emitted when the user clicks a relationship link line or label.
+   * @returns object with various entity and ui properties.
+   */
+  @Output() graphRelationshipClick: EventEmitter<any> = new EventEmitter<any>();
   /**
    * emitted when the user double clicks a graph entity node.
    * @returns object with various entity and ui properties.
@@ -566,7 +605,9 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     private searchService: SzSearchService,
     public prefs: SzPrefsService,
     private cd: ChangeDetectorRef,
-    public dialog: MatDialog
+    public overlay: Overlay,
+    public dialog: MatDialog,
+    public viewContainerRef: ViewContainerRef
   ) {}
 
   ngOnInit() {
@@ -670,7 +711,25 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    * proxies internal graph component entity right-click to "graphContextMenuClick" event.
    */
   public onGraphRightClick(event: any) {
+    if(this._showGraphNodeContextMenu) {
+      this.openGraphContextMenu(event, this.graphNodeContextMenu);
+    }
     this.graphContextMenuClick.emit(event);
+  }
+  /**
+   * proxies internal graph component relationship link right-click to "graphRelationshipContextClick" event.
+   */
+  public onGraphRelationshipRightClick(event: any) {
+    if(this._showGraphLinkContextMenu) {
+      this.openGraphContextMenu(event, this.graphLinkContextMenu);
+    }
+    this.graphRelationshipContextMenuClick.emit(event);
+  }
+  /**
+   * proxies internal graph component relationship link click to "graphRelationshipClick" event.
+   */
+  public onGraphRelationshipClick(event: any) {
+    this.graphRelationshipClick.emit(event);
   }
   /**
    * proxies internal graph component pop-out click to "graphPopOutClick" event.
@@ -753,6 +812,55 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
       });
     }
   }
+  
+  /** @internal */
+  private _graphContextMenuSub: Subscription;
+  /** 
+   * shows a graph context menu when triggered by an appropriate event
+   * @internal 
+   */
+  private openGraphContextMenu(event: any, contextMenu: TemplateRef<any>) {
+    console.log('SzEntityDetailComponent.openGraphContextMenu: ', event);
+    this.closeGraphContextMenu();
+    let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+    const positionStrategy = this.overlay.position().global();
+    positionStrategy.top(Math.ceil(event.eventPageY - scrollY)+'px');
+    positionStrategy.left(Math.ceil(event.eventPageX)+'px');
+
+    this.overlayRef = this.overlay.create({
+      positionStrategy,
+      scrollStrategy: this.overlay.scrollStrategies.close()
+    });
+
+    this.overlayRef.attach(new TemplatePortal(contextMenu, this.viewContainerRef, {
+      $implicit: event
+    }));
+
+    this._graphContextMenuSub = fromEvent<MouseEvent>(document, 'click')
+      .pipe(
+        filter(evt => {
+          const clickTarget = evt.target as HTMLElement;
+          return !!this.overlayRef && !this.overlayRef.overlayElement.contains(clickTarget);
+        }),
+        take(1)
+      ).subscribe(() => this.closeGraphContextMenu());
+
+    return false;
+  }
+  /**
+   * closes any active graph context menu 
+   * @internal 
+   */
+  private closeGraphContextMenu() {
+    if (this._graphContextMenuSub){
+      this._graphContextMenuSub.unsubscribe();
+    }
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+      this.overlayRef = null;
+    }
+  }
+
   /** can a specific entity node be removed from canvas */
   public isGraphEntityRemovable(entityId: SzEntityIdentifier): boolean {
     return this.graphComponent.canRemoveNode(entityId);
@@ -772,6 +880,23 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   /** remove single node and any directly related nodes that are only related to the entity specified */
   public hideGraphEntity(entityId: SzEntityIdentifier) {
     this.graphComponent.removeNode(entityId);
+  }
+  /** the built-in graph link context menu has an option to show
+   * a "Why Not" report modal on select.
+   * @internal
+   */
+  public openWhyReportForGraphRelationship(event: any) {
+    if(event && event.sourceEntityId && event.targetEntityId) {
+      this.closeGraphContextMenu();
+      this.dialog.open(SzWhyEntitiesDialog, {
+        panelClass: 'why-entities-dialog-panel',
+        data: {
+          entities: [event.sourceEntityId, event.targetEntityId],
+          showOkButton: false,
+          okButtonText: 'Close'
+        }
+      });
+    }
   }
 
 }

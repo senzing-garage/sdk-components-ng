@@ -270,10 +270,16 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @ViewChild(SzRelationshipNetworkComponent) graph : SzRelationshipNetworkComponent;
 
   /**
-   * emitted when the player right clicks a entity node.
+   * emitted when the user right clicks a entity node.
    * @returns object with various entity and ui properties.
    */
-  @Output() contextMenuClick: EventEmitter<any> = new EventEmitter<any>();
+  @Output() contextMenuClick:             EventEmitter<any> = new EventEmitter<any>();
+  /**
+   * emitted when the user right clicks a link line or label between two entities
+   * @returns object with various entity and ui properties.
+   */
+  @Output() relationshipContextMenuClick: EventEmitter<any> = new EventEmitter<any>();
+  @Output() relationshipClick:            EventEmitter<any> = new EventEmitter<any>();
 
   /** @internal */
   private _requestStarted: Subject<boolean> = new Subject<boolean>();
@@ -518,6 +524,23 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       this.contextMenuClick.emit( evtSynth );
     }
   }
+  /**
+   * on entity node right click in the graph.
+   * proxies to synthetic "relationshipContextMenuClick" event.
+   * @internal
+   */
+  public onLinkRightClick(event: any) {
+    this.relationshipContextMenuClick.emit( event );
+  }
+  /**
+   * on entity node right click in the graph.
+   * proxies to synthetic "relationshipClick" event.
+   * @internal
+   */
+  public onLinkClick(event: any) {
+    this.relationshipClick.emit( event );
+  }
+
   /** publish an "popoutClick" event on icon click, pass the entityIds as arg */
   public onPopOutClick(event?: any) {
     // publish event

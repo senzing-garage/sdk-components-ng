@@ -64,7 +64,7 @@
     "@angular/platform-browser-dynamic": "~13.2.0",
     "@angular/router": "~13.2.0",
     "@senzing/rest-api-client-ng": "^4.0.1",
-    "@senzing/sdk-graph-components": "^4.2.0-alpha.1",
+    "@senzing/sdk-graph-components": "^4.2.0-alpha.3",
     "acorn": "^8.6.0",
     "ajv": "^6.12.6",
     "d3": "^5.9.1",
