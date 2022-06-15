@@ -37,6 +37,8 @@
     [captureMouseWheel]="captureMouseWheel"
     (onWheelScroll)="onGraphScrollEvent($event)"
     (contextMenuClick)="onRightClick($event)"
+    (relationshipClick)="onLinkClick($event)"
+    (relationshipContextMenuClick)="onLinkRightClick($event)"
     (entityClick)="onEntityClick($event)"
     (noResults)="onNoResults($event)"
     (onDataLoaded)="onGraphDataLoaded($event)"

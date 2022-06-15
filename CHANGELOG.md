@@ -17,11 +17,20 @@ Thio release adds new functionality around expanding and collapsing related enti
   - `removeNode(entityId: SzEntityIdentifier)` removes a single node and any directly related nodes 
   - `collapseNode(entityId: SzEntityIdentifier)` hide all visible(expanded) entities related to a specific entity that are themselves not related to any other visible entities.
   - `expandNode(entityId: SzEntityIdentifier)` show any entities that are related to a specific entity that are currently not on the canvas.
+- The following event emitters added to `SzGraphComponent`
+  - `relationshipContextMenuClick` is emitted when a user right clicks on relationship lines/labels in the embedded graph component. 
+  - `relationshipClick` is emitted when a user clicks on relationship lines/labels in the embedded graph component.
 - The following methods added to `SzEntityDetailComponent`
   - `isGraphEntityRemovable(entityId: SzEntityIdentifier)` can a specific entity node be removed from canvas.
   - `showGraphEntityRelationships(entityId: SzEntityIdentifier)` show any entities that are related to a specific entity that are currently not on the canvas.
   - `hideGraphEntityRelationships(entityId: SzEntityIdentifier)` hide all visible(expanded) entities related to a specific entity that are themselves not related to any other visible entities.
   - `hideGraphEntity(entityId: SzEntityIdentifier)` remove single node and any directly related nodes that are only related to the entity specified.
+- The follwing getters and setters added to `SzEntityDetailComponent`
+  - `showGraphContextMenu` enables the built-in context menu for entity nodes on the graph embedded in the entity detail component.
+  - `showGraphLinkContextMenu` enables the built-in context menu for relationship lines/labels on the graph embedded in the entity detail component.
+- The following Event Emitters added to `SzEntityDetailComponent`
+  - `graphRelationshipContextMenuClick` is emitted when a user right clicks on relationship lines/labels in the embedded graph component.
+  - `graphRelationshipClick` is emitted when a user clicks on relationship lines/labels in the embedded graph component.
 
 ### Modified
 - `_graphIds` property on `SzGraphComponent` type changed from `number[]` to `SzEntityIdentifier[]`

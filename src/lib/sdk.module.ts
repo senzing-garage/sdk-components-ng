@@ -33,6 +33,8 @@ import { SzBulkDataService } from './services/sz-bulk-data.service';
 
 /** components */
 import { SzMultiSelectButtonComponent } from './shared/multi-select-button/multi-select-button.component';
+import { SzAlertMessageDialog } from './shared/alert-dialog/sz-alert-dialog.component';
+
 /** entity resume related */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
 import { SzEntityDetailHeaderComponent } from './entity/detail/sz-entity-detail-header/header.component';
@@ -101,6 +103,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
  */
 @NgModule({
   declarations: [
+    SzAlertMessageDialog,
     SzEntityDetailComponent,
     SzSearchComponent,
     SzSearchByIdComponent,
@@ -176,6 +179,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
   ],
   /** for components being exported as web components */
   entryComponents: [
+    SzAlertMessageDialog,
     SzEntityDetailComponent,
     SzEntityDetailGraphComponent,
     SzEntityRecordViewerComponent,

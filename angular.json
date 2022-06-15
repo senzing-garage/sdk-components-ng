@@ -569,6 +569,14 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
           }
         },
@@ -582,6 +590,9 @@
           "configurations": {
             "production": {
               "browserTarget": "@senzing/sdk-components-ng/examples/graph:build:production"
+            },
+            "development": {
+              "browserTarget": "@senzing/sdk-components-ng/examples/graph:build:development"
             }
           }
         },

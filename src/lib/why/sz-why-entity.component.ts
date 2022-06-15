@@ -103,7 +103,7 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
   }
 
   getWhyData() {
-    return this.entityData.whyEntityByEntityID(parseSzIdentifier(this.entityId), true, true, false, SzFeatureMode.REPRESENTATIVE, false, false)
+    return this.entityData.whyEntityByEntityID(parseSzIdentifier(this.entityId), true, true, true, SzFeatureMode.REPRESENTATIVE, false, false)
   }
   formatWhyDataForDataTable(data: SzWhyEntityResult[], entities: SzEntityData[], entityRecords: SzMatchedRecord[]): any {
     let internalIds   = data.map((matchWhyResult) => { return matchWhyResult.perspective.internalId; });
@@ -257,9 +257,24 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
     // why result
     retVal.push( whyKeyRow );
     // add feature rows
-    featureKeys.forEach((featureKeyStr) => {
-      retVal.push( features[ featureKeyStr ] );
-    });
+    if(featureKeys) {
+      // reorder keys
+      let defaultOrder        = [
+        'AMBIGUOUS_ENTITY',
+        'NAME',
+        'DOB',
+        'ADDRESS',
+        'PHONE',
+        'NAME_KEY',
+        'ADDR_KEY',
+        'PHONE_KEY'
+      ].filter((oFeatKey) => { return featureKeys.indexOf(oFeatKey) > -1;});
+      let orderedFeatureKeys  = defaultOrder.concat(featureKeys.filter((uoFeatKey) => { return defaultOrder.indexOf(uoFeatKey) < 0; }));
+      
+      orderedFeatureKeys.forEach((featureKeyStr) => {
+        retVal.push( features[ featureKeyStr ] );
+      });
+    }
 
     return {
       columns: ['title'].concat(columnKeys.map((kNum: number) => { return kNum.toString(); })),

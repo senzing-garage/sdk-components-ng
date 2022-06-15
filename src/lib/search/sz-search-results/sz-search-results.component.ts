@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
 import { SzEntitySearchParams } from '../../models/entity-search';
 import {
@@ -9,9 +9,10 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { SzWhyEntitiesDialog } from '../../why/sz-why-entities.component';
+import { SzAlertMessageDialog } from '../../shared/alert-dialog/sz-alert-dialog.component';
 import { parseBool } from '../../common/utils';
 
 /**
@@ -96,6 +97,11 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
   public get selectedEntities():SzAttributeSearchResult[] {
     return this._selectedEntities;
   }
+  // the api service only allows two entities at a time to be compared
+  // if this changes in the future change this to match
+  private _maximumEntitiesSelected = 2;
+  // used to prevent annoying the user with multiple alert messages
+  private _maximumAlertAlreadyShown = false;
 
   /**
    * The results of a search response to display in the component.
@@ -293,9 +299,25 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
       if(existingPosition > -1 && this._selectedEntities && this._selectedEntities[ existingPosition ]) {
         // remove from array
         this._selectedEntities.splice(existingPosition, 1);
-      } else {
+      } else if(this._selectedEntities.length < this._maximumEntitiesSelected) {
         // add to array
         this._selectedEntities.push( entityResult );
+      } else if(this._selectedEntities.length >= this._maximumEntitiesSelected && !this._maximumAlertAlreadyShown) {
+        let alertDialog = this.dialog.open(SzAlertMessageDialog, {
+          panelClass: 'alert-dialog-panel',
+          height: '240px',
+          width: '338px',
+          data: {
+            'title':`${this._maximumEntitiesSelected} Already Selected`,
+            'text':'the maximum number of entities that can be compared has been reached.',
+            'buttonText':'Ok'
+          }
+        });
+        alertDialog.afterClosed().pipe(
+          take(1)
+        ).subscribe((closedWithButton) => {
+          if(closedWithButton) this._maximumAlertAlreadyShown = true;
+        })
       }
     }
   }
