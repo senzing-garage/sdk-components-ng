@@ -3,6 +3,11 @@
     position: relative;
     height: 100%;
 
+    &.maximized {
+        width: 100vw;
+        height: 100vh;
+    }
+
     .mat-dialog-title {
         background-color: #6d738c;
         text-align: center;
@@ -100,4 +105,7 @@
     resize: both; 
     overflow: auto;
     background: #fff;
+}
+::ng-deep.why-entities-dialog-panel {
+    resize: both; 
 }

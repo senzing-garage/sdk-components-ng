@@ -1,9 +1,12 @@
-import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding, ElementRef, NgZone, AfterViewInit } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
-import { EntityDataService, SzDataSourceRecordSummary, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntitiesResponse, SzWhyEntitiesResponseData, SzWhyEntitiesResult, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
-import { catchError, Observable, of, ReplaySubject, Subject, throwError } from 'rxjs';
+import { EntityDataService, SzDataSourceRecordSummary, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzRecordId, SzWhyEntitiesResponse, SzWhyEntitiesResponseData } from '@senzing/rest-api-client-ng';
+import { BehaviorSubject, Observable, ReplaySubject, Subject, takeUntil, throwError } from 'rxjs';
+import { debounceTime, filter } from "rxjs/operators";
+
 import { parseSzIdentifier } from '../common/utils';
+import { SzPrefsService } from '../services/sz-prefs.service';
 
 class SzWhyEntitiesDataSource extends DataSource<any> {
   private _dataStream = new ReplaySubject<any[]>();
@@ -237,13 +240,20 @@ export class SzWhyEntitiesComparisonComponent implements OnInit, OnDestroy {
   styleUrls: ['sz-why-entities-dialog.component.scss'],
   templateUrl: 'sz-why-entities-dialog.component.html'
 })
-export class SzWhyEntitiesDialog {
+export class SzWhyEntitiesDialog implements OnDestroy {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
+
   private _entities: SzEntityIdentifier[] = [];
   private _showOkButton = true;
   private _isLoading = true;
+  private _isMaximized = false;
   public get isLoading(): boolean {
     return this._isLoading;
   }
+  @HostBinding('class.maximized') get maximized() { return this._isMaximized; }
+  private set maximized(value: boolean) { this._isMaximized = value; }
+
   @ViewChild('whyEntitiesTag') whyEntitiesTag: SzWhyEntitiesComparisonComponent;
 
   public get title(): string {
@@ -264,8 +274,20 @@ export class SzWhyEntitiesDialog {
       this._entities = data.entities;
     }
   }
+  /**
+   * unsubscribe when component is destroyed
+   */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
   public onDataLoading(isLoading: boolean) {
-    console.log('SzWhyEntityDialog.isLoading: ', isLoading);
     this._isLoading = isLoading;
+  }
+  public toggleMaximized() {
+    this.maximized = !this.maximized;
+  }
+  public onDoubleClick(event) {
+    this.toggleMaximized();
   }
 }
