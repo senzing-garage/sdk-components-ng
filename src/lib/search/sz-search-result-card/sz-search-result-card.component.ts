@@ -21,6 +21,7 @@ export class SzSearchResultCardComponent implements OnInit, OnDestroy {
   @Input()isOpen: boolean[];
   @Input()isPrinting: boolean;
   @Input()showDataSources: boolean;
+  @Input()showMatchKey: boolean;
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
 

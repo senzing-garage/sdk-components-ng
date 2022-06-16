@@ -7,7 +7,7 @@ import {
   SzAttributeSearchResultType,
   SzEntityIdentifier
 } from '@senzing/rest-api-client-ng';
-import { SzPrefsService } from '../../services/sz-prefs.service';
+import { SzPrefsService, SzSearchResultsPrefs } from '../../services/sz-prefs.service';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
@@ -62,6 +62,21 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
    * @memberof SzSearchResultsComponent
    */
   @Input() showDataSources: boolean = true;
+
+  /**
+   * Shows or hides the match keys in the result items header.
+   * @memberof SzSearchResultsComponent
+   */
+  @Input() set showMatchKeys(value: boolean) {
+    if(value && this.prefs.searchResults.showMatchKeys === undefined) {
+      // current pref is undefined, set it only once so user
+      // can override this value
+      this.prefs.searchResults.showMatchKeys = value;
+    }
+  }
+  public get showMatchKeys(): boolean {
+    return this.prefs.searchResults.showMatchKeys !== undefined ? this.prefs.searchResults.showMatchKeys : false;
+  }
 
   private _showWhyComparisonButton: boolean = false;
   /**
@@ -356,7 +371,7 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.prefs.searchResults.prefsChanged.pipe(
       takeUntil(this.unsubscribe$)
-    ).subscribe( (pJson)=>{
+    ).subscribe( (pJson: SzSearchResultsPrefs)=>{
       //console.warn('SEARCH RESULTS PREF CHANGE!', pJson);
       this.cd.detectChanges();
     });

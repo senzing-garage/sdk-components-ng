@@ -15,4 +15,13 @@
         </span>
       </div>
     </header>
+    <div *ngIf="showMatchKey" class="search-card__header--matchkey">
+      <ng-container *ngIf="matchPills?.length > 0">
+        <sz-entity-match-pill
+          *ngFor="let pill of matchPills"
+          [text]="pill.text"
+          [plusMinus]="pill.plusMinus">
+        </sz-entity-match-pill>
+      </ng-container>
+    </div>
   </div>
