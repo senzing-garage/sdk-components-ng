@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
 import { EntityDataService, SzAttributeSearchResult, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
@@ -289,9 +289,13 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
   styleUrls: ['sz-why-entity-dialog.component.scss']
 })
 export class SzWhyEntityDialog {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
+  
   private _entityId: SzEntityIdentifier;
   private _recordsToShow: SzRecordId[];
   private _showOkButton = true;
+  private _isMaximized = false;
   private _isLoading = true;
   public get isLoading(): boolean {
     return this._isLoading;
@@ -299,6 +303,9 @@ export class SzWhyEntityDialog {
   public get recordsToShow(): SzRecordId[] | undefined {
     return this._recordsToShow;
   }
+  @HostBinding('class.maximized') get maximized() { return this._isMaximized; }
+  private set maximized(value: boolean) { this._isMaximized = value; }
+
   @ViewChild('whyEntityTag') whyEntityTag: SzWhyEntityComponent;
 
   public get title(): string {
@@ -337,8 +344,20 @@ export class SzWhyEntityDialog {
       }
     }
   }
+  /**
+   * unsubscribe when component is destroyed
+   */
+   ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
   public onDataLoading(isLoading: boolean) {
-    console.log('SzWhyEntityDialog.isLoading: ', isLoading);
     this._isLoading = isLoading;
+  }
+  public toggleMaximized() {
+    this.maximized = !this.maximized;
+  }
+  public onDoubleClick(event) {
+    this.toggleMaximized();
   }
 }

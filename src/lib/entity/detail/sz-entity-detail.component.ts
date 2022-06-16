@@ -746,6 +746,8 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     if(this._openWhyComparisonModalOnClick){
       this.dialog.open(SzWhyEntityDialog, {
         panelClass: 'why-entity-dialog-panel',
+        minHeight: 400,
+        minWidth: 800,
         data: {
           entityId: entityId
         }
@@ -759,6 +761,8 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     if(this._openWhyComparisonModalOnClick) {
       this.dialog.open(SzWhyEntityDialog, {
         panelClass: 'why-entity-dialog-panel',
+        minHeight: 400,
+        minWidth: 800,
         data: {
           entityId: this.entity.resolvedEntity.entityId,
           showOkButton: false,
@@ -890,6 +894,8 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
       this.closeGraphContextMenu();
       this.dialog.open(SzWhyEntitiesDialog, {
         panelClass: 'why-entities-dialog-panel',
+        minHeight: 400,
+        minWidth: 800,
         data: {
           entities: [event.sourceEntityId, event.targetEntityId],
           showOkButton: false,
