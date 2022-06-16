@@ -43,7 +43,10 @@
 
 <!-- start search results -->
 <div class="component-example">
-  <sz-search-results *ngIf="showSearchResults" [results]="currentSearchResults" [parameters]="currentSearchParameters" (resultClick)="onSearchResultClick($event)"></sz-search-results>
+  <sz-search-results *ngIf="showSearchResults" 
+  [results]="currentSearchResults" 
+  [parameters]="currentSearchParameters" 
+  (resultClick)="onSearchResultClick($event)"></sz-search-results>
 </div>
 <!-- end search results -->
 <!-- start entity detail -->

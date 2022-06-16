@@ -12,6 +12,7 @@
 
           <h3>Search Results</h3>
           <input type="checkbox" id="cb-sr-1" [checked]="boolPrefChecked('searchResults','showOtherData')" (change)="updateBoolPrefValue('searchResults','showOtherData', $event)"><label for="cb-sr-1">Show "other" data when present:</label>
+          <input type="checkbox" id="cb-sr-2" [checked]="boolPrefChecked('searchResults','showOtherData')" (change)="updateBoolPrefValue('searchResults','showMatchKeys', $event)"><label for="cb-sr-1">Show Match Keys</label>
 
       </div>
   </div>

@@ -7,6 +7,7 @@
     line-height: var(--sz-search-results-a-font-size);
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
     &.no-background {
       background: none;
@@ -34,6 +35,12 @@
 
       &:hover {
         color: var(--sz-search-results-name-hover-color);
+      }
+    }
+    .search-card__header--matchkey {
+      color: var(--sz-search-results-a-color);
+      sz-entity-match-pill {
+        line-height: var(--sz-entity-detail-pill-font-size);
       }
     }
 

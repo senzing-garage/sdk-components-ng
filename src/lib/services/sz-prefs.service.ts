@@ -350,6 +350,8 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _showIdentifierData: boolean = false;
   /** @internal */
+  private _showMatchKeys: boolean | undefined;
+  /** @internal */
   private _truncateRecordsAt: number = 3;
   /** @internal */
   private _showEmbeddedGraph?: boolean = false;
@@ -374,6 +376,7 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
     'showOtherData',
     'showIdentifierData',
     'showCharacteristicData',
+    'showMatchKeys',
     'truncateRecordsAt',
     'truncateOtherDataAt',
     'truncateCharacteristicDataAt',
@@ -418,6 +421,15 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   /** show "attribute data" in search results. ie DOB, favorite cat */
   public set showCharacteristicData(value: boolean) {
     this._showCharacteristicData = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** show "match keys" in search results. */
+  public get showMatchKeys(): boolean {
+    return this._showMatchKeys;
+  }
+  /** show "match keys" in search results. */
+  public set showMatchKeys(value: boolean) {
+    this._showMatchKeys = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** show "record ids" in search results. currently not implemented in view */
