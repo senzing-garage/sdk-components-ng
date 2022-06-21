@@ -113,6 +113,14 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   @Input() public set SearchResultsShowCharacteristicData(value: boolean) {
     this.prefs.searchResults.showCharacteristicData = value;
   }
+  /** show "match keys" in search results */
+  public get SearchResultsShowMatchRecords(): boolean {
+    return this.prefs.searchResults.showMatchKeys;
+  }
+  /** show "match keys" in search results */
+  @Input() public set SearchResultsShowMatchRecords(value: boolean) {
+    this.prefs.searchResults.showMatchKeys = value;
+  }
   /** show "record ids" in search results */
   public get SearchResultsShowRecordIds(): boolean {
     return this.prefs.searchResults.showRecordIds;
@@ -442,11 +450,15 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
 
   /** helper function to get a special model to iterate over in the template */
   private getNameSpaceOptions(ns: string) {
-    const opts = this.prefs[ns].toJSONObject();
+    const opts        = this.prefs[ns].toJSONObject();
+    const optsSchema  = this.prefs[ns].getPublicPropertiesSchema();
+
     let ret = [];
-    for(const k in opts) {
+    for(const k in optsSchema) {
       let iType = 'checkbox';
-      switch(typeof opts[k]){
+      let optValue = opts[k];
+      let sType = optsSchema[k] ? optsSchema[k] : (typeof optValue);
+      switch(sType){
         case 'string':
           iType = 'text';
           break;
@@ -464,10 +476,10 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
       // blacklisted prop check
       if(this.editableBlacklist && this.editableBlacklist[ns] && this.editableBlacklist[ns].indexOf( k ) < 0){
         // ns has bl but not in it
-        ret.push({name: k, value: opts[k], inputType: iType});
+        ret.push({name: k, value: optValue, inputType: iType});
       } else if(!this.editableBlacklist || (this.editableBlacklist && !this.editableBlacklist[ns])) {
         // no ns
-        ret.push({name: k, value: opts[k], inputType: iType});
+        ret.push({name: k, value: optValue, inputType: iType});
       }
     }
     // sort return order by: input type
@@ -507,7 +519,8 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   /** update a specific pref whos type should be boolean through a fn */
   updateBoolPrefValue(prefGroup: string, prefKey: string, evt) {
     const _checked = evt.target.checked;
-    if (this.prefs[prefGroup] && typeof this.prefs[prefGroup][prefKey] === 'boolean'){
+    let prefTypeFromSchema = this.prefs[prefGroup].getPublicPropertiesSchema()[prefKey]
+    if (this.prefs[prefGroup] && prefTypeFromSchema === 'boolean'){
       this.prefs[prefGroup][prefKey] = _checked;
     }
   }

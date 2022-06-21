@@ -12,11 +12,6 @@ import {
   Configuration as SzRestConfiguration,
   ConfigurationParameters as SzRestConfigurationParameters
 } from '@senzing/rest-api-client-ng';
-
-import {
-  SenzingSdkGraphModule
-} from '@senzing/sdk-graph-components';
-
 import { SzSdkMaterialModule } from './sdk.material.module';
 
 /** services */
@@ -50,6 +45,10 @@ import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-car
 import { SzEntityRecordCardContentComponent } from './entity/sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
 
 // graph components
+import { SzRelationshipNetworkComponent } from './graph/sz-relationship-network/sz-relationship-network.component';
+import { SzRelationshipNetworkInputComponent } from './graph/sz-relationship-network-input/sz-relationship-network-input.component';
+import { SzRelationshipNetworkLookupComponent } from './graph/sz-relationship-network-lookup/sz-relationship-network-lookup.component';
+import { SzRelationshipPathComponent } from './graph/sz-relationship-path/sz-relationship-path.component';
 import { SzEntityDetailGraphControlComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-control.component';
 import { SzEntityDetailGraphFilterComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-filter.component';
 import { SzGraphControlComponent } from './graph/sz-graph-control.component';
@@ -104,7 +103,34 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
 @NgModule({
   declarations: [
     SzAlertMessageDialog,
+    SzConfigurationAboutComponent,
+    SzConfigurationComponent,
     SzEntityDetailComponent,
+    SzEntityDetailGraphControlComponent,
+    SzEntityDetailGraphComponent,
+    SzEntityDetailGraphFilterComponent,
+    SzEntityDetailHeaderComponent,
+    SzEntityDetailHeaderContentComponent,
+    SzEntityDetailSectionSummaryComponent,
+    SzEntityDetailSectionHeaderComponent,
+    SzEntityDetailSectionCollapsibleCardComponent,
+    SzEntityDetailsSectionComponent,
+    SzEntityMatchPillComponent,
+    SzEntityRecordCardComponent,
+    SzEntityRecordViewerComponent,
+    SzEntityRecordCardHeaderComponent,
+    SzEntityRecordCardContentComponent,
+    SzGraphControlComponent,
+    SzGraphComponent,
+    SzGraphFilterComponent,
+    SzMultiSelectButtonComponent,
+    SzPoweredByComponent,
+    SzPreferencesComponent,
+    SzPrefDictComponent,
+    SzRelationshipNetworkComponent,
+    SzRelationshipNetworkInputComponent,
+    SzRelationshipNetworkLookupComponent,
+    SzRelationshipPathComponent,
     SzSearchComponent,
     SzSearchByIdComponent,
     SzSearchIdentifiersPickerDialogComponent,
@@ -112,31 +138,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzSearchResultsComponent,
     SzSearchResultCardComponent,
     SzSearchResultCardContentComponent,
-    SzEntityDetailGraphComponent,
-    SzGraphComponent,
-    SzEntityDetailGraphControlComponent,
-    SzEntityDetailGraphFilterComponent,
-    SzGraphControlComponent,
-    SzGraphFilterComponent,
-    SzStandaloneGraphComponent,
-    SzEntityDetailHeaderComponent,
-    SzEntityDetailsSectionComponent,
-    SzEntityDetailSectionSummaryComponent,
-    SzEntityDetailHeaderContentComponent,
-    SzEntityDetailSectionHeaderComponent,
-    SzEntityDetailSectionCollapsibleCardComponent,
-    SzEntityMatchPillComponent,
-    SzEntityRecordCardComponent,
-    SzEntityRecordViewerComponent,
-    SzEntityRecordCardHeaderComponent,
-    SzEntityRecordCardContentComponent,
     SzSearchResultCardHeaderComponent,
-    SzConfigurationAboutComponent,
-    SzConfigurationComponent,
-    SzMultiSelectButtonComponent,
-    SzPoweredByComponent,
-    SzPreferencesComponent,
-    SzPrefDictComponent,
+    SzStandaloneGraphComponent,
     SzWhyEntitiesComparisonComponent,
     SzWhyEntityComponent,
     SzWhyEntitiesDialog,
@@ -149,29 +152,32 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     FormsModule,
     ReactiveFormsModule,
     LayoutModule,
-    SenzingSdkGraphModule,
     NgxJsonViewerModule,
     ApiModule,
     SzSdkMaterialModule
   ],
   exports: [
+    SzConfigurationComponent,
+    SzConfigurationAboutComponent,
+    SzEntityDetailGraphComponent,
     SzEntityDetailComponent,
+    SzEntityDetailGraphControlComponent,
+    SzEntityDetailGraphFilterComponent,
+    SzEntityRecordViewerComponent,
+    SzGraphComponent,
+    SzGraphControlComponent,
+    SzGraphFilterComponent,
+    SzPoweredByComponent,
+    SzPreferencesComponent,
+    SzRelationshipNetworkComponent,
+    SzRelationshipNetworkInputComponent,
+    SzRelationshipNetworkLookupComponent,
+    SzRelationshipPathComponent,
     SzSearchComponent,
     SzSearchByIdComponent,
     SzSearchResultsComponent,
     SzSearchResultCardComponent,
-    SzPoweredByComponent,
-    SzConfigurationComponent,
-    SzConfigurationAboutComponent,
-    SzEntityDetailGraphComponent,
-    SzGraphComponent,
-    SzEntityDetailGraphControlComponent,
-    SzEntityDetailGraphFilterComponent,
-    SzGraphControlComponent,
-    SzGraphFilterComponent,
-    SzEntityRecordViewerComponent,
     SzStandaloneGraphComponent,
-    SzPreferencesComponent,
     SzWhyEntitiesComparisonComponent,
     SzWhyEntityComponent,
     SzWhyEntitiesDialog,
@@ -180,19 +186,19 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
   /** for components being exported as web components */
   entryComponents: [
     SzAlertMessageDialog,
+    SzConfigurationComponent,
+    SzConfigurationAboutComponent,
     SzEntityDetailComponent,
     SzEntityDetailGraphComponent,
     SzEntityRecordViewerComponent,
-    SzStandaloneGraphComponent,
+    SzPoweredByComponent,
+    SzPreferencesComponent,
     SzSearchComponent,
     SzSearchByIdComponent,
     SzSearchIdentifiersPickerDialogComponent,
     SzSearchIdentifiersPickerSheetComponent,
     SzSearchResultsComponent,
-    SzPoweredByComponent,
-    SzConfigurationComponent,
-    SzConfigurationAboutComponent,
-    SzPreferencesComponent,
+    SzStandaloneGraphComponent,
     SzWhyEntitiesComparisonComponent,
     SzWhyEntityComponent,
     SzWhyEntitiesDialog,

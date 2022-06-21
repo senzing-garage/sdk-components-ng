@@ -27,6 +27,7 @@ export class SzSdkPrefsBase {
    * to output in json, or to take as json input
    */
   jsonKeys = [];
+  typemap  = {};
 
   // ------------------ methods
 
@@ -70,6 +71,16 @@ export class SzSdkPrefsBase {
   /** get object state representation as a string */
   public toJSONString(): string {
     return JSON.stringify(this.toJSONObject());
+  }
+  /** gets an array of all public json properties and their types */
+  public getPublicPropertiesSchema() {
+    const retObj = {};
+    if (this.jsonKeys && this.jsonKeys.forEach) {
+      this.jsonKeys.forEach((k: string) => {
+        retObj[k] = (this.typemap && this.typemap[k]) ? this.typemap[k] : typeof this[k];
+      });
+    }
+    return retObj;
   }
 }
 
@@ -385,6 +396,20 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
     'linkToEmbeddedGraph',
     'truncateIdentifierDataAt'
   ];
+  override typemap = {
+    'openInNewTab':                 'boolean',
+    'showOtherData':                'boolean',
+    'showIdentifierData':           'boolean',
+    'showCharacteristicData':       'boolean',
+    'showMatchKeys':                'boolean',
+    'truncateRecordsAt':            'number',
+    'truncateOtherDataAt':          'number',
+    'truncateCharacteristicDataAt': 'number',
+    'showEmbeddedGraph':            'boolean',
+    'showRecordIds':                'boolean',
+    'linkToEmbeddedGraph':          'boolean',
+    'truncateIdentifierDataAt':     'number'
+  }
 
   // -------------------- getters and setters
   /** open entity detail in new tab when link clicked */

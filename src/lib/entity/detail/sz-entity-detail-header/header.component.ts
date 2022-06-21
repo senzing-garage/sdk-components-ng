@@ -14,7 +14,7 @@ import {
   SzResolvedEntity,
   SzEntityIdentifier
 } from '@senzing/rest-api-client-ng';
-import { SzRelationshipNetworkComponent } from '@senzing/sdk-graph-components';
+import { SzRelationshipNetworkComponent } from '../../../graph/sz-relationship-network/sz-relationship-network.component';
 
 import { bestEntityName } from '../../entity-utils';
 import { SzWhyEntityDialog } from '../../../why/sz-why-entity.component';

@@ -3,7 +3,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { fromEvent, Subscription, filter, take } from 'rxjs';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { SzEntityIdentifier } from '@senzing/rest-api-client-ng';
-import { SzRelationshipNetworkComponent } from '@senzing/sdk-graph-components';
+import { SzRelationshipNetworkComponent } from '@senzing/sdk-components-ng';
 
 @Component({
   selector: 'app-root',

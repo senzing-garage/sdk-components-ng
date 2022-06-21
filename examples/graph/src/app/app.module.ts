@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { SenzingSdkModule, SzRestConfiguration  } from '@senzing/sdk-components-ng';
-import { SenzingSdkGraphModule } from '@senzing/sdk-graph-components';
 import { AppComponent } from './app.component';
 
 /**
@@ -35,8 +34,7 @@ export function SzRestConfigurationFactory() {
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    SenzingSdkModule.forRoot( SzRestConfigurationFactory ),
-    SenzingSdkGraphModule.forRoot( SzRestConfigurationFactory )
+    SenzingSdkModule.forRoot( SzRestConfigurationFactory )
   ],
   providers: [],
   bootstrap: [AppComponent]

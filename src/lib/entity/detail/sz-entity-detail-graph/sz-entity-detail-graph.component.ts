@@ -3,10 +3,9 @@ import {
   SzRelatedEntity,
   SzResolvedEntity
 } from '@senzing/rest-api-client-ng';
-import { NodeFilterPair } from '@senzing/sdk-graph-components';
-
+import { SzGraphNodeFilterPair } from '../../../models/graph';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
-import { SzNetworkGraphInputs } from '../../../models/network-graph-inputs';
+import { SzNetworkGraphInputs } from '../../../models/graph';
 import { SzGraphComponent } from '../../../graph/sz-graph.component';
 
 /**
@@ -100,7 +99,7 @@ export class SzEntityDetailGraphComponent extends SzGraphComponent {
    * 
    * @deprecated use entityNodeFilters property instead
    */
-  public get entityNodeFilterByDataSource(): NodeFilterPair[] {
+  public get entityNodeFilterByDataSource(): SzGraphNodeFilterPair[] {
     return this.entityNodeFilters;
   }
 }

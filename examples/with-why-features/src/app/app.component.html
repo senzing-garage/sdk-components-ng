@@ -57,12 +57,13 @@
       #entityDetailComponent
       (graphEntityClick)="onGraphEntityClick($event)"
       (graphEntityDblClick)="onGraphEntityDblClick($event)"
-      (graphContextMenuClick)="onGraphContextClick($event)"
       [whySelectionMode]="'SINGLE'"
       [showEntityWhyFunction]="true"
       [showRecordWhyUtilities]="true"
       [showGraphMatchKeys]="true"
       [graphShowZoomControl]="true"
+      [showGraphContextMenu]="true"
+      [showGraphLinkContextMenu]="true"
       graphZoomControlPosition="top-left"
       [entityId]="currentlySelectedEntityId"></sz-entity-detail>
   </div>

@@ -16,14 +16,10 @@ import {
   SzSearchByIdComponent,
   SzSearchComponent,
   SzSearchResultsComponent,
-  SzStandaloneGraphComponent
-} from '@senzing/sdk-components-ng';
-// for graph support
-import {
-  SenzingSdkGraphModule,
+  SzStandaloneGraphComponent,
   SzRelationshipNetworkComponent,
   SzRelationshipPathComponent
-} from '@senzing/sdk-graph-components';
+} from '@senzing/sdk-components-ng';
 
 /**
 * Pull in api configuration(SzRestConfigurationParameters)
@@ -50,8 +46,7 @@ export function SzRestConfigurationFactory() {
   declarations: [],
   imports: [
     BrowserModule,
-    SenzingSdkModule.forRoot( SzRestConfigurationFactory ),
-    SenzingSdkGraphModule.forRoot( SzRestConfigurationFactory )
+    SenzingSdkModule.forRoot( SzRestConfigurationFactory )
   ],
   providers: [{provide: APP_BASE_HREF, useValue: '/'}]
 })

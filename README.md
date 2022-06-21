@@ -49,7 +49,7 @@ Open a terminal window to the location of your project and type:
 The components package, along with any missing dependencies will be added to your project. 
 
 Alternatively you can install the components and dependencies without the angular-cli via npm individually:
-`npm i @angular/material @angular/cdk @senzing/sdk-graph-components @senzing/sdk-components-ng --save`
+`npm i @angular/material @angular/cdk @senzing/sdk-components-ng --save`
 
 Please take note that all the same [interfaces](https://senzing.github.io/rest-api-client-ng/), and [services](https://senzing.github.io/rest-api-client-ng/) from the [@senzing/rest-api-client-ng package](https://www.npmjs.com/package/@senzing/rest-api-client-ng) will also be available for convenience.
 

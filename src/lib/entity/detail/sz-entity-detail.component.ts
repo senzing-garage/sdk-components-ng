@@ -205,7 +205,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   /** whether or not to automatically open a modal with the entity comparison on 
    * "Why" button click. (disable for custom implementation/action)
    */
-   @Input() openWhyComparisonModalOnClick(value: boolean) {
+  @Input() openWhyComparisonModalOnClick(value: boolean) {
     this._openWhyComparisonModalOnClick = value;
   }
 

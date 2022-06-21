@@ -1,0 +1,1114 @@
+{
+  "meta": {
+    "httpMethod": "GET",
+    "httpStatusCode": 200,
+    "timestamp": "2019-03-20T17:30:07.167Z"
+  },
+  "links": {
+    "self": "http://localhost:2080/entity-paths?from=914082&to=179726&maxDegrees=3&forbidAvoided=true&withRaw=true"
+  },
+  "rawData": {
+    "ENTITY_PATHS": [
+      {
+        "START_ENTITY_ID": 914082,
+        "END_ENTITY_ID": 179726,
+        "ENTITIES": []
+      }
+    ],
+    "ENTITIES": [
+      {
+        "RESOLVED_ENTITY": {
+          "ENTITY_ID": 179726,
+          "LENS_ID": 1,
+          "ENTITY_NAME": "MAURICE ALLEN",
+          "FEATURES": {
+            "ADDRESS": [
+              {
+                "FEAT_DESC": "POBOX 368 AGCY PARKSVILLE NY 12768",
+                "LIB_FEAT_ID": 867916,
+                "FEAT_DESC_VALUES": [
+                  {
+                    "FEAT_DESC": "POBOX 368 AGCY PARKSVILLE NY 12768",
+                    "LIB_FEAT_ID": 867916
+                  }
+                ]
+              }
+            ],
+            "DOB": [
+              {
+                "FEAT_DESC": "2014-03-05",
+                "LIB_FEAT_ID": 233401,
+                "FEAT_DESC_VALUES": [
+                  {
+                    "FEAT_DESC": "2014-03-05",
+                    "LIB_FEAT_ID": 233401
+                  }
+                ]
+              }
+            ],
+            "GENDER": [
+              {
+                "FEAT_DESC": "M",
+                "LIB_FEAT_ID": 4003,
+                "FEAT_DESC_VALUES": [
+                  {
+                    "FEAT_DESC": "M",
+                    "LIB_FEAT_ID": 4003
+                  }
+                ]
+              }
+            ],
+            "NAME": [
+              {
+                "FEAT_DESC": "MAURICE ALLEN",
+                "LIB_FEAT_ID": 336410,
+                "UTYPE_CODE": "PRIMARY",
+                "FEAT_DESC_VALUES": [
+                  {
+                    "FEAT_DESC": "MAURICE ALLEN",
+                    "LIB_FEAT_ID": 336410
+                  }
+                ]
+              }
+            ],
+            "PHONE": [
+              {
+                "FEAT_DESC": "908-594-5864",
+                "LIB_FEAT_ID": 2308971,
+                "UTYPE_CODE": "PRIMARY",
+                "FEAT_DESC_VALUES": [
+                  {
+                    "FEAT_DESC": "908-594-5864",
+                    "LIB_FEAT_ID": 2308971
+                  }
+                ]
+              }
+            ],
+            "SSN": [
+              {
+                "FEAT_DESC": "882-32-7767",
+                "LIB_FEAT_ID": 2308972,
+                "FEAT_DESC_VALUES": [
+                  {
+                    "FEAT_DESC": "882-32-7767",
+                    "LIB_FEAT_ID": 2308972
+                  }
+                ]
+              }
+            ]
+          },
+          "RECORD_SUMMARY": [
+            {
+              "DATA_SOURCE": "PATIENTS",
+              "RECORD_COUNT": 1,
+              "FIRST_SEEN_DT": "2019-01-14 21:43:49.416",
+              "LAST_SEEN_DT": "2019-01-14 21:43:49.416"
+            }
+          ],
+          "LAST_SEEN_DT": "2019-01-14 21:43:49.416",
+          "RECORDS": [
+            {
+              "JSON_DATA": {
+                "SOURCE_ID": "patientMapped_NoDoe.csv",
+                "PRIMARY_NAME_LAST": "ALLEN",
+                "PRIMARY_NAME_FIRST": "MAURICE",
+                "DATE_OF_BIRTH": "3/5/2014",
+                "GENDER": "M",
+                "SSN_NUMBER": "882-32-7767",
+                "ADDR_LINE1": "POBOX 368",
+                "ADDR_LINE2": "AGCY",
+                "ADDR_CITY": "PARKSVILLE",
+                "ADDR_STATE": "NY",
+                "ADDR_POSTAL_CODE": "12768",
+                "PRIMARY_PHONE_NUMBER": "908-594-5864",
+                "DATA_SOURCE": "PATIENTS",
+                "ENTITY_TYPE": "PATIENTS",
+                "DSRC_ACTION": "A",
+                "LENS_CODE": "DEFAULT",
+                "RECORD_ID": "13339124"
+              },
+              "DATA_SOURCE": "PATIENTS",
+              "ENTITY_TYPE": "PATIENTS",
+              "ENTITY_KEY": "8DFB88A2CEDF05446C136AC9BB09B0C33DE1C3B1",
+              "ENTITY_NAME": "MAURICE ALLEN",
+              "RECORD_ID": "13339124",
+              "MATCH_KEY": "",
+              "MATCH_SCORE": "",
+              "ERRULE_CODE": "",
+              "REF_SCORE": 0,
+              "MATCH_LEVEL": 0,
+              "LAST_SEEN_DT": "2019-01-14 21:43:49.416",
+              "NAME_DATA": [
+                "PRIMARY: ALLEN MAURICE"
+              ],
+              "ATTRIBUTE_DATA": [
+                "DOB: 3/5/2014",
+                "GENDER: M"
+              ],
+              "IDENTIFIER_DATA": [
+                "SSN: 882-32-7767"
+              ],
+              "ADDRESS_DATA": [
+                "POBOX 368 AGCY PARKSVILLE NY 12768"
+              ],
+              "PHONE_DATA": [
+                "PRIMARY: 908-594-5864"
+              ],
+              "RELATIONSHIP_DATA": [],
+              "ENTITY_DATA": [],
+              "OTHER_DATA": []
+            }
+          ]
+        },
+        "RELATED_ENTITIES": [
+          {
+            "ENTITY_ID": 896580,
+            "LENS_ID": 1,
+            "MATCH_LEVEL": 2,
+            "MATCH_KEY": "+SSN-GENDER",
+            "MATCH_SCORE": "4",
+            "ERRULE_CODE": "SF1E",
+            "REF_SCORE": 6,
+            "IS_DISCLOSED": 0,
+            "IS_AMBIGUOUS": 0,
+            "ENTITY_NAME": "KATHLEEN MACGREGOR",
+            "RECORD_SUMMARY": [
+              {
+                "DATA_SOURCE": "PATIENTS",
+                "RECORD_COUNT": 1,
+                "FIRST_SEEN_DT": "2019-01-14 22:38:12.723",
+                "LAST_SEEN_DT": "2019-01-14 22:38:12.723"
+              }
+            ],
+            "LAST_SEEN_DT": "2019-01-14 22:38:12.723"
+          },
+          {
+            "ENTITY_ID": 66085,
+            "LENS_ID": 1,
+            "MATCH_LEVEL": 3,
+            "MATCH_KEY": "+ADDRESS-DOB-GENDER-SSN",
+            "MATCH_SCORE": "2",
+            "ERRULE_CODE": "SFF",
+            "REF_SCORE": 3,
+            "IS_DISCLOSED": 0,
+            "IS_AMBIGUOUS": 0,
+            "ENTITY_NAME": "RITA ANGELA RUHLAND",
+            "RECORD_SUMMARY": [
+              {
+                "DATA_SOURCE": "PATIENTS",
+                "RECORD_COUNT": 1,
+                "FIRST_SEEN_DT": "2019-01-14 21:35:50.079",
+                "LAST_SEEN_DT": "2019-01-14 21:35:50.079"
+              }
+            ],
+            "LAST_SEEN_DT": "2019-01-14 21:35:50.079"
+          },
+          {
+            "ENTITY_ID": 181582,
+            "LENS_ID": 1,
+            "MATCH_LEVEL": 3,
+            "MATCH_KEY": "+ADDRESS-DOB-GENDER",
+            "MATCH_SCORE": "2",
+            "ERRULE_CODE": "SFF",
+            "REF_SCORE": 3,
+            "IS_DISCLOSED": 0,
+            "IS_AMBIGUOUS": 0,
+            "ENTITY_NAME": "VIRGINIA LETHA ELLIOTT",
+            "RECORD_SUMMARY": [
+              {
+                "DATA_SOURCE": "PATIENTS",
+                "RECORD_COUNT": 1,
+                "FIRST_SEEN_DT": "2019-01-14 21:43:46.039",
+                "LAST_SEEN_DT": "2019-01-14 21:43:46.039"
+              }
+            ],
+            "LAST_SEEN_DT": "2019-01-14 21:43:46.039"
+          },
+          {
+            "ENTITY_ID": 326564,
+            "LENS_ID": 1,
+            "MATCH_LEVEL": 3,
+            "MATCH_KEY": "+GENDER+ADDRESS-DOB-SSN",
+            "MATCH_SCORE": "3",
+            "ERRULE_CODE": "SFF",
+            "REF_SCORE": 3,
+            "IS_DISCLOSED": 0,
+            "IS_AMBIGUOUS": 0,
+            "ENTITY_NAME": "NICHOLAS DOUGLAS HUBBARD",
+            "RECORD_SUMMARY": [
+              {
+                "DATA_SOURCE": "PATIENTS",
+                "RECORD_COUNT": 1,
+                "FIRST_SEEN_DT": "2019-01-14 21:53:53.896",
+                "LAST_SEEN_DT": "2019-01-14 21:53:53.896"
+              }
+            ],
+            "LAST_SEEN_DT": "2019-01-14 21:53:53.896"
+          },
+          {
+            "ENTITY_ID": 433393,
+            "LENS_ID": 1,
+            "MATCH_LEVEL": 3,
+            "MATCH_KEY": "+ADDRESS-DOB-GENDER-SSN",
+            "MATCH_SCORE": "2",
+            "ERRULE_CODE": "SFF",
+            "REF_SCORE": 3,
+            "IS_DISCLOSED": 0,
+            "IS_AMBIGUOUS": 0,
+            "ENTITY_NAME": "MARIA OWEN",
+            "RECORD_SUMMARY": [
+              {
+                "DATA_SOURCE": "PATIENTS",
+                "RECORD_COUNT": 1,
+                "FIRST_SEEN_DT": "2019-01-14 22:01:40.713",
+                "LAST_SEEN_DT": "2019-01-14 22:01:40.713"
+              }
+            ],
+            "LAST_SEEN_DT": "2019-01-14 22:01:40.713"
+          },
+          {
+            "ENTITY_ID": 606389,
+            "LENS_ID": 1,
+            "MATCH_LEVEL": 3,
+            "MATCH_KEY": "+ADDRESS-DOB-GENDER-SSN",
+            "MATCH_SCORE": "2",
+            "ERRULE_CODE": "SFF",
+            "REF_SCORE": 3,
+            "IS_DISCLOSED": 0,
+            "IS_AMBIGUOUS": 0,
+            "ENTITY_NAME": "YAFFA DORON",
+            "RECORD_SUMMARY": [
+              {
+                "DATA_SOURCE": "PATIENTS",
+                "RECORD_COUNT": 1,
+                "FIRST_SEEN_DT": "2019-01-14 22:14:25.852",
+                "LAST_SEEN_DT": "2019-01-14 22:14:25.852"
+              }
+            ],
+            "LAST_SEEN_DT": "2019-01-14 22:14:25.852"
+          },
+          {
+            "ENTITY_ID": 795115,
+            "LENS_ID": 1,
+            "MATCH_LEVEL": 3,
+            "MATCH_KEY": "+ADDRESS-DOB-GENDER-SSN",
+            "MATCH_SCORE": "2",
+            "ERRULE_CODE": "SFF",
+            "REF_SCORE": 3,
+            "IS_DISCLOSED": 0,
+            "IS_AMBIGUOUS": 0,
+            "ENTITY_NAME": "SOL RODRIGUEZ",
+            "RECORD_SUMMARY": [
+              {
+                "DATA_SOURCE": "PATIENTS",
+                "RECORD_COUNT": 1,
+                "FIRST_SEEN_DT": "2019-01-14 22:29:13.429",
+                "LAST_SEEN_DT": "2019-01-14 22:29:13.429"
+              }
+            ],
+            "LAST_SEEN_DT": "2019-01-14 22:29:13.429"
+          },
+          {
+            "ENTITY_ID": 864580,
+            "LENS_ID": 1,
+            "MATCH_LEVEL": 3,
+            "MATCH_KEY": "+ADDRESS-DOB-GENDER",
+            "MATCH_SCORE": "2",
+            "ERRULE_CODE": "SFF",
+            "REF_SCORE": 3,
+            "IS_DISCLOSED": 0,
+            "IS_AMBIGUOUS": 0,
+            "ENTITY_NAME": "MARTA SALAZAR",
+            "RECORD_SUMMARY": [
+              {
+                "DATA_SOURCE": "PATIENTS",
+                "RECORD_COUNT": 1,
+                "FIRST_SEEN_DT": "2019-01-14 22:35:29.272",
+                "LAST_SEEN_DT": "2019-01-14 22:35:29.272"
+              }
+            ],
+            "LAST_SEEN_DT": "2019-01-14 22:35:29.272"
+          },
+          {
+            "ENTITY_ID": 882840,
+            "LENS_ID": 1,
+            "MATCH_LEVEL": 3,
+            "MATCH_KEY": "+GENDER+ADDRESS-DOB-SSN",
+            "MATCH_SCORE": "3",
+            "ERRULE_CODE": "SFF",
+            "REF_SCORE": 3,
+            "IS_DISCLOSED": 0,
+            "IS_AMBIGUOUS": 0,
+            "ENTITY_NAME": "AMIR AALAAM",
+            "RECORD_SUMMARY": [
+              {
+                "DATA_SOURCE": "PATIENTS",
+                "RECORD_COUNT": 1,
+                "FIRST_SEEN_DT": "2019-01-14 22:37:16.458",
+                "LAST_SEEN_DT": "2019-01-14 22:37:16.458"
+              }
+            ],
+            "LAST_SEEN_DT": "2019-01-14 22:37:16.458"
+          }
+        ]
+      },
+      {
+        "RESOLVED_ENTITY": {
+          "ENTITY_ID": 914082,
+          "LENS_ID": 1,
+          "ENTITY_NAME": "BOBBY HUNT",
+          "FEATURES": {
+            "ACCT_NUM": [
+              {
+                "FEAT_DESC": "3525879",
+                "LIB_FEAT_ID": 9948452,
+                "FEAT_DESC_VALUES": [
+                  {
+                    "FEAT_DESC": "3525879",
+                    "LIB_FEAT_ID": 9948452
+                  }
+                ]
+              }
+            ],
+            "ADDRESS": [
+              {
+                "FEAT_DESC": "2160 MAPES AVE 4F BRONX NY 10460",
+                "LIB_FEAT_ID": 9948449,
+                "FEAT_DESC_VALUES": [
+                  {
+                    "FEAT_DESC": "2160 MAPES AVE 4F BRONX NY 10460",
+                    "LIB_FEAT_ID": 9948449
+                  }
+                ]
+              }
+            ],
+            "DOB": [
+              {
+                "FEAT_DESC": "1964-02-17",
+                "LIB_FEAT_ID": 82053,
+                "FEAT_DESC_VALUES": [
+                  {
+                    "FEAT_DESC": "1964-02-17",
+                    "LIB_FEAT_ID": 82053
+                  }
+                ]
+              }
+            ],
+            "GENDER": [
+              {
+                "FEAT_DESC": "M",
+                "LIB_FEAT_ID": 4003,
+                "FEAT_DESC_VALUES": [
+                  {
+                    "FEAT_DESC": "M",
+                    "LIB_FEAT_ID": 4003
+                  }
+                ]
+              }
+            ],
+            "NAME": [
+              {
+                "FEAT_DESC": "BOBBY HUNT",
+                "LIB_FEAT_ID": 2074106,
+                "UTYPE_CODE": "PRIMARY",
+                "FEAT_DESC_VALUES": [
+                  {
+                    "FEAT_DESC": "BOBBY HUNT",
+                    "LIB_FEAT_ID": 2074106
+                  }
+                ]
+              }
+            ],
+            "PHONE": [
+              {
+                "FEAT_DESC": "631-132-9744",
+                "LIB_FEAT_ID": 9948450,
+                "UTYPE_CODE": "PRIMARY",
+                "FEAT_DESC_VALUES": [
+                  {
+                    "FEAT_DESC": "631-132-9744",
+                    "LIB_FEAT_ID": 9948450
+                  }
+                ]
+              }
+            ],
+            "SSN": [
+              {
+                "FEAT_DESC": "895-05-8847",
+                "LIB_FEAT_ID": 9948451,
+                "FEAT_DESC_VALUES": [
+                  {
+                    "FEAT_DESC": "895-05-8847",
+                    "LIB_FEAT_ID": 9948451
+                  }
+                ]
+              }
+            ]
+          },
+          "RECORD_SUMMARY": [
+            {
+              "DATA_SOURCE": "PATIENTS",
+              "RECORD_COUNT": 1,
+              "FIRST_SEEN_DT": "2019-01-14 22:39:32.363",
+              "LAST_SEEN_DT": "2019-01-14 22:39:32.363"
+            }
+          ],
+          "LAST_SEEN_DT": "2019-01-14 22:39:32.363",
+          "RECORDS": [
+            {
+              "JSON_DATA": {
+                "SOURCE_ID": "patientMapped_NoDoe.csv",
+                "PRIMARY_NAME_LAST": "HUNT",
+                "PRIMARY_NAME_FIRST": "BOBBY",
+                "DATE_OF_BIRTH": "2/17/1964",
+                "GENDER": "M",
+                "SSN_NUMBER": "895-05-8847",
+                "ADDR_LINE1": "2160 MAPES AVE",
+                "ADDR_LINE2": "4F",
+                "ADDR_CITY": "BRONX",
+                "ADDR_STATE": "NY",
+                "ADDR_POSTAL_CODE": "10460",
+                "PRIMARY_PHONE_NUMBER": "631-132-9744",
+                "ACCOUNT_NUMBER": "3525879",
+                "DATA_SOURCE": "PATIENTS",
+                "ENTITY_TYPE": "PATIENTS",
+                "DSRC_ACTION": "A",
+                "LENS_CODE": "DEFAULT",
+                "RECORD_ID": "13971505"
+              },
+              "DATA_SOURCE": "PATIENTS",
+              "ENTITY_TYPE": "PATIENTS",
+              "ENTITY_KEY": "8CF450FAFCC0381A289593DAD151D29558B440DF",
+              "ENTITY_NAME": "BOBBY HUNT",
+              "RECORD_ID": "13971505",
+              "MATCH_KEY": "",
+              "MATCH_SCORE": "",
+              "ERRULE_CODE": "",
+              "REF_SCORE": 0,
+              "MATCH_LEVEL": 0,
+              "LAST_SEEN_DT": "2019-01-14 22:39:32.363",
+              "NAME_DATA": [
+                "PRIMARY: HUNT BOBBY"
+              ],
+              "ATTRIBUTE_DATA": [
+                "DOB: 2/17/1964",
+                "GENDER: M"
+              ],
+              "IDENTIFIER_DATA": [
+                "ACCT_NUM: 3525879",
+                "SSN: 895-05-8847"
+              ],
+              "ADDRESS_DATA": [
+                "2160 MAPES AVE 4F BRONX NY 10460"
+              ],
+              "PHONE_DATA": [
+                "PRIMARY: 631-132-9744"
+              ],
+              "RELATIONSHIP_DATA": [],
+              "ENTITY_DATA": [],
+              "OTHER_DATA": []
+            }
+          ]
+        },
+        "RELATED_ENTITIES": [
+          {
+            "ENTITY_ID": 755204,
+            "LENS_ID": 1,
+            "MATCH_LEVEL": 3,
+            "MATCH_KEY": "+ADDRESS-DOB-GENDER-SSN",
+            "MATCH_SCORE": "2",
+            "ERRULE_CODE": "SFF",
+            "REF_SCORE": 3,
+            "IS_DISCLOSED": 0,
+            "IS_AMBIGUOUS": 0,
+            "ENTITY_NAME": "MARY SYRITSYNA",
+            "RECORD_SUMMARY": [
+              {
+                "DATA_SOURCE": "PATIENTS",
+                "RECORD_COUNT": 2,
+                "FIRST_SEEN_DT": "2019-01-14 22:25:49.354",
+                "LAST_SEEN_DT": "2019-01-14 22:42:25.090"
+              }
+            ],
+            "LAST_SEEN_DT": "2019-01-14 22:42:25.090"
+          }
+        ]
+      }
+    ]
+  },
+  "data": {
+    "entityPath": {
+      "startEntityId": 914082,
+      "endEntityId": 179726,
+      "entityIds": []
+    },
+    "entities": [
+      {
+        "resolvedEntity": {
+          "entityId": 179726,
+          "entityName": "MAURICE ALLEN",
+          "bestName": null,
+          "recordSummaries": [
+            {
+              "dataSource": "PATIENTS",
+              "recordCount": 1,
+              "topRecordIds": [
+                "13339124"
+              ]
+            }
+          ],
+          "addressData": [
+            "POBOX 368 AGCY PARKSVILLE NY 12768"
+          ],
+          "attributeData": [
+            "DOB: 2014-03-05",
+            "GENDER: M"
+          ],
+          "identifierData": [
+            "SSN: 882-32-7767"
+          ],
+          "nameData": [
+            "PRIMARY: MAURICE ALLEN"
+          ],
+          "phoneData": [
+            "PRIMARY: 908-594-5864"
+          ],
+          "relationshipData": [],
+          "otherData": [],
+          "features": {
+            "ADDRESS": [
+              {
+                "primaryValue": "POBOX 368 AGCY PARKSVILLE NY 12768",
+                "usageType": null,
+                "duplicateValues": []
+              }
+            ],
+            "DOB": [
+              {
+                "primaryValue": "2014-03-05",
+                "usageType": null,
+                "duplicateValues": []
+              }
+            ],
+            "GENDER": [
+              {
+                "primaryValue": "M",
+                "usageType": null,
+                "duplicateValues": []
+              }
+            ],
+            "NAME": [
+              {
+                "primaryValue": "MAURICE ALLEN",
+                "usageType": "PRIMARY",
+                "duplicateValues": []
+              }
+            ],
+            "PHONE": [
+              {
+                "primaryValue": "908-594-5864",
+                "usageType": "PRIMARY",
+                "duplicateValues": []
+              }
+            ],
+            "SSN": [
+              {
+                "primaryValue": "882-32-7767",
+                "usageType": null,
+                "duplicateValues": []
+              }
+            ]
+          },
+          "records": [
+            {
+              "dataSource": "PATIENTS",
+              "recordId": "13339124",
+              "addressData": [
+                "POBOX 368 AGCY PARKSVILLE NY 12768"
+              ],
+              "attributeData": [
+                "DOB: 3/5/2014",
+                "GENDER: M"
+              ],
+              "identifierData": [
+                "SSN: 882-32-7767"
+              ],
+              "nameData": [
+                "PRIMARY: ALLEN MAURICE"
+              ],
+              "phoneData": [
+                "PRIMARY: 908-594-5864"
+              ],
+              "relationshipData": [],
+              "otherData": [],
+              "originalSourceData": {
+                "SOURCE_ID": "patientMapped_NoDoe.csv",
+                "PRIMARY_NAME_LAST": "ALLEN",
+                "PRIMARY_NAME_FIRST": "MAURICE",
+                "DATE_OF_BIRTH": "3/5/2014",
+                "GENDER": "M",
+                "SSN_NUMBER": "882-32-7767",
+                "ADDR_LINE1": "POBOX 368",
+                "ADDR_LINE2": "AGCY",
+                "ADDR_CITY": "PARKSVILLE",
+                "ADDR_STATE": "NY",
+                "ADDR_POSTAL_CODE": "12768",
+                "PRIMARY_PHONE_NUMBER": "908-594-5864",
+                "DATA_SOURCE": "PATIENTS",
+                "ENTITY_TYPE": "PATIENTS",
+                "DSRC_ACTION": "A",
+                "LENS_CODE": "DEFAULT",
+                "RECORD_ID": "13339124"
+              }
+            }
+          ]
+        },
+        "relatedEntities": [
+          {
+            "entityId": 896580,
+            "entityName": "KATHLEEN MACGREGOR",
+            "bestName": null,
+            "recordSummaries": [
+              {
+                "dataSource": "PATIENTS",
+                "recordCount": 1,
+                "topRecordIds": []
+              }
+            ],
+            "addressData": [],
+            "attributeData": [],
+            "identifierData": [],
+            "nameData": [],
+            "phoneData": [],
+            "relationshipData": [],
+            "otherData": [],
+            "features": {},
+            "records": [],
+            "matchLevel": 2,
+            "fullNameScore": null,
+            "matchScore": 4,
+            "ambiguous": false,
+            "matchKey": "+SSN-GENDER",
+            "resolutionRuleCode": "SF1E",
+            "refScore": 6,
+            "partial": true,
+            "disclosed": false,
+            "relationType": "POSSIBLE_MATCH"
+          },
+          {
+            "entityId": 66085,
+            "entityName": "RITA ANGELA RUHLAND",
+            "bestName": null,
+            "recordSummaries": [
+              {
+                "dataSource": "PATIENTS",
+                "recordCount": 1,
+                "topRecordIds": []
+              }
+            ],
+            "addressData": [],
+            "attributeData": [],
+            "identifierData": [],
+            "nameData": [],
+            "phoneData": [],
+            "relationshipData": [],
+            "otherData": [],
+            "features": {},
+            "records": [],
+            "matchLevel": 3,
+            "fullNameScore": null,
+            "matchScore": 2,
+            "ambiguous": false,
+            "matchKey": "+ADDRESS-DOB-GENDER-SSN",
+            "resolutionRuleCode": "SFF",
+            "refScore": 3,
+            "partial": true,
+            "disclosed": false,
+            "relationType": "POSSIBLE_RELATION"
+          },
+          {
+            "entityId": 181582,
+            "entityName": "VIRGINIA LETHA ELLIOTT",
+            "bestName": null,
+            "recordSummaries": [
+              {
+                "dataSource": "PATIENTS",
+                "recordCount": 1,
+                "topRecordIds": []
+              }
+            ],
+            "addressData": [],
+            "attributeData": [],
+            "identifierData": [],
+            "nameData": [],
+            "phoneData": [],
+            "relationshipData": [],
+            "otherData": [],
+            "features": {},
+            "records": [],
+            "matchLevel": 3,
+            "fullNameScore": null,
+            "matchScore": 2,
+            "ambiguous": false,
+            "matchKey": "+ADDRESS-DOB-GENDER",
+            "resolutionRuleCode": "SFF",
+            "refScore": 3,
+            "partial": true,
+            "disclosed": false,
+            "relationType": "POSSIBLE_RELATION"
+          },
+          {
+            "entityId": 326564,
+            "entityName": "NICHOLAS DOUGLAS HUBBARD",
+            "bestName": null,
+            "recordSummaries": [
+              {
+                "dataSource": "PATIENTS",
+                "recordCount": 1,
+                "topRecordIds": []
+              }
+            ],
+            "addressData": [],
+            "attributeData": [],
+            "identifierData": [],
+            "nameData": [],
+            "phoneData": [],
+            "relationshipData": [],
+            "otherData": [],
+            "features": {},
+            "records": [],
+            "matchLevel": 3,
+            "fullNameScore": null,
+            "matchScore": 3,
+            "ambiguous": false,
+            "matchKey": "+GENDER+ADDRESS-DOB-SSN",
+            "resolutionRuleCode": "SFF",
+            "refScore": 3,
+            "partial": true,
+            "disclosed": false,
+            "relationType": "POSSIBLE_RELATION"
+          },
+          {
+            "entityId": 433393,
+            "entityName": "MARIA OWEN",
+            "bestName": null,
+            "recordSummaries": [
+              {
+                "dataSource": "PATIENTS",
+                "recordCount": 1,
+                "topRecordIds": []
+              }
+            ],
+            "addressData": [],
+            "attributeData": [],
+            "identifierData": [],
+            "nameData": [],
+            "phoneData": [],
+            "relationshipData": [],
+            "otherData": [],
+            "features": {},
+            "records": [],
+            "matchLevel": 3,
+            "fullNameScore": null,
+            "matchScore": 2,
+            "ambiguous": false,
+            "matchKey": "+ADDRESS-DOB-GENDER-SSN",
+            "resolutionRuleCode": "SFF",
+            "refScore": 3,
+            "partial": true,
+            "disclosed": false,
+            "relationType": "POSSIBLE_RELATION"
+          },
+          {
+            "entityId": 606389,
+            "entityName": "YAFFA DORON",
+            "bestName": null,
+            "recordSummaries": [
+              {
+                "dataSource": "PATIENTS",
+                "recordCount": 1,
+                "topRecordIds": []
+              }
+            ],
+            "addressData": [],
+            "attributeData": [],
+            "identifierData": [],
+            "nameData": [],
+            "phoneData": [],
+            "relationshipData": [],
+            "otherData": [],
+            "features": {},
+            "records": [],
+            "matchLevel": 3,
+            "fullNameScore": null,
+            "matchScore": 2,
+            "ambiguous": false,
+            "matchKey": "+ADDRESS-DOB-GENDER-SSN",
+            "resolutionRuleCode": "SFF",
+            "refScore": 3,
+            "partial": true,
+            "disclosed": false,
+            "relationType": "POSSIBLE_RELATION"
+          },
+          {
+            "entityId": 795115,
+            "entityName": "SOL RODRIGUEZ",
+            "bestName": null,
+            "recordSummaries": [
+              {
+                "dataSource": "PATIENTS",
+                "recordCount": 1,
+                "topRecordIds": []
+              }
+            ],
+            "addressData": [],
+            "attributeData": [],
+            "identifierData": [],
+            "nameData": [],
+            "phoneData": [],
+            "relationshipData": [],
+            "otherData": [],
+            "features": {},
+            "records": [],
+            "matchLevel": 3,
+            "fullNameScore": null,
+            "matchScore": 2,
+            "ambiguous": false,
+            "matchKey": "+ADDRESS-DOB-GENDER-SSN",
+            "resolutionRuleCode": "SFF",
+            "refScore": 3,
+            "partial": true,
+            "disclosed": false,
+            "relationType": "POSSIBLE_RELATION"
+          },
+          {
+            "entityId": 864580,
+            "entityName": "MARTA SALAZAR",
+            "bestName": null,
+            "recordSummaries": [
+              {
+                "dataSource": "PATIENTS",
+                "recordCount": 1,
+                "topRecordIds": []
+              }
+            ],
+            "addressData": [],
+            "attributeData": [],
+            "identifierData": [],
+            "nameData": [],
+            "phoneData": [],
+            "relationshipData": [],
+            "otherData": [],
+            "features": {},
+            "records": [],
+            "matchLevel": 3,
+            "fullNameScore": null,
+            "matchScore": 2,
+            "ambiguous": false,
+            "matchKey": "+ADDRESS-DOB-GENDER",
+            "resolutionRuleCode": "SFF",
+            "refScore": 3,
+            "partial": true,
+            "disclosed": false,
+            "relationType": "POSSIBLE_RELATION"
+          },
+          {
+            "entityId": 882840,
+            "entityName": "AMIR AALAAM",
+            "bestName": null,
+            "recordSummaries": [
+              {
+                "dataSource": "PATIENTS",
+                "recordCount": 1,
+                "topRecordIds": []
+              }
+            ],
+            "addressData": [],
+            "attributeData": [],
+            "identifierData": [],
+            "nameData": [],
+            "phoneData": [],
+            "relationshipData": [],
+            "otherData": [],
+            "features": {},
+            "records": [],
+            "matchLevel": 3,
+            "fullNameScore": null,
+            "matchScore": 3,
+            "ambiguous": false,
+            "matchKey": "+GENDER+ADDRESS-DOB-SSN",
+            "resolutionRuleCode": "SFF",
+            "refScore": 3,
+            "partial": true,
+            "disclosed": false,
+            "relationType": "POSSIBLE_RELATION"
+          }
+        ]
+      },
+      {
+        "resolvedEntity": {
+          "entityId": 914082,
+          "entityName": "BOBBY HUNT",
+          "bestName": null,
+          "recordSummaries": [
+            {
+              "dataSource": "PATIENTS",
+              "recordCount": 1,
+              "topRecordIds": [
+                "13971505"
+              ]
+            }
+          ],
+          "addressData": [
+            "2160 MAPES AVE 4F BRONX NY 10460"
+          ],
+          "attributeData": [
+            "DOB: 1964-02-17",
+            "GENDER: M"
+          ],
+          "identifierData": [
+            "ACCT_NUM: 3525879",
+            "SSN: 895-05-8847"
+          ],
+          "nameData": [
+            "PRIMARY: BOBBY HUNT"
+          ],
+          "phoneData": [
+            "PRIMARY: 631-132-9744"
+          ],
+          "relationshipData": [],
+          "otherData": [],
+          "features": {
+            "ACCT_NUM": [
+              {
+                "primaryValue": "3525879",
+                "usageType": null,
+                "duplicateValues": []
+              }
+            ],
+            "ADDRESS": [
+              {
+                "primaryValue": "2160 MAPES AVE 4F BRONX NY 10460",
+                "usageType": null,
+                "duplicateValues": []
+              }
+            ],
+            "DOB": [
+              {
+                "primaryValue": "1964-02-17",
+                "usageType": null,
+                "duplicateValues": []
+              }
+            ],
+            "GENDER": [
+              {
+                "primaryValue": "M",
+                "usageType": null,
+                "duplicateValues": []
+              }
+            ],
+            "NAME": [
+              {
+                "primaryValue": "BOBBY HUNT",
+                "usageType": "PRIMARY",
+                "duplicateValues": []
+              }
+            ],
+            "PHONE": [
+              {
+                "primaryValue": "631-132-9744",
+                "usageType": "PRIMARY",
+                "duplicateValues": []
+              }
+            ],
+            "SSN": [
+              {
+                "primaryValue": "895-05-8847",
+                "usageType": null,
+                "duplicateValues": []
+              }
+            ]
+          },
+          "records": [
+            {
+              "dataSource": "PATIENTS",
+              "recordId": "13971505",
+              "addressData": [
+                "2160 MAPES AVE 4F BRONX NY 10460"
+              ],
+              "attributeData": [
+                "DOB: 2/17/1964",
+                "GENDER: M"
+              ],
+              "identifierData": [
+                "ACCT_NUM: 3525879",
+                "SSN: 895-05-8847"
+              ],
+              "nameData": [
+                "PRIMARY: HUNT BOBBY"
+              ],
+              "phoneData": [
+                "PRIMARY: 631-132-9744"
+              ],
+              "relationshipData": [],
+              "otherData": [],
+              "originalSourceData": {
+                "SOURCE_ID": "patientMapped_NoDoe.csv",
+                "PRIMARY_NAME_LAST": "HUNT",
+                "PRIMARY_NAME_FIRST": "BOBBY",
+                "DATE_OF_BIRTH": "2/17/1964",
+                "GENDER": "M",
+                "SSN_NUMBER": "895-05-8847",
+                "ADDR_LINE1": "2160 MAPES AVE",
+                "ADDR_LINE2": "4F",
+                "ADDR_CITY": "BRONX",
+                "ADDR_STATE": "NY",
+                "ADDR_POSTAL_CODE": "10460",
+                "PRIMARY_PHONE_NUMBER": "631-132-9744",
+                "ACCOUNT_NUMBER": "3525879",
+                "DATA_SOURCE": "PATIENTS",
+                "ENTITY_TYPE": "PATIENTS",
+                "DSRC_ACTION": "A",
+                "LENS_CODE": "DEFAULT",
+                "RECORD_ID": "13971505"
+              }
+            }
+          ]
+        },
+        "relatedEntities": [
+          {
+            "entityId": 755204,
+            "entityName": "MARY SYRITSYNA",
+            "bestName": null,
+            "recordSummaries": [
+              {
+                "dataSource": "PATIENTS",
+                "recordCount": 2,
+                "topRecordIds": []
+              }
+            ],
+            "addressData": [],
+            "attributeData": [],
+            "identifierData": [],
+            "nameData": [],
+            "phoneData": [],
+            "relationshipData": [],
+            "otherData": [],
+            "features": {},
+            "records": [],
+            "matchLevel": 3,
+            "fullNameScore": null,
+            "matchScore": 2,
+            "ambiguous": false,
+            "matchKey": "+ADDRESS-DOB-GENDER-SSN",
+            "resolutionRuleCode": "SFF",
+            "refScore": 3,
+            "partial": true,
+            "disclosed": false,
+            "relationType": "POSSIBLE_RELATION"
+          }
+        ]
+      }
+    ]
+  }
+}

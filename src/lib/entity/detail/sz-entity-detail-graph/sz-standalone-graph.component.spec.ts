@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzStandaloneGraphComponent } from './sz-standalone-graph.component';
 import { SenzingSdkModule } from 'src/lib/sdk.module';
-import { SenzingSdkGraphModule } from '@senzing/sdk-graph-components';
 
 describe('SzStandaloneGraphComponent', () => {
   let component: SzStandaloneGraphComponent;
@@ -19,7 +18,7 @@ describe('SzStandaloneGraphComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [SenzingSdkModule.forRoot(), SenzingSdkGraphModule.forRoot()]
+      imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
 

@@ -1,19 +1,6 @@
 import { Injectable, Output, Input, Inject } from '@angular/core';
-import { Observable, fromEventPattern, Subject } from 'rxjs';
-import { map, tap, mapTo } from 'rxjs/operators';
 import { Configuration as SzRestConfiguration, ConfigurationParameters as SzRestConfigurationParameters } from '@senzing/rest-api-client-ng';
-
-import {
-  EntityDataService,
-  ConfigService,
-  SzAttributeSearchResponse,
-  SzEntityData,
-  SzAttributeTypesResponse,
-  SzAttributeType,
-  SzAttributeSearchResult
-} from '@senzing/rest-api-client-ng';
-import { SzEntitySearchParams } from '../models/entity-search';
-import { SzGraphConfigurationService } from '@senzing/sdk-graph-components';
+import { Subject } from 'rxjs';
 import { SzPrefsService } from './sz-prefs.service';
 
 /**
@@ -39,16 +26,10 @@ export class SzConfigurationService {
   /** add an additional header to all outgoing API requests */
   public addHeaderToApiRequests(header: {[key: string]: string}): void {
     this.apiConfiguration.addAdditionalRequestHeader( header );
-    if(this.graphApiConfigService && this.graphApiConfigService.addHeaderToApiRequests){
-      this.graphApiConfigService.addHeaderToApiRequests( header );
-    }
   }
   /** remove an additional header from all outgoing API requests */
   public removeHeaderFromApiRequests(header: {[key: string]: string} | string): void {
     this.apiConfiguration.removeAdditionalRequestHeader( header );
-    if(this.graphApiConfigService && this.graphApiConfigService.removeHeaderFromApiRequests){
-      this.graphApiConfigService.removeHeaderFromApiRequests( header );
-    }
   }
   /** 
    * additional http/https request headers that will be added by default to 
@@ -64,9 +45,6 @@ export class SzConfigurationService {
    */
   public set additionalApiRequestHeaders(value: {[key: string]: string} | undefined) {
     this.apiConfiguration.additionalHeaders = value;
-    if(this.graphApiConfigService && this.graphApiConfigService.additionalApiRequestHeaders) {
-      this.graphApiConfigService.additionalApiRequestHeaders = this.apiConfiguration.additionalHeaders;
-    }
   }
   /**
    * emmitted when a property has been changed.
@@ -84,9 +62,6 @@ export class SzConfigurationService {
   @Input()
   set apiKeys(value: {[ key: string ]: string}) {
     this.apiConfiguration.apiKeys = value;
-    if(this.graphApiConfigService && this.graphApiConfigService.apiKeys){
-      this.graphApiConfigService.apiKeys = this.apiConfiguration.apiKeys;
-    }
     this.onParameterChange();
   }
   /**
@@ -95,26 +70,17 @@ export class SzConfigurationService {
   @Input()
   set username(value: string) {
     this.apiConfiguration.username = value;
-    if(this.graphApiConfigService && this.graphApiConfigService.username){
-      this.graphApiConfigService.username = this.apiConfiguration.username;
-    }
     this.onParameterChange();
   }
   /** password used for challenge respose. */
   @Input()
   set password(value: string) {
     this.apiConfiguration.password = value;
-    if(this.graphApiConfigService && this.graphApiConfigService.password){
-      this.graphApiConfigService.password = this.apiConfiguration.password;
-    }
     this.onParameterChange();
   }
   @Input()
   set accessToken(value: string | (() => string)) {
     this.apiConfiguration.accessToken = value;
-    if(this.graphApiConfigService && this.graphApiConfigService.accessToken){
-      this.graphApiConfigService.accessToken = this.apiConfiguration.accessToken;
-    }
     this.onParameterChange();
   }
   /** prefix all api requests with this value. most commonly a http or https
@@ -123,9 +89,6 @@ export class SzConfigurationService {
   @Input()
   public set basePath(value: string) {
     this.apiConfiguration.basePath = value;
-    if(this.graphApiConfigService && this.graphApiConfigService.basePath){
-      this.graphApiConfigService.basePath = this.apiConfiguration.basePath;
-    }
     this.onParameterChange();
   }
   public get basePath(): string {
@@ -135,9 +98,6 @@ export class SzConfigurationService {
   @Input()
   set withCredentials(value: boolean) {
     this.apiConfiguration.withCredentials = value;
-    if(this.graphApiConfigService && this.graphApiConfigService.withCredentials){
-      this.graphApiConfigService.withCredentials = this.apiConfiguration.withCredentials;
-    }
     this.onParameterChange();
   }
   /** bulk runtime set of sdk configuration */
@@ -147,9 +107,6 @@ export class SzConfigurationService {
     for(const propKey of propKeys) {
       const propValue = value[ propKey ];
       this.apiConfiguration[propKey] = propValue;
-      if(this.graphApiConfigService && this.graphApiConfigService.apiConfiguration){
-        this.graphApiConfigService.apiConfiguration[propKey] = propValue;
-      }
     }
   }
   /** bulk fetch of sdk configuration parameters. */
@@ -166,7 +123,6 @@ export class SzConfigurationService {
 
   constructor(
     @Inject(SzRestConfiguration) public apiConfiguration: SzRestConfiguration,
-    public graphApiConfigService: SzGraphConfigurationService,
     public prefs: SzPrefsService
   ) {}
 }
