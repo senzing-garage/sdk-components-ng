@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzRelationshipPathComponent } from './sz-relationship-path.component';
-import { SenzingSdkGraphModule } from 'src/lib/sdk-graph-components.module';
+import { SenzingSdkModule } from 'src/lib/sdk.module';
 
 describe('SzRelationshipPathComponent', () => {
   let component: SzRelationshipPathComponent;
@@ -9,7 +9,7 @@ describe('SzRelationshipPathComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SenzingSdkGraphModule.forRoot()]
+      imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
   }));

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzRelationshipNetworkComponent } from './sz-relationship-network.component';
-import { SenzingSdkGraphModule } from 'src/lib/sdk-graph-components.module';
+import { SenzingSdkModule } from 'src/lib/sdk.module';
 
 describe('SzRelationshipNetworkComponent', () => {
   let component: SzRelationshipNetworkComponent;
@@ -9,7 +9,7 @@ describe('SzRelationshipNetworkComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SenzingSdkGraphModule.forRoot()]
+      imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
   }));
