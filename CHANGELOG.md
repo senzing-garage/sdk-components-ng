@@ -6,9 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.1.0] - 2022-06-20
+## [5.0.0] - 2022-06-27
 
-Thio release adds new functionality around expanding and collapsing related entities in *Network Graph* related components. We're also adding the *Why Not* component that can be embedded between two or more entities to generate a report to show why two entities/records did not resolve.
+Thio release adds new functionality around expanding and collapsing related entities in *Network Graph* related components. We've moved the `@senzing/sdk-graph-components` to the scope of this package for easier maintenance and installation(now you just need this package instead of two). We're also adding the *Why Not* component that can be embedded between two or more entities to generate a report to show why two entities/records did not resolve.
 
 ### Added
 - The following methods added to `SzGraphComponent` and are inheirited by `SzStandaloneGraphComponent` and `SzEntityDetailGraphComponent`.
@@ -31,6 +31,10 @@ Thio release adds new functionality around expanding and collapsing related enti
 - The following Event Emitters added to `SzEntityDetailComponent`
   - `graphRelationshipContextMenuClick` is emitted when a user right clicks on relationship lines/labels in the embedded graph component.
   - `graphRelationshipClick` is emitted when a user clicks on relationship lines/labels in the embedded graph component.
+- `SzRelationshipNetworkComponent` moved from `@senzing/sdk-graph-components`
+- `SzRelationshipNetworkInputComponent` moved from `@senzing/sdk-graph-components`
+- `SzRelationshipNetworkLookupComponent` moved from `@senzing/sdk-graph-components`
+- `SzRelationshipPathComponent` moved from `@senzing/sdk-graph-components`
 
 ### Modified
 - `_graphIds` property on `SzGraphComponent` type changed from `number[]` to `SzEntityIdentifier[]`
