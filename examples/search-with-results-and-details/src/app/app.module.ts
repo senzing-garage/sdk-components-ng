@@ -5,7 +5,6 @@ import { CommonModule, TitleCasePipe } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ApiModule as SenzingDataServiceModule } from '@senzing/rest-api-client-ng';
-import { SenzingSdkGraphModule } from '@senzing/sdk-graph-components';
 import { SenzingSdkModule, SzRestConfiguration, SzPoweredByComponent, SzPrefsService, SzConfigurationService  } from '@senzing/sdk-components-ng';
 
 import { AppComponent } from './app.component';
@@ -41,7 +40,6 @@ export function SzRestConfigurationFactory() {
     OverlayModule,
     ReactiveFormsModule,
     SenzingSdkModule.forRoot( SzRestConfigurationFactory ),
-    SenzingSdkGraphModule.forRoot( SzRestConfigurationFactory ),
     SenzingDataServiceModule.forRoot( SzRestConfigurationFactory )
   ],
   providers: [

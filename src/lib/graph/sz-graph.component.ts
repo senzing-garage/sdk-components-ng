@@ -4,10 +4,11 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { SzEntityData, SzEntityIdentifier, SzEntityNetworkData } from '@senzing/rest-api-client-ng';
 import { SzGraphControlComponent } from './sz-graph-control.component';
-import { SzRelationshipNetworkComponent, NodeFilterPair, SzNetworkGraphInputs, SzEntityNetworkMatchKeyTokens } from '@senzing/sdk-graph-components';
+import { SzGraphNodeFilterPair, SzEntityNetworkMatchKeyTokens } from '../models/graph';
+import { SzRelationshipNetworkComponent } from './sz-relationship-network/sz-relationship-network.component';
 import { parseBool, parseSzIdentifier, sortDataSourcesByIndex } from '../common/utils';
 import { SzDataSourceComposite } from '../models/data-sources';
-import { SzMatchKeyTokenComposite } from '../models/graph';
+import { SzMatchKeyTokenComposite, SzNetworkGraphInputs } from '../models/graph';
 
 /**
  * Embeddable Graph Component
@@ -738,7 +739,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   // ----------------------  special built-ins for applying colors and filters to nodes in datasources ---------------
 
   /** function used to generate entity node fill colors from those saved in preferences */
-  public get entityNodecolorsByDataSource(): NodeFilterPair[] {
+  public get entityNodecolorsByDataSource(): SzGraphNodeFilterPair[] {
     let _ret = [];
     if(this.dataSourceColors && this.dataSourceColors.reverse) {
       _ret = this.dataSourceColors.reverse().map((dsVal: SzDataSourceComposite) => {
@@ -756,7 +757,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     return _ret;
   }
   /** get the list of filters to apply to inner graph component */
-  public get entityNodeFilters(): NodeFilterPair[] {
+  public get entityNodeFilters(): SzGraphNodeFilterPair[] {
     let _ret = [];
     if(this.dataSourcesFiltered) {
       if( this.graph && this.graph.isD3) {
@@ -789,8 +790,8 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     }*/
     return _ret;
   }
-  public get entityMatchFilter(): NodeFilterPair {
-    let _ret: NodeFilterPair;
+  public get entityMatchFilter(): SzGraphNodeFilterPair {
+    let _ret: SzGraphNodeFilterPair;
     if(this.matchKeysIncluded && this.showMatchKeyFilters) {
       //let matchKeyFilters = this.matchKeysIncluded.map((_name) => {
         _ret = {
@@ -802,8 +803,8 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     return _ret;
   }
 
-  public get entityMatchTokenFilter(): NodeFilterPair {
-    let _ret: NodeFilterPair;
+  public get entityMatchTokenFilter(): SzGraphNodeFilterPair {
+    let _ret: SzGraphNodeFilterPair;
     if(this.matchKeyTokensIncluded && this.showMatchKeyTokenFilters) {
       _ret = {
         selectorFn: this.isMatchKeyTokenInEntityNode.bind(this, this.matchKeyCoreTokensIncluded, this.matchKeyTokensIncluded),
@@ -814,8 +815,8 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   }
   
 
-  /** get an array of NodeFilterPair to use for highlighting certain graph nodes specific colors */
-  public get entityNodeColors(): NodeFilterPair[] {
+  /** get an array of SzGraphNodeFilterPair to use for highlighting certain graph nodes specific colors */
+  public get entityNodeColors(): SzGraphNodeFilterPair[] {
     const _ret = this.entityNodecolorsByDataSource;
     if( this.queriedEntitiesColor && this.queriedEntitiesColor !== undefined && this.queriedEntitiesColor !== null){
       // add special color for active/primary nodes

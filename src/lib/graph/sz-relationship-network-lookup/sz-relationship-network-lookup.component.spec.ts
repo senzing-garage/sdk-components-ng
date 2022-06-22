@@ -1,32 +1,26 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SzEntityDetailGraphComponent } from './sz-entity-detail-graph.component';
+import { SzRelationshipNetworkLookupComponent } from './sz-relationship-network-lookup.component';
 import { SenzingSdkModule } from 'src/lib/sdk.module';
 
-describe('SzEntityDetailGraphComponent', () => {
-  let component: SzEntityDetailGraphComponent;
-  let fixture: ComponentFixture<SzEntityDetailGraphComponent>;
+describe('SzRelationshipNetworkLookupComponent', () => {
+  let component: SzRelationshipNetworkLookupComponent;
+  let fixture: ComponentFixture<SzRelationshipNetworkLookupComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SenzingSdkModule.forRoot() ]
+      imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SzEntityDetailGraphComponent);
+    fixture = TestBed.createComponent(SzRelationshipNetworkLookupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  afterEach(() => {
-    fixture.destroy();
-  });
-
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

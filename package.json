@@ -1,6 +1,6 @@
 {
   "name": "@senzing/sdk-components-ng",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng build @senzing/sdk-components-ng && ng serve",
@@ -35,7 +35,6 @@
     "lint": "ng lint @senzing/sdk-components-ng",
     "e2e": "ng e2e e2e-harness --configuration=e2e --protractor-config=e2e/protractor.conf.js",
     "e2e:headless": "ng e2e e2e-harness --configuration=e2e --protractor-config=e2e/protractor.ci.conf.js",
-    "example:aws-amplify-cognito": "ng serve @senzing/sdk-components-ng/examples/aws-amplify-cognito",
     "example:graph": "ng serve @senzing/sdk-components-ng/examples/graph",
     "example:search-by-id": "ng serve @senzing/sdk-components-ng/examples/search-by-id",
     "example:search-in-graph": "ng serve @senzing/sdk-components-ng/examples/search-in-graph --configuration=development",
@@ -64,7 +63,6 @@
     "@angular/platform-browser-dynamic": "~13.2.0",
     "@angular/router": "~13.2.0",
     "@senzing/rest-api-client-ng": "^4.0.1",
-    "@senzing/sdk-graph-components": "^4.2.0-alpha.3",
     "acorn": "^8.6.0",
     "ajv": "^6.12.6",
     "d3": "^5.9.1",

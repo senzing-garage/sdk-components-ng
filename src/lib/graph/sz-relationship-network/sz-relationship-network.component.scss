@@ -1,0 +1,127 @@
+:host {
+  font-family: var(--sz-font-family);
+  &.not-showing-link-labels {
+    ::ng-deep svg.graph-chart {
+      .sz-graph-link-label {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+.sz-graph-node {
+  font-size: 12px;
+}
+
+.sz-graph-link-label {
+  font-size: 10px;
+}
+
+.sz-graph-bbox {
+  fill: white;
+  fill-opacity: 0.7;
+}
+
+.sz-graph-core-link {
+  stroke: #555;
+  stroke-width: 3px;
+}
+
+.sz-graph-link {
+  stroke: #999;
+  stroke-width: 2px;
+}
+
+.sz-graph-icon-enclosure, .sz-graph-business-icon-enclosure {
+  fill: white;
+}
+
+div.sz-graph-tooltip {
+  position: absolute;
+  background-color: white;
+  max-width: 200px;
+  height: auto;
+  padding: 1px;
+  border-radius: 4px;
+  border: 1px solid;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
+  pointer-events: none;
+}
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  .chart-container {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    kl-components {
+      display: block;
+      width: 100%;
+      height: 100%;
+
+      kl-component {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .kl-chart {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  svg {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+
+    .sz-graph-link {
+      stroke: #999;
+      stroke-width: 2px;
+    }
+  }
+
+  .tooltip-container {
+    /* position container relative to flow */
+    position: relative;
+    left: 0px;
+    top: 0px;
+    height: 0;
+    overflow: visible;
+
+    /* position actual tooltip node absolute
+      to container. that way tooltip can use
+      absolute positioning, relative to the place
+      that the container is located.
+    */
+    .tooltip {
+      font-size: var(--sz-graph-tooltip-font-size);
+      background-color:  var(--sz-graph-tooltip-background-color);
+      position: absolute;
+      z-index: 5000;
+      padding: 1px;
+      border-radius: var(--sz-graph-tooltip-border-radius);
+      border: var(--sz-graph-tooltip-border);
+      box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .2s linear;
+
+      .popover-title {
+        margin: 0 4px 10px 0;
+        font-size: var(--sz-graph-tooltip-font-size);
+      }
+    }
+  }
+
+  #tooltip, .tooltip {
+    border: var(--sz-graph-tooltip-border);
+    padding: var(--sz-graph-tooltip-padding);
+  }
+}

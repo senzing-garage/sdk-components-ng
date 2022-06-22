@@ -1,0 +1,110 @@
+
+  <div id="kl-chart-container" class="chart-container">
+    <div id="tooltip-container" #tooltipContainer class="tooltip-container">
+      <div #tooltip id="tooltip"
+      [style.top]="toolTipPosTop+'px'"
+      [style.left]="toolTipPosLeft+'px'"
+      [style.opacity]=" this.tooltipShowing ? 1 : 0"
+      class="tooltip">
+        <!--<ng-container *ngTemplateOutlet="toolTipTemplate;context:toolTipData"></ng-container>-->
+      </div>
+    </div>
+    <!-- chart -->
+    <svg data-html2canvas-ignore #graphEle class="graph-chart"
+    [attr.preserveAspectRatio]="this.svgPreserveAspectRatio"
+    (contextmenu)="onRightClick($event)"
+    ><g #zoomEle></g></svg>
+  </div>
+
+  <div id="moreParent">
+    <div id="moreContainer">
+      <script id="tt_html" type="text/html">
+        <div id="tooltip" style="display: none; position: absolute; min-width: 70px; pointer-events: none;"
+             class="popover right">
+          <div class="arrow"></div>
+          <h2 class="popover-title"><strong>{{label}}</strong></h2>
+          <div class="popover-content">
+            <table class="table-condensed">
+              <tbody>
+              <tr>
+                <td style="text-align: right;"><strong>Gender</strong></td>
+                <td>{{gender}}</td>
+              </tr>
+              <tr>
+                <td style="text-align: right;"><strong>Name</strong></td>
+                <td>{{name}}</td>
+              </tr>
+              <tr>
+                <td style="text-align: right;"><strong>Surname</strong></td>
+                <td>{{surname}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </script>
+    </div>
+  </div>
+  <div id="lazyScripts">
+  </div>
+  <!-- template for link -->
+  <ng-template #ttLink
+  let-matchKey="matchKey">
+      <div>{{matchKey}}</div>
+  </ng-template>
+  <!-- template for entity -->
+  <ng-template #ttEnt
+  let-label="label"
+  let-id="id"
+  let-orgName="orgName"
+  let-name="name"
+  let-gender="gender"
+  let-address="address"
+  let-phone="phone"
+  let-sources="sources"
+  let-sourcesString="sourcesString"
+  let-relatedEntities="relatedEntities">
+      <div>
+          <div class="arrow"></div>
+          <h2 class="popover-title"><strong>{{ label }}</strong></h2>
+          <div class="popover-content">
+            <table class="table-condensed">
+              <tbody>
+              <tr> <td class="tooltip-info-type"><strong>Entity_ID</strong></td> <td>{{id}}</td> </tr>
+              <tr>
+                <td class="tooltip-info-type"><strong>Sources</strong></td><td>
+                    <table>
+                      <tbody>
+                          <tr *ngFor="let source of sources">
+                            <td>{{source}}</td>
+                          </tr>
+                      </tbody>
+                    </table>
+                </td>
+              </tr>
+              <tr *ngIf="orgName"> <td class="tooltip-info-type"><strong>Name</strong></td> <td>{{orgName}}</td> </tr>
+              <tr *ngIf="!orgName && name"> <td class="tooltip-info-type"><strong>Name</strong></td> <td>{{name}}</td> </tr>
+              <tr *ngIf="gender"> <td class="tooltip-info-type"><strong>Gender</strong></td> <td>{{gender}}</td> </tr>
+              <tr *ngIf="address"> <td class="tooltip-info-type"><strong>Address</strong></td> <td>{{address}}</td> </tr>
+              <tr *ngIf="phone"> <td class="tooltip-info-type"><strong>Phone</strong></td> <td>{{phone}}</td> </tr>
+              <tr *ngIf="relatedEntities"> 
+                <td class="tooltip-info-type"><strong>Related</strong></td><td>
+                  <table>
+                    <tbody>
+                        <tr *ngFor="let relatedEntity of relatedEntities">
+                          <td>{{relatedEntity}}</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+  </ng-template>
+
+    <!--<svg data-html2canvas-ignore #graphEle class="graph-chart"-->
+    <!--[attr.viewBox]="this.svgViewBox"-->
+    <!--[attr.preserveAspectRatio]="this.svgPreserveAspectRatio"-->
+    <!--&gt;</svg>-->

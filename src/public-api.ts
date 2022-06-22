@@ -44,6 +44,10 @@ export * from './lib/entity/detail/sz-entity-detail.component';
 export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
 
 /** graph related */
+export { SzRelationshipNetworkComponent } from './lib/graph/sz-relationship-network/sz-relationship-network.component';
+export { SzRelationshipNetworkInputComponent } from './lib/graph/sz-relationship-network-input/sz-relationship-network-input.component';
+export { SzRelationshipNetworkLookupComponent } from './lib/graph/sz-relationship-network-lookup/sz-relationship-network-lookup.component';
+export { SzRelationshipPathComponent } from './lib/graph/sz-relationship-path/sz-relationship-path.component';
 export { SzGraphComponent } from './lib/graph/sz-graph.component';
 export * from './lib/graph/sz-graph-control.component';
 export * from './lib/graph/sz-graph-filter.component';
@@ -56,14 +60,15 @@ export * from './lib/sz-powered-by/sz-powered-by.component';
 export * from './lib/configuration/sz-configuration/sz-configuration.component';
 export * from './lib/configuration/sz-configuration-about/sz-configuration-about.component';
 export { SzPreferencesComponent } from './lib/configuration/sz-preferences/sz-preferences.component';
-export * from '@senzing/sdk-graph-components';
 
 /** models */
 export * from './lib/models/folio';
 export { SzBulkDataAnalysis } from './lib/models/data-analysis';
 export { SzBulkLoadStatus } from './lib/models/data-importing';
+export { SzEntitySearchParams } from './lib/models/entity-search';
 export { AdminStreamConnProperties, AdminStreamAnalysisConfig, AdminStreamLoadConfig, AdminStreamUploadRates } from './lib/models/data-admin';
 export { SzDataSourceRecordAnalysis, SzDataSourceComposite } from './lib/models/data-sources';
+export { SzGraphTooltipEntityModel, SzGraphTooltipLinkModel, SzGraphNodeFilterPair } from './lib/models/graph';
 
 /** why */
 export { SzWhyEntityComponent } from './lib/why/sz-why-entity.component';

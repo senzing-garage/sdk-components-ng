@@ -10,7 +10,6 @@ function addPackageJsonDependencies(): Rule {
   return (host: Tree, context: SchematicContext) => {
     const dependencies: NodeDependency[] = [
       { type: NodeDependencyType.Default, version: '~4.0.0', name: '@senzing/rest-api-client-ng' },
-      { type: NodeDependencyType.Default, version: '~4.1.0', name: '@senzing/sdk-graph-components' },
       { type: NodeDependencyType.Default, version: '~4.0.0', name: '@senzing/sdk-components-ng' }
     ];
 

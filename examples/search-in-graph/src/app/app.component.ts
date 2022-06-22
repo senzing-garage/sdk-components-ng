@@ -138,10 +138,10 @@ export class AppComponent implements AfterViewInit {
 
     // console.log('onSearchResults: ', this.currentSearchResults);
 
-    /*
+    
     this.searchResultEntityIds = this.currentSearchResults.map( (entityResult: SzAttributeSearchResult) => {
       return entityResult.entityId;
-    });*/
+    });
 
     // show results
     if (this.searchResultEntityIds && this.searchResultEntityIds.length > 0){

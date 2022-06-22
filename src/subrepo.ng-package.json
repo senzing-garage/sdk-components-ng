@@ -6,7 +6,6 @@
   },
   "whitelistedNonPeerDependencies": [
     "@senzing/rest-api-client-ng",
-    "@senzing/sdk-graph-components",
     "ngx-json-viewer",
     "d3",
     "jspdf",

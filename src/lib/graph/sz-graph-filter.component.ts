@@ -8,7 +8,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SzDataSourceComposite } from '../models/data-sources';
 import { SzMatchKeyComposite, SzMatchKeyTokenComposite } from '../models/graph';
 import { sortDataSourcesByIndex, parseBool, sortMatchKeysByIndex, sortMatchKeyTokensByIndex } from '../common/utils';
-import { SzEntityNetworkMatchKeyTokens } from '@senzing/sdk-graph-components';
+import { SzEntityNetworkMatchKeyTokens } from '../models/graph';
 
 /**
  * Control Component allowing UI friendly changes
