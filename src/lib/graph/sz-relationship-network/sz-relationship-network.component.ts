@@ -483,7 +483,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
           // hide any related "link" nodes using "_excludedIds" members
           // generated from filtering function
           const _linksToShow = this.link.filter( (lNode) => {
-            let _includedInGraph = (_includedIds.indexOf( lNode.source.entityId ) >= 0 && _includedIds.indexOf( lNode.target.entityId ) >= 0);
+            let _includedInGraph = (_includedIds.indexOf( lNode.sourceEntityId ) >= 0 && _includedIds.indexOf( lNode.targetEntityId ) >= 0);
             lNode.inMatchKeysFilter = _includedInGraph; // set prop for persistence
             return _includedInGraph;
           });
@@ -496,7 +496,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
         }
         if(this.linkLabel && this.linkLabel.filter) {
           let _includedLinkLabels = this.linkLabel.filter( (lNode) => {
-            let _includedInGraph = _includedIds.indexOf( lNode.source.entityId ) >= 0 && _includedIds.indexOf( lNode.target.entityId ) >= 0;
+            let _includedInGraph = _includedIds.indexOf( lNode.sourceEntityId ) >= 0 && _includedIds.indexOf( lNode.targetEntityId ) >= 0;
             lNode.inMatchKeysFilter = _includedInGraph; // set prop for persistence
             return _includedInGraph;
           });
@@ -562,7 +562,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
         // generated from filtering function
         if(_excludedIds && this.link && this.link.filter ) {
           const _linksToHide = this.link.filter( (lNode) => {
-            return (_excludedIds.indexOf( lNode.source.entityId ) >= 0 || _excludedIds.indexOf( lNode.target.entityId ) >= 0);
+            return (_excludedIds.indexOf( lNode.sourceEntityId ) >= 0 || _excludedIds.indexOf( lNode.targetEntityId ) >= 0);
           });
           if(_linksToHide && _linksToHide.style) {
             try {
@@ -574,7 +574,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
         // console.warn('filter match keys? ', _excludedIds);
         if(_excludedIds && this.link && this.linkLabel && this.linkLabel.filter ) {
           const _linksToHide = this.linkLabel.filter( (lNode) => {
-            return (_excludedIds.indexOf( lNode.source.entityId ) >= 0 || _excludedIds.indexOf( lNode.target.entityId ) >= 0);
+            return (_excludedIds.indexOf( lNode.sourceEntityId ) >= 0 || _excludedIds.indexOf( lNode.targetEntityId ) >= 0);
           });
           if(_linksToHide && _linksToHide.style) {
             try {
@@ -592,18 +592,19 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
         }
         if(this.link && this.link.filter) {
           let _unfilteredLinks = this.link.filter( (lNode) => {
-            return _excludedIds.indexOf( lNode.source.entityId ) < 0 && _excludedIds.indexOf( lNode.target.entityId ) < 0;
+            return _excludedIds.indexOf( lNode.sourceEntityId ) < 0 && _excludedIds.indexOf( lNode.targetEntityId ) < 0;
           });
           _unfilteredLinks.style("display", 'block');
         }
         if(this.linkLabel && this.linkLabel.filter) {
           let _unfilteredLinkLabels = this.linkLabel.filter( (lNode) => {
-            return _excludedIds.indexOf( lNode.source.entityId ) < 0;
+            return _excludedIds.indexOf( lNode.sourceEntityId ) < 0;
           });
           _unfilteredLinkLabels.style("display", 'block');
         }
 
         // --- end D3 filter
+        //console.log('_applyFilterFn: ', _excludedIds);
       }
     }
 
@@ -876,7 +877,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
     // data store, so setting "isHidden" from one 
     // will set it on the other as well
     this.link.each((_ln) => {
-      let shouldBeHidden = (hiddenEntities.includes(_ln.target.entityId) || hiddenEntities.includes(_ln.source.entityId));
+      let shouldBeHidden = (hiddenEntities.includes(_ln.targetEntityId) || hiddenEntities.includes(_ln.sourceEntityId));
       _ln.isHidden = shouldBeHidden;
     });
 
@@ -1076,7 +1077,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
     // data store, so setting "isHidden" from one 
     // will set it on the other as well
     this.link.each((_ln) => {
-      let shouldBeHidden = (hiddenEntities.includes(_ln.target.entityId) || hiddenEntities.includes(_ln.source.entityId));
+      let shouldBeHidden = (hiddenEntities.includes(_ln.targetEntityId) || hiddenEntities.includes(_ln.sourceEntityId));
       _ln.isHidden = shouldBeHidden;
     });
 
