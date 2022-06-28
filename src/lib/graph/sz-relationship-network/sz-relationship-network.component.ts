@@ -1403,7 +1403,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
         let numberOfNodes = nodes.size();
       
         nodes.each((_n, _j) => {
-          let positionOnCircumference: SVGPoint = circleCoord(_n, _circle, _j, numberOfNodes);
+          let positionOnCircumference: SVGPoint = circleCoord(_n, _circle, _j, numberOfNodes, circleDiameter);
           _n.position = positionOnCircumference;
           _n.x       = _n.position.x;
           _n.y       = _n.position.y;
@@ -1575,8 +1575,10 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
         return d;       
     }
     // evenly space nodes along arc
-    var circleCoord = function(node, circle, index, num_nodes): SVGPoint {
-      var circumference = circle.node().getTotalLength();
+    var circleCoord = function(node, circle, index, num_nodes, circleDiameter?: number): SVGPoint {
+      // we take alittle bit off the end otherwise itll count the last part of the path
+      // which goes from the center to the outer circumference of the circle
+      var circumference = circle.node().getTotalLength() - (circleDiameter ? circleDiameter * 2 : 0); 
       var pointAtLength = function(l){return circle.node().getPointAtLength(l)};
       var sectionLength = (circumference)/num_nodes;
       var position = sectionLength*index+sectionLength/2;
