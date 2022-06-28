@@ -1429,11 +1429,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
           return _entityIds.indexOf(l.sourceEntityId) > -1 || _entityIds.indexOf(l.targetEntityId);
         });
       
-      lnk.attr('d', _d => {
-        return (_d.source.x < _d.target.x) ?
-        this.linkSvgByEntityId(_d.sourceEntityId, _d.targetEntityId) :
-        this.linkSvgByEntityId(_d.targetEntityId, _d.sourceEntityId)
-      });
+      lnk.attr('d', this.onLinkEntityPositionChange.bind(this));
     }
     let attachEventListenersToNodes   = (_nodes, _tooltip, _labels?, _scope?: any) => {
       _scope  = _scope ? _scope : this;
@@ -1622,7 +1618,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       }
       return circlesToDraw
     }
-    let drawNodesInRings = (_nodes: d3.Selection<SVGElement, any, any, any>, minimumRingSize?: number, x?: number, y?: number) => {
+    let drawNodesInRings = (_nodes: d3.Selection<SVGElement, any, any, any>, minimumRingSize?: number, x?: number, y?: number): Array<{index: number, diameter: number, itemCount?: number, nodes: d3.Selection<SVGElement, any, any, any>}> => {
       let optimalRingMinimumDiameter = minimumRingSize ? minimumRingSize : undefined;
       if(!optimalRingMinimumDiameter) {
         // auto-set the optimal starting ring diameter
@@ -1652,6 +1648,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       });
       applyPositionToNodes(_nodes);
       //console.log('Ring Calculation: ', circlesToDraw, optimalRingMinimumDiameter, _nodes.size());
+      return circlesToDraw;
     }
     // -------------------------------------- end utility functions --------------------------------------
 
@@ -1995,6 +1992,11 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       }
     }
 
+    let randomIntBetweenRange = (min, max) => { 
+      // min and max included 
+      return Math.floor(Math.random() * (max - min + 1) + min)
+    }
+
     let onExpandCollapseClick     = (d) => {
       // this handler always superceeds any click events etc
       // so we stop propagation
@@ -2093,24 +2095,34 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       let coreNodes = this.node.filter((_d) => {
         return _d.isPrimaryEntity || _d.isCoreNode;
       })
-      /*let widthOfNodes = nodesToPosition.nodes()
-      .map((_n) => { return _n.getBoundingClientRect().width; })
-      .reduce((a, b) => { return a+b; });
-      let circleDiameter = widthOfNodes / Math.PI;*/
-
-      // make sure core nodes are set to pos 0,0
-      coreNodes.each((_n, _j) => {
+      // give the initial ring diameter a bit extra if there's a lot of items
+      let nodesCircleSchema = drawNodesInRings(nodesToPosition);
+      // make sure core nodes are positioned correctly
+      let coreClusterSpacing      = 200; 
+      let ringsSortedByDiameter   = nodesCircleSchema.sort((csA, csB) => {
+        return csB.diameter - csA.diameter;
+      });
+      let inintialClusterOffset   = ringsSortedByDiameter && ringsSortedByDiameter.length > 0 ? ringsSortedByDiameter[0].diameter : 400;
+      coreNodes
+      .sort((_cnA, _cnB) => d3.descending(_cnA.numberRelated, _cnB.numberRelated))
+      .each((_n, _j) => {
         _n.x       = _n.x ? _n.x : 0;
         _n.y       = _n.y ? _n.y : 0;
+        let anyOtherNodeInSamePosition = coreNodes.data().some((_cd) => {
+          return _cd.x == _n.x || _cd.y == _n.y;
+        })
+        if(anyOtherNodeInSamePosition && _j > 0) {
+          // reposition node so it's somewhere else
+          _n.x = inintialClusterOffset + (_j * randomIntBetweenRange(coreClusterSpacing, coreClusterSpacing+300));
+          _n.y = (!(_j === 0 || _j % 2 === 0)) ? (0 - randomIntBetweenRange(50, 300)) : (0 + randomIntBetweenRange(150, 300));
+        }
       });
-
-      // give the initial ring diameter a bit extra if there's a lot of items
-      drawNodesInRings(nodesToPosition);
       // position non-primary nodes around focused interests
       applyPositionToNodes(coreNodes);
       // update initial relationship link lines
       updateLinksForNodes(this.node);
 
+      //console.log('coreNodes: ', coreNodes.data(), nodesCircleSchema, ringsSortedByDiameter);
       //console.log('total width of nodes: ', widthOfNodes, circleDiameter);
       //console.log('nodes: ', this.node.data());
 
@@ -2218,18 +2230,20 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
     return _classes.join(' ');
   }
 
+  /** returns a D3.Selection of the node that matches the entity id provided */
   private getNodeByIdQuery(_entityId) {
+    return this.getNodesByIdQuery([_entityId]);
+  }
+  /** returns a D3.Selection of nodes that match the entity ids provided */
+  private getNodesByIdQuery(entityIds: SzEntityIdentifier[]) {
     if(this.node && this.node.select){
-      let retVal = this.node.filter(_d => _d.entityId === _entityId);
-      //console.log(`getNodeByIdQuery(${_entityId})`, retVal);
-
+      let retVal = this.node.filter(_d => entityIds.indexOf(_d.entityId) > -1);
       return retVal;
     }
-    //console.log(`getNodeByIdQuery(${_entityId})`, );
-
     return undefined;
   }
 
+  /** returns a D3.Selection of nodes that match the entity ids provided */
   private getRelatedNodesByIdQuery  = (relatedEntityIds, nodes, includePrimaryEntities?: boolean) => {
     return nodes.filter((d) => {
       if(!includePrimaryEntities) {
@@ -2255,7 +2269,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
                                 concat(_visibilityClass);
     return _classes.join(' ');
   }
-
+  /** toggle a nodes directly attached related nodes */
   private expandCollapseToggle(d) {
     let relatedNodes              = this.getRelatedNodesByIdQuery(d.relatedEntities, this.node, true).filter(_rn =>  _rn.entityId !== d.entityId);
     let hasCollapsedRelationships = relatedNodes.filter((_d) => {
@@ -2516,84 +2530,6 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       }
     }
   }
-  /**
-   * called on every d3 node drag event
-   * if "_forcePositionsLocked" which is triggered when nodes stop 
-   * moving is set to true then return node. otherwise assign assign
-   * locked "fx/fy" to current "x/y"
-   */
-  /*
-  lockForcePosition(d: any, event: any) {
-    if(!this._forcePositionsLocked) {
-      return d;
-    }
-    // iterate over each selection node and assign(fx/fy)"force pos" to (d.x/d.y)"event pos"
-    d.each((d: any) => {
-      d.fx = d.x;
-      d.fy = d.y;
-    });
-  }*/
-  /** called in the "lockForceSimulationPosition" setter to clear out fixed position on sim nodes */
-  /*
-  unlockForcePosition() {
-    // unset any fx/fy positions if set
-    if(this.forceSimulation) {
-      this.forceSimulation.nodes().forEach(d => {
-        // nodes snap back in to place
-        d.fx = null;
-        d.fy = null;
-        delete d.fx;
-        delete d.fy;
-      });
-    }
-  }
-  */
-
-  /**
-   * on every "tick" cycle of d3 Force animation cyle fn is called.
-   * fn does a transform on node positions, enables d-n-d(w/ evt chain), 
-   * and re-orients line Link positions.
-   */
-  /*
-  onSimulationCycle(d: any | ((d: any) => void) | Simulation<any, undefined>) {
-    // Update the SVG for each .node
-    //if(!this.node || !d || (d && !d.x) || (d && !d.y)) return;
-    if(!this.node) return;
-    try{
-      this.node.attr("transform", d => "translate(" + d.x + "," + d.y + ")")
-      .transition()
-      .duration(50)
-      .attr("transform", d => "translate(" + d.x + "," + d.y + ")")
-      .on("end", (function(d: any) {
-        if(this._lockForceSimulationPosition) {
-          this._forcePositionsLocked = true;
-        }
-      }).bind(this))
-    } catch(err) {}
-    // re-enable drag events (I dunno why I can't just do this outside of the "forceSimulation" but I can't *shrug*)
-    // so I'm calling it every iteration of "forceSimulation"'s "tick" event
-    this.node.call(this.lockForcePosition.bind(this))
-    .call(d3.drag()             // TODO Update dragging code to use v5 conventions for event listening
-      .on("start", this.onNodeDragStarted.bind(this))
-      .on("drag", this.onNodeDragged.bind(this))
-      .on("end", this.onNodeDragEnded.bind(this)));
-
-    // Update link SVG
-    // Draws left to right so .link-label stay right-side up
-    if(this.link) {
-      this.link.attr('d', d => (d.source.x < d.target.x) ?
-      SzRelationshipNetworkComponent.linkSvg(d.source, d.target) :
-      SzRelationshipNetworkComponent.linkSvg(d.target, d.source));
-    }
-
-    // Show or hide .link-label
-    if (this.showLinkLabels) {
-      d3.selectAll('.link-label').attr('opacity', 100);
-    } else {
-      d3.selectAll('.link-label').attr('opacity', 0);
-    }
-  }
-  */
 
   //private _zoomTransform = {k: 1, x: 0, y: 0}
   private _onZoomed() {
@@ -2695,24 +2631,33 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       _rightNode ? (_rightNode.y) : 0);
   }
 
-  /**
-   * When the user clicks and drags and node, 'Re-heat' the simulation if nodes have stopped moving.
-   *   To oversimplify, alpha is the rate at which the simulation advances.
-   *   alpha approaches alphaTarget at a rate of alphaDecay.
-   *   The simulation stops once alpha < alphaMin.
-   *   Restart sets alpha back to 1.
+  /** when an entity nodes position changes
+   * we need to update the x and y of the link
+   * line so that it stays connected
    */
-   /*private onNodeDragStarted(d) {
-    //if (!d3.event.active && this.forceSimulation) this.forceSimulation.alphaTarget(0.3).restart();
-    //d3.event.subject.fx = d3.event.subject.x;
-    //d3.event.subject.fy = d3.event.subject.y;
-    if(!d.ox) { d.ox =  d3.event.x; }
-    if(!d.oy) { d.oy =  d3.event.y; }
-  }*/
+  private onLinkEntityPositionChange(linkNode) {
+    // get source and target x position 
+    // so were always left to right
+    let linkedNodes   = this.getNodesByIdQuery([linkNode.sourceEntityId,linkNode.targetEntityId]);
+    let _linkTargets  = {source: linkNode.source, target: linkNode.target }
+    let _sourceNode = linkedNodes.filter((_ln) => { return _ln.entityId === linkNode.sourceEntityId});
+    let _targetNode = linkedNodes.filter((_ln) => { return _ln.entityId === linkNode.targetEntityId});
+    if(_sourceNode && _sourceNode.data) {
+      if(_sourceNode.size() > 0) {
+        _linkTargets.source = _sourceNode.data()[0];
+      }
+    }
+    if(_targetNode && _targetNode.data) {
+      if(_targetNode.size() > 0) {
+        _linkTargets.target = _targetNode.data()[0];
+      }
+    }
+    return (_linkTargets.source.x < _linkTargets.target.x) ?
+    this.linkSvgByEntityId(linkNode.sourceEntityId, linkNode.targetEntityId) :
+    this.linkSvgByEntityId(linkNode.targetEntityId, linkNode.sourceEntityId)
+  }
 
   private onNodeDragged(d) {
-    //d3.event.subject.fx = d3.event.x;
-    //d3.event.subject.fy = d3.event.y;
     d.x = d3.event.x;
     d.y = d3.event.y;
     
@@ -2722,7 +2667,6 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
     .attr('x', d.x)
     .attr('y', d.y)
     .attr('transform',`translate(${d.x},${d.y})`)
-    //.attr('transform',`translate(${d.x - d.ox},${d.y - d.oy})`)
 
     let lnk = this.link.filter(
       (l) => { 
@@ -2730,15 +2674,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
         return l.sourceEntityId === d.entityId || l.targetEntityId === d.entityId; 
       });
     
-    lnk.attr('d', _d => (_d.source.x < _d.target.x) ?
-      this.linkSvgByEntityId(_d.sourceEntityId, _d.targetEntityId) :
-      this.linkSvgByEntityId(_d.targetEntityId, _d.sourceEntityId));
-    //lnk.attr('d', `M${},0L0,100`)
-
-    //return 'M' + leftNode.x + ',' + leftNode.y + 'L' + rightNode.x + ',' + rightNode.y;
-
-    //console.log(`onNodeDragged: ${d.entityId}`, lnk.data());
-    //console.log(`onNodeDragged: ${d.entityId}`, d.x, d3.event.subject.x, d.y, d3.event.subject.y, d);
+    lnk.attr('d', this.onLinkEntityPositionChange.bind(this));
   }
 
   /**
