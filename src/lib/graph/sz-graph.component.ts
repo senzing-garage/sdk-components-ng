@@ -368,6 +368,8 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @Output() dataSourcesChange: EventEmitter<any> = new EventEmitter<string[]>();
   /** event is emitted when the graph components data is updated or loaded */
   @Output() dataLoaded: EventEmitter<SzEntityNetworkData> = new EventEmitter<SzEntityNetworkData>();
+  /** event is emitted when the graph components data is updated or loaded */
+  @Output() dataUpdated: EventEmitter<SzEntityNetworkData> = new EventEmitter<SzEntityNetworkData>();
   /** event is emitted when the collection of matchkeys present in graph dislay change */
   @Output() matchKeysChange: EventEmitter<any> = new EventEmitter<string[]>();
   /** event is emitted when the collection of matchkey tokens present in graph dislay change */
@@ -454,32 +456,35 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       let matchKeyTokens          = this.getMatchKeyTokenComposites( _matchKeyTokens );
       this.dataSourcesChange.emit( SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data) );
       this.matchKeysChange.emit( SzRelationshipNetworkComponent.getMatchKeysFromEntityNetworkData(inputs.data) )
-      if(inputs.data && inputs.data.entities) {
-        // first build a array of all entity Ids present
-        let _onDeckEntityIds     = inputs.data.entities.map((entity: SzEntityData) => {
-          return entity.resolvedEntity.entityId;
-        });
-        // now update the "entitiesOnCanvas" property of the matchKeyToken entry with 
-        // just the entity ids that are present on the graph (from the "_onDeckEntityIds")
-        /*
-        matchKeyTokens = matchKeyTokens.map((mkToken: SzMatchKeyTokenComposite) => {
-          mkToken.entitiesOnCanvas = mkToken.entityIds.filter((entityId) => {
-            return _onDeckEntityIds.indexOf(entityId as number) > -1;
-          });
-          return mkToken;
-        })
-        .filter((mkToken: SzMatchKeyTokenComposite) => {
-          return mkToken && mkToken.entitiesOnCanvas && mkToken.entitiesOnCanvas.length > 0 ? true : false;
-        });*/
-      }
       this.matchKeyTokensChange.emit( matchKeyTokens );
-      console.log('onGraphDataLoaded: ', _matchKeyTokens, this.filterShowMatchKeyTokens, inputs);
+      //console.log('onGraphDataLoaded: ', _matchKeyTokens, this.filterShowMatchKeyTokens, inputs);
     }
     if(inputs.data) {
       this.dataLoaded.emit( inputs.data );
     }
     // console.log('onGraphDataLoaded setter: ', inputs);
   }
+  /**
+   * when new data has been added to the initial data request
+   * through ad-hoc expansion or some other process this handler 
+   * is invokes to build list of distinct match key tokens and datasource names
+   * from data.
+  */
+  public onGraphDataUpdated(data: any) {
+    if(data && data.entities) { 
+      this.filterShowDataSources  = SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(data);
+      let _matchKeyTokens         = SzRelationshipNetworkComponent.getMatchKeyTokensFromEntityData(data, this.graphIds);
+      let matchKeyTokens          = this.getMatchKeyTokenComposites( _matchKeyTokens );
+      this.dataSourcesChange.emit( SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(data) );
+      this.matchKeysChange.emit( SzRelationshipNetworkComponent.getMatchKeysFromEntityNetworkData(data) )
+      this.matchKeyTokensChange.emit( matchKeyTokens );
+      //console.log('onGraphDataUpdated: ', _matchKeyTokens, this.filterShowMatchKeyTokens, data);
+    }
+    if(data) {
+      this.dataUpdated.emit( data );
+    }
+  }
+
   /** when scale of graph changes, store value for control indicators */
   public onGraphZoom(value) {
     this._graphZoom = value;

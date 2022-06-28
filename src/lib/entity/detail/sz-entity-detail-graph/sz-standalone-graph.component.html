@@ -42,15 +42,16 @@
       (relationshipContextMenuClick)="onLinkRightClick($event)"
       (noResults)="onNoResults($event)"
       (onDataLoaded)="onGraphDataLoaded($event)"
+      (onDataUpdated)="onGraphDataUpdated($event)"
       (scaleChanged)="onGraphZoom($event)"
       [maxEntities]="maxEntities"></sz-relationship-network>
   
-      <sz-graph-control *ngIf="showMatchKeyControl" class="sz-graph-control"
+    <sz-graph-control *ngIf="showMatchKeyControl" class="sz-graph-control"
       [showLinkLabels]="_showMatchKeys"
       (optionChanged)="onOptionChange($event)"
-      ></sz-graph-control>
+    ></sz-graph-control>
   
-      <sz-graph-filter *ngIf="showFiltersControl" class="sz-graph-filter"
+    <sz-graph-filter *ngIf="showFiltersControl" class="sz-graph-filter"
         [ngStyle]="{'width.px': filterWidth}"
         [class.top-left]="filterControlPosition == 'top-left'"
         [class.top-right]="filterControlPosition == 'top-right'"
@@ -65,9 +66,9 @@
         [showMatchKeyTokenFilters]="showMatchKeyTokenFilters"
         [showCoreMatchKeyTokenChips]="showCoreMatchKeyTokenChips"
         [showExtraneousMatchKeyTokenChips]="showExtraneousMatchKeyTokenChips"
-      ></sz-graph-filter>
+    ></sz-graph-filter>
   
-      <svg class="popout-icon"
+    <svg class="popout-icon"
         [class.top-left]="popOutIconPosition == 'top-left'"
         [class.top-right]="popOutIconPosition == 'top-right'"
         [class.bottom-right]="popOutIconPosition == 'bottom-right'"
@@ -76,11 +77,11 @@
         (click)="onPopOutClick()"
         *ngIf="showPopOutIcon"
         enable-background="new 0 0 64 64" xml:space="preserve">
-        <g>
-          <g><g><polygon points="53,56 8,56 8,11 30,11 30,3 0,3 0,64 61,64 61,34 53,34"/></g></g>
-          <g><g><polygon points="42,0 50,8 33,25 39,31 56,14 64,23 64,0"/></g></g>
-        </g>
-      </svg>
+      <g>
+        <g><g><polygon points="53,56 8,56 8,11 30,11 30,3 0,3 0,64 61,64 61,34 53,34"/></g></g>
+        <g><g><polygon points="42,0 50,8 33,25 39,31 56,14 64,23 64,0"/></g></g>
+       </g>
+    </svg>
   </div>
   <!--
     filterControlPosition: "{{ filterControlPosition }}"<br/>
