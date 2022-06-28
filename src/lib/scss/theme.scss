@@ -350,6 +350,7 @@ body {
 
     /* graph filters */
     --sz-graph-filter-control-background-color: transparent;
+    --sz-graph-filter-multi-select-link-color: #{$sz-blue};
     --sz-graph-filter-match-key-tags-display: inline-flex;
     --sz-graph-filter-match-key-tags-flex-direction: column;
     --sz-graph-filter-match-key-tags-align-items: flex-start;

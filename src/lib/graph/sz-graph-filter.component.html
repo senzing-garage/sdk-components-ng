@@ -140,7 +140,12 @@
   </div>
   <div *ngIf="showMatchKeyTokens && showMatchKeyTokenFilters">
     <hr>
-    <h3>{{ sectionTitles[5] }}</h3>
+    <div class="filter-header">
+      <h3>{{ sectionTitles[5] }}</h3>
+      <div *ngIf="showMatchKeyTokenSelectAll" class="bulk-select-options">
+        [<span (click)="onSelectAllMatchKeyTokens(true)">All On</span> | <span (click)="onSelectAllMatchKeyTokens(false)">All Off</span>]
+      </div>
+    </div>
     <mat-chip-list 
       #matchKeyChipList
       class="match-keys mat-chip-list-stacked" 
