@@ -189,6 +189,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   // broken (see https://github.com/Senzing/sdk-graph-components/issues/154)
   private _showMatchKeyTokenFilters: boolean = false;
   private _showMatchKeyControl: boolean = true;
+  @Input() public showMatchKeyTokenSelectAll: boolean       = true;
   @Input() public showCoreMatchKeyTokenChips: boolean       = false;
   @Input() public showExtraneousMatchKeyTokenChips: boolean = true;
   

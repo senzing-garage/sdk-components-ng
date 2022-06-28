@@ -118,6 +118,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     return this._showMatchKeyTokenFilters;
   }
   
+  @Input() public showMatchKeyTokenSelectAll: boolean       = true;
   @Input() public showCoreMatchKeyTokenChips: boolean       = false;
   @Input() public showExtraneousMatchKeyTokenChips: boolean = true;
 
@@ -492,6 +493,22 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     //let _sortedNewArray       = sortDataSourcesByIndex(newArray);
     //console.log("direction? "+ direction +" | item slice: ", newArray, _sortedExistingArray, _sortedNewArray);
     //console.log('onColorOrderDrop: ', event, newArray);
+  }
+
+  /** toggle all available match key tokens on or off */
+  onSelectAllMatchKeyTokens(selectAll: boolean) {
+    if(this.showCoreMatchKeyTokenChips) {
+      this.prefs.graph.matchKeyCoreTokensIncluded = selectAll ? this.matchKeyCoreTokens.map((token: SzMatchKeyTokenComposite) => { return token.name; }) : [];
+    } else if(this.prefs.graph.matchKeyCoreTokensIncluded && this.prefs.graph.matchKeyCoreTokensIncluded.length > 0) {
+      // clear out old value
+      this.prefs.graph.matchKeyCoreTokensIncluded = [];
+    }
+    if(this.showExtraneousMatchKeyTokenChips) {
+      this.prefs.graph.matchKeyTokensIncluded = selectAll ? this.matchKeyTokens.map((token: SzMatchKeyTokenComposite) => { return token.name; }) : [];
+    } else if(this.prefs.graph.matchKeyTokensIncluded && this.prefs.graph.matchKeyTokensIncluded.length > 0) {
+        // clear out old value
+        this.prefs.graph.matchKeyTokensIncluded = [];
+    }
   }
 
   /**

@@ -39,6 +39,23 @@
     margin-top: 0;
   }
 
+  .filter-header {
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+    justify-content: space-between;
+
+    h3 {
+      display: inline-block;
+    }
+    .bulk-select-options {
+      span {
+        color: var(--sz-graph-filter-multi-select-link-color);
+        cursor: pointer;
+      }
+    }
+  }
+
   hr {
     margin-top: 1em;
     border-top: 0;
