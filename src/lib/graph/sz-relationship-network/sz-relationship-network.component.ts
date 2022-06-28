@@ -1622,7 +1622,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       }
       return circlesToDraw
     }
-    let drawNodesInRings = (_nodes: d3.Selection<SVGElement, any, any, any>, minimumRingSize?: number, x?: number, y?: number) => {
+    let drawNodesInRings = (_nodes: d3.Selection<SVGElement, any, any, any>, minimumRingSize?: number, x?: number, y?: number): Array<{index: number, diameter: number, itemCount?: number, nodes: d3.Selection<SVGElement, any, any, any>}> => {
       let optimalRingMinimumDiameter = minimumRingSize ? minimumRingSize : undefined;
       if(!optimalRingMinimumDiameter) {
         // auto-set the optimal starting ring diameter
@@ -1652,6 +1652,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       });
       applyPositionToNodes(_nodes);
       //console.log('Ring Calculation: ', circlesToDraw, optimalRingMinimumDiameter, _nodes.size());
+      return circlesToDraw;
     }
     // -------------------------------------- end utility functions --------------------------------------
 
@@ -1995,6 +1996,11 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       }
     }
 
+    let randomIntBetweenRange = (min, max) => { 
+      // min and max included 
+      return Math.floor(Math.random() * (max - min + 1) + min)
+    }
+
     let onExpandCollapseClick     = (d) => {
       // this handler always superceeds any click events etc
       // so we stop propagation
@@ -2093,24 +2099,34 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       let coreNodes = this.node.filter((_d) => {
         return _d.isPrimaryEntity || _d.isCoreNode;
       })
-      /*let widthOfNodes = nodesToPosition.nodes()
-      .map((_n) => { return _n.getBoundingClientRect().width; })
-      .reduce((a, b) => { return a+b; });
-      let circleDiameter = widthOfNodes / Math.PI;*/
-
-      // make sure core nodes are set to pos 0,0
-      coreNodes.each((_n, _j) => {
+      // give the initial ring diameter a bit extra if there's a lot of items
+      let nodesCircleSchema = drawNodesInRings(nodesToPosition);
+      // make sure core nodes are positioned correctly
+      let coreClusterSpacing      = 200; 
+      let ringsSortedByDiameter   = nodesCircleSchema.sort((csA, csB) => {
+        return csB.diameter - csA.diameter;
+      });
+      let inintialClusterOffset   = ringsSortedByDiameter && ringsSortedByDiameter.length > 0 ? ringsSortedByDiameter[0].diameter : 400;
+      coreNodes
+      .sort((_cnA, _cnB) => d3.descending(_cnA.numberRelated, _cnB.numberRelated))
+      .each((_n, _j) => {
         _n.x       = _n.x ? _n.x : 0;
         _n.y       = _n.y ? _n.y : 0;
+        let anyOtherNodeInSamePosition = coreNodes.data().some((_cd) => {
+          return _cd.x == _n.x || _cd.y == _n.y;
+        })
+        if(anyOtherNodeInSamePosition && _j > 0) {
+          // reposition node so it's somewhere else
+          _n.x = inintialClusterOffset + (_j * randomIntBetweenRange(coreClusterSpacing, coreClusterSpacing+300));
+          _n.y = (!(_j === 0 || _j % 2 === 0)) ? (0 - randomIntBetweenRange(50, 300)) : (0 + randomIntBetweenRange(150, 300));
+        }
       });
-
-      // give the initial ring diameter a bit extra if there's a lot of items
-      drawNodesInRings(nodesToPosition);
       // position non-primary nodes around focused interests
       applyPositionToNodes(coreNodes);
       // update initial relationship link lines
       updateLinksForNodes(this.node);
 
+      //console.log('coreNodes: ', coreNodes.data(), nodesCircleSchema, ringsSortedByDiameter);
       //console.log('total width of nodes: ', widthOfNodes, circleDiameter);
       //console.log('nodes: ', this.node.data());
 
