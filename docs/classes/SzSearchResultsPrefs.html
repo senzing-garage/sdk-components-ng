@@ -104,6 +104,10 @@ this.prefs.searchResults.truncateIdentifierDataAt =  2;</p>
                                 <a href="#jsonKeys" >jsonKeys</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                <a href="#typemap" >typemap</a>
+                            </li>
+                            <li>
                                     <span class="modifier">Public</span>
                                 <a href="#bulkSet" >bulkSet</a>
                             </li>
@@ -126,6 +130,10 @@ this.prefs.searchResults.truncateIdentifierDataAt =  2;</p>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#fromJSONObject" >fromJSONObject</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getPublicPropertiesSchema" >getPublicPropertiesSchema</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -162,6 +170,9 @@ this.prefs.searchResults.truncateIdentifierDataAt =  2;</p>
                                 </li>
                                 <li>
                                     <a href="#showCharacteristicData" >showCharacteristicData</a>
+                                </li>
+                                <li>
+                                    <a href="#showMatchKeys" >showMatchKeys</a>
                                 </li>
                                 <li>
                                     <a href="#showRecordIds" >showRecordIds</a>
@@ -235,6 +246,7 @@ this.prefs.searchResults.truncateIdentifierDataAt =  2;</p>
     &#x27;showOtherData&#x27;,
     &#x27;showIdentifierData&#x27;,
     &#x27;showCharacteristicData&#x27;,
+    &#x27;showMatchKeys&#x27;,
     &#x27;truncateRecordsAt&#x27;,
     &#x27;truncateOtherDataAt&#x27;,
     &#x27;truncateCharacteristicDataAt&#x27;,
@@ -253,6 +265,46 @@ to output in json, or to take as json input</p>
 </div>
                 </td>
             </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="typemap"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>typemap</b></span>
+                        <a href="#typemap"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    &#x27;openInNewTab&#x27;:                 &#x27;boolean&#x27;,
+    &#x27;showOtherData&#x27;:                &#x27;boolean&#x27;,
+    &#x27;showIdentifierData&#x27;:           &#x27;boolean&#x27;,
+    &#x27;showCharacteristicData&#x27;:       &#x27;boolean&#x27;,
+    &#x27;showMatchKeys&#x27;:                &#x27;boolean&#x27;,
+    &#x27;truncateRecordsAt&#x27;:            &#x27;number&#x27;,
+    &#x27;truncateOtherDataAt&#x27;:          &#x27;number&#x27;,
+    &#x27;truncateCharacteristicDataAt&#x27;: &#x27;number&#x27;,
+    &#x27;showEmbeddedGraph&#x27;:            &#x27;boolean&#x27;,
+    &#x27;showRecordIds&#x27;:                &#x27;boolean&#x27;,
+    &#x27;linkToEmbeddedGraph&#x27;:          &#x27;boolean&#x27;,
+    &#x27;truncateIdentifierDataAt&#x27;:     &#x27;number&#x27;
+  }</code>
+                    </td>
+                </tr>
+
 
         </tbody>
     </table>
@@ -393,6 +445,41 @@ notifications.</p>
                     </div>
                     <div class="io-description">
                         
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPublicPropertiesSchema"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>getPublicPropertiesSchema</b></span>
+                        <a href="#getPublicPropertiesSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPublicPropertiesSchema()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>gets an array of all public json properties and their types</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
                     </div>
                 </td>
             </tr>
@@ -728,6 +815,78 @@ notifications.</p>
                     <tr>
                         <td class="col-md-4">
                                 <div class="io-description"><p>show &quot;attribute data&quot; in search results. ie DOB, favorite cat</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showMatchKeys"></a>
+                        <span class="name"><b>showMatchKeys</b><a href="#showMatchKeys"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>showMatchKeys()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>show &quot;match keys&quot; in search results.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>showMatchKeys(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>show &quot;match keys&quot; in search results.</p>
 </div>
 
                                 <div class="io-description">

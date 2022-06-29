@@ -28,7 +28,7 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content miscellaneous-variables">
+               <div class="content miscellaneous-typealiases">
                    <div class="content-data">
 
 
@@ -49,7 +49,7 @@
 
 <ol class="breadcrumb">
   <li>Miscellaneous</li>
-  <li>Variables</li>
+  <li>Type aliases</li>
 </ol>
 
 <section>
@@ -60,13 +60,7 @@
                 <td class="col-md-4">
                     <ul class="index-list">
                         <li>
-                            <a href="#AdminStreamUploadRates" title="src/lib/models/data-admin.ts" ><b>AdminStreamUploadRates</b>&nbsp;&nbsp;&nbsp;(src/.../data-admin.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#EMAIL_PATTERNS" title="src/lib/entity/entity-utils.ts" ><b>EMAIL_PATTERNS</b>&nbsp;&nbsp;&nbsp;(src/.../entity-utils.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#SzWhySelectionMode" title="src/lib/models/data-source-record-selection.ts" ><b>SzWhySelectionMode</b>&nbsp;&nbsp;&nbsp;(src/.../data-source-record-selection.ts)</a>
+                            <a href="#SzWhySelectionModeBehavior" title="src/lib/models/data-source-record-selection.ts" ><b>SzWhySelectionModeBehavior</b>&nbsp;&nbsp;&nbsp;(src/.../data-source-record-selection.ts)</a>
                         </li>
                     </ul>
                 </td>
@@ -75,111 +69,25 @@
     </table>
 </section>
 
-    <h3>src/lib/models/data-admin.ts</h3>
-    <section>
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="AdminStreamUploadRates"></a>
-                    <span class="name">
-                        <span ><b>AdminStreamUploadRates</b></span>
-                        <a href="#AdminStreamUploadRates"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>{
-    unlimited: -1,
-    100: 100,
-    1000: 1000,
-    5000: 5000,
-    10000: 10000,
-    20000: 20000,
-    50000: 50000
-}</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
-    <h3>src/lib/entity/entity-utils.ts</h3>
-    <section>
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="EMAIL_PATTERNS"></a>
-                    <span class="name">
-                        <span ><b>EMAIL_PATTERNS</b></span>
-                        <a href="#EMAIL_PATTERNS"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>RegExp[]</code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>[
-  /^[^:]+ EMAIL:(.*)$/i,
-  /^EMAIL \([^\):]+\):(.*)$/i,
-  /^EMAIL:\s*[^:]+:(.*)$/i,
-  /^EMAIL:(.*)$/i,
-]</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
     <h3>src/lib/models/data-source-record-selection.ts</h3>
     <section>
-    <h3></h3>    <table class="table table-sm table-bordered">
+    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="SzWhySelectionMode"></a>
-                    <span class="name">
-                        <span ><b>SzWhySelectionMode</b></span>
-                        <a href="#SzWhySelectionMode"><span class="icon ion-ios-link"></span></a>
-                    </span>
+                    <a name="SzWhySelectionModeBehavior"></a>
+                    <span class="name "><b>SzWhySelectionModeBehavior</b><a href="#SzWhySelectionModeBehavior"><span class="icon ion-ios-link"></span></a></span>
                 </td>
             </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>{
-    SINGLE: &#x27;SINGLE&#x27; as SzWhySelectionModeBehavior,
-    MULTIPLE: &#x27;MULTI&#x27; as SzWhySelectionModeBehavior,
-    NONE: &#x27;NONE&#x27; as SzWhySelectionModeBehavior
-}</code>
-                    </td>
-                </tr>
-
-
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;SINGLE&quot; | &quot;MULTI&quot; | &quot;NONE&quot;</code>
+</code>
+                </td>
+            </tr>
         </tbody>
     </table>
 </section>
-
 
 
                    </div><div class="search-results">
@@ -207,8 +115,8 @@
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'miscellaneous-variables';
-            var COMPODOC_CURRENT_PAGE_URL = 'variables.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'miscellaneous-typealiases';
+            var COMPODOC_CURRENT_PAGE_URL = 'typealiases.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

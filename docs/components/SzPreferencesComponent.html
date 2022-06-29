@@ -357,6 +357,9 @@ show-controls=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;<br/><br/></p>
                                 <a href="#SearchResultsShowEmbeddedGraph" >SearchResultsShowEmbeddedGraph</a>
                             </li>
                             <li>
+                                <a href="#SearchResultsShowMatchRecords" >SearchResultsShowMatchRecords</a>
+                            </li>
+                            <li>
                                 <a href="#SearchResultsShowOtherData" >SearchResultsShowOtherData</a>
                             </li>
                             <li>
@@ -417,6 +420,9 @@ show-controls=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;<br/><br/></p>
                                 </li>
                                 <li>
                                     <a href="#SearchResultsShowCharacteristicData" >SearchResultsShowCharacteristicData</a>
+                                </li>
+                                <li>
+                                    <a href="#SearchResultsShowMatchRecords" >SearchResultsShowMatchRecords</a>
                                 </li>
                                 <li>
                                     <a href="#SearchResultsShowRecordIds" >SearchResultsShowRecordIds</a>
@@ -1410,6 +1416,28 @@ show-controls=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;<br/><br/></p>
                 <tr>
                     <td class="col-md-4">
                         <div class="io-description"><p>show embedded graph in search results</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="SearchResultsShowMatchRecords"></a>
+                        <b>SearchResultsShowMatchRecords</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>show &quot;match keys&quot; in search results</p>
 </div>
                     </td>
                 </tr>
@@ -2666,6 +2694,78 @@ search-results-open-in-new-tab=&quot;true&quot;&gt;</code></pre>
                     <tr>
                         <td class="col-md-4">
                                 <div class="io-description"><p>show &quot;attribute data&quot; ie &quot;login id, email address etc&quot; in search results</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="SearchResultsShowMatchRecords"></a>
+                        <span class="name"><b>SearchResultsShowMatchRecords</b><a href="#SearchResultsShowMatchRecords"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>SearchResultsShowMatchRecords()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>show &quot;match keys&quot; in search results</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>SearchResultsShowMatchRecords(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>show &quot;match keys&quot; in search results</p>
 </div>
 
                                 <div class="io-description">
@@ -5592,7 +5692,7 @@ search-results-open-in-new-tab=&quot;true&quot;&gt;</code></pre>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><div *ngIf="showControls" class="sz-preferences">    <div class="prefs-ui-lists">        <!-- start search prefs -->        <div class="prefs-ui-column prefs-ui-column-search">            <!-- start search form prefs -->            <h4 class="title">Search</h4>            <ul class="prefs-ui-column-inner prefs-ui-column-inner-search">                <li *ngFor="let opt of searchFormOptions; let i = index" [attr.pref-key]="opt.name">                    <input *ngIf="opt.inputType == \'checkbox\'" [attr.id]="\'c1-opts-search-form-\'+ i" type="checkbox"                    [checked]="boolPrefChecked(\'searchForm\', opt.name)"                    (change)="updateBoolPrefValue(\'searchForm\', opt.name, $event)">                    <input *ngIf="opt.inputType == \'number\'" [attr.id]="\'c1-opts-search-form-\'+ i" type="number"                    min="1" max="90" size="2"                    [value]="prefValAsInt(\'searchForm\', opt.name)"                    (change)="updateIntPrefValue(\'searchForm\', opt.name, $event)">                    <label [attr.for]="\'c1-opts-search-form-\'+ i">{{ toSentenceCase(opt.name) | titlecase }}</label>                </li>            </ul>            <!-- end search form prefs -->            <!-- start search results prefs -->            <h4 class="title">Search Results</h4>            <ul class="prefs-ui-column-inner">                <li *ngFor="let opt of searchResultsOptions; let i = index" [attr.pref-key]="opt.name">                    <input *ngIf="opt.inputType == \'checkbox\'" [attr.id]="\'c2-opts-search-results-\'+ i" type="checkbox"                    [checked]="boolPrefChecked(\'searchResults\', opt.name)"                    (change)="updateBoolPrefValue(\'searchResults\', opt.name, $event)">                    <input *ngIf="opt.inputType == \'number\'" [attr.id]="\'c2-opts-search-results-\'+ i" type="number"                    min="1" max="90" size="2"                    [value]="prefValAsInt(\'searchResults\', opt.name)"                    (change)="updateIntPrefValue(\'searchResults\', opt.name, $event)">                    <label [attr.for]="\'c2-opts-search-results-\'+ i">{{ toSentenceCase(opt.name) | titlecase }}<!-- <span class="pref-key">({{opt.name}})</span> --></label>                </li>            </ul>            <!-- end search results prefs -->        </div>        <!-- end search prefs -->        <!-- start entity detail prefs -->        <div class="prefs-ui-column prefs-ui-column-entity-detail">            <h4 class="title">Entity Detail</h4>            <ul class="prefs-ui-column-inner">                <li *ngFor="let opt of entityDetailOptions; let i = index" [attr.pref-key]="opt.name">                    <input *ngIf="opt.inputType == \'checkbox\'" [attr.id]="\'c3-opts-entityDetail-\'+ i" type="checkbox"                    [checked]="boolPrefChecked(\'entityDetail\', opt.name)"                    (change)="updateBoolPrefValue(\'entityDetail\', opt.name, $event)">                    <input *ngIf="opt.inputType == \'number\'" [attr.id]="\'c3-opts-entityDetail-\'+ i" type="number"                    min="1" max="90" size="2"                    [value]="prefValAsInt(\'entityDetail\', opt.name)"                    (change)="updateIntPrefValue(\'entityDetail\', opt.name, $event)">                    <label [attr.for]="\'c3-opts-entityDetail-\'+ i">{{ toSentenceCase(opt.name) | titlecase }}</label>                </li>            </ul>        </div>        <!-- end entity detail prefs -->        <!-- start graph prefs -->        <div class="prefs-ui-column prefs-ui-column-graph">            <h4 class="title">Graph</h4>            <ul class="prefs-ui-column-inner">                <li *ngFor="let opt of graphOptions; let i = index" [attr.pref-key]="opt.name">                    <input *ngIf="opt.inputType == \'checkbox\'" [attr.id]="\'c4-opts-graph-\'+ i" type="checkbox"                    [checked]="boolPrefChecked(\'graph\', opt.name)"                    (change)="updateBoolPrefValue(\'graph\', opt.name, $event)">                    <input *ngIf="opt.inputType == \'number\'" [attr.id]="\'c4-opts-graph-\'+ i" type="number"                    min="1" max="90" size="2"                    [value]="prefValAsInt(\'graph\', opt.name)"                    (change)="updateIntPrefValue(\'graph\', opt.name, $event)">                    <label [attr.for]="\'c4-opts-graph-\'+ i">{{ toSentenceCase(opt.name) | titlecase }}</label>                </li>            </ul>            <!-- <h4 class="title">Datasource Colors</h4>            <sz-pref-dict [value]="GraphDataSourceColors" (dataChange)="GraphDataSourceColors = $event" valueType="color"></sz-pref-dict> -->        </div>        <!-- end graph prefs -->    </div></div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
+    var COMPONENTS = [{'name': 'SzAlertMessageDialog', 'selector': 'sz-alert-dialog'},{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzMultiSelectButtonComponent', 'selector': 'sz-button-multi-select'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipNetworkInputComponent', 'selector': 'sz-relationship-network-input'},{'name': 'SzRelationshipNetworkLookupComponent', 'selector': 'sz-relationship-network-lookup'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzPreferencesComponent'};
 </script>

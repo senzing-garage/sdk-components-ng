@@ -171,6 +171,10 @@ name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#dialog" >dialog</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#searchResultsJSON" >searchResultsJSON</a>
                             </li>
                             <li>
@@ -190,6 +194,14 @@ name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#clearSelected" >clearSelected</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#isSelected" >isSelected</a>
+                            </li>
+                            <li>
                                 <a href="#ngOnDestroy" >ngOnDestroy</a>
                             </li>
                             <li>
@@ -197,7 +209,26 @@ name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#onCompareClick" >onCompareClick</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#onComparisonModeActiveChange" >onComparisonModeActiveChange</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#onComparisonModeToggleClick" >onComparisonModeToggleClick</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#onResultClick" >onResultClick</a>
+                            </li>
+                            <li>
+                                <a href="#openWhyComparisonModalOnClick" >openWhyComparisonModalOnClick</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#toggleSelected" >toggleSelected</a>
                             </li>
                         </ul>
                     </td>
@@ -212,6 +243,9 @@ name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#openWhyComparisonModalOnClick" >openWhyComparisonModalOnClick</a>
+                            </li>
+                            <li>
                                 <a href="#parameters" >parameters</a>
                             </li>
                             <li>
@@ -219,6 +253,12 @@ name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
                             </li>
                             <li>
                                 <a href="#showDataSources" >showDataSources</a>
+                            </li>
+                            <li>
+                                <a href="#showMatchKeys" >showMatchKeys</a>
+                            </li>
+                            <li>
+                                <a href="#showWhyComparisonButton" >showWhyComparisonButton</a>
                             </li>
                         </ul>
                     </td>
@@ -235,6 +275,9 @@ name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
                             <li>
                                 <a href="#resultClick" >resultClick</a>
                             </li>
+                            <li>
+                                <a href="#whyButtonClick" >whyButtonClick</a>
+                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -249,6 +292,18 @@ name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
                     <tr>
                         <td class="col-md-4">
                             <ul class="index-list">
+                                <li>
+                                    <a href="#showMatchKeys" >showMatchKeys</a>
+                                </li>
+                                <li>
+                                    <a href="#showWhyComparisonButton" >showWhyComparisonButton</a>
+                                </li>
+                                <li>
+                                    <a href="#entitySelectActive" >entitySelectActive</a>
+                                </li>
+                                <li>
+                                    <a href="#selectedEntities" >selectedEntities</a>
+                                </li>
                                 <li>
                                     <a href="#searchResults" >searchResults</a>
                                 </li>
@@ -283,7 +338,7 @@ name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(titleCasePipe: <a href="https://angular.io/api/common/TitleCasePipe" target="_blank">TitleCasePipe</a>, prefs: <a href="../injectables/SzPrefsService.html" target="_self">SzPrefsService</a>, cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>)</code>
+<code>constructor(titleCasePipe: <a href="https://angular.io/api/common/TitleCasePipe" target="_blank">TitleCasePipe</a>, prefs: <a href="../injectables/SzPrefsService.html" target="_self">SzPrefsService</a>, cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>, dialog: MatDialog)</code>
                     </td>
                 </tr>
 
@@ -336,6 +391,18 @@ name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
                                                     </td>
                                                     
                                                 </tr>
+                                                <tr>
+                                                        <td>dialog</td>
+                                                  
+                                                        <td>
+                                                                    <code>MatDialog</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
                                         </tbody>
                                     </table>
                             </div>
@@ -347,6 +414,29 @@ name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
 
     <section>
     <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="openWhyComparisonModalOnClick"></a>
+                        <b>openWhyComparisonModalOnClick</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>(value: boolean) &#x3D;&gt; void</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>whether or not to automatically open a modal with the entity comparison on
+&quot;Why&quot; button click. (disable for custom implementation/action)</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -413,6 +503,44 @@ used for displaying the parameters being searched on above result list.</p>
                 </tr>
             </tbody>
         </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showMatchKeys"></a>
+                        <b>showMatchKeys</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Shows or hides the match keys in the result items header.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showWhyComparisonButton"></a>
+                        <b>showWhyComparisonButton</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Shows or hides the multi-select &quot;Why&quot; comparison button.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 </section>
     <section>
     <h3 id="outputs">Outputs</h3>
@@ -438,6 +566,28 @@ used for displaying the parameters being searched on above result list.</p>
                 </tr>
             </tbody>
         </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="whyButtonClick"></a>
+                        <b>whyButtonClick</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>(Event Emitter) when the user clicks on the &quot;Why&quot; button</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 </section>
 
 
@@ -446,6 +596,108 @@ used for displaying the parameters being searched on above result list.</p>
     <h3 id="methods">
         Methods
     </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearSelected"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>clearSelected</b></span>
+                        <a href="#clearSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>clearSelected()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>clear any selected entity results if &quot;_showWhyComparisonButton&quot; set to true</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isSelected"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>isSelected</b></span>
+                        <a href="#isSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isSelected(entityResult: SzAttributeSearchResult)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>is a search result already selected</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>entityResult</td>
+                                    <td>
+                                            <code>SzAttributeSearchResult</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -514,6 +766,208 @@ used for displaying the parameters being searched on above result list.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="onCompareClick"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>onCompareClick</b></span>
+                        <a href="#onCompareClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onCompareClick(evt: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>when the compare button is clicked</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>evt</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onComparisonModeActiveChange"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>onComparisonModeActiveChange</b></span>
+                        <a href="#onComparisonModeActiveChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onComparisonModeActiveChange(isActive: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>when the user clicks the multi-select button to enable/disable click to select behavior this handler is invoked</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>isActive</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onComparisonModeToggleClick"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>onComparisonModeToggleClick</b></span>
+                        <a href="#onComparisonModeToggleClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onComparisonModeToggleClick(evt: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>for multi-select the user has to click the button to change the default row behavior from
+click-&gt;go to detail to click-&gt;select for comparison</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>evt</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="onResultClick"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
@@ -563,6 +1017,146 @@ used for displaying the parameters being searched on above result list.</p>
                                 </tr>
                                 <tr>
                                     <td>resData</td>
+                                    <td>
+                                            <code>SzAttributeSearchResult</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openWhyComparisonModalOnClick"></a>
+                    <span class="name">
+                        <span ><b>openWhyComparisonModalOnClick</b></span>
+                        <a href="#openWhyComparisonModalOnClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openWhyComparisonModalOnClick(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Input()<br /></code>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>whether or not to automatically open a modal with the entity comparison on
+&quot;Why&quot; button click. (disable for custom implementation/action)</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleSelected"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>toggleSelected</b></span>
+                        <a href="#toggleSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>toggleSelected(entityResult: SzAttributeSearchResult)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>add entity to selection if not already in it. remove entity from selection if already in selection</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>entityResult</td>
                                     <td>
                                             <code>SzAttributeSearchResult</code>
                                     </td>
@@ -665,6 +1259,28 @@ used for displaying the parameters being searched on above result list.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="dialog"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>dialog</b></span>
+                        <a href="#dialog"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>MatDialog</code>
+
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="searchResultsJSON"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
@@ -710,6 +1326,174 @@ used for displaying the parameters being searched on above result list.</p>
     <h3 id="accessors">
         Accessors
     </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showMatchKeys"></a>
+                        <span class="name"><b>showMatchKeys</b><a href="#showMatchKeys"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>showMatchKeys()</code></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>showMatchKeys(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Shows or hides the match keys in the result items header.</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showWhyComparisonButton"></a>
+                        <span class="name"><b>showWhyComparisonButton</b><a href="#showWhyComparisonButton"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>showWhyComparisonButton()</code></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>showWhyComparisonButton(value: boolean | string)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Shows or hides the multi-select &quot;Why&quot; comparison button.</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code>boolean | string</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="entitySelectActive"></a>
+                        <span class="name"><b>entitySelectActive</b><a href="#entitySelectActive"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>entitySelectActive()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedEntities"></a>
+                        <span class="name"><b>selectedEntities</b><a href="#selectedEntities"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>selectedEntities()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>get the entities selected during a multi-select operation such as when
+&quot;Why&quot; comparison mode select is active.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>SzAttributeSearchResult[]</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -1015,10 +1799,10 @@ used for displaying the parameters being searched on above result list.</p>
 
 
     <div class="tab-pane fade " id="c-templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;div&gt;
+        <pre class="line-numbers"><code class="language-html">&lt;div [class.select-mode-active]&#x3D;&quot;entitySelectActive&quot;&gt;
     &lt;!-- @senzing/sdk/search/sz-search-results --&gt;
-
-    &lt;div class&#x3D;&quot;sz-search-results-total-summary&quot;&gt;
+    &lt;div class&#x3D;&quot;sz-search-results-head&quot;&gt;
+      &lt;div class&#x3D;&quot;sz-search-results-total-summary&quot;&gt;
         &lt;div class&#x3D;&quot;sz-search-results-total&quot; *ngIf&#x3D;&quot;searchResults &amp;&amp; searchValue&quot;&gt;
           &lt;span class&#x3D;&quot;sz-search-results-total-bold&quot;&gt;{{searchResultsTotal}} Results &lt;/span&gt;found for
           &lt;div&gt;
@@ -1028,8 +1812,30 @@ used for displaying the parameters being searched on above result list.</p>
             &lt;/ng-container&gt;
           &lt;/div&gt;
         &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!-- start &quot;entity select control&quot; mechanism --&gt;
+      &lt;sz-button-multi-select *ngIf&#x3D;&quot;showWhyComparisonButton&quot;
+        (onSelectActiveChange)&#x3D;&quot;onComparisonModeActiveChange($event)&quot;
+        (onSelectedClick)&#x3D;&quot;onCompareClick($event)&quot;
+        [selectedCount]&#x3D;&quot;this.selectedEntities.length&quot;
+        aria-hidden&#x3D;&quot;false&quot; 
+        aria-label&#x3D;&quot;Select Entities for Why comparison&quot;
+        text&#x3D;&quot;Compare Entities&quot;
+        selectedItemTypeSingular&#x3D;&quot;entity&quot;
+        selectedItemTypePlural&#x3D;&quot;entities&quot;
+        selectedActionVerb&#x3D;&quot;why comparison&quot;
+        selectedActionVerbCTA&#x3D;&quot;compare Why&quot;
+        mat-icon&#x3D;&quot;compare_arrows&quot;
+        &gt;&lt;/sz-button-multi-select&gt;
+      &lt;!-- end &quot;entity select control&quot; mechanism --&gt;
     &lt;/div&gt;
-
+    &lt;!--&lt;div *ngIf&#x3D;&quot;entitySelectActive&quot;&gt;
+      &lt;ul&gt;
+        &lt;li *ngFor&#x3D;&quot;let selectedEntity of this.selectedEntities; let i &#x3D; index&quot;&gt;
+          {{ selectedEntity.nameData }}
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;--&gt;
     &lt;div class&#x3D;&quot;search-result__section-header matches&quot;
       *ngIf&#x3D;&quot;this.matches?.length &gt; 0&quot;&gt;&lt;span&gt;Matches&lt;/span&gt;&lt;/div&gt;
     &lt;sz-search-result-card
@@ -1038,7 +1844,9 @@ used for displaying the parameters being searched on above result list.</p>
       (click)&#x3D;&quot;onResultClick($event, searchResult)&quot;
       [searchResult]&#x3D;&quot;searchResult&quot;
       [cardTitle]&#x3D;&quot;&#x27;Match&#x27;&quot;
-      [showDataSources]&#x3D;&quot;showDataSources&quot;&gt;
+      [class.selected]&#x3D;&quot;isSelected(searchResult)&quot;
+      [showDataSources]&#x3D;&quot;showDataSources&quot;
+      [showMatchKey]&#x3D;&quot;showMatchKeys&quot;&gt;
     &lt;/sz-search-result-card&gt;
 
     &lt;div class&#x3D;&quot;search-result__section-header possible-match&quot;
@@ -1049,7 +1857,9 @@ used for displaying the parameters being searched on above result list.</p>
       (click)&#x3D;&quot;onResultClick($event, searchResult)&quot;
       [searchResult]&#x3D;&quot;searchResult&quot;
       [cardTitle]&#x3D;&quot;&#x27;Possible Matches&#x27;&quot;
-      [showDataSources]&#x3D;&quot;showDataSources&quot;&gt;
+      [class.selected]&#x3D;&quot;isSelected(searchResult)&quot;
+      [showDataSources]&#x3D;&quot;showDataSources&quot;
+      [showMatchKey]&#x3D;&quot;showMatchKeys&quot;&gt;
     &lt;/sz-search-result-card&gt;
 
     &lt;div class&#x3D;&quot;search-result__section-header possibly-related&quot;
@@ -1060,7 +1870,9 @@ used for displaying the parameters being searched on above result list.</p>
       (click)&#x3D;&quot;onResultClick($event, searchResult)&quot;
       [searchResult]&#x3D;&quot;searchResult&quot;
       [cardTitle]&#x3D;&quot;&#x27;Discovered Relationships&#x27;&quot;
-      [showDataSources]&#x3D;&quot;showDataSources&quot;&gt;
+      [class.selected]&#x3D;&quot;isSelected(searchResult)&quot;
+      [showDataSources]&#x3D;&quot;showDataSources&quot;
+      [showMatchKey]&#x3D;&quot;showMatchKeys&quot;&gt;
     &lt;/sz-search-result-card&gt;
 
     &lt;div class&#x3D;&quot;search-result__section-header name-only-matches&quot;
@@ -1071,7 +1883,9 @@ used for displaying the parameters being searched on above result list.</p>
       (click)&#x3D;&quot;onResultClick($event, searchResult)&quot;
       [searchResult]&#x3D;&quot;searchResult&quot;
       [cardTitle]&#x3D;&quot;&#x27;Name Only Matches&#x27;&quot;
-      [showDataSources]&#x3D;&quot;showDataSources&quot;&gt;&lt;/sz-search-result-card&gt;
+      [class.selected]&#x3D;&quot;isSelected(searchResult)&quot;
+      [showDataSources]&#x3D;&quot;showDataSources&quot;
+      [showMatchKey]&#x3D;&quot;showMatchKeys&quot;&gt;&lt;/sz-search-result-card&gt;
 &lt;/div&gt;
 </code></pre>
     </div>
@@ -1094,6 +1908,15 @@ used for displaying the parameters being searched on above result list.</p>
   }
   .label-title {
     text-transform: uppercase;
+  }
+
+  .sz-search-results-head {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    sz-button-multi-select { width: 165px; }
   }
 
   .sz-search-results-total-summary {
@@ -1146,8 +1969,25 @@ used for displaying the parameters being searched on above result list.</p>
     }
   }
 
+  .select-mode-active {
+    sz-search-result-card { 
+      opacity: .5;
+      cursor: copy;
+      &amp;:hover {
+        opacity: .9;
+      }
+      &amp;.selected {
+        background-color: #0b95ed2e;
+        opacity: 1;
+        /*cursor: zoom-out;*/
+      }
+    }
+  }
+
   sz-search-result-card {
     cursor: var(--sz-search-results-card-cursor);
+    background: $sz-white;
+
     &amp;:hover {
       color: var(--sz-search-results-card-hover-color);
       cursor: var(--sz-search-results-card-hover-cursor);
@@ -1207,8 +2047,8 @@ used for displaying the parameters being searched on above result list.</p>
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div>    <!-- @senzing/sdk/search/sz-search-results -->    <div class="sz-search-results-total-summary">        <div class="sz-search-results-total" *ngIf="searchResults && searchValue">          <span class="sz-search-results-total-bold">{{searchResultsTotal}} Results </span>found for          <div>            <ng-container *ngFor="let attribute of attributeDisplay">{{attribute?.attr}}              <span *ngIf="attribute?.value">:</span>              <span class="sz-search-results-parameter-value">{{attribute?.value}}&nbsp;</span>            </ng-container>          </div>        </div>    </div>    <div class="search-result__section-header matches"      *ngIf="this.matches?.length > 0"><span>Matches</span></div>    <sz-search-result-card      class="matches"      *ngFor="let searchResult of this.matches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Match\'"      [showDataSources]="showDataSources">    </sz-search-result-card>    <div class="search-result__section-header possible-match"      *ngIf="this.possibleMatches?.length > 0"><span>Possible Match</span></div>    <sz-search-result-card      class="possible-match"      *ngFor="let searchResult of this.possibleMatches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Possible Matches\'"      [showDataSources]="showDataSources">    </sz-search-result-card>    <div class="search-result__section-header possibly-related"      *ngIf="this.discoveredRelationships?.length > 0"><span>Possibly Related</span></div>    <sz-search-result-card      class="possibly-related"      *ngFor="let searchResult of this.discoveredRelationships; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Discovered Relationships\'"      [showDataSources]="showDataSources">    </sz-search-result-card>    <div class="search-result__section-header name-only-matches"      *ngIf="this.nameOnlyMatches?.length > 0"><span>Name Only Matches</span></div>    <sz-search-result-card      class="name-only"      *ngFor="let searchResult of this.nameOnlyMatches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Name Only Matches\'"      [showDataSources]="showDataSources"></sz-search-result-card></div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'}];
+        var COMPONENT_TEMPLATE = '<div><div [class.select-mode-active]="entitySelectActive">    <!-- @senzing/sdk/search/sz-search-results -->    <div class="sz-search-results-head">      <div class="sz-search-results-total-summary">        <div class="sz-search-results-total" *ngIf="searchResults && searchValue">          <span class="sz-search-results-total-bold">{{searchResultsTotal}} Results </span>found for          <div>            <ng-container *ngFor="let attribute of attributeDisplay">{{attribute?.attr}}              <span *ngIf="attribute?.value">:</span>              <span class="sz-search-results-parameter-value">{{attribute?.value}}&nbsp;</span>            </ng-container>          </div>        </div>      </div>      <!-- start "entity select control" mechanism -->      <sz-button-multi-select *ngIf="showWhyComparisonButton"        (onSelectActiveChange)="onComparisonModeActiveChange($event)"        (onSelectedClick)="onCompareClick($event)"        [selectedCount]="this.selectedEntities.length"        aria-hidden="false"         aria-label="Select Entities for Why comparison"        text="Compare Entities"        selectedItemTypeSingular="entity"        selectedItemTypePlural="entities"        selectedActionVerb="why comparison"        selectedActionVerbCTA="compare Why"        mat-icon="compare_arrows"        ></sz-button-multi-select>      <!-- end "entity select control" mechanism -->    </div>    <!--<div *ngIf="entitySelectActive">      <ul>        <li *ngFor="let selectedEntity of this.selectedEntities; let i = index">          {{ selectedEntity.nameData }}        </li>      </ul>    </div>-->    <div class="search-result__section-header matches"      *ngIf="this.matches?.length > 0"><span>Matches</span></div>    <sz-search-result-card      class="matches"      *ngFor="let searchResult of this.matches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Match\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys">    </sz-search-result-card>    <div class="search-result__section-header possible-match"      *ngIf="this.possibleMatches?.length > 0"><span>Possible Match</span></div>    <sz-search-result-card      class="possible-match"      *ngFor="let searchResult of this.possibleMatches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Possible Matches\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys">    </sz-search-result-card>    <div class="search-result__section-header possibly-related"      *ngIf="this.discoveredRelationships?.length > 0"><span>Possibly Related</span></div>    <sz-search-result-card      class="possibly-related"      *ngFor="let searchResult of this.discoveredRelationships; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Discovered Relationships\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys">    </sz-search-result-card>    <div class="search-result__section-header name-only-matches"      *ngIf="this.nameOnlyMatches?.length > 0"><span>Name Only Matches</span></div>    <sz-search-result-card      class="name-only"      *ngFor="let searchResult of this.nameOnlyMatches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Name Only Matches\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys"></sz-search-result-card></div></div>'
+    var COMPONENTS = [{'name': 'SzAlertMessageDialog', 'selector': 'sz-alert-dialog'},{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzMultiSelectButtonComponent', 'selector': 'sz-button-multi-select'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipNetworkInputComponent', 'selector': 'sz-relationship-network-input'},{'name': 'SzRelationshipNetworkLookupComponent', 'selector': 'sz-relationship-network-lookup'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzSearchResultsComponent'};
 </script>
