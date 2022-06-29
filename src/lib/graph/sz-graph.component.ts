@@ -913,7 +913,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
       return true;
     } else if(coreMatchKeyTokens && coreMatchKeyTokens.length > 0) {
-      if(nodeData && (nodeData.isRelatedToPrimaryEntity || nodeData.isPrimaryEntity) && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf){
+      if(nodeData && (nodeData.isRelatedToPrimaryEntity || nodeData.relatedToPrimaryEntityDirectly || nodeData.isPrimaryEntity) && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf){
         // D3 filter query 
         retVal = (nodeData.relationshipMatchKeyTokens.some( (tokenName) => {
           return coreMatchKeyTokens.indexOf(tokenName) > -1;
