@@ -36,15 +36,173 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 <a href="https://dlaa.me/markdownlint/">markdownlint</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="400---2022-3-15">[4.0.0] - 2022-3-15</h2>
+<h2 id="500---2022-07-01">[5.0.0] - 2022-07-01</h2>
+<p>Thio release adds new functionality around expanding and collapsing related entities in <em>Network Graph</em> related components. We&#39;ve moved the <code>@senzing/sdk-graph-components</code> to the scope of this package for easier maintenance and installation(now you just need this package instead of two). We&#39;re also adding the <em>Why Not</em> component that can be embedded between two or more entities to generate a report to show why two entities/records did not resolve.</p>
+<h3 id="added">Added</h3>
+<ul>
+<li>The <code>SzWhyEntitiesComparisonComponent</code> added for doing <em>WHY</em> comparison <em>between</em> entities. Adds the ability to run &quot;Why Not&quot; Reports from within the context of the search results and graph. </li>
+<li>The following input parameters added to <code>SzSearchResultsComponent</code>:<ul>
+<li><code>showWhyComparisonButton</code> enables a <em>multi-select</em> button behavior for search results that when clicked allows a user to click to toggle selection of an entity in the results then click the button to show a <em>WHY NOT</em> report for differences between those two entities.</li>
+</ul>
+</li>
+<li>The follwing getters and setters added to <code>SzEntityDetailComponent</code><ul>
+<li><code>showGraphContextMenu</code> enables the built-in context menu for entity nodes on the graph embedded in the entity detail component.</li>
+<li><code>showGraphLinkContextMenu</code> enables the built-in context menu for relationship lines/labels on the graph embedded in the entity detail component.</li>
+</ul>
+</li>
+<li>The following Event Emitters added to <code>SzEntityDetailComponent</code><ul>
+<li><code>graphRelationshipContextMenuClick</code> is emitted when a user right clicks on relationship lines/labels in the embedded graph component.</li>
+<li><code>graphRelationshipClick</code> is emitted when a user clicks on relationship lines/labels in the embedded graph component.</li>
+</ul>
+</li>
+<li>The following methods added to <code>SzGraphComponent</code> and are inheirited by <code>SzStandaloneGraphComponent</code> and <code>SzEntityDetailGraphComponent</code>.<ul>
+<li><code>canRemoveNode(entityId: SzEntityIdentifier)</code> returns boolean if an entity on canvas can be removed(root nodes, and primary query nodes cannot).</li>
+<li><code>canExpandNode(entityId: SzEntityIdentifier)</code> returns boolean if a node has hidden related entities that can be shown on canvas.</li>
+<li><code>removeNode(entityId: SzEntityIdentifier)</code> removes a single node and any directly related nodes </li>
+<li><code>collapseNode(entityId: SzEntityIdentifier)</code> hide all visible(expanded) entities related to a specific entity that are themselves not related to any other visible entities.</li>
+<li><code>expandNode(entityId: SzEntityIdentifier)</code> show any entities that are related to a specific entity that are currently not on the canvas.</li>
+</ul>
+</li>
+<li>The following event emitters added to <code>SzGraphComponent</code><ul>
+<li><code>relationshipContextMenuClick</code> is emitted when a user right clicks on relationship lines/labels in the embedded graph component. </li>
+<li><code>relationshipClick</code> is emitted when a user clicks on relationship lines/labels in the embedded graph component.</li>
+</ul>
+</li>
+<li>The following methods added to <code>SzEntityDetailComponent</code><ul>
+<li><code>isGraphEntityRemovable(entityId: SzEntityIdentifier)</code> can a specific entity node be removed from canvas.</li>
+<li><code>showGraphEntityRelationships(entityId: SzEntityIdentifier)</code> show any entities that are related to a specific entity that are currently not on the canvas.</li>
+<li><code>hideGraphEntityRelationships(entityId: SzEntityIdentifier)</code> hide all visible(expanded) entities related to a specific entity that are themselves not related to any other visible entities.</li>
+<li><code>hideGraphEntity(entityId: SzEntityIdentifier)</code> remove single node and any directly related nodes that are only related to the entity specified.</li>
+</ul>
+</li>
+<li><code>SzRelationshipNetworkComponent</code> moved from <code>@senzing/sdk-graph-components</code></li>
+<li><code>SzRelationshipNetworkInputComponent</code> moved from <code>@senzing/sdk-graph-components</code></li>
+<li><code>SzRelationshipNetworkLookupComponent</code> moved from <code>@senzing/sdk-graph-components</code></li>
+<li><code>SzRelationshipPathComponent</code> moved from <code>@senzing/sdk-graph-components</code></li>
+<li>The following methods added to <code>SzRelationshipNetworkComponent</code><ul>
+<li><code>canExpandNode</code> does a node have hidden related nodes that can be displayed.</li>
+<li><code>expandNode</code> show all hidden nodes related to the node specified.</li>
+<li><code>canRemoveNode</code> can a node be removed.</li>
+<li><code>removeNode</code> removes a single node, all it&#39;s related and/or both.</li>
+<li><code>center</code> centers the graph viewport.</li>
+<li><code>addExistingNodeData</code> used for data merge/transform operation.</li>
+<li><code>addLinksToNodeData</code> used for data merge/transform operation.</li>
+<li><code>asEntityNetworkData</code> gets the state of graph nodes/links as <code>EntityNetworkData</code></li>
+<li><code>onLinkClick</code> when a user clicks on a relationship link line or label.</li>
+<li><code>onLinkDblClick</code> when a user double clicks on a relationship link line or label.</li>
+<li><code>onLinkContextClick</code> when a user right clicks on a relationship link line or label.</li>
+<li><code>getNodeByIdQuery</code> returns a D3.Selection of the node that matches the entity id provided.</li>
+<li><code>getNodesByIdQuery</code> returns a D3.Selection of the nodes that match the entity ids provided.</li>
+<li><code>getHiddenNodeIds</code> return an array of entity ids for nodes that exist on canvas but are not currently visible.</li>
+<li><code>updateHiddenRelationshipCounts</code> update the relationship count bubble inside a entity node with the value from numberRelatedHidden.</li>
+<li><code>getRelatedNodesByIdQuery</code> returns a D3.Selection of nodes that match the entity ids provided</li>
+<li><code>updateIsHiddenForLinks</code> ensure that a link node(line) is not visible if one of the connected nodes is not visible</li>
+<li><code>getEntityNodeClass</code> get the css classes as a space separate string to apply to an entity node. </li>
+<li><code>getEntityLinkClass</code> get the css classes as a space separate string to apply to an entity link node(line).</li>
+<li><code>getEntityLinkLabelClass</code> get the css classes as a space separate string to apply to an entity link node.</li>
+<li><code>expandCollapseToggle</code> toggles the collapsed or expanded nodes related to a node</li>
+<li><code>updateHasCollapsedRelationships</code> after a collapse or expand event all of the nodes on canvas&#39;s properties related to collapse/expand must be updated in order to calculate whether or not a node still has hidden related entities.</li>
+</ul>
+</li>
+<li>The following event emitters added to <code>SzRelationshipNetworkComponent</code><ul>
+<li><code>relationshipClick</code> when a user clicks on a relationship link line or label.</li>
+<li><code>relationshipDblClick</code> when a user double clicks on a relationship link line or label.</li>
+<li><code>relationshipContextMenuClick</code> when a user right clicks on a relationship link line or label.</li>
+<li><code>onDataUpdated</code> when new data is added to the store representing the state of the graph this event is emitted with the result of <code>asEntityNetworkData()</code></li>
+<li><code>onShowRelatedEntities</code> event emitted when the user expands or collapses a entity nodes related nodes.</li>
+<li><code>onHideRelatedEntities</code> event emitted when the user expands or collapses a entity nodes related nodes.</li>
+</ul>
+</li>
+<li>Major refactoring around the draw mechanism inside <code>SzRelationshipNetworkComponent.addSvg()</code> method reorganized or rewritten. The following subroutines added:<ul>
+<li><code>getNodeVisibilityClass</code> returns a array with the string of <code>sz-node-state-hidden</code> if node is supposed to be hidden. (used for css queries)</li>
+<li><code>setNodePositionsAsCircle</code> takes a selection of entity nodes and places their X,Y positions on an arc path(circle) around a central point.</li>
+<li><code>applyPositionToNodes</code> takes the X/Y values set on a node&#39;s data property and converts them to CSS transform properties</li>
+<li><code>updateLinksForNodes</code> when a node(s) position has changed this sub is called to keep the end of the link path attached to the node being moved</li>
+<li><code>attachEventListenersToNodes</code> attach internal handlers for things like click, drag, mouseover events to a selection of nodes so handlers are called.</li>
+<li><code>stopEventListenersForNodes</code> remove event handers for a selection of nodes</li>
+<li><code>attachEventListenersToLinks</code> attach internal handlers for things like click, drag, mouseover events to a selection of nodes so handlers are called.</li>
+<li><code>polarToCartesian</code> dependency for drawing concentric rings</li>
+<li><code>describeArc</code> dependency for drawing concentric rings</li>
+<li><code>circleCoord</code> dependency for drawing concentric rings</li>
+<li><code>getRingSchemaForNodes</code> gets a object describing a ring based drawing layout for nodes</li>
+<li><code>drawNodesInRings</code> takes a collection of entities and lays them out in increasing diameter along rings around an X and Y origin.</li>
+<li><code>drawLinks</code> draws the links between entity nodes on svg canvas</li>
+<li><code>drawNodes</code> draws the entity nodes on svg canvas</li>
+<li><code>onExpandCollapseClick</code> event handler for when a node&#39;s expand or collapsed glyph is clicked on.</li>
+</ul>
+</li>
+<li><code>SzRelationshipNetworkComponent.onNodeContextClick</code> added the following to the <code>contextMenuClick</code> event emitter so the context menu could be positioned correctly.<ul>
+<li><code>eventPageX</code> the x position on the page non-relative that the event occurred at.</li>
+<li><code>eventPageY</code> the y position on the page non-relative that the event occurred at.</li>
+</ul>
+</li>
+<li><code>SzRelationshipNetworkComponent.contextMenuClick</code><ul>
+<li><code>eventPageX</code> the x position on the page non-relative that the event occurred at.</li>
+<li><code>eventPageY</code> the y position on the page non-relative that the event occurred at.</li>
+</ul>
+</li>
+</ul>
+<h3 id="removed">Removed</h3>
+<ul>
+<li>The following methods have been removed from <code>SzRelationshipNetworkComponent</code><ul>
+<li><code>onSimulationCycle</code> gravity simulation has been removed in favor or concentric ring algorithm.</li>
+<li><code>unlockForcePosition</code> gravity simulation has been removed in favor or concentric ring algorithm.</li>
+<li><code>lockForcePosition</code> gravity simulation has been removed in favor or concentric ring algorithm.</li>
+<li><code>fade</code> used to highlight directly related  nodes by changing the opacity of all unrelated nodes</li>
+<li><code>linkfade</code> used to highlight directly related  nodes by changing the opacity of all unrelated nodes</li>
+<li><code>onNodeDragEnded</code> no longer needed</li>
+</ul>
+</li>
+</ul>
+<h3 id="modified">Modified</h3>
+<ul>
+<li><code>_graphIds</code> property on <code>SzGraphComponent</code> type changed from <code>number[]</code> to <code>SzEntityIdentifier[]</code></li>
+<li><code>graphIds</code> property getter and setter on <code>SzGraphComponent</code> type changed from <code>number[]</code> to <code>SzEntityIdentifier[]</code></li>
+<li><code>reload</code> method in <code>SzGraphComponent</code> parameter type changed to <code>string | number | SzEntityIdentifier | SzEntityIdentifier[]</code></li>
+<li>Major refactoring around the draw mechanism inside <code>SzRelationshipNetworkComponent</code>. Almost all of the routiines in <code>addSvg</code> method reorganized or rewritten. The following subroutines added <ul>
+<li><code>onNodeContextClick</code> added the following to the <code>contextMenuClick</code> event emmitter so the context menu could be positioned correctly.<ul>
+<li><code>eventPageX</code> the x position on the page non-relative that the event occurred at.</li>
+<li><code>eventPageY</code> the y position on the page non-relative that the event occurred at.</li>
+</ul>
+</li>
+<li><code>contextMenuClick</code><ul>
+<li><code>eventPageX</code> the x position on the page non-relative that the event occurred at.</li>
+<li><code>eventPageY</code> the y position on the page non-relative that the event occurred at.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>relevant tickets: #280 #299 #302 #304 #307 #310 #311 #313 #315 #319 #321</p>
+<h2 id="400---2022-05-09">[4.0.0] - 2022-05-09</h2>
 <p>This update brings the models in line with the changes for the <code>3.0.0</code> release of the <a href="https://github.com/Senzing/senzing-api-server">senzing rest api server</a>
 and <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/caceres.version-3.0.0/senzing-rest-api.yaml">rest api specification</a>.</p>
-<h3 id="added">Added</h3>
+<h3 id="added-1">Added</h3>
 <ul>
 <li><code>showMatchKeyFilters</code> property added to <code>sz-standalone-graph</code> tag. specifying a value of <code>false</code> will hide the <em>Filter By Match Key</em> section of the embedded graph controls. (defaults to <em>true</em>)</li>
 <li><code>showMatchKeyFilters</code> property added to <code>sz-graph-filter</code> tag. specifying a value of <code>false</code> will hide the <em>Filter By Match Key</em> list of checkboxes. (defaults to <em>true</em>)</li>
+<li><code>SzWhyEntityComponent</code> component for displaying results from the api server&#39;s respective why endpoints(<code>/entities/{entityId}/why</code>).</li>
+<li><code>parseSzIdentifier</code> function added to <code>src/lib/common/utils.ts</code></li>
+<li><code>nonTextTrim</code> function added to <code>src/lib/common/utils.ts</code></li>
+<li><code>SzWhySelectionMode</code> </li>
+<li><code>showWhyFunction</code> input attribute added to <code>SzEntityDetailComponent</code>. Turns on the availability of &quot;Why&quot; related functions(Why button under icon, why buttons in the records section) in the entity detail component.</li>
+<li><code>whySelectionMode</code> input attribute added to <code>SzEntityDetailComponent</code>. Turns on the availability of &quot;Why&quot; related functions(Why button under icon, why buttons in the records section) in the entity detail component. values are <code>NONE</code>|<code>SINGLE</code>|<code>MULTI</code></li>
+<li><code>openWhyComparisonModalOnClick</code> input attribute added to <code>SzEntityDetailComponent</code>. setting to <code>false</code> will mean that the integrator will be responsible for responding to &quot;Why&quot; events(<code>recordsWhyButtonClick</code>,<code>headerWhyButtonClick</code>), the component will no longer display a modal on click by default. </li>
+<li>The following getters/setters, and methods to <code>SzEntityDetailComponent</code><ul>
+<li><code>showRecordWhyUtilities</code> - explicitly hide or show the why buttons on individual records.</li>
+<li><code>showEntityWhyFunction</code> - explicitly hide or show the why button under the icon.</li>
+<li><code>onCompareRecordsForWhy()</code> - is what is called when a <code>recordsWhyButtonClick</code> event is invoked.</li>
+<li><code>onHeaderWhyButtonClick()</code> - is what is called when a <code>headerWhyButtonClick</code> event is invoked.</li>
 </ul>
-<h3 id="removed">Removed</h3>
+</li>
+<li>The following event emitters to <code>SzEntityDetailComponent</code><ul>
+<li><code>recordsWhyButtonClick</code> - is emitted when a user clicks a why button from within the context of a record.</li>
+<li><code>headerWhyButtonClick</code> - is emitted when a user clicks a why button underneath the icon in the header.</li>
+</ul>
+</li>
+<li>The graph filters found in the <code>SzStandaloneGraphComponent</code> can now show a tag cloud of <em>Match Key Tokens</em>. If setting the <code>showMatchKeyTokenFilters=&quot;true&quot;</code> you should also set the <code>showMatchKeyFilters]=&quot;false&quot;</code> since the two options are exclusive and will interfere with proper function of the other.</li>
+</ul>
+<h3 id="removed-1">Removed</h3>
 <ul>
 <li>the following methods removed <code>SzAdminService</code><ul>
 <li><code>addEntityClasses()</code></li>
@@ -92,7 +250,7 @@ and <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/cace
 <li><code>SzSearchResultEntityData.matchScore</code> property</li>
 </ul>
 <h2 id="300---2021-12-17">[3.0.0] - 2021-12-17</h2>
-<h3 id="modified">Modified</h3>
+<h3 id="modified-1">Modified</h3>
 <ul>
 <li>Angular Framework Updated to version 13. As of 3.0.0 release this package now requires <code>@angular@~13.0.0</code> to compile and run. Updating to angular 13 resolves major dependency compatibility issues so we can apply the latest security patches to the library. For information updating your project from a previous angular version to <code>~13.0.0</code> see the <a href="https://update.angular.io/">Angular Update Guide </a></li>
 <li>SzSearchComponent.resultCleared event emitter payload is now of type <code>void</code> and not <code>SzEntitySearchParams</code>.</li>
@@ -105,7 +263,7 @@ and <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/cace
 </ul>
 <p>relevant tickets: #253 #252 #251 #250</p>
 <h2 id="226---2021-11-23">[2.2.6] - 2021-11-23</h2>
-<h3 id="added-1">Added</h3>
+<h3 id="added-2">Added</h3>
 <ul>
 <li><code>SzEntityDetailGraphComponent</code><ul>
 <li><code>showZoomControl</code> input setter for whether or not to show zoom controls.</li>

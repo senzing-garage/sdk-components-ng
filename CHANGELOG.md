@@ -6,11 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [5.0.0] - 2022-06-27
+## [5.0.0] - 2022-07-01
 
 Thio release adds new functionality around expanding and collapsing related entities in *Network Graph* related components. We've moved the `@senzing/sdk-graph-components` to the scope of this package for easier maintenance and installation(now you just need this package instead of two). We're also adding the *Why Not* component that can be embedded between two or more entities to generate a report to show why two entities/records did not resolve.
 
 ### Added
+- The `SzWhyEntitiesComparisonComponent` added for doing _WHY_ comparison _between_ entities. Adds the ability to run "Why Not" Reports from within the context of the search results and graph. 
+- The following input parameters added to `SzSearchResultsComponent`:
+  - `showWhyComparisonButton` enables a *multi-select* button behavior for search results that when clicked allows a user to click to toggle selection of an entity in the results then click the button to show a *WHY NOT* report for differences between those two entities.
+- The follwing getters and setters added to `SzEntityDetailComponent`
+  - `showGraphContextMenu` enables the built-in context menu for entity nodes on the graph embedded in the entity detail component.
+  - `showGraphLinkContextMenu` enables the built-in context menu for relationship lines/labels on the graph embedded in the entity detail component.
+- The following Event Emitters added to `SzEntityDetailComponent`
+  - `graphRelationshipContextMenuClick` is emitted when a user right clicks on relationship lines/labels in the embedded graph component.
+  - `graphRelationshipClick` is emitted when a user clicks on relationship lines/labels in the embedded graph component.
 - The following methods added to `SzGraphComponent` and are inheirited by `SzStandaloneGraphComponent` and `SzEntityDetailGraphComponent`.
   - `canRemoveNode(entityId: SzEntityIdentifier)` returns boolean if an entity on canvas can be removed(root nodes, and primary query nodes cannot).
   - `canExpandNode(entityId: SzEntityIdentifier)` returns boolean if a node has hidden related entities that can be shown on canvas.
@@ -25,21 +34,85 @@ Thio release adds new functionality around expanding and collapsing related enti
   - `showGraphEntityRelationships(entityId: SzEntityIdentifier)` show any entities that are related to a specific entity that are currently not on the canvas.
   - `hideGraphEntityRelationships(entityId: SzEntityIdentifier)` hide all visible(expanded) entities related to a specific entity that are themselves not related to any other visible entities.
   - `hideGraphEntity(entityId: SzEntityIdentifier)` remove single node and any directly related nodes that are only related to the entity specified.
-- The follwing getters and setters added to `SzEntityDetailComponent`
-  - `showGraphContextMenu` enables the built-in context menu for entity nodes on the graph embedded in the entity detail component.
-  - `showGraphLinkContextMenu` enables the built-in context menu for relationship lines/labels on the graph embedded in the entity detail component.
-- The following Event Emitters added to `SzEntityDetailComponent`
-  - `graphRelationshipContextMenuClick` is emitted when a user right clicks on relationship lines/labels in the embedded graph component.
-  - `graphRelationshipClick` is emitted when a user clicks on relationship lines/labels in the embedded graph component.
 - `SzRelationshipNetworkComponent` moved from `@senzing/sdk-graph-components`
 - `SzRelationshipNetworkInputComponent` moved from `@senzing/sdk-graph-components`
 - `SzRelationshipNetworkLookupComponent` moved from `@senzing/sdk-graph-components`
 - `SzRelationshipPathComponent` moved from `@senzing/sdk-graph-components`
+- The following methods added to `SzRelationshipNetworkComponent`
+  - `canExpandNode` does a node have hidden related nodes that can be displayed.
+  - `expandNode` show all hidden nodes related to the node specified.
+  - `canRemoveNode` can a node be removed.
+  - `removeNode` removes a single node, all it's related and/or both.
+  - `center` centers the graph viewport.
+  - `addExistingNodeData` used for data merge/transform operation.
+  - `addLinksToNodeData` used for data merge/transform operation.
+  - `asEntityNetworkData` gets the state of graph nodes/links as `EntityNetworkData`
+  - `onLinkClick` when a user clicks on a relationship link line or label.
+  - `onLinkDblClick` when a user double clicks on a relationship link line or label.
+  - `onLinkContextClick` when a user right clicks on a relationship link line or label.
+  - `getNodeByIdQuery` returns a D3.Selection of the node that matches the entity id provided.
+  - `getNodesByIdQuery` returns a D3.Selection of the nodes that match the entity ids provided.
+  - `getHiddenNodeIds` return an array of entity ids for nodes that exist on canvas but are not currently visible.
+  - `updateHiddenRelationshipCounts` update the relationship count bubble inside a entity node with the value from numberRelatedHidden.
+  - `getRelatedNodesByIdQuery` returns a D3.Selection of nodes that match the entity ids provided
+  - `updateIsHiddenForLinks` ensure that a link node(line) is not visible if one of the connected nodes is not visible
+  - `getEntityNodeClass` get the css classes as a space separate string to apply to an entity node. 
+  - `getEntityLinkClass` get the css classes as a space separate string to apply to an entity link node(line).
+  - `getEntityLinkLabelClass` get the css classes as a space separate string to apply to an entity link node.
+  - `expandCollapseToggle` toggles the collapsed or expanded nodes related to a node
+  - `updateHasCollapsedRelationships` after a collapse or expand event all of the nodes on canvas's properties related to collapse/expand must be updated in order to calculate whether or not a node still has hidden related entities.
+- The following event emitters added to `SzRelationshipNetworkComponent`
+  - `relationshipClick` when a user clicks on a relationship link line or label.
+  - `relationshipDblClick` when a user double clicks on a relationship link line or label.
+  - `relationshipContextMenuClick` when a user right clicks on a relationship link line or label.
+  - `onDataUpdated` when new data is added to the store representing the state of the graph this event is emitted with the result of `asEntityNetworkData()`
+  - `onShowRelatedEntities` event emitted when the user expands or collapses a entity nodes related nodes.
+  - `onHideRelatedEntities` event emitted when the user expands or collapses a entity nodes related nodes.
+- Major refactoring around the draw mechanism inside `SzRelationshipNetworkComponent.addSvg()` method reorganized or rewritten. The following subroutines added:
+  - `getNodeVisibilityClass` returns a array with the string of `sz-node-state-hidden` if node is supposed to be hidden. (used for css queries)
+  - `setNodePositionsAsCircle` takes a selection of entity nodes and places their X,Y positions on an arc path(circle) around a central point.
+  - `applyPositionToNodes` takes the X/Y values set on a node's data property and converts them to CSS transform properties
+  - `updateLinksForNodes` when a node(s) position has changed this sub is called to keep the end of the link path attached to the node being moved
+  - `attachEventListenersToNodes` attach internal handlers for things like click, drag, mouseover events to a selection of nodes so handlers are called.
+  - `stopEventListenersForNodes` remove event handers for a selection of nodes
+  - `attachEventListenersToLinks` attach internal handlers for things like click, drag, mouseover events to a selection of nodes so handlers are called.
+  - `polarToCartesian` dependency for drawing concentric rings
+  - `describeArc` dependency for drawing concentric rings
+  - `circleCoord` dependency for drawing concentric rings
+  - `getRingSchemaForNodes` gets a object describing a ring based drawing layout for nodes
+  - `drawNodesInRings` takes a collection of entities and lays them out in increasing diameter along rings around an X and Y origin.
+  - `drawLinks` draws the links between entity nodes on svg canvas
+  - `drawNodes` draws the entity nodes on svg canvas
+  - `onExpandCollapseClick` event handler for when a node's expand or collapsed glyph is clicked on.
+- `SzRelationshipNetworkComponent.onNodeContextClick` added the following to the `contextMenuClick` event emitter so the context menu could be positioned correctly.
+  - `eventPageX` the x position on the page non-relative that the event occurred at.
+  - `eventPageY` the y position on the page non-relative that the event occurred at.
+- `SzRelationshipNetworkComponent.contextMenuClick`
+  - `eventPageX` the x position on the page non-relative that the event occurred at.
+  - `eventPageY` the y position on the page non-relative that the event occurred at.
+
+### Removed
+- The following methods have been removed from `SzRelationshipNetworkComponent`
+  - `onSimulationCycle` gravity simulation has been removed in favor or concentric ring algorithm.
+  - `unlockForcePosition` gravity simulation has been removed in favor or concentric ring algorithm.
+  - `lockForcePosition` gravity simulation has been removed in favor or concentric ring algorithm.
+  - `fade` used to highlight directly related  nodes by changing the opacity of all unrelated nodes
+  - `linkfade` used to highlight directly related  nodes by changing the opacity of all unrelated nodes
+  - `onNodeDragEnded` no longer needed
 
 ### Modified
 - `_graphIds` property on `SzGraphComponent` type changed from `number[]` to `SzEntityIdentifier[]`
 - `graphIds` property getter and setter on `SzGraphComponent` type changed from `number[]` to `SzEntityIdentifier[]`
 - `reload` method in `SzGraphComponent` parameter type changed to `string | number | SzEntityIdentifier | SzEntityIdentifier[]`
+- Major refactoring around the draw mechanism inside `SzRelationshipNetworkComponent`. Almost all of the routiines in `addSvg` method reorganized or rewritten. The following subroutines added 
+  - `onNodeContextClick` added the following to the `contextMenuClick` event emmitter so the context menu could be positioned correctly.
+    - `eventPageX` the x position on the page non-relative that the event occurred at.
+    - `eventPageY` the y position on the page non-relative that the event occurred at.
+  - `contextMenuClick`
+    - `eventPageX` the x position on the page non-relative that the event occurred at.
+    - `eventPageY` the y position on the page non-relative that the event occurred at.
+
+relevant tickets: #280 #299 #302 #304 #307 #310 #311 #313 #315 #319 #321
 
 ## [4.0.0] - 2022-05-09
 

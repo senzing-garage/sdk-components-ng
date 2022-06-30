@@ -38,7 +38,7 @@
   <li>Components</li>
   <li
   >
-  SzConfigurationAboutComponent</li>
+  SzWhyEntitiesComparisonComponent</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -58,7 +58,7 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>src/lib/configuration/sz-configuration-about/sz-configuration-about.component.ts</code>
+    <code>src/lib/why/sz-why-entities.component.ts</code>
 </p>
 
 
@@ -66,15 +66,11 @@
         <h3>Description</h3>
     </p>
     <p class="comment">
-        <p>Provides a component that lists all current API connection config parameters as
-a human readable table.</p>
-<code>
-&lt;!-- (Angular) --&gt;<br/>
-&lt;sz-configuration-about&gt;&lt;/sz-configuration-about&gt;<br/><br/>
-
-<p>&lt;!-- (WC) by attribute --&gt;<br/>
-&lt;sz-wc-configuration-about&gt;&lt;/sz-wc-configuration-about&gt;<br/>
-</code></p>
+        <p>Display the &quot;Why&quot; information for entities</p>
+<p>&lt;!-- (Angular) --&gt;<br/>
+&lt;sz-why-entities&gt;&lt;/sz-why-entities&gt;<br/><br/></p>
+<p>&lt;!-- (WC) --&gt;<br/>
+&lt;sz-wc-why-entities&gt;&lt;/sz-wc-why-entities&gt;<br/></p>
 
     </p>
 
@@ -105,19 +101,19 @@ a human readable table.</p>
 
             <tr>
                 <td class="col-md-3">selector</td>
-                <td class="col-md-9"><code>sz-configuration-about</code></td>
+                <td class="col-md-9"><code>sz-why-entities</code></td>
             </tr>
 
             <tr>
                 <td class="col-md-3">styleUrls</td>
-                <td class="col-md-9"><code>./sz-configuration-about.component.scss</code></td>
+                <td class="col-md-9"><code>./sz-why-entities.component.scss</code></td>
             </tr>
 
 
 
             <tr>
                 <td class="col-md-3">templateUrl</td>
-                <td class="col-md-9"><code>./sz-configuration-about.component.html</code></td>
+                <td class="col-md-9"><code>./sz-why-entities.component.html</code></td>
             </tr>
 
 
@@ -145,11 +141,11 @@ a human readable table.</p>
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#apiConfiguration" >apiConfiguration</a>
+                                <a href="#dataSource" >dataSource</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#apiProperties" >apiProperties</a>
+                                <a href="#gotColumnDefs" >gotColumnDefs</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -168,8 +164,10 @@ a human readable table.</p>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#getPropsAsArray" >getPropsAsArray</a>
+                                <a href="#formatWhyDataForDataTable" >formatWhyDataForDataTable</a>
+                            </li>
+                            <li>
+                                <a href="#getWhyData" >getWhyData</a>
                             </li>
                             <li>
                                 <a href="#ngOnDestroy" >ngOnDestroy</a>
@@ -181,10 +179,58 @@ a human readable table.</p>
                     </td>
                 </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#entityIds" >entityIds</a>
+                            </li>
+                            <li>
+                                <a href="#recordsToShow" >recordsToShow</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#loading" >loading</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
 
 
-
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#displayedColumns" >displayedColumns</a>
+                                </li>
+                                <li>
+                                    <a href="#isLoading" >isLoading</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
         </tbody>
     </table>
 </section>
@@ -195,7 +241,7 @@ a human readable table.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(apiConfiguration: SzRestConfiguration, apiConfigService: <a href="../injectables/SzConfigurationService.html" target="_self">SzConfigurationService</a>)</code>
+<code>constructor(entityData: EntityDataService)</code>
                     </td>
                 </tr>
 
@@ -213,22 +259,10 @@ a human readable table.</p>
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>apiConfiguration</td>
+                                                        <td>entityData</td>
                                                   
                                                         <td>
-                                                                    <code>SzRestConfiguration</code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>apiConfigService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/SzConfigurationService.html" target="_self" >SzConfigurationService</a></code>
+                                                                    <code>EntityDataService</code>
                                                         </td>
                                                   
                                                     <td>
@@ -245,8 +279,66 @@ a human readable table.</p>
         </table>
 </section>
 
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="entityIds"></a>
+                        <b>entityIds</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>SzEntityIdentifier[]</code>
 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="recordsToShow"></a>
+                        <b>recordsToShow</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>SzRecordId[] | undefined</code>
 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>if more than two records the view can be limited to just explicitly listed ones</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+    <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="loading"></a>
+                        <b>loading</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter&lt;boolean&gt;</code>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
 
 
     <section>
@@ -258,18 +350,16 @@ a human readable table.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getPropsAsArray"></a>
+                    <a name="formatWhyDataForDataTable"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>getPropsAsArray</b></span>
-                        <a href="#getPropsAsArray"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>formatWhyDataForDataTable</b></span>
+                        <a href="#formatWhyDataForDataTable"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getPropsAsArray(config: SzRestConfiguration)</code>
+<code>formatWhyDataForDataTable(data: SzWhyEntitiesResponseData)</code>
                 </td>
             </tr>
 
@@ -292,9 +382,9 @@ a human readable table.</p>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>config</td>
+                                    <td>data</td>
                                     <td>
-                                            <code>SzRestConfiguration</code>
+                                            <code>SzWhyEntitiesResponseData</code>
                                     </td>
 
                                     <td>
@@ -309,11 +399,42 @@ a human readable table.</p>
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>object[]</code>
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                     </div>
                     <div class="io-description">
                         
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getWhyData"></a>
+                    <span class="name">
+                        <span ><b>getWhyData</b></span>
+                        <a href="#getWhyData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getWhyData()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
                     </div>
                 </td>
             </tr>
@@ -393,27 +514,17 @@ a human readable table.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="apiConfiguration"></a>
+                    <a name="dataSource"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>apiConfiguration</b></span>
-                        <a href="#apiConfiguration"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>dataSource</b></span>
+                        <a href="#dataSource"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>SzRestConfiguration</code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <b>Decorators : </b>
-                        <br />
-                        <code>
-                            @Inject(SzRestConfiguration)<br />
-                        </code>
+                        <i>Default value : </i><code>new SzWhyEntitiesDataSource(this.dataToDisplay)</code>
                     </td>
                 </tr>
 
@@ -424,18 +535,17 @@ a human readable table.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="apiProperties"></a>
+                    <a name="gotColumnDefs"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>apiProperties</b></span>
-                        <a href="#apiProperties"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>gotColumnDefs</b></span>
+                        <a href="#gotColumnDefs"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>object[]</code>
-
+                        <i>Default value : </i><code>false</code>
                     </td>
                 </tr>
 
@@ -471,62 +581,150 @@ a human readable table.</p>
     </table>
 </section>
 
+    <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="displayedColumns"></a>
+                        <span class="name"><b>displayedColumns</b><a href="#displayedColumns"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>displayedColumns()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isLoading"></a>
+                        <span class="name"><b>isLoading</b><a href="#isLoading"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>isLoading()</code></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>isLoading(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+</section>
 </div>
 
 
 
     <div class="tab-pane fade " id="c-templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;sz-configuration-about&quot;&gt;
-  &lt;div class&#x3D;&quot;header&quot;&gt;
-      &lt;div class&#x3D;&quot;column&quot;&gt;Property Name&lt;/div&gt;
-      &lt;div class&#x3D;&quot;column&quot;&gt;Property Value&lt;/div&gt;
-  &lt;/div&gt;
-    &lt;div *ngFor&#x3D;&quot; let propObj of this.apiProperties&quot; class&#x3D;&quot;row&quot;&gt;
-      &lt;div class&#x3D;&quot;column cell&quot;&gt;{{propObj[&#x27;key&#x27;]}}&lt;/div&gt;
-      &lt;div class&#x3D;&quot;column cell&quot;&gt;{{propObj[&#x27;value&#x27;]}}&lt;/div&gt;
-    &lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
+        <pre class="line-numbers"><code class="language-html">&lt;table *ngIf&#x3D;&quot;gotColumnDefs &amp;&amp; !isLoading&quot; mat-table [dataSource]&#x3D;&quot;dataSource&quot; class&#x3D;&quot;mat-why-report-table mat-elevation-z8&quot;&gt;
+  &lt;ng-container [matColumnDef]&#x3D;&quot;column&quot; *ngFor&#x3D;&quot;let column of displayedColumns&quot;&gt;
+    &lt;th mat-header-cell *matHeaderCellDef&gt; {{column}} &lt;/th&gt;
+    &lt;td mat-cell *matCellDef&#x3D;&quot;let element&quot; class&#x3D;&quot;mat-cell&quot;&gt; {{element[column]}} &lt;/td&gt;
+  &lt;/ng-container&gt;
+
+  &lt;!--&lt;tr mat-header-row *matHeaderRowDef&#x3D;&quot;displayedColumns&quot;&gt;&lt;/tr&gt;--&gt;
+  &lt;tr mat-row *matRowDef&#x3D;&quot;let row; columns: displayedColumns;&quot;&gt;&lt;/tr&gt;
+&lt;/table&gt;</code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-styleData">
                 <p class="comment">
-                    <code>./sz-configuration-about.component.scss</code>
+                    <code>./sz-why-entities.component.scss</code>
                 </p>
                 <pre class="line-numbers"><code class="language-scss">
 :host {
-  border: 1px solid #000;
-  border-radius: 3px;
-  display: inline-table;
-}
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 14px;
+  font-size: 14px;
+  margin: 2px 4px;
 
-.header {
-  border: 1px outset #C0C0C0;
-  background-color: #e1e1e1;
-  font-weight: bold;
+  span {
+    /* align-self: flex-start;*/
+    margin-right: 7px;
+  }
 
-  .column {
-    margin: 4px 10px;
+  svg {
+    align-self: flex-end;
   }
 }
 
-.row, .header {
-  display: flex;
+.mat-why-report-table {
+  width: 100%;
 }
 
-.column {
-  flex: 50%;
-  margin: 0 2px 0 2px;
+.mat-column-title {
+  padding-left: 16px;
+  padding-right: 16px;
+  color: #2977a7;
+  font-size: 16px;
+  border-right: 2px solid #dcdcdc;
+  background-color: #f5f5f5;
+  text-transform: uppercase;
+  font-family: inherit;
 }
-.row {
-  padding: 2px 0 2px 10px;
-  border-bottom: 1px inset #c0c0c0;
-}
-.cell {
-  /*border: 1px inset #C0C0C0;*/
-  padding: 2px;
-}
-</code></pre>
+.mat-cell {
+  border-right: 2px solid #dcdcdc;
+  padding-left: 16px;
+  padding-right: 16px;
+  white-space: pre;
+  font-family: monospace;
+  &amp;:last-child {
+    padding-right: 10px;
+  }
+}</code></pre>
     </div>
 
 
@@ -537,10 +735,10 @@ a human readable table.</p>
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="sz-configuration-about">  <div class="header">      <div class="column">Property Name</div>      <div class="column">Property Value</div>  </div>    <div *ngFor=" let propObj of this.apiProperties" class="row">      <div class="column cell">{{propObj[\'key\']}}</div>      <div class="column cell">{{propObj[\'value\']}}</div>    </div></div></div>'
+        var COMPONENT_TEMPLATE = '<div><table *ngIf="gotColumnDefs && !isLoading" mat-table [dataSource]="dataSource" class="mat-why-report-table mat-elevation-z8">  <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">    <th mat-header-cell *matHeaderCellDef> {{column}} </th>    <td mat-cell *matCellDef="let element" class="mat-cell"> {{element[column]}} </td>  </ng-container>  <!--<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr></table></div>'
     var COMPONENTS = [{'name': 'SzAlertMessageDialog', 'selector': 'sz-alert-dialog'},{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzMultiSelectButtonComponent', 'selector': 'sz-button-multi-select'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipNetworkInputComponent', 'selector': 'sz-relationship-network-input'},{'name': 'SzRelationshipNetworkLookupComponent', 'selector': 'sz-relationship-network-lookup'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
     var DIRECTIVES = [];
-    var ACTUAL_COMPONENT = {'name': 'SzConfigurationAboutComponent'};
+    var ACTUAL_COMPONENT = {'name': 'SzWhyEntitiesComparisonComponent'};
 </script>
 <script src="../js/tree.js"></script>
 
@@ -585,7 +783,7 @@ a human readable table.</p>
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
-            var COMPODOC_CURRENT_PAGE_URL = 'SzConfigurationAboutComponent.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'SzWhyEntitiesComparisonComponent.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

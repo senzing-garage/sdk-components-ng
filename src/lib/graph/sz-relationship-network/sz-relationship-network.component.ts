@@ -1559,6 +1559,8 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
         y: centerY + (radius * Math.sin(angleInRadians))
       };
     }
+    // draws a path in a circle to be used for laying out items
+    // in a circle along a path
     function describeArc(x, y, radius, startAngle, endAngle){
         var start = polarToCartesian(x, y, radius, endAngle);
         var end = polarToCartesian(x, y, radius, startAngle);
@@ -1620,6 +1622,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       }
       return circlesToDraw
     }
+    // takes a collection of entities and lays them out in increasing diameter along rings around an X and Y origin.
     let drawNodesInRings = (_nodes: d3.Selection<SVGElement, any, any, any>, minimumRingSize?: number, x?: number, y?: number): Array<{index: number, diameter: number, itemCount?: number, nodes: d3.Selection<SVGElement, any, any, any>}> => {
       let optimalRingMinimumDiameter = minimumRingSize ? minimumRingSize : undefined;
       if(!optimalRingMinimumDiameter) {
@@ -2159,7 +2162,10 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
     // publish out event
     this._rendered = true;
   }
-
+  /** 
+   * update the relationship count bubble inside a entity node 
+   * with the value from numberRelatedHidden
+   */
   private updateHiddenRelationshipCounts(_nodes) {
     //console.log('updateHiddenRelationshipCounts: ', _nodes);
     if(_nodes && _nodes.selectAll) {
@@ -2177,6 +2183,10 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       //console.log('updateHiddenRelationshipCounts: ', _glyphNodes);
     }
   }
+  /** 
+   * ensure that a link node(line) is not visible if one 
+   * of the connected nodes is not visible
+   */
   private updateIsHiddenForLinks(hiddenNodes, _ln) {
     // we only want links to just read off of 
     // whatever the visibility is of the nodes (K.I.S.S.)
@@ -2193,7 +2203,10 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
     }
     //console.log('checking if line between '+ _ln.sourceEntityId +' and '+ _ln.targetEntityId +' should be hidden: '+ shouldBeHidden, hiddenNodes.includes(_ln.sourceEntityId), hiddenNodes.includes(_ln.targetEntityId), hiddenNodes);
   }
-
+  /**
+   * get the css classes as a space separate string 
+   * to apply to an entity link node(line) 
+   */
   private getEntityLinkClass(_ln) {
     let _visibilityClass      = _ln.isHidden ? ['sz-node-state-hidden']  : [];
     let _classes              = [].
@@ -2205,7 +2218,10 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
     //}
     return _classes.join(' ');
   }
-
+  /**
+   * get the css classes as a space separate string 
+   * to apply to an entity node 
+   */
   private getEntityNodeClass(_d) {
     let _visibilityClass        = _d.isHidden ?                   ['sz-node-state-hidden']  : [];
     let _collapsedNodesClass    = (_d.numberRelatedHidden > 0 || !_d.allRelatedEntitiesOnDeck) ?  ['has-collapsed-edges']   : [];
@@ -2254,7 +2270,10 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       return relatedEntityIds && relatedEntityIds.indexOf && relatedEntityIds.indexOf(d.entityId) >= 0;
     })
   }
-
+  /** 
+   * return an array of entity ids for nodes 
+   * that exist on canvas but are not currently visible
+   */
   private getHiddenNodeIds(_nodeData) {
     let _retVal = [];
     if(_nodeData && _nodeData.data){
@@ -2264,7 +2283,10 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
     }
     return _retVal;
   }
-
+  /** 
+   * get the css classes as a space separate string 
+   * to apply to an entity link label node 
+   */
   private getEntityLinkLabelClass (_ln) {
     let _visibilityClass      = _ln.isHidden ? ['sz-node-state-hidden']  : [];
     let _classes              = ['sz-graph-link-label'].

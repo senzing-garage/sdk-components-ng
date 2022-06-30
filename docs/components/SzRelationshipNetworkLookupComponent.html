@@ -28,72 +28,94 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content class">
+               <div class="content component">
                    <div class="content-data">
 
 
 
 
-
-
-
-
-
-
-
-
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li >SzAdminPrefs</li>
+  <li>Components</li>
+  <li
+  >
+  SzRelationshipNetworkLookupComponent</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
         <li class="active">
             <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
-        <p class="comment">
-            <h3>File</h3>
-        </p>
-        <p class="comment">
-            <code>src/lib/services/sz-prefs.service.ts</code>
-        </p>
-
-
-            <p class="comment">
-                <h3>Description</h3>
-            </p>
-            <p class="comment">
-                <p>search form related preferences bus class.
-used by <a href="../injectables/SzPrefsService.html">SzPrefsService</a> to store it&#39;s
-admin area related prefs.
-Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsService</a> context, not on its own.</p>
-<p>this.prefs.admin.streamConnectionProperties = {
-connected: boolean;
-clientId?: string;
-hostname: string;
-sampleSize: number;
-port?: number;
-connectionTest: boolean;
-reconnectOnClose: boolean;
-};</p>
-<p>this.prefs.searchResults.prefsChanged.subscribe( (prefs) =&gt; { console.log(&#39;search form pref change happened.&#39;, prefs); })</p>
-
-            </p>
-
-            <p class="comment">
-                <h3>Extends</h3>
-            </p>
-            <p class="comment">
-                        <code><a href="../classes/SzSdkPrefsBase.html" target="_self" >SzSdkPrefsBase</a></code>
-            </p>
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/lib/graph/sz-relationship-network-lookup/sz-relationship-network-lookup.component.ts</code>
+</p>
 
 
 
-            <section>
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>sz-relationship-network-lookup</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./sz-relationship-network-lookup.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./sz-relationship-network-lookup.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -106,19 +128,9 @@ reconnectOnClose: boolean;
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier"></span>
-                                <a href="#jsonKeys" >jsonKeys</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#bulkSet" >bulkSet</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#prefsChanged" >prefsChanged</a>
-                            </li>
-                            <li>
-                                <a href="#typemap" >typemap</a>
+                                    <span class="modifier">Static</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#WITH_RAW" >WITH_RAW</a>
                             </li>
                         </ul>
                     </td>
@@ -133,26 +145,56 @@ reconnectOnClose: boolean;
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#fromJSONObject" >fromJSONObject</a>
+                                <a href="#broadcastInputs" >broadcastInputs</a>
                             </li>
                             <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#getPublicPropertiesSchema" >getPublicPropertiesSchema</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#toJSONObject" >toJSONObject</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#toJSONString" >toJSONString</a>
+                                <a href="#ngOnInit" >ngOnInit</a>
                             </li>
                         </ul>
                     </td>
                 </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#buildOut" >buildOut</a>
+                            </li>
+                            <li>
+                                <a href="#entityIds" >entityIds</a>
+                            </li>
+                            <li>
+                                <a href="#maxDegrees" >maxDegrees</a>
+                            </li>
+                            <li>
+                                <a href="#maxEntities" >maxEntities</a>
+                            </li>
+                            <li>
+                                <a href="#showLinkLabels" >showLinkLabels</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#networkLoaded" >networkLoaded</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
 
 
@@ -165,19 +207,19 @@ reconnectOnClose: boolean;
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#streamAnalysisConfig" >streamAnalysisConfig</a>
+                                    <a href="#showLinkLabels" >showLinkLabels</a>
                                 </li>
                                 <li>
-                                    <a href="#streamConnectionProperties" >streamConnectionProperties</a>
+                                    <a href="#entityIds" >entityIds</a>
                                 </li>
                                 <li>
-                                    <a href="#streamLoadConfig" >streamLoadConfig</a>
+                                    <a href="#maxDegrees" >maxDegrees</a>
                                 </li>
                                 <li>
-                                    <a href="#useStreamingForAnalysis" >useStreamingForAnalysis</a>
+                                    <a href="#buildOut" >buildOut</a>
                                 </li>
                                 <li>
-                                    <a href="#useStreamingForLoad" >useStreamingForLoad</a>
+                                    <a href="#maxEntities" >maxEntities</a>
                                 </li>
                             </ul>
                         </td>
@@ -186,21 +228,217 @@ reconnectOnClose: boolean;
     </table>
 </section>
 
-            <section>
+    <section>
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor()</code>
+<code>constructor(graphService: <a href="../interfaces/Graph.html" target="_self">EntityGraphService</a>)</code>
                     </td>
                 </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>graphService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/Graph.html" target="_self" >EntityGraphService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
 
-            <section>
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="buildOut"></a>
+                        <b>buildOut</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="entityIds"></a>
+                        <b>entityIds</b>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="maxDegrees"></a>
+                        <b>maxDegrees</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="maxEntities"></a>
+                        <b>maxEntities</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showLinkLabels"></a>
+                        <b>showLinkLabels</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+    <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="networkLoaded"></a>
+                        <b>networkLoaded</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="broadcastInputs"></a>
+                    <span class="name">
+                        <span ><b>broadcastInputs</b></span>
+                        <a href="#broadcastInputs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>broadcastInputs()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
     
     <h3 id="inputs">
         Properties
@@ -209,51 +447,12 @@ reconnectOnClose: boolean;
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="jsonKeys"></a>
+                    <a name="WITH_RAW"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                        <span ><b>jsonKeys</b></span>
-                        <a href="#jsonKeys"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>[]</code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>[
-    &#x27;streamAnalysisConfig&#x27;,
-    &#x27;streamConnectionProperties&#x27;,
-    &#x27;streamLoadConfig&#x27;,
-    &#x27;useStreamingForAnalysis&#x27;,
-    &#x27;useStreamingForLoad&#x27;,
-  ]</code>
-                    </td>
-                </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>the keys of member setters or variables in the object
-to output in json, or to take as json input</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="bulkSet"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>bulkSet</b></span>
-                        <a href="#bulkSet"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Static</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>WITH_RAW</b></span>
+                        <a href="#WITH_RAW"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -265,74 +464,7 @@ to output in json, or to take as json input</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>false</code>
-                    </td>
-                </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>during a bulk property set, set this to true to
-not publish change events on every single value change</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="prefsChanged"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>prefsChanged</b></span>
-                        <a href="#prefsChanged"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>BehaviorSubject&lt;any&gt;</code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>new BehaviorSubject&lt;any&gt;(this.toJSONObject())</code>
-                    </td>
-                </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>behavior subject that can be subscribed to for change
-notifications.</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="typemap"></a>
-                    <span class="name">
-                        <span ><b>typemap</b></span>
-                        <a href="#typemap"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>{}</code>
+                        <i>Default value : </i><code>true</code>
                     </td>
                 </tr>
 
@@ -341,190 +473,7 @@ notifications.</p>
     </table>
 </section>
 
-            <section>
-    
-    <h3 id="methods">
-        Methods
-    </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="fromJSONObject"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>fromJSONObject</b></span>
-                        <a href="#fromJSONObject"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>fromJSONObject(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>populate values by calling setters with the same names as json keys</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>value</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getPublicPropertiesSchema"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>getPublicPropertiesSchema</b></span>
-                        <a href="#getPublicPropertiesSchema"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getPublicPropertiesSchema()</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>gets an array of all public json properties and their types</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="toJSONObject"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>toJSONObject</b></span>
-                        <a href="#toJSONObject"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>toJSONObject()</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>get shallow JSON copy of object state. properties are filtered by members of <a href="jsonKeys">jsonKeys</a></p>
-</div>
-
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="toJSONString"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>toJSONString</b></span>
-                        <a href="#toJSONString"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>toJSONString()</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>get object state representation as a string</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>
-
-
-
-
-
-            <section>
+    <section>
     <h3 id="accessors">
         Accessors
     </h3>
@@ -532,253 +481,24 @@ notifications.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="streamAnalysisConfig"></a>
-                        <span class="name"><b>streamAnalysisConfig</b><a href="#streamAnalysisConfig"><span class="icon ion-ios-link"></span></a></span>
+                        <a name="showLinkLabels"></a>
+                        <span class="name"><b>showLinkLabels</b><a href="#showLinkLabels"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>streamAnalysisConfig()</code></span>
+                        <span class="accessor"><b>get</b><code>showLinkLabels()</code></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>showLinkLabels(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>configuration parameters for doing analysis on a file stream prior to importing</p>
-</div>
-
-                                <div class="io-description">
-                                    <b>Returns : </b>        <code><a href="../interfaces/AdminStreamAnalysisConfig.html" target="_self" >AdminStreamAnalysisConfig</a></code>
-
-                                </div>
-                        </td>
-                    </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>streamAnalysisConfig(value: <a href="../interfaces/AdminStreamAnalysisConfig.html" target="_self">AdminStreamAnalysisConfig</a>)</code></span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description"><p>configuration parameters for doing analysis on a file stream prior to importing</p>
-</div>
-
-                                <div class="io-description">
-                                        <b>Parameters :</b>
-                                        <table class="params">
-                                            <thead>
-                                                <tr>
-                                                    <td>Name</td>
-                                                        <td>Type</td>
-                                                    <td>Optional</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                    <tr>
-                                                            <td>value</td>
-                                                    
-                                                            <td>
-                                                                            <code><a href="../interfaces/AdminStreamAnalysisConfig.html" target="_self" >AdminStreamAnalysisConfig</a></code>
-                                                            </td>
-                                                    
-                                                        <td>
-                                                                No
-                                                        </td>
-                                                        
-                                                    </tr>
-                                            </tbody>
-                                        </table>
-                                </div>
-                                <div>
-                                </div>
-                                <div class="io-description">
-                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                                </div>
-                        </td>
-                    </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="streamConnectionProperties"></a>
-                        <span class="name"><b>streamConnectionProperties</b><a href="#streamConnectionProperties"><span class="icon ion-ios-link"></span></a></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>streamConnectionProperties()</code></span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description"><p>connection parameters defining how and where to stream to bulk-loading endpoints</p>
-</div>
-
-                                <div class="io-description">
-                                    <b>Returns : </b>        <code><a href="../interfaces/AdminStreamConnProperties.html" target="_self" >AdminStreamConnProperties | undefined</a></code>
-
-                                </div>
-                        </td>
-                    </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>streamConnectionProperties(value: <a href="../interfaces/AdminStreamConnProperties.html" target="_self">AdminStreamConnProperties | undefined</a>)</code></span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description"><p>connection parameters defining how and where to stream to bulk-loading endpoints</p>
-</div>
-
-                                <div class="io-description">
-                                        <b>Parameters :</b>
-                                        <table class="params">
-                                            <thead>
-                                                <tr>
-                                                    <td>Name</td>
-                                                        <td>Type</td>
-                                                    <td>Optional</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                    <tr>
-                                                            <td>value</td>
-                                                    
-                                                            <td>
-                                                                            <code><a href="../interfaces/AdminStreamConnProperties.html" target="_self" >AdminStreamConnProperties | undefined</a></code>
-                                                            </td>
-                                                    
-                                                        <td>
-                                                                No
-                                                        </td>
-                                                        
-                                                    </tr>
-                                            </tbody>
-                                        </table>
-                                </div>
-                                <div>
-                                </div>
-                                <div class="io-description">
-                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                                </div>
-                        </td>
-                    </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="streamLoadConfig"></a>
-                        <span class="name"><b>streamLoadConfig</b><a href="#streamLoadConfig"><span class="icon ion-ios-link"></span></a></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>streamLoadConfig()</code></span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description"><p>configuration parameters for related to importing records using the stream connection</p>
-</div>
-
-                                <div class="io-description">
-                                    <b>Returns : </b>        <code><a href="../interfaces/AdminStreamLoadConfig.html" target="_self" >AdminStreamLoadConfig</a></code>
-
-                                </div>
-                        </td>
-                    </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>streamLoadConfig(value: <a href="../interfaces/AdminStreamLoadConfig.html" target="_self">AdminStreamLoadConfig</a>)</code></span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description"><p>configuration parameters for related to importing records using the stream connection</p>
-</div>
-
-                                <div class="io-description">
-                                        <b>Parameters :</b>
-                                        <table class="params">
-                                            <thead>
-                                                <tr>
-                                                    <td>Name</td>
-                                                        <td>Type</td>
-                                                    <td>Optional</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                    <tr>
-                                                            <td>value</td>
-                                                    
-                                                            <td>
-                                                                            <code><a href="../interfaces/AdminStreamLoadConfig.html" target="_self" >AdminStreamLoadConfig</a></code>
-                                                            </td>
-                                                    
-                                                        <td>
-                                                                No
-                                                        </td>
-                                                        
-                                                    </tr>
-                                            </tbody>
-                                        </table>
-                                </div>
-                                <div>
-                                </div>
-                                <div class="io-description">
-                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                                </div>
-                        </td>
-                    </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="useStreamingForAnalysis"></a>
-                        <span class="name"><b>useStreamingForAnalysis</b><a href="#useStreamingForAnalysis"><span class="icon ion-ios-link"></span></a></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>useStreamingForAnalysis()</code></span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description"><p>whether or not to use the streamConnectionProperties to do analysis through websocket stream.</p>
-</div>
-
-                                <div class="io-description">
-                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
-                                </div>
-                        </td>
-                    </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>useStreamingForAnalysis(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description"><p>whether or not to use the streamConnectionProperties to do analysis through websocket stream.</p>
-</div>
 
                                 <div class="io-description">
                                         <b>Parameters :</b>
@@ -820,37 +540,19 @@ notifications.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="useStreamingForLoad"></a>
-                        <span class="name"><b>useStreamingForLoad</b><a href="#useStreamingForLoad"><span class="icon ion-ios-link"></span></a></span>
+                        <a name="entityIds"></a>
+                        <span class="name"><b>entityIds</b><a href="#entityIds"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
 
+
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>useStreamingForLoad()</code></span>
+                        <span class="accessor"><b>set</b><code>entityIds(value: number[] | string[] | string)</code></span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>whether or not to use the streamConnectionProperties to do analysis through websocket stream.</p>
-</div>
-
-                                <div class="io-description">
-                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
-                                </div>
-                        </td>
-                    </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>useStreamingForLoad(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description"><p>whether or not to use the streamConnectionProperties to do record importing through websocket stream.</p>
-</div>
 
                                 <div class="io-description">
                                         <b>Parameters :</b>
@@ -867,7 +569,169 @@ notifications.</p>
                                                             <td>value</td>
                                                     
                                                             <td>
-                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                                        <code>number[] | string[] | string</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="maxDegrees"></a>
+                        <span class="name"><b>maxDegrees</b><a href="#maxDegrees"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>maxDegrees(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="buildOut"></a>
+                        <span class="name"><b>buildOut</b><a href="#buildOut"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>buildOut(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="maxEntities"></a>
+                        <span class="name"><b>maxEntities</b><a href="#maxEntities"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>maxEntities(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                                             </td>
                                                     
                                                         <td>
@@ -889,10 +753,43 @@ notifications.</p>
             </tbody>
         </table>
 </section>
+</div>
+
+
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./sz-relationship-network-lookup.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
     </div>
 
 
+    
 </div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div></div>'
+    var COMPONENTS = [{'name': 'SzAlertMessageDialog', 'selector': 'sz-alert-dialog'},{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzMultiSelectButtonComponent', 'selector': 'sz-button-multi-select'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipNetworkInputComponent', 'selector': 'sz-relationship-network-input'},{'name': 'SzRelationshipNetworkLookupComponent', 'selector': 'sz-relationship-network-lookup'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'SzRelationshipNetworkLookupComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
 
 
 
@@ -926,8 +823,8 @@ notifications.</p>
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'SzAdminPrefs.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'SzRelationshipNetworkLookupComponent.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 
