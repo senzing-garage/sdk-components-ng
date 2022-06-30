@@ -83,7 +83,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     return retVal;
   }
   @Input() public set showMatchKeyTokens(value: Array<SzMatchKeyTokenComposite>) {
-    console.log('showMatchKeyTokens.set()', value);
+    //console.log('showMatchKeyTokens.set()', value);
     if(value && value.map && value !== undefined) {
       this._matchKeyTokens = value.map((matchKeyComposite: SzMatchKeyTokenComposite, ind: number) => {
         return Object.assign(matchKeyComposite, {

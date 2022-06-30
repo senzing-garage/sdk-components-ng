@@ -912,14 +912,27 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     let retVal = false;
     if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
       return true;
-    } else if(coreMatchKeyTokens && coreMatchKeyTokens.length > 0) {
-      if(nodeData && (nodeData.isRelatedToPrimaryEntity || nodeData.relatedToPrimaryEntityDirectly || nodeData.isPrimaryEntity) && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf){
+    } else if(coreMatchKeyTokens) {
+      if(coreMatchKeyTokens && coreMatchKeyTokens.length === 0) {
+        // just hide everything that is 1 lvl deep
+        if(nodeData && (nodeData.isRelatedToPrimaryEntity || nodeData.relatedToPrimaryEntityDirectly || nodeData.isPrimaryEntity) && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf) {
+          retVal = false;
+        } else {
+          retVal = true;
+        }
+        // and show everything else
+      } else if(nodeData && (nodeData.isRelatedToPrimaryEntity || nodeData.relatedToPrimaryEntityDirectly || nodeData.isPrimaryEntity) && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf){
         // D3 filter query 
         retVal = (nodeData.relationshipMatchKeyTokens.some( (tokenName) => {
           return coreMatchKeyTokens.indexOf(tokenName) > -1;
         }));
         //console.log(`isMatchKeyTokenInEntityNode: checking for "${matchKeyTokens}"? ${retVal}`, nodeData.relationshipMatchKeyTokens, );
         //return true;
+      } else if(nodeData.relatedToPrimaryEntityDirectly === false) {
+        // if it's not directly related to core BUT we're in core match key
+        // filtering mode the UI will have no way to select for it
+        // and if we're expanding out it will look like nothing happened on expand
+        retVal = true;
       }
     } else {
       if(nodeData && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf){
