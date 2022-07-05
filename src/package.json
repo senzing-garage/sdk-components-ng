@@ -1,6 +1,6 @@
 {
   "name": "@senzing/sdk-components-ng",
-  "version": "5.0.0-beta.1",
+  "version": "5.0.0-beta.2",
   "private": false,
   "keywords" :["Angular","Library","Senzing"],
   "license" : "SEE LICENSE IN LICENSE",
@@ -19,10 +19,10 @@
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
-    "@angular/cdk": "^13.2.0",
-    "@angular/common": "~13.2.0",
-    "@angular/core": "~13.2.0",
-    "@angular/material": "~13.2.0",
+    "@angular/cdk": "^13.3.0",
+    "@angular/common": "~13.3.0",
+    "@angular/core": "~13.3.0",
+    "@angular/material": "~13.3.0",
     "@senzing/rest-api-client-ng": "^4.0.0"
   }
 }
