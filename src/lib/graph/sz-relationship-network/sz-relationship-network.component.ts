@@ -896,6 +896,18 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
     if(this.linkLabel && this.linkLabel.attr) {
       this.linkLabel.attr('class', this.getEntityLinkLabelClass);
     }
+    // if there are any special node modifier functions run them
+    if( this._highlightFn || this._includesFn || this._filterFn || this._modifyFn) {
+      // run a fn against the node list
+      if ((this._filterFn && this._filterFn.length > 0) || (this._includesFn && this._includesFn.selectorArgs)) {
+        this._applyFilterFn(this._filterFn);
+        this._applyIncludesFn(this._includesFn);
+      } else if(this._modifyFn && this._modifyFn.length > 0) {
+        this._applyModifierFn(this._modifyFn);
+      } else if (this._highlightFn && this._highlightFn.length > 0) {
+        this._applyModifierFn(this._filterFn);
+      }
+    }
   }
 
   /**
@@ -2064,6 +2076,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
           this.expandCollapseToggle(d);
           d.loadingRelatedToDeck = false;
           this.getNodeByIdQuery(d.entityId).attr('class', this.getEntityNodeClass);
+
           return;
         });
       } else {

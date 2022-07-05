@@ -8,7 +8,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SzDataSourceComposite } from '../models/data-sources';
 import { SzMatchKeyComposite, SzMatchKeyTokenComposite } from '../models/graph';
 import { sortDataSourcesByIndex, parseBool, sortMatchKeysByIndex, sortMatchKeyTokensByIndex } from '../common/utils';
-import { SzEntityNetworkMatchKeyTokens } from '../models/graph';
+import { SzEntityNetworkMatchKeyTokens, SzMatchKeyTokenFilterScope } from '../models/graph';
 
 /**
  * Control Component allowing UI friendly changes
@@ -117,7 +117,37 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   public get showMatchKeyTokenFilters(): boolean | string {
     return this._showMatchKeyTokenFilters;
   }
-  
+  /** @internal */
+  private _matchKeyTokenSelectionScope: SzMatchKeyTokenFilterScope = SzMatchKeyTokenFilterScope.EXTRANEOUS;
+  /** sets the depth of what entities are shown when they match the 
+   * match key token filters. possible values are "CORE" and "EXTRANEOUS".
+   * when "CORE" is selected only entities that are directly related to queried 
+   * entity/entities are filtered by match key tokens. 
+   * when "EXTRANEOUS" is selected ALL entities no matter how they are related 
+   * are filtered by match key tokens.
+   */
+  @Input() public set matchKeyTokenSelectionScope(value: SzMatchKeyTokenFilterScope | string) {
+    switch((value as string)) {
+      case 'CORE':
+        this._matchKeyTokenSelectionScope = SzMatchKeyTokenFilterScope.CORE;
+        break;
+      case 'EXTRANEOUS':
+        this._matchKeyTokenSelectionScope = SzMatchKeyTokenFilterScope.EXTRANEOUS;
+        break;
+      default:
+        // assume it's already cast correctly
+        this._matchKeyTokenSelectionScope = (value as SzMatchKeyTokenFilterScope);
+    }
+  }
+  /**
+   * get the value of match key token filterings scope. possible values are 
+   * "CORE" and "EXTRANEOUS".
+   * core means the filtering is only being applied to entities that are directly 
+   * related to the primary entity/entities being displayed.
+   */
+  public get matchKeyTokenSelectionScope(): SzMatchKeyTokenFilterScope | string {
+    return this._matchKeyTokenSelectionScope;
+  }
   @Input() public showMatchKeyTokenSelectAll: boolean       = true;
   @Input() public showCoreMatchKeyTokenChips: boolean       = false;
   @Input() public showExtraneousMatchKeyTokenChips: boolean = true;
@@ -314,18 +344,18 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
         // remove from position
         _matchKeyTokensIncludedMemCopy.splice(_existingKeyPos,1);
         this.prefs.graph.matchKeyTokensIncluded = _matchKeyTokensIncludedMemCopy;
-        console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: removed ${mkName} from cloud value`,_matchKeyTokensIncludedMemCopy);
+        //console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: removed ${mkName} from cloud value`,_matchKeyTokensIncludedMemCopy);
       } else {
         // add to included token list
         _matchKeyTokensIncludedMemCopy.push( mkName );
         this.prefs.graph.matchKeyTokensIncluded = _matchKeyTokensIncludedMemCopy;
-        console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: added ${mkName} to cloud value`,_matchKeyTokensIncludedMemCopy);
+        //console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: added ${mkName} to cloud value`,_matchKeyTokensIncludedMemCopy);
       }
     } else {
       // add to included token list
       _matchKeyTokensIncludedMemCopy.push( mkName );
       this.prefs.graph.matchKeyTokensIncluded = _matchKeyTokensIncludedMemCopy;
-      console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: added ${mkName} to cloud value`,_matchKeyTokensIncludedMemCopy);
+      //console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: added ${mkName} to cloud value`,_matchKeyTokensIncludedMemCopy);
     }
   }
   onCoreMkTagFilterToggle( mkName: string ) { 

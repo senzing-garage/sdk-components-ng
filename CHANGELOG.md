@@ -17,9 +17,12 @@ Thio release adds new functionality around expanding and collapsing related enti
 - The follwing getters and setters added to `SzEntityDetailComponent`
   - `showGraphContextMenu` enables the built-in context menu for entity nodes on the graph embedded in the entity detail component.
   - `showGraphLinkContextMenu` enables the built-in context menu for relationship lines/labels on the graph embedded in the entity detail component.
+  - `graphMatchKeyTokenSelectionScope` possible values are "CORE" and "EXTRANEOUS". core sets the scope of match key token filtering to just entities directly related to the focused/primary entity of the graph. defaults to `EXTRANEOUS`.
 - The following Event Emitters added to `SzEntityDetailComponent`
   - `graphRelationshipContextMenuClick` is emitted when a user right clicks on relationship lines/labels in the embedded graph component.
   - `graphRelationshipClick` is emitted when a user clicks on relationship lines/labels in the embedded graph component.
+- The following properties added to `SzGraphComponent` and are inheirited by `SzStandaloneGraphComponent` and `SzEntityDetailGraphComponent`.
+  - `matchKeyTokenSelectionScope` possible values are "CORE" and "EXTRANEOUS". core sets the scope of match key token filtering to just entities directly related to the focused/primary entity of the graph. defaults to `EXTRANEOUS`.
 - The following methods added to `SzGraphComponent` and are inheirited by `SzStandaloneGraphComponent` and `SzEntityDetailGraphComponent`.
   - `canRemoveNode(entityId: SzEntityIdentifier)` returns boolean if an entity on canvas can be removed(root nodes, and primary query nodes cannot).
   - `canExpandNode(entityId: SzEntityIdentifier)` returns boolean if a node has hidden related entities that can be shown on canvas.
