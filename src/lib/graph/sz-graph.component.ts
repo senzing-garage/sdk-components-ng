@@ -863,7 +863,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     return _ret;
   }
   /** used by "entityNodecolorsByDataSource" getter to query nodes as belonging to a datasource */
-  private isEntityNodeInDataSource(isColorQuery, dataSource, nodeData) {
+  protected isEntityNodeInDataSource(isColorQuery, dataSource, nodeData) {
     const _retVal = false;
     const _hasActiveEntColorSet = ( this.queriedEntitiesColor && this.queriedEntitiesColor !== undefined && this.queriedEntitiesColor !== null) ? true : false;
 
@@ -880,7 +880,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       }
     }
   }
-  private isEntityNodeInDataSources(dataSources, nodeData) {
+  protected isEntityNodeInDataSources(dataSources, nodeData) {
     // console.log('fromOwners: ', nodeData);
     console.log('isEntityNodeInDataSources: ', dataSources, nodeData);
     if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
@@ -900,7 +900,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       }
     }
   }
-  private isEntityNodeNotInDataSources(dataSources, nodeData) {
+  protected isEntityNodeNotInDataSources(dataSources, nodeData) {
     //console.log('isEntityNodeNotInDataSources: ', dataSources, nodeData);
     if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
       return false;
