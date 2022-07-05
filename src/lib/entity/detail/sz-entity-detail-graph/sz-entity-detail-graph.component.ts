@@ -102,4 +102,20 @@ export class SzEntityDetailGraphComponent extends SzGraphComponent {
   public get entityNodeFilterByDataSource(): SzGraphNodeFilterPair[] {
     return this.entityNodeFilters;
   }
+  /** 
+   * for detail graph view we only want filters on if the user 
+   * can select them.
+   */
+  override get entityNodeFilters(): SzGraphNodeFilterPair[] {
+    let _ret = [];
+    if(this.dataSourcesFiltered && this.showFiltersControl) {
+      _ret = this.dataSourcesFiltered.map( (_name) => {
+        return {
+          selectorFn: this.isEntityNodeInDataSource.bind(this, false, _name),
+          selectorArgs: _name
+        };
+      });
+    }
+    return _ret;
+  }
 }
