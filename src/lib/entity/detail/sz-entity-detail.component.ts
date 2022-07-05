@@ -23,7 +23,7 @@ import { SzWhyEntitiesDialog } from '../../why/sz-why-entities.component';
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { parseBool } from '../../common/utils';
 import { SzDataSourceRecordsSelection, SzWhySelectionModeBehavior, SzWhySelectionMode } from '../../models/data-source-record-selection';
-
+import { SzMatchKeyTokenFilterScope } from '../../models/graph';
 /**
  * The Entity Detail Component.
  * Generates a complex detail page from input parameters.
@@ -166,6 +166,33 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   /** whether or not to show the built-in context menu on graph entity right-click */
   @Input() set showGraphContextMenu(value: boolean) {
     this._showGraphNodeContextMenu = value;
+  }
+  /** @internal */
+  private _graphMatchKeyTokenSelectionScope: SzMatchKeyTokenFilterScope       = SzMatchKeyTokenFilterScope.EXTRANEOUS;
+  /** sets the depth of what entities are shown when they match the 
+   * match key token filters. possible values are "CORE" and "EXTRANEOUS".
+   * when "CORE" is selected only entities that are directly related to queried 
+   * entity/entities are filtered by match key tokens. 
+   * when "EXTRANEOUS" is selected ALL entities no matter how they are related 
+   * are filtered by match key tokens.
+   */
+  @Input() public set graphMatchKeyTokenSelectionScope(value: SzMatchKeyTokenFilterScope | string){
+    if((value as string) === 'CORE') {
+      this._graphMatchKeyTokenSelectionScope = SzMatchKeyTokenFilterScope.CORE;
+    } else if((value as string) === 'EXTRANEOUS') {
+      this._graphMatchKeyTokenSelectionScope = SzMatchKeyTokenFilterScope.EXTRANEOUS;
+    } else {
+      this._graphMatchKeyTokenSelectionScope = (value as SzMatchKeyTokenFilterScope);
+    }
+  }
+  /**
+   * get the value of match key token filterings scope. possible values are 
+   * "CORE" and "EXTRANEOUS".
+   * core means the filtering is only being applied to entities that are directly 
+   * related to the primary entity/entities being displayed.
+   */
+  public get graphMatchKeyTokenSelectionScope() {
+    return this._graphMatchKeyTokenSelectionScope as SzMatchKeyTokenFilterScope;
   }
   /** whether or not to show the "why" comparison button for records */
   public get showRecordWhyUtilities(): boolean {

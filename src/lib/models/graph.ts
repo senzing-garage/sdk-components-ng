@@ -1,10 +1,15 @@
 import { SzEntityIdentifier } from "@senzing/rest-api-client-ng"
 
+export enum SzMatchKeyTokenFilterScope {
+  CORE,
+  EXTRANEOUS
+}
+
 export interface SzMatchKeyComposite {
-    name: string,
-    index?: number,
-    hidden?: boolean
-  }
+  name: string,
+  index?: number,
+  hidden?: boolean
+}
 
 export interface SzMatchKeyTokenComposite {
   derived: boolean,

@@ -8,7 +8,7 @@ import { SzGraphNodeFilterPair, SzEntityNetworkMatchKeyTokens } from '../models/
 import { SzRelationshipNetworkComponent } from './sz-relationship-network/sz-relationship-network.component';
 import { parseBool, parseSzIdentifier, sortDataSourcesByIndex } from '../common/utils';
 import { SzDataSourceComposite } from '../models/data-sources';
-import { SzMatchKeyTokenComposite, SzNetworkGraphInputs } from '../models/graph';
+import { SzMatchKeyTokenComposite, SzNetworkGraphInputs, SzMatchKeyTokenFilterScope } from '../models/graph';
 
 /**
  * Embeddable Graph Component
@@ -192,6 +192,33 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @Input() public showMatchKeyTokenSelectAll: boolean       = true;
   @Input() public showCoreMatchKeyTokenChips: boolean       = false;
   @Input() public showExtraneousMatchKeyTokenChips: boolean = true;
+  /** @internal */
+  private _matchKeyTokenSelectionScope: SzMatchKeyTokenFilterScope       = SzMatchKeyTokenFilterScope.EXTRANEOUS;
+  /** sets the depth of what entities are shown when they match the 
+   * match key token filters. possible values are "CORE" and "EXTRANEOUS".
+   * when "CORE" is selected only entities that are directly related to queried 
+   * entity/entities are filtered by match key tokens. 
+   * when "EXTRANEOUS" is selected ALL entities no matter how they are related 
+   * are filtered by match key tokens.
+   */
+  @Input() public set matchKeyTokenSelectionScope(value: SzMatchKeyTokenFilterScope | string){
+    if((value as string) === 'CORE') {
+      this._matchKeyTokenSelectionScope = SzMatchKeyTokenFilterScope.CORE;
+    } else if((value as string) === 'EXTRANEOUS') {
+      this._matchKeyTokenSelectionScope = SzMatchKeyTokenFilterScope.EXTRANEOUS;
+    } else {
+      this._matchKeyTokenSelectionScope = (value as SzMatchKeyTokenFilterScope);
+    }
+  }
+  /**
+   * get the value of match key token filterings scope. possible values are 
+   * "CORE" and "EXTRANEOUS".
+   * core means the filtering is only being applied to entities that are directly 
+   * related to the primary entity/entities being displayed.
+   */
+  public get matchKeyTokenSelectionScope() {
+    return this._matchKeyTokenSelectionScope as SzMatchKeyTokenFilterScope;
+  }
   
   /** whether or not to show match keys toggle control */
   @Input() set showMatchKeyControl(value: boolean | string) {
@@ -836,7 +863,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     return _ret;
   }
   /** used by "entityNodecolorsByDataSource" getter to query nodes as belonging to a datasource */
-  private isEntityNodeInDataSource(isColorQuery, dataSource, nodeData) {
+  protected isEntityNodeInDataSource(isColorQuery, dataSource, nodeData) {
     const _retVal = false;
     const _hasActiveEntColorSet = ( this.queriedEntitiesColor && this.queriedEntitiesColor !== undefined && this.queriedEntitiesColor !== null) ? true : false;
 
@@ -853,7 +880,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       }
     }
   }
-  private isEntityNodeInDataSources(dataSources, nodeData) {
+  protected isEntityNodeInDataSources(dataSources, nodeData) {
     // console.log('fromOwners: ', nodeData);
     console.log('isEntityNodeInDataSources: ', dataSources, nodeData);
     if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
@@ -873,7 +900,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       }
     }
   }
-  private isEntityNodeNotInDataSources(dataSources, nodeData) {
+  protected isEntityNodeNotInDataSources(dataSources, nodeData) {
     //console.log('isEntityNodeNotInDataSources: ', dataSources, nodeData);
     if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
       return false;
@@ -912,7 +939,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     let retVal = false;
     if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
       return true;
-    } else if(coreMatchKeyTokens) {
+    } else if(coreMatchKeyTokens && this._matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.CORE) {
       if(coreMatchKeyTokens && coreMatchKeyTokens.length === 0) {
         // just hide everything that is 1 lvl deep
         if(nodeData && (nodeData.isRelatedToPrimaryEntity || nodeData.relatedToPrimaryEntityDirectly || nodeData.isPrimaryEntity) && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf) {
@@ -926,7 +953,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
         retVal = (nodeData.relationshipMatchKeyTokens.some( (tokenName) => {
           return coreMatchKeyTokens.indexOf(tokenName) > -1;
         }));
-        //console.log(`isMatchKeyTokenInEntityNode: checking for "${matchKeyTokens}"? ${retVal}`, nodeData.relationshipMatchKeyTokens, );
+        //console.log(`isMatchKeyTokenInEntityNode: checking for "${coreMatchKeyTokens}"? ${retVal}`, nodeData.relationshipMatchKeyTokens, );
         //return true;
       } else if(nodeData.relatedToPrimaryEntityDirectly === false) {
         // if it's not directly related to core BUT we're in core match key
@@ -940,11 +967,22 @@ export class SzGraphComponent implements OnInit, OnDestroy {
         retVal = (nodeData.relationshipMatchKeyTokens.some( (tokenName) => {
           return matchKeyTokens.indexOf(tokenName) > -1;
         }));
-        //console.log(`isMatchKeyTokenInEntityNode: checking for "${matchKeyTokens}"? ${retVal}`, nodeData.relationshipMatchKeyTokens, );
+        //console.log(`isMatchKeyTokenInEntityNode: checking for "${matchKeyTokens}"? ${retVal}`, nodeData.relationshipMatchKeyTokens);
         //return true;
       }
     }
-    //console.log('isMatchKeyTokenInEntityNode: ', coreMatchKeyTokens, matchKeyTokens, nodeData, retVal);
+    /*
+    console.log(`isMatchKeyTokenInEntityNode #last: 
+    ${(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0)} | 
+    ${coreMatchKeyTokens ? true : false} | 
+    (${this._matchKeyTokenSelectionScope}  ${(coreMatchKeyTokens && this._matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.CORE) ? true : false}) | 
+    ${(coreMatchKeyTokens && coreMatchKeyTokens.length === 0)} | 
+    ${(nodeData && (nodeData.isRelatedToPrimaryEntity || nodeData.relatedToPrimaryEntityDirectly || nodeData.isPrimaryEntity) && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf) ? true : false}`, 
+    coreMatchKeyTokens, 
+    matchKeyTokens, 
+    nodeData, 
+    retVal);
+    */
     return retVal;
   }
   /** checks to see if entity node is one of the primary entities queried for*/
