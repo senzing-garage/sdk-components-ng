@@ -93,7 +93,7 @@
     "concat": "^1.0.3",
     "concurrently": "^6.4.0",
     "fs-extra": "^9.0.1",
-    "jasmine-core": "~3.10.0",
+    "jasmine-core": "~4.2.0",
     "karma": "^6.3.17",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.0.3",
