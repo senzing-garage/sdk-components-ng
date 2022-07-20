@@ -6,9 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.1] - 2022-07-19
+
+### Modified
+- Changed the behavior of `showCoreMatchKeyTokenChips` to automatically set `matchKeyTokenSelectionScope` to `CORE`.
+- Changed the complete match key display to a comma deliminated list of tokens on each line for readability
+
+relevant tickets: #343 #344
+
 ## [5.0.0] - 2022-07-01
 
-Thio release adds new functionality around expanding and collapsing related entities in *Network Graph* related components. We've moved the `@senzing/sdk-graph-components` to the scope of this package for easier maintenance and installation(now you just need this package instead of two). We're also adding the *Why Not* component that can be embedded between two or more entities to generate a report to show why two entities/records did not resolve.
+This release adds new functionality around expanding and collapsing related entities in *Network Graph* related components. We've moved the `@senzing/sdk-graph-components` to the scope of this package for easier maintenance and installation(now you just need this package instead of two). We're also adding the *Why Not* component that can be embedded between two or more entities to generate a report to show why two entities/records did not resolve.
 
 ### Added
 - The `SzWhyEntitiesComparisonComponent` added for doing _WHY_ comparison _between_ entities. Adds the ability to run "Why Not" Reports from within the context of the search results and graph. 

@@ -202,6 +202,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
    * are filtered by match key tokens.
    */
   @Input() public set matchKeyTokenSelectionScope(value: SzMatchKeyTokenFilterScope | string){
+    if(value === undefined) return;
     if((value as string) === 'CORE') {
       this._matchKeyTokenSelectionScope = SzMatchKeyTokenFilterScope.CORE;
     } else if((value as string) === 'EXTRANEOUS') {
@@ -209,6 +210,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     } else {
       this._matchKeyTokenSelectionScope = (value as SzMatchKeyTokenFilterScope);
     }
+    //console.log(`@senzing/sdk-components-ng/sz-graph-component.matchKeyTokenSelectionScope(${value} | ${(this._matchKeyTokenSelectionScope as unknown as string)})`, this._matchKeyTokenSelectionScope);
   }
   /**
    * get the value of match key token filterings scope. possible values are 
