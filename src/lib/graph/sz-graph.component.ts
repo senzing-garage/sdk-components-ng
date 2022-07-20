@@ -185,13 +185,59 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   public filterShowMatchKeys: string[];
   public filterShowMatchKeyTokens: Array<SzMatchKeyTokenComposite>;
   private _showMatchKeysFilters: boolean = true;
-  // temporarily switched to false since somethings
-  // broken (see https://github.com/Senzing/sdk-graph-components/issues/154)
   private _showMatchKeyTokenFilters: boolean = false;
   private _showMatchKeyControl: boolean = true;
+
+  /** whether or not to show the [ALL] | [NONE] macro token actions button */
   @Input() public showMatchKeyTokenSelectAll: boolean       = true;
-  @Input() public showCoreMatchKeyTokenChips: boolean       = false;
-  @Input() public showExtraneousMatchKeyTokenChips: boolean = true;
+
+  /** @internal */
+  private _showCoreMatchKeyTokenChips: boolean              = false;
+  /**
+   * whether or not to show only the match key token chips that apply 
+   * to "core" relationships. ie if the relationship is only between 
+   * the queried entity and 1 level away relationships. 
+   */
+  @Input() public set showCoreMatchKeyTokenChips(value: boolean | string){
+    this._showCoreMatchKeyTokenChips = parseBool(value);
+    if (value === true) {
+      this.matchKeyTokenSelectionScope = SzMatchKeyTokenFilterScope.CORE;
+    }
+  }
+  /**
+   * whether or not to show only the match key token chips that apply 
+   * to "core" relationships. ie if the relationship is only between 
+   * the queried entity and 1 level away relationships. 
+   */
+  public get showCoreMatchKeyTokenChips(): boolean {
+    return this._showCoreMatchKeyTokenChips;
+  }
+  /** @internal */
+  private _showExtraneousMatchKeyTokenChips: boolean = true;
+  /**
+   * whether or not to show only match key token chips that apply 
+   * to relationships between entities that are NOT directly related to 
+   * the primary entities. ie if the relationship is only between 
+   * a relatiohship between two entities that are not the primary queried 
+   * entity. 
+   */
+  @Input() public set showExtraneousMatchKeyTokenChips(value: boolean | string) {
+    this._showExtraneousMatchKeyTokenChips = parseBool(value);
+    if (value === true) {
+      this.matchKeyTokenSelectionScope = SzMatchKeyTokenFilterScope.EXTRANEOUS;
+    }
+  }
+  /**
+   * whether or not to show only match key token chips that apply 
+   * to relationships between entities that are NOT directly related to 
+   * the primary entities. ie if the relationship is only between 
+   * a relatiohship between two entities that are not the primary queried 
+   * entity. 
+   */
+  public get showExtraneousMatchKeyTokenChips(): boolean {
+    return this._showExtraneousMatchKeyTokenChips;
+  }
+
   /** @internal */
   private _matchKeyTokenSelectionScope: SzMatchKeyTokenFilterScope       = SzMatchKeyTokenFilterScope.EXTRANEOUS;
   /** sets the depth of what entities are shown when they match the 
