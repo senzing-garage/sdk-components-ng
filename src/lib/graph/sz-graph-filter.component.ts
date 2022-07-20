@@ -362,7 +362,14 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     let _matchKeyTokensIncludedMemCopy: string[] = [];
     if(this.matchKeyCoreTokensIncluded && this.matchKeyCoreTokensIncluded.length) {
       let _matchKeyTokensIncludedMemCopy = [].concat(this.matchKeyCoreTokensIncluded);
-
+      // pull any other items out of the values 
+      // IF the values are not in the current tag cloud
+      let _matchKeyCoreTokens        = this.matchKeyCoreTokens.map((mkTok) => mkTok.name);
+      _matchKeyTokensIncludedMemCopy = _matchKeyTokensIncludedMemCopy.filter((mkStr: string) => {
+        return (_matchKeyCoreTokens.indexOf(mkStr) > -1) ? true : false;
+      });
+      // now that we have a clean array see if the current value has 
+      // an existing position
       let _existingKeyPos = _matchKeyTokensIncludedMemCopy.indexOf(mkName);
       if(_existingKeyPos > -1 && _matchKeyTokensIncludedMemCopy[_existingKeyPos]) {
         // remove from position
