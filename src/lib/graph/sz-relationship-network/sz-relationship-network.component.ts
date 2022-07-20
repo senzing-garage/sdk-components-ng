@@ -1669,6 +1669,15 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
     }
     // -------------------------------------- end utility functions --------------------------------------
 
+    let getMatchKeyLabel = (_linkData) => {
+      let retValue = _linkData.matchKey + '['+ _linkData.matchKeyTokens +']';
+      if(_linkData.matchKeyTokens && _linkData.matchKeyTokens.length > 0) {
+        // tokenize list
+        retValue = _linkData.matchKeyTokens.map((_v) => { return (_v && _v.replace) ? _v.replace(/_/g,' '): _v;}).join(', ');
+      }
+      return retValue;
+    }
+
     let drawLinks = (_linkData) => {
       // Add link groups (line + label)
       if(!this.linkGroup) {
@@ -1705,7 +1714,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
         .attr('class', (d: any) => d.isCoreLink ? 'sz-graph-core-link-text' : 'sz-graph-link-text')
         .attr('startOffset', '50%')
         .attr('xlink:href', (d: any) => '#' + d.id) // This lets SVG know which label goes with which line
-        .text((d: any) => d.matchKey);
+        .text(getMatchKeyLabel);
 
       return {
         link: _links,
@@ -2997,6 +3006,8 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
 
     //console.log('addLinksToNodeData: entities: ',entitiesData);
     if(entitiesData && entitiesData.forEach) {
+      const matchKeyCategoriesByEntityId: {[key: number]: string[]} = {};
+
       entitiesData.forEach(entityInfo => {
         const resolvedEntity  = entityInfo;
         const entityId        = resolvedEntity.entityId;
@@ -3007,6 +3018,21 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
           const relatedEntityId = relatedEntity.entityId;
           const linkArr = [entityId, relatedEntityId].sort();
           const linkKey = {firstId: linkArr[0], secondId: linkArr[1]};
+          let _relatedMatchCategory = SzRelationshipNetworkComponent.tokenizeMatchKey(relatedEntity.matchKey);
+          let relatedMatchKeyCategories       = matchKeyCategoriesByEntityId[ resolvedEntity.entityId ] ? matchKeyCategoriesByEntityId[ resolvedEntity.entityId ]   : [];
+
+          if(!matchKeyCategoriesByEntityId[ relatedEntityId ] || matchKeyCategoriesByEntityId[ relatedEntityId ] === undefined) {
+            matchKeyCategoriesByEntityId[ relatedEntityId ] = [];
+          }
+          if(matchKeyCategoriesByEntityId[ relatedEntityId ] && matchKeyCategoriesByEntityId[ relatedEntityId ].concat) {
+            matchKeyCategoriesByEntityId[ relatedEntityId ] = matchKeyCategoriesByEntityId[ relatedEntityId ].concat(_relatedMatchCategory[0]).concat(_relatedMatchCategory[1])
+            // de-dupe values
+            matchKeyCategoriesByEntityId[ relatedEntityId ] = matchKeyCategoriesByEntityId[ relatedEntityId ].filter((value, index, self) => {
+              return self.indexOf(value) === index;
+            });
+          }
+
+
           if (!SzRelationshipNetworkComponent.hasKey(linkIndex, linkKey) && entityIndex.indexOf(relatedEntityId) !== -1) {
             linkIndex.push(linkKey);
             links.push({
@@ -3016,6 +3042,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
               targetEntityId: relatedEntityId,
               matchLevel: relatedEntity.matchLevel,
               matchKey: relatedEntity.matchKey,
+              matchKeyTokens: relatedMatchKeyCategories,
               isHidden: false,
               isCoreLink: false,
               id: linkIndex.indexOf(linkKey)
@@ -3028,6 +3055,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
               targetEntityId: relatedEntityId,
               matchLevel: relatedEntity.matchLevel,
               matchKey: relatedEntity.matchKey,
+              matchKeyTokens: relatedMatchKeyCategories,
               isHidden: false,
               isCoreLink: false,
               id: linkIndex.indexOf(linkKey)
