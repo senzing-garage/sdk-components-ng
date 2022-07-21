@@ -2,13 +2,12 @@ import { Component, HostBinding, Input, OnInit, AfterViewInit, OnDestroy, Output
 import { SzPrefsService, SzSdkPrefsModel } from '../services/sz-prefs.service';
 import { SzDataSourcesService } from '../services/sz-datasources.service';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SzDataSourceComposite } from '../models/data-sources';
-import { SzMatchKeyComposite, SzMatchKeyTokenComposite } from '../models/graph';
+import { SzMatchKeyComposite, SzMatchKeyTokenComposite, SzEntityNetworkMatchKeyTokens, SzMatchKeyTokenFilterScope } from '../models/graph';
 import { sortDataSourcesByIndex, parseBool, sortMatchKeysByIndex, sortMatchKeyTokensByIndex } from '../common/utils';
-import { SzEntityNetworkMatchKeyTokens, SzMatchKeyTokenFilterScope } from '../models/graph';
 
 /**
  * Control Component allowing UI friendly changes
@@ -119,6 +118,13 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   }
   /** @internal */
   private _matchKeyTokenSelectionScope: SzMatchKeyTokenFilterScope = SzMatchKeyTokenFilterScope.EXTRANEOUS;
+  /** @internal */
+  private _onMatchKeyTokenSelectionScopeChange        = new BehaviorSubject<SzMatchKeyTokenFilterScope>(this._matchKeyTokenSelectionScope);
+  /** when the user changes the scope of the match keys selected this event is published */
+  public onMatchKeyTokenSelectionScopeChange          = this._onMatchKeyTokenSelectionScopeChange.asObservable();
+  /** when the user changes the scope of the match keys selected this event is published */
+  @Output() public matchKeyTokenSelectionScopeChanged = new EventEmitter<SzMatchKeyTokenFilterScope>();
+
   /** sets the depth of what entities are shown when they match the 
    * match key token filters. possible values are "CORE" and "EXTRANEOUS".
    * when "CORE" is selected only entities that are directly related to queried 
@@ -148,6 +154,10 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   public get matchKeyTokenSelectionScope(): SzMatchKeyTokenFilterScope | string {
     return this._matchKeyTokenSelectionScope;
   }
+  public get isMatchKeyTokenSelectionScopeCore(): boolean {
+    return this._matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.CORE ? true : false;
+  }
+
   @Input() public showMatchKeyTokenSelectAll: boolean       = true;
   @Input() public showCoreMatchKeyTokenChips: boolean       = false;
   @Input() public showExtraneousMatchKeyTokenChips: boolean = true;
@@ -548,6 +558,18 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
+  public onMatchKeyCoreModeToggle(isCoreMode: any) {
+    console.log('onMatchKeyCoreModeToggle: ', isCoreMode);
+    this._matchKeyTokenSelectionScope = (!isCoreMode) ? SzMatchKeyTokenFilterScope.EXTRANEOUS : SzMatchKeyTokenFilterScope.CORE;
+    this._onMatchKeyTokenSelectionScopeChange.next( this._matchKeyTokenSelectionScope );
+  }
+
+  private onMatchKeyTokenSelectionScopeChanged(scope: SzMatchKeyTokenFilterScope) {
+    console.log('onMatchKeyTokenSelectionScopeChanged: ', scope);
+    this.optionChanged.emit({name: 'matchKeyTokenFilterScope', value: scope});
+    this.matchKeyTokenSelectionScopeChanged.emit(scope);
+  }
+
   /**
    * unsubscribe when component is destroyed
    */
@@ -561,6 +583,11 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     this.prefs.graph.prefsChanged.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe( this.onPrefsChange.bind(this) );
+
+    // when the user changes the scope of the match key token filtering
+    this.onMatchKeyTokenSelectionScopeChange.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe(this.onMatchKeyTokenSelectionScopeChanged.bind(this));
 
     // get datasources
     // then create filter and color control lists

@@ -3,9 +3,8 @@ import {
   SzRelatedEntity,
   SzResolvedEntity
 } from '@senzing/rest-api-client-ng';
-import { SzGraphNodeFilterPair } from '../../../models/graph';
+import { SzGraphNodeFilterPair, SzNetworkGraphInputs } from '../../../models/graph';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
-import { SzNetworkGraphInputs } from '../../../models/graph';
 import { SzGraphComponent } from '../../../graph/sz-graph.component';
 
 /**

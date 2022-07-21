@@ -59,6 +59,7 @@
         [class.bottom-left]="filterControlPosition == 'bottom-left'"
         [showLinkLabels]="_showMatchKeys"
         (optionChanged)="onOptionChange($event)"
+        (matchKeyTokenSelectionScopeChanged)="onFilterMatchKeyTokenSelectionScopeChanged($event)"
         [showDataSources]="filterShowDataSources"
         [showMatchKeys]="filterShowMatchKeys"
         [showMatchKeyTokens]="filterShowMatchKeyTokens"

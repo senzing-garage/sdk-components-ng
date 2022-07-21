@@ -7,6 +7,7 @@ import { SzEntityIdentifier } from '@senzing/rest-api-client-ng';
 import { SzWhyEntitiesDialog } from '../../../why/sz-why-entities.component';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { MatDialog } from '@angular/material/dialog';
+import { SzMatchKeyTokenFilterScope } from '../../../models/graph';
 
 /**
  * Embeddable Graph Component
@@ -188,6 +189,12 @@ export class SzStandaloneGraphComponent extends SzGraphComponent implements Afte
     if(this._showGraphLinkContextMenu) {
       this.openGraphContextMenu(event, this.graphLinkContextMenu);
     }
+  }
+  public onFilterMatchKeyTokenSelectionScopeChanged(scope: SzMatchKeyTokenFilterScope) {
+    console.log('sz-standalone-graph.onMatchKeyTokenSelectionScopeChanged: ', scope, this.matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.CORE, this.matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.EXTRANEOUS);
+    this.matchKeyTokenSelectionScope = scope;
+    this._showExtraneousMatchKeyTokenChips  = (this.matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.EXTRANEOUS) ?  true : false;
+    this._showCoreMatchKeyTokenChips        = (this.matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.CORE) ?        true : false;
   }
 
   /** can a specific entity node be removed from canvas */

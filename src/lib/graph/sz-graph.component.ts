@@ -4,11 +4,10 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { SzEntityData, SzEntityIdentifier, SzEntityNetworkData } from '@senzing/rest-api-client-ng';
 import { SzGraphControlComponent } from './sz-graph-control.component';
-import { SzGraphNodeFilterPair, SzEntityNetworkMatchKeyTokens } from '../models/graph';
+import { SzGraphNodeFilterPair, SzEntityNetworkMatchKeyTokens, SzMatchKeyTokenComposite, SzNetworkGraphInputs, SzMatchKeyTokenFilterScope } from '../models/graph';
 import { SzRelationshipNetworkComponent } from './sz-relationship-network/sz-relationship-network.component';
 import { parseBool, parseSzIdentifier, sortDataSourcesByIndex } from '../common/utils';
 import { SzDataSourceComposite } from '../models/data-sources';
-import { SzMatchKeyTokenComposite, SzNetworkGraphInputs, SzMatchKeyTokenFilterScope } from '../models/graph';
 
 /**
  * Embeddable Graph Component
@@ -192,7 +191,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @Input() public showMatchKeyTokenSelectAll: boolean       = true;
 
   /** @internal */
-  private _showCoreMatchKeyTokenChips: boolean              = false;
+  protected _showCoreMatchKeyTokenChips: boolean              = false;
   /**
    * whether or not to show only the match key token chips that apply 
    * to "core" relationships. ie if the relationship is only between 
@@ -213,7 +212,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     return this._showCoreMatchKeyTokenChips;
   }
   /** @internal */
-  private _showExtraneousMatchKeyTokenChips: boolean = true;
+  protected _showExtraneousMatchKeyTokenChips: boolean = true;
   /**
    * whether or not to show only match key token chips that apply 
    * to relationships between entities that are NOT directly related to 
@@ -256,6 +255,14 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     } else {
       this._matchKeyTokenSelectionScope = (value as SzMatchKeyTokenFilterScope);
     }
+    /*
+    if(this._matchKeyTokenSelectionScope !== SzMatchKeyTokenFilterScope.EXTRANEOUS) {
+      this._showExtraneousMatchKeyTokenChips = false;
+    }
+    if(this._matchKeyTokenSelectionScope !== SzMatchKeyTokenFilterScope.CORE) {
+      this._showCoreMatchKeyTokenChips        = false;
+    }*/
+
     //console.log(`@senzing/sdk-components-ng/sz-graph-component.matchKeyTokenSelectionScope(${value} | ${(this._matchKeyTokenSelectionScope as unknown as string)})`, this._matchKeyTokenSelectionScope);
   }
   /**

@@ -135,6 +135,19 @@
     }
   }
 
+  .chip-group {
+    &.core {
+      border: 1px solid salmon;
+    }
+    &.extraneous {
+      border: 1px solid lightblue;
+    }
+  }
+
+  .match-key-token-mode-select {
+    display: block;
+  }
+
   mat-chip-list.match-keys {
 
     mat-chip {
