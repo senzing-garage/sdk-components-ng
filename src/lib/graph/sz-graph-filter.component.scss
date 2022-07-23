@@ -54,6 +54,10 @@
         cursor: pointer;
       }
     }
+
+    &.match-key-token-filter-header h3 {
+      margin-bottom: 0;
+    }
   }
 
   hr {
@@ -146,6 +150,7 @@
 
   .match-key-token-mode-select {
     display: block;
+    margin-bottom: 20px;
   }
 
   mat-chip-list.match-keys {

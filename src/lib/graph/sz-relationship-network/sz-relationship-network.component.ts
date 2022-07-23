@@ -7,8 +7,9 @@ import { Simulation } from 'd3-force';
 import { EntityGraphService, SzEntityNetworkResponse, SzEntityNetworkData, SzFeatureMode, SzRelatedEntity, SzEntityData, SzEntityIdentifier, SzEntityPath } from '@senzing/rest-api-client-ng';
 import { map, tap, first, takeUntil, take } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
-import { parseSzIdentifier } from '../../common/utils';
+import { parseSzIdentifier, parseBool } from '../../common/utils';
 import { SzNetworkGraphInputs, SzGraphTooltipEntityModel, SzGraphTooltipLinkModel, SzGraphNodeFilterPair, SzEntityNetworkMatchKeyTokens } from '../../../lib/models/graph';
+import { SzSearchService } from '../../services/sz-search.service';
 
 /**
  * Provides a SVG of a relationship network diagram via D3.
@@ -177,8 +178,9 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
   }
 
   /** emit "onDataLoaded" when data received and parsed */
-  @Output() public onDataLoaded:  EventEmitter<SzNetworkGraphInputs> = new EventEmitter<SzNetworkGraphInputs>();
-  @Output() public onDataUpdated: EventEmitter<any> = new EventEmitter<any>();
+  @Output() public onDataRequested:   EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() public onDataLoaded:      EventEmitter<SzNetworkGraphInputs> = new EventEmitter<SzNetworkGraphInputs>();
+  @Output() public onDataUpdated:     EventEmitter<any> = new EventEmitter<any>();
 
   /**
    * arbitrary value just for drawing
@@ -311,7 +313,31 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
    * maxiumum entities to display
    */
   private _maxEntities: number | undefined;
-  @Input() set maxEntities(value: string | number) { this._maxEntities = +value; }
+  private _maxEntitiesPreflightLimit: number | undefined;
+  @Input() set maxEntities(value: string | number) { 
+    this._maxEntities = parseInt(value as string); 
+  }
+  public get maxEntities(): number {
+    return this._maxEntities;
+  }
+
+  private _unlimitedMaxEntities: boolean = false;
+  @Input() public set noMaxEntitiesLimit(value: boolean | string) {
+    this._unlimitedMaxEntities = parseBool(value as string);
+  }
+  public get noMaxEntitiesLimit(): boolean {
+    return this._unlimitedMaxEntities;
+  }
+  private _unlimitedMaxScope: boolean = false;
+  @Input() public set noMaxScopeLimit(value: boolean | string) {
+    this._unlimitedMaxScope = parseBool(value as string);
+  }
+  public get noMaxScopeLimit(): boolean {
+    return this._unlimitedMaxScope;
+  }
+
+  @Output() onPreflightRequestComplete: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onTotalRelationshipsCountUpdated: EventEmitter<number> = new EventEmitter<number>();
 
   /**
    * the space between nodes
@@ -1141,7 +1167,8 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
   private _zoom: d3.ZoomBehavior<Element, unknown> | undefined;
 
   constructor(
-    private graphService: EntityGraphService
+    private graphService: EntityGraphService,
+    private searchService: SzSearchService,
   ) {
     this.linkedByNodeIndexMap = {};
     // set up public observable streams
@@ -1204,7 +1231,10 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
     }
 
     if(this._entityIds) {
-      this.getNetwork().pipe(
+      let _maxEntities  = this._unlimitedMaxEntities ? 40000 : this._maxEntities;
+      let _maxBuildOut  = 1; //this._unlimitedMaxScope ? 10 : this._buildOut;
+
+      this.getNetwork(this._entityIds, this._maxDegrees, _maxBuildOut, _maxEntities).pipe(
         takeUntil(this.unsubscribe$),
         first(),
         map( this.asGraphInputs.bind(this) ),
@@ -1213,6 +1243,24 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
           if(gdata && gdata.data && gdata.data.entities && gdata.data.entities.length == 0) {
             this.noResults.emit(true);
             this._requestNoResults.next(true);
+          }
+          if(gdata && gdata.data) {
+            //onTotalDirectRelationshipsCountUpdated
+            let totalEntities = 0;
+            let entitiesById = new Set();
+            (gdata.data as SzEntityNetworkData).entities.forEach((_rEntData: SzEntityData) => {
+              // for each entity 
+              entitiesById.add(_rEntData.resolvedEntity.entityId);
+              //entitiesById[_rEntData.resolvedEntity.entityId] = 1;
+              if(_rEntData && _rEntData.relatedEntities && _rEntData.relatedEntities.forEach) {
+                _rEntData.relatedEntities.forEach((_rEntRel) => {
+                  entitiesById.add(_rEntRel.entityId);
+                });
+              }
+            });
+            totalEntities = entitiesById.size;
+            console.log('gdata: ', totalEntities, gdata.data, entitiesById);
+            this.onTotalRelationshipsCountUpdated.emit(totalEntities);
           }
           this.onDataLoaded.emit(gdata);
         })
@@ -1235,14 +1283,15 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
   /**
    * make graph network request using input parameters
    */
-  private getNetwork() {
+  private getNetwork(entityIds: SzEntityIdentifier[], maxDegrees: number, buildOut: number, maxEntities: number) {
     if(this._entityIds) {
+      this.onDataRequested.emit(true);
       return this.graphService.findEntityNetwork(
-        this._entityIds,
+        entityIds,
         undefined,
-        this._maxDegrees,
-        this._buildOut,
-        this._maxEntities,
+        maxDegrees,
+        buildOut,
+        maxEntities,
         SzFeatureMode.NONE,
         false,
         false,
@@ -1286,6 +1335,11 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
 
   /** main render lifecycle method */
   public render(gdata: SzNetworkGraphInputs) {
+    if(console.time){
+      try {
+        console.time('graph render')
+      }catch(err){}
+    }
     //console.log('@senzing/sdk-components-ng/sz-relationship-network.render(): ', gdata, this._filterFn);
     this.loadedData = gdata;
     this.addSvg(gdata);
@@ -1327,7 +1381,10 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
 
     if(this._entityIds) {
       this._requestStarted.next(true);
-      this.getNetwork().pipe(
+      this.onDataRequested.emit(true);
+      let _maxEntitiesLimit = this._unlimitedMaxEntities ? (this._maxEntitiesPreflightLimit !== undefined ? this._maxEntitiesPreflightLimit : 2000) : this.maxEntities;
+
+      this.getNetwork(this._entityIds, this._maxDegrees, this._buildOut, _maxEntitiesLimit).pipe(
         takeUntil(this.unsubscribe$),
         first(),
         map( this.asGraphInputs.bind(this) ),
@@ -2183,6 +2240,11 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
 
     // publish out event
     this._rendered = true;
+    if(console.time){
+      try {
+        console.timeEnd('graph render')
+      }catch(err){}
+    }
   }
   /** 
    * update the relationship count bubble inside a entity node 
@@ -3237,6 +3299,43 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
     }
     return _matchkeys;
   }
+  public static getMatchKeysFromEntityData(data: SzEntityData[], coreEntityIds?: SzEntityIdentifier[]): {entityId: string|number, value: string, isCoreRelationship: boolean}[] {
+    let _matchkeys = [];
+    let _entitiesOnDeck   = [];
+    if(data && data.map) {
+      // first build a array of all entity Ids present
+      _entitiesOnDeck     = data.map((entity: SzEntityData) => {
+        return entity.resolvedEntity.entityId;
+      });
+      if(coreEntityIds) {
+        coreEntityIds = coreEntityIds.map(parseSzIdentifier);
+      }
+      let _entityRelatedMatchKeys = data.map( (entity) => {
+        let retVal = [];
+        if(entity && entity.relatedEntities && entity.relatedEntities.map) {
+          retVal = entity.relatedEntities.map( (relatedEntity: SzRelatedEntity) => {
+            let isCoreRelationship = coreEntityIds && coreEntityIds.indexOf ? coreEntityIds.indexOf( entity.resolvedEntity.entityId ) > -1 : false;
+            return { entityId: relatedEntity.entityId, value: relatedEntity.matchKey, isCoreRelationship: isCoreRelationship, coreEntities: coreEntityIds, relSource: entity.resolvedEntity.entityId};
+          });
+        }
+        return retVal;
+      })
+      if(_entityRelatedMatchKeys && _entityRelatedMatchKeys.reduce) {
+        _matchkeys = _entityRelatedMatchKeys.reduce((accumulator, value) => accumulator.concat(value), []);
+      }
+      if(_matchkeys && _matchkeys.filter) {
+        // de-dupe
+        _matchkeys = _matchkeys.filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        });
+        // only show match keys that have at least one glyph on deck
+        _matchkeys = _matchkeys.filter((value, index, self) => {
+          return _entitiesOnDeck.indexOf(value.entityId as number) > -1;
+        });
+      }
+    }
+    return _matchkeys;
+  }
   /** 
    * takes a complex match key like "NAME+ADDRESS-DOB (Ambiguous)" and turns it in to 
    * an array of positive tokens like ["NAME","ADDRESS","Ambiguous"]. 
@@ -3351,5 +3450,25 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       });
     });
     return retValue;
+  }
+  private getMatchKeyTokensFromEntityPreflightData(derdah: SzEntityData[], focalEntityIds?: SzEntityIdentifier[]) {
+    let retValue: undefined | SzEntityNetworkMatchKeyTokens = {
+      DISCLOSED: {},
+      DERIVED: {}
+    }
+    // if we have focal entity id's add new "CORE" node to return value
+    if(focalEntityIds) {
+      retValue.CORE = {
+        DISCLOSED: {},
+        DERIVED: {}
+      }
+    }
+    let relatedMatchKeys = SzRelationshipNetworkComponent.getMatchKeysFromEntityData(derdah, focalEntityIds);
+    let categorizedMatchKeys: {entityId: string | number, disclosed: string[], derived: string[], isCoreRelationship: boolean}[]  = relatedMatchKeys
+    .map((matchKeyResult) => {
+      let entityMatchKeys = SzRelationshipNetworkComponent.tokenizeMatchKey(matchKeyResult.value);
+      return {entityId: matchKeyResult.entityId, disclosed: entityMatchKeys[0], derived: entityMatchKeys[1], isCoreRelationship: matchKeyResult.isCoreRelationship }
+    });
+    console.log('getMatchKeyTokensFromEntityPreflightData: ', relatedMatchKeys, categorizedMatchKeys);
   }
 }

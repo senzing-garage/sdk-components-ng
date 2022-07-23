@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input'
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -36,6 +37,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     MatMenuModule, 
     MatPaginatorModule, 
     MatSidenavModule, 
+    MatSliderModule,
     MatSlideToggleModule,
     MatSortModule, 
     MatTableModule, 
@@ -56,6 +58,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     MatMenuModule,
     MatPaginatorModule, 
     MatSidenavModule, 
+    MatSliderModule,
     MatSlideToggleModule,
     MatSortModule, 
     MatTableModule, 

@@ -101,9 +101,43 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     this._openInSidePanel = value;
   };
   @Input() sectionIcon: string;
+  /** maximum degrees of separation between focal entity and relationships */
   @Input() maxDegrees: number = 1;
-  @Input() maxEntities: number = 20;
-  @Input() buildOut: number = 1;
+  /** @internal */
+  private _maxEntities: number = 200;
+  /** maximum number of entities that can be returned in a single query */
+  @Input() set maxEntities(value: number | string) {
+    this._maxEntities = parseInt(value as string);
+  }
+  /** maximum number of entities that can be returned in a single query */
+  get maxEntities(): number {
+    return this._maxEntities;
+  }
+  /** @internal */
+  private _maxEntitiesFilterLimit = 200;
+  /** maximum value selectable in the graph filter component */
+  @Input() set maxEntitiesFilterLimit(value: number | string){ this._maxEntitiesFilterLimit = parseInt(value as string); }
+  /** maximum value selectable in the graph filter component */
+  get maxEntitiesFilterLimit(): number { return this._maxEntitiesFilterLimit; }
+  /** ignore the entity limit restriction from maxEntities */
+  @Input() set unlimitedMaxEntities(value: boolean) {
+    if(value === undefined) return;
+    this.prefs.graph.unlimitedMaxEntities = value;
+  }
+  /** ignore the entity limit restriction from maxEntities */
+  get unlimitedMaxEntities(): boolean {
+    return this.prefs.graph.unlimitedMaxEntities;
+  }
+  /** ignore the scope limit restriction from maxEntities */
+  @Input() set unlimitedMaxScope(value: boolean) {
+    if(value === undefined) return;
+    this.prefs.graph.unlimitedMaxScope = value;
+  }
+  /** ignore the scope limit restriction from maxEntities */
+  get unlimitedMaxScope(): boolean {
+    return this.prefs.graph.unlimitedMaxScope;
+  }
+  @Input() buildOut: number = 0;
   /** array of datasources with color and order information */
   @Input() public set dataSourceColors(value: SzDataSourceComposite[]) {
     this._dataSourceColors  = value;
@@ -200,6 +234,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @Input() public set showCoreMatchKeyTokenChips(value: boolean | string){
     this._showCoreMatchKeyTokenChips = parseBool(value);
     if (value === true) {
+      //console.log('@senzing/sdk-components-ng/sz-graph-component.showCoreMatchKeyTokenChips = '+ value);
       this.matchKeyTokenSelectionScope = SzMatchKeyTokenFilterScope.CORE;
     }
   }
@@ -223,6 +258,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @Input() public set showExtraneousMatchKeyTokenChips(value: boolean | string) {
     this._showExtraneousMatchKeyTokenChips = parseBool(value);
     if (value === true) {
+      //console.log('@senzing/sdk-components-ng/sz-graph-component.showExtraneousMatchKeyTokenChips = '+ value);
       this.matchKeyTokenSelectionScope = SzMatchKeyTokenFilterScope.EXTRANEOUS;
     }
   }
@@ -255,14 +291,6 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     } else {
       this._matchKeyTokenSelectionScope = (value as SzMatchKeyTokenFilterScope);
     }
-    /*
-    if(this._matchKeyTokenSelectionScope !== SzMatchKeyTokenFilterScope.EXTRANEOUS) {
-      this._showExtraneousMatchKeyTokenChips = false;
-    }
-    if(this._matchKeyTokenSelectionScope !== SzMatchKeyTokenFilterScope.CORE) {
-      this._showCoreMatchKeyTokenChips        = false;
-    }*/
-
     //console.log(`@senzing/sdk-components-ng/sz-graph-component.matchKeyTokenSelectionScope(${value} | ${(this._matchKeyTokenSelectionScope as unknown as string)})`, this._matchKeyTokenSelectionScope);
   }
   /**
@@ -450,6 +478,8 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   /** event is emitted when the collection of datasources present in graph dislay change*/
   @Output() dataSourcesChange: EventEmitter<any> = new EventEmitter<string[]>();
   /** event is emitted when the graph components data is updated or loaded */
+  @Output() dataLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
+  /** event is emitted when the graph components data is updated or loaded */
   @Output() dataLoaded: EventEmitter<SzEntityNetworkData> = new EventEmitter<SzEntityNetworkData>();
   /** event is emitted when the graph components data is updated or loaded */
   @Output() dataUpdated: EventEmitter<SzEntityNetworkData> = new EventEmitter<SzEntityNetworkData>();
@@ -457,6 +487,8 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @Output() matchKeysChange: EventEmitter<any> = new EventEmitter<string[]>();
   /** event is emitted when the collection of matchkey tokens present in graph dislay change */
   @Output() matchKeyTokensChange: EventEmitter<any> = new EventEmitter<SzMatchKeyTokenComposite[]>();
+  /** event is emitted when a graph pre-flight request is performed */
+  @Output() preflightRequestComplete: EventEmitter<any> = new EventEmitter<any>();
 
   private getMatchKeyTokenComposites(data: SzEntityNetworkMatchKeyTokens): Array<SzMatchKeyTokenComposite> {
     let retVal: Array<SzMatchKeyTokenComposite> = [];
@@ -659,7 +691,21 @@ export class SzGraphComponent implements OnInit, OnDestroy {
    */
    onMatchKeyTokensChange(data: SzMatchKeyTokenComposite[]) {
     this.filterShowMatchKeyTokens = data;
-  } 
+  }
+  /** when a pre-flight data request is performed this handler is invoked */
+  onPreflightRequestComplete(data: any) {
+    //console.warn('onPreflightRequestComplete: ', data);
+    if(this.maxEntities !== data.maxEntities) {
+      this.maxEntities            = data.maxEntities;
+      this._maxEntitiesFilterLimit = data.maxEntities;
+    }
+  }
+  onTotalRelationshipsCountUpdated(count: number) {
+    if(this.maxEntities !== count) {
+      this.maxEntities              = count;
+      this._maxEntitiesFilterLimit  = count;
+    }
+  }
 
   constructor(
     public prefs: SzPrefsService,
@@ -683,28 +729,6 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     this.prefs.graph.prefsChanged.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe( this.onPrefsChange.bind(this) );
-
-    // entity prefs
-    /*
-    this.prefs.entityDetail.prefsChanged.pipe(
-      takeUntil(this.unsubscribe$)
-    ).subscribe( (prefs: any) => {
-      let changedStateOnZero = false;
-      if(prefs.hideGraphWhenZeroRelations && this.data && this.data.relatedEntities.length == 0){
-        this.isOpen = false;
-        changedStateOnZero = true;
-      } else if(this.data && this.data.relatedEntities.length == 0 && this.isOpen == false) {
-        this.isOpen = true;
-        changedStateOnZero = true;
-      }
-      if(!changedStateOnZero) {
-        if(!prefs.graphSectionCollapsed !== this.isOpen){
-          // sync up
-          this.isOpen = !prefs.graphSectionCollapsed;
-        }
-      }
-    })
-    */
 
     // listen for match key changes
     this.matchKeysChange.pipe(
@@ -748,6 +772,16 @@ export class SzGraphComponent implements OnInit, OnDestroy {
           //console.log('[STANDALONE GRAPH] onDataLoaded', args);
           this.dataLoaded.emit(args.data);
       });
+      this.graphNetworkComponent.onDataRequested.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe( (args) => {
+        this.dataLoading.emit(args);
+      })
+      this.graphNetworkComponent.onPreflightRequestComplete.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe( (args) => {
+        this.preflightRequestComplete.emit(args);
+      })
 
       this.graphNetworkComponent.renderComplete.pipe(
         takeUntil(this.unsubscribe$),

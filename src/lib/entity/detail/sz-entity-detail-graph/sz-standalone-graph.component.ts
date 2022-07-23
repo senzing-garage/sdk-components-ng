@@ -192,9 +192,10 @@ export class SzStandaloneGraphComponent extends SzGraphComponent implements Afte
   }
   public onFilterMatchKeyTokenSelectionScopeChanged(scope: SzMatchKeyTokenFilterScope) {
     console.log('sz-standalone-graph.onMatchKeyTokenSelectionScopeChanged: ', scope, this.matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.CORE, this.matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.EXTRANEOUS);
-    this.matchKeyTokenSelectionScope = scope;
+    this.matchKeyTokenSelectionScope        = scope;
     this._showExtraneousMatchKeyTokenChips  = (this.matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.EXTRANEOUS) ?  true : false;
     this._showCoreMatchKeyTokenChips        = (this.matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.CORE) ?        true : false;
+
   }
 
   /** can a specific entity node be removed from canvas */

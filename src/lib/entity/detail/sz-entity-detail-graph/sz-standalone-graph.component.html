@@ -41,9 +41,12 @@
       (relationshipClick)="onLinkClick($event)"
       (relationshipContextMenuClick)="onLinkRightClick($event)"
       (noResults)="onNoResults($event)"
+      (onTotalRelationshipsCountUpdated)="onTotalRelationshipsCountUpdated($event)"
       (onDataLoaded)="onGraphDataLoaded($event)"
       (onDataUpdated)="onGraphDataUpdated($event)"
       (scaleChanged)="onGraphZoom($event)"
+      [noMaxEntitiesLimit]="unlimitedMaxEntities"
+      [noMaxScopeLimit]="unlimitedMaxScope"
       [maxEntities]="maxEntities"></sz-relationship-network>
   
     <sz-graph-control *ngIf="showMatchKeyControl" class="sz-graph-control"
@@ -69,7 +72,9 @@
         [showMatchKeyTokenSelectAll]="showMatchKeyTokenSelectAll"
         [showCoreMatchKeyTokenChips]="showCoreMatchKeyTokenChips"
         [showExtraneousMatchKeyTokenChips]="showExtraneousMatchKeyTokenChips"
+        [maxEntitiesLimit]="maxEntitiesFilterLimit"
     ></sz-graph-filter>
+    _maxEntitiesFilterLimit {{maxEntitiesFilterLimit}}
   
     <svg class="popout-icon"
         [class.top-left]="popOutIconPosition == 'top-left'"

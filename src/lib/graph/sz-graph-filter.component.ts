@@ -53,7 +53,40 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
 
   @Input() maxDegreesOfSeparation: number = 1;
   @Input() showMaxDegreesOfSeparation: boolean = false;
-  @Input() maxEntities: number = 20;
+  private _maxEntities: number = 200;
+  @Input() set maxEntities(value: number | string) {
+    this._maxEntities = parseInt(value as string);
+  }
+  get maxEntities(): number {
+    return this._maxEntities;
+  }
+  private _maxEntitiesLimit: number = 200;
+  @Input() set maxEntitiesLimit(value: number | string) {
+    this._maxEntitiesLimit = parseInt(value as string);
+  }
+  public get maxEntitiesLimit(): number { return this._maxEntitiesLimit; }
+  public get maxEntitiesValueLabel(): string {
+    let retVal = this.prefs.graph.unlimitedMaxEntities ? 'unlimited' : this.maxEntities.toString();
+    return retVal;
+  }
+
+  @Input() set unlimitedMaxEntities(value: boolean | string) {
+    if(value === undefined) return;
+    this.prefs.graph.unlimitedMaxEntities = parseBool(value);
+  }
+  get unlimitedMaxEntities(): boolean {
+    return this.prefs.graph.unlimitedMaxEntities;
+  }
+  @Input() set unlimitedMaxScope(value: boolean | string) {
+    if(value === undefined) return;
+    this.prefs.graph.unlimitedMaxScope = parseBool(value);
+  }
+  get unlimitedMaxScope(): boolean {
+    return this.prefs.graph.unlimitedMaxScope;
+  }
+  public onMaxEntitiesValueChange(value) {
+    console.log('onMaxEntitiesValueChange: ', value);
+  }
   @Input() showMaxEntities: boolean = true;
   @Input() buildOut: number = 1;
   @Input() buildOutMin: number = 0;
@@ -119,7 +152,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   /** @internal */
   private _matchKeyTokenSelectionScope: SzMatchKeyTokenFilterScope = SzMatchKeyTokenFilterScope.EXTRANEOUS;
   /** @internal */
-  private _onMatchKeyTokenSelectionScopeChange        = new BehaviorSubject<SzMatchKeyTokenFilterScope>(this._matchKeyTokenSelectionScope);
+  private _onMatchKeyTokenSelectionScopeChange        = new Subject<SzMatchKeyTokenFilterScope>();
   /** when the user changes the scope of the match keys selected this event is published */
   public onMatchKeyTokenSelectionScopeChange          = this._onMatchKeyTokenSelectionScopeChange.asObservable();
   /** when the user changes the scope of the match keys selected this event is published */
@@ -144,6 +177,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
         // assume it's already cast correctly
         this._matchKeyTokenSelectionScope = (value as SzMatchKeyTokenFilterScope);
     }
+    console.log(`@senzing/sdk-components-ng/sz-graph-filter.matchKeyTokenSelectionScope(${value} | ${(this._matchKeyTokenSelectionScope as unknown as string)})`, this._matchKeyTokenSelectionScope);
   }
   /**
    * get the value of match key token filterings scope. possible values are 
@@ -159,7 +193,14 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   @Input() public showMatchKeyTokenSelectAll: boolean       = true;
-  @Input() public showCoreMatchKeyTokenChips: boolean       = false;
+  private _showCoreMatchKeyTokenChips: boolean       = false;
+  @Input() public set showCoreMatchKeyTokenChips(value: boolean) {
+    this._showCoreMatchKeyTokenChips = value;
+    console.log(`@senzing/sdk-components-ng/sz-graph-filter.showCoreMatchKeyTokenChips(${value})`, this._showCoreMatchKeyTokenChips);
+  }
+  public get showCoreMatchKeyTokenChips(): boolean {
+    return this._showCoreMatchKeyTokenChips;
+  }
   @Input() public showExtraneousMatchKeyTokenChips: boolean = true;
 
   @Input() dataSourcesFiltered: string[]        = [];
@@ -467,6 +508,14 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     //console.log('@senzing/sdk-components-ng/SzEntityDetailGraphFilterComponent.onCheckboxPrefToggle: ', _checked, optName, event);
     this.optionChanged.emit({'name': optName, value: _checked});
   }
+  /** when the user selects either the scope or entity limit "unlimited" checkboxes
+   * this handler is invoked to set the appropriate preferences.
+   */
+  public onMaxUnlimitedChange(prefKey: string, value: boolean) {
+    console.log('onMaxUnlimitedChange: ', value);
+    this.prefs.graph[ prefKey ] = value;
+  }
+
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
     this._showLinkLabels = prefs.showMatchKeys;
@@ -557,15 +606,40 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
         this.prefs.graph.matchKeyTokensIncluded = [];
     }
   }
-
+  /** when the user toggles the match key tokens scope control this 
+   * handler is invoked to copy all selections from one mode to the 
+   * other and update the preferences with the new values.
+  */
   public onMatchKeyCoreModeToggle(isCoreMode: any) {
-    console.log('onMatchKeyCoreModeToggle: ', isCoreMode);
+    if(!isCoreMode && (this._matchKeyTokenSelectionScope !== SzMatchKeyTokenFilterScope.EXTRANEOUS)) {
+      // copy over any selected chips from 
+      let _matchKeyTokens = this.matchKeyTokens.map((mkToken) => mkToken.name);
+      let _matchKeyTokensIncludedMemCopy = new Set([].concat(this.matchKeyCoreTokensIncluded));
+      let _filteredList = [].concat(..._matchKeyTokensIncludedMemCopy).filter((strVal) => {
+        return _matchKeyTokens.indexOf(strVal) > -1 ? true : false;
+      });
+      this.prefs.graph.matchKeyTokensIncluded = _filteredList;
+      //console.log('onMatchKeyCoreModeToggle1: ', this.matchKeyTokens, [].concat(..._matchKeyTokensIncludedMemCopy), this.prefs.graph.matchKeyTokensIncluded);
+    } else if(isCoreMode && (this._matchKeyTokenSelectionScope !== SzMatchKeyTokenFilterScope.CORE)) {
+      // copy any items from extra to core 
+      // IF the items exist in core
+      let _matchKeyCoreTokens = this.matchKeyCoreTokens.map((mkToken) => mkToken.name);
+      let _matchKeyCoreTokensIncludedMemCopy = new Set([].concat(this.matchKeyCoreTokensIncluded, this.matchKeyTokensIncluded));
+      this.prefs.graph.matchKeyCoreTokensIncluded = [].concat(..._matchKeyCoreTokensIncludedMemCopy).filter((strVal) => {
+        return _matchKeyCoreTokens.indexOf(strVal) > -1 ? true : false;
+      });
+      //console.log('onMatchKeyCoreModeToggle2: ', _matchKeyCoreTokensIncludedMemCopy, this.prefs.graph.matchKeyTokensIncluded);
+    }
     this._matchKeyTokenSelectionScope = (!isCoreMode) ? SzMatchKeyTokenFilterScope.EXTRANEOUS : SzMatchKeyTokenFilterScope.CORE;
     this._onMatchKeyTokenSelectionScopeChange.next( this._matchKeyTokenSelectionScope );
   }
-
+  /** this event handler proxies the internal "_onMatchKeyTokenSelectionScopeChange" event 
+   * the the public "matchKeyTokenSelectionScopeChanged" event emitter.
+   */
   private onMatchKeyTokenSelectionScopeChanged(scope: SzMatchKeyTokenFilterScope) {
-    console.log('onMatchKeyTokenSelectionScopeChanged: ', scope);
+    //console.log('onMatchKeyTokenSelectionScopeChanged: ', scope);
+    
+    // now emit events
     this.optionChanged.emit({name: 'matchKeyTokenFilterScope', value: scope});
     this.matchKeyTokenSelectionScopeChanged.emit(scope);
   }

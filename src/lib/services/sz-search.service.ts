@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { forkJoin, Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import {
@@ -13,7 +13,8 @@ import {
   SzEntityRecord,
   SzEntityResponse,
   SzRecordResponse,
-  SzRecordResponseData
+  SzRecordResponseData,
+  SzEntityIdentifiers
 } from '@senzing/rest-api-client-ng';
 import { SzEntitySearchParams } from '../models/entity-search';
 
@@ -138,6 +139,31 @@ export class SzSearchService {
       tap((res: SzEntityResponse) => console.log('SzSearchService.getEntityById: ' + entityId, res.data)),
       map((res: SzEntityResponse) => (res.data as SzEntityData))
     );
+  }
+  /** get the SzEntityData[] responses for multiple entities 
+   * @memberof SzSearchService
+   */
+  public getEntitiesByIds(entityIds: SzEntityIdentifiers, withRelated = false): Observable<SzEntityData[]> {
+    console.log('@senzing/sdk/services/sz-search[getEntitiesByIds('+ entityIds +', '+ withRelated +')] ');
+    const withRelatedStr = withRelated ? 'FULL' : 'NONE';
+    let _retSubject = new Subject<SzEntityData[]>();
+    let _retVal     = _retSubject.asObservable();
+
+    let _listOfObserveables = entityIds.map((eId) => {
+      return this.entityDataService.getEntityByEntityId(eId, undefined, undefined, undefined, undefined, withRelatedStr)
+    })
+
+    forkJoin(_listOfObserveables).pipe(
+      map((res: SzEntityResponse[]) => {
+        return res.map((res: SzEntityResponse) => (res.data as SzEntityData))
+      })
+    )
+    .subscribe((results: SzEntityData[]) => {
+      console.warn('@senzing/sdk/services/sz-search[getEntitiesByIds RESULT: ', results);
+      _retSubject.next(results);
+    })
+
+    return _retVal;
   }
 
   /**
