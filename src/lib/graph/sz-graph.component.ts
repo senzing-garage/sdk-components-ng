@@ -764,19 +764,19 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       this.graphNetworkComponent.requestStarted.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe( (args) => {
-        console.log('[STANDALONE GRAPH] requestStarted', args);
+        //console.log('[STANDALONE GRAPH] requestStarted', args);
         this.requestStarted.emit(args);
       });
       this.graphNetworkComponent.requestComplete.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe( (args) => {
-        console.log('[STANDALONE GRAPH] requestComplete', args);
+        //console.log('[STANDALONE GRAPH] requestComplete', args);
         this.requestComplete.emit(args);
       });
       this.graphNetworkComponent.renderComplete.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe( (args) => {
-          console.log('[STANDALONE GRAPH] renderComplete', args);
+        //console.log('[STANDALONE GRAPH] renderComplete', args);
         this.renderComplete.emit(args);
       });
       this.graphNetworkComponent.noResults.pipe(
@@ -788,7 +788,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       this.graphNetworkComponent.onDataLoaded.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe( (args) => {
-          console.log('[STANDALONE GRAPH] onDataLoaded', args);
+          //console.log('[STANDALONE GRAPH] onDataLoaded', args);
           this.dataLoaded.emit(args.data);
       });
       this.graphNetworkComponent.onDataRequested.pipe(

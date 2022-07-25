@@ -184,7 +184,7 @@
           class="core-key"
           [class.selected]="isMatchKeyCoreTokenSelected(mk.name)"
           (click)="onCoreMkTagFilterToggle(mk.name)"
-          [matBadge]="mk.coreCount" matBadgePosition="after" matBadgeColor="accent">
+          [matBadge]="getMKBadgeCount(mk.coreCount)" matBadgePosition="after" matBadgeColor="accent">
           {{mk.name}}
         </mat-chip>
       </div>
@@ -193,7 +193,7 @@
           class="extra-key"
           [class.selected]="isMatchKeyTokenSelected(mk.name)"
           (click)="onMkTagFilterToggle(mk.name)"
-          [matBadge]="mk.count" matBadgePosition="after" matBadgeColor="accent">
+          [matBadge]="getMKBadgeCount(mk.count)" matBadgePosition="after" matBadgeColor="accent">
           {{mk.name}}
         </mat-chip>
       </div>

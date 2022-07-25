@@ -799,5 +799,13 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     return true;
     return (this.showMatchKeyTokens && this.showMatchKeyTokens.length > 0) ? (this.showMatchKeyTokens.findIndex( (mkCat)=> { return mkCat.name === mkName; } ) > -1) : true;
   }
+  /** function for shortening the match key token badge counts notation */
+  public getMKBadgeCount(count: number): string {
+    let retVal = (count && count > 0) ? (count as unknown as string) : '0';
+    if (count >= 1000) {
+      retVal = (Math.round((count / 1000) * 10) / 10)+'K';
+    }
+    return retVal;
+  }
   
 }

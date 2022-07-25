@@ -138,7 +138,7 @@
       width: 0px;
     }
   }
-
+  /*
   .chip-group {
     &.core {
       border: 1px solid salmon;
@@ -146,7 +146,7 @@
     &.extraneous {
       border: 1px solid lightblue;
     }
-  }
+  }*/
 
   .match-key-token-mode-select {
     display: block;
@@ -183,6 +183,9 @@
         color: var(--sz-graph-filter-match-key-tags-count-badge-color);
         top: var(--sz-graph-filter-match-key-tags-count-badge-top);
         right: var(--sz-graph-filter-match-key-tags-count-badge-right);
+        width: unset;
+        min-width: var(--sz-graph-filter-match-key-tags-min-width);
+        padding: 0 3px;
       }
     }
   }
