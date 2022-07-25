@@ -666,7 +666,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   }
   /** if "showDataSources" array is specified, check that string name is present in list */
   public shouldDataSourceBeDisplayed( dsName: string) {
-    return (this.showDataSources && this.showDataSources.length > 0) ? (this.showDataSources.indexOf( dsName ) > -1) : true;
+    return (this.showDataSources && this.showDataSources !== undefined && this.showDataSources.length !== undefined) ? (this.showDataSources.indexOf( dsName ) > -1) : true;
   }
   /** if "showMatchKeys" array is specified, check that string name is present in list */
   public shouldMatchKeyBeDisplayed( mkName: string) {

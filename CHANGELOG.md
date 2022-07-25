@@ -11,8 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Modified
 - Changed the behavior of `showCoreMatchKeyTokenChips` to automatically set `matchKeyTokenSelectionScope` to `CORE`.
 - Changed the complete match key display to a comma deliminated list of tokens on each line for readability
+- Changed the `shouldDataSourceBeDisplayed` method in `SzGraphFilterComponent` to allow for passing an empty array to `showDataSources` so we can initialize with an empty list that will prevent showing datasources before the list is ready.
+- Changed the `SzStandaloneGraphComponent` component to initialize the value of `showDataSources` in the filter component to NOT initially show data sources until the data can be properly rendered. (prevents FOC, see above)
 
-relevant tickets: #343 #344
+relevant tickets: #343 #344 #348
 
 ## [5.0.0] - 2022-07-01
 

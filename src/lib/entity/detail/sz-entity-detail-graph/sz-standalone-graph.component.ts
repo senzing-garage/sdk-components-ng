@@ -62,6 +62,8 @@ export class SzStandaloneGraphComponent extends SzGraphComponent implements Afte
   private _showGraphLinkContextMenu: boolean          = true;
   private _showGraphEntityContextMenuOnClick: boolean = false;
   private _showGraphLinkContextMenuOnClick: boolean   = false;
+  public override filterShowDataSources: string[] = [];
+
   /** built-in graph context menus */
   @ViewChild('graphNodeContextMenu') graphNodeContextMenu: TemplateRef<any>;
   @ViewChild('graphLinkContextMenu') graphLinkContextMenu: TemplateRef<any>;
