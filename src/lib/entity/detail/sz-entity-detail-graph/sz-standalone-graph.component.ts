@@ -190,8 +190,9 @@ export class SzStandaloneGraphComponent extends SzGraphComponent implements Afte
       this.openGraphContextMenu(event, this.graphLinkContextMenu);
     }
   }
+  /** when the filter component's match key scope is changed from EXTRANEOUS to CORE or vice-versa */
   public onFilterMatchKeyTokenSelectionScopeChanged(scope: SzMatchKeyTokenFilterScope) {
-    console.log('sz-standalone-graph.onMatchKeyTokenSelectionScopeChanged: ', scope, this.matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.CORE, this.matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.EXTRANEOUS);
+    //console.log('sz-standalone-graph.onMatchKeyTokenSelectionScopeChanged: ', scope, this.matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.CORE, this.matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.EXTRANEOUS);
     this.matchKeyTokenSelectionScope        = scope;
     this._showExtraneousMatchKeyTokenChips  = (this.matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.EXTRANEOUS) ?  true : false;
     this._showCoreMatchKeyTokenChips        = (this.matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.CORE) ?        true : false;

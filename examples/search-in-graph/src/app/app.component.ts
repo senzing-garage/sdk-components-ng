@@ -29,9 +29,11 @@ export class AppComponent implements AfterViewInit {
   public unsubscribe$ = new Subject<void>();
   public currentSearchResults: SzAttributeSearchResult[];
   public currentlySelectedEntityId: number;
-  public searchResultEntityIds: SzEntityIdentifier[] = [40002];
+  //public searchResultEntityIds: SzEntityIdentifier[] = [40002];
+  //public searchResultEntityIds: SzEntityIdentifier[] = [39001,40002,40003,40005];
+  public searchResultEntityIds: SzEntityIdentifier[] = [40001,40003,40005,41001,44271];
   public currentSearchParameters: SzEntitySearchParams;
-  public showSearchResults = false;
+  public showSearchResults = true;
   public showSpinner = false;
   public _showMatchKeysInFilter: string[];
   
@@ -111,6 +113,10 @@ export class AppComponent implements AfterViewInit {
     });
   }
 
+  toggleShowSpinner() {
+    this.showSpinner = !this.showSpinner;
+  }
+
   onSearchException(err: Error) {
     throw (err.message);
   }
@@ -122,8 +128,20 @@ export class AppComponent implements AfterViewInit {
   onRequestComplete(evt: any) {
     console.log('onRequestComplete: ', evt);
   }
+  onRenderStarted(evt: any) {
+    console.log('onRenderStarted: ', evt);
+    this.showSpinner = true;
+  }
   onRenderComplete(evt: any) {
     console.log('onRenderComplete: ', evt);
+    this.showSpinner = false;
+  }
+  onDataLoading(evt: any) {
+    console.log('onDataLoading: ', evt);
+    this.showSpinner = true;
+  }
+  onDataLoaded(evt: any) {
+    console.log('onDataLoaded: ', evt);
     this.showSpinner = false;
   }
   onMatchKeysChange(data: string[]) {

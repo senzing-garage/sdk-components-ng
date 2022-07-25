@@ -8,7 +8,6 @@
 <!-- start search box -->
 <div class="component-example">
   <sz-search
-    name="Jenny Smith"
     #searchBox
     disableIdentifierOptions="SSN_LAST4"
     enableIdentifierOptions="SOCIAL_NETWORK"
@@ -34,6 +33,7 @@
 
 <button (click)="onTabClick('detail')">show detail</button>
 <button (click)="onTabClick('filters')">show filters</button>
+<button (click)="toggleShowSpinner()">toggle showSpinner({{showSpinner}})</button>
 <div class="content-container">
   <!-- start graph control -->
   <div #graphContainer>
@@ -51,14 +51,29 @@
         [showMatchKeys]="true"
         [showMatchKeyFilters]="false"
         [showMatchKeyTokenFilters]="true"
-        [showCoreMatchKeyTokenChips]="false"
-        [showExtraneousMatchKeyTokenChips]="true"
+        [showCoreMatchKeyTokenChips]="true"
+        [showExtraneousMatchKeyTokenChips]="false"
+        [unlimitedMaxEntities]="true"
         showZoomControl="true"
         (requestStarted)="onRequestStarted($event)"
-        (renderComplete)="onRenderComplete($event)"
         (requestComplete)="onRequestComplete($event)"
+        (renderStarted)="onRenderStarted($event)"
+        (renderComplete)="onRenderComplete($event)"
+        (dataLoading)="onRequestStarted($event)"
+        (dataLoaded)="onDataLoaded($event)"
     ></sz-standalone-graph>
   </div>
+  <!-- start spinner overlay -->
+  <div class="mat-background" *ngIf="showSpinner">
+    <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+    </div>
+  </div>
+  <!-- end spinner overlay -->
   <!--  end graph control  -->
 
   <!-- start entity detail -->

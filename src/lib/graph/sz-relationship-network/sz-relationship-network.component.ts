@@ -5,8 +5,8 @@ import { Simulation } from 'd3-force';
 
 
 import { EntityGraphService, SzEntityNetworkResponse, SzEntityNetworkData, SzFeatureMode, SzRelatedEntity, SzEntityData, SzEntityIdentifier, SzEntityPath } from '@senzing/rest-api-client-ng';
-import { map, tap, first, takeUntil, take } from 'rxjs/operators';
-import { Subject, Observable } from 'rxjs';
+import { map, tap, first, takeUntil, take, filter } from 'rxjs/operators';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
 import { parseSzIdentifier, parseBool } from '../../common/utils';
 import { SzNetworkGraphInputs, SzGraphTooltipEntityModel, SzGraphTooltipLinkModel, SzGraphNodeFilterPair, SzEntityNetworkMatchKeyTokens } from '../../../lib/models/graph';
 import { SzSearchService } from '../../services/sz-search.service';
@@ -76,39 +76,45 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
   }
 
   /** @internal */
-  private _requestStarted: Subject<boolean> = new Subject<boolean>();
+  private _requestStarted: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  public requestStarted = this._requestStarted.asObservable().pipe(filter((value) => value !== false));
   /** @internal */
-  private _requestComplete: Subject<boolean> = new Subject<boolean>();
+  private _requestComplete: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  /**
+   * Observeable stream for the event that occurs when a network
+   * request is completed
+   */
+  public requestComplete = this._requestComplete.asObservable().pipe(filter((value) => value !== false));
   /** @internal */
-  private _renderComplete: Subject<boolean> = new Subject<boolean>();
+  private _renderStarted: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  /** Observeable stream that occurs when the rendering cycle 
+   * of a graph is in progress.
+   */
+  public renderStarted = this._renderStarted.asObservable().pipe(filter((value) => value !== false));
   /** @internal */
-  private _requestNoResults: Subject<boolean> = new Subject<boolean>();
+  private _renderComplete: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  /**
+   * Observeable stream for the event that occurs when a draw
+   * operation is completed
+   */
+  public renderComplete = this._renderComplete.asObservable().pipe(filter((value) => value !== false));
+  /** @internal */
+  private _requestNoResults: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  /**
+   * Observeable stream for the event that occurs when a
+   * request completed but has no results
+   */
+  public noResults = this._requestNoResults.asObservable().pipe(filter((value) => value !== false));
 
   /**
    * Observeable stream for the event that occurs when a network
    * request is initiated
    */
-  public requestStarted: Observable<boolean>;
-  /**
-   * Observeable stream for the event that occurs when a network
-   * request is completed
-   */
-  public requestComplete: Observable<boolean>;
-  /**
-   * Observeable stream for the event that occurs when a draw
-   * operation is completed
-   */
-  public renderComplete: Observable<boolean>;
-  /**
-   * Observeable stream for the event that occurs when a
-   * request completed but has no results
-   */
-  public requestNoResults: Observable<boolean>;
-  /**
-   * emitted when the player right clicks a entity node.
-   * @returns object with various entity and ui properties.
-   */
-  @Output() noResults: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() onRequestStarted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() onRequestCompleted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() onRenderStarted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() onRenderCompleted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() onNoResults: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   private _onZoom: Subject<number> = new Subject<number>();
   public onZoom: Observable<number> = this._onZoom.asObservable();
@@ -178,6 +184,11 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
   }
 
   /** emit "onDataLoaded" when data received and parsed */
+  private _dataRequested = new BehaviorSubject<boolean>(false);
+  public dataRequested = this._dataRequested.asObservable();
+  private _dataLoaded = new Subject<SzNetworkGraphInputs>();
+  public dataLoaded = this._dataRequested.asObservable();
+  
   @Output() public onDataRequested:   EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() public onDataLoaded:      EventEmitter<SzNetworkGraphInputs> = new EventEmitter<SzNetworkGraphInputs>();
   @Output() public onDataUpdated:     EventEmitter<any> = new EventEmitter<any>();
@@ -1172,10 +1183,25 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
   ) {
     this.linkedByNodeIndexMap = {};
     // set up public observable streams
+    /*
     this.requestStarted = this._requestStarted.asObservable();
     this.requestComplete = this._requestComplete.asObservable();
     this.renderComplete = this._renderComplete.asObservable();
     this.requestNoResults = this._requestNoResults.asObservable();
+    */
+    /** set up eventing proxies */
+    this.requestStarted.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((value) => { this.onRequestStarted.emit(value) });
+    this.requestComplete.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((value) => { this.onRequestCompleted.emit(value) });
+    this.renderStarted.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((value) => { this.onRenderStarted.emit(value) });
+    this.renderComplete.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((value) => { this.onRenderCompleted.emit(value) });
   }
 
   /** since the user can set zoom to false and then "true" we need a way to 
@@ -1241,7 +1267,6 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
         tap( (gdata: SzNetworkGraphInputs) => {
           //console.warn('SzRelationshipNetworkGraph: g1 = ', gdata);
           if(gdata && gdata.data && gdata.data.entities && gdata.data.entities.length == 0) {
-            this.noResults.emit(true);
             this._requestNoResults.next(true);
           }
           if(gdata && gdata.data) {
@@ -1263,6 +1288,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
             this.onTotalRelationshipsCountUpdated.emit(totalEntities);
           }
           this.onDataLoaded.emit(gdata);
+          this._requestComplete.next(true);
         })
       ).subscribe( this.render.bind(this) );
     }
@@ -1285,7 +1311,8 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
    */
   private getNetwork(entityIds: SzEntityIdentifier[], maxDegrees: number, buildOut: number, maxEntities: number) {
     if(this._entityIds) {
-      this.onDataRequested.emit(true);
+      this._requestStarted.next(true);
+      this._dataRequested.next(true);
       return this.graphService.findEntityNetwork(
         entityIds,
         undefined,
@@ -1340,6 +1367,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
         console.time('graph render')
       }catch(err){}
     }
+    this._renderStarted.next(true);
     //console.log('@senzing/sdk-components-ng/sz-relationship-network.render(): ', gdata, this._filterFn);
     this.loadedData = gdata;
     this.addSvg(gdata);
@@ -1391,7 +1419,6 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
         tap( (gdata: SzNetworkGraphInputs) => {
           //console.log('SzRelationshipNetworkGraph: g1 = ', gdata);
           if(gdata && gdata.data && gdata.data.entities && gdata.data.entities.length == 0) {
-            this.noResults.emit(true);
             this._requestNoResults.next(true);
           }
           // unlock force positions for render

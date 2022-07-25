@@ -417,6 +417,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
    * Observeable stream for the event that occurs when a draw
    * operation is completed
    */
+  @Output() public renderStarted: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() public renderComplete: EventEmitter<boolean> = new EventEmitter<boolean>();
   /**
    * Observeable stream for the event that occurs when a
@@ -707,6 +708,23 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     }
   }
 
+  onDataLoaded(data) {
+    console.log('onDataLoaded: ', data);
+  }
+
+  onRenderStarted(state) {
+    console.log('[STANDALONE GRAPH] onRenderStarted', state);
+    this.renderStarted.emit(state);
+  }
+  onRenderCompleted(state) {
+    console.log('[STANDALONE GRAPH] onRenderCompleted', state);
+    this.renderComplete.emit(state);
+  }
+  onRequestCompleted(state) {
+    console.log('[STANDALONE GRAPH] onRequestCompleted', state);
+    this.renderComplete.emit(state);
+  }
+
   constructor(
     public prefs: SzPrefsService,
     private cd: ChangeDetectorRef
@@ -746,21 +764,22 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       this.graphNetworkComponent.requestStarted.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe( (args) => {
-        //console.log('[STANDALONE GRAPH] requestStarted', args);
+        console.log('[STANDALONE GRAPH] requestStarted', args);
         this.requestStarted.emit(args);
       });
       this.graphNetworkComponent.requestComplete.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe( (args) => {
+        console.log('[STANDALONE GRAPH] requestComplete', args);
         this.requestComplete.emit(args);
       });
       this.graphNetworkComponent.renderComplete.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe( (args) => {
-          //console.log('[STANDALONE GRAPH] renderComplete', args);
+          console.log('[STANDALONE GRAPH] renderComplete', args);
         this.renderComplete.emit(args);
       });
-      this.graphNetworkComponent.requestNoResults.pipe(
+      this.graphNetworkComponent.noResults.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe( (args) => {
         this.requestNoResults.emit(args);
@@ -769,7 +788,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       this.graphNetworkComponent.onDataLoaded.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe( (args) => {
-          //console.log('[STANDALONE GRAPH] onDataLoaded', args);
+          console.log('[STANDALONE GRAPH] onDataLoaded', args);
           this.dataLoaded.emit(args.data);
       });
       this.graphNetworkComponent.onDataRequested.pipe(
