@@ -15,10 +15,6 @@ updates:
       - dependency-type: "indirect"
       - dependency-type: "direct"
     ignore:
-      - dependency-type: "indirect"
-        update-types: ["version-update:semver-major"]
-      - dependency-type: "direct"
-        update-types: ["version-update:semver-major"]
       - dependency-name: "@angular/animations"
         update-types: ["version-update:semver-major"]
       - dependency-name: "@angular/cdk"
