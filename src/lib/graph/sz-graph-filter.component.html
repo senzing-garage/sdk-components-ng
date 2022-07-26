@@ -17,29 +17,48 @@
     </li>
 
     <li>
-      <label>
-        <div>
+      <label style="display: block;">
+        <div style="display: flex; flex-direction: row; justify-content: space-between;">
           <span class="has-tooltip">
             Scope
             <span class="tooltip tooptip-left">number of relationship hops away from focused entity</span>
           </span>
+          <span class="left-adjusted"><mat-checkbox [checked]="unlimitedMaxScope" (change)="onMaxUnlimitedChange('unlimitedMaxScope',$event.checked)">unlimited</mat-checkbox></span>
         </div>
-        <input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut" 
-          (change)="onIntParameterChange('buildOut', getValueFromEventTarget($event))" required>
+      </label>
+      <label *ngIf="!unlimitedMaxScope" style="display: flex; flex-direction: row; justify-content: space-between; align-content: center; flex-wrap: nowrap; align-items: center;">
+        <mat-slider style="width: 100%" min="1" [max]="buildOutMax" 
+        [disabled]="unlimitedMaxScope" 
+        [value]="buildOut"
+        (change)="onIntParameterChange('buildOut', $event.value)"
+        ></mat-slider>
+        <!--<input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut" 
+          (change)="onIntParameterChange('buildOut', getValueFromEventTarget($event))" required>-->
         <span class="intVal">({{ buildOut }})</span>
       </label>
     </li>
     <li *ngIf="showMaxEntities">
-      <label>
-        <div>
+      <label style="display: block;">
+        <div style="display: flex; flex-direction: row; justify-content: space-between;">
           <span class="has-tooltip">
             Max
             <span class="tooltip tooptip-left">hard limit on how many entities will be displayed</span>
           </span>
+          <span class="left-adjusted"><mat-checkbox [checked]="unlimitedMaxEntities" (change)="onMaxUnlimitedChange('unlimitedMaxEntities',$event.checked)">unlimited</mat-checkbox></span>
         </div>
-        <input type="range" min="1" max="99" step="3" [value]="maxEntities" formControlName="maxEntities" 
-          (change)="onIntParameterChange('maxEntities', getValueFromEventTarget($event))" required>
-        <span class="intVal">({{ maxEntities }})</span>
+      </label>
+      <label *ngIf="!unlimitedMaxEntities" style="display: flex; flex-direction: row; justify-content: space-between; align-content: center; flex-wrap: nowrap; align-items: center;">
+        <mat-slider style="width: 100%" min="1" [max]="maxEntitiesLimit + 3" step="3" 
+        [disabled]="unlimitedMaxEntities" 
+        [value]="maxEntities"
+        (change)="onIntParameterChange('maxEntities', $event.value)"
+        ></mat-slider>
+        <!--<input type="range" 
+          min="1" [max]="maxEntitiesLimit + 3" 
+          [disabled]="true"
+          [value]="maxEntities" formControlName="maxEntities" 
+          (change)="onIntParameterChange('maxEntities', getValueFromEventTarget($event))" required>-->        
+        <span style="white-space: nowrap;">({{ maxEntitiesValueLabel }}) of {{ maxEntitiesLimit }}</span>
       </label>
     </li>
     <li *ngIf="showMaxDegreesOfSeparation">
@@ -123,7 +142,9 @@
   </form>
   <div *ngIf="showMatchKeys && showMatchKeyFilters">
     <hr>
-    <h3>{{ sectionTitles[4] }}</h3>
+    <h3>
+      {{ sectionTitles[4] }}
+    </h3>
     <form [formGroup]="filterByMatchKeysForm">
     <ul class="filters-list">
       <ng-container *ngFor="let ds of filterByMatchKeysData.controls; let i = index">
@@ -140,32 +161,39 @@
   </div>
   <div *ngIf="showMatchKeyTokens && showMatchKeyTokenFilters">
     <hr>
-    <div class="filter-header">
-      <h3>{{ sectionTitles[5] }}</h3>
+    <div class="filter-header match-key-token-filter-header">
+      <h3>
+        {{ sectionTitles[5] }}
+      </h3>
       <div *ngIf="showMatchKeyTokenSelectAll" class="bulk-select-options">
         [<span (click)="onSelectAllMatchKeyTokens(true)">All On</span> | <span (click)="onSelectAllMatchKeyTokens(false)">All Off</span>]
       </div>
     </div>
+    <mat-slide-toggle 
+      class="match-key-token-mode-select" 
+      [checked]="isMatchKeyTokenSelectionScopeCore"
+      (change)="onMatchKeyCoreModeToggle($event.checked)">Primary Only</mat-slide-toggle>
     <mat-chip-list 
       #matchKeyChipList
       class="match-keys mat-chip-list-stacked" 
       aria-orientation="vertical" 
       aria-label="Match Key Filters">
       
-      <div *ngIf="showCoreMatchKeyTokenChips" class="chip-group">
+      <div *ngIf="showCoreMatchKeyTokenChips" class="chip-group core">
         <mat-chip *ngFor="let mk of matchKeyCoreTokens; let i = index"
           class="core-key"
           [class.selected]="isMatchKeyCoreTokenSelected(mk.name)"
           (click)="onCoreMkTagFilterToggle(mk.name)"
-          [matBadge]="mk.coreCount" matBadgePosition="after" matBadgeColor="accent">
+          [matBadge]="getMKBadgeCount(mk.coreCount)" matBadgePosition="after" matBadgeColor="accent">
           {{mk.name}}
         </mat-chip>
       </div>
-      <div *ngIf="showExtraneousMatchKeyTokenChips" class="chip-group">
+      <div *ngIf="showExtraneousMatchKeyTokenChips" class="chip-group extraneous">
         <mat-chip *ngFor="let mk of matchKeyTokens; let i = index"
+          class="extra-key"
           [class.selected]="isMatchKeyTokenSelected(mk.name)"
           (click)="onMkTagFilterToggle(mk.name)"
-          [matBadge]="mk.count" matBadgePosition="after" matBadgeColor="accent">
+          [matBadge]="getMKBadgeCount(mk.count)" matBadgePosition="after" matBadgeColor="accent">
           {{mk.name}}
         </mat-chip>
       </div>

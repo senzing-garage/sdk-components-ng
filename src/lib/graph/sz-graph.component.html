@@ -27,6 +27,7 @@
       (relationshipContextMenuClick)="onLinkRightClick($event)"
       (noResults)="onNoResults($event)"
       (onDataLoaded)="onGraphDataLoaded($event)"
+      (onPreflightRequestComplete)="onPreflightRequestComplete($event)"
       (scaleChanged)="onGraphZoom($event)"
       [maxEntities]="maxEntities"></sz-relationship-network>
   
@@ -51,6 +52,7 @@
         [showMatchKeyTokenSelectAll]="showMatchKeyTokenSelectAll"
         [showCoreMatchKeyTokenChips]="showCoreMatchKeyTokenChips"
         [showExtraneousMatchKeyTokenChips]="showExtraneousMatchKeyTokenChips"
+        [maxEntitiesLimit]="maxEntitiesFilterLimit"
       ></sz-graph-filter>
   
       <svg class="popout-icon"

@@ -879,6 +879,10 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   private _neverFilterQueriedEntityIds: boolean = true;
   /** @internal */
   private _queriedEntitiesColor: string | undefined = "#465BA8";
+  /** @internal */
+  private _unlimitedMaxEntities: boolean = true;
+  /** @internal */
+  private _unlimitedMaxScope: boolean = false;
 
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
@@ -897,7 +901,9 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     'matchKeyTokensIncluded',
     'matchKeyCoreTokensIncluded',
     'neverFilterQueriedEntityIds',
-    'queriedEntitiesColor'
+    'queriedEntitiesColor',
+    'unlimitedMaxEntities',
+    'unlimitedMaxScope'
   ]
 
   // -------------- getters and setters
@@ -1032,7 +1038,28 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     this._queriedEntitiesColor = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
-
+  /** whether or not to ignore the maxEntities value and always get 
+   * all related entities */
+  public get unlimitedMaxEntities(): boolean {
+    return this._unlimitedMaxEntities;
+  }
+  /** whether or not to ignore the maxEntities value and always get 
+   * all related entities */
+  public set unlimitedMaxEntities(value: boolean) {
+    this._unlimitedMaxEntities = value;
+    if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** whether or not to ignore the maxDegreesOfSeparation value and always get 
+   * build out to max */
+   public get unlimitedMaxScope(): boolean {
+    return this._unlimitedMaxScope;
+  }
+  /** whether or not to ignore the maxDegreesOfSeparation value and always get 
+   * build out to max */
+  public set unlimitedMaxScope(value: boolean) {
+    this._unlimitedMaxScope = value;
+    if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
+  }
 
   /**
    * publish out a "first" real payload so that

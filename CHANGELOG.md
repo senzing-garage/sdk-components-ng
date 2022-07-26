@@ -6,15 +6,68 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [5.0.1] - 2022-07-19
+## [5.1.0] - 2022-07-27
+
+- there is now a new `unlimited` ui option for maximum entities allowed.
+- there is now a new `unlimited` ui option for maximum build out allowed.
+- the upper limit of the maximum entities ui slider is now dynamically set from the initial query.
+- match key token counts now feature condensed notation instead of ellipsis
+
+
+### Added
+- the following event emitters added to `SzGraphFilterComponent`
+  - `matchKeyTokenSelectionScopeChanged` when the user switches from `CORE` to `EXTRANEOUS` match key token scope
+- the following getters and setters added to `SzGraphFilterComponent`
+  -  `maxEntitiesLimit` the maximum value that the slider control will allow. default is 200.
+  -  `unlimitedMaxEntities` ignore the `maxEntities` value and always pull up to 40000
+  -  `unlimitedMaxScope` ignore the `buildOut` value and always pull up to 10
+- the following getters and setters added to `SzGraphComponent`
+  - `unlimitedMaxEntities`
+  - `unlimitedMaxScope`
+  - `maxEntitiesFilterLimit`
+- the following event emitters on `SzGraphComponent`
+  - `renderStarted` not sure why this didn't exist since `renderComplete` did
+  - `dataLoading` for more flexible state sensing
+  - `onPreflightRequestComplete` so we can get the total relationship count to populate the `maxEntitiesFilterLimit`
+- the following properties/getters/setters added to `SzRelationshipNetworkComponent`
+  - `noMaxEntitiesLimit` sets whether or not to ignore the value set in `maxEntities`
+  - `noMaxScopeLimit` sets whether or not to ignore the value set in `buildOut`
+- the following event emitters added to `SzRelationshipNetworkComponent`
+  - `onTotalRelationshipsCountUpdated` is emitted with the value of how many total relationships are possible to display according to the data in the focal entities related entities.
+  - `renderStarted` wasn't wired correctly. works now
+  - `dataLoading` when a data request has been initiated.
+  - `dataLoaded` which is like `requestComplete` but instead of a boolean it returns the data response
+- the following preferences added to `SzGraphPrefs`
+  - `unlimitedMaxEntities`
+  - `unlimitedMaxScope`
+- `getEntitiesByIds` method added to `SzSearchService` to get data for multiple entities by their id's in the form of `Observable<SzEntityData[]>`
+
 
 ### Modified
 - Changed the behavior of `showCoreMatchKeyTokenChips` to automatically set `matchKeyTokenSelectionScope` to `CORE`.
 - Changed the complete match key display to a comma deliminated list of tokens on each line for readability
 - Changed the `shouldDataSourceBeDisplayed` method in `SzGraphFilterComponent` to allow for passing an empty array to `showDataSources` so we can initialize with an empty list that will prevent showing datasources before the list is ready.
 - Changed the `SzStandaloneGraphComponent` component to initialize the value of `showDataSources` in the filter component to NOT initially show data sources until the data can be properly rendered. (prevents FOC, see above)
+- the following getters and setters added to `SzGraphFilterComponent`
+  - `maxEntities` the maximum number of entities to display on the graph
+- the following changes made to `SzRelationshipNetworkComponent`
+  - `dataRequested` changed to BehaviorSubject (lifecycle bugfix)
+  - `requestStarted` fixed
+  - `requestComplete` fixed
+  - `getNetwork` signature changed to `getNetwork(entityIds: SzEntityIdentifier[], maxDegrees: number, buildOut: number, maxEntities: number)`
+  - the following event emitters have been rewired so that they are just proxies of 
+the observeable event streams for uniformity/reliability:
+    - `onRequestStarted`
+    - `onRequestCompleted`
+    - `onRenderStarted`
+    - `onRenderCompleted`
+    - `onNoResults`
+    - `onDataRequested`
+    - `onDataLoaded`
+    - `onDataUpdated`
+    - `scaleChanged`
 
-relevant tickets: #343 #344 #348
+relevant tickets: #343 #344 #347 #348 #350 #355
 
 ## [5.0.0] - 2022-07-01
 

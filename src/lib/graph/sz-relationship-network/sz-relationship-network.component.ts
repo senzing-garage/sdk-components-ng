@@ -4,11 +4,12 @@ import { Graph, NodeInfo, LinkInfo } from './graph-types';
 import { Simulation } from 'd3-force';
 
 
-import { EntityGraphService, SzEntityNetworkResponse, SzEntityNetworkData, SzFeatureMode, SzRelatedEntity, SzEntityData, SzEntityIdentifier, SzEntityPath } from '@senzing/rest-api-client-ng';
-import { map, tap, first, takeUntil, take } from 'rxjs/operators';
-import { Subject, Observable } from 'rxjs';
-import { parseSzIdentifier } from '../../common/utils';
+import { EntityGraphService, SzEntityNetworkResponse, SzEntityNetworkData, SzFeatureMode, SzRelatedEntity, SzEntityData, SzEntityIdentifier, SzEntityPath, SzEntityIdentifiers } from '@senzing/rest-api-client-ng';
+import { map, tap, first, takeUntil, take, filter } from 'rxjs/operators';
+import { Subject, Observable, BehaviorSubject, of } from 'rxjs';
+import { parseSzIdentifier, parseBool } from '../../common/utils';
 import { SzNetworkGraphInputs, SzGraphTooltipEntityModel, SzGraphTooltipLinkModel, SzGraphNodeFilterPair, SzEntityNetworkMatchKeyTokens } from '../../../lib/models/graph';
+import { SzSearchService } from '../../services/sz-search.service';
 
 /**
  * Provides a SVG of a relationship network diagram via D3.
@@ -19,7 +20,7 @@ import { SzNetworkGraphInputs, SzGraphTooltipEntityModel, SzGraphTooltipLinkMode
   templateUrl: './sz-relationship-network.component.html',
   styleUrls: ['./sz-relationship-network.component.scss']
 })
-export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
 
@@ -75,44 +76,63 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
   }
 
   /** @internal */
-  private _requestStarted: Subject<boolean> = new Subject<boolean>();
+  private _dataRequested  = new BehaviorSubject<boolean>(false);
+  /** observeable for when new data has been requested from the api */
+  public dataRequested    = this._dataRequested.asObservable();
   /** @internal */
-  private _requestComplete: Subject<boolean> = new Subject<boolean>();
+  private _dataLoaded     = new Subject<SzNetworkGraphInputs>();
+  /** observeable for when data has been updated */
+  public dataLoaded       = this._dataLoaded.asObservable();
   /** @internal */
-  private _renderComplete: Subject<boolean> = new Subject<boolean>();
+  private _requestStarted: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  /** observeable for when new data has been requested from the api */
+  public requestStarted   = this._requestStarted.asObservable().pipe(filter((value) => value !== false));
   /** @internal */
-  private _requestNoResults: Subject<boolean> = new Subject<boolean>();
-
-  /**
-   * Observeable stream for the event that occurs when a network
-   * request is initiated
-   */
-  public requestStarted: Observable<boolean>;
-  /**
-   * Observeable stream for the event that occurs when a network
-   * request is completed
-   */
-  public requestComplete: Observable<boolean>;
-  /**
-   * Observeable stream for the event that occurs when a draw
-   * operation is completed
-   */
-  public renderComplete: Observable<boolean>;
-  /**
-   * Observeable stream for the event that occurs when a
-   * request completed but has no results
-   */
-  public requestNoResults: Observable<boolean>;
-  /**
-   * emitted when the player right clicks a entity node.
-   * @returns object with various entity and ui properties.
-   */
-  @Output() noResults: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+  private _requestComplete: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  /** observeable stream for the event that occurs when a network api request is completed */
+  public requestComplete  = this._requestComplete.asObservable().pipe(filter((value) => value !== false));
+  /** @internal */
+  private _renderStarted: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  /** Observeable stream that occurs when the rendering cycle of a graph is in progress */
+  public renderStarted = this._renderStarted.asObservable().pipe(filter((value) => value !== false));
+  /** @internal */
+  private _renderComplete: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  /** observeable stream for the event that occurs when a draw operation is completed */
+  public renderComplete = this._renderComplete.asObservable().pipe(filter((value) => value !== false));
+  /** @internal */
+  private _requestNoResults: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  /** observeable stream for the event that occurs when a request completed but has no results */
+  public noResults = this._requestNoResults.asObservable().pipe(filter((value) => value !== false));
+  /** @internal */
+  private _lastPrimaryRequestParameters: {
+    entityIds: SzEntityIdentifier[],
+    maxDegrees: number,
+    buildOut: number, 
+    maxEntities: number
+  } = undefined;
+  /** @internal */
   private _onZoom: Subject<number> = new Subject<number>();
+  /** observeable stream for when the canvas zoom level is changed */
   public onZoom: Observable<number> = this._onZoom.asObservable();
-  @Output() public scaleChanged: EventEmitter<number> = new EventEmitter<number>();
 
+  /** Event emitter for the event that occurs when a network request is initiated*/
+  @Output() onRequestStarted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  /** Event emitter for the event that occurs when a network api request is completed */
+  @Output() onRequestCompleted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  /** Event emitter that occurs when the rendering cycle of a graph is in progress */
+  @Output() onRenderStarted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  /** Event emitter that occurs when the rendering cycle of a graph is in progress */
+  @Output() onRenderCompleted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  /** Event emitter for the event that occurs when a request completed but has no results */
+  @Output() onNoResults: EventEmitter<boolean> = new EventEmitter<boolean>();
+  /** emit "onDataRequested" when data requested */
+  @Output() public onDataRequested:   EventEmitter<boolean> = new EventEmitter<boolean>();
+  /** Event emitter for when new data has been requested from the api */
+  @Output() public onDataLoaded:      EventEmitter<SzNetworkGraphInputs> = new EventEmitter<SzNetworkGraphInputs>();
+  /** emit "onDataUpdated" when data requested */
+  @Output() public onDataUpdated:     EventEmitter<any> = new EventEmitter<any>();
+  /** Event emitter for when the canvas zoom level is changed */
+  @Output() public scaleChanged: EventEmitter<number> = new EventEmitter<number>();
 
   // assigned during render phase to D3 selector groups
   private svg: any;
@@ -174,12 +194,7 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       return;
     }
     //this.render(value);
-  }
-
-  /** emit "onDataLoaded" when data received and parsed */
-  @Output() public onDataLoaded:  EventEmitter<SzNetworkGraphInputs> = new EventEmitter<SzNetworkGraphInputs>();
-  @Output() public onDataUpdated: EventEmitter<any> = new EventEmitter<any>();
-
+  }  
   /**
    * arbitrary value just for drawing
    * @internal
@@ -307,11 +322,44 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
   private _buildOut: number | undefined;
   @Input() set buildOut(value: string| number) { this._buildOut = +value; }
 
-  /**
-   * maxiumum entities to display
-   */
+  /** @internal */
   private _maxEntities: number | undefined;
-  @Input() set maxEntities(value: string | number) { this._maxEntities = +value; }
+  /** @internal */
+  private _maxEntitiesPreflightLimit: number | undefined;
+  /** the maximum entities to pull back from the api request */
+  @Input() set maxEntities(value: string | number) { 
+    this._maxEntities = parseInt(value as string); 
+  }
+  /** the maximum entities to pull back from the api request */
+  public get maxEntities(): number {
+    return this._maxEntities;
+  }
+  /** @internal */
+  private _unlimitedMaxEntities: boolean = false;
+  /** sets whether or not to ignore the value set in "maxEntities" */
+  @Input() public set noMaxEntitiesLimit(value: boolean | string) {
+    this._unlimitedMaxEntities = parseBool(value as string);
+  }
+  /** whether or not to ignore the value set in "maxEntities" */
+  public get noMaxEntitiesLimit(): boolean {
+    return this._unlimitedMaxEntities;
+  }
+  /** @internal */
+  private _unlimitedMaxScope: boolean = false;
+  /** sets whether or not to ignore the value set in "buildOut" */
+  @Input() public set noMaxScopeLimit(value: boolean | string) {
+    this._unlimitedMaxScope = parseBool(value as string);
+  }
+  /** whether or not to ignore the value set in "buildOut" */
+  public get noMaxScopeLimit(): boolean {
+    return this._unlimitedMaxScope;
+  }
+  /** when a preflight request completes */
+  @Output() onPreflightRequestComplete: EventEmitter<any> = new EventEmitter<any>();
+  /** when the initial or preflight request has the total relationships available
+   * this event is emitted.
+  */
+  @Output() onTotalRelationshipsCountUpdated: EventEmitter<number> = new EventEmitter<number>();
 
   /**
    * the space between nodes
@@ -1141,14 +1189,32 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
   private _zoom: d3.ZoomBehavior<Element, unknown> | undefined;
 
   constructor(
-    private graphService: EntityGraphService
+    private graphService: EntityGraphService,
+    private searchService: SzSearchService,
   ) {
     this.linkedByNodeIndexMap = {};
-    // set up public observable streams
-    this.requestStarted = this._requestStarted.asObservable();
-    this.requestComplete = this._requestComplete.asObservable();
-    this.renderComplete = this._renderComplete.asObservable();
-    this.requestNoResults = this._requestNoResults.asObservable();
+    /** set up eventing proxies */
+    this.requestStarted.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((value) => { this.onRequestStarted.emit(value) });
+    this.requestComplete.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((value) => { this.onRequestCompleted.emit(value) });
+    this.renderStarted.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((value) => { this.onRenderStarted.emit(value) });
+    this.renderComplete.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((value) => { this.onRenderCompleted.emit(value) });
+    this.dataRequested.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((value) => { this.onDataRequested.emit(value) });
+    this.dataLoaded.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((value) => { this.onDataLoaded.emit(value) });
+    this.noResults.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((value) => { this.onNoResults.emit(value) });
   }
 
   /** since the user can set zoom to false and then "true" we need a way to 
@@ -1175,21 +1241,6 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
     this.center();
   }
 
-  ngOnInit() {
-    // !!!! logic moved to ngAfterViewInit
-    // !!!! as of NG10 ViewChild(Ref) is no longer available at 
-    // !!!! time of view init
-    /*
-    // get dom element reference to svg tag
-    console.warn('what kind of element is svgComponent? ', this.svgComponent);
-    this.svgElement = (this.svgComponent.nativeElement as SVGSVGElement);
-
-    if (this._entityIds === undefined || this._entityIds.length === 0) {
-      console.log("No EntityIDs passed in to " + this);
-      return;
-    } */
-  }
-
   /** make network request and populate svg */
   ngAfterViewInit() {
     // get dom element reference to svg tag
@@ -1204,17 +1255,37 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
     }
 
     if(this._entityIds) {
-      this.getNetwork().pipe(
+      let _maxEntities  = this._unlimitedMaxEntities ? 40000 : this._maxEntities;
+      let _maxBuildOut  = this._unlimitedMaxScope ? 10 : this._buildOut;
+
+      this.getNetwork(this._entityIds, this._maxDegrees, _maxBuildOut, _maxEntities).pipe(
         takeUntil(this.unsubscribe$),
         first(),
         map( this.asGraphInputs.bind(this) ),
         tap( (gdata: SzNetworkGraphInputs) => {
           //console.warn('SzRelationshipNetworkGraph: g1 = ', gdata);
           if(gdata && gdata.data && gdata.data.entities && gdata.data.entities.length == 0) {
-            this.noResults.emit(true);
             this._requestNoResults.next(true);
           }
-          this.onDataLoaded.emit(gdata);
+          if(gdata && gdata.data) {
+            //onTotalDirectRelationshipsCountUpdated
+            let totalEntities = 0;
+            let entitiesById = new Set();
+            (gdata.data as SzEntityNetworkData).entities.forEach((_rEntData: SzEntityData) => {
+              // for each entity 
+              entitiesById.add(_rEntData.resolvedEntity.entityId);
+              //entitiesById[_rEntData.resolvedEntity.entityId] = 1;
+              if(_rEntData && _rEntData.relatedEntities && _rEntData.relatedEntities.forEach) {
+                _rEntData.relatedEntities.forEach((_rEntRel) => {
+                  entitiesById.add(_rEntRel.entityId);
+                });
+              }
+            });
+            totalEntities = entitiesById.size;
+            this.onTotalRelationshipsCountUpdated.emit(totalEntities);
+          }
+          this._dataLoaded.next(gdata);
+          this._requestComplete.next(true);
         })
       ).subscribe( this.render.bind(this) );
     }
@@ -1235,21 +1306,51 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
   /**
    * make graph network request using input parameters
    */
-  private getNetwork() {
-    if(this._entityIds) {
+  private getNetwork(entityIds: SzEntityIdentifier[], maxDegrees: number, buildOut: number, maxEntities: number) {
+    let _lastPrimaryRequestParameters = {
+      entityIds: entityIds,
+      maxDegrees: maxDegrees,
+      buildOut: buildOut,
+      maxEntities: maxEntities
+    }
+    let _parametersChanged = false;
+    let _noLastRequestParameters = this._lastPrimaryRequestParameters ? false : true;
+    if(
+      this._lastPrimaryRequestParameters && (
+      this._lastPrimaryRequestParameters.entityIds !== _lastPrimaryRequestParameters.entityIds ||
+      this._lastPrimaryRequestParameters.maxDegrees !== _lastPrimaryRequestParameters.maxDegrees || 
+      this._lastPrimaryRequestParameters.buildOut !== _lastPrimaryRequestParameters.buildOut || 
+      this._lastPrimaryRequestParameters.maxEntities !== _lastPrimaryRequestParameters.maxEntities
+    )) {
+      _parametersChanged = true;
+    }
+
+    //console.log(`getNetwork(${entityIds},${maxDegrees},${buildOut},${maxEntities} | ${this.maxEntities}) | ${this._unlimitedMaxEntities}`, 
+    //_parametersChanged);
+
+    this._lastPrimaryRequestParameters = _lastPrimaryRequestParameters;
+    if(
+      this._entityIds && _parametersChanged || 
+      this._entityIds && _noLastRequestParameters) 
+    {
+      this._requestStarted.next(true);
+      this._dataRequested.next(true);
       return this.graphService.findEntityNetwork(
-        this._entityIds,
+        entityIds,
         undefined,
-        this._maxDegrees,
-        this._buildOut,
-        this._maxEntities,
+        maxDegrees,
+        buildOut,
+        maxEntities,
         SzFeatureMode.NONE,
         false,
         false,
         false,
         SzRelationshipNetworkComponent.WITH_RAW) ;
-    } else {
+    } else if(!this._entityIds) {
       throw new Error('entity ids are required to make "findEntityNetwork" call.');
+    } else {
+      console.log('getNetwork() no refresh');
+      throw new Error('parameters have not changed');
     }
   }
 
@@ -1286,6 +1387,12 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
 
   /** main render lifecycle method */
   public render(gdata: SzNetworkGraphInputs) {
+    if(console.time){
+      try {
+        console.time('graph render')
+      }catch(err){}
+    }
+    this._renderStarted.next(true);
     //console.log('@senzing/sdk-components-ng/sz-relationship-network.render(): ', gdata, this._filterFn);
     this.loadedData = gdata;
     this.addSvg(gdata);
@@ -1320,29 +1427,29 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       this.entityIds = entityIds;
     }
     
-    //console.warn('@senzing/sdk-components-ng/sz-relationship-network.reload(): ', this._entityIds);
     if(this.svgZoom && this.svgZoom.selectAll) {
       this.svgZoom.selectAll('*').remove();
     }
 
     if(this._entityIds) {
       this._requestStarted.next(true);
-      this.getNetwork().pipe(
+      this._dataRequested.next(true);
+      let _maxEntities      = this._unlimitedMaxEntities ? 40000 : this._maxEntities;
+      let _maxEntitiesLimit = this._unlimitedMaxEntities ? (this._maxEntitiesPreflightLimit !== undefined ? this._maxEntitiesPreflightLimit : 40000) : this.maxEntities;
+      //console.warn('@senzing/sdk-components-ng/sz-relationship-network.reload(): ', this._entityIds, _maxEntitiesLimit, this._unlimitedMaxEntities);
+
+      this.getNetwork(this._entityIds, this._maxDegrees, this._buildOut, _maxEntities).pipe(
         takeUntil(this.unsubscribe$),
         first(),
         map( this.asGraphInputs.bind(this) ),
         tap( (gdata: SzNetworkGraphInputs) => {
           //console.log('SzRelationshipNetworkGraph: g1 = ', gdata);
           if(gdata && gdata.data && gdata.data.entities && gdata.data.entities.length == 0) {
-            this.noResults.emit(true);
             this._requestNoResults.next(true);
           }
-          // unlock force positions for render
-          //this._forcePositionsLocked = false;
-          //this.unlockForcePosition();
           // send requestComplete
           this._requestComplete.next(true);
-          this.onDataLoaded.emit(gdata);
+          this._dataLoaded.next(gdata);
         })
       ).subscribe( this.render.bind(this) );
     }
@@ -2183,6 +2290,11 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
 
     // publish out event
     this._rendered = true;
+    if(console.time){
+      try {
+        console.timeEnd('graph render')
+      }catch(err){}
+    }
   }
   /** 
    * update the relationship count bubble inside a entity node 
@@ -3237,6 +3349,43 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
     }
     return _matchkeys;
   }
+  public static getMatchKeysFromEntityData(data: SzEntityData[], coreEntityIds?: SzEntityIdentifier[]): {entityId: string|number, value: string, isCoreRelationship: boolean}[] {
+    let _matchkeys = [];
+    let _entitiesOnDeck   = [];
+    if(data && data.map) {
+      // first build a array of all entity Ids present
+      _entitiesOnDeck     = data.map((entity: SzEntityData) => {
+        return entity.resolvedEntity.entityId;
+      });
+      if(coreEntityIds) {
+        coreEntityIds = coreEntityIds.map(parseSzIdentifier);
+      }
+      let _entityRelatedMatchKeys = data.map( (entity) => {
+        let retVal = [];
+        if(entity && entity.relatedEntities && entity.relatedEntities.map) {
+          retVal = entity.relatedEntities.map( (relatedEntity: SzRelatedEntity) => {
+            let isCoreRelationship = coreEntityIds && coreEntityIds.indexOf ? coreEntityIds.indexOf( entity.resolvedEntity.entityId ) > -1 : false;
+            return { entityId: relatedEntity.entityId, value: relatedEntity.matchKey, isCoreRelationship: isCoreRelationship, coreEntities: coreEntityIds, relSource: entity.resolvedEntity.entityId};
+          });
+        }
+        return retVal;
+      })
+      if(_entityRelatedMatchKeys && _entityRelatedMatchKeys.reduce) {
+        _matchkeys = _entityRelatedMatchKeys.reduce((accumulator, value) => accumulator.concat(value), []);
+      }
+      if(_matchkeys && _matchkeys.filter) {
+        // de-dupe
+        _matchkeys = _matchkeys.filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        });
+        // only show match keys that have at least one glyph on deck
+        _matchkeys = _matchkeys.filter((value, index, self) => {
+          return _entitiesOnDeck.indexOf(value.entityId as number) > -1;
+        });
+      }
+    }
+    return _matchkeys;
+  }
   /** 
    * takes a complex match key like "NAME+ADDRESS-DOB (Ambiguous)" and turns it in to 
    * an array of positive tokens like ["NAME","ADDRESS","Ambiguous"]. 
@@ -3351,5 +3500,25 @@ export class SzRelationshipNetworkComponent implements OnInit, AfterViewInit, On
       });
     });
     return retValue;
+  }
+  private getMatchKeyTokensFromEntityPreflightData(derdah: SzEntityData[], focalEntityIds?: SzEntityIdentifier[]) {
+    let retValue: undefined | SzEntityNetworkMatchKeyTokens = {
+      DISCLOSED: {},
+      DERIVED: {}
+    }
+    // if we have focal entity id's add new "CORE" node to return value
+    if(focalEntityIds) {
+      retValue.CORE = {
+        DISCLOSED: {},
+        DERIVED: {}
+      }
+    }
+    let relatedMatchKeys = SzRelationshipNetworkComponent.getMatchKeysFromEntityData(derdah, focalEntityIds);
+    let categorizedMatchKeys: {entityId: string | number, disclosed: string[], derived: string[], isCoreRelationship: boolean}[]  = relatedMatchKeys
+    .map((matchKeyResult) => {
+      let entityMatchKeys = SzRelationshipNetworkComponent.tokenizeMatchKey(matchKeyResult.value);
+      return {entityId: matchKeyResult.entityId, disclosed: entityMatchKeys[0], derived: entityMatchKeys[1], isCoreRelationship: matchKeyResult.isCoreRelationship }
+    });
+    console.log('getMatchKeyTokensFromEntityPreflightData: ', relatedMatchKeys, categorizedMatchKeys);
   }
 }
