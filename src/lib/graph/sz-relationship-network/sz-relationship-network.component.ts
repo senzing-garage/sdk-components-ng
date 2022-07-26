@@ -322,34 +322,43 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   private _buildOut: number | undefined;
   @Input() set buildOut(value: string| number) { this._buildOut = +value; }
 
-  /**
-   * maxiumum entities to display
-   */
+  /** @internal */
   private _maxEntities: number | undefined;
+  /** @internal */
   private _maxEntitiesPreflightLimit: number | undefined;
+  /** the maximum entities to pull back from the api request */
   @Input() set maxEntities(value: string | number) { 
     this._maxEntities = parseInt(value as string); 
   }
+  /** the maximum entities to pull back from the api request */
   public get maxEntities(): number {
     return this._maxEntities;
   }
-
+  /** @internal */
   private _unlimitedMaxEntities: boolean = false;
+  /** sets whether or not to ignore the value set in "maxEntities" */
   @Input() public set noMaxEntitiesLimit(value: boolean | string) {
     this._unlimitedMaxEntities = parseBool(value as string);
   }
+  /** whether or not to ignore the value set in "maxEntities" */
   public get noMaxEntitiesLimit(): boolean {
     return this._unlimitedMaxEntities;
   }
+  /** @internal */
   private _unlimitedMaxScope: boolean = false;
+  /** sets whether or not to ignore the value set in "buildOut" */
   @Input() public set noMaxScopeLimit(value: boolean | string) {
     this._unlimitedMaxScope = parseBool(value as string);
   }
+  /** whether or not to ignore the value set in "buildOut" */
   public get noMaxScopeLimit(): boolean {
     return this._unlimitedMaxScope;
   }
-
+  /** when a preflight request completes */
   @Output() onPreflightRequestComplete: EventEmitter<any> = new EventEmitter<any>();
+  /** when the initial or preflight request has the total relationships available
+   * this event is emitted.
+  */
   @Output() onTotalRelationshipsCountUpdated: EventEmitter<number> = new EventEmitter<number>();
 
   /**
@@ -1316,8 +1325,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       _parametersChanged = true;
     }
 
-    console.log(`getNetwork(${entityIds},${maxDegrees},${buildOut},${maxEntities} | ${this.maxEntities}) | ${this._unlimitedMaxEntities}`, 
-    _parametersChanged);
+    //console.log(`getNetwork(${entityIds},${maxDegrees},${buildOut},${maxEntities} | ${this.maxEntities}) | ${this._unlimitedMaxEntities}`, 
+    //_parametersChanged);
 
     this._lastPrimaryRequestParameters = _lastPrimaryRequestParameters;
     if(
