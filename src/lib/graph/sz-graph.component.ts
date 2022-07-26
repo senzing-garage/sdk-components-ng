@@ -1,5 +1,5 @@
 import { Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef } from '@angular/core';
-import { SzPrefsService } from '../services/sz-prefs.service';
+import { SzGraphPrefs, SzPrefsService } from '../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { SzEntityData, SzEntityIdentifier, SzEntityNetworkData } from '@senzing/rest-api-client-ng';
@@ -119,10 +119,17 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @Input() set maxEntitiesFilterLimit(value: number | string){ this._maxEntitiesFilterLimit = parseInt(value as string); }
   /** maximum value selectable in the graph filter component */
   get maxEntitiesFilterLimit(): number { return this._maxEntitiesFilterLimit; }
+  /** @internal */
+  private _unlimitedMaxEntities: boolean;
+  /** @internal */
+  private _unlimitedMaxScope: boolean;
   /** ignore the entity limit restriction from maxEntities */
   @Input() set unlimitedMaxEntities(value: boolean) {
     if(value === undefined) return;
-    this.prefs.graph.unlimitedMaxEntities = value;
+    if(value !== this.prefs.graph.unlimitedMaxEntities) {
+      this.prefs.graph.unlimitedMaxEntities = value;
+    }
+    this._unlimitedMaxEntities = value;
   }
   /** ignore the entity limit restriction from maxEntities */
   get unlimitedMaxEntities(): boolean {
@@ -131,7 +138,11 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   /** ignore the scope limit restriction from maxEntities */
   @Input() set unlimitedMaxScope(value: boolean) {
     if(value === undefined) return;
-    this.prefs.graph.unlimitedMaxScope = value;
+    if(value !== this.prefs.graph.unlimitedMaxScope) {
+      this.prefs.graph.unlimitedMaxScope = this._unlimitedMaxScope;
+    }
+    this._unlimitedMaxScope  = value;
+    //this.prefs.graph.unlimitedMaxScope = value;
   }
   /** ignore the scope limit restriction from maxEntities */
   get unlimitedMaxScope(): boolean {
@@ -573,12 +584,12 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       this.dataSourcesChange.emit( SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data) );
       this.matchKeysChange.emit( SzRelationshipNetworkComponent.getMatchKeysFromEntityNetworkData(inputs.data) )
       this.matchKeyTokensChange.emit( matchKeyTokens );
-      //console.log('onGraphDataLoaded: ', _matchKeyTokens, this.filterShowMatchKeyTokens, inputs);
+      console.log('onGraphDataLoaded: ', _matchKeyTokens, this.filterShowMatchKeyTokens, inputs);
     }
     if(inputs.data) {
       this.dataLoaded.emit( inputs.data );
     }
-    // console.log('onGraphDataLoaded setter: ', inputs);
+    console.log('onGraphDataLoaded setter: ', inputs);
   }
   /**
    * when new data has been added to the initial data request
@@ -594,7 +605,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       this.dataSourcesChange.emit( SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(data) );
       this.matchKeysChange.emit( SzRelationshipNetworkComponent.getMatchKeysFromEntityNetworkData(data) )
       this.matchKeyTokensChange.emit( matchKeyTokens );
-      //console.log('onGraphDataUpdated: ', _matchKeyTokens, this.filterShowMatchKeyTokens, data);
+      console.log('onGraphDataUpdated: ', _matchKeyTokens, this.filterShowMatchKeyTokens, data);
     }
     if(data) {
       this.dataUpdated.emit( data );
@@ -834,22 +845,49 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   }
 
   /** proxy handler for when prefs have changed externally */
-  private onPrefsChange(prefs: any) {
-    console.log('@senzing/sdk-components-ng/sz-graph-component.onPrefsChange(): ', prefs, this.prefs.graph);
+  private onPrefsChange(prefs: SzGraphPrefs) {
+    console.log('@senzing/sdk-components-ng/sz-graph-component.onPrefsChange(): ', prefs, this.prefs.graph.toJSONObject());
     let queryParamChanged = false;
-    let _oldQueryParams = {maxDegrees: this.maxDegrees, maxEntities: this.maxEntities, buildOut: this.buildOut};
-    let _newQueryParams = {maxDegrees: prefs.maxDegreesOfSeparation, maxEntities: prefs.maxEntities, buildOut: prefs.buildOut};
-    if(this.maxDegrees != prefs.maxDegreesOfSeparation ||
-      this.maxEntities != prefs.maxEntities ||
-      this.buildOut != prefs.buildOut){
+    let _oldQueryParams = {maxDegrees: this.maxDegrees, maxEntities: this.maxEntities, buildOut: this.buildOut, unlimitedMaxEntities: this.unlimitedMaxEntities, unlimitedMaxScope: this.unlimitedMaxScope};
+    let _newQueryParams = {maxDegrees: prefs.maxDegreesOfSeparation, maxEntities: prefs.maxEntities, buildOut: prefs.buildOut, unlimitedMaxEntities: prefs.unlimitedMaxEntities, unlimitedMaxScope: prefs.unlimitedMaxScope};
+    if(
+      this.maxDegrees != prefs.maxDegreesOfSeparation || 
+      this.unlimitedMaxEntities != prefs.unlimitedMaxEntities || 
+      (this.graphNetworkComponent && this.graphNetworkComponent.noMaxEntitiesLimit != prefs.unlimitedMaxEntities) ||
+      (
+        this.maxEntities != prefs.maxEntities &&
+        (
+          (this.unlimitedMaxEntities != prefs.unlimitedMaxEntities) || 
+          !this.unlimitedMaxEntities
+        )
+      ) ||
+      this.buildOut != prefs.buildOut
+    ){
       // only params that factor in to the API call
       // should trigger full redraw
       queryParamChanged = true;
+
+      /*
+      console.warn('@senzing/sdk-components-ng/sz-graph-component.onPrefsChange(): query parameter changed!!!',
+      this.maxDegrees != prefs.maxDegreesOfSeparation,
+      this.maxEntities != prefs.maxEntities, // it's this one triggering when it shouldn't
+      this.maxEntities, 
+      prefs.maxEntities,
+      this.buildOut != prefs.buildOut, 
+      this.buildOut, prefs.buildOut, 
+      prefs.unlimitedMaxEntities
+      );*/
     }
     this._showMatchKeys               = prefs.showMatchKeys;
     this.maxDegrees                   = prefs.maxDegreesOfSeparation;
-    this.maxEntities                  = prefs.maxEntities;
-    this.buildOut                     = prefs.buildOut;
+    if(!prefs.unlimitedMaxEntities) {
+      this.maxEntities                = prefs.maxEntities;
+    }
+    if(!prefs.unlimitedMaxScope) {
+      this.buildOut                   = prefs.buildOut;
+    }
+    this.unlimitedMaxEntities         = prefs.unlimitedMaxEntities;
+    this.unlimitedMaxScope            = prefs.unlimitedMaxScope;
     this.dataSourceColors             = prefs.dataSourceColors;
     this.dataSourcesFiltered          = prefs.dataSourcesFiltered;
     this.matchKeysIncluded            = prefs.matchKeysIncluded;
@@ -861,17 +899,19 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     }
     if(this.graphNetworkComponent && queryParamChanged) {
       // update graph with new properties
-      this.graphNetworkComponent.maxDegrees = this.maxDegrees;
-      this.graphNetworkComponent.maxEntities = this.maxEntities;
-      this.graphNetworkComponent.buildOut = this.buildOut;
+      this.graphNetworkComponent.maxDegrees           = this.maxDegrees;
+      this.graphNetworkComponent.maxEntities          = this.maxEntities;
+      this.graphNetworkComponent.buildOut             = this.buildOut;
+      this.graphNetworkComponent.noMaxEntitiesLimit   = this.unlimitedMaxEntities;
+      this.graphNetworkComponent.noMaxScopeLimit      = this.unlimitedMaxScope;
       if(this._graphComponentRendered){
-        //console.log('re-rendering graph');
+        console.log('re-rendering graph');
         this.reload( this._graphIds );
       } else {
         //console.log('prefs changed but none of them require re-query.', _oldQueryParams, _newQueryParams, queryParamChanged);
       }
     } else {
-      //console.log('prefs changed but no requery', _oldQueryParams, _newQueryParams, queryParamChanged, this._graphComponentRendered);
+      console.log('prefs changed but no requery', _oldQueryParams, _newQueryParams, queryParamChanged, this._graphComponentRendered);
     }
 
     // update view manually (for web components redraw reliability)

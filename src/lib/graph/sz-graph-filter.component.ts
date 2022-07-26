@@ -79,7 +79,9 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   }
   @Input() set unlimitedMaxScope(value: boolean | string) {
     if(value === undefined) return;
-    this.prefs.graph.unlimitedMaxScope = parseBool(value);
+    if(this.prefs.graph.unlimitedMaxScope !== parseBool(value)) {
+      this.prefs.graph.unlimitedMaxScope = parseBool(value);
+    }
   }
   get unlimitedMaxScope(): boolean {
     return this.prefs.graph.unlimitedMaxScope;
@@ -512,8 +514,10 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
    * this handler is invoked to set the appropriate preferences.
    */
   public onMaxUnlimitedChange(prefKey: string, value: boolean) {
-    console.log('onMaxUnlimitedChange: ', value);
-    this.prefs.graph[ prefKey ] = value;
+    //console.log('onMaxUnlimitedChange: ', value);
+    if(this.prefs.graph[ prefKey ] !== value) {   // prevents recursive change evt loops
+      this.prefs.graph[ prefKey ] = value;
+    }
   }
 
   /** proxy handler for when prefs have changed externally */
@@ -593,6 +597,11 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
 
   /** toggle all available match key tokens on or off */
   onSelectAllMatchKeyTokens(selectAll: boolean) {
+    /**
+     * @TODO something about changing this is causing a new 
+     * graph data request. Need to fix this.
+     */
+    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onSelectAllMatchKeyTokens: ', selectAll);
     if(this.showCoreMatchKeyTokenChips) {
       this.prefs.graph.matchKeyCoreTokensIncluded = selectAll ? this.matchKeyCoreTokens.map((token: SzMatchKeyTokenComposite) => { return token.name; }) : [];
     } else if(this.prefs.graph.matchKeyCoreTokensIncluded && this.prefs.graph.matchKeyCoreTokensIncluded.length > 0) {

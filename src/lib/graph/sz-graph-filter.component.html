@@ -58,7 +58,7 @@
           [disabled]="true"
           [value]="maxEntities" formControlName="maxEntities" 
           (change)="onIntParameterChange('maxEntities', getValueFromEventTarget($event))" required>-->        
-        <span>({{ maxEntitiesValueLabel }}) of {{ maxEntitiesLimit }}</span>
+        <span style="white-space: nowrap;">({{ maxEntitiesValueLabel }}) of {{ maxEntitiesLimit }}</span>
       </label>
     </li>
     <li *ngIf="showMaxDegreesOfSeparation">
