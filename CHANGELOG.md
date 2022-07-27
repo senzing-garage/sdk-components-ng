@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - there is now a new `unlimited` ui option for maximum entities allowed.
 - there is now a new `unlimited` ui option for maximum build out allowed.
 - the upper limit of the maximum entities ui slider is now dynamically set from the initial query.
-- match key token counts now feature condensed notation instead of ellipsis
+- match key token counts now feature condensed notation instead of ellipsis.
 
 
 ### Added
