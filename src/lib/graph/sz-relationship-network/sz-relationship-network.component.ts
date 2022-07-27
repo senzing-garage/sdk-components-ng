@@ -3102,6 +3102,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       nodes.push({
         address: resolvedEntity.addressData && resolvedEntity.addressData.length > 0 ? resolvedEntity.addressData[0] : SzRelationshipNetworkComponent.firstOrNull(features, "ADDRESS"),
         areAllRelatedEntitiesOnDeck: false,
+        coreRelationshipMatchKeyTokens: coreRelatedMatchKeyCategories,
         dataSources: resolvedEntity.recordSummaries.map((ds) =>  ds.dataSource ),
         entityId: entityId,
         hasCollapsedRelationships: relatedToPrimaryEntityDirectly && (relatedEntities && relatedEntities.length > 0),
@@ -3115,6 +3116,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         isRemovable: (!coreEntityIds.includes(entityId) && !primaryEntityIds.includes( (entityId as unknown as string)+"") && !queriedEntityIds.includes(entityId)),
         isQueriedNode: queriedEntityIds.includes(entityId),
         name: resolvedEntity.entityName,
+        nodesVisibleBeforeExpand: [],
         numberRelated: relatedEntities ? relatedEntities.length : 0,
         numberRelatedOnDeck: 0,
         numberRelatedHidden: relatedEntities ? relatedEntities.length : 0,
@@ -3128,10 +3130,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         relatedEntitiesData: relatedEntities,
         relatedVisibleBeforeExpand: [],
         resolvedEntityData: resolvedEntity,
-        nodesVisibleBeforeExpand: [],
         relationshipMatchKeyTokens: relatedMatchKeyCategories,
-        coreRelationshipMatchKeyTokens: coreRelatedMatchKeyCategories,
-        matchKeyCategoriesByEntityId: matchKeyCategoriesByEntityId,
         styles: [],
         visibilityClass: undefined
       });
