@@ -148,7 +148,16 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   get unlimitedMaxScope(): boolean {
     return this.prefs.graph.unlimitedMaxScope;
   }
-  @Input() buildOut: number = 0;
+  /* @internal */
+  private _buildOut: number = 1;
+  /** the level of degrees from focus that the query will attempt to resolve */
+  @Input() set buildOut(value: number) {
+    this._buildOut = value > 0 ? value : 1;
+  }
+  /** the level of degrees from focus that the query will attempt to resolve */
+  public get buildOut(): number {
+    return this._buildOut > 0 ? this._buildOut : 1;
+  }
   /** array of datasources with color and order information */
   @Input() public set dataSourceColors(value: SzDataSourceComposite[]) {
     this._dataSourceColors  = value;
@@ -1090,15 +1099,16 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     } else if(coreMatchKeyTokens && this._matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.CORE) {
       if(coreMatchKeyTokens && coreMatchKeyTokens.length === 0) {
         // just hide everything that is 1 lvl deep
-        if(nodeData && (nodeData.isRelatedToPrimaryEntity || nodeData.relatedToPrimaryEntityDirectly || nodeData.isPrimaryEntity) && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf) {
+        //if(nodeData && (nodeData.isRelatedToPrimaryEntity || nodeData.relatedToPrimaryEntityDirectly || nodeData.isPrimaryEntity) && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf) {
+        if(nodeData && (nodeData.isRelatedToPrimaryEntity || nodeData.relatedToPrimaryEntityDirectly || nodeData.isPrimaryEntity) && nodeData.coreRelationshipMatchKeyTokens && nodeData.coreRelationshipMatchKeyTokens.indexOf) {
           retVal = false;
         } else {
           retVal = true;
         }
         // and show everything else
-      } else if(nodeData && (nodeData.isRelatedToPrimaryEntity || nodeData.relatedToPrimaryEntityDirectly || nodeData.isPrimaryEntity) && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf){
+      } else if(nodeData && (nodeData.isRelatedToPrimaryEntity || nodeData.relatedToPrimaryEntityDirectly || nodeData.isPrimaryEntity) && nodeData.coreRelationshipMatchKeyTokens && nodeData.coreRelationshipMatchKeyTokens.indexOf){
         // D3 filter query 
-        retVal = (nodeData.relationshipMatchKeyTokens.some( (tokenName) => {
+        retVal = (nodeData.coreRelationshipMatchKeyTokens.some( (tokenName) => {
           return coreMatchKeyTokens.indexOf(tokenName) > -1;
         }));
         //console.log(`isMatchKeyTokenInEntityNode: checking for "${coreMatchKeyTokens}"? ${retVal}`, nodeData.relationshipMatchKeyTokens, );

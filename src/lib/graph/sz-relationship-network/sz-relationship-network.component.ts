@@ -2514,6 +2514,29 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     if(d.phone && d.phone !== null) {
       retVal += "<br/><strong>Phone</strong>: " + d.phone;
     }
+    /*
+    if(d.relationshipMatchKeys) {
+      retVal += "<br/><strong>match key</strong>: <br/>";
+      retVal += `<li>${d.relationshipMatchKeys}</li>`;
+    }
+    if(d.relationshipMatchKeyTokens && d.relationshipMatchKeyTokens.forEach) {
+      retVal += "<br/><strong>match keys</strong>: <br/>";
+      retVal += "<ul>";
+      d.relationshipMatchKeyTokens.forEach((mkt) =>{
+        retVal += `<li>${mkt}</li>`;
+      });
+      retVal += "</ul>";
+    }
+    if(d.coreRelationshipMatchKeyTokens && d.coreRelationshipMatchKeyTokens.forEach && d.coreRelationshipMatchKeyTokens.length > 0) {
+      retVal += "<br/><strong>core match keys</strong>: <br/>";
+      retVal += "<ul>";
+      d.coreRelationshipMatchKeyTokens.forEach((mkt) =>{
+        retVal += `<li>${mkt}</li>`;
+      });
+      retVal += "</ul>";
+    }*/
+    //console.log('tt match key categories by entity id: ', d.matchKeyCategoriesByEntityId[d.entityId], d.coreRelationshipMatchKeyTokens[ d.entityId ]);
+    
     //retVal += "<br/><strong>areAllRelatedEntitiesOnDeck(1)</strong>: "+ d.allRelatedEntitiesOnDeck;
     //retVal += "<br/><strong>numberRelated</strong>: "+ d.numberRelated;
     //retVal += "<br/><strong>numberRelatedOnDeck</strong>: "+ d.numberRelatedOnDeck;
@@ -2940,9 +2963,12 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     const primaryEntityIds = this._entityIds ? this._entityIds : [];
     const coreEntityIds = [];
     const coreLinkIds = [];
-    const primaryEntities = this._entityIds.map( parseInt );
+    const primaryEntities = this._entityIds && this._entityIds.map ? this._entityIds.map( (_val) => {
+      return parseInt(_val)
+    }) : [];
     const relatedMatchKeysByEntityId: {[key: number]: string[]} = {};
     const matchKeyCategoriesByEntityId: {[key: number]: string[]} = {};
+    const matchKeyCoreCategoriesByEntityId: {[key: number]: string[]} = {};
 
     // grab the directly related to core node entity Ids first
     let   relatedToPrimaryEntities = [];
@@ -2985,6 +3011,25 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         entNode.relatedEntities.forEach((_relatedEnt: SzRelatedEntity) => {
           let _relatedEntId = _relatedEnt.entityId;
           let _relatedMatchCategory = SzRelationshipNetworkComponent.tokenizeMatchKey(_relatedEnt.matchKey);
+          let _relatedEntityIsPrimary = primaryEntities.indexOf(_relatedEntId) > -1 || primaryEntities.indexOf(_resolvedEntId) > -1;
+          if(_relatedEntityIsPrimary) {
+            // this is a core relationship
+            if(!matchKeyCoreCategoriesByEntityId[ _relatedEntId ] || matchKeyCoreCategoriesByEntityId[ _relatedEntId ] === undefined) {
+              matchKeyCoreCategoriesByEntityId[ _relatedEntId ] = [];
+            }
+            if(matchKeyCoreCategoriesByEntityId[ _relatedEntId ] && matchKeyCoreCategoriesByEntityId[ _relatedEntId ].concat) {
+              let concatVals = [];
+              _relatedMatchCategory.forEach((mkArr) => {
+                concatVals = concatVals.concat(mkArr);
+              });
+
+              matchKeyCoreCategoriesByEntityId[ _relatedEntId ] = matchKeyCoreCategoriesByEntityId[ _relatedEntId ].concat(concatVals);
+              // de-dupe values
+              matchKeyCoreCategoriesByEntityId[ _relatedEntId ] = matchKeyCoreCategoriesByEntityId[ _relatedEntId ].filter((value, index, self) => {
+                return self.indexOf(value) === index;
+              });
+            }
+          }
 
           if(!relatedMatchKeysByEntityId[ _relatedEntId ] || relatedMatchKeysByEntityId[ _relatedEntId ] === undefined) {
             relatedMatchKeysByEntityId[ _relatedEntId ] = [];
@@ -3020,6 +3065,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       let isPrimaryEntity                 = primaryEntityIds.includes( (entityId as unknown as string)+"")
       let relatedMatchKeys                = relatedMatchKeysByEntityId[ resolvedEntity.entityId ]   ? relatedMatchKeysByEntityId[ resolvedEntity.entityId ]     : [];
       let relatedMatchKeyCategories       = matchKeyCategoriesByEntityId[ resolvedEntity.entityId ] ? matchKeyCategoriesByEntityId[ resolvedEntity.entityId ]   : [];
+      let coreRelatedMatchKeyCategories   = matchKeyCoreCategoriesByEntityId[ resolvedEntity.entityId ] ? matchKeyCoreCategoriesByEntityId[ resolvedEntity.entityId ]   : [];
       let relatedToPrimaryEntityDirectly  = primaryEntityIds.includes( (entityId as unknown as string)+"") ? true : false;
       let hasCollapsibleRelationships     = false;
       if(relatedEntities && !isPrimaryEntity) {
@@ -3056,6 +3102,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       nodes.push({
         address: resolvedEntity.addressData && resolvedEntity.addressData.length > 0 ? resolvedEntity.addressData[0] : SzRelationshipNetworkComponent.firstOrNull(features, "ADDRESS"),
         areAllRelatedEntitiesOnDeck: false,
+        coreRelationshipMatchKeyTokens: coreRelatedMatchKeyCategories,
         dataSources: resolvedEntity.recordSummaries.map((ds) =>  ds.dataSource ),
         entityId: entityId,
         hasCollapsedRelationships: relatedToPrimaryEntityDirectly && (relatedEntities && relatedEntities.length > 0),
@@ -3069,6 +3116,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         isRemovable: (!coreEntityIds.includes(entityId) && !primaryEntityIds.includes( (entityId as unknown as string)+"") && !queriedEntityIds.includes(entityId)),
         isQueriedNode: queriedEntityIds.includes(entityId),
         name: resolvedEntity.entityName,
+        nodesVisibleBeforeExpand: [],
         numberRelated: relatedEntities ? relatedEntities.length : 0,
         numberRelatedOnDeck: 0,
         numberRelatedHidden: relatedEntities ? relatedEntities.length : 0,
@@ -3082,7 +3130,6 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         relatedEntitiesData: relatedEntities,
         relatedVisibleBeforeExpand: [],
         resolvedEntityData: resolvedEntity,
-        nodesVisibleBeforeExpand: [],
         relationshipMatchKeyTokens: relatedMatchKeyCategories,
         styles: [],
         visibilityClass: undefined
