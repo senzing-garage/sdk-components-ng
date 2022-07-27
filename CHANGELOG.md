@@ -67,7 +67,7 @@ the observeable event streams for uniformity/reliability:
     - `onDataUpdated`
     - `scaleChanged`
 
-relevant tickets: #343 #344 #347 #348 #350 #355
+relevant tickets: #343 #344 #347 #348 #350 #355 #358
 
 ## [5.0.0] - 2022-07-01
 
