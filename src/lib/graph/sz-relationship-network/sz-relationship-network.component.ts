@@ -1344,8 +1344,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         SzFeatureMode.NONE,
         false,
         false,
-        false,
-        SzRelationshipNetworkComponent.WITH_RAW) ;
+        false, 
+        false) ;
     } else if(!this._entityIds) {
       throw new Error('entity ids are required to make "findEntityNetwork" call.');
     } else {
@@ -3443,7 +3443,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     let disclosedKeys = [];
     let derived_keys  = [];
     let _keyReg       = /(\+|\-)/;
-    let _keyList      = matchKey.split(_keyReg)
+    let _keyList      = matchKey && matchKey.split ? matchKey.split(_keyReg) : []
     //console.log('----- categorizeMatchKey: '+matchKey+'------', _keyList);
 
     _keyList.forEach((keyStr, _ind: number) => {

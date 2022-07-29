@@ -510,6 +510,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @Output() matchKeyTokensChange: EventEmitter<any> = new EventEmitter<SzMatchKeyTokenComposite[]>();
   /** event is emitted when a graph pre-flight request is performed */
   @Output() preflightRequestComplete: EventEmitter<any> = new EventEmitter<any>();
+  @Output() totalRelationshipsCountUpdated: EventEmitter<number> = new EventEmitter<number>();
 
   private getMatchKeyTokenComposites(data: SzEntityNetworkMatchKeyTokens): Array<SzMatchKeyTokenComposite> {
     let retVal: Array<SzMatchKeyTokenComposite> = [];
@@ -591,6 +592,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       let _matchKeyTokens         = SzRelationshipNetworkComponent.getMatchKeyTokensFromEntityData(inputs.data, this.graphIds);
       let matchKeyTokens          = this.getMatchKeyTokenComposites( _matchKeyTokens );
       this.dataSourcesChange.emit( SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(inputs.data) );
+      this.clearMatchKeyFilters();
       this.matchKeysChange.emit( SzRelationshipNetworkComponent.getMatchKeysFromEntityNetworkData(inputs.data) )
       this.matchKeyTokensChange.emit( matchKeyTokens );
       console.log('onGraphDataLoaded: ', _matchKeyTokens, this.filterShowMatchKeyTokens, inputs);
@@ -726,6 +728,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       this.maxEntities              = count;
       this._maxEntitiesFilterLimit  = count;
     }
+    this.totalRelationshipsCountUpdated.emit(count);
   }
 
   onDataLoaded(data) {
@@ -1076,6 +1079,21 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       }
     }
   }
+  
+  /** @internal */
+  private clearMatchKeyFilters() {
+    if(this.prefs.graph) {
+      // clear out any saved match key filters
+      let _previousGraphPrefs = Object.assign({}, this.prefs.graph.toJSONObject());
+      this.prefs.graph.bulkSet = true;
+      this.prefs.graph.matchKeyCoreTokensIncluded = [];
+      this.prefs.graph.matchKeyTokensIncluded     = [];
+      this.prefs.graph.bulkSet = false;
+      this.prefs.graph.matchKeysIncluded          = [];
+      //console.warn('clearMatchKeyFilters()', _previousGraphPrefs, this.prefs.graph.toJSONObject())
+    }
+  }
+
   private isMatchKeyInEntityNode(matchKeys?, nodeData?) {
     let retVal = false;
     if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0){
