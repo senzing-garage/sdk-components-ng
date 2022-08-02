@@ -68,7 +68,7 @@
     <p class="comment">
         <p>Provides a component that allows the user to select what &quot;Identity Types&quot; are displayed
 in the search form. Uses Angular Material &quot;Bottom Sheet&quot; to load in to view.</p>
-<p>// (Angular) SzSearchIdentifiersPickerSheetComponent
+<div><pre class="line-numbers"><code class="language-html">// (Angular) SzSearchIdentifiersPickerSheetComponent
   const bottomSheetRef = this.bottomSheet.open(SzSearchIdentifiersPickerSheetComponent, {
       ariaLabel: &#39;Identifier Types&#39;,
       panelClass: [&#39;sz-search-identifiers-picker-sheet&#39;],
@@ -78,8 +78,7 @@ in the search form. Uses Angular Material &quot;Bottom Sheet&quot; to load in to
         attributeTypes: this._attributeTypesFromServer,
         selected: this.allowedTypeAttributes
       }
-});</p>
-
+});</code></pre></div>
     </p>
 
     <p class="comment">
@@ -850,6 +849,7 @@ a type of AttrRow[] which can hold checkbox state as well as SzAttributeType pro
     var ACTUAL_COMPONENT = {'name': 'SzSearchIdentifiersPickerSheetComponent'};
 </script>
 <script src="../js/tree.js"></script>
+
 
 
 

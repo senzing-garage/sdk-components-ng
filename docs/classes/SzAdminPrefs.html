@@ -71,7 +71,7 @@
 used by <a href="../injectables/SzPrefsService.html">SzPrefsService</a> to store it&#39;s
 admin area related prefs.
 Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsService</a> context, not on its own.</p>
-<p>this.prefs.admin.streamConnectionProperties = {
+<div><pre class="line-numbers"><code class="language-html">this.prefs.admin.streamConnectionProperties = {
 connected: boolean;
 clientId?: string;
 hostname: string;
@@ -79,9 +79,7 @@ sampleSize: number;
 port?: number;
 connectionTest: boolean;
 reconnectOnClose: boolean;
-};</p>
-<p>this.prefs.searchResults.prefsChanged.subscribe( (prefs) =&gt; { console.log(&#39;search form pref change happened.&#39;, prefs); })</p>
-
+};</code></pre></div><div><pre class="line-numbers"><code class="language-html">this.prefs.searchResults.prefsChanged.subscribe( (prefs) =&gt; { console.log(&#39;search form pref change happened.&#39;, prefs); })</code></pre></div>
             </p>
 
             <p class="comment">
@@ -893,6 +891,7 @@ notifications.</p>
 
 
 </div>
+
 
 
 

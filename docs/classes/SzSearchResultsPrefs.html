@@ -71,11 +71,9 @@
 used by <a href="../injectables/SzPrefsService.html">SzPrefsService</a> to store it&#39;s
 search results related prefs.
 Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsService</a> context, not on its own.</p>
-<p>this.prefs.searchResults.showOtherData = true;
+<div><pre class="line-numbers"><code class="language-html">this.prefs.searchResults.showOtherData = true;
 this.prefs.searchResults.truncateOtherDataAt = 3;
-this.prefs.searchResults.truncateIdentifierDataAt =  2;</p>
-<p>this.prefs.searchResults.prefsChanged.subscribe( (prefs) =&gt; { console.log(&#39;search results pref change happened.&#39;, prefs); })</p>
-
+this.prefs.searchResults.truncateIdentifierDataAt =  2;</code></pre></div><div><pre class="line-numbers"><code class="language-html">this.prefs.searchResults.prefsChanged.subscribe( (prefs) =&gt; { console.log(&#39;search results pref change happened.&#39;, prefs); })</code></pre></div>
             </p>
 
             <p class="comment">
@@ -1434,6 +1432,7 @@ notifications.</p>
 
 
 </div>
+
 
 
 

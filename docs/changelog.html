@@ -36,9 +36,91 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 <a href="https://dlaa.me/markdownlint/">markdownlint</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="500---2022-07-01">[5.0.0] - 2022-07-01</h2>
-<p>Thio release adds new functionality around expanding and collapsing related entities in <em>Network Graph</em> related components. We&#39;ve moved the <code>@senzing/sdk-graph-components</code> to the scope of this package for easier maintenance and installation(now you just need this package instead of two). We&#39;re also adding the <em>Why Not</em> component that can be embedded between two or more entities to generate a report to show why two entities/records did not resolve.</p>
+<h2 id="510---2022-07-27">[5.1.0] - 2022-07-27</h2>
+<ul>
+<li>there is now a new <code>unlimited</code> ui option for maximum entities allowed.</li>
+<li>there is now a new <code>unlimited</code> ui option for maximum build out allowed.</li>
+<li>the upper limit of the maximum entities ui slider is now dynamically set from the initial query.</li>
+<li>match key token counts now feature condensed notation instead of ellipsis.</li>
+</ul>
 <h3 id="added">Added</h3>
+<ul>
+<li>the following event emitters added to <code>SzGraphFilterComponent</code><ul>
+<li><code>matchKeyTokenSelectionScopeChanged</code> when the user switches from <code>CORE</code> to <code>EXTRANEOUS</code> match key token scope</li>
+</ul>
+</li>
+<li>the following getters and setters added to <code>SzGraphFilterComponent</code><ul>
+<li><code>maxEntitiesLimit</code> the maximum value that the slider control will allow. default is 200.</li>
+<li><code>unlimitedMaxEntities</code> ignore the <code>maxEntities</code> value and always pull up to 40000</li>
+<li><code>unlimitedMaxScope</code> ignore the <code>buildOut</code> value and always pull up to 10</li>
+</ul>
+</li>
+<li>the following getters and setters added to <code>SzGraphComponent</code><ul>
+<li><code>unlimitedMaxEntities</code></li>
+<li><code>unlimitedMaxScope</code></li>
+<li><code>maxEntitiesFilterLimit</code></li>
+</ul>
+</li>
+<li>the following event emitters on <code>SzGraphComponent</code><ul>
+<li><code>renderStarted</code> not sure why this didn&#39;t exist since <code>renderComplete</code> did</li>
+<li><code>dataLoading</code> for more flexible state sensing</li>
+<li><code>onPreflightRequestComplete</code> so we can get the total relationship count to populate the <code>maxEntitiesFilterLimit</code></li>
+</ul>
+</li>
+<li>the following properties/getters/setters added to <code>SzRelationshipNetworkComponent</code><ul>
+<li><code>noMaxEntitiesLimit</code> sets whether or not to ignore the value set in <code>maxEntities</code></li>
+<li><code>noMaxScopeLimit</code> sets whether or not to ignore the value set in <code>buildOut</code></li>
+</ul>
+</li>
+<li>the following event emitters added to <code>SzRelationshipNetworkComponent</code><ul>
+<li><code>onTotalRelationshipsCountUpdated</code> is emitted with the value of how many total relationships are possible to display according to the data in the focal entities related entities.</li>
+<li><code>renderStarted</code> wasn&#39;t wired correctly. works now</li>
+<li><code>dataLoading</code> when a data request has been initiated.</li>
+<li><code>dataLoaded</code> which is like <code>requestComplete</code> but instead of a boolean it returns the data response</li>
+</ul>
+</li>
+<li>the following preferences added to <code>SzGraphPrefs</code><ul>
+<li><code>unlimitedMaxEntities</code></li>
+<li><code>unlimitedMaxScope</code></li>
+</ul>
+</li>
+<li><code>getEntitiesByIds</code> method added to <code>SzSearchService</code> to get data for multiple entities by their id&#39;s in the form of <code>Observable&lt;SzEntityData[]&gt;</code></li>
+</ul>
+<h3 id="modified">Modified</h3>
+<ul>
+<li>Changed the behavior of <code>showCoreMatchKeyTokenChips</code> to automatically set <code>matchKeyTokenSelectionScope</code> to <code>CORE</code>.</li>
+<li>Changed the complete match key display to a comma deliminated list of tokens on each line for readability</li>
+<li>Changed the <code>shouldDataSourceBeDisplayed</code> method in <code>SzGraphFilterComponent</code> to allow for passing an empty array to <code>showDataSources</code> so we can initialize with an empty list that will prevent showing datasources before the list is ready.</li>
+<li>Changed the <code>SzStandaloneGraphComponent</code> component to initialize the value of <code>showDataSources</code> in the filter component to NOT initially show data sources until the data can be properly rendered. (prevents FOC, see above)</li>
+<li>the following getters and setters added to <code>SzGraphFilterComponent</code><ul>
+<li><code>maxEntities</code> the maximum number of entities to display on the graph</li>
+</ul>
+</li>
+<li>the following changes made to <code>SzRelationshipNetworkComponent</code><ul>
+<li><code>dataRequested</code> changed to BehaviorSubject (lifecycle bugfix)</li>
+<li><code>requestStarted</code> fixed</li>
+<li><code>requestComplete</code> fixed</li>
+<li><code>getNetwork</code> signature changed to <code>getNetwork(entityIds: SzEntityIdentifier[], maxDegrees: number, buildOut: number, maxEntities: number)</code></li>
+<li>the following event emitters have been rewired so that they are just proxies of 
+the observeable event streams for uniformity/reliability:<ul>
+<li><code>onRequestStarted</code></li>
+<li><code>onRequestCompleted</code></li>
+<li><code>onRenderStarted</code></li>
+<li><code>onRenderCompleted</code></li>
+<li><code>onNoResults</code></li>
+<li><code>onDataRequested</code></li>
+<li><code>onDataLoaded</code></li>
+<li><code>onDataUpdated</code></li>
+<li><code>scaleChanged</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>relevant tickets: #343 #344 #347 #348 #350 #355 #358</p>
+<h2 id="500---2022-07-01">[5.0.0] - 2022-07-01</h2>
+<p>This release adds new functionality around expanding and collapsing related entities in <em>Network Graph</em> related components. We&#39;ve moved the <code>@senzing/sdk-graph-components</code> to the scope of this package for easier maintenance and installation(now you just need this package instead of two). We&#39;re also adding the <em>Why Not</em> component that can be embedded between two or more entities to generate a report to show why two entities/records did not resolve.</p>
+<h3 id="added-1">Added</h3>
 <ul>
 <li>The <code>SzWhyEntitiesComparisonComponent</code> added for doing <em>WHY</em> comparison <em>between</em> entities. Adds the ability to run &quot;Why Not&quot; Reports from within the context of the search results and graph. </li>
 <li>The following input parameters added to <code>SzSearchResultsComponent</code>:<ul>
@@ -48,11 +130,16 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>The follwing getters and setters added to <code>SzEntityDetailComponent</code><ul>
 <li><code>showGraphContextMenu</code> enables the built-in context menu for entity nodes on the graph embedded in the entity detail component.</li>
 <li><code>showGraphLinkContextMenu</code> enables the built-in context menu for relationship lines/labels on the graph embedded in the entity detail component.</li>
+<li><code>graphMatchKeyTokenSelectionScope</code> possible values are &quot;CORE&quot; and &quot;EXTRANEOUS&quot;. core sets the scope of match key token filtering to just entities directly related to the focused/primary entity of the graph. defaults to <code>EXTRANEOUS</code>.</li>
 </ul>
 </li>
 <li>The following Event Emitters added to <code>SzEntityDetailComponent</code><ul>
 <li><code>graphRelationshipContextMenuClick</code> is emitted when a user right clicks on relationship lines/labels in the embedded graph component.</li>
 <li><code>graphRelationshipClick</code> is emitted when a user clicks on relationship lines/labels in the embedded graph component.</li>
+</ul>
+</li>
+<li>The following properties added to <code>SzGraphComponent</code> and are inheirited by <code>SzStandaloneGraphComponent</code> and <code>SzEntityDetailGraphComponent</code>.<ul>
+<li><code>matchKeyTokenSelectionScope</code> possible values are &quot;CORE&quot; and &quot;EXTRANEOUS&quot;. core sets the scope of match key token filtering to just entities directly related to the focused/primary entity of the graph. defaults to <code>EXTRANEOUS</code>.</li>
 </ul>
 </li>
 <li>The following methods added to <code>SzGraphComponent</code> and are inheirited by <code>SzStandaloneGraphComponent</code> and <code>SzEntityDetailGraphComponent</code>.<ul>
@@ -154,7 +241,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 </ul>
 </li>
 </ul>
-<h3 id="modified">Modified</h3>
+<h3 id="modified-1">Modified</h3>
 <ul>
 <li><code>_graphIds</code> property on <code>SzGraphComponent</code> type changed from <code>number[]</code> to <code>SzEntityIdentifier[]</code></li>
 <li><code>graphIds</code> property getter and setter on <code>SzGraphComponent</code> type changed from <code>number[]</code> to <code>SzEntityIdentifier[]</code></li>
@@ -177,7 +264,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="400---2022-05-09">[4.0.0] - 2022-05-09</h2>
 <p>This update brings the models in line with the changes for the <code>3.0.0</code> release of the <a href="https://github.com/Senzing/senzing-api-server">senzing rest api server</a>
 and <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/caceres.version-3.0.0/senzing-rest-api.yaml">rest api specification</a>.</p>
-<h3 id="added-1">Added</h3>
+<h3 id="added-2">Added</h3>
 <ul>
 <li><code>showMatchKeyFilters</code> property added to <code>sz-standalone-graph</code> tag. specifying a value of <code>false</code> will hide the <em>Filter By Match Key</em> section of the embedded graph controls. (defaults to <em>true</em>)</li>
 <li><code>showMatchKeyFilters</code> property added to <code>sz-graph-filter</code> tag. specifying a value of <code>false</code> will hide the <em>Filter By Match Key</em> list of checkboxes. (defaults to <em>true</em>)</li>
@@ -250,7 +337,7 @@ and <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/cace
 <li><code>SzSearchResultEntityData.matchScore</code> property</li>
 </ul>
 <h2 id="300---2021-12-17">[3.0.0] - 2021-12-17</h2>
-<h3 id="modified-1">Modified</h3>
+<h3 id="modified-2">Modified</h3>
 <ul>
 <li>Angular Framework Updated to version 13. As of 3.0.0 release this package now requires <code>@angular@~13.0.0</code> to compile and run. Updating to angular 13 resolves major dependency compatibility issues so we can apply the latest security patches to the library. For information updating your project from a previous angular version to <code>~13.0.0</code> see the <a href="https://update.angular.io/">Angular Update Guide </a></li>
 <li>SzSearchComponent.resultCleared event emitter payload is now of type <code>void</code> and not <code>SzEntitySearchParams</code>.</li>
@@ -263,7 +350,7 @@ and <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/cace
 </ul>
 <p>relevant tickets: #253 #252 #251 #250</p>
 <h2 id="226---2021-11-23">[2.2.6] - 2021-11-23</h2>
-<h3 id="added-2">Added</h3>
+<h3 id="added-3">Added</h3>
 <ul>
 <li><code>SzEntityDetailGraphComponent</code><ul>
 <li><code>showZoomControl</code> input setter for whether or not to show zoom controls.</li>
@@ -603,6 +690,7 @@ see the following links for associated tickets:</p>
 </ul>
 </li>
 </ul>
+
 
 
 

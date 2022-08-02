@@ -71,10 +71,8 @@
 used by <a href="../injectables/SzPrefsService.html">SzPrefsService</a> to store it&#39;s
 graph related prefs.
 Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsService</a> context, not on its own.</p>
-<p>this.prefs.graph.showMatchKeys = true;
-this.prefs.graph.buildOut =  5;</p>
-<p>this.prefs.graph.prefsChanged.subscribe( (prefs) =&gt; { console.log(&#39;graph pref change happened.&#39;, prefs); })</p>
-
+<div><pre class="line-numbers"><code class="language-html">this.prefs.graph.showMatchKeys = true;
+this.prefs.graph.buildOut =  5;</code></pre></div><div><pre class="line-numbers"><code class="language-html">this.prefs.graph.prefsChanged.subscribe( (prefs) =&gt; { console.log(&#39;graph pref change happened.&#39;, prefs); })</code></pre></div>
             </p>
 
             <p class="comment">
@@ -199,6 +197,12 @@ this.prefs.graph.buildOut =  5;</p>
                                 <li>
                                     <a href="#queriedEntitiesColor" >queriedEntitiesColor</a>
                                 </li>
+                                <li>
+                                    <a href="#unlimitedMaxEntities" >unlimitedMaxEntities</a>
+                                </li>
+                                <li>
+                                    <a href="#unlimitedMaxScope" >unlimitedMaxScope</a>
+                                </li>
                             </ul>
                         </td>
                     </tr>
@@ -267,7 +271,9 @@ instead of the empty superclass</p>
     &#x27;matchKeyTokensIncluded&#x27;,
     &#x27;matchKeyCoreTokensIncluded&#x27;,
     &#x27;neverFilterQueriedEntityIds&#x27;,
-    &#x27;queriedEntitiesColor&#x27;
+    &#x27;queriedEntitiesColor&#x27;,
+    &#x27;unlimitedMaxEntities&#x27;,
+    &#x27;unlimitedMaxScope&#x27;
   ]</code>
                     </td>
                 </tr>
@@ -1575,11 +1581,160 @@ useful for not getting notified on bulk property sets.</p>
                     </tr>
             </tbody>
         </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="unlimitedMaxEntities"></a>
+                        <span class="name"><b>unlimitedMaxEntities</b><a href="#unlimitedMaxEntities"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>unlimitedMaxEntities()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>whether or not to ignore the maxEntities value and always get
+all related entities</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>unlimitedMaxEntities(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>whether or not to ignore the maxEntities value and always get
+all related entities</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="unlimitedMaxScope"></a>
+                        <span class="name"><b>unlimitedMaxScope</b><a href="#unlimitedMaxScope"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>unlimitedMaxScope()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>whether or not to ignore the maxDegreesOfSeparation value and always get
+build out to max</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>unlimitedMaxScope(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>whether or not to ignore the maxDegreesOfSeparation value and always get
+build out to max</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
 </section>
     </div>
 
 
 </div>
+
 
 
 

@@ -71,10 +71,8 @@
 used by <a href="../injectables/SzPrefsService.html">SzPrefsService</a> to store it&#39;s
 entity detail prefs.</p>
 <p>Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsService</a> context, not on its own.</p>
-<p>this.prefs.entityDetail.showGraphSection = false;
-this.prefs.entityDetail.showOtherDataInSummary =  true;</p>
-<p>this.prefs.entityDetail.prefsChanged.subscribe( (prefs) =&gt; { console.log(&#39;entity detail pref change happened.&#39;, prefs); })</p>
-
+<div><pre class="line-numbers"><code class="language-html">this.prefs.entityDetail.showGraphSection = false;
+this.prefs.entityDetail.showOtherDataInSummary =  true;</code></pre></div><div><pre class="line-numbers"><code class="language-html">this.prefs.entityDetail.prefsChanged.subscribe( (prefs) =&gt; { console.log(&#39;entity detail pref change happened.&#39;, prefs); })</code></pre></div>
             </p>
 
             <p class="comment">
@@ -2180,6 +2178,7 @@ useful for not getting notified on bulk property sets.</p>
 
 
 </div>
+
 
 
 

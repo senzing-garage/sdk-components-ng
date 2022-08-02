@@ -69,9 +69,7 @@ values that are passed throughout all components for API connection requests.</p
 change dynamically through the application lifecycle(ie changing request namespace from &#39;<a href="http://api.mydomain.com&#39;">http://api.mydomain.com&#39;</a> to &#39;<a href="http://api.mydomain.com/SUBSECTION&#39;">http://api.mydomain.com/SUBSECTION&#39;</a>).</p>
 <p>If your application just needs its values initialized that should be done by
 passing in a config factory to the <a href="../modules/SenzingSdkModule.html#forRoot">SenzingSdkModule</a> method.</p>
-<p>this.apiconf.basePath = &#39;<a href="http://apis.mydomain.com/&#39;">http://apis.mydomain.com/&#39;</a>;</p>
-<p>this.apiconf.parametersChanged.subscribe( (params) =&gt; { console.log(&#39;api connection params changed.&#39;, params); })</p>
-
+<div><pre class="line-numbers"><code class="language-html">this.apiconf.basePath = &#39;http://apis.mydomain.com/&#39;;</code></pre></div><div><pre class="line-numbers"><code class="language-html">this.apiconf.parametersChanged.subscribe( (params) =&gt; { console.log(&#39;api connection params changed.&#39;, params); })</code></pre></div>
             </p>
 
 
@@ -951,6 +949,7 @@ protocol://hostname:port string that your api server can be accessed through</p>
 
 
 </div>
+
 
 
 

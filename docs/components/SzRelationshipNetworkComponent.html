@@ -75,7 +75,6 @@
         <h3>Implements</h3>
     </p>
     <p class="comment">
-                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
                     <code><a href="https://angular.io/api/core/AfterViewInit" target="_blank" >AfterViewInit</a></code>
                     <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
     </p>
@@ -141,6 +140,14 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#dataLoaded" >dataLoaded</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#dataRequested" >dataRequested</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#entityId" >entityId</a>
                             </li>
                             <li>
@@ -183,6 +190,10 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#noResults" >noResults</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#onZoom" >onZoom</a>
                             </li>
                             <li>
@@ -191,11 +202,11 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#requestComplete" >requestComplete</a>
+                                <a href="#renderStarted" >renderStarted</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#requestNoResults" >requestNoResults</a>
+                                <a href="#requestComplete" >requestComplete</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -338,6 +349,10 @@
                             </li>
                             <li>
                                     <span class="modifier">Static</span>
+                                <a href="#getMatchKeysFromEntityData" >getMatchKeysFromEntityData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Static</span>
                                 <a href="#getMatchKeysFromEntityNetworkData" >getMatchKeysFromEntityNetworkData</a>
                             </li>
                             <li>
@@ -367,9 +382,6 @@
                             </li>
                             <li>
                                 <a href="#ngOnDestroy" >ngOnDestroy</a>
-                            </li>
-                            <li>
-                                <a href="#ngOnInit" >ngOnInit</a>
                             </li>
                             <li>
                                     <span class="modifier">Static</span>
@@ -449,9 +461,6 @@
                                 <a href="#buildOut" >buildOut</a>
                             </li>
                             <li>
-                                <a href="#captureMouseWheel" >captureMouseWheel</a>
-                            </li>
-                            <li>
                                 <a href="#entityIds" >entityIds</a>
                             </li>
                             <li>
@@ -492,6 +501,12 @@
                             </li>
                             <li>
                                 <a href="#modify" >modify</a>
+                            </li>
+                            <li>
+                                <a href="#noMaxEntitiesLimit" >noMaxEntitiesLimit</a>
+                            </li>
+                            <li>
+                                <a href="#noMaxScopeLimit" >noMaxScopeLimit</a>
                             </li>
                             <li>
                                 <a href="#reloadOnIdChange" >reloadOnIdChange</a>
@@ -539,10 +554,10 @@
                                 <a href="#loading" >loading</a>
                             </li>
                             <li>
-                                <a href="#noResults" >noResults</a>
+                                <a href="#onDataLoaded" >onDataLoaded</a>
                             </li>
                             <li>
-                                <a href="#onDataLoaded" >onDataLoaded</a>
+                                <a href="#onDataRequested" >onDataRequested</a>
                             </li>
                             <li>
                                 <a href="#onDataUpdated" >onDataUpdated</a>
@@ -551,7 +566,28 @@
                                 <a href="#onHideRelatedEntities" >onHideRelatedEntities</a>
                             </li>
                             <li>
+                                <a href="#onNoResults" >onNoResults</a>
+                            </li>
+                            <li>
+                                <a href="#onPreflightRequestComplete" >onPreflightRequestComplete</a>
+                            </li>
+                            <li>
+                                <a href="#onRenderCompleted" >onRenderCompleted</a>
+                            </li>
+                            <li>
+                                <a href="#onRenderStarted" >onRenderStarted</a>
+                            </li>
+                            <li>
+                                <a href="#onRequestCompleted" >onRequestCompleted</a>
+                            </li>
+                            <li>
+                                <a href="#onRequestStarted" >onRequestStarted</a>
+                            </li>
+                            <li>
                                 <a href="#onShowRelatedEntities" >onShowRelatedEntities</a>
+                            </li>
+                            <li>
+                                <a href="#onTotalRelationshipsCountUpdated" >onTotalRelationshipsCountUpdated</a>
                             </li>
                             <li>
                                 <a href="#relationshipClick" >relationshipClick</a>
@@ -639,6 +675,12 @@
                                     <a href="#maxEntities" >maxEntities</a>
                                 </li>
                                 <li>
+                                    <a href="#noMaxEntitiesLimit" >noMaxEntitiesLimit</a>
+                                </li>
+                                <li>
+                                    <a href="#noMaxScopeLimit" >noMaxScopeLimit</a>
+                                </li>
+                                <li>
                                     <a href="#linkGravity" >linkGravity</a>
                                 </li>
                                 <li>
@@ -693,7 +735,7 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(graphService: <a href="../interfaces/Graph.html" target="_self">EntityGraphService</a>)</code>
+<code>constructor(graphService: <a href="../interfaces/Graph.html" target="_self">EntityGraphService</a>, searchService: <a href="../injectables/SzSearchService.html" target="_self">SzSearchService</a>)</code>
                     </td>
                 </tr>
 
@@ -722,6 +764,18 @@
                                                     </td>
                                                     
                                                 </tr>
+                                                <tr>
+                                                        <td>searchService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SzSearchService.html" target="_self" >SzSearchService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
                                         </tbody>
                                     </table>
                             </div>
@@ -741,25 +795,10 @@
                         <b>buildOut</b>
                     </td>
                 </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="captureMouseWheel"></a>
-                        <b>captureMouseWheel</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                        <i>Type : </i>    <code>string | number</code>
 
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>false</code>
                     </td>
                 </tr>
             </tbody>
@@ -770,6 +809,12 @@
                     <td class="col-md-4">
                         <a name="entityIds"></a>
                         <b>entityIds</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>SzEntityIdentifier | []</code>
+
                     </td>
                 </tr>
                 <tr>
@@ -786,6 +831,12 @@
                     <td class="col-md-4">
                         <a name="filter"></a>
                         <b>filter</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[] | SzGraphNodeFilterPair | undefined</code>
+
                     </td>
                 </tr>
                 <tr>
@@ -829,10 +880,15 @@ nodes that return true when the selectorFn is called on the node.</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
+                        <i>Type : </i>    <code>[] | SzGraphNodeFilterPair</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
                         <div class="io-description"><p>set a style or effect to apply to the display of nodes in graph that match any
-of the criteria set by &quot;&quot;.
-SzRelationshipNetworkComponent.highlight = {selectorFn: (node) =&gt; { return node.dataSources.indexOf(&#39;MY DATASOURCE&#39;) &gt; -1; }, modifierFn: (nodeList) =&gt; { nodeList.style(&#39;fill&#39;,&#39;orange&#39;); }}</p>
-</div>
+of the criteria set by &quot;&quot;.</p>
+<div><pre class="line-numbers"><code class="language-html">SzRelationshipNetworkComponent.highlight = {selectorFn: (node) =&gt; { return node.dataSources.indexOf(&#39;MY DATASOURCE&#39;) &gt; -1; }, modifierFn: (nodeList) =&gt; { nodeList.style(&#39;fill&#39;,&#39;orange&#39;); }}</code></pre></div></div>
                     </td>
                 </tr>
             </tbody>
@@ -843,6 +899,12 @@ SzRelationshipNetworkComponent.highlight = {selectorFn: (node) =&gt; { return no
                     <td class="col-md-4">
                         <a name="includes"></a>
                         <b>includes</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>SzGraphNodeFilterPair | undefined</code>
+
                     </td>
                 </tr>
                 <tr>
@@ -911,6 +973,12 @@ filter, but arg is a single SzGraphNodeFilterPair instead of array and is inclus
                         <b>loadedData</b>
                     </td>
                 </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/SzNetworkGraphInputs.html" target="_self" >SzNetworkGraphInputs</a></code>
+
+                    </td>
+                </tr>
             </tbody>
         </table>
         <table class="table table-sm table-bordered">
@@ -921,6 +989,12 @@ filter, but arg is a single SzGraphNodeFilterPair instead of array and is inclus
                         <b>maxDegrees</b>
                     </td>
                 </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | number</code>
+
+                    </td>
+                </tr>
             </tbody>
         </table>
         <table class="table table-sm table-bordered">
@@ -929,6 +1003,18 @@ filter, but arg is a single SzGraphNodeFilterPair instead of array and is inclus
                     <td class="col-md-4">
                         <a name="maxEntities"></a>
                         <b>maxEntities</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | number</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>the maximum entities to pull back from the api request</p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -987,9 +1073,58 @@ filter, but arg is a single SzGraphNodeFilterPair instead of array and is inclus
                 </tr>
                 <tr>
                     <td class="col-md-4">
+                        <i>Type : </i>    <code>[] | SzGraphNodeFilterPair</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
                         <div class="io-description"><p>set or update a property on nodes in graph that match any
-of the criteria set by &quot;&quot;.
-SzRelationshipNetworkComponent.modify = {selectorFn: (node) =&gt; { return node.dataSources.indexOf(&#39;MY DATASOURCE&#39;) &gt; -1; }, modifierFn: (data) =&gt; { data.newProperty = true; return data; } }</p>
+of the criteria set by &quot;&quot;.</p>
+<div><pre class="line-numbers"><code class="language-html">SzRelationshipNetworkComponent.modify = {selectorFn: (node) =&gt; { return node.dataSources.indexOf(&#39;MY DATASOURCE&#39;) &gt; -1; }, modifierFn: (data) =&gt; { data.newProperty = true; return data; } }</code></pre></div></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="noMaxEntitiesLimit"></a>
+                        <b>noMaxEntitiesLimit</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>boolean | string</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>sets whether or not to ignore the value set in &quot;maxEntities&quot;</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="noMaxScopeLimit"></a>
+                        <b>noMaxScopeLimit</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>boolean | string</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>sets whether or not to ignore the value set in &quot;buildOut&quot;</p>
 </div>
                     </td>
                 </tr>
@@ -1238,28 +1373,6 @@ used to set aspect ratio, centering etc for dynamic scaling.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="noResults"></a>
-                        <b>noResults</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>EventEmitter&lt;boolean&gt;</code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>emitted when the player right clicks a entity node.</p>
-</div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
                         <a name="onDataLoaded"></a>
                         <b>onDataLoaded</b>
                     </td>
@@ -1272,7 +1385,29 @@ used to set aspect ratio, centering etc for dynamic scaling.</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>emit &quot;onDataLoaded&quot; when data received and parsed</p>
+                        <div class="io-description"><p>Event emitter for when new data has been requested from the api</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onDataRequested"></a>
+                        <b>onDataRequested</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter&lt;boolean&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>emit &quot;onDataRequested&quot; when data requested</p>
 </div>
                     </td>
                 </tr>
@@ -1290,6 +1425,12 @@ used to set aspect ratio, centering etc for dynamic scaling.</p>
                     <td class="col-md-4">
                         <i>Type : </i>    <code>EventEmitter&lt;any&gt;</code>
 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>emit &quot;onDataUpdated&quot; when data requested</p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -1320,6 +1461,138 @@ used to set aspect ratio, centering etc for dynamic scaling.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="onNoResults"></a>
+                        <b>onNoResults</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter&lt;boolean&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Event emitter for the event that occurs when a request completed but has no results</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onPreflightRequestComplete"></a>
+                        <b>onPreflightRequestComplete</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter&lt;any&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>when a preflight request completes</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onRenderCompleted"></a>
+                        <b>onRenderCompleted</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter&lt;boolean&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Event emitter that occurs when the rendering cycle of a graph is in progress</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onRenderStarted"></a>
+                        <b>onRenderStarted</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter&lt;boolean&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Event emitter that occurs when the rendering cycle of a graph is in progress</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onRequestCompleted"></a>
+                        <b>onRequestCompleted</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter&lt;boolean&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Event emitter for the event that occurs when a network api request is completed</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onRequestStarted"></a>
+                        <b>onRequestStarted</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter&lt;boolean&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Event emitter for the event that occurs when a network request is initiated</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="onShowRelatedEntities"></a>
                         <b>onShowRelatedEntities</b>
                     </td>
@@ -1333,6 +1606,29 @@ used to set aspect ratio, centering etc for dynamic scaling.</p>
                 <tr>
                     <td class="col-md-4">
                         <div class="io-description"><p>emitted when the user expands or collapses a entity nodes related nodes.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onTotalRelationshipsCountUpdated"></a>
+                        <b>onTotalRelationshipsCountUpdated</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter&lt;number&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>when the initial or preflight request has the total relationships available
+this event is emitted.</p>
 </div>
                     </td>
                 </tr>
@@ -1432,6 +1728,12 @@ used to set aspect ratio, centering etc for dynamic scaling.</p>
                     <td class="col-md-4">
                         <i>Type : </i>    <code>EventEmitter&lt;number&gt;</code>
 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Event emitter for when the canvas zoom level is changed</p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -2462,6 +2764,83 @@ canvas directly.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getMatchKeysFromEntityData"></a>
+                    <span class="name">
+                        <span class="modifier">Static</span>
+                        <span ><b>getMatchKeysFromEntityData</b></span>
+                        <a href="#getMatchKeysFromEntityData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getMatchKeysFromEntityData(data: SzEntityData[], coreEntityIds?: SzEntityIdentifier[])</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                            <code>SzEntityData[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>coreEntityIds</td>
+                                    <td>
+                                            <code>SzEntityIdentifier[]</code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>literal type[]</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getMatchKeysFromEntityNetworkData"></a>
                     <span class="name">
                         <span class="modifier">Static</span>
@@ -3021,37 +3400,6 @@ arrays of the entity ids found in the data that have that match key token presen
                 <td class="col-md-4">
                     <div class="io-description"><p>unsubscribe when component is destroyed</p>
 </div>
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="ngOnInit"></a>
-                    <span class="name">
-                        <span ><b>ngOnInit</b></span>
-                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>ngOnInit()</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -4271,6 +4619,60 @@ keys categorized as &quot;derived&quot; type(s) are return value position[1].</p
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="dataLoaded"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>dataLoaded</b></span>
+                        <a href="#dataLoaded"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._dataLoaded.asObservable()</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>observeable for when data has been updated</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dataRequested"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>dataRequested</b></span>
+                        <a href="#dataRequested"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._dataRequested.asObservable()</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>observeable for when new data has been requested from the api</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="entityId"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
@@ -4583,6 +4985,33 @@ keys categorized as &quot;derived&quot; type(s) are return value position[1].</p
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="noResults"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>noResults</b></span>
+                        <a href="#noResults"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._requestNoResults.asObservable().pipe(filter((value) &#x3D;&gt; value !&#x3D;&#x3D; false))</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>observeable stream for the event that occurs when a request completed but has no results</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="onZoom"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
@@ -4603,6 +5032,12 @@ keys categorized as &quot;derived&quot; type(s) are return value position[1].</p
                     </td>
                 </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>observeable stream for when the canvas zoom level is changed</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -4620,15 +5055,40 @@ keys categorized as &quot;derived&quot; type(s) are return value position[1].</p
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>Observable&lt;boolean&gt;</code>
-
+                        <i>Default value : </i><code>this._renderComplete.asObservable().pipe(filter((value) &#x3D;&gt; value !&#x3D;&#x3D; false))</code>
                     </td>
                 </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Observeable stream for the event that occurs when a draw
-operation is completed</p>
+                    <div class="io-description"><p>observeable stream for the event that occurs when a draw operation is completed</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="renderStarted"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>renderStarted</b></span>
+                        <a href="#renderStarted"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._renderStarted.asObservable().pipe(filter((value) &#x3D;&gt; value !&#x3D;&#x3D; false))</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observeable stream that occurs when the rendering cycle of a graph is in progress</p>
 </div>
                 </td>
             </tr>
@@ -4649,44 +5109,13 @@ operation is completed</p>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>Observable&lt;boolean&gt;</code>
-
+                        <i>Default value : </i><code>this._requestComplete.asObservable().pipe(filter((value) &#x3D;&gt; value !&#x3D;&#x3D; false))</code>
                     </td>
                 </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Observeable stream for the event that occurs when a network
-request is completed</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="requestNoResults"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>requestNoResults</b></span>
-                        <a href="#requestNoResults"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>Observable&lt;boolean&gt;</code>
-
-                    </td>
-                </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Observeable stream for the event that occurs when a
-request completed but has no results</p>
+                    <div class="io-description"><p>observeable stream for the event that occurs when a network api request is completed</p>
 </div>
                 </td>
             </tr>
@@ -4707,15 +5136,13 @@ request completed but has no results</p>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>Observable&lt;boolean&gt;</code>
-
+                        <i>Default value : </i><code>this._requestStarted.asObservable().pipe(filter((value) &#x3D;&gt; value !&#x3D;&#x3D; false))</code>
                     </td>
                 </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Observeable stream for the event that occurs when a network
-request is initiated</p>
+                    <div class="io-description"><p>observeable for when new data has been requested from the api</p>
 </div>
                 </td>
             </tr>
@@ -5822,6 +6249,22 @@ used to set aspect ratio, centering etc for dynamic scaling.</p>
                     </td>
                 </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>maxEntities()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>the maximum entities to pull back from the api request</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -5830,6 +6273,8 @@ used to set aspect ratio, centering etc for dynamic scaling.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
+                                <div class="io-description"><p>the maximum entities to pull back from the api request</p>
+</div>
 
                                 <div class="io-description">
                                         <b>Parameters :</b>
@@ -5847,6 +6292,150 @@ used to set aspect ratio, centering etc for dynamic scaling.</p>
                                                     
                                                             <td>
                                                                         <code>string | number</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="noMaxEntitiesLimit"></a>
+                        <span class="name"><b>noMaxEntitiesLimit</b><a href="#noMaxEntitiesLimit"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>noMaxEntitiesLimit()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>whether or not to ignore the value set in &quot;maxEntities&quot;</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>noMaxEntitiesLimit(value: boolean | string)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>sets whether or not to ignore the value set in &quot;maxEntities&quot;</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code>boolean | string</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="noMaxScopeLimit"></a>
+                        <span class="name"><b>noMaxScopeLimit</b><a href="#noMaxScopeLimit"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>noMaxScopeLimit()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>whether or not to ignore the value set in &quot;buildOut&quot;</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>noMaxScopeLimit(value: boolean | string)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>sets whether or not to ignore the value set in &quot;buildOut&quot;</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code>boolean | string</code>
                                                             </td>
                                                     
                                                         <td>
@@ -6378,9 +6967,8 @@ filter, but arg is a single SzGraphNodeFilterPair instead of array and is inclus
                     <tr>
                         <td class="col-md-4">
                                 <div class="io-description"><p>set a style or effect to apply to the display of nodes in graph that match any
-of the criteria set by &quot;&quot;.
-SzRelationshipNetworkComponent.highlight = {selectorFn: (node) =&gt; { return node.dataSources.indexOf(&#39;MY DATASOURCE&#39;) &gt; -1; }, modifierFn: (nodeList) =&gt; { nodeList.style(&#39;fill&#39;,&#39;orange&#39;); }}</p>
-</div>
+of the criteria set by &quot;&quot;.</p>
+<div><pre class="line-numbers"><code class="language-html">SzRelationshipNetworkComponent.highlight = {selectorFn: (node) =&gt; { return node.dataSources.indexOf(&#39;MY DATASOURCE&#39;) &gt; -1; }, modifierFn: (nodeList) =&gt; { nodeList.style(&#39;fill&#39;,&#39;orange&#39;); }}</code></pre></div></div>
 
                                 <div class="io-description">
                                         <b>Parameters :</b>
@@ -6440,9 +7028,8 @@ SzRelationshipNetworkComponent.highlight = {selectorFn: (node) =&gt; { return no
                     <tr>
                         <td class="col-md-4">
                                 <div class="io-description"><p>set or update a property on nodes in graph that match any
-of the criteria set by &quot;&quot;.
-SzRelationshipNetworkComponent.modify = {selectorFn: (node) =&gt; { return node.dataSources.indexOf(&#39;MY DATASOURCE&#39;) &gt; -1; }, modifierFn: (data) =&gt; { data.newProperty = true; return data; } }</p>
-</div>
+of the criteria set by &quot;&quot;.</p>
+<div><pre class="line-numbers"><code class="language-html">SzRelationshipNetworkComponent.modify = {selectorFn: (node) =&gt; { return node.dataSources.indexOf(&#39;MY DATASOURCE&#39;) &gt; -1; }, modifierFn: (data) =&gt; { data.newProperty = true; return data; } }</code></pre></div></div>
 
                                 <div class="io-description">
                                         <b>Parameters :</b>
@@ -6855,6 +7442,7 @@ div.sz-graph-tooltip {
     var ACTUAL_COMPONENT = {'name': 'SzRelationshipNetworkComponent'};
 </script>
 <script src="../js/tree.js"></script>
+
 
 
 

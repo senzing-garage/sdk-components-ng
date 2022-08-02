@@ -69,22 +69,21 @@
         <p>Provides a graphical search results component. Data can be provided a number of ways.
 The simplest of which is to bind the results input setter to the output of the
 <a href="../components/SzSearchComponent.html">SzSearchComponent</a> resultsChange event.</p>
-<p><code><br/>
-&lt;!-- (Angular) SzSearchComponent --&gt;<br/>
-&lt;sz-search<br/>
-name="Isa Creepr"<br/>
-(resultsChange)="resultsOfSearch=$event"&gt;&lt;/sz-search&gt;<br/>
-&lt;sz-search-results [results]="resultsOfSearch"&gt;&lt;/sz-search-results&gt;<br/><br/></p>
-<p>&lt;!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo --&gt;<br/>
+<div><pre class="line-numbers"><code class="language-html">&lt;code&gt;&lt;br/&gt;
+&amp;lt;!-- (Angular) SzSearchComponent --&amp;gt;&lt;br/&gt;
+&amp;lt;sz-search&lt;br/&gt;
+name=&quot;Isa Creepr&quot;&lt;br/&gt;
+(resultsChange)=&quot;resultsOfSearch=$event&quot;&amp;gt;&amp;lt;/sz-search&amp;gt;&lt;br/&gt;
+&amp;lt;sz-search-results [results]=&quot;resultsOfSearch&quot;&amp;gt;&amp;lt;/sz-search-results&amp;gt;&lt;br/&gt;&lt;br/&gt;</code></pre></div><p>&lt;!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo --&gt;<br/>
 &lt;sz-wc-search<br/>
-id="sz-search"<br/>
-name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
-&lt;sz-wc-search-results id="sz-search-results"&gt;&lt;/sz-wc-search-results&gt;<br/>
+id=&quot;sz-search&quot;<br/>
+name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;<br/>
+&lt;sz-wc-search-results id=&quot;sz-search-results&quot;&gt;&lt;/sz-wc-search-results&gt;<br/>
 &lt;script&gt;<br/>
- var szSearchComponent = document.getElementById('sz-search');<br/>
- var szSearchResultsComponent = document.getElementById('sz-search-results');<br/>
- szSearchComponent.addEventListener('resultsChange', (evt) => {<br/>
-   console.log('search results: ', evt);<br/>
+ var szSearchComponent = document.getElementById(&#39;sz-search&#39;);<br/>
+ var szSearchResultsComponent = document.getElementById(&#39;sz-search-results&#39;);<br/>
+ szSearchComponent.addEventListener(&#39;resultsChange&#39;, (evt) =&gt; {<br/>
+   console.log(&#39;search results: &#39;, evt);<br/>
    szSearchResultsComponent.results = evt.detail;<br/>
  });<br/>
 &lt;/script&gt;<br/>
@@ -447,6 +446,12 @@ name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
                 </tr>
                 <tr>
                     <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/SzEntitySearchParams.html" target="_self" >SzEntitySearchParams</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
                         <div class="io-description"><p>The current search parameters being used.
 used for displaying the parameters being searched on above result list.</p>
 </div>
@@ -464,7 +469,7 @@ used for displaying the parameters being searched on above result list.</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>[]</code>
+                        <i>Type : </i>    <code>SzAttributeSearchResult[]</code>
 
                     </td>
                 </tr>
@@ -531,6 +536,12 @@ used for displaying the parameters being searched on above result list.</p>
                     <td class="col-md-4">
                         <a name="showWhyComparisonButton"></a>
                         <b>showWhyComparisonButton</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>boolean | string</code>
+
                     </td>
                 </tr>
                 <tr>
@@ -2053,6 +2064,7 @@ used for displaying the parameters being searched on above result list.</p>
     var ACTUAL_COMPONENT = {'name': 'SzSearchResultsComponent'};
 </script>
 <script src="../js/tree.js"></script>
+
 
 
 
