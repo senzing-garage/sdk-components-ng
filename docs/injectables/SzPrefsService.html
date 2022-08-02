@@ -72,24 +72,20 @@ the component updates the corresponding value through this service.</p>
 <p>representational state is published and responded to through this class.
 it is up to the end consumer what to do with this data. it is not stored anywhere
 other than in memory by default. the third example shows how to load from localstorage.</p>
-<p>constructor(private prefs: SzPrefsService) {
+<div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService) {
     this.prefs.prefsChanged.subscribe((prefs: SzSdkPrefsModel) =&gt; { console.log(&#39;prefs changed!&#39;, prefs); })
-}</p>
-<p>constructor(private prefs: SzPrefsService) {
+}</code></pre></div><div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService) {
     currentState = this.prefs.toJSONObject();
-}</p>
-<p>constructor(private prefs: SzPrefsService, Inject(LOCAL_STORAGE) private storage: StorageService) {
+}</code></pre></div><div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService, Inject(LOCAL_STORAGE) private storage: StorageService) {
     // get from ls
     let _ls = this.storage.get(&quot;name_of_local_storage_store&quot;);
     this.prefs.fromJSONString( _ls );
     // store in ls
     this.prefs.prefsChanged.subscribe((prefs: SzSdkPrefsModel) =&gt; { this.storage.set(&quot;name_of_local_storage_store&quot;, prefs); })
-}</p>
-<p>constructor(private prefs: SzPrefsService) {
+}</code></pre></div><div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService) {
     // set graph to collapsed by default
     this.prefs.entityDetail.graphSectionCollapsed = true;
-}</p>
-
+}</code></pre></div>
             </p>
 
 
@@ -285,15 +281,14 @@ other than in memory by default. the third example shows how to load from locals
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>populate objects and values from JSON. bulk import basically. example shows bulk importing from local storage.
-constructor(private prefs: SzPrefsService, Inject(LOCAL_STORAGE) private storage: StorageService) {
+                    <div class="io-description"><p>populate objects and values from JSON. bulk import basically. example shows bulk importing from local storage.</p>
+<div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService, Inject(LOCAL_STORAGE) private storage: StorageService) {
     // get from ls
     let _ls = this.storage.get( name_of_local_storage_store );
     this.prefs.fromJSONString( _ls );
     // store in ls
     this.prefs.prefsChanged.subscribe((prefs: SzSdkPrefsModel) =&gt; { this.storage.set( name_of_local_storage_store, prefs); })
-}</p>
-</div>
+}</code></pre></div></div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -372,10 +367,9 @@ this.prefs.prefsChanged.subscribe((prefs: SzSdkPrefsModel) =&amp;gt; { this.stor
                 <td class="col-md-4">
                     <div class="io-description"><p>get shallow JSON copy of services object state by calling
 same method on namespace members.</p>
-<p>constructor(private prefs: SzPrefsService) {
+<div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService) {
     currentState = this.prefs.toJSONObject();
-}</p>
-</div>
+}</code></pre></div></div>
 
                     <div>
                         <b>Example :</b>
@@ -647,6 +641,7 @@ same method on namespace members.</p>
 
 
 </div>
+
 
 
 

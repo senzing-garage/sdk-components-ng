@@ -69,33 +69,32 @@
         <h3>Description</h3>
     </p>
     <p class="comment">
-        <p>Provides a search box component that can execute search queries and return results.
-<code>
-&lt;!-- (WC javascript) SzSearchComponent --&gt;<br/>
-&lt;sz-wc-search<br/>
-id="sz-search"<br/>
-name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
-&lt;script&gt;<br/>
- document.getElementById('sz-search').addEventListener('resultsChange', (results) => {<br/>
-   console.log('search results: ', results);<br/>
- });<br/>
-&lt;/script&gt;<br/><br/></p>
-<p>&lt;!-- (Angular) SzSearchComponent --&gt;<br/>
+        <p>Provides a search box component that can execute search queries and return results.</p>
+<div><pre class="line-numbers"><code class="language-html">&lt;code&gt;
+&amp;lt;!-- (WC javascript) SzSearchComponent --&amp;gt;&lt;br/&gt;
+&amp;lt;sz-wc-search&lt;br/&gt;
+id=&quot;sz-search&quot;&lt;br/&gt;
+name=&quot;Isa Creepr&quot;&amp;gt;&amp;lt;/sz-wc-search&amp;gt;&lt;br/&gt;
+&amp;lt;script&amp;gt;&lt;br/&gt;
+ document.getElementById(&#39;sz-search&#39;).addEventListener(&#39;resultsChange&#39;, (results) =&gt; {&lt;br/&gt;
+   console.log(&#39;search results: &#39;, results);&lt;br/&gt;
+ });&lt;br/&gt;
+&amp;lt;/script&amp;gt;&lt;br/&gt;&lt;br/&gt;</code></pre></div><p>&lt;!-- (Angular) SzSearchComponent --&gt;<br/>
 &lt;sz-search<br/>
-name="Isa Creepr"<br/>
-(resultsChange)="myResultsHandler($event)"<br/>
-(searchStart)="showSpinner()"<br/>
-(searchEnd)="hideSpinner()"&gt;&lt;/sz-search&gt;<br/><br/></p>
+name=&quot;Isa Creepr&quot;<br/>
+(resultsChange)=&quot;myResultsHandler($event)&quot;<br/>
+(searchStart)=&quot;showSpinner()&quot;<br/>
+(searchEnd)=&quot;hideSpinner()&quot;&gt;&lt;/sz-search&gt;<br/><br/></p>
 <p>&lt;!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo --&gt;<br/>
 &lt;sz-wc-search<br/>
-id="sz-search"<br/>
-name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
-&lt;sz-wc-search-results id="sz-search-results"&gt;&lt;/sz-wc-search-results&gt;<br/>
+id=&quot;sz-search&quot;<br/>
+name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;<br/>
+&lt;sz-wc-search-results id=&quot;sz-search-results&quot;&gt;&lt;/sz-wc-search-results&gt;<br/>
 &lt;script&gt;<br/>
- var szSearchComponent = document.getElementById('sz-search');<br/>
- var szSearchResultsComponent = document.getElementById('sz-search-results');<br/>
- szSearchComponent.addEventListener('resultsChange', (evt) => {<br/>
-   console.log('search results: ', evt);<br/>
+ var szSearchComponent = document.getElementById(&#39;sz-search&#39;);<br/>
+ var szSearchResultsComponent = document.getElementById(&#39;sz-search-results&#39;);<br/>
+ szSearchComponent.addEventListener(&#39;resultsChange&#39;, (evt) =&gt; {<br/>
+   console.log(&#39;search results: &#39;, evt);<br/>
    szSearchResultsComponent.results = evt.detail;<br/>
  });<br/>
 &lt;/script&gt;<br/>
@@ -845,9 +844,8 @@ name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>sets the value of the address field
-<sz-search address="421 Rawling Str"></p>
-</div>
+                        <div class="io-description"><p>sets the value of the address field</p>
+<div><pre class="line-numbers"><code class="language-html">&lt;sz-search address=&quot;421 Rawling Str&quot;&gt;</code></pre></div></div>
                     </td>
                 </tr>
             </tbody>
@@ -900,7 +898,7 @@ name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>[]</code>
+                        <i>Type : </i>    <code>SzAttributeType[]</code>
 
                     </td>
                 </tr>
@@ -1108,6 +1106,12 @@ name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
                     <td class="col-md-4">
                         <a name="disableIdentifierOptions"></a>
                         <b>disableIdentifierOptions</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[] | string</code>
+
                     </td>
                 </tr>
                 <tr>
@@ -1444,9 +1448,7 @@ format is &quot;SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER&quot; or array of strings
                 <tr>
                     <td class="col-md-4">
                         <div class="io-description"><p>sets the value of the email field.</p>
-<sz-search email="guy.i.am.looking&#64;for.com">
-
-</div>
+<div><pre class="line-numbers"><code class="language-html">&lt;sz-search email=&quot;guy.i.am.looking&amp;#64;for.com&quot;&gt;</code></pre></div></div>
                     </td>
                 </tr>
             </tbody>
@@ -1501,6 +1503,12 @@ format is &quot;SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER&quot; or array of strings
                     <td class="col-md-4">
                         <a name="enableIdentifierOptions"></a>
                         <b>enableIdentifierOptions</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[] | string</code>
+
                     </td>
                 </tr>
                 <tr>
@@ -1698,9 +1706,15 @@ format is &quot;SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER&quot; or array of strings
                 </tr>
                 <tr>
                     <td class="col-md-4">
+                        <i>Type : </i>    <code>string | []</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
                         <div class="io-description"><p>Takes a collection or a single value of layout enum css classnames to pass
 to all children components. this value overrides auto-responsive css adjustments.</p>
-</div>
+<div><pre class="line-numbers"><code class="language-html"></code></pre></div></div>
                     </td>
                 </tr>
             </tbody>
@@ -2014,6 +2028,12 @@ api server when a configuration change is detected</p>
                         <b>layoutClasses</b>
                     </td>
                 </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[] | string</code>
+
+                    </td>
+                </tr>
             </tbody>
         </table>
         <table class="table table-sm table-bordered">
@@ -2032,9 +2052,8 @@ api server when a configuration change is detected</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>the name field of the search form.
-<sz-search name="Good Guy"></p>
-</div>
+                        <div class="io-description"><p>the name field of the search form.</p>
+<div><pre class="line-numbers"><code class="language-html">&lt;sz-search name=&quot;Good Guy&quot;&gt;</code></pre></div></div>
                     </td>
                 </tr>
             </tbody>
@@ -3388,9 +3407,8 @@ any parameter changes through the paramsChange emmitter.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>the name field of the search form.
-<sz-search name="Good Guy"></p>
-</div>
+                                <div class="io-description"><p>the name field of the search form.</p>
+<div><pre class="line-numbers"><code class="language-html">&lt;sz-search name=&quot;Good Guy&quot;&gt;</code></pre></div></div>
 
                                 <div class="io-description">
                                         <b>Parameters :</b>
@@ -3446,9 +3464,7 @@ any parameter changes through the paramsChange emmitter.</p>
                     <tr>
                         <td class="col-md-4">
                                 <div class="io-description"><p>sets the value of the email field.</p>
-<sz-search email="guy.i.am.looking&#64;for.com">
-
-</div>
+<div><pre class="line-numbers"><code class="language-html">&lt;sz-search email=&quot;guy.i.am.looking&amp;#64;for.com&quot;&gt;</code></pre></div></div>
 
                                 <div class="io-description">
                                         <b>Parameters :</b>
@@ -3503,9 +3519,8 @@ any parameter changes through the paramsChange emmitter.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>sets the value of the address field
-<sz-search address="421 Rawling Str"></p>
-</div>
+                                <div class="io-description"><p>sets the value of the address field</p>
+<div><pre class="line-numbers"><code class="language-html">&lt;sz-search address=&quot;421 Rawling Str&quot;&gt;</code></pre></div></div>
 
                                 <div class="io-description">
                                         <b>Parameters :</b>
@@ -6072,7 +6087,7 @@ format is &quot;SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER&quot; or array of strings
                         <td class="col-md-4">
                                 <div class="io-description"><p>Takes a collection or a single value of layout enum css classnames to pass
 to all children components. this value overrides auto-responsive css adjustments.</p>
-</div>
+<div><pre class="line-numbers"><code class="language-html"></code></pre></div></div>
 
                                 <div class="io-description">
                                         <b>Parameters :</b>
@@ -6865,6 +6880,7 @@ export class AppComponent implements AfterViewInit {
     var ACTUAL_COMPONENT = {'name': 'SzSearchComponent'};
 </script>
 <script src="../js/tree.js"></script>
+
 
 
 

@@ -351,11 +351,10 @@ Add to your applications module imports array.</p>
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>initialize the SenzingSdkModule with an optional factory method that returns a <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> instance.
-See <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a>
-export function SzRestConfigurationFactory() {
-return new SzRestConfiguration({ basePath: &quot;myapiserverhostname.com:8080&quot;, withCredentials: true });
-}</p>
-<p>SenzingSdkModule.forRoot( SzRestConfigurationFactory )</p>
+See <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a></p>
+<div><pre class="line-numbers"><code class="language-html">export function SzRestConfigurationFactory() {
+return new SzRestConfiguration({ basePath: \&quot;myapiserverhostname.com:8080\&quot;, withCredentials: true });
+}</code></pre></div><p>SenzingSdkModule.forRoot( SzRestConfigurationFactory )</p>
 </div>
 
                     <div class="io-description">
@@ -438,6 +437,7 @@ export class AppModule { }</code></pre></div><p>Now start up your application an
     </div>
 
 </div>
+
 
 
 
