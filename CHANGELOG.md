@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.1] - 2022-08-15
+
+### Modified
+- Match keys on graph entity link(s) are now in a vertically centered multi-line list.
+- Bugfix for match key labels. (see #383)
+- Entity detail embedded graph now defaults to collapsed nodes when relationships are `< 10`
+
+relevant tickets: #309 #383
+
+
 ## [5.1.0] - 2022-07-27
 
 - there is now a new `unlimited` ui option for maximum entities allowed.
