@@ -65,6 +65,15 @@ body {
 
   .sz-graph-link-label {
     font-size: 10px;
+    paint-order: stroke;
+    stroke: #ffffff;
+    stroke-width: 5px;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+    font-weight: 800;
+    fill: #565656;
+    letter-spacing: 2px;
+    line-height: 15px;
   }
 
   .sz-graph-core-link {
@@ -108,7 +117,8 @@ body {
   .sz-graph-tooltip {
     position: absolute;
     background-color: white;
-    max-width: 200px;
+    min-width: 200px;
+    max-width: 50vw;
     height: auto;
     padding: 1px;
     border-radius: 4px;

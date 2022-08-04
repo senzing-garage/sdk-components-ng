@@ -30,7 +30,9 @@ body {
     position: absolute;
     font-size: var(--sz-graph-tooltip-font-size);
     background-color: var(--sz-graph-tooltip-background-color);
+    min-width: 200px;
     max-width: var(--sz-graph-tooltip-max-width);
+    line-break: anywhere;
     height: auto;
     padding: var(--sz-graph-tooltip-padding);
     border-radius: var(--sz-graph-tooltip-border-radius);

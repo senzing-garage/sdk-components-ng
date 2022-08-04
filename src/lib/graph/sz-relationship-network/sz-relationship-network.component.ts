@@ -1799,7 +1799,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         this.link.remove();
       }
 
-      // Add the lines, except we're not defining how they're drawn here.  That happens in tick()
+      // Add the lines
       let _links      = this.linkGroup.join('path')
         //.attr('class', (d: any) => d.isCoreLink ? 'sz-graph-core-link' : 'sz-graph-link')
         .attr('class', this.getEntityLinkClass.bind(this))
@@ -1812,16 +1812,59 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         this.linkLabel.remove();
       }
       // Add link labels
-      let _linkLabels = this.linkGroup.join('svg:text')
+      let _linkLabels = this.linkGroup.join('g')
+      .attr('class', 'sz-graph-link-label')
+      .attr('y', 0)
+      .attr('x', 0)
+      .each(function(d, i) {
+        let mkVertInc = 0;        
+        let mkNodes = d3.select(this).selectAll('g.sz-graph-link-label')
+        .data(d.matchKeyTokensFlat)
+        .enter();
+
+        let _newLabels = mkNodes.append('svg:text')
         .attr('text-anchor', 'middle')
-        .attr('class', 'sz-graph-link-label')
-        .attr('dy', -3)
-        .attr('dx', 0)
-        .append('textPath')
-        .attr('class', (d: any) => d.isCoreLink ? 'sz-graph-core-link-text' : 'sz-graph-link-text')
-        .attr('startOffset', '50%')
-        .attr('xlink:href', (d: any) => '#' + d.id) // This lets SVG know which label goes with which line
-        .text(getMatchKeyLabel);
+        .attr('class', 'sz-graph-link-label-text');
+
+        let _newLabelsText = _newLabels.append('textPath')
+          .attr('class', (_d: any) => _d.isCoreLink ? 'sz-graph-core-link-text' : 'sz-graph-link-text')
+          .attr('startOffset', '50%')
+          .attr('xlink:href', (_d: any) => '#' + d.id) // This lets SVG know which label goes with which line
+          .text((mkToken) => {
+            return mkToken as string;
+          });
+
+        // take a sample bounding box
+        // so we can read the height of the text nodes
+        let _linkLabelTextSize    = 10;
+        let _linkLabelLineHeight  = 15;
+        let _linkLabelBBoxAry: any[] = [];
+        if(_newLabelsText) {
+          _newLabelsText.each(function (d, i) {
+            _linkLabelBBoxAry[i] = this.getBBox();
+          });
+          if(_linkLabelBBoxAry && _linkLabelBBoxAry[ 0 ] && _linkLabelBBoxAry[ 0 ].height > 5 && _linkLabelBBoxAry[ 0 ].height < 20) {
+            _linkLabelTextSize    =  Math.ceil(_linkLabelBBoxAry[ 0 ].height);
+            _linkLabelLineHeight  = _linkLabelTextSize + 5;
+          }
+        }
+        // now that we have the line height
+        // place the link labels vertically on the line
+        _newLabels.attr('dy', function(mkNode, mki){
+            let retVal = d.matchKeyTokensFlat.length <= 1 ? 
+            ((_linkLabelTextSize-1) / 2) : 
+            (mki * _linkLabelLineHeight) - 
+            parseInt( 
+              d.matchKeyTokensFlat.length <= 1 ? 
+                (_linkLabelTextSize / 2)  : 
+                (
+                  (d.matchKeyTokensFlat.length*_linkLabelLineHeight / 2) - _linkLabelLineHeight
+                ) as any 
+            );
+            return retVal;
+          })
+          .attr('dx', 0)
+      })
 
       return {
         link: _links,
@@ -3178,19 +3221,39 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           const linkArr = [entityId, relatedEntityId].sort();
           const linkKey = {firstId: linkArr[0], secondId: linkArr[1]};
           let _relatedMatchCategory = SzRelationshipNetworkComponent.tokenizeMatchKey(relatedEntity.matchKey);
-          let relatedMatchKeyCategories       = matchKeyCategoriesByEntityId[ resolvedEntity.entityId ] ? matchKeyCategoriesByEntityId[ resolvedEntity.entityId ]   : [];
-
+          // match key tokens grouped by 'DERIVED' and 'DISCLOSED'
+          let relatedMatchKeyCategories                 = _relatedMatchCategory;
+          // flattened array of match key tokens
+          let _matchKeyTokensFlattened                  = [];
+          _relatedMatchCategory.forEach((mkeyCat)=>{
+            _matchKeyTokensFlattened = _matchKeyTokensFlattened.concat(mkeyCat);
+          });
+          _matchKeyTokensFlattened  = _matchKeyTokensFlattened.sort();
+          // de-dupe values
+          _matchKeyTokensFlattened  = _matchKeyTokensFlattened.filter((value, index, self) => {
+            return self.indexOf(value) === index;
+          });
+          let _ambiPos              = _matchKeyTokensFlattened.findIndex((val) => {
+            return val && val.toLowerCase ? val.toLowerCase() === 'ambiguous' : val === 'Ambiguous';
+          });
+          if(_ambiPos > -1) {
+            // pop out and push to end
+            //console.log(`${_matchKeyTokensFlattened}[${_ambiPos}] = ${ambiVal}`);
+            let ambiVal       = _matchKeyTokensFlattened.splice(_ambiPos,1)
+            _matchKeyTokensFlattened.push(ambiVal);
+          }
+          // now add match key categories by entity id
           if(!matchKeyCategoriesByEntityId[ relatedEntityId ] || matchKeyCategoriesByEntityId[ relatedEntityId ] === undefined) {
             matchKeyCategoriesByEntityId[ relatedEntityId ] = [];
           }
           if(matchKeyCategoriesByEntityId[ relatedEntityId ] && matchKeyCategoriesByEntityId[ relatedEntityId ].concat) {
             matchKeyCategoriesByEntityId[ relatedEntityId ] = matchKeyCategoriesByEntityId[ relatedEntityId ].concat(_relatedMatchCategory[0]).concat(_relatedMatchCategory[1])
-            // de-dupe values
-            matchKeyCategoriesByEntityId[ relatedEntityId ] = matchKeyCategoriesByEntityId[ relatedEntityId ].filter((value, index, self) => {
-              return self.indexOf(value) === index;
-            });
+            
           }
-
+          // de-dupe values
+          matchKeyCategoriesByEntityId[ relatedEntityId ] = matchKeyCategoriesByEntityId[ relatedEntityId ].filter((value, index, self) => {
+            return self.indexOf(value) === index;
+          });
 
           if (!SzRelationshipNetworkComponent.hasKey(linkIndex, linkKey) && entityIndex.indexOf(relatedEntityId) !== -1) {
             linkIndex.push(linkKey);
@@ -3202,6 +3265,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
               matchLevel: relatedEntity.matchLevel,
               matchKey: relatedEntity.matchKey,
               matchKeyTokens: relatedMatchKeyCategories,
+              matchKeyTokensFlat: _matchKeyTokensFlattened,
+              relatedMatchKeyCategories: _relatedMatchCategory,
               isHidden: false,
               isCoreLink: false,
               id: linkIndex.indexOf(linkKey)
@@ -3215,6 +3280,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
               matchLevel: relatedEntity.matchLevel,
               matchKey: relatedEntity.matchKey,
               matchKeyTokens: relatedMatchKeyCategories,
+              matchKeyTokensFlat: _matchKeyTokensFlattened,
               isHidden: false,
               isCoreLink: false,
               id: linkIndex.indexOf(linkKey)
@@ -3455,7 +3521,11 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           derived_keys.push(keyStr);
         } else {
           // disclosed
+          let leftSide        = keyStr.indexOf('(') > 0 && keyStr.toLowerCase().indexOf('ambiguous') > 0 ? keyStr.substring(0, keyStr.indexOf('(')) : undefined;
           let subKeys         = keyStr.substring(keyStr.indexOf('(')+1, keyStr.indexOf(')')).split(',');
+          if(leftSide !== undefined) {
+            derived_keys.push(leftSide);
+          }
           // left side of colon is from this entity's point of view
           // but if blank, must use right side as both sides not required
           subKeys.forEach((dKey) => {
