@@ -15,6 +15,15 @@
 
 .sz-graph-link-label {
   font-size: 10px;
+  paint-order: stroke;
+  stroke: #ffffff;
+  stroke-width: 4px;
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+  font-weight: 800;
+  fill: #565656;
+  letter-spacing: 2px;
+  line-height: 15px;
 }
 
 .sz-graph-bbox {
