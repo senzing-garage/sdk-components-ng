@@ -4,10 +4,10 @@ import { Graph, NodeInfo, LinkInfo } from './graph-types';
 import { Simulation } from 'd3-force';
 
 
-import { EntityGraphService, SzEntityNetworkResponse, SzEntityNetworkData, SzFeatureMode, SzRelatedEntity, SzEntityData, SzEntityIdentifier, SzEntityPath, SzEntityIdentifiers } from '@senzing/rest-api-client-ng';
+import { EntityGraphService, SzEntityNetworkResponse, SzEntityNetworkData, SzFeatureMode, SzRelatedEntity, SzEntityData, SzEntityIdentifier, SzEntityPath, SzEntityIdentifiers, SzDetailLevel } from '@senzing/rest-api-client-ng';
 import { map, tap, first, takeUntil, take, filter } from 'rxjs/operators';
 import { Subject, Observable, BehaviorSubject, of } from 'rxjs';
-import { parseSzIdentifier, parseBool } from '../../common/utils';
+import { parseSzIdentifier, parseBool, isValueTypeOfArray } from '../../common/utils';
 import { SzNetworkGraphInputs, SzGraphTooltipEntityModel, SzGraphTooltipLinkModel, SzGraphNodeFilterPair, SzEntityNetworkMatchKeyTokens } from '../../../lib/models/graph';
 import { SzSearchService } from '../../services/sz-search.service';
 
@@ -301,15 +301,25 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       // single number
       _changed = this._entityIds != [ value.toString() ];
       this._entityIds = [ value.toString() ];
+    } else if(value && isValueTypeOfArray(value)) {
+      // passed string[] or number[].
+      // we need to always convert to "string[]" or else the 
+      // result wont be what we expect
+      let _tempArr  = (value as unknown as string[]).map((val) => { return val.toString(); });
+      _changed      = this._entityIds != _tempArr;
+      this._entityIds = _tempArr;
+      //console.log(`entityIds = ${value}(any[]) | ${_changed}`, this._entityIds, value, (value as unknown as []));
     } else if(value) {
-      // the only other thing it could be is number[]
+      // unknown type of value
+      // I guess we just.... guess??
       _changed = this._entityIds != value.toString().split(',');
       this._entityIds = value.toString().split(',');
+      console.log(`entityIds = ${value}(number[])`, value, value.toString().split(','), ((value as unknown as string[]) && (value as unknown as string[]).map));
     }
     if(this.reloadOnIdChange && this._entityIds && this._entityIds.some( (eId) => { return _oldIds && _oldIds.indexOf(eId) < 0; })) {
       this.reload( this._entityIds.map((eId) => { return parseInt(eId); }) );
     }
-    // console.log('sdk-graph-components/sz-relationship-network.component: entityIds setter( '+_changed+' )', this._entityIds);
+    //console.log('sdk-graph-components/sz-relationship-network.component: entityIds setter( '+_changed+' )', this._entityIds);
   }
 
   /**
@@ -420,6 +430,10 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
    * return the raw data node in the payload
    */
   static readonly WITH_RAW: boolean = true;
+  /**
+   * do not return the raw data node in the payload
+   */
+  static readonly WITHOUT_RAW: boolean = false;
 
   /**
    * nulls out the browser right click menu
@@ -1252,6 +1266,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     if (this._entityIds === undefined || this._entityIds.length === 0) {
       console.warn("SzRelationshipNetworkComponent.ngAfterViewInit: No EntityIDs passed in to " + this);
       return;
+    } else {
+      console.warn(`SzRelationshipNetworkComponent.ngAfterViewInit: `,this._entityIds);
     }
 
     if(this._entityIds) {
@@ -1325,14 +1341,20 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       _parametersChanged = true;
     }
 
-    //console.log(`getNetwork(${entityIds},${maxDegrees},${buildOut},${maxEntities} | ${this.maxEntities}) | ${this._unlimitedMaxEntities}`, 
-    //_parametersChanged);
+    let _hasEntityIds = ((entityIds && entityIds.length > 0 && _parametersChanged) || 
+    (entityIds && entityIds.length > 0 && _noLastRequestParameters));
+
+    console.log(`getNetwork(${entityIds},${maxDegrees},${buildOut},${maxEntities} | ${this.maxEntities}) | ${this._unlimitedMaxEntities}`, 
+    _parametersChanged, _hasEntityIds, entityIds, entityIds.length,
+    (entityIds && entityIds.length > 0 && _parametersChanged),
+    (entityIds && entityIds.length > 0 && _noLastRequestParameters));
 
     this._lastPrimaryRequestParameters = _lastPrimaryRequestParameters;
     if(
-      this._entityIds && _parametersChanged || 
-      this._entityIds && _noLastRequestParameters) 
+      entityIds && entityIds.length > 0 && _parametersChanged || 
+      entityIds && entityIds.length > 0 && _noLastRequestParameters) 
     {
+
       this._requestStarted.next(true);
       this._dataRequested.next(true);
       return this.graphService.findEntityNetwork(
@@ -1341,12 +1363,13 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         maxDegrees,
         buildOut,
         maxEntities,
+        SzDetailLevel.BRIEF,
         SzFeatureMode.NONE,
         false,
         false,
         false, 
-        false) ;
-    } else if(!this._entityIds) {
+        SzRelationshipNetworkComponent.WITHOUT_RAW) ;
+    } else if(!(entityIds && entityIds.length > 0) || !entityIds) {
       throw new Error('entity ids are required to make "findEntityNetwork" call.');
     } else {
       console.log('getNetwork() no refresh');
@@ -1365,11 +1388,12 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       1,
       0,
       100,
+      SzDetailLevel.BRIEF,
       SzFeatureMode.NONE,
       false,
       false,
       false,
-      SzRelationshipNetworkComponent.WITH_RAW) ;
+      SzRelationshipNetworkComponent.WITHOUT_RAW) ;
   }
 
   /** zoom in to the graph relative to current position */

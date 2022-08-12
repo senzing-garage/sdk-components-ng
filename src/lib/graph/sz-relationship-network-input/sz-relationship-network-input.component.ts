@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { SzRelationshipNetworkComponent } from '../sz-relationship-network/sz-relationship-network.component';
-import { EntityGraphService } from '@senzing/rest-api-client-ng';
+import { EntityGraphService, SzDetailLevel } from '@senzing/rest-api-client-ng';
 import { SzNetworkGraphInputs } from '../../models/graph';
 
 @Component({
@@ -58,11 +58,12 @@ export class SzRelationshipNetworkInputComponent implements OnInit {
       this.networkMaxDegrees,
       this.networkBuildout,
       this.maxEntities,
+      SzDetailLevel.BRIEF,
       undefined,
       undefined,
       undefined,
       undefined,
-      SzRelationshipNetworkComponent.WITH_RAW)
+      SzRelationshipNetworkComponent.WITHOUT_RAW)
       .subscribe(this.emitResult.bind(this));
   }
 

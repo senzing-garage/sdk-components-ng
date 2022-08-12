@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, HostBinding, Input, OnInit, ViewChild } from '@angular/core';
 import { Simulation } from 'd3-force';
 import { Graph, LinkInfo, NodeInfo } from '../sz-relationship-network/graph-types';
-import { EntityGraphService } from '@senzing/rest-api-client-ng';
+import { EntityGraphService, SzDetailLevel } from '@senzing/rest-api-client-ng';
 import { map } from 'rxjs/operators';
 import * as d3 from 'd3';
 import { Subject } from 'rxjs';
@@ -142,6 +142,7 @@ export class SzRelationshipPathComponent implements OnInit, AfterViewInit {
   @Input() set maxDegrees(value: string) { this._maxDegrees = +value; }
 
   static readonly WITH_RAW: boolean = true;
+  static readonly WITHOUT_RAW: boolean = true;
 
   private _showLinkLabels: any = false;
   @Input() public set showLinkLabels(value: boolean) { this._showLinkLabels = value; }
@@ -209,11 +210,12 @@ export class SzRelationshipPathComponent implements OnInit, AfterViewInit {
       undefined,
       true,
       undefined,
+      SzDetailLevel.MINIMAL,
       undefined,
       undefined,
       undefined,
       undefined,
-      SzRelationshipPathComponent.WITH_RAW );
+      SzRelationshipPathComponent.WITHOUT_RAW );
   }
 
   addSvg(graph: Graph, parentSelection = d3.select("body")) {
