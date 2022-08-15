@@ -1,5 +1,5 @@
 
-  <div id="kl-chart-container" class="chart-container">
+  <div class="chart-container">
     <div id="tooltip-container" #tooltipContainer class="tooltip-container">
       <div #tooltip id="tooltip"
       [style.top]="toolTipPosTop+'px'"
@@ -14,6 +14,10 @@
     [attr.preserveAspectRatio]="this.svgPreserveAspectRatio"
     (contextmenu)="onRightClick($event)"
     ><g #zoomEle></g></svg>
+  </div>
+  <div>
+    expandByDefaultWhenLessThan: {{ expandByDefaultWhenLessThan }}<br/>
+    _ignoreFilters: {{ignoreFilters}}
   </div>
 
   <div id="moreParent">
