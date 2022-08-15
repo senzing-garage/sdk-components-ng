@@ -23,6 +23,6 @@
     "@angular/common": "~13.3.0",
     "@angular/core": "~13.3.0",
     "@angular/material": "~13.3.0",
-    "@senzing/rest-api-client-ng": "^4.0.0"
+    "@senzing/rest-api-client-ng": "^5.0.0"
   }
 }
