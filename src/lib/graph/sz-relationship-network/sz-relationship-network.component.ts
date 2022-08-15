@@ -314,7 +314,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       // I guess we just.... guess??
       _changed = this._entityIds != value.toString().split(',');
       this._entityIds = value.toString().split(',');
-      console.log(`entityIds = ${value}(number[])`, value, value.toString().split(','), ((value as unknown as string[]) && (value as unknown as string[]).map));
+      //console.log(`entityIds = ${value}(number[])`, value, value.toString().split(','), ((value as unknown as string[]) && (value as unknown as string[]).map));
     }
     if(this.reloadOnIdChange && this._entityIds && this._entityIds.some( (eId) => { return _oldIds && _oldIds.indexOf(eId) < 0; })) {
       this.reload( this._entityIds.map((eId) => { return parseInt(eId); }) );
@@ -1266,8 +1266,6 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     if (this._entityIds === undefined || this._entityIds.length === 0) {
       console.warn("SzRelationshipNetworkComponent.ngAfterViewInit: No EntityIDs passed in to " + this);
       return;
-    } else {
-      console.warn(`SzRelationshipNetworkComponent.ngAfterViewInit: `,this._entityIds);
     }
 
     if(this._entityIds) {
@@ -1344,10 +1342,10 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     let _hasEntityIds = ((entityIds && entityIds.length > 0 && _parametersChanged) || 
     (entityIds && entityIds.length > 0 && _noLastRequestParameters));
 
-    console.log(`getNetwork(${entityIds},${maxDegrees},${buildOut},${maxEntities} | ${this.maxEntities}) | ${this._unlimitedMaxEntities}`, 
+    /*console.log(`getNetwork(${entityIds},${maxDegrees},${buildOut},${maxEntities} | ${this.maxEntities}) | ${this._unlimitedMaxEntities}`, 
     _parametersChanged, _hasEntityIds, entityIds, entityIds.length,
     (entityIds && entityIds.length > 0 && _parametersChanged),
-    (entityIds && entityIds.length > 0 && _noLastRequestParameters));
+    (entityIds && entityIds.length > 0 && _noLastRequestParameters));*/
 
     this._lastPrimaryRequestParameters = _lastPrimaryRequestParameters;
     if(
