@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { EntityGraphService } from '@senzing/rest-api-client-ng';
+import { EntityGraphService, SzDetailLevel } from '@senzing/rest-api-client-ng';
 import { SzNetworkGraphInputs } from '../../models/graph';
 
 @Component({
@@ -66,6 +66,7 @@ export class SzRelationshipNetworkLookupComponent implements OnInit {
   @Input() set maxEntities(value: string) { this._maxEntities = +value; }
 
   static readonly WITH_RAW: boolean = true;
+  static readonly WITHOUT_RAW: boolean = true;
 
   constructor(private graphService: EntityGraphService) {
   }
@@ -82,11 +83,12 @@ export class SzRelationshipNetworkLookupComponent implements OnInit {
         this._maxDegrees,
         this._buildOut,
         this._maxEntities,
+        SzDetailLevel.BRIEF,
         undefined,
         undefined,
         undefined,
         undefined,
-        SzRelationshipNetworkLookupComponent.WITH_RAW )
+        SzRelationshipNetworkLookupComponent.WITHOUT_RAW )
         .subscribe(this.emitResult.bind(this));
     } else {
       return false;

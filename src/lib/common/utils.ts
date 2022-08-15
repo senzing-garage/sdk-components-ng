@@ -119,3 +119,14 @@ export function sortMatchKeyTokensByIndex(value: SzMatchKeyTokenComposite[]): Sz
   }
   return retVal;
 }
+
+export function isValueTypeOfArray(value: any) {
+  let retVal = false;
+  if(value) {
+    let valueAsArray = (value as unknown);
+    if(valueAsArray && (valueAsArray as []).map && (valueAsArray as []).every) {
+      retVal = (valueAsArray as []).every(() => { return true; });
+    }
+  }
+  return retVal;
+}
