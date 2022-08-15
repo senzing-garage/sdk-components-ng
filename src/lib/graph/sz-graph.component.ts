@@ -113,6 +113,21 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   get maxEntities(): number {
     return this._maxEntities;
   }
+  /** */
+  private _expandByDefaultWhenLessThan = 50;
+  /** when the result of a graph query contains less than this number all initial
+   * entities are displayed
+   */
+  @Input() public set expandByDefaultWhenLessThan(value: number | string) {
+    this._expandByDefaultWhenLessThan = parseInt(value as string)
+  }
+  /** when the result of a graph query contains less than this number all initial
+   * entities are displayed
+   */
+  public get expandByDefaultWhenLessThan(): number {
+    return this._expandByDefaultWhenLessThan;
+  }
+
   /** @internal */
   private _maxEntitiesFilterLimit = 200;
   /** maximum value selectable in the graph filter component */

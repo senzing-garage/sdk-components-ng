@@ -11,9 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Modified
 - Match keys on graph entity link(s) are now in a vertically centered multi-line list.
 - Bugfix for match key labels. (see #383)
-- Entity detail embedded graph now defaults to collapsed nodes when relationships are `< 10`
+- Entity detail embedded graph now defaults to collapsed nodes when relationships are `<= 10`
 
-relevant tickets: #309 #383
+relevant tickets: #309 #364 #383
 
 
 ## [5.1.0] - 2022-07-27

@@ -403,6 +403,34 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   public get zoomEnabled(): boolean { 
     return this._zoomEnabled !== undefined; 
   }
+  /** @internal */
+  private _expandByDefaultWhenLessThan: number;
+  /** when this value is set, if the initial amount of relationships is 
+   * less than this number than all items are unhidden by default
+   */
+  @Input() public set expandByDefaultWhenLessThan(value: number) {
+    this._expandByDefaultWhenLessThan = value;
+  }
+  /** when this value is set, if the initial amount of relationships is 
+   * less than this number than all items are unhidden by default
+   */
+  public get expandByDefaultWhenLessThan(): number {
+    return this._expandByDefaultWhenLessThan;
+  }
+  /** @internal */
+  private _ignoreFilters: boolean;
+  /** if this value is set then we ignore all entity filtering regardless 
+   * of whether or not the entity meets the condition
+   */
+  @Input() public set ignoreFilters(value: boolean) {
+    this._ignoreFilters = value;
+  }
+  /** if this value is set then we ignore all entity filtering regardless 
+   * of whether or not the entity meets the condition
+   */
+  public get ignoreFilters(): boolean {
+    return this._ignoreFilters;
+  }
 
   /** maximum zoom amount @internal */
   private _scaleMax = 3;
@@ -512,7 +540,12 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     const _excludedIds: number[] = [];
     const _includedIds: number[] = [];
 
-    if (fnPair && fnPair.selectorFn) {
+    if(this._ignoreFilters && this.node && this.node.each) {
+      // if "ignore filters" is set we just include everything
+      this.node.each((element, ind) => {
+        _includedIds.push( element.entityId );
+      });
+    } else if (fnPair && fnPair.selectorFn) {
       if( this.node && this.node.each) {
         // D3
         
@@ -582,23 +615,10 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   private _applyFilterFn(fnPairArray: SzGraphNodeFilterPair[]) {
     const _excludedIds: number[] = [];
     if (fnPairArray && fnPairArray.length >= 0) {
-      if(this.chart && this.chart.filter) {
-        // --- start keylines filter
-        fnPairArray.forEach( (pairFn, _index) => {
-          // keylines filter actually does the filtering
-          // no need to change opacity etc
-          /** selectorFn functions look like:
-           * function myFilter(item) {
-           *   return (item.d.dataSources.indexOf('DATASOURCE 1') > -1);
-           * }
-           */
-          this.chart.filter(pairFn.selectorFn, { type: 'node' });
-        });
-        // --- end keylines filter
-      } else if( this.node && this.node.filter) {
+      if( this.node && this.node.filter) {
         // --- start D3 filter
         fnPairArray.forEach( (pairFn) => {
-          if(this.node) {
+          if(this.node && !this._ignoreFilters) {
             const _filtered = this.node.filter( pairFn.selectorFn );
             // create array of filtered entityIds to compare source/target links to
             _filtered.each( (fNode) => {
@@ -743,6 +763,11 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     const oldValueAsJSON = JSON.stringify(this._filterFn);
     this._filterFn = fn as SzGraphNodeFilterPair[];
     if(oldValueAsJSON != JSON.stringify(this._filterFn)) {
+      if(this._expandByDefaultWhenLessThan !== undefined && this._ignoreFilters) {
+        // reset the "_ignoreFilters" parameter because it was initially set by
+        // the "_expandByDefaultWhenLessThan" condition being met
+        this._ignoreFilters = false;
+      }
       //console.warn('SzRelationshipNetworkComponent.filter = ', JSON.stringify(this._filterFn));
       this._applyFilterFn(this._filterFn);
     }
@@ -762,6 +787,11 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     const oldValueAsJSON = JSON.stringify(this._includesFn);
     this._includesFn = fn as SzGraphNodeFilterPair;
     if(oldValueAsJSON != JSON.stringify(this._includesFn)) {
+      if(this._expandByDefaultWhenLessThan !== undefined && this._ignoreFilters) {
+        // reset the "_ignoreFilters" parameter because it was initially set by
+        // the "_expandByDefaultWhenLessThan" condition being met
+        this._ignoreFilters = false;
+      }
       //console.warn('SzRelationshipNetworkComponent.includes = ', JSON.stringify(this._includesFn));
       this._applyIncludesFn(this._includesFn);
     }
@@ -1281,9 +1311,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           if(gdata && gdata.data && gdata.data.entities && gdata.data.entities.length == 0) {
             this._requestNoResults.next(true);
           }
+          let totalEntities = 0;
           if(gdata && gdata.data) {
-            //onTotalDirectRelationshipsCountUpdated
-            let totalEntities = 0;
             let entitiesById = new Set();
             (gdata.data as SzEntityNetworkData).entities.forEach((_rEntData: SzEntityData) => {
               // for each entity 
@@ -1297,6 +1326,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
             });
             totalEntities = entitiesById.size;
             this.onTotalRelationshipsCountUpdated.emit(totalEntities);
+          }
+          if(this._expandByDefaultWhenLessThan > 0 && totalEntities > 0 && totalEntities <= this._expandByDefaultWhenLessThan) {
+            this._ignoreFilters = true;
           }
           this._dataLoaded.next(gdata);
           this._requestComplete.next(true);

@@ -63,6 +63,13 @@ export class SzEntityDetailGraphComponent extends SzGraphComponent {
   @HostBinding('class.open') get cssClssOpen() { return this.expanded; }
   @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; }
 
+  /** since we're embedding this graph inside another component 
+   * we will always ignore filters "UNLESS" the filter tray is shown
+   */
+  public get ignoreFilters(): boolean {
+    return this.showFiltersControl ? false : true;
+  }
+
   _inputs: SzNetworkGraphInputs;
 
   constructor(
