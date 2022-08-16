@@ -1384,7 +1384,11 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       entityIds && entityIds.length > 0 && _parametersChanged || 
       entityIds && entityIds.length > 0 && _noLastRequestParameters) 
     {
-
+      if(console.time){
+        try {
+          console.time('graph data')
+        }catch(err){}
+      }
       this._requestStarted.next(true);
       this._dataRequested.next(true);
       return this.graphService.findEntityNetwork(
@@ -1393,12 +1397,20 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         maxDegrees,
         buildOut,
         maxEntities,
-        SzDetailLevel.BRIEF,
+        SzDetailLevel.SUMMARY,
         SzFeatureMode.NONE,
         false,
         false,
         false, 
-        SzRelationshipNetworkComponent.WITHOUT_RAW) ;
+        SzRelationshipNetworkComponent.WITHOUT_RAW).pipe(
+          tap(() => {
+            if(console.time){
+              try {
+                console.timeEnd('graph data')
+              }catch(err){}
+            }
+          })
+        ) ;
     } else if(!(entityIds && entityIds.length > 0) || !entityIds) {
       throw new Error('entity ids are required to make "findEntityNetwork" call.');
     } else {
@@ -1412,18 +1424,31 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     if(_entityIds && _entityIds.push && relationSource){
       _entityIds.push(relationSource);
     }
+    if(console.time){
+      try {
+        console.time('graph expand')
+      }catch(err){}
+    }
     return this.graphService.findEntityNetwork(
       _entityIds,
       undefined,
       1,
       0,
       100,
-      SzDetailLevel.BRIEF,
+      SzDetailLevel.SUMMARY,
       SzFeatureMode.NONE,
       false,
       false,
       false,
-      SzRelationshipNetworkComponent.WITHOUT_RAW) ;
+      SzRelationshipNetworkComponent.WITHOUT_RAW).pipe(
+        tap(() => {
+          if(console.time){
+            try {
+              console.timeEnd('graph expand')
+            }catch(err){}
+          }
+        })
+      );
   }
 
   /** zoom in to the graph relative to current position */
