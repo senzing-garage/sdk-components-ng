@@ -98,7 +98,7 @@
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~1.7.0",
+    "karma-jasmine-html-reporter": "~2.0.0",
     "karma-summary-reporter": "~3.1.1",
     "ng-packagr": "^13.3.0",
     "ngx-webstorage-service": "^5.0.0",
