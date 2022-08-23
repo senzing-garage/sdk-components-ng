@@ -1,6 +1,6 @@
-//@use '@angular/material' as mat;
-@use '../../../node_modules/@angular/material' as mat;     /* works both with angular compiler and nodejs 'sass' this way. dont change */
-@import '../../../node_modules/@angular/material/theming'; /* works both with angular compiler and nodejs 'sass' this way. dont change */
+@use '@angular/material' as mat;
+//@use '../../../node_modules/@angular/material' as mat;     /* works both with angular compiler and nodejs 'sass' this way. dont change */
+@import '@angular/material/theming'; /* works both with angular compiler and nodejs 'sass' this way. dont change */
 @import "../scss/_variables";
 @import "../scss/_mixins";
 

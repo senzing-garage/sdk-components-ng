@@ -17,6 +17,10 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "paths": {
+      "@senzing/rest-client-ng": [
+        "dist/@senzing/rest-client-ng/rest-client-ng",
+        "dist/@senzing/rest-client-ng"
+      ],
       "@senzing/sdk-components-ng": [
         "dist/@senzing/sdk-components-ng/senzing-sdk-components-ng",
         "dist/@senzing/sdk-components-ng"
