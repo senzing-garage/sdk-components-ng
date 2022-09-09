@@ -4,13 +4,19 @@
   "lib": {
     "entryFile": "public-api.ts"
   },
-  "whitelistedNonPeerDependencies": [
+  "assets": [
+    "./lib/scss/*",
+    "./lib/scss/**/*"
+  ],
+  "allowedNonPeerDependencies": [
     "@senzing/rest-api-client-ng",
+    "@angular/material",
     "ngx-json-viewer",
     "d3",
     "jspdf",
     "html2canvas",
     "@types/d3",
-    "@types/jspdf"
+    "@types/jspdf",
+    "schematics-utilities"
   ]
 }
