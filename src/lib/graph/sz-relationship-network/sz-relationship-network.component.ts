@@ -4,9 +4,23 @@ import { Graph, NodeInfo, LinkInfo } from './graph-types';
 import { Simulation } from 'd3-force';
 
 
-import { EntityGraphService, SzEntityNetworkResponse, SzEntityNetworkData, SzFeatureMode, SzRelatedEntity, SzEntityData, SzEntityIdentifier, SzEntityPath, SzEntityIdentifiers, SzDetailLevel } from '@senzing/rest-api-client-ng';
+import { 
+  EntityGraphService, 
+  EntityDataService, 
+  SzEntityNetworkResponse, 
+  SzEntityNetworkData, 
+  SzRelationshipMode,
+  SzFeatureMode, 
+  SzRelatedEntity, 
+  SzEntityData, 
+  SzEntityIdentifier, 
+  SzEntityPath, 
+  SzEntityIdentifiers, 
+  SzDetailLevel,
+  SzEntityResponse
+} from '@senzing/rest-api-client-ng';
 import { map, tap, first, takeUntil, take, filter } from 'rxjs/operators';
-import { Subject, Observable, BehaviorSubject, of } from 'rxjs';
+import { Subject, Observable, BehaviorSubject, of, forkJoin } from 'rxjs';
 import { parseSzIdentifier, parseBool, isValueTypeOfArray } from '../../common/utils';
 import { SzNetworkGraphInputs, SzGraphTooltipEntityModel, SzGraphTooltipLinkModel, SzGraphNodeFilterPair, SzEntityNetworkMatchKeyTokens } from '../../../lib/models/graph';
 import { SzSearchService } from '../../services/sz-search.service';
@@ -1235,6 +1249,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   constructor(
     private graphService: EntityGraphService,
     private searchService: SzSearchService,
+    private entityDataService: EntityDataService
   ) {
     this.linkedByNodeIndexMap = {};
     /** set up eventing proxies */
@@ -1302,9 +1317,20 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       let _maxEntities  = this._unlimitedMaxEntities ? 40000 : this._maxEntities;
       let _maxBuildOut  = this._unlimitedMaxScope ? 10 : this._buildOut;
 
-      this.getNetwork(this._entityIds, this._maxDegrees, _maxBuildOut, _maxEntities).pipe(
+      /*this.getNetworkComposite(this._entityIds[0], this._maxDegrees, _maxBuildOut, _maxEntities).pipe(
+        takeUntil(this.unsubscribe$),
+        first()
+      ).subscribe((resp: any) => {
+        console.info('getNetworkComposite()', resp);
+      });*/
+
+      this.getNetworkComposite(this._entityIds[0], this._maxDegrees, _maxBuildOut, _maxEntities).pipe(
+      //this.getNetwork(this._entityIds, this._maxDegrees, _maxBuildOut, _maxEntities).pipe(
         takeUntil(this.unsubscribe$),
         first(),
+        tap( (resp: any) => {
+          console.info('getNetwork()', resp);
+        }),
         map( this.asGraphInputs.bind(this) ),
         tap( (gdata: SzNetworkGraphInputs) => {
           //console.warn('SzRelationshipNetworkGraph: g1 = ', gdata);
@@ -1348,6 +1374,120 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+  private mergeEntityResponseWithNetworkResponse(entityResp: SzEntityResponse, networkResp: SzEntityNetworkResponse): SzEntityNetworkResponse {
+    let entityData  = entityResp.data;
+    let networkData = networkResp.data;
+
+    let relatedEntitiesById = {};
+    if(entityData.relatedEntities && entityData.relatedEntities.forEach) {
+      // create a entityId to object map for network entities augmentation later
+      entityData.relatedEntities.forEach((relEntity: SzRelatedEntity) => {
+        if(relEntity) {
+          relatedEntitiesById[ relEntity.entityId ] = relEntity;
+        }
+      });
+    }
+    if(networkData && networkData.entities && networkData.entities.forEach) {
+      networkData.entities = networkData.entities.map((networkEntity: SzEntityData) => {
+        if(networkEntity.resolvedEntity && networkEntity.resolvedEntity.entityId === entityData.resolvedEntity.entityId){
+          // this is the primary entity
+          // SUPERSIZE IT!
+          networkEntity.resolvedEntity   = Object.assign(networkEntity.resolvedEntity, entityData.resolvedEntity);
+          networkEntity.relatedEntities  = entityData.relatedEntities;
+        }
+        if(relatedEntitiesById[ networkEntity.resolvedEntity.entityId ] !== undefined) {
+          networkEntity.resolvedEntity = Object.assign(networkEntity.resolvedEntity, relatedEntitiesById[ networkEntity.resolvedEntity.entityId ]);
+        }
+        return networkEntity;
+      })
+      // update original payload with modified values
+      networkResp.data = networkData;
+    }
+    return networkResp
+  }
+
+  private getNetworkComposite(entityId: SzEntityIdentifier, maxDegrees: number, buildOut: number, maxEntities: number) {
+    let returnSubject     = new Subject<SzEntityNetworkResponse>();
+    let returnObserveable = returnSubject.asObservable();
+    if(console.time){
+      try {
+        console.time('graph composite data')
+        console.time('graph entity data')
+        console.time('graph network data')
+
+      }catch(err){}
+    }
+    let entityRequest = this.entityDataService.getEntityByEntityId(
+      entityId as number,
+      SzDetailLevel.SUMMARY,
+      SzFeatureMode.NONE,
+      undefined,
+      undefined,
+      undefined, 
+      SzRelationshipMode.PARTIAL, 
+      false
+    ).pipe(
+      tap(() => {
+        if(console.time){
+          try {
+            console.timeEnd('graph entity data')
+          }catch(err){}
+        }
+      })
+    )
+    let networkRequest = this.graphService.findEntityNetwork(
+      [entityId],
+      undefined,
+      maxDegrees,
+      1,
+      maxEntities,
+      SzDetailLevel.SUMMARY,
+      SzFeatureMode.NONE,
+      false,
+      false,
+      'network', 
+      SzRelationshipNetworkComponent.WITHOUT_RAW
+    ).pipe(
+      tap(() => {
+        if(console.time){
+          try {
+            console.timeEnd('graph network data')
+          }catch(err){}
+        }
+      })
+    )
+
+    forkJoin([
+      entityRequest,
+      networkRequest
+    ]).subscribe((responses: (SzEntityResponse | SzEntityNetworkResponse)[]) => {
+      let entityResp    = responses[0] as SzEntityResponse;
+      let networkResp   = responses[1] as SzEntityNetworkResponse;
+      let modifiedResp  = this.mergeEntityResponseWithNetworkResponse(entityResp, networkResp);
+      console.info('getNetworkComposite: ', responses, modifiedResp);
+
+      if(console.time){
+        try {
+          console.timeEnd('graph composite data')
+        }catch(err){}
+      }
+      /*
+      mappedResp.data.entities.map((entityData: SzEntityData) => {
+        let retVal = entityData;
+        if(entityData.resolvedEntity && entityData.resolvedEntity.entityId === entityResp.data.resolvedEntity.entityId){
+          // this is the primary entity
+          // SUPERSIZE IT!
+          entityData.resolvedEntity   = entityResp.data.resolvedEntity;
+          entityData.relatedEntities  = entityResp.data.relatedEntities;
+        }
+        return retVal;
+      })*/
+      returnSubject.next(modifiedResp);
+    });
+    return returnObserveable
+  }
+
 
   /**
    * make graph network request using input parameters
@@ -1517,7 +1657,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       let _maxEntitiesLimit = this._unlimitedMaxEntities ? (this._maxEntitiesPreflightLimit !== undefined ? this._maxEntitiesPreflightLimit : 40000) : this.maxEntities;
       //console.warn('@senzing/sdk-components-ng/sz-relationship-network.reload(): ', this._entityIds, _maxEntitiesLimit, this._unlimitedMaxEntities);
 
-      this.getNetwork(this._entityIds, this._maxDegrees, this._buildOut, _maxEntities).pipe(
+      this.getNetworkComposite(this._entityIds[0], this._maxDegrees, this._buildOut, _maxEntities).pipe(
         takeUntil(this.unsubscribe$),
         first(),
         map( this.asGraphInputs.bind(this) ),
@@ -2628,6 +2768,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   }
 
   static nodeTooltipText(d: any) {
+    console.log('nodeTooltipText: ', d);
     let retVal = "<strong>Entity ID</strong>: " + d.entityId +
       "<br/><strong>Name</strong>: " + d.name;
     if(d.address && d.address !== null) {
@@ -3067,6 +3208,11 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     return returnValue
   }
 
+  /*
+  private mergeEntityResponseWithNetworkResponse(): SzEntityNetworkResponse {
+    SzEntityResponse | SzEntityNetworkResponse
+  }*/
+
   /**
    * primary data model shaper.
    */
@@ -3225,7 +3371,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         address: resolvedEntity.addressData && resolvedEntity.addressData.length > 0 ? resolvedEntity.addressData[0] : SzRelationshipNetworkComponent.firstOrNull(features, "ADDRESS"),
         areAllRelatedEntitiesOnDeck: false,
         coreRelationshipMatchKeyTokens: coreRelatedMatchKeyCategories,
-        dataSources: resolvedEntity.recordSummaries.map((ds) =>  ds.dataSource ),
+        dataSources: resolvedEntity.recordSummaries && resolvedEntity.recordSummaries.map ? resolvedEntity.recordSummaries.map((ds) =>  ds.dataSource ) : undefined,
         entityId: entityId,
         hasCollapsedRelationships: relatedToPrimaryEntityDirectly && (relatedEntities && relatedEntities.length > 0),
         hasCollapsibleRelationships: hasCollapsibleRelationships,
