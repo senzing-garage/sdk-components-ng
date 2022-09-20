@@ -37,6 +37,7 @@
       [includes]="entityMatchTokenFilter"
       [expandByDefaultWhenLessThan]="expandByDefaultWhenLessThan"
       [showLinkLabels]="_showMatchKeys"
+      [suppressL1InterLinks]="_suppressL1InterLinks"
       (contextMenuClick)="onRightClick($event)"
       (entityClick)="onEntityClick($event)"
       (relationshipClick)="onLinkClick($event)"
@@ -48,8 +49,7 @@
       (scaleChanged)="onGraphZoom($event)"
       [noMaxEntitiesLimit]="unlimitedMaxEntities"
       [noMaxScopeLimit]="unlimitedMaxScope"
-      [maxEntities]="maxEntities"></sz-relationship-network>
-  
+      [maxEntities]="maxEntities"></sz-relationship-network>  
     <sz-graph-control *ngIf="showMatchKeyControl" class="sz-graph-control"
       [showLinkLabels]="_showMatchKeys"
       (optionChanged)="onOptionChange($event)"
@@ -92,6 +92,10 @@
     </svg>
   </div>
   <!--
+    _showMatchKeys: {{ _showMatchKeys }}<br/>
+    _suppressL1InterLinks: {{ _suppressL1InterLinks }}<br/>
+
     filterControlPosition: "{{ filterControlPosition }}"<br/>
-    entityIds: {{ graphIds }} -->
+    entityIds: {{ graphIds }}
+  -->
 <!-- end graph container -->

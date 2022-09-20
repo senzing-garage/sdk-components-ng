@@ -39,6 +39,17 @@ export function parseSzIdentifier(value: any): number {
   return retVal;
 }
 
+/** check whether a value is boolean */
+export function isBoolean(value: any) {
+  let retVal = false;
+  if(typeof value === 'boolean') {
+    retVal = true;
+  } else if(typeof value === 'string' && (value as string).toLowerCase() && ((value as string).toLocaleLowerCase() === 'true' || (value as string).toLocaleLowerCase() === 'false')) {
+    retVal = true;
+  }
+  return retVal;
+}
+
 export function nonTextTrim(value: string): string {
   let retVal = value;
   return retVal;

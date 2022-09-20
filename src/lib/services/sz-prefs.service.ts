@@ -883,6 +883,8 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   private _unlimitedMaxEntities: boolean = true;
   /** @internal */
   private _unlimitedMaxScope: boolean = false;
+  /** @internal */
+  private _suppressL1InterLinks: boolean = true;
 
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
@@ -903,7 +905,8 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     'neverFilterQueriedEntityIds',
     'queriedEntitiesColor',
     'unlimitedMaxEntities',
-    'unlimitedMaxScope'
+    'unlimitedMaxScope',
+    'suppressL1InterLinks'
   ]
 
   // -------------- getters and setters
@@ -1058,6 +1061,17 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
    * build out to max */
   public set unlimitedMaxScope(value: boolean) {
     this._unlimitedMaxScope = value;
+    if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** whether or not to ignore the maxDegreesOfSeparation value and always get 
+   * build out to max */
+   public get suppressL1InterLinks(): boolean {
+    return this._suppressL1InterLinks;
+  }
+  /** whether or not to ignore the maxDegreesOfSeparation value and always get 
+   * build out to max */
+  public set suppressL1InterLinks(value: boolean) {
+    this._suppressL1InterLinks = value;
     if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
   }
 

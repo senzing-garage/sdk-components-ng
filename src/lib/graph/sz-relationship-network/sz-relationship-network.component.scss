@@ -7,6 +7,17 @@
       }
     }
   }
+  &.not-showing-inter-link-lines {
+    ::ng-deep svg.graph-chart {
+      .sz-graph-link {
+        stroke: #999;
+        &.not-primary {
+          opacity: .2;
+          stroke: rgb(98, 81, 112);
+        }
+      }
+    }
+  }
 }
 
 .sz-graph-node {

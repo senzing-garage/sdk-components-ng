@@ -4,21 +4,40 @@
   <form [formGroup]="slidersForm">
   <ul class="sliders-list">
     <li class="has-tooltip block-level-src no-text-selection">
-      <span class="tooltip">display match keys on relationship lines</span>
-      <label>
-        <!-- start graph match keys checkbox -->
-        <input type="checkbox"
-          id="sz-graph-toggle-match-keys" name="sz-graph-toggle-match-keys"
-          [checked]="showLinkLabels"
-          (change)="onCheckboxPrefToggle('showLinkLabels',$event)">
-        <!-- end graph match keys checkbox -->
-        Show Match Keys
+      <label class="checkbox-row">
+        <div class="checkbox-row">
+          <span class="has-tooltip">
+            Show Match Keys
+            <span class="tooltip tooptip-left">display match keys on relationship lines</span>
+          </span>
+          <span class="left-adjusted no-text"><mat-checkbox [checked]="showLinkLabels" (change)="onCheckboxPrefToggle('showLinkLabels',$event.checked)"></mat-checkbox></span>
+        </div>
       </label>
     </li>
-
-    <li>
-      <label style="display: block;">
-        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+    <!--<li class="has-tooltip block-level-src no-text-selection">
+      <span class="tooltip">do not show inter-related first level links</span>
+      <label>
+        <input type="checkbox"
+          id="sz-graph-toggle-l1-link" name="sz-graph-toggle-l1-links"
+          [checked]="suppressL1InterLinks"
+          (change)="onCheckboxPrefToggle('suppressL1InterLinks',$event)">
+        Suppress Indirect Links
+      </label>
+    </li>-->
+    <li class="has-tooltip block-level-src no-text-selection">
+      <label class="checkbox-row">
+        <div class="checkbox-row">
+          <span class="has-tooltip">
+            Suppress Indirect Links
+            <span class="tooltip tooptip-left">do not show inter-related first level links</span>
+          </span>
+          <span class="left-adjusted no-text"><mat-checkbox [checked]="suppressL1InterLinks" (change)="onCheckboxPrefToggle('suppressL1InterLinks',$event.checked)"></mat-checkbox></span>
+        </div>
+      </label>
+    </li>
+    <li class="has-tooltip block-level-src no-text-selection">
+      <label class="checkbox-row">
+        <div class="checkbox-row">
           <span class="has-tooltip">
             Scope
             <span class="tooltip tooptip-left">number of relationship hops away from focused entity</span>
@@ -26,7 +45,7 @@
           <span class="left-adjusted"><mat-checkbox [checked]="unlimitedMaxScope" (change)="onMaxUnlimitedChange('unlimitedMaxScope',$event.checked)">unlimited</mat-checkbox></span>
         </div>
       </label>
-      <label *ngIf="!unlimitedMaxScope" style="display: flex; flex-direction: row; justify-content: space-between; align-content: center; flex-wrap: nowrap; align-items: center;">
+      <label class="slider-row" *ngIf="!unlimitedMaxScope">
         <mat-slider style="width: 100%" min="1" [max]="buildOutMax" 
         [disabled]="unlimitedMaxScope" 
         [value]="buildOut"
@@ -37,9 +56,9 @@
         <span class="intVal">({{ buildOut }})</span>
       </label>
     </li>
-    <li *ngIf="showMaxEntities">
-      <label style="display: block;">
-        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+    <li class="has-tooltip block-level-src no-text-selection" *ngIf="showMaxEntities">
+      <label class="checkbox-row">
+        <div class="checkbox-row">
           <span class="has-tooltip">
             Max
             <span class="tooltip tooptip-left">hard limit on how many entities will be displayed</span>
@@ -47,7 +66,7 @@
           <span class="left-adjusted"><mat-checkbox [checked]="unlimitedMaxEntities" (change)="onMaxUnlimitedChange('unlimitedMaxEntities',$event.checked)">unlimited</mat-checkbox></span>
         </div>
       </label>
-      <label *ngIf="!unlimitedMaxEntities" style="display: flex; flex-direction: row; justify-content: space-between; align-content: center; flex-wrap: nowrap; align-items: center;">
+      <label class="slider-row" *ngIf="!unlimitedMaxEntities" style="display: flex; flex-direction: row; justify-content: space-between; align-content: center; flex-wrap: nowrap; align-items: center;">
         <mat-slider style="width: 100%" min="1" [max]="maxEntitiesLimit + 3" step="3" 
         [disabled]="unlimitedMaxEntities" 
         [value]="maxEntities"

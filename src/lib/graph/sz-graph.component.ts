@@ -89,6 +89,12 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     this._showMatchKeys = parseBool(value);
   };
   /** @internal */
+  public _suppressL1InterLinks = false;
+  /** sets the visibility of edge labels on the node links */
+  @Input() public set suppressL1InterLinks(value: boolean | string) {
+    this._suppressL1InterLinks = parseBool(value);
+  };
+  /** @internal */
   private _openInNewTab: boolean = false;
   /** whether or not to open entity clicks in new tab */
   @Input() public set openInNewTab(value: boolean) {
@@ -413,6 +419,13 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @HostBinding('class.not-showing-link-labels') public get hidingLinkLabels(): boolean {
     return !this._showMatchKeys;
   }
+  @HostBinding('class.showing-inter-link-lines') public get showingInterLinkLines(): boolean {
+    return !this._suppressL1InterLinks;
+  }
+  @HostBinding('class.not-showing-inter-link-lines') public get hidingInterLinkLines(): boolean {
+    return this._suppressL1InterLinks;
+  }
+  
 
   @ViewChild('graphContainer') graphContainerEle: ElementRef;
   @ViewChild(SzGraphControlComponent) graphControlComponent: SzGraphControlComponent;
@@ -709,10 +722,13 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   }
 
   public onOptionChange(event: {name: string, value: any}) {
-    //console.log('onOptionChange: ', event);
+    console.log('onOptionChange: ', event);
     switch(event.name) {
       case 'showLinkLabels':
         this.showMatchKeys = event.value;
+        break;
+      case 'suppressL1InterLinks':
+        this.suppressL1InterLinks = event.value;
         break;
     }
   }
@@ -913,6 +929,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     if(!prefs.unlimitedMaxScope) {
       this.buildOut                   = prefs.buildOut;
     }
+    this._suppressL1InterLinks         = prefs.suppressL1InterLinks;
     this.unlimitedMaxEntities         = prefs.unlimitedMaxEntities;
     this.unlimitedMaxScope            = prefs.unlimitedMaxScope;
     this.dataSourceColors             = prefs.dataSourceColors;

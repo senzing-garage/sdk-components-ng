@@ -175,6 +175,14 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   /** tooltip element, child element of container with absolute pos  */
   @ViewChild('tooltip') tooltip: ElementRef | undefined;
 
+  private _suppressL1InterLinks: boolean = false;
+  @Input() public set suppressL1InterLinks(value: boolean) {
+    this._suppressL1InterLinks = value;
+  }
+  public get suppressL1InterLinks(): boolean {
+    return this._suppressL1InterLinks;
+  }
+
   private _showLinkLabels: boolean = false;
   @Input() public set showLinkLabels(value: boolean) {
     this._showLinkLabels = value;
@@ -200,6 +208,12 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   }
   @HostBinding('class.not-showing-link-labels') public get hidingLinkLabels(): boolean {
     return !this._showLinkLabels;
+  }
+  @HostBinding('class.showing-inter-link-lines') public get showingInterLinkLines(): boolean {
+    return !this._suppressL1InterLinks;
+  }
+  @HostBinding('class.not-showing-inter-link-lines') public get hidingInterLinkLines(): boolean {
+    return this._suppressL1InterLinks;
   }
 
   @Input() public set loadedData(value: SzNetworkGraphInputs) {
@@ -1317,13 +1331,6 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       let _maxEntities  = this._unlimitedMaxEntities ? 40000 : this._maxEntities;
       let _maxBuildOut  = this._unlimitedMaxScope ? 10 : this._buildOut;
 
-      /*this.getNetworkComposite(this._entityIds[0], this._maxDegrees, _maxBuildOut, _maxEntities).pipe(
-        takeUntil(this.unsubscribe$),
-        first()
-      ).subscribe((resp: any) => {
-        console.info('getNetworkComposite()', resp);
-      });*/
-
       this.getNetworkComposite(this._entityIds[0], this._maxDegrees, _maxBuildOut, _maxEntities).pipe(
       //this.getNetwork(this._entityIds, this._maxDegrees, _maxBuildOut, _maxEntities).pipe(
         takeUntil(this.unsubscribe$),
@@ -1723,7 +1730,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     this.svgZoom  = d3.select( this.svgZoomElement );
     var hiddenNodes; // this has to be a var outside of fn's so they can hoist value
 
-    //console.log('@senzing/sdk-components-ng:sz-relationship-network.addSvg', gdata, graph);
+    console.log('@senzing/sdk-components-ng:sz-relationship-network.addSvg', gdata, graph);
 
     // ------------------------------------- start utility functions -------------------------------------
     let getNodeVisibilityClass = (_d) => {
@@ -2037,6 +2044,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       .attr('x', 0)
       .each(function(d, i) {
         let mkVertInc = 0;        
+        //console.log('[adding link label]', d, d.matchKeyTokensFlat);
         let mkNodes = d3.select(this).selectAll('g.sz-graph-link-label')
         .data(d.matchKeyTokensFlat)
         .enter();
@@ -3247,7 +3255,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         relatedToPrimaryEntities = relatedToPrimaryEntities.concat( entNode.relatedEntities.map((relEnt) => { return relEnt.entityId; }) );
       }
     });
-    //console.log('SzRelationshipNetworkGraph.asGraph: ', inputs, data, entitiesData, entityPaths, primaryEntityIds);
+    console.log('SzRelationshipNetworkGraph.asGraph: ', inputs, data, entitiesData, entityPaths, primaryEntityIds);
 
     // Identify queried nodes and the nodes and links that connect them.
     entityPaths.forEach( (entPath) => {
@@ -3273,13 +3281,20 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       });
     });
     // we have to aggregate match keys first so we have them all on next pass
+    //console.log('-------------------- start match key map routine --------------------');
     entitiesData.forEach(entNode => {
       let _resolvedEntId = entNode.resolvedEntity.entityId;
+      //console.log(`\t#${entNode.resolvedEntity.entityId} (${entNode.resolvedEntity.entityName})`,entNode);
+      if(entNode.resolvedEntity) {
+
+      }
       if(entNode.relatedEntities && entNode.relatedEntities.forEach){
         entNode.relatedEntities.forEach((_relatedEnt: SzRelatedEntity) => {
           let _relatedEntId = _relatedEnt.entityId;
           let _relatedMatchCategory = SzRelationshipNetworkComponent.tokenizeMatchKey(_relatedEnt.matchKey);
           let _relatedEntityIsPrimary = primaryEntities.indexOf(_relatedEntId) > -1 || primaryEntities.indexOf(_resolvedEntId) > -1;
+          //console.log(`\t\t${_relatedEntId}(${_relatedEnt.entityName}) match keys: ${_relatedEntityIsPrimary}`,_relatedMatchCategory);
+          /*
           if(_relatedEntityIsPrimary) {
             // this is a core relationship
             if(!matchKeyCoreCategoriesByEntityId[ _relatedEntId ] || matchKeyCoreCategoriesByEntityId[ _relatedEntId ] === undefined) {
@@ -3297,30 +3312,70 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
                 return self.indexOf(value) === index;
               });
             }
-          }
+          }*/
+          if(_relatedMatchCategory && _relatedMatchCategory.length == 2) {
+            //console.log(`\t\t\thas match key categories..`);
+            if(
+              (_relatedMatchCategory && _relatedMatchCategory[0] && _relatedMatchCategory[0].length > 0) || 
+              (_relatedMatchCategory && _relatedMatchCategory[1] && _relatedMatchCategory[1].length > 0)
+            ){
+              //console.log(`\t\t\thas match key categories..`);
+              // there are match key categories to add
+              // check for core match key relationships
+              if(_relatedEntityIsPrimary) {
+                //console.log(`\t\t\thas core relationship to primary entity..`);
+                if(!matchKeyCoreCategoriesByEntityId[ _relatedEntId ] || matchKeyCoreCategoriesByEntityId[ _relatedEntId ] === undefined) {
+                  matchKeyCoreCategoriesByEntityId[ _relatedEntId ] = [];
+                }
+                if(matchKeyCoreCategoriesByEntityId[ _relatedEntId ] && matchKeyCoreCategoriesByEntityId[ _relatedEntId ].concat) {
+                  let concatVals = [];
+                  _relatedMatchCategory.forEach((mkArr) => {
+                    concatVals = concatVals.concat(mkArr);
+                  });
+                  matchKeyCoreCategoriesByEntityId[ _relatedEntId ] = matchKeyCoreCategoriesByEntityId[ _relatedEntId ].concat(concatVals);
+                  // de-dupe values
+                  matchKeyCoreCategoriesByEntityId[ _relatedEntId ] = matchKeyCoreCategoriesByEntityId[ _relatedEntId ].filter((value, index, self) => {
+                    return self.indexOf(value) === index;
+                  });
+                }
+              }
 
-          if(!relatedMatchKeysByEntityId[ _relatedEntId ] || relatedMatchKeysByEntityId[ _relatedEntId ] === undefined) {
-            relatedMatchKeysByEntityId[ _relatedEntId ] = [];
+              // now add all tokens regardless
+              if(!matchKeyCategoriesByEntityId[ _relatedEntId ] || matchKeyCategoriesByEntityId[ _relatedEntId ] === undefined) {
+                matchKeyCategoriesByEntityId[ _relatedEntId ] = [];
+              }
+              if(matchKeyCategoriesByEntityId[ _relatedEntId ] && matchKeyCategoriesByEntityId[ _relatedEntId ].concat) {
+                matchKeyCategoriesByEntityId[ _relatedEntId ] = matchKeyCategoriesByEntityId[ _relatedEntId ].concat(_relatedMatchCategory[0]).concat(_relatedMatchCategory[1])
+                // de-dupe values
+                matchKeyCategoriesByEntityId[ _relatedEntId ] = matchKeyCategoriesByEntityId[ _relatedEntId ].filter((value, index, self) => {
+                  return self.indexOf(value) === index;
+                });
+                //relatedMatchKeysByEntityId[ _relatedEntId ].push( _relatedEnt.matchKey );
+              }
+            }
           }
-          if(relatedMatchKeysByEntityId[ _relatedEntId ] && relatedMatchKeysByEntityId[ _relatedEntId ].indexOf && relatedMatchKeysByEntityId[ _relatedEntId ].indexOf(_relatedEnt.matchKey) < 0) {
-            relatedMatchKeysByEntityId[ _relatedEntId ].push( _relatedEnt.matchKey );
-          } else if(relatedMatchKeysByEntityId[ _relatedEntId ] && !relatedMatchKeysByEntityId[ _relatedEntId ].indexOf) {
-            // not sure whats going on here
+          // IF related entity has a match key (not all do since issue #407 since we only fully populate off of focal/primary entity)
+          if(_relatedEnt.matchKey && _relatedEnt.matchKey !== undefined && _relatedEnt.matchKey !== null) {
+            if(!relatedMatchKeysByEntityId[ _relatedEntId ] || relatedMatchKeysByEntityId[ _relatedEntId ] === undefined) {
+              relatedMatchKeysByEntityId[ _relatedEntId ] = [];
+            }
+            if(relatedMatchKeysByEntityId[ _relatedEntId ] && relatedMatchKeysByEntityId[ _relatedEntId ].indexOf && relatedMatchKeysByEntityId[ _relatedEntId ].indexOf(_relatedEnt.matchKey) < 0) {
+              relatedMatchKeysByEntityId[ _relatedEntId ].push( _relatedEnt.matchKey );
+            } else if(relatedMatchKeysByEntityId[ _relatedEntId ] && !relatedMatchKeysByEntityId[ _relatedEntId ].indexOf) {
+              // not sure whats going on here
+            }
           }
-          if(!matchKeyCategoriesByEntityId[ _relatedEntId ] || matchKeyCategoriesByEntityId[ _relatedEntId ] === undefined) {
-            matchKeyCategoriesByEntityId[ _relatedEntId ] = [];
-          }
-          if(matchKeyCategoriesByEntityId[ _relatedEntId ] && matchKeyCategoriesByEntityId[ _relatedEntId ].concat) {
-            matchKeyCategoriesByEntityId[ _relatedEntId ] = matchKeyCategoriesByEntityId[ _relatedEntId ].concat(_relatedMatchCategory[0]).concat(_relatedMatchCategory[1])
-            // de-dupe values
-            matchKeyCategoriesByEntityId[ _relatedEntId ] = matchKeyCategoriesByEntityId[ _relatedEntId ].filter((value, index, self) => {
-              return self.indexOf(value) === index;
-            });
-            //relatedMatchKeysByEntityId[ _relatedEntId ].push( _relatedEnt.matchKey );
-          }
+          
         });
       }
     });
+    //console.log(`related Match Keys: `,relatedMatchKeysByEntityId);
+    //console.log(`related Match Key Categories: `,matchKeyCategoriesByEntityId);
+    //console.log(`related Core Categories: `,matchKeyCoreCategoriesByEntityId);
+
+    
+    //console.log('-------------------- end match key map routine --------------------');
+
 
     // Add a node for each resolved entity
     entitiesData.forEach(entNode => {
@@ -3431,9 +3486,27 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     const entityIndex   = [];
     const entitiesData  = data && data.nodes ? data.nodes : [];
 
-    //console.log('addLinksToNodeData: entities: ',entitiesData);
+    console.log('addLinksToNodeData: entities: ', entitiesData);
     if(entitiesData && entitiesData.forEach) {
       const matchKeyCategoriesByEntityId: {[key: number]: string[]} = {};
+      /*
+      const matchKeysByEntityId: {[key: number]: string}            = {};
+      const matchKeyTokensByEntityId: {[key: number]: string[]}     = {};
+
+      console.log('-------------------- start link routine --------------------');
+      // first we have to create maps for match keys by entity id
+      // otherwise we'll get goofy results on a single pass routine
+      entitiesData.forEach(entityInfo => {
+        const resolvedEntity    = entityInfo;
+        const entityId          = resolvedEntity.entityId;
+        const relatedMatchKeys  = [];
+        //matchLevel: relatedEntity.matchLevel,
+        //matchKey: relatedEntity.matchKey,
+        //matchKeyTokens: relatedMatchKeyCategories,
+        //matchKeyTokensFlat: _matchKeyTokensFlattened,
+        //relatedMatchKeyCategories: _relatedMatchCategory,
+      });*/
+
 
       entitiesData.forEach(entityInfo => {
         const resolvedEntity  = entityInfo;
@@ -3513,6 +3586,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           }
         });
       });
+      //console.log('-------------------- end link routine --------------------');
+
     }
     data.links = links
 
