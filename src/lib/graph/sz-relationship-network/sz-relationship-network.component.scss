@@ -9,9 +9,9 @@
   }
   &.not-showing-inter-link-lines {
     ::ng-deep svg.graph-chart {
-      .sz-graph-link {
-        stroke: #999;
-        &.not-primary {
+      .sz-graph-link, .sz-graph-link-label {
+        &.not-touching-focal {
+          display: none !important;
           opacity: .2;
           stroke: rgb(98, 81, 112);
         }

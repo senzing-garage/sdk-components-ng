@@ -349,6 +349,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     }
     //console.log('sdk-graph-components/sz-relationship-network.component: entityIds setter( '+_changed+' )', this._entityIds);
   }
+  public get entityIds(): SzEntityIdentifier | SzEntityIdentifier[] {
+    return this._entityIds;
+  }
 
   /**
    * amount of degrees of separation to populate the graph with
@@ -1778,7 +1781,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     }
     let attachEventListenersToNodes   = (_nodes, _tooltip, _labels?, _scope?: any) => {
       _scope  = _scope ? _scope : this;
-      // Make the tooltip visible when mousing over nodes.  Fade out distant nodes
+      // Make the tooltip visible when mousing over nodes. 
       if(_nodes && _nodes.on) {
         _nodes.on('mouseover.tooltip', function (d,j) {
           _tooltip.transition()
@@ -1788,13 +1791,11 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
             .style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY + 10) + "px");
         })
-        /*.on('mouseover.fade', this.fade(0.1).bind(_scope))*/
         .on("mouseout.tooltip", function () {
           _tooltip.transition()
             .duration(100)
             .style("opacity", 0);
         })
-        /*.on('mouseout.fade', this.fade(1).bind(_scope))*/
         .on("mousemove", function () {
           _tooltip.style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY + 10) + "px");
@@ -1805,10 +1806,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
 
         // drag n drop
         this.node
-          .call(d3.drag()             // TODO Update dragging code to use v5 conventions for event listening
-            //.on("start", this.onNodeDragStarted.bind(_scope))
+          .call(d3.drag()
             .on("drag", this.onNodeDragged.bind(_scope)));
-            //.on("end", this.onNodeDragEnded.bind(_scope)));
       }
       let _nodesWithCollapsibleRelationships = _nodes.filter(d => !d.allRelatedEntitiesOnDeck || d.hasCollapsibleRelationships || (d.hasRelatedEdges && d.numberRelated > 1));
       // bind click evt to expand bubble
@@ -1819,30 +1818,18 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       _nodes      //.filter(d => !d.allRelatedEntitiesOnDeck || d.hasCollapsedRelationships)
       .select(".sz-graph-icon-edge-glyph")
       .on("click", onExpandCollapseClick.bind(this));
-
-      //sz-graph-icon-edge-glyph sz-graph-icon-edge-glyph-collapsed
-
-      // allow user to toggle ellipsis
-      if(_labels && _labels.on) {
-        _labels.on('click', this.onLabelClick.bind(_scope));
-        _labels.on('mouseover', this.onLabelMouseOver.bind(_scope));
-        _labels.on('mouseout', this.onLabelMouseOut.bind(_scope));
-      }
     }
     let stopEventListenersForNodes    = (_nodes, _labels?) => {
       if(_nodes && _nodes.on) {
         _nodes.on('mouseover.tooltip', null)
-        .on('mouseover.fade', null)
         .on("mouseout.tooltip", null)
-        .on('mouseout.fade', null)
         .on("mousemove", null)
         .on('click', null)
         .on('dblclick', null)
         .on('contextmenu', null);
         // drag n drop
-        _nodes.on("start", null)
+        _nodes
         .on("drag", null)
-        .on("end", null);
       }
       if(_labels && _labels.on) {
         _labels.on('click', null);
@@ -1853,7 +1840,6 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     let attachEventListenersToLinks = (_links, _labels, _tooltip, _scope?: any) => {
       _scope  = _scope ? _scope : this;
       if(_links && _links.on) {
-        //_links.on('mouseover.fade', this.linkFade(0.1).bind(_scope))
         _links.on('mouseover.tooltip', function (d) {
           _tooltip.transition()
             .duration(300)
@@ -1867,7 +1853,6 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
             .duration(100)
             .style("opacity", 0);
         })
-        /*.on('mouseout.fade', this.linkFade(1).bind(_scope))*/
         .on("mousemove", function () {
           _tooltip.style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY + 10) + "px");
@@ -2135,14 +2120,27 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
             .attr("y", 25)
             .attr("class", (d) => {
               let retVal = ["sz-graph-label"];
-              if(d && d.name && d.name.length > (this._labelMaxLength + 3)) {
-                retVal.push('truncated');
-              }
               return retVal.join(' ');
-            })
-            .text(d => {
-              return d && d.name && d.name.length > (this._labelMaxLength + 3) ? d.name.substring(0, this._labelMaxLength).trim() + "..." : d.name;
             });
+            let _newLabelBaseY = 25;
+            let _nameLabelLineHeight = 12;
+            _newLabels
+            .each(function(d, i) {
+              let mkNodes = d3.select(this).selectAll('g.sz-graph-label')
+              .data(d.nameAsLines)
+              .enter();
+
+              let _newLabelsText = mkNodes.append('tspan')
+              .attr('x', 0)
+              .text((labelLine) => {
+                return labelLine as string;
+              });
+              _newLabelsText.attr('y', function(nameLabelLine, llInc){
+                let retVal = _newLabelBaseY + (llInc * _nameLabelLineHeight);
+                return retVal;
+              });
+            });
+
             let _nodeLabelBBoxAry: any[] = [];
             if(_newLabels) {
               _newLabels.each(function (d, i) {
@@ -2439,9 +2437,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
             return (typeof _nl.source === 'number' || typeof _nl.target === 'number')
           }).forEach( this.registerLink.bind(this) );
 
-          // Make the tooltip visible when mousing over nodes.  Fade out distant nodes
+          // Make the tooltip visible when mousing over nodes.
           attachEventListenersToNodes(this.node, this._tooltip, this.nodeLabel, this);
-          // Make the tooltip visible when mousing over links.  Fade out distant nodes
+          // Make the tooltip visible when mousing over links.
           attachEventListenersToLinks(this.link, this.linkLabel, this._tooltip, this);
 
           // just the nodes that were added
@@ -2553,9 +2551,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       }
     }
 
-    // Make the tooltip visible when mousing over nodes.  Fade out distant nodes
+    // Make the tooltip visible when mousing over nodes.
     attachEventListenersToNodes(this.node, this._tooltip, this.nodeLabel, this);
-    // Make the tooltip visible when mousing over links.  Fade out distant nodes
+    // Make the tooltip visible when mousing over links.
     attachEventListenersToLinks(this.link, this.linkLabel, this._tooltip, this);
 
     // publish out event
@@ -2615,11 +2613,10 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     let _visibilityClass      = _ln.isHidden ? ['sz-node-state-hidden']  : [];
     let _classes              = [].
                                 concat(_visibilityClass);
-    //if(_ln.isCoreLink) {
-    //  _classes.push('sz-graph-core-link')
-    //} else {
-      _classes.push('sz-graph-link');
-    //}
+    _classes.push('sz-graph-link');
+    if(_ln && !_ln.touchesFocalEntity) {
+      _classes.push('not-touching-focal');
+    }
     return _classes.join(' ');
   }
   /**
@@ -2695,6 +2692,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     let _visibilityClass      = _ln.isHidden ? ['sz-node-state-hidden']  : [];
     let _classes              = ['sz-graph-link-label'].
                                 concat(_visibilityClass);
+    if(_ln && !_ln.touchesFocalEntity) {
+      _classes.push('not-touching-focal');
+    }
     return _classes.join(' ');
   }
   /** toggle a nodes directly attached related nodes */
@@ -2776,7 +2776,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   }
 
   static nodeTooltipText(d: any) {
-    console.log('nodeTooltipText: ', d);
+    //console.log('nodeTooltipText: ', d);
     let retVal = "<strong>Entity ID</strong>: " + d.entityId +
       "<br/><strong>Name</strong>: " + d.name;
     if(d.address && d.address !== null) {
@@ -2940,50 +2940,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       _d.ellipsisExpanded = !_d.ellipsisExpanded;
     }
   }
-  /**
-   * handler for when a entity nodes text label is hovered over.
-   * default behavior is to expand the text label if it has been
-   * truncated.
-   */
-   onLabelMouseOver(_d) {
-    if(_d) {
-      let textNode = this.node.selectAll('text.sz-graph-label')
-      .filter((_t: any) => {
-        return _t && _t.entityId && _t.entityId === _d.entityId;
-      });
 
-      if(textNode.size && textNode.size() >= 1) {
-        // expand ellipsis
-        textNode
-        .text((_t: any) => {
-          return _t.name;
-        });
-      }
-    }
-  }
-  /**
-   * handler for when a entity nodes text label is hovered over.
-   * default behavior is to truncate the text label if it has been
-   * truncated and not set to expanded through a click toggle.
-   */
-   onLabelMouseOut(_d) {
-    if(_d) {
-      let textNode = this.node.selectAll('text.sz-graph-label')
-      .filter((_t: any) => {
-        return _t && _t.entityId && _t.entityId === _d.entityId && !_d.ellipsisExpanded;
-      });
-
-      if(textNode.size && textNode.size() >= 1) {
-        // collapse ellipsis
-        textNode
-        .text((_t: any) => {
-          return _t && _t.name && _t.name.length > (this._labelMaxLength + 3) ? _t.name.substring(0, this._labelMaxLength).trim() + "..." : _t.name;
-        });
-      }
-    }
-  }
-
-  //private _zoomTransform = {k: 1, x: 0, y: 0}
   private _onZoomed() {
     let e = d3.event.transform;
     let scale = e.k;
@@ -3010,52 +2967,6 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       this._onZoom.next(this._scalePerc);
     }
   }
-
-  /**
-   * function that is executed on node hover
-   * @param opacity
-   */
-  /*fade(opacity: any) {
-    const isConnectedLocal = this.isConnected.bind(this);
-    return (d: any) => {
-      if(this.node){ 
-        this.node.transition().duration(100).style('opacity', function (o) {
-          const thisOpacity = isConnectedLocal(d, o) ? 1 : opacity;
-          //this.setAttribute('fill-opacity', thisOpacity);
-          return thisOpacity;
-        });
-      }
-      if(this.link) {
-        this.link.transition().duration(100).style('opacity', o => (o.source === d || o.target === d ? 1 : opacity));
-      }      
-      if (this.showLinkLabels && this.linkLabel) {
-        this.linkLabel.transition().duration(100).style('opacity', o => (o.source === d || o.target === d ? 1 : opacity));
-      }
-    };
-  }*/
-  /**
-   * Fade Rules for hovering over links
-   * As currently implemented, any nodes that are connected to both source and target are not faded out.
-   */
-  /*linkFade(opacity: any) {
-    const isConnectedLocal = this.isConnected.bind(this);
-    return (d: any) => {
-      if(this.node){
-        this.node.transition().duration(100).style('opacity', function (o) {
-          const thisOpacity = isConnectedLocal(d.source, o) &&
-                              isConnectedLocal(d.target, o) ? 1 : opacity;
-          //this.setAttribute('fill-opacity', thisOpacity);
-          return thisOpacity;
-        });
-      }
-      if(this.link) {
-        this.link.transition().duration(100).style('opacity', o => (o.source === d.source && o.target === d.target ? 1 : opacity));
-      }
-      if (this.showLinkLabels && this.linkLabel) {
-        this.linkLabel.transition().duration(100).style('opacity', opacity);
-      }
-    };
-  }*/
 
   /**
    * Generate SVG commands for a straight line between two nodes, always left-to-right.
@@ -3385,6 +3296,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       const relatedEntRels  = entNode.relatedEntities && entNode.relatedEntities.filter ? entNode.relatedEntities.filter( (relEnt) => {
         return primaryEntities ? primaryEntities.indexOf(relEnt.entityId) >= 0 : false;
       } ) : undefined;
+      const entityNameLines = this.getNameAsLinesArray(resolvedEntity && resolvedEntity.entityName ? resolvedEntity.entityName : undefined, 10);
+
       let isPrimaryEntity                 = primaryEntityIds.includes( (entityId as unknown as string)+"")
       let relatedMatchKeys                = relatedMatchKeysByEntityId[ resolvedEntity.entityId ]   ? relatedMatchKeysByEntityId[ resolvedEntity.entityId ]     : [];
       let relatedMatchKeyCategories       = matchKeyCategoriesByEntityId[ resolvedEntity.entityId ] ? matchKeyCategoriesByEntityId[ resolvedEntity.entityId ]   : [];
@@ -3418,7 +3331,6 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       }
 
       // entitities who use this entity as it's source
-
       // Create Node
       entityIndex.push(entityId);
       const features = resolvedEntity.features;
@@ -3439,6 +3351,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         isRemovable: (!coreEntityIds.includes(entityId) && !primaryEntityIds.includes( (entityId as unknown as string)+"") && !queriedEntityIds.includes(entityId)),
         isQueriedNode: queriedEntityIds.includes(entityId),
         name: resolvedEntity.entityName,
+        nameAsLines: entityNameLines,
         nodesVisibleBeforeExpand: [],
         numberRelated: relatedEntities ? relatedEntities.length : 0,
         numberRelatedOnDeck: 0,
@@ -3465,6 +3378,36 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     };
   }
 
+  /** takes a entityName and returns an array of lines of text so the name can be
+   * word wrapped on render
+   * @internal
+   */
+  private getNameAsLinesArray(name: string | undefined, maxCharsPerLine: number): string[] {
+    let _lineCharCount    = 0;
+    let _lineCurrent      = '';
+    let name_lines        = (name && name.length > maxCharsPerLine) ? [] : [name];
+    let name_words        = name && name.split ? name.split(' ') : []; 
+
+    if(name_words && name_words.forEach) {
+      //console.log(`getting lines for ${name}: `, name_words);
+      name_words.forEach((nW, inc) => {
+        _lineCharCount  = _lineCharCount + nW.length;
+        _lineCurrent    = _lineCurrent +(_lineCurrent !== '' ? ' ': '')+nW;
+        console.log(`\t\t${nW}`,nW.length);
+        if(_lineCharCount >= maxCharsPerLine) {
+          name_lines.push(_lineCurrent);
+          _lineCurrent    = '';
+          _lineCharCount  = 0;
+        } else if(inc === (name_words.length -1)) {
+          // this is the last word
+          name_lines.push(_lineCurrent);
+        }
+      });
+      //console.log('\t', name_lines);
+    }
+    return name_lines
+  }
+
   addExistingNodeData(newData: {nodes: any[], links?: any[]}): {nodes: any[], links?: any[]} {
     if(this.node && this.node.data) {
       let existingData = this.node.data();
@@ -3486,27 +3429,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     const entityIndex   = [];
     const entitiesData  = data && data.nodes ? data.nodes : [];
 
-    console.log('addLinksToNodeData: entities: ', entitiesData);
+    //console.log('addLinksToNodeData: entities: ', entitiesData, this);
     if(entitiesData && entitiesData.forEach) {
       const matchKeyCategoriesByEntityId: {[key: number]: string[]} = {};
-      /*
-      const matchKeysByEntityId: {[key: number]: string}            = {};
-      const matchKeyTokensByEntityId: {[key: number]: string[]}     = {};
-
-      console.log('-------------------- start link routine --------------------');
-      // first we have to create maps for match keys by entity id
-      // otherwise we'll get goofy results on a single pass routine
-      entitiesData.forEach(entityInfo => {
-        const resolvedEntity    = entityInfo;
-        const entityId          = resolvedEntity.entityId;
-        const relatedMatchKeys  = [];
-        //matchLevel: relatedEntity.matchLevel,
-        //matchKey: relatedEntity.matchKey,
-        //matchKeyTokens: relatedMatchKeyCategories,
-        //matchKeyTokensFlat: _matchKeyTokensFlattened,
-        //relatedMatchKeyCategories: _relatedMatchCategory,
-      });*/
-
 
       entitiesData.forEach(entityInfo => {
         const resolvedEntity  = entityInfo;
@@ -3518,6 +3443,13 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           const relatedEntityId = relatedEntity.entityId;
           const linkArr = [entityId, relatedEntityId].sort();
           const linkKey = {firstId: linkArr[0], secondId: linkArr[1]};
+          let isRelatedToFocalEntity = false;
+          if(this.entityIds && (this.entityIds as SzEntityIdentifier[]).some) {
+            isRelatedToFocalEntity = (this.entityIds as SzEntityIdentifier[]).some((primaryEnt: SzEntityIdentifier) => { return (parseSzIdentifier(primaryEnt) === parseSzIdentifier(entityInfo.entityId) || parseSzIdentifier(primaryEnt) === parseSzIdentifier(relatedEntity.entityId));} ) ? true : false;
+          } else if(this.entityIds){
+            // single entity
+            isRelatedToFocalEntity = ((this.entityIds as SzEntityIdentifier) === entityInfo.entityId || (this.entityIds as SzEntityIdentifier) === relatedEntity.entityId) ? true : false;
+          }
           let _relatedMatchCategory = SzRelationshipNetworkComponent.tokenizeMatchKey(relatedEntity.matchKey);
           // match key tokens grouped by 'DERIVED' and 'DISCLOSED'
           let relatedMatchKeyCategories                 = _relatedMatchCategory;
@@ -3560,6 +3492,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
               target: entityIndex.indexOf(relatedEntityId),
               sourceEntityId: entityId,
               targetEntityId: relatedEntityId,
+              touchesFocalEntity: isRelatedToFocalEntity,
               matchLevel: relatedEntity.matchLevel,
               matchKey: relatedEntity.matchKey,
               matchKeyTokens: relatedMatchKeyCategories,
@@ -3575,6 +3508,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
               target: entityIndex.indexOf(relatedEntityId),
               sourceEntityId: entityId,
               targetEntityId: relatedEntityId,
+              touchesFocalEntity: isRelatedToFocalEntity,
               matchLevel: relatedEntity.matchLevel,
               matchKey: relatedEntity.matchKey,
               matchKeyTokens: relatedMatchKeyCategories,
@@ -3590,6 +3524,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
 
     }
     data.links = links
+    //console.log('addLinksToNodeData: ', data.links);
 
     return data;
   }
