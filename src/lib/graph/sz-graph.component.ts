@@ -427,7 +427,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   }
   
 
-  @ViewChild('graphContainer') graphContainerEle: ElementRef;
+  @ViewChild('graphContainer') graphContainerEle: ElementRef<HTMLDivElement>;
   @ViewChild(SzGraphControlComponent) graphControlComponent: SzGraphControlComponent;
   @ViewChild(SzRelationshipNetworkComponent) graph : SzRelationshipNetworkComponent;
 

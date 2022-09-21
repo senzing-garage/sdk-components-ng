@@ -304,6 +304,10 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
 
   /** @internal */
   private _entityIds: string[] | undefined;
+  private _focalEntities: SzEntityIdentifier[] = [];
+  public get focalEntities(): SzEntityIdentifier[] {
+    return this._focalEntities;
+  }
 
   /** whether or not to re-draw on id change */
   @Input() public reloadOnIdChange = false;
@@ -344,6 +348,10 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       this._entityIds = value.toString().split(',');
       //console.log(`entityIds = ${value}(number[])`, value, value.toString().split(','), ((value as unknown as string[]) && (value as unknown as string[]).map));
     }
+    // copy over new entity id's to "focalEntities"
+    this._focalEntities = this._focalEntities.concat(this._entityIds.filter((eId) => {
+      return this._focalEntities.indexOf(eId) <= -1;
+    }))
     if(this.reloadOnIdChange && this._entityIds && this._entityIds.some( (eId) => { return _oldIds && _oldIds.indexOf(eId) < 0; })) {
       this.reload( this._entityIds.map((eId) => { return parseInt(eId); }) );
     }
@@ -956,6 +964,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
    * @param entityId The numeric entity ID
    */
   private _expandNode(d: any) {
+    this._addToFocalEntities(d.entityId);
     let relatedNodes              = this.getRelatedNodesByIdQuery(d.relatedEntities, this.node, true).filter(_rn =>  _rn.entityId !== d.entityId)
     // lets grab all visible first
     let allVisibleEntities = this.node.filter((_d) => {
@@ -1041,6 +1050,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     if(!entityId){
       return;
     }
+    this._addToFocalEntities(entityId);
 
     let _node = this.getNodeByIdQuery(entityId);
     if(_node && _node.size && _node.size() > 0) {
@@ -1058,6 +1068,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     if(!entityId){
       return;
     }
+    this._removeFromFocalEntities(entityId);
 
     let _node = this.getNodeByIdQuery(entityId);
 
@@ -1065,6 +1076,20 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       _node.each((d) => {
         this._removeNode(d, false, true);
       });
+    }
+  }
+  /** removes an entityId from the "focalEntities" collection */
+  private _addToFocalEntities(entityId: SzEntityIdentifier) {
+    if(this._focalEntities && this._focalEntities.push && entityId && this._focalEntities.indexOf(entityId) === -1) {
+      this._focalEntities.push(entityId);
+      console.log(`added ${entityId} to focal entities`, this._focalEntities);
+    }
+  }
+  /** adds an entityId from the "focalEntities" collection */
+  private _removeFromFocalEntities(entityId: SzEntityIdentifier) {
+    if(this._focalEntities && this._focalEntities.splice && entityId && this._focalEntities.indexOf(entityId) >= 0) {
+      this._focalEntities.splice(this._focalEntities.indexOf(entityId), 1);
+      console.log(`removed ${entityId} from focal entities`, this._focalEntities);
     }
   }
 
@@ -1175,6 +1200,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
    * a source/primary node.
    */
   private _removeNode(d: any, removeSource: boolean = false, removeDependents?: boolean) {
+    this._removeFromFocalEntities(d.entityId);
+
     let relatedNodes              = this.getRelatedNodesByIdQuery(d.relatedEntities, this.node, true)
     .filter(_rn =>  _rn.entityId !== d.entityId && !_rn.isPrimaryEntity && !_rn.isRelatedToPrimaryEntity)
 
@@ -1708,14 +1735,6 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     }
   }
 
-  public getBoundingBoxForCanvas(){
-    let positionMax = [0,0,1000,1000];
-    this.node.each((_node) => {
-
-    })
-    console.log('getBoundingBoxForCanvas: ', this.graphData, positionMax);
-  }
-
   /** render svg elements from graph data */
   addSvg(gdata: SzNetworkGraphInputs, parentSelection = d3.select("body")) {
     if(!this.svgElement) {
@@ -1733,7 +1752,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     this.svgZoom  = d3.select( this.svgZoomElement );
     var hiddenNodes; // this has to be a var outside of fn's so they can hoist value
 
-    console.log('@senzing/sdk-components-ng:sz-relationship-network.addSvg', gdata, graph);
+    //console.log('@senzing/sdk-components-ng:sz-relationship-network.addSvg', gdata, graph);
 
     // ------------------------------------- start utility functions -------------------------------------
     let getNodeVisibilityClass = (_d) => {
@@ -2460,11 +2479,14 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           this.expandCollapseToggle(d);
           d.loadingRelatedToDeck = false;
           this.getNodeByIdQuery(d.entityId).attr('class', this.getEntityNodeClass);
-
+          // update any "focal" link properties
+          this.updateIsRelatedToFocalEntitiesForLinks(this.link, this.linkLabel);
           return;
         });
       } else {
         this.expandCollapseToggle(d);
+        // update any "focal" link properties
+        this.updateIsRelatedToFocalEntitiesForLinks(this.link, this.linkLabel);
       }
     }
 
@@ -2585,6 +2607,36 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       //console.log('updateHiddenRelationshipCounts: ', _glyphNodes);
     }
   }
+  /**
+   * updates the "touchesFocalEntity" property on link lines
+   * and link labels. Then updates the css classes for both the 
+   * link lines and link text labels so that they can filtered in 
+   * the UI bases on these properties
+   */
+  private updateIsRelatedToFocalEntitiesForLinks(links, linkLabels) {
+    // first update the "touchesFocalEntity" property
+    if(!(links && links.each)) { return; }
+    links.each((ll, i) => {
+      if(ll && (ll.sourceEntityId || ll.targetEntityId)) {
+        if(this.focalEntities && this.focalEntities.some) {
+          let isDirectlyRelatedToFocalEntity = this.focalEntities.some((focalEnt: SzEntityIdentifier) => { 
+            return (
+              parseSzIdentifier(focalEnt) === parseSzIdentifier(ll.sourceEntityId) || 
+              parseSzIdentifier(focalEnt) === parseSzIdentifier(ll.targetEntityId));
+          }) ? true : false;
+          ll.touchesFocalEntity = isDirectlyRelatedToFocalEntity;
+        }
+      }
+    });
+    // now update css classes
+    links
+    .attr('class', this.getEntityLinkClass.bind(this));
+    // and labels
+    if(linkLabels && linkLabels.attr) {
+      linkLabels.attr('class', this.getEntityLinkLabelClass.bind(this));
+    }
+  }
+
   /** 
    * ensure that a link node(line) is not visible if one 
    * of the connected nodes is not visible
@@ -2616,6 +2668,12 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     _classes.push('sz-graph-link');
     if(_ln && !_ln.touchesFocalEntity) {
       _classes.push('not-touching-focal');
+    }
+    if(_ln && _ln.touchesFocalEntity) {
+      _classes.push('touching-focal');
+    }
+    if(_ln && _ln.relatedTouchesFocalEntity) {
+      _classes.push('related-touching-focal');
     }
     return _classes.join(' ');
   }
@@ -3393,7 +3451,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       name_words.forEach((nW, inc) => {
         _lineCharCount  = _lineCharCount + nW.length;
         _lineCurrent    = _lineCurrent +(_lineCurrent !== '' ? ' ': '')+nW;
-        console.log(`\t\t${nW}`,nW.length);
+        //console.log(`\t\t${nW}`,nW.length);
         if(_lineCharCount >= maxCharsPerLine) {
           name_lines.push(_lineCurrent);
           _lineCurrent    = '';
@@ -3444,11 +3502,13 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           const linkArr = [entityId, relatedEntityId].sort();
           const linkKey = {firstId: linkArr[0], secondId: linkArr[1]};
           let isRelatedToFocalEntity = false;
-          if(this.entityIds && (this.entityIds as SzEntityIdentifier[]).some) {
-            isRelatedToFocalEntity = (this.entityIds as SzEntityIdentifier[]).some((primaryEnt: SzEntityIdentifier) => { return (parseSzIdentifier(primaryEnt) === parseSzIdentifier(entityInfo.entityId) || parseSzIdentifier(primaryEnt) === parseSzIdentifier(relatedEntity.entityId));} ) ? true : false;
-          } else if(this.entityIds){
-            // single entity
-            isRelatedToFocalEntity = ((this.entityIds as SzEntityIdentifier) === entityInfo.entityId || (this.entityIds as SzEntityIdentifier) === relatedEntity.entityId) ? true : false;
+
+          if(this.focalEntities && this.focalEntities.some) {
+            isRelatedToFocalEntity = this.focalEntities.some((focalEnt: SzEntityIdentifier) => { 
+              return (
+                parseSzIdentifier(focalEnt) === parseSzIdentifier(entityInfo.entityId) || 
+                parseSzIdentifier(focalEnt) === parseSzIdentifier(relatedEntity.entityId));
+            }) ? true : false;
           }
           let _relatedMatchCategory = SzRelationshipNetworkComponent.tokenizeMatchKey(relatedEntity.matchKey);
           // match key tokens grouped by 'DERIVED' and 'DISCLOSED'
@@ -3513,6 +3573,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
               matchKey: relatedEntity.matchKey,
               matchKeyTokens: relatedMatchKeyCategories,
               matchKeyTokensFlat: _matchKeyTokensFlattened,
+              relatedMatchKeyCategories: _relatedMatchCategory,
               isHidden: false,
               isCoreLink: false,
               id: linkIndex.indexOf(linkKey)
@@ -3524,8 +3585,6 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
 
     }
     data.links = links
-    //console.log('addLinksToNodeData: ', data.links);
-
     return data;
   }
 

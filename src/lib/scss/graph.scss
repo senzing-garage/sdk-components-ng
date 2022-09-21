@@ -74,6 +74,16 @@ body {
     fill: #565656;
     letter-spacing: 2px;
     line-height: 15px;
+    &.not-touching-focal {
+      opacity: .5;
+    }
+    /*
+    &.related-touching-focal {
+      stroke: rgb(187, 95, 175);
+    }
+    &.touching-focal {
+      stroke: rgb(156, 187, 95);
+    }*/
   }
 
   .sz-graph-core-link {
@@ -82,8 +92,16 @@ body {
   }
 
   .sz-graph-link {
-    stroke: #999;
+    /*stroke: #999;*/
+    stroke: var(--sz-graph-link-line-color);
     stroke-width: 1px;
+    &.not-touching-focal {
+      opacity: var(--sz-graph-link-line-non-focused-opacity);
+      stroke: var(--sz-graph-link-line-non-focused-color);
+    }
+    /*&.touching-focal {
+      stroke: rgb(156, 187, 95);
+    }*/
   }
 
   .sz-graph-node-icon {
