@@ -112,21 +112,27 @@
     </ng-container>
   </ul>
   </form>
-  <!--
-  <ul class="filters-list">
-    <ng-container *ngFor="let ds of dataSources; let i = index">
-        <ng-container *ngIf="shouldDataSourceBeDisplayed(ds.name)">
-            <li>
-              <label>
-                <input type="checkbox" [(ngModel)]="!ds.hidden" (change)="onDsFilterChange(ds.name, $event)">{{ds.name}}
-              </label>
-            </li>
-        </ng-container>
-    </ng-container>
-  </ul>
-  -->
   <hr>
   <h3>{{ sectionTitles[2] }}</h3>
+  <ul class="colors-list">
+    <li class="color-box">
+      <div class="color-box-placeholder"></div>
+      <label>
+        <input type="color" [(ngModel)]="linkColor" [style.background-color]="linkColor" (change)="onColorParameterChange('linkColor', getValueFromEventTarget($event))">
+        Directly Related
+      </label>
+    </li>
+    <li class="color-box">
+      <div class="color-box-placeholder"></div>
+      <label>
+        <input type="color" [(ngModel)]="indirectLinkColor" [style.background-color]="indirectLinkColor" (change)="onColorParameterChange('indirectLinkColor', getValueFromEventTarget($event))">
+        Indirectly Related
+      </label>
+    </li>
+  </ul>
+
+  <hr>
+  <h3>{{ sectionTitles[3] }}</h3>
   <ul cdkDropList class="colors-list" (cdkDropListDropped)="onColorOrderDrop($event)">
     <ng-container *ngFor="let ds of dataSourceColors; let i = index">
       <li class="color-box" *ngIf="shouldDataSourceBeDisplayed(ds.name)" cdkDrag [cdkDragData]="ds.name">
@@ -143,7 +149,7 @@
   </ul>
 
   <hr>
-  <h3>{{ sectionTitles[3] }}</h3>
+  <h3>{{ sectionTitles[4] }}</h3>
   <form [formGroup]="colorsMiscForm">
   <ul class="other-colors-list">
     <li>
@@ -162,7 +168,7 @@
   <div *ngIf="showMatchKeys && showMatchKeyFilters">
     <hr>
     <h3>
-      {{ sectionTitles[4] }}
+      {{ sectionTitles[5] }}
     </h3>
     <form [formGroup]="filterByMatchKeysForm">
     <ul class="filters-list">
@@ -190,7 +196,7 @@
     <hr>
     <div class="filter-header match-key-token-filter-header">
       <h3>
-        {{ sectionTitles[5] }}
+        {{ sectionTitles[6] }}
       </h3>
       <div *ngIf="showMatchKeyTokenSelectAll" class="bulk-select-options">
         [<span (click)="onSelectAllMatchKeyTokens(true)">All On</span> | <span (click)="onSelectAllMatchKeyTokens(false)">All Off</span>]

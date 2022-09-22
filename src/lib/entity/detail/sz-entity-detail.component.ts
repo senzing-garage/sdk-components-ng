@@ -541,13 +541,13 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     return this._graphTitle;
   }
 
-  public _showGraphMatchKeys: boolean = true;
+  public _showGraphLinkLabels: boolean = true;
   /**
    * show or hide the "At a Glance" section.
    */
   @Input()
   public set showGraphMatchKeys(value: any) {
-    this._showGraphMatchKeys = parseBool(value);
+    this._showGraphLinkLabels = parseBool(value);
   }
   /**
    * whether or not the graph component is displaying match keys
@@ -556,7 +556,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     if(this.graphComponent && this.graphComponent.graphControlComponent && this.graphComponent.graphControlComponent.showLinkLabels) {
       return this.graphComponent.graphControlComponent.showLinkLabels;
     } else {
-      return this._showGraphMatchKeys;
+      return this._showGraphLinkLabels;
     }
   }
 

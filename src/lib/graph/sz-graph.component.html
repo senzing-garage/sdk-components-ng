@@ -21,7 +21,7 @@
       [filter]="entityNodeFilters"
       [includes]="entityMatchTokenFilter"
       [expandByDefaultWhenLessThan]="expandByDefaultWhenLessThan"
-      [showLinkLabels]="_showMatchKeys"
+      [showLinkLabels]="_showLinkLabels"
       [suppressL1InterLinks]="_suppressL1InterLinks"
       (contextMenuClick)="onRightClick($event)"
       (entityClick)="onEntityClick($event)"
@@ -34,7 +34,7 @@
       [maxEntities]="maxEntities"></sz-relationship-network>
   
       <sz-graph-control *ngIf="showMatchKeyControl" class="sz-graph-control"
-      [showLinkLabels]="_showMatchKeys"
+      [showLinkLabels]="_showLinkLabels"
       (optionChanged)="onOptionChange($event)"
       ></sz-graph-control>
   
@@ -44,7 +44,7 @@
         [class.top-right]="filterControlPosition == 'top-right'"
         [class.bottom-right]="filterControlPosition == 'bottom-right'"
         [class.bottom-left]="filterControlPosition == 'bottom-left'"
-        [showLinkLabels]="_showMatchKeys"
+        [showLinkLabels]="_showLinkLabels"
         (optionChanged)="onOptionChange($event)"
         [showDataSources]="filterShowDataSources"
         [showMatchKeys]="filterShowMatchKeys"

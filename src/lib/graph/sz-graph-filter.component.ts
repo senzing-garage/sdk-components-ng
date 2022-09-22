@@ -211,6 +211,8 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   @Input() matchKeyTokensIncluded: string[]     = [];
   @Input() matchKeyCoreTokensIncluded: string[] = [];
   @Input() queriedEntitiesColor: string;
+  @Input() linkColor: string;
+  @Input() indirectLinkColor: string;
 
   /** 
    * set the internal list of datasource colors from local storage or input value
@@ -289,8 +291,9 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   @Input() sectionTitles = [
     'Filters',
     'Filter by Source',
+    'Link Colors',
     'Colors by Source',
-    'Color by: ',
+    'Focused Entity: ',
     'Filter by Match Key',
     'Filter by Match Key'
   ];
@@ -511,6 +514,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   }
   /** handler for when an string color pref value has changed. ie: queriedEntitiesColor  */
   onColorParameterChange(prefName, value) {
+    console.log('onColorParameterChange: ', prefName, value, this.prefs.graph.suppressL1InterLinks);
     try {
       this.prefs.graph[prefName] = value;
     } catch(err) {}
@@ -526,6 +530,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
       _checked = (event as boolean);
     }
     console.log('@senzing/sdk-components-ng/SzEntityDetailGraphFilterComponent.onCheckboxPrefToggle: ', optName, _checked, event);
+    this.prefs.graph[optName] = parseBool(_checked);
     this.optionChanged.emit({'name': optName, value: _checked});
   }
   /** when the user selects either the scope or entity limit "unlimited" checkboxes
@@ -551,7 +556,9 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     this.matchKeyTokensIncluded = prefs.matchKeyTokensIncluded;
     this.matchKeyCoreTokensIncluded = prefs.matchKeyCoreTokensIncluded;
     this.queriedEntitiesColor   = prefs.queriedEntitiesColor;
-    //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onPrefsChange(): ', prefs, this.dataSourceColors);
+    this.linkColor              = prefs.linkColor;
+    this.indirectLinkColor      = prefs.indirectLinkColor;
+    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onPrefsChange(): ', prefs, this.dataSourceColors);
     // update view manually (for web components redraw reliability)
     this.cd.detectChanges();
   }
@@ -665,7 +672,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
    * the the public "matchKeyTokenSelectionScopeChanged" event emitter.
    */
   private onMatchKeyTokenSelectionScopeChanged(scope: SzMatchKeyTokenFilterScope) {
-    //console.log('onMatchKeyTokenSelectionScopeChanged: ', scope);
+    console.log('onMatchKeyTokenSelectionScopeChanged: ', scope);
     
     // now emit events
     this.optionChanged.emit({name: 'matchKeyTokenFilterScope', value: scope});

@@ -75,7 +75,7 @@ body {
     letter-spacing: 2px;
     line-height: 15px;
     &.not-touching-focal {
-      opacity: .5;
+      opacity: var(--sz-graph-link-label-non-focused-opacity);
     }
     /*
     &.related-touching-focal {

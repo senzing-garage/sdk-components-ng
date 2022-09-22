@@ -34,7 +34,7 @@
     [highlight]="entityNodeColors"
     [filter]="entityNodeFilters" 
     [ignoreFilters]="ignoreFilters"
-    [showLinkLabels]="_showMatchKeys"
+    [showLinkLabels]="_showLinkLabels"
     [suppressL1InterLinks]="_suppressL1InterLinks"
     [captureMouseWheel]="captureMouseWheel"
     (onWheelScroll)="onGraphScrollEvent($event)"
@@ -48,12 +48,12 @@
     [maxEntities]="maxEntities"></sz-relationship-network>
 
     <sz-graph-control *ngIf="showMatchKeyControl" class="sz-graph-control"
-    [showLinkLabels]="_showMatchKeys"
+    [showLinkLabels]="_showLinkLabels"
     (optionChanged)="onOptionChange($event)"
     ></sz-graph-control>
 
     <sz-graph-filter *ngIf="showFiltersControl" class="sz-graph-filter"
-    [showLinkLabels]="_showMatchKeys"
+    [showLinkLabels]="_showLinkLabels"
     (optionChanged)="onOptionChange($event)"
     ></sz-graph-filter>
     <!-- 

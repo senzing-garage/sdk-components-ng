@@ -83,10 +83,10 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     relatedEntities: SzRelatedEntity[]
   }*/
   /** @internal */
-  public _showMatchKeys = false;
+  public _showLinkLabels = false;
   /** sets the visibility of edge labels on the node links */
-  @Input() public set showMatchKeys(value: boolean | string) {
-    this._showMatchKeys = parseBool(value);
+  @Input() public set showLinkLabels(value: boolean | string) {
+    this._showLinkLabels = parseBool(value);
   };
   /** @internal */
   public _suppressL1InterLinks = false;
@@ -414,10 +414,10 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     this._graphZoom = value;
   }
   @HostBinding('class.showing-link-labels') public get showingLinkLabels(): boolean {
-    return this._showMatchKeys;
+    return this._showLinkLabels;
   }
   @HostBinding('class.not-showing-link-labels') public get hidingLinkLabels(): boolean {
-    return !this._showMatchKeys;
+    return !this._showLinkLabels;
   }
   @HostBinding('class.showing-inter-link-lines') public get showingInterLinkLines(): boolean {
     return !this._suppressL1InterLinks;
@@ -725,7 +725,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     console.log('onOptionChange: ', event);
     switch(event.name) {
       case 'showLinkLabels':
-        this.showMatchKeys = event.value;
+        this.showLinkLabels = event.value;
         break;
       case 'suppressL1InterLinks':
         this.suppressL1InterLinks = event.value;
@@ -921,15 +921,29 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       prefs.unlimitedMaxEntities
       );*/
     }
-    this._showMatchKeys               = prefs.showMatchKeys;
+    this.showLinkLabels               = prefs.showLinkLabels;
     this.maxDegrees                   = prefs.maxDegreesOfSeparation;
+
+    // if we have "color" UI prefs add them here
+    if(this.graphContainerEle && this.graphContainerEle.nativeElement){
+      if(prefs.linkColor) {
+        this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-link-line-color', prefs.linkColor);
+      }
+      if(prefs.indirectLinkColor) {
+        this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-link-line-non-focused-color', prefs.indirectLinkColor);
+      }
+      if(prefs.queriedEntitiesColor) {
+        this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-focused-entity-color', prefs.queriedEntitiesColor);
+      }
+    }
+
     if(!prefs.unlimitedMaxEntities) {
       this.maxEntities                = prefs.maxEntities;
     }
     if(!prefs.unlimitedMaxScope) {
       this.buildOut                   = prefs.buildOut;
     }
-    this._suppressL1InterLinks         = prefs.suppressL1InterLinks;
+    this._suppressL1InterLinks        = prefs.suppressL1InterLinks;
     this.unlimitedMaxEntities         = prefs.unlimitedMaxEntities;
     this.unlimitedMaxScope            = prefs.unlimitedMaxScope;
     this.dataSourceColors             = prefs.dataSourceColors;
