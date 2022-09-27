@@ -6,14 +6,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [5.1.1] - 2022-08-15
+## [5.1.1] - 2022-09-28
+
+
+### Added
+- Added "hide indirect links" UI control to graph filtering component.
+- Added `suppressL1InterLinks` to graph preferences
+- Added `linkColor` to graph preferences
+- Added `indirectLinkColor` to graph preferences
+- Added *Link Color* section to graph filter component
+- Added *Data Sources* list to graph hover tooltip
 
 ### Modified
 - Match keys on graph entity link(s) are now in a vertically centered multi-line list.
 - Bugfix for match key labels. (see #383)
 - Entity detail embedded graph now defaults to collapsed nodes when relationships are `<= 10`
+- `showMatchKeys` UI/UX parameter renamed to `showLinkLabels` to avoid confusion with `matchKeyFilters` and `showMatchKeyTokens` which are functional/behavior parameters.
+- Graph api call pattern changed to an initial entity request followed by a minimal `entity-networks` call to retrieve the necessary data. This new surface pattern dramatically decreases the time needed to initially render a graph with a large about of relationships.
+- Graph entity name label no longer clips with ellipsis.
+- Graph entity name now performs a hard word wrap to display the full name on multiple lines
 
-relevant tickets: #309 #364 #383
+relevant tickets: #309 #364 #383 #407 #413 #414 #415 #417
 
 
 ## [5.1.0] - 2022-07-27

@@ -1479,11 +1479,11 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       maxDegrees,
       1,
       maxEntities,
-      SzDetailLevel.SUMMARY,
+      SzDetailLevel.NETWORKMINIMAL,
       SzFeatureMode.NONE,
       false,
       false,
-      'network', 
+      false, 
       SzRelationshipNetworkComponent.WITHOUT_RAW
     ).pipe(
       tap(() => {
@@ -1574,7 +1574,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         maxDegrees,
         buildOut,
         maxEntities,
-        SzDetailLevel.SUMMARY,
+        SzDetailLevel.NETWORKMINIMAL,
         SzFeatureMode.NONE,
         false,
         false,
@@ -2842,6 +2842,19 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     }
     if(d.phone && d.phone !== null) {
       retVal += "<br/><strong>Phone</strong>: " + d.phone;
+    }
+    if(d.dataSources && d.dataSources.forEach && d.dataSources.length > 0) {
+      let dsNamesCeil = 10;
+      retVal += "<br/><strong>Data Sources</strong>: <ul>";
+      d.dataSources.forEach((dsName, dsNameInc) => {
+        if(dsNameInc <= dsNamesCeil){
+          retVal += "<li><strong>"+ dsName +"</li>";
+        }
+      });
+      retVal += "</ul>";
+      if(d.dataSources.length > dsNamesCeil) {
+        retVal += `+${d.dataSources.length - dsNamesCeil} more..`;
+      }
     }
     /*
     if(d.relationshipMatchKeys) {
