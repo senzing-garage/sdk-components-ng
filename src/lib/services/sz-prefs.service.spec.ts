@@ -462,7 +462,7 @@ describe('SzPrefsService', () => {
     service.prefsChanged.pipe(
       debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
-      expect(g.graph.showMatchKeys).toEqual(true);
+      expect(g.graph.showLinkLabels).toEqual(true);
       done();
     });
     service.graph.showLinkLabels = true;

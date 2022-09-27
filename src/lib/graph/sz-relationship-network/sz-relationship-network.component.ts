@@ -349,9 +349,10 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       //console.log(`entityIds = ${value}(number[])`, value, value.toString().split(','), ((value as unknown as string[]) && (value as unknown as string[]).map));
     }
     // copy over new entity id's to "focalEntities"
-    this._focalEntities = this._focalEntities.concat(this._entityIds.filter((eId) => {
+    let uniqueEntityIds = this._entityIds && this._entityIds.filter ? this._entityIds.filter((eId) => {
       return this._focalEntities.indexOf(eId) <= -1;
-    }))
+    }) : [];
+    this._focalEntities = this._focalEntities.concat(uniqueEntityIds);
     if(this.reloadOnIdChange && this._entityIds && this._entityIds.some( (eId) => { return _oldIds && _oldIds.indexOf(eId) < 0; })) {
       this.reload( this._entityIds.map((eId) => { return parseInt(eId); }) );
     }

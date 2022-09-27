@@ -558,7 +558,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     this.queriedEntitiesColor   = prefs.queriedEntitiesColor;
     this.linkColor              = prefs.linkColor;
     this.indirectLinkColor      = prefs.indirectLinkColor;
-    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onPrefsChange(): ', prefs, this.dataSourceColors);
+    //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onPrefsChange(): ', prefs, this.dataSourceColors);
     // update view manually (for web components redraw reliability)
     this.cd.detectChanges();
   }
