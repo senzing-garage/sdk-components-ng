@@ -458,14 +458,14 @@ describe('SzPrefsService', () => {
     });
     service.graph.openInSidePanel = true;
   });
-  it('graph "showMatchKeys" changes to true', (done) => {
+  it('graph "showLinkLabels" changes to true', (done) => {
     service.prefsChanged.pipe(
       debounceTime(500)
     ).subscribe((g: SzSdkPrefsModel) => {
       expect(g.graph.showMatchKeys).toEqual(true);
       done();
     });
-    service.graph.showMatchKeys = true;
+    service.graph.showLinkLabels = true;
   });
   it('graph "rememberStateOptions" changes to true', (done) => {
     service.prefsChanged.pipe(
@@ -474,7 +474,7 @@ describe('SzPrefsService', () => {
       expect(g.graph.rememberStateOptions).toEqual(true);
       done();
     });
-    service.graph.showMatchKeys = true;
+    service.graph.rememberStateOptions = true;
   });
   it('graph "maxDegreesOfSeparation" changes to 9', (done) => {
     service.prefsChanged.pipe(

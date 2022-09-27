@@ -348,7 +348,7 @@ describe('SzPreferencesComponent', () => {
         expect(g.graph.showMatchKeys).toEqual(true);
         done();
       });
-      fixture.componentInstance.GraphShowMatchKeys = true;
+      fixture.componentInstance.GraphShowLinkLabels = true;
     });
     it('graph "rememberStateOptions" changes to true', (done) => {
       fixture.componentInstance.prefsChange.subscribe((g: SzSdkPrefsModel) => {
