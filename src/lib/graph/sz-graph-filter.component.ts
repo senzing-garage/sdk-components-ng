@@ -8,6 +8,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SzDataSourceComposite } from '../models/data-sources';
 import { SzMatchKeyComposite, SzMatchKeyTokenComposite, SzEntityNetworkMatchKeyTokens, SzMatchKeyTokenFilterScope } from '../models/graph';
 import { sortDataSourcesByIndex, parseBool, sortMatchKeysByIndex, sortMatchKeyTokensByIndex } from '../common/utils';
+import { isBoolean } from '../common/utils';
 
 /**
  * Control Component allowing UI friendly changes
@@ -210,6 +211,8 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   @Input() matchKeyTokensIncluded: string[]     = [];
   @Input() matchKeyCoreTokensIncluded: string[] = [];
   @Input() queriedEntitiesColor: string;
+  @Input() linkColor: string;
+  @Input() indirectLinkColor: string;
 
   /** 
    * set the internal list of datasource colors from local storage or input value
@@ -275,12 +278,22 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   public get showLinkLabels(): boolean {
     return this._showLinkLabels;
   }
+  /** show match keys */
+  public _suppressL1InterLinks = true;
+  @Input() public set suppressL1InterLinks(value){
+    this._suppressL1InterLinks = value;
+  }
+  public get suppressL1InterLinks(): boolean {
+    return this._suppressL1InterLinks;
+  }
+
   /** titles that are displayed for each section in component */
   @Input() sectionTitles = [
     'Filters',
     'Filter by Source',
+    'Link Colors',
     'Colors by Source',
-    'Color by: ',
+    'Focused Entity: ',
     'Filter by Match Key',
     'Filter by Match Key'
   ];
@@ -290,6 +303,12 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   }
   @HostBinding('class.not-showing-link-labels') public get hidingLinkLabels(): boolean {
     return !this._showLinkLabels;
+  }
+  @HostBinding('class.showing-inter-link-lines') public get showingInterLinkLines(): boolean {
+    return !this._suppressL1InterLinks;
+  }
+  @HostBinding('class.not-showing-inter-link-lines') public get hidingInterLinkLines(): boolean {
+    return this._suppressL1InterLinks;
   }
 
   // ------------------------------------  getters and setters --------------------------
@@ -495,6 +514,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   }
   /** handler for when an string color pref value has changed. ie: queriedEntitiesColor  */
   onColorParameterChange(prefName, value) {
+    console.log('onColorParameterChange: ', prefName, value, this.prefs.graph.suppressL1InterLinks);
     try {
       this.prefs.graph[prefName] = value;
     } catch(err) {}
@@ -506,8 +526,11 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
       _checked = event.target.checked;
     } else if (event.srcElement) {
       _checked = event.srcElement.checked;
+    } else if (isBoolean(event)) {
+      _checked = (event as boolean);
     }
-    //console.log('@senzing/sdk-components-ng/SzEntityDetailGraphFilterComponent.onCheckboxPrefToggle: ', _checked, optName, event);
+    console.log('@senzing/sdk-components-ng/SzEntityDetailGraphFilterComponent.onCheckboxPrefToggle: ', optName, _checked, event);
+    this.prefs.graph[optName] = parseBool(_checked);
     this.optionChanged.emit({'name': optName, value: _checked});
   }
   /** when the user selects either the scope or entity limit "unlimited" checkboxes
@@ -522,16 +545,19 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
 
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    this._showLinkLabels = prefs.showMatchKeys;
+    this._showLinkLabels        = prefs.showMatchKeys;
+    this._suppressL1InterLinks  = prefs.suppressL1InterLinks
     this.maxDegreesOfSeparation = prefs.maxDegreesOfSeparation;
-    this.maxEntities = prefs.maxEntities;
-    this.buildOut = prefs.buildOut;
-    this.dataSourceColors = prefs.dataSourceColors;
-    this.dataSourcesFiltered = prefs.dataSourcesFiltered;
-    this.matchKeysIncluded = prefs.matchKeysIncluded;
+    this.maxEntities            = prefs.maxEntities;
+    this.buildOut               = prefs.buildOut;
+    this.dataSourceColors       = prefs.dataSourceColors;
+    this.dataSourcesFiltered    = prefs.dataSourcesFiltered;
+    this.matchKeysIncluded      = prefs.matchKeysIncluded;
     this.matchKeyTokensIncluded = prefs.matchKeyTokensIncluded;
     this.matchKeyCoreTokensIncluded = prefs.matchKeyCoreTokensIncluded;
-    this.queriedEntitiesColor = prefs.queriedEntitiesColor;
+    this.queriedEntitiesColor   = prefs.queriedEntitiesColor;
+    this.linkColor              = prefs.linkColor;
+    this.indirectLinkColor      = prefs.indirectLinkColor;
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onPrefsChange(): ', prefs, this.dataSourceColors);
     // update view manually (for web components redraw reliability)
     this.cd.detectChanges();
@@ -646,7 +672,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
    * the the public "matchKeyTokenSelectionScopeChanged" event emitter.
    */
   private onMatchKeyTokenSelectionScopeChanged(scope: SzMatchKeyTokenFilterScope) {
-    //console.log('onMatchKeyTokenSelectionScopeChanged: ', scope);
+    console.log('onMatchKeyTokenSelectionScopeChanged: ', scope);
     
     // now emit events
     this.optionChanged.emit({name: 'matchKeyTokenFilterScope', value: scope});

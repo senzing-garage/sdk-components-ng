@@ -384,12 +384,12 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
     this.prefs.graph.dataSourceColors = value;
   }
   /** show match keys on relationship edges in graph */
-  public get GraphShowMatchKeys(): boolean {
-    return this.prefs.graph.showMatchKeys;
+  public get GraphShowLinkLabels(): boolean {
+    return this.prefs.graph.showLinkLabels;
   }
   /** show match keys on relationship edges in graph */
-  @Input() public set GraphShowMatchKeys(value: boolean) {
-    this.prefs.graph.showMatchKeys = value;
+  @Input() public set GraphShowLinkLabels(value: boolean) {
+    this.prefs.graph.showLinkLabels = value;
   }
   /** publish prefs change events on state change in graph component */
   public get GraphRememberStateOptions(): boolean {

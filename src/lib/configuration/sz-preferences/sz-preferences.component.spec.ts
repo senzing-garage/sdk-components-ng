@@ -343,12 +343,12 @@ describe('SzPreferencesComponent', () => {
       });
       fixture.componentInstance.GraphOpenInSidePanel = true;
     });
-    it('graph "showMatchKeys" changes to true', (done) => {
+    it('graph "showLinkLabels" changes to true', (done) => {
       fixture.componentInstance.prefsChange.subscribe((g: SzSdkPrefsModel) => {
-        expect(g.graph.showMatchKeys).toEqual(true);
+        expect(g.graph.showLinkLabels).toEqual(true);
         done();
       });
-      fixture.componentInstance.GraphShowMatchKeys = true;
+      fixture.componentInstance.GraphShowLinkLabels = true;
     });
     it('graph "rememberStateOptions" changes to true', (done) => {
       fixture.componentInstance.prefsChange.subscribe((g: SzSdkPrefsModel) => {

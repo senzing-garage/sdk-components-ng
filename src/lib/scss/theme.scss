@@ -305,6 +305,11 @@ body {
     /* end relationship section list vars */
 
     /* graph */
+    --sz-graph-link-line-color: #999;
+    --sz-graph-link-line-non-focused-color: var(--sz-graph-link-line-color);
+    --sz-graph-link-line-non-focused-opacity: 1;
+    --sz-graph-link-label-non-focused-opacity: 1;
+
     --sz-entity-graph-primary-entity-default-color: #465BA8;
     --sz-entity-graph-control-border: 1px solid #d3d3d3;
     --sz-entity-graph-control-position: absolute;

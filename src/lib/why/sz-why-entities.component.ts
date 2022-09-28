@@ -77,26 +77,28 @@ export class SzWhyEntitiesComparisonComponent implements OnInit, OnDestroy {
     this._isLoading = true;
     this.loading.emit(true);
 
-    this.getWhyData()
-    .subscribe((resData: SzWhyEntitiesResponse) => {
-      this._isLoading = false;
-      this.loading.emit(false);
-
-      if(resData.data.entities && resData.data.entities.length > 0) {
-        resData.data.entities.forEach((_data: SzEntityData) => {
-          if(_data.resolvedEntity && _data.resolvedEntity.records) {
-            //matchedRecords = matchedRecords.concat(_data.resolvedEntity.records);
-          }
-        });
-      }
-      let formattedData = this.formatWhyDataForDataTable(resData.data);
-      this._columnsToDisplay  = formattedData.columns;
-      this.dataToDisplay      = formattedData.data;
-      this.dataSource.setData(this.dataToDisplay);
-      this.gotColumnDefs = true;
-    }, (error) => {
-      console.warn(error);
-    });
+    if(this.entityIds && this.entityIds.length == 2) {
+      this.getWhyData()
+      .subscribe((resData: SzWhyEntitiesResponse) => {
+        this._isLoading = false;
+        this.loading.emit(false);
+  
+        if(resData.data.entities && resData.data.entities.length > 0) {
+          resData.data.entities.forEach((_data: SzEntityData) => {
+            if(_data.resolvedEntity && _data.resolvedEntity.records) {
+              //matchedRecords = matchedRecords.concat(_data.resolvedEntity.records);
+            }
+          });
+        }
+        let formattedData = this.formatWhyDataForDataTable(resData.data);
+        this._columnsToDisplay  = formattedData.columns;
+        this.dataToDisplay      = formattedData.data;
+        this.dataSource.setData(this.dataToDisplay);
+        this.gotColumnDefs = true;
+      }, (error) => {
+        console.warn(error);
+      });
+    }
   }
   /**
    * unsubscribe when component is destroyed

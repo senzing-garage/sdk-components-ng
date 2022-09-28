@@ -83,10 +83,16 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     relatedEntities: SzRelatedEntity[]
   }*/
   /** @internal */
-  public _showMatchKeys = false;
+  public _showLinkLabels = false;
   /** sets the visibility of edge labels on the node links */
-  @Input() public set showMatchKeys(value: boolean | string) {
-    this._showMatchKeys = parseBool(value);
+  @Input() public set showLinkLabels(value: boolean | string) {
+    this._showLinkLabels = parseBool(value);
+  };
+  /** @internal */
+  public _suppressL1InterLinks = false;
+  /** sets the visibility of edge labels on the node links */
+  @Input() public set suppressL1InterLinks(value: boolean | string) {
+    this._suppressL1InterLinks = parseBool(value);
   };
   /** @internal */
   private _openInNewTab: boolean = false;
@@ -408,13 +414,20 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     this._graphZoom = value;
   }
   @HostBinding('class.showing-link-labels') public get showingLinkLabels(): boolean {
-    return this._showMatchKeys;
+    return this._showLinkLabels;
   }
   @HostBinding('class.not-showing-link-labels') public get hidingLinkLabels(): boolean {
-    return !this._showMatchKeys;
+    return !this._showLinkLabels;
   }
+  @HostBinding('class.showing-inter-link-lines') public get showingInterLinkLines(): boolean {
+    return !this._suppressL1InterLinks;
+  }
+  @HostBinding('class.not-showing-inter-link-lines') public get hidingInterLinkLines(): boolean {
+    return this._suppressL1InterLinks;
+  }
+  
 
-  @ViewChild('graphContainer') graphContainerEle: ElementRef;
+  @ViewChild('graphContainer') graphContainerEle: ElementRef<HTMLDivElement>;
   @ViewChild(SzGraphControlComponent) graphControlComponent: SzGraphControlComponent;
   @ViewChild(SzRelationshipNetworkComponent) graph : SzRelationshipNetworkComponent;
 
@@ -709,10 +722,13 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   }
 
   public onOptionChange(event: {name: string, value: any}) {
-    //console.log('onOptionChange: ', event);
+    console.log('onOptionChange: ', event);
     switch(event.name) {
       case 'showLinkLabels':
-        this.showMatchKeys = event.value;
+        this.showLinkLabels = event.value;
+        break;
+      case 'suppressL1InterLinks':
+        this.suppressL1InterLinks = event.value;
         break;
     }
   }
@@ -873,7 +889,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
 
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: SzGraphPrefs) {
-    console.log('@senzing/sdk-components-ng/sz-graph-component.onPrefsChange(): ', prefs, this.prefs.graph.toJSONObject());
+    //console.log('@senzing/sdk-components-ng/sz-graph-component.onPrefsChange(): ', prefs, this.prefs.graph.toJSONObject());
     let queryParamChanged = false;
     let _oldQueryParams = {maxDegrees: this.maxDegrees, maxEntities: this.maxEntities, buildOut: this.buildOut, unlimitedMaxEntities: this.unlimitedMaxEntities, unlimitedMaxScope: this.unlimitedMaxScope};
     let _newQueryParams = {maxDegrees: prefs.maxDegreesOfSeparation, maxEntities: prefs.maxEntities, buildOut: prefs.buildOut, unlimitedMaxEntities: prefs.unlimitedMaxEntities, unlimitedMaxScope: prefs.unlimitedMaxScope};
@@ -905,14 +921,29 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       prefs.unlimitedMaxEntities
       );*/
     }
-    this._showMatchKeys               = prefs.showMatchKeys;
+    this.showLinkLabels               = prefs.showLinkLabels;
     this.maxDegrees                   = prefs.maxDegreesOfSeparation;
+
+    // if we have "color" UI prefs add them here
+    if(this.graphContainerEle && this.graphContainerEle.nativeElement){
+      if(prefs.linkColor) {
+        this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-link-line-color', prefs.linkColor);
+      }
+      if(prefs.indirectLinkColor) {
+        this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-link-line-non-focused-color', prefs.indirectLinkColor);
+      }
+      if(prefs.queriedEntitiesColor) {
+        this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-focused-entity-color', prefs.queriedEntitiesColor);
+      }
+    }
+
     if(!prefs.unlimitedMaxEntities) {
       this.maxEntities                = prefs.maxEntities;
     }
     if(!prefs.unlimitedMaxScope) {
       this.buildOut                   = prefs.buildOut;
     }
+    this._suppressL1InterLinks        = prefs.suppressL1InterLinks;
     this.unlimitedMaxEntities         = prefs.unlimitedMaxEntities;
     this.unlimitedMaxScope            = prefs.unlimitedMaxScope;
     this.dataSourceColors             = prefs.dataSourceColors;
@@ -938,7 +969,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
         //console.log('prefs changed but none of them require re-query.', _oldQueryParams, _newQueryParams, queryParamChanged);
       }
     } else {
-      console.log('prefs changed but no requery', _oldQueryParams, _newQueryParams, queryParamChanged, this._graphComponentRendered);
+      //console.log('prefs changed but no requery', _oldQueryParams, _newQueryParams, queryParamChanged, this._graphComponentRendered);
     }
 
     // update view manually (for web components redraw reliability)

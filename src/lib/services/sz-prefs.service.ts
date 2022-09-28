@@ -856,7 +856,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _dataSourceColors: SzDataSourceComposite[] = [];
   /** @internal */
-  private _showMatchKeys: boolean = false;
+  private _showLinkLabels: boolean = false;
   /** @internal */
   private _rememberStateOptions: boolean = true;
   /** @internal */
@@ -880,9 +880,15 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _queriedEntitiesColor: string | undefined = "#465BA8";
   /** @internal */
+  private _linkColor: string | undefined = "#999";
+  /** @internal */
+  private _indirectLinkColor: string | undefined = "#999";
+  /** @internal */
   private _unlimitedMaxEntities: boolean = true;
   /** @internal */
   private _unlimitedMaxScope: boolean = false;
+  /** @internal */
+  private _suppressL1InterLinks: boolean = true;
 
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
@@ -891,7 +897,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     'openInNewTab',
     'openInSidePanel',
     'dataSourceColors',
-    'showMatchKeys',
+    'showLinkLabels',
     'rememberStateOptions',
     'maxDegreesOfSeparation',
     'maxEntities',
@@ -902,8 +908,11 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     'matchKeyCoreTokensIncluded',
     'neverFilterQueriedEntityIds',
     'queriedEntitiesColor',
+    'linkColor',
+    'indirectLinkColor',
     'unlimitedMaxEntities',
-    'unlimitedMaxScope'
+    'unlimitedMaxScope',
+    'suppressL1InterLinks'
   ]
 
   // -------------- getters and setters
@@ -935,12 +944,12 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
   }
   /** show match keys/edge labels on relationships */
-  public get showMatchKeys(): boolean {
-    return this._showMatchKeys;
+  public get showLinkLabels(): boolean {
+    return this._showLinkLabels;
   }
   /** show match keys/edge labels on relationships */
-  public set showMatchKeys(value: boolean) {
-    this._showMatchKeys = value;
+  public set showLinkLabels(value: boolean) {
+    this._showLinkLabels = value;
     if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
   }
   /** whether or not to publish change events on property value changes.
@@ -1038,6 +1047,24 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     this._queriedEntitiesColor = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
+  /** color of link lines */
+  public get linkColor(): string | undefined {
+    return this._linkColor;
+  }
+  /** color of link lines */
+  public set linkColor(value: string | undefined) {
+    this._linkColor = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** color of link lines that are not directly connected to a focal entity */
+  public get indirectLinkColor(): string | undefined {
+    return this._indirectLinkColor;
+  }
+  /** color of link lines that are not directly connected to a focal entity */
+  public set indirectLinkColor(value: string | undefined) {
+    this._indirectLinkColor = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
   /** whether or not to ignore the maxEntities value and always get 
    * all related entities */
   public get unlimitedMaxEntities(): boolean {
@@ -1058,6 +1085,17 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
    * build out to max */
   public set unlimitedMaxScope(value: boolean) {
     this._unlimitedMaxScope = value;
+    if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** whether or not to ignore the maxDegreesOfSeparation value and always get 
+   * build out to max */
+   public get suppressL1InterLinks(): boolean {
+    return this._suppressL1InterLinks;
+  }
+  /** whether or not to ignore the maxDegreesOfSeparation value and always get 
+   * build out to max */
+  public set suppressL1InterLinks(value: boolean) {
+    this._suppressL1InterLinks = value;
     if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
   }
 
