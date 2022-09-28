@@ -279,6 +279,11 @@
                                     <span class="modifier">Readonly</span>
                                 <a href="#WITH_RAW" >WITH_RAW</a>
                             </li>
+                            <li>
+                                    <span class="modifier">Static</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#WITHOUT_RAW" >WITHOUT_RAW</a>
+                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -330,10 +335,6 @@
                             <li>
                                     <span class="modifier">Static</span>
                                 <a href="#firstOrNull" >firstOrNull</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#getBoundingBoxForCanvas" >getBoundingBoxForCanvas</a>
                             </li>
                             <li>
                                     <span class="modifier">Static</span>
@@ -389,12 +390,6 @@
                             </li>
                             <li>
                                 <a href="#onLabelClick" >onLabelClick</a>
-                            </li>
-                            <li>
-                                <a href="#onLabelMouseOut" >onLabelMouseOut</a>
-                            </li>
-                            <li>
-                                <a href="#onLabelMouseOver" >onLabelMouseOver</a>
                             </li>
                             <li>
                                 <a href="#onLinkClick" >onLinkClick</a>
@@ -464,6 +459,9 @@
                                 <a href="#entityIds" >entityIds</a>
                             </li>
                             <li>
+                                <a href="#expandByDefaultWhenLessThan" >expandByDefaultWhenLessThan</a>
+                            </li>
+                            <li>
                                 <a href="#filter" >filter</a>
                             </li>
                             <li>
@@ -471,6 +469,9 @@
                             </li>
                             <li>
                                 <a href="#highlight" >highlight</a>
+                            </li>
+                            <li>
+                                <a href="#ignoreFilters" >ignoreFilters</a>
                             </li>
                             <li>
                                 <a href="#includes" >includes</a>
@@ -513,6 +514,9 @@
                             </li>
                             <li>
                                 <a href="#showLinkLabels" >showLinkLabels</a>
+                            </li>
+                            <li>
+                                <a href="#suppressL1InterLinks" >suppressL1InterLinks</a>
                             </li>
                             <li>
                                 <a href="#svgHeight" class="deprecated-name">svgHeight</a>
@@ -617,7 +621,13 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#class.not-showing-inter-link-lines" >class.not-showing-inter-link-lines</a>
+                            </li>
+                            <li>
                                 <a href="#class.not-showing-link-labels" >class.not-showing-link-labels</a>
+                            </li>
+                            <li>
+                                <a href="#class.showing-inter-link-lines" >class.showing-inter-link-lines</a>
                             </li>
                             <li>
                                 <a href="#class.showing-link-labels" >class.showing-link-labels</a>
@@ -642,6 +652,9 @@
                                     <a href="#rendered" >rendered</a>
                                 </li>
                                 <li>
+                                    <a href="#suppressL1InterLinks" >suppressL1InterLinks</a>
+                                </li>
+                                <li>
                                     <a href="#showLinkLabels" >showLinkLabels</a>
                                 </li>
                                 <li>
@@ -649,6 +662,12 @@
                                 </li>
                                 <li>
                                     <a href="#hidingLinkLabels" >hidingLinkLabels</a>
+                                </li>
+                                <li>
+                                    <a href="#showingInterLinkLines" >showingInterLinkLines</a>
+                                </li>
+                                <li>
+                                    <a href="#hidingInterLinkLines" >hidingInterLinkLines</a>
                                 </li>
                                 <li>
                                     <a href="#loadedData" >loadedData</a>
@@ -661,6 +680,9 @@
                                 </li>
                                 <li>
                                     <a href="#fixDraggedNodes" >fixDraggedNodes</a>
+                                </li>
+                                <li>
+                                    <a href="#focalEntities" >focalEntities</a>
                                 </li>
                                 <li>
                                     <a href="#entityIds" >entityIds</a>
@@ -691,6 +713,12 @@
                                 </li>
                                 <li>
                                     <a href="#zoomEnabled" >zoomEnabled</a>
+                                </li>
+                                <li>
+                                    <a href="#expandByDefaultWhenLessThan" >expandByDefaultWhenLessThan</a>
+                                </li>
+                                <li>
+                                    <a href="#ignoreFilters" >ignoreFilters</a>
                                 </li>
                                 <li>
                                     <a href="#maxZoom" >maxZoom</a>
@@ -735,7 +763,7 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(graphService: <a href="../interfaces/Graph.html" target="_self">EntityGraphService</a>, searchService: <a href="../injectables/SzSearchService.html" target="_self">SzSearchService</a>)</code>
+<code>constructor(graphService: <a href="../interfaces/Graph.html" target="_self">EntityGraphService</a>, searchService: <a href="../injectables/SzSearchService.html" target="_self">SzSearchService</a>, entityDataService: EntityDataService)</code>
                     </td>
                 </tr>
 
@@ -769,6 +797,18 @@
                                                   
                                                         <td>
                                                                         <code><a href="../injectables/SzSearchService.html" target="_self" >SzSearchService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>entityDataService</td>
+                                                  
+                                                        <td>
+                                                                    <code>EntityDataService</code>
                                                         </td>
                                                   
                                                     <td>
@@ -820,6 +860,29 @@
                 <tr>
                     <td class="col-md-4">
                         <div class="io-description"><p>Set the entityIds of the src entities to do discovery search around.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="expandByDefaultWhenLessThan"></a>
+                        <b>expandByDefaultWhenLessThan</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>when this value is set, if the initial amount of relationships is
+less than this number than all items are unhidden by default</p>
 </div>
                     </td>
                 </tr>
@@ -889,6 +952,29 @@ nodes that return true when the selectorFn is called on the node.</p>
                         <div class="io-description"><p>set a style or effect to apply to the display of nodes in graph that match any
 of the criteria set by &quot;&quot;.</p>
 <div><pre class="line-numbers"><code class="language-html">SzRelationshipNetworkComponent.highlight = {selectorFn: (node) =&gt; { return node.dataSources.indexOf(&#39;MY DATASOURCE&#39;) &gt; -1; }, modifierFn: (nodeList) =&gt; { nodeList.style(&#39;fill&#39;,&#39;orange&#39;); }}</code></pre></div></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ignoreFilters"></a>
+                        <b>ignoreFilters</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>if this value is set then we ignore all entity filtering regardless
+of whether or not the entity meets the condition</p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -1163,6 +1249,22 @@ of the criteria set by &quot;&quot;.</p>
                     <td class="col-md-4">
                         <a name="showLinkLabels"></a>
                         <b>showLinkLabels</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="suppressL1InterLinks"></a>
+                        <b>suppressL1InterLinks</b>
                     </td>
                 </tr>
                 <tr>
@@ -1744,10 +1846,52 @@ this event is emitted.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="class.not-showing-inter-link-lines"></a>
+                    <span class="name">
+                        <span ><b>class.not-showing-inter-link-lines</b></span>
+                        <a href="#class.not-showing-inter-link-lines"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="class.not-showing-link-labels"></a>
                     <span class="name">
                         <span ><b>class.not-showing-link-labels</b></span>
                         <a href="#class.not-showing-link-labels"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="class.showing-inter-link-lines"></a>
+                    <span class="name">
+                        <span ><b>class.showing-inter-link-lines</b></span>
+                        <a href="#class.showing-inter-link-lines"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -2515,39 +2659,6 @@ canvas directly.</p>
                     </div>
                     <div class="io-description">
                         
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getBoundingBoxForCanvas"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>getBoundingBoxForCanvas</b></span>
-                        <a href="#getBoundingBoxForCanvas"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getBoundingBoxForCanvas()</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
                     </div>
                 </td>
             </tr>
@@ -3499,132 +3610,6 @@ arrays of the entity ids found in the data that have that match key token presen
                     <div class="io-description"><p>handler for when a entity nodes text label is clicked.
 default behavior is to expand the text label if it has been
 truncated, and truncate it if it is over 15 chars long.</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>_d</td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="onLabelMouseOut"></a>
-                    <span class="name">
-                        <span ><b>onLabelMouseOut</b></span>
-                        <a href="#onLabelMouseOut"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>onLabelMouseOut(_d)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>handler for when a entity nodes text label is hovered over.
-default behavior is to truncate the text label if it has been
-truncated and not set to expanded through a click toggle.</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>_d</td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="onLabelMouseOver"></a>
-                    <span class="name">
-                        <span ><b>onLabelMouseOver</b></span>
-                        <a href="#onLabelMouseOver"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>onLabelMouseOver(_d)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>handler for when a entity nodes text label is hovered over.
-default behavior is to expand the text label if it has been
-truncated.</p>
 </div>
 
                     <div class="io-description">
@@ -5696,6 +5681,40 @@ keys categorized as &quot;derived&quot; type(s) are return value position[1].</p
 
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="WITHOUT_RAW"></a>
+                    <span class="name">
+                            <span class="modifier">Static</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>WITHOUT_RAW</b></span>
+                        <a href="#WITHOUT_RAW"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>do not return the raw data node in the payload</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
 </section>
 
     <section>
@@ -5734,6 +5753,65 @@ keys categorized as &quot;derived&quot; type(s) are return value position[1].</p
                     </td>
                 </tr>
 
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="suppressL1InterLinks"></a>
+                        <span class="name"><b>suppressL1InterLinks</b><a href="#suppressL1InterLinks"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>suppressL1InterLinks()</code></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>suppressL1InterLinks(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
             </tbody>
         </table>
         <table class="table table-sm table-bordered">
@@ -5824,6 +5902,40 @@ keys categorized as &quot;derived&quot; type(s) are return value position[1].</p
                 <tr>
                     <td class="col-md-4">
                         <span class="accessor"><b>get</b><code>hidingLinkLabels()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showingInterLinkLines"></a>
+                        <span class="name"><b>showingInterLinkLines</b><a href="#showingInterLinkLines"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>showingInterLinkLines()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="hidingInterLinkLines"></a>
+                        <span class="name"><b>hidingInterLinkLines</b><a href="#hidingInterLinkLines"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>hidingInterLinkLines()</code></span>
                     </td>
                 </tr>
 
@@ -6080,11 +6192,33 @@ used to set aspect ratio, centering etc for dynamic scaling.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="focalEntities"></a>
+                        <span class="name"><b>focalEntities</b><a href="#focalEntities"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>focalEntities()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="entityIds"></a>
                         <span class="name"><b>entityIds</b><a href="#entityIds"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>entityIds()</code></span>
+                    </td>
+                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -6694,6 +6828,154 @@ used to set aspect ratio, centering etc for dynamic scaling.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="expandByDefaultWhenLessThan"></a>
+                        <span class="name"><b>expandByDefaultWhenLessThan</b><a href="#expandByDefaultWhenLessThan"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>expandByDefaultWhenLessThan()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>when this value is set, if the initial amount of relationships is
+less than this number than all items are unhidden by default</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>expandByDefaultWhenLessThan(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>when this value is set, if the initial amount of relationships is
+less than this number than all items are unhidden by default</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ignoreFilters"></a>
+                        <span class="name"><b>ignoreFilters</b><a href="#ignoreFilters"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>ignoreFilters()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>if this value is set then we ignore all entity filtering regardless
+of whether or not the entity meets the condition</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>ignoreFilters(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>if this value is set then we ignore all entity filtering regardless
+of whether or not the entity meets the condition</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="maxZoom"></a>
                         <span class="name"><b>maxZoom</b><a href="#maxZoom"><span class="icon ion-ios-link"></span></a></span>
                     </td>
@@ -7182,7 +7464,7 @@ of the criteria set by &quot;&quot;.</p>
 
     <div class="tab-pane fade " id="c-templateData">
         <pre class="line-numbers"><code class="language-html">
-  &lt;div id&#x3D;&quot;kl-chart-container&quot; class&#x3D;&quot;chart-container&quot;&gt;
+  &lt;div class&#x3D;&quot;chart-container&quot;&gt;
     &lt;div id&#x3D;&quot;tooltip-container&quot; #tooltipContainer class&#x3D;&quot;tooltip-container&quot;&gt;
       &lt;div #tooltip id&#x3D;&quot;tooltip&quot;
       [style.top]&#x3D;&quot;toolTipPosTop+&#x27;px&#x27;&quot;
@@ -7307,6 +7589,17 @@ of the criteria set by &quot;&quot;.</p>
       }
     }
   }
+  &amp;.not-showing-inter-link-lines {
+    ::ng-deep svg.graph-chart {
+      .sz-graph-link, .sz-graph-link-label {
+        &amp;.not-touching-focal {
+          display: none !important;
+          opacity: .2;
+          stroke: rgb(98, 81, 112);
+        }
+      }
+    }
+  }
 }
 
 .sz-graph-node {
@@ -7315,6 +7608,15 @@ of the criteria set by &quot;&quot;.</p>
 
 .sz-graph-link-label {
   font-size: 10px;
+  paint-order: stroke;
+  stroke: #ffffff;
+  stroke-width: 4px;
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+  font-weight: 800;
+  fill: #565656;
+  letter-spacing: 2px;
+  line-height: 15px;
 }
 
 .sz-graph-bbox {
@@ -7358,22 +7660,6 @@ div.sz-graph-tooltip {
     display: block;
     width: 100%;
     height: 100%;
-    kl-components {
-      display: block;
-      width: 100%;
-      height: 100%;
-
-      kl-component {
-        display: block;
-        width: 100%;
-        height: 100%;
-      }
-    }
-
-    .kl-chart {
-      width: 100%;
-      height: 100%;
-    }
   }
 
   svg {
@@ -7436,7 +7722,7 @@ div.sz-graph-tooltip {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div>  <div id="kl-chart-container" class="chart-container">    <div id="tooltip-container" #tooltipContainer class="tooltip-container">      <div #tooltip id="tooltip"      [style.top]="toolTipPosTop+\'px\'"      [style.left]="toolTipPosLeft+\'px\'"      [style.opacity]=" this.tooltipShowing ? 1 : 0"      class="tooltip">        <!--<ng-container *ngTemplateOutlet="toolTipTemplate;context:toolTipData"></ng-container>-->      </div>    </div>    <!-- chart -->    <svg data-html2canvas-ignore #graphEle class="graph-chart"    [attr.preserveAspectRatio]="this.svgPreserveAspectRatio"    (contextmenu)="onRightClick($event)"    ><g #zoomEle></g></svg>  </div>  <div id="moreParent">    <div id="moreContainer">      <script id="tt_html" type="text/html">        <div id="tooltip" style="display: none; position: absolute; min-width: 70px; pointer-events: none;"             class="popover right">          <div class="arrow"></div>          <h2 class="popover-title"><strong>{{label}}</strong></h2>          <div class="popover-content">            <table class="table-condensed">              <tbody>              <tr>                <td style="text-align: right;"><strong>Gender</strong></td>                <td>{{gender}}</td>              </tr>              <tr>                <td style="text-align: right;"><strong>Name</strong></td>                <td>{{name}}</td>              </tr>              <tr>                <td style="text-align: right;"><strong>Surname</strong></td>                <td>{{surname}}</td>              </tr>              </tbody>            </table>          </div>        </div>      </script>    </div>  </div>  <div id="lazyScripts">  </div>  <!-- template for link -->  <ng-template #ttLink  let-matchKey="matchKey">      <div>{{matchKey}}</div>  </ng-template>  <!-- template for entity -->  <ng-template #ttEnt  let-label="label"  let-id="id"  let-orgName="orgName"  let-name="name"  let-gender="gender"  let-address="address"  let-phone="phone"  let-sources="sources"  let-sourcesString="sourcesString"  let-relatedEntities="relatedEntities">      <div>          <div class="arrow"></div>          <h2 class="popover-title"><strong>{{ label }}</strong></h2>          <div class="popover-content">            <table class="table-condensed">              <tbody>              <tr> <td class="tooltip-info-type"><strong>Entity_ID</strong></td> <td>{{id}}</td> </tr>              <tr>                <td class="tooltip-info-type"><strong>Sources</strong></td><td>                    <table>                      <tbody>                          <tr *ngFor="let source of sources">                            <td>{{source}}</td>                          </tr>                      </tbody>                    </table>                </td>              </tr>              <tr *ngIf="orgName"> <td class="tooltip-info-type"><strong>Name</strong></td> <td>{{orgName}}</td> </tr>              <tr *ngIf="!orgName && name"> <td class="tooltip-info-type"><strong>Name</strong></td> <td>{{name}}</td> </tr>              <tr *ngIf="gender"> <td class="tooltip-info-type"><strong>Gender</strong></td> <td>{{gender}}</td> </tr>              <tr *ngIf="address"> <td class="tooltip-info-type"><strong>Address</strong></td> <td>{{address}}</td> </tr>              <tr *ngIf="phone"> <td class="tooltip-info-type"><strong>Phone</strong></td> <td>{{phone}}</td> </tr>              <tr *ngIf="relatedEntities">                 <td class="tooltip-info-type"><strong>Related</strong></td><td>                  <table>                    <tbody>                        <tr *ngFor="let relatedEntity of relatedEntities">                          <td>{{relatedEntity}}</td>                        </tr>                    </tbody>                  </table>                </td>              </tr>              </tbody>            </table>          </div>        </div>  </ng-template>    <!--<svg data-html2canvas-ignore #graphEle class="graph-chart"-->    <!--[attr.viewBox]="this.svgViewBox"-->    <!--[attr.preserveAspectRatio]="this.svgPreserveAspectRatio"-->    <!--&gt;</svg>--></div>'
+        var COMPONENT_TEMPLATE = '<div>  <div class="chart-container">    <div id="tooltip-container" #tooltipContainer class="tooltip-container">      <div #tooltip id="tooltip"      [style.top]="toolTipPosTop+\'px\'"      [style.left]="toolTipPosLeft+\'px\'"      [style.opacity]=" this.tooltipShowing ? 1 : 0"      class="tooltip">        <!--<ng-container *ngTemplateOutlet="toolTipTemplate;context:toolTipData"></ng-container>-->      </div>    </div>    <!-- chart -->    <svg data-html2canvas-ignore #graphEle class="graph-chart"    [attr.preserveAspectRatio]="this.svgPreserveAspectRatio"    (contextmenu)="onRightClick($event)"    ><g #zoomEle></g></svg>  </div>  <div id="moreParent">    <div id="moreContainer">      <script id="tt_html" type="text/html">        <div id="tooltip" style="display: none; position: absolute; min-width: 70px; pointer-events: none;"             class="popover right">          <div class="arrow"></div>          <h2 class="popover-title"><strong>{{label}}</strong></h2>          <div class="popover-content">            <table class="table-condensed">              <tbody>              <tr>                <td style="text-align: right;"><strong>Gender</strong></td>                <td>{{gender}}</td>              </tr>              <tr>                <td style="text-align: right;"><strong>Name</strong></td>                <td>{{name}}</td>              </tr>              <tr>                <td style="text-align: right;"><strong>Surname</strong></td>                <td>{{surname}}</td>              </tr>              </tbody>            </table>          </div>        </div>      </script>    </div>  </div>  <div id="lazyScripts">  </div>  <!-- template for link -->  <ng-template #ttLink  let-matchKey="matchKey">      <div>{{matchKey}}</div>  </ng-template>  <!-- template for entity -->  <ng-template #ttEnt  let-label="label"  let-id="id"  let-orgName="orgName"  let-name="name"  let-gender="gender"  let-address="address"  let-phone="phone"  let-sources="sources"  let-sourcesString="sourcesString"  let-relatedEntities="relatedEntities">      <div>          <div class="arrow"></div>          <h2 class="popover-title"><strong>{{ label }}</strong></h2>          <div class="popover-content">            <table class="table-condensed">              <tbody>              <tr> <td class="tooltip-info-type"><strong>Entity_ID</strong></td> <td>{{id}}</td> </tr>              <tr>                <td class="tooltip-info-type"><strong>Sources</strong></td><td>                    <table>                      <tbody>                          <tr *ngFor="let source of sources">                            <td>{{source}}</td>                          </tr>                      </tbody>                    </table>                </td>              </tr>              <tr *ngIf="orgName"> <td class="tooltip-info-type"><strong>Name</strong></td> <td>{{orgName}}</td> </tr>              <tr *ngIf="!orgName && name"> <td class="tooltip-info-type"><strong>Name</strong></td> <td>{{name}}</td> </tr>              <tr *ngIf="gender"> <td class="tooltip-info-type"><strong>Gender</strong></td> <td>{{gender}}</td> </tr>              <tr *ngIf="address"> <td class="tooltip-info-type"><strong>Address</strong></td> <td>{{address}}</td> </tr>              <tr *ngIf="phone"> <td class="tooltip-info-type"><strong>Phone</strong></td> <td>{{phone}}</td> </tr>              <tr *ngIf="relatedEntities">                 <td class="tooltip-info-type"><strong>Related</strong></td><td>                  <table>                    <tbody>                        <tr *ngFor="let relatedEntity of relatedEntities">                          <td>{{relatedEntity}}</td>                        </tr>                    </tbody>                  </table>                </td>              </tr>              </tbody>            </table>          </div>        </div>  </ng-template>    <!--<svg data-html2canvas-ignore #graphEle class="graph-chart"-->    <!--[attr.viewBox]="this.svgViewBox"-->    <!--[attr.preserveAspectRatio]="this.svgPreserveAspectRatio"-->    <!--&gt;</svg>--></div>'
     var COMPONENTS = [{'name': 'SzAlertMessageDialog', 'selector': 'sz-alert-dialog'},{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzMultiSelectButtonComponent', 'selector': 'sz-button-multi-select'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipNetworkInputComponent', 'selector': 'sz-relationship-network-input'},{'name': 'SzRelationshipNetworkLookupComponent', 'selector': 'sz-relationship-network-lookup'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzRelationshipNetworkComponent'};
