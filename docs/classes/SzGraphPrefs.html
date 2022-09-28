@@ -165,7 +165,7 @@ this.prefs.graph.buildOut =  5;</code></pre></div><div><pre class="line-numbers"
                                     <a href="#dataSourceColors" >dataSourceColors</a>
                                 </li>
                                 <li>
-                                    <a href="#showMatchKeys" >showMatchKeys</a>
+                                    <a href="#showLinkLabels" >showLinkLabels</a>
                                 </li>
                                 <li>
                                     <a href="#rememberStateOptions" >rememberStateOptions</a>
@@ -198,10 +198,19 @@ this.prefs.graph.buildOut =  5;</code></pre></div><div><pre class="line-numbers"
                                     <a href="#queriedEntitiesColor" >queriedEntitiesColor</a>
                                 </li>
                                 <li>
+                                    <a href="#linkColor" >linkColor</a>
+                                </li>
+                                <li>
+                                    <a href="#indirectLinkColor" >indirectLinkColor</a>
+                                </li>
+                                <li>
                                     <a href="#unlimitedMaxEntities" >unlimitedMaxEntities</a>
                                 </li>
                                 <li>
                                     <a href="#unlimitedMaxScope" >unlimitedMaxScope</a>
+                                </li>
+                                <li>
+                                    <a href="#suppressL1InterLinks" >suppressL1InterLinks</a>
                                 </li>
                             </ul>
                         </td>
@@ -261,7 +270,7 @@ instead of the empty superclass</p>
     &#x27;openInNewTab&#x27;,
     &#x27;openInSidePanel&#x27;,
     &#x27;dataSourceColors&#x27;,
-    &#x27;showMatchKeys&#x27;,
+    &#x27;showLinkLabels&#x27;,
     &#x27;rememberStateOptions&#x27;,
     &#x27;maxDegreesOfSeparation&#x27;,
     &#x27;maxEntities&#x27;,
@@ -272,8 +281,11 @@ instead of the empty superclass</p>
     &#x27;matchKeyCoreTokensIncluded&#x27;,
     &#x27;neverFilterQueriedEntityIds&#x27;,
     &#x27;queriedEntitiesColor&#x27;,
+    &#x27;linkColor&#x27;,
+    &#x27;indirectLinkColor&#x27;,
     &#x27;unlimitedMaxEntities&#x27;,
-    &#x27;unlimitedMaxScope&#x27;
+    &#x27;unlimitedMaxScope&#x27;,
+    &#x27;suppressL1InterLinks&#x27;
   ]</code>
                     </td>
                 </tr>
@@ -791,14 +803,14 @@ notifications.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="showMatchKeys"></a>
-                        <span class="name"><b>showMatchKeys</b><a href="#showMatchKeys"><span class="icon ion-ios-link"></span></a></span>
+                        <a name="showLinkLabels"></a>
+                        <span class="name"><b>showLinkLabels</b><a href="#showLinkLabels"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>showMatchKeys()</code></span>
+                        <span class="accessor"><b>get</b><code>showLinkLabels()</code></span>
                     </td>
                 </tr>
                     <tr>
@@ -815,7 +827,7 @@ notifications.</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>showMatchKeys(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                        <span class="accessor"><b>set</b><code>showLinkLabels(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
                     </td>
                 </tr>
                     <tr>
@@ -1585,6 +1597,150 @@ useful for not getting notified on bulk property sets.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="linkColor"></a>
+                        <span class="name"><b>linkColor</b><a href="#linkColor"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>linkColor()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>color of link lines</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>string | undefined</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>linkColor(value: string | undefined)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>color of link lines</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code>string | undefined</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="indirectLinkColor"></a>
+                        <span class="name"><b>indirectLinkColor</b><a href="#indirectLinkColor"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>indirectLinkColor()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>color of link lines that are not directly connected to a focal entity</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>string | undefined</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>indirectLinkColor(value: string | undefined)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>color of link lines that are not directly connected to a focal entity</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code>string | undefined</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="unlimitedMaxEntities"></a>
                         <span class="name"><b>unlimitedMaxEntities</b><a href="#unlimitedMaxEntities"><span class="icon ion-ios-link"></span></a></span>
                     </td>
@@ -1685,6 +1841,80 @@ build out to max</p>
                 <tr>
                     <td class="col-md-4">
                         <span class="accessor"><b>set</b><code>unlimitedMaxScope(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>whether or not to ignore the maxDegreesOfSeparation value and always get
+build out to max</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="suppressL1InterLinks"></a>
+                        <span class="name"><b>suppressL1InterLinks</b><a href="#suppressL1InterLinks"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>suppressL1InterLinks()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>whether or not to ignore the maxDegreesOfSeparation value and always get
+build out to max</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>suppressL1InterLinks(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
                     </td>
                 </tr>
                     <tr>
