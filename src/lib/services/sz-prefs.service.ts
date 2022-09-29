@@ -4,6 +4,7 @@ import { takeUntil, debounce } from 'rxjs/operators';
 import { SzDataSourceComposite } from '../models/data-sources';
 import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio } from '../models/folio';
 import { AdminStreamAnalysisConfig, AdminStreamConnProperties, AdminStreamLoadConfig } from '../models/data-admin';
+import { SzMatchKeyTokenFilterScope } from '../models/graph';
 //import { Configuration as SzRestConfiguration, ConfigurationParameters as SzRestConfigurationParameters } from '@senzing/rest-api-client-ng';
 
 /**
@@ -889,6 +890,8 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   private _unlimitedMaxScope: boolean = false;
   /** @internal */
   private _suppressL1InterLinks: boolean = true;
+  /** @internal */
+  private _matchKeyTokenSelectionScope: SzMatchKeyTokenFilterScope = SzMatchKeyTokenFilterScope.CORE;
 
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
@@ -912,7 +915,8 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     'indirectLinkColor',
     'unlimitedMaxEntities',
     'unlimitedMaxScope',
-    'suppressL1InterLinks'
+    'suppressL1InterLinks',
+    'matchKeyTokenSelectionScope'
   ]
 
   // -------------- getters and setters
@@ -1098,6 +1102,20 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     this._suppressL1InterLinks = value;
     if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
   }
+  /** whether or not match key token filtering should apply to ALL entities
+   * OR just relationships that are directly related to the focal entity
+   */
+   public get matchKeyTokenSelectionScope(): SzMatchKeyTokenFilterScope {
+    return this._matchKeyTokenSelectionScope;
+  }
+  /** whether or not match key token filtering should apply to ALL entities
+   * OR just relationships that are directly related to the focal entity
+   */
+  public set matchKeyTokenSelectionScope(value: SzMatchKeyTokenFilterScope) {
+    this._matchKeyTokenSelectionScope = value;
+    if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject() );
+  }
+  
 
   /**
    * publish out a "first" real payload so that

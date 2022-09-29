@@ -558,7 +558,10 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     this.queriedEntitiesColor   = prefs.queriedEntitiesColor;
     this.linkColor              = prefs.linkColor;
     this.indirectLinkColor      = prefs.indirectLinkColor;
-    //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onPrefsChange(): ', prefs, this.dataSourceColors);
+    this.matchKeyTokenSelectionScope  = prefs.matchKeyTokenSelectionScope;
+    //this._matchKeyTokenSelectionScope = prefs.matchKeyTokenSelectionScope;
+
+    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onPrefsChange(): ', prefs, this.dataSourceColors);
     // update view manually (for web components redraw reliability)
     this.cd.detectChanges();
   }
@@ -665,7 +668,8 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
       });
       //console.log('onMatchKeyCoreModeToggle2: ', _matchKeyCoreTokensIncludedMemCopy, this.prefs.graph.matchKeyTokensIncluded);
     }
-    this._matchKeyTokenSelectionScope = (!isCoreMode) ? SzMatchKeyTokenFilterScope.EXTRANEOUS : SzMatchKeyTokenFilterScope.CORE;
+    //this._matchKeyTokenSelectionScope = (!isCoreMode) ? SzMatchKeyTokenFilterScope.EXTRANEOUS : SzMatchKeyTokenFilterScope.CORE;
+    this.prefs.graph.matchKeyTokenSelectionScope = (!isCoreMode) ? SzMatchKeyTokenFilterScope.EXTRANEOUS : SzMatchKeyTokenFilterScope.CORE;
     this._onMatchKeyTokenSelectionScopeChange.next( this._matchKeyTokenSelectionScope );
   }
   /** this event handler proxies the internal "_onMatchKeyTokenSelectionScopeChange" event 
