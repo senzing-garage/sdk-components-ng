@@ -1456,6 +1456,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
 
       }catch(err){}
     }
+    this._requestStarted.next(true);
+    this._dataRequested.next(true);
+
     let entityRequest = this.entityDataService.getEntityByEntityId(
       entityId as number,
       SzDetailLevel.SUMMARY,
