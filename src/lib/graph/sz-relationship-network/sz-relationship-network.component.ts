@@ -17,7 +17,8 @@ import {
   SzEntityPath, 
   SzEntityIdentifiers, 
   SzDetailLevel,
-  SzEntityResponse
+  SzEntityResponse,
+  SzRecordIdentifier
 } from '@senzing/rest-api-client-ng';
 import { map, tap, first, takeUntil, take, filter } from 'rxjs/operators';
 import { Subject, Observable, BehaviorSubject, of, forkJoin } from 'rxjs';
@@ -350,8 +351,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     }
     // copy over new entity id's to "focalEntities"
     let uniqueEntityIds = this._entityIds && this._entityIds.filter ? this._entityIds.filter((eId) => {
-      return this._focalEntities.indexOf(eId) <= -1;
-    }) : [];
+      return this._focalEntities.indexOf(parseSzIdentifier(eId)) <= -1;
+    }).map(parseSzIdentifier) : [];
     this._focalEntities = this._focalEntities.concat(uniqueEntityIds);
     if(this.reloadOnIdChange && this._entityIds && this._entityIds.some( (eId) => { return _oldIds && _oldIds.indexOf(eId) < 0; })) {
       this.reload( this._entityIds.map((eId) => { return parseInt(eId); }) );
@@ -1016,7 +1017,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
 
     let hiddenNodes                 = this.getHiddenNodeIds(this.node);
     this.node.each(this.updateHasCollapsedRelationships.bind(this, this.node))
-    .attr('class', this.getEntityNodeClass);
+    .attr('class', this.getEntityNodeClass.bind(this));
 
     // update counts
     this.updateHiddenRelationshipCounts(this.node);
@@ -1246,7 +1247,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
 
     let hiddenNodes                 = this.getHiddenNodeIds(this.node);
     this.node.each(this.updateHasCollapsedRelationships.bind(this, this.node))
-    .attr('class', this.getEntityNodeClass);
+    .attr('class', this.getEntityNodeClass.bind(this));
 
     // update counts
     this.updateHiddenRelationshipCounts(this.node);
@@ -2174,7 +2175,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
             _newNodes.each(this.updateHasCollapsedRelationships.bind(this, _newNodes))
                   
             // update initial visibility state
-            _newNodes.attr('class', this.getEntityNodeClass);
+            _newNodes.attr('class', this.getEntityNodeClass.bind(this));
             
             // Adds a background underneath the node labels.  This label is mostly opaque so that the label is still legible in
             // busy areas of a network.
@@ -2271,13 +2272,13 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
             .attr("y", -20)
             .attr("height", 50)
             .attr("width", 50)
-            .attr('class', this.getEntityNodeClass);
+            .attr('class', this.getEntityNodeClass.bind(this));
 
           // --- add expand/collapse glyph
             // update entities with collapsed relationship information
             _newNodes.each(this.updateHasCollapsedRelationships.bind(this, _newNodes))
             // update initial visibility state
-            _newNodes.attr('class', this.getEntityNodeClass);
+            _newNodes.attr('class', this.getEntityNodeClass.bind(this));
             
             let _nodesWithCollapsibleRelationships = _newNodes.filter(d => !d.allRelatedEntitiesOnDeck || d.hasCollapsibleRelationships || (d.hasRelatedEdges && d.numberRelated > 1));
             if(_nodesWithCollapsibleRelationships) {
@@ -2407,7 +2408,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       this.updateHiddenRelationshipCounts(_nodes);
       
       // update initial visibility state
-      _nodes.attr('class', this.getEntityNodeClass);
+      _nodes.attr('class', this.getEntityNodeClass.bind(this));
 
       return {
         node: _nodes,
@@ -2429,7 +2430,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       if(!d.allRelatedEntitiesOnDeck) {
         // get all related entities
         d.loadingRelatedToDeck = true;
-        this.getNodeByIdQuery(d.entityId).attr('class', this.getEntityNodeClass);
+        this.getNodeByIdQuery(d.entityId).attr('class', this.getEntityNodeClass.bind(this));
         this.getNextLayerForEntities(d.relatedEntities, d.entityId).pipe(
           take(1),
           map(this.asGraph.bind(this)),
@@ -2513,7 +2514,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       this.updateHiddenRelationshipCounts(this.node);
       
       // update initial visibility state
-      this.node.attr('class', this.getEntityNodeClass);
+      this.node.attr('class', this.getEntityNodeClass.bind(this));
 
       // on first draw we position the nodes so
       // that the user can see all of them
@@ -2690,8 +2691,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     let _collapsedNodesClass    = (_d.numberRelatedHidden > 0 || !_d.allRelatedEntitiesOnDeck) ?  ['has-collapsed-edges']   : [];
     let _classes                = [].
                                   concat(_d.relationTypeClasses).
+                                  concat(_d.dataSourceClasses).
                                   concat(_collapsedNodesClass).
-                                  concat(_visibilityClass);
+                                  concat(_visibilityClass)
     if(_d.isQueriedNode) {
       _classes.push('sz-graph-queried-node');
     } else if(_d.isCoreNode) {
@@ -2701,6 +2703,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     }
     if(_d.isPrimaryEntity) {
       _classes.push('sz-graph-primary-node')
+    }
+    if(this._focalEntities && this._focalEntities.indexOf && this._focalEntities.indexOf(parseSzIdentifier(_d.entityId)) > -1){
+      _classes.push('sz-graph-focused-node');
     }
     if(!_d.hasCollapsedRelationships && _d.numberRelated > 1) {
       _classes.push('sz-graph-all-related-visible');
@@ -3392,6 +3397,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       }
 
       const relColorClasses = [];
+      let dataSourceClasses = [];
       if(relatedEntRels && relatedEntRels.length) {
         //console.log('get color classes: ', relatedEntRels);
         relatedEntRels.forEach( (relEnt) => {
@@ -3404,6 +3410,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       } else {
         //console.warn('no related ent rels for #'+ resolvedEntity.entityId +'.', entNode.relatedEntities, relatedEntRels);
       }
+      if(resolvedEntity.recordSummaries && resolvedEntity.recordSummaries.map) {
+        dataSourceClasses = resolvedEntity.recordSummaries && resolvedEntity.recordSummaries.map ? resolvedEntity.recordSummaries.map((ds) => { return (ds.dataSource && ds.dataSource.toLowerCase) ? `sz-node-ds-${ds.dataSource.toLowerCase()}`:`sz-node-ds-${ds.dataSource}`; }) : undefined;
+      }
 
       // entitities who use this entity as it's source
       // Create Node
@@ -3413,7 +3422,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         address: resolvedEntity.addressData && resolvedEntity.addressData.length > 0 ? resolvedEntity.addressData[0] : SzRelationshipNetworkComponent.firstOrNull(features, "ADDRESS"),
         areAllRelatedEntitiesOnDeck: false,
         coreRelationshipMatchKeyTokens: coreRelatedMatchKeyCategories,
-        dataSources: resolvedEntity.recordSummaries && resolvedEntity.recordSummaries.map ? resolvedEntity.recordSummaries.map((ds) =>  ds.dataSource ) : undefined,
+        dataSources: resolvedEntity.recordSummaries && resolvedEntity.recordSummaries.map ? resolvedEntity.recordSummaries.map((ds) =>  ds.dataSource ) : undefined, 
+        dataSourceClasses: dataSourceClasses,
         entityId: entityId,
         hasCollapsedRelationships: relatedToPrimaryEntityDirectly && (relatedEntities && relatedEntities.length > 0),
         hasCollapsibleRelationships: hasCollapsibleRelationships,

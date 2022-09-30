@@ -18,6 +18,19 @@ body {
         stroke: #474747;
       }
     }
+
+    &.sz-graph-primary-node {
+      fill: var(--sz-graph-primary-entity-color);
+      .sz-graph-node-icon {
+        fill: var(--sz-graph-primary-entity-color);
+      }
+    }
+    &.sz-graph-focused-node {
+      fill: var(--sz-graph-focused-entity-color);
+      .sz-graph-node-icon {
+        fill: var(--sz-graph-focused-entity-color);
+      }
+    }
   }
 
   // for core non-removable nodes we dont want to show

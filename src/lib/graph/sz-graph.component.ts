@@ -8,6 +8,7 @@ import { SzGraphNodeFilterPair, SzEntityNetworkMatchKeyTokens, SzMatchKeyTokenCo
 import { SzRelationshipNetworkComponent } from './sz-relationship-network/sz-relationship-network.component';
 import { parseBool, parseSzIdentifier, sortDataSourcesByIndex } from '../common/utils';
 import { SzDataSourceComposite } from '../models/data-sources';
+import { SzCSSClassService } from '../services/sz-css-class.service';
 
 /**
  * Embeddable Graph Component
@@ -781,7 +782,8 @@ export class SzGraphComponent implements OnInit, OnDestroy {
 
   constructor(
     public prefs: SzPrefsService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private cssClassesService: SzCSSClassService
   ) {}
 
   /**
@@ -932,8 +934,20 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       if(prefs.indirectLinkColor) {
         this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-link-line-non-focused-color', prefs.indirectLinkColor);
       }
+      if(prefs.focusedEntitiesColor) {
+        this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-focused-entity-color', prefs.focusedEntitiesColor);
+      }
       if(prefs.queriedEntitiesColor) {
-        this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-focused-entity-color', prefs.queriedEntitiesColor);
+        this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-queried-entity-color', prefs.queriedEntitiesColor);
+      }
+      if(prefs.dataSourceColors) {
+        //console.warn('doing ds colors!! ');
+        prefs.dataSourceColors.forEach((dsColorEntry: SzDataSourceComposite) => {
+          this.cssClassesService.setStyle(`.sz-node-ds-${dsColorEntry.name.toLowerCase()}`, "fill", dsColorEntry.color);
+          this.cssClassesService.setStyle(`.sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon`, "fill", dsColorEntry.color);
+
+          //console.log(`\tadded ".sz-node-ds-${dsColorEntry.name.toLowerCase()}" class`);
+        })
       }
     }
 

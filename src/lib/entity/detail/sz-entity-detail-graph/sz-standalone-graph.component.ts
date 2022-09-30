@@ -8,6 +8,7 @@ import { SzWhyEntitiesDialog } from '../../../why/sz-why-entities.component';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { MatDialog } from '@angular/material/dialog';
 import { SzMatchKeyTokenFilterScope } from '../../../models/graph';
+import { SzCSSClassService } from '../../../services/sz-css-class.service';
 
 /**
  * Embeddable Graph Component
@@ -102,11 +103,12 @@ export class SzStandaloneGraphComponent extends SzGraphComponent implements Afte
   constructor(
     public _p_prefs: SzPrefsService,
     private _p_cd: ChangeDetectorRef,
+    private _p_css: SzCSSClassService,
     public overlay: Overlay,
     public dialog: MatDialog,
     public viewContainerRef: ViewContainerRef
   ) {
-    super(_p_prefs, _p_cd)
+    super(_p_prefs, _p_cd, _p_css)
   }
 
   ngAfterViewInit() {

@@ -517,6 +517,9 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     console.log('onColorParameterChange: ', prefName, value, this.prefs.graph.suppressL1InterLinks);
     try {
       this.prefs.graph[prefName] = value;
+      if(prefName === 'queriedEntitiesColor'){
+        this.prefs.graph.focusedEntitiesColor
+      }
     } catch(err) {}
   }
   /** handler method for when a basic bool pref should be toggled */
