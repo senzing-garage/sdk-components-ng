@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [5.1.1] - 2022-09-28
+## [5.1.1] - 2022-10-03
 
 
 ### Added
@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Graph entity name label no longer clips with ellipsis.
 - Graph entity name now performs a hard word wrap to display the full name on multiple lines
 
-relevant tickets: #309 #364 #383 #407 #413 #414 #415 #417 #422 #423
+relevant tickets: #309 #364 #383 #407 #413 #414 #415 #416 #417 #422 #423
 
 
 ## [5.1.0] - 2022-07-27
