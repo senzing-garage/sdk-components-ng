@@ -940,13 +940,15 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       if(prefs.queriedEntitiesColor) {
         this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-queried-entity-color', prefs.queriedEntitiesColor);
       }
-      if(prefs.dataSourceColors) {
-        //console.warn('doing ds colors!! ');
-        prefs.dataSourceColors.forEach((dsColorEntry: SzDataSourceComposite) => {
+      if(prefs.dataSourceColors && prefs.dataSourceColors.sort) {
+        let sorted = Array.from(prefs.dataSourceColors)
+        .sort((dsColorEntry1: SzDataSourceComposite, dsColorEntry2: SzDataSourceComposite) => {
+          let retVal = dsColorEntry1.index > dsColorEntry2.index ? -1 : (dsColorEntry1.index < dsColorEntry2.index) ? 1 : 0 ;
+          return retVal;
+        })
+        .forEach((dsColorEntry: SzDataSourceComposite) => {
           this.cssClassesService.setStyle(`.sz-node-ds-${dsColorEntry.name.toLowerCase()}`, "fill", dsColorEntry.color);
           this.cssClassesService.setStyle(`.sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon`, "fill", dsColorEntry.color);
-
-          //console.log(`\tadded ".sz-node-ds-${dsColorEntry.name.toLowerCase()}" class`);
         })
       }
     }
