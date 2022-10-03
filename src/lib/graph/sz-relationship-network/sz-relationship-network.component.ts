@@ -1367,9 +1367,6 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       //this.getNetwork(this._entityIds, this._maxDegrees, _maxBuildOut, _maxEntities).pipe(
         takeUntil(this.unsubscribe$),
         first(),
-        tap( (resp: any) => {
-          console.info('getNetwork()', resp);
-        }),
         map( this.asGraphInputs.bind(this) ),
         tap( (gdata: SzNetworkGraphInputs) => {
           //console.warn('SzRelationshipNetworkGraph: g1 = ', gdata);
@@ -1507,7 +1504,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       let entityResp    = responses[0] as SzEntityResponse;
       let networkResp   = responses[1] as SzEntityNetworkResponse;
       let modifiedResp  = this.mergeEntityResponseWithNetworkResponse(entityResp, networkResp);
-      console.info('getNetworkComposite: ', responses, modifiedResp);
+      //console.info('getNetworkComposite: ', responses, modifiedResp);
 
       if(console.time){
         try {
@@ -3246,7 +3243,6 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         relatedToPrimaryEntities = relatedToPrimaryEntities.concat( entNode.relatedEntities.map((relEnt) => { return relEnt.entityId; }) );
       }
     });
-    console.log('SzRelationshipNetworkGraph.asGraph: ', inputs, data, entitiesData, entityPaths, primaryEntityIds);
 
     // Identify queried nodes and the nodes and links that connect them.
     entityPaths.forEach( (entPath) => {

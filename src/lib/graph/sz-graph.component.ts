@@ -28,7 +28,7 @@ import { SzCSSClassService } from '../services/sz-css-class.service';
           [showFiltersControl]="false"
           [filterControlPosition]="'top-right'"
           (entityClick)="onGraphEntityClick($event)"
-          [showMatchKeys]="true"
+          [showLinkLabels]="true"
       ></sz-graph>
  *
  * @example <!-- (WC) by attribute -->
@@ -39,7 +39,7 @@ import { SzCSSClassService } from '../services/sz-css-class.service';
           show-match-key-control="false"
           show-filters-control="false"
           filter-control-position="top-right"
-          show-match-keys="true"
+          show-link-labels="true"
       ></sz-wc-graph>
  *
  * @example <!-- (WC) by DOM -->
@@ -624,12 +624,10 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       this.clearMatchKeyFilters();
       this.matchKeysChange.emit( SzRelationshipNetworkComponent.getMatchKeysFromEntityNetworkData(inputs.data) )
       this.matchKeyTokensChange.emit( matchKeyTokens );
-      console.log('onGraphDataLoaded: ', _matchKeyTokens, this.filterShowMatchKeyTokens, inputs);
     }
     if(inputs.data) {
       this.dataLoaded.emit( inputs.data );
     }
-    console.log('onGraphDataLoaded setter: ', inputs);
   }
   /**
    * when new data has been added to the initial data request
@@ -723,7 +721,6 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   }
 
   public onOptionChange(event: {name: string, value: any}) {
-    console.log('onOptionChange: ', event);
     switch(event.name) {
       case 'showLinkLabels':
         this.showLinkLabels = event.value;

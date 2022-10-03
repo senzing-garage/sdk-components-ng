@@ -30,7 +30,6 @@ export class SzCSSClassService {
       .find(s => s.title === this._styleSheetTitle);
 
       if(!this._styleSheet) {
-        console.warn('initialized dyn css block');
         this._styleSheet = this.initCssBlock();
       }
     }
@@ -44,7 +43,6 @@ export class SzCSSClassService {
   private initCssBlock(): CSSStyleSheet {
     // Create the style sheet element.
     let cssEle = document.createElement("style");
-    cssEle.type   = "text/css";
     cssEle.title  = this._styleSheetTitle;
 
     // Append the style sheet element to the head.

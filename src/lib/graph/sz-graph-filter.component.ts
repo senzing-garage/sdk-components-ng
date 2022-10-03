@@ -180,7 +180,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
         // assume it's already cast correctly
         this._matchKeyTokenSelectionScope = (value as SzMatchKeyTokenFilterScope);
     }
-    console.log(`@senzing/sdk-components-ng/sz-graph-filter.matchKeyTokenSelectionScope(${value} | ${(this._matchKeyTokenSelectionScope as unknown as string)})`, this._matchKeyTokenSelectionScope);
+    //console.log(`@senzing/sdk-components-ng/sz-graph-filter.matchKeyTokenSelectionScope(${value} | ${(this._matchKeyTokenSelectionScope as unknown as string)})`, this._matchKeyTokenSelectionScope);
   }
   /**
    * get the value of match key token filterings scope. possible values are 
@@ -548,7 +548,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
 
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    this._showLinkLabels        = prefs.showMatchKeys;
+    this._showLinkLabels        = prefs.showLinkLabels;
     this._suppressL1InterLinks  = prefs.suppressL1InterLinks
     this.maxDegreesOfSeparation = prefs.maxDegreesOfSeparation;
     this.maxEntities            = prefs.maxEntities;
@@ -763,13 +763,6 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     }
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.removeAllMatchKeyControls: ', this.filterByMatchKeysData, this.matchKeysIncluded);
   }
-  /*
-  private removeAllMatchKeyTokenControls() {
-    while(this.filterByMatchKeyTokenData.length > 0){
-      this.filterByMatchKeyTokenData.removeAt(this.filterByMatchKeyTokenData.length - 1);
-    }
-    //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.removeAllMatchKeyControls: ', this.filterByMatchKeysData, this.matchKeysIncluded);
-  }*/
 
   private initializeMatchKeysFormControls() {
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.initializeMatchKeysFormControls: ', this.matchKeys, this.showMatchKeys, this.matchKeysIncluded);
@@ -786,22 +779,6 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
       });
     }
   }
-  /*
-  private initializeMatchKeyTokenFormControls() {
-    console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.initializeMatchKeysFormControls: ', this.matchKeyTokens, this.showMatchKeyTokens, this.matchKeyTokensIncluded);
-    if(this.matchKeyTokens) {
-      // remove old controls
-      this.removeAllMatchKeyTokenControls();
-
-      // init form controls for filter by match keys
-      this.matchKeyTokens.forEach((o, i) => {
-        const mkFilterVal = (this.matchKeyTokensIncluded.indexOf(o.name) >= 0);
-        const control1 = new FormControl(mkFilterVal); // if first item set to true, else false
-        // add control for filtered by list
-        (this.filterByMatchKeyTokensForm.controls['matchkeytokens'] as FormArray).push(control1);
-      });
-    }
-  }*/
 
   /** helper method for retrieving list of datasources */
   public getDataSources() {
