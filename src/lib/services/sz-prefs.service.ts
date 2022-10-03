@@ -881,6 +881,8 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _queriedEntitiesColor: string | undefined = "#465BA8";
   /** @internal */
+  private _focusedEntitiesColor: string | undefined = "#465BA8";
+  /** @internal */
   private _linkColor: string | undefined = "#999";
   /** @internal */
   private _indirectLinkColor: string | undefined = "#999";
@@ -911,6 +913,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     'matchKeyCoreTokensIncluded',
     'neverFilterQueriedEntityIds',
     'queriedEntitiesColor',
+    'focusedEntitiesColor',
     'linkColor',
     'indirectLinkColor',
     'unlimitedMaxEntities',
@@ -1049,6 +1052,15 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** color of active or queried for entity or entitities */
   public set queriedEntitiesColor(value: string | undefined) {
     this._queriedEntitiesColor = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** color of focused/expanded entity or entitities */
+  public get focusedEntitiesColor(): string | undefined {
+    return this._focusedEntitiesColor;
+  }
+  /** color of focused/expanded entity or entitities */
+  public set focusedEntitiesColor(value: string | undefined) {
+    this._focusedEntitiesColor = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** color of link lines */

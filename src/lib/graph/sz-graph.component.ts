@@ -8,6 +8,7 @@ import { SzGraphNodeFilterPair, SzEntityNetworkMatchKeyTokens, SzMatchKeyTokenCo
 import { SzRelationshipNetworkComponent } from './sz-relationship-network/sz-relationship-network.component';
 import { parseBool, parseSzIdentifier, sortDataSourcesByIndex } from '../common/utils';
 import { SzDataSourceComposite } from '../models/data-sources';
+import { SzCSSClassService } from '../services/sz-css-class.service';
 
 /**
  * Embeddable Graph Component
@@ -27,7 +28,7 @@ import { SzDataSourceComposite } from '../models/data-sources';
           [showFiltersControl]="false"
           [filterControlPosition]="'top-right'"
           (entityClick)="onGraphEntityClick($event)"
-          [showMatchKeys]="true"
+          [showLinkLabels]="true"
       ></sz-graph>
  *
  * @example <!-- (WC) by attribute -->
@@ -38,7 +39,7 @@ import { SzDataSourceComposite } from '../models/data-sources';
           show-match-key-control="false"
           show-filters-control="false"
           filter-control-position="top-right"
-          show-match-keys="true"
+          show-link-labels="true"
       ></sz-wc-graph>
  *
  * @example <!-- (WC) by DOM -->
@@ -623,12 +624,10 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       this.clearMatchKeyFilters();
       this.matchKeysChange.emit( SzRelationshipNetworkComponent.getMatchKeysFromEntityNetworkData(inputs.data) )
       this.matchKeyTokensChange.emit( matchKeyTokens );
-      console.log('onGraphDataLoaded: ', _matchKeyTokens, this.filterShowMatchKeyTokens, inputs);
     }
     if(inputs.data) {
       this.dataLoaded.emit( inputs.data );
     }
-    console.log('onGraphDataLoaded setter: ', inputs);
   }
   /**
    * when new data has been added to the initial data request
@@ -722,7 +721,6 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   }
 
   public onOptionChange(event: {name: string, value: any}) {
-    console.log('onOptionChange: ', event);
     switch(event.name) {
       case 'showLinkLabels':
         this.showLinkLabels = event.value;
@@ -781,7 +779,8 @@ export class SzGraphComponent implements OnInit, OnDestroy {
 
   constructor(
     public prefs: SzPrefsService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private cssClassesService: SzCSSClassService
   ) {}
 
   /**
@@ -932,8 +931,22 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       if(prefs.indirectLinkColor) {
         this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-link-line-non-focused-color', prefs.indirectLinkColor);
       }
+      if(prefs.focusedEntitiesColor) {
+        this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-focused-entity-color', prefs.focusedEntitiesColor);
+      }
       if(prefs.queriedEntitiesColor) {
-        this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-focused-entity-color', prefs.queriedEntitiesColor);
+        this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-queried-entity-color', prefs.queriedEntitiesColor);
+      }
+      if(prefs.dataSourceColors && prefs.dataSourceColors.sort) {
+        let sorted = Array.from(prefs.dataSourceColors)
+        .sort((dsColorEntry1: SzDataSourceComposite, dsColorEntry2: SzDataSourceComposite) => {
+          let retVal = dsColorEntry1.index > dsColorEntry2.index ? -1 : (dsColorEntry1.index < dsColorEntry2.index) ? 1 : 0 ;
+          return retVal;
+        })
+        .forEach((dsColorEntry: SzDataSourceComposite) => {
+          this.cssClassesService.setStyle(`.sz-node-ds-${dsColorEntry.name.toLowerCase()}`, "fill", dsColorEntry.color);
+          this.cssClassesService.setStyle(`.sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon`, "fill", dsColorEntry.color);
+        })
       }
     }
 

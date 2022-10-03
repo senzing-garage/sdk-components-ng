@@ -25,6 +25,7 @@ import { SzPrefsService } from './services/sz-prefs.service';
 import { SzDataSourcesService } from './services/sz-datasources.service';
 import { SzAdminService } from './services/sz-admin.service';
 import { SzBulkDataService } from './services/sz-bulk-data.service';
+import { SzCSSClassService } from './services/sz-css-class.service';
 
 /** components */
 import { SzMultiSelectButtonComponent } from './shared/multi-select-button/multi-select-button.component';
@@ -209,6 +210,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzAdminService,
     SzBulkDataService,
     SzConfigurationService,
+    SzCSSClassService,
     SzDataSourcesService,
     SzFoliosService,
     SzPrefsService,

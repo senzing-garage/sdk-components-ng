@@ -6,6 +6,7 @@ import {
 import { SzGraphNodeFilterPair, SzNetworkGraphInputs } from '../../../models/graph';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
 import { SzGraphComponent } from '../../../graph/sz-graph.component';
+import { SzCSSClassService } from '../../../services/sz-css-class.service';
 
 /**
  * @internal
@@ -74,9 +75,10 @@ export class SzEntityDetailGraphComponent extends SzGraphComponent {
 
   constructor(
     public _p_prefs: SzPrefsService,
-    private _p_cd: ChangeDetectorRef
+    private _p_cd: ChangeDetectorRef,
+    private _p_css: SzCSSClassService
   ) {
-    super(_p_prefs, _p_cd)
+    super(_p_prefs, _p_cd, _p_css)
   }
 
   /** toggle collapsed/expanded state of graph */
