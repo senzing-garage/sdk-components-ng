@@ -2069,8 +2069,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
 
         // take a sample bounding box
         // so we can read the height of the text nodes
-        let _linkLabelTextSize    = 10;
-        let _linkLabelLineHeight  = 15;
+        let _linkLabelTextSize    = 1;
+        let _linkLabelLineHeight  = 10;
         let _linkLabelBBoxAry: any[] = [];
         if(_newLabelsText) {
           _newLabelsText.each(function (d, i) {
@@ -2078,7 +2078,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           });
           if(_linkLabelBBoxAry && _linkLabelBBoxAry[ 0 ] && _linkLabelBBoxAry[ 0 ].height > 5 && _linkLabelBBoxAry[ 0 ].height < 20) {
             _linkLabelTextSize    =  Math.ceil(_linkLabelBBoxAry[ 0 ].height);
-            _linkLabelLineHeight  = _linkLabelTextSize + 5;
+            _linkLabelLineHeight  = _linkLabelTextSize - 2;
           }
         }
         // now that we have the line height
@@ -2094,9 +2094,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
                   (d.matchKeyTokensFlat.length*_linkLabelLineHeight / 2) - _linkLabelLineHeight
                 ) as any 
             );
-            return retVal;
+            return retVal - 2;
           })
-          .attr('dx', 0)
+          .attr('dx', 0);
       })
 
       return {
@@ -3466,15 +3466,14 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   private getNameAsLinesArray(name: string | undefined, maxCharsPerLine: number): string[] {
     let _lineCharCount    = 0;
     let _lineCurrent      = '';
-    let name_lines        = (name && name.length > maxCharsPerLine) ? [] : [name];
+    let name_lines        = [name]; // default to whole name if no other conditions are met
     let name_words        = name && name.split ? name.split(' ') : []; 
 
     if(name_words && name_words.forEach) {
-      //console.log(`getting lines for ${name}: `, name_words);
+      name_lines = [];
       name_words.forEach((nW, inc) => {
         _lineCharCount  = _lineCharCount + nW.length;
         _lineCurrent    = _lineCurrent +(_lineCurrent !== '' ? ' ': '')+nW;
-        //console.log(`\t\t${nW}`,nW.length);
         if(_lineCharCount >= maxCharsPerLine) {
           name_lines.push(_lineCurrent);
           _lineCurrent    = '';
@@ -3484,7 +3483,6 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           name_lines.push(_lineCurrent);
         }
       });
-      //console.log('\t', name_lines);
     }
     return name_lines
   }
