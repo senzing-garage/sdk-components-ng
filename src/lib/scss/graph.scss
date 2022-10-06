@@ -80,12 +80,13 @@ body {
     font-size: 10px;
     paint-order: stroke;
     stroke: #ffffff;
-    stroke-width: 5px;
+    stroke-width: 3px;
     stroke-linecap: square;
     stroke-linejoin: miter;
     font-weight: 800;
-    fill: #565656;
-    letter-spacing: 2px;
+    /*fill: #565656;*/
+    fill: #6b6b6b;
+    /*letter-spacing: 2px;*/
     line-height: 15px;
     &.not-touching-focal {
       opacity: var(--sz-graph-link-label-non-focused-opacity);

@@ -53,6 +53,7 @@
           .left-adjusted {
             &.no-text {
               min-width: 77px;
+              min-width: var(--sz-graph-filter-control-cb-no-text-min-width);
             }
           }
         }
