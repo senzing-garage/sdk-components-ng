@@ -212,7 +212,7 @@
       aria-orientation="vertical" 
       aria-label="Match Key Filters">
       
-      <div *ngIf="showCoreMatchKeyTokenChips" class="chip-group core">
+      <div *ngIf="isMatchKeyTokenSelectionScopeCore" class="chip-group core">
         <mat-chip *ngFor="let mk of matchKeyCoreTokens; let i = index"
           class="core-key"
           [class.selected]="isMatchKeyCoreTokenSelected(mk.name)"
@@ -221,7 +221,7 @@
           {{mk.name}}
         </mat-chip>
       </div>
-      <div *ngIf="showExtraneousMatchKeyTokenChips" class="chip-group extraneous">
+      <div *ngIf="!isMatchKeyTokenSelectionScopeCore" class="chip-group extraneous">
         <mat-chip *ngFor="let mk of matchKeyTokens; let i = index"
           class="extra-key"
           [class.selected]="isMatchKeyTokenSelected(mk.name)"

@@ -965,6 +965,10 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     this.matchKeyTokensIncluded       = prefs.matchKeyTokensIncluded;
     this.matchKeyCoreTokensIncluded   = prefs.matchKeyCoreTokensIncluded
     this.neverFilterQueriedEntityIds  = prefs.neverFilterQueriedEntityIds;
+    // always keep selection scope in sync
+    if(this._matchKeyTokenSelectionScope !== prefs.matchKeyTokenSelectionScope) {
+      this._matchKeyTokenSelectionScope = prefs.matchKeyTokenSelectionScope;
+    }
     if(prefs.queriedEntitiesColor && prefs.queriedEntitiesColor !== undefined && prefs.queriedEntitiesColor !== null) {
       this.queriedEntitiesColor = prefs.queriedEntitiesColor;
     }
