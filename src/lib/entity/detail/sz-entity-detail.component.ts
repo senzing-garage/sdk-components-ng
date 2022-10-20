@@ -781,14 +781,18 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   public onHeaderWhyButtonClick(entityId: SzEntityIdentifier){
     this.headerWhyButtonClick.emit(entityId);
     //console.log('SzEntityDetailComponent.onHeaderWhyButtonClick: ', entityId);
+    let _data: any = {
+      entityId: entityId
+    }
+    if(this.entity && this.entity.resolvedEntity && (this.entity.resolvedEntity.bestName || this.entity.resolvedEntity.entityName)) {
+      _data.entityName = this.entity.resolvedEntity.bestName ? this.entity.resolvedEntity.bestName : this.entity.resolvedEntity.entityName;
+    }
     if(this._openWhyComparisonModalOnClick){
       this.dialog.open(SzWhyEntityDialog, {
         panelClass: 'why-entity-dialog-panel',
         minHeight: 400,
         minWidth: 800,
-        data: {
-          entityId: entityId
-        }
+        data: _data
       });
     }
   }
@@ -812,7 +816,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   public onCompareEntitiesForWhyNot(entityIds: any) {
-    console.log('SzEntityDetailComponent.onCompareEntitiesForWhyNot: ', entityIds, this._openWhyComparisonModalOnClick);
+    //console.log('SzEntityDetailComponent.onCompareEntitiesForWhyNot: ', entityIds, this._openWhyComparisonModalOnClick);
     if(entityIds && entityIds.length > 0 && entityIds.push){
       entityIds.push(this.entity.resolvedEntity.entityId);
     }

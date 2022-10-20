@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding, ElementRef, NgZone, AfterViewInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
-import { EntityDataService, SzDataSourceRecordSummary, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzRecordId, SzWhyEntitiesResponse, SzWhyEntitiesResponseData } from '@senzing/rest-api-client-ng';
+import { EntityDataService, SzDataSourceRecordSummary, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzRecordId, SzWhyEntitiesResponse, SzWhyEntitiesResponseData, SzWhyEntityResponseData } from '@senzing/rest-api-client-ng';
 import { BehaviorSubject, Observable, ReplaySubject, Subject, takeUntil, throwError } from 'rxjs';
 import { debounceTime, filter } from "rxjs/operators";
 
@@ -56,6 +56,7 @@ export class SzWhyEntitiesComparisonComponent implements OnInit, OnDestroy {
 
   /** if more than two records the view can be limited to just explicitly listed ones */
   @Input() recordsToShow: SzRecordId[] | undefined;
+  @Output() onData = new EventEmitter<SzWhyEntitiesResponseData>();
 
   private _columnsToDisplay: string[] = [];
   public get displayedColumns(): string[] {
@@ -95,6 +96,7 @@ export class SzWhyEntitiesComparisonComponent implements OnInit, OnDestroy {
         this.dataToDisplay      = formattedData.data;
         this.dataSource.setData(this.dataToDisplay);
         this.gotColumnDefs = true;
+        this.onData.emit(resData.data);
       }, (error) => {
         console.warn(error);
       });
@@ -131,7 +133,7 @@ export class SzWhyEntitiesComparisonComponent implements OnInit, OnDestroy {
     });
 
 
-    console.log(`Why Not result: `,internalIds, data);
+    //console.log(`Why Not result: `,internalIds, data);
 
     data.entities.forEach((entity: SzEntityData) => {
       // first get all the datasources present in recods
@@ -250,6 +252,7 @@ export class SzWhyEntitiesDialog implements OnDestroy {
   private _showOkButton = true;
   private _isLoading = true;
   private _isMaximized = false;
+  private _title;
   public get isLoading(): boolean {
     return this._isLoading;
   }
@@ -259,8 +262,10 @@ export class SzWhyEntitiesDialog implements OnDestroy {
   @ViewChild('whyEntitiesTag') whyEntitiesTag: SzWhyEntitiesComparisonComponent;
 
   public get title(): string {
-    let retVal = `Why NOT for Entities (${this.entities.join(', ')})`;
-    return retVal
+    if(this._title) return this._title;
+
+    this._title = `Why NOT for Entities (${this.entities.join(', ')})`;
+    return this._title
   }
 
   public okButtonText: string = "Ok";
@@ -291,5 +296,19 @@ export class SzWhyEntitiesDialog implements OnDestroy {
   }
   public onDoubleClick(event) {
     this.toggleMaximized();
+  }
+  public onDataResponse(data: SzWhyEntityResponseData) {
+    let _names: string[];
+    if(data && data.entities && data.entities.length > 0 && data.entities.forEach) {
+      let _title = `Why `;
+      data.entities.forEach((entity: SzEntityData, _ind) => {
+        let _bName = entity.resolvedEntity.bestName ? entity.resolvedEntity.bestName : entity.resolvedEntity.entityName;
+        let _eId = entity.resolvedEntity.entityId;
+        _title += `${_bName}(${_eId})` + (_ind === (data.entities.length - 1) ? '' : ' and ');
+      })
+
+      _title += ' did not resolve';
+      this._title = _title;
+    }
   }
 }
