@@ -71,11 +71,14 @@
     [sectionTitle]="'Possible Matches'"
     sectionId="detail-section-2"
     [sectionCount]="this._possibleMatches?.length"
+    [showWhyUtilities]="showRelatedWhyNotFunction"
+    [whySelectionMode]="whySelectionMode"
     [forceLayout]="_forceLayout"
     [layoutClasses]="_layoutEnforcers"
     [showNameDataInEntities]="showNameDataInPossibleMatchesSection"
     (onCollapsedChange)="this.onSectionCollapsedChange('possibleMatches', $event)"
-    (entityRecordClick)="onEntityRecordClick($event)">
+    (entityRecordClick)="onEntityRecordClick($event)"
+    (onCompareEntitiesForWhyNot)="onCompareEntitiesForWhyNot($event)">
   </sz-entity-details-section>
   <sz-entity-details-section class="details-section discovered"
     *ngIf="this._discoveredRelationships?.length && this.showPossibleRelationshipsSection"
@@ -88,7 +91,10 @@
     [forceLayout]="_forceLayout"
     [layoutClasses]="_layoutEnforcers"
     [showNameDataInEntities]="showNameDataInPossibleRelationshipsSection"
-    (entityRecordClick)="onEntityRecordClick($event)">
+    [showWhyUtilities]="showRelatedWhyNotFunction"
+    [whySelectionMode]="whySelectionMode"
+    (entityRecordClick)="onEntityRecordClick($event)"
+    (onCompareEntitiesForWhyNot)="onCompareEntitiesForWhyNot($event)">
   </sz-entity-details-section>
   <sz-entity-details-section class="details-section disclosed"
     *ngIf="this._disclosedRelationships?.length && this.showDisclosedSection"
