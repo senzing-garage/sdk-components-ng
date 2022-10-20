@@ -73,9 +73,12 @@
               [entity]="_cardData"
               [parentEntity]="cardData"
               [layoutClasses]="layoutClasses"
-              [ngClass]="{'open': expanded, 'no-shade': true}"
+              [ngClass]="{'open': expanded, 'no-shade': true, 'selected': isRelatedEntitySelected(_cardData), 'select-mode-single': isSingleSelect, 'select-mode-multiple': isMultiSelect, 'is-selectable': relatedWhyNotSelectActive}"
+              [whySelectionMode]="whySelectionMode"
+              [whySelectionAction]="'WHY_NOT'"
               [truncateResults]="truncateResults"
               [truncatedTooltip]="'click to expand.'"
+              (onWhyNotClicked)="onEntityRecordWhyNotClicked($event)"
             ></sz-entity-record-card-content>
           </div>
       </div>
@@ -94,6 +97,7 @@
           [parentEntity]="cardData"
           [ngClass]="{'open': expanded, 'selected': isRecordSelected(_cardData), 'select-mode-single': isSingleSelect, 'select-mode-multiple': isMultiSelect, 'is-selectable': recordWhySelectActive}"
           [whySelectionMode]="whySelectionMode"
+          [whySelectionAction]="'WHY'"
           [layoutClasses]="layoutClasses"
           [truncateResults]="truncateResults"
           [truncatedTooltip]="'click to expand.'"

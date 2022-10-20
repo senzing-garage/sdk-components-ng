@@ -6,12 +6,13 @@ import {
   SzResolvedEntity,
   SzEntityRecord,
   SzRelatedEntity,
-  SzRecordId
+  SzRecordId,
+  SzEntityIdentifier
 } from '@senzing/rest-api-client-ng';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
-import { SzWhySelectionMode, SzWhySelectionModeBehavior } from '../../../models/data-source-record-selection';
+import { SzWhySelectionMode, SzWhySelectionAction, SzWhySelectionModeBehavior, SzWhySelectionActionBehavior } from '../../../models/data-source-record-selection';
 
 
 /**
@@ -36,6 +37,8 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   private _showBestNameOnly: boolean = false;
   private _ignorePrefOtherDataChanges = false;
   @Input() public whySelectionMode: SzWhySelectionModeBehavior = SzWhySelectionMode.NONE;
+  @Input() public whySelectionAction: SzWhySelectionActionBehavior = SzWhySelectionAction.NONE;
+
   @Input() public showWhyUtilities: boolean = false;
   @Input() public showRecordIdWhenNative: boolean = false;
   /** allows records with empty columns to match up with records with non-empty columns. format is [true,false,true,true,true] */
@@ -526,6 +529,17 @@ export class SzEntityRecordCardContentComponent implements OnInit {
       this.onRecordCardWhyClickedEmitter.emit(recordId);
     } else {
       console.error('SzEntityRecordCardContentComponent.onRecordCardWhyClicked() ERROR: datasource or recordId missing');
+    }
+  }
+  @Output('onWhyNotClicked') 
+  onWhyNotClickedEmitter: EventEmitter<SzEntityIdentifier> = new EventEmitter<SzEntityIdentifier>();
+
+  public onRelatedEntityCardWhyNotClicked(event: any) {
+    console.log('SzEntityRecordCardContentComponent.onRelatedEntityCardWhyNotClicked()', this.entity, this);
+    if(this.entity && this.entity.entityId) {
+      this.onWhyNotClickedEmitter.emit(this.entity.entityId)
+    } else {
+      console.error('SzEntityRecordCardContentComponent.onRelatedEntityCardWhyNotClicked() ERROR: entityId missing');
     }
   }
 }

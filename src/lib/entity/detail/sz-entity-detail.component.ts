@@ -133,6 +133,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private _whySelectionMode: SzWhySelectionModeBehavior = SzWhySelectionMode.NONE;
   private _showEntityWhyFunction: boolean = false;
   private _showRecordWhyUtilities: boolean = false;
+  private _showRelatedWhyNotUtilities: boolean = false;
   private _openWhyComparisonModalOnClick: boolean = true;
   // graph utilities
   private _showGraphNodeContextMenu: boolean = false;
@@ -146,6 +147,8 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   @Output() headerWhyButtonClick = new EventEmitter<SzEntityIdentifier>();
   /** (Event Emitter) when the user clicks on the "Why" button in records section */
   @Output() recordsWhyButtonClick = new EventEmitter<SzRecordId[]>();
+  /** (Event Emitter) when the user clicks on the "Why Not" button in a related entity card */
+  @Output() relatedEntitiesWhyNotButtonClick = new EventEmitter<SzEntityIdentifier[]>();
   /** (Event Emitter) when the user clicks on a datasource record for either single-select
    * or multi-select operations.
    */
@@ -228,6 +231,14 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   /** whether or not to show the "why" comparison button for the entire entity */
   @Input() set showEntityWhyFunction(value: boolean) {
     this._showEntityWhyFunction = value;
+  }
+  /** whether or not the "why" comparison button on "possible matches" */
+  public get showRelatedWhyNotFunction(): boolean {
+    return this._showRelatedWhyNotUtilities;
+  }
+  /** whether or not to show the "why not" comparison button on "possible matches" */
+  @Input() set showRelatedWhyNotFunction(value: boolean) {
+    this._showRelatedWhyNotUtilities = value;
   }
   /** whether or not to automatically open a modal with the entity comparison on 
    * "Why" button click. (disable for custom implementation/action)
@@ -769,7 +780,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    */
   public onHeaderWhyButtonClick(entityId: SzEntityIdentifier){
     this.headerWhyButtonClick.emit(entityId);
-    console.log('SzEntityDetailComponent.onHeaderWhyButtonClick: ', entityId);
+    //console.log('SzEntityDetailComponent.onHeaderWhyButtonClick: ', entityId);
     if(this._openWhyComparisonModalOnClick){
       this.dialog.open(SzWhyEntityDialog, {
         panelClass: 'why-entity-dialog-panel',
@@ -783,7 +794,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   public onCompareRecordsForWhy(records: SzRecordId[]) {
-    console.log('SzEntityDetailComponent.onCompareRecordsForWhy: ', records);
+    //console.log('SzEntityDetailComponent.onCompareRecordsForWhy: ', records);
     this.recordsWhyButtonClick.emit(records);
     if(this._openWhyComparisonModalOnClick) {
       this.dialog.open(SzWhyEntityDialog, {
@@ -795,6 +806,27 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
           showOkButton: false,
           okButtonText: 'Close',
           records: records
+        }
+      });
+    }
+  }
+
+  public onCompareEntitiesForWhyNot(entityIds: any) {
+    console.log('SzEntityDetailComponent.onCompareEntitiesForWhyNot: ', entityIds, this._openWhyComparisonModalOnClick);
+    if(entityIds && entityIds.length > 0 && entityIds.push){
+      entityIds.push(this.entity.resolvedEntity.entityId);
+    }
+    
+    this.relatedEntitiesWhyNotButtonClick.emit(entityIds);
+    if(this._openWhyComparisonModalOnClick) {
+      this.dialog.open(SzWhyEntitiesDialog, {
+        panelClass: 'why-entities-dialog-panel',
+        minHeight: 400,
+        minWidth: 800,
+        data: {
+          entities: entityIds,
+          showOkButton: false,
+          okButtonText: 'Close'
         }
       });
     }

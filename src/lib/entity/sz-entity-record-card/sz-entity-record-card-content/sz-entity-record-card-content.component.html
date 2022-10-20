@@ -58,7 +58,7 @@
 </div>
 <!--<div class="select-mode-single-hover-mask">-->
   <button 
-      class="select-mode-single-hover-button"
+      class="select-mode-single-hover-button select-mode-action-why"
       mat-stroked-button
       matTooltipPosition="above"
       matTooltip="Perform Why Analysis on this record"
@@ -67,4 +67,14 @@
       aria-hidden="false" aria-label="Click to perform Why on record"
       >compare_arrows</mat-icon> Why?
   </button>
+  <button 
+  class="select-mode-single-hover-button select-mode-action-why-not"
+  mat-stroked-button
+  matTooltipPosition="above"
+  matTooltip="Perform Why Not Analysis between this entity and the one you are currently viewing"
+  (click)="onRelatedEntityCardWhyNotClicked($event)">
+  <mat-icon  
+  aria-hidden="false" aria-label="Click to perform Why Not on between this entity and the one you are currently viewing"
+  >compare_arrows</mat-icon> Why?
+</button>
 <!--</div>-->
