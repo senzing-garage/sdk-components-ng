@@ -76,6 +76,9 @@ import { SzWhyEntitiesComparisonComponent } from './why/sz-why-entities.componen
 import { SzWhyEntityDialog } from './why/sz-why-entity.component';
 import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
 //import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
+// how related
+import { SzHowEntityComponent } from './how/sz-how-entity.component';
+
 
 /**
  * Sets up a default set of service parameters for use
@@ -124,6 +127,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzGraphControlComponent,
     SzGraphComponent,
     SzGraphFilterComponent,
+    SzHowEntityComponent,
     SzMultiSelectButtonComponent,
     SzPoweredByComponent,
     SzPreferencesComponent,
@@ -168,6 +172,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzGraphComponent,
     SzGraphControlComponent,
     SzGraphFilterComponent,
+    SzHowEntityComponent,
     SzPoweredByComponent,
     SzPreferencesComponent,
     SzRelationshipNetworkComponent,
@@ -192,6 +197,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzEntityDetailComponent,
     SzEntityDetailGraphComponent,
     SzEntityRecordViewerComponent,
+    SzHowEntityComponent,
     SzPoweredByComponent,
     SzPreferencesComponent,
     SzSearchComponent,

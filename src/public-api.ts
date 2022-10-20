@@ -77,6 +77,8 @@ export { SzWhyEntityComponent } from './lib/why/sz-why-entity.component';
 export { SzWhyEntitiesComparisonComponent } from './lib/why/sz-why-entities.component';
 export { SzWhyEntityDialog } from './lib/why/sz-why-entity.component';
 export { SzWhyEntitiesDialog } from './lib/why/sz-why-entities.component';
+/** how */
+export { SzHowEntityComponent } from './lib/how/sz-how-entity.component';
 
 /** export some members of rest client to ease type use */
 export {
