@@ -307,20 +307,20 @@ export class SzEntityDetailsSectionComponent implements OnDestroy {
 
   public onDataSourceRecordWhyClick(recordId: SzRecordId | any): void {
     let _recordId: SzRecordId = (recordId as SzRecordId);
-    console.log('sz-entity-details-section.onDataSourceRecordWhyClick: ', recordId);
+    //console.log('sz-entity-details-section.onDataSourceRecordWhyClick: ', recordId);
     
     this._onCompareRecordsForWhy([recordId]);
   }
 
   public onEntityRecordWhyNotClick(entityId: SzEntityIdentifier | any): void {
-    console.log('sz-entity-details-section.onEntityRecordWhyNotClick: ', entityId);
+    //console.log('sz-entity-details-section.onEntityRecordWhyNotClick: ', entityId);
     this._onCompareEntitiesForWhyNot([entityId]);
   }
 
   public onDataSourceRecordClick(recordId: SzRecordId | any): void {
     let _recordId: SzRecordId = (recordId as SzRecordId);
     if(this.showWhyUtilities) {
-      console.log('sz-entity-details-section.onDataSourceRecordClick: ', recordId, this.showWhyUtilities, this.selectedDataSourceRecords);
+      //console.log('sz-entity-details-section.onDataSourceRecordClick: ', recordId, this.showWhyUtilities, this.selectedDataSourceRecords);
       if(!this.selectedDataSourceRecords[_recordId.src] ) {
         // no records at all, assume we're adding
         this.selectedDataSourceRecords[_recordId.src] = [_recordId.id];

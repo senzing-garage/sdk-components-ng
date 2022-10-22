@@ -293,6 +293,7 @@ export class SzWhyEntityDialog {
   public unsubscribe$ = new Subject<void>();
   
   private _entityId: SzEntityIdentifier;
+  private _entityName: string;
   private _recordsToShow: SzRecordId[];
   private _showOkButton = true;
   private _isMaximized = false;
@@ -309,7 +310,7 @@ export class SzWhyEntityDialog {
   @ViewChild('whyEntityTag') whyEntityTag: SzWhyEntityComponent;
 
   public get title(): string {
-    let retVal = `Why for Entity ${this.entityId}`;
+    let retVal = this._entityName ? `Why for ${this.entityName} (${this.entityId})` : `Why for Entity ${this.entityId}`;
     if(this._recordsToShow && this._recordsToShow.length > 0) {
       // we're only showing specific record(s)
       retVal = `Why for Record`
@@ -328,10 +329,16 @@ export class SzWhyEntityDialog {
   public get entityId(): SzEntityIdentifier {
     return this._entityId;
   }
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { entityId: SzEntityIdentifier, records?: SzRecordId[], okButtonText?: string, showOkButton?: boolean }) {
+  public get entityName(): string | undefined {
+    return this._entityName;
+  }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { entityId: SzEntityIdentifier, entityName?:string, records?: SzRecordId[], okButtonText?: string, showOkButton?: boolean }) {
     if(data) {
       if(data.entityId) {
         this._entityId = data.entityId;
+      }
+      if(data.entityName) {
+        this._entityName = data.entityName;
       }
       if(data.records) {
         this._recordsToShow = data.records;

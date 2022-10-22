@@ -510,7 +510,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   onRecordCardContentClickedEmitter: EventEmitter<SzRecordId> = new EventEmitter<SzRecordId>();
 
   public onRecordCardContentClicked(event: any) {
-    console.log('SzEntityRecordCardContentComponent.onRecordCardContentClicked()', this.entity, this);
+    //console.log('SzEntityRecordCardContentComponent.onRecordCardContentClicked()', this.entity, this);
     
     if(this.entity && this.entity.dataSource && this.entity.recordId) {
       let recordId: SzRecordId = {src: this.entity.dataSource, id: this.entity.recordId};
@@ -523,7 +523,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   onRecordCardWhyClickedEmitter: EventEmitter<SzRecordId> = new EventEmitter<SzRecordId>();
 
   public onRecordCardWhyClicked(event: any) {
-    console.log('SzEntityRecordCardContentComponent.onRecordCardWhyClicked()', this.entity, this);
+    //console.log('SzEntityRecordCardContentComponent.onRecordCardWhyClicked()', this.entity, this);
     if(this.entity && this.entity.dataSource && this.entity.recordId) {
       let recordId: SzRecordId = {src: this.entity.dataSource, id: this.entity.recordId};
       this.onRecordCardWhyClickedEmitter.emit(recordId);
@@ -535,7 +535,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   onWhyNotClickedEmitter: EventEmitter<SzEntityIdentifier> = new EventEmitter<SzEntityIdentifier>();
 
   public onRelatedEntityCardWhyNotClicked(event: any) {
-    console.log('SzEntityRecordCardContentComponent.onRelatedEntityCardWhyNotClicked()', this.entity, this);
+    //console.log('SzEntityRecordCardContentComponent.onRelatedEntityCardWhyNotClicked()', this.entity, this);
     if(this.entity && this.entity.entityId) {
       this.onWhyNotClickedEmitter.emit(this.entity.entityId)
     } else {
