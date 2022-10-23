@@ -1,0 +1,6 @@
+@import '../../scss/how-card';
+
+:host {
+    @include sz-how-entity-card;
+    border: 1px solid green;
+}

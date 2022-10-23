@@ -1,0 +1,60 @@
+$sz-how-card-handle-width: 30px;
+
+@mixin sz-how-entity-card {
+    border: 1px solid rgb(173, 102, 102);
+    display: inline-flex;
+    flex-direction: row-reverse;
+
+    .content {
+        border: 2px solid rgb(20, 20, 20);
+        border-radius: 7px;
+        box-shadow: #000;
+        min-height: 700px;
+        min-width: 400px;
+    }
+    .handle {
+        display: flex;
+        position: relative;
+        align-items: center;
+        width: $sz-how-card-handle-width;
+        height: 120px;
+        background-color: #000;
+        margin-top: 33px;
+        color: #fff;
+        font-size: 33px;
+        line-height: 33px;
+
+        .material-icons {
+            display: block;
+            font-size: 33px;
+            line-height: 33px;
+            /* width: 14px; */
+            height: 33px;
+            right: 3px;
+            position: absolute;
+        }
+
+        &:before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 $sz-how-card-handle-width $sz-how-card-handle-width 0;
+            border-color: transparent #ffffff transparent transparent;
+            right: 0;
+            top: 0;
+            position: absolute;
+        }
+        &:after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: $sz-how-card-handle-width $sz-how-card-handle-width 0 0;
+            border-color: transparent #ffffff transparent transparent;
+            right: 0;
+            bottom: 0;
+            position: absolute;
+        }
+    }
+}

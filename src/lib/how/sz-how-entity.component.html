@@ -1,3 +1,9 @@
 <div>
-    sz-how-entity boilerplate
+    <sz-how-entity-card-final *ngFor="let fCardData of finalCardsData; let fCardIndex=index"
+        [attr.data-index]="fCardIndex"
+        [attr.data-step]="fCardData.stepNumber"
+        [attr.resolved-entity-id]="fCardData.resolvedVirtualEntityId"
+        [entityId]="entityId"
+        [data]="fCardData"
+    ></sz-how-entity-card-final>
 </div>

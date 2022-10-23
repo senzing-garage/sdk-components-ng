@@ -1,3 +1,33 @@
-<div>
-    sz-how-entity-card-final boilerplate
+<div class="handle">
+    <mat-icon fontIcon="arrow_right" *ngIf="!branchExpanded">arrow_right</mat-icon>
+    <mat-icon fontIcon="arrow_left" *ngIf="branchExpanded">arrow_left</mat-icon>
+</div>
+<div class="content">
+    <header>Entity <span class="entity-id">{{entityId}}</span></header>
+    <mat-accordion class="steps-ribbon">
+        <mat-expansion-panel (opened)="stepsPanelOpenState = true"
+                    (closed)="stepsPanelOpenState = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Step #{{stepNumber}}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>Steps Go here</p>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion class="features" multi>
+        <mat-expansion-panel class="feature-drawer-sources" hideToggle>
+            <mat-expansion-panel-header>Sources</mat-expansion-panel-header>
+            <ul>
+                <li *ngFor="let source of sources | keyvalue">
+                    {{source.key}}:
+                    <ul>
+                        <li *ngFor="let record of source.value;">
+                            {{record?.recordId}}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </mat-expansion-panel>
+    </mat-accordion>
 </div>

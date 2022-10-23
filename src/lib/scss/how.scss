@@ -1,0 +1,44 @@
+
+/* this file contains global overrides to material component styles 
+* being used from within the context of "How" components. These 
+* cannot be at the ViewEncapsulated level or mixin level because 
+* angular will alias the scope.
+*/
+sz-how-entity {
+    .sz-how-entity-card {
+        header {
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-align: center;
+
+            &::first-letter,
+            .entity-id, .virtual-entity-id {
+                font-size: 22px;
+            }
+        }
+        mat-accordion.steps-ribbon {
+            background-color: #000;
+            .mat-expansion-panel {
+                border-radius: 0;
+            }
+            .mat-expansion-panel-header {
+                background: #000;
+                height: 20px;
+                &.expanded {
+                    height: 20px;
+                }
+                &:hover:not([aria-disabled=true]) {
+                    background: #000;
+                }
+            }
+            .mat-expansion-panel-header-title {
+                color: #fff;
+            }
+            .mat-expansion-panel-content {
+                background-color: #fff;
+                color: #000;
+            }
+        }
+    }
+}
