@@ -40,5 +40,15 @@ sz-how-entity {
                 color: #000;
             }
         }
+        .mat-expansion-panel-spacing {
+            margin: 
+            0;
+        }
+        .mat-expansion-panel {
+            height: auto;
+            .mat-expansion-panel-header {
+                height: 33px;
+            }
+        }
     }
 }

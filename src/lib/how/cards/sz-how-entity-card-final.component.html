@@ -29,5 +29,73 @@
                 </li>
             </ul>
         </mat-expansion-panel>
+        <mat-expansion-panel class="feature-drawer-names" *ngIf="names" hideToggle>
+            <mat-expansion-panel-header>Names</mat-expansion-panel-header>
+            <ul>
+                <li *ngFor="let value of names">
+                    {{value.primaryValue}}
+                </li>
+            </ul>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="feature-drawer-dob" *ngIf="dob" hideToggle>
+            <mat-expansion-panel-header>Date of Birth</mat-expansion-panel-header>
+            <ul>
+                <li *ngFor="let value of dob">
+                    {{value.primaryValue}}
+                </li>
+            </ul>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="feature-drawer-addresses" *ngIf="addresses" hideToggle>
+            <mat-expansion-panel-header>Addresses</mat-expansion-panel-header>
+            <ul>
+                <li *ngFor="let value of addresses">
+                    {{value.primaryValue}}
+                </li>
+            </ul>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="feature-drawer-emails" *ngIf="emails" hideToggle>
+            <mat-expansion-panel-header>Emails</mat-expansion-panel-header>
+            <ul>
+                <li *ngFor="let value of emails">
+                    {{value.primaryValue}}
+                </li>
+            </ul>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="feature-drawer-phone-numbers" *ngIf="phoneNumbers" hideToggle>
+            <mat-expansion-panel-header>Phone Numbers</mat-expansion-panel-header>
+            <ul>
+                <li *ngFor="let value of phoneNumbers">
+                    {{value.primaryValue}}
+                </li>
+            </ul>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="feature-drawer-ssn" *ngIf="ssnNumbers" hideToggle>
+            <mat-expansion-panel-header>SSN</mat-expansion-panel-header>
+            <ul>
+                <li *ngFor="let value of ssnNumbers">
+                    {{value.primaryValue}}
+                </li>
+            </ul>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="feature-drawer-drivers-licenses" *ngIf="dlNumbers" hideToggle>
+            <mat-expansion-panel-header>DL</mat-expansion-panel-header>
+            <ul>
+                <li *ngFor="let value of dlNumbers">
+                    {{value.primaryValue}}
+                </li>
+            </ul>
+        </mat-expansion-panel>
+        <!-- start "other features" -->
+        <ng-container *ngIf="otherFeatures">
+            <mat-expansion-panel class="feature-drawer-features" *ngFor="let otherFeat of otherFeatures | keyvalue" hideToggle>
+                <mat-expansion-panel-header>{{otherFeat.key}}</mat-expansion-panel-header>
+                <ul>
+                    <li *ngFor="let feat of otherFeat.value">
+                        {{feat}}
+                    </li>
+                </ul>
+            </mat-expansion-panel>
+        </ng-container>
+        <!-- end "other features" -->
     </mat-accordion>
 </div>
