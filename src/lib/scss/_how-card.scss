@@ -1,4 +1,5 @@
-$sz-how-card-handle-width: 30px;
+/* mixins for "how" component base styles */
+$sz-how-card-handle-width: 17px;
 
 @mixin sz-how-entity-card {
     border: 1px solid rgb(173, 102, 102);
