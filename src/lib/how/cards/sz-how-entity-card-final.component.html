@@ -9,15 +9,28 @@
                     (closed)="stepsPanelOpenState = false">
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    Step #{{stepNumber}}
+                    Step #{{stepNumber}}: {{stepTitle}}
                 </mat-panel-title>
             </mat-expansion-panel-header>
-            <p>Steps Go here</p>
+            <h4>On: <span class="feature-value">{{matchKey}}</span></h4>
+            <h4>Using: <span class="feature-value">({{matchCodes}})</span></h4>
+            <div class="steps-feat-scores">
+                <h4>With Feature Scores:</h4>
+                <div class="steps-feat-score" *ngFor="let fScoreBucket of featureScores | keyvalue">
+                    <div *ngFor="let fScore of fScoreBucket.value">
+                        {{fScore.featureType}} (Score {{fScore.score}})
+                        <ul>
+                            <li [attr.data-feature-id]="fScore.candidateFeature.featureId">{{fScore.candidateFeature.featureValue}}</li>
+                            <li [attr.data-feature-id]="fScore.inboundFeature.featureId">{{fScore.inboundFeature.featureValue}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </mat-expansion-panel>
     </mat-accordion>
     <mat-accordion class="features" multi>
         <mat-expansion-panel class="feature-drawer-sources" hideToggle>
-            <mat-expansion-panel-header>Sources</mat-expansion-panel-header>
+            <mat-expansion-panel-header>Sources<span class="count-bubble">{{featureCount(sources)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let source of sources | keyvalue">
                     {{source.key}}:
@@ -30,7 +43,7 @@
             </ul>
         </mat-expansion-panel>
         <mat-expansion-panel class="feature-drawer-names" *ngIf="names" hideToggle>
-            <mat-expansion-panel-header>Names</mat-expansion-panel-header>
+            <mat-expansion-panel-header>Names<span class="count-bubble">{{featureCount(names)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let value of names">
                     {{value.primaryValue}}
@@ -38,7 +51,7 @@
             </ul>
         </mat-expansion-panel>
         <mat-expansion-panel class="feature-drawer-dob" *ngIf="dob" hideToggle>
-            <mat-expansion-panel-header>Date of Birth</mat-expansion-panel-header>
+            <mat-expansion-panel-header>Date of Birth<span class="count-bubble">{{featureCount(dob)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let value of dob">
                     {{value.primaryValue}}
@@ -46,7 +59,7 @@
             </ul>
         </mat-expansion-panel>
         <mat-expansion-panel class="feature-drawer-addresses" *ngIf="addresses" hideToggle>
-            <mat-expansion-panel-header>Addresses</mat-expansion-panel-header>
+            <mat-expansion-panel-header>Addresses<span class="count-bubble">{{featureCount(addresses)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let value of addresses">
                     {{value.primaryValue}}
@@ -54,7 +67,7 @@
             </ul>
         </mat-expansion-panel>
         <mat-expansion-panel class="feature-drawer-emails" *ngIf="emails" hideToggle>
-            <mat-expansion-panel-header>Emails</mat-expansion-panel-header>
+            <mat-expansion-panel-header>Emails<span class="count-bubble">{{featureCount(emails)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let value of emails">
                     {{value.primaryValue}}
@@ -62,7 +75,7 @@
             </ul>
         </mat-expansion-panel>
         <mat-expansion-panel class="feature-drawer-phone-numbers" *ngIf="phoneNumbers" hideToggle>
-            <mat-expansion-panel-header>Phone Numbers</mat-expansion-panel-header>
+            <mat-expansion-panel-header>Phone Numbers<span class="count-bubble">{{featureCount(phoneNumbers)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let value of phoneNumbers">
                     {{value.primaryValue}}
@@ -70,7 +83,7 @@
             </ul>
         </mat-expansion-panel>
         <mat-expansion-panel class="feature-drawer-ssn" *ngIf="ssnNumbers" hideToggle>
-            <mat-expansion-panel-header>SSN</mat-expansion-panel-header>
+            <mat-expansion-panel-header>SSN<span class="count-bubble">{{featureCount(ssnNumbers)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let value of ssnNumbers">
                     {{value.primaryValue}}
@@ -78,7 +91,7 @@
             </ul>
         </mat-expansion-panel>
         <mat-expansion-panel class="feature-drawer-drivers-licenses" *ngIf="dlNumbers" hideToggle>
-            <mat-expansion-panel-header>DL</mat-expansion-panel-header>
+            <mat-expansion-panel-header>DL<span class="count-bubble">{{featureCount(dlNumbers)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let value of dlNumbers">
                     {{value.primaryValue}}

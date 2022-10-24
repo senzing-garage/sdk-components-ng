@@ -8,6 +8,10 @@ import { SzHowFinalCardData } from '../../models/data-how';
 import { SzHowCardBaseComponent } from './sz-how-entity-card-base.component';
 import { SzSearchService } from '../../services/sz-search.service';
 
+interface SzVirtualEntityRecordsByDataSource {
+    [key: string]: Array<SzVirtualEntityRecord> 
+}
+
 /**
  * Display the "Why" information for entity
  *
@@ -76,9 +80,7 @@ export class SzHowFinalCardComponent extends SzHowCardBaseComponent implements O
     get data(): SzHowFinalCardData {
         return this._data;
     }
-    private _sources: {
-        [key: string]: Array<SzVirtualEntityRecord> 
-    };
+    private _sources: SzVirtualEntityRecordsByDataSource;
     get sources() {
         // check if we have a cached version of this first
         if(!this._sources) {
@@ -107,12 +109,31 @@ export class SzHowFinalCardComponent extends SzHowCardBaseComponent implements O
         )
     }
 
+    public get stepTitle(): string {
+        let retVal = '';
+        if(this._data && this._data.candidateVirtualEntity && this._data.inboundVirtualEntity) {
+            let iEnt = this._data.inboundVirtualEntity;
+            let cEnt = this._data.candidateVirtualEntity;
+            let sCount = (iEnt.singleton? 1:0) + (cEnt.singleton? 1:0);
+            if(sCount === 2){
+                retVal = 'Records Merged to Virtual Entity';
+            } else if(sCount === 1) {
+                // one singleton, one vent
+                retVal = 'Add Record to Virtual Entity';
+            } else {
+                // two vents
+                retVal = 'Merged Virtual Entities';
+            }
+        }
+        return retVal;
+    }
+
     public get names(): SzEntityFeature[] | undefined {
         if(this.resolvedEntity && this.resolvedEntity.features && this.resolvedEntity.features['NAME']) {
-            console.log('entity names: ', this.resolvedEntity.features['NAME']);
+            //console.log('entity names: ', this.resolvedEntity.features['NAME']);
             return this.resolvedEntity.features['NAME'];
-        } else {
-            console.warn('entity names: ', this.resolvedEntity);
+        //} else {
+            //console.warn('entity names: ', this.resolvedEntity);
         }
         return undefined;
     }
@@ -154,6 +175,36 @@ export class SzHowFinalCardComponent extends SzHowCardBaseComponent implements O
         }
         return undefined;
     }
+    public get matchInfo() {
+        return this._data && this._data.matchInfo ? this._data.matchInfo : undefined;
+    }
+    public get featureScores() {
+        return this._data && this._data.matchInfo && this._data.matchInfo.featureScores ? this._data.matchInfo.featureScores : undefined;
+    }
+    public get matchKey(): string {
+        let retVal = [];
+        if(this.matchInfo) {
+            retVal = this.matchInfo.matchKey.split('+').filter((value) => value && value.trim && value.trim().length > 0);
+        }
+        return retVal.join(' + ');
+    }
+    public get matchCodes(): string {
+        let retVal = '';
+        if(this.featureScores && Object.keys(this.featureScores).length > 0) {
+            let featureScoreCodes   = [];
+            let fScores             = this.featureScores;
+            console.log('matchCodes: ', fScores);
+            for(let _fTypeKey in fScores){
+                let _fMatchArr           = fScores[_fTypeKey];
+                let _fMatchBehaviorCodes = _fMatchArr.map((_fMatchVal)=> _fMatchVal.scoringBehavior.code);
+                console.log(`\t${_fTypeKey}:`, _fMatchArr, _fMatchBehaviorCodes)
+
+                featureScoreCodes = featureScoreCodes.concat(_fMatchBehaviorCodes);
+            }
+            retVal = featureScoreCodes.join('+');
+        }
+        return retVal;
+    }
     private keysWithTopLevelAccessors = ['NAME','ADDRESS','DOB','PHONE','EMAIL','SSN','DL'];
     public get otherFeatures(): {[key: string] : SzEntityFeature[]} | undefined {
         if(this.resolvedEntity && this.resolvedEntity.features) {
@@ -162,10 +213,21 @@ export class SzHowFinalCardComponent extends SzHowCardBaseComponent implements O
             for(let _key in this.resolvedEntity.features) {
                 if(keysWithoutCommonKeys.indexOf(_key) >= 0) { featuresWithoutMajorKeys[_key] = this.resolvedEntity.features[_key];}
             }
-            console.log('other features: ', featuresWithoutMajorKeys, keysWithoutCommonKeys);
+            //console.log('other features: ', featuresWithoutMajorKeys, keysWithoutCommonKeys);
             return featuresWithoutMajorKeys;
         }
         return undefined;
+    }
+
+    public featureCount(featureCollection: SzVirtualEntityRecordsByDataSource | SzEntityFeature[] ) {
+        if(featureCollection) {
+            if(Object.keys(featureCollection)) {
+                return Object.keys(featureCollection).length;
+            } else if(featureCollection.length) {
+                return length;
+            }
+        }
+        return 0;
     }
 
     /*

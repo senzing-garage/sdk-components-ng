@@ -3,4 +3,62 @@
 :host {
     @include sz-how-entity-card;
     border: 1px solid green;
+
+    .feature-value {
+        color: #303030;
+    }
+
+    .count-bubble {
+        border: 1px solid #000;
+        border-radius: 50% 50%;
+        height: 16px;
+        width: 16px;
+        line-height: 16px;
+        font-size: 12px;
+        font-weight: 500;
+        margin-left: 5px;
+        margin-right: 5px;
+        overflow: hidden;
+        text-align: center;
+        vertical-align: middle;
+    }
+    .steps-ribbon {
+        h4 {
+            display: block; font-weight: normal;
+            /*padding: 2px 10px 2px 6px;*/
+            padding: 0px 10px 0px 6px;
+            margin: 0;
+            line-height: 15px;
+            &:first-child {
+                padding-top: 4px;
+            }
+            &:last-child {
+                padding-bottom: 2px;
+            }
+        }
+        .steps-feat-scores {
+            h4:first-child {
+                padding-bottom: 4px;
+            }
+
+            .steps-feat-score {
+                display: block;
+                padding: 2px 6px;
+                border-top: 2px solid #dedede;
+
+                ul {
+                    margin: 0;
+                    color: #303030;
+                }
+            }
+
+            ol {
+                margin: 0px;
+                margin-block-start: unset;
+                margin-block-end: unset;
+                padding-inline-start: unset;
+                list-style-type: none;
+            }
+        }
+    }
 }
