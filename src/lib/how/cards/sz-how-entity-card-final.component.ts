@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding, ViewEncapsulation } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
-import { SzEntityData, SzEntityFeature, SzEntityIdentifier, SzResolvedEntity, SzVirtualEntity, SzVirtualEntityRecord } from '@senzing/rest-api-client-ng';
-import { Observable, ReplaySubject, Subject, take, takeUntil, tap } from 'rxjs';
+import { 
+    SzEntityData, SzEntityFeature, SzEntityIdentifier, SzResolvedEntity, 
+    SzVirtualEntity, SzVirtualEntityRecord, EntityDataService as SzEntityDataService, SzRecordIdentifiers, SzRecordIdentifier, SzVirtualEntityResponse, SzFeatureMode } from '@senzing/rest-api-client-ng';
+import { Observable, ReplaySubject, Subject, take, takeUntil, tap, map } from 'rxjs';
 import { parseSzIdentifier } from '../../common/utils';
 import { SzHowFinalCardData } from '../../models/data-how';
 import { SzHowCardBaseComponent } from './sz-how-entity-card-base.component';
@@ -34,12 +36,13 @@ export class SzHowFinalCardComponent extends SzHowCardBaseComponent implements O
     set entityId(value: SzEntityIdentifier){
         if(this._entityId !== value) {
             this._entityId = value;
+            /*
             this.getEntityData(this._entityId).pipe(
                 take(1),
                 takeUntil(this.unsubscribe$)
             ).subscribe((data: SzEntityData) => {
                 this.entityData = data;
-            })
+            })*/
         }
     }
     get entityId(): SzEntityIdentifier {
@@ -48,12 +51,12 @@ export class SzHowFinalCardComponent extends SzHowCardBaseComponent implements O
 
     @Input()
     virtualEntityId: SzVirtualEntity
-    private _entityData: SzEntityData;
     private _resolvedEntity: SzResolvedEntity;
     public get resolvedEntity() {
         return this._resolvedEntity;
     }
-
+    //private _entityData: SzEntityData;
+    /*
     public set entityData(value: SzEntityData) {
         if(value) {
             this._entityData        = value;
@@ -66,6 +69,7 @@ export class SzHowFinalCardComponent extends SzHowCardBaseComponent implements O
     public get entityData(): SzEntityData {
         return this._entityData
     }
+    */
 
     @HostBinding('class.sz-how-entity-card') cssCardClass: boolean = true;
 
@@ -75,7 +79,18 @@ export class SzHowFinalCardComponent extends SzHowCardBaseComponent implements O
     @Input()
     set data(value: SzHowFinalCardData) {
         this._data = value;
-        console.log('@senzing/sdk-components-ng/sz-how-entity-card-final.setData(): ', this._data);
+        if(this._data && this._data.resolvedVirtualEntity) {
+            this.getVirtualEntity().pipe(
+                take(1),
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe((res: SzResolvedEntity) => {
+                this._resolvedEntity    = res;
+                console.log('@senzing/sdk-components-ng/sz-how-entity-card-final.setData(): ', this._data, this._resolvedEntity);
+            });
+        } else {
+            console.log('@senzing/sdk-components-ng/sz-how-entity-card-final.setData(): ', this._data);
+        }
     }
     get data(): SzHowFinalCardData {
         return this._data;
@@ -106,6 +121,30 @@ export class SzHowFinalCardComponent extends SzHowCardBaseComponent implements O
         return this.searchService.getEntityById(entityId, true).
         pipe(
           tap(res => console.log('@senzing/sdk-components-ng/sz-how-entity-card-final.getEntityData: ' + this.entityId, res))
+        )
+    }
+
+    getVirtualEntity(){
+        let rIds: SzRecordIdentifiers = [];
+        if(this._data){
+            if(this._data.resolvedVirtualEntity) {
+                // convert "SzVirtualEntityRecord" to "SzRecordIdentifier"
+                rIds = this._data.resolvedVirtualEntity.records.map((vRec: SzVirtualEntityRecord)=>{
+                    return {
+                        src: vRec.dataSource,
+                        id: vRec.recordId
+                    } as SzRecordIdentifier
+                })
+            }
+        }
+        return this.entityDataService.getVirtualEntityByRecordIds(
+                rIds, 
+                undefined,
+                undefined, SzFeatureMode.ATTRIBUTED
+            )
+            .pipe(
+            tap(res => console.log('@senzing/sdk-components-ng/sz-how-entity-card-final.getVirtualEntityByRecordIds: ' + rIds, res)),
+            map((res: SzVirtualEntityResponse) => { return res.data.resolvedEntity})
         )
     }
 
@@ -193,11 +232,11 @@ export class SzHowFinalCardComponent extends SzHowCardBaseComponent implements O
         if(this.featureScores && Object.keys(this.featureScores).length > 0) {
             let featureScoreCodes   = [];
             let fScores             = this.featureScores;
-            console.log('matchCodes: ', fScores);
+            //console.log('matchCodes: ', fScores);
             for(let _fTypeKey in fScores){
                 let _fMatchArr           = fScores[_fTypeKey];
                 let _fMatchBehaviorCodes = _fMatchArr.map((_fMatchVal)=> _fMatchVal.scoringBehavior.code);
-                console.log(`\t${_fTypeKey}:`, _fMatchArr, _fMatchBehaviorCodes)
+                //console.log(`\t${_fTypeKey}:`, _fMatchArr, _fMatchBehaviorCodes)
 
                 featureScoreCodes = featureScoreCodes.concat(_fMatchBehaviorCodes);
             }
@@ -219,7 +258,7 @@ export class SzHowFinalCardComponent extends SzHowCardBaseComponent implements O
         return undefined;
     }
 
-    public featureCount(featureCollection: SzVirtualEntityRecordsByDataSource | SzEntityFeature[] ) {
+    public featureCount(featureCollection: SzVirtualEntityRecordsByDataSource | SzEntityFeature[] | SzVirtualEntityRecord[] ) {
         if(featureCollection) {
             if(Object.keys(featureCollection)) {
                 return Object.keys(featureCollection).length;
@@ -230,19 +269,9 @@ export class SzHowFinalCardComponent extends SzHowCardBaseComponent implements O
         return 0;
     }
 
-    /*
-    private _data = {
-        sources: [],
-        names: [],
-        addresses: [],
-        emails: [],
-        phone: [],
-        ssn: [],
-        dl: []
-    }*/
-
     constructor(
-        private searchService: SzSearchService
+        private searchService: SzSearchService,
+        private entityDataService: SzEntityDataService
     ){
         super();
     }

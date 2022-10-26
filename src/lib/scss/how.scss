@@ -66,6 +66,13 @@ sz-how-entity {
                 }
             }
         }
+        .feature-drawer {
+            .mat-expansion-panel-content ul {
+                margin-top: 0;
+                margin-bottom: 0;
+                padding-inline-start: 50px;
+            }
+        }
         .mat-expansion-panel-spacing {
             margin: 0;
         }
