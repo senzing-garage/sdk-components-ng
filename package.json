@@ -91,7 +91,7 @@
     "angular-in-memory-web-api": "^0.13.0",
     "cheerio": "^1.0.0-rc.12",
     "concat": "^1.0.3",
-    "concurrently": "^6.4.0",
+    "concurrently": "^7.5.0",
     "fs-extra": "^9.0.1",
     "jasmine-core": "~4.3.0",
     "karma": "~6.4.0",
