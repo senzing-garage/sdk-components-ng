@@ -50,6 +50,9 @@ export class SzHowFinalCardComponent extends SzHowCardBaseComponent implements O
     }
 
     @Input()
+    featureOrder: string[];
+
+    @Input()
     virtualEntityId: SzVirtualEntity
     private _resolvedEntity: SzResolvedEntity;
     public get resolvedEntity() {

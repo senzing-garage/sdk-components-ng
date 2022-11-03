@@ -1,10 +1,13 @@
 import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
-import { EntityDataService, SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult 
+import { 
+    EntityDataService as SzEntityDataService, 
+    SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse 
 } from '@senzing/rest-api-client-ng';
+import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzHowFinalCardData } from '../models/data-how';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
 
 /**
@@ -31,6 +34,10 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
 
     private _data: SzHowEntityResult;
     public finalCardsData: SzHowFinalCardData[];
+    private _featureTypesOrdered: string[] | undefined;
+    public get orderedFeatures(): string[] {
+        return this._featureTypesOrdered
+    }
 
     getData(entityId: SzEntityIdentifier): Observable<SzHowEntityResponse> {
         return this.entityDataService.howEntityByEntityID(
@@ -39,10 +46,13 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     }
 
     constructor(
-        public entityDataService: EntityDataService
+        public entityDataService: SzEntityDataService,
+        public configDataService: SzConfigDataService
     ){}
 
     ngOnInit() {
+        this.getFeatureTypeOrderFromConfig();
+
         if(this.entityId) {
             // get entity data
             this.getData(this.entityId).subscribe((resp: SzHowEntityResponse) => {
@@ -67,7 +77,16 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
                 }
             })
         }
+
     }
+
+    getFeatureTypeOrderFromConfig() {
+        this.configDataService.getOrderedFeatures().subscribe((res: any)=>{
+            this._featureTypesOrdered = res;
+            console.log('getFeatureTypeOrderFromConfig: ', res);
+        });
+    }
+
     /**
      * unsubscribe when component is destroyed
      */
