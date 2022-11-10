@@ -78,8 +78,10 @@ import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
 //import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
 // how related
 import { SzHowEntityComponent } from './how/sz-how-entity.component';
+import { SzHowStepComponent } from './how/sz-how-step.component';
 import { SzHowCardBaseComponent } from './how/cards/sz-how-entity-card-base.component';
 import { SzHowFinalCardComponent } from './how/cards/sz-how-entity-card-final.component';
+import { SzHowVirtualCardComponent } from './how/cards/sz-how-virtual-card.component';
 
 /**
  * Sets up a default set of service parameters for use
@@ -128,9 +130,11 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzGraphControlComponent,
     SzGraphComponent,
     SzGraphFilterComponent,
-    SzHowEntityComponent,
     SzHowCardBaseComponent,
+    SzHowEntityComponent,
     SzHowFinalCardComponent,
+    SzHowStepComponent,
+    SzHowVirtualCardComponent,
     SzMultiSelectButtonComponent,
     SzPoweredByComponent,
     SzPreferencesComponent,
@@ -176,6 +180,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzGraphControlComponent,
     SzGraphFilterComponent,
     SzHowEntityComponent,
+    SzHowEntityComponent,
+    SzHowVirtualCardComponent,
     SzPoweredByComponent,
     SzPreferencesComponent,
     SzRelationshipNetworkComponent,

@@ -1,4 +1,3 @@
-<div>
     <sz-how-entity-card-final *ngFor="let fCardData of finalCardsData; let fCardIndex=index"
         [attr.data-index]="fCardIndex"
         [attr.data-step]="fCardData.stepNumber"
@@ -7,4 +6,11 @@
         [data]="fCardData"
         [featureOrder]="orderedFeatures"
     ></sz-how-entity-card-final>
- </div>
+    <sz-how-step *ngFor="let stepData of resolutionSteps; let stepIndex=index"
+    [attr.data-index]="stepIndex"
+    [attr.data-step]="stepData.stepNumber"
+    [virtualEntityId]="stepData.resolvedVirtualEntityId"
+    [data]="stepData"
+    [stepsByVirtualId]="resolutionStepsByVirtualId"
+    [featureOrder]="orderedFeatures"
+    ></sz-how-step>

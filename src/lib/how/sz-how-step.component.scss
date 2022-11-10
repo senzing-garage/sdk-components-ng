@@ -1,0 +1,12 @@
+:host {
+    border: 2px dashed salmon;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+
+    .virtual-entity-card {
+        display: flex;
+        flex-grow: 4;
+        align-self: start;
+    }
+}

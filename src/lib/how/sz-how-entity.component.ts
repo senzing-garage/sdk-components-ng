@@ -32,17 +32,20 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     @Input()
     entityId: SzEntityIdentifier;
 
-    private _data: SzHowEntityResult;
     public finalCardsData: SzHowFinalCardData[];
+    private _data: SzHowEntityResult;
     private _featureTypesOrdered: string[] | undefined;
+    private _resolutionSteps: SzResolutionStep[];
+    private _resolutionStepsByVirtualId: {[key: string]: SzResolutionStep};
+
+    public get resolutionSteps(): SzResolutionStep[] | undefined {
+        return this._resolutionSteps;
+    }
+    public get resolutionStepsByVirtualId() {
+        return this._resolutionStepsByVirtualId;
+    }
     public get orderedFeatures(): string[] {
         return this._featureTypesOrdered
-    }
-
-    getData(entityId: SzEntityIdentifier): Observable<SzHowEntityResponse> {
-        return this.entityDataService.howEntityByEntityID(
-            this.entityId as number
-        )
     }
 
     constructor(
@@ -57,7 +60,8 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
             // get entity data
             this.getData(this.entityId).subscribe((resp: SzHowEntityResponse) => {
                 console.log(`how response: ${resp}`, resp.data);
-                this._data = resp.data;
+                this._data                          = resp && resp.data ? resp.data : undefined;
+                this._resolutionStepsByVirtualId    = resp && resp.data && resp.data.resolutionSteps ? this._data.resolutionSteps : undefined;
 
                 if(this._data.finalStates && this._data.finalStates.length > 0) {
                     // has at least one final states
@@ -75,11 +79,26 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
                     this.finalCardsData = _finalStatesData
                     console.log(`final step(s): `, this.finalCardsData);
                 }
+                if(this._data.resolutionSteps && Object.keys(this._data.resolutionSteps).length > 0) {
+                    // we have resolution steps
+                    let _resSteps = [];
+                    for(let rKey in this._data.resolutionSteps) {
+                        this._data.resolutionSteps[rKey].resolvedVirtualEntityId
+                        _resSteps.push( this._data.resolutionSteps[rKey] );
+                    }
+                    this._resolutionSteps = _resSteps;
+                }
             })
         }
 
     }
 
+    getData(entityId: SzEntityIdentifier): Observable<SzHowEntityResponse> {
+        return this.entityDataService.howEntityByEntityID(
+            this.entityId as number
+        )
+    }
+    
     getFeatureTypeOrderFromConfig() {
         this.configDataService.getOrderedFeatures().subscribe((res: any)=>{
             this._featureTypesOrdered = res;

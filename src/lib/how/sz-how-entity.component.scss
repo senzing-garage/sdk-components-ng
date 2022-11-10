@@ -1,5 +1,7 @@
 :host {
-    display: block;
+    display: flex;
+    flex-direction: row;
     border: 1px dashed blue;
     padding: 4px;
+    /*min-height: calc(100vh - 100px);*/
 }
