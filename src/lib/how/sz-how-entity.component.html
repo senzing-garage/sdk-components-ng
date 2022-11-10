@@ -1,16 +1,16 @@
-    <sz-how-entity-card-final *ngFor="let fCardData of finalCardsData; let fCardIndex=index"
-        [attr.data-index]="fCardIndex"
-        [attr.data-step]="fCardData.stepNumber"
-        [attr.resolved-entity-id]="fCardData.resolvedVirtualEntityId"
-        [entityId]="entityId"
-        [data]="fCardData"
-        [featureOrder]="orderedFeatures"
-    ></sz-how-entity-card-final>
-    <sz-how-step *ngFor="let stepData of resolutionSteps; let stepIndex=index"
+<sz-how-step *ngFor="let stepData of resolutionSteps; let stepIndex=index"
     [attr.data-index]="stepIndex"
     [attr.data-step]="stepData.stepNumber"
     [virtualEntityId]="stepData.resolvedVirtualEntityId"
     [data]="stepData"
     [stepsByVirtualId]="resolutionStepsByVirtualId"
     [featureOrder]="orderedFeatures"
-    ></sz-how-step>
+></sz-how-step>
+<sz-how-entity-card-final *ngFor="let fCardData of finalCardsData; let fCardIndex=index"
+    [attr.data-index]="fCardIndex"
+    [attr.data-step]="fCardData.stepNumber"
+    [attr.resolved-entity-id]="fCardData.resolvedVirtualEntityId"
+    [entityId]="entityId"
+    [data]="fCardData"
+    [featureOrder]="orderedFeatures"
+></sz-how-entity-card-final>

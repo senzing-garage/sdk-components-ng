@@ -29,8 +29,7 @@ interface SzVirtualEntityRecordsByDataSource {
     templateUrl: './sz-how-entity-card-final.component.html',
     styleUrls: ['./sz-how-entity-card-final.component.scss']
 })
-export class SzHowFinalCardComponent extends SzHowCardBaseComponent implements OnInit, OnDestroy {
-  
+export class SzHowFinalCardComponent extends SzHowCardBaseComponent {
     private _entityId: SzEntityIdentifier;
     @Input()
     set entityId(value: SzEntityIdentifier){
@@ -277,13 +276,5 @@ export class SzHowFinalCardComponent extends SzHowCardBaseComponent implements O
         private entityDataService: SzEntityDataService
     ){
         super();
-    }
-    override ngOnInit() {}
-    /**
-     * unsubscribe when component is destroyed
-     */
-    override ngOnDestroy() {
-        this.unsubscribe$.next();
-        this.unsubscribe$.complete();
     }
 }

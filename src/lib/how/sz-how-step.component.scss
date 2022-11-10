@@ -2,11 +2,15 @@
     border: 2px dashed salmon;
     display: flex;
     flex-direction: column;
-    justify-content: stretch;
+    justify-content: space-between;
+    /*justify-content: space-around;*/
 
     .virtual-entity-card {
         display: flex;
-        flex-grow: 4;
+        /*flex-grow: 4;*/
         align-self: start;
+        &:first-child {
+            margin-bottom: 20px;
+        }
     }
 }

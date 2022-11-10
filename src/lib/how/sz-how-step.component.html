@@ -1,12 +1,12 @@
 <sz-how-virtual-card
-    *ngIf="candidateVirtualEntity"
-    class="virtual-entity-card candidate-entity-card"
-    [data]="candidateVirtualEntity"
-    [preceedingStep]="getConstructionStepForVirtualEntity(candidateVirtualEntity.virtualEntityId)"
-></sz-how-virtual-card>
-<sz-how-virtual-card
     *ngIf="inboundVirtualEntity"
     class="virtual-entity-card inbound-entity-card"
     [data]="inboundVirtualEntity"
     [preceedingStep]="getConstructionStepForVirtualEntity(inboundVirtualEntity.virtualEntityId)"
+></sz-how-virtual-card>
+<sz-how-virtual-card
+    *ngIf="candidateVirtualEntity"
+    class="virtual-entity-card candidate-entity-card"
+    [data]="candidateVirtualEntity"
+    [preceedingStep]="getConstructionStepForVirtualEntity(candidateVirtualEntity.virtualEntityId)"
 ></sz-how-virtual-card>

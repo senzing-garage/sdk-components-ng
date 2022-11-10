@@ -3,9 +3,9 @@
     <mat-icon fontIcon="arrow_left" *ngIf="branchExpanded">arrow_left</mat-icon>
 </div>
 <div class="content">
-    <header>Virtual Entity <span class="entity-id">{{virtualEntityId}}</span></header>
+    <header>Virtual Entity <span class="entity-id" (click)="featuresAccordion.openAll()">{{virtualEntityId}}</span></header>
     <div *ngIf="singleton" class="steps-header none">Singleton Entity</div>
-    <mat-accordion class="steps-ribbon" *ngIf="!singleton">
+    <mat-accordion #steps class="steps-ribbon" *ngIf="!singleton">
         <mat-expansion-panel (opened)="stepsPanelOpenState = true"
                     (closed)="stepsPanelOpenState = false">
             <mat-expansion-panel-header>
@@ -29,8 +29,8 @@
             </div>
         </mat-expansion-panel>
     </mat-accordion>
-    <mat-accordion class="features" multi>
-        <mat-expansion-panel class="feature-drawer feature-drawer-sources" hideToggle>
+    <mat-accordion #features class="features" multi>
+        <mat-expansion-panel class="feature-drawer feature-drawer-sources" [expanded]="true" hideToggle>
             <mat-expansion-panel-header>Sources<span class="count-bubble">{{featureCount(sources)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let source of sources | keyvalue">
@@ -43,7 +43,7 @@
                 </li>
             </ul>
         </mat-expansion-panel>
-        <mat-expansion-panel class="feature-drawer feature-drawer-names" *ngIf="names" hideToggle>
+        <mat-expansion-panel class="feature-drawer feature-drawer-names" *ngIf="names" [expanded]="true" hideToggle>
             <mat-expansion-panel-header>Names<span class="count-bubble">{{featureCount(names)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let value of names">
@@ -54,7 +54,7 @@
                 </li>
             </ul>
         </mat-expansion-panel>
-        <mat-expansion-panel class="feature-drawer feature-drawer-dob" *ngIf="dob" hideToggle>
+        <mat-expansion-panel class="feature-drawer feature-drawer-dob" *ngIf="dob" [expanded]="true" hideToggle>
             <mat-expansion-panel-header>Date of Birth<span class="count-bubble">{{featureCount(dob)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let value of dob">
@@ -65,7 +65,7 @@
                 </li>
             </ul>
         </mat-expansion-panel>
-        <mat-expansion-panel class="feature-drawer feature-drawer-addresses" *ngIf="addresses" hideToggle>
+        <mat-expansion-panel class="feature-drawer feature-drawer-addresses" *ngIf="addresses" [expanded]="true" hideToggle>
             <mat-expansion-panel-header>Addresses<span class="count-bubble">{{featureCount(addresses)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let value of addresses">
@@ -76,7 +76,7 @@
                 </li>
             </ul>
         </mat-expansion-panel>
-        <mat-expansion-panel class="feature-drawer feature-drawer-emails" *ngIf="emails" hideToggle>
+        <mat-expansion-panel class="feature-drawer feature-drawer-emails" *ngIf="emails" [expanded]="true" hideToggle>
             <mat-expansion-panel-header>Emails<span class="count-bubble">{{featureCount(emails)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let value of emails">
@@ -87,7 +87,7 @@
                 </li>
             </ul>
         </mat-expansion-panel>
-        <mat-expansion-panel class="feature-drawer feature-drawer-phone-numbers" *ngIf="phoneNumbers" hideToggle>
+        <mat-expansion-panel class="feature-drawer feature-drawer-phone-numbers" *ngIf="phoneNumbers" [expanded]="true" hideToggle>
             <mat-expansion-panel-header>Phone Numbers<span class="count-bubble">{{featureCount(phoneNumbers)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let value of phoneNumbers">
@@ -98,7 +98,7 @@
                 </li>
             </ul>
         </mat-expansion-panel>
-        <mat-expansion-panel class="feature-drawer feature-drawer-ssn" *ngIf="ssnNumbers" hideToggle>
+        <mat-expansion-panel class="feature-drawer feature-drawer-ssn" *ngIf="ssnNumbers" [expanded]="true" hideToggle>
             <mat-expansion-panel-header>SSN<span class="count-bubble">{{featureCount(ssnNumbers)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let value of ssnNumbers">
@@ -109,7 +109,7 @@
                 </li>
             </ul>
         </mat-expansion-panel>
-        <mat-expansion-panel class="feature-drawer feature-drawer-drivers-licenses" *ngIf="dlNumbers" hideToggle>
+        <mat-expansion-panel class="feature-drawer feature-drawer-drivers-licenses" *ngIf="dlNumbers" [expanded]="true" hideToggle>
             <mat-expansion-panel-header>DL<span class="count-bubble">{{featureCount(dlNumbers)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let value of dlNumbers">
@@ -122,7 +122,7 @@
         </mat-expansion-panel>
         <!-- start "other features" -->
         <ng-container *ngIf="otherFeatures">
-            <mat-expansion-panel class="feature-drawer feature-drawer-features" *ngFor="let otherFeat of otherFeatures | keyvalue" hideToggle>
+            <mat-expansion-panel class="feature-drawer feature-drawer-features" *ngFor="let otherFeat of otherFeatures | keyvalue" [expanded]="true" hideToggle>
                 <mat-expansion-panel-header>{{otherFeat.key}}</mat-expansion-panel-header>
                 <ul>
                     <li *ngFor="let feat of otherFeat.value">

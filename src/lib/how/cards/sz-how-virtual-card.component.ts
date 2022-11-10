@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { MatAccordion } from '@angular/material/expansion';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
 import { 
@@ -29,7 +30,7 @@ interface SzVirtualEntityRecordsByDataSource {
     templateUrl: './sz-how-virtual-card.component.html',
     styleUrls: ['./sz-how-virtual-card.component.scss']
 })
-export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements OnInit, OnDestroy {
+export class SzHowVirtualCardComponent extends SzHowCardBaseComponent {
 
     public stepsPanelOpenState = false;
     private _data: SzVirtualEntity;
@@ -41,7 +42,8 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
     @HostBinding('class.sz-how-singleton-card') cssSingletonClass(): boolean {
         return this.singleton ? true : false;
     }
-
+    @ViewChild(MatAccordion) override featuresAccordion: MatAccordion;
+    @ViewChild(MatAccordion) override stepsAccordion: MatAccordion;
 
     @Input() set preceedingStep(value: SzResolutionStep) {
         if(value) {
