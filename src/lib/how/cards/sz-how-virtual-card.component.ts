@@ -11,6 +11,7 @@ import { SzHowFinalCardData } from '../../models/data-how';
 import { SzHowCardBaseComponent } from './sz-how-entity-card-base.component';
 import { SzSearchService } from '../../services/sz-search.service';
 import { friendlyFeaturesName } from '../../models/data-features';
+import { SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
 
 interface SzVirtualEntityRecordsByDataSource {
     [key: string]: Array<SzVirtualEntityRecord> 
@@ -66,7 +67,7 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent {
                 .subscribe((res: SzResolvedEntity) => {
                     this._resolvedEntity    = res;
                     this.orderedFeatures   = this.getOrderedFeatures(res);
-                    console.log('@senzing/sdk-components-ng/sz-how-virtual-card.setData(): ', this._data, res);
+                    //console.log('@senzing/sdk-components-ng/sz-how-virtual-card.setData(): ', this._data, res);
                 });
             }
         }
@@ -191,7 +192,7 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent {
                 undefined, SzFeatureMode.ATTRIBUTED
             )
             .pipe(
-            tap(res => console.log('@senzing/sdk-components-ng/sz-how-virtual-card.getVirtualEntityByRecordIds: ' + rIds, res)),
+            /*tap(res => console.log('@senzing/sdk-components-ng/sz-how-virtual-card.getVirtualEntityByRecordIds: ' + rIds, res)),*/
             map((res: SzVirtualEntityResponse) => { return res.data.resolvedEntity})
         )
     }
@@ -352,8 +353,18 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent {
 
     constructor(
         private searchService: SzSearchService,
-        private entityDataService: SzEntityDataService
+        private entityDataService: SzEntityDataService,
+        private uiCoordinatorService: SzHowUICoordinatorService
     ){
         super();
+    }
+
+    expandSteps() {
+        this.uiCoordinatorService.expandSteps(this.virtualEntityId);
+        this.branchExpanded = true;
+    }
+    collapseSteps() {
+        this.uiCoordinatorService.collapseSteps(this.virtualEntityId)
+        this.branchExpanded = false;
     }
 }

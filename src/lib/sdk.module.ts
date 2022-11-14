@@ -82,7 +82,7 @@ import { SzHowStepComponent } from './how/sz-how-step.component';
 import { SzHowCardBaseComponent } from './how/cards/sz-how-entity-card-base.component';
 import { SzHowFinalCardComponent } from './how/cards/sz-how-entity-card-final.component';
 import { SzHowVirtualCardComponent } from './how/cards/sz-how-virtual-card.component';
-
+import { SzHowUICoordinatorService } from './services/sz-how-ui-coordinator.service';
 /**
  * Sets up a default set of service parameters for use
  * by the SDK Components.
@@ -228,6 +228,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     SzCSSClassService,
     SzDataSourcesService,
     SzFoliosService,
+    SzHowUICoordinatorService,
     SzPrefsService,
     SzSearchService,
     HttpClient,

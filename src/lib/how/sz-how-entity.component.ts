@@ -6,6 +6,7 @@ import {
     SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../services/sz-config-data.service';
+import { SzHowUICoordinatorService } from '../services/sz-how-ui-coordinator.service';
 import { SzHowFinalCardData } from '../models/data-how';
 import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
@@ -51,7 +52,8 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
 
     constructor(
         public entityDataService: SzEntityDataService,
-        public configDataService: SzConfigDataService
+        public configDataService: SzConfigDataService,
+        private uiCoordinatorService: SzHowUICoordinatorService
     ){}
 
     ngOnInit() {
@@ -61,8 +63,9 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
             // get entity data
             this.getData(this.entityId).subscribe((resp: SzHowEntityResponse) => {
                 console.log(`how response: ${resp}`, resp.data);
-                this._data                          = resp && resp.data ? resp.data : undefined;
-                this._resolutionStepsByVirtualId    = resp && resp.data && resp.data.resolutionSteps ? this._data.resolutionSteps : undefined;
+                this._data                                    = resp && resp.data ? resp.data : undefined;
+                this._resolutionStepsByVirtualId              = resp && resp.data && resp.data.resolutionSteps ? this._data.resolutionSteps : undefined;
+                this.uiCoordinatorService.currentHowResult    = resp.data;
 
                 if(this._data.finalStates && this._data.finalStates.length > 0) {
                     // has at least one final states
