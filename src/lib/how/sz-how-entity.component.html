@@ -20,6 +20,7 @@
     [attr.data-step]="getStepNumberByVirtualEntityId(fCardData.virtualEntityId)"
     [attr.virtual-entity-id]="fCardData.virtualEntityId"
     cardType="Entity"
+    [cardId]="entityId"
     [data]="fCardData"
     [featureOrder]="orderedFeatures"
     [preceedingStep]="getConstructionStepForVirtualEntity(fCardData.virtualEntityId)"

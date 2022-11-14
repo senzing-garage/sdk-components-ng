@@ -40,6 +40,7 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent {
     private _resolvedEntity: SzResolvedEntity;
     private _sources: SzVirtualEntityRecordsByDataSource;
     private _cardType: string = 'Virtual Entity';
+    private _cardId: string;
 
     @HostBinding('class.sz-how-entity-card') cssCardClass: boolean = true;
     @HostBinding('class.sz-how-singleton-card') cssSingletonClass(): boolean {
@@ -74,6 +75,9 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent {
     @Input() set cardType(value: string) {
         this._cardType = value;
     }
+    @Input() set cardId(value: string | SzEntityIdentifier) {
+        this._cardId = (value as SzEntityIdentifier as string);
+    }
 
     @Input() set currentStep(value: SzResolutionStep) {
         if(value) {
@@ -88,6 +92,9 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent {
     }
     public get cardType(): string {
         return this._cardType;
+    }
+    public get cardId(): string {
+        return this._cardId ? this._cardId : (this._data && this._data.virtualEntityId !== undefined ? this._data.virtualEntityId : '');
     }
     public get resolvedEntity() {
         return this._resolvedEntity;
