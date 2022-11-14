@@ -3,7 +3,7 @@
     <mat-icon fontIcon="arrow_left" *ngIf="branchExpanded">arrow_left</mat-icon>
 </div>
 <div class="content">
-    <header>Virtual Entity <span class="entity-id" (click)="featuresAccordion.openAll()">{{virtualEntityId}}</span></header>
+    <header>Virtual Entity <span class="entity-id">{{virtualEntityId}}</span></header>
     <div *ngIf="singleton" class="steps-header none">Singleton Entity</div>
     <mat-accordion #steps class="steps-ribbon" *ngIf="!singleton">
         <mat-expansion-panel (opened)="stepsPanelOpenState = true"
@@ -43,94 +43,18 @@
                 </li>
             </ul>
         </mat-expansion-panel>
-        <mat-expansion-panel class="feature-drawer feature-drawer-names" *ngIf="names" [expanded]="true" hideToggle>
-            <mat-expansion-panel-header>Names<span class="count-bubble">{{featureCount(names)}}</span></mat-expansion-panel-header>
-            <ul>
-                <li *ngFor="let value of names">
-                    {{value.primaryValue}}
-                    <ul class="duplicate-tree" *ngIf="value.duplicateValues && value.duplicateValues.length > 0">
-                        <li *ngFor="let dupVal of value.duplicateValues">{{dupVal}}</li>
-                    </ul>
-                </li>
-            </ul>
-        </mat-expansion-panel>
-        <mat-expansion-panel class="feature-drawer feature-drawer-dob" *ngIf="dob" [expanded]="true" hideToggle>
-            <mat-expansion-panel-header>Date of Birth<span class="count-bubble">{{featureCount(dob)}}</span></mat-expansion-panel-header>
-            <ul>
-                <li *ngFor="let value of dob">
-                    {{value.primaryValue}}
-                    <ul class="duplicate-tree" *ngIf="value.duplicateValues && value.duplicateValues.length > 0">
-                        <li *ngFor="let dupVal of value.duplicateValues">{{dupVal}}</li>
-                    </ul>
-                </li>
-            </ul>
-        </mat-expansion-panel>
-        <mat-expansion-panel class="feature-drawer feature-drawer-addresses" *ngIf="addresses" [expanded]="true" hideToggle>
-            <mat-expansion-panel-header>Addresses<span class="count-bubble">{{featureCount(addresses)}}</span></mat-expansion-panel-header>
-            <ul>
-                <li *ngFor="let value of addresses">
-                    {{value.primaryValue}}
-                    <ul class="duplicate-tree" *ngIf="value.duplicateValues && value.duplicateValues.length > 0">
-                        <li *ngFor="let dupVal of value.duplicateValues">{{dupVal}}</li>
-                    </ul>
-                </li>
-            </ul>
-        </mat-expansion-panel>
-        <mat-expansion-panel class="feature-drawer feature-drawer-emails" *ngIf="emails" [expanded]="true" hideToggle>
-            <mat-expansion-panel-header>Emails<span class="count-bubble">{{featureCount(emails)}}</span></mat-expansion-panel-header>
-            <ul>
-                <li *ngFor="let value of emails">
-                    {{value.primaryValue}}
-                    <ul class="duplicate-tree" *ngIf="value.duplicateValues && value.duplicateValues.length > 0">
-                        <li *ngFor="let dupVal of value.duplicateValues">{{dupVal}}</li>
-                    </ul>
-                </li>
-            </ul>
-        </mat-expansion-panel>
-        <mat-expansion-panel class="feature-drawer feature-drawer-phone-numbers" *ngIf="phoneNumbers" [expanded]="true" hideToggle>
-            <mat-expansion-panel-header>Phone Numbers<span class="count-bubble">{{featureCount(phoneNumbers)}}</span></mat-expansion-panel-header>
-            <ul>
-                <li *ngFor="let value of phoneNumbers">
-                    {{value.primaryValue}}
-                    <ul class="duplicate-tree" *ngIf="value.duplicateValues && value.duplicateValues.length > 0">
-                        <li *ngFor="let dupVal of value.duplicateValues">{{dupVal}}</li>
-                    </ul>
-                </li>
-            </ul>
-        </mat-expansion-panel>
-        <mat-expansion-panel class="feature-drawer feature-drawer-ssn" *ngIf="ssnNumbers" [expanded]="true" hideToggle>
-            <mat-expansion-panel-header>SSN<span class="count-bubble">{{featureCount(ssnNumbers)}}</span></mat-expansion-panel-header>
-            <ul>
-                <li *ngFor="let value of ssnNumbers">
-                    {{value.primaryValue}}
-                    <ul class="duplicate-tree" *ngIf="value.duplicateValues && value.duplicateValues.length > 0">
-                        <li *ngFor="let dupVal of value.duplicateValues">{{dupVal}}</li>
-                    </ul>
-                </li>
-            </ul>
-        </mat-expansion-panel>
-        <mat-expansion-panel class="feature-drawer feature-drawer-drivers-licenses" *ngIf="dlNumbers" [expanded]="true" hideToggle>
-            <mat-expansion-panel-header>DL<span class="count-bubble">{{featureCount(dlNumbers)}}</span></mat-expansion-panel-header>
-            <ul>
-                <li *ngFor="let value of dlNumbers">
-                    {{value.primaryValue}}
-                    <ul class="duplicate-tree" *ngIf="value.duplicateValues && value.duplicateValues.length > 0">
-                        <li *ngFor="let dupVal of value.duplicateValues">{{dupVal}}</li>
-                    </ul>
-                </li>
-            </ul>
-        </mat-expansion-panel>
         <!-- start "other features" -->
-        <ng-container *ngIf="otherFeatures">
-            <mat-expansion-panel class="feature-drawer feature-drawer-features" *ngFor="let otherFeat of otherFeatures | keyvalue" [expanded]="true" hideToggle>
-                <mat-expansion-panel-header>{{otherFeat.key}}</mat-expansion-panel-header>
-                <ul>
-                    <li *ngFor="let feat of otherFeat.value">
-                        {{feat}}
-                    </li>
-                </ul>
-            </mat-expansion-panel>
-        </ng-container>
+        <mat-expansion-panel class="feature-drawer feature-drawer-features" [expanded]="true" *ngFor="let featBucket of orderedFeatures">
+            <mat-expansion-panel-header>{{featureName(featBucket.name)}}<span class="count-bubble">{{featureCount(featBucket.features)}}</span></mat-expansion-panel-header>
+            <ul>
+                <li *ngFor="let value of featBucket.features">
+                    {{value.primaryValue}}
+                    <ul class="duplicate-tree" *ngIf="value.duplicateValues && value.duplicateValues.length > 0">
+                        <li *ngFor="let dupVal of value.duplicateValues">{{dupVal}}</li>
+                    </ul>
+                </li>
+            </ul>
+        </mat-expansion-panel>
         <!-- end "other features" -->
     </mat-accordion>
 </div>

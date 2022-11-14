@@ -10,6 +10,7 @@ import { parseSzIdentifier } from '../../common/utils';
 import { SzHowFinalCardData } from '../../models/data-how';
 import { SzHowCardBaseComponent } from './sz-how-entity-card-base.component';
 import { SzSearchService } from '../../services/sz-search.service';
+import { friendlyFeaturesName } from '../../models/data-features';
 
 interface SzVirtualEntityRecordsByDataSource {
     [key: string]: Array<SzVirtualEntityRecord> 
@@ -61,11 +62,14 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent {
                 )
                 .subscribe((res: SzResolvedEntity) => {
                     this._resolvedEntity    = res;
+                    this.orderedFeatures   = this.getOrderedFeatures(res);
                     console.log('@senzing/sdk-components-ng/sz-how-virtual-card.setData(): ', this._data, res);
                 });
             }
         }
     }
+
+    @Input() featureOrder: string[];
 
     get preceedingStep(): SzResolutionStep | undefined {
         return this._preceedingStep;
@@ -263,6 +267,56 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent {
             return featuresWithoutMajorKeys;
         }
         return undefined;
+    }
+    public orderedFeatures: {name: string, features: SzEntityFeature[]}[] | undefined;
+
+    public getOrderedFeatures(entity: SzResolvedEntity): {name: string, features: SzEntityFeature[]}[] | undefined {
+        if(entity && entity.features) {
+            let orderedFeatures          = [];
+            for(let _key in entity.features) {
+                orderedFeatures.push({
+                    name: _key,
+                    features: entity.features[_key]
+                });
+            }            
+            // first sort alphabetically
+            orderedFeatures.sort((a: {name: string, features: SzEntityFeature[]}, b: {name: string, features: SzEntityFeature[]}) => {
+                var textA = a.name.toUpperCase();
+                var textB = b.name.toUpperCase();
+                return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+            });
+            // order by order of "features from config" if we got it
+            if(this.featureOrder && this.featureOrder.length > 0) {
+                //console.log('reordering virtual card features by config order: ', this.featureOrder);
+                orderedFeatures.sort((a: {name: string, features: SzEntityFeature[]}, b: {name: string, features: SzEntityFeature[]}) => {
+                    return this.featureOrder.indexOf(a.name) - this.featureOrder.indexOf(b.name);
+                })
+                return orderedFeatures;
+            }
+            //console.log('other features: ', orderedFeatures);
+            return orderedFeatures;
+        }
+
+        return undefined;
+    }
+
+    public featureName(featureKey) {
+        // by default show pure value
+        let retValue = featureKey;
+        // if we have specific overrides use those
+        if(featureKey && friendlyFeaturesName.has(featureKey)) {
+            retValue = friendlyFeaturesName.get(featureKey);
+        // otherwise if not a "KEY" value just make it friendly
+        } else if(featureKey && featureKey.indexOf('_') < 0) {
+            // no '_' so just capital case string
+            let _words = featureKey.split(' ');
+            let _capitalized = _words.map((_w) => {
+                return _w[0].toUpperCase() + _w.substr(1).toLowerCase();
+            }).join(' ').trim();
+            retValue = _capitalized;
+        }
+        //console.log(`featureName(${featureKey}): ${retValue}`, friendlyFeaturesName.get(featureKey));
+        return retValue;
     }
 
     public featureCount(featureCollection: SzVirtualEntityRecordsByDataSource | SzEntityFeature[] | SzVirtualEntityRecord[] ) {
