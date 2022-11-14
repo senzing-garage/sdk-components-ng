@@ -1,16 +1,68 @@
 :host {
-    border: 2px dashed salmon;
+    /*border: 2px dashed salmon;*/
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     /*justify-content: space-around;*/
 
-    .virtual-entity-card {
+    .vcard-container {
         display: flex;
+        flex-direction: row;
         /*flex-grow: 4;*/
         align-self: start;
+
         &:first-child {
-            margin-bottom: 20px;
+            /*margin-bottom: 20px;*/
+
+            .line-kit .vline {
+                margin-top: auto;
+                margin-bottom: 0;
+                margin-left: -2px; /* we need to shift negative for to line up properly */
+                height: 50%;
+                width: 20px;
+                border-bottom: 0;
+                border-top: 2px solid #000;
+            }
         }
+
+        .line-kit {
+            width: 43px;
+            display: flex;
+            flex-direction: row;
+
+            /*border: 1px dashed purple;*/
+            .hline-spacer {
+                width: 20px;
+            }
+            .hline {
+                display: block;
+                margin-top: 90px;
+                width: 20px;
+                border-top: 2px solid #000;
+                border-right: 2px solid #000;
+                height: calc(50% - 94px);
+            }
+            .vline {
+                display: block;
+                height: 50%;
+                width: 20px;
+                border-left: 2px solid #000;
+                border-bottom: 2px solid #000;
+            }
+        }
+    }
+    .vcard-spacer {
+        /*border: 2px dashed blueviolet;*/
+        min-height: 20px;
+        flex-grow: 5;
+        .vline {
+            display: block;
+            width: 20px;
+            height: 100%;
+            border-right: 2px solid #000;
+        }
+    }
+    .virtual-entity-card {
+
     }
 }

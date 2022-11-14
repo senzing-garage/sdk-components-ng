@@ -1,14 +1,27 @@
-<sz-how-virtual-card
+<div class="vcard-container">
+    <span class="line-kit">
+        <span class="hline"></span>
+        <span class="vline"></span>
+    </span>
+    <sz-how-virtual-card
     *ngIf="inboundVirtualEntity"
     class="virtual-entity-card inbound-entity-card"
     [data]="inboundVirtualEntity"
     [featureOrder]="featureOrder"
     [preceedingStep]="getConstructionStepForVirtualEntity(inboundVirtualEntity.virtualEntityId)"
 ></sz-how-virtual-card>
-<sz-how-virtual-card
+</div>
+<div class="vcard-spacer"><span class="vline"></span></div>
+<div class="vcard-container">
+    <span class="line-kit">
+        <span class="hline-spacer"></span>
+        <span class="vline"></span>
+    </span>
+    <sz-how-virtual-card
     *ngIf="candidateVirtualEntity"
     class="virtual-entity-card candidate-entity-card"
     [data]="candidateVirtualEntity"
     [featureOrder]="featureOrder"
     [preceedingStep]="getConstructionStepForVirtualEntity(candidateVirtualEntity.virtualEntityId)"
 ></sz-how-virtual-card>
+</div>
