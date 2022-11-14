@@ -42,13 +42,17 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
     private _sources: SzVirtualEntityRecordsByDataSource;
     private _cardType: string = 'Virtual Entity';
     private _cardId: string;
+    private _isHidden: boolean = false;
+    public get isHidden() {
+        return this._isHidden;
+    }
 
     @HostBinding('class.sz-how-entity-card') cssCardClass: boolean = true;
     @HostBinding('class.sz-how-singleton-card') get cssSingletonClass(): boolean {
         return this.singleton ? true : false;
     }
     @HostBinding('class.hidden') get cssHiddenClass(): boolean {
-        return this.branchExpanded ? false : true;
+        return this._isHidden ? true : false;
     }
     @ViewChild(MatAccordion) override featuresAccordion: MatAccordion;
     @ViewChild(MatAccordion) override stepsAccordion: MatAccordion;
@@ -373,9 +377,9 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
             return;
         }
         if(expansionEvent && this.data && expansionEvent.visibleVirtualIds && expansionEvent.visibleVirtualIds.indexOf(this.data.virtualEntityId) > -1) {
-            this.branchExpanded = true;
+            this._isHidden = false;
         } else if(expansionEvent && this.data && expansionEvent.hiddenVirtualIds && expansionEvent.hiddenVirtualIds.indexOf(this.data.virtualEntityId) > -1) {
-            this.branchExpanded = false;
+            this._isHidden = true;
         }
         console.log(`onStepExpansionChanged: ${this.data.virtualEntityId}: ${this.branchExpanded}`, expansionEvent);
     }

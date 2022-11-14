@@ -124,8 +124,21 @@ export class SzHowUICoordinatorService {
         if(virtualEntityId && this._steps && this._steps[virtualEntityId]) {
             step = this._steps[virtualEntityId];
             stepsToChangeState = step.preceedingStepVirtualIds;
-            let stepsNotInChain    = Object.keys(this._resolutionStepsByVirtualId)
+            
+            // we need all step ids that are parents of this primary id
+            let stepsResultOf       = [virtualEntityId];
+            for(let sk in this._steps) {
+                let hasVEntityInSteps = this._steps[sk].preceedingStepVirtualIds.indexOf(virtualEntityId) > -1;
+                if(hasVEntityInSteps) {
+                    stepsResultOf.push(sk);
+                }
+            }
+            // force steps that are result of virtualId 
+            // to continue to display
+            stepsToChangeState = stepsToChangeState.concat(stepsResultOf);
 
+            // now set anything not in the visible results to hidden
+            let stepsNotInChain    = Object.keys(this._resolutionStepsByVirtualId)
             .filter((kname) => {
                 return stepsToChangeState.indexOf(kname) <= 0 && kname !== this._finalStepVirtualId;
             });
@@ -136,14 +149,14 @@ export class SzHowUICoordinatorService {
             }
             this._stepVisibilityStateChange.next(eventPayload);
         }
-        console.log(`SzHowUICoordinatorService.expandSteps(${virtualEntityId}): ${stepsToChangeState}`, step, this._steps, this);
+        //console.log(`SzHowUICoordinatorService.expandSteps(${virtualEntityId}): ${stepsToChangeState}`, step, this._steps, this);
     }
     public collapseSteps(virtualEntityId: string) {
         let stepsToChangeState = [];
         let step: SzHowResolutionUIStep;
         if(virtualEntityId && this._steps && this._steps[virtualEntityId]) {
             step = this._steps[virtualEntityId];
-            stepsToChangeState = step.preceedingStepVirtualIds;
+            stepsToChangeState  = step.preceedingStepVirtualIds;
             let stepsNotInChain    = Object.keys(this._resolutionStepsByVirtualId)
             .filter((kname) => {
                 return stepsToChangeState.indexOf(kname) <= 0;
