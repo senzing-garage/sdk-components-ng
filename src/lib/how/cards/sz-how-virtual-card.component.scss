@@ -10,6 +10,10 @@
         }
     }
 
+    &.hidden {
+        border: 2px solid rgb(95, 35, 35);
+    }
+
     .steps-header {
         &.none {
             padding: 2px 0 1px 18px;

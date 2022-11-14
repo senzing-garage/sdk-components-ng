@@ -25,7 +25,7 @@ export class SzHowCardBaseComponent implements OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
 
-    public branchExpanded = false;
+    public branchExpanded = true;
     private _isPreceedingStepVisible: boolean = false;
 
     @Input() isPreceedingStepVisible(value: boolean) {

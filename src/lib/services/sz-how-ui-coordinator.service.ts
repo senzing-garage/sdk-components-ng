@@ -4,7 +4,7 @@ import {
   SzHowEntityResult,
   SzResolutionStep
 } from '@senzing/rest-api-client-ng';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 
 export interface SzResolutionStepUI extends SzResolutionStep {
@@ -70,6 +70,11 @@ export class SzHowResolutionUIStep {
     }
 }
 
+export interface SzHowStepUIStateChangeEvent {
+    visibleVirtualIds: string[],
+    hiddenVirtualIds: string[]
+}
+
 /**
  * Provides access to the /datasources api path.
  * See {@link https://github.com/Senzing/senzing-rest-api/blob/master/senzing-rest-api.yaml#L172}
@@ -83,6 +88,10 @@ export class SzHowUICoordinatorService {
     private _currentHowResult: SzHowEntityResult;
     private _resolutionStepsByVirtualId: {[key: string]: SzResolutionStep} = {};
     public _steps: {[key: string]: SzHowResolutionUIStep} = {};
+    private _finalStepVirtualId: string;
+
+    private _stepVisibilityStateChange = new BehaviorSubject<SzHowStepUIStateChangeEvent>({visibleVirtualIds: [], hiddenVirtualIds: []});
+    public stepExpansionChange = this._stepVisibilityStateChange.asObservable();
 
     public get steps(): {[key: string]: SzHowResolutionUIStep} {
         return this._steps;
@@ -98,13 +107,16 @@ export class SzHowUICoordinatorService {
             _stepsUI[k] = new SzHowResolutionUIStep(rStep, value.resolutionSteps);
         }
         this._steps = _stepsUI;
+        // get steps for last step and expand
+        if(value.finalStates && value.finalStates.length > 0) {
+            this._finalStepVirtualId = value.finalStates[0].virtualEntityId;
 
-        console.log('SzDataSourcesService.setCurrentHowResult() ', this._steps);
+            this.expandSteps( this._finalStepVirtualId );
+        }
+        console.log('SzHowUICoordinatorService.setCurrentHowResult() ', this._steps);
     }
 
-    constructor() {
-
-    }
+    constructor() {}
 
     public expandSteps(virtualEntityId: string) {
         let stepsToChangeState = [];
@@ -112,8 +124,19 @@ export class SzHowUICoordinatorService {
         if(virtualEntityId && this._steps && this._steps[virtualEntityId]) {
             step = this._steps[virtualEntityId];
             stepsToChangeState = step.preceedingStepVirtualIds;
+            let stepsNotInChain    = Object.keys(this._resolutionStepsByVirtualId)
+
+            .filter((kname) => {
+                return stepsToChangeState.indexOf(kname) <= 0 && kname !== this._finalStepVirtualId;
+            });
+
+            let eventPayload = {
+                visibleVirtualIds: stepsToChangeState,
+                hiddenVirtualIds: stepsNotInChain
+            }
+            this._stepVisibilityStateChange.next(eventPayload);
         }
-        console.log(`SzDataSourcesService.expandSteps(${virtualEntityId}): ${stepsToChangeState}`, step, this._steps, this);
+        console.log(`SzHowUICoordinatorService.expandSteps(${virtualEntityId}): ${stepsToChangeState}`, step, this._steps, this);
     }
     public collapseSteps(virtualEntityId: string) {
         let stepsToChangeState = [];
@@ -121,7 +144,17 @@ export class SzHowUICoordinatorService {
         if(virtualEntityId && this._steps && this._steps[virtualEntityId]) {
             step = this._steps[virtualEntityId];
             stepsToChangeState = step.preceedingStepVirtualIds;
+            let stepsNotInChain    = Object.keys(this._resolutionStepsByVirtualId)
+            .filter((kname) => {
+                return stepsToChangeState.indexOf(kname) <= 0;
+            });
+
+            let eventPayload = {
+                visibleVirtualIds: stepsNotInChain,
+                hiddenVirtualIds: stepsToChangeState
+            }
+            this._stepVisibilityStateChange.next(eventPayload);
         }
-        console.log(`SzDataSourcesService.collapseSteps(${virtualEntityId}): ${stepsToChangeState}`, step, this._steps, this);
+        console.log(`SzHowUICoordinatorService.collapseSteps(${virtualEntityId}): ${stepsToChangeState}`, step, this._steps, this);
     }
 }

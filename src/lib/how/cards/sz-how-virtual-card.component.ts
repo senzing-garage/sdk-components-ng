@@ -11,7 +11,7 @@ import { SzHowFinalCardData } from '../../models/data-how';
 import { SzHowCardBaseComponent } from './sz-how-entity-card-base.component';
 import { SzSearchService } from '../../services/sz-search.service';
 import { friendlyFeaturesName } from '../../models/data-features';
-import { SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
+import { SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
 
 interface SzVirtualEntityRecordsByDataSource {
     [key: string]: Array<SzVirtualEntityRecord> 
@@ -32,7 +32,7 @@ interface SzVirtualEntityRecordsByDataSource {
     templateUrl: './sz-how-virtual-card.component.html',
     styleUrls: ['./sz-how-virtual-card.component.scss']
 })
-export class SzHowVirtualCardComponent extends SzHowCardBaseComponent {
+export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements OnInit {
 
     public stepsPanelOpenState = false;
     private _data: SzVirtualEntity;
@@ -44,8 +44,11 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent {
     private _cardId: string;
 
     @HostBinding('class.sz-how-entity-card') cssCardClass: boolean = true;
-    @HostBinding('class.sz-how-singleton-card') cssSingletonClass(): boolean {
+    @HostBinding('class.sz-how-singleton-card') get cssSingletonClass(): boolean {
         return this.singleton ? true : false;
+    }
+    @HostBinding('class.hidden') get cssHiddenClass(): boolean {
+        return this.branchExpanded ? false : true;
     }
     @ViewChild(MatAccordion) override featuresAccordion: MatAccordion;
     @ViewChild(MatAccordion) override stepsAccordion: MatAccordion;
@@ -357,6 +360,24 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent {
         private uiCoordinatorService: SzHowUICoordinatorService
     ){
         super();
+    }
+    ngOnInit() {
+        this.uiCoordinatorService.stepExpansionChange.pipe(
+            takeUntil(this.unsubscribe$)
+        ).subscribe(this.onStepExpansionChanged.bind(this))
+    }
+
+    private onStepExpansionChanged(expansionEvent: SzHowStepUIStateChangeEvent) {
+        if(!(this.data && this.data.virtualEntityId)) {
+            console.warn('data for card not initialized properly');
+            return;
+        }
+        if(expansionEvent && this.data && expansionEvent.visibleVirtualIds && expansionEvent.visibleVirtualIds.indexOf(this.data.virtualEntityId) > -1) {
+            this.branchExpanded = true;
+        } else if(expansionEvent && this.data && expansionEvent.hiddenVirtualIds && expansionEvent.hiddenVirtualIds.indexOf(this.data.virtualEntityId) > -1) {
+            this.branchExpanded = false;
+        }
+        console.log(`onStepExpansionChanged: ${this.data.virtualEntityId}: ${this.branchExpanded}`, expansionEvent);
     }
 
     expandSteps() {
