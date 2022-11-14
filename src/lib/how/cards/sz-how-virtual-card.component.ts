@@ -36,8 +36,10 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent {
     public stepsPanelOpenState = false;
     private _data: SzVirtualEntity;
     private _preceedingStep: SzResolutionStep;
+    private _currentStep: SzResolutionStep;
     private _resolvedEntity: SzResolvedEntity;
     private _sources: SzVirtualEntityRecordsByDataSource;
+    private _cardType: string = 'Virtual Entity';
 
     @HostBinding('class.sz-how-entity-card') cssCardClass: boolean = true;
     @HostBinding('class.sz-how-singleton-card') cssSingletonClass(): boolean {
@@ -68,47 +70,58 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent {
             }
         }
     }
+    
+    @Input() set cardType(value: string) {
+        this._cardType = value;
+    }
+
+    @Input() set currentStep(value: SzResolutionStep) {
+        if(value) {
+            this._currentStep = value;
+        }
+    }
 
     @Input() featureOrder: string[];
 
     get preceedingStep(): SzResolutionStep | undefined {
         return this._preceedingStep;
     }
+    public get cardType(): string {
+        return this._cardType;
+    }
     public get resolvedEntity() {
         return this._resolvedEntity;
+    }
+    get currentStep(): SzResolutionStep | undefined {
+        return this._currentStep;
     }
     
     get data(): SzVirtualEntity | undefined {
         return this._data;
     }
 
-    private _stepNumber;
     get stepNumber() {
-        return this._stepNumber;
+        return this._preceedingStep && this._preceedingStep.stepNumber ?  this._preceedingStep.stepNumber : 0;
     }
-    set stepNumber(value: number) {
-        this._stepNumber = value;
-    }
+    
     public get stepTitle(): string {
         let retVal = '';
-        if(this._data && this._data.singleton) {
-            if(this._data.singleton) {
-                // this card is a singleton record
-                retVal = 'Singleton Entity';
-            } else if(this.preceedingStep && this.preceedingStep.resolvedVirtualEntityId) {
-                // this card is the result of a preceeding step operation
-                let iEnt = this.preceedingStep.inboundVirtualEntity;
-                let cEnt = this.preceedingStep.candidateVirtualEntity;
-                let sCount = (iEnt.singleton? 1:0) + (cEnt.singleton? 1:0);
-                if(sCount === 2){
-                    retVal = 'Records Merged to Virtual Entity';
-                } else if(sCount === 1) {
-                    // one singleton, one vent
-                    retVal = 'Add Record to Virtual Entity';
-                } else {
-                    // two vents
-                    retVal = 'Merged Virtual Entities';
-                }
+        if(this._data.singleton) {
+            // this card is a singleton record
+            retVal = 'Singleton Entity';
+        } else if(this.preceedingStep && this.preceedingStep.resolvedVirtualEntityId) {
+            // this card is the result of a preceeding step operation
+            let iEnt = this.preceedingStep.inboundVirtualEntity;
+            let cEnt = this.preceedingStep.candidateVirtualEntity;
+            let sCount = (iEnt.singleton? 1:0) + (cEnt.singleton? 1:0);
+            if(sCount === 2){
+                retVal = 'Records Merged to Virtual Entity';
+            } else if(sCount === 1) {
+                // one singleton, one vent
+                retVal = 'Add Record to Virtual Entity';
+            } else {
+                // two vents
+                retVal = 'Merged Virtual Entities';
             }
         }
         return retVal;

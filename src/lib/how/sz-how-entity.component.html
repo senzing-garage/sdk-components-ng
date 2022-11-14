@@ -6,11 +6,21 @@
     [stepsByVirtualId]="resolutionStepsByVirtualId"
     [featureOrder]="orderedFeatures"
 ></sz-how-step>
-<sz-how-entity-card-final *ngFor="let fCardData of finalCardsData; let fCardIndex=index"
+<!--<sz-how-entity-card-final *ngFor="let fCardData of finalCardsData; let fCardIndex=index"
     [attr.data-index]="fCardIndex"
     [attr.data-step]="fCardData.stepNumber"
     [attr.resolved-entity-id]="fCardData.resolvedVirtualEntityId"
     [entityId]="entityId"
     [data]="fCardData"
     [featureOrder]="orderedFeatures"
-></sz-how-entity-card-final>
+></sz-how-entity-card-final>-->
+<sz-how-virtual-card *ngFor="let fCardData of finalCardsData; let fCardIndex=index"
+    class="virtual-entity-card inbound-entity-card"
+    [attr.data-index]="fCardIndex"
+    [attr.data-step]="getStepNumberByVirtualEntityId(fCardData.virtualEntityId)"
+    [attr.virtual-entity-id]="fCardData.virtualEntityId"
+    cardType="Entity"
+    [data]="fCardData"
+    [featureOrder]="orderedFeatures"
+    [preceedingStep]="getConstructionStepForVirtualEntity(fCardData.virtualEntityId)"
+></sz-how-virtual-card>

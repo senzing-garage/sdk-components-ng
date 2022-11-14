@@ -11,7 +11,8 @@ $sz-how-card-handle-width: 17px;
         border-radius: 7px;
         box-shadow: #000;
         /*min-height: 700px;*/
-        min-width: 400px;
+        min-width: 300px;
+        padding-bottom: 10px;
     }
     .handle {
         display: flex;
@@ -20,7 +21,7 @@ $sz-how-card-handle-width: 17px;
         width: $sz-how-card-handle-width;
         height: 120px;
         background-color: #000;
-        margin-top: 33px;
+        margin-top: 28px;
         color: #fff;
         font-size: 33px;
         line-height: 33px;

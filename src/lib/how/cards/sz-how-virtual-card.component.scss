@@ -12,6 +12,7 @@
 
     .steps-header {
         &.none {
+            padding: 2px 0 1px 18px;
             background-color: gray;
             color: white;
         }
@@ -76,6 +77,10 @@
               height: 15px;
             }
         }
+    }
+    .mat-accordion.features {
+        display: block;
+        padding-right: 10px;
     }
     .feature-drawer {
         .mat-expansion-panel-content ul {

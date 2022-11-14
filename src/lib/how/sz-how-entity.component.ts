@@ -32,7 +32,8 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     @Input()
     entityId: SzEntityIdentifier;
 
-    public finalCardsData: SzHowFinalCardData[];
+    //public finalCardsData: SzHowFinalCardData[];
+    public finalCardsData: SzVirtualEntity[];
     private _data: SzHowEntityResult;
     private _featureTypesOrdered: string[] | undefined;
     private _resolutionSteps: SzResolutionStep[];
@@ -71,11 +72,13 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
                     .filter((fStateObj) => {
                         return this._data.resolutionSteps && this._data.resolutionSteps[ fStateObj.virtualEntityId ] ? true : false;
                     })
+                    /*
                     .map((fStateObj) => {
                         return (Object.assign(this._data.resolutionSteps[ fStateObj.virtualEntityId ], {
                             resolvedVirtualEntity: fStateObj
                         }) as SzHowFinalCardData)
-                    });
+                    });*/
+
                     this.finalCardsData = _finalStatesData
                     console.log(`final step(s): `, this.finalCardsData);
                 }
@@ -91,6 +94,23 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
             })
         }
 
+    }
+
+    getStepNumberByVirtualEntityId(virtualEntityId: string) {
+        let retVal = undefined;
+        if(this._resolutionStepsByVirtualId && this._resolutionStepsByVirtualId[virtualEntityId]) {
+            retVal = this._resolutionStepsByVirtualId[virtualEntityId].stepNumber;
+        }
+        return retVal;
+    }
+
+    public getConstructionStepForVirtualEntity(virtualEntityId: string) {
+        let retVal = undefined;
+        if(this._resolutionStepsByVirtualId && this._resolutionStepsByVirtualId[virtualEntityId]) {
+            // there is a step entry for the virtualEntityId passed to this function
+            retVal = this._resolutionStepsByVirtualId[virtualEntityId];
+        }
+        return retVal;
     }
 
     getData(entityId: SzEntityIdentifier): Observable<SzHowEntityResponse> {

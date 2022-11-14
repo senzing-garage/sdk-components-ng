@@ -42,11 +42,11 @@ export class SzHowStepComponent implements OnInit, OnDestroy {
         this._data = value;
         console.info(`sz-how-step.setData()`, value);
     }
+    get data() : SzResolutionStep {
+        return this._data;
+    }
     get stepsByVirtualId(): {[key: string]: SzResolutionStep} {
         return this._stepMap;
-    }
-    get data(): SzResolutionStep {
-        return this._data;
     }
     get candidateVirtualEntity(): SzVirtualEntity | undefined {
         return (this._data && this._data.candidateVirtualEntity) ? this._data.candidateVirtualEntity : undefined ;

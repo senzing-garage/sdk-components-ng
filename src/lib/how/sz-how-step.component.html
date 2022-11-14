@@ -7,6 +7,7 @@
     *ngIf="inboundVirtualEntity"
     class="virtual-entity-card inbound-entity-card"
     [data]="inboundVirtualEntity"
+    [currentStep]="data"
     [featureOrder]="featureOrder"
     [preceedingStep]="getConstructionStepForVirtualEntity(inboundVirtualEntity.virtualEntityId)"
 ></sz-how-virtual-card>
@@ -21,6 +22,7 @@
     *ngIf="candidateVirtualEntity"
     class="virtual-entity-card candidate-entity-card"
     [data]="candidateVirtualEntity"
+    [currentStep]="data"
     [featureOrder]="featureOrder"
     [preceedingStep]="getConstructionStepForVirtualEntity(candidateVirtualEntity.virtualEntityId)"
 ></sz-how-virtual-card>

@@ -5,7 +5,7 @@ export let friendlyFeaturesName = new Map<string, string>([
     ['EMAIL', 'Emails'],
     ['PHONE', 'Phone Numbers'],
     ['PASSPORT', 'Passports'],
-    ['DOB','DOB'],
+    ['DOB','Date of Birth'],
     ['ACCT_NUM','Account #'],
     ['DOD','DOD'],
     ['SSN','SSN'],
