@@ -1,3 +1,26 @@
 :host {
     border: 2px dashed rgb(15, 120, 206);
+    justify-content: center;
+    text-align: center;
+    nav {
+        ol, ul {
+            list-style: none;
+            margin: 10px;
+            display: inline-flex;
+            flex-direction: row;
+
+            li {
+                border: 2px solid black;
+                border-radius: 5px;
+                margin: 0 4px;
+                padding: 4px 10px;
+                min-width: calc(100vw / 6);
+                &:first-child {
+                    /* first child is text*/
+                    min-width: unset;
+                    border: 0;
+                }
+            }
+        }
+    }
 }
