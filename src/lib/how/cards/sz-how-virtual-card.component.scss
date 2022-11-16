@@ -4,14 +4,16 @@
     @include sz-how-entity-card;
 
     &.sz-how-singleton-card {
+        display: inline-block;
+        width: calc(100% - 60px);
         /*border: 2px solid rgb(16, 114, 60);*/
         .handle {
             /*display: none;*/
+            /*border: 1px dashed saddlebrown;*/
         }
     }
 
     &.hidden {
-        border: 2px solid rgb(95, 35, 35);
         display: none;
     }
 

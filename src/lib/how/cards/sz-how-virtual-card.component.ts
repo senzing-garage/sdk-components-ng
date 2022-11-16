@@ -381,7 +381,26 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
         } else if(expansionEvent && this.data && expansionEvent.hiddenVirtualIds && expansionEvent.hiddenVirtualIds.indexOf(this.data.virtualEntityId) > -1) {
             this._isHidden = true;
         }
-        console.log(`onStepExpansionChanged: ${this.data.virtualEntityId}: ${this.branchExpanded}`, expansionEvent);
+        // check if any of the immediately preceeding step is hidden
+        // if so, change the branchExpanded to false;
+        if(this._preceedingStep) {
+            let allCardsForPreviousStepGHidden = false;
+            if(expansionEvent && this._preceedingStep && expansionEvent.hiddenVirtualIds && (expansionEvent.hiddenVirtualIds.indexOf(this._preceedingStep.candidateVirtualEntity.virtualEntityId) > -1 && expansionEvent.hiddenVirtualIds.indexOf(this._preceedingStep.inboundVirtualEntity.virtualEntityId) > -1)) {
+                allCardsForPreviousStepGHidden = true;
+                console.log(`preceeding step is hidden ${this._preceedingStep.resolvedVirtualEntityId}`);
+            }
+            this.branchExpanded = !allCardsForPreviousStepGHidden;
+        }
+
+        //console.log(`onStepExpansionChanged: ${this.data.virtualEntityId}: ${this.branchExpanded}`, expansionEvent);
+    }
+
+    toggleSteps() {
+        if(this.branchExpanded) {
+            this.collapseSteps();
+        } else {
+            this.expandSteps();
+        }
     }
 
     expandSteps() {

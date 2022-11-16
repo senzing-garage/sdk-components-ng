@@ -1,9 +1,9 @@
-<div class="handle" *ngIf="!singleton">
-    <mat-icon fontIcon="arrow_right" *ngIf="!branchExpanded" (click)="expandSteps()">arrow_right</mat-icon>
-    <mat-icon fontIcon="arrow_left" *ngIf="branchExpanded" (click)="collapseSteps()">arrow_left</mat-icon>
+<div class="handle" *ngIf="!singleton" [class.expanded]="branchExpanded" (click)="toggleSteps()">
+    <mat-icon fontIcon="arrow_right">arrow_right</mat-icon>
+    <!--<mat-icon fontIcon="arrow_left" *ngIf="branchExpanded" (click)="collapseSteps()">arrow_left</mat-icon>-->
 </div>
 <div class="content">
-    <header>{{cardType}} <span class="entity-id">{{cardId}}</span>({{branchExpanded}}|{{isHidden}})</header>
+    <header>{{cardType}} <span class="entity-id">{{cardId}}</span></header>
     <div *ngIf="singleton" class="steps-header none">Singleton Entity</div>
     <mat-accordion #steps class="steps-ribbon" *ngIf="!singleton">
         <mat-expansion-panel (opened)="stepsPanelOpenState = true"

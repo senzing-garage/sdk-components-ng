@@ -9,6 +9,7 @@ import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzHowFinalCardData } from '../models/data-how';
 import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
+import { SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../services/sz-how-ui-coordinator.service';
 
 /**
  * Why
@@ -33,6 +34,13 @@ export class SzHowStepComponent implements OnInit, OnDestroy {
 
     private _stepMap: {[key: string]: SzResolutionStep};
     private _data: SzResolutionStep;
+    private _isHidden: boolean = false;
+
+    @HostBinding('class.hidden') get cssHiddenClass(): boolean {
+        return this._isHidden ? true : false;
+    }
+
+    @Input() featureOrder: string[];
 
     @Input() set stepsByVirtualId(value: {[key: string]: SzResolutionStep}) {
         this._stepMap = value;
@@ -54,15 +62,21 @@ export class SzHowStepComponent implements OnInit, OnDestroy {
     get inboundVirtualEntity(): SzVirtualEntity | undefined {
         return (this._data && this._data.inboundVirtualEntity) ? this._data.inboundVirtualEntity : undefined ;
     }
-
-    @Input() featureOrder: string[];
+    public get isHidden() {
+        return this._isHidden;
+    }
 
     constructor(
         public entityDataService: SzEntityDataService,
-        public configDataService: SzConfigDataService
+        public configDataService: SzConfigDataService,
+        private uiCoordinatorService: SzHowUICoordinatorService
     ){}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.uiCoordinatorService.stepExpansionChange.pipe(
+            takeUntil(this.unsubscribe$)
+        ).subscribe(this.onStepExpansionChanged.bind(this))
+    }
 
     /**
      * unsubscribe when component is destroyed
@@ -79,5 +93,18 @@ export class SzHowStepComponent implements OnInit, OnDestroy {
             retVal = this._stepMap[virtualEntityId];
         }
         return retVal;
+    }
+
+    private onStepExpansionChanged(expansionEvent: SzHowStepUIStateChangeEvent) {
+        if(!(this._data.resolvedVirtualEntityId && this._data.resolvedVirtualEntityId)) {
+            console.warn('data for card not initialized properly');
+            return;
+        }
+        let allStepsAreHidden = false;
+        if(expansionEvent && this._data && expansionEvent.hiddenVirtualIds && (expansionEvent.hiddenVirtualIds.indexOf(this._data.candidateVirtualEntity.virtualEntityId) > -1 && expansionEvent.hiddenVirtualIds.indexOf(this._data.inboundVirtualEntity.virtualEntityId) > -1)) {
+            allStepsAreHidden = true;
+        }
+        this._isHidden = allStepsAreHidden
+        //console.log(`SzHowStepComponent.onStepExpansionChanged: ${allStepsAreHidden}`, expansionEvent);
     }
 }

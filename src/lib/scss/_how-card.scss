@@ -25,15 +25,26 @@ $sz-how-card-handle-width: 17px;
         color: #fff;
         font-size: 33px;
         line-height: 33px;
+        cursor: pointer;
+
+        &.expanded {
+            mat-icon, .mat-icon {
+                transform: rotate(180deg);
+                right: calc(0px - (16px / 2));
+            }
+        }
 
         .material-icons {
             display: block;
             font-size: 33px;
             line-height: 33px;
             /* width: 14px; */
+            width: unset;
             height: 33px;
-            right: 3px;
+            /*right: calc((16px / 2) + 2px);*/
+            left: calc(0px - 8px); /* the real size of the text glyph is 33px. 33 /2 /2*/
             position: absolute;
+            transition: right .2s, transform .5s;
         }
 
         &:before {
