@@ -88,3 +88,30 @@ sz-how-entity {
         }
     }
 }
+sz-how-toolbar {
+    mat-form-field.jump-to-menu {
+        display: block;
+        border-radius: 10px;
+        border: 2px solid rgb(0, 0, 0);
+
+        .mat-form-field-wrapper {
+            padding-bottom: unset;
+            padding: 8px 0 0 0;
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+        .mat-form-field-flex {
+            background-color: unset;
+        }
+        .mat-form-field-infix {
+            border-top: unset;
+        }
+        .mat-form-field-underline {
+            display: none;
+        }
+    }
+}
+.how-jump-menu-panel {
+    .mat-icon.ninety {
+        transform: rotate(90deg);
+    }
+}

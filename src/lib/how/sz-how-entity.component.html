@@ -1,4 +1,8 @@
-<sz-how-toolbar></sz-how-toolbar>
+<sz-how-toolbar 
+    [stepsByVirtualId]="resolutionStepsByVirtualId"
+    [finalVirtualEntities]="finalCardsData"
+    [finalEntityId]="entityId"
+></sz-how-toolbar>
 <div class="steps">
     <sz-how-step *ngFor="let stepData of resolutionSteps; let stepIndex=index"
     [attr.data-index]="stepIndex"

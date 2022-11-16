@@ -1,7 +1,19 @@
 <nav>
     <ul>
         <li>Jump To:</li>
-        <li>All Steps</li>
+        <li>
+            <mat-form-field appearance="fill" class="jump-to-menu">
+                <mat-label>All Steps</mat-label>
+                <mat-select panelClass="how-jump-menu-panel">
+                  <mat-option *ngFor="let step of allSteps" [value]="step.resolvedVirtualEntityId">
+                    Step #{{step.stepNumber}} 
+                    <mat-icon class="ninety" [fontIcon]="getIconForStep(step)">{{getIconForStep(step)}}</mat-icon>
+                    {{stepDescription(step)}}
+                  </mat-option>
+                  <!--<mat-option *ngFor="let virtualEntity of finalVirtualEntities; let fStateInd=index" [value]="virtualEntity.virtualEntityId">Step #{{1+numberOfSteps}} - Entity {{virtualEntity.virtualEntityId}}</mat-option>-->
+                </mat-select>
+            </mat-form-field>
+        </li>
         <li>Merge Virtual Entity Steps</li>
         <li>Add Record to Virtual Entity Steps</li>
         <li>Create Virtual Entity Steps</li>
