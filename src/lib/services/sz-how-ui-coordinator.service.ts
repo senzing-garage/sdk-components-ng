@@ -170,4 +170,11 @@ export class SzHowUICoordinatorService {
         }
         console.log(`SzHowUICoordinatorService.collapseSteps(${virtualEntityId}): ${stepsToChangeState}`, step, this._steps, this);
     }
+
+    public jumpTo(stepId: string) {
+        // 99.9% of the time stepId is a virtualEntityId
+        // unless it's the first(two singletons) or 
+        // last step(when the result is multiple entities)
+        console.log('Jump To: ', stepId);
+    }
 }
