@@ -2,6 +2,8 @@
  * Public API Surface of sdk
  */
 
+import { from } from 'rxjs';
+
 export * from './lib/sdk.module';
 export * from '@senzing/rest-api-client-ng';
 
@@ -82,6 +84,7 @@ export { SzHowEntityComponent } from './lib/how/sz-how-entity.component';
 export { SzHowStepComponent } from './lib/how/sz-how-step.component';
 export { SzHowFinalCardComponent } from './lib/how/cards/sz-how-entity-card-final.component';
 export { SzHowVirtualCardComponent } from './lib/how/cards/sz-how-virtual-card.component';
+export { SzHowToolbarComponent } from './lib/how/sz-how-toolbar.component';
 
 /** export some members of rest client to ease type use */
 export {

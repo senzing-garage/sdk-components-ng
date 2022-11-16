@@ -1,4 +1,6 @@
-<sz-how-step *ngFor="let stepData of resolutionSteps; let stepIndex=index"
+<sz-how-toolbar></sz-how-toolbar>
+<div class="steps">
+    <sz-how-step *ngFor="let stepData of resolutionSteps; let stepIndex=index"
     [attr.data-index]="stepIndex"
     [attr.data-step]="stepData.stepNumber"
     [virtualEntityId]="stepData.resolvedVirtualEntityId"
@@ -25,3 +27,4 @@
     [featureOrder]="orderedFeatures"
     [preceedingStep]="getConstructionStepForVirtualEntity(fCardData.virtualEntityId)"
 ></sz-how-virtual-card>
+</div>
