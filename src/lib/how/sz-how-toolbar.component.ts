@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding } from '@angular/core';
+import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding, ViewChildren, QueryList } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
 import { 
@@ -10,6 +10,7 @@ import { SzHowFinalCardData } from '../models/data-how';
 import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
 import { SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../services/sz-how-ui-coordinator.service';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
     selector: 'sz-how-toolbar',
@@ -29,6 +30,12 @@ export class SzHowToolbarComponent implements OnInit, OnDestroy {
     public get finalVirtualEntities(): SzVirtualEntity[] {
         return this._finalVirtualEntities;
     }
+    public pdModels = [
+        '',
+        '',
+        '',
+        '',
+    ];
 
     get finalVirtualEntityStepNumber(): number {
         let retVal = 0;
@@ -162,7 +169,9 @@ export class SzHowToolbarComponent implements OnInit, OnDestroy {
         private uiCoordinatorService: SzHowUICoordinatorService
     ){}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.pdModels = ['','','',''];
+    }
 
     /**
      * unsubscribe when component is destroyed
@@ -207,5 +216,10 @@ export class SzHowToolbarComponent implements OnInit, OnDestroy {
 
     public jumpTo(virtualEntityId: string) {
         this.uiCoordinatorService.jumpTo(virtualEntityId);
+        this.pdModels[0] = virtualEntityId;
+        this.pdModels[1] = virtualEntityId;
+        this.pdModels[2] = virtualEntityId;
+        this.pdModels[3] = virtualEntityId;
+        console.log('reset other menus', this.pdModels);
     }
 }
