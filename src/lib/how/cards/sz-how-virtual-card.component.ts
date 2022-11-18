@@ -1,13 +1,9 @@
-import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, HostBinding } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DataSource } from '@angular/cdk/collections';
 import { 
-    SzEntityData, SzEntityFeature, SzEntityIdentifier, SzResolvedEntity, 
+    SzEntityFeature, SzEntityIdentifier, SzResolvedEntity, 
     SzVirtualEntity, SzVirtualEntityRecord, EntityDataService as SzEntityDataService, SzRecordIdentifiers, SzRecordIdentifier, SzVirtualEntityResponse, SzFeatureMode, SzResolutionStep } from '@senzing/rest-api-client-ng';
-import { Observable, ReplaySubject, Subject, take, takeUntil, tap, map } from 'rxjs';
-import { parseSzIdentifier } from '../../common/utils';
-import { SzHowFinalCardData } from '../../models/data-how';
+import { take, takeUntil, tap, map } from 'rxjs';
 import { SzHowCardBaseComponent } from './sz-how-entity-card-base.component';
 import { SzSearchService } from '../../services/sz-search.service';
 import { friendlyFeaturesName } from '../../models/data-features';
@@ -394,7 +390,7 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
             let allCardsForPreviousStepGHidden = false;
             if(expansionEvent && this._preceedingStep && expansionEvent.hiddenVirtualIds && (expansionEvent.hiddenVirtualIds.indexOf(this._preceedingStep.candidateVirtualEntity.virtualEntityId) > -1 && expansionEvent.hiddenVirtualIds.indexOf(this._preceedingStep.inboundVirtualEntity.virtualEntityId) > -1)) {
                 allCardsForPreviousStepGHidden = true;
-                console.log(`preceeding step is hidden ${this._preceedingStep.resolvedVirtualEntityId}`);
+                //console.log(`preceeding step is hidden ${this._preceedingStep.resolvedVirtualEntityId}`);
             }
             this.branchExpanded = !allCardsForPreviousStepGHidden;
         }
@@ -405,13 +401,6 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
     private onStepJumpTo(step: SzHowResolutionUIStep) {
         if(!step) return
         this._highlighted = (step && step.data && step.data.resolvedVirtualEntityId === this.virtualEntityId);
-        if(step && step.data && step.data.resolvedVirtualEntityId === this.virtualEntityId) {
-            console.warn('Hey, found the card!', this._highlighted, step.data);
-        } else if(step && step.data){
-            console.warn(`car ${this.virtualEntityId} !== ${step.data.resolvedVirtualEntityId}`, );
-        } else {
-            //console.log(`${this.virtualEntityId}.onStepJumpTo: `, step);
-        }
     }
 
     toggleSteps() {

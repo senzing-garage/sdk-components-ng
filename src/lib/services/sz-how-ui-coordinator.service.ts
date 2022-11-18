@@ -19,21 +19,22 @@ export class SzHowResolutionUIStep {
     private _preceedingStepVirtualIds: string[];
     private _isExpanded: boolean = true;
 
-    public get preceedingStepVirtualIds(): string [] {
+    public get preceedingStepVirtualIds(): string[] {
         return this._preceedingStepVirtualIds;
     }
     public get data() {
         return this._step;
     }
+    public get virtualEntityId(): string {
+        return this._step.resolvedVirtualEntityId;
+    }
 
     constructor(resolutionStep: SzResolutionStep, resolutionSteps: {[key: string] : SzResolutionStep}) {
         let extendedStep        = resolutionStep as SzResolutionStepUI;
         let preceedingVirtualIds = this.getVirtualIdsForStepChain(resolutionStep.resolvedVirtualEntityId, resolutionSteps)
-        
         this._virtualEntityId   = resolutionStep.resolvedVirtualEntityId;
         this._step              = extendedStep;
         this._preceedingStepVirtualIds = preceedingVirtualIds;
-
         //console.log('SzHowResolutionUIStep()', extendedStep, preceedingVirtualIds);
     }
     getVirtualIdsForStepChain(virtualEntityId: string, resolutionSteps: {[key: string] : SzResolutionStep}) {
@@ -124,7 +125,7 @@ export class SzHowUICoordinatorService {
 
             this.expandSteps( this._finalStepVirtualId );
         }
-        console.log('SzHowUICoordinatorService.setCurrentHowResult() ', this._steps);
+        //console.log('SzHowUICoordinatorService.setCurrentHowResult() ', this._steps);
     }
 
     constructor() {}
@@ -188,6 +189,9 @@ export class SzHowUICoordinatorService {
         // last step(when the result is multiple entities)
         if(this._steps[stepId]){
             this._highlightedSteps = [this._steps[stepId]];
+            // first make sure we can see the step being jumped to
+            this.expandSteps(stepId);
+            // now jump to step
             this._jumpToStep.next(this._steps[stepId]);
             //console.log('Jump To: ', stepId);
         }

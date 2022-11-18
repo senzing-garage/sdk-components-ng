@@ -112,18 +112,10 @@ export class SzHowStepComponent implements OnInit, OnDestroy {
     private onStepJumpTo(step: SzHowResolutionUIStep) {
         if(!step) return
         this._highlighted = (step && step.data && step.data.resolvedVirtualEntityId === this.virtualEntityId);
-        if(step && step.data && step.data.resolvedVirtualEntityId === this.virtualEntityId) {
-            console.warn('Hey, found the step!', this._highlighted, step.data);
-        } else if(step && step.data){
-            //console.warn(`${this.virtualEntityId} !== ${step.data.resolvedVirtualEntityId}`);
-        } else {
-            //console.log(`${this.virtualEntityId}.onStepJumpTo: `, step);
-        }
     }
 
     private onStepExpansionChanged(expansionEvent: SzHowStepUIStateChangeEvent) {
         if(!(this._data.resolvedVirtualEntityId && this._data.resolvedVirtualEntityId)) {
-            console.warn('data for card not initialized properly');
             return;
         }
         let allStepsAreHidden = false;
