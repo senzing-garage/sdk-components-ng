@@ -5,9 +5,9 @@
 <div class="content">
     <header>{{cardType}} <span class="entity-id">{{cardId}}</span></header>
     <div *ngIf="singleton" class="steps-header none">Singleton Entity</div>
-    <mat-accordion #steps class="steps-ribbon" *ngIf="!singleton">
+    <mat-accordion #steps class="steps-ribbon" *ngIf="!singleton" >
         <mat-expansion-panel (opened)="stepsPanelOpenState = true"
-                    (closed)="stepsPanelOpenState = false">
+                    (closed)="stepsPanelOpenState = false" hideToggle>
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Step #{{stepNumber}}: {{stepTitle}}

@@ -16,6 +16,11 @@
     &.hidden {
         /*display: none;*/
     }
+    &.highlighted {
+        --sz-how-card-border-color: rgb(28, 168, 115);
+        --sz-how-card-ribbon-color: rgb(28, 168, 115);
+        opacity: 1;
+    }
 
     .steps-header {
         &.none {

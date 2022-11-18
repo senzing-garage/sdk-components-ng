@@ -19,17 +19,21 @@ sz-how-entity {
         }
         mat-accordion.steps-ribbon {
             background-color: #000;
+            background-color: var(--sz-how-card-ribbon-color);
             .mat-expansion-panel {
                 border-radius: 0;
             }
             .mat-expansion-panel-header {
                 background: #000;
+                background-color: var(--sz-how-card-ribbon-color);
+
                 height: 20px;
                 &.expanded {
                     height: 20px;
                 }
                 &:hover:not([aria-disabled=true]) {
                     background: #000;
+                    background-color: var(--sz-how-card-ribbon-color);
                 }
             }
             .mat-expansion-panel-header-title {
@@ -38,6 +42,7 @@ sz-how-entity {
             .mat-expansion-panel-content {
                 background-color: #efefef;
                 border-bottom: 2px solid #000;
+                border-bottom-color: var(--sz-how-card-border-color);
                 color: #000;
             }
         }

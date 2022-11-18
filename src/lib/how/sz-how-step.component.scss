@@ -5,11 +5,46 @@
     justify-content: space-between;
     opacity: 1;
     /*justify-content: space-around;*/
-    transition: 1s opacity;
+    transition: .9s opacity;
+    
+    sz-how-virtual-card,
+    .line-kit,
+    .vcard-spacer {
+        transition: .9s opacity;
+    }
 
     &.hidden {
         /*display: none;*/
         opacity: 0;
+    }
+    &.highlighted {
+        --sz-how-card-border-color: rgb(28, 168, 115);
+    }
+    &.dimmed {
+        sz-how-virtual-card,
+        .line-kit,
+        .vcard-spacer {
+            transition: .4s opacity;
+        }
+
+        sz-how-virtual-card {
+            opacity: .4;
+
+            &.highlighted {
+                opacity: 1;
+            }
+        }
+        .line-kit,
+        .vcard-spacer {
+            opacity: .4;
+        }
+    }
+    &:hover.dimmed {
+        sz-how-virtual-card,
+        .line-kit,
+        .vcard-spacer {
+            opacity: 1;
+        }
     }
 
     .vcard-container {
@@ -29,6 +64,7 @@
                 width: 20px;
                 border-bottom: 0;
                 border-top: 2px solid #000;
+                border-top-color: var(--sz-how-card-border-color);
             }
         }
 
@@ -47,6 +83,8 @@
                 width: 20px;
                 border-top: 2px solid #000;
                 border-right: 2px solid #000;
+                border-top-color: var(--sz-how-card-border-color);
+                border-right-color: var(--sz-how-card-border-color);
                 height: calc(50% - 94px);
             }
             .vline {
@@ -55,6 +93,8 @@
                 width: 20px;
                 border-left: 2px solid #000;
                 border-bottom: 2px solid #000;
+                border-left-color: var(--sz-how-card-border-color);
+                border-bottom-color: var(--sz-how-card-border-color);
             }
         }
     }
@@ -67,6 +107,7 @@
             width: 20px;
             height: 100%;
             border-right: 2px solid #000;
+            border-right-color: var(--sz-how-card-border-color);
         }
     }
     .virtual-entity-card {

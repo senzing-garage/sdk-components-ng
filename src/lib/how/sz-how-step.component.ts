@@ -9,7 +9,7 @@ import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzHowFinalCardData } from '../models/data-how';
 import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
-import { SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../services/sz-how-ui-coordinator.service';
+import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../services/sz-how-ui-coordinator.service';
 
 /**
  * Why
@@ -35,9 +35,19 @@ export class SzHowStepComponent implements OnInit, OnDestroy {
     private _stepMap: {[key: string]: SzResolutionStep};
     private _data: SzResolutionStep;
     private _isHidden: boolean = false;
+    private _highlighted: boolean = false;
 
     @HostBinding('class.hidden') get cssHiddenClass(): boolean {
         return this._isHidden ? true : false;
+    }
+    @HostBinding('class.highlighted') get cssHighlightedClass(): boolean {
+        return this._highlighted ? true : false;
+    }
+    @HostBinding('class.dimmed') get cssDimmedClass(): boolean {
+        return this._highlighted === false && this.uiCoordinatorService.hasHighlightedSteps ? true : false;
+    }
+    get hasHighlightedSteps(){
+        return this.uiCoordinatorService.hasHighlightedSteps;
     }
 
     @Input() featureOrder: string[];
@@ -75,7 +85,11 @@ export class SzHowStepComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.uiCoordinatorService.stepExpansionChange.pipe(
             takeUntil(this.unsubscribe$)
-        ).subscribe(this.onStepExpansionChanged.bind(this))
+        ).subscribe(this.onStepExpansionChanged.bind(this));
+
+        this.uiCoordinatorService.onStepJump.pipe(
+            takeUntil(this.unsubscribe$)
+        ).subscribe(this.onStepJumpTo.bind(this));
     }
 
     /**
@@ -93,6 +107,18 @@ export class SzHowStepComponent implements OnInit, OnDestroy {
             retVal = this._stepMap[virtualEntityId];
         }
         return retVal;
+    }
+
+    private onStepJumpTo(step: SzHowResolutionUIStep) {
+        if(!step) return
+        this._highlighted = (step && step.data && step.data.resolvedVirtualEntityId === this.virtualEntityId);
+        if(step && step.data && step.data.resolvedVirtualEntityId === this.virtualEntityId) {
+            console.warn('Hey, found the step!', this._highlighted, step.data);
+        } else if(step && step.data){
+            //console.warn(`${this.virtualEntityId} !== ${step.data.resolvedVirtualEntityId}`);
+        } else {
+            //console.log(`${this.virtualEntityId}.onStepJumpTo: `, step);
+        }
     }
 
     private onStepExpansionChanged(expansionEvent: SzHowStepUIStateChangeEvent) {

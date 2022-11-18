@@ -22,16 +22,19 @@ export class SzHowResolutionUIStep {
     public get preceedingStepVirtualIds(): string [] {
         return this._preceedingStepVirtualIds;
     }
+    public get data() {
+        return this._step;
+    }
 
     constructor(resolutionStep: SzResolutionStep, resolutionSteps: {[key: string] : SzResolutionStep}) {
-        let extendedStep = resolutionStep as SzResolutionStepUI;
+        let extendedStep        = resolutionStep as SzResolutionStepUI;
         let preceedingVirtualIds = this.getVirtualIdsForStepChain(resolutionStep.resolvedVirtualEntityId, resolutionSteps)
         
         this._virtualEntityId   = resolutionStep.resolvedVirtualEntityId;
         this._step              = extendedStep;
         this._preceedingStepVirtualIds = preceedingVirtualIds;
 
-        console.log('SzHowResolutionUIStep()', extendedStep, preceedingVirtualIds);
+        //console.log('SzHowResolutionUIStep()', extendedStep, preceedingVirtualIds);
     }
     getVirtualIdsForStepChain(virtualEntityId: string, resolutionSteps: {[key: string] : SzResolutionStep}) {
         // get the immediately preceeding step by virtual id
@@ -92,6 +95,14 @@ export class SzHowUICoordinatorService {
 
     private _stepVisibilityStateChange = new BehaviorSubject<SzHowStepUIStateChangeEvent>({visibleVirtualIds: [], hiddenVirtualIds: []});
     public stepExpansionChange = this._stepVisibilityStateChange.asObservable();
+
+    private _jumpToStep = new BehaviorSubject<SzHowResolutionUIStep | undefined>(undefined);
+    public onStepJump = this._jumpToStep.asObservable();
+
+    private _highlightedSteps: SzHowResolutionUIStep[] = [];
+    public get hasHighlightedSteps(): boolean {
+        return this._highlightedSteps && this._highlightedSteps.length > 0 ? true : false;
+    }
 
     public get steps(): {[key: string]: SzHowResolutionUIStep} {
         return this._steps;
@@ -175,6 +186,10 @@ export class SzHowUICoordinatorService {
         // 99.9% of the time stepId is a virtualEntityId
         // unless it's the first(two singletons) or 
         // last step(when the result is multiple entities)
-        console.log('Jump To: ', stepId);
+        if(this._steps[stepId]){
+            this._highlightedSteps = [this._steps[stepId]];
+            this._jumpToStep.next(this._steps[stepId]);
+            //console.log('Jump To: ', stepId);
+        }
     }
 }

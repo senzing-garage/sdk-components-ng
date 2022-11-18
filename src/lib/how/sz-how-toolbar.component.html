@@ -27,7 +27,7 @@
             </mat-select>
             </mat-form-field>
         </li>
-        <li>
+        <li *ngIf="numberOfAddRecordSteps > 0">
             <mat-form-field appearance="fill" class="jump-to-menu">
             <mat-label>Add Record to Virtual Entity Steps({{numberOfAddRecordSteps}})</mat-label>
             <mat-select panelClass="how-jump-menu-panel" (selectionChange)="jumpTo($event.value)">
@@ -40,7 +40,7 @@
             </mat-select>
             </mat-form-field>
         </li>
-        <li>
+        <li *ngIf="numberOfCreateVirtualEntitySteps > 0">
             <mat-form-field appearance="fill" class="jump-to-menu">
             <mat-label>Create Virtual Entity Steps({{numberOfCreateVirtualEntitySteps}})</mat-label>
             <mat-select panelClass="how-jump-menu-panel" (selectionChange)="jumpTo($event.value)">

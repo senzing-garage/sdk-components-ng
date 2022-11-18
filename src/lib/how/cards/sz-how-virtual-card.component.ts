@@ -11,7 +11,7 @@ import { SzHowFinalCardData } from '../../models/data-how';
 import { SzHowCardBaseComponent } from './sz-how-entity-card-base.component';
 import { SzSearchService } from '../../services/sz-search.service';
 import { friendlyFeaturesName } from '../../models/data-features';
-import { SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
+import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
 
 interface SzVirtualEntityRecordsByDataSource {
     [key: string]: Array<SzVirtualEntityRecord> 
@@ -40,9 +40,10 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
     private _currentStep: SzResolutionStep;
     private _resolvedEntity: SzResolvedEntity;
     private _sources: SzVirtualEntityRecordsByDataSource;
-    private _cardType: string = 'Virtual Entity';
+    private _cardType: string       = 'Virtual Entity';
     private _cardId: string;
-    private _isHidden: boolean = false;
+    private _isHidden: boolean      = false;
+    private _highlighted: boolean   = false;
     public get isHidden() {
         return this._isHidden;
     }
@@ -53,6 +54,9 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
     }
     @HostBinding('class.hidden') get cssHiddenClass(): boolean {
         return this._isHidden ? true : false;
+    }
+    @HostBinding('class.highlighted') get cssHighlightedClass(): boolean {
+        return this._highlighted ? true : false;
     }
     @ViewChild(MatAccordion) override featuresAccordion: MatAccordion;
     @ViewChild(MatAccordion) override stepsAccordion: MatAccordion;
@@ -369,6 +373,9 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
         this.uiCoordinatorService.stepExpansionChange.pipe(
             takeUntil(this.unsubscribe$)
         ).subscribe(this.onStepExpansionChanged.bind(this))
+        this.uiCoordinatorService.onStepJump.pipe(
+            takeUntil(this.unsubscribe$)
+        ).subscribe(this.onStepJumpTo.bind(this));
     }
 
     private onStepExpansionChanged(expansionEvent: SzHowStepUIStateChangeEvent) {
@@ -393,6 +400,18 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
         }
 
         //console.log(`onStepExpansionChanged: ${this.data.virtualEntityId}: ${this.branchExpanded}`, expansionEvent);
+    }
+
+    private onStepJumpTo(step: SzHowResolutionUIStep) {
+        if(!step) return
+        this._highlighted = (step && step.data && step.data.resolvedVirtualEntityId === this.virtualEntityId);
+        if(step && step.data && step.data.resolvedVirtualEntityId === this.virtualEntityId) {
+            console.warn('Hey, found the card!', this._highlighted, step.data);
+        } else if(step && step.data){
+            console.warn(`car ${this.virtualEntityId} !== ${step.data.resolvedVirtualEntityId}`, );
+        } else {
+            //console.log(`${this.virtualEntityId}.onStepJumpTo: `, step);
+        }
     }
 
     toggleSteps() {
