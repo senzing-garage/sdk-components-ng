@@ -91,6 +91,15 @@ sz-how-entity {
         .mat-expansion-panel-body {
             padding: 0;
         }
+        .steps-feat-score {
+            .mat-radio-button {
+                display: block;
+                label {
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
+        }
     }
 }
 sz-how-toolbar {

@@ -17,15 +17,21 @@
             <h4>Using: <span class="feature-value">({{matchCodes}})</span></h4>
             <div class="steps-feat-scores">
                 <h4>With Feature Scores:</h4>
-                <div class="steps-feat-score" *ngFor="let fScoreBucket of featureScores | keyvalue">
-                    <div *ngFor="let fScore of fScoreBucket.value">
-                        {{fScore.featureType}} (Score {{fScore.score}})
-                        <ul>
-                            <li [attr.data-feature-id]="fScore.candidateFeature.featureId">{{fScore.candidateFeature.featureValue}}</li>
-                            <li [attr.data-feature-id]="fScore.inboundFeature.featureId">{{fScore.inboundFeature.featureValue}}</li>
-                        </ul>
+                <mat-radio-group aria-label="Select an option" [(ngModel)]="highlightedConstructionFeatureKey">
+                    <div class="steps-feat-score" *ngFor="let fScoreBucket of featureScores | keyvalue">
+                        <mat-radio-button #button [value]="fScoreBucket.key" labelPosition="before" (click)="onFeatureScoreBucketClick($event, fScoreBucket.key, button)">
+                        <div *ngFor="let fScore of fScoreBucket.value; let fScoreBucketIndex=index">
+                            {{fScore.featureType}} (Score {{fScore.score}})
+                            <ul>
+                                <li [attr.data-feature-id]="fScore.candidateFeature.featureId">
+                                    {{fScore.candidateFeature.featureValue}}
+                                </li>
+                                <li [attr.data-feature-id]="fScore.inboundFeature.featureId">{{fScore.inboundFeature.featureValue}}</li>
+                            </ul>
+                        </div>
+                        </mat-radio-button>
                     </div>
-                </div>
+                </mat-radio-group>
             </div>
         </mat-expansion-panel>
     </mat-accordion>

@@ -10,6 +10,7 @@
     [currentStep]="data"
     [featureOrder]="featureOrder"
     [preceedingStep]="getConstructionStepForVirtualEntity(inboundVirtualEntity.virtualEntityId)"
+    (highlightedConstructionFeaturesChanged)="onHighlightedConstructionFeaturesChanged($event[0], $event[1])"
 ></sz-how-virtual-card>
 </div>
 <div class="vcard-spacer"><span class="vline"></span></div>
@@ -25,5 +26,6 @@
     [currentStep]="data"
     [featureOrder]="featureOrder"
     [preceedingStep]="getConstructionStepForVirtualEntity(candidateVirtualEntity.virtualEntityId)"
+    (highlightedConstructionFeaturesChanged)="onHighlightedConstructionFeaturesChanged($event[0], $event[1])"
 ></sz-how-virtual-card>
 </div>

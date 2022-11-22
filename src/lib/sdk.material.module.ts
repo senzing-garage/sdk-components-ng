@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input'
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSliderModule } from '@angular/material/slider';
@@ -46,6 +47,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     MatInputModule, 
     MatMenuModule, 
     MatPaginatorModule, 
+    MatRadioModule,
     MatSelectModule,
     MatSidenavModule, 
     MatSliderModule,
@@ -73,6 +75,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     MatInputModule, 
     MatMenuModule,
     MatPaginatorModule,
+    MatRadioModule,
     MatSelectModule,
     MatSidenavModule, 
     MatSliderModule,

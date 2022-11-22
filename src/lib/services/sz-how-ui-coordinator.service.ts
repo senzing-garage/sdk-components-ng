@@ -1,17 +1,13 @@
 import { Injectable } from '@angular/core';
 
 import {
+    SzFeatureScore,
   SzHowEntityResult,
   SzResolutionStep
 } from '@senzing/rest-api-client-ng';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
-
-export interface SzResolutionStepUI extends SzResolutionStep {
-    visible: boolean
-    expanded: boolean
-    preceedingSteps: SzResolutionStepUI[]
-}
+import { SzHowStepHightlightEvent, SzResolutionStepUI } from '../models/data-how';
 
 export class SzHowResolutionUIStep {
     private _step: SzResolutionStepUI;
@@ -99,6 +95,9 @@ export class SzHowUICoordinatorService {
 
     private _jumpToStep = new BehaviorSubject<SzHowResolutionUIStep | undefined>(undefined);
     public onStepJump = this._jumpToStep.asObservable();
+
+    private _stepFeaturesHighlightChange = new Subject<SzHowStepHightlightEvent | undefined>();
+    public onStepFeaturesHighlightChange = this._stepFeaturesHighlightChange.asObservable();
 
     private _highlightedSteps: SzHowResolutionUIStep[] = [];
     public get hasHighlightedSteps(): boolean {
@@ -194,6 +193,23 @@ export class SzHowUICoordinatorService {
             // now jump to step
             this._jumpToStep.next(this._steps[stepId]);
             //console.log('Jump To: ', stepId);
+        }
+    }
+
+    public highlightStepFeatures(virtualEntityId: string, features: SzFeatureScore[]) {
+        console.log(`SzHowUICoordinatorService.highlightStepFeatures: ${virtualEntityId}`, features, this._steps);
+        // get the UI object for step
+        if(this._steps && this._steps[virtualEntityId]) {
+            // now get the inbound AND candidate ID's
+            let _payload: SzHowStepHightlightEvent = {
+                features: {},
+                sourceStepId: virtualEntityId
+            };
+            _payload.features[this._steps[virtualEntityId].data.candidateVirtualEntity.virtualEntityId]  = features;
+            _payload.features[this._steps[virtualEntityId].data.inboundVirtualEntity.virtualEntityId]    = features;
+
+            //this._highlightFeaturesForCards(_payload);
+            this._stepFeaturesHighlightChange.next(_payload);
         }
     }
 }

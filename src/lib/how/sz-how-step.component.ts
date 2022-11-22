@@ -125,4 +125,9 @@ export class SzHowStepComponent implements OnInit, OnDestroy {
         this._isHidden = allStepsAreHidden
         //console.log(`SzHowStepComponent.onStepExpansionChanged: ${allStepsAreHidden}`, expansionEvent);
     }
+
+    public onHighlightedConstructionFeaturesChanged(features: SzFeatureScore[], virtualEntityId: string) {
+        //console.log('SzHowStepComponent.onHighlightedConstructionFeaturesChanged()'+ virtualEntityId, features);
+        this.uiCoordinatorService.highlightStepFeatures(virtualEntityId, features);
+    }
 }

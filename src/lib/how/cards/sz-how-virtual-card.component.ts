@@ -1,13 +1,14 @@
-import { Component, OnInit, Input, ViewChild, HostBinding } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, HostBinding, EventEmitter, Output } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { 
     SzEntityFeature, SzEntityIdentifier, SzResolvedEntity, 
-    SzVirtualEntity, SzVirtualEntityRecord, EntityDataService as SzEntityDataService, SzRecordIdentifiers, SzRecordIdentifier, SzVirtualEntityResponse, SzFeatureMode, SzResolutionStep } from '@senzing/rest-api-client-ng';
-import { take, takeUntil, tap, map } from 'rxjs';
+    SzVirtualEntity, SzVirtualEntityRecord, EntityDataService as SzEntityDataService, SzRecordIdentifiers, SzRecordIdentifier, SzVirtualEntityResponse, SzFeatureMode, SzResolutionStep, SzFeatureScore } from '@senzing/rest-api-client-ng';
+import { take, takeUntil, tap, map, BehaviorSubject } from 'rxjs';
 import { SzHowCardBaseComponent } from './sz-how-entity-card-base.component';
 import { SzSearchService } from '../../services/sz-search.service';
 import { friendlyFeaturesName } from '../../models/data-features';
 import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
+import { SzHowStepHightlightEvent } from '../../models/data-how';
 
 interface SzVirtualEntityRecordsByDataSource {
     [key: string]: Array<SzVirtualEntityRecord> 
@@ -39,7 +40,9 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
     private _cardType: string       = 'Virtual Entity';
     private _cardId: string;
     private _isHidden: boolean      = false;
+    private _hasHighlightedFeatures = false;
     private _highlighted: boolean   = false;
+    private _highlightedConstructionFeatures: SzFeatureScore[]   = undefined;
     public get isHidden() {
         return this._isHidden;
     }
@@ -54,6 +57,10 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
     @HostBinding('class.highlighted') get cssHighlightedClass(): boolean {
         return this._highlighted ? true : false;
     }
+    @HostBinding('class.highlightedFeatures') get cssHasHighlightedFeatures(): boolean {
+        return this._hasHighlightedFeatures ? true : false;
+    }
+    
     @ViewChild(MatAccordion) override featuresAccordion: MatAccordion;
     @ViewChild(MatAccordion) override stepsAccordion: MatAccordion;
 
@@ -94,6 +101,10 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
     }
 
     @Input() featureOrder: string[];
+
+    private _highlightedConstructionFeaturesChange: BehaviorSubject<SzFeatureScore[]> = new BehaviorSubject(this._highlightedConstructionFeatures);
+    public highlightedConstructionFeaturesChange                = this._highlightedConstructionFeaturesChange.asObservable();
+    @Output() public highlightedConstructionFeaturesChanged     = new EventEmitter<[SzFeatureScore[], string]>();
 
     get preceedingStep(): SzResolutionStep | undefined {
         return this._preceedingStep;
@@ -259,6 +270,32 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
     public get featureScores() {
         return this._preceedingStep && this._preceedingStep.matchInfo && this._preceedingStep.matchInfo.featureScores ? this._preceedingStep.matchInfo.featureScores : undefined;
     }
+
+    private _highlightedConstructionFeatureKey: string;
+    public set highlightedConstructionFeatureKey(value: string) {
+        // assign to local variable
+        this._highlightedConstructionFeatureKey = value;
+        //console.log(`highlightedFeatureKey('${value}'|'${this._highlightedConstructionFeatureKey}')`, this.featureScores);
+        // get the feature bucket for this key
+        if(this.featureScores && this.featureScores[value]) {
+            this._highlightedConstructionFeaturesChange.next(this.featureScores[value]);
+        }
+    }
+    public get highlightedConstructionFeatureKey(): string {
+        return this._highlightedConstructionFeatureKey;
+    }
+
+    public onFeatureScoreBucketClick(event, featureBucketKey, el) {
+        event.preventDefault();
+        if (this.highlightedConstructionFeatureKey && this.highlightedConstructionFeatureKey === el.value) {
+            el.checked = false;
+            this.highlightedConstructionFeatureKey = null;
+        } else {
+            this.highlightedConstructionFeatureKey = el.value;
+            el.checked = true;
+        }
+    }
+
     public get matchKey(): string {
         let retVal = [];
         if(this.matchInfo) {
@@ -372,6 +409,24 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
         this.uiCoordinatorService.onStepJump.pipe(
             takeUntil(this.unsubscribe$)
         ).subscribe(this.onStepJumpTo.bind(this));
+        this.uiCoordinatorService.onStepFeaturesHighlightChange.pipe(
+            takeUntil(this.unsubscribe$)
+        ).subscribe(this.onStepFeaturesHighlightChange.bind(this));
+        
+        this.highlightedConstructionFeaturesChange.pipe(
+            takeUntil(this.unsubscribe$)
+        ).subscribe((feats: SzFeatureScore[])=>{
+            //console.log(`highlightedConstructionFeaturesChange.subscribe()`, feats);
+            // first run our local handler
+            this.onHighlightedConstructionFeaturesChange(feats);
+            // now emit to any subscribers
+            this.highlightedConstructionFeaturesChanged.emit([feats, this._preceedingStep && this._preceedingStep.resolvedVirtualEntityId ? this._preceedingStep.resolvedVirtualEntityId : undefined]);
+        });
+    }
+
+    private onHighlightedConstructionFeaturesChange(features: SzFeatureScore[]) {
+        //console.log(`onHighlightedConstructionFeaturesChange: `, features);
+        this._highlightedConstructionFeatures = features;
     }
 
     private onStepExpansionChanged(expansionEvent: SzHowStepUIStateChangeEvent) {
@@ -396,6 +451,22 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
         }
 
         //console.log(`onStepExpansionChanged: ${this.data.virtualEntityId}: ${this.branchExpanded}`, expansionEvent);
+    }
+
+    private onStepFeaturesHighlightChange(value: SzHowStepHightlightEvent) {
+        //console.log(`onStepFeaturesHighlightChange IS this(${this._data.virtualEntityId}) === '${Object.keys(value)}' ? `, value);
+        if(value && this._data && this._data.virtualEntityId && value && value.features && value.features[this._data.virtualEntityId]) {
+            // this card is a member of highlighted cards
+            this._hasHighlightedFeatures = true;
+            //console.log(`onStepFeaturesHighlightChange IS this(${this._data.virtualEntityId}) === '${Object.keys(value.features)}' ? `, value);
+        } else {
+            this._hasHighlightedFeatures = false;
+        }
+        // deselect any previously highlighted construction steps
+        if(this._data.virtualEntityId !== value.sourceStepId) {
+            // hide any child steps
+            this._highlightedConstructionFeatureKey = undefined;
+        }
     }
 
     private onStepJumpTo(step: SzHowResolutionUIStep) {
