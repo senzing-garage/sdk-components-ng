@@ -144,6 +144,19 @@
                 padding: 2px 6px;
                 border-top: 2px solid #dedede;
 
+                &.highlighted {
+                    background-color: #ffe5d2;
+                    &.hl-1-color {
+                        background-color: #c0eebc;
+                    }
+                    &.hl-2-color {
+                        background-color: #e49a9a;
+                    }
+                    &.hl-3-color {
+                        background-color: #ece8ab;
+                    }
+                }
+
                 ul {
                     margin: 0;
                     color: #303030;

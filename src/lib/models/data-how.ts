@@ -5,8 +5,15 @@ export interface SzHowFinalCardData extends SzResolutionStep {
 }
 
 export interface SzHowStepHightlightEvent {
-    features: {[key: string]: SzFeatureScore[]}
-    sourceStepId: string
+    features: {[key: string]: SzFeatureScore[]},
+    sourceStepId: string,
+    matchKey?: string,
+    resolutionRule?: string
+}
+
+export interface SzMatchFeatureScore extends SzFeatureScore {
+    matchKey?: string,
+    resolutionRule?: string
 }
 
 export interface SzResolutionStepUI extends SzResolutionStep {

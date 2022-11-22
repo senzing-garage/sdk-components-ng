@@ -8,7 +8,7 @@ import { SzHowCardBaseComponent } from './sz-how-entity-card-base.component';
 import { SzSearchService } from '../../services/sz-search.service';
 import { friendlyFeaturesName } from '../../models/data-features';
 import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
-import { SzHowStepHightlightEvent } from '../../models/data-how';
+import { SzHowStepHightlightEvent, SzMatchFeatureScore } from '../../models/data-how';
 
 interface SzVirtualEntityRecordsByDataSource {
     [key: string]: Array<SzVirtualEntityRecord> 
@@ -43,8 +43,8 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
     private _hasHighlightedFeatures = false;
     private _highlighted: boolean   = false;
     private _highlightedFeatures: {[key: string]: SzFeatureScore[]} = undefined
-    private _highlightedFeaturesByInternalId: {[key: number]: SzFeatureScore} = undefined;
-    private _highlightedConstructionFeatures: SzFeatureScore[]   = undefined;
+    private _highlightedFeaturesByInternalId: {[key: number]: SzMatchFeatureScore} = undefined;
+    private _highlightedConstructionFeatures: SzMatchFeatureScore[]   = undefined;
     public get isHidden() {
         return this._isHidden;
     }
@@ -270,7 +270,24 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
         return this._preceedingStep && this._preceedingStep.matchInfo ? this._preceedingStep.matchInfo : undefined;
     }
     public get featureScores() {
-        return this._preceedingStep && this._preceedingStep.matchInfo && this._preceedingStep.matchInfo.featureScores ? this._preceedingStep.matchInfo.featureScores : undefined;
+        let retVal: {[key: string]: SzMatchFeatureScore[]} = undefined;
+        if(this._preceedingStep && this._preceedingStep.matchInfo && this._preceedingStep.matchInfo.featureScores) {
+            retVal = {};
+            for(let fKey in this._preceedingStep.matchInfo.featureScores) {
+                let _fValues    = this._preceedingStep.matchInfo.featureScores[fKey];
+                retVal[fKey]    = _fValues.map((_fVal) => {
+                    return Object.assign(_fVal, {resolutionRule: this._preceedingStep.matchInfo.resolutionRule, matchKey: this._preceedingStep.matchInfo.matchKey});
+                })
+            }
+        }
+        /*
+        this._preceedingStep && this._preceedingStep.matchInfo && this._preceedingStep.matchInfo.featureScores ? this._preceedingStep.matchInfo.featureScores : undefined;
+        if(retVal !== undefined && this._preceedingStep && this._preceedingStep.matchInfo) {
+            retVal.resolutionRule = this._preceedingStep.matchInfo.resolutionRule;
+            retVal.matchKey       = this._preceedingStep.matchInfo.matchKey;
+        }
+        return this._preceedingStep && this._preceedingStep.matchInfo && this._preceedingStep.matchInfo.featureScores ? this._preceedingStep.matchInfo.featureScores : undefined;*/
+        return retVal;
     }
 
     private _highlightedConstructionFeatureKey: string;
@@ -360,7 +377,7 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
                 })
                 return orderedFeatures;
             }
-            //console.log('other features: ', orderedFeatures);
+            console.log('ordered features: ', orderedFeatures);
             return orderedFeatures;
         }
 
@@ -457,6 +474,7 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
 
     private onStepFeaturesHighlightChange(value: SzHowStepHightlightEvent) {
         //console.log(`onStepFeaturesHighlightChange IS this(${this._data.virtualEntityId}) === '${Object.keys(value)}' ? `, value);
+        
         if(value && this._data && this._data.virtualEntityId && value && value.features && value.features[this._data.virtualEntityId]) {
             // this card is a member of highlighted cards
             this._hasHighlightedFeatures    = true;
@@ -466,9 +484,11 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
                 let _featArr = value.features[k];
                 _featArr.forEach((featScore: SzFeatureScore) => {
                     this._highlightedFeaturesByInternalId[ featScore.inboundFeature.featureId ] = featScore;
+                    this._highlightedFeaturesByInternalId[ featScore.inboundFeature.featureId ].resolutionRule  = value.resolutionRule;
+                    this._highlightedFeaturesByInternalId[ featScore.inboundFeature.featureId ].matchKey        = value.matchKey;
                 });
             }
-            console.log(`onStepFeaturesHighlightChange IS this(${this._data.virtualEntityId}) === '${Object.keys(value.features)}' ? `, value);
+            console.log(`onStepFeaturesHighlightChange IS this(${this._data.virtualEntityId}) === '${Object.keys(value.features)}' ? `, value, this._highlightedFeaturesByInternalId);
         } else {
             this._hasHighlightedFeatures            = false;
             this._highlightedFeatures               = undefined;
@@ -478,6 +498,7 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
         if(this._data.virtualEntityId !== value.sourceStepId) {
             // hide any child steps
             this._highlightedConstructionFeatureKey = undefined;
+            this._highlightedConstructionFeatures   = undefined;
         }
     }
 
@@ -493,6 +514,58 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
             //return true;
         }
         return false;
+    }
+    public getHighlightedColorClassesForFeatureValue(feature: SzEntityFeature){
+        let retVal = undefined;
+        if(feature) {
+            // check "_highlightedFeatures" for 
+            let _internalId = feature.primaryId
+            if(this._highlightedFeaturesByInternalId && this._highlightedFeaturesByInternalId[_internalId]) {
+                return this.getHighlightCSSClassForSzMatchFeatureScore(this._highlightedFeaturesByInternalId[_internalId]);
+            }
+        }
+        return retVal;
+    }
+
+    private getHighlightCSSClassForSzMatchFeatureScore(feat: SzMatchFeatureScore) {
+        let retVal = undefined;
+        if(feat) {
+            let rValHighlightClass = 'hl-3-color';
+            if(
+                (feat.featureType && feat.matchKey.indexOf(`+${feat.featureType}`) >= 0) || 
+                (feat.scoringBucket === 'SAME' || feat.scoringBucket === 'CLOSE')
+            ){
+                rValHighlightClass = 'hl-1-color';
+            } else if(
+                feat.featureType && feat.matchKey.indexOf(`-${feat.featureType}`) >= 0
+            ) {
+                rValHighlightClass  = 'hl-2-color';
+            }
+            return rValHighlightClass;
+        }
+        return retVal;
+    }
+
+    public isFeatureScoreBucketHighlighted(features: SzMatchFeatureScore[]) {
+        //console.log(`isFeatureScoreBucketHighlighted: `,features);
+        let retVal = false;
+        if(this._highlightedConstructionFeatures) {
+            let isFeatureInHighlightedItems = false;
+            features.forEach((feat: SzFeatureScore) => {
+                if(this._highlightedConstructionFeatures.includes(feat)) {
+                    isFeatureInHighlightedItems = true;
+                }
+            });
+            retVal = isFeatureInHighlightedItems;
+        }
+        return retVal;
+    }
+    public getHighlightedColorClasses(features: SzMatchFeatureScore[]) {
+        let retVal = undefined;
+        if(features) {
+            retVal = features.map(this.getHighlightCSSClassForSzMatchFeatureScore.bind(this));
+        }
+        return retVal;
     }
 
     private onStepJumpTo(step: SzHowResolutionUIStep) {

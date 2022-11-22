@@ -207,7 +207,14 @@ export class SzHowUICoordinatorService {
             };
             _payload.features[this._steps[virtualEntityId].data.candidateVirtualEntity.virtualEntityId]  = features;
             _payload.features[this._steps[virtualEntityId].data.inboundVirtualEntity.virtualEntityId]    = features;
-
+            if(this._steps[virtualEntityId].data && this._steps[virtualEntityId].data.matchInfo){
+                if(this._steps[virtualEntityId].data.matchInfo.resolutionRule) {
+                    _payload.resolutionRule = this._steps[virtualEntityId].data.matchInfo.resolutionRule;
+                }
+                if(this._steps[virtualEntityId].data.matchInfo.matchKey) {
+                    _payload.matchKey = this._steps[virtualEntityId].data.matchInfo.matchKey;
+                }
+            }
             //this._highlightFeaturesForCards(_payload);
             this._stepFeaturesHighlightChange.next(_payload);
         }
