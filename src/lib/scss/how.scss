@@ -75,7 +75,18 @@ sz-how-entity {
             .mat-expansion-panel-content ul {
                 margin-top: 0;
                 margin-bottom: 0;
-                padding-inline-start: 50px;
+                /*padding-inline-start: 50px; */
+                padding-left: 0;
+                list-style-position: inside;
+                li {
+                    padding-left: 34px;
+                    padding-right: 10px;
+                }
+
+                li.highlighted {
+                    background-color: #ffe5d2;
+
+                }
             }
         }
         .mat-expansion-panel-spacing {

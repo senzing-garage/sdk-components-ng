@@ -42,6 +42,8 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
     private _isHidden: boolean      = false;
     private _hasHighlightedFeatures = false;
     private _highlighted: boolean   = false;
+    private _highlightedFeatures: {[key: string]: SzFeatureScore[]} = undefined
+    private _highlightedFeaturesByInternalId: {[key: number]: SzFeatureScore} = undefined;
     private _highlightedConstructionFeatures: SzFeatureScore[]   = undefined;
     public get isHidden() {
         return this._isHidden;
@@ -457,16 +459,40 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
         //console.log(`onStepFeaturesHighlightChange IS this(${this._data.virtualEntityId}) === '${Object.keys(value)}' ? `, value);
         if(value && this._data && this._data.virtualEntityId && value && value.features && value.features[this._data.virtualEntityId]) {
             // this card is a member of highlighted cards
-            this._hasHighlightedFeatures = true;
-            //console.log(`onStepFeaturesHighlightChange IS this(${this._data.virtualEntityId}) === '${Object.keys(value.features)}' ? `, value);
+            this._hasHighlightedFeatures    = true;
+            this._highlightedFeatures       = value.features;
+            this._highlightedFeaturesByInternalId   = {};
+            for(let k in value.features) {
+                let _featArr = value.features[k];
+                _featArr.forEach((featScore: SzFeatureScore) => {
+                    this._highlightedFeaturesByInternalId[ featScore.inboundFeature.featureId ] = featScore;
+                });
+            }
+            console.log(`onStepFeaturesHighlightChange IS this(${this._data.virtualEntityId}) === '${Object.keys(value.features)}' ? `, value);
         } else {
-            this._hasHighlightedFeatures = false;
+            this._hasHighlightedFeatures            = false;
+            this._highlightedFeatures               = undefined;
+            this._highlightedFeaturesByInternalId   = undefined
         }
         // deselect any previously highlighted construction steps
         if(this._data.virtualEntityId !== value.sourceStepId) {
             // hide any child steps
             this._highlightedConstructionFeatureKey = undefined;
         }
+    }
+
+    public isFeatureValueInHighlightedItems(feature: SzEntityFeature) {
+        if(feature) {
+            // check "_highlightedFeatures" for 
+            let _internalId = feature.primaryId
+            if(this._highlightedFeaturesByInternalId && this._highlightedFeaturesByInternalId[_internalId]) {
+                return true;
+            }
+        }
+        if(this._hasHighlightedFeatures) {
+            //return true;
+        }
+        return false;
     }
 
     private onStepJumpTo(step: SzHowResolutionUIStep) {

@@ -53,7 +53,7 @@
         <mat-expansion-panel class="feature-drawer feature-drawer-features" [expanded]="true" hideToggle *ngFor="let featBucket of orderedFeatures">
             <mat-expansion-panel-header>{{featureName(featBucket.name)}}<span class="count-bubble">{{featureCount(featBucket.features)}}</span></mat-expansion-panel-header>
             <ul>
-                <li *ngFor="let value of featBucket.features">
+                <li *ngFor="let value of featBucket.features" [class.highlighted]="isFeatureValueInHighlightedItems(value)">
                     {{value.primaryValue}}
                     <ul class="duplicate-tree" *ngIf="value.duplicateValues && value.duplicateValues.length > 0">
                         <li *ngFor="let dupVal of value.duplicateValues">{{dupVal}}</li>
