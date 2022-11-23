@@ -71,6 +71,13 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
             this._preceedingStep = value;
         }
     }
+    private _recordLimit: number = 5;
+    @Input() set recordLimit(value: number | string){
+        this._recordLimit = parseInt(value as string);
+    }
+    get recordLimit(): number {
+        return this._recordLimit;
+    }
     @Input() set data(value: SzVirtualEntity) {
         if(value) {
             let oldValue = this._data;
@@ -571,6 +578,10 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
     private onStepJumpTo(step: SzHowResolutionUIStep) {
         if(!step) return
         this._highlighted = (step && step.data && step.data.resolvedVirtualEntityId === this.virtualEntityId);
+    }
+
+    public onMoreLinkClick(dsKey: string) {
+        console.log('onMoreLinkClck: ', dsKey);
     }
 
     toggleSteps() {

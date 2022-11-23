@@ -6,6 +6,7 @@
     <sz-how-virtual-card
     *ngIf="inboundVirtualEntity"
     class="virtual-entity-card inbound-entity-card"
+    [recordLimit]="2"
     [data]="inboundVirtualEntity"
     [currentStep]="data"
     [featureOrder]="featureOrder"
@@ -22,6 +23,7 @@
     <sz-how-virtual-card
     *ngIf="candidateVirtualEntity"
     class="virtual-entity-card candidate-entity-card"
+    [recordLimit]="2"
     [data]="candidateVirtualEntity"
     [currentStep]="data"
     [featureOrder]="featureOrder"

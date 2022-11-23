@@ -83,6 +83,18 @@ sz-how-entity {
                     padding-right: 10px;
                 }
 
+                li.more-link {
+                    /*background-color: salmon;
+                    border: 2px dashed pink;*/
+                    font-style: italic;
+                    color: blue;
+                    cursor: pointer;
+                    
+                    &::before {
+                        display: none !important;
+                    }
+                }
+
                 li.highlighted {
                     background-color: #ece8ab;
                     &.hl-1-color {
