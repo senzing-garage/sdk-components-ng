@@ -4,6 +4,19 @@
     [finalEntityId]="entityId"
 ></sz-how-toolbar>
 <div class="steps">
+    <sz-how-virtual-card *ngFor="let fCardData of finalCardsData; let fCardIndex=index"
+        class="virtual-entity-card inbound-entity-card"
+        [attr.data-index]="fCardIndex"
+        [attr.data-step]="getStepNumberByVirtualEntityId(fCardData.virtualEntityId)"
+        [attr.virtual-entity-id]="fCardData.virtualEntityId"
+        cardType="Entity"
+        recordLimit="2"
+        [cardId]="entityId"
+        [data]="fCardData"
+        [featureOrder]="orderedFeatures"
+        [preceedingStep]="getConstructionStepForVirtualEntity(fCardData.virtualEntityId)"
+    ></sz-how-virtual-card>
+
     <sz-how-step *ngFor="let stepData of resolutionSteps; let stepIndex=index"
     [attr.data-index]="stepIndex"
     [attr.data-step]="stepData.stepNumber"
@@ -21,16 +34,4 @@
     [data]="fCardData"
     [featureOrder]="orderedFeatures"
 ></sz-how-entity-card-final>-->
-<sz-how-virtual-card *ngFor="let fCardData of finalCardsData; let fCardIndex=index"
-    class="virtual-entity-card inbound-entity-card"
-    [attr.data-index]="fCardIndex"
-    [attr.data-step]="getStepNumberByVirtualEntityId(fCardData.virtualEntityId)"
-    [attr.virtual-entity-id]="fCardData.virtualEntityId"
-    cardType="Entity"
-    recordLimit="2"
-    [cardId]="entityId"
-    [data]="fCardData"
-    [featureOrder]="orderedFeatures"
-    [preceedingStep]="getConstructionStepForVirtualEntity(fCardData.virtualEntityId)"
-></sz-how-virtual-card>
 </div>

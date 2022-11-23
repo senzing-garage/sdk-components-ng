@@ -103,7 +103,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
                         this._data.resolutionSteps[rKey].resolvedVirtualEntityId
                         _resSteps.push( this._data.resolutionSteps[rKey] );
                     }
-                    this._resolutionSteps = _resSteps;
+                    this._resolutionSteps = _resSteps.reverse(); // we want the steps in reverse for display purposes
                 }
                 this.isLoading = false;
                 this.loading.emit(false);
