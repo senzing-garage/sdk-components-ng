@@ -80,7 +80,7 @@ export { SzWhyEntitiesComparisonComponent } from './lib/why/sz-why-entities.comp
 export { SzWhyEntityDialog } from './lib/why/sz-why-entity.component';
 export { SzWhyEntitiesDialog } from './lib/why/sz-why-entities.component';
 /** how */
-export { SzHowEntityComponent } from './lib/how/sz-how-entity.component';
+export { SzHowEntityComponent, SzHowEntityDialog } from './lib/how/sz-how-entity.component';
 export { SzHowStepComponent } from './lib/how/sz-how-step.component';
 export { SzHowFinalCardComponent } from './lib/how/cards/sz-how-entity-card-final.component';
 export { SzHowVirtualCardComponent } from './lib/how/cards/sz-how-virtual-card.component';

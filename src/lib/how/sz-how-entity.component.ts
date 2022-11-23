@@ -12,14 +12,14 @@ import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
 
 /**
- * Display the "Why" information for entity
+ * Display the "How" information for entity
  *
  * @example 
  * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-why-entity entityId="5"&gt;&lt;/sz-why-entity&gt;<br/><br/>
+ * &lt;sz-how-entity entityId="5"&gt;&lt;/sz-how-entity&gt;<br/><br/>
  *
  * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-wc-why-entity entityId="5"&gt;&lt;/sz-wc-why-entity&gt;<br/>
+ * &lt;sz-wc-how-entity entityId="5"&gt;&lt;/sz-wc-how-entity&gt;<br/>
 */
 @Component({
     selector: 'sz-how-entity',
@@ -29,9 +29,6 @@ import { parseSzIdentifier } from '../common/utils';
 export class SzHowEntityComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
-  
-    @Input()
-    entityId: SzEntityIdentifier;
 
     //public finalCardsData: SzHowFinalCardData[];
     public finalCardsData: SzVirtualEntity[];
@@ -39,6 +36,12 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     private _featureTypesOrdered: string[] | undefined;
     private _resolutionSteps: SzResolutionStep[];
     private _resolutionStepsByVirtualId: {[key: string]: SzResolutionStep};
+    private _isLoading = false;
+
+    @Output()
+    loading: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Input()
+    entityId: SzEntityIdentifier;
 
     public get resolutionSteps(): SzResolutionStep[] | undefined {
         return this._resolutionSteps;
@@ -48,6 +51,12 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     }
     public get orderedFeatures(): string[] {
         return this._featureTypesOrdered
+    }
+    public get isLoading(): boolean {
+        return this._isLoading;
+    }
+    public set isLoading(value: boolean) {
+        this._isLoading = value;
     }
 
     constructor(
@@ -61,6 +70,8 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
 
         if(this.entityId) {
             // get entity data
+            this.isLoading = true;
+            this.loading.emit(true);
             this.getData(this.entityId).subscribe((resp: SzHowEntityResponse) => {
                 console.log(`how response: ${resp}`, resp.data);
                 this._data                                    = resp && resp.data ? resp.data : undefined;
@@ -94,6 +105,8 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
                     }
                     this._resolutionSteps = _resSteps;
                 }
+                this.isLoading = false;
+                this.loading.emit(false);
             })
         }
 
@@ -136,4 +149,70 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
+}
+
+@Component({
+  selector: 'sz-dialog-how-entity',
+  templateUrl: 'sz-how-entity-dialog.component.html',
+  styleUrls: ['sz-how-entity-dialog.component.scss']
+})
+export class SzHowEntityDialog {
+  /** subscription to notify subscribers to unbind */
+  public unsubscribe$ = new Subject<void>();
+  
+  private _entityId: SzEntityIdentifier;
+  private _showOkButton = true;
+  private _isMaximized = false;
+  private _isLoading = true;
+  public get isLoading(): boolean {
+    return this._isLoading;
+  }
+  @HostBinding('class.maximized') get maximized() { return this._isMaximized; }
+  private set maximized(value: boolean) { this._isMaximized = value; }
+
+  @ViewChild('howEntityTag') howEntityTag: SzHowEntityComponent;
+
+  public get title(): string {
+    let retVal = `Resolution Steps for Entity ${this.entityId}`;
+    return retVal
+  }
+
+  public okButtonText: string = "Ok";
+  public get showDialogActions(): boolean {
+    return this._showOkButton;
+  }
+
+  public get entityId(): SzEntityIdentifier {
+    return this._entityId;
+  }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { entityId: SzEntityIdentifier, records?: SzRecordId[], okButtonText?: string, showOkButton?: boolean }) {
+    if(data) {
+      if(data.entityId) {
+        this._entityId = data.entityId;
+      }
+      if(data.okButtonText) {
+        this.okButtonText = data.okButtonText;
+      }
+      if(data.showOkButton) {
+        this._showOkButton = data.showOkButton;
+      }
+    }
+  }
+  /**
+   * unsubscribe when component is destroyed
+   */
+   ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+  public onDataLoading(isLoading: boolean) {
+    console.log('SzHowEntityDialog.onDataLoading?' , isLoading);
+    this._isLoading = isLoading;
+  }
+  public toggleMaximized() {
+    this.maximized = !this.maximized;
+  }
+  public onDoubleClick(event) {
+    this.toggleMaximized();
+  }
 }

@@ -23,7 +23,8 @@ import { Subscription, fromEvent } from 'rxjs';
 })
 export class AppComponent implements AfterViewInit {
   public currentSearchResults: SzAttributeSearchResult[];
-  public currentlySelectedEntityId: number;// = 39001;
+  //public currentlySelectedEntityId: number;// = 39001;
+  public currentlySelectedEntityId: number = 200002;
   public currentSearchParameters: SzEntitySearchParams;
   public showSearchResults = false;
   public set showGraphMatchKeys(value: boolean) {
@@ -114,6 +115,10 @@ export class AppComponent implements AfterViewInit {
     console.log('onGraphRelationshipContextClick: ', event);
     this.openContextMenu(event, this.graphLinkContextMenu);
   }
+  public onHeaderHowButtonClick(event: any) {
+    console.log('onHeaderHowButtonClick: ', event);
+  }
+  
 
   openGraphItemInNewMenu(entityId: number) {
     window.open('/entity/' + entityId, '_blank');

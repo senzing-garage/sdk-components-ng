@@ -24,6 +24,7 @@ import { SzPrefsService } from '../../services/sz-prefs.service';
 import { parseBool } from '../../common/utils';
 import { SzDataSourceRecordsSelection, SzWhySelectionModeBehavior, SzWhySelectionMode } from '../../models/data-source-record-selection';
 import { SzMatchKeyTokenFilterScope } from '../../models/graph';
+import { SzHowEntityDialog } from '../../how/sz-how-entity.component';
 /**
  * The Entity Detail Component.
  * Generates a complex detail page from input parameters.
@@ -134,6 +135,14 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private _showEntityWhyFunction: boolean = false;
   private _showRecordWhyUtilities: boolean = false;
   private _openWhyComparisonModalOnClick: boolean = true;
+  /** the text to show on the header "why" button */
+  @Input() public whyButtonText   = 'Why Analysis';
+  // how utilities
+  private _showEntityHowFunction: boolean = false;
+  private _openHowModalOnClick: boolean = true;
+  /** the text to show on the header "why" button */
+  @Input() public howButtonText   = 'Resolution Steps';
+
   // graph utilities
   private _showGraphNodeContextMenu: boolean = false;
   private _showGraphLinkContextMenu: boolean = false;
@@ -146,6 +155,14 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   @Output() headerWhyButtonClick = new EventEmitter<SzEntityIdentifier>();
   /** (Event Emitter) when the user clicks on the "Why" button in records section */
   @Output() recordsWhyButtonClick = new EventEmitter<SzRecordId[]>();
+
+  /** @internal */
+  private _headerHowButtonClicked: Subject<SzEntityIdentifier> = new Subject<SzEntityIdentifier>();
+  /** (Observeable) when the user clicks on the "How" button in header under the icon */
+  public headerHowButtonClicked = this._headerHowButtonClicked.asObservable();
+  /** (Event Emitter) when the user clicks on the "How" button in header under the icon */
+  @Output() headerHowButtonClick = new EventEmitter<SzEntityIdentifier>();
+
   /** (Event Emitter) when the user clicks on a datasource record for either single-select
    * or multi-select operations.
    */
@@ -229,11 +246,25 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   @Input() set showEntityWhyFunction(value: boolean) {
     this._showEntityWhyFunction = value;
   }
+  /** whether or not the "how" comparison button for the entire entity is shown */
+  public get showEntityHowFunction(): boolean {
+    return this._showEntityHowFunction;
+  }
+  /** whether or not to show the "how" comparison button for the entire entity */
+  @Input() set showEntityHowFunction(value: boolean) {
+    this._showEntityHowFunction = value;
+  }
   /** whether or not to automatically open a modal with the entity comparison on 
    * "Why" button click. (disable for custom implementation/action)
    */
-  @Input() openWhyComparisonModalOnClick(value: boolean) {
+  @Input() set openWhyComparisonModalOnClick(value: boolean) {
     this._openWhyComparisonModalOnClick = value;
+  }
+  /** whether or not to automatically open a modal with the entity resolution steps on 
+   * "How" button click. (disable for custom implementation/action)
+   */
+  @Input() set openHowComparisonModalOnClick(value: boolean) {
+    this._openHowModalOnClick = value;
   }
 
   /** used for print and pdf support, allows fetching DOM HTMLElement */
@@ -765,7 +796,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     this.graphPopOutClick.emit(event);
   }
   /**
-   * proxies internal "why button" header click to "graphPopOutClick" event.
+   * proxies internal "why button" header click to "headerWhyButtonClick" event.
    */
   public onHeaderWhyButtonClick(entityId: SzEntityIdentifier){
     this.headerWhyButtonClick.emit(entityId);
@@ -775,6 +806,23 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
         panelClass: 'why-entity-dialog-panel',
         minHeight: 400,
         minWidth: 800,
+        data: {
+          entityId: entityId
+        }
+      });
+    }
+  }
+  /**
+   * proxies internal "how button" header click to "headerHowButtonClick" event.
+   */
+  public onHeaderHowButtonClick(entityId: SzEntityIdentifier){
+    this.headerHowButtonClick.emit(entityId);
+    console.log('SzEntityDetailComponent.onHeaderHowButtonClick: ', entityId);
+    if(this._openHowModalOnClick){
+      this.dialog.open(SzHowEntityDialog, {
+        panelClass: 'how-entity-dialog-panel',
+        minHeight: '90vh',
+        minWidth: '90vw',
         data: {
           entityId: entityId
         }

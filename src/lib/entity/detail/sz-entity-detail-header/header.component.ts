@@ -300,6 +300,11 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     ).subscribe( (entityId: SzEntityIdentifier) => {
       this.onWhyButtonClick.emit(entityId);
     })
+    this._onHowButtonClicked.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( (entityId: SzEntityIdentifier) => {
+      this.onHowButtonClick.emit(entityId);
+    })
   }
 
   /**
@@ -353,6 +358,8 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
   public get showWhyFunction(): boolean {
     return this._showWhyFunction;
   }
+  /** the text to show on the "why" button */
+  @Input() public whyButtonText   = 'Why Analysis';
   /**
    * When user clicks the "Why" button this handler is invoked 
    * which then proxies the event to observeables and emitters 
@@ -360,6 +367,36 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
   */
   public onWhyButtonClickHandler(event: any) {
     this._onWhyButtonClicked.next(this.entityId);
+  }
+
+  /** 
+   * when the user clicks the "how" button (if enabled with "showHowFunction") 
+   * @internal
+  */
+  private _onHowButtonClicked = new Subject<SzEntityIdentifier>();
+  /** (Observeable Event) when the user clicks the "how" button (if enabled with "showHowFunction") */
+  public onHowButtonClicked   = this._onHowButtonClicked.asObservable();
+  /** (Event Emitter) when the user clicks the "why" button (if enabled with "showHowFunction") */
+  @Output() onHowButtonClick: EventEmitter<SzEntityIdentifier> = new EventEmitter<SzEntityIdentifier>();
+  /** @internal */
+  private _showHowFunction: boolean = false;
+  /** whether or not to show the "How button" under the entity icon */
+  @Input() public set showHowFunction(value: boolean) {
+    this._showHowFunction = value;
+  }
+  /** whether or not the "How button" under the entity icon is being shown*/
+  public get showHowFunction(): boolean {
+    return this._showHowFunction;
+  }
+  /** the text to show on the "how" button */
+  @Input() public howButtonText   = 'Resolution Steps';
+  /**
+  * When user clicks the "How" button this handler is invoked 
+  * which then proxies the event to observeables and emitters 
+  * @internal 
+  */
+  public onHowButtonClickHandler(event: any) {
+    this._onHowButtonClicked.next(this.entityId);
   }
 
 }

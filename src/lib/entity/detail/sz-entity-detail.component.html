@@ -20,7 +20,11 @@
   [entity]="entity"
   [forceLayout]="_forceLayout"
   [showWhyFunction]="showEntityWhyFunction"
+  [whyButtonText]="whyButtonText"
+  [howButtonText]="howButtonText"
   (onWhyButtonClick)="this.onHeaderWhyButtonClick($event)"
+  [showHowFunction]="showEntityHowFunction"
+  (onHowButtonClick)="this.onHeaderHowButtonClick($event)"
   [layoutClasses]="_layoutEnforcers">
   </sz-entity-detail-header>
   

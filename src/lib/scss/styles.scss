@@ -50,16 +50,21 @@ body {
   }
 
 }
-.why-entity-dialog-panel, .why-entities-dialog-panel {
+.why-entity-dialog-panel, .why-entities-dialog-panel,
+.how-entity-dialog-panel, .how-entities-dialog-panel {
   max-width: 100vw !important;
   max-height: 100vh !important;
   width: unset !important;
   height: unset !important;
   .mat-dialog-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
     padding: 0px;
     //height: 500px;  /* this is actually min-height because of the way material-dialogs work */
     //width: 900px;   /* this is actually min-width because of the way material-dialogs work */
     max-height: 100vh;
+    min-height: unset;
     overflow: hidden;
   }
 }
