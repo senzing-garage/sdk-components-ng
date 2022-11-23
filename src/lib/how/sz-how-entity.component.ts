@@ -185,7 +185,10 @@ export class SzHowEntityDialog {
   public get entityId(): SzEntityIdentifier {
     return this._entityId;
   }
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { entityId: SzEntityIdentifier, records?: SzRecordId[], okButtonText?: string, showOkButton?: boolean }) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: { entityId: SzEntityIdentifier, records?: SzRecordId[], okButtonText?: string, showOkButton?: boolean },
+    private uiCoordinatorService: SzHowUICoordinatorService
+  ) {
     if(data) {
       if(data.entityId) {
         this._entityId = data.entityId;
@@ -204,6 +207,7 @@ export class SzHowEntityDialog {
    ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.uiCoordinatorService.clear();
   }
   public onDataLoading(isLoading: boolean) {
     console.log('SzHowEntityDialog.onDataLoading?' , isLoading);

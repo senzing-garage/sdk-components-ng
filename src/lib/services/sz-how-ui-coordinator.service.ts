@@ -110,18 +110,20 @@ export class SzHowUICoordinatorService {
     
     public set currentHowResult(value: SzHowEntityResult) {
         this._currentHowResult = value;
-        this._resolutionStepsByVirtualId = value.resolutionSteps;
+        this._resolutionStepsByVirtualId = value && value.resolutionSteps ? value.resolutionSteps : {};
+        this._finalStepVirtualId = undefined;
 
         let _stepsUI = {};
-        for(let k in value.resolutionSteps) {
-            let rStep = value.resolutionSteps[k];
-            _stepsUI[k] = new SzHowResolutionUIStep(rStep, value.resolutionSteps);
+        if(value && value.resolutionSteps) {
+            for(let k in value.resolutionSteps) {
+                let rStep = value.resolutionSteps[k];
+                _stepsUI[k] = new SzHowResolutionUIStep(rStep, value.resolutionSteps);
+            }
         }
         this._steps = _stepsUI;
         // get steps for last step and expand
-        if(value.finalStates && value.finalStates.length > 0) {
+        if(value && value.finalStates && value.finalStates.length > 0) {
             this._finalStepVirtualId = value.finalStates[0].virtualEntityId;
-
             this.expandSteps( this._finalStepVirtualId );
         }
         //console.log('SzHowUICoordinatorService.setCurrentHowResult() ', this._steps);
@@ -218,5 +220,11 @@ export class SzHowUICoordinatorService {
             //this._highlightFeaturesForCards(_payload);
             this._stepFeaturesHighlightChange.next(_payload);
         }
+    }
+
+    public clear() {
+        this.currentHowResult   = undefined;
+        this._highlightedSteps  = [];
+        this._jumpToStep.next(undefined); // we need to publish a null to reset
     }
 }
