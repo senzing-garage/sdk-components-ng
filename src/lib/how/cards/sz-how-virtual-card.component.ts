@@ -3,7 +3,7 @@ import { MatAccordion } from '@angular/material/expansion';
 import { 
     SzEntityFeature, SzEntityIdentifier, SzResolvedEntity, 
     SzVirtualEntity, SzVirtualEntityRecord, EntityDataService as SzEntityDataService, SzRecordIdentifiers, SzRecordIdentifier, SzVirtualEntityResponse, SzFeatureMode, SzResolutionStep, SzFeatureScore } from '@senzing/rest-api-client-ng';
-import { take, takeUntil, tap, map, BehaviorSubject } from 'rxjs';
+import { take, takeUntil, tap, map, BehaviorSubject, Subject } from 'rxjs';
 import { SzHowCardBaseComponent } from './sz-how-entity-card-base.component';
 import { SzSearchService } from '../../services/sz-search.service';
 import { friendlyFeaturesName } from '../../models/data-features';
@@ -114,6 +114,9 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
     private _highlightedConstructionFeaturesChange: BehaviorSubject<SzFeatureScore[]> = new BehaviorSubject(this._highlightedConstructionFeatures);
     public highlightedConstructionFeaturesChange                = this._highlightedConstructionFeaturesChange.asObservable();
     @Output() public highlightedConstructionFeaturesChanged     = new EventEmitter<[SzFeatureScore[], string]>();
+    private _moreLinkClick: Subject<Array<SzVirtualEntityRecord>> = new Subject();
+    public moreLinkClick                                        = this._moreLinkClick.asObservable();
+    @Output() public moreLinkClicked                            = new EventEmitter<Array<SzVirtualEntityRecord>>();
 
     get preceedingStep(): SzResolutionStep | undefined {
         return this._preceedingStep;
@@ -448,6 +451,11 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
             // now emit to any subscribers
             this.highlightedConstructionFeaturesChanged.emit([feats, this._preceedingStep && this._preceedingStep.resolvedVirtualEntityId ? this._preceedingStep.resolvedVirtualEntityId : undefined]);
         });
+        this.moreLinkClick.pipe(
+            takeUntil(this.unsubscribe$)
+        ).subscribe((records: Array<SzVirtualEntityRecord>)=>{
+            this.moreLinkClicked.emit(records);
+        });
     }
 
     private onHighlightedConstructionFeaturesChange(features: SzFeatureScore[]) {
@@ -581,7 +589,9 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
     }
 
     public onMoreLinkClick(dsKey: string) {
-        console.log('onMoreLinkClck: ', dsKey);
+        console.log('SzHowVirtualCardComponent.onMoreLinkClck: ', dsKey, this.sources[dsKey]);
+        this._moreLinkClick.next(this.sources[dsKey]);
+        //Array<SzVirtualEntityRecord>
     }
 
     toggleSteps() {

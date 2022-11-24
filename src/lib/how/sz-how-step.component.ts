@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { DataSource } from '@angular/cdk/collections';
 import { 
     EntityDataService as SzEntityDataService, 
-    SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse 
+    SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse, SzVirtualEntityRecord 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzHowFinalCardData } from '../models/data-how';
@@ -36,6 +36,9 @@ export class SzHowStepComponent implements OnInit, OnDestroy {
     private _data: SzResolutionStep;
     private _isHidden: boolean = false;
     private _highlighted: boolean = false;
+    private _recordsMoreLinkClick: Subject<Array<SzVirtualEntityRecord>> = new Subject();
+    public recordsMoreLinkClick                            = this._recordsMoreLinkClick.asObservable();
+    @Output() public recordsMoreLinkClicked                = new EventEmitter<Array<SzVirtualEntityRecord>>();
 
     @HostBinding('class.hidden') get cssHiddenClass(): boolean {
         return this._isHidden ? true : false;
@@ -58,7 +61,6 @@ export class SzHowStepComponent implements OnInit, OnDestroy {
     
     @Input() set data(value: SzResolutionStep) {
         this._data = value;
-        console.info(`sz-how-step.setData()`, value);
     }
     get data() : SzResolutionStep {
         return this._data;
@@ -90,6 +92,12 @@ export class SzHowStepComponent implements OnInit, OnDestroy {
         this.uiCoordinatorService.onStepJump.pipe(
             takeUntil(this.unsubscribe$)
         ).subscribe(this.onStepJumpTo.bind(this));
+
+        this.recordsMoreLinkClick.pipe(
+            takeUntil(this.unsubscribe$)
+        ).subscribe((records: SzVirtualEntityRecord[])=> {
+            this.recordsMoreLinkClicked.emit(records);
+        });
     }
 
     /**
@@ -129,5 +137,8 @@ export class SzHowStepComponent implements OnInit, OnDestroy {
     public onHighlightedConstructionFeaturesChanged(features: SzFeatureScore[], virtualEntityId: string) {
         //console.log('SzHowStepComponent.onHighlightedConstructionFeaturesChanged()'+ virtualEntityId, features);
         this.uiCoordinatorService.highlightStepFeatures(virtualEntityId, features);
+    }
+    public onRecordsMoreLinkClicked(records: SzVirtualEntityRecord[]) {
+        this._recordsMoreLinkClick.next(records);
     }
 }

@@ -181,7 +181,6 @@ export class SzHowUICoordinatorService {
             }
             this._stepVisibilityStateChange.next(eventPayload);
         }
-        console.log(`SzHowUICoordinatorService.collapseSteps(${virtualEntityId}): ${stepsToChangeState}`, step, this._steps, this);
     }
 
     public jumpTo(stepId: string) {
@@ -199,7 +198,6 @@ export class SzHowUICoordinatorService {
     }
 
     public highlightStepFeatures(virtualEntityId: string, features: SzFeatureScore[]) {
-        console.log(`SzHowUICoordinatorService.highlightStepFeatures: ${virtualEntityId}`, features, this._steps);
         // get the UI object for step
         if(this._steps && this._steps[virtualEntityId]) {
             // now get the inbound AND candidate ID's

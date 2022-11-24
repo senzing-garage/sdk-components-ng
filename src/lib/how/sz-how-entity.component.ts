@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { DataSource } from '@angular/cdk/collections';
 import { 
     EntityDataService as SzEntityDataService, 
-    SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse 
+    SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse, SzVirtualEntityRecord 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzHowUICoordinatorService } from '../services/sz-how-ui-coordinator.service';
@@ -37,6 +37,9 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     private _resolutionSteps: SzResolutionStep[];
     private _resolutionStepsByVirtualId: {[key: string]: SzResolutionStep};
     private _isLoading = false;
+    private _recordsMoreLinkClick: Subject<Array<SzVirtualEntityRecord>> = new Subject();
+    public recordsMoreLinkClick                            = this._recordsMoreLinkClick.asObservable();
+    @Output() public recordsMoreLinkClicked                = new EventEmitter<Array<SzVirtualEntityRecord>>();
 
     @Output()
     loading: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -66,50 +69,55 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     ){}
 
     ngOnInit() {
-        this.getFeatureTypeOrderFromConfig();
+      this.getFeatureTypeOrderFromConfig();
 
-        if(this.entityId) {
-            // get entity data
-            this.isLoading = true;
-            this.loading.emit(true);
-            this.getData(this.entityId).subscribe((resp: SzHowEntityResponse) => {
-                console.log(`how response: ${resp}`, resp.data);
-                this._data                                    = resp && resp.data ? resp.data : undefined;
-                this._resolutionStepsByVirtualId              = resp && resp.data && resp.data.resolutionSteps ? this._data.resolutionSteps : undefined;
-                this.uiCoordinatorService.currentHowResult    = resp.data;
+      if(this.entityId) {
+        // get entity data
+        this.isLoading = true;
+        this.loading.emit(true);
+        this.getData(this.entityId).subscribe((resp: SzHowEntityResponse) => {
+            console.log(`how response: ${resp}`, resp.data);
+            this._data                                    = resp && resp.data ? resp.data : undefined;
+            this._resolutionStepsByVirtualId              = resp && resp.data && resp.data.resolutionSteps ? this._data.resolutionSteps : undefined;
+            this.uiCoordinatorService.currentHowResult    = resp.data;
 
-                if(this._data.finalStates && this._data.finalStates.length > 0) {
-                    // has at least one final states
-                    // for each final state get the virual step
-                    // and populate the components
-                    let _finalStatesData = this._data.finalStates
-                    .filter((fStateObj) => {
-                        return this._data.resolutionSteps && this._data.resolutionSteps[ fStateObj.virtualEntityId ] ? true : false;
-                    })
-                    /*
-                    .map((fStateObj) => {
-                        return (Object.assign(this._data.resolutionSteps[ fStateObj.virtualEntityId ], {
-                            resolvedVirtualEntity: fStateObj
-                        }) as SzHowFinalCardData)
-                    });*/
+            if(this._data.finalStates && this._data.finalStates.length > 0) {
+                // has at least one final states
+                // for each final state get the virual step
+                // and populate the components
+                let _finalStatesData = this._data.finalStates
+                .filter((fStateObj) => {
+                    return this._data.resolutionSteps && this._data.resolutionSteps[ fStateObj.virtualEntityId ] ? true : false;
+                })
+                /*
+                .map((fStateObj) => {
+                    return (Object.assign(this._data.resolutionSteps[ fStateObj.virtualEntityId ], {
+                        resolvedVirtualEntity: fStateObj
+                    }) as SzHowFinalCardData)
+                });*/
 
-                    this.finalCardsData = _finalStatesData
-                    console.log(`final step(s): `, this.finalCardsData);
+                this.finalCardsData = _finalStatesData
+                console.log(`final step(s): `, this.finalCardsData);
+            }
+            if(this._data.resolutionSteps && Object.keys(this._data.resolutionSteps).length > 0) {
+                // we have resolution steps
+                let _resSteps = [];
+                for(let rKey in this._data.resolutionSteps) {
+                    this._data.resolutionSteps[rKey].resolvedVirtualEntityId
+                    _resSteps.push( this._data.resolutionSteps[rKey] );
                 }
-                if(this._data.resolutionSteps && Object.keys(this._data.resolutionSteps).length > 0) {
-                    // we have resolution steps
-                    let _resSteps = [];
-                    for(let rKey in this._data.resolutionSteps) {
-                        this._data.resolutionSteps[rKey].resolvedVirtualEntityId
-                        _resSteps.push( this._data.resolutionSteps[rKey] );
-                    }
-                    this._resolutionSteps = _resSteps.reverse(); // we want the steps in reverse for display purposes
-                }
-                this.isLoading = false;
-                this.loading.emit(false);
-            })
-        }
+                this._resolutionSteps = _resSteps.reverse(); // we want the steps in reverse for display purposes
+            }
+            this.isLoading = false;
+            this.loading.emit(false);
+        });
+      }
 
+      this.recordsMoreLinkClick.pipe(
+          takeUntil(this.unsubscribe$)
+      ).subscribe((records: SzVirtualEntityRecord[])=> {
+          this.recordsMoreLinkClicked.emit(records);
+      });
     }
 
     getStepNumberByVirtualEntityId(virtualEntityId: string) {
@@ -148,6 +156,11 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
+    }
+
+    public onRecordsMoreLinkClicked(records: SzVirtualEntityRecord[]) {
+      console.log('SzHowEntityComponent.onRecordsMoreLinkClicked: ', records);
+      this._recordsMoreLinkClick.next(records);
     }
 }
 
