@@ -45,7 +45,7 @@
                         <li *ngFor="let record of source.value | slice:0:recordLimit">
                             {{record?.recordId}}
                         </li>
-                        <li *ngIf="source.value.length > recordLimit" class="more-link" (click)="onMoreLinkClick(source.key)">more...</li>
+                        <li *ngIf="source.value.length > recordLimit" class="more-link" (click)="onMoreLinkClick(source.key, $event)">more...</li>
                     </ul>
                 </li>
             </ul>

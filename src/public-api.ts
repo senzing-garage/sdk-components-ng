@@ -84,7 +84,7 @@ export { SzHowEntityComponent, SzHowEntityDialog } from './lib/how/sz-how-entity
 export { SzHowStepComponent } from './lib/how/sz-how-step.component';
 export { SzHowFinalCardComponent } from './lib/how/cards/sz-how-entity-card-final.component';
 export { SzHowVirtualCardComponent } from './lib/how/cards/sz-how-virtual-card.component';
-export { SzHowSourceRecordsComponent } from './lib/how/sz-how-source-records.component';
+export { SzHowSourceRecordsComponent } from './lib/how/sz-dialog-how-source-records.component';
 export { SzHowToolbarComponent } from './lib/how/sz-how-toolbar.component';
 
 /** export some members of rest client to ease type use */

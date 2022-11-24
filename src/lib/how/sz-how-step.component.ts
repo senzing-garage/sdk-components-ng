@@ -6,7 +6,7 @@ import {
     SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse, SzVirtualEntityRecord 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../services/sz-config-data.service';
-import { SzHowFinalCardData } from '../models/data-how';
+import { SzHowFinalCardData, SzVirtualEntityRecordsClickEvent } from '../models/data-how';
 import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
 import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../services/sz-how-ui-coordinator.service';
@@ -36,9 +36,9 @@ export class SzHowStepComponent implements OnInit, OnDestroy {
     private _data: SzResolutionStep;
     private _isHidden: boolean = false;
     private _highlighted: boolean = false;
-    private _recordsMoreLinkClick: Subject<Array<SzVirtualEntityRecord>> = new Subject();
+    private _recordsMoreLinkClick: Subject<SzVirtualEntityRecordsClickEvent> = new Subject();
     public recordsMoreLinkClick                            = this._recordsMoreLinkClick.asObservable();
-    @Output() public recordsMoreLinkClicked                = new EventEmitter<Array<SzVirtualEntityRecord>>();
+    @Output() public recordsMoreLinkClicked                = new EventEmitter<SzVirtualEntityRecordsClickEvent>();
 
     @HostBinding('class.hidden') get cssHiddenClass(): boolean {
         return this._isHidden ? true : false;
@@ -95,8 +95,8 @@ export class SzHowStepComponent implements OnInit, OnDestroy {
 
         this.recordsMoreLinkClick.pipe(
             takeUntil(this.unsubscribe$)
-        ).subscribe((records: SzVirtualEntityRecord[])=> {
-            this.recordsMoreLinkClicked.emit(records);
+        ).subscribe((e: SzVirtualEntityRecordsClickEvent)=> {
+            this.recordsMoreLinkClicked.emit(e);
         });
     }
 
@@ -138,7 +138,7 @@ export class SzHowStepComponent implements OnInit, OnDestroy {
         //console.log('SzHowStepComponent.onHighlightedConstructionFeaturesChanged()'+ virtualEntityId, features);
         this.uiCoordinatorService.highlightStepFeatures(virtualEntityId, features);
     }
-    public onRecordsMoreLinkClicked(records: SzVirtualEntityRecord[]) {
-        this._recordsMoreLinkClick.next(records);
+    public onRecordsMoreLinkClicked(e: SzVirtualEntityRecordsClickEvent) {
+        this._recordsMoreLinkClick.next(e);
     }
 }

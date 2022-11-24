@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding } from '@angular/core';
+import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding, ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
 import { 
@@ -7,9 +7,10 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzHowUICoordinatorService } from '../services/sz-how-ui-coordinator.service';
-import { SzHowFinalCardData } from '../models/data-how';
+import { SzHowFinalCardData, SzVirtualEntityRecordsClickEvent } from '../models/data-how';
 import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
+import { SzHowSourceRecordsComponent } from './sz-dialog-how-source-records.component';
 
 /**
  * Display the "How" information for entity
@@ -37,10 +38,11 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     private _resolutionSteps: SzResolutionStep[];
     private _resolutionStepsByVirtualId: {[key: string]: SzResolutionStep};
     private _isLoading = false;
-    private _recordsMoreLinkClick: Subject<Array<SzVirtualEntityRecord>> = new Subject();
+    private _openRecordsModalOnClick = true;
+    private _recordsMoreLinkClick: Subject<SzVirtualEntityRecordsClickEvent> = new Subject();
     public recordsMoreLinkClick                            = this._recordsMoreLinkClick.asObservable();
-    @Output() public recordsMoreLinkClicked                = new EventEmitter<Array<SzVirtualEntityRecord>>();
 
+    @Output() public recordsMoreLinkClicked                = new EventEmitter<SzVirtualEntityRecordsClickEvent>();
     @Output()
     loading: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Input()
@@ -65,6 +67,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     constructor(
         public entityDataService: SzEntityDataService,
         public configDataService: SzConfigDataService,
+        public dialog: MatDialog,
         private uiCoordinatorService: SzHowUICoordinatorService
     ){}
 
@@ -115,8 +118,8 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
 
       this.recordsMoreLinkClick.pipe(
           takeUntil(this.unsubscribe$)
-      ).subscribe((records: SzVirtualEntityRecord[])=> {
-          this.recordsMoreLinkClicked.emit(records);
+      ).subscribe((evt: SzVirtualEntityRecordsClickEvent)=> {
+          this.recordsMoreLinkClicked.emit(evt);
       });
     }
 
@@ -158,9 +161,20 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         this.unsubscribe$.complete();
     }
 
-    public onRecordsMoreLinkClicked(records: SzVirtualEntityRecord[]) {
-      console.log('SzHowEntityComponent.onRecordsMoreLinkClicked: ', records);
-      this._recordsMoreLinkClick.next(records);
+    public onRecordsMoreLinkClicked(evt: SzVirtualEntityRecordsClickEvent) {
+      console.log('SzHowEntityComponent.onRecordsMoreLinkClicked: ', evt);
+      this._recordsMoreLinkClick.next(evt);
+      if(this._openRecordsModalOnClick) {
+        let targetEle = new ElementRef(evt.target);
+        const dialogRef = this.dialog.open(SzHowSourceRecordsComponent, {
+          panelClass: 'tooltip-dialog-panel',
+          hasBackdrop: false,
+          data: {
+            target: targetEle,
+            event: evt
+          }
+        });
+      }
     }
 }
 

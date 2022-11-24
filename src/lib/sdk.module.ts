@@ -83,7 +83,7 @@ import { SzHowFinalCardComponent } from './how/cards/sz-how-entity-card-final.co
 import { SzHowVirtualCardComponent } from './how/cards/sz-how-virtual-card.component';
 import { SzHowUICoordinatorService } from './services/sz-how-ui-coordinator.service';
 import { SzHowToolbarComponent } from './how/sz-how-toolbar.component';
-import { SzHowSourceRecordsComponent } from './how/sz-how-source-records.component';
+import { SzHowSourceRecordsComponent } from './how/sz-dialog-how-source-records.component';
 
 /**
  * Sets up a default set of service parameters for use

@@ -68,7 +68,7 @@ body {
     overflow: hidden;
   }
 }
-.alert-dialog-panel, .alert-dialog-panel {
+.alert-dialog-panel, .tooltip-dialog-panel {
   max-width: 100vw !important;
   max-height: 100vh;
   .mat-dialog-container {
@@ -76,6 +76,9 @@ body {
     overflow: hidden;
     max-height: 100vh;
   }
+}
+.tooltip-dialog-panel .mat-dialog-container {
+  border: 1px solid #a0a0a0;
 }
 
 .senzing-alarm:before {

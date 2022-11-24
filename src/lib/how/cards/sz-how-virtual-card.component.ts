@@ -8,7 +8,7 @@ import { SzHowCardBaseComponent } from './sz-how-entity-card-base.component';
 import { SzSearchService } from '../../services/sz-search.service';
 import { friendlyFeaturesName } from '../../models/data-features';
 import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
-import { SzHowStepHightlightEvent, SzMatchFeatureScore } from '../../models/data-how';
+import { SzHowStepHightlightEvent, SzMatchFeatureScore, SzVirtualEntityRecordsClickEvent } from '../../models/data-how';
 
 interface SzVirtualEntityRecordsByDataSource {
     [key: string]: Array<SzVirtualEntityRecord> 
@@ -112,11 +112,11 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
     @Input() featureOrder: string[];
 
     private _highlightedConstructionFeaturesChange: BehaviorSubject<SzFeatureScore[]> = new BehaviorSubject(this._highlightedConstructionFeatures);
-    public highlightedConstructionFeaturesChange                = this._highlightedConstructionFeaturesChange.asObservable();
-    @Output() public highlightedConstructionFeaturesChanged     = new EventEmitter<[SzFeatureScore[], string]>();
-    private _moreLinkClick: Subject<Array<SzVirtualEntityRecord>> = new Subject();
-    public moreLinkClick                                        = this._moreLinkClick.asObservable();
-    @Output() public moreLinkClicked                            = new EventEmitter<Array<SzVirtualEntityRecord>>();
+    public highlightedConstructionFeaturesChange                        = this._highlightedConstructionFeaturesChange.asObservable();
+    @Output() public highlightedConstructionFeaturesChanged             = new EventEmitter<[SzFeatureScore[], string]>();
+    private _moreLinkClick: Subject<SzVirtualEntityRecordsClickEvent>   = new Subject();
+    public moreLinkClick                                                = this._moreLinkClick.asObservable();
+    @Output() public moreLinkClicked                                    = new EventEmitter<SzVirtualEntityRecordsClickEvent>();
 
     get preceedingStep(): SzResolutionStep | undefined {
         return this._preceedingStep;
@@ -453,8 +453,8 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
         });
         this.moreLinkClick.pipe(
             takeUntil(this.unsubscribe$)
-        ).subscribe((records: Array<SzVirtualEntityRecord>)=>{
-            this.moreLinkClicked.emit(records);
+        ).subscribe((event: SzVirtualEntityRecordsClickEvent)=>{
+            this.moreLinkClicked.emit(event);
         });
     }
 
@@ -588,9 +588,13 @@ export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements
         this._highlighted = (step && step.data && step.data.resolvedVirtualEntityId === this.virtualEntityId);
     }
 
-    public onMoreLinkClick(dsKey: string) {
-        console.log('SzHowVirtualCardComponent.onMoreLinkClck: ', dsKey, this.sources[dsKey]);
-        this._moreLinkClick.next(this.sources[dsKey]);
+    public onMoreLinkClick(dsKey: string, evt: MouseEvent) {
+        let payload: SzVirtualEntityRecordsClickEvent = Object.assign(evt, {
+            records: this.sources[dsKey],
+            dataSourceName: dsKey
+        });
+        console.log('SzHowVirtualCardComponent.onMoreLinkClck: ', payload, evt);
+        this._moreLinkClick.next(payload);
         //Array<SzVirtualEntityRecord>
     }
 
