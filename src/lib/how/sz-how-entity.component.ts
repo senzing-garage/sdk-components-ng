@@ -3,13 +3,13 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { DataSource } from '@angular/cdk/collections';
 import { 
     EntityDataService as SzEntityDataService, 
-    SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse, SzVirtualEntityRecord 
+    SzEntityIdentifier, SzHowEntityResponse, SzHowEntityResult, SzRecordId, SzResolutionStep, SzVirtualEntity 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzHowUICoordinatorService } from '../services/sz-how-ui-coordinator.service';
 import { SzHowFinalCardData, SzVirtualEntityRecordsClickEvent } from '../models/data-how';
 import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
-import { parseSzIdentifier } from '../common/utils';
+import { parseBool, parseSzIdentifier } from '../common/utils';
 import { SzHowSourceRecordsComponent } from './sz-dialog-how-source-records.component';
 
 /**
@@ -39,12 +39,15 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     private _resolutionStepsByVirtualId: {[key: string]: SzResolutionStep};
     private _isLoading = false;
     private _openRecordsModalOnClick = true;
+    private _showToolBar = true;
+    private _dataChange: Subject<SzHowEntityResult>         = new Subject<SzHowEntityResult>();
+    public   dataChange                                     = this._dataChange.asObservable();
     private _recordsMoreLinkClick: Subject<SzVirtualEntityRecordsClickEvent> = new Subject();
-    public recordsMoreLinkClick                            = this._recordsMoreLinkClick.asObservable();
-
-    @Output() public recordsMoreLinkClicked                = new EventEmitter<SzVirtualEntityRecordsClickEvent>();
+    public   recordsMoreLinkClick                           = this._recordsMoreLinkClick.asObservable();
+    @Output() public dataChanged                            = new EventEmitter<SzHowEntityResult>();
+    @Output() public recordsMoreLinkClicked                 = new EventEmitter<SzVirtualEntityRecordsClickEvent>();
     @Output()
-    loading: EventEmitter<boolean> = new EventEmitter<boolean>();
+    loading: EventEmitter<boolean>                          = new EventEmitter<boolean>();
     @Input()
     entityId: SzEntityIdentifier;
 
@@ -60,8 +63,11 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     public get isLoading(): boolean {
         return this._isLoading;
     }
-    public set isLoading(value: boolean) {
-        this._isLoading = value;
+    public get showToolBar(): boolean {
+      return this._showToolBar;
+    }
+    @Input() public set showToolBar(value: boolean | string) {
+        this._showToolBar = parseBool(value);
     }
 
     constructor(
@@ -74,9 +80,15 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     ngOnInit() {
       this.getFeatureTypeOrderFromConfig();
 
+      this.dataChange.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe((data: SzHowEntityResult) => {
+        this.dataChanged.emit(data);
+      })
+
       if(this.entityId) {
         // get entity data
-        this.isLoading = true;
+        this._isLoading = true;
         this.loading.emit(true);
         this.getData(this.entityId).subscribe((resp: SzHowEntityResponse) => {
             console.log(`how response: ${resp}`, resp.data);
@@ -111,8 +123,9 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
                 }
                 this._resolutionSteps = _resSteps.reverse(); // we want the steps in reverse for display purposes
             }
-            this.isLoading = false;
+            this._isLoading = false;
             this.loading.emit(false);
+            this._dataChange.next(resp.data);
         });
       }
 

@@ -1,20 +1,16 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, ViewContainerRef, TemplateRef, Input } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import {
-  SzEntitySearchParams,
-  SzAttributeSearchResult,
   SzSearchComponent,
   SzPdfUtilService,
   SzSearchService,
-  SzEntityDetailComponent,
-  SzEntityData,
   SzPrefsService,
-  SzConfigurationService,
-  SzSearchResultsComponent
+  SzHowEntityResult,
+  SzResolutionStep
 } from '@senzing/sdk-components-ng';
-import { tap, filter, take } from 'rxjs/operators';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
-import { Subscription, fromEvent } from 'rxjs';
+import { 
+  SzVirtualEntity 
+} from '@senzing/rest-api-client-ng';
+import { Overlay } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-root',
@@ -22,8 +18,8 @@ import { Subscription, fromEvent } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public currentlySelectedEntityId: number = 300001;
-  
+  public currentlySelectedEntityId: number = 200002;
+  private howResult: SzHowEntityResult;  
   @ViewChild('howGraph') howGraph: SzSearchComponent;
 
   constructor(
@@ -34,5 +30,23 @@ export class AppComponent {
     public viewContainerRef: ViewContainerRef){}
 
   ngAfterViewInit() {
+  }
+
+  public onDataChange(data: SzHowEntityResult) {
+    console.log('onDataChange: ',data);
+    this.howResult = data;
+  }
+
+  public get resolutionStepsByVirtualId(): {[key: string]: SzResolutionStep} {
+    if(this.howResult) {
+      return this.howResult.resolutionSteps;
+    }
+    return undefined;
+  }
+  public get finalCardsData(): SzVirtualEntity[] {
+    if(this.howResult) {
+      return this.howResult.finalStates;
+    }
+    return undefined;
   }
 }

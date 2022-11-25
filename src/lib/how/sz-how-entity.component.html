@@ -2,6 +2,7 @@
     [stepsByVirtualId]="resolutionStepsByVirtualId"
     [finalVirtualEntities]="finalCardsData"
     [finalEntityId]="entityId"
+    *ngIf="showToolBar"
 ></sz-how-toolbar>
 <div class="steps">
     <sz-how-virtual-card *ngFor="let fCardData of finalCardsData; let fCardIndex=index"
