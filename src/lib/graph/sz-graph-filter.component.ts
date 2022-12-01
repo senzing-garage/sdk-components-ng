@@ -3,7 +3,7 @@ import { SzPrefsService, SzSdkPrefsModel } from '../services/sz-prefs.service';
 import { SzDataSourcesService } from '../services/sz-datasources.service';
 import { takeUntil } from 'rxjs/operators';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, UntypedFormArray, UntypedFormControl, Validators } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SzDataSourceComposite } from '../models/data-sources';
 import { SzMatchKeyComposite, SzMatchKeyTokenComposite, SzEntityNetworkMatchKeyTokens, SzMatchKeyTokenFilterScope } from '../models/graph';
@@ -315,11 +315,11 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
 
   /** get data from reactive form control array */
   public get filterByDataSourcesData() {
-    return <FormArray>this.filterByDataSourcesForm.get('datasources');
+    return <UntypedFormArray>this.filterByDataSourcesForm.get('datasources');
   }
   /** get data from reactive form control array */
   public get filterByMatchKeysData() {
-    return <FormArray>this.filterByMatchKeysForm.get('matchkeys');
+    return <UntypedFormArray>this.filterByMatchKeysForm.get('matchkeys');
   }
   /** get data from reactive form control array */
   /*
@@ -339,20 +339,20 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
 
   // ------------------------------ forms, form groups, and handlers ---------------------
   /** the form group for the filters by datasource list */
-  filterByDataSourcesForm: FormGroup;
-  filterByMatchKeysForm: FormGroup;
+  filterByDataSourcesForm: UntypedFormGroup;
+  filterByMatchKeysForm: UntypedFormGroup;
   //filterByMatchKeyTokensForm: FormGroup;
   /** the form group for colors by datasource list */
-  colorsByDataSourcesForm: FormGroup;
+  colorsByDataSourcesForm: UntypedFormGroup;
   /** the form group for maxDegreesOfSeparation, maxEntities, buildOut parameter sliders */
-  slidersForm: FormGroup;
+  slidersForm: UntypedFormGroup;
   /** the form group for colors by other characteristics */
-  colorsMiscForm: FormGroup;
+  colorsMiscForm: UntypedFormGroup;
 
   constructor(
     public prefs: SzPrefsService,
     public dataSourcesService: SzDataSourcesService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private cd: ChangeDetectorRef
   ) {
     // ----- initialize form control groups ------
@@ -365,11 +365,11 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
 
     // filter by datasources
     this.filterByDataSourcesForm = this.formBuilder.group({
-      datasources: new FormArray([])
+      datasources: new UntypedFormArray([])
     });
     // filter by matchkeys
     this.filterByMatchKeysForm = this.formBuilder.group({
-      matchkeys: new FormArray([])
+      matchkeys: new UntypedFormArray([])
     });
     // filter by match keys tags
     /*
@@ -378,7 +378,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     });*/
     // colors by datasources
     this.colorsByDataSourcesForm = this.formBuilder.group({
-      datasources: new FormArray([])
+      datasources: new UntypedFormArray([])
     });
     // other colors
     this.queriedEntitiesColor =  this.prefs.graph.queriedEntitiesColor;
@@ -749,9 +749,9 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
       // init form controls for filter by datasource      
       this.dataSources.forEach((o, i) => {
         const dsFilterVal = !(this.dataSourcesFiltered.indexOf(o.name) >= 0);
-        const control1 = new FormControl(dsFilterVal); // if first item set to true, else false
+        const control1 = new UntypedFormControl(dsFilterVal); // if first item set to true, else false
         // add control for filtered by list
-        (this.filterByDataSourcesForm.controls['datasources'] as FormArray).push(control1);
+        (this.filterByDataSourcesForm.controls['datasources'] as UntypedFormArray).push(control1);
       });
 
     });
@@ -773,9 +773,9 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
       // init form controls for filter by match keys
       this.matchKeys.forEach((o, i) => {
         const mkFilterVal = (this.matchKeysIncluded.indexOf(o.name) >= 0);
-        const control1 = new FormControl(mkFilterVal); // if first item set to true, else false
+        const control1 = new UntypedFormControl(mkFilterVal); // if first item set to true, else false
         // add control for filtered by list
-        (this.filterByMatchKeysForm.controls['matchkeys'] as FormArray).push(control1);
+        (this.filterByMatchKeysForm.controls['matchkeys'] as UntypedFormArray).push(control1);
       });
     }
   }

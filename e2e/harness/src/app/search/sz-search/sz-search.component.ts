@@ -1,7 +1,7 @@
 
 
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { tap, filter } from 'rxjs/operators';
 
@@ -97,7 +97,7 @@ export class SzSearchComponentTest implements OnInit {
   /**
    * @ignore
    */
-  entitySearchForm: FormGroup;
+  entitySearchForm: UntypedFormGroup;
   /**
    * @ignore
    */
@@ -178,7 +178,7 @@ export class SzSearchComponentTest implements OnInit {
   }
   /* end tag input setters */
 
-  constructor(private fb: FormBuilder, private entityService: EntityDataService, private searchService: SzSearchService) {}
+  constructor(private fb: UntypedFormBuilder, private entityService: EntityDataService, private searchService: SzSearchService) {}
 
   /**
    * do any additional component set up

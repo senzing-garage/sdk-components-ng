@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectorRef, Inject, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Subject  } from 'rxjs';
 import { map, first, filter, takeUntil } from 'rxjs/operators';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
@@ -308,7 +308,7 @@ export class SzSearchComponent implements OnInit, OnDestroy {
   /**
    * @ignore
    */
-  entitySearchForm: FormGroup;
+  entitySearchForm: UntypedFormGroup;
   /**
    * @ignore
    */
@@ -868,7 +868,7 @@ export class SzSearchComponent implements OnInit, OnDestroy {
   /* end tag input setters */
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private configService: ConfigService,
     private cd: ChangeDetectorRef,
     private apiConfigService: SzConfigurationService,

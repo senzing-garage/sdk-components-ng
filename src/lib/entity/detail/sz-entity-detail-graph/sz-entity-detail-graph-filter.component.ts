@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
 import { SzDataSourcesService } from '../../../services/sz-datasources.service';
 import { SzGraphFilterComponent } from '../../../graph/sz-graph-filter.component';
@@ -34,7 +34,7 @@ export class SzEntityDetailGraphFilterComponent extends SzGraphFilterComponent {
   constructor(
     _p_prefs: SzPrefsService,
     _p_dataSourcesService: SzDataSourcesService,
-    _p_formBuilder: FormBuilder,
+    _p_formBuilder: UntypedFormBuilder,
     _p_cd: ChangeDetectorRef
   ) {
     super(

@@ -1391,7 +1391,6 @@
       }
     }
   },
-  "defaultProject": "@senzing/sdk-components-ng/examples/search-with-results-and-details",
   "cli": {
     "analytics": "47f40adf-8d24-4483-b855-ab6e0a3310d9"
   }
