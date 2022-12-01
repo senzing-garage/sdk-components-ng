@@ -327,12 +327,30 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         this._entityIds = value.split(',');
       } else {
         // single string
-        _changed = this._entityIds != [value];
+        if(this._entityIds) {
+          // check to see if only one value
+          if(this._entityIds.length === 1) {
+            _changed  = this._entityIds[0] !== value;
+          } else {
+            _changed = true;
+          }
+        } else {
+          _changed = true;  
+        }
         this._entityIds = [value];
       }
     } else if(value && typeof value === 'number') {
       // single number
-      _changed = this._entityIds != [ value.toString() ];
+      if(this._entityIds) {
+        // check to see if only one value
+        if(this._entityIds.length === 1) {
+          _changed  = this._entityIds[0] !== (value as any as number).toString();
+        } else {
+          _changed = true;
+        }
+      } else {
+        _changed = true;  
+      }
       this._entityIds = [ value.toString() ];
     } else if(value && isValueTypeOfArray(value)) {
       // passed string[] or number[].
