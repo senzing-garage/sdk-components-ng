@@ -13,10 +13,7 @@
     "@angular/material",
     "ngx-json-viewer",
     "d3",
-    "jspdf",
-    "html2canvas",
     "@types/d3",
-    "@types/jspdf",
     "schematics-utilities"
   ]
 }

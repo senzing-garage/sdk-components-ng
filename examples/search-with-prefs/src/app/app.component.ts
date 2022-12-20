@@ -3,7 +3,6 @@ import {
   SzEntitySearchParams,
   SzAttributeSearchResult,
   SzSearchComponent,
-  SzPdfUtilService,
   SzSearchService,
   SzEntityDetailComponent,
   SzEntityData,
@@ -84,7 +83,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   // --------------------------------------------------  lifecycle related
   constructor(
-    public pdfUtil: SzPdfUtilService,
     public searchService: SzSearchService,
     public overlay: Overlay,
     public prefs: SzPrefsService,

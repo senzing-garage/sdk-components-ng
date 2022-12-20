@@ -2,7 +2,7 @@ import { NgModule, Injector, ModuleWithProviders, SkipSelf, Optional, Provider, 
 /* import { BrowserModule } from '@angular/platform-browser'; */
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { CommonModule, TitleCasePipe, Location, PathLocationStrategy, LocationStrategy } from '@angular/common';
+import { CommonModule, Location, LocationStrategy, PathLocationStrategy, TitleCasePipe } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { LayoutModule } from '@angular/cdk/layout';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
@@ -20,7 +20,6 @@ import { SzSearchService } from './services/sz-search.service';
 import { SzConfigurationService } from './services/sz-configuration.service';
 import { SzFoliosService } from './services/sz-folios.service';
 import { SzUIEventService } from './services/sz-ui.service';
-import { SzPdfUtilService } from './services/sz-pdf-util.service';
 import { SzPrefsService } from './services/sz-prefs.service';
 import { SzDataSourcesService } from './services/sz-datasources.service';
 import { SzAdminService } from './services/sz-admin.service';
@@ -75,7 +74,6 @@ import { SzWhyEntityComponent } from './why/sz-why-entity.component';
 import { SzWhyEntitiesComparisonComponent } from './why/sz-why-entities.component';
 import { SzWhyEntityDialog } from './why/sz-why-entity.component';
 import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
-//import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
 
 /**
  * Sets up a default set of service parameters for use
@@ -182,7 +180,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzWhyEntitiesComparisonComponent,
         SzWhyEntityComponent,
         SzWhyEntitiesDialog,
-        SzWhyEntityDialog
+        SzWhyEntityDialog,
+        SzPreferencesComponent
     ],
     providers: [
         SzMessageBundleService,
@@ -196,9 +195,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzSearchService,
         HttpClient,
         TitleCasePipe,
-        SzUIEventService,
-        SzPdfUtilService,
-        Location
+        SzUIEventService
     ]
 })
 export class SenzingSdkModule {
@@ -225,5 +222,4 @@ export class SenzingSdkModule {
         ]
     };
   }
-
 }

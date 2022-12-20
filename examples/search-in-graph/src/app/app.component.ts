@@ -3,7 +3,6 @@ import {
   SzEntitySearchParams,
   SzAttributeSearchResult,
   SzSearchComponent,
-  SzPdfUtilService,
   SzSearchService,
   SzEntityDetailComponent,
   SzEntityData,
@@ -29,9 +28,9 @@ export class AppComponent implements AfterViewInit {
   public unsubscribe$ = new Subject<void>();
   public currentSearchResults: SzAttributeSearchResult[];
   public currentlySelectedEntityId: number;
-  //public searchResultEntityIds: SzEntityIdentifier[] = [6];
+  public searchResultEntityIds: SzEntityIdentifier[] = [3];
   //public searchResultEntityIds: SzEntityIdentifier[] = [300002];
-  public searchResultEntityIds: SzEntityIdentifier[] = [500038];
+  //public searchResultEntityIds: SzEntityIdentifier[] = [500038];
   public currentSearchParameters: SzEntitySearchParams;
   public showSearchResults = true;
   public showSpinner = false;
@@ -82,7 +81,6 @@ export class AppComponent implements AfterViewInit {
   }
 
   constructor(
-    public pdfUtil: SzPdfUtilService,
     public searchService: SzSearchService,
     public overlay: Overlay,
     public prefs: SzPrefsService,
@@ -185,7 +183,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   public onPDFDownloadClick(): void {
-    this.pdfUtil.createPdfFromAttributeSearch( this.currentSearchResults, this.currentSearchParameters );
+    //this.pdfUtil.createPdfFromAttributeSearch( this.currentSearchResults, this.currentSearchParameters );
   }
 
   public onEntityPDFDownloadClick(): void {

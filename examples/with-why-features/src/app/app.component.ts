@@ -3,7 +3,6 @@ import {
   SzEntitySearchParams,
   SzAttributeSearchResult,
   SzSearchComponent,
-  SzPdfUtilService,
   SzSearchService,
   SzEntityDetailComponent,
   SzEntityData,
@@ -58,7 +57,6 @@ export class AppComponent {
   }
 
   constructor(
-    public pdfUtil: SzPdfUtilService,
     public searchService: SzSearchService,
     public overlay: Overlay,
     public prefs: SzPrefsService,
@@ -94,13 +92,8 @@ export class AppComponent {
     this.currentlySelectedEntityId = undefined;
   }
 
-  public onPDFDownloadClick(event?): void {
-    this.pdfUtil.createPdfFromAttributeSearch( this.currentSearchResults, this.currentSearchParameters );
-  }
-
   public onEntityPDFDownloadClick(event?): void {
     const filename = this.entityDetailComponent.entity.resolvedEntity.entityName.toLowerCase().replace(' ', '-entity') + '.pdf';
-    this.pdfUtil.createPdfFromHtmlElement(this.entityDetailComponent.nativeElement, filename);
   }
 
   public onGraphEntityClick(event: any): void {
