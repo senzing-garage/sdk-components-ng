@@ -19,7 +19,7 @@
     "@angular/cdk": "^15.0.3",
     "@angular/common": "^15.0.4",
     "@angular/core": "^15.0.4",
-    "@angular/material": "^14.2.0",
+    "@angular/material": "^15.0.3",
     "@senzing/rest-api-client-ng": "^6.0.0"
   }
 }

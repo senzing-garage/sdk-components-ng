@@ -10,7 +10,7 @@ import {
 import { SzPrefsService, SzSearchResultsPrefs } from '../../services/sz-prefs.service';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { SzWhyEntitiesDialog } from '../../why/sz-why-entities.component';
 import { SzAlertMessageDialog } from '../../shared/alert-dialog/sz-alert-dialog.component';
 import { parseBool } from '../../common/utils';
