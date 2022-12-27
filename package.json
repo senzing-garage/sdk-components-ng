@@ -62,7 +62,7 @@
     "@angular/platform-browser": "^15.0.4",
     "@angular/platform-browser-dynamic": "^15.0.4",
     "@angular/router": "^15.0.4",
-    "@senzing/rest-api-client-ng": "file:../rest-api-client-ng/dist/@senzing/rest-api-client-ng/senzing-rest-api-client-ng-6.0.0-ng15.tgz",
+    "@senzing/rest-api-client-ng": "^6.0.0-alpha.1",
     "d3": "^5.9.1",
     "ngx-json-viewer": "^3.2.1",
     "rxjs": "~7.5.0",
