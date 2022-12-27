@@ -6,8 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [5.1.1] - 2022-10-31
+## [6.0.0] - 2022-12-28
+### Modified
+- Angular Framework Updated to version 15. As of 6.0.0 release this package now requires `@angular@~15.0.0` to compile and run. Updating to angular 15 resolves major dependency compatibility issues so we can apply the latest security patches to the library. For information updating your project from a previous angular version to `~15.0.0` see the [Angular Update Guide ](https://update.angular.io/)
 
+## [5.1.1] - 2022-10-31
 
 ### Added
 - Added "hide indirect links" UI control to graph filtering component.
