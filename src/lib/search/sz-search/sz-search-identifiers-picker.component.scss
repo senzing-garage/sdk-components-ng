@@ -13,7 +13,7 @@
         display: none;
     }
 
-    .mat-dialog-actions {
+    .mat-mdc-dialog-actions {
         /*position: absolute;
         bottom: 0px;
         display: flex;*/
@@ -54,7 +54,7 @@
         margin-bottom: 20px;
     }
 
-    .mat-dialog-actions {
+    .mat-mdc-dialog-actions {
         display: flex;
         width: 100%;
         position: absolute;
@@ -67,11 +67,11 @@
     }
 }
 
-:host ::ng-deep .mat-dialog-content {
+:host ::ng-deep .mat-mdc-dialog-content {
     height: calc(100% - 96px);
 }
 
-:host.isMatSheet ::ng-deep .mat-dialog-content {
+:host.isMatSheet ::ng-deep .mat-mdc-dialog-content {
     height: calc(100vh - 32px - 0.67em - 0.67em - 16px);
     max-height: calc(100vh - 32px - 0.67em - 0.67em - 16px);
 

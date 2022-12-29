@@ -416,18 +416,18 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
         // remove from position
         _matchKeyTokensIncludedMemCopy.splice(_existingKeyPos,1);
         this.prefs.graph.matchKeyTokensIncluded = _matchKeyTokensIncludedMemCopy;
-        //console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: removed ${mkName} from cloud value`,_matchKeyTokensIncludedMemCopy);
+        console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: removed ${mkName} from cloud value`,_matchKeyTokensIncludedMemCopy);
       } else {
         // add to included token list
         _matchKeyTokensIncludedMemCopy.push( mkName );
         this.prefs.graph.matchKeyTokensIncluded = _matchKeyTokensIncludedMemCopy;
-        //console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: added ${mkName} to cloud value`,_matchKeyTokensIncludedMemCopy);
+        console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: added ${mkName} to cloud value`,_matchKeyTokensIncludedMemCopy);
       }
     } else {
       // add to included token list
       _matchKeyTokensIncludedMemCopy.push( mkName );
       this.prefs.graph.matchKeyTokensIncluded = _matchKeyTokensIncludedMemCopy;
-      //console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: added ${mkName} to cloud value`,_matchKeyTokensIncludedMemCopy);
+      console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: added ${mkName} to cloud value`,_matchKeyTokensIncludedMemCopy);
     }
   }
   onCoreMkTagFilterToggle( mkName: string ) { 
@@ -443,6 +443,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
       // now that we have a clean array see if the current value has 
       // an existing position
       let _existingKeyPos = _matchKeyTokensIncludedMemCopy.indexOf(mkName);
+      console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onCoreMkTagFilterToggle: checking if "${mkName}" is in existing items: ${_matchKeyTokensIncludedMemCopy}`, _existingKeyPos);
       if(_existingKeyPos > -1 && _matchKeyTokensIncludedMemCopy[_existingKeyPos]) {
         // remove from position
         _matchKeyTokensIncludedMemCopy.splice(_existingKeyPos,1);
@@ -455,6 +456,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
         console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onCoreMkTagFilterToggle: addeded ${mkName}(${_existingKeyPos}) to cloud value`,_matchKeyTokensIncludedMemCopy);
       }
     } else {
+      console.log(`matchKeyCoreTokensIncluded: ${this.matchKeyCoreTokensIncluded}`);
       // add to included token list
       _matchKeyTokensIncludedMemCopy.push( mkName );
       this.prefs.graph.matchKeyCoreTokensIncluded = _matchKeyTokensIncludedMemCopy;
