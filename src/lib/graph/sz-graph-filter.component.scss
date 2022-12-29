@@ -178,22 +178,45 @@
   .match-key-token-mode-select {
     display: block;
     margin-bottom: 20px;
+    
+    /*
+    .mdc-switch__handle-track {
+      border: 1px solid green;
+      &::after {
+        color: rgb(28, 122, 151) !important;
+        background-color: rgb(28, 122, 151) !important;
+      }
+    }
+    .mdc-switch__track
+    .mdc-switch__track::after,
+    .mdc-switch__handle-track {
+      color: rgb(28, 122, 151);
+    }
+    */
   }
 
-  mat-chip-list.match-keys {
+  mat-chip-listbox.match-keys {
+    --mdc-chip-elevated-container-color: var(--sz-graph-filter-match-key-tags-selected-color);
+    --mdc-chip-elevated-disabled-container-color: #eee;
+    --mdc-chip-label-text-color: #fff;
 
-    mat-chip {
+    mat-chip-option {
       font-size: var(--sz-graph-filter-match-key-tags-font-size);
       line-height: var(--sz-graph-filter-match-key-tags-line-height);
       padding: var(--sz-graph-filter-match-key-tags-padding);
       margin-right: var(--sz-graph-filter-match-key-tags-margin-right);
       display: inline-block;
       width: var(--sz-graph-filter-match-key-tags-width);
+      height: var(--sz-graph-filter-match-key-tags-height);
       min-height: var(--sz-graph-filter-match-key-tags-min-height);
       color: var(--sz-graph-filter-match-key-tags-color);
       background-color: var(--sz-graph-filter-match-key-tags-background-color);
       cursor: var(--sz-graph-filter-match-key-tags-cursor);
       user-select: none;
+
+      button.mat-mdc-chip-action {
+        padding-right: 9px;
+      }
 
       &.selected {
         background-color: var(--sz-graph-filter-match-key-tags-selected-background-color); //rgb(208, 224, 228);
@@ -203,17 +226,7 @@
         &.core-key {
           background-color: var(--sz-graph-filter-match-key-core-tags-selected-background-color);
         }
-      }
-
-      .mat-badge-content {
-        background-color: var(--sz-graph-filter-match-key-tags-count-badge-background-color);
-        color: var(--sz-graph-filter-match-key-tags-count-badge-color);
-        top: var(--sz-graph-filter-match-key-tags-count-badge-top);
-        right: var(--sz-graph-filter-match-key-tags-count-badge-right);
-        width: unset;
-        min-width: var(--sz-graph-filter-match-key-tags-min-width);
-        padding: 0 3px;
-      }
+      }      
     }
   }
 }

@@ -17,8 +17,15 @@
 }
 
 body {
-  
+  /*
+  --sz-graph-filter-match-key-mode-select-track-color: #414141;
+  --sz-graph-filter-match-key-mode-select-handle-color: rgb(219, 219, 219);
+  --sz-graph-filter-match-key-mode-select-active-track-color: #{$sz-blue};
+  --sz-graph-filter-match-key-mode-select-active-handle-color: #{$sz-blue};
+  */
+
   /* match key tag cloud for standalone graph and filter(s) */
+  /* TODO(mdc-migration): The following rule targets internal classes of chips that may no longer apply for the MDC version. */
   mat-chip-list.match-keys .mat-chip-list-wrapper,
   mat-chip-list.match-keys .chip-group {
     display: var(--sz-graph-filter-match-key-tags-display);
@@ -49,12 +56,138 @@ body {
   }
 
 }
+
+.mat-mdc-slide-toggle.match-key-token-mode-select {
+  display: block;
+  margin-bottom: 20px;
+
+  .mdc-switch {
+    .mdc-switch__track {
+      &::after, &::before {
+        background: var(--sz-graph-filter-match-key-mode-select-track-color) !important;
+      }
+    }
+    .mdc-switch__handle {
+      &::before, &::after {
+        background: var(--sz-graph-filter-match-key-mode-select-handle-color) !important;
+      }
+    }
+
+    &:hover {
+      .mdc-switch__handle {
+        &::before, &::after {
+          background: var(--sz-graph-filter-match-key-mode-select-handle-color) !important;
+        }
+      }
+    }
+
+    &.mdc-switch--selected {
+      .mdc-switch__track {
+        &::after, &::before {
+          background: var(--sz-graph-filter-match-key-mode-select-active-track-color) !important;
+        }
+      }
+      .mdc-switch__handle {
+        &::before, &::after {
+          background: var(--sz-graph-filter-match-key-mode-select-active-handle-color) !important;
+        }
+      }
+  
+      &:hover {
+        .mdc-switch__handle {
+          &::before, &::after {
+            background: var(--sz-graph-filter-match-key-mode-select-active-handle-color) !important;
+          }
+        }
+      }
+    }
+
+  }
+  .mdc-switch {
+    .mdc-switch__handle-track .mdc-switch__ripple {
+      display: none;
+    }
+    /*
+      .mdc-switch__track {
+        &::after, &::before {
+          background: var(--sz-graph-filters-match-key-mode-select-track-color);
+        }
+      }
+      .mdc-switch__handle {
+        &::before, &::after {
+          background: var(--sz-graph-filter-match-key-mode-select-handle-color);
+        }
+      }
+    
+    &:hover {
+      .mdc-switch__track {
+        &::after, &::before {
+          background: var(--sz-graph-filters-match-key-mode-select-track-color);
+        }
+      }
+      .mdc-switch__handle {
+        &::before, &::after {
+          background: var(--sz-graph-filter-match-key-mode-select-handle-color);
+        }
+      }
+    }
+    &.mdc-switch--selected {
+      .mdc-switch__track {
+        &::after, &::before {
+          background: var(--sz-graph-filter-match-key-mode-select-active-track-color);
+        }
+      }
+      .mdc-switch__handle {
+        &::before, &::after {
+          background: var(--sz-graph-filter-match-key-mode-select-active-handle-color);
+        }
+      }
+      &:hover {
+        .mdc-switch__track {
+          &::after, &::before {
+            background: var(--sz-graph-filter-match-key-mode-select-active-track-color);
+          }
+        }
+        .mdc-switch__handle {
+          &::before, &::after {
+            background: var(--sz-graph-filter-match-key-mode-select-active-handle-color);
+          }
+        }
+      }
+    }
+    */
+  }
+}
+mat-chip-listbox.match-keys {
+  mat-chip-option {
+    .mat-mdc-chip-graphic {
+      display: none !important;
+    }
+    .mat-badge-content {
+      background-color: var(--sz-graph-filter-match-key-tags-count-badge-background-color);
+      color: var(--sz-graph-filter-match-key-tags-count-badge-color);
+      top: var(--sz-graph-filter-match-key-tags-count-badge-top) !important;
+      right: var(--sz-graph-filter-match-key-tags-count-badge-right) !important;
+      width: unset;
+      min-width: var(--sz-graph-filter-match-key-tags-min-width);
+      padding: 0 3px;
+    }
+  }
+}
+.mat-mdc-checkbox.unpadded .mdc-checkbox {
+  padding: 0px;
+  .mdc-checkbox__background {
+    top: auto;
+    left: auto;
+  }
+}
+
 .why-entity-dialog-panel, .why-entities-dialog-panel {
   max-width: 100vw !important;
   max-height: 100vh !important;
   width: unset !important;
   height: unset !important;
-  .mat-dialog-container {
+  .mat-mdc-dialog-container {
     padding: 0px;
     //height: 500px;  /* this is actually min-height because of the way material-dialogs work */
     //width: 900px;   /* this is actually min-width because of the way material-dialogs work */
@@ -65,12 +198,18 @@ body {
 .alert-dialog-panel, .alert-dialog-panel {
   max-width: 100vw !important;
   max-height: 100vh;
-  .mat-dialog-container {
+  .mat-mdc-dialog-container {
     padding: 0px;
     overflow: hidden;
     max-height: 100vh;
   }
 }
+.mat-mdc-dialog-container {
+  .mdc-dialog__title::before {
+    display: none;
+  }
+}
+
 
 .senzing-alarm:before {
   content: "\e900";
