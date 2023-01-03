@@ -10,8 +10,8 @@
   },
   "homepage" :"https://senzing.github.io/sdk-components-ng/",
   "dependencies": {
-    "@types/d3": "^5.9.1",
-    "d3": "^5.9.1",
+    "@types/d3": "^6.7.5",
+    "d3": "^6.7.0",
     "ngx-json-viewer": "^3.2.1",
     "tslib": "^2.3.0"
   },

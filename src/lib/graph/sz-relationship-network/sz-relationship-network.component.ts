@@ -1822,22 +1822,22 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       _scope  = _scope ? _scope : this;
       // Make the tooltip visible when mousing over nodes. 
       if(_nodes && _nodes.on) {
-        _nodes.on('mouseover.tooltip', function (d,j) {
+        _nodes.on('mouseover.tooltip', function (event, d,j) {
           _tooltip.transition()
             .duration(300)
             .style("opacity", .8);
           _tooltip.html(SzRelationshipNetworkComponent.nodeTooltipText(d))
-            .style("left", (d3.event.pageX) + "px")
-            .style("top", (d3.event.pageY + 10) + "px");
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY + 10) + "px");
         })
         .on("mouseout.tooltip", function () {
           _tooltip.transition()
             .duration(100)
             .style("opacity", 0);
         })
-        .on("mousemove", function () {
-          _tooltip.style("left", (d3.event.pageX) + "px")
-            .style("top", (d3.event.pageY + 10) + "px");
+        .on("mousemove", function (event) {
+          _tooltip.style("left", (event.pageX) + "px")
+            .style("top", (event.pageY + 10) + "px");
         })
         .on('click', this.onNodeClick.bind(_scope))
         .on('dblclick', this.onNodeDblClick.bind(_scope))
@@ -1879,22 +1879,22 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     let attachEventListenersToLinks = (_links, _labels, _tooltip, _scope?: any) => {
       _scope  = _scope ? _scope : this;
       if(_links && _links.on) {
-        _links.on('mouseover.tooltip', function (d) {
+        _links.on('mouseover.tooltip', function (event, d) {
           _tooltip.transition()
             .duration(300)
             .style("opacity", .8);
           _tooltip.html(SzRelationshipNetworkComponent.linkTooltipText(d))
-            .style("left", (d3.event.pageX) + "px")
-            .style("top", (d3.event.pageY + 10) + "px");
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY + 10) + "px");
         })
         .on("mouseout.tooltip", function () {
           _tooltip.transition()
             .duration(100)
             .style("opacity", 0);
         })
-        .on("mousemove", function () {
-          _tooltip.style("left", (d3.event.pageX) + "px")
-            .style("top", (d3.event.pageY + 10) + "px");
+        .on("mousemove", function (event) {
+          _tooltip.style("left", (event.pageX) + "px")
+            .style("top", (event.pageY + 10) + "px");
         })
         .on('contextmenu', this.onLinkContextClick.bind(this))
         .on('click', this.onLinkClick.bind(this))
@@ -1902,13 +1902,13 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       }
       if(_labels && _labels.on) {
         _labels
-        .on('mouseover.tooltip', function (d) {
+        .on('mouseover.tooltip', function (event, d) {
           _tooltip.transition()
             .duration(300)
             .style("opacity", .8);
           _tooltip.html(SzRelationshipNetworkComponent.linkTooltipText(d))
-            .style("left", (d3.event.pageX) + "px")
-            .style("top", (d3.event.pageY + 10) + "px");
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY + 10) + "px");
         })
         .on("mouseout.tooltip", function () {
           _tooltip.transition()
@@ -2437,10 +2437,10 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       return Math.floor(Math.random() * (max - min + 1) + min)
     }
 
-    let onExpandCollapseClick     = (d) => {
+    let onExpandCollapseClick     = (event, d) => {
       // this handler always superceeds any click events etc
       // so we stop propagation
-      d3.event.stopPropagation();
+      event.stopPropagation();
 
       if(!d.allRelatedEntitiesOnDeck) {
         // get all related entities
@@ -2932,24 +2932,24 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
    * proxies to synthetic event "relationshipClick"
    * @param event
    */
-  onLinkClick(event: any) {
-    if(event && d3.event && d3.event.pageX && d3.event.pageY) {
-      event.eventPageX = (d3.event.pageX);
-      event.eventPageY = (d3.event.pageY);
+  onLinkClick(ptrEvent: PointerEvent, evtData: any) {
+    if(evtData && ptrEvent.pageX && ptrEvent.pageY) {
+      evtData.eventPageX = (ptrEvent.pageX);
+      evtData.eventPageY = (ptrEvent.pageY);
     }
-    this.relationshipClick.emit(event);
+    this.relationshipClick.emit(evtData);
   }
   /**
    * handler for when a relationship link label is double clicked.
    * proxies to synthetic event "relationshipDblClick"
    * @param event
    */
-  onLinkDblClick(event: any) {
-    if(event && d3.event && d3.event.pageX && d3.event.pageY) {
-      event.eventPageX = (d3.event.pageX);
-      event.eventPageY = (d3.event.pageY);
+  onLinkDblClick(ptrEvent: PointerEvent, evtData: any) {
+    if(evtData && ptrEvent.pageX && ptrEvent.pageY) {
+      evtData.eventPageX = (ptrEvent.pageX);
+      evtData.eventPageY = (ptrEvent.pageY);
     }
-    this.relationshipDblClick.emit(event);
+    this.relationshipDblClick.emit(evtData);
     return false;
   }
   /**
@@ -2957,12 +2957,12 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
    * proxies to synthetic event "relationshipContextMenuClick"
    * @param event
    */
-  onLinkContextClick(event: any, x?: number, y?: number) {
-    if(event && d3.event && d3.event.pageX && d3.event.pageY) {
-      event.eventPageX = (d3.event.pageX);
-      event.eventPageY = (d3.event.pageY);
+  onLinkContextClick(ptrEvent: PointerEvent, evtData: any, x?: number, y?: number) {
+    if(evtData && ptrEvent.pageX && ptrEvent.pageY) {
+      evtData.eventPageX = (ptrEvent.pageX);
+      evtData.eventPageY = (ptrEvent.pageY);
     }
-    this.relationshipContextMenuClick.emit(event);
+    this.relationshipContextMenuClick.emit(evtData);
     return false;
   }
 
@@ -2971,24 +2971,24 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
    * proxies to synthetic event "entityClick"
    * @param event
    */
-  onNodeClick(event: any) {
-    if(event && d3.event && d3.event.pageX && d3.event.pageY) {
-      event.eventPageX = (d3.event.pageX);
-      event.eventPageY = (d3.event.pageY);
+  onNodeClick(ptrEvent: PointerEvent, evtData: any) {
+    if(evtData && ptrEvent.pageX && ptrEvent.pageY) {
+      evtData.eventPageX = (ptrEvent.pageX);
+      evtData.eventPageY = (ptrEvent.pageY);
     }
-    this.entityClick.emit(event);
+    this.entityClick.emit(evtData);
   }
   /**
    * handler for when a entity node is double clicked.
    * proxies to synthetic event "entityDblClick"
    * @param event
    */
-  onNodeDblClick(event: any) {
-    if(event && d3.event && d3.event.pageX && d3.event.pageY) {
-      event.eventPageX = (d3.event.pageX);
-      event.eventPageY = (d3.event.pageY);
+  onNodeDblClick(ptrEvent: PointerEvent, evtData: any) {
+    if(evtData && ptrEvent.pageX && ptrEvent.pageY) {
+      evtData.eventPageX = (ptrEvent.pageX);
+      evtData.eventPageY = (ptrEvent.pageY);
     }
-    this.entityDblClick.emit(event);
+    this.entityDblClick.emit(evtData);
     return false;
   }
   /**
@@ -2996,10 +2996,10 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
    * proxies to synthetic event "contextMenuClick"
    * @param event
    */
-  onNodeContextClick(event: any, x?: number, y?: number) {
-    if(event && d3.event && d3.event.pageX && d3.event.pageY) {
-      event.eventPageX = (d3.event.pageX);
-      event.eventPageY = (d3.event.pageY);
+  onNodeContextClick(ptrEvent: PointerEvent, evtData: any, x?: number, y?: number) {
+    if(evtData && ptrEvent.pageX && ptrEvent.pageY) {
+      evtData.eventPageX = (ptrEvent.pageX);
+      evtData.eventPageY = (ptrEvent.pageY);
     }
     this.contextMenuClick.emit(event);
     return false;
@@ -3009,7 +3009,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
    * default behavior is to expand the text label if it has been
    * truncated, and truncate it if it is over 15 chars long.
    */
-  onLabelClick(_d) {
+  onLabelClick(event, _d) {
     if(_d) {
       let textNode = this.node.selectAll('text.sz-graph-label')
       .filter((_t: any) => {
@@ -3036,8 +3036,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     }
   }
 
-  private _onZoomed() {
-    let e = d3.event.transform;
+  private _onZoomed(event) {
+    let e = event.transform;
     let scale = e.k;
 
     if(e && this.svgZoom && this.svgZoom.attr) {
@@ -3115,9 +3115,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     this.linkSvgByEntityId(linkNode.targetEntityId, linkNode.sourceEntityId)
   }
 
-  private onNodeDragged(d) {
-    d.x = d3.event.x;
-    d.y = d3.event.y;
+  private onNodeDragged(event, d) {
+    d.x = event.x;
+    d.y = event.y;
     
     this.node.filter((_d) => {
       return _d.entityId === d.entityId;
@@ -3133,24 +3133,6 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       });
     
     lnk.attr('d', this.onLinkEntityPositionChange.bind(this));
-  }
-
-  /**
-   * Allows the simulation to 'cool' to the point that nodes stop moving.
-   * The simulation does not stop while alphaTarget (default 0, set at 0.3 by dragstarted) > alphaMin (default 0.001)
-   */
-  private onNodeDragEnded() {
-    if (!d3.event.active && this.forceSimulation) this.forceSimulation.alphaTarget(0);
-    if (this._fixDraggedNodes) {
-      // nodes once dragged stay where you put them
-      // elegant compromise
-      d3.event.subject.fx = d3.event.subject.x;
-      d3.event.subject.fy = d3.event.subject.y;
-    } else {
-      // nodes snap back in to place
-      d3.event.subject.fx = null;
-      d3.event.subject.fy = null;
-    }
   }
 
   //////////////////
