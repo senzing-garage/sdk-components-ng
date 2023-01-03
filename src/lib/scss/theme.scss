@@ -12,11 +12,7 @@
 //  If you don't need the default component typographies but still want the hierarchy styles,
 //  you can delete this line and instead use:
 //    `@include mat.legacy-typography-hierarchy(mat.define-typography-config());`
-/*TODO(mdc-migration): Remove all-legacy-component-typographies once all legacy components are migrated*/
-//@include mat.all-legacy-component-typographies();
 @include mat.all-component-typographies();
-/*TODO(mdc-migration): Remove legacy-core once all legacy components are migrated*/
-//@include mat.legacy-core();
 @include mat.core();
 
 // --------------------- ANGULAR MATERIAL THEME
@@ -62,9 +58,7 @@ $sz-mat-theme: mat.define-light-theme((
   )
 ));
 
-/*TODO(mdc-migration): Remove all-legacy-component-themes once all legacy components are migrated*/
-@include mat.all-legacy-component-themes($sz-mat-theme);
-
+//@include mat.all-legacy-component-themes($sz-mat-theme);
 @include mat.all-component-themes($sz-mat-theme);
 //@include mat.core-theme($sz-mat-theme);
 //@include mat.button-theme($sz-mat-theme);

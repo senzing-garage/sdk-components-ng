@@ -14,7 +14,7 @@ import {
   SzEntityIdentifier,
   SzRecordId
 } from '@senzing/rest-api-client-ng';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 import { SzEntityDetailGraphComponent } from './sz-entity-detail-graph/sz-entity-detail-graph.component';
 import { SzWhyEntityDialog } from '../../why/sz-why-entity.component';
