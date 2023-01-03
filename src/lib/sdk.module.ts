@@ -2,7 +2,7 @@ import { NgModule, Injector, ModuleWithProviders, SkipSelf, Optional, Provider, 
 /* import { BrowserModule } from '@angular/platform-browser'; */
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { CommonModule, TitleCasePipe, Location, PathLocationStrategy, LocationStrategy } from '@angular/common';
+import { CommonModule, Location, LocationStrategy, PathLocationStrategy, TitleCasePipe } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { LayoutModule } from '@angular/cdk/layout';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
@@ -20,7 +20,6 @@ import { SzSearchService } from './services/sz-search.service';
 import { SzConfigurationService } from './services/sz-configuration.service';
 import { SzFoliosService } from './services/sz-folios.service';
 import { SzUIEventService } from './services/sz-ui.service';
-import { SzPdfUtilService } from './services/sz-pdf-util.service';
 import { SzPrefsService } from './services/sz-prefs.service';
 import { SzDataSourcesService } from './services/sz-datasources.service';
 import { SzAdminService } from './services/sz-admin.service';
@@ -75,7 +74,6 @@ import { SzWhyEntityComponent } from './why/sz-why-entity.component';
 import { SzWhyEntitiesComparisonComponent } from './why/sz-why-entities.component';
 import { SzWhyEntityDialog } from './why/sz-why-entity.component';
 import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
-//import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
 
 /**
  * Sets up a default set of service parameters for use
@@ -102,125 +100,103 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
  * Add to your applications module imports array.
  */
 @NgModule({
-  declarations: [
-    SzAlertMessageDialog,
-    SzConfigurationAboutComponent,
-    SzConfigurationComponent,
-    SzEntityDetailComponent,
-    SzEntityDetailGraphControlComponent,
-    SzEntityDetailGraphComponent,
-    SzEntityDetailGraphFilterComponent,
-    SzEntityDetailHeaderComponent,
-    SzEntityDetailHeaderContentComponent,
-    SzEntityDetailSectionSummaryComponent,
-    SzEntityDetailSectionHeaderComponent,
-    SzEntityDetailSectionCollapsibleCardComponent,
-    SzEntityDetailsSectionComponent,
-    SzEntityMatchPillComponent,
-    SzEntityRecordCardComponent,
-    SzEntityRecordViewerComponent,
-    SzEntityRecordCardHeaderComponent,
-    SzEntityRecordCardContentComponent,
-    SzGraphControlComponent,
-    SzGraphComponent,
-    SzGraphFilterComponent,
-    SzMultiSelectButtonComponent,
-    SzPoweredByComponent,
-    SzPreferencesComponent,
-    SzPrefDictComponent,
-    SzRelationshipNetworkComponent,
-    SzRelationshipNetworkInputComponent,
-    SzRelationshipNetworkLookupComponent,
-    SzRelationshipPathComponent,
-    SzSearchComponent,
-    SzSearchByIdComponent,
-    SzSearchIdentifiersPickerDialogComponent,
-    SzSearchIdentifiersPickerSheetComponent,
-    SzSearchResultsComponent,
-    SzSearchResultCardComponent,
-    SzSearchResultCardContentComponent,
-    SzSearchResultCardHeaderComponent,
-    SzStandaloneGraphComponent,
-    SzWhyEntitiesComparisonComponent,
-    SzWhyEntityComponent,
-    SzWhyEntitiesDialog,
-    SzWhyEntityDialog
-  ],
-  imports: [
-    CommonModule,
-    DragDropModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    LayoutModule,
-    NgxJsonViewerModule,
-    ApiModule,
-    SzSdkMaterialModule
-  ],
-  exports: [
-    SzConfigurationComponent,
-    SzConfigurationAboutComponent,
-    SzEntityDetailGraphComponent,
-    SzEntityDetailComponent,
-    SzEntityDetailGraphControlComponent,
-    SzEntityDetailGraphFilterComponent,
-    SzEntityRecordViewerComponent,
-    SzGraphComponent,
-    SzGraphControlComponent,
-    SzGraphFilterComponent,
-    SzPoweredByComponent,
-    SzPreferencesComponent,
-    SzRelationshipNetworkComponent,
-    SzRelationshipNetworkInputComponent,
-    SzRelationshipNetworkLookupComponent,
-    SzRelationshipPathComponent,
-    SzSearchComponent,
-    SzSearchByIdComponent,
-    SzSearchResultsComponent,
-    SzSearchResultCardComponent,
-    SzStandaloneGraphComponent,
-    SzWhyEntitiesComparisonComponent,
-    SzWhyEntityComponent,
-    SzWhyEntitiesDialog,
-    SzWhyEntityDialog
-  ],
-  /** for components being exported as web components */
-  entryComponents: [
-    SzAlertMessageDialog,
-    SzConfigurationComponent,
-    SzConfigurationAboutComponent,
-    SzEntityDetailComponent,
-    SzEntityDetailGraphComponent,
-    SzEntityRecordViewerComponent,
-    SzPoweredByComponent,
-    SzPreferencesComponent,
-    SzSearchComponent,
-    SzSearchByIdComponent,
-    SzSearchIdentifiersPickerDialogComponent,
-    SzSearchIdentifiersPickerSheetComponent,
-    SzSearchResultsComponent,
-    SzStandaloneGraphComponent,
-    SzWhyEntitiesComparisonComponent,
-    SzWhyEntityComponent,
-    SzWhyEntitiesDialog,
-    SzWhyEntityDialog
-  ],
-  providers: [
-    SzMessageBundleService,
-    SzAdminService,
-    SzBulkDataService,
-    SzConfigurationService,
-    SzCSSClassService,
-    SzDataSourcesService,
-    SzFoliosService,
-    SzPrefsService,
-    SzSearchService,
-    HttpClient,
-    TitleCasePipe,
-    SzUIEventService,
-    SzPdfUtilService,
-    Location
-  ]
+    declarations: [
+        SzAlertMessageDialog,
+        SzConfigurationAboutComponent,
+        SzConfigurationComponent,
+        SzEntityDetailComponent,
+        SzEntityDetailGraphControlComponent,
+        SzEntityDetailGraphComponent,
+        SzEntityDetailGraphFilterComponent,
+        SzEntityDetailHeaderComponent,
+        SzEntityDetailHeaderContentComponent,
+        SzEntityDetailSectionSummaryComponent,
+        SzEntityDetailSectionHeaderComponent,
+        SzEntityDetailSectionCollapsibleCardComponent,
+        SzEntityDetailsSectionComponent,
+        SzEntityMatchPillComponent,
+        SzEntityRecordCardComponent,
+        SzEntityRecordViewerComponent,
+        SzEntityRecordCardHeaderComponent,
+        SzEntityRecordCardContentComponent,
+        SzGraphControlComponent,
+        SzGraphComponent,
+        SzGraphFilterComponent,
+        SzMultiSelectButtonComponent,
+        SzPoweredByComponent,
+        SzPreferencesComponent,
+        SzPrefDictComponent,
+        SzRelationshipNetworkComponent,
+        SzRelationshipNetworkInputComponent,
+        SzRelationshipNetworkLookupComponent,
+        SzRelationshipPathComponent,
+        SzSearchComponent,
+        SzSearchByIdComponent,
+        SzSearchIdentifiersPickerDialogComponent,
+        SzSearchIdentifiersPickerSheetComponent,
+        SzSearchResultsComponent,
+        SzSearchResultCardComponent,
+        SzSearchResultCardContentComponent,
+        SzSearchResultCardHeaderComponent,
+        SzStandaloneGraphComponent,
+        SzWhyEntitiesComparisonComponent,
+        SzWhyEntityComponent,
+        SzWhyEntitiesDialog,
+        SzWhyEntityDialog
+    ],
+    imports: [
+        CommonModule,
+        DragDropModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        LayoutModule,
+        NgxJsonViewerModule,
+        ApiModule,
+        SzSdkMaterialModule
+    ],
+    exports: [
+        SzConfigurationComponent,
+        SzConfigurationAboutComponent,
+        SzEntityDetailGraphComponent,
+        SzEntityDetailComponent,
+        SzEntityDetailGraphControlComponent,
+        SzEntityDetailGraphFilterComponent,
+        SzEntityRecordViewerComponent,
+        SzGraphComponent,
+        SzGraphControlComponent,
+        SzGraphFilterComponent,
+        SzPoweredByComponent,
+        SzPreferencesComponent,
+        SzRelationshipNetworkComponent,
+        SzRelationshipNetworkInputComponent,
+        SzRelationshipNetworkLookupComponent,
+        SzRelationshipPathComponent,
+        SzSearchComponent,
+        SzSearchByIdComponent,
+        SzSearchResultsComponent,
+        SzSearchResultCardComponent,
+        SzStandaloneGraphComponent,
+        SzWhyEntitiesComparisonComponent,
+        SzWhyEntityComponent,
+        SzWhyEntitiesDialog,
+        SzWhyEntityDialog,
+        SzPreferencesComponent
+    ],
+    providers: [
+        SzMessageBundleService,
+        SzAdminService,
+        SzBulkDataService,
+        SzConfigurationService,
+        SzCSSClassService,
+        SzDataSourcesService,
+        SzFoliosService,
+        SzPrefsService,
+        SzSearchService,
+        HttpClient,
+        TitleCasePipe,
+        SzUIEventService
+    ]
 })
 export class SenzingSdkModule {
   /**
@@ -246,5 +222,4 @@ export class SenzingSdkModule {
         ]
     };
   }
-
 }

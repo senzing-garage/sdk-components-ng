@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef, Inject, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject  } from 'rxjs';
 import { map, tap, mapTo, first, filter, takeUntil } from 'rxjs/operators';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
@@ -156,7 +156,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   /**
    * @ignore
    */
-  entitySearchForm: FormGroup;
+  entitySearchForm: UntypedFormGroup;
   /**
    * @ignore
    */
@@ -352,7 +352,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   /* end tag input setters */
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private dataSourcesService: SzDataSourcesService,
     private cd: ChangeDetectorRef,
     private apiConfigService: SzConfigurationService,

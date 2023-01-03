@@ -6,7 +6,7 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { SzEntityIdentifier } from '@senzing/rest-api-client-ng';
 import { SzWhyEntitiesDialog } from '../../../why/sz-why-entities.component';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { SzMatchKeyTokenFilterScope } from '../../../models/graph';
 import { SzCSSClassService } from '../../../services/sz-css-class.service';
 
