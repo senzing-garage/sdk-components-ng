@@ -10,7 +10,7 @@
             Show Match Keys
             <span class="tooltip tooptip-left">display match keys on relationship lines</span>
           </span>
-          <span class="left-adjusted no-text"><mat-checkbox [checked]="showLinkLabels" (change)="onCheckboxPrefToggle('showLinkLabels',$event.checked)"></mat-checkbox></span>
+          <span class="left-adjusted no-text"><mat-checkbox class="unpadded" [checked]="showLinkLabels" (change)="onCheckboxPrefToggle('showLinkLabels',$event.checked)"></mat-checkbox></span>
         </div>
       </label>
     </li>
@@ -31,7 +31,7 @@
             Hide Indirect Links
             <span class="tooltip tooptip-left">do not show inter-related first level links</span>
           </span>
-          <span class="left-adjusted no-text"><mat-checkbox [checked]="suppressL1InterLinks" (change)="onCheckboxPrefToggle('suppressL1InterLinks',$event.checked)"></mat-checkbox></span>
+          <span class="left-adjusted no-text"><mat-checkbox class="unpadded" [checked]="suppressL1InterLinks" (change)="onCheckboxPrefToggle('suppressL1InterLinks',$event.checked)"></mat-checkbox></span>
         </div>
       </label>
     </li>
@@ -42,15 +42,13 @@
             Scope
             <span class="tooltip tooptip-left">number of relationship hops away from focused entity</span>
           </span>
-          <span class="left-adjusted"><mat-checkbox [checked]="unlimitedMaxScope" (change)="onMaxUnlimitedChange('unlimitedMaxScope',$event.checked)">unlimited</mat-checkbox></span>
+          <span class="left-adjusted"><mat-checkbox class="unpadded" [checked]="unlimitedMaxScope" (change)="onMaxUnlimitedChange('unlimitedMaxScope',$event.checked)">unlimited</mat-checkbox></span>
         </div>
       </label>
       <label class="slider-row" *ngIf="!unlimitedMaxScope">
         <mat-slider style="width: 100%" min="1" [max]="buildOutMax" 
-        [disabled]="unlimitedMaxScope" 
-        [value]="buildOut"
-        (change)="onIntParameterChange('buildOut', $event.value)"
-        ></mat-slider>
+        [disabled]="unlimitedMaxScope"
+         #ngSlider><input matSliderThumb [value]="buildOut" (change)="onIntParameterChange('buildOut', {source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value}.value)" #ngSliderThumb="matSliderThumb" /></mat-slider>
         <!--<input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut" 
           (change)="onIntParameterChange('buildOut', getValueFromEventTarget($event))" required>-->
         <span class="intVal">({{ buildOut }})</span>
@@ -63,15 +61,13 @@
             Max
             <span class="tooltip tooptip-left">hard limit on how many entities will be displayed</span>
           </span>
-          <span class="left-adjusted"><mat-checkbox [checked]="unlimitedMaxEntities" (change)="onMaxUnlimitedChange('unlimitedMaxEntities',$event.checked)">unlimited</mat-checkbox></span>
+          <span class="left-adjusted"><mat-checkbox class="unpadded" [checked]="unlimitedMaxEntities" (change)="onMaxUnlimitedChange('unlimitedMaxEntities',$event.checked)">unlimited</mat-checkbox></span>
         </div>
       </label>
       <label class="slider-row" *ngIf="!unlimitedMaxEntities" style="display: flex; flex-direction: row; justify-content: space-between; align-content: center; flex-wrap: nowrap; align-items: center;">
         <mat-slider style="width: 100%" min="1" [max]="maxEntitiesLimit + 3" step="3" 
-        [disabled]="unlimitedMaxEntities" 
-        [value]="maxEntities"
-        (change)="onIntParameterChange('maxEntities', $event.value)"
-        ></mat-slider>
+        [disabled]="unlimitedMaxEntities"
+         #ngSlider><input matSliderThumb [value]="maxEntities" (change)="onIntParameterChange('maxEntities', {source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value}.value)" #ngSliderThumb="matSliderThumb" /></mat-slider>
         <!--<input type="range" 
           min="1" [max]="maxEntitiesLimit + 3" 
           [disabled]="true"
@@ -206,31 +202,39 @@
       class="match-key-token-mode-select" 
       [checked]="isMatchKeyTokenSelectionScopeCore"
       (change)="onMatchKeyCoreModeToggle($event.checked)">Directly Related Only</mat-slide-toggle>
-    <mat-chip-list 
+    <mat-chip-listbox 
       #matchKeyChipList
+      multiple
       class="match-keys mat-chip-list-stacked" 
       aria-orientation="vertical" 
       aria-label="Match Key Filters">
       
       <div *ngIf="isMatchKeyTokenSelectionScopeCore" class="chip-group core">
-        <mat-chip *ngFor="let mk of matchKeyCoreTokens; let i = index"
+        <!--matchKeyCoreTokensIncluded: {{matchKeyCoreTokensIncluded}}<br/>-->
+        <mat-chip-option *ngFor="let mk of matchKeyCoreTokens; let i = index"
           class="core-key"
           [class.selected]="isMatchKeyCoreTokenSelected(mk.name)"
           (click)="onCoreMkTagFilterToggle(mk.name)"
-          [matBadge]="getMKBadgeCount(mk.coreCount)" matBadgePosition="after" matBadgeColor="accent">
+          disableRipple="true"
+          leadingIcon="false"
+          [matBadge]="getMKBadgeCount(mk.coreCount)" 
+          matBadgePosition="after" 
+          matBadgeColor="accent">
           {{mk.name}}
-        </mat-chip>
+        </mat-chip-option>
       </div>
       <div *ngIf="!isMatchKeyTokenSelectionScopeCore" class="chip-group extraneous">
-        <mat-chip *ngFor="let mk of matchKeyTokens; let i = index"
+        <mat-chip-option *ngFor="let mk of matchKeyTokens; let i = index"
           class="extra-key"
           [class.selected]="isMatchKeyTokenSelected(mk.name)"
           (click)="onMkTagFilterToggle(mk.name)"
+          disableRipple="true"
+          leadingIcon="false"
           [matBadge]="getMKBadgeCount(mk.count)" matBadgePosition="after" matBadgeColor="accent">
           {{mk.name}}
-        </mat-chip>
+        </mat-chip-option>
       </div>
-    </mat-chip-list>
+    </mat-chip-listbox>
     <!--<form [formGroup]="filterByMatchKeyTokensForm">
     <ul class="filters-list">
       <ng-container *ngFor="let ds of filterByMatchKeyTokenData.controls; let i = index">
