@@ -1,6 +1,6 @@
 {
   "name": "@senzing/sdk-components-ng",
-  "version": "6.0.0-ng15",
+  "version": "6.0.0",
   "private": false,
   "keywords" :["Angular","Library","Senzing"],
   "license" : "SEE LICENSE IN LICENSE",
@@ -10,8 +10,8 @@
   },
   "homepage" :"https://senzing.github.io/sdk-components-ng/",
   "dependencies": {
-    "@types/d3": "^6.7.5",
-    "d3": "^6.7.0",
+    "@types/d3": "^7.4.0",
+    "d3": "^7.8.0",
     "ngx-json-viewer": "^3.2.1",
     "tslib": "^2.3.0"
   },

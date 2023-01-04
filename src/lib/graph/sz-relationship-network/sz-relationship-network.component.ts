@@ -1,8 +1,6 @@
 import { Component, Input, Output, HostBinding, OnInit, ViewChild, AfterViewInit, EventEmitter, OnDestroy, ElementRef } from '@angular/core';
 import * as d3 from 'd3';
 import { Graph, NodeInfo, LinkInfo } from './graph-types';
-import { Simulation } from 'd3-force';
-
 
 import { 
   EntityGraphService, 
@@ -280,28 +278,6 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
    * sets whether or not to fix nodes in place after dragging.
    */
   @Input() public set fixDraggedNodes(value: boolean) { this._fixDraggedNodes = value; }
-
-  /** @internal */
-  //private _forcePositionsLocked: boolean = false;
-  /** @internal */
-  //private _lockForceSimulationPosition: boolean = true;
-  /**
-   * sets whether or not to fix nodes in place or 
-   * to let the force gravity/charge negotiate related node movement.
-   */
-  /*
-  @Input() public set lockForceSimulationPosition(value: boolean) { 
-    this._lockForceSimulationPosition = value;
-    // if weve already rendered the graph
-    // immediately set force position lock
-    if(this.rendered){
-      if(value == false && this._forcePositionsLocked == true) {
-        this._forcePositionsLocked = value;
-        this.unlockForcePosition();
-      }
-      this._forcePositionsLocked = value;
-    }
-  }*/
 
   /** @internal */
   private _entityIds: string[] | undefined;
@@ -1302,8 +1278,6 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   link: d3.Selection<SVGPathElement, any, any, any> | undefined;
   /** D3 selection for text labels on relationship lines */
   linkLabel: d3.Selection<SVGTextElement, any, any, any> | undefined;
-  /** d3 force plugin ref */
-  forceSimulation: Simulation<NodeInfo, LinkInfo> | undefined;
   linkedByNodeIndexMap;
 
   /** D3 zoom plugin set in constructor
@@ -3001,7 +2975,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       evtData.eventPageX = (ptrEvent.pageX);
       evtData.eventPageY = (ptrEvent.pageY);
     }
-    this.contextMenuClick.emit(event);
+    this.contextMenuClick.emit(evtData);
     return false;
   }
   /**
