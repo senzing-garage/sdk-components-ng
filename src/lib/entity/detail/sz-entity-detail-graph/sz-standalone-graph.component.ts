@@ -139,6 +139,7 @@ export class SzStandaloneGraphComponent extends SzGraphComponent implements Afte
    * @internal 
    */
   private openGraphContextMenu(event: any, contextMenu: TemplateRef<any>) {
+    console.log('openGraphContextMenu: ', event, contextMenu);
     this.closeGraphContextMenu();
     let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
     const positionStrategy = this.overlay.position().global();
