@@ -382,13 +382,13 @@ export class SzRelationshipPathComponent implements OnInit, AfterViewInit {
     .on('tick', this.tick.bind(this));
 
     // Make the tooltip visible when mousing over nodes.  Fade out distant nodes
-    this.node.on('mouseover.tooltip', function (d) {
+    this.node.on('mouseover.tooltip', function (event, d) {
       tooltip.transition()
         .duration(300)
         .style("opacity", .8);
       tooltip.html(SzRelationshipPathComponent.nodeTooltipText(d))
-        .style("left", (d3.event.pageX) + "px")
-        .style("top", (d3.event.pageY + 10) + "px");
+        .style("left", (event.pageX) + "px")
+        .style("top", (event.pageY + 10) + "px");
     })
       .on('mouseover.fade', this.fade(0.1).bind(this))
       .on("mouseout.tooltip", function () {
@@ -397,20 +397,20 @@ export class SzRelationshipPathComponent implements OnInit, AfterViewInit {
           .style("opacity", 0);
       })
       .on('mouseout.fade', this.fade(1).bind(this))
-      .on("mousemove", function () {
-        tooltip.style("left", (d3.event.pageX) + "px")
-          .style("top", (d3.event.pageY + 10) + "px");
+      .on("mousemove", function (event) {
+        tooltip.style("left", (event.pageX) + "px")
+          .style("top", (event.pageY + 10) + "px");
       });
 
     // Make the tooltip visible when mousing over links.  Fade out distant nodes
     this.link.on('mouseover.fade', this.linkFade(0.1).bind(this))
-      .on('mouseover.tooltip', function (d) {
+      .on('mouseover.tooltip', function (event, d) {
         tooltip.transition()
           .duration(300)
           .style("opacity", .8);
         tooltip.html(SzRelationshipPathComponent.linkTooltipText(d))
-          .style("left", (d3.event.pageX) + "px")
-          .style("top", (d3.event.pageY + 10) + "px");
+          .style("left", (event.pageX) + "px")
+          .style("top", (event.pageY + 10) + "px");
       })
       .on("mouseout.tooltip", function () {
         tooltip.transition()
@@ -418,9 +418,9 @@ export class SzRelationshipPathComponent implements OnInit, AfterViewInit {
           .style("opacity", 0);
       })
       .on('mouseout.fade', this.linkFade(1).bind(this))
-      .on("mousemove", function () {
-        tooltip.style("left", (d3.event.pageX) + "px")
-          .style("top", (d3.event.pageY + 10) + "px");
+      .on("mousemove", function (event) {
+        tooltip.style("left", (event.pageX) + "px")
+          .style("top", (event.pageY + 10) + "px");
       });
 
     graph.links.forEach( this.registerLink.bind(this) );
@@ -530,29 +530,29 @@ export class SzRelationshipPathComponent implements OnInit, AfterViewInit {
    *   The simulation stops once alpha < alphaMin.
    *   Restart sets alpha back to 1.
    */
-  dragstarted() {
-    if (!d3.event.active) this.forceSimulation.alphaTarget(0.3).restart();
-    d3.event.subject.fx = d3.event.subject.x;
-    d3.event.subject.fy = d3.event.subject.y;
+  dragstarted(event) {
+    if (!event.active) this.forceSimulation.alphaTarget(0.3).restart();
+    event.subject.fx = event.subject.x;
+    event.subject.fy = event.subject.y;
   }
 
   /**
    * Update the position of the dragged node while dragging.
    */
-  dragged() {
-    d3.event.subject.fx = d3.event.x;
-    d3.event.subject.fy = d3.event.y;
+  dragged(event) {
+    event.subject.fx = event.x;
+    event.subject.fy = event.y;
   }
 
   /**
    * Allows the simulation to 'cool' to the point that nodes stop moving.
    *   The simulation does not stop while alphaTarget (default 0, set at 0.3 by dragstarted) > alphaMin (default 0.001)
    */
-  dragended() {
-    if (!d3.event.active) this.forceSimulation.alphaTarget(0);
+  dragended(event) {
+    if (!event.active) this.forceSimulation.alphaTarget(0);
 
-    d3.event.subject.fx = null;
-    d3.event.subject.fy = null;
+    event.subject.fx = null;
+    event.subject.fy = null;
   }
 
   //////////////////
