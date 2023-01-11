@@ -62,7 +62,7 @@
     "@angular/platform-browser": "^15.0.4",
     "@angular/platform-browser-dynamic": "^15.0.4",
     "@angular/router": "^15.0.4",
-    "@senzing/rest-api-client-ng": "^6.0.0-alpha.1",
+    "@senzing/rest-api-client-ng": "^6.0.0-beta.1",
     "d3": "^7.8.0",
     "document-register-element": "^1.14.10",
     "ngx-json-viewer": "^3.2.1",
@@ -73,7 +73,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.0.4",
-    "@angular/cli": "~15.0.4",
+    "@angular/cli": "^15.0.4",
     "@angular/compiler-cli": "^15.0.4",
     "@angular/language-service": "^15.0.4",
     "@compodoc/compodoc": "^1.1.19",
