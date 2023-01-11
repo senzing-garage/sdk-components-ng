@@ -59,6 +59,7 @@
 <!--<div class="select-mode-single-hover-mask">-->
   <button 
       class="select-mode-single-hover-button select-mode-action-why"
+      *ngIf="whySelectionAction == 'WHY'"
       mat-stroked-button
       matTooltipPosition="above"
       matTooltip="Perform Why Analysis on this record"
@@ -69,12 +70,13 @@
   </button>
   <button 
   class="select-mode-single-hover-button select-mode-action-why-not"
+  *ngIf="whySelectionAction == 'WHY_NOT'"
   mat-stroked-button
   matTooltipPosition="above"
   matTooltip="Perform Why Not Analysis between this entity and the one you are currently viewing"
   (click)="onRelatedEntityCardWhyNotClicked($event)">
   <mat-icon  
   aria-hidden="false" aria-label="Click to perform Why Not on between this entity and the one you are currently viewing"
-  >compare_arrows</mat-icon> Why?
+  >compare_arrows</mat-icon> Why Not?
 </button>
 <!--</div>-->
