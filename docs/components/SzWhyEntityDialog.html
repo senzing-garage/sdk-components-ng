@@ -211,6 +211,9 @@
                                 <li>
                                     <a href="#entityId" >entityId</a>
                                 </li>
+                                <li>
+                                    <a href="#entityName" >entityName</a>
+                                </li>
                             </ul>
                         </td>
                     </tr>
@@ -715,6 +718,23 @@
 
             </tbody>
         </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="entityName"></a>
+                        <span class="name"><b>entityName</b><a href="#entityName"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>entityName()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
 </section>
 </div>
 
@@ -756,7 +776,7 @@
         height: 100vh;
     }
 
-    .mat-dialog-title {
+    .mat-mdc-dialog-title {
         background-color: #6d738c;
         text-align: center;
         padding: 6px;
@@ -766,13 +786,13 @@
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
     }
-    .mat-dialog-content {
+    .mat-mdc-dialog-content {
         height: calc(100% - 100px);
         width: 100%;
         margin: 0;
         padding: 0;
     }
-    .mat-dialog-actions {
+    .mat-mdc-dialog-actions {
         justify-content: flex-end;
         padding: 0 0 10px 0;
         margin-bottom: 0px;
@@ -849,7 +869,7 @@
         }
     }
 }
-::ng-deep.mat-dialog-container {
+::ng-deep.mat-mdc-dialog-container {
     resize: both; 
     overflow: auto;
     background: #fff;

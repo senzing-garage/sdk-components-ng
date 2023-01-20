@@ -163,6 +163,10 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#onDataResponse" >onDataResponse</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#onDoubleClick" >onDoubleClick</a>
                             </li>
                             <li>
@@ -371,6 +375,71 @@
                                     <td>isLoading</td>
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onDataResponse"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>onDataResponse</b></span>
+                        <a href="#onDataResponse"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onDataResponse(data: SzWhyEntityResponseData)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                            <code>SzWhyEntityResponseData</code>
                                     </td>
 
                                     <td>
@@ -709,7 +778,7 @@
     <div class="tab-pane fade " id="c-templateData">
         <pre class="line-numbers"><code class="language-html">&lt;h1 mat-dialog-title cdkDrag cdkDragRootElement&#x3D;&quot;.cdk-overlay-pane&quot; (dblclick)&#x3D;&quot;onDoubleClick($event)&quot; cdkDragHandle&gt;{{title}}&lt;/h1&gt;
 &lt;div mat-dialog-content&gt;
-  &lt;sz-why-entities #whyEntitiesTag [entityIds]&#x3D;&quot;entities&quot; (loading)&#x3D;&quot;onDataLoading($event)&quot;&gt;&lt;/sz-why-entities&gt;
+  &lt;sz-why-entities #whyEntitiesTag [entityIds]&#x3D;&quot;entities&quot; (loading)&#x3D;&quot;onDataLoading($event)&quot; (onData)&#x3D;&quot;onDataResponse($event)&quot;&gt;&lt;/sz-why-entities&gt;
   &lt;!-- start spinner overlay --&gt;
   &lt;div class&#x3D;&quot;mat-background spinner-panel&quot; *ngIf&#x3D;&quot;isLoading&quot;&gt;
     &lt;div class&#x3D;&quot;spinner&quot;&gt;
@@ -742,7 +811,7 @@
         height: 100vh;
     }
 
-    .mat-dialog-title {
+    .mat-mdc-dialog-title {
         background-color: #6d738c;
         text-align: center;
         padding: 6px;
@@ -752,13 +821,13 @@
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
     }
-    .mat-dialog-content {
+    .mat-mdc-dialog-content {
         height: calc(100% - 100px);
         width: 100%;
         margin: 0;
         padding: 0;
     }
-    .mat-dialog-actions {
+    .mat-mdc-dialog-actions {
         justify-content: flex-end;
         padding: 0 0 10px 0;
         margin-bottom: 0px;
@@ -835,7 +904,7 @@
         }
     }
 }
-::ng-deep.mat-dialog-container {
+::ng-deep.mat-mdc-dialog-container {
     resize: both; 
     overflow: auto;
     background: #fff;
@@ -853,7 +922,7 @@
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><h1 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" (dblclick)="onDoubleClick($event)" cdkDragHandle>{{title}}</h1><div mat-dialog-content>  <sz-why-entities #whyEntitiesTag [entityIds]="entities" (loading)="onDataLoading($event)"></sz-why-entities>  <!-- start spinner overlay -->  <div class="mat-background spinner-panel" *ngIf="isLoading">    <div class="spinner">        <div class="rect1"></div>        <div class="rect2"></div>        <div class="rect3"></div>        <div class="rect4"></div>        <div class="rect5"></div>    </div>  </div>  <!-- end spinner overlay --></div><div mat-dialog-actions *ngIf="showDialogActions">  <button mat-stroked-button mat-dialog-close color="primary" class="ok">{{okButtonText}}</button></div></div>'
+        var COMPONENT_TEMPLATE = '<div><h1 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" (dblclick)="onDoubleClick($event)" cdkDragHandle>{{title}}</h1><div mat-dialog-content>  <sz-why-entities #whyEntitiesTag [entityIds]="entities" (loading)="onDataLoading($event)" (onData)="onDataResponse($event)"></sz-why-entities>  <!-- start spinner overlay -->  <div class="mat-background spinner-panel" *ngIf="isLoading">    <div class="spinner">        <div class="rect1"></div>        <div class="rect2"></div>        <div class="rect3"></div>        <div class="rect4"></div>        <div class="rect5"></div>    </div>  </div>  <!-- end spinner overlay --></div><div mat-dialog-actions *ngIf="showDialogActions">  <button mat-stroked-button mat-dialog-close color="primary" class="ok">{{okButtonText}}</button></div></div>'
     var COMPONENTS = [{'name': 'SzAlertMessageDialog', 'selector': 'sz-alert-dialog'},{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzMultiSelectButtonComponent', 'selector': 'sz-button-multi-select'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipNetworkInputComponent', 'selector': 'sz-relationship-network-input'},{'name': 'SzRelationshipNetworkLookupComponent', 'selector': 'sz-relationship-network-lookup'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzWhyEntitiesDialog'};

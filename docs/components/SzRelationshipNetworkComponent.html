@@ -151,9 +151,6 @@
                                 <a href="#entityId" >entityId</a>
                             </li>
                             <li>
-                                <a href="#forceSimulation" >forceSimulation</a>
-                            </li>
-                            <li>
                                 <a href="#graphData" >graphData</a>
                             </li>
                             <li>
@@ -3598,7 +3595,7 @@ arrays of the entity ids found in the data that have that match key token presen
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>onLabelClick(_d)</code>
+<code>onLabelClick(event, _d)</code>
                 </td>
             </tr>
 
@@ -3623,6 +3620,15 @@ truncated, and truncate it if it is over 15 chars long.</p>
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr>
+                                    <td>event</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
                                 <tr>
                                     <td>_d</td>
 
@@ -3661,7 +3667,7 @@ truncated, and truncate it if it is over 15 chars long.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>onLinkClick(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+<code>onLinkClick(ptrEvent: PointerEvent, evtData: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
 
@@ -3687,7 +3693,19 @@ proxies to synthetic event &quot;relationshipClick&quot;</p>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>event</td>
+                                    <td>ptrEvent</td>
+                                    <td>
+                                            <code>PointerEvent</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>evtData</td>
                                     <td>
                                                 <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
                                     </td>
@@ -3727,7 +3745,7 @@ proxies to synthetic event &quot;relationshipClick&quot;</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>onLinkContextClick(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, x?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, y?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+<code>onLinkContextClick(ptrEvent: PointerEvent, evtData: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, x?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, y?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -3753,7 +3771,19 @@ proxies to synthetic event &quot;relationshipContextMenuClick&quot;</p>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>event</td>
+                                    <td>ptrEvent</td>
+                                    <td>
+                                            <code>PointerEvent</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>evtData</td>
                                     <td>
                                                 <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
                                     </td>
@@ -3817,7 +3847,7 @@ proxies to synthetic event &quot;relationshipContextMenuClick&quot;</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>onLinkDblClick(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+<code>onLinkDblClick(ptrEvent: PointerEvent, evtData: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
 
@@ -3843,7 +3873,19 @@ proxies to synthetic event &quot;relationshipDblClick&quot;</p>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>event</td>
+                                    <td>ptrEvent</td>
+                                    <td>
+                                            <code>PointerEvent</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>evtData</td>
                                     <td>
                                                 <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
                                     </td>
@@ -3883,7 +3925,7 @@ proxies to synthetic event &quot;relationshipDblClick&quot;</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>onNodeClick(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+<code>onNodeClick(ptrEvent: PointerEvent, evtData: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
 
@@ -3909,7 +3951,19 @@ proxies to synthetic event &quot;entityClick&quot;</p>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>event</td>
+                                    <td>ptrEvent</td>
+                                    <td>
+                                            <code>PointerEvent</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>evtData</td>
                                     <td>
                                                 <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
                                     </td>
@@ -3949,7 +4003,7 @@ proxies to synthetic event &quot;entityClick&quot;</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>onNodeContextClick(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, x?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, y?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+<code>onNodeContextClick(ptrEvent: PointerEvent, evtData: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, x?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, y?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -3975,7 +4029,19 @@ proxies to synthetic event &quot;contextMenuClick&quot;</p>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>event</td>
+                                    <td>ptrEvent</td>
+                                    <td>
+                                            <code>PointerEvent</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>evtData</td>
                                     <td>
                                                 <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
                                     </td>
@@ -4039,7 +4105,7 @@ proxies to synthetic event &quot;contextMenuClick&quot;</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>onNodeDblClick(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+<code>onNodeDblClick(ptrEvent: PointerEvent, evtData: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
 
@@ -4065,7 +4131,19 @@ proxies to synthetic event &quot;entityDblClick&quot;</p>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>event</td>
+                                    <td>ptrEvent</td>
+                                    <td>
+                                            <code>PointerEvent</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>evtData</td>
                                     <td>
                                                 <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
                                     </td>
@@ -4673,33 +4751,6 @@ keys categorized as &quot;derived&quot; type(s) are return value position[1].</p
                     </td>
                 </tr>
 
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="forceSimulation"></a>
-                    <span class="name">
-                        <span ><b>forceSimulation</b></span>
-                        <a href="#forceSimulation"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>Simulation&lt;NodeInfo | LinkInfo&gt; | undefined</code>
-
-                    </td>
-                </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>d3 force plugin ref</p>
-</div>
-                </td>
-            </tr>
 
         </tbody>
     </table>

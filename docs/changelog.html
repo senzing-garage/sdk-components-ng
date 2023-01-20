@@ -36,7 +36,18 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 <a href="https://dlaa.me/markdownlint/">markdownlint</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="511---2022-09-28">[5.1.1] - 2022-09-28</h2>
+<h2 id="600---2023-01-14">[6.0.0] - 2023-01-14</h2>
+<h3 id="modified">Modified</h3>
+<ul>
+<li>Angular Framework updated to version 15. As of 6.0.0 release this package now requires <code>@angular@~15.0.0</code> to compile and run. Updating to angular 15 resolves major dependency compatibility issues so we can apply the latest security patches to the library. For information updating your project from a previous angular version to <code>~15.0.0</code> see the <a href="https://update.angular.io/">Angular Update Guide </a></li>
+<li><a href="https://material.angular.io/">Angular Material</a> updated to version 15. As of 6.0.0 release this package now requires v15 of angular material library. Since the compiled version of this package defines it&#39;s dependency as a <em>peer dependency</em> it&#39;s worth mentioning that your project will need to import it to function properly. <code>ng add @angular/material@15</code>.</li>
+<li>D3.js updated to version 7. version 5 was exposing a security defect in d3.color(see <a href="https://security.snyk.io/vuln/SNYK-JS-D3COLOR-1076592">SNYK-JS-D3COLOR-1076592</a>) that had no patches available until version 7. <a href="https://github.com/Senzing/sdk-components-ng/issues/466">see #466</a></li>
+</ul>
+<h3 id="removed">Removed</h3>
+<ul>
+<li><code>forceSimulation</code> property removed from <code>SzRelationshipNetworkComponent</code> base class. (no one should be directly using this anyways)</li>
+</ul>
+<h2 id="511---2022-10-31">[5.1.1] - 2022-10-31</h2>
 <h3 id="added">Added</h3>
 <ul>
 <li>Added &quot;hide indirect links&quot; UI control to graph filtering component.</li>
@@ -45,8 +56,9 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Added <code>indirectLinkColor</code> to graph preferences</li>
 <li>Added <em>Link Color</em> section to graph filter component</li>
 <li>Added <em>Data Sources</em> list to graph hover tooltip</li>
+<li>Added &quot;Why Not&quot; button/report to &quot;Possible Matches&quot; section in the entity detail component.</li>
 </ul>
-<h3 id="modified">Modified</h3>
+<h3 id="modified-1">Modified</h3>
 <ul>
 <li>Match keys on graph entity link(s) are now in a vertically centered multi-line list.</li>
 <li>Bugfix for match key labels. (see #383)</li>
@@ -56,7 +68,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Graph entity name label no longer clips with ellipsis.</li>
 <li>Graph entity name now performs a hard word wrap to display the full name on multiple lines</li>
 </ul>
-<p>relevant tickets: #309 #364 #383 #407 #413 #414 #415 #417</p>
+<p>relevant tickets: #309 #364 #383 #407 #413 #414 #415 #416 #417 #422 #423 #432 #433 #436 #439</p>
 <h2 id="510---2022-07-27">[5.1.0] - 2022-07-27</h2>
 <ul>
 <li>there is now a new <code>unlimited</code> ui option for maximum entities allowed.</li>
@@ -107,7 +119,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 </li>
 <li><code>getEntitiesByIds</code> method added to <code>SzSearchService</code> to get data for multiple entities by their id&#39;s in the form of <code>Observable&lt;SzEntityData[]&gt;</code></li>
 </ul>
-<h3 id="modified-1">Modified</h3>
+<h3 id="modified-2">Modified</h3>
 <ul>
 <li>Changed the behavior of <code>showCoreMatchKeyTokenChips</code> to automatically set <code>matchKeyTokenSelectionScope</code> to <code>CORE</code>.</li>
 <li>Changed the complete match key display to a comma deliminated list of tokens on each line for readability</li>
@@ -250,7 +262,7 @@ the observeable event streams for uniformity/reliability:<ul>
 </ul>
 </li>
 </ul>
-<h3 id="removed">Removed</h3>
+<h3 id="removed-1">Removed</h3>
 <ul>
 <li>The following methods have been removed from <code>SzRelationshipNetworkComponent</code><ul>
 <li><code>onSimulationCycle</code> gravity simulation has been removed in favor or concentric ring algorithm.</li>
@@ -262,7 +274,7 @@ the observeable event streams for uniformity/reliability:<ul>
 </ul>
 </li>
 </ul>
-<h3 id="modified-2">Modified</h3>
+<h3 id="modified-3">Modified</h3>
 <ul>
 <li><code>_graphIds</code> property on <code>SzGraphComponent</code> type changed from <code>number[]</code> to <code>SzEntityIdentifier[]</code></li>
 <li><code>graphIds</code> property getter and setter on <code>SzGraphComponent</code> type changed from <code>number[]</code> to <code>SzEntityIdentifier[]</code></li>
@@ -310,7 +322,7 @@ and <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/cace
 </li>
 <li>The graph filters found in the <code>SzStandaloneGraphComponent</code> can now show a tag cloud of <em>Match Key Tokens</em>. If setting the <code>showMatchKeyTokenFilters=&quot;true&quot;</code> you should also set the <code>showMatchKeyFilters]=&quot;false&quot;</code> since the two options are exclusive and will interfere with proper function of the other.</li>
 </ul>
-<h3 id="removed-1">Removed</h3>
+<h3 id="removed-2">Removed</h3>
 <ul>
 <li>the following methods removed <code>SzAdminService</code><ul>
 <li><code>addEntityClasses()</code></li>
@@ -358,7 +370,7 @@ and <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/cace
 <li><code>SzSearchResultEntityData.matchScore</code> property</li>
 </ul>
 <h2 id="300---2021-12-17">[3.0.0] - 2021-12-17</h2>
-<h3 id="modified-3">Modified</h3>
+<h3 id="modified-4">Modified</h3>
 <ul>
 <li>Angular Framework Updated to version 13. As of 3.0.0 release this package now requires <code>@angular@~13.0.0</code> to compile and run. Updating to angular 13 resolves major dependency compatibility issues so we can apply the latest security patches to the library. For information updating your project from a previous angular version to <code>~13.0.0</code> see the <a href="https://update.angular.io/">Angular Update Guide </a></li>
 <li>SzSearchComponent.resultCleared event emitter payload is now of type <code>void</code> and not <code>SzEntitySearchParams</code>.</li>

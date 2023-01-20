@@ -249,6 +249,10 @@ document.getElementById(&#39;sz-ent-detail&#39;).addEventListener(&#39;entityIdC
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#onCompareEntitiesForWhyNot" >onCompareEntitiesForWhyNot</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#onCompareRecordsForWhy" >onCompareRecordsForWhy</a>
                             </li>
                             <li>
@@ -438,6 +442,9 @@ document.getElementById(&#39;sz-ent-detail&#39;).addEventListener(&#39;entityIdC
                                 <a href="#showRecordWhyUtilities" >showRecordWhyUtilities</a>
                             </li>
                             <li>
+                                <a href="#showRelatedWhyNotFunction" >showRelatedWhyNotFunction</a>
+                            </li>
+                            <li>
                                 <a href="#updatePrefsOnChange" >updatePrefsOnChange</a>
                             </li>
                             <li>
@@ -495,6 +502,9 @@ document.getElementById(&#39;sz-ent-detail&#39;).addEventListener(&#39;entityIdC
                                 <a href="#recordsWhyButtonClick" >recordsWhyButtonClick</a>
                             </li>
                             <li>
+                                <a href="#relatedEntitiesWhyNotButtonClick" >relatedEntitiesWhyNotButtonClick</a>
+                            </li>
+                            <li>
                                 <a href="#requestEnd" >requestEnd</a>
                             </li>
                             <li>
@@ -537,6 +547,9 @@ document.getElementById(&#39;sz-ent-detail&#39;).addEventListener(&#39;entityIdC
                                 </li>
                                 <li>
                                     <a href="#showEntityWhyFunction" >showEntityWhyFunction</a>
+                                </li>
+                                <li>
+                                    <a href="#showRelatedWhyNotFunction" >showRelatedWhyNotFunction</a>
                                 </li>
                                 <li>
                                     <a href="#nativeElement" >nativeElement</a>
@@ -1628,6 +1641,28 @@ are filtered by match key tokens.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="showRelatedWhyNotFunction"></a>
+                        <b>showRelatedWhyNotFunction</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>whether or not to show the &quot;why not&quot; comparison button on &quot;possible matches&quot;</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="updatePrefsOnChange"></a>
                         <b>updatePrefsOnChange</b>
                     </td>
@@ -1957,6 +1992,28 @@ or multi-select operations.</p>
                 <tr>
                     <td class="col-md-4">
                         <div class="io-description"><p>(Event Emitter) when the user clicks on the &quot;Why&quot; button in records section</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="relatedEntitiesWhyNotButtonClick"></a>
+                        <b>relatedEntitiesWhyNotButtonClick</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>(Event Emitter) when the user clicks on the &quot;Why Not&quot; button in a related entity card</p>
 </div>
                     </td>
                 </tr>
@@ -2306,6 +2363,71 @@ that are themselves not related to any other visible entities</p>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onCompareEntitiesForWhyNot"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>onCompareEntitiesForWhyNot</b></span>
+                        <a href="#onCompareEntitiesForWhyNot"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onCompareEntitiesForWhyNot(entityIds: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>entityIds</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -4241,6 +4363,78 @@ are filtered by match key tokens.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="showRelatedWhyNotFunction"></a>
+                        <span class="name"><b>showRelatedWhyNotFunction</b><a href="#showRelatedWhyNotFunction"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>showRelatedWhyNotFunction()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>whether or not the &quot;why&quot; comparison button on &quot;possible matches&quot;</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>showRelatedWhyNotFunction(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>whether or not to show the &quot;why not&quot; comparison button on &quot;possible matches&quot;</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="nativeElement"></a>
                         <span class="name"><b>nativeElement</b><a href="#nativeElement"><span class="icon ion-ios-link"></span></a></span>
                     </td>
@@ -6115,11 +6309,14 @@ are filtered by match key tokens.</p>
     [sectionTitle]&#x3D;&quot;&#x27;Possible Matches&#x27;&quot;
     sectionId&#x3D;&quot;detail-section-2&quot;
     [sectionCount]&#x3D;&quot;this._possibleMatches?.length&quot;
+    [showWhyUtilities]&#x3D;&quot;showRelatedWhyNotFunction&quot;
+    [whySelectionMode]&#x3D;&quot;whySelectionMode&quot;
     [forceLayout]&#x3D;&quot;_forceLayout&quot;
     [layoutClasses]&#x3D;&quot;_layoutEnforcers&quot;
     [showNameDataInEntities]&#x3D;&quot;showNameDataInPossibleMatchesSection&quot;
     (onCollapsedChange)&#x3D;&quot;this.onSectionCollapsedChange(&#x27;possibleMatches&#x27;, $event)&quot;
-    (entityRecordClick)&#x3D;&quot;onEntityRecordClick($event)&quot;&gt;
+    (entityRecordClick)&#x3D;&quot;onEntityRecordClick($event)&quot;
+    (onCompareEntitiesForWhyNot)&#x3D;&quot;onCompareEntitiesForWhyNot($event)&quot;&gt;
   &lt;/sz-entity-details-section&gt;
   &lt;sz-entity-details-section class&#x3D;&quot;details-section discovered&quot;
     *ngIf&#x3D;&quot;this._discoveredRelationships?.length &amp;&amp; this.showPossibleRelationshipsSection&quot;
@@ -6132,7 +6329,10 @@ are filtered by match key tokens.</p>
     [forceLayout]&#x3D;&quot;_forceLayout&quot;
     [layoutClasses]&#x3D;&quot;_layoutEnforcers&quot;
     [showNameDataInEntities]&#x3D;&quot;showNameDataInPossibleRelationshipsSection&quot;
-    (entityRecordClick)&#x3D;&quot;onEntityRecordClick($event)&quot;&gt;
+    [showWhyUtilities]&#x3D;&quot;showRelatedWhyNotFunction&quot;
+    [whySelectionMode]&#x3D;&quot;whySelectionMode&quot;
+    (entityRecordClick)&#x3D;&quot;onEntityRecordClick($event)&quot;
+    (onCompareEntitiesForWhyNot)&#x3D;&quot;onCompareEntitiesForWhyNot($event)&quot;&gt;
   &lt;/sz-entity-details-section&gt;
   &lt;sz-entity-details-section class&#x3D;&quot;details-section disclosed&quot;
     *ngIf&#x3D;&quot;this._disclosedRelationships?.length &amp;&amp; this.showDisclosedSection&quot;
@@ -6175,7 +6375,7 @@ are filtered by match key tokens.</p>
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><!-- @senzing/sdk/entity/detail/sz-entity-detail --><!-- start graph entity context menu template --><ng-template #graphNodeContextMenu let-entityEvt>  <ul class="graph-context-menu">      <li>#{{entityEvt?.entityId}}</li>      <li [class.disabled]="!isGraphEntityRemovable(entityEvt)" (click)="hideGraphEntity(entityEvt)">Hide Entity</li>  </ul></ng-template><!-- end graph entity context menu template --><!-- start graph link context menu template --><ng-template #graphLinkContextMenu let-linkEvt><ul class="graph-context-menu">    <li (click)="openWhyReportForGraphRelationship(linkEvt)">Show "Why Not" Report</li></ul></ng-template><!-- end graph link context menu template --><div #nativeElementRef>  <sz-entity-detail-header  [entity]="entity"  [forceLayout]="_forceLayout"  [showWhyFunction]="showEntityWhyFunction"  (onWhyButtonClick)="this.onHeaderWhyButtonClick($event)"  [layoutClasses]="_layoutEnforcers">  </sz-entity-detail-header>    <sz-entity-detail-graph data-html2canvas-ignore    *ngIf="graphData && this.showGraphSection"    [data]="graphData"    [title]="this.graphTitle"    [captureMouseWheel]="graphAllowScrollingZoom"    [showPopOutIcon]="graphShowPopOutIcon"    [popOutIconPosition]="graphPopOutIconPosition"    [showZoomControl]="graphShowZoomControl"    [zoomControlPosition]="graphZoomControlPosition"    (popoutClick)="onGraphPopoutClick($event)"    [showMatchKeyControl]="graphShowMatchKeyControl"    [showFiltersControl]="graphShowFiltersControl"    [matchKeyTokenSelectionScope]="graphMatchKeyTokenSelectionScope"    [showLinkLabels]="this._showGraphLinkLabels"    (contextMenuClick)="onGraphRightClick($event)"    (relationshipContextMenuClick)="onGraphRelationshipRightClick($event)"    (scrollWheelEvent)="graphScrollWheelEvent.emit($event)"    (entityClick)="onGraphEntityClick($event)"    (relationshipClick)="onGraphRelationshipClick($event)"  ></sz-entity-detail-graph>  <sz-entity-details-section class="details-section datasources"    *ngIf="entity?.resolvedEntity?.records?.length && this.showMatchesSection"    collapsedStatePrefsKey="recordsSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'recordsSectionCollapsed\', $event)"    [sectionData]="entity?.resolvedEntity?.records"    [sectionTitle]="\'Matched Records\'"    sectionId="detail-section-1"    [sectionCount]="entity?.resolvedEntity?.records?.length"    [showWhyUtilities]="showRecordWhyUtilities"    [whySelectionMode]="whySelectionMode"    (onCompareRecordsForWhy)="onCompareRecordsForWhy($event)"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInMatchesSection"    (dataSourceRecordsSelected)="onDataSourceRecordsSelected($event)"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section possible"    *ngIf="this._possibleMatches?.length && this.showPossibleMatchesSection"    collapsedStatePrefsKey="possibleMatchesSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'possibleMatchesSectionCollapsed\', $event)"    [sectionData]="this._possibleMatches"    [sectionTitle]="\'Possible Matches\'"    sectionId="detail-section-2"    [sectionCount]="this._possibleMatches?.length"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInPossibleMatchesSection"    (onCollapsedChange)="this.onSectionCollapsedChange(\'possibleMatches\', $event)"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section discovered"    *ngIf="this._discoveredRelationships?.length && this.showPossibleRelationshipsSection"    collapsedStatePrefsKey="possibleRelationshipsSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'possibleRelationshipsSectionCollapsed\', $event)"    [sectionData]="this._discoveredRelationships"    [sectionTitle]="\'Possible Relationships\'"    sectionId="detail-section-3"    [sectionCount]="this._discoveredRelationships?.length"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInPossibleRelationshipsSection"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section disclosed"    *ngIf="this._disclosedRelationships?.length && this.showDisclosedSection"    collapsedStatePrefsKey="disclosedRelationshipsSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'disclosedRelationshipsSectionCollapsed\', $event)"    [sectionData]="this._disclosedRelationships"    [sectionTitle]="\'Disclosed Relationships\'"    sectionId="detail-section-4"    [sectionCount]="this._disclosedRelationships?.length"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInDisclosedSection"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section></div></div>'
+        var COMPONENT_TEMPLATE = '<div><!-- @senzing/sdk/entity/detail/sz-entity-detail --><!-- start graph entity context menu template --><ng-template #graphNodeContextMenu let-entityEvt>  <ul class="graph-context-menu">      <li>#{{entityEvt?.entityId}}</li>      <li [class.disabled]="!isGraphEntityRemovable(entityEvt)" (click)="hideGraphEntity(entityEvt)">Hide Entity</li>  </ul></ng-template><!-- end graph entity context menu template --><!-- start graph link context menu template --><ng-template #graphLinkContextMenu let-linkEvt><ul class="graph-context-menu">    <li (click)="openWhyReportForGraphRelationship(linkEvt)">Show "Why Not" Report</li></ul></ng-template><!-- end graph link context menu template --><div #nativeElementRef>  <sz-entity-detail-header  [entity]="entity"  [forceLayout]="_forceLayout"  [showWhyFunction]="showEntityWhyFunction"  (onWhyButtonClick)="this.onHeaderWhyButtonClick($event)"  [layoutClasses]="_layoutEnforcers">  </sz-entity-detail-header>    <sz-entity-detail-graph data-html2canvas-ignore    *ngIf="graphData && this.showGraphSection"    [data]="graphData"    [title]="this.graphTitle"    [captureMouseWheel]="graphAllowScrollingZoom"    [showPopOutIcon]="graphShowPopOutIcon"    [popOutIconPosition]="graphPopOutIconPosition"    [showZoomControl]="graphShowZoomControl"    [zoomControlPosition]="graphZoomControlPosition"    (popoutClick)="onGraphPopoutClick($event)"    [showMatchKeyControl]="graphShowMatchKeyControl"    [showFiltersControl]="graphShowFiltersControl"    [matchKeyTokenSelectionScope]="graphMatchKeyTokenSelectionScope"    [showLinkLabels]="this._showGraphLinkLabels"    (contextMenuClick)="onGraphRightClick($event)"    (relationshipContextMenuClick)="onGraphRelationshipRightClick($event)"    (scrollWheelEvent)="graphScrollWheelEvent.emit($event)"    (entityClick)="onGraphEntityClick($event)"    (relationshipClick)="onGraphRelationshipClick($event)"  ></sz-entity-detail-graph>  <sz-entity-details-section class="details-section datasources"    *ngIf="entity?.resolvedEntity?.records?.length && this.showMatchesSection"    collapsedStatePrefsKey="recordsSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'recordsSectionCollapsed\', $event)"    [sectionData]="entity?.resolvedEntity?.records"    [sectionTitle]="\'Matched Records\'"    sectionId="detail-section-1"    [sectionCount]="entity?.resolvedEntity?.records?.length"    [showWhyUtilities]="showRecordWhyUtilities"    [whySelectionMode]="whySelectionMode"    (onCompareRecordsForWhy)="onCompareRecordsForWhy($event)"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInMatchesSection"    (dataSourceRecordsSelected)="onDataSourceRecordsSelected($event)"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section possible"    *ngIf="this._possibleMatches?.length && this.showPossibleMatchesSection"    collapsedStatePrefsKey="possibleMatchesSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'possibleMatchesSectionCollapsed\', $event)"    [sectionData]="this._possibleMatches"    [sectionTitle]="\'Possible Matches\'"    sectionId="detail-section-2"    [sectionCount]="this._possibleMatches?.length"    [showWhyUtilities]="showRelatedWhyNotFunction"    [whySelectionMode]="whySelectionMode"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInPossibleMatchesSection"    (onCollapsedChange)="this.onSectionCollapsedChange(\'possibleMatches\', $event)"    (entityRecordClick)="onEntityRecordClick($event)"    (onCompareEntitiesForWhyNot)="onCompareEntitiesForWhyNot($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section discovered"    *ngIf="this._discoveredRelationships?.length && this.showPossibleRelationshipsSection"    collapsedStatePrefsKey="possibleRelationshipsSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'possibleRelationshipsSectionCollapsed\', $event)"    [sectionData]="this._discoveredRelationships"    [sectionTitle]="\'Possible Relationships\'"    sectionId="detail-section-3"    [sectionCount]="this._discoveredRelationships?.length"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInPossibleRelationshipsSection"    [showWhyUtilities]="showRelatedWhyNotFunction"    [whySelectionMode]="whySelectionMode"    (entityRecordClick)="onEntityRecordClick($event)"    (onCompareEntitiesForWhyNot)="onCompareEntitiesForWhyNot($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section disclosed"    *ngIf="this._disclosedRelationships?.length && this.showDisclosedSection"    collapsedStatePrefsKey="disclosedRelationshipsSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'disclosedRelationshipsSectionCollapsed\', $event)"    [sectionData]="this._disclosedRelationships"    [sectionTitle]="\'Disclosed Relationships\'"    sectionId="detail-section-4"    [sectionCount]="this._disclosedRelationships?.length"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInDisclosedSection"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section></div></div>'
     var COMPONENTS = [{'name': 'SzAlertMessageDialog', 'selector': 'sz-alert-dialog'},{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzMultiSelectButtonComponent', 'selector': 'sz-button-multi-select'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipNetworkInputComponent', 'selector': 'sz-relationship-network-input'},{'name': 'SzRelationshipNetworkLookupComponent', 'selector': 'sz-relationship-network-lookup'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzEntityDetailComponent'};
