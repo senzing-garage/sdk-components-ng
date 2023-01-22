@@ -198,6 +198,9 @@ this.prefs.graph.buildOut =  5;</code></pre></div><div><pre class="line-numbers"
                                     <a href="#queriedEntitiesColor" >queriedEntitiesColor</a>
                                 </li>
                                 <li>
+                                    <a href="#focusedEntitiesColor" >focusedEntitiesColor</a>
+                                </li>
+                                <li>
                                     <a href="#linkColor" >linkColor</a>
                                 </li>
                                 <li>
@@ -211,6 +214,9 @@ this.prefs.graph.buildOut =  5;</code></pre></div><div><pre class="line-numbers"
                                 </li>
                                 <li>
                                     <a href="#suppressL1InterLinks" >suppressL1InterLinks</a>
+                                </li>
+                                <li>
+                                    <a href="#matchKeyTokenSelectionScope" >matchKeyTokenSelectionScope</a>
                                 </li>
                             </ul>
                         </td>
@@ -281,11 +287,13 @@ instead of the empty superclass</p>
     &#x27;matchKeyCoreTokensIncluded&#x27;,
     &#x27;neverFilterQueriedEntityIds&#x27;,
     &#x27;queriedEntitiesColor&#x27;,
+    &#x27;focusedEntitiesColor&#x27;,
     &#x27;linkColor&#x27;,
     &#x27;indirectLinkColor&#x27;,
     &#x27;unlimitedMaxEntities&#x27;,
     &#x27;unlimitedMaxScope&#x27;,
-    &#x27;suppressL1InterLinks&#x27;
+    &#x27;suppressL1InterLinks&#x27;,
+    &#x27;matchKeyTokenSelectionScope&#x27;
   ]</code>
                     </td>
                 </tr>
@@ -1597,6 +1605,78 @@ useful for not getting notified on bulk property sets.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="focusedEntitiesColor"></a>
+                        <span class="name"><b>focusedEntitiesColor</b><a href="#focusedEntitiesColor"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>focusedEntitiesColor()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>color of focused/expanded entity or entitities</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>string | undefined</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>focusedEntitiesColor(value: string | undefined)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>color of focused/expanded entity or entitities</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code>string | undefined</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="linkColor"></a>
                         <span class="name"><b>linkColor</b><a href="#linkColor"><span class="icon ion-ios-link"></span></a></span>
                     </td>
@@ -1939,6 +2019,80 @@ build out to max</p>
                                                     
                                                             <td>
                                                                             <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="matchKeyTokenSelectionScope"></a>
+                        <span class="name"><b>matchKeyTokenSelectionScope</b><a href="#matchKeyTokenSelectionScope"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>matchKeyTokenSelectionScope()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>whether or not match key token filtering should apply to ALL entities
+OR just relationships that are directly related to the focal entity</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../miscellaneous/enumerations.html#SzMatchKeyTokenFilterScope" target="_self" >SzMatchKeyTokenFilterScope</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>matchKeyTokenSelectionScope(value: <a href="../undefineds/SzMatchKeyTokenFilterScope.html" target="_self">SzMatchKeyTokenFilterScope</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>whether or not match key token filtering should apply to ALL entities
+OR just relationships that are directly related to the focal entity</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="../miscellaneous/enumerations.html#SzMatchKeyTokenFilterScope" target="_self" >SzMatchKeyTokenFilterScope</a></code>
                                                             </td>
                                                     
                                                         <td>

@@ -66,7 +66,7 @@
                 <p>Provides a service injectable that can be used to dynamically change the global
 values that are passed throughout all components for API connection requests.</p>
 <p>This service is provided for advanced usage where the connection parameters have to
-change dynamically through the application lifecycle(ie changing request namespace from &#39;<a href="http://api.mydomain.com&#39;">http://api.mydomain.com&#39;</a> to &#39;<a href="http://api.mydomain.com/SUBSECTION&#39;">http://api.mydomain.com/SUBSECTION&#39;</a>).</p>
+change dynamically through the application lifecycle(ie changing request namespace from &#39;<a href="http://api.mydomain.com">http://api.mydomain.com</a>&#39; to &#39;<a href="http://api.mydomain.com/SUBSECTION">http://api.mydomain.com/SUBSECTION</a>&#39;).</p>
 <p>If your application just needs its values initialized that should be done by
 passing in a config factory to the <a href="../modules/SenzingSdkModule.html#forRoot">SenzingSdkModule</a> method.</p>
 <div><pre class="line-numbers"><code class="language-html">this.apiconf.basePath = &#39;http://apis.mydomain.com/&#39;;</code></pre></div><div><pre class="line-numbers"><code class="language-html">this.apiconf.parametersChanged.subscribe( (params) =&gt; { console.log(&#39;api connection params changed.&#39;, params); })</code></pre></div>
