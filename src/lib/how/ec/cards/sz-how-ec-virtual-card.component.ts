@@ -4,7 +4,7 @@ import {
     SzEntityFeature, SzEntityIdentifier, SzResolvedEntity, 
     SzVirtualEntity, SzVirtualEntityRecord, EntityDataService as SzEntityDataService, SzRecordIdentifiers, SzRecordIdentifier, SzVirtualEntityResponse, SzFeatureMode, SzResolutionStep, SzFeatureScore } from '@senzing/rest-api-client-ng';
 import { take, takeUntil, tap, map, BehaviorSubject, Subject } from 'rxjs';
-import { SzHowCardBaseComponent } from './sz-how-entity-card-base.component';
+import { SzHowECCardBaseComponent } from './sz-how-ec-entity-card-base.component';
 import { SzSearchService } from '../../../services/sz-search.service';
 import { friendlyFeaturesName } from '../../../models/data-features';
 import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../../services/sz-how-ui-coordinator.service';
@@ -25,11 +25,11 @@ interface SzVirtualEntityRecordsByDataSource {
  * &lt;sz-wc-why-entity entityId="5"&gt;&lt;/sz-wc-why-entity&gt;<br/>
 */
 @Component({
-    selector: 'sz-how-virtual-card',
-    templateUrl: './sz-how-virtual-card.component.html',
-    styleUrls: ['./sz-how-virtual-card.component.scss']
+    selector: 'sz-how-ec-virtual-card',
+    templateUrl: './sz-how-ec-virtual-card.component.html',
+    styleUrls: ['./sz-how-ec-virtual-card.component.scss']
 })
-export class SzHowVirtualCardComponent extends SzHowCardBaseComponent implements OnInit {
+export class SzHowECVirtualCardComponent extends SzHowECCardBaseComponent implements OnInit {
 
     public stepsPanelOpenState = false;
     private _data: SzVirtualEntity;

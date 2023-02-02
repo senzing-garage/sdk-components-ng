@@ -22,11 +22,11 @@ import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorS
  * &lt;sz-wc-why-entity entityId="5"&gt;&lt;/sz-wc-why-entity&gt;<br/>
 */
 @Component({
-    selector: 'sz-how-step',
-    templateUrl: './sz-how-step.component.html',
-    styleUrls: ['./sz-how-step.component.scss']
+    selector: 'sz-how-ec-step',
+    templateUrl: './sz-how-ec-step.component.html',
+    styleUrls: ['./sz-how-ec-step.component.scss']
 })
-export class SzHowStepComponent implements OnInit, OnDestroy {
+export class SzHowECStepComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
 

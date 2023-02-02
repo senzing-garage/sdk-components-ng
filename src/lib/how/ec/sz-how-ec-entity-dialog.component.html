@@ -1,6 +1,6 @@
 <h1 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" (dblclick)="onDoubleClick($event)" cdkDragHandle>{{title}}</h1>
 <div mat-dialog-content>
-  <sz-how-entity #howEntityTag [entityId]="entityId" (loading)="onDataLoading($event)"></sz-how-entity>
+  <sz-how-ec-entity #howEntityTag [entityId]="entityId" (loading)="onDataLoading($event)"></sz-how-ec-entity>
   <!-- start spinner overlay -->
   <div class="mat-background spinner-panel" *ngIf="isLoading">
     <div class="spinner">

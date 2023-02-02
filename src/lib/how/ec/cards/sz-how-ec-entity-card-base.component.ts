@@ -7,7 +7,7 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { parseSzIdentifier } from '../../../common/utils';
 
 @Component({
-    selector: 'sz-how-entity-card-base',
+    selector: 'sz-how-ec-entity-card-base',
     template: `
     <div class="handle">
         <mat-icon fontIcon="arrow_right" *ngIf="!branchExpanded">arrow_right</mat-icon>
@@ -21,7 +21,7 @@ import { parseSzIdentifier } from '../../../common/utils';
     `,
     styles: []
 })
-export class SzHowCardBaseComponent implements OnDestroy {
+export class SzHowECCardBaseComponent implements OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
 

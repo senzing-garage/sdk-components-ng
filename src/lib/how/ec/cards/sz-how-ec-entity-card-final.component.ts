@@ -7,7 +7,7 @@ import {
 import { Observable, ReplaySubject, Subject, take, takeUntil, tap, map } from 'rxjs';
 import { parseSzIdentifier } from '../../../common/utils';
 import { SzHowFinalCardData } from '../../../models/data-how';
-import { SzHowCardBaseComponent } from './sz-how-entity-card-base.component';
+import { SzHowECCardBaseComponent } from './sz-how-ec-entity-card-base.component';
 import { SzSearchService } from '../../../services/sz-search.service';
 
 interface SzVirtualEntityRecordsByDataSource {
@@ -25,11 +25,11 @@ interface SzVirtualEntityRecordsByDataSource {
  * &lt;sz-wc-why-entity entityId="5"&gt;&lt;/sz-wc-why-entity&gt;<br/>
 */
 @Component({
-    selector: 'sz-how-entity-card-final',
-    templateUrl: './sz-how-entity-card-final.component.html',
-    styleUrls: ['./sz-how-entity-card-final.component.scss']
+    selector: 'sz-how-ec-entity-card-final',
+    templateUrl: './sz-how-ec-entity-card-final.component.html',
+    styleUrls: ['./sz-how-ec-entity-card-final.component.scss']
 })
-export class SzHowFinalCardComponent extends SzHowCardBaseComponent {
+export class SzHowECFinalCardComponent extends SzHowECCardBaseComponent {
     private _entityId: SzEntityIdentifier;
     @Input()
     set entityId(value: SzEntityIdentifier){

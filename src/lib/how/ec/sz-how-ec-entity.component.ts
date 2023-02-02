@@ -10,7 +10,7 @@ import { SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.
 import { SzHowFinalCardData, SzVirtualEntityRecordsClickEvent } from '../../models/data-how';
 import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseBool, parseSzIdentifier } from '../../common/utils';
-import { SzHowSourceRecordsComponent } from './sz-dialog-how-source-records.component';
+import { SzHowECSourceRecordsComponent } from './sz-dialog-how-ec-source-records.component';
 
 /**
  * Display the "How" information for entity
@@ -23,11 +23,11 @@ import { SzHowSourceRecordsComponent } from './sz-dialog-how-source-records.comp
  * &lt;sz-wc-how-entity entityId="5"&gt;&lt;/sz-wc-how-entity&gt;<br/>
 */
 @Component({
-    selector: 'sz-how-entity',
-    templateUrl: './sz-how-entity.component.html',
-    styleUrls: ['./sz-how-entity.component.scss']
+    selector: 'sz-how-ec-entity',
+    templateUrl: './sz-how-ec-entity.component.html',
+    styleUrls: ['./sz-how-ec-entity.component.scss']
 })
-export class SzHowEntityComponent implements OnInit, OnDestroy {
+export class SzHowECEntityComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
 
@@ -179,7 +179,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       this._recordsMoreLinkClick.next(evt);
       if(this._openRecordsModalOnClick) {
         let targetEle = new ElementRef(evt.target);
-        const dialogRef = this.dialog.open(SzHowSourceRecordsComponent, {
+        const dialogRef = this.dialog.open(SzHowECSourceRecordsComponent, {
           panelClass: 'tooltip-dialog-panel',
           hasBackdrop: false,
           data: {
@@ -192,11 +192,11 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
 }
 
 @Component({
-  selector: 'sz-dialog-how-entity',
-  templateUrl: 'sz-how-entity-dialog.component.html',
-  styleUrls: ['sz-how-entity-dialog.component.scss']
+  selector: 'sz-dialog-how-ec-entity',
+  templateUrl: 'sz-how-ec-entity-dialog.component.html',
+  styleUrls: ['sz-how-ec-entity-dialog.component.scss']
 })
-export class SzHowEntityDialog {
+export class SzHowECEntityDialog {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
   
@@ -210,7 +210,7 @@ export class SzHowEntityDialog {
   @HostBinding('class.maximized') get maximized() { return this._isMaximized; }
   private set maximized(value: boolean) { this._isMaximized = value; }
 
-  @ViewChild('howEntityTag') howEntityTag: SzHowEntityComponent;
+  @ViewChild('howEntityTag') howEntityTag: SzHowECEntityComponent;
 
   public get title(): string {
     let retVal = `Resolution Steps for Entity ${this.entityId}`;

@@ -13,11 +13,11 @@ import { SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../se
 import { MatSelect } from '@angular/material/select';
 
 @Component({
-    selector: 'sz-how-toolbar',
-    templateUrl: './sz-how-toolbar.component.html',
-    styleUrls: ['./sz-how-toolbar.component.scss']
+    selector: 'sz-how-ec-toolbar',
+    templateUrl: './sz-how-ec-toolbar.component.html',
+    styleUrls: ['./sz-how-ec-toolbar.component.scss']
 })
-export class SzHowToolbarComponent implements OnInit, OnDestroy {
+export class SzHowECToolbarComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
     private _stepMap: {[key: string]: SzResolutionStep} = {};

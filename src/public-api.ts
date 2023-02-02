@@ -78,12 +78,12 @@ export { SzWhyEntityDialog } from './lib/why/sz-why-entity.component';
 export { SzWhyEntitiesDialog } from './lib/why/sz-why-entities.component';
 
 /** how */
-export { SzHowEntityComponent, SzHowEntityDialog } from './lib/how/ec/sz-how-entity.component';
-export { SzHowStepComponent } from './lib/how/ec/sz-how-step.component';
-export { SzHowFinalCardComponent } from './lib/how/ec/cards/sz-how-entity-card-final.component';
-export { SzHowVirtualCardComponent } from './lib/how/ec/cards/sz-how-virtual-card.component';
-export { SzHowSourceRecordsComponent } from './lib/how/ec/sz-dialog-how-source-records.component';
-export { SzHowToolbarComponent } from './lib/how/ec/sz-how-toolbar.component';
+export { SzHowECEntityComponent, SzHowECEntityDialog } from './lib/how/ec/sz-how-ec-entity.component';
+export { SzHowECStepComponent } from './lib/how/ec/sz-how-ec-step.component';
+export { SzHowECFinalCardComponent } from './lib/how/ec/cards/sz-how-ec-entity-card-final.component';
+export { SzHowECVirtualCardComponent } from './lib/how/ec/cards/sz-how-ec-virtual-card.component';
+export { SzHowECSourceRecordsComponent } from './lib/how/ec/sz-dialog-how-ec-source-records.component';
+export { SzHowECToolbarComponent } from './lib/how/ec/sz-how-ec-toolbar.component';
 
 /** export some members of rest client to ease type use */
 export {

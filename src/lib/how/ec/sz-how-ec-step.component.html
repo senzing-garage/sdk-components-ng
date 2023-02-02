@@ -3,7 +3,7 @@
         <span class="hline"></span>
         <span class="vline"></span>
     </span>
-    <sz-how-virtual-card
+    <sz-how-ec-virtual-card
     *ngIf="inboundVirtualEntity"
     class="virtual-entity-card inbound-entity-card"
     [recordLimit]="2"
@@ -13,7 +13,7 @@
     [preceedingStep]="getConstructionStepForVirtualEntity(inboundVirtualEntity.virtualEntityId)"
     (highlightedConstructionFeaturesChanged)="onHighlightedConstructionFeaturesChanged($event[0], $event[1])"
     (moreLinkClicked)="onRecordsMoreLinkClicked($event)"
-></sz-how-virtual-card>
+></sz-how-ec-virtual-card>
 </div>
 <div class="vcard-spacer"><span class="vline"></span></div>
 <div class="vcard-container">
@@ -21,7 +21,7 @@
         <span class="hline-spacer"></span>
         <span class="vline"></span>
     </span>
-    <sz-how-virtual-card
+    <sz-how-ec-virtual-card
     *ngIf="candidateVirtualEntity"
     class="virtual-entity-card candidate-entity-card"
     [recordLimit]="2"
@@ -31,5 +31,5 @@
     [preceedingStep]="getConstructionStepForVirtualEntity(candidateVirtualEntity.virtualEntityId)"
     (highlightedConstructionFeaturesChanged)="onHighlightedConstructionFeaturesChanged($event[0], $event[1])"
     (moreLinkClicked)="onRecordsMoreLinkClicked($event)"
-></sz-how-virtual-card>
+></sz-how-ec-virtual-card>
 </div>

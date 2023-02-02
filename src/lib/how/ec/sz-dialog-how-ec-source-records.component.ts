@@ -23,14 +23,14 @@ import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorS
  * &lt;sz-wc-why-entity entityId="5"&gt;&lt;/sz-wc-why-entity&gt;<br/>
 */
 @Component({
-    selector: 'sz-dialog-how-source-records',
-    templateUrl: './sz-dialog-how-source-records.component.html',
-    styleUrls: ['./sz-dialog-how-source-records.component.scss']
+    selector: 'sz-dialog-how-ec-source-records',
+    templateUrl: './sz-dialog-how-ec-source-records.component.html',
+    styleUrls: ['./sz-dialog-how-ec-source-records.component.scss']
 })
-export class SzHowSourceRecordsComponent implements OnInit, OnDestroy {
+export class SzHowECSourceRecordsComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
-    private readonly _matDialogRef: MatDialogRef<SzHowSourceRecordsComponent>;
+    private readonly _matDialogRef: MatDialogRef<SzHowECSourceRecordsComponent>;
     private readonly targetElementRef: ElementRef;
     public okButtonText: string = "Ok";
     private _showOkButton = true;
@@ -59,7 +59,7 @@ export class SzHowSourceRecordsComponent implements OnInit, OnDestroy {
       return this._showOkButton;
     }
   
-    constructor(_matDialogRef: MatDialogRef<SzHowSourceRecordsComponent>,
+    constructor(_matDialogRef: MatDialogRef<SzHowECSourceRecordsComponent>,
         @Inject(MAT_DIALOG_DATA) data: { target: ElementRef, event: SzVirtualEntityRecordsClickEvent }) {
         this._matDialogRef      = _matDialogRef;
         this.targetElementRef   = data.target;

@@ -76,14 +76,14 @@ import { SzWhyEntitiesComparisonComponent } from './why/sz-why-entities.componen
 import { SzWhyEntityDialog } from './why/sz-why-entity.component';
 import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
 // how related
-import { SzHowEntityComponent, SzHowEntityDialog } from './how/ec/sz-how-entity.component';
-import { SzHowStepComponent } from './how/ec/sz-how-step.component';
-import { SzHowCardBaseComponent } from './how/ec/cards/sz-how-entity-card-base.component';
-import { SzHowFinalCardComponent } from './how/ec/cards/sz-how-entity-card-final.component';
-import { SzHowVirtualCardComponent } from './how/ec/cards/sz-how-virtual-card.component';
+import { SzHowECEntityComponent, SzHowECEntityDialog } from './how/ec/sz-how-ec-entity.component';
+import { SzHowECStepComponent } from './how/ec/sz-how-ec-step.component';
+import { SzHowECCardBaseComponent } from './how/ec/cards/sz-how-ec-entity-card-base.component';
+import { SzHowECFinalCardComponent } from './how/ec/cards/sz-how-ec-entity-card-final.component';
+import { SzHowECVirtualCardComponent } from './how/ec/cards/sz-how-ec-virtual-card.component';
 import { SzHowUICoordinatorService } from './services/sz-how-ui-coordinator.service';
-import { SzHowToolbarComponent } from './how/ec/sz-how-toolbar.component';
-import { SzHowSourceRecordsComponent } from './how/ec/sz-dialog-how-source-records.component';
+import { SzHowECToolbarComponent } from './how/ec/sz-how-ec-toolbar.component';
+import { SzHowECSourceRecordsComponent } from './how/ec/sz-dialog-how-ec-source-records.component';
 
 /**
  * Sets up a default set of service parameters for use
@@ -132,14 +132,14 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzGraphControlComponent,
         SzGraphComponent,
         SzGraphFilterComponent,
-        SzHowCardBaseComponent,
-        SzHowEntityComponent,
-        SzHowEntityDialog,
-        SzHowFinalCardComponent,
-        SzHowSourceRecordsComponent,
-        SzHowStepComponent,
-        SzHowToolbarComponent,
-        SzHowVirtualCardComponent,
+        SzHowECCardBaseComponent,
+        SzHowECEntityComponent,
+        SzHowECEntityDialog,
+        SzHowECFinalCardComponent,
+        SzHowECSourceRecordsComponent,
+        SzHowECStepComponent,
+        SzHowECToolbarComponent,
+        SzHowECVirtualCardComponent,
         SzMultiSelectButtonComponent,
         SzPoweredByComponent,
         SzPreferencesComponent,
@@ -184,11 +184,11 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzGraphComponent,
         SzGraphControlComponent,
         SzGraphFilterComponent,
-        SzHowEntityComponent,
-        SzHowEntityDialog,
-        SzHowSourceRecordsComponent,
-        SzHowToolbarComponent,
-        SzHowVirtualCardComponent,
+        SzHowECEntityComponent,
+        SzHowECEntityDialog,
+        SzHowECSourceRecordsComponent,
+        SzHowECToolbarComponent,
+        SzHowECVirtualCardComponent,
         SzPoweredByComponent,
         SzPreferencesComponent,
         SzRelationshipNetworkComponent,
