@@ -1,0 +1,116 @@
+:host {
+    /*border: 2px dashed salmon;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 1;
+    /*justify-content: space-around;*/
+    transition: .9s opacity;
+    
+    sz-how-virtual-card,
+    .line-kit,
+    .vcard-spacer {
+        transition: .9s opacity;
+    }
+
+    &.hidden {
+        /*display: none;*/
+        opacity: 0;
+    }
+    &.highlighted {
+        --sz-how-card-border-color: rgb(28, 168, 115);
+    }
+    &.dimmed {
+        sz-how-virtual-card,
+        .line-kit,
+        .vcard-spacer {
+            transition: .4s opacity;
+        }
+
+        sz-how-virtual-card {
+            opacity: .4;
+
+            &.highlighted {
+                opacity: 1;
+            }
+        }
+        .line-kit,
+        .vcard-spacer {
+            opacity: .4;
+        }
+    }
+    &:hover.dimmed {
+        sz-how-virtual-card,
+        .line-kit,
+        .vcard-spacer {
+            opacity: 1;
+        }
+    }
+
+    .vcard-container {
+        display: flex;
+        flex-direction: row;
+        /*flex-grow: 4;*/
+        align-self: start;
+
+        &:first-child {
+            /*margin-bottom: 20px;*/
+
+            .line-kit .vline {
+                margin-top: auto;
+                margin-bottom: 0;
+                margin-left: -2px; /* we need to shift negative for to line up properly */
+                height: 50%;
+                width: 20px;
+                border-bottom: 0;
+                border-top: 2px solid #000;
+                border-top-color: var(--sz-how-card-border-color);
+            }
+        }
+
+        .line-kit {
+            width: 43px;
+            display: flex;
+            flex-direction: row;
+
+            /*border: 1px dashed purple;*/
+            .hline-spacer {
+                width: 20px;
+            }
+            .hline {
+                display: block;
+                margin-top: 90px;
+                width: 20px;
+                border-top: 2px solid #000;
+                border-right: 2px solid #000;
+                border-top-color: var(--sz-how-card-border-color);
+                border-right-color: var(--sz-how-card-border-color);
+                height: calc(50% - 94px);
+            }
+            .vline {
+                display: block;
+                height: 50%;
+                width: 20px;
+                border-left: 2px solid #000;
+                border-bottom: 2px solid #000;
+                border-left-color: var(--sz-how-card-border-color);
+                border-bottom-color: var(--sz-how-card-border-color);
+            }
+        }
+    }
+    .vcard-spacer {
+        /*border: 2px dashed blueviolet;*/
+        min-height: 20px;
+        flex-grow: 5;
+        .vline {
+            display: block;
+            width: 20px;
+            height: 100%;
+            border-right: 2px solid #000;
+            border-right-color: var(--sz-how-card-border-color);
+        }
+    }
+    .virtual-entity-card {
+
+    }
+}

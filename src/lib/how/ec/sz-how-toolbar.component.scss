@@ -1,0 +1,31 @@
+:host {
+    justify-content: center;
+    text-align: center;
+    nav {
+        ol, ul {
+            list-style: none;
+            margin: 10px;
+            display: inline-flex;
+            flex-direction: row;
+
+            .menuslabel {
+                padding-top: calc(30px / 2);
+                font-size: 32px;
+                color: #3c3c3c;
+            }
+
+            li {
+                /* border: 2px solid black;*/
+                border-radius: 5px;
+                margin: 0 4px;
+                padding: 4px 10px;
+                min-width: calc(100vw / 6);
+                &:first-child {
+                    /* first child is text*/
+                    min-width: unset;
+                    border: 0;
+                }
+            }
+        }
+    }
+}

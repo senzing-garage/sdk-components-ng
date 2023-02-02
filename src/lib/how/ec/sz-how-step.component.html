@@ -1,0 +1,35 @@
+<div class="vcard-container">
+    <span class="line-kit">
+        <span class="hline"></span>
+        <span class="vline"></span>
+    </span>
+    <sz-how-virtual-card
+    *ngIf="inboundVirtualEntity"
+    class="virtual-entity-card inbound-entity-card"
+    [recordLimit]="2"
+    [data]="inboundVirtualEntity"
+    [currentStep]="data"
+    [featureOrder]="featureOrder"
+    [preceedingStep]="getConstructionStepForVirtualEntity(inboundVirtualEntity.virtualEntityId)"
+    (highlightedConstructionFeaturesChanged)="onHighlightedConstructionFeaturesChanged($event[0], $event[1])"
+    (moreLinkClicked)="onRecordsMoreLinkClicked($event)"
+></sz-how-virtual-card>
+</div>
+<div class="vcard-spacer"><span class="vline"></span></div>
+<div class="vcard-container">
+    <span class="line-kit">
+        <span class="hline-spacer"></span>
+        <span class="vline"></span>
+    </span>
+    <sz-how-virtual-card
+    *ngIf="candidateVirtualEntity"
+    class="virtual-entity-card candidate-entity-card"
+    [recordLimit]="2"
+    [data]="candidateVirtualEntity"
+    [currentStep]="data"
+    [featureOrder]="featureOrder"
+    [preceedingStep]="getConstructionStepForVirtualEntity(candidateVirtualEntity.virtualEntityId)"
+    (highlightedConstructionFeaturesChanged)="onHighlightedConstructionFeaturesChanged($event[0], $event[1])"
+    (moreLinkClicked)="onRecordsMoreLinkClicked($event)"
+></sz-how-virtual-card>
+</div>

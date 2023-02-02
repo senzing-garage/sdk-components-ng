@@ -1,0 +1,57 @@
+<nav>
+    <ul>
+        <li class="menuslabel">Jump To:</li>
+        <li>
+            <mat-form-field appearance="fill" class="jump-to-menu">
+                <mat-label>All Steps({{numberOfTotalSteps}})</mat-label>
+                <mat-select panelClass="how-jump-menu-panel" (selectionChange)="jumpTo($event.value)" [(value)]="pdModels[0]">
+                  <mat-option *ngFor="let step of allSteps" [value]="step.resolvedVirtualEntityId">
+                    Step #{{step.stepNumber}} 
+                    <mat-icon class="ninety" [fontIcon]="getIconForStep(step)">{{getIconForStep(step)}}</mat-icon>
+                    {{stepDescription(step)}}
+                  </mat-option>
+                  <!--<mat-option *ngFor="let virtualEntity of finalVirtualEntities; let fStateInd=index" [value]="virtualEntity.virtualEntityId">Step #{{1+numberOfSteps}} - Entity {{virtualEntity.virtualEntityId}}</mat-option>-->
+                </mat-select>
+            </mat-form-field>
+        </li>
+        <li *ngIf="numberOfMergeSteps > 0">
+            <mat-form-field appearance="fill" class="jump-to-menu">
+            <mat-label>Merge Virtual Entity Steps({{numberOfMergeSteps}})</mat-label>
+            <mat-select panelClass="how-jump-menu-panel" (selectionChange)="jumpTo($event.value)" [(value)]="pdModels[1]">
+              <mat-option *ngFor="let step of mergeSteps" [value]="step.resolvedVirtualEntityId">
+                Step #{{step.stepNumber}} 
+                <mat-icon class="ninety" [fontIcon]="getIconForStep(step)">{{getIconForStep(step)}}</mat-icon>
+                {{stepDescription(step)}}
+              </mat-option>
+              <!--<mat-option *ngFor="let virtualEntity of finalVirtualEntities; let fStateInd=index" [value]="virtualEntity.virtualEntityId">Step #{{1+numberOfSteps}} - Entity {{virtualEntity.virtualEntityId}}</mat-option>-->
+            </mat-select>
+            </mat-form-field>
+        </li>
+        <li *ngIf="numberOfAddRecordSteps > 0">
+            <mat-form-field appearance="fill" class="jump-to-menu">
+            <mat-label>Add Record to Virtual Entity Steps({{numberOfAddRecordSteps}})</mat-label>
+            <mat-select panelClass="how-jump-menu-panel" (selectionChange)="jumpTo($event.value)" [(value)]="pdModels[2]">
+              <mat-option *ngFor="let step of addRecordSteps" [value]="step.resolvedVirtualEntityId">
+                Step #{{step.stepNumber}} 
+                <mat-icon class="ninety" [fontIcon]="getIconForStep(step)">{{getIconForStep(step)}}</mat-icon>
+                {{stepDescription(step)}}
+              </mat-option>
+              <!--<mat-option *ngFor="let virtualEntity of finalVirtualEntities; let fStateInd=index" [value]="virtualEntity.virtualEntityId">Step #{{1+numberOfSteps}} - Entity {{virtualEntity.virtualEntityId}}</mat-option>-->
+            </mat-select>
+            </mat-form-field>
+        </li>
+        <li *ngIf="numberOfCreateVirtualEntitySteps > 0">
+            <mat-form-field appearance="fill" class="jump-to-menu">
+            <mat-label>Create Virtual Entity Steps({{numberOfCreateVirtualEntitySteps}})</mat-label>
+            <mat-select panelClass="how-jump-menu-panel" (selectionChange)="jumpTo($event.value)" [(value)]="pdModels[3]">
+              <mat-option *ngFor="let step of createEntitySteps" [value]="step.resolvedVirtualEntityId">
+                Step #{{step.stepNumber}} 
+                <mat-icon class="ninety" [fontIcon]="getIconForStep(step)">{{getIconForStep(step)}}</mat-icon>
+                {{stepDescription(step)}}
+              </mat-option>
+              <!--<mat-option *ngFor="let virtualEntity of finalVirtualEntities; let fStateInd=index" [value]="virtualEntity.virtualEntityId">Step #{{1+numberOfSteps}} - Entity {{virtualEntity.virtualEntityId}}</mat-option>-->
+            </mat-select>
+            </mat-form-field>
+        </li>
+    </ul>
+</nav>

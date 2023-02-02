@@ -1,0 +1,15 @@
+<h1 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" (dblclick)="onDoubleClick($event)" cdkDragHandle>
+    <span>{{title}}</span>
+    <button mat-dialog-close class="close">X</button>
+</h1>
+
+<div mat-dialog-content>
+    <ul *ngIf="records && records.length > 0" class="records-list">
+        <li *ngFor="let record of records">
+            {{record?.recordId}}
+        </li>
+    </ul>
+</div>
+<!--<div mat-dialog-actions *ngIf="showDialogActions">
+  <button mat-stroked-button mat-dialog-close color="primary" class="ok">{{okButtonText}}</button>
+</div>-->

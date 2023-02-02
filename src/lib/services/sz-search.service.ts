@@ -15,7 +15,8 @@ import {
   SzRecordResponse,
   SzRecordResponseData,
   SzEntityIdentifiers,
-  SzDetailLevel
+  SzDetailLevel,
+  SzEntityIdentifier
 } from '@senzing/rest-api-client-ng';
 import { SzEntitySearchParams } from '../models/entity-search';
 
@@ -132,10 +133,10 @@ export class SzSearchService {
    *
    * @memberof SzSearchService
    */
-  public getEntityById(entityId: number, withRelated = false, detailLevel = SzDetailLevel.VERBOSE): Observable<SzEntityData> {
+  public getEntityById(entityId: SzEntityIdentifier, withRelated = false, detailLevel = SzDetailLevel.VERBOSE): Observable<SzEntityData> {
     console.log('@senzing/sdk/services/sz-search[getEntityById('+ entityId +', '+ withRelated +')] ');
     const withRelatedStr = withRelated ? 'FULL' : 'NONE';
-    return this.entityDataService.getEntityByEntityId(entityId, detailLevel, undefined, undefined, undefined, undefined, withRelatedStr)
+    return this.entityDataService.getEntityByEntityId((entityId as number), detailLevel, undefined, undefined, undefined, undefined, withRelatedStr)
     .pipe(
       tap((res: SzEntityResponse) => console.log('SzSearchService.getEntityById: ' + entityId, res.data)),
       map((res: SzEntityResponse) => (res.data as SzEntityData))

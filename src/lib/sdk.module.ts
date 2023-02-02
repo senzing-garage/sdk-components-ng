@@ -25,6 +25,7 @@ import { SzDataSourcesService } from './services/sz-datasources.service';
 import { SzAdminService } from './services/sz-admin.service';
 import { SzBulkDataService } from './services/sz-bulk-data.service';
 import { SzCSSClassService } from './services/sz-css-class.service';
+import { SzConfigDataService } from './services/sz-config-data.service';
 
 /** components */
 import { SzMultiSelectButtonComponent } from './shared/multi-select-button/multi-select-button.component';
@@ -74,6 +75,15 @@ import { SzWhyEntityComponent } from './why/sz-why-entity.component';
 import { SzWhyEntitiesComparisonComponent } from './why/sz-why-entities.component';
 import { SzWhyEntityDialog } from './why/sz-why-entity.component';
 import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
+// how related
+import { SzHowEntityComponent, SzHowEntityDialog } from './how/ec/sz-how-entity.component';
+import { SzHowStepComponent } from './how/ec/sz-how-step.component';
+import { SzHowCardBaseComponent } from './how/ec/cards/sz-how-entity-card-base.component';
+import { SzHowFinalCardComponent } from './how/ec/cards/sz-how-entity-card-final.component';
+import { SzHowVirtualCardComponent } from './how/ec/cards/sz-how-virtual-card.component';
+import { SzHowUICoordinatorService } from './services/sz-how-ui-coordinator.service';
+import { SzHowToolbarComponent } from './how/ec/sz-how-toolbar.component';
+import { SzHowSourceRecordsComponent } from './how/ec/sz-dialog-how-source-records.component';
 
 /**
  * Sets up a default set of service parameters for use
@@ -122,6 +132,14 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzGraphControlComponent,
         SzGraphComponent,
         SzGraphFilterComponent,
+        SzHowCardBaseComponent,
+        SzHowEntityComponent,
+        SzHowEntityDialog,
+        SzHowFinalCardComponent,
+        SzHowSourceRecordsComponent,
+        SzHowStepComponent,
+        SzHowToolbarComponent,
+        SzHowVirtualCardComponent,
         SzMultiSelectButtonComponent,
         SzPoweredByComponent,
         SzPreferencesComponent,
@@ -166,6 +184,11 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzGraphComponent,
         SzGraphControlComponent,
         SzGraphFilterComponent,
+        SzHowEntityComponent,
+        SzHowEntityDialog,
+        SzHowSourceRecordsComponent,
+        SzHowToolbarComponent,
+        SzHowVirtualCardComponent,
         SzPoweredByComponent,
         SzPreferencesComponent,
         SzRelationshipNetworkComponent,
@@ -187,10 +210,12 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzMessageBundleService,
         SzAdminService,
         SzBulkDataService,
+        SzConfigDataService,
         SzConfigurationService,
         SzCSSClassService,
         SzDataSourcesService,
         SzFoliosService,
+        SzHowUICoordinatorService,
         SzPrefsService,
         SzSearchService,
         HttpClient,

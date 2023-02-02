@@ -1,0 +1,41 @@
+<div style="text-align:left; font-weight: bold; font-size: 1.5em">
+    @senzing/sdk-components-ng/examples/with-how-features
+  </div>
+  <div style="text-align:left; text-decoration: italic; font-size: 0.8em; margin: 2px 0 10px 0;">
+    An example Angular app showing usage of the sz-how-entities component
+  </div>
+  <!-- start entity how -->
+  <sz-how-toolbar 
+    [stepsByVirtualId]="resolutionStepsByVirtualId"
+    [finalVirtualEntities]="finalCardsData"
+    [finalEntityId]="currentlySelectedEntityId"
+  ></sz-how-toolbar>
+  <sz-how-entity
+    #howGraph
+    [entityId]="currentlySelectedEntityId"
+    showToolBar="false"
+    (dataChanged)="onDataChange($event)"
+  ></sz-how-entity>
+  <!-- end entity how -->
+  <!-- start entity detail -->
+  <!--
+  <div *ngIf="showSearchResultDetail">
+    <div class="detail-wrapper">
+        <button (click)="onBackToSearchResultsClick($event)">&lt;&lt; Go Back to Search Results</button>
+    </div>
+    <sz-entity-detail
+      #entityDetailComponent
+      (graphEntityClick)="onGraphEntityClick($event)"
+      (graphEntityDblClick)="onGraphEntityDblClick($event)"
+      [whySelectionMode]="'SINGLE'"
+      [showEntityWhyFunction]="true"
+      [showRecordWhyUtilities]="true"
+      [showGraphMatchKeys]="true"
+      [graphShowZoomControl]="true"
+      [showGraphContextMenu]="true"
+      [showGraphLinkContextMenu]="true"
+      graphZoomControlPosition="top-left"
+      [entityId]="currentlySelectedEntityId"></sz-entity-detail>
+  </div>-->
+  <!-- end entity detail -->
+  
