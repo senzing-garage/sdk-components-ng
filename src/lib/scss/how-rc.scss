@@ -1,0 +1,39 @@
+
+/* this file contains global overrides to material component styles 
+* being used from within the context of "How" components. These 
+* cannot be at the ViewEncapsulated level or mixin level because 
+* angular will alias the scope.
+*/
+
+sz-how-rc-nav, .sz-how-nav {
+
+    .mat-mdc-form-field.free-text-search {
+        
+    }
+
+    .mat-mdc-checkbox .mdc-checkbox {
+        margin: 0;
+        padding: 0;
+
+        input[type=checkbox] {
+            top: 0;
+            left: 0;
+            width: 18px;
+            height: 18px;
+        }
+        .mdc-checkbox__background {
+            top: 0;
+            left: 0;
+        }
+    }
+    mat-checkbox {
+        .mdc-form-field,
+        label {
+            font-size: inherit !important;
+        }
+        label {
+            white-space: nowrap;
+        }
+    }
+}
+

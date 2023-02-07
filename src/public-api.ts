@@ -85,6 +85,9 @@ export { SzHowECVirtualCardComponent } from './lib/how/ec/cards/sz-how-ec-virtua
 export { SzHowECSourceRecordsComponent } from './lib/how/ec/sz-dialog-how-ec-source-records.component';
 export { SzHowECToolbarComponent } from './lib/how/ec/sz-how-ec-toolbar.component';
 
+export { SzHowRCEntityComponent, SzHowRCEntityDialog } from './lib/how/rc/sz-how-rc-entity.component';
+export { SzHowRCNavComponent } from './lib/how/rc/sz-how-rc-nav.component';
+
 /** export some members of rest client to ease type use */
 export {
   Configuration as SzRestConfiguration,

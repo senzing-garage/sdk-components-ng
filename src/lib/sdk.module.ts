@@ -85,6 +85,9 @@ import { SzHowUICoordinatorService } from './services/sz-how-ui-coordinator.serv
 import { SzHowECToolbarComponent } from './how/ec/sz-how-ec-toolbar.component';
 import { SzHowECSourceRecordsComponent } from './how/ec/sz-dialog-how-ec-source-records.component';
 
+import { SzHowRCEntityComponent, SzHowRCEntityDialog } from './how/rc/sz-how-rc-entity.component';
+import { SzHowRCNavComponent } from './how/rc/sz-how-rc-nav.component';
+
 /**
  * Sets up a default set of service parameters for use
  * by the SDK Components.
@@ -140,6 +143,9 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowECStepComponent,
         SzHowECToolbarComponent,
         SzHowECVirtualCardComponent,
+        SzHowRCEntityComponent,
+        SzHowRCEntityDialog,
+        SzHowRCNavComponent,
         SzMultiSelectButtonComponent,
         SzPoweredByComponent,
         SzPreferencesComponent,
@@ -189,6 +195,9 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowECSourceRecordsComponent,
         SzHowECToolbarComponent,
         SzHowECVirtualCardComponent,
+        SzHowRCNavComponent,
+        SzHowRCEntityComponent,
+        SzHowRCEntityDialog,
         SzPoweredByComponent,
         SzPreferencesComponent,
         SzRelationshipNetworkComponent,

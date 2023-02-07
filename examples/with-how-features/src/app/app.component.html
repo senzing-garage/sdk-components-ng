@@ -5,17 +5,12 @@
     An example Angular app showing usage of the sz-how-entities component
   </div>
   <!-- start entity how -->
-  <sz-how-ec-toolbar 
-    [stepsByVirtualId]="resolutionStepsByVirtualId"
-    [finalVirtualEntities]="finalCardsData"
-    [finalEntityId]="currentlySelectedEntityId"
-  ></sz-how-ec-toolbar>
-  <sz-how-ec-entity
+  <sz-how-rc-entity
     #howGraph
     [entityId]="currentlySelectedEntityId"
-    showToolBar="false"
+    showNavigation="true"
     (dataChanged)="onDataChange($event)"
-  ></sz-how-ec-entity>
+  ></sz-how-rc-entity>
   <!-- end entity how -->
   <!-- start entity detail -->
   <!--

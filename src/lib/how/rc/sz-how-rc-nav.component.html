@@ -1,0 +1,41 @@
+<form class="how-nav-parameters">
+  <section class="parameter-block free-text-search">
+    <label>Filter By Text or Record ID:</label>
+    <mat-form-field class="free-text-search">
+      <input matInput placeholder="" [(ngModel)]="filterByTextOrRecordId">
+    </mat-form-field>
+  </section>
+  <section class="parameter-block">
+    <label>Filter by How Step Type</label>
+    <ul>
+      <li>
+        <mat-checkbox [(ngModel)]="filterByVirtualEntityCreation">Create Virtual Entity</mat-checkbox>
+      </li>
+      <li>
+        <mat-checkbox [(ngModel)]="filterByMergeInterimEntitites">Merge Interim Entitites</mat-checkbox>
+      </li>
+      <li>
+        <mat-checkbox [(ngModel)]="filterByAddRecordtoVirtualEntity">Add Record to Virtual Entity</mat-checkbox>
+      </li>
+    </ul>
+  </section>
+  <section class="parameter-block">
+    <label>Filter by Low-Scoring Matches</label>
+    <ul>
+      <li>
+        <mat-checkbox [(ngModel)]="filterByLowScoringNames">Low Scoring Names</mat-checkbox>
+      </li>
+      <li>
+        <mat-checkbox [(ngModel)]="filterByLowScoringAddresses">Low Scoring Addresses</mat-checkbox>
+      </li>
+    </ul>
+  </section>
+  <section class="results-block">
+    <label>Matching Steps</label>
+    <nav>
+      <ul>
+        <li></li>
+      </ul>
+    </nav>
+  </section>
+</form>
