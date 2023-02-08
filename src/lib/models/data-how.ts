@@ -26,3 +26,17 @@ export interface SzResolutionStepUI extends SzResolutionStep {
     expanded: boolean
     preceedingSteps: SzResolutionStepUI[]
 }
+
+export type SzResolutionStepDisplayType = 'MERGE' | 'CREATE' | 'ADD';
+export const SzResolutionStepDisplayType = {
+    MERGE: 'MERGE' as SzResolutionStepDisplayType,
+    CREATE: 'CREATE' as SzResolutionStepDisplayType,
+    ADD: 'ADD' as SzResolutionStepDisplayType
+};
+
+export interface SzResolutionStepListItem extends SzResolutionStep {
+    actionType: SzResolutionStepDisplayType,
+    title: string,
+    cssClasses?: string[],
+    description: {text: string, cssClasses: string[]}[],
+}
