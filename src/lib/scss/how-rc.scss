@@ -8,7 +8,24 @@
 sz-how-rc-nav, .sz-how-nav {
 
     .mat-mdc-form-field.free-text-search {
-        
+        .mat-mdc-form-field-infix {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            min-height: 14px;
+        }
+
+        .mat-mdc-text-field-wrapper.mdc-text-field--filled {
+            border: 1px solid #000;
+            border-radius: 3px;
+        }
+        .mat-mdc-form-field-focus-overlay {
+            display: none;
+        }
+        .mat-mdc-form-field-subscript-wrapper {
+            font-size: 8px;
+            line-height: 8px;
+            display: none;
+        }
     }
 
     .mat-mdc-checkbox .mdc-checkbox {
@@ -24,6 +41,11 @@ sz-how-rc-nav, .sz-how-nav {
         .mdc-checkbox__background {
             top: 0;
             left: 0;
+            background-color: #fff !important;
+        }
+        .mat-mdc-checkbox-touch-target {
+            width: 18px;
+            height: 18px;
         }
     }
     mat-checkbox {

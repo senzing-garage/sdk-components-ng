@@ -17,7 +17,10 @@ import { Overlay } from '@angular/cdk/overlay';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public currentlySelectedEntityId: number = 200002;
+  //public currentlySelectedEntityId: number = 200002;
+  //public currentlySelectedEntityId: number = 400124;
+  public currentlySelectedEntityId: number = 401992;
+
   private howResult: SzHowEntityResult;  
   @ViewChild('howGraph') howGraph: SzSearchComponent;
 

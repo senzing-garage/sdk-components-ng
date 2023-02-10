@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { DataSource } from '@angular/cdk/collections';
 import { 
     EntityDataService as SzEntityDataService, 
-    SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzConfigResponse, SzEntityIdentifier, SzVirtualEntityRecord 
+    SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzConfigResponse, SzEntityIdentifier, SzVirtualEntityRecord, SzFeatureScore 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../services/sz-config-data.service';
 import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolutionStepListItem } from '../../models/data-how';
@@ -12,6 +12,15 @@ import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../../common/utils';
 import { SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
 import { MatSelect } from '@angular/material/select';
+
+export interface SzHowRCNavComponentParameterCounts {
+    'CREATE': number,
+    'ADD': number,
+    'MERGE': number,
+    'LOW_SCORE_NAME': number,
+    'LOW_SCORE_ADDRESS': number,
+    'LOW_SCORE_PHONE': number
+}
 
 @Component({
     selector: 'sz-how-rc-nav',
@@ -23,6 +32,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
     public unsubscribe$ = new Subject<void>();
     private _stepMap: {[key: string]: SzResolutionStep} = {};
     @Input() public finalEntityId: SzEntityIdentifier;
+    @Input() public lowScoringFeatureThreshold: number = 80;
 
     private _finalVirtualEntities: SzVirtualEntity[];
     @Input() set finalVirtualEntities(value: SzVirtualEntity[]) {
@@ -63,6 +73,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
     @Input() set stepsByVirtualId(value: {[key: string]: SzResolutionStep}) {
         console.info('set stepsByVirtualId: ',value);
         this._stepMap = value;
+        this._parameterCounts = this.getParameterCounts();
     }
     get stepsByVirtualId(): {[key: string]: SzResolutionStep} {
         return this._stepMap;
@@ -221,38 +232,168 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
     }
 
     public get filteredListSteps(): SzResolutionStepListItem[] {
-        let retVal = this.listSteps;
+        let oVal    = this.listSteps;
+        let retVal  = oVal.filter((step: SzResolutionStepListItem) => {
+            let _hasParamsChecked   = false;
+            let _inc                = false;
+
+            if(this._filterByVirtualEntityCreation) {
+                _hasParamsChecked = true;
+                _inc = _inc || step.actionType == SzResolutionStepDisplayType.CREATE;
+            }
+            if(this._filterByAddRecordtoVirtualEntity) {
+                _hasParamsChecked = true;
+                _inc = _inc || step.actionType == SzResolutionStepDisplayType.ADD;
+            }
+            if(this._filterByMergeInterimEntitites) {
+                _hasParamsChecked = true;
+                _inc = _inc || step.actionType == SzResolutionStepDisplayType.MERGE;
+            }
+            // now check for low-scoring features
+            if(this._filterByLowScoringNames || this.filterByLowScoringAddresses) {
+                _hasParamsChecked = true;
+                let hasLowScoringFeature = false;
+                if(this._filterByLowScoringNames && step.matchInfo && step.matchInfo.featureScores && step.matchInfo.featureScores['NAME']){
+                    // has name features
+                    let nameScores = step.matchInfo.featureScores['NAME'];
+                    // we only assign if value is false,
+                    // that way the default is false UNLESS the condition is true
+                    if(!hasLowScoringFeature) {
+                        hasLowScoringFeature = nameScores.some((featScore: SzFeatureScore) => {
+                            return !(featScore.score > this.lowScoringFeatureThreshold);
+                        });
+                        if(hasLowScoringFeature) {
+                            //console.log('HAS LOW SCORING NAME!!', step);
+                        }
+                    }
+                }
+                if(this.filterByLowScoringAddresses && step.matchInfo && step.matchInfo.featureScores && step.matchInfo.featureScores['ADDRESS']){
+                    // has name features
+                    let nameScores = step.matchInfo.featureScores['ADDRESS'];
+                    // we only assign if value is false,
+                    // that way the default is false UNLESS the condition is true
+                    if(!hasLowScoringFeature) {
+                        hasLowScoringFeature = nameScores.some((featScore: SzFeatureScore) => {
+                            return !(featScore.score > this.lowScoringFeatureThreshold);
+                        });
+                        if(hasLowScoringFeature) {
+                            //console.log('HAS LOW SCORING ADDRESS!!', step);
+                        }
+                    }
+                }
+                if(hasLowScoringFeature) {
+                    _inc = true;
+                }
+            }
+
+            // if no parameters are selected just return everything
+            return _hasParamsChecked ? _inc : true;
+        });
+        //console.log('filteredListSteps: ', oVal, retVal);
 
         return retVal;
     }
 
 
+    private _parameterCounts: SzHowRCNavComponentParameterCounts = {
+        'CREATE': 0,
+        'ADD': 0,
+        'MERGE': 0,
+        'LOW_SCORE_NAME':0,
+        'LOW_SCORE_ADDRESS':0,
+        'LOW_SCORE_PHONE':0
+    }
+    public get parameterCounts(): SzHowRCNavComponentParameterCounts {
+        return this._parameterCounts;
+    }
+
+    public getParameterCount(name: string): number {
+        let retVal = 0;
+        if(this._parameterCounts && this._parameterCounts[ name ] !== undefined) {
+            retVal = this._parameterCounts[ name ];
+        }
+        return retVal;
+    }
+
+    private getParameterCounts() {
+        let retVal = {
+            'CREATE': 0,
+            'ADD': 0,
+            'MERGE': 0,
+            'LOW_SCORE_NAME':0,
+            'LOW_SCORE_ADDRESS':0,
+            'LOW_SCORE_PHONE':0
+        }
+        this.listSteps.forEach((step: SzResolutionStepListItem) => {
+            if(step.actionType == SzResolutionStepDisplayType.CREATE) {
+                retVal.CREATE = retVal.CREATE+1;
+            }
+            if(step.actionType == SzResolutionStepDisplayType.ADD) {
+                retVal.ADD = retVal.ADD+1;
+            }
+            if(step.actionType == SzResolutionStepDisplayType.MERGE) {
+                retVal.ADD = retVal.MERGE+1;
+            }
+            if(step.matchInfo && step.matchInfo.featureScores && step.matchInfo.featureScores['NAME'] && step.matchInfo.featureScores['NAME'].some){
+                // check for low scoring name
+                let hasLowScoringFeature = step.matchInfo.featureScores['NAME'].some((featScore: SzFeatureScore) => {
+                    return !(featScore.score > this.lowScoringFeatureThreshold);
+                });
+                if(hasLowScoringFeature) {
+                    retVal.LOW_SCORE_NAME = retVal.LOW_SCORE_NAME+1;
+                }
+            }
+            if(step.matchInfo && step.matchInfo.featureScores && step.matchInfo.featureScores['ADDRESS'] && step.matchInfo.featureScores['ADDRESS'].some){
+                // check for low scoring name
+                let hasLowScoringFeature = step.matchInfo.featureScores['ADDRESS'].some((featScore: SzFeatureScore) => {
+                    return !(featScore.score > this.lowScoringFeatureThreshold);
+                });
+                if(hasLowScoringFeature) {
+                    retVal.LOW_SCORE_ADDRESS = retVal.LOW_SCORE_ADDRESS+1;
+                }
+            }
+            if(step.matchInfo && step.matchInfo.featureScores && step.matchInfo.featureScores['PHONE'] && step.matchInfo.featureScores['PHONE'].some){
+                // check for low scoring name
+                let hasLowScoringFeature = step.matchInfo.featureScores['PHONE'].some((featScore: SzFeatureScore) => {
+                    return !(featScore.score > this.lowScoringFeatureThreshold);
+                });
+                if(hasLowScoringFeature) {
+                    retVal.LOW_SCORE_PHONE = retVal.LOW_SCORE_PHONE+1;
+                }
+            }
+        });
+
+        console.info('getParameterCounts: ', retVal, this.listSteps);
+
+        return retVal;
+    }
+
     private getStepListItemType(step: SzResolutionStep): SzResolutionStepDisplayType {
+
         if(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) {
             // both items are records
             return SzResolutionStepDisplayType.CREATE;
-        } else if(!(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) && (step.candidateVirtualEntity.singleton === false || step.inboundVirtualEntity.singleton === false)) {
-            // one of the items is record, the other is virtual
-            return SzResolutionStepDisplayType.ADD;
         } else if(!step.candidateVirtualEntity.singleton && !step.inboundVirtualEntity.singleton) {
             // both items are virtual entities
             return SzResolutionStepDisplayType.MERGE;
+        } else if(!(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) && (step.candidateVirtualEntity.singleton === false || step.inboundVirtualEntity.singleton === false)) {
+            // one of the items is record, the other is virtual
+            return SzResolutionStepDisplayType.ADD;
         }
         return undefined;
     }
-
 
     private getStepListItemTitle(step: SzResolutionStep): string {
         let retVal = '';
         if(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) {
             // both items are records
             retVal = 'Create Virtual Entity';
-        } else if(!(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) && (step.candidateVirtualEntity.singleton === false || step.inboundVirtualEntity.singleton === false)) {
-            // one of the items is record, the other is virtual
-            retVal = 'Add Record to Virtual Entity';
         } else if(!step.candidateVirtualEntity.singleton && !step.inboundVirtualEntity.singleton) {
             // both items are virtual entities
             retVal = 'Merge Interim Entities';
+        } else if(!(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) && (step.candidateVirtualEntity.singleton === false || step.inboundVirtualEntity.singleton === false)) {
+            // one of the items is record, the other is virtual
+            retVal = 'Add Record to Virtual Entity';
         }
         return retVal;
     }
@@ -292,7 +433,6 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
 
         return cssClasses;
     }
-
 
     // ---------------------------------------- end filtered collection getters
 

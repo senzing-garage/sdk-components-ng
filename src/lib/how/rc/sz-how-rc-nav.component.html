@@ -8,25 +8,25 @@
   <section class="parameter-block">
     <label>Filter by How Step Type</label>
     <ul>
-      <li>
-        <mat-checkbox [(ngModel)]="filterByVirtualEntityCreation" name="filterByVirtualEntityCreationCheckbox">Create Virtual Entity</mat-checkbox>
+      <li *ngIf="getParameterCount('CREATE') > 0">
+        <mat-checkbox [(ngModel)]="filterByVirtualEntityCreation" name="filterByVirtualEntityCreationCheckbox" class="prevent-text-selection">Create Virtual Entity ({{getParameterCount('CREATE')}})</mat-checkbox>
       </li>
-      <li>
-        <mat-checkbox [(ngModel)]="filterByMergeInterimEntitites" name="filterByMergeInterimEntititesCheckbox">Merge Interim Entitites</mat-checkbox>
+      <li *ngIf="getParameterCount('MERGE') > 0">
+        <mat-checkbox [(ngModel)]="filterByMergeInterimEntitites" name="filterByMergeInterimEntititesCheckbox" class="prevent-text-selection">Merge Interim Entitites ({{getParameterCount('MERGE')}})</mat-checkbox>
       </li>
-      <li>
-        <mat-checkbox [(ngModel)]="filterByAddRecordtoVirtualEntity" name="filterByMergeInterimEntititesCheckbox">Add Record to Virtual Entity</mat-checkbox>
+      <li *ngIf="getParameterCount('ADD') > 0">
+        <mat-checkbox [(ngModel)]="filterByAddRecordtoVirtualEntity" name="filterByMergeInterimEntititesCheckbox" class="prevent-text-selection">Add Record to Virtual Entity ({{getParameterCount('ADD')}})</mat-checkbox>
       </li>
     </ul>
   </section>
-  <section class="parameter-block">
+  <section class="parameter-block" *ngIf="getParameterCount('LOW_SCORE_NAME') > 0 || getParameterCount('LOW_SCORE_ADDRESS') > 0">
     <label>Filter by Low-Scoring Matches</label>
     <ul>
-      <li>
-        <mat-checkbox [(ngModel)]="filterByLowScoringNames" name="filterByLowScoringNamesCheckbox">Low Scoring Names</mat-checkbox>
+      <li *ngIf="getParameterCount('LOW_SCORE_NAME') > 0">
+        <mat-checkbox [(ngModel)]="filterByLowScoringNames" name="filterByLowScoringNamesCheckbox" class="prevent-text-selection">Low Scoring Names ({{getParameterCount('LOW_SCORE_NAME')}})</mat-checkbox>
       </li>
-      <li>
-        <mat-checkbox [(ngModel)]="filterByLowScoringAddresses" name="filterByLowScoringAddressesCheckbox">Low Scoring Addresses</mat-checkbox>
+      <li *ngIf="getParameterCount('LOW_SCORE_ADDRESS') > 0">
+        <mat-checkbox [(ngModel)]="filterByLowScoringAddresses" name="filterByLowScoringAddressesCheckbox" class="prevent-text-selection">Low Scoring Addresses ({{getParameterCount('LOW_SCORE_ADDRESS')}})</mat-checkbox>
       </li>
     </ul>
   </section>

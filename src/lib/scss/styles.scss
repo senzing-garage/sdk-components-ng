@@ -58,6 +58,12 @@ body {
 
 }
 
+.prevent-text-selection {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
 .mat-mdc-slide-toggle.match-key-token-mode-select {
   display: block;
   margin-bottom: 20px;
