@@ -28,6 +28,9 @@
       <li *ngIf="getParameterCount('LOW_SCORE_ADDRESS') > 0">
         <mat-checkbox [(ngModel)]="filterByLowScoringAddresses" name="filterByLowScoringAddressesCheckbox" class="prevent-text-selection">Low Scoring Addresses ({{getParameterCount('LOW_SCORE_ADDRESS')}})</mat-checkbox>
       </li>
+      <li *ngIf="getParameterCount('LOW_SCORE_PHONE') > 0">
+        <mat-checkbox [(ngModel)]="filterByLowScoringAddresses" name="filterByLowScoringAddressesCheckbox" class="prevent-text-selection">Low Scoring Phone Numbers ({{getParameterCount('LOW_SCORE_PHONE')}})</mat-checkbox>
+      </li>
     </ul>
   </section>
   <section class="results-block">

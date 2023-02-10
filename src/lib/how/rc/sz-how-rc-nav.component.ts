@@ -332,7 +332,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
                 retVal.ADD = retVal.ADD+1;
             }
             if(step.actionType == SzResolutionStepDisplayType.MERGE) {
-                retVal.ADD = retVal.MERGE+1;
+                retVal.MERGE = retVal.MERGE+1;
             }
             if(step.matchInfo && step.matchInfo.featureScores && step.matchInfo.featureScores['NAME'] && step.matchInfo.featureScores['NAME'].some){
                 // check for low scoring name
