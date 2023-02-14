@@ -27,6 +27,10 @@ export interface SzResolutionStepUI extends SzResolutionStep {
     preceedingSteps: SzResolutionStepUI[]
 }
 
+export interface SzVirtualEntityWithData extends SzVirtualEntity {
+    virtualEntityData?: SzVirtualEntity[]
+}
+
 export type SzResolutionStepDisplayType = 'MERGE' | 'CREATE' | 'ADD';
 export const SzResolutionStepDisplayType = {
     MERGE: 'MERGE' as SzResolutionStepDisplayType,

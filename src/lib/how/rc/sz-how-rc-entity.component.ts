@@ -7,7 +7,7 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../services/sz-config-data.service';
 import { SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
-import { SzHowFinalCardData, SzVirtualEntityRecordsClickEvent } from '../../models/data-how';
+import { SzHowFinalCardData, SzVirtualEntityRecordsClickEvent, SzVirtualEntityWithData } from '../../models/data-how';
 import { Observable, ReplaySubject, Subject, take, takeUntil, zip, map } from 'rxjs';
 import { parseBool, parseSzIdentifier } from '../../common/utils';
 import { SzHowECSourceRecordsComponent } from '../ec/sz-dialog-how-ec-source-records.component';
@@ -199,7 +199,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
     }
 
     private getVirtualEntityDataForSteps(resolutionSteps?: {[key: string]: SzResolutionStep}) {
-      let _rParamsByVirtualIds  = {};
+      //let _rParamsByVirtualIds  = {};
       let _rParamsByDsRecIds    = {};
       let _rResultsByDsRecIds   = {};
       if(resolutionSteps){
@@ -231,7 +231,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       }
 
       // now construct requests for each set of parameters
-      console.log('getVirtualEntityDataForSteps: ',_rParamsByVirtualIds, _rParamsByDsRecIds);
+      console.log('getVirtualEntityDataForSteps: ', _rParamsByDsRecIds);
 
       if(_rParamsByDsRecIds && Object.keys(_rParamsByDsRecIds).length > 0) {
         let results = new Map();
@@ -249,19 +249,32 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
 
         let totalRequests = zip(...virtualRecordRequests).subscribe((_results: SzVirtualEntityResponseWithRequestKey[]) => {
           _results.forEach((_result: SzVirtualEntityResponseWithRequestKey) => {
-            console.log('wheres the pairKey ??? ', _result.pairKey);
             results.set(_result.pairKey, _result);
           });
 
-          //console.log('GET VIRTUAL ENTITY REQUESTS: ', results);
-        });
-       
-        if(resolutionSteps) {
-          for(let sKey in resolutionSteps) {
-            resolutionSteps[sKey] = Object.assign({virtualEntityData: results.get(sKey), sKey: sKey}, resolutionSteps[sKey]);
+          console.log('GET VIRTUAL ENTITY REQUESTS: ', results);
+
+          if(resolutionSteps) {
+            let _dataBySzRecordIdentifier = new Map();
+  
+            for(let sKey in resolutionSteps) {
+              resolutionSteps[sKey].candidateVirtualEntity.records.forEach(element => {
+                let rKey = element.dataSource+':'+element.recordId;
+                if(!(resolutionSteps[sKey].candidateVirtualEntity as SzVirtualEntityWithData).virtualEntityData) { (resolutionSteps[sKey].candidateVirtualEntity as SzVirtualEntityWithData).virtualEntityData = []; }
+                (resolutionSteps[sKey].candidateVirtualEntity as SzVirtualEntityWithData).virtualEntityData.push(results.get(rKey));
+                _dataBySzRecordIdentifier.set(rKey, results.get(rKey));
+              });
+              resolutionSteps[sKey].inboundVirtualEntity.records.forEach(element => {
+                let rKey = element.dataSource+':'+element.recordId;
+                if(!(resolutionSteps[sKey].inboundVirtualEntity as SzVirtualEntityWithData).virtualEntityData) { (resolutionSteps[sKey].inboundVirtualEntity as SzVirtualEntityWithData).virtualEntityData = []; }
+                (resolutionSteps[sKey].inboundVirtualEntity as SzVirtualEntityWithData).virtualEntityData.push(results.get(rKey));
+                _dataBySzRecordIdentifier.set(rKey, results.get(rKey));
+              });
+              resolutionSteps[sKey] = Object.assign({virtualEntityData: _dataBySzRecordIdentifier}, resolutionSteps[sKey]);
+            }
+            console.log('GET VIRTUAL ENTITY RESULT: ', resolutionSteps, results, [results.get('SINGAPORE2:9571'), results['SINGAPORE2:9571']], _dataBySzRecordIdentifier.get('SINGAPORE2:9571'), _dataBySzRecordIdentifier);
           }
-          console.log('GET VIRTUAL ENTITY RESULT: ', resolutionSteps, results);
-        }
+        });
       }
     }
 }
