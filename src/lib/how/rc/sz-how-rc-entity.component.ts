@@ -3,14 +3,18 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { DataSource } from '@angular/cdk/collections';
 import { 
     EntityDataService as SzEntityDataService, 
-    SzEntityIdentifier, SzHowEntityResponse, SzHowEntityResult, SzRecordId, SzResolutionStep, SzVirtualEntity 
+    SzEntityIdentifier, SzFeatureMode, SzHowEntityResponse, SzHowEntityResult, SzRecordId, SzRecordIdentifier, SzRecordIdentifiers, SzResolutionStep, SzResolvedEntity, SzVirtualEntity, SzVirtualEntityRecord, SzVirtualEntityResponse 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../services/sz-config-data.service';
 import { SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
 import { SzHowFinalCardData, SzVirtualEntityRecordsClickEvent } from '../../models/data-how';
-import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, Subject, take, takeUntil, zip, map } from 'rxjs';
 import { parseBool, parseSzIdentifier } from '../../common/utils';
 import { SzHowECSourceRecordsComponent } from '../ec/sz-dialog-how-ec-source-records.component';
+
+export interface SzVirtualEntityResponseWithRequestKey extends SzResolvedEntity {
+  pairKey: string
+}
 
 /**
  * Display the "How" information for entity
@@ -123,6 +127,10 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
                 }
                 this._resolutionSteps = _resSteps.reverse(); // we want the steps in reverse for display purposes
             }
+            // extend data with augmentation
+            if(this._data && this._data.resolutionSteps) {
+              this.getVirtualEntityDataForSteps(this._data.resolutionSteps);
+            }
             this._isLoading = false;
             this.loading.emit(false);
             this._dataChange.next(resp.data);
@@ -187,6 +195,73 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
             event: evt
           }
         });
+      }
+    }
+
+    private getVirtualEntityDataForSteps(resolutionSteps?: {[key: string]: SzResolutionStep}) {
+      let _rParamsByVirtualIds  = {};
+      let _rParamsByDsRecIds    = {};
+      let _rResultsByDsRecIds   = {};
+      if(resolutionSteps){
+        for(let rKey in resolutionSteps) {
+          let _rparams = 
+          {
+            candidateVirtualEntity: resolutionSteps[rKey].candidateVirtualEntity.records.map((vRec: SzVirtualEntityRecord)=>{
+              return {
+                  src: vRec.dataSource,
+                  id: vRec.recordId
+              } as SzRecordIdentifier
+            }),
+            inboundVirtualEntity: resolutionSteps[rKey].inboundVirtualEntity.records.map((vRec: SzVirtualEntityRecord)=>{
+              return {
+                  src: vRec.dataSource,
+                  id: vRec.recordId
+              } as SzRecordIdentifier
+            })
+          }
+          resolutionSteps[rKey].inboundVirtualEntity.records.forEach((vRec: SzVirtualEntityRecord) => {
+            let _reqId  = vRec.dataSource +':'+vRec.recordId;
+            _rParamsByDsRecIds[ _reqId ] = {recordId: vRec.recordId, dataSource: vRec.dataSource};
+          });
+          resolutionSteps[rKey].candidateVirtualEntity.records.forEach((vRec: SzVirtualEntityRecord) => {
+            let _reqId  = vRec.dataSource +':'+vRec.recordId;
+            _rParamsByDsRecIds[ _reqId ] = {recordId: vRec.recordId, dataSource: vRec.dataSource};
+          });
+        }
+      }
+
+      // now construct requests for each set of parameters
+      console.log('getVirtualEntityDataForSteps: ',_rParamsByVirtualIds, _rParamsByDsRecIds);
+
+      if(_rParamsByDsRecIds && Object.keys(_rParamsByDsRecIds).length > 0) {
+        let results = new Map();
+
+        let virtualRecordRequests = Object.values(_rParamsByDsRecIds).map((pSet: {recordId: string, dataSource: string}) => {
+          return this.entityDataService.getVirtualEntityByRecordIds([({src: pSet.dataSource, id: pSet.recordId} as SzRecordIdentifier)], undefined, undefined, SzFeatureMode.ATTRIBUTED)
+          .pipe(
+            map(((result: SzVirtualEntityResponse) => {
+              return Object.assign({
+                pairKey: pSet.dataSource +':'+pSet.recordId
+              }, result.data.resolvedEntity);
+            }))
+          )
+        });
+
+        let totalRequests = zip(...virtualRecordRequests).subscribe((_results: SzVirtualEntityResponseWithRequestKey[]) => {
+          _results.forEach((_result: SzVirtualEntityResponseWithRequestKey) => {
+            console.log('wheres the pairKey ??? ', _result.pairKey);
+            results.set(_result.pairKey, _result);
+          });
+
+          //console.log('GET VIRTUAL ENTITY REQUESTS: ', results);
+        });
+       
+        if(resolutionSteps) {
+          for(let sKey in resolutionSteps) {
+            resolutionSteps[sKey] = Object.assign({virtualEntityData: results.get(sKey), sKey: sKey}, resolutionSteps[sKey]);
+          }
+          console.log('GET VIRTUAL ENTITY RESULT: ', resolutionSteps, results);
+        }
       }
     }
 }

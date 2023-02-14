@@ -55,6 +55,16 @@ export function nonTextTrim(value: string): string {
   return retVal;
 }
 
+export function isNotNull(value?: string | any) {
+  let retVal = false;
+  if((value as string) && (value as string) !== undefined) {
+    if((value as string).trim && (value as string).trim() !== '' && (value as string).replaceAll(' ','').trim() !== '') {
+      return true;
+    }
+  }
+  return retVal;
+}
+
 /**
  * Function used to return an array of "SzDataSourceComposite" in the order 
  * specified by each members "index" property

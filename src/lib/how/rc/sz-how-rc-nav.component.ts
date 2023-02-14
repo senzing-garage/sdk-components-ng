@@ -9,7 +9,7 @@ import { SzConfigDataService } from '../../services/sz-config-data.service';
 import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolutionStepListItem } from '../../models/data-how';
 import { parseBool } from '../../common/utils';
 import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
-import { parseSzIdentifier } from '../../common/utils';
+import { parseSzIdentifier, isNotNull } from '../../common/utils';
 import { SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
 import { MatSelect } from '@angular/material/select';
 
@@ -222,8 +222,11 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
                     actionType: this.getStepListItemType(_s),
                     cssClasses: this.getStepListItemCssClasses(_s), 
                     title: this.getStepListItemTitle(_s),
-                    description: this.getStepListItemDescription(_s)
+                    description: this.getStepListItemDescription(_s),
+                    recordIds: this.getStepListItemRecords(_s),
+                    dataSources: this.getStepListItemDataSources(_s)
                 }, _s);
+                _t.freeTextTerms = this.getStepListItemFreeTextTerms(_t)
                 return _t;
             });
         }
@@ -289,6 +292,28 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
             // if no parameters are selected just return everything
             return _hasParamsChecked ? _inc : true;
         });
+
+        // we do the free text search OUTSIDE of main criteria check loop so that 
+        // the checkbox parameters are an "OR" operation by themselves, but become 
+        // a "AND" operation in conjunction with free text search
+        if(this._filterByTextOrRecordId && isNotNull(this._filterByTextOrRecordId)){
+            // check if text is in record Id's
+            let _critStr            = this._filterByTextOrRecordId.toUpperCase().trim();
+            let _critTerms          = _critStr.split(' ');
+
+            retVal  = retVal.filter((step: SzResolutionStepListItem) => {
+                let _hasMatchingRecords = step.recordIds.some((recordId: string) => {
+                    return recordId.toUpperCase().trim().startsWith(_critStr);
+                });
+                let _hasMatchingTerms   = _critTerms.every(sTermTag => {
+                    return step.freeTextTerms.some((termTag) => {
+                        return termTag.toUpperCase().startsWith(sTermTag.toUpperCase());
+                    })
+                });                
+                return _hasMatchingRecords || _hasMatchingTerms ? true : false;
+            });
+        }
+
         //console.log('filteredListSteps: ', oVal, retVal);
 
         return retVal;
@@ -367,6 +392,58 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
 
         return retVal;
     }
+
+    private getStepListItemRecords(step: SzResolutionStep): string[] {
+        let retVal = [];
+        if(step && step.candidateVirtualEntity && step.candidateVirtualEntity.records && step.candidateVirtualEntity.singleton) {
+            retVal = retVal.concat(step.candidateVirtualEntity.records.map((rec: SzVirtualEntityRecord)=>{
+                return rec.recordId;
+            }));
+        }
+        if(step && step.inboundVirtualEntity && step.inboundVirtualEntity.records && step.inboundVirtualEntity.singleton) {
+            retVal = retVal.concat(step.inboundVirtualEntity.records.map((rec: SzVirtualEntityRecord)=>{
+                return rec.recordId;
+            }));
+        }
+        return retVal;
+    }
+
+    private getStepListItemDataSources(step: SzResolutionStep): string[] {
+        let retVal = [];
+        if(step && step.candidateVirtualEntity && step.candidateVirtualEntity.records) {
+            retVal = retVal.concat(step.candidateVirtualEntity.records.map((rec: SzVirtualEntityRecord)=>{
+                return rec.dataSource;
+            }));
+        }
+        if(step && step.inboundVirtualEntity && step.inboundVirtualEntity.records) {
+            retVal = retVal.concat(step.inboundVirtualEntity.records.map((rec: SzVirtualEntityRecord)=>{
+                return rec.dataSource;
+            }));
+        }
+        return retVal;
+    }
+
+    private getStepListItemFreeTextTerms(step: SzResolutionStepListItem): string[] {
+        let retVal = [];
+        if(step.title) {
+            retVal = retVal.concat(step.title.split(' '));
+        }
+        if(step.description && step.description.length > 0) {
+            /*
+            let _desc = [{text: 'Virtual Entity V509570-S1', cssClasses: []},
+            {text: 'Virtual Entity V401992-S2', cssClasses: Array(1)},
+            {text: 'Virtual Entity V401992-S3', cssClasses: Array(1)}]
+            .forEach((desc: {text: string, cssClasses: string[]}) => {
+                retVal = retVal.concat(desc.text.split(' '));
+            });*/
+            step.description.forEach((desc: {text: string, cssClasses: string[]}) => {
+                retVal = retVal.concat(desc.text.split(' '));
+            });
+
+            retVal = retVal.concat(step.title.split(' '));
+        }
+        return [...new Set(retVal)];
+    }    
 
     private getStepListItemType(step: SzResolutionStep): SzResolutionStepDisplayType {
 
