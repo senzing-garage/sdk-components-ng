@@ -7,14 +7,12 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../services/sz-config-data.service';
 import { SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
-import { SzHowFinalCardData, SzVirtualEntityRecordsClickEvent, SzVirtualEntityWithData } from '../../models/data-how';
+import { SzHowFinalCardData, SzVirtualEntityRecordsClickEvent, SzResolvedVirtualEntity } from '../../models/data-how';
 import { Observable, ReplaySubject, Subject, take, takeUntil, zip, map } from 'rxjs';
 import { parseBool, parseSzIdentifier } from '../../common/utils';
 import { SzHowECSourceRecordsComponent } from '../ec/sz-dialog-how-ec-source-records.component';
 
-export interface SzResolvedVirtualEntity extends SzResolvedEntity {
-  virtualEntityId: string
-}
+
 
 /**
  * Display the "How" information for entity
@@ -38,6 +36,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
     //public finalCardsData: SzHowFinalCardData[];
     public finalCardsData: SzVirtualEntity[];
     private _data: SzHowEntityResult;
+    private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
     private _featureTypesOrdered: string[] | undefined;
     private _resolutionSteps: SzResolutionStep[];
     private _resolutionStepsByVirtualId: {[key: string]: SzResolutionStep};
@@ -46,12 +45,15 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
     private _showNavigation = true;
     private _dataChange: Subject<SzHowEntityResult>         = new Subject<SzHowEntityResult>();
     public   dataChange                                     = this._dataChange.asObservable();
+    private _virtualEntitiesDataChange: Subject<Map<string, SzResolvedVirtualEntity>> = new Subject<Map<string, SzResolvedVirtualEntity>>();
+    public  virtualEntitiesDataChange                       = this._virtualEntitiesDataChange.asObservable();
     private _recordsMoreLinkClick: Subject<SzVirtualEntityRecordsClickEvent> = new Subject();
     public   recordsMoreLinkClick                           = this._recordsMoreLinkClick.asObservable();
     @Output() public dataChanged                            = new EventEmitter<SzHowEntityResult>();
     @Output() public recordsMoreLinkClicked                 = new EventEmitter<SzVirtualEntityRecordsClickEvent>();
     @Output()
     loading: EventEmitter<boolean>                          = new EventEmitter<boolean>();
+    @Output() public virtualEntitiesDataChanged             = new EventEmitter<Map<string, SzResolvedVirtualEntity>>();
     @Input()
     entityId: SzEntityIdentifier;
 
@@ -60,6 +62,9 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
     }
     public get resolutionStepsByVirtualId() {
         return this._resolutionStepsByVirtualId;
+    }
+    public get virtualEntitiesById(): Map<string, SzResolvedVirtualEntity> {
+      return this._virtualEntitiesById;
     }
     public get orderedFeatures(): string[] {
         return this._featureTypesOrdered
@@ -83,11 +88,17 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
       this.getFeatureTypeOrderFromConfig();
-
+      // publish how step data on retrieval
       this.dataChange.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe((data: SzHowEntityResult) => {
         this.dataChanged.emit(data);
+      })
+      // publish virtual entities data on retrieval
+      this.virtualEntitiesDataChange.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe((data: Map<string, SzResolvedVirtualEntity>) => {
+        this.virtualEntitiesDataChanged.emit(data);
       })
 
       if(this.entityId) {
@@ -133,7 +144,8 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
                 take(1),
                 takeUntil(this.unsubscribe$)
               ).subscribe((virtualEntitiesMap) => {
-                console.info('HEY!!!! it\'s a party!!',virtualEntitiesMap);
+                this._virtualEntitiesById = virtualEntitiesMap;
+                this._virtualEntitiesDataChange.next(virtualEntitiesMap);
               });
             }
             this._isLoading = false;
@@ -209,7 +221,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
      * this data can then be used to populate any component or look up any components
      * displayed data at the source by its virtual entity id.
      */
-    private getVirtualEntityDataForSteps(resolutionSteps?: {[key: string]: SzResolutionStep}) {
+    private getVirtualEntityDataForSteps(resolutionSteps?: {[key: string]: SzResolutionStep}): Observable<Map<string, SzResolvedVirtualEntity>> {
       let _rParamsByVirtualEntityIds  = {};
       let _responseSubject      = new Subject<Map<string, SzResolvedVirtualEntity>>();
       let _retObserveable       = _responseSubject.asObservable();

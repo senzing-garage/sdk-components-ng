@@ -1,4 +1,4 @@
-import { SzFeatureScore, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzVirtualEntityRecord, SzVirtualEntityResponse } from '@senzing/rest-api-client-ng';
+import { SzFeatureScore, SzRecordId, SzResolutionStep, SzResolvedEntity, SzVirtualEntity, SzVirtualEntityData, SzVirtualEntityRecord, SzVirtualEntityResponse } from '@senzing/rest-api-client-ng';
 
 export interface SzHowFinalCardData extends SzResolutionStep {
     resolvedVirtualEntity: SzVirtualEntity
@@ -27,8 +27,8 @@ export interface SzResolutionStepUI extends SzResolutionStep {
     preceedingSteps: SzResolutionStepUI[]
 }
 
-export interface SzVirtualEntityWithData extends SzVirtualEntity {
-    virtualEntityData?: SzVirtualEntity[]
+export interface SzResolvedVirtualEntity extends SzResolvedEntity {
+    virtualEntityId: string
 }
 
 export type SzResolutionStepDisplayType = 'MERGE' | 'CREATE' | 'ADD';

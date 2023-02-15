@@ -6,7 +6,7 @@ import {
     SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzConfigResponse, SzEntityIdentifier, SzVirtualEntityRecord, SzFeatureScore 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../services/sz-config-data.service';
-import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolutionStepListItem } from '../../models/data-how';
+import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolutionStepListItem, SzResolvedVirtualEntity } from '../../models/data-how';
 import { parseBool } from '../../common/utils';
 import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseSzIdentifier, isNotNull } from '../../common/utils';
@@ -31,8 +31,17 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
     private _stepMap: {[key: string]: SzResolutionStep} = {};
+    private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
+
     @Input() public finalEntityId: SzEntityIdentifier;
     @Input() public lowScoringFeatureThreshold: number = 80;
+    @Input() public set virtualEntitiesById(value: Map<string, SzResolvedVirtualEntity>) {
+        if(this._virtualEntitiesById === undefined && value !== undefined) {
+            this._virtualEntitiesById = value;
+            console.log('SzHowRCNavComponent.setVirtualEntitiesById: ', this._virtualEntitiesById);
+        }
+        this._virtualEntitiesById = value;
+    }
 
     private _finalVirtualEntities: SzVirtualEntity[];
     @Input() set finalVirtualEntities(value: SzVirtualEntity[]) {
@@ -71,7 +80,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
     }
 
     @Input() set stepsByVirtualId(value: {[key: string]: SzResolutionStep}) {
-        console.info('set stepsByVirtualId: ',value);
+        console.info('SzHowRCNavComponent.setStepsByVirtualId: ',value);
         this._stepMap = value;
         this._parameterCounts = this.getParameterCounts();
     }
@@ -388,7 +397,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
             }
         });
 
-        console.info('getParameterCounts: ', retVal, this.listSteps);
+        console.log('SzHowRCNavComponent.getParameterCounts: ', retVal, this.listSteps);
 
         return retVal;
     }
