@@ -58,25 +58,26 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
     entityId: SzEntityIdentifier;
 
     public get resolutionSteps(): SzResolutionStep[] | undefined {
-        return this._resolutionSteps;
+      //this._resolutionSteps[0].stepNumber
+      return this._resolutionSteps;
     }
     public get resolutionStepsByVirtualId() {
-        return this._resolutionStepsByVirtualId;
+      return this._resolutionStepsByVirtualId;
     }
     public get virtualEntitiesById(): Map<string, SzResolvedVirtualEntity> {
       return this._virtualEntitiesById;
     }
     public get orderedFeatures(): string[] {
-        return this._featureTypesOrdered
+      return this._featureTypesOrdered
     }
     public get isLoading(): boolean {
-        return this._isLoading;
+      return this._isLoading;
     }
     public get showNavigation(): boolean {
       return this._showNavigation;
     }
     @Input() public set showNavigation(value: boolean | string) {
-        this._showNavigation = parseBool(value);
+      this._showNavigation = parseBool(value);
     }
 
     constructor(
@@ -189,6 +190,21 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
             this._featureTypesOrdered = res;
             console.log('getFeatureTypeOrderFromConfig: ', res);
         });
+    }
+
+    getStepTitle(step: SzResolutionStep): string {
+      let retVal = '';
+      if(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) {
+          // both items are records
+          retVal = 'Create Virtual Entity';
+      } else if(!step.candidateVirtualEntity.singleton && !step.inboundVirtualEntity.singleton) {
+          // both items are virtual entities
+          retVal = 'Merge Interim Entities';
+      } else if(!(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) && (step.candidateVirtualEntity.singleton === false || step.inboundVirtualEntity.singleton === false)) {
+          // one of the items is record, the other is virtual
+          retVal = 'Add Record to Virtual Entity';
+      }
+      return retVal;
     }
 
     /**

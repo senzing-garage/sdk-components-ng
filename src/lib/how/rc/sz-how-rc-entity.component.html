@@ -6,5 +6,12 @@
     *ngIf="showNavigation"
 ></sz-how-rc-nav>
 <div class="main">
-    <h3>main linear view</h3>
+    <ul class="step-list">
+        <li>
+            Final Entity
+        </li>
+        <sz-how-rc-step *ngFor="let step of resolutionSteps"
+            [data]="step"
+            [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step>
+    </ul>
 </div>

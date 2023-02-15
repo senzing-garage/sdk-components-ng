@@ -87,6 +87,7 @@ import { SzHowECSourceRecordsComponent } from './how/ec/sz-dialog-how-ec-source-
 
 import { SzHowRCEntityComponent, SzHowRCEntityDialog } from './how/rc/sz-how-rc-entity.component';
 import { SzHowRCNavComponent } from './how/rc/sz-how-rc-nav.component';
+import { SzHowRCStepComponent } from './how/rc/cards/sz-how-rc-step-card.component';
 
 /**
  * Sets up a default set of service parameters for use
@@ -146,6 +147,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowRCEntityComponent,
         SzHowRCEntityDialog,
         SzHowRCNavComponent,
+        SzHowRCStepComponent,
         SzMultiSelectButtonComponent,
         SzPoweredByComponent,
         SzPreferencesComponent,
@@ -195,9 +197,10 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowECSourceRecordsComponent,
         SzHowECToolbarComponent,
         SzHowECVirtualCardComponent,
-        SzHowRCNavComponent,
         SzHowRCEntityComponent,
         SzHowRCEntityDialog,
+        SzHowRCNavComponent,
+        SzHowRCStepComponent,
         SzPoweredByComponent,
         SzPreferencesComponent,
         SzRelationshipNetworkComponent,
