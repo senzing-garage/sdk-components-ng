@@ -5,11 +5,11 @@ import {
     EntityDataService as SzEntityDataService, 
     SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse, SzVirtualEntityRecord, SzDataSourceRecordSummary 
 } from '@senzing/rest-api-client-ng';
-import { SzConfigDataService } from '../../../services/sz-config-data.service';
-import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../../../models/data-how';
+import { SzConfigDataService } from '../../services/sz-config-data.service';
+import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../../models/data-how';
 import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
-import { parseSzIdentifier } from '../../../common/utils';
-import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../../services/sz-how-ui-coordinator.service';
+import { parseSzIdentifier } from '../../common/utils';
+import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
 
 /**
  * Why
@@ -22,17 +22,16 @@ import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorS
  * &lt;sz-how-rc-step entityId="5"&gt;&lt;/sz-how-rc-step&gt;<br/>
 */
 @Component({
-    selector: 'sz-how-rc-step-card',
-    templateUrl: './sz-how-rc-step-card.component.html',
-    styleUrls: ['./sz-how-rc-step-card.component.scss']
+    selector: 'sz-how-rc-step',
+    templateUrl: './sz-how-rc-step.component.html',
+    styleUrls: ['./sz-how-rc-step.component.scss']
 })
-export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
+export class SzHowRCStepComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
 
     private _stepMap: {[key: string]: SzResolutionStep};
     private _data: SzResolutionStep;
-    private _parentStep: SzResolutionStep;
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
     private _highlighted: boolean = false;
     private _collapsed: boolean = false;
@@ -43,19 +42,6 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     @HostBinding('class.highlighted') get cssHighlightedClass(): boolean {
         return this._highlighted ? true : false;
     }
-    @HostBinding('class.type-add') get cssTypeAddClass(): boolean {
-        return this.displayType === SzResolutionStepDisplayType.ADD;
-    }
-    @HostBinding('class.type-merge') get cssTypeMergeClass(): boolean {
-        return this.displayType === SzResolutionStepDisplayType.MERGE;
-    }
-    @HostBinding('class.type-interim') get cssTypeInterimClass(): boolean {
-        return this.displayType === SzResolutionStepDisplayType.INTERIM;
-    }
-    @HostBinding('class.type-create') get cssTypeCreateClass(): boolean {
-        return this.displayType === SzResolutionStepDisplayType.CREATE;
-    }
-
     @Input() featureOrder: string[];
 
     @Input() set stepsByVirtualId(value: {[key: string]: SzResolutionStep}) {
@@ -64,15 +50,11 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     @Input() public set virtualEntitiesById(value: Map<string, SzResolvedVirtualEntity>) {
         if(this._virtualEntitiesById === undefined && value !== undefined) {
             this._virtualEntitiesById = value;
-            //console.log('SzHowRCStepCardComponent.setVirtualEntitiesById: ', this._virtualEntitiesById);
         }
         this._virtualEntitiesById = value;
     }
     @Input() set data(value: SzResolutionStep) {
         this._data = value;
-    }
-    @Input() set parentStep(value: SzResolutionStep) {
-        this._parentStep = value;
     }
     get displayType(): SzResolutionStepDisplayType {
         let listItemVerb    = this.getStepListItemType(this._data);
@@ -81,55 +63,17 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     get data() : SzResolutionStep {
         return this._data;
     }
-    get parentStep() {
-        return this._parentStep;
-    }
     get stepsByVirtualId(): {[key: string]: SzResolutionStep} {
         return this._stepMap;
-    }
-    get candidateVirtualEntity(): SzVirtualEntity | undefined {
-        return (this._data && this._data.candidateVirtualEntity) ? this._data.candidateVirtualEntity : undefined ;
-    }
-    get inboundVirtualEntity(): SzVirtualEntity | undefined {
-        return (this._data && this._data.inboundVirtualEntity) ? this._data.inboundVirtualEntity : undefined ;
     }
     public get isCollapsed() {
         return this._collapsed;
     }
     public get isInterimEntity() {
-        return this.displayType === SzResolutionStepDisplayType.INTERIM;
+        return this.displayType === SzResolutionStepDisplayType.CREATE;
     }
-    public get title(): string {
-        let retVal = '';
-        let displayType: SzResolutionStepDisplayType = this.getStepListItemType(this._data);
-
-        if(displayType === SzResolutionStepDisplayType.INTERIM) {
-            let _resolvedEntity = this.resolvedVirtualEntity;
-            if(_resolvedEntity) {
-                retVal = `${_resolvedEntity.virtualEntityId}: Interim Entity: ${_resolvedEntity.entityName}`;
-            }
-        } else if(displayType === SzResolutionStepDisplayType.CREATE) {
-            // both items are virtual entities
-            retVal = 'Create Virtual Entity';
-        } else if(displayType === SzResolutionStepDisplayType.MERGE) {
-            // both items are virtual entities
-            retVal = 'Merge Interim Entities';
-        } else if(displayType === SzResolutionStepDisplayType.ADD) {
-            // one of the items is record, the other is virtual
-            retVal = 'Add Record to Virtual Entity';
-        }
-        return `Step ${this._data.stepNumber}: ${retVal}`;
-    }
-    public get dataSourcesAsString(): string {
-        let retVal = '';
-        let _resolvedEntity = this.resolvedVirtualEntity;
-        if(_resolvedEntity && _resolvedEntity.recordSummaries && _resolvedEntity.recordSummaries.length > 0) {
-            let db_str = _resolvedEntity.recordSummaries.map((rs: SzDataSourceRecordSummary) => {
-                return `${rs.dataSource} (${rs.recordCount})`;
-            }).join(' | ');
-            retVal += `${db_str}`;
-        }
-        return retVal;
+    public get virtualEntitiesById(): Map<string, SzResolvedVirtualEntity> {
+        return this._virtualEntitiesById;
     }
     public get resolvedVirtualEntity(): SzResolvedVirtualEntity {
         let retVal;
@@ -137,7 +81,7 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
             let retVal = this._virtualEntitiesById.get(this._data.resolvedVirtualEntityId);
             return retVal;
         } else {
-            //console.log(`no virtual entity: ${this._data.resolvedVirtualEntityId}`, this._virtualEntitiesById);
+            console.log(`no virtual entity: ${this._data.resolvedVirtualEntityId}`, this._virtualEntitiesById);
         }
         return retVal;
     }
@@ -161,11 +105,7 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     private getStepListItemType(step: SzResolutionStep): SzResolutionStepDisplayType {
         if(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) {
             // both items are records
-            if(this.parentStep) {
-                return SzResolutionStepDisplayType.CREATE;
-            } else {
-                return SzResolutionStepDisplayType.INTERIM;
-            }
+            return SzResolutionStepDisplayType.CREATE;
         } else if(!step.candidateVirtualEntity.singleton && !step.inboundVirtualEntity.singleton) {
             // both items are virtual entities
             return SzResolutionStepDisplayType.MERGE;

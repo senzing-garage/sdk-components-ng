@@ -31,10 +31,11 @@ export interface SzResolvedVirtualEntity extends SzResolvedEntity {
     virtualEntityId: string
 }
 
-export type SzResolutionStepDisplayType = 'MERGE' | 'CREATE' | 'ADD';
+export type SzResolutionStepDisplayType = 'MERGE' | 'CREATE' | 'INTERIM' | 'ADD';
 export const SzResolutionStepDisplayType = {
     MERGE: 'MERGE' as SzResolutionStepDisplayType,
     CREATE: 'CREATE' as SzResolutionStepDisplayType,
+    INTERIM: 'INTERIM' as SzResolutionStepDisplayType,
     ADD: 'ADD' as SzResolutionStepDisplayType
 };
 
