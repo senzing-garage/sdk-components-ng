@@ -8,7 +8,9 @@
 <div class="main">
     <ul class="step-list">
         <li>
-            Final Entity
+            <sz-how-rc-final-entity-card *ngFor="let vCardData of finalCardsData"
+                [data]="vCardData"
+                [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-final-entity-card>
         </li>
         <sz-how-rc-step *ngFor="let step of resolutionSteps"
             [data]="step"

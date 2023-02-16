@@ -88,6 +88,7 @@ import { SzHowECSourceRecordsComponent } from './how/ec/sz-dialog-how-ec-source-
 import { SzHowRCEntityComponent, SzHowRCEntityDialog } from './how/rc/sz-how-rc-entity.component';
 import { SzHowRCNavComponent } from './how/rc/sz-how-rc-nav.component';
 import { SzHowRCStepComponent } from './how/rc/sz-how-rc-step.component';
+import { SzHowRCFinalEntityCardComponent } from './how/rc/cards/sz-how-rc-final-entity-card.component';
 import { SzHowRCStepCardComponent } from './how/rc/cards/sz-how-rc-step-card.component';
 
 /**
@@ -147,9 +148,10 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowECVirtualCardComponent,
         SzHowRCEntityComponent,
         SzHowRCEntityDialog,
+        SzHowRCFinalEntityCardComponent,
         SzHowRCNavComponent,
-        SzHowRCStepComponent,
         SzHowRCStepCardComponent,
+        SzHowRCStepComponent,
         SzMultiSelectButtonComponent,
         SzPoweredByComponent,
         SzPreferencesComponent,

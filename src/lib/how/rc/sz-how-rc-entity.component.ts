@@ -141,7 +141,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
             }
             // extend data with augmentation
             if(this._data && this._data.resolutionSteps) {
-              this.getVirtualEntityDataForSteps(this._data.resolutionSteps).pipe(
+              this.getVirtualEntityDataForSteps(this._data.resolutionSteps, this._data.finalStates).pipe(
                 take(1),
                 takeUntil(this.unsubscribe$)
               ).subscribe((virtualEntitiesMap) => {
@@ -237,7 +237,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
      * this data can then be used to populate any component or look up any components
      * displayed data at the source by its virtual entity id.
      */
-    private getVirtualEntityDataForSteps(resolutionSteps?: {[key: string]: SzResolutionStep}): Observable<Map<string, SzResolvedVirtualEntity>> {
+    private getVirtualEntityDataForSteps(resolutionSteps?: {[key: string]: SzResolutionStep}, finalVirtualEntities?: SzVirtualEntity[]): Observable<Map<string, SzResolvedVirtualEntity>> {
       let _rParamsByVirtualEntityIds  = {};
       let _responseSubject      = new Subject<Map<string, SzResolvedVirtualEntity>>();
       let _retObserveable       = _responseSubject.asObservable();
@@ -256,6 +256,16 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
             } as SzRecordIdentifier
           });
         }
+      }
+      if(finalVirtualEntities) {
+        finalVirtualEntities.forEach((virtualEntity: SzVirtualEntity) => {
+          _rParamsByVirtualEntityIds[ virtualEntity.virtualEntityId ] = virtualEntity.records.map((vRec: SzVirtualEntityRecord)=>{
+            return {
+                src: vRec.dataSource,
+                id: vRec.recordId
+            } as SzRecordIdentifier
+          });
+        });
       }
       if(_rParamsByVirtualEntityIds && Object.keys(_rParamsByVirtualEntityIds).length > 0){
         let virtualRecordRequests = [];

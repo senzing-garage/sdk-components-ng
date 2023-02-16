@@ -1,0 +1,41 @@
+:host {
+    display: block;
+    background-color: aqua;
+    border: 2px solid #000;
+    margin-top: 14px;
+    border-radius: 5px;
+    padding: 3px 3px;
+
+    &.type-add {
+        background-color: #feae00;
+    }
+    &.type-create {
+        background-color: #ffd932;
+    }
+    &.type-interim {
+        background-color: #56c1ff;
+    }
+    &.type-merge {
+        background-color: #16e7cf;
+    }
+    &.type-final {
+        background-color: #88fa4e;
+    }
+
+    h3 {
+        margin: 0;
+    }
+
+    ul {
+        list-style: none;
+        li {
+
+        }
+    }
+
+    .datasources {
+        .datasources-list {
+            font-weight: normal;
+        }
+    }
+}

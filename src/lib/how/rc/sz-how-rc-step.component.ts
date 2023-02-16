@@ -81,7 +81,7 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
             let retVal = this._virtualEntitiesById.get(this._data.resolvedVirtualEntityId);
             return retVal;
         } else {
-            console.log(`no virtual entity: ${this._data.resolvedVirtualEntityId}`, this._virtualEntitiesById);
+            //console.log(`no virtual entity: ${this._data.resolvedVirtualEntityId}`, this._virtualEntitiesById);
         }
         return retVal;
     }
