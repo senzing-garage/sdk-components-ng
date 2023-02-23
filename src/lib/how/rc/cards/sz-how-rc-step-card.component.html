@@ -1,4 +1,47 @@
-<h3>{{title}}<span *ngIf="isInterimEntity" class="datasources"> [ <span class="datasources-list">{{dataSourcesAsString}}</span> ]</span></h3>
+<h3>
+    {{title}}<span *ngIf="isInterimEntity" class="datasources"> [ <span class="datasources-list">{{dataSourcesAsString}}</span> ]</span>
+
+</h3>
+<div class="columns hide-on-collapsed">
+    <div class="column info-block">
+        <div class="info-line" *ngFor="let line of description">{{line}}</div>
+        <!--<div>Forms <span class="emphasis">Virtual Entity V123-S12</span></div>
+        <div>On <span class="emphasis">NAME+ADDRESS</span></div>
+        <div>Using <span class="emphasis">Principle 162 (CNAME_CFF)</span></div>-->
+    </div>
+    <div class="column data-table horizontal">
+        <div class="pre-head">
+            <div class="cell"></div>
+            <div class="cell">{{candidateVirtualEntity?.virtualEntityId}}</div>
+            <div class="cell">Score</div>
+            <div class="cell">{{inboundVirtualEntity?.virtualEntityId}}</div>
+        </div>
+        <div class="head">
+            <div class="cell column-1">Sources ({{sourcesCount}}) / Records ({{recordsCount}})</div>
+            <div class="cell column-2">
+                {{getSourcesAndRecordsForEntity(candidateVirtualEntity)}}
+            </div>
+            <div class="cell column-3">N/A</div>
+            <div class="cell column-4">
+                {{getSourcesAndRecordsForEntity(inboundVirtualEntity)}}
+            </div>
+        </div>
+        <div class="body">
+            <div class="row">
+                <div class="cell column-1">row 1 value 1</div>
+                <div class="cell column-2">row 1 value 2</div>
+                <div class="cell column-3">row 1 value 3</div>
+                <div class="cell column-4">row 1 value 4</div>
+            </div>
+            <div class="row">
+                <div class="cell column-1">row 2 value 1</div>
+                <div class="cell column-2">row 2 value 2</div>
+                <div class="cell column-3">row 2 value 3</div>
+                <div class="cell column-4">row 2 value 4</div>
+            </div>
+        </div>
+    </div>
+</div>
 <!--<ul *ngIf="this.resolvedVirtualEntity && this.isInterimEntity" class="debug">
     <li>this.resolvedVirtualEntity: {{this.resolvedVirtualEntity.virtualEntityId}}</li>
     <li>this.isInterimEntity: {{this.isInterimEntity}}</li>

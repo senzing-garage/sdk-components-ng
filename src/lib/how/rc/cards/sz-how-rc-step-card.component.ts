@@ -120,6 +120,84 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
         }
         return `Step ${this._data.stepNumber}: ${retVal}`;
     }
+    public get description(): string[] {
+        let retVal = [];
+        let displayType: SzResolutionStepDisplayType = this.getStepListItemType(this._data);
+        let _resolvedEntity = this.resolvedVirtualEntity;
+
+        if(this._data) {
+            retVal.push(`Forms ${this._data.resolvedVirtualEntityId}`);
+            if(this._data.matchInfo && this._data.matchInfo.matchKey) {
+                retVal.push(`On ${this._data.matchInfo.matchKey}`);
+            }
+        }
+        /*
+        if(displayType === SzResolutionStepDisplayType.INTERIM) {
+            let _resolvedEntity = this.resolvedVirtualEntity;
+            if(_resolvedEntity) {
+                retVal = `${_resolvedEntity.virtualEntityId}: Interim Entity: ${_resolvedEntity.entityName}`;
+            }
+        } else if(displayType === SzResolutionStepDisplayType.CREATE) {
+            // both items are virtual entities
+            retVal = 'Create Virtual Entity';
+        } else if(displayType === SzResolutionStepDisplayType.MERGE) {
+            // both items are virtual entities
+            retVal = 'Merge Interim Entities';
+        } else if(displayType === SzResolutionStepDisplayType.ADD) {
+            // one of the items is record, the other is virtual
+            retVal = 'Add Record to Virtual Entity';
+        }*/
+        return retVal;
+    }
+    private _sourceAndRecordCount: {records: number, dataSources: number};
+    public getSourceAndRecordCount(): {records: number, dataSources: number} {
+
+        let retVal = {
+            records: 0,
+            dataSources: 0
+        };
+        if(this._sourceAndRecordCount !== undefined) {
+            return this._sourceAndRecordCount;
+        }
+        if(this._data){
+            let _dataSources    = new Map();
+            let _records        = new Map();
+            if(this._data.candidateVirtualEntity.records.length > 0){
+                this._data.candidateVirtualEntity.records.forEach((_rec: SzVirtualEntityRecord) => {
+                    _dataSources.set(_rec.dataSource,_rec.internalId);
+                    _records.set(_rec.recordId,_rec.internalId)
+                });
+            }
+            if(this._data.inboundVirtualEntity.records.length > 0){
+                this._data.inboundVirtualEntity.records.forEach((_rec: SzVirtualEntityRecord) => {
+                    _dataSources.set(_rec.dataSource,_rec.internalId);
+                    _records.set(_rec.recordId,_rec.internalId)
+                });
+            }
+            retVal.dataSources = [..._dataSources].length;
+            retVal.records     = [..._records].length;
+        }
+        this._sourceAndRecordCount = retVal;
+        return this._sourceAndRecordCount;
+    }
+
+    public getSourcesAndRecordsForEntity(cellSource: SzVirtualEntity) {
+        let retVal = '';
+        if(cellSource) {
+
+        }
+        return retVal;
+    }
+
+    public get sourcesCount(): number {
+        let res = this.getSourceAndRecordCount();
+        return res.dataSources;
+    }
+    public get recordsCount(): number {
+        let res = this.getSourceAndRecordCount();
+        return res.records;
+    }
+
     public get dataSourcesAsString(): string {
         let retVal = '';
         let _resolvedEntity = this.resolvedVirtualEntity;
