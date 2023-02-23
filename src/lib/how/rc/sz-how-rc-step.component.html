@@ -1,12 +1,14 @@
 
 <sz-how-rc-step-card 
     [data]="data"
+    [featureOrder]="featureOrder"
     [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step-card>
 <ul *ngIf="this.resolvedVirtualEntity && this.isInterimEntity">
     <!-- show nested "Create Virtual Entity Card" -->
     <sz-how-rc-step-card 
         [parentStep]="data"
         [data]="data"
+        [featureOrder]="featureOrder"
         [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step-card>
 </ul>
 <!--<h3>{{title}}<span *ngIf="isInterimEntity" class="datasources"> [ <span class="datasources-list">{{dataSourcesAsString}}</span> ]</span></h3>-->

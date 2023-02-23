@@ -10,10 +10,12 @@
         <li>
             <sz-how-rc-final-entity-card *ngFor="let vCardData of finalCardsData"
                 [data]="vCardData"
+                [featureOrder]="orderedFeatures"
                 [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-final-entity-card>
         </li>
         <sz-how-rc-step *ngFor="let step of resolutionSteps"
             [data]="step"
+            [featureOrder]="orderedFeatures"
             [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step>
     </ul>
 </div>

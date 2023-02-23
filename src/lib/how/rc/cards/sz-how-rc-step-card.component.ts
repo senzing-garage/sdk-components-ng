@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { DataSource } from '@angular/cdk/collections';
 import { 
     EntityDataService as SzEntityDataService, 
-    SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse, SzVirtualEntityRecord, SzDataSourceRecordSummary 
+    SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse, SzVirtualEntityRecord, SzDataSourceRecordSummary, SzResolvedEntity 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../../services/sz-config-data.service';
 import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../../../models/data-how';
@@ -131,27 +131,10 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
                 retVal.push(`On ${this._data.matchInfo.matchKey}`);
             }
         }
-        /*
-        if(displayType === SzResolutionStepDisplayType.INTERIM) {
-            let _resolvedEntity = this.resolvedVirtualEntity;
-            if(_resolvedEntity) {
-                retVal = `${_resolvedEntity.virtualEntityId}: Interim Entity: ${_resolvedEntity.entityName}`;
-            }
-        } else if(displayType === SzResolutionStepDisplayType.CREATE) {
-            // both items are virtual entities
-            retVal = 'Create Virtual Entity';
-        } else if(displayType === SzResolutionStepDisplayType.MERGE) {
-            // both items are virtual entities
-            retVal = 'Merge Interim Entities';
-        } else if(displayType === SzResolutionStepDisplayType.ADD) {
-            // one of the items is record, the other is virtual
-            retVal = 'Add Record to Virtual Entity';
-        }*/
         return retVal;
     }
     private _sourceAndRecordCount: {records: number, dataSources: number};
     public getSourceAndRecordCount(): {records: number, dataSources: number} {
-
         let retVal = {
             records: 0,
             dataSources: 0
@@ -182,10 +165,53 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     }
 
     public getSourcesAndRecordsForEntity(cellSource: SzVirtualEntity) {
-        let retVal = '';
+        let retVal = [];
         if(cellSource) {
+            let _dataSourceCounts = new Map();
+            cellSource.records.forEach((_rec: SzVirtualEntityRecord) => {
+                let _currentValue = (_dataSourceCounts.has(_rec.dataSource)) ? _dataSourceCounts.get(_rec.dataSource) : 0;
+                _dataSourceCounts.set(_rec.dataSource, _currentValue+1);
+            });
 
+            for (let [key, value] of _dataSourceCounts) {
+                let strVal  = value === 1 ? `${key} (${value}): ${cellSource.records[0].recordId}` : `${key} (${value})`;
+                retVal.push(strVal);
+            }
         }
+        return retVal.join(' | ');
+    }
+
+    public get dataRows(): SzFeatureScore[] {
+        let retVal = [];
+        if(this._data && this._data.matchInfo && this._data.matchInfo.featureScores) {
+            let _tempMap = new Map<string,SzFeatureScore>();
+            for(let fkey in this._data.matchInfo.featureScores) {
+                this._data.matchInfo.featureScores[fkey].forEach((featScore: SzFeatureScore) => {
+                    if(_tempMap.has(fkey)) {
+                        // we only want to append if highest score of fType
+                        if(_tempMap.get(fkey).score < featScore.score) {
+                            _tempMap.set(fkey, featScore);
+                        }
+                    } else {
+                        // just append
+                        _tempMap.set(fkey, featScore);
+                    }
+                });
+            }
+            retVal = [..._tempMap.values()];
+            // if we have features from config we should return the  
+            // values in that order
+            if(this.featureOrder && this.featureOrder.length > 0) {
+                //console.log('reordering virtual card features by config order: ', this.featureOrder);
+                retVal.sort((
+                    a: SzFeatureScore, 
+                    b: SzFeatureScore
+                ) => {
+                    return this.featureOrder.indexOf(a.featureType) - this.featureOrder.indexOf(b.featureType);
+                });
+            }
+        }
+        //console.info('dataRows: ', retVal, this.featureOrder);
         return retVal;
     }
 
