@@ -21,6 +21,7 @@
 
     h3 {
         margin: 0;
+        font-size: 20px;
     }
 
     ul {
@@ -78,10 +79,38 @@
         margin-left: 10px;
         margin-right: 20px;
         margin-bottom: 10px;
+        font-size: 20px;
         .info-line {
             white-space: nowrap;
         }
     }
+    .toggle-expansion-icon {
+        transform: rotate(90deg);
+        cursor: pointer;
+    }
+    .toggle-child-expansion-icon {
+        transform: rotate(90deg);
+        cursor: pointer;
+    }
+
+    &.collapsed {
+        .toggle-child-expansion-icon {
+            transform: rotate(0deg);
+        }
+        .toggle-expansion-icon {
+            transform: rotate(0deg);
+        }
+        .hide-on-collapsed {
+            display: none;
+        }
+    }
+    &.children-collapsed {
+        
+    }
+}
+
+::ng-deep .info-block .emphasized {
+    font-weight: 800;
 }
 
 .columns {

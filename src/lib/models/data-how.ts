@@ -31,12 +31,13 @@ export interface SzResolvedVirtualEntity extends SzResolvedEntity {
     virtualEntityId: string
 }
 
-export type SzResolutionStepDisplayType = 'MERGE' | 'CREATE' | 'INTERIM' | 'ADD';
+export type SzResolutionStepDisplayType = 'MERGE' | 'CREATE' | 'INTERIM' | 'ADD' | 'FINAL';
 export const SzResolutionStepDisplayType = {
     MERGE: 'MERGE' as SzResolutionStepDisplayType,
     CREATE: 'CREATE' as SzResolutionStepDisplayType,
     INTERIM: 'INTERIM' as SzResolutionStepDisplayType,
-    ADD: 'ADD' as SzResolutionStepDisplayType
+    ADD: 'ADD' as SzResolutionStepDisplayType,
+    FINAL: 'FINAL' as SzResolutionStepDisplayType
 };
 
 export interface SzResolutionStepListItem extends SzResolutionStep {

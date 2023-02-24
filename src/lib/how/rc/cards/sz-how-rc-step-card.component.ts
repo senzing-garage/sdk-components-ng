@@ -36,6 +36,7 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
     private _highlighted: boolean = false;
     private _collapsed: boolean = false;
+    private _canExpand: boolean = true;
 
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
         return this._collapsed ? true : false;
@@ -58,6 +59,10 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
 
     @Input() featureOrder: string[];
 
+    @Input() set expanded(value: boolean) {
+        this._collapsed = !value;
+    }
+
     @Input() set stepsByVirtualId(value: {[key: string]: SzResolutionStep}) {
         this._stepMap = value;
     }
@@ -73,6 +78,19 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     }
     @Input() set parentStep(value: SzResolutionStep) {
         this._parentStep = value;
+    }
+    @Output()
+    onExpand: EventEmitter<boolean>                          = new EventEmitter<boolean>();
+    
+    public toggleExpansion() {
+        this.onExpand.next(!this._collapsed);
+    }
+
+    get canExpand(): boolean {
+        return true;
+    }
+    get hasChildren(): boolean {
+        return this.isInterimEntity || this.isFinalEntity ? true : false;
     }
     get displayType(): SzResolutionStepDisplayType {
         let listItemVerb    = this.getStepListItemType(this._data);
@@ -98,6 +116,9 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     }
     public get isInterimEntity() {
         return this.displayType === SzResolutionStepDisplayType.INTERIM;
+    }
+    public get isFinalEntity() {
+        return this.displayType === SzResolutionStepDisplayType.FINAL;
     }
     public get title(): string {
         let retVal = '';
@@ -126,9 +147,13 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
         let _resolvedEntity = this.resolvedVirtualEntity;
 
         if(this._data) {
-            retVal.push(`Forms ${this._data.resolvedVirtualEntityId}`);
+            let eType = this.isInterimEntity ? 'Interim Entity' : 'Virtual Entity';
+            retVal.push(`Forms <span class="emphasized">${eType} ${this._data.resolvedVirtualEntityId}</span>`);
             if(this._data.matchInfo && this._data.matchInfo.matchKey) {
-                retVal.push(`On ${this._data.matchInfo.matchKey}`);
+                retVal.push(`On <span class="emphasized">${this._data.matchInfo.matchKey}</span>`);
+            }
+            if(this._data.matchInfo && this._data.matchInfo.resolutionRule) {
+                retVal.push(`Using <span class="emphasized">${this._data.matchInfo.resolutionRule}</span>`);
             }
         }
         return retVal;

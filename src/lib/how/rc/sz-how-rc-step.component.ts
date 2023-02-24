@@ -35,9 +35,13 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
     private _highlighted: boolean = false;
     private _collapsed: boolean = false;
+    private _childrenCollapsed: boolean = false;
 
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
         return this._collapsed ? true : false;
+    }
+    @HostBinding('class.expanded') get cssExpandedClass(): boolean {
+        return this._collapsed ? false : true;
     }
     @HostBinding('class.highlighted') get cssHighlightedClass(): boolean {
         return this._highlighted ? true : false;
@@ -56,6 +60,7 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
     @Input() set data(value: SzResolutionStep) {
         this._data = value;
     }
+
     get displayType(): SzResolutionStepDisplayType {
         let listItemVerb    = this.getStepListItemType(this._data);
         return listItemVerb;
@@ -69,6 +74,13 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
     public get isCollapsed() {
         return this._collapsed;
     }
+    public get isExpanded() {
+        return !this._collapsed;
+    }
+    public get isChildExpanded() {
+        return !this._childrenCollapsed;
+    }
+    
     public get isInterimEntity() {
         return this.displayType === SzResolutionStepDisplayType.CREATE;
     }
@@ -100,6 +112,15 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
+    }
+
+    public onExpand(value: boolean) {
+        console.info('onExpand: ', value);
+        this._collapsed = value;
+    }
+    public onExpandChild(value: boolean) {
+        console.info('onExpandChildren: ', value);
+        this._childrenCollapsed = value;
     }
 
     private getStepListItemType(step: SzResolutionStep): SzResolutionStepDisplayType {
