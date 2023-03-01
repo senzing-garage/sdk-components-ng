@@ -17,5 +17,12 @@
     }
     .step-list {
         list-style: none;
+
+        li {
+            margin-left: 40px;
+            &.top-level {
+                margin-left: 0px;
+            }
+        }
     }
 }

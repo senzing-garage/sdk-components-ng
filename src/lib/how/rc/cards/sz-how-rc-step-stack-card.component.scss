@@ -1,0 +1,43 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    border: 2px dashed orange;
+
+    .stack-card {
+        border: 2px solid #000;
+        margin-top: 14px;
+        border-radius: 5px;
+        padding: 3px 3px;
+        min-height: 20px;
+        margin-top: -20px;
+
+        &:first-child {
+            margin-top: 0px;
+        }
+        &.type-add {
+            background-color: #feae00;
+        }
+        &.type-create {
+            background-color: #ffd932;
+        }
+        &.type-interim {
+            background-color: #56c1ff;
+        }
+        &.type-merge {
+            background-color: #16e7cf;
+        }
+        &.type-final {
+            background-color: #88fa4e;
+        }
+    
+        h3 {
+            margin: 0;
+        }
+
+        @for $i from 1 through 100 {
+            &:nth-child(#{$i}) {
+                z-index: #{10 - $i};
+            }
+        }
+    }
+}

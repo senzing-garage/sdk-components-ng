@@ -22,6 +22,7 @@ export * from './lib/services/sz-message-bundle.service';
 export { SzPrefsService, SzSdkPrefsModel} from './lib/services/sz-prefs.service';
 export * from './lib/services/sz-search.service';  // updated to use rest
 export * from './lib/services/sz-ui.service';
+export * from './lib/services/sz-how-ui.service';
 
 /** components */
   /** bulk data related */
@@ -88,6 +89,7 @@ export { SzHowECToolbarComponent } from './lib/how/ec/sz-how-ec-toolbar.componen
 export { SzHowRCEntityComponent, SzHowRCEntityDialog } from './lib/how/rc/sz-how-rc-entity.component';
 export { SzHowRCFinalEntityCardComponent } from './lib/how/rc/cards/sz-how-rc-final-entity-card.component';
 export { SzHowRCStepComponent } from './lib/how/rc/sz-how-rc-step.component';
+export { SzHowRCStepCardStackComponent } from './lib/how/rc/cards/sz-how-rc-step-stack-card.component';
 export { SzHowRCStepCardComponent } from './lib/how/rc/cards/sz-how-rc-step-card.component';
 export { SzHowRCNavComponent } from './lib/how/rc/sz-how-rc-nav.component';
 

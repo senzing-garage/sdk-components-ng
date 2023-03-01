@@ -6,16 +6,30 @@
     *ngIf="showNavigation"
 ></sz-how-rc-nav>
 <div class="main">
+    <!--<button (click)="getResolutionStepsWithGroups()">get hybrid step list</button>-->
+
     <ul class="step-list">
-        <li>
+        <li class="top-level">
             <sz-how-rc-final-entity-card *ngFor="let vCardData of finalCardsData"
                 [data]="vCardData"
                 [featureOrder]="orderedFeatures"
                 [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-final-entity-card>
         </li>
-        <sz-how-rc-step *ngFor="let step of resolutionSteps"
-            [data]="step"
-            [featureOrder]="orderedFeatures"
-            [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step>
+        <li *ngFor="let step of resolutionStepsWithGroups; let rsInd=index"
+            [ngSwitch]="isResolutionStep(step)">
+            <ng-template [ngSwitchCase]="false">
+                <sz-how-rc-step-stack-card
+                    [steps]="cooerceToSteps(step)"></sz-how-rc-step-stack-card>
+            </ng-template>
+            <ng-template [ngSwitchCase]="true">
+                <sz-how-rc-step *ngIf="isResolutionStep(step)"
+                [attr.step-index]="rsInd"
+                [attr.step-number]="cooerceToStep(step).stepNumber"
+                [attr.virtual-id]="cooerceToStep(step).resolvedVirtualEntityId"
+                [data]="cooerceToStep(step)" 
+                [featureOrder]="orderedFeatures" 
+                [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step>
+            </ng-template>
+        </li>
     </ul>
 </div>

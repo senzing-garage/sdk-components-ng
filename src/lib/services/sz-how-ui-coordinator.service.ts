@@ -77,7 +77,7 @@ export interface SzHowStepUIStateChangeEvent {
 
 /**
  * Provides access to the /datasources api path.
- * See {@link https://github.com/Senzing/senzing-rest-api/blob/master/senzing-rest-api.yaml#L172}
+ * See {@link http://github.com/Senzing/senzing-rest-api/blob/master/senzing-rest-api.yaml#L172}
  *
  * @export
  */

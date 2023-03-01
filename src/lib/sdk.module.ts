@@ -86,10 +86,12 @@ import { SzHowECToolbarComponent } from './how/ec/sz-how-ec-toolbar.component';
 import { SzHowECSourceRecordsComponent } from './how/ec/sz-dialog-how-ec-source-records.component';
 
 import { SzHowRCEntityComponent, SzHowRCEntityDialog } from './how/rc/sz-how-rc-entity.component';
-import { SzHowRCNavComponent } from './how/rc/sz-how-rc-nav.component';
-import { SzHowRCStepComponent } from './how/rc/sz-how-rc-step.component';
 import { SzHowRCFinalEntityCardComponent } from './how/rc/cards/sz-how-rc-final-entity-card.component';
+import { SzHowRCNavComponent } from './how/rc/sz-how-rc-nav.component';
 import { SzHowRCStepCardComponent } from './how/rc/cards/sz-how-rc-step-card.component';
+import { SzHowRCStepCardStackComponent } from './how/rc/cards/sz-how-rc-step-stack-card.component';
+import { SzHowRCStepComponent } from './how/rc/sz-how-rc-step.component';
+import { SzHowUIService } from './services/sz-how-ui.service';
 
 /**
  * Sets up a default set of service parameters for use
@@ -151,6 +153,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowRCFinalEntityCardComponent,
         SzHowRCNavComponent,
         SzHowRCStepCardComponent,
+        SzHowRCStepCardStackComponent,
         SzHowRCStepComponent,
         SzMultiSelectButtonComponent,
         SzPoweredByComponent,
@@ -204,6 +207,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowRCEntityComponent,
         SzHowRCEntityDialog,
         SzHowRCNavComponent,
+        SzHowRCStepCardStackComponent,
         SzHowRCStepComponent,
         SzPoweredByComponent,
         SzPreferencesComponent,
@@ -232,6 +236,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzDataSourcesService,
         SzFoliosService,
         SzHowUICoordinatorService,
+        SzHowUIService,
         SzPrefsService,
         SzSearchService,
         HttpClient,

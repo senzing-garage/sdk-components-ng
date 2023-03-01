@@ -1,0 +1,5 @@
+<div *ngFor="let step of steps; let stepInd=index;"
+    class="stack-card"
+    [class.type-add]="isStepDisplayType(step, 'ADD')">
+    <h3 *ngIf="stepInd === 0">{{title}}</h3>
+</div>
