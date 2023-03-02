@@ -19,10 +19,23 @@
         list-style: none;
 
         li {
+            display: flex;
+            flex-direction: row;
             margin-left: 40px;
             &.top-level {
                 margin-left: 0px;
             }
+            sz-how-rc-step {
+                flex-grow: 5;
+                margin-right: 20px;
+            }
+            sz-how-rc-step-stack-card {
+                flex-grow: 5;
+            }
         }
+    }
+    .stack-control {
+        min-width: 20px;
+        border: 1px dotted pink;
     }
 }

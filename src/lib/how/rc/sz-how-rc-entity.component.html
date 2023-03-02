@@ -30,6 +30,9 @@
                 [featureOrder]="orderedFeatures" 
                 [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step>
             </ng-template>
+            <ng-template [ngSwitchCase]="false">
+                <div class="stack-control"></div>
+            </ng-template>
         </li>
     </ul>
 </div>
