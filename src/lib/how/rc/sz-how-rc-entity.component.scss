@@ -22,14 +22,18 @@
             display: flex;
             flex-direction: row;
             margin-left: 40px;
+
             &.top-level {
                 margin-left: 0px;
+                sz-how-rc-final-entity-card {
+                    flex-grow: 5;
+                }
             }
             sz-how-rc-step {
                 flex-grow: 5;
                 margin-right: 20px;
             }
-            sz-how-rc-step-stack-card {
+            sz-how-rc-step-group {
                 flex-grow: 5;
             }
         }

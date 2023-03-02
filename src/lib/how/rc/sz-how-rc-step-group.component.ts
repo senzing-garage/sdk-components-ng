@@ -5,42 +5,71 @@ import {
     EntityDataService as SzEntityDataService, 
     SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse, SzVirtualEntityRecord, SzDataSourceRecordSummary, SzResolvedEntity 
 } from '@senzing/rest-api-client-ng';
-import { SzConfigDataService } from '../../../services/sz-config-data.service';
-import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../../../models/data-how';
-import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
-import { parseSzIdentifier } from '../../../common/utils';
-import { SzHowUIService } from '../../../services/sz-how-ui.service';
+import { SzConfigDataService } from '../../services/sz-config-data.service';
+import { SzResolutionStepDisplayType, SzResolutionStepGroup, SzResolvedVirtualEntity} from '../../models/data-how';
+import { Subject } from 'rxjs';
+import { parseSzIdentifier } from '../../common/utils';
+import { SzHowUIService } from '../../services/sz-how-ui.service';
 
 /**
  * Why
  *
  * @example 
  * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-how-rc-step entityId="5"&gt;&lt;/sz-how-rc-step&gt;<br/><br/>
+ * &lt;sz-how-rc-step-group&gt;&lt;/sz-how-rc-step&gt;<br/><br/>
  *
  * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-how-rc-step entityId="5"&gt;&lt;/sz-how-rc-step&gt;<br/>
+ * &lt;sz-how-rc-step-group&gt;&lt;/sz-how-rc-step&gt;<br/>
 */
 @Component({
-    selector: 'sz-how-rc-step-stack-card',
-    templateUrl: './sz-how-rc-step-stack-card.component.html',
-    styleUrls: ['./sz-how-rc-step-stack-card.component.scss']
+    selector: 'sz-how-rc-step-group',
+    templateUrl: './sz-how-rc-step-group.component.html',
+    styleUrls: ['./sz-how-rc-step-group.component.scss']
 })
-export class SzHowRCStepCardStackComponent implements OnInit, OnDestroy {
+export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
-    private _data: SzResolutionStep[];
-    public get steps(): SzResolutionStep[] {
-        return this._data;
+    private _stepMap: {[key: string]: SzResolutionStep};
+    private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
+    private _highlighted: boolean = false;
+    private _collapsed: boolean = false;
+    private _childrenCollapsed: boolean = false;
+    private _data: SzResolutionStepGroup;
+    @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
+        return this._collapsed ? true : false;
     }
-    @Input() set steps(value: SzResolutionStep[]) {
+    @HostBinding('class.expanded') get cssExpandedClass(): boolean {
+        return this._collapsed ? false : true;
+    }
+    @HostBinding('class.highlighted') get cssHighlightedClass(): boolean {
+        return this._highlighted ? true : false;
+    }
+    @Input() featureOrder: string[];
+
+    @Input() set stepsByVirtualId(value: {[key: string]: SzResolutionStep}) {
+        this._stepMap = value;
+    }
+    @Input() set data(value: SzResolutionStepGroup) {
         this._data = value;
+    }
+    @Input() public set virtualEntitiesById(value: Map<string, SzResolvedVirtualEntity>) {
+        if(this._virtualEntitiesById === undefined && value !== undefined) {
+            this._virtualEntitiesById = value;
+        }
+        this._virtualEntitiesById = value;
+    }
+    @Input() set expanded(value: boolean) {
+        this._collapsed = !value;
+    }
+
+    public get data(): SzResolutionStepGroup {
+        return this._data;
     }
 
     get numberOfCards(): number {
         let retVal = 0;
-        if(this._data && this._data.length) {
-            retVal = this._data.length;
+        if(this._data && this._data.virtualEntityIds && this._data.virtualEntityIds.length) {
+            retVal = this._data.virtualEntityIds.length;
         }
         return retVal;
     }
@@ -49,7 +78,7 @@ export class SzHowRCStepCardStackComponent implements OnInit, OnDestroy {
         let retVal = 'Steps';
         if(this._data) {
             let _retTypes = new Map<SzResolutionStepDisplayType, number>();
-            this._data.forEach((step: SzResolutionStep) => {
+            this._data.resolutionSteps.forEach((step: SzResolutionStep) => {
                 let _retType = SzHowUIService.getStepListItemType(step);
                 if(_retTypes.has(_retType)){
                     _retTypes.set(_retType, (_retTypes.get(_retType) + 1));
@@ -90,15 +119,6 @@ export class SzHowRCStepCardStackComponent implements OnInit, OnDestroy {
     isStepDisplayType(step: SzResolutionStep, typeVerb: SzResolutionStepDisplayType): boolean {
         let stepType = SzHowUIService.getStepListItemType(step);
         return stepType === typeVerb;
-        /*
-        if(typeVerb === 'MERGE') { return stepType === SzResolutionStepDisplayType.MERGE; }
-        if(typeVerb === 'CREATE') { return stepType === SzResolutionStepDisplayType.CREATE; }
-        if(typeVerb === 'ADD') { return stepType === SzResolutionStepDisplayType.ADD; }
-        if(typeVerb === 'ADD') { return stepType === SzResolutionStepDisplayType.ADD; }
-        if(typeVerb === 'ADD') { return stepType === SzResolutionStepDisplayType.ADD; }
-        if(typeVerb === 'ADD') { return stepType === SzResolutionStepDisplayType.ADD; }
-
-        return false;*/
     } 
 
     constructor(

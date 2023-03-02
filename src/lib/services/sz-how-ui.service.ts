@@ -28,7 +28,7 @@ export class SzHowUIService {
 
     public static getStepListItemType(step: SzResolutionStep, stepNumber?: number): SzResolutionStepDisplayType {
       if(step && step !== undefined) {
-        console.log(`#${stepNumber} getStepListItemType: `, step);
+        //console.log(`#${stepNumber} getStepListItemType: `, step);
         if(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) {
           // both items are records
           return SzResolutionStepDisplayType.CREATE;

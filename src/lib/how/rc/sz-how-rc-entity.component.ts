@@ -8,11 +8,17 @@ import {
 import { SzConfigDataService } from '../../services/sz-config-data.service';
 import { SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
 import { SzHowUIService } from '../../services/sz-how-ui.service';
-import { SzHowFinalCardData, SzVirtualEntityRecordsClickEvent, SzResolvedVirtualEntity, SzResolutionStepDisplayType } from '../../models/data-how';
+import { 
+  SzHowFinalCardData, 
+  SzVirtualEntityRecordsClickEvent, 
+  SzResolvedVirtualEntity, 
+  SzResolutionStepGroup,
+  SzResolutionStepDisplayType 
+} from '../../models/data-how';
 import { Observable, ReplaySubject, Subject, take, takeUntil, zip, map } from 'rxjs';
 import { parseBool, parseSzIdentifier } from '../../common/utils';
 import { SzHowECSourceRecordsComponent } from '../ec/sz-dialog-how-ec-source-records.component';
-
+import { v4 as uuidv4} from 'uuid';
 
 
 /**
@@ -39,8 +45,9 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
     private _data: SzHowEntityResult;
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
     private _featureTypesOrdered: string[] | undefined;
-    private _resolutionSteps: Array<SzResolutionStep | SzResolutionStep[]>;
+    private _resolutionSteps: Array<SzResolutionStep>;
     private _resolutionStepsByVirtualId: {[key: string]: SzResolutionStep};
+    private _resolutionStepGroups: Map<string, SzResolutionStepGroup> = new Map<string, SzResolutionStepGroup>();
     private _isLoading = false;
     private _openRecordsModalOnClick = true;
     private _showNavigation = true;
@@ -58,12 +65,11 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
     @Input()
     entityId: SzEntityIdentifier;
 
-    public get resolutionSteps(): Array<SzResolutionStep | SzResolutionStep[]> | undefined {
-      //this._resolutionSteps[0].stepNumber
+    public get resolutionSteps(): Array<SzResolutionStep> | undefined {
       return this._resolutionSteps;
     }
 
-    public cooerceToStep(stepItem: SzResolutionStep | SzResolutionStep[]): SzResolutionStep {
+    public cooerceToStep(stepItem: SzResolutionStep | SzResolutionStepGroup): SzResolutionStep {
       let retVal: SzResolutionStep | undefined;
       if((stepItem as SzResolutionStep).stepNumber) {
         retVal = (stepItem as SzResolutionStep);
@@ -71,10 +77,10 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       return retVal;
     }
 
-    public cooerceToSteps(stepItem: SzResolutionStep | SzResolutionStep[]): SzResolutionStep[] {
-      let retVal: SzResolutionStep[] | undefined;
-      if((stepItem as SzResolutionStep[]).length) {
-        retVal = (stepItem as SzResolutionStep[]);
+    public cooerceToStepGroup(stepItem: SzResolutionStep | SzResolutionStepGroup): SzResolutionStepGroup {
+      let retVal: SzResolutionStepGroup | undefined;
+      if((stepItem as SzResolutionStepGroup).resolutionSteps) {
+        retVal = (stepItem as SzResolutionStepGroup);
       }
       return retVal;
     }
@@ -158,6 +164,9 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
                 }
                 this._resolutionSteps = _resSteps.reverse(); // we want the steps in reverse for display purposes
             }
+            if(this._resolutionSteps){
+              this._resolutionStepGroups = this.getDefaultResolutionStepGroups(this._resolutionSteps);
+            }
             // extend data with augmentation
             if(this._data && this._data.resolutionSteps) {
               this.getVirtualEntityDataForSteps(this._data.resolutionSteps, this._data.finalStates).pipe(
@@ -190,37 +199,108 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       return retVal;
     }
 
-    public get resolutionStepsWithGroups(): Array<SzResolutionStep | SzResolutionStep[]> {
-      let retVal = [];
+    public getDefaultResolutionStepGroups(_rSteps?: Array<SzResolutionStep>): Map<string, SzResolutionStepGroup> {
+      let retVal = new Map<string, SzResolutionStepGroup>();
+      if(!_rSteps) {
+        _rSteps = this._resolutionSteps;
+      }
       // create "groups" for multiple sequential "add record" steps
-      if(this._resolutionSteps && this._resolutionSteps.length > 1) {
-        let _groups = [];
-        let _resolutionStepsWithGroups: Array<SzResolutionStep | SzResolutionStep[]> = [];
+      if(_rSteps && _rSteps.length > 1) {
+        //let _resolutionStepsWithGroups: Array<SzResolutionStep | SzResolutionStep[]> = [];
+        let _currentGroupId   = uuidv4();
 
-        this._resolutionSteps.forEach((resStep: SzResolutionStep, stepArrIndex: number) => {
-          let futureStepType  = this._resolutionSteps[(stepArrIndex + 1)]  ? SzHowUIService.getStepListItemType((this._resolutionSteps[(stepArrIndex + 1)] as SzResolutionStep), resStep.stepNumber) : undefined;
-          let currentStepType = this._resolutionSteps[stepArrIndex]        ? SzHowUIService.getStepListItemType((this._resolutionSteps[ stepArrIndex     ] as SzResolutionStep), resStep.stepNumber) : undefined;
-          let lastStepType    = this._resolutionSteps[(stepArrIndex - 1)]  ? SzHowUIService.getStepListItemType((this._resolutionSteps[(stepArrIndex - 1)] as SzResolutionStep), resStep.stepNumber) : undefined;
+        _rSteps.forEach((resStep: SzResolutionStep, stepArrIndex: number) => {
+          let futureStepType  = _rSteps[(stepArrIndex + 1)]  ? SzHowUIService.getStepListItemType((_rSteps[(stepArrIndex + 1)] as SzResolutionStep), resStep.stepNumber) : undefined;
+          let currentStepType = _rSteps[stepArrIndex]        ? SzHowUIService.getStepListItemType((_rSteps[ stepArrIndex     ] as SzResolutionStep), resStep.stepNumber) : undefined;
+          let lastStepType    = _rSteps[(stepArrIndex - 1)]  ? SzHowUIService.getStepListItemType((_rSteps[(stepArrIndex - 1)] as SzResolutionStep), resStep.stepNumber) : undefined;
 
           if(currentStepType !== SzResolutionStepDisplayType.ADD){ 
-            _resolutionStepsWithGroups.push(resStep);
+            //_resolutionStepsWithGroups.push(resStep);
           } else {
             // current type is "add"
               // check if previous step was add
               // if so add this item to previous item
               if(lastStepType === SzResolutionStepDisplayType.ADD) {
-                console.log(`${stepArrIndex} | previous step was add operation. append(${_resolutionStepsWithGroups.length - 1}:${lastStepType})`,_resolutionStepsWithGroups[(_resolutionStepsWithGroups.length - 1)], _resolutionStepsWithGroups);
-                (_resolutionStepsWithGroups[(_resolutionStepsWithGroups.length - 1)] as SzResolutionStep[]).push(resStep);
+                retVal.get(_currentGroupId).resolutionSteps.push(resStep);
+                //console.log(`${stepArrIndex} | previous step was add operation. append`, retVal.get(_currentGroupId));
+                //(_resolutionStepsWithGroups[(_resolutionStepsWithGroups.length - 1)] as SzResolutionStep[]).push(resStep);
               } else if(futureStepType === SzResolutionStepDisplayType.ADD) {
                 // this is the first "add record" in a sequence of at least
                 // two add records
-                _resolutionStepsWithGroups.push([resStep]);
-                console.log(`${stepArrIndex} | first add operation in series`, _resolutionStepsWithGroups);
+                _currentGroupId   = uuidv4();
+                retVal.set(_currentGroupId, {
+                  resolutionSteps: []
+                });
 
+                retVal.get(_currentGroupId).arrayIndex = stepArrIndex;
+                retVal.get(_currentGroupId).resolutionSteps.push(resStep);
+                //_resolutionStepsWithGroups.push([resStep]);
+                //console.log(`${stepArrIndex} | first add operation in series`, retVal.get(_currentGroupId));
               } else {
                 // this is a "singular" "add record" step, do not group it
-                _resolutionStepsWithGroups.push(resStep);
+                //_resolutionStepsWithGroups.push(resStep);
               }
+              retVal.get(_currentGroupId).virtualEntityIds = retVal.get(_currentGroupId).resolutionSteps.map((rStep: SzResolutionStep) => { return rStep.resolvedVirtualEntityId; });
+          }
+        });
+        //retVal  = _resolutionStepsWithGroups;
+      }
+      //console.info('getResolutionStepGroups: ', retVal);
+      return retVal;
+    }
+
+    private stepIsMemberOfGroup(virtualEntityId: string) {
+      let _retVal   = false;
+      let _groupId  = this.getResolutionStepGroupIdByMemberVirtualId(virtualEntityId);
+      if(_groupId) {
+        _retVal     = true; 
+      }
+      return _retVal;
+    }
+    private getResolutionStepGroupIdByMemberVirtualId(virtualEntityId: string) {
+      let retVal;
+      if(this._resolutionStepGroups) {
+        this._resolutionStepGroups.forEach((_value: SzResolutionStepGroup, _key: string) => {
+          let _is = _value.virtualEntityIds.indexOf(virtualEntityId) > -1;
+          if(_is) {
+            retVal = _key;
+          }
+        });
+      }
+      return retVal;
+    }
+    private getResolutionStepGroupIdByMemberIndexPosition(stepIndexPosition: number) {
+      let retVal;
+      if(this._resolutionStepGroups) {
+        this._resolutionStepGroups.forEach((_value: SzResolutionStepGroup, _key: string) => {
+          let _is = _value.arrayIndex === stepIndexPosition;
+          if(_is) {
+            retVal = _key;
+          }
+        });
+      }
+      return retVal;
+    }
+
+    public get resolutionStepsWithGroups(): Array<SzResolutionStep | SzResolutionStepGroup> {
+      let retVal = [];
+      // create "groups" for multiple sequential "add record" steps
+      if(this._resolutionSteps && this._resolutionSteps.length > 1) {
+        let _resolutionStepsWithGroups: Array<SzResolutionStep | SzResolutionStepGroup> = [];
+
+        this._resolutionSteps.forEach((resStep: SzResolutionStep, stepArrIndex: number) => {
+          // check to see if we need to add a group here
+          let _stepGroupIdForCurrentIndex = this.getResolutionStepGroupIdByMemberIndexPosition(stepArrIndex);
+          let _stepGroupIdForCurrentStep  = this.getResolutionStepGroupIdByMemberVirtualId(resStep.resolvedVirtualEntityId);
+
+          if(_stepGroupIdForCurrentIndex){
+            _resolutionStepsWithGroups.push(this._resolutionStepGroups.get(_stepGroupIdForCurrentIndex));
+          }
+          // check whether or not step is member of group
+          if(!_stepGroupIdForCurrentStep) {
+            // item is not member of group
+            // add item to array
+            _resolutionStepsWithGroups.push(resStep);
           }
         });
         retVal  = _resolutionStepsWithGroups;
@@ -298,7 +378,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       }
     }
 
-    public isResolutionStep(value: SzResolutionStep | SzResolutionStep[]): boolean {
+    public isResolutionStep(value: SzResolutionStep | SzResolutionStepGroup): boolean {
       let retVal = false;
       if((value as SzResolutionStep).stepNumber !== undefined) {
         retVal = true;

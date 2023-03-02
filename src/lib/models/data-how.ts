@@ -31,6 +31,12 @@ export interface SzResolvedVirtualEntity extends SzResolvedEntity {
     virtualEntityId: string
 }
 
+export interface SzResolutionStepGroup {
+    arrayIndex?: number,
+    virtualEntityIds?: string[],
+    resolutionSteps: SzResolutionStep[]
+}
+
 export type SzResolutionStepDisplayType = 'MERGE' | 'CREATE' | 'INTERIM' | 'ADD' | 'FINAL';
 export const SzResolutionStepDisplayType = {
     MERGE: 'MERGE' as SzResolutionStepDisplayType,
