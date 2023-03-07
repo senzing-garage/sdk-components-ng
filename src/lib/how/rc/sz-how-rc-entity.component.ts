@@ -267,6 +267,14 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       }
     }
 
+    public isGroupExpanded(grp: SzResolutionStep | SzResolutionStepGroup) {
+      let vId = (grp as SzResolutionStepGroup).id ? (grp as SzResolutionStepGroup).id : (grp as SzResolutionStep).resolvedVirtualEntityId ? (grp as SzResolutionStep).resolvedVirtualEntityId : undefined;
+      if(vId) {
+        return this.howUIService.isExpanded(vId);
+      }
+      return false;
+    }
+
     private stepIsMemberOfGroup(virtualEntityId: string) {
       let _retVal   = false;
       let _groupId  = this.getResolutionStepGroupIdByMemberVirtualId(virtualEntityId);

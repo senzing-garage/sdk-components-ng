@@ -33,11 +33,41 @@
                 [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step>
             </ng-template>
             <ng-template [ngSwitchCase]="false">
-                <div class="stack-control">
+                <div class="stack-control" 
+                    [class.expanded]="isGroupExpanded(cooerceToStepGroup(step))"
+                    (click)="toggleCollapsedState(cooerceToStepGroup(step))">
+                    <!-- start collapsed  icon set -->
                     <mat-icon 
                     aria-hidden="false" 
-                    aria-label="Example home icon" 
-                    fontIcon="add_circle" (click)="toggleCollapsedState(cooerceToStepGroup(step))"></mat-icon>
+                    class="hide-on-expanded"
+                    fontIcon="arrow_upward"></mat-icon>
+                    <div class="center-area hide-on-expanded">
+                        <mat-icon 
+                        aria-hidden="false" 
+                        class="center-button"
+                        fontIcon="add_circle"></mat-icon>
+                    </div>
+                    <mat-icon 
+                    aria-hidden="false" 
+                    class="hide-on-expanded"
+                    fontIcon="arrow_downward"></mat-icon>
+                    <!-- end   collapsed icon set -->
+                    <!-- start expanded icon set  -->
+                    <mat-icon 
+                    aria-hidden="false" 
+                    class="hide-on-collapsed arrow-down"
+                    fontIcon="arrow_right"></mat-icon>
+                    <div class="center-area hide-on-collapsed">
+                        <mat-icon 
+                        aria-hidden="false" 
+                        class="center-button minus-button"
+                        fontIcon="circle"><span>-</span></mat-icon>
+                    </div>
+                    <mat-icon 
+                    aria-hidden="false" 
+                    class="hide-on-collapsed arrow-up"
+                    fontIcon="arrow_right"></mat-icon>
+                    <!-- end   expanded icon set  -->
                 </div>
             </ng-template>
         </li>

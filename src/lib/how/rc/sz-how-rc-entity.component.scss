@@ -11,7 +11,6 @@
         border-radius: 3px;
     }
     .main {
-        border: 2px dashed coral;
         justify-items: flex-start;
         flex-grow: 10;
     }
@@ -39,7 +38,73 @@
         }
     }
     .stack-control {
-        min-width: 20px;
-        border: 1px dotted pink;
+        display: flex;
+        flex-direction: column;
+        min-width: 18px;
+        width: 18px;
+        white-space: nowrap;
+        cursor: pointer;
+        justify-content: space-between;
+        margin: 12px 0 0 0;
+
+        .center-area {
+            display: flex;
+            flex-grow: 20;
+            height: 100%;
+            justify-content: center;
+            background-size: 2px 9px;
+            background-image: linear-gradient(transparent 4px, #000 4px);
+            background-repeat-x: no-repeat;
+            background-position-x: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mat-icon {
+            display: flex;
+            overflow: unset;
+            font-size: 18px;
+            height: 18px;
+            width: 18px;
+
+            &.center-button {
+                background-color: #ffffff;
+                clip-path: circle();
+            }
+            &.minus-button {
+                position: relative;
+                overflow: hidden;
+
+                span {
+                    position: absolute;
+                    color: #fff;
+                    top: calc(50% - 18px);
+                    left: calc(50% - 4px);
+                    font-weight: 900;
+                    font-size: 24px;
+                }
+            }
+            &.arrow-up {
+                margin-top: 1px;
+                transform: rotate(270deg);
+            }
+            &.arrow-down {
+                margin-bottom: -2px;
+                transform: rotate(90deg);
+            }
+        }
+
+        .hide-on-collapsed {
+            display: none;
+        }
+
+        &.expanded {
+            .hide-on-expanded {
+                display: none;
+            }
+            .hide-on-collapsed { 
+                display: flex;
+            }
+        }
     }
 }
