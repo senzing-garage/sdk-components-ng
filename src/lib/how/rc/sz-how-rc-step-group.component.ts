@@ -7,7 +7,7 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../services/sz-config-data.service';
 import { SzResolutionStepDisplayType, SzResolutionStepGroup, SzResolvedVirtualEntity} from '../../models/data-how';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../../common/utils';
 import { SzHowUIService } from '../../services/sz-how-ui.service';
 
@@ -31,9 +31,9 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
     public unsubscribe$ = new Subject<void>();
     private _stepMap: {[key: string]: SzResolutionStep};
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
-    private _highlighted: boolean = false;
-    private _collapsed: boolean = false;
-    private _childrenCollapsed: boolean = false;
+    private _highlighted: boolean           = false;
+    private _collapsed: boolean             = true;
+    private _childrenCollapsed: boolean     = false;
     private _data: SzResolutionStepGroup;
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
         return this._collapsed ? true : false;
@@ -58,8 +58,13 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
         }
         this._virtualEntitiesById = value;
     }
+    /*
     @Input() set expanded(value: boolean) {
         this._collapsed = !value;
+    }*/
+
+    public get id(): string {
+        return this._data && this._data.id ? this._data.id : undefined;
     }
 
     public get data(): SzResolutionStepGroup {
@@ -72,6 +77,10 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
             retVal = this._data.virtualEntityIds.length;
         }
         return retVal;
+    }
+
+    getCardTitleForStep(title: string, cardIndex: number) {
+        return cardIndex === 0 ? title : undefined;
     }
 
     get title(): string {
@@ -88,10 +97,10 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
             });
             if(_retTypes.size > 0) {
                 retVal = '';
-                console.log('_retTypes: ', _retTypes);
+                //console.log('_retTypes: ', _retTypes);
 
                 _retTypes.forEach((typeCount, retType) => {
-                    console.log(`\t\t${retType}`, typeCount);
+                    //console.log(`\t\t${retType}`, typeCount);
                     if(retType === SzResolutionStepDisplayType.ADD) {
                         retVal += `${typeCount} x Add Record to Virtual Entity\n\r`;
                     }
@@ -127,7 +136,16 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
         private howUIService: SzHowUIService
     ){}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.howUIService.onGroupExpansionChange.pipe(
+            takeUntil(this.unsubscribe$)
+        ).subscribe(this.onGroupExpansionChange.bind(this));
+    }
+
+    onGroupExpansionChange(gId: string) {
+        console.log(`onGroupExpansionChange: ${gId}`, this);
+        this._collapsed = !this.howUIService.isExpanded(gId);
+    }
 
     /**
      * unsubscribe when component is destroyed

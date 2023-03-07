@@ -159,8 +159,12 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
                 // we have resolution steps
                 let _resSteps = [];
                 for(let rKey in this._data.resolutionSteps) {
-                    this._data.resolutionSteps[rKey].resolvedVirtualEntityId
-                    _resSteps.push( this._data.resolutionSteps[rKey] );
+                  let _stepType = SzHowUIService.getStepListItemType(this._data.resolutionSteps[rKey]);
+                  if(_stepType !== SzResolutionStepDisplayType.CREATE) {
+                    //console.log(`#${this._data.resolutionSteps[rKey].stepNumber} type ${_stepType}`);
+                    this.howUIService.expandStep(this._data.resolutionSteps[rKey].resolvedVirtualEntityId);
+                  }
+                  _resSteps.push( this._data.resolutionSteps[rKey] );
                 }
                 this._resolutionSteps = _resSteps.reverse(); // we want the steps in reverse for display purposes
             }
@@ -222,6 +226,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
               // if so add this item to previous item
               if(lastStepType === SzResolutionStepDisplayType.ADD) {
                 retVal.get(_currentGroupId).resolutionSteps.push(resStep);
+                //this.howUIService.collapseStep(resStep.resolvedVirtualEntityId);
                 //console.log(`${stepArrIndex} | previous step was add operation. append`, retVal.get(_currentGroupId));
                 //(_resolutionStepsWithGroups[(_resolutionStepsWithGroups.length - 1)] as SzResolutionStep[]).push(resStep);
               } else if(futureStepType === SzResolutionStepDisplayType.ADD) {
@@ -229,11 +234,13 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
                 // two add records
                 _currentGroupId   = uuidv4();
                 retVal.set(_currentGroupId, {
+                  id: _currentGroupId,
                   resolutionSteps: []
                 });
 
                 retVal.get(_currentGroupId).arrayIndex = stepArrIndex;
                 retVal.get(_currentGroupId).resolutionSteps.push(resStep);
+                //this.howUIService.collapseStep(resStep.resolvedVirtualEntityId);
                 //_resolutionStepsWithGroups.push([resStep]);
                 //console.log(`${stepArrIndex} | first add operation in series`, retVal.get(_currentGroupId));
               } else {
@@ -249,6 +256,17 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       return retVal;
     }
 
+    public toggleCollapsedState(step: SzResolutionStep | SzResolutionStepGroup) {
+      let vId = (step as SzResolutionStepGroup).id ? (step as SzResolutionStepGroup).id : (step as SzResolutionStep).resolvedVirtualEntityId ? (step as SzResolutionStep).resolvedVirtualEntityId : undefined;
+      if(vId) {
+        if(this.howUIService.isExpanded(vId)){
+          this.howUIService.collapse(vId);
+        } else {
+          this.howUIService.expand(vId);
+        }
+      }
+    }
+
     private stepIsMemberOfGroup(virtualEntityId: string) {
       let _retVal   = false;
       let _groupId  = this.getResolutionStepGroupIdByMemberVirtualId(virtualEntityId);
@@ -257,6 +275,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       }
       return _retVal;
     }
+
     private getResolutionStepGroupIdByMemberVirtualId(virtualEntityId: string) {
       let retVal;
       if(this._resolutionStepGroups) {
@@ -305,7 +324,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
         });
         retVal  = _resolutionStepsWithGroups;
       }
-      console.info('resolutionStepsWithGroups: ', retVal);
+      //console.info('resolutionStepsWithGroups: ', retVal);
       return retVal;
     }
 
@@ -339,43 +358,12 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
         });
     }
 
-    getStepTitle(step: SzResolutionStep): string {
-      let retVal = '';
-      if(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) {
-          // both items are records
-          retVal = 'Create Virtual Entity';
-      } else if(!step.candidateVirtualEntity.singleton && !step.inboundVirtualEntity.singleton) {
-          // both items are virtual entities
-          retVal = 'Merge Interim Entities';
-      } else if(!(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) && (step.candidateVirtualEntity.singleton === false || step.inboundVirtualEntity.singleton === false)) {
-          // one of the items is record, the other is virtual
-          retVal = 'Add Record to Virtual Entity';
-      }
-      return retVal;
-    }
-
     /**
      * unsubscribe when component is destroyed
      */
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
-    }
-
-    public onRecordsMoreLinkClicked(evt: SzVirtualEntityRecordsClickEvent) {
-      console.log('SzHowEntityComponent.onRecordsMoreLinkClicked: ', evt);
-      this._recordsMoreLinkClick.next(evt);
-      if(this._openRecordsModalOnClick) {
-        let targetEle = new ElementRef(evt.target);
-        const dialogRef = this.dialog.open(SzHowECSourceRecordsComponent, {
-          panelClass: 'tooltip-dialog-panel',
-          hasBackdrop: false,
-          data: {
-            target: targetEle,
-            event: evt
-          }
-        });
-      }
     }
 
     public isResolutionStep(value: SzResolutionStep | SzResolutionStepGroup): boolean {

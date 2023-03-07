@@ -34,7 +34,10 @@
             </ng-template>
             <ng-template [ngSwitchCase]="false">
                 <div class="stack-control">
-
+                    <mat-icon 
+                    aria-hidden="false" 
+                    aria-label="Example home icon" 
+                    fontIcon="add_circle" (click)="toggleCollapsedState(cooerceToStepGroup(step))"></mat-icon>
                 </div>
             </ng-template>
         </li>

@@ -10,6 +10,7 @@ import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolvedVirtualEntit
 import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../../common/utils';
 import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
+import { SzHowUIService } from '../../services/sz-how-ui.service';
 
 /**
  * Why
@@ -32,9 +33,12 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
 
     private _stepMap: {[key: string]: SzResolutionStep};
     private _data: SzResolutionStep;
+    private _groupId: string;
+    private _groupTitle: string;
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
     private _highlighted: boolean = false;
     private _collapsed: boolean = false;
+    private _collapsedGroup: boolean = false;
     private _childrenCollapsed: boolean = false;
 
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
@@ -42,6 +46,12 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
     }
     @HostBinding('class.expanded') get cssExpandedClass(): boolean {
         return this._collapsed ? false : true;
+    }
+    @HostBinding('class.group-collapsed') get cssHiddenGroupClass(): boolean {
+        return this._collapsedGroup ? true : false;
+    }
+    @HostBinding('class.group-expanded') get cssExpandedGroupClass(): boolean {
+        return this._collapsedGroup ? false : true;
     }
     @HostBinding('class.highlighted') get cssHighlightedClass(): boolean {
         return this._highlighted ? true : false;
@@ -60,7 +70,18 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
     @Input() set data(value: SzResolutionStep) {
         this._data = value;
     }
-
+    @Input() set groupId(value: string) {
+        this._groupId = value;
+    }
+    @Input() set groupTitle(value: string) {
+        this._groupTitle = value;
+    }
+    get groupId(): string {
+        return this._groupId;
+    }
+    get groupTitle(): string {
+        return this._groupTitle;
+    }
     get displayType(): SzResolutionStepDisplayType {
         let listItemVerb    = this.getStepListItemType(this._data);
         return listItemVerb;
@@ -79,6 +100,9 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
     }
     public get isChildExpanded() {
         return !this._childrenCollapsed;
+    }
+    private get id(): string {
+        return this._data && this._data.resolvedVirtualEntityId ? this._data.resolvedVirtualEntityId : undefined;
     }
     
     public get isInterimEntity() {
@@ -101,10 +125,34 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
     constructor(
         public entityDataService: SzEntityDataService,
         public configDataService: SzConfigDataService,
-        private uiCoordinatorService: SzHowUICoordinatorService
+        private howUIService: SzHowUIService
     ){}
 
-    ngOnInit() {}
+    ngOnInit() {
+        // initialize
+        this._collapsedGroup = !this.howUIService.isExpanded(this._groupId);
+        this._collapsed      = !this.howUIService.isExpanded(this.id);
+
+        // listen for group state changes
+        this.howUIService.onGroupExpansionChange.pipe(
+            takeUntil(this.unsubscribe$)
+        ).subscribe(this.onGroupExpansionChange.bind(this));
+        // listen for step state changes
+        this.howUIService.onStepExpansionChange.pipe(
+            takeUntil(this.unsubscribe$)
+        ).subscribe(this.onStepExpansionChange.bind(this));
+    }
+
+    onGroupExpansionChange(gId: string) {
+        console.log(`onGroupExpansionChange: ${gId}`, this);
+        if(this._groupId && this._groupId === gId) {
+            // item is member of group
+            this._collapsedGroup = !this.howUIService.isExpanded(gId);
+        }
+    }
+    onStepExpansionChange(sId: string) {
+        console.log(`onStepExpansionChange: ${sId}`, this);
+    }
 
     /**
      * unsubscribe when component is destroyed

@@ -5,6 +5,7 @@
     margin-top: 14px;
     border-radius: 5px;
     padding: 3px 3px;
+    min-height: 20px;
 
     &.type-add {
         background-color: #feae00;
@@ -18,10 +19,29 @@
     &.type-merge {
         background-color: #16e7cf;
     }
+    &.group-member {
+        margin-top: 0px;
+        
+        .title-group {
+            display: none;
+        }
+        &.group-collapsed{
+            
+            .title-group {
+                display: block;
+            }
+            .hide-on-group-collapsed {
+                display: none;
+            }
+        }
+    }
 
     h3 {
         margin: 0;
         font-size: 20px;
+    }
+    .title-group {
+        display: none;       
     }
 
     ul {

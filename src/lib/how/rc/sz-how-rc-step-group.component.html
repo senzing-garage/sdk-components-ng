@@ -1,5 +1,15 @@
-<div *ngFor="let step of data.resolutionSteps; let stepInd=index;"
+<!--<div *ngFor="let step of data.resolutionSteps; let stepInd=index;"
     class="stack-card"
     [class.type-add]="isStepDisplayType(step, 'ADD')">
     <h3 *ngIf="stepInd === 0">{{title}}</h3>
-</div>
+</div>-->
+<sz-how-rc-step *ngFor="let step of data.resolutionSteps; let groupInd=index;"
+    class="stack-card"
+    [attr.step-index]="groupInd"
+    [attr.step-number]="step.stepNumber"
+    [attr.virtual-id]="step.resolvedVirtualEntityId"
+    [data]="step"
+    [groupId]="id" 
+    [groupTitle]="getCardTitleForStep(title, groupInd)"
+    [featureOrder]="featureOrder" 
+    [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step>

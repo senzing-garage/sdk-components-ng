@@ -1,9 +1,10 @@
-<h3>
+<h3 class="title hide-on-group-collapsed">
     <mat-icon *ngIf="canExpand && hasChildren"  class="toggle-child-expansion-icon" (click)="toggleExpansion()" fontIcon="play_circle"></mat-icon>
     <mat-icon *ngIf="canExpand && !hasChildren" class="toggle-expansion-icon"       (click)="toggleExpansion()" fontIcon="arrow_right"></mat-icon>
     {{title}}<span *ngIf="isInterimEntity" class="datasources"> [ <span class="datasources-list">{{dataSourcesAsString}}</span> ]</span>
 </h3>
-<div class="columns hide-on-collapsed">
+<h3 *ngIf="isGroupMember" class="title-group">{{groupTitle}}</h3>
+<div class="columns hide-on-collapsed hide-on-group-collapsed">
     <div class="column info-block">
         <div class="info-line" *ngFor="let line of description; let l = index">
             <span [innerHTML]="line"></span>

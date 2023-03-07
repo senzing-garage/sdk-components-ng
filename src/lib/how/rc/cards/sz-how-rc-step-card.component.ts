@@ -9,7 +9,8 @@ import { SzConfigDataService } from '../../../services/sz-config-data.service';
 import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../../../models/data-how';
 import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../../../common/utils';
-import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../../services/sz-how-ui-coordinator.service';
+//import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../../services/sz-how-ui-coordinator.service';
+import { SzHowUIService } from '../../../services/sz-how-ui.service';
 
 /**
  * Why
@@ -32,6 +33,8 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
 
     private _stepMap: {[key: string]: SzResolutionStep};
     private _data: SzResolutionStep;
+    private _groupId: string;
+    private _groupTitle: string;
     private _parentStep: SzResolutionStep;
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
     private _highlighted: boolean = false;
@@ -56,6 +59,12 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     @HostBinding('class.type-create') get cssTypeCreateClass(): boolean {
         return this.displayType === SzResolutionStepDisplayType.CREATE;
     }
+    @HostBinding('class.group-collapsed') get cssGroupCollapsedClass(): boolean {
+        return this._groupId && !this.howUIService.isGroupExpanded(this._groupId);
+    }
+    @HostBinding('class.group-member') get cssGroupMemberClass(): boolean {
+        return this.isGroupMember;
+    }
 
     @Input() featureOrder: string[];
 
@@ -79,6 +88,12 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     @Input() set parentStep(value: SzResolutionStep) {
         this._parentStep = value;
     }
+    @Input() set groupId(value: string) {
+        this._groupId = value;
+    }
+    @Input() set groupTitle(value: string) {
+        this._groupTitle = value;
+    }
     @Output()
     onExpand: EventEmitter<boolean>                          = new EventEmitter<boolean>();
     
@@ -98,6 +113,12 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     }
     get data() : SzResolutionStep {
         return this._data;
+    }
+    get groupId(): string {
+        return this._groupId;
+    }
+    get isGroupMember(): boolean {
+        return this._groupId ? true : false;
     }
     get parentStep() {
         return this._parentStep;
@@ -119,6 +140,9 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     }
     public get isFinalEntity() {
         return this.displayType === SzResolutionStepDisplayType.FINAL;
+    }
+    public get groupTitle(): string {
+        return this._groupTitle;
     }
     public get title(): string {
         let retVal = '';
@@ -274,7 +298,7 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     constructor(
         public entityDataService: SzEntityDataService,
         public configDataService: SzConfigDataService,
-        private uiCoordinatorService: SzHowUICoordinatorService
+        private howUIService: SzHowUIService
     ){}
 
     ngOnInit() {}

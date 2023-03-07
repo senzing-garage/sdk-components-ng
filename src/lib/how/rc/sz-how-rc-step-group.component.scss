@@ -3,16 +3,18 @@
     flex-direction: column;
     border: 2px dashed orange;
 
+    &.expanded {
+        .stack-card {
+            margin-top: 14px;
+        }
+    }
+
     .stack-card {
-        border: 2px solid #000;
-        margin-top: 14px;
-        border-radius: 5px;
-        padding: 3px 3px;
         min-height: 20px;
         margin-top: -20px;
 
         &:first-child {
-            margin-top: 0px;
+            margin-top: 14px;
         }
         &.type-add {
             background-color: #feae00;
