@@ -15,13 +15,16 @@
     }
     &.type-interim {
         background-color: #56c1ff;
+        .columns {
+            display: none;
+        }
     }
     &.type-merge {
         background-color: #16e7cf;
     }
     &.group-member {
         margin-top: 0px;
-        
+
         .title-group {
             display: none;
         }
@@ -113,6 +116,10 @@
         cursor: pointer;
     }
 
+    .hide-on-expanded {
+        display: none;
+    }
+
     &.collapsed {
         .toggle-child-expansion-icon {
             transform: rotate(0deg);
@@ -123,7 +130,11 @@
         .hide-on-collapsed {
             display: none;
         }
+        .hide-on-expanded {
+            display: initial;
+        }
     }
+
     &.children-collapsed {
         
     }
