@@ -59,3 +59,62 @@ sz-how-rc-nav, .sz-how-nav {
     }
 }
 
+ul.tree, ul.tree ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+} 
+ul.tree ul {
+    /* nested trees do have lines on first node */
+    li:first-child {
+        border-left: 3px solid #000000;
+        &:before {
+            border-bottom: 3px solid #000000;
+        }
+    }
+    li:last-child {
+        border-left: none;
+        &:before {
+            /*left: -3px;*/
+            top: 0;
+            height: 30px;
+        }
+    }
+    li {
+        position: relative;
+        margin-left: 20px;
+        display: flex;
+
+        &:before {
+
+        }
+    }
+}
+ul.tree li {
+    margin: 0;
+    border-left: 3px solid #000000;
+}
+ul.tree li:last-child {
+    border-left: none;
+}
+ul.tree li:before {
+    position:relative;
+    top: 30px;
+    height: 3px;
+    width: 13px;
+    border-bottom: 3px solid #000000;
+    content: "";
+    display: inline-block;
+}
+ul.tree li:first-child {
+    border-left: none;
+
+    &:before {
+        border-bottom: none;
+    }
+}
+ul.tree li:last-child:before {
+    border-left: 3px solid #000000;
+    height: 30px;
+    top: 0px;  
+}

@@ -1,7 +1,19 @@
 :host {
     display: block;
-    
+
     &.group-expanded {
 
+    }
+    &.expanded {
+        ul {
+            display: block;
+        }
+    }
+    ul {
+        display: none;
+
+        sz-how-rc-step-card {
+            width: 100%;
+        }
     }
 }
