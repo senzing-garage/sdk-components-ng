@@ -42,6 +42,10 @@
     h3 {
         margin: 0;
         font-size: 20px;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        flex-wrap: nowrap;
     }
     .title-group {
         display: none;       
@@ -107,6 +111,12 @@
             white-space: nowrap;
         }
     }
+    .info-icon {
+        position: relative;
+        top: 5px;
+        margin-left: 4px;
+        cursor: pointer;
+    }
     .toggle-expansion-icon {
         transform: rotate(90deg);
         cursor: pointer;
@@ -114,6 +124,7 @@
     .toggle-child-expansion-icon {
         transform: rotate(90deg);
         cursor: pointer;
+        margin-right: 4px;
     }
 
     .hide-on-expanded {
@@ -132,6 +143,9 @@
         }
         .hide-on-expanded {
             display: initial;
+            &.title {
+                display: flex;
+            }
         }
     }
 
