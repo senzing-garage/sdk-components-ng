@@ -10,7 +10,8 @@ import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolutionStepListIt
 import { parseBool } from '../../common/utils';
 import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseSzIdentifier, isNotNull } from '../../common/utils';
-import { SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
+import { SzHowUIService } from '../../services/sz-how-ui.service';
+
 import { MatSelect } from '@angular/material/select';
 
 export interface SzHowRCNavComponentParameterCounts {
@@ -228,7 +229,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
             _steps[0].resolvedVirtualEntityId
             retVal = _steps.map((_s: SzResolutionStep) => {
                 let _t: SzResolutionStepListItem = Object.assign({
-                    actionType: this.getStepListItemType(_s),
+                    actionType: this.getStepListCardType(_s),
                     cssClasses: this.getStepListItemCssClasses(_s), 
                     title: this.getStepListItemTitle(_s),
                     description: this.getStepListItemDescription(_s),
@@ -454,19 +455,8 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         return [...new Set(retVal)];
     }    
 
-    private getStepListItemType(step: SzResolutionStep): SzResolutionStepDisplayType {
-
-        if(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) {
-            // both items are records
-            return SzResolutionStepDisplayType.CREATE;
-        } else if(!step.candidateVirtualEntity.singleton && !step.inboundVirtualEntity.singleton) {
-            // both items are virtual entities
-            return SzResolutionStepDisplayType.MERGE;
-        } else if(!(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) && (step.candidateVirtualEntity.singleton === false || step.inboundVirtualEntity.singleton === false)) {
-            // one of the items is record, the other is virtual
-            return SzResolutionStepDisplayType.ADD;
-        }
-        return undefined;
+    private getStepListCardType(step: SzResolutionStep): SzResolutionStepDisplayType {
+        return SzHowUIService.getResolutionStepCardType(step);
     }
 
     private getStepListItemTitle(step: SzResolutionStep): string {
@@ -511,7 +501,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
     }
 
     private getStepListItemCssClasses(step: SzResolutionStep) {
-        let listItemVerb    = this.getStepListItemType(step);
+        let listItemVerb    = this.getStepListCardType(step);
         let cssClasses      = [];
         if(listItemVerb === SzResolutionStepDisplayType.ADD)    { cssClasses = cssClasses.concat(['record', 'add']); }
         if(listItemVerb === SzResolutionStepDisplayType.CREATE) { cssClasses = cssClasses.concat(['virtual-entity','create']); }
@@ -524,8 +514,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
 
     constructor(
         public entityDataService: SzEntityDataService,
-        public configDataService: SzConfigDataService,
-        private uiCoordinatorService: SzHowUICoordinatorService
+        public configDataService: SzConfigDataService
     ){}
 
     ngOnInit() {
@@ -571,14 +560,5 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
             }
         }
         return retVal;
-    }
-
-    public jumpTo(virtualEntityId: string) {
-        this.uiCoordinatorService.jumpTo(virtualEntityId);
-        this.pdModels[0] = virtualEntityId;
-        this.pdModels[1] = virtualEntityId;
-        this.pdModels[2] = virtualEntityId;
-        this.pdModels[3] = virtualEntityId;
-        console.log('reset other menus', this.pdModels);
     }
 }

@@ -106,4 +106,21 @@
             }
         }
     }
+    .debug-box {
+        position: relative;
+        border: 1px inset #b1b1b1;
+        border-radius: 4px;
+        margin: 10px 2px 2px 14px;
+        padding: 22px 20px 14px;
+        
+        button {
+            margin-left: 5px;
+        }
+        h3 {
+            position: absolute;
+            top: -32px;
+            background-color: #fff;
+            padding: 0px 10px 0px 10px;
+        }
+    }
 }

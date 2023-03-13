@@ -6,7 +6,7 @@ import {
     SzResolutionStep,
     SzVirtualEntity
 } from '@senzing/rest-api-client-ng';
-import { SzResolutionStepDisplayType, SzResolutionStepGroup } from '../models/data-how';
+import { SzResolutionStepDisplayType, SzResolutionStepGroup, SzResolutionStepListItemType } from '../models/data-how';
 
 /**
  * Provides access to the /datasources api path.
@@ -93,8 +93,26 @@ export class SzHowUIService {
       }
     }
 
+    public static getResolutionStepListItemType(item: SzResolutionStep | SzResolutionStepGroup): SzResolutionStepListItemType {
+      if(item && item !== undefined) {
+        let itemIsGroup   = (item as SzResolutionStepGroup).virtualEntityIds && (item as SzResolutionStepGroup).interimSteps ? true : false;
+        let itemsIsStack  = (item as SzResolutionStepGroup).virtualEntityIds && (item as SzResolutionStepGroup).resolutionSteps && !itemIsGroup ? true : false;
+        
+        if(itemIsGroup) {
+          // item is a interim entity whos children are a collection of steps AND/OR stacks (single with subtree)
+          return SzResolutionStepListItemType.GROUP;
+        } else if(itemsIsStack) {
+          // item is a collection of steps but not an interim entity (collapsible multi-step)
+          return SzResolutionStepListItemType.STACK;
+        } else {
+          // item is neither a collection of steps or a interim entity group (single)
+          return SzResolutionStepListItemType.STEP;
+        }
+      }
+      return undefined;
+    }
 
-    public static getStepListItemType(step: SzResolutionStep, stepNumber?: number): SzResolutionStepDisplayType {
+    public static getResolutionStepCardType(step: SzResolutionStep, stepNumber?: number): SzResolutionStepDisplayType {
       if(step && step !== undefined) {
         //console.log(`#${stepNumber} getStepListItemType: `, step);
         if(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) {

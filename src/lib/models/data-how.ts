@@ -35,8 +35,17 @@ export interface SzResolutionStepGroup {
     id: string,
     arrayIndex?: number,
     virtualEntityIds?: string[],
-    resolutionSteps: SzResolutionStep[]
+    mergeStep?: SzResolutionStep,
+    interimSteps?: SzResolutionStep[],
+    resolutionSteps?: SzResolutionStep[]
 }
+
+export type SzResolutionStepListItemType = 'STACK' | 'GROUP' | 'STEP';
+export const SzResolutionStepListItemType = {
+    STACK: 'STACK' as SzResolutionStepListItemType,
+    GROUP: 'GROUP' as SzResolutionStepListItemType,
+    STEP: 'STEP' as SzResolutionStepListItemType
+};
 
 export type SzResolutionStepDisplayType = 'MERGE' | 'CREATE' | 'INTERIM' | 'ADD' | 'FINAL';
 export const SzResolutionStepDisplayType = {

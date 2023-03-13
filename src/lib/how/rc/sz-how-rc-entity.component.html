@@ -6,8 +6,13 @@
     *ngIf="showNavigation"
 ></sz-how-rc-nav>
 <div class="main">
-    <button (click)="getDefaultResolutionStepGroups()">get default step groups list</button>
-
+    <div class="debug-box">
+        <h3>debug</h3>
+        <button (click)="getStepGroupsForInterimEntities()">getStepGroupsForInterimEntities()</button>
+        <button (click)="getDefaultStepGroups()">getDefaultStepGroups()</button>
+        <button (click)="getDefaultResolutionStepGroups()">getDefaultResolutionStepGroups()</button>
+        <button (click)="getNewResolutionStepsWithGroups()">getNewResolutionStepsWithGroups()</button> 
+    </div>
     <ul class="step-list tree">
         <li class="top-level">
             <sz-how-rc-final-entity-card *ngFor="let vCardData of finalCardsData"
@@ -15,7 +20,14 @@
                 [featureOrder]="orderedFeatures"
                 [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-final-entity-card>
         </li>
-        <li *ngFor="let step of resolutionStepsWithGroups; let rsInd=index"
+        <li *ngFor="let item of stepsList; let rsInd=index"
+            >
+            {{getListItemType(item)}}
+            <!--<ng-template [ngSwitchCase]="'STACK'">STACK</ng-template>
+            <ng-template [ngSwitchCase]="'GROUP'">GROUP</ng-template>
+            <ng-template [ngSwitchCase]="'STEP'">STEP</ng-template>-->
+        </li>
+        <!--<li *ngFor="let step of resolutionStepsWithGroupsOld; let rsInd=index"
             [ngSwitch]="isResolutionStep(step)">
             <ng-template [ngSwitchCase]="false">
                 <sz-how-rc-step-group
@@ -35,9 +47,9 @@
             <ng-template [ngSwitchCase]="false">
                 <div class="stack-control" 
                     [class.expanded]="isGroupExpanded(cooerceToStepGroup(step))"
-                    (click)="toggleCollapsedState(cooerceToStepGroup(step))">
+                    (click)="toggleCollapsedState(cooerceToStepGroup(step))">-->
                     <!-- start collapsed  icon set -->
-                    <mat-icon 
+                    <!--<mat-icon 
                     aria-hidden="false" 
                     class="hide-on-expanded"
                     fontIcon="arrow_upward"></mat-icon>
@@ -50,10 +62,10 @@
                     <mat-icon 
                     aria-hidden="false" 
                     class="hide-on-expanded"
-                    fontIcon="arrow_downward"></mat-icon>
+                    fontIcon="arrow_downward"></mat-icon>-->
                     <!-- end   collapsed icon set -->
                     <!-- start expanded icon set  -->
-                    <mat-icon 
+                    <!--<mat-icon 
                     aria-hidden="false" 
                     class="hide-on-collapsed arrow-down"
                     fontIcon="arrow_right"></mat-icon>
@@ -66,10 +78,10 @@
                     <mat-icon 
                     aria-hidden="false" 
                     class="hide-on-collapsed arrow-up"
-                    fontIcon="arrow_right"></mat-icon>
+                    fontIcon="arrow_right"></mat-icon>-->
                     <!-- end   expanded icon set  -->
-                </div>
+                <!--</div>
             </ng-template>
-        </li>
+        </li>-->
     </ul>
 </div>

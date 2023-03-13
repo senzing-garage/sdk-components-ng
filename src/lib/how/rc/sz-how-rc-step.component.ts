@@ -83,7 +83,7 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
         return this._groupTitle;
     }
     get displayType(): SzResolutionStepDisplayType {
-        let listItemVerb    = this.getStepListItemType(this._data);
+        let listItemVerb    = this.getCardType(this._data);
         return listItemVerb;
     }
     get data() : SzResolutionStep {
@@ -171,18 +171,8 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
         this._childrenCollapsed = value;
     }
 
-    private getStepListItemType(step: SzResolutionStep): SzResolutionStepDisplayType {
-        if(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) {
-            // both items are records
-            return SzResolutionStepDisplayType.CREATE;
-        } else if(!step.candidateVirtualEntity.singleton && !step.inboundVirtualEntity.singleton) {
-            // both items are virtual entities
-            return SzResolutionStepDisplayType.MERGE;
-        } else if(!(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) && (step.candidateVirtualEntity.singleton === false || step.inboundVirtualEntity.singleton === false)) {
-            // one of the items is record, the other is virtual
-            return SzResolutionStepDisplayType.ADD;
-        }
-        return undefined;
+    private getCardType(step: SzResolutionStep): SzResolutionStepDisplayType {
+        return SzHowUIService.getResolutionStepCardType(step);
     }
 
     public getConstructionStepForVirtualEntity(virtualEntityId: string) {

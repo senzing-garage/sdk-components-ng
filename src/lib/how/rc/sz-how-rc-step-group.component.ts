@@ -88,7 +88,7 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
         if(this._data) {
             let _retTypes = new Map<SzResolutionStepDisplayType, number>();
             this._data.resolutionSteps.forEach((step: SzResolutionStep) => {
-                let _retType = SzHowUIService.getStepListItemType(step);
+                let _retType = SzHowUIService.getResolutionStepCardType(step);
                 if(_retTypes.has(_retType)){
                     _retTypes.set(_retType, (_retTypes.get(_retType) + 1));
                 } else {
@@ -126,7 +126,7 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
     }
 
     isStepDisplayType(step: SzResolutionStep, typeVerb: SzResolutionStepDisplayType): boolean {
-        let stepType = SzHowUIService.getStepListItemType(step);
+        let stepType = SzHowUIService.getResolutionStepCardType(step);
         return stepType === typeVerb;
     } 
 
