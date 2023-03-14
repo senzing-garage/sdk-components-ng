@@ -35,6 +35,7 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     private _data: SzResolutionStep;
     private _groupId: string;
     private _groupTitle: string;
+    private _isInterimStep: boolean;
     private _parentStep: SzResolutionStep;
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
     private _highlighted: boolean = false;
@@ -71,7 +72,9 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     @Input() set expanded(value: boolean) {
         this._collapsed = !value;
     }
-
+    @Input() set isInterimStep(value: boolean) {
+        this._isInterimStep = value;
+    }
     @Input() set stepsByVirtualId(value: {[key: string]: SzResolutionStep}) {
         this._stepMap = value;
     }
@@ -108,7 +111,7 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
         return this.isInterimEntity || this.isFinalEntity ? true : false;
     }
     get displayType(): SzResolutionStepDisplayType {
-        let listItemVerb    = this.getStepListItemType(this._data);
+        let listItemVerb    = this.getStepListItemCardType(this._data);
         return listItemVerb;
     }
     get data() : SzResolutionStep {
@@ -138,6 +141,9 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     public get isInterimEntity() {
         return this.displayType === SzResolutionStepDisplayType.INTERIM;
     }
+    public get isInterimStep() {
+        return this.displayType === SzResolutionStepDisplayType.INTERIM;
+    }
     public get isFinalEntity() {
         return this.displayType === SzResolutionStepDisplayType.FINAL;
     }
@@ -146,7 +152,7 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     }
     public get title(): string {
         let retVal = '';
-        let displayType: SzResolutionStepDisplayType = this.getStepListItemType(this._data);
+        let displayType: SzResolutionStepDisplayType = this.getStepListItemCardType(this._data);
 
         if(displayType === SzResolutionStepDisplayType.INTERIM) {
             let _resolvedEntity = this.resolvedVirtualEntity;
@@ -167,7 +173,7 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     }
     public get description(): string[] {
         let retVal = [];
-        let displayType: SzResolutionStepDisplayType = this.getStepListItemType(this._data);
+        let displayType: SzResolutionStepDisplayType = this.getStepListItemCardType(this._data);
         let _resolvedEntity = this.resolvedVirtualEntity;
 
         if(this._data) {
@@ -311,22 +317,8 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
         this.unsubscribe$.complete();
     }
 
-    private getStepListItemType(step: SzResolutionStep): SzResolutionStepDisplayType {
-        if(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) {
-            // both items are records
-            if(this.parentStep) {
-                return SzResolutionStepDisplayType.CREATE;
-            } else {
-                return SzResolutionStepDisplayType.INTERIM;
-            }
-        } else if(!step.candidateVirtualEntity.singleton && !step.inboundVirtualEntity.singleton) {
-            // both items are virtual entities
-            return SzResolutionStepDisplayType.MERGE;
-        } else if(!(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) && (step.candidateVirtualEntity.singleton === false || step.inboundVirtualEntity.singleton === false)) {
-            // one of the items is record, the other is virtual
-            return SzResolutionStepDisplayType.ADD;
-        }
-        return undefined;
+    private getStepListItemCardType(step: SzResolutionStep): SzResolutionStepDisplayType {
+        return this._isInterimStep ? SzResolutionStepDisplayType.INTERIM : SzHowUIService.getResolutionStepCardType(step);
     }
 
     public getConstructionStepForVirtualEntity(virtualEntityId: string) {

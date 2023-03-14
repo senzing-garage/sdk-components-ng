@@ -16,17 +16,17 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
  *
  * @example 
  * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-how-rc-step-group&gt;&lt;/sz-how-rc-step&gt;<br/><br/>
+ * &lt;sz-how-rc-step-stack&gt;&lt;/sz-how-rc-step-stack&gt;<br/><br/>
  *
  * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-how-rc-step-group&gt;&lt;/sz-how-rc-step&gt;<br/>
+ * &lt;sz-how-rc-step-stack&gt;&lt;/sz-how-rc-step-stack&gt;<br/>
 */
 @Component({
-    selector: 'sz-how-rc-step-group',
-    templateUrl: './sz-how-rc-step-group.component.html',
-    styleUrls: ['./sz-how-rc-step-group.component.scss']
+    selector: 'sz-how-rc-step-stack',
+    templateUrl: './sz-how-rc-step-stack.component.html',
+    styleUrls: ['./sz-how-rc-step-stack.component.scss']
 })
-export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
+export class SzHowRCStepStackComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
     private _stepMap: {[key: string]: SzResolutionStep};
@@ -50,9 +50,6 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
         this._stepMap = value;
     }
     @Input() set data(value: SzResolutionStepGroup) {
-        if(this._data && value !== undefined) {
-            console.log('SzHowRCStepGroupComponent.setData() ', value);
-        }
         this._data = value;
     }
     @Input() public set virtualEntitiesById(value: Map<string, SzResolvedVirtualEntity>) {
@@ -80,13 +77,6 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
             retVal = this._data.virtualEntityIds.length;
         }
         return retVal;
-    }
-
-    get isInterimStep(): boolean {
-        return (this._data && this._data.interimSteps && this._data.interimSteps.length > 0) ? true : false;
-    }
-    get isMergeStepGroup(): boolean {
-        return (this._data && this._data.mergeStep) ? true : false;
     }
 
     getCardTitleForStep(title: string, cardIndex: number) {

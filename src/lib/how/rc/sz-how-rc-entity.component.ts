@@ -82,7 +82,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
 
     public cooerceToStepGroup(stepItem: SzResolutionStep | SzResolutionStepGroup): SzResolutionStepGroup {
       let retVal: SzResolutionStepGroup | undefined;
-      if((stepItem as SzResolutionStepGroup).resolutionSteps) {
+      if((stepItem as SzResolutionStepGroup).resolutionSteps || (stepItem as SzResolutionStepGroup).interimSteps || (stepItem as SzResolutionStepGroup).mergeStep) {
         retVal = (stepItem as SzResolutionStepGroup);
       }
       return retVal;

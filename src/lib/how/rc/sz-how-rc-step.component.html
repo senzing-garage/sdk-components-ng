@@ -5,6 +5,7 @@
     [virtualEntitiesById]="virtualEntitiesById"
     [groupId]="groupId" 
     [groupTitle]="groupTitle" 
+    [isInterimStep]="isInterimStep"
     [expanded]="isExpanded"
     (onExpand)="onExpand($event)"></sz-how-rc-step-card>
 <ul *ngIf="this.resolvedVirtualEntity && this.isInterimEntity" class="tree">

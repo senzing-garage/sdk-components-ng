@@ -21,11 +21,29 @@
                 [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-final-entity-card>
         </li>
         <li *ngFor="let item of stepsList; let rsInd=index"
-            >
-            {{getListItemType(item)}}
-            <!--<ng-template [ngSwitchCase]="'STACK'">STACK</ng-template>
-            <ng-template [ngSwitchCase]="'GROUP'">GROUP</ng-template>
-            <ng-template [ngSwitchCase]="'STEP'">STEP</ng-template>-->
+            [ngSwitch]="getListItemType(item)">
+            <!--{{getListItemType(item)}}-->
+            <ng-template [ngSwitchCase]="'STACK'">
+                <sz-how-rc-step-stack
+                    [data]="cooerceToStepGroup(item)"
+                    [featureOrder]="orderedFeatures" 
+                    [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step-stack>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'GROUP'">
+                <sz-how-rc-step-group
+                    [data]="cooerceToStepGroup(item)"
+                    [featureOrder]="orderedFeatures" 
+                    [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step-group>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'STEP'">
+                <sz-how-rc-step
+                [attr.step-index]="rsInd"
+                [attr.step-number]="cooerceToStep(item).stepNumber"
+                [attr.virtual-id]="cooerceToStep(item).resolvedVirtualEntityId"
+                [data]="cooerceToStep(item)" 
+                [featureOrder]="orderedFeatures" 
+                [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step>
+            </ng-template>
         </li>
         <!--<li *ngFor="let step of resolutionStepsWithGroupsOld; let rsInd=index"
             [ngSwitch]="isResolutionStep(step)">

@@ -3,22 +3,13 @@
     [class.type-add]="isStepDisplayType(step, 'ADD')">
     <h3 *ngIf="stepInd === 0">{{title}}</h3>
 </div>-->
-<sz-how-rc-step *ngIf="isMergeStepGroup"
-    class="interim-card"
-    [attr.step-number]="data.mergeStep.stepNumber"
-    [attr.virtual-id]="data.mergeStep.resolvedVirtualEntityId"
-    [data]="data.mergeStep"
-    [isInterimStep]="true"
-    [featureOrder]="featureOrder" 
-    [virtualEntitiesById]="virtualEntitiesById"
-    ></sz-how-rc-step>
-
-<sz-how-rc-step *ngFor="let step of data?.interimSteps; let groupInd=index;"
+<sz-how-rc-step *ngFor="let step of data.resolutionSteps; let groupInd=index;"
     class="stack-card"
     [attr.step-index]="groupInd"
     [attr.step-number]="step.stepNumber"
     [attr.virtual-id]="step.resolvedVirtualEntityId"
     [data]="step"
     [groupId]="id" 
+    [groupTitle]="getCardTitleForStep(title, groupInd)"
     [featureOrder]="featureOrder" 
     [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step>
