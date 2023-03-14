@@ -241,7 +241,10 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
                   id: vIdToLookFor,
                   mergeStep: value.mergeStep,
                   interimSteps: [resStep],
-                  virtualEntityIds: [resStep.candidateVirtualEntity.virtualEntityId, resStep.inboundVirtualEntity.virtualEntityId]
+                  virtualEntityIds: [resStep.candidateVirtualEntity.virtualEntityId, resStep.inboundVirtualEntity.virtualEntityId].filter((virtualEntityId: string) => {
+                    // make sure step is not another interim group
+                    return !interimGroups.has(virtualEntityId);
+                  })
                 });
               }
               // for each step who's resolvedId matches the
@@ -262,32 +265,9 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
               } else {
                 console.warn('_resolutionStepsByVirtualId is null', this._resolutionStepsByVirtualId);
               }
-              /*
-              if(!retVal.get(vIdToLookFor).interimSteps){      retVal.get(vIdToLookFor).interimSteps = []; }
-              if(!retVal.get(vIdToLookFor).virtualEntityIds){  retVal.get(vIdToLookFor).virtualEntityIds = []; }
-              retVal.get(vIdToLookFor).interimSteps.push(resStep);
-              retVal.get(vIdToLookFor).virtualEntityIds.push(resStep.resolvedVirtualEntityId);
-              */
             }
           });
         });
-
-        // now comb through all the steps and add them to the groups
-        /*
-        _rSteps.forEach((resStep: SzResolutionStep, stepArrIndex: number) => {
-          let vIdToLookFor  = resStep.resolvedVirtualEntityId;
-          retVal.forEach((value: SzResolutionStepGroup, key: string) => {
-            if(value.mergeStep && (
-              value.mergeStep.candidateVirtualEntity.virtualEntityId === vIdToLookFor || 
-              value.mergeStep.inboundVirtualEntity.virtualEntityId === vIdToLookFor)) {
-              // add this step to collection
-              if(!value.interimSteps){ value.interimSteps = []; }
-              if(!value.virtualEntityIds){ value.virtualEntityIds = []; }
-              value.interimSteps.push(resStep);
-              value.virtualEntityIds.push(resStep.resolvedVirtualEntityId);
-            }
-          });
-        });*/
       }
       console.log('getStepGroupsForInterimEntities', retVal);
       return retVal;
@@ -305,7 +285,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
         let _filteredSteps = _rSteps.filter((resStep: SzResolutionStep, stepArrIndex: number) => {
           // if step is a member of an interim entity we should 
           // exclude it from list
-          return !this.isStepMemberOfGroup(resStep, _stepGroupsForInterimEntities);
+          return !this.isStepMemberOfGroup(resStep, _stepGroupsForInterimEntities) && !(SzHowUIService.getResolutionStepCardType(resStep) === SzResolutionStepDisplayType.MERGE);
         });
         _filteredSteps.forEach((resStep: SzResolutionStep, stepArrIndex: number) => {
           // check to see if we have any "top-level" collapsible groups
@@ -345,9 +325,11 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
               retVal.get(_currentGroupId).virtualEntityIds = retVal.get(_currentGroupId).resolutionSteps.map((rStep: SzResolutionStep) => { return rStep.resolvedVirtualEntityId; });
           }
         });
+
         _stepGroupsForInterimEntities.forEach((group, key) => {
           retVal.set(key, group);
         });
+
       }
       console.info('getDefaultStepGroups: ', retVal);
       return retVal;
@@ -511,7 +493,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
     public getNewResolutionStepsWithGroups() {
       let groups  = this.getDefaultStepGroups();
       let steps   = this.getResolutionStepsWithGroups(this._resolutionSteps, groups);
-      console.info(`getResolutionStepsWithGroups() `, steps);
+      console.info(`getNewResolutionStepsWithGroups() `, steps, groups);
     }
 
     public get resolutionStepsWithGroupsOld(): Array<SzResolutionStep | SzResolutionStepGroup> {
@@ -521,7 +503,6 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
 
     public get stepsList(): Array<SzResolutionStep | SzResolutionStepGroup> {
       let retVal   = this.getResolutionStepsWithGroups(this._resolutionSteps, this._stepGroups);
-      console.log(`get stepsList: `, retVal);
       return retVal;
     }
 
@@ -538,7 +519,6 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
 
           // check whether or not step is member of group
           if(!_stepIsMemberOfGroup && !_stepHasMembers) {
-            console.log(`${resStep.stepNumber} is not a member of any group`, resStep, groups);
             // item is not member of group or interim step group
             // add item to array
             _resolutionStepsWithGroups.push(resStep);
