@@ -1,14 +1,19 @@
-<h3 class="title hide-on-collapsed hide-on-group-collapsed">
+<h3 class="title hide-on-collapsed hide-on-group-collapsed hide-on-group-interim">
     <mat-icon *ngIf="canExpand && hasChildren"  class="toggle-child-expansion-icon" (click)="toggleExpansion()" fontIcon="play_circle"></mat-icon>
     <mat-icon *ngIf="canExpand && !hasChildren" class="toggle-expansion-icon"       (click)="toggleExpansion()" fontIcon="arrow_right"></mat-icon>
     {{title}}
 </h3>
-<h3 class="title hide-on-expanded hide-on-group-collapsed">
+<h3 class="title hide-on-expanded hide-on-group-collapsed hide-on-group-interim">
     <mat-icon *ngIf="canExpand && hasChildren"  class="toggle-child-expansion-icon" (click)="toggleExpansion()" fontIcon="play_circle"></mat-icon>
     <mat-icon *ngIf="canExpand && !hasChildren" class="toggle-expansion-icon"       (click)="toggleExpansion()" fontIcon="arrow_right"></mat-icon>
     {{title}}<span *ngIf="isInterimEntity" class="datasources"> [ <span class="datasources-list">{{dataSourcesAsString}}</span> ]</span>
 </h3>
-<h3 *ngIf="isGroupMember" class="title-group">{{groupTitle}}</h3>
+hasChildren: {{hasChildren}} | canExpand: {{canExpand}}
+<h3 *ngIf="isGroupMember || groupTitle !== undefined" class="title-group">
+    <mat-icon *ngIf="canExpand && hasChildren"  class="toggle-child-expansion-icon" (click)="toggleExpansion(groupId)" fontIcon="play_circle"></mat-icon>
+    <mat-icon *ngIf="canExpand && !hasChildren" class="toggle-expansion-icon"       (click)="toggleExpansion(groupId)" fontIcon="arrow_right"></mat-icon>
+    {{groupTitle}}
+</h3>
 <div class="columns hide-on-collapsed hide-on-group-collapsed">
     <div class="column info-block">
         <div class="info-line" *ngFor="let line of description; let l = index">

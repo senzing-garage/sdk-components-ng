@@ -18,25 +18,32 @@
         .columns {
             display: none;
         }
+        .hide-on-group-interim {
+            display: none !important;
+        }
+        .title-group {
+            display: block;
+        }
     }
     &.type-merge {
         background-color: #16e7cf;
     }
-    &.group-member {
-        margin-top: 0px;
-
+    .title-group {
+        display: none;
+    }
+    &.group-collapsed {
         .title-group {
+            display: block;
+        }
+        .hide-on-group-collapsed {
             display: none;
         }
-        &.group-collapsed{
-            
-            .title-group {
-                display: block;
-            }
-            .hide-on-group-collapsed {
-                display: none;
-            }
+        .toggle-child-expansion-icon {
+            transform: rotate(0deg);
         }
+    }
+    &.group-member {
+        margin-top: 0px;
     }
 
     h3 {
@@ -130,6 +137,8 @@
     .hide-on-expanded {
         display: none;
     }
+
+
 
     &.collapsed {
         .toggle-child-expansion-icon {

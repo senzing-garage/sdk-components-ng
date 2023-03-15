@@ -301,7 +301,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
               // if so add this item to previous item
               if(lastStepType === SzResolutionStepDisplayType.ADD) {
                 retVal.get(_currentGroupId).resolutionSteps.push(resStep);
-                //this.howUIService.collapseStep(resStep.resolvedVirtualEntityId);
+                this.howUIService.collapseStep(resStep.resolvedVirtualEntityId);
                 //console.log(`${stepArrIndex} | previous step was add operation. append`, retVal.get(_currentGroupId));
                 //(_resolutionStepsWithGroups[(_resolutionStepsWithGroups.length - 1)] as SzResolutionStep[]).push(resStep);
               } else if(futureStepType === SzResolutionStepDisplayType.ADD) {
@@ -315,7 +315,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
 
                 retVal.get(_currentGroupId).arrayIndex = stepArrIndex;
                 retVal.get(_currentGroupId).resolutionSteps.push(resStep);
-                //this.howUIService.collapseStep(resStep.resolvedVirtualEntityId);
+                this.howUIService.collapseStep(resStep.resolvedVirtualEntityId);
                 //_resolutionStepsWithGroups.push([resStep]);
                 //console.log(`${stepArrIndex} | first add operation in series`, retVal.get(_currentGroupId));
               } else {
@@ -328,6 +328,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
 
         _stepGroupsForInterimEntities.forEach((group, key) => {
           retVal.set(key, group);
+          this.howUIService.collapseStep(group.id);
         });
 
       }

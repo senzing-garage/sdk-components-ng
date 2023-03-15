@@ -92,6 +92,18 @@ export class SzHowUIService {
         }
       }
     }
+    public get expandedStepsOrGroups() {
+      return this._expandedStepsOrGroups;
+    }
+
+    toggleExpansion(id: string) {
+      let isExpanded = this._expandedStepsOrGroups.includes(id);
+      if(!isExpanded) {
+        this.expand(id);
+      } else {
+        this.collapse(id);
+      }
+    }
 
     public static getResolutionStepListItemType(item: SzResolutionStep | SzResolutionStepGroup): SzResolutionStepListItemType {
       if(item && item !== undefined) {

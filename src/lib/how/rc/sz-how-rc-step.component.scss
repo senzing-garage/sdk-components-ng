@@ -4,6 +4,11 @@
     &.group-expanded {
 
     }
+    &.group-collapsed, &.collapsed {
+        .hide-on-group-collapsed {
+            display: none;
+        }
+    }
     &.expanded {
         ul {
             display: block;

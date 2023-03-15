@@ -7,7 +7,7 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../services/sz-config-data.service';
 import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../../models/data-how';
-import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
+import { filter, Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../../common/utils';
 import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
 import { SzHowUIService } from '../../services/sz-how-ui.service';
@@ -141,23 +141,25 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
 
         // listen for group state changes
         this.howUIService.onGroupExpansionChange.pipe(
-            takeUntil(this.unsubscribe$)
+            takeUntil(this.unsubscribe$),
+            filter(this.filterOutExpansionEvents.bind(this))
         ).subscribe(this.onGroupExpansionChange.bind(this));
         // listen for step state changes
         this.howUIService.onStepExpansionChange.pipe(
-            takeUntil(this.unsubscribe$)
+            takeUntil(this.unsubscribe$),
+            filter(this.filterOutExpansionEvents.bind(this))
         ).subscribe(this.onStepExpansionChange.bind(this));
     }
 
     onGroupExpansionChange(gId: string) {
-        console.log(`onGroupExpansionChange: ${gId}`, this);
+        console.log(`SzHowRCStepComponent.onGroupExpansionChange: ${gId}`, this);
         if(this._groupId && this._groupId === gId) {
             // item is member of group
             this._collapsedGroup = !this.howUIService.isExpanded(gId);
         }
     }
     onStepExpansionChange(sId: string) {
-        console.log(`onStepExpansionChange: ${sId}`, this);
+        console.log(`SzHowRCStepComponent.onStepExpansionChange: ${sId}`, this);
     }
 
     /**
@@ -168,9 +170,15 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
         this.unsubscribe$.complete();
     }
 
+    private filterOutExpansionEvents(vId: string) {
+        //console.warn(`SzHowRCStepComponent: ${this.id} === ${vId} ? ${this.id === vId}`);
+        return this.id === vId;
+    }
+
     public onExpand(value: boolean) {
         console.info('onExpand: ', value);
-        this._collapsed = value;
+        this.howUIService.expand(this.id);
+        //this._collapsed = value;
     }
     public onExpandChild(value: boolean) {
         console.info('onExpandChildren: ', value);

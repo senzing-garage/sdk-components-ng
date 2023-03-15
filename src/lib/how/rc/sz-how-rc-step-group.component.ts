@@ -7,7 +7,7 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../services/sz-config-data.service';
 import { SzResolutionStepDisplayType, SzResolutionStepGroup, SzResolvedVirtualEntity} from '../../models/data-how';
-import { Subject, takeUntil } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../../common/utils';
 import { SzHowUIService } from '../../services/sz-how-ui.service';
 
@@ -93,6 +93,23 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
         return cardIndex === 0 ? title : undefined;
     }
 
+    get interimStepTitle(): string {
+        let retVal = 'Interim Entity';
+        if(this._data) {
+            if(this._data.id) {
+                retVal = this._data.id +': '+ retVal;
+                // get just the single item matching the id
+                if(this.virtualEntitiesById && this.virtualEntitiesById.has(this._data.id)){
+                    // add name
+                    let _vEnt = this.virtualEntitiesById.get(this._data.id);
+                    retVal = _vEnt ? retVal+': ' : retVal;
+                    retVal = _vEnt.bestName ? _vEnt.bestName : _vEnt.entityName;
+                }
+            }
+        }
+        return retVal;
+    }
+
     get title(): string {
         let retVal = 'Steps';
         if(this._data) {
@@ -148,13 +165,27 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.howUIService.onGroupExpansionChange.pipe(
-            takeUntil(this.unsubscribe$)
+            takeUntil(this.unsubscribe$),
+            filter(this.filterOutExpansionEvents.bind(this))
         ).subscribe(this.onGroupExpansionChange.bind(this));
+        this.howUIService.onStepExpansionChange.pipe(
+            takeUntil(this.unsubscribe$),
+            filter(this.filterOutExpansionEvents.bind(this))
+        ).subscribe(this.onStepExpansionChange.bind(this));
     }
 
     onGroupExpansionChange(gId: string) {
-        console.log(`onGroupExpansionChange: ${gId}`, this);
+        console.log(`SzHowRCStepGroupComponent.onGroupExpansionChange: ${gId}`, this);
         this._collapsed = !this.howUIService.isExpanded(gId);
+    }
+    onStepExpansionChange(gId: string) {
+        console.log(`SzHowRCStepGroupComponent.onStepExpansionChange: ${gId}`, this);
+        this._collapsed = !this.howUIService.isExpanded(gId);
+    }
+
+    private filterOutExpansionEvents(vId: string) {
+        console.warn(`SzHowRCStepGroupComponent: ${this.id} === ${vId} ? ${this.id === vId}`);
+        return this.id === vId;
     }
 
     /**

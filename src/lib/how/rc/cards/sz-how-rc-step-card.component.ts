@@ -7,7 +7,7 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../../services/sz-config-data.service';
 import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../../../models/data-how';
-import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
+import { filter, Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../../../common/utils';
 //import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../../services/sz-how-ui-coordinator.service';
 import { SzHowUIService } from '../../../services/sz-how-ui.service';
@@ -63,6 +63,9 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     @HostBinding('class.group-collapsed') get cssGroupCollapsedClass(): boolean {
         return this._groupId && !this.howUIService.isGroupExpanded(this._groupId);
     }
+    @HostBinding('class.group-expanded') get cssGroupExpandedClass(): boolean {
+        return this._groupId && this.howUIService.isGroupExpanded(this._groupId);
+    }
     @HostBinding('class.group-member') get cssGroupMemberClass(): boolean {
         return this.isGroupMember;
     }
@@ -100,12 +103,21 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     @Output()
     onExpand: EventEmitter<boolean>                          = new EventEmitter<boolean>();
     
-    public toggleExpansion() {
-        this.onExpand.next(!this._collapsed);
+    public toggleExpansion(vId?: string) {
+        //this.onExpand.next(!this._collapsed);
+        console.warn(`SzHowRCStepCardComponent.toggleExpansion: ${vId}`, this.id, vId, this._groupId);
+        vId = vId ? vId : this.id;
+        this.howUIService.toggleExpansion(vId);
+    }
+
+    private get id(): string {
+        return this._data && this._data.resolvedVirtualEntityId ? this._data.resolvedVirtualEntityId : undefined;
     }
 
     get canExpand(): boolean {
         return true;
+        let vId = (this.isGroupMember || this.groupTitle !== undefined) && this._groupId ? this._groupId : this.id;
+        return !this.howUIService.isExpanded(vId);
     }
     get hasChildren(): boolean {
         return this.isInterimEntity || this.isFinalEntity ? true : false;
@@ -307,7 +319,13 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
         private howUIService: SzHowUIService
     ){}
 
-    ngOnInit() {}
+    ngOnInit() {
+        // listen for step state changes
+        this.howUIService.onStepExpansionChange.pipe(
+            takeUntil(this.unsubscribe$),
+            filter(this.filterOutExpansionEvents.bind(this))
+        ).subscribe(this.onStepExpansionChange.bind(this));
+    }
 
     /**
      * unsubscribe when component is destroyed
@@ -315,6 +333,15 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
+    }
+
+    private filterOutExpansionEvents(vId: string) {
+        //console.warn(`SzHowRCStepCardComponent: ${this.id} === ${vId} ? ${this.id === vId}`);
+        return this.id === vId;
+    }
+
+    private onStepExpansionChange(sId: string) {
+        console.log(`SzHowRCStepCardComponent.onStepExpansionChange: ${sId}`, this);
     }
 
     private getStepListItemCardType(step: SzResolutionStep): SzResolutionStepDisplayType {

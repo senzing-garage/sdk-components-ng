@@ -9,16 +9,21 @@
     [attr.virtual-id]="data.mergeStep.resolvedVirtualEntityId"
     [data]="data.mergeStep"
     [isInterimStep]="true"
+    [groupId]="id"
+    [groupTitle]="interimStepTitle"
     [featureOrder]="featureOrder" 
     [virtualEntitiesById]="virtualEntitiesById"
     ></sz-how-rc-step>
-
-<sz-how-rc-step *ngFor="let step of data?.interimSteps; let groupInd=index;"
-    class="stack-card"
-    [attr.step-index]="groupInd"
-    [attr.step-number]="step.stepNumber"
-    [attr.virtual-id]="step.resolvedVirtualEntityId"
-    [data]="step"
-    [groupId]="id" 
-    [featureOrder]="featureOrder" 
-    [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step>
+<ul class="hide-on-group-collapsed">
+    <li *ngFor="let step of data?.interimSteps; let groupInd=index;">
+        <sz-how-rc-step
+        class="stack-card"
+        [attr.step-index]="groupInd"
+        [attr.step-number]="step.stepNumber"
+        [attr.virtual-id]="step.resolvedVirtualEntityId"
+        [data]="step"
+        [groupId]="id" 
+        [featureOrder]="featureOrder" 
+        [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step>
+    </li>
+</ul>

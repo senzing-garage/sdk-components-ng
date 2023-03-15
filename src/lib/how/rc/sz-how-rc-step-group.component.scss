@@ -8,14 +8,21 @@
             margin-top: 14px;
         }
     }
+    .hide-on-group-collapsed {
+        display: block;
+    }
+    &.collapsed {
+        .hide-on-group-collapsed {
+            display: none;
+        }
+    }
+    sz-how-rc-step {
+        margin-right: 20px;
+        margin-top: 10px;
+        flex-grow: 10;
+    }
 
     .stack-card {
-        min-height: 20px;
-        margin-top: -20px;
-
-        &:first-child {
-            margin-top: 14px;
-        }
         &.type-add {
             background-color: #feae00;
         }
@@ -30,16 +37,6 @@
         }
         &.type-final {
             background-color: #88fa4e;
-        }
-    
-        h3 {
-            margin: 0;
-        }
-
-        @for $i from 1 through 100 {
-            &:nth-child(#{$i}) {
-                z-index: #{10 - $i};
-            }
         }
     }
 }
