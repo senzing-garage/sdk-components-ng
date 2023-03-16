@@ -20,6 +20,7 @@ import { SzResolutionStepDisplayType, SzResolutionStepGroup, SzResolutionStepLis
 export class SzHowUIService {
     private _pinnedSteps: string[];
     private _expandedStepsOrGroups: string[]    = [];
+    private _expandedGroups: string[]           = [];
     private _expandedVirtualEntities: string[]  = [];
 
     private _onGroupExpansionChange = new Subject<string>()
@@ -42,7 +43,7 @@ export class SzHowUIService {
       return this._expandedStepsOrGroups.includes(virtualEntityId);
     }
     isGroupExpanded(groupId: string): boolean {
-      return this._expandedStepsOrGroups.includes(groupId);
+      return this._expandedGroups.includes(groupId);
     }
     isExpanded(vId: string) {
       return this._expandedStepsOrGroups.includes(vId);
@@ -81,28 +82,44 @@ export class SzHowUIService {
     }
     expandGroup(groupId: string) {
       if(!this.isGroupExpanded(groupId)) {
-        this._expandedStepsOrGroups.push(groupId);
+        this._expandedGroups.push(groupId);
+        this._onGroupExpansionChange.next(groupId);
       }
     }
     collapseGroup(groupId: string) {
       if(this.isGroupExpanded(groupId)) {
-        let _itemIndex  = this._expandedStepsOrGroups.indexOf(groupId);
-        if(this._expandedStepsOrGroups[_itemIndex] && this._expandedStepsOrGroups.splice) {
-          this._expandedStepsOrGroups.splice(_itemIndex, 1);
+        let _itemIndex  = this._expandedGroups.indexOf(groupId);
+        if(this._expandedGroups[_itemIndex] && this._expandedGroups.splice) {
+          this._expandedGroups.splice(_itemIndex, 1);
         }
+        this._onGroupExpansionChange.next(groupId);
       }
     }
     public get expandedStepsOrGroups() {
       return this._expandedStepsOrGroups;
     }
 
-    toggleExpansion(id: string) {
-      let isExpanded = this._expandedStepsOrGroups.includes(id);
-      if(!isExpanded) {
-        this.expand(id);
-      } else {
-        this.collapse(id);
+    toggleExpansion(id: string, groupId?: string) {
+      id = id ? id : (groupId ? groupId : undefined);
+      if(!id) {
+        console.warn('toggleExpansion: no id passed to method');
+        return;
       }
+      let isExpanded = (!groupId) ? this._expandedStepsOrGroups.includes(id) : this._expandedGroups.includes(groupId);
+      if(!isExpanded) {
+        if(!groupId) {
+          this.expand(id);
+        } else {
+          this.expandGroup(id);
+        }
+      } else {
+        if(!groupId) {
+          this.collapse(id);
+        } else {
+          this.collapseGroup(id);
+        }
+      }
+      console.log(`toggleExpansion: ${id} | ${groupId}`);
     }
 
     public static getResolutionStepListItemType(item: SzResolutionStep | SzResolutionStepGroup): SzResolutionStepListItemType {

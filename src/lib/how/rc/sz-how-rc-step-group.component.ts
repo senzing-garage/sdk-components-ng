@@ -51,7 +51,7 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
     }
     @Input() set data(value: SzResolutionStepGroup) {
         if(this._data && value !== undefined) {
-            console.log('SzHowRCStepGroupComponent.setData() ', value);
+            //console.log('SzHowRCStepGroupComponent.setData() ', value);
         }
         this._data = value;
     }
@@ -61,10 +61,6 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
         }
         this._virtualEntitiesById = value;
     }
-    /*
-    @Input() set expanded(value: boolean) {
-        this._collapsed = !value;
-    }*/
 
     public get id(): string {
         return this._data && this._data.id ? this._data.id : undefined;
@@ -168,23 +164,15 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
             takeUntil(this.unsubscribe$),
             filter(this.filterOutExpansionEvents.bind(this))
         ).subscribe(this.onGroupExpansionChange.bind(this));
-        this.howUIService.onStepExpansionChange.pipe(
-            takeUntil(this.unsubscribe$),
-            filter(this.filterOutExpansionEvents.bind(this))
-        ).subscribe(this.onStepExpansionChange.bind(this));
     }
 
     onGroupExpansionChange(gId: string) {
-        console.log(`SzHowRCStepGroupComponent.onGroupExpansionChange: ${gId}`, this);
-        this._collapsed = !this.howUIService.isExpanded(gId);
-    }
-    onStepExpansionChange(gId: string) {
-        console.log(`SzHowRCStepGroupComponent.onStepExpansionChange: ${gId}`, this);
-        this._collapsed = !this.howUIService.isExpanded(gId);
+        //console.log(`SzHowRCStepGroupComponent.onGroupExpansionChange: ${gId}`, this);
+        this._collapsed = !this.howUIService.isGroupExpanded(gId);
     }
 
     private filterOutExpansionEvents(vId: string) {
-        console.warn(`SzHowRCStepGroupComponent: ${this.id} === ${vId} ? ${this.id === vId}`);
+        //console.warn(`SzHowRCStepGroupComponent: ${this.id} === ${vId} ? ${this.id === vId}`);
         return this.id === vId;
     }
 

@@ -152,14 +152,15 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
     }
 
     onGroupExpansionChange(gId: string) {
-        console.log(`SzHowRCStepComponent.onGroupExpansionChange: ${gId}`, this);
+        //console.log(`SzHowRCStepComponent.onGroupExpansionChange: ${gId}`, this);
         if(this._groupId && this._groupId === gId) {
             // item is member of group
-            this._collapsedGroup = !this.howUIService.isExpanded(gId);
+            this._collapsedGroup = !this.howUIService.isGroupExpanded(gId);
         }
     }
     onStepExpansionChange(sId: string) {
-        console.log(`SzHowRCStepComponent.onStepExpansionChange: ${sId}`, this);
+        //console.log(`SzHowRCStepComponent.onStepExpansionChange: ${sId}`, this);
+        this._collapsed = !this.howUIService.isExpanded(sId);
     }
 
     /**

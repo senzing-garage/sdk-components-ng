@@ -110,6 +110,16 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
         this.howUIService.toggleExpansion(vId);
     }
 
+    isGroupCollapsed() {
+        return this.howUIService.isGroupExpanded(this._groupId);
+    }
+
+    public toggleGroupExpansion(gId?: string) {
+        console.warn(`SzHowRCStepCardComponent.toggleGroupExpansion: ${gId}`, this.id, gId, this._groupId);
+        gId = gId ? gId : this.id;
+        this.howUIService.toggleExpansion(undefined, gId);
+    }
+
     private get id(): string {
         return this._data && this._data.resolvedVirtualEntityId ? this._data.resolvedVirtualEntityId : undefined;
     }
@@ -342,6 +352,10 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
 
     private onStepExpansionChange(sId: string) {
         console.log(`SzHowRCStepCardComponent.onStepExpansionChange: ${sId}`, this);
+        if(this.id === sId) {
+            // item is member of group
+            this._collapsed = !this.howUIService.isExpanded(sId);
+        }
     }
 
     private getStepListItemCardType(step: SzResolutionStep): SzResolutionStepDisplayType {
