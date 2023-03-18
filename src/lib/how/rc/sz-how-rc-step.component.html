@@ -6,7 +6,6 @@
     [groupId]="groupId" 
     [groupTitle]="groupTitle" 
     [isInterimStep]="isInterimStep"
-    [expanded]="isExpanded"
     ></sz-how-rc-step-card>
 <ul *ngIf="this.resolvedVirtualEntity && this.isInterimEntity" class="tree hide-on-group-collapsed">
     <!-- show nested "Create Virtual Entity Card" -->
@@ -17,7 +16,6 @@
         [data]="data"
         [featureOrder]="featureOrder"
         [virtualEntitiesById]="virtualEntitiesById"
-        [expanded]="isChildExpanded"
         ></sz-how-rc-step-card>
     </li>
 </ul>

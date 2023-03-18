@@ -1,7 +1,6 @@
 :host {
     display: flex;
     flex-direction: column;
-    border: 2px dashed orange;
 
     &.expanded {
         .stack-card {

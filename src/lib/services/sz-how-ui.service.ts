@@ -22,6 +22,7 @@ export class SzHowUIService {
     private _expandedStepsOrGroups: string[]    = [];
     private _expandedGroups: string[]           = [];
     private _expandedVirtualEntities: string[]  = [];
+    private _stepGroups: Map<string, SzResolutionStepGroup> = new Map<string, SzResolutionStepGroup>();
 
     private _onGroupExpansionChange = new Subject<string>()
     private _onStepExpansionChange  = new Subject<string>();
@@ -29,6 +30,10 @@ export class SzHowUIService {
 
     public onGroupExpansionChange   = this._onGroupExpansionChange.asObservable();
     public onStepExpansionChange    = this._onStepExpansionChange.asObservable();
+
+    public set stepGroups(value: Map<string, SzResolutionStepGroup>) {
+      this._stepGroups              = value;
+    }
 
     idIsGroupId(vId: string): boolean {
       // group id format "de9b1c0f-67a9-4b6d-9f63-bc90deabe3e4"
@@ -68,8 +73,10 @@ export class SzHowUIService {
       console.info(`SzHowUIService.collapse(${vId})`, this._expandedStepsOrGroups);
     }
     expandStep(virtualEntityId: string) {
+      console.info(`SzHowUIService.expandStep(${virtualEntityId}): ${this.isStepExpanded(virtualEntityId)}`);
       if(!this.isStepExpanded(virtualEntityId)) {
         this._expandedStepsOrGroups.push(virtualEntityId);
+        this._onStepExpansionChange.next(virtualEntityId);
       }
     }
     collapseStep(virtualEntityId: string) {
@@ -77,6 +84,7 @@ export class SzHowUIService {
         let _itemIndex  = this._expandedStepsOrGroups.indexOf(virtualEntityId);
         if(this._expandedStepsOrGroups[_itemIndex] && this._expandedStepsOrGroups.splice) {
           this._expandedStepsOrGroups.splice(_itemIndex, 1);
+          this._onStepExpansionChange.next(virtualEntityId);
         }
       }
     }
@@ -120,6 +128,78 @@ export class SzHowUIService {
         }
       }
       console.log(`toggleExpansion: ${id} | ${groupId}`);
+    }
+
+    public collapseAll(idsToExclude?: string | string[], emitEvent?: boolean) {
+      let _stepIdsLeft           = [];
+      let _groupIdsLeft          = [];
+
+      if(idsToExclude) {
+        _stepIdsLeft           = this._expandedStepsOrGroups.filter((gId: string) => {
+          if((idsToExclude as string) && (idsToExclude as string).substring) {
+            // is single id
+            return gId === (idsToExclude as string)
+          } else {
+            return (idsToExclude as string[]).includes(gId);
+          }
+        });
+        _groupIdsLeft           = this._expandedGroups.filter((gId: string) => {
+          if((idsToExclude as string) && (idsToExclude as string).substring) {
+            // is single id
+            return gId === (idsToExclude as string)
+          } else {
+            return (idsToExclude as string[]).includes(gId);
+          }
+        });
+      }
+      this._expandedStepsOrGroups = _stepIdsLeft;
+      this._expandedGroups        = _groupIdsLeft;
+      if(emitEvent !== false) {
+        this._onStepExpansionChange.next(undefined);
+        this._onGroupExpansionChange.next(undefined);
+      }
+    }
+
+    public selectStep(vId: string) {
+      let vIdInGroups = (this._stepGroups && this._stepGroups.has(vId)) ? true : false;
+      let stepGroup   = vIdInGroups ? this._stepGroups.get(vId) : undefined;
+      //console.log(`SzHowUIService.selectStep()`, vIdInGroups, stepGroup);
+      if(vIdInGroups) {
+        // is group
+          // clear out any other selected
+          this.collapseAll(undefined, false);
+          // expand group
+          this.expandGroup(vId);
+          // also expand step(s)
+          this.expandStep(vId);
+      } else {
+        // is not in group
+        if(!(this._expandedStepsOrGroups && this._expandedStepsOrGroups.includes(vId))) {
+          // clear out any other selected
+          this.collapseAll(undefined, false);
+          // expand step
+          this.expandStep(vId);
+          // check if step is actually a member of a group
+          let groupForStep  = SzHowUIService.getGroupForMemberStep(vId, this._stepGroups);
+          if(groupForStep) {
+            this.expandGroup(groupForStep.id);
+          }
+        }
+      }
+    }
+
+    public static getGroupForMemberStep(step: SzResolutionStep | string, groups: Map<string, SzResolutionStepGroup>): SzResolutionStepGroup {
+      let _retVal: SzResolutionStepGroup;
+      if(groups && step) {
+        let _idToLookFor = ((step as SzResolutionStep).resolvedVirtualEntityId) ? (step as SzResolutionStep).resolvedVirtualEntityId : (step as string);
+        let _sk = false;
+        groups.forEach((groupToSearch: SzResolutionStepGroup, key: string) => {
+          if(!_sk && groupToSearch.virtualEntityIds && groupToSearch.virtualEntityIds.indexOf(_idToLookFor) > -1 || groupToSearch.id === _idToLookFor) {
+            _retVal = groupToSearch;
+          }
+        });
+      }
+      return _retVal;
     }
 
     public static getResolutionStepListItemType(item: SzResolutionStep | SzResolutionStepGroup): SzResolutionStepListItemType {

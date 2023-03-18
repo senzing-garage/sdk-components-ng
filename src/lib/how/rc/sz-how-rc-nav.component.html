@@ -29,7 +29,7 @@
         <mat-checkbox [(ngModel)]="filterByLowScoringAddresses" name="filterByLowScoringAddressesCheckbox" class="prevent-text-selection">Low Scoring Addresses ({{getParameterCount('LOW_SCORE_ADDRESS')}})</mat-checkbox>
       </li>
       <li *ngIf="getParameterCount('LOW_SCORE_PHONE') > 0">
-        <mat-checkbox [(ngModel)]="filterByLowScoringAddresses" name="filterByLowScoringAddressesCheckbox" class="prevent-text-selection">Low Scoring Phone Numbers ({{getParameterCount('LOW_SCORE_PHONE')}})</mat-checkbox>
+        <mat-checkbox [(ngModel)]="filterByLowScoringPhoneNumbers" name="filterByLowScoringPhoneNumbersCheckbox" class="prevent-text-selection">Low Scoring Phone Numbers ({{getParameterCount('LOW_SCORE_PHONE')}})</mat-checkbox>
       </li>
     </ul>
   </section>
@@ -37,7 +37,7 @@
     <label>Matching Steps</label>
     <nav>
       <ul>
-        <li *ngFor="let step of filteredListSteps" [ngClass]="step.cssClasses">
+        <li *ngFor="let step of filteredListSteps" [ngClass]="step.cssClasses" (click)="stepClicked(step)">
           <h3>{{step.stepNumber}}. {{step.title}}</h3>
           <ul>
             <li *ngFor="let descLine of step.description" [ngClass]="descLine.cssClasses">{{descLine.text}}</li>

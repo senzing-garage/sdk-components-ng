@@ -192,6 +192,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
     private _filterByAddRecordtoVirtualEntity: boolean  = false;
     private _filterByLowScoringNames: boolean           = false;
     private _filterByLowScoringAddresses                = false;
+    private _filterByLowScoringPhoneNumbers: boolean    = false;
         // ---------------------------------------- public getters
         get filterByTextOrRecordId(): string | undefined   { return this._filterByTextOrRecordId; }
         get filterByVirtualEntityCreation(): boolean       { return this._filterByVirtualEntityCreation; }
@@ -199,6 +200,8 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         get filterByAddRecordtoVirtualEntity(): boolean    { return this._filterByAddRecordtoVirtualEntity; }
         get filterByLowScoringNames(): boolean             { return this._filterByLowScoringNames; }
         get filterByLowScoringAddresses(): boolean         { return this._filterByLowScoringAddresses; }
+        get filterByLowScoringPhoneNumbers(): boolean      { return this._filterByLowScoringPhoneNumbers; }
+
         // ---------------------------------------- public setters
         @Input() set filterByTextOrRecordId(value: string | undefined) {
             this._filterByTextOrRecordId = value;
@@ -217,6 +220,9 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         }
         @Input() set filterByLowScoringAddresses(value: boolean | undefined) {
             this._filterByLowScoringAddresses = parseBool(value);
+        }
+        @Input() set filterByLowScoringPhoneNumbers(value: boolean | undefined) {
+            this._filterByLowScoringPhoneNumbers = parseBool(value);
         }
     // ---------------------------------------- end parameters
 
@@ -263,7 +269,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
                 _inc = _inc || step.actionType == SzResolutionStepDisplayType.MERGE;
             }
             // now check for low-scoring features
-            if(this._filterByLowScoringNames || this.filterByLowScoringAddresses) {
+            if(this._filterByLowScoringNames || this.filterByLowScoringAddresses || this.filterByLowScoringPhoneNumbers) {
                 _hasParamsChecked = true;
                 let hasLowScoringFeature = false;
                 if(this._filterByLowScoringNames && step.matchInfo && step.matchInfo.featureScores && step.matchInfo.featureScores['NAME']){
@@ -291,6 +297,20 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
                         });
                         if(hasLowScoringFeature) {
                             //console.log('HAS LOW SCORING ADDRESS!!', step);
+                        }
+                    }
+                }
+                if(this.filterByLowScoringPhoneNumbers && step.matchInfo && step.matchInfo.featureScores && step.matchInfo.featureScores['PHONE']) {
+                    // has phone features
+                    let phoneScores = step.matchInfo.featureScores['PHONE'];
+                    // we only assign if value is false,
+                    // that way the default is false UNLESS the condition is true
+                    if(!hasLowScoringFeature) {
+                        hasLowScoringFeature = phoneScores.some((featScore: SzFeatureScore) => {
+                            return !(featScore.score > this.lowScoringFeatureThreshold);
+                        });
+                        if(hasLowScoringFeature) {
+                            //console.log('HAS LOW SCORING PHONE!!', step);
                         }
                     }
                 }
@@ -514,7 +534,8 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
 
     constructor(
         public entityDataService: SzEntityDataService,
-        public configDataService: SzConfigDataService
+        public configDataService: SzConfigDataService,
+        private howUIService: SzHowUIService
     ){}
 
     ngOnInit() {
@@ -560,5 +581,10 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
             }
         }
         return retVal;
+    }
+
+    public stepClicked(step: SzResolutionStep) {
+        console.warn('SzHowRCNavComponent.stepClicked()', step);
+        this.howUIService.selectStep(step.resolvedVirtualEntityId);
     }
 }

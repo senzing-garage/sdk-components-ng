@@ -23,6 +23,7 @@
         }
         .title-group {
             display: block;
+            margin-top: -5px;
         }
     }
     &.type-merge {
@@ -30,6 +31,11 @@
     }
     .title-group {
         display: none;
+        .mat-icon {
+            position: relative;
+            top: 5px;
+            margin-bottom: 0;
+        }
     }
     &.group-collapsed {
         .title-group {

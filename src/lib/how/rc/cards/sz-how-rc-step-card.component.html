@@ -9,7 +9,7 @@
     {{title}}<span *ngIf="isInterimEntity" class="datasources"> [ <span class="datasources-list">{{dataSourcesAsString}}</span> ]</span>
 </h3>
 <!-- hasChildren: {{hasChildren}} | canExpand: {{canExpand}} -->
-<h3 *ngIf="isGroupMember || groupTitle !== undefined" class="title-group">
+<h3 *ngIf="groupTitle !== undefined" class="title-group">
     <mat-icon *ngIf="canExpand && hasChildren"  class="toggle-child-expansion-icon" (click)="toggleGroupExpansion(groupId)" fontIcon="play_circle"></mat-icon>
     <mat-icon *ngIf="canExpand && !hasChildren" class="toggle-expansion-icon"       (click)="toggleGroupExpansion(groupId)" fontIcon="arrow_right"></mat-icon>
     {{groupTitle}}

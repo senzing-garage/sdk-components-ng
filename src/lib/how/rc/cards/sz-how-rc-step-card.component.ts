@@ -39,11 +39,10 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     private _parentStep: SzResolutionStep;
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
     private _highlighted: boolean = false;
-    private _collapsed: boolean = false;
     private _canExpand: boolean = true;
 
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
-        return this._collapsed ? true : false;
+        return !this.howUIService.isStepExpanded(this.id);
     }
     @HostBinding('class.highlighted') get cssHighlightedClass(): boolean {
         return this._highlighted ? true : false;
@@ -72,9 +71,6 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
 
     @Input() featureOrder: string[];
 
-    @Input() set expanded(value: boolean) {
-        this._collapsed = !value;
-    }
     @Input() set isInterimStep(value: boolean) {
         this._isInterimStep = value;
     }
@@ -157,8 +153,9 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     get inboundVirtualEntity(): SzVirtualEntity | undefined {
         return (this._data && this._data.inboundVirtualEntity) ? this._data.inboundVirtualEntity : undefined ;
     }
+    
     public get isCollapsed() {
-        return this._collapsed;
+        return !this.howUIService.isStepExpanded(this.id);
     }
     public get isInterimEntity() {
         return this.displayType === SzResolutionStepDisplayType.INTERIM;
@@ -331,10 +328,11 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         // listen for step state changes
+        /*
         this.howUIService.onStepExpansionChange.pipe(
             takeUntil(this.unsubscribe$),
             filter(this.filterOutExpansionEvents.bind(this))
-        ).subscribe(this.onStepExpansionChange.bind(this));
+        ).subscribe(this.onStepExpansionChange.bind(this));*/
     }
 
     /**
@@ -347,16 +345,15 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
 
     private filterOutExpansionEvents(vId: string) {
         //console.warn(`SzHowRCStepCardComponent: ${this.id} === ${vId} ? ${this.id === vId}`);
-        return this.id === vId;
+        return this.id === vId || vId === undefined;
     }
 
-    private onStepExpansionChange(sId: string) {
+    /*private onStepExpansionChange(sId: string) {
         console.log(`SzHowRCStepCardComponent.onStepExpansionChange: ${sId}`, this);
         if(this.id === sId) {
-            // item is member of group
             this._collapsed = !this.howUIService.isExpanded(sId);
         }
-    }
+    }*/
 
     private getStepListItemCardType(step: SzResolutionStep): SzResolutionStepDisplayType {
         return this._isInterimStep ? SzResolutionStepDisplayType.INTERIM : SzHowUIService.getResolutionStepCardType(step);

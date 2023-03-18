@@ -174,6 +174,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
             if(this._resolutionSteps){
               this._resolutionStepGroupsOld = this.getDefaultResolutionStepGroups(this._resolutionSteps);
               this._stepGroups              = this.getDefaultStepGroups(this._resolutionSteps);
+              this.howUIService.stepGroups  = this._stepGroups;
             }
             // extend data with augmentation
             if(this._data && this._data.resolutionSteps) {
@@ -196,6 +197,10 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       ).subscribe((evt: SzVirtualEntityRecordsClickEvent)=> {
           this.recordsMoreLinkClicked.emit(evt);
       });
+    }
+
+    collapseAllSteps() {
+      this.howUIService.collapseAll();
     }
 
     public getResolutionSteps(): Array<SzResolutionStep | SzResolutionStep[]> {

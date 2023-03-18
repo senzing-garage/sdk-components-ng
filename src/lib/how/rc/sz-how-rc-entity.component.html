@@ -6,13 +6,15 @@
     *ngIf="showNavigation"
 ></sz-how-rc-nav>
 <div class="main">
-    <!--<div class="debug-box">
+    <div class="debug-box">
         <h3>debug</h3>
         <button (click)="getStepGroupsForInterimEntities()">getStepGroupsForInterimEntities()</button>
         <button (click)="getDefaultStepGroups()">getDefaultStepGroups()</button>
         <button (click)="getDefaultResolutionStepGroups()">getDefaultResolutionStepGroups()</button>
         <button (click)="getNewResolutionStepsWithGroups()">getNewResolutionStepsWithGroups()</button> 
-    </div>-->
+        <button (click)="collapseAllSteps()">collpseAll()</button> 
+
+    </div>
     <ul class="step-list tree">
         <li class="top-level">
             <sz-how-rc-final-entity-card *ngFor="let vCardData of finalCardsData"

@@ -32,14 +32,14 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
     private _stepMap: {[key: string]: SzResolutionStep};
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
     private _highlighted: boolean           = false;
-    private _collapsed: boolean             = true;
+    //private _collapsed: boolean             = true;
     private _childrenCollapsed: boolean     = false;
     private _data: SzResolutionStepGroup;
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
-        return this._collapsed ? true : false;
+        return !this.howUIService.isGroupExpanded(this.id);
     }
     @HostBinding('class.expanded') get cssExpandedClass(): boolean {
-        return this._collapsed ? false : true;
+        return this.howUIService.isGroupExpanded(this.id);
     }
     @HostBinding('class.highlighted') get cssHighlightedClass(): boolean {
         return this._highlighted ? true : false;
@@ -160,16 +160,18 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
     ){}
 
     ngOnInit() {
+        /*
         this.howUIService.onGroupExpansionChange.pipe(
             takeUntil(this.unsubscribe$),
             filter(this.filterOutExpansionEvents.bind(this))
-        ).subscribe(this.onGroupExpansionChange.bind(this));
+        ).subscribe(this.onGroupExpansionChange.bind(this));*/
     }
 
+    /*
     onGroupExpansionChange(gId: string) {
         //console.log(`SzHowRCStepGroupComponent.onGroupExpansionChange: ${gId}`, this);
         this._collapsed = !this.howUIService.isGroupExpanded(gId);
-    }
+    }*/
 
     private filterOutExpansionEvents(vId: string) {
         //console.warn(`SzHowRCStepGroupComponent: ${this.id} === ${vId} ? ${this.id === vId}`);
