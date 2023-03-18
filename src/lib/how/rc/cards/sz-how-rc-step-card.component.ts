@@ -160,11 +160,44 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     public get isInterimStep() {
         return this.displayType === SzResolutionStepDisplayType.INTERIM;
     }
+    public get isCreateEntity() {
+        return this.displayType === SzResolutionStepDisplayType.CREATE;
+    }
     public get isFinalEntity() {
         return this.displayType === SzResolutionStepDisplayType.FINAL;
     }
     public get groupTitle(): string {
         return this._groupTitle;
+    }
+    public get from(): string {
+        let retVal = '';
+        let _resolvedEntity = this.resolvedVirtualEntity;
+        let _dsArr = [];
+
+        // do datasources
+        if(this._data && this._data.candidateVirtualEntity && this._data.candidateVirtualEntity.records) {
+            _dsArr = _dsArr.concat(this._data.candidateVirtualEntity.records.map((record: SzVirtualEntityRecord) => {
+                return `${record.dataSource}:${record.recordId}`;
+            }));
+        }
+        if(this._data && this._data.inboundVirtualEntity && this._data.inboundVirtualEntity.records) {
+            _dsArr = _dsArr.concat(this._data.inboundVirtualEntity.records.map((record: SzVirtualEntityRecord) => {
+                return `${record.dataSource}:${record.recordId}`;
+            }));
+        }
+        if(_dsArr.length > 0) {
+            retVal = _dsArr.join('<span class="how-step-card-title-token">and</span>');
+        }
+        if(this._data && this._data.matchInfo) {
+            // now check matchkey and principle
+            if(this._data.matchInfo.matchKey) {
+                retVal = retVal +`<span class="how-step-card-title-token">on</span>${this._data.matchInfo.matchKey}`;
+            }
+            if(this._data.matchInfo.resolutionRule) {
+                retVal = retVal +`<span class="how-step-card-title-token">using</span>${this._data.matchInfo.resolutionRule}`;
+            }
+        }
+        return retVal;
     }
     public get title(): string {
         let retVal = '';
@@ -177,7 +210,8 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
             }
         } else if(displayType === SzResolutionStepDisplayType.CREATE) {
             // both items are virtual entities
-            retVal = 'Create Virtual Entity';
+            let _resolvedEntity = this.resolvedVirtualEntity;
+            retVal = 'Create Virtual Entity'+ (_resolvedEntity && _resolvedEntity.virtualEntityId ? ' '+_resolvedEntity.virtualEntityId : '');
         } else if(displayType === SzResolutionStepDisplayType.MERGE) {
             // both items are virtual entities
             retVal = 'Merge Interim Entities';

@@ -37,6 +37,13 @@
             margin-bottom: 0;
         }
     }
+    .title-from {
+        span {
+            font-weight: normal;
+            margin-left: 8px;
+            margin-right: 8px;
+        }
+    }
     &.group-collapsed {
         .title-group {
             display: block;

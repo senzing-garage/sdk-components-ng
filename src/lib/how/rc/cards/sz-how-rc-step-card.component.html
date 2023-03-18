@@ -7,6 +7,7 @@
     <mat-icon *ngIf="canExpand && hasChildren"  class="toggle-child-expansion-icon" (click)="toggleExpansion()" fontIcon="play_circle"></mat-icon>
     <mat-icon *ngIf="canExpand && !hasChildren" class="toggle-expansion-icon"       (click)="toggleExpansion()" fontIcon="arrow_right"></mat-icon>
     {{title}}<span *ngIf="isInterimEntity" class="datasources"> [ <span class="datasources-list">{{dataSourcesAsString}}</span> ]</span>
+    <span class="title-token" *ngIf="isCreateEntity"> from </span><div *ngIf="isCreateEntity" class="title-from" [innerHTML]="from"></div>
 </h3>
 <!-- hasChildren: {{hasChildren}} | canExpand: {{canExpand}} -->
 <h3 *ngIf="groupTitle !== undefined" class="title-group">
