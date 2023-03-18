@@ -63,9 +63,6 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
         this._stepMap = value;
     }
     @Input() public set virtualEntitiesById(value: Map<string, SzResolvedVirtualEntity>) {
-        if(this._virtualEntitiesById === undefined && value !== undefined) {
-            this._virtualEntitiesById = value;
-        }
         this._virtualEntitiesById = value;
     }
     @Input() set data(value: SzResolutionStep) {
@@ -134,36 +131,7 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
         private howUIService: SzHowUIService
     ){}
 
-    ngOnInit() {
-        // initialize
-        //this._collapsedGroup = !this.howUIService.isExpanded(this._groupId);
-        //this._collapsed      = !this.howUIService.isExpanded(this.id);
-
-        // listen for group state changes
-        /*
-        this.howUIService.onGroupExpansionChange.pipe(
-            takeUntil(this.unsubscribe$),
-            filter(this.filterOutExpansionEvents.bind(this))
-        ).subscribe(this.onGroupExpansionChange.bind(this));
-        // listen for step state changes
-        this.howUIService.onStepExpansionChange.pipe(
-            takeUntil(this.unsubscribe$),
-            filter(this.filterOutExpansionEvents.bind(this))
-        ).subscribe(this.onStepExpansionChange.bind(this));*/
-    }
-
-    /*
-    onGroupExpansionChange(gId: string) {
-        //console.log(`SzHowRCStepComponent.onGroupExpansionChange: ${gId}`, this);
-        if(this._groupId && this._groupId === gId) {
-            // item is member of group
-            this._collapsedGroup = !this.howUIService.isGroupExpanded(gId);
-        }
-    }
-    onStepExpansionChange(sId: string) {
-        //console.log(`SzHowRCStepComponent.onStepExpansionChange: ${sId}`, this);
-        this._collapsed = !this.howUIService.isExpanded(sId);
-    }*/
+    ngOnInit() {}
 
     /**
      * unsubscribe when component is destroyed
@@ -171,16 +139,6 @@ export class SzHowRCStepComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
-    }
-
-    public onExpand(value: boolean) {
-        console.info('onExpand: ', value);
-        this.howUIService.expand(this.id);
-        //this._collapsed = value;
-    }
-    public onExpandChild(value: boolean) {
-        console.info('onExpandChildren: ', value);
-        this._childrenCollapsed = value;
     }
 
     private getStepListItemCardType(step: SzResolutionStep): SzResolutionStepDisplayType {

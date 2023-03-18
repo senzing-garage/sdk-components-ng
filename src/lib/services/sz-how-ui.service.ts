@@ -59,7 +59,7 @@ export class SzHowUIService {
         if(this.idIsGroupId(vId)) { this._onGroupExpansionChange.next(vId); }
         if(this.idIsStepId(vId)) { this._onStepExpansionChange.next(vId); }
       }
-      console.info(`SzHowUIService.expand(${vId})`, this._expandedStepsOrGroups);
+      //console.info(`SzHowUIService.expand(${vId})`, this._expandedStepsOrGroups);
     }
     collapse(vId: string) {
       if(this.isExpanded(vId)) {
@@ -70,10 +70,10 @@ export class SzHowUIService {
           if(this.idIsStepId(vId)) { this._onStepExpansionChange.next(vId); }
         }
       }
-      console.info(`SzHowUIService.collapse(${vId})`, this._expandedStepsOrGroups);
+      //console.info(`SzHowUIService.collapse(${vId})`, this._expandedStepsOrGroups);
     }
     expandStep(virtualEntityId: string) {
-      console.info(`SzHowUIService.expandStep(${virtualEntityId}): ${this.isStepExpanded(virtualEntityId)}`);
+      //console.info(`SzHowUIService.expandStep(${virtualEntityId}): ${this.isStepExpanded(virtualEntityId)}`);
       if(!this.isStepExpanded(virtualEntityId)) {
         this._expandedStepsOrGroups.push(virtualEntityId);
         this._onStepExpansionChange.next(virtualEntityId);
@@ -127,7 +127,6 @@ export class SzHowUIService {
           this.collapseGroup(id);
         }
       }
-      console.log(`toggleExpansion: ${id} | ${groupId}`);
     }
 
     public collapseAll(idsToExclude?: string | string[], emitEvent?: boolean) {

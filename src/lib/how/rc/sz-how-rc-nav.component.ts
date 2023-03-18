@@ -37,10 +37,6 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
     @Input() public finalEntityId: SzEntityIdentifier;
     @Input() public lowScoringFeatureThreshold: number = 80;
     @Input() public set virtualEntitiesById(value: Map<string, SzResolvedVirtualEntity>) {
-        if(this._virtualEntitiesById === undefined && value !== undefined) {
-            this._virtualEntitiesById = value;
-            console.log('SzHowRCNavComponent.setVirtualEntitiesById: ', this._virtualEntitiesById);
-        }
         this._virtualEntitiesById = value;
     }
 
@@ -81,7 +77,6 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
     }
 
     @Input() set stepsByVirtualId(value: {[key: string]: SzResolutionStep}) {
-        console.info('SzHowRCNavComponent.setStepsByVirtualId: ',value);
         this._stepMap = value;
         this._parameterCounts = this.getParameterCounts();
     }
@@ -584,7 +579,6 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
     }
 
     public stepClicked(step: SzResolutionStep) {
-        console.warn('SzHowRCNavComponent.stepClicked()', step);
         this.howUIService.selectStep(step.resolvedVirtualEntityId);
     }
 }

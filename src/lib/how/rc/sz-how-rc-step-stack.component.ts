@@ -12,7 +12,7 @@ import { parseSzIdentifier } from '../../common/utils';
 import { SzHowUIService } from '../../services/sz-how-ui.service';
 
 /**
- * Why
+ * How Step Stack (multiple steps represented as a collapsible group)
  *
  * @example 
  * &lt;!-- (Angular) --&gt;<br/>

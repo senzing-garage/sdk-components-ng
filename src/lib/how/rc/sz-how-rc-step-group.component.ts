@@ -56,10 +56,11 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
         this._data = value;
     }
     @Input() public set virtualEntitiesById(value: Map<string, SzResolvedVirtualEntity>) {
-        if(this._virtualEntitiesById === undefined && value !== undefined) {
-            this._virtualEntitiesById = value;
-        }
         this._virtualEntitiesById = value;
+    }
+    
+    public get virtualEntitiesById(): Map<string, SzResolvedVirtualEntity> {
+        return this._virtualEntitiesById;
     }
 
     public get id(): string {
@@ -95,11 +96,11 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
             if(this._data.id) {
                 retVal = this._data.id +': '+ retVal;
                 // get just the single item matching the id
-                if(this.virtualEntitiesById && this.virtualEntitiesById.has(this._data.id)){
+                if(this._virtualEntitiesById && this._virtualEntitiesById.has(this._data.id)){
                     // add name
-                    let _vEnt = this.virtualEntitiesById.get(this._data.id);
-                    retVal = _vEnt ? retVal+': ' : retVal;
-                    retVal = _vEnt.bestName ? _vEnt.bestName : _vEnt.entityName;
+                    let _vEnt = this._virtualEntitiesById.get(this._data.id);
+                    retVal = _vEnt ? retVal +': ' : retVal;
+                    retVal = retVal + (_vEnt.bestName ? _vEnt.bestName : _vEnt.entityName);
                 }
             }
         }
@@ -159,24 +160,7 @@ export class SzHowRCStepGroupComponent implements OnInit, OnDestroy {
         private howUIService: SzHowUIService
     ){}
 
-    ngOnInit() {
-        /*
-        this.howUIService.onGroupExpansionChange.pipe(
-            takeUntil(this.unsubscribe$),
-            filter(this.filterOutExpansionEvents.bind(this))
-        ).subscribe(this.onGroupExpansionChange.bind(this));*/
-    }
-
-    /*
-    onGroupExpansionChange(gId: string) {
-        //console.log(`SzHowRCStepGroupComponent.onGroupExpansionChange: ${gId}`, this);
-        this._collapsed = !this.howUIService.isGroupExpanded(gId);
-    }*/
-
-    private filterOutExpansionEvents(vId: string) {
-        //console.warn(`SzHowRCStepGroupComponent: ${this.id} === ${vId} ? ${this.id === vId}`);
-        return this.id === vId;
-    }
+    ngOnInit() {}
 
     /**
      * unsubscribe when component is destroyed

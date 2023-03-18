@@ -7,18 +7,6 @@
     [groupTitle]="groupTitle" 
     [isInterimStep]="isInterimStep"
     ></sz-how-rc-step-card>
-<ul *ngIf="this.resolvedVirtualEntity && this.isInterimEntity" class="tree hide-on-group-collapsed">
-    <!-- show nested "Create Virtual Entity Card" -->
-    <li>
-        <sz-how-rc-step-card 
-        *ngIf="isExpanded"
-        [parentStep]="data"
-        [data]="data"
-        [featureOrder]="featureOrder"
-        [virtualEntitiesById]="virtualEntitiesById"
-        ></sz-how-rc-step-card>
-    </li>
-</ul>
 <!--<h3>{{title}}<span *ngIf="isInterimEntity" class="datasources"> [ <span class="datasources-list">{{dataSourcesAsString}}</span> ]</span></h3>-->
 <!--<ul *ngIf="this.resolvedVirtualEntity && this.isInterimEntity" class="debug">
     <li>this.resolvedVirtualEntity: {{this.resolvedVirtualEntity.virtualEntityId}}</li>
