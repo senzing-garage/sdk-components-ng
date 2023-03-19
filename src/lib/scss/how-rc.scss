@@ -72,6 +72,26 @@ sz-how-rc-step-card {
         background: none !important;
         border-radius: 10px !important;
     }
+    .mat-accordion {
+        .mat-expansion-panel-header  {
+            height: 34px;
+            padding-left: 0;
+        }
+        .mat-expansion-panel {
+            border-radius: 0;
+        }
+        .mat-expansion-panel-spacing {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .mat-expansion-panel-body {
+            ul {
+                margin-block-start: 0;
+                margin-block-end: 0;
+                padding-inline-start: 25px;
+            }
+        }
+    }
 }
 
 ul.tree, ul.tree ul {

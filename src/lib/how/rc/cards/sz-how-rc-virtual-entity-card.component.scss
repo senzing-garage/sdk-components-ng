@@ -74,6 +74,14 @@
         /*padding-right: 10px;*/
     }
     .feature-drawer {
+        .toggle-expansion-icon {
+            cursor: pointer;
+        }
+        &.mat-expanded {
+            .toggle-expansion-icon {
+                transform: rotate(90deg);
+            }
+        }
         .mat-expansion-panel-content ul {
             margin: 0;
         }

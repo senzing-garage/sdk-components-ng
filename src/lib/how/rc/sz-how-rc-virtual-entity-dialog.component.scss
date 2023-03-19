@@ -49,8 +49,17 @@
         border-bottom-right-radius: 10px;
         border-bottom-left-radius: 10px;
     }
+    .mat-expansion-panel-spacing {
+        margin: 0;
+    }
     mat-expansion-panel:last-child {
         border-radius: 0 0 10px 10px;
+    }
+    .dialog-close-button {
+        position: absolute;
+        right: 6px;
+        top: 4px;
+        cursor: pointer;
     }
 }
 ::ng-deep.mat-dialog-container {

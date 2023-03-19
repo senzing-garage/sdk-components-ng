@@ -54,7 +54,7 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
     }
     public get id(): SzEntityIdentifier {
       if(this._virtualEntity) {
-        return this._virtualEntity.entityId;
+        return this._virtualEntity.virtualEntityId;
       }
       return undefined;
     }

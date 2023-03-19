@@ -1,7 +1,9 @@
 <div class="content">
     <mat-accordion #features class="features" multi>
-        <mat-expansion-panel class="feature-drawer feature-drawer-sources" [expanded]="true" hideToggle>
-            <mat-expansion-panel-header>Sources<span class="count-bubble">{{featureCount(sources)}}</span></mat-expansion-panel-header>
+        <mat-expansion-panel class="feature-drawer feature-drawer-sources" [expanded]="isExpanded('SOURCES')" (opened)="onDrawerOpen('SOURCES')" (closed)="onDrawerClose('SOURCES')" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-icon class="toggle-expansion-icon" fontIcon="arrow_right"></mat-icon>
+                Sources<span class="count-bubble">{{featureCount(sources)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let source of sources | keyvalue">
                     {{source.key}}<span class="count-bubble">{{featureCount(source.value)}}</span>:
@@ -15,8 +17,10 @@
             </ul>
         </mat-expansion-panel>
         <!-- start "other features" -->
-        <mat-expansion-panel class="feature-drawer feature-drawer-features" [expanded]="true" hideToggle *ngFor="let featBucket of orderedFeatures">
-            <mat-expansion-panel-header>{{featureName(featBucket.name)}}<span class="count-bubble">{{featureCount(featBucket.features)}}</span></mat-expansion-panel-header>
+        <mat-expansion-panel class="feature-drawer feature-drawer-features" [expanded]="isExpanded(featBucket.name)" (opened)="onDrawerOpen(featBucket.name)" (closed)="onDrawerClose(featBucket.name)" hideToggle *ngFor="let featBucket of orderedFeatures">
+            <mat-expansion-panel-header>
+                <mat-icon class="toggle-expansion-icon" fontIcon="arrow_right"></mat-icon>
+                {{featureName(featBucket.name)}}<span class="count-bubble">{{featureCount(featBucket.features)}}</span></mat-expansion-panel-header>
             <ul>
                 <li *ngFor="let value of featBucket.features">
                     {{value.primaryValue}}

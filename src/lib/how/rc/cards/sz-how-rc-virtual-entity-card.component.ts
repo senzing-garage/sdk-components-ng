@@ -35,7 +35,8 @@ export class SzHowRCVirtualEntityCardComponent implements OnInit {
     private _stepData: SzResolutionStep;
     private _sources: SzVirtualEntityRecordsByDataSource;
     public _orderedFeatures: {name: string, features: SzEntityFeature[]}[] | undefined;
-    
+    private _drawerStates: Map<string, boolean>  = new Map([['SOURCES',false]]);
+
     @HostBinding('class.type-add') get cssTypeAddClass(): boolean {
         return this.displayType === SzResolutionStepDisplayType.ADD;
     }
@@ -84,14 +85,13 @@ export class SzHowRCVirtualEntityCardComponent implements OnInit {
             if(retVal) {
                 // cache value;
                 this._orderedFeatures = retVal;
+                this._orderedFeatures.forEach((feat) => {
+                    this._drawerStates.set(feat.name, true);
+                });
             }
         }
         return retVal;
     }
-    /*
-    get resolvedEntity(): SzResolvedVirtualEntity {
-        return this._data;
-    }*/
     get virtualEntity(): SzResolvedVirtualEntity {
         return this._data;
     }
@@ -136,31 +136,6 @@ export class SzHowRCVirtualEntityCardComponent implements OnInit {
     get displayType(): SzResolutionStepDisplayType {
         return SzHowUIService.getResolutionStepCardType(this._stepData);
     }
-
-    /*
-    getVirtualEntity(){
-        let rIds: SzRecordIdentifiers = [];
-        if(this._data){
-            if(this._data.records) {
-                // convert "SzVirtualEntityRecord" to "SzRecordIdentifier"
-                rIds = this._data.records.map((vRec: SzVirtualEntityRecord)=>{
-                    return {
-                        src: vRec.dataSource,
-                        id: vRec.recordId
-                    } as SzRecordIdentifier
-                })
-            }
-        }
-
-        return this.entityDataService.getVirtualEntityByRecordIds(
-                rIds, 
-                undefined,
-                undefined, SzFeatureMode.ATTRIBUTED
-            )
-            .pipe(
-            map((res: SzVirtualEntityResponse) => { return res.data.resolvedEntity})
-        )
-    }*/
 
     private _moreLinkClick: Subject<SzVirtualEntityRecordsClickEvent>   = new Subject();
     public moreLinkClick                                                = this._moreLinkClick.asObservable();
@@ -307,6 +282,23 @@ export class SzHowRCVirtualEntityCardComponent implements OnInit {
         return retValue;
     }
 
+    public toggleExpansion(drawerId: string) {
+        let currentVal = this.isExpanded(drawerId);
+        this._drawerStates.set(drawerId, !currentVal);
+    }
+    public isExpanded(drawerId: string): boolean {
+        let retVal = true;
+        if(this._drawerStates.has(drawerId)) {
+            retVal = this._drawerStates.get(drawerId);
+        }
+        return retVal;
+    }
+    public onDrawerOpen(drawerId: string) {
+        this._drawerStates.set(drawerId, true);
+    }
+    public onDrawerClose(drawerId: string) {
+        this._drawerStates.set(drawerId, false);
+    }
     public featureCount(featureCollection: SzVirtualEntityRecordsByDataSource | SzEntityFeature[] | SzVirtualEntityRecord[] ) {
         if(featureCollection) {
             if(Object.keys(featureCollection)) {
@@ -329,9 +321,7 @@ export class SzHowRCVirtualEntityCardComponent implements OnInit {
         private howUIService: SzHowUIService
     ){}
 
-    ngOnInit() {
-        
-    }
+    ngOnInit() {}
 
     public onMoreLinkClick(dsKey: string, evt: MouseEvent) {
         let payload: SzVirtualEntityRecordsClickEvent = Object.assign(evt, {
