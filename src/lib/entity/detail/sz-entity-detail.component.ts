@@ -131,6 +131,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
   // why utilities
   private _whySelectionMode: SzWhySelectionModeBehavior = SzWhySelectionMode.NONE;
+  private _showEntityHowFunction: boolean = false;
   private _showEntityWhyFunction: boolean = false;
   private _showRecordWhyUtilities: boolean = false;
   private _showRelatedWhyNotUtilities: boolean = false;
@@ -139,6 +140,12 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private _showGraphNodeContextMenu: boolean = false;
   private _showGraphLinkContextMenu: boolean = false;
 
+  /** @internal */
+  private _headerHowButtonClicked: Subject<SzEntityIdentifier> = new Subject<SzEntityIdentifier>();
+  /** (Observeable) when the user clicks on the "Why" button in header under the icon */
+  public headerHowButtonClicked = this._headerHowButtonClicked.asObservable();
+  /** (Event Emitter) when the user clicks on the "Why" button in header under the icon */
+  @Output() howButtonClick      = new EventEmitter<SzEntityIdentifier>();
   /** @internal */
   private _headerWhyButtonClicked: Subject<SzEntityIdentifier> = new Subject<SzEntityIdentifier>();
   /** (Observeable) when the user clicks on the "Why" button in header under the icon */
@@ -223,7 +230,14 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   @Input() set whySelectionMode(value: SzWhySelectionModeBehavior) {
     this._whySelectionMode = value;
   }
-
+  /** whether or not the "how" button for the entire entity is shown */
+  public get showEntityHowFunction(): boolean {
+    return this._showEntityHowFunction;
+  }
+  /** whether or not to show the "how" button for the entire entity */
+  @Input() set showEntityHowFunction(value: boolean) {
+    this._showEntityHowFunction = value;
+  }
   /** whether or not the "why" comparison button for the entire entity is shown */
   public get showEntityWhyFunction(): boolean {
     return this._showEntityWhyFunction;
@@ -680,7 +694,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
     // show or hide sections based on pref change
-    this.showGraphSection = prefs.showGraphSection;
+    this.showGraphSection   = prefs.showGraphSection;
     this.showMatchesSection = prefs.showMatchesSection;
     this.showPossibleMatchesSection = prefs.showPossibleMatchesSection;
     this.showPossibleRelationshipsSection = prefs.showPossibleRelationshipsSection;
@@ -775,8 +789,15 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   public onGraphPopoutClick(event: any) {
     this.graphPopOutClick.emit(event);
   }
+  
   /**
-   * proxies internal "why button" header click to "graphPopOutClick" event.
+   * proxies internal "how button" header click to "headerHowButtonClick" event.
+   */
+  public onHeaderHowButtonClick(entityId: SzEntityIdentifier){
+    this.howButtonClick.emit(entityId);
+  }
+  /**
+   * proxies internal "why button" header click to "onHeaderWhyButtonClick" event.
    */
   public onHeaderWhyButtonClick(entityId: SzEntityIdentifier){
     this.headerWhyButtonClick.emit(entityId);

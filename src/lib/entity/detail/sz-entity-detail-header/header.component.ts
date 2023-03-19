@@ -299,7 +299,14 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$)
     ).subscribe( (entityId: SzEntityIdentifier) => {
       this.onWhyButtonClick.emit(entityId);
+    });
+    // proxy internal "Subject" to event emitter for tidyness
+    this._onHowButtonClicked.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( (entityId: SzEntityIdentifier) => {
+      this.onHowButtonClick.emit(entityId);
     })
+    
   }
 
   /**
@@ -352,6 +359,33 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
   /** whether or not the "Why button" under the entity icon is being shown*/
   public get showWhyFunction(): boolean {
     return this._showWhyFunction;
+  }
+  /** 
+   * when the user clicks the "how" button (if enabled with "showHowFunction") 
+   * @internal
+  */
+  private _onHowButtonClicked = new Subject<SzEntityIdentifier>();
+  /** (Observeable Event) when the user clicks the "how" button (if enabled with "showHowFunction") */
+  public onHowButtonClicked   = this._onHowButtonClicked.asObservable();
+  /** (Event Emitter) when the user clicks the "how" button (if enabled with "showHowFunction") */
+  @Output() onHowButtonClick: EventEmitter<SzEntityIdentifier> = new EventEmitter<SzEntityIdentifier>();
+  /** @internal */
+  private _showHowFunction: boolean = false;
+  /** whether or not to show the "How button" under the entity icon */
+  @Input() public set showHowFunction(value: boolean) {
+    this._showHowFunction = value;
+  }
+  /** whether or not the "Why button" under the entity icon is being shown*/
+  public get showHowFunction(): boolean {
+    return (this._showWhyFunction && this._showHowFunction) ? false : this._showHowFunction;
+  }
+  /**
+   * When user clicks the "How" button this handler is invoked 
+   * which then proxies the event to observeables and emitters 
+   * @internal 
+  */
+  public onHowButtonClickHandler(event: any) {
+    this._onHowButtonClicked.next(this.entityId);
   }
   /**
    * When user clicks the "Why" button this handler is invoked 

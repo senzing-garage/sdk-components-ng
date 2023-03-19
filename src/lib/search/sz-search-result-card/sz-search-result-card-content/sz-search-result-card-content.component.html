@@ -54,4 +54,11 @@
     *ngIf="columnOneTotal > truncateOtherDataAt && truncateResults">...</span>
   </div>
 
+  <div *ngIf="showHowButton" class="search-card__content--how-button how-button-container">
+    <button (click)="onHowButtonClick($event)" class="how-button" mat-button>
+      How Report
+      <mat-icon class="how-report-icon" fontIcon="insert_chart_outlined"></mat-icon>
+    </button>
+  </div>
+
 </div>

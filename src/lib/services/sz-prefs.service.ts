@@ -360,6 +360,8 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _showOtherData: boolean = false;
   /** @internal */
+  private _showHowButton: boolean = false;
+  /** @internal */
   private _showIdentifierData: boolean = false;
   /** @internal */
   private _showMatchKeys: boolean | undefined;
@@ -385,10 +387,11 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
    */
   override jsonKeys = [
     'openInNewTab',
-    'showOtherData',
-    'showIdentifierData',
     'showCharacteristicData',
+    'showHowButton',
+    'showIdentifierData',
     'showMatchKeys',
+    'showOtherData',
     'truncateRecordsAt',
     'truncateOtherDataAt',
     'truncateCharacteristicDataAt',
@@ -399,10 +402,11 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   ];
   override typemap = {
     'openInNewTab':                 'boolean',
-    'showOtherData':                'boolean',
-    'showIdentifierData':           'boolean',
     'showCharacteristicData':       'boolean',
+    'showHowButton':                'boolean',
+    'showIdentifierData':           'boolean',
     'showMatchKeys':                'boolean',
+    'showOtherData':                'boolean',
     'truncateRecordsAt':            'number',
     'truncateOtherDataAt':          'number',
     'truncateCharacteristicDataAt': 'number',
@@ -429,6 +433,15 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   /** show "other data" in search results */
   public set showOtherData(value: boolean) {
     this._showOtherData = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** show "how" button in search results */
+  public get showHowButton(): boolean {
+    return this._showHowButton;
+  }
+  /** show "how" button in search results */
+  public set showHowButton(value: boolean) {
+    this._showHowButton = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** show "other data" in search results */

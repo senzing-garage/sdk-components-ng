@@ -27,5 +27,16 @@
       }
     }
 
+    .how-button {
+      border: var(--sz-search-results-how-button-border);
+      background-color: var(--sz-search-results-how-button-background-color);
+      padding: var(--sz-search-results-how-button-padding);
+      margin: var(--sz-search-results-how-button-margin);
+      color: var(--sz-search-results-how-button-color);
+    }
+    .how-report-icon {
+      transform: rotate(90deg);
+    }
+
   }
 }

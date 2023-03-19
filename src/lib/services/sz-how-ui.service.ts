@@ -34,6 +34,7 @@ export class SzHowUIService {
     public set stepGroups(value: Map<string, SzResolutionStepGroup>) {
       this._stepGroups              = value;
     }
+    private _userHasChangedStepState    = new Map<string, boolean>();
 
     idIsGroupId(vId: string): boolean {
       // group id format "de9b1c0f-67a9-4b6d-9f63-bc90deabe3e4"
@@ -76,6 +77,7 @@ export class SzHowUIService {
       //console.info(`SzHowUIService.expandStep(${virtualEntityId}): ${this.isStepExpanded(virtualEntityId)}`);
       if(!this.isStepExpanded(virtualEntityId)) {
         this._expandedStepsOrGroups.push(virtualEntityId);
+        this._userHasChangedStepState.set(virtualEntityId, true)
         this._onStepExpansionChange.next(virtualEntityId);
       }
     }
@@ -92,6 +94,15 @@ export class SzHowUIService {
       if(!this.isGroupExpanded(groupId)) {
         this._expandedGroups.push(groupId);
         this._onGroupExpansionChange.next(groupId);
+        // check if group has only one member card
+        // if a user expands a collapsed group it 
+        // doesnt make sense to make them click expand again
+        // right after
+        let _group = this._stepGroups.get(groupId);
+        if(_group && _group.interimSteps && _group.interimSteps.length === 1 && !this._userHasChangedStepState.has(groupId)) {
+          // step will have the same id as the group so just use that
+          this.expandStep(groupId);
+        }
       }
     }
     collapseGroup(groupId: string) {

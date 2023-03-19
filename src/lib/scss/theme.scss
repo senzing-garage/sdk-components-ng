@@ -154,6 +154,11 @@ body {
   --sz-search-results-col-name-min-width: 300px;
   --sz-search-results-col-margin-right: 2em;
   --sz-search-results-datasources-spacing: 8px;
+  --sz-search-results-how-button-border: 1px solid #{$sz-dark-grey};
+  --sz-search-results-how-button-background-color: #{$sz-light-background};
+  --sz-search-results-how-button-padding: 0px 10px;
+  --sz-search-results-how-button-margin: 0;
+  --sz-search-results-how-button-color: #{$sz-dark-grey};
 
   --sz-search-results-header-width: calc(100% - 40px);
   --sz-search-results-header-display: block;
@@ -205,7 +210,7 @@ body {
     --sz-entity-detail-icon-person-fill: #353535;
     --sz-entity-detail-icon-company-fill: #565656;
     --sz-entity-detail-icon-background-color: #f3f3f3;
-    --sz-entity-detail-icon-margin: 0 30px 0 20px;
+    --sz-entity-detail-icon-margin: 0 30px 4px 20px;
 
     --sz-entity-detail-header-entity-name-font-size: 34px;
     --sz-entity-detail-header-entity-name-font-weight: 600;
