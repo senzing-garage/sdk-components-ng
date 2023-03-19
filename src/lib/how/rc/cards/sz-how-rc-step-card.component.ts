@@ -1,16 +1,17 @@
-import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding } from '@angular/core';
+import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, ElementRef, HostBinding } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
 import { 
     EntityDataService as SzEntityDataService, 
-    SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse, SzVirtualEntityRecord, SzDataSourceRecordSummary, SzResolvedEntity 
+    SzFeatureScore, SzResolutionStep, SzVirtualEntity, SzVirtualEntityRecord, SzDataSourceRecordSummary 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../../services/sz-config-data.service';
 import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../../../models/data-how';
-import { filter, Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
+import {  Subject } from 'rxjs';
 import { parseSzIdentifier } from '../../../common/utils';
 //import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../../services/sz-how-ui-coordinator.service';
 import { SzHowUIService } from '../../../services/sz-how-ui.service';
+import { SzHowRCVirtualEntityDialog } from '../sz-how-rc-virtual-entity-dialog.component';
 
 /**
  * Why
@@ -351,10 +352,29 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
         return retVal;
     }
 
+    openVirtualEntityDialog(evt) {
+      console.log('SzHowEntityComponent.openVirtualEntityDialog: ', evt);
+      //return;
+      //this._virtualEntityInfoLinkClick.next(evt);
+      let targetEle = new ElementRef(evt.target);
+      const dialogRef = this.dialog.open(SzHowRCVirtualEntityDialog, {
+          panelClass: 'how-virtual-entity-dialog-panel',
+          hasBackdrop: false,
+          data: {
+            target: targetEle,
+            virtualEntity: this.resolvedVirtualEntity,
+            stepData: this._data,
+            featureOrder: this.featureOrder,
+            event: evt
+        }
+      });
+    }
+
     constructor(
         public entityDataService: SzEntityDataService,
         public configDataService: SzConfigDataService,
-        private howUIService: SzHowUIService
+        private howUIService: SzHowUIService,
+        public dialog: MatDialog
     ){}
 
     ngOnInit() {}

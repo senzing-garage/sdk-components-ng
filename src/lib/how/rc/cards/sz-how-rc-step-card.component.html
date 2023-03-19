@@ -19,7 +19,7 @@
     <div class="column info-block">
         <div class="info-line" *ngFor="let line of description; let l = index">
             <span [innerHTML]="line"></span>
-            <mat-icon *ngIf="l == 0" class="info-icon" aria-hidden="false" aria-label="Show Virtual Entity Details" fontIcon="info"></mat-icon>
+            <mat-icon *ngIf="l == 0" (click)="openVirtualEntityDialog($event)" class="info-icon" aria-hidden="false" aria-label="Show Virtual Entity Details" fontIcon="info"></mat-icon>
         </div>
         <!--<div>Forms <span class="emphasis">Virtual Entity V123-S12</span></div>
         <div>On <span class="emphasis">NAME+ADDRESS</span></div>

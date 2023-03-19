@@ -1,0 +1,60 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    position: relative;
+    height: 100%;
+    border: 2px solid #000;
+    border-radius: 10px;
+    background-color: #fff;
+
+    &.maximized {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    &.type-add .mat-dialog-title {
+        background-color: #feae00;
+    }
+    &.type-create .mat-dialog-title {
+        background-color: #ffd932;
+    }
+    &.type-interim .mat-dialog-title{
+        background-color: #56c1ff;
+    }
+    &.type-merge .mat-dialog-title{
+        background-color: #16e7cf;
+    }
+
+    .mat-dialog-title {
+        background-color: #6d738c;
+        text-align: center;
+        padding: 6px;
+        border-radius: 8px 8px 0 0;
+        margin: 0px 0px;
+        line-height: 20px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    .mat-dialog-content {
+        display: flex;
+        height: calc(100% - 107px);
+        max-height: unset;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border-radius: 0 0 10px 10px;
+    }
+    .mat-accordion .mat-expansion-panel:last-of-type {
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+    mat-expansion-panel:last-child {
+        border-radius: 0 0 10px 10px;
+    }
+}
+::ng-deep.mat-dialog-container {
+    resize: both; 
+    overflow: auto;
+    background: #fff;
+}

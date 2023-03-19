@@ -86,14 +86,15 @@ export { SzHowECVirtualCardComponent } from './lib/how/ec/cards/sz-how-ec-virtua
 export { SzHowECSourceRecordsComponent } from './lib/how/ec/sz-dialog-how-ec-source-records.component';
 export { SzHowECToolbarComponent } from './lib/how/ec/sz-how-ec-toolbar.component';
 
-export { SzHowRCEntityComponent, SzHowRCEntityDialog } from './lib/how/rc/sz-how-rc-entity.component';
+export { SzHowRCEntityComponent } from './lib/how/rc/sz-how-rc-entity.component';
 export { SzHowRCFinalEntityCardComponent } from './lib/how/rc/cards/sz-how-rc-final-entity-card.component';
+export { SzHowRCStepCardComponent } from './lib/how/rc/cards/sz-how-rc-step-card.component';
 export { SzHowRCStepComponent } from './lib/how/rc/sz-how-rc-step.component';
 export { SzHowRCStepGroupComponent } from './lib/how/rc//sz-how-rc-step-group.component';
 export { SzHowRCStepStackComponent } from './lib/how/rc/sz-how-rc-step-stack.component';
-
-export { SzHowRCStepCardComponent } from './lib/how/rc/cards/sz-how-rc-step-card.component';
 export { SzHowRCNavComponent } from './lib/how/rc/sz-how-rc-nav.component';
+export { SzHowRCVirtualEntityCardComponent } from './lib/how/rc/cards/sz-how-rc-virtual-entity-card.component';
+export { SzHowRCVirtualEntityDialog } from './lib/how/rc/sz-how-rc-virtual-entity-dialog.component';
 
 /** export some members of rest client to ease type use */
 export {

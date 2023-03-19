@@ -1,0 +1,115 @@
+import { Component, Inject, ViewChild, HostBinding, ElementRef } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { 
+    EntityDataService as SzEntityDataService, 
+    SzEntityIdentifier, SzFeatureMode, SzHowEntityResponse, SzHowEntityResult, SzRecordId, SzRecordIdentifier, SzRecordIdentifiers, SzResolutionStep, SzResolvedEntity, SzVirtualEntity, SzVirtualEntityRecord, SzVirtualEntityResponse 
+} from '@senzing/rest-api-client-ng';
+import { SzConfigDataService } from '../../services/sz-config-data.service';
+import { SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
+import { Subject } from 'rxjs';
+import { SzResolutionStepDisplayType, SzResolvedVirtualEntity } from 'src/lib/models/data-how';
+import { SzHowUIService } from '../../services/sz-how-ui.service';
+
+
+@Component({
+    selector: 'sz-dialog-how-rc-virtual-entity-dialog',
+    templateUrl: 'sz-how-rc-virtual-entity-dialog.component.html',
+    styleUrls: ['sz-how-rc-virtual-entity-dialog.component.scss']
+  })
+  export class SzHowRCVirtualEntityDialog {
+    /** subscription to notify subscribers to unbind */
+    public unsubscribe$ = new Subject<void>();
+    
+    private _stepData: SzResolutionStep;
+    private _virtualEntity: SzResolvedVirtualEntity;
+    private _featureOrder: string[];
+
+    private _showOkButton = true;
+    private _isMaximized = false;
+    @HostBinding('class.type-add') get cssTypeAddClass(): boolean {
+        return this.displayType === SzResolutionStepDisplayType.ADD;
+    }
+    @HostBinding('class.type-merge') get cssTypeMergeClass(): boolean {
+        return this.displayType === SzResolutionStepDisplayType.MERGE;
+    }
+    @HostBinding('class.type-interim') get cssTypeInterimClass(): boolean {
+        return this.displayType === SzResolutionStepDisplayType.INTERIM;
+    }
+    @HostBinding('class.type-create') get cssTypeCreateClass(): boolean {
+        return this.displayType === SzResolutionStepDisplayType.CREATE;
+    }
+    @HostBinding('class.maximized') get maximized() { return this._isMaximized; }
+    private set maximized(value: boolean) { this._isMaximized = value; }
+  
+    //@ViewChild('howEntityTag') howEntityTag: SzHowRCEntityComponent;
+  
+    public get title(): string {
+      let retVal = `Virtual Entity ${this.id}`;
+      return retVal
+    }
+  
+    public okButtonText: string = "Ok";
+    public get showDialogActions(): boolean {
+      return this._showOkButton;
+    }
+    public get id(): SzEntityIdentifier {
+      if(this._virtualEntity) {
+        return this._virtualEntity.entityId;
+      }
+      return undefined;
+    }
+    public get stepData(): SzResolutionStep {
+      return this._stepData;
+    }
+    public get virtualEntity(): SzResolvedVirtualEntity {
+      return this._virtualEntity;
+    }
+    public get featureOrder(): string[] {
+      return this._featureOrder;
+    }
+
+    get displayType(): SzResolutionStepDisplayType {
+        return SzHowUIService.getResolutionStepCardType(this._stepData);
+    }
+
+    constructor(
+      @Inject(MAT_DIALOG_DATA) public data: { 
+        stepData: SzResolutionStep, 
+        virtualEntity: SzResolvedVirtualEntity, 
+        featureOrder: string[],
+        okButtonText?: string, showOkButton?: boolean 
+      },
+      private howUIService: SzHowUIService
+      ) {
+      if(data) {
+        if(data.stepData) {
+          this._stepData = data.stepData;
+        }
+        if(data.virtualEntity) {
+            this._virtualEntity = data.virtualEntity;
+          }
+          if(data.featureOrder) {
+            this._featureOrder = data.featureOrder;
+          }
+        if(data.okButtonText) {
+          this.okButtonText = data.okButtonText;
+        }
+        if(data.showOkButton) {
+          this._showOkButton = data.showOkButton;
+        }
+      }
+    }
+    /**
+     * unsubscribe when component is destroyed
+     */
+     ngOnDestroy() {
+      this.unsubscribe$.next();
+      this.unsubscribe$.complete();
+    }
+    public toggleMaximized() {
+      this.maximized = !this.maximized;
+    }
+    public onDoubleClick(event) {
+      this.toggleMaximized();
+    }
+  }

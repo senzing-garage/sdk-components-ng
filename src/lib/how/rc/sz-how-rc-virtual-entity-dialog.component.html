@@ -1,0 +1,8 @@
+<h1 mat-dialog-title class="mat-dialog-title" cdkDrag cdkDragRootElement=".cdk-overlay-pane" (dblclick)="onDoubleClick($event)" cdkDragHandle>{{title}}</h1>
+<div mat-dialog-content class="mat-dialog-content">
+  <sz-how-rc-virtual-entity-card
+    [virtualEntity]="virtualEntity"
+    [featureOrder]="featureOrder"
+    [step]="stepData"></sz-how-rc-virtual-entity-card>
+  <!--<sz-how-ec-entity #howEntityTag [entityId]="entityId" (loading)="onDataLoading($event)"></sz-how-ec-entity>-->
+</div>

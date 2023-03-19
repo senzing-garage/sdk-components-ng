@@ -85,7 +85,7 @@ import { SzHowUICoordinatorService } from './services/sz-how-ui-coordinator.serv
 import { SzHowECToolbarComponent } from './how/ec/sz-how-ec-toolbar.component';
 import { SzHowECSourceRecordsComponent } from './how/ec/sz-dialog-how-ec-source-records.component';
 
-import { SzHowRCEntityComponent, SzHowRCEntityDialog } from './how/rc/sz-how-rc-entity.component';
+import { SzHowRCEntityComponent } from './how/rc/sz-how-rc-entity.component';
 import { SzHowRCFinalEntityCardComponent } from './how/rc/cards/sz-how-rc-final-entity-card.component';
 import { SzHowRCNavComponent } from './how/rc/sz-how-rc-nav.component';
 import { SzHowRCStepCardComponent } from './how/rc/cards/sz-how-rc-step-card.component';
@@ -93,6 +93,8 @@ import { SzHowRCStepComponent } from './how/rc/sz-how-rc-step.component';
 import { SzHowRCStepGroupComponent } from './how/rc/sz-how-rc-step-group.component';
 import { SzHowRCStepStackComponent } from './how/rc/sz-how-rc-step-stack.component';
 import { SzHowUIService } from './services/sz-how-ui.service';
+import { SzHowRCVirtualEntityCardComponent } from './how/rc/cards/sz-how-rc-virtual-entity-card.component';
+import { SzHowRCVirtualEntityDialog } from './how/rc/sz-how-rc-virtual-entity-dialog.component';
 
 /**
  * Sets up a default set of service parameters for use
@@ -150,13 +152,14 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowECToolbarComponent,
         SzHowECVirtualCardComponent,
         SzHowRCEntityComponent,
-        SzHowRCEntityDialog,
         SzHowRCFinalEntityCardComponent,
         SzHowRCNavComponent,
         SzHowRCStepCardComponent,
         SzHowRCStepComponent,
         SzHowRCStepGroupComponent,
         SzHowRCStepStackComponent,
+        SzHowRCVirtualEntityCardComponent,
+        SzHowRCVirtualEntityDialog,
         SzMultiSelectButtonComponent,
         SzPoweredByComponent,
         SzPreferencesComponent,
@@ -207,11 +210,12 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowECToolbarComponent,
         SzHowECVirtualCardComponent,
         SzHowRCEntityComponent,
-        SzHowRCEntityDialog,
         SzHowRCNavComponent,
         SzHowRCStepComponent,
         SzHowRCStepGroupComponent,
         SzHowRCStepStackComponent,
+        SzHowRCVirtualEntityCardComponent,
+        SzHowRCVirtualEntityDialog,
         SzPoweredByComponent,
         SzPreferencesComponent,
         SzRelationshipNetworkComponent,

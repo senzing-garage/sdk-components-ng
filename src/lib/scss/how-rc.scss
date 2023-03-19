@@ -59,11 +59,18 @@ sz-how-rc-nav, .sz-how-nav {
     }
 }
 
-sz-how-rc-step-card{
+sz-how-rc-step-card {
     .how-step-card-title-token, .title-token {
         font-weight: normal;
         margin-left: 8px;
         margin-right: 8px;
+    }
+}
+
+.how-virtual-entity-dialog-panel {
+    .mat-mdc-dialog-surface {
+        background: none !important;
+        border-radius: 10px !important;
     }
 }
 

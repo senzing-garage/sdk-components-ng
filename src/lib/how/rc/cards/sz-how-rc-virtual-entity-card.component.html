@@ -1,0 +1,32 @@
+<div class="content">
+    <mat-accordion #features class="features" multi>
+        <mat-expansion-panel class="feature-drawer feature-drawer-sources" [expanded]="true" hideToggle>
+            <mat-expansion-panel-header>Sources<span class="count-bubble">{{featureCount(sources)}}</span></mat-expansion-panel-header>
+            <ul>
+                <li *ngFor="let source of sources | keyvalue">
+                    {{source.key}}<span class="count-bubble">{{featureCount(source.value)}}</span>:
+                    <ul>
+                        <li *ngFor="let record of source.value | slice:0:recordLimit">
+                            {{record?.recordId}}
+                        </li>
+                        <li *ngIf="source.value.length > recordLimit" class="more-link" (click)="onMoreLinkClick(source.key, $event)">more...</li>
+                    </ul>
+                </li>
+            </ul>
+        </mat-expansion-panel>
+        <!-- start "other features" -->
+        <mat-expansion-panel class="feature-drawer feature-drawer-features" [expanded]="true" hideToggle *ngFor="let featBucket of orderedFeatures">
+            <mat-expansion-panel-header>{{featureName(featBucket.name)}}<span class="count-bubble">{{featureCount(featBucket.features)}}</span></mat-expansion-panel-header>
+            <ul>
+                <li *ngFor="let value of featBucket.features">
+                    {{value.primaryValue}}
+                    <ul class="duplicate-tree" *ngIf="value.duplicateValues && value.duplicateValues.length > 0">
+                        <li *ngFor="let dupVal of value.duplicateValues">{{dupVal}}</li>
+                    </ul>
+                </li>
+            </ul>
+        </mat-expansion-panel>
+        <!-- end "other features" -->
+    </mat-accordion>
+    <!--<button (click)="getOrderedFeaturesDebug()">Get Ordered Features</button>-->
+</div>
