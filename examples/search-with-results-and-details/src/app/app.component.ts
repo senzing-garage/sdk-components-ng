@@ -22,9 +22,12 @@ import { Subscription, fromEvent } from 'rxjs';
 })
 export class AppComponent implements AfterViewInit {
   public currentSearchResults: SzAttributeSearchResult[];
-  public currentlySelectedEntityId: number;// = 39001;
+  public currentlySelectedEntityId: number; // = 39001;
   public currentSearchParameters: SzEntitySearchParams;
-  public showSearchResults = false;
+  public howReportEntityId: SzEntityIdentifier;
+  public _showSearchResults  = false;
+  public _showEntityDetail   = false;
+  public _showHowReport      = false;
   public set showGraphMatchKeys(value: boolean) {
     if (this.entityDetailComponent){
       this.entityDetailComponent.showGraphMatchKeys = value;
@@ -38,8 +41,18 @@ export class AppComponent implements AfterViewInit {
    return false;
   }
 
+  public get showSearchResults(): boolean {
+    return this._showSearchResults && this.currentSearchResults && this.currentSearchResults.length > 0;
+  }
+
   public get showSearchResultDetail(): boolean {
-    if (this.currentlySelectedEntityId && this.currentlySelectedEntityId > 0) {
+    if (this._showEntityDetail && this.currentlySelectedEntityId && this.currentlySelectedEntityId > 0) {
+      return true;
+    }
+    return false;
+  }
+  public get showHowReport(): boolean {
+    if(this.howReportEntityId !== undefined && this._showHowReport && !this._showSearchResults && !this._showEntityDetail){
       return true;
     }
     return false;
@@ -82,12 +95,20 @@ export class AppComponent implements AfterViewInit {
     // results module is bound to this property
 
     // show results
-    this.showSearchResults = true;
+    this._showSearchResults = true;
+    this._showHowReport     = false;
+    this._showEntityDetail  = false;
   }
 
-  public onBackToSearchResultsClick($event): void {
-    this.showSearchResults = true;
-    this.currentlySelectedEntityId = undefined;
+  public onBackToSearchResultsClick(event): void {
+    this._showSearchResults = true;
+    this._showEntityDetail  = false;
+    this._showHowReport     = false;
+  }
+  public onBackToEntityClick(event): void {
+    this._showSearchResults = false;
+    this._showEntityDetail  = true;
+    this._showHowReport     = false;
   }
 
   public onGraphEntityClick(event: any): void {
@@ -183,18 +204,32 @@ export class AppComponent implements AfterViewInit {
     // console.log('onSearchResultClick: ', entityData);
     if (entityData && entityData.entityId > 0) {
       this.currentlySelectedEntityId = entityData.entityId;
-      this.showSearchResults = false;
+      this._showSearchResults = false;
+      this._showEntityDetail  = true;
+      this._showHowReport     = false;
     } else {
-      this.currentlySelectedEntityId = undefined;
-      this.showSearchResults = true;
+      this._showSearchResults = true;
+      this._showEntityDetail  = false;
+      this._showHowReport     = false;
     }
+  }
+
+  public onHowButtonClick(entityId) {
+    console.log('onHowButtonClick: ', entityId);
+    this.howReportEntityId  = entityId;
+    this._showSearchResults = false;
+    this._showEntityDetail  = false;
+    this._showHowReport     = true;
   }
 
   public onSearchResultsCleared(searchParams: SzEntitySearchParams | void){
     // hide search results
-    this.showSearchResults = false;
-    this.currentSearchResults = undefined;
-    this.currentlySelectedEntityId = undefined;
+    this.currentSearchResults       = undefined;
+    this.currentlySelectedEntityId  = undefined;
+    this.howReportEntityId          = undefined;
+    this._showSearchResults = false;
+    this._showEntityDetail  = false;
+    this._showHowReport     = false;
   }
 
   public onSearchParameterChange(searchParams: SzEntitySearchParams) {
