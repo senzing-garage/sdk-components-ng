@@ -90,7 +90,7 @@
 <!-- end entity detail -->
 <!-- start how report panel -->
 <div class="how-report-example">
-  <div class="detail-wrapper">
+  <div class="detail-wrapper" *ngIf="showHowReport">
       <button (click)="onBackToEntityClick($event)">&lt;&lt; Go Back to Entity</button>
   </div>
   <sz-how-rc-entity *ngIf="showHowReport" 
