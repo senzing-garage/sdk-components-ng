@@ -1,20 +1,24 @@
 :host {
     display: block;
     background-color: aqua;
-    border: 2px solid #000;
+    border: var(--sz-how-step-card-border);
     margin-top: 14px;
     border-radius: 5px;
     padding: 3px 3px;
     min-height: 20px;
 
+    box-shadow: 0px 3px 7px 0px rgb(0 0 0 / 35%), 
+        0px 11px 12px 4px rgb(0 0 0 / 14%), 
+        11px 0px 18px 4px rgb(0 0 0 / 10%);
+
     &.type-add {
-        background-color: #feae00;
+        background-color: var(--sz-how-step-card-type-color-add);
     }
     &.type-create {
-        background-color: #ffd932;
+        background-color: var(--sz-how-step-card-type-color-create);
     }
     &.type-interim {
-        background-color: #56c1ff;
+        background-color: var(--sz-how-step-card-type-color-interim);
         .columns {
             display: none;
         }
@@ -27,7 +31,7 @@
         }
     }
     &.type-merge {
-        background-color: #16e7cf;
+        background-color: var(--sz-how-step-card-type-color-merge);
     }
     .title-group {
         display: none;
@@ -206,8 +210,8 @@
         .cell {
             /* display: table-column;*/
             background-color: #d5d5d5;
-            border-right: 1px solid #1c1c1c;
-            border-bottom: 1px solid #1c1c1c;
+            border-right: var(--sz-how-step-card-data-table-cell-border);
+            border-bottom: var(--sz-how-step-card-data-table-cell-border);
             padding: 5px 2px;
             text-align: center;
             /* text-transform: uppercase;*/
@@ -215,15 +219,15 @@
 
             &:first-child {
                 font-weight: 800;
-                border-left: 2px solid #1c1c1c;
+                border-left: var(--sz-how-step-card-data-table-border);
             }
             &:last-child {
-                border-right: 2px solid #1c1c1c;
+                border-right: var(--sz-how-step-card-data-table-border);
             }
         }
         &:nth-child(2) {
             .cell {
-                border-top: 2px solid #1c1c1c;
+                border-top: var(--sz-how-step-card-data-table-border);
             }
         }
     }
@@ -232,16 +236,16 @@
         .cell {
             background-color: #fff;
             /*border: 1px solid #1c1c1c;*/
-            border-bottom: 1px solid #1c1c1c;
-            border-right: 1px solid #1c1c1c;
+            border-bottom: var(--sz-how-step-card-data-table-cell-border);
+            border-right: var(--sz-how-step-card-data-table-cell-border);
             border-collapse: collapse;
             padding: 6px 2px 4px 2px;
 
             &:first-child {
-                border-left: 2px solid #1c1c1c;
+                border-left: var(--sz-how-step-card-data-table-border);
             }
             &:last-child {
-                border-right: 2px solid #1c1c1c;
+                border-right: var(--sz-how-step-card-data-table-border);
             }
         }
     }
@@ -249,7 +253,7 @@
         display: table-row;
         &:last-child {
             .cell {
-                border-bottom: 2px solid #1c1c1c;
+                border-bottom: var(--sz-how-step-card-data-table-border);
             }
         }
     }

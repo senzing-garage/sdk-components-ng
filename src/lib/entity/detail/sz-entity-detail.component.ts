@@ -118,6 +118,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
   // show | hide specific sections
   private _showGraphSection: boolean = true;
+  private _showHowSection: boolean = true;
   private _showMatchesSection: boolean = true;
   private _showPossibleMatchesSection: boolean = true;
   private _showPossibleRelationshipsSection: boolean = true;
@@ -389,7 +390,21 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   public get showGraphSection(): any {
     return this._showGraphSection;
   }
-    /**
+  /**
+   * show or hide the "At a Glance" section.
+   */
+  @Input()
+  public set showHowSection(value: any) {
+    this._showHowSection = parseBool(value);
+    // update pref from setter
+    if(this.prefs.entityDetail.showHowSection !== this.showHowSection && this._updatePrefsOnChange){
+      this.prefs.entityDetail.showHowSection = this.showHowSection;
+    }
+  }
+  public get showHowSection(): any {
+    return this._showGraphSection;
+  }
+  /**
    * show or hide the "Records" section.
    */
   @Input()
@@ -666,11 +681,12 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     // show or hide sections based on pref change
     if(this._updatePrefsOnChange){
       // if were not saving prefs then do not initialize with values
-      this.showGraphSection = this.prefs.entityDetail.showGraphSection;
+      this.showHowSection     = this.prefs.entityDetail.showHowSection;
+      this.showGraphSection   = this.prefs.entityDetail.showGraphSection;
       this.showMatchesSection = this.prefs.entityDetail.showMatchesSection;
-      this.showPossibleMatchesSection = this.prefs.entityDetail.showPossibleMatchesSection;
+      this.showPossibleMatchesSection       = this.prefs.entityDetail.showPossibleMatchesSection;
       this.showPossibleRelationshipsSection = this.prefs.entityDetail.showPossibleRelationshipsSection;
-      this.showDisclosedSection = this.prefs.entityDetail.showDisclosedSection;
+      this.showDisclosedSection             = this.prefs.entityDetail.showDisclosedSection;
     }
     // get and listen for prefs change
     this.prefs.entityDetail.prefsChanged.pipe(
@@ -694,6 +710,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
     // show or hide sections based on pref change
+    this.showHowSection     = prefs.showHowSection;
     this.showGraphSection   = prefs.showGraphSection;
     this.showMatchesSection = prefs.showMatchesSection;
     this.showPossibleMatchesSection = prefs.showPossibleMatchesSection;

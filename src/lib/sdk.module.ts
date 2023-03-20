@@ -40,6 +40,7 @@ import { SzEntityDetailsSectionComponent } from './entity/detail/sz-entity-detai
 import { SzEntityDetailSectionHeaderComponent } from './entity/detail/sz-entity-details-section/header.component';
 import { SzEntityDetailSectionCollapsibleCardComponent } from './entity/detail/sz-entity-details-section/collapsible-card.component';
 import { SzEntityDetailGraphComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
+import { SzEntityDetailHowReportComponent } from './entity/detail/sz-entity-detail-how-report/sz-entity-detail-how-report.component';
 import { SzEntityMatchPillComponent } from './entity/sz-entity-match-pill/sz-entity-match-pill.component';
 import { SzEntityRecordCardComponent } from './entity/sz-entity-record-card/sz-entity-record-card.component';
 import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-card/sz-entity-record-card-header/sz-entity-record-card-header.component';
@@ -131,6 +132,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzEntityDetailGraphFilterComponent,
         SzEntityDetailHeaderComponent,
         SzEntityDetailHeaderContentComponent,
+        SzEntityDetailHowReportComponent,
         SzEntityDetailSectionSummaryComponent,
         SzEntityDetailSectionHeaderComponent,
         SzEntityDetailSectionCollapsibleCardComponent,
@@ -198,6 +200,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzConfigurationAboutComponent,
         SzEntityDetailGraphComponent,
         SzEntityDetailComponent,
+        SzEntityDetailHowReportComponent,
         SzEntityDetailGraphControlComponent,
         SzEntityDetailGraphFilterComponent,
         SzEntityRecordViewerComponent,

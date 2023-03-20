@@ -1,25 +1,28 @@
 :host {
     display: block;
-    background-color: aqua;
-    border: 2px solid #000;
+    background-color: var(var(--sz-how-step-card-type-color-final));
+    border: var(--sz-how-step-card-border);
     margin-top: 14px;
     border-radius: 5px;
     padding: 3px 3px;
+    box-shadow: 0px 3px 7px 0px rgb(0 0 0 / 35%), 
+        0px 11px 12px 4px rgb(0 0 0 / 14%), 
+        11px 0px 18px 4px rgb(0 0 0 / 10%);
 
     &.type-add {
-        background-color: #feae00;
+        background-color: var(--sz-how-step-card-type-color-add);
     }
     &.type-create {
-        background-color: #ffd932;
+        background-color: var(--sz-how-step-card-type-color-create);
     }
     &.type-interim {
-        background-color: #56c1ff;
+        background-color: var(--sz-how-step-card-type-color-interim);
     }
     &.type-merge {
-        background-color: #16e7cf;
+        background-color: var(--sz-how-step-card-type-color-merge);
     }
     &.type-final {
-        background-color: #88fa4e;
+        background-color: var(--sz-how-step-card-type-color-final);
     }
 
     h3 {

@@ -81,6 +81,7 @@ body {
   --sz-color-disclosed: #{$sz-green};
   --sz-color-ambiguous: #{$sz-purple};
   --sz-color-graph-relationships: #{$sz-magenta};
+  --sz-color-how-report: #{$sz-lime};
 
   /* search box vars */
   --sz-search-button-submit-color: #{$sz-white};
@@ -411,6 +412,16 @@ body {
     --sz-preferences-column-border-radius: 5px;
     --sz-preferences-column-background-color: #d3d3d3;
   /* end preferences component */
+  /* how report vars */
+  --sz-how-step-card-border: 2px solid #000;
+  --sz-how-step-card-type-color-add: #feae00;
+  --sz-how-step-card-type-color-create: #ffd932;
+  --sz-how-step-card-type-color-merge: #16e7cf;
+  --sz-how-step-card-type-color-interim: #56c1ff;
+  --sz-how-step-card-type-color-final: #88fa4e;
+  
+  --sz-how-step-card-data-table-border: 2px solid #1c1c1c;
+  --sz-how-step-card-data-table-cell-border: 2px solid #1c1c1c;
 
 }
 

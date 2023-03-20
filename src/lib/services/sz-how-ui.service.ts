@@ -1,13 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import {
-    SzFeatureScore,
-    SzHowEntityResult,
-    SzResolutionStep,
-    SzVirtualEntity
+  EntityDataService as SzEntityDataService,
+  SzFeatureScore,
+  SzHowEntityResult,
+  SzEntityIdentifier,
+  SzResolutionStep,
+  SzVirtualEntity,
+  SzHowEntityResponse
 } from '@senzing/rest-api-client-ng';
 import { SzResolutionStepDisplayType, SzResolutionStepGroup, SzResolutionStepListItemType } from '../models/data-how';
-
+import { SzPrefsService } from './sz-prefs.service';
 /**
  * Provides access to the /datasources api path.
  * See {@link https://github.com/Senzing/senzing-rest-api/blob/master/senzing-rest-api.yaml}
@@ -35,6 +38,7 @@ export class SzHowUIService {
       this._stepGroups              = value;
     }
     private _userHasChangedStepState    = new Map<string, boolean>();
+    private static _entityDataService: SzEntityDataService;
 
     idIsGroupId(vId: string): boolean {
       // group id format "de9b1c0f-67a9-4b6d-9f63-bc90deabe3e4"
@@ -247,4 +251,21 @@ export class SzHowUIService {
       }
       return undefined;
     }
+
+    constructor(
+      public entityDataService: SzEntityDataService,
+      public prefs: SzPrefsService
+    ) {
+      SzHowUIService._entityDataService = entityDataService;
+    }
+
+    // --------------------------------------- start data/api functions
+
+    public static getHowDataForEntity(entityId: SzEntityIdentifier): Observable<SzHowEntityResponse> {
+      return this._entityDataService.howEntityByEntityID(
+          entityId as number
+      )
+    }
+    // --------------------------------------- end   data/api functions
+
 }

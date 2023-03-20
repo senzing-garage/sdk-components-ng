@@ -42,6 +42,7 @@ export * from './lib/search/sz-search-results/sz-search-results.component';
 export * from './lib/search/sz-search-result-card/sz-search-result-card.component';
 export * from './lib/entity/detail/sz-entity-detail.component';
 export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
+export * from './lib/entity/detail/sz-entity-detail-how-report/sz-entity-detail-how-report.component';
 
 /** graph related */
 export { SzRelationshipNetworkComponent } from './lib/graph/sz-relationship-network/sz-relationship-network.component';

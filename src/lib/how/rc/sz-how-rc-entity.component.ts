@@ -50,8 +50,9 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
     private _resolutionStepGroupsOld: Map<string, SzResolutionStepGroup> = new Map<string, SzResolutionStepGroup>();
     private _stepGroups: Map<string, SzResolutionStepGroup> = new Map<string, SzResolutionStepGroup>();
 
-    private _isLoading = false;
-    private _showNavigation = true;
+    private _isLoading                        = false;
+    private _showNavigation                   = true;
+    private _expandCardsWhenLessThan: number  = 2;
     private _dataChange: Subject<SzHowEntityResult>         = new Subject<SzHowEntityResult>();
     public   dataChange                                     = this._dataChange.asObservable();
     private _virtualEntitiesDataChange: Subject<Map<string, SzResolvedVirtualEntity>> = new Subject<Map<string, SzResolvedVirtualEntity>>();
@@ -157,10 +158,11 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
             }
             if(this._data.resolutionSteps && Object.keys(this._data.resolutionSteps).length > 0) {
                 // we have resolution steps
-                let _resSteps = [];
+                let _resSteps   = [];
+                let _stepCount  = Object.keys(this._data.resolutionSteps).length;
                 for(let rKey in this._data.resolutionSteps) {
                   let _stepType = SzHowUIService.getResolutionStepCardType(this._data.resolutionSteps[rKey]);
-                  if(_stepType !== SzResolutionStepDisplayType.CREATE) {
+                  if(_stepType !== SzResolutionStepDisplayType.CREATE || _stepCount <= this._expandCardsWhenLessThan) {
                     //console.log(`#${this._data.resolutionSteps[rKey].stepNumber} type ${_stepType}`);
                     this.howUIService.expandStep(this._data.resolutionSteps[rKey].resolvedVirtualEntityId);
                   }
@@ -496,7 +498,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
     public getNewResolutionStepsWithGroups() {
       let groups  = this.getDefaultStepGroups();
       let steps   = this.getResolutionStepsWithGroups(this._resolutionSteps, groups);
-      console.info(`getNewResolutionStepsWithGroups() `, steps, groups);
+      //console.info(`getNewResolutionStepsWithGroups() `, this._resolutionSteps, steps, groups);
     }
 
     public get resolutionStepsWithGroupsOld(): Array<SzResolutionStep | SzResolutionStepGroup> {
@@ -512,7 +514,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
     public getResolutionStepsWithGroups(steps: SzResolutionStep[], groups: Map<string, SzResolutionStepGroup>): Array<SzResolutionStep | SzResolutionStepGroup> {
       let retVal = [];
       // create "groups" for multiple sequential "add record" steps
-      if(steps && steps.length > 1) {
+      if(steps && steps.length > 0) {
         let _resolutionStepsWithGroups: Array<SzResolutionStep | SzResolutionStepGroup> = [];
 
         steps.forEach((resStep: SzResolutionStep, stepArrIndex: number) => {

@@ -61,8 +61,12 @@ export class SzEntityDetailGraphComponent extends SzGraphComponent {
   @Input() public captureMouseWheel: boolean = true;
   @Output() public scrollWheelEvent: EventEmitter<WheelEvent> = new EventEmitter<WheelEvent>()
 
-  @HostBinding('class.open') get cssClssOpen() { return this.expanded; }
-  @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; }
+  @HostBinding('class.open') get cssClssOpen() { 
+    return this.expanded; 
+  }
+  @HostBinding('class.closed') get cssClssClosed() { 
+    return !this.expanded; 
+  }
 
   /** since we're embedding this graph inside another component 
    * we will always ignore filters "UNLESS" the filter tray is shown
