@@ -1,15 +1,12 @@
-import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DataSource } from '@angular/cdk/collections';
+import { Component, OnInit, Input, OnDestroy, HostBinding } from '@angular/core';
 import { 
     EntityDataService as SzEntityDataService, 
-    SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse, SzVirtualEntityRecord, SzDataSourceRecordSummary 
+    SzResolutionStep, SzVirtualEntity, SzDataSourceRecordSummary 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../../services/sz-config-data.service';
-import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../../../models/data-how';
-import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
-import { parseSzIdentifier } from '../../../common/utils';
-import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../../services/sz-how-ui-coordinator.service';
+import { SzResolvedVirtualEntity } from '../../../models/data-how';
+import { Subject} from 'rxjs';
+import { SzHowUIService } from '../../../services/sz-how-ui.service';
 
 /**
  * How Final Entity Card
@@ -31,14 +28,12 @@ export class SzHowRCFinalEntityCardComponent implements OnInit, OnDestroy {
     private _data: SzVirtualEntity;
     private _parentStep: SzResolutionStep;
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
-    private _highlighted: boolean = false;
-    private _collapsed: boolean = false;
 
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
-        return this._collapsed ? true : false;
+        return !this.howUIService.isFinalEntityExpanded(this.id);
     }
-    @HostBinding('class.highlighted') get cssHighlightedClass(): boolean {
-        return this._highlighted ? true : false;
+    @HostBinding('class.expanded') get cssExpandedClass(): boolean {
+        return this.howUIService.isFinalEntityExpanded(this.id);
     }
     @HostBinding('class.type-final') get cssTypeClass(): boolean {
         return true;
@@ -57,6 +52,9 @@ export class SzHowRCFinalEntityCardComponent implements OnInit, OnDestroy {
         }
         this._virtualEntitiesById = value;
     }
+    get id(): string {
+        return this._data && this._data.virtualEntityId ? this._data.virtualEntityId : undefined;
+    }
     get data() : SzVirtualEntity {
         return this._data;
     }
@@ -67,7 +65,7 @@ export class SzHowRCFinalEntityCardComponent implements OnInit, OnDestroy {
         return this._stepMap;
     }
     public get isCollapsed() {
-        return this._collapsed;
+        return !this.howUIService.isFinalEntityExpanded(this.id);
     }
     public get virtualEntitiesById(): Map<string, SzResolvedVirtualEntity> {
         return this._virtualEntitiesById;
@@ -110,11 +108,15 @@ export class SzHowRCFinalEntityCardComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
+    public togglExpansion() {
+        console.log('togglExpansion: ', this.id, this._data, this._virtualEntitiesById);
+        this.howUIService.toggleExpansion(undefined, undefined, this.id);
+    }
     
     constructor(
         public entityDataService: SzEntityDataService,
         public configDataService: SzConfigDataService,
-        private uiCoordinatorService: SzHowUICoordinatorService
+        private howUIService: SzHowUIService
     ){}
 
     ngOnInit() {}

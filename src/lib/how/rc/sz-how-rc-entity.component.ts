@@ -153,7 +153,8 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
                     }) as SzHowFinalCardData)
                 });*/
 
-                this.finalCardsData = _finalStatesData
+                this.finalCardsData = _finalStatesData;
+                this.howUIService.finalStates  = _finalStatesData;
                 console.log(`final step(s): `, this.finalCardsData);
             }
             if(this._data.resolutionSteps && Object.keys(this._data.resolutionSteps).length > 0) {
@@ -423,6 +424,80 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
         } else {
           this.howUIService.expand(vId);
         }
+      }
+    }
+
+    public isParentEntityHidden(member: SzResolutionStep | SzResolutionStepGroup) {
+      let finalEntity = this.getFinalEntityFromMember(member);
+      let retVal = false;
+      if(finalEntity) {
+        retVal = this.howUIService.isFinalEntityExpanded(finalEntity.virtualEntityId)
+      }
+      console.log(`isParentEntityHidden(${retVal})`, finalEntity, member);
+      return retVal;
+    }
+
+    private getFinalEntityFromMember(member: SzResolutionStep | SzResolutionStepGroup) {
+      let isGroup = (member as SzResolutionStepGroup).virtualEntityIds ? true : false;
+      if(isGroup) {
+        // check to see if all virtual entity ids are in a particula group
+        let memberAsGroup = (member as SzResolutionStepGroup);
+        let parentFinal = this.finalCardsData.find((fEnt: SzVirtualEntity) => {
+          let idToLookFor = fEnt.virtualEntityId;
+          return memberAsGroup.virtualEntityIds && memberAsGroup.virtualEntityIds.includes(idToLookFor);
+        });
+        return parentFinal;
+      } else {
+        // is step
+        let memberAsStep = (member as SzResolutionStep);
+        let parentFinal = this.finalCardsData.find((fEnt: SzVirtualEntity) => {
+          // look through fEnt.records for record matches??!?! (yeah this is dirty)
+          // but no better way to tie these two together for now
+          let _recordsToLookFor = memberAsStep.candidateVirtualEntity.records.concat(memberAsStep.inboundVirtualEntity.records);
+          let _hasAllRecords    = _recordsToLookFor.every((record) => {
+            // convert records to strings for comparison
+            let _recKeys  = fEnt.records.map((r)=>{ return r.dataSource+':'+r.recordId+':'+r.internalId});
+            let hasRecord = _recKeys.includes(record.dataSource+':'+record.recordId+':'+record.internalId);
+            return hasRecord;
+          });
+          /*let _hasSomeRecords   = _recordsToLookFor.some((record) => {
+            let _recKeys  = fEnt.records.map((r)=>{ return r.dataSource+':'+r.recordId+':'+r.internalId});
+            let hasRecord = _recKeys.includes(record.dataSource+':'+record.recordId+':'+record.internalId);
+            return hasRecord;
+          });*/
+          return _hasAllRecords;
+        });
+        /*console.log(`\tis step(${memberAsStep.resolvedVirtualEntityId})`, 
+        parentFinal, memberAsStep, 
+        this.finalCardsData, this._data.finalStates);*/
+
+        return parentFinal;
+      }
+      return undefined;
+    }
+
+    public getFinalEntityFromMemberByStepNumber(stepNumber: number){
+      // first get step
+      let stepsOrGroups = this.stepsList;
+      let member = stepsOrGroups.find((stepOrGroup) => {
+        let isGroup       = (stepOrGroup as SzResolutionStepGroup).virtualEntityIds ? true : false;
+        let memberAsGroup = (stepOrGroup as SzResolutionStepGroup);
+
+        if(isGroup) {
+          return memberAsGroup.resolutionSteps.find((step) => {
+            return step.stepNumber === stepNumber;
+          })
+        } else {
+          let memberAsStep = (stepOrGroup as SzResolutionStep);
+          return memberAsStep.stepNumber === stepNumber;
+        }
+        return undefined;
+      });
+      if(member) {
+        // now get parent group
+        let finalEntity = this.getFinalEntityFromMember(member);
+        console.log('getFinalEntityFromMemberByStepNumber: found step in stepsList: ', member, finalEntity);
+
       }
     }
 

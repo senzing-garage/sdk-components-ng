@@ -28,6 +28,9 @@
                     flex-grow: 5;
                 }
             }
+            &.hidden {
+                display: none;
+            }
             sz-how-rc-step {
                 flex-grow: 5;
                 margin-right: 20px;

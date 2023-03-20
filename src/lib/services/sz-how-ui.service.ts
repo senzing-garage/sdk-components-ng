@@ -22,23 +22,37 @@ import { SzPrefsService } from './sz-prefs.service';
 })
 export class SzHowUIService {
     private _pinnedSteps: string[];
+    private _expandedFinalEntities: string[]    = [];
     private _expandedStepsOrGroups: string[]    = [];
     private _expandedGroups: string[]           = [];
     private _expandedVirtualEntities: string[]  = [];
     private _stepGroups: Map<string, SzResolutionStepGroup> = new Map<string, SzResolutionStepGroup>();
-
-    private _onGroupExpansionChange = new Subject<string>()
-    private _onStepExpansionChange  = new Subject<string>();
+    private _finalEntities: SzVirtualEntity[]   = [];
+    private _onGroupExpansionChange   = new Subject<string>()
+    private _onStepExpansionChange    = new Subject<string>();
+    private _onFinalExpansionChange   = new Subject<string>();
+    private _userHasChangedStepState  = new Map<string, boolean>();
+    private static _entityDataService: SzEntityDataService;
     private _onStepChildExpansionChange;
 
-    public onGroupExpansionChange   = this._onGroupExpansionChange.asObservable();
-    public onStepExpansionChange    = this._onStepExpansionChange.asObservable();
+    public onGroupExpansionChange     = this._onGroupExpansionChange.asObservable();
+    public onStepExpansionChange      = this._onStepExpansionChange.asObservable();
+    public onFinalExpansionChange     = this._onFinalExpansionChange.asObservable();
+
+    public set finalStates(value: SzVirtualEntity[]) {
+      if(value && this._finalEntities && this._finalEntities.length > 0) {
+        // when we initially set final entities populate expanded arr
+        // so the trees are expanded by default
+        this._expandedFinalEntities = value.map((fEnt) => {
+          return fEnt.virtualEntityId;
+        });
+      }
+      this._finalEntities = value;
+    }
 
     public set stepGroups(value: Map<string, SzResolutionStepGroup>) {
       this._stepGroups              = value;
     }
-    private _userHasChangedStepState    = new Map<string, boolean>();
-    private static _entityDataService: SzEntityDataService;
 
     idIsGroupId(vId: string): boolean {
       // group id format "de9b1c0f-67a9-4b6d-9f63-bc90deabe3e4"
@@ -54,6 +68,9 @@ export class SzHowUIService {
     }
     isGroupExpanded(groupId: string): boolean {
       return this._expandedGroups.includes(groupId);
+    }
+    isFinalEntityExpanded(vId: string): boolean {
+      return this._expandedFinalEntities.includes(vId);
     }
     isExpanded(vId: string) {
       return this._expandedStepsOrGroups.includes(vId);
@@ -94,6 +111,14 @@ export class SzHowUIService {
         }
       }
     }
+    expandFinal(virtualEntityId: string) {
+      console.log(`expandFinal(${virtualEntityId})`, this.isFinalEntityExpanded(virtualEntityId));
+
+      if(!this.isFinalEntityExpanded(virtualEntityId)) {
+        this._expandedFinalEntities.push(virtualEntityId);
+        this._onFinalExpansionChange.next(virtualEntityId);
+      }
+    }
     expandGroup(groupId: string) {
       if(!this.isGroupExpanded(groupId)) {
         this._expandedGroups.push(groupId);
@@ -118,27 +143,50 @@ export class SzHowUIService {
         this._onGroupExpansionChange.next(groupId);
       }
     }
+    collapseFinal(virtualEntityId: string) {
+      console.log(`collapseFinal(${virtualEntityId})`, this.isFinalEntityExpanded(virtualEntityId));
+      if(this.isFinalEntityExpanded(virtualEntityId)) {
+        let _itemIndex  = this._expandedFinalEntities.indexOf(virtualEntityId);
+        if(this._expandedFinalEntities[_itemIndex] && this._expandedFinalEntities.splice) {
+          this._expandedFinalEntities.splice(_itemIndex, 1);
+        }
+        this._onFinalExpansionChange.next(virtualEntityId);
+      }
+    }    
     public get expandedStepsOrGroups() {
       return this._expandedStepsOrGroups;
     }
 
-    toggleExpansion(id: string, groupId?: string) {
+    toggleExpansion(id: string, groupId?: string, finalEntityId?: string) {
       id = id ? id : (groupId ? groupId : undefined);
-      if(!id) {
+      if(!id && !finalEntityId) {
         console.warn('toggleExpansion: no id passed to method');
         return;
       }
-      let isExpanded = (!groupId) ? this._expandedStepsOrGroups.includes(id) : this._expandedGroups.includes(groupId);
+      //let isExpanded = (!groupId) ? this._expandedStepsOrGroups.includes(id) : this._expandedGroups.includes(groupId);
+      let isExpanded = (finalEntityId) ? this._expandedFinalEntities.includes(finalEntityId) : 
+      (!groupId) ? this._expandedStepsOrGroups.includes(id) : this._expandedGroups.includes(groupId);
+
       if(!isExpanded) {
-        if(!groupId) {
+        if(finalEntityId) {
+          console.log(`\texpand final`);
+          this.expandFinal(finalEntityId);
+        } else if(!groupId) {
+          console.log(`\texpand step`);
           this.expand(id);
         } else {
+          console.log(`\texpand group`);
           this.expandGroup(id);
         }
       } else {
-        if(!groupId) {
+        if(finalEntityId) {
+          console.log(`\collapse final`);
+          this.collapseFinal(finalEntityId);
+        } else if(!groupId) {
+          console.log(`\tcollapse step`);
           this.collapse(id);
         } else {
+          console.log(`\tcollapse groups`);
           this.collapseGroup(id);
         }
       }

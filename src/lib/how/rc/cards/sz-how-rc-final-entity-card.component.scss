@@ -1,5 +1,8 @@
 :host {
-    display: block;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
     background-color: var(var(--sz-how-step-card-type-color-final));
     border: var(--sz-how-step-card-border);
     margin-top: 14px;
@@ -27,6 +30,17 @@
 
     h3 {
         margin: 0;
+    }
+
+    .toggle-child-expansion-icon {
+        transform: rotate(0deg);
+        transition: transform 500ms;
+    }
+
+    &.collapsed {
+        .toggle-child-expansion-icon {
+            transform: rotate(90deg);
+        }
     }
 
     ul {
