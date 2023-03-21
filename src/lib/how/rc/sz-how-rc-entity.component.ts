@@ -427,6 +427,10 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       }
     }
 
+    public toggleGroupCollapsedState(gId: SzResolutionStepGroup) {
+      this.howUIService.toggleExpansion(undefined, gId.id);
+    }
+
     public isParentEntityHidden(member: SzResolutionStep | SzResolutionStepGroup) {
       let finalEntity = this.getFinalEntityFromMember(member);
       let retVal = false;

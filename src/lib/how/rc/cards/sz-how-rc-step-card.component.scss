@@ -48,19 +48,20 @@
             margin-right: 8px;
         }
     }
-    &.group-collapsed {
-        .title-group {
-            display: block;
-        }
-        .hide-on-group-collapsed {
-            display: none;
-        }
-        .toggle-child-expansion-icon {
-            transform: rotate(0deg);
-        }
-    }
     &.group-member {
         margin-top: 0px;
+
+        &.group-collapsed {
+            .title-group {
+                display: block;
+            }
+            .hide-on-group-collapsed {
+                display: none !important;
+            }
+            .toggle-child-expansion-icon {
+                transform: rotate(0deg);
+            }
+        }
     }
 
     h3 {

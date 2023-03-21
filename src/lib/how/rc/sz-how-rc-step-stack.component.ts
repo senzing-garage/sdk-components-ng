@@ -35,14 +35,18 @@ export class SzHowRCStepStackComponent implements OnInit, OnDestroy {
     private _collapsed: boolean             = true;
     private _childrenCollapsed: boolean     = false;
     private _data: SzResolutionStepGroup;
+
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
-        return this._collapsed ? true : false;
+        return !this.howUIService.isGroupExpanded(this.id);
     }
     @HostBinding('class.expanded') get cssExpandedClass(): boolean {
-        return this._collapsed ? false : true;
+        return this.howUIService.isGroupExpanded(this.id);
     }
-    @HostBinding('class.highlighted') get cssHighlightedClass(): boolean {
-        return this._highlighted ? true : false;
+    @HostBinding('class.group-collapsed') get cssHiddenGroupClass(): boolean {
+        return !this.howUIService.isGroupExpanded(this.id);
+    }
+    @HostBinding('class.group-expanded') get cssExpandedGroupClass(): boolean {
+        return this.howUIService.isGroupExpanded(this.id);
     }
     @Input() featureOrder: string[];
 

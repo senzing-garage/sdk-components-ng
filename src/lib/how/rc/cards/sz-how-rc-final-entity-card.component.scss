@@ -33,6 +33,7 @@
     }
 
     .toggle-child-expansion-icon {
+        cursor: pointer;
         transform: rotate(0deg);
         transition: transform 500ms;
     }
