@@ -2,6 +2,9 @@
   {{title}}
   <mat-icon class="dialog-close-button" [mat-dialog-close]="true" fontIcon="close"></mat-icon>
 </h1>
+<div class="sources-summary">
+  sources ({{sourceCount}}) | records ({{recordCount}})
+</div>
 <div mat-dialog-content class="mat-dialog-content">
   <sz-how-rc-virtual-entity-card
     [virtualEntity]="virtualEntity"

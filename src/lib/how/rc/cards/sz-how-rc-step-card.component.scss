@@ -26,18 +26,18 @@
             display: none !important;
         }
         .title-group {
-            display: block;
-            margin-top: -5px;
+            display: flex;
         }
     }
     &.type-merge {
         background-color: var(--sz-how-step-card-type-color-merge);
     }
     .title-group {
-        display: none;
+        display: flex;
+        justify-content: flex-start;
         .mat-icon {
             position: relative;
-            top: 5px;
+            /*top: 5px;*/
             margin-bottom: 0;
         }
     }
@@ -53,13 +53,19 @@
 
         &.group-collapsed {
             .title-group {
-                display: block;
+                display: flex;
             }
             .hide-on-group-collapsed {
                 display: none !important;
             }
-            .toggle-child-expansion-icon {
+            .toggle-group-expansion-icon {
                 transform: rotate(0deg);
+            }
+        }
+
+        &.group-expanded {
+            .toggle-group-expansion-icon {
+                transform: rotate(90deg);
             }
         }
     }
@@ -84,6 +90,7 @@
     }
 
     .datasources {
+        margin-left: 5px; 
         .datasources-list {
             font-weight: normal;
         }
@@ -144,12 +151,19 @@
     }
     .toggle-expansion-icon {
         transform: rotate(90deg);
+        transition: transform 300ms;
         cursor: pointer;
     }
     .toggle-child-expansion-icon {
         transform: rotate(90deg);
+        transition: transform 300ms;
         cursor: pointer;
         /*margin-right: 4px;*/
+    }
+    .toggle-group-expansion-icon {
+        transform: rotate(90deg);
+        transition: transform 300ms;
+        cursor: pointer;
     }
 
     .hide-on-expanded {

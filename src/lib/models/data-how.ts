@@ -31,6 +31,10 @@ export interface SzResolvedVirtualEntity extends SzResolvedEntity {
     virtualEntityId: string
 }
 
+export interface SzVirtualEntityRecordsByDataSource {
+    [key: string]: Array<SzVirtualEntityRecord> 
+}
+
 export interface SzResolutionStepGroup {
     id: string,
     arrayIndex?: number,

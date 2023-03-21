@@ -8,17 +8,12 @@ import { SzSearchService } from '../../../services/sz-search.service';
 import { friendlyFeaturesName } from '../../../models/data-features';
 //import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../../services/sz-how-ui-coordinator.service';
 import { 
-    SzHowFinalCardData, 
     SzResolutionStepDisplayType, 
     SzResolvedVirtualEntity, 
     SzVirtualEntityRecordsClickEvent ,
-    SzMatchFeatureScore
+    SzVirtualEntityRecordsByDataSource
 } from '../../../models/data-how';
 import { SzHowUIService } from '../../../services/sz-how-ui.service';
-
-interface SzVirtualEntityRecordsByDataSource {
-    [key: string]: Array<SzVirtualEntityRecord> 
-}
 
 /**
  * Display the "Virtual Entity" information for how resolution step

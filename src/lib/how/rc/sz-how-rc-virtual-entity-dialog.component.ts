@@ -7,7 +7,7 @@ import {
 import { SzConfigDataService } from '../../services/sz-config-data.service';
 import { SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
 import { Subject } from 'rxjs';
-import { SzResolutionStepDisplayType, SzResolvedVirtualEntity } from 'src/lib/models/data-how';
+import { SzResolutionStepDisplayType, SzResolvedVirtualEntity, SzVirtualEntityRecordsByDataSource } from 'src/lib/models/data-how';
 import { SzHowUIService } from '../../services/sz-how-ui.service';
 
 
@@ -23,6 +23,7 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
     private _stepData: SzResolutionStep;
     private _virtualEntity: SzResolvedVirtualEntity;
     private _featureOrder: string[];
+    private _sources: SzVirtualEntityRecordsByDataSource;
 
     private _showOkButton = true;
     private _isMaximized = false;
@@ -70,6 +71,38 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
 
     get displayType(): SzResolutionStepDisplayType {
         return SzHowUIService.getResolutionStepCardType(this._stepData);
+    }
+    get sourceCount(): number {
+      let retVal  = 0;
+      let _sources = this.sources;
+      if(_sources){
+        retVal = Object.keys(_sources).length;
+      }
+      return retVal;
+    }
+    get recordCount(): number {
+        let retVal = 0;
+        if(this._virtualEntity && this._virtualEntity.records !== undefined) {
+            return this._virtualEntity.records.length;
+        }
+        return retVal;
+    }
+    get sources() {
+      // check if we have a cached version of this first
+      if(!this._sources) {
+          let _recordsByDataSource: {
+              [key: string]: Array<SzVirtualEntityRecord> 
+          } = {};
+          this._virtualEntity.records.forEach((dsRec) => {
+              if(!_recordsByDataSource[dsRec.dataSource]) {
+                  _recordsByDataSource[dsRec.dataSource] = [];
+              }
+              _recordsByDataSource[dsRec.dataSource].push(dsRec);
+
+          });
+          this._sources = _recordsByDataSource;
+      }
+      return this._sources;
     }
 
     constructor(
