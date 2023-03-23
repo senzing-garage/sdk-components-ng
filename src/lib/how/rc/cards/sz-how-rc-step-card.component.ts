@@ -390,9 +390,9 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
         this.howUIService.pinStep(this._data.resolvedVirtualEntityId, this._groupId);
     }
 
-    public unpinStep() {
-        console.log(`pinStep()`, this._data.resolvedVirtualEntityId, this._groupId);
-        //this.howUIService.unpinStep(this._data.resolvedVirtualEntityId, this._groupId);
+    public unPinStep() {
+        console.log(`unPinStep()`, this._data.resolvedVirtualEntityId, this._groupId);
+        this.howUIService.unPinStep(this._data.resolvedVirtualEntityId);
     }
 
     constructor(

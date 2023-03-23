@@ -398,7 +398,7 @@ export class SzHowUIService {
                   return false;
                 });
                 if(_indexInNewList > -1 && _newStepList[_indexInNewList] && _group && _group.resolutionSteps && _group.resolutionSteps[0]) {
-                  console.warn(`\tmove item to same spot as group in _newStepList: `, _newStepList[_indexInNewList], _group.resolutionSteps[0]);
+                  //console.warn(`\tmove item to same spot as group in _newStepList: `, _newStepList[_indexInNewList], _group.resolutionSteps[0]);
                   _newStepList[_indexInNewList] = _group.resolutionSteps[0];
                   // now remove old group from stepGroups
                   this._stepGroups.delete(_group.id);
@@ -409,9 +409,6 @@ export class SzHowUIService {
             // update step list
             console.log(`new step list: `,_newStepList, this._stepsList, insertBeforeGroup);
             this._stepsList = _newStepList;
-
-            // add step id to pinnedItems list
-            this._pinnedSteps.push(vId);
           } 
 
         } else {
@@ -424,7 +421,72 @@ export class SzHowUIService {
     }
 
     public unPinStep(vId: string) {
+      if(this.isStepPinned(vId)) {
+        console.log(`unPinStep: ${vId}`, this._pinnedSteps);
+        // this step is pinned
+        let _previousItem;
+        let _nextItem;
+        let _stepIndex: number;
+        let _stepToMove: SzResolutionStep;
 
+        this._stepsList.forEach((s, ind)=>{ 
+          if((s as SzResolutionStep).resolvedVirtualEntityId === vId) {
+            _stepIndex  = ind;
+            _stepToMove = (s as SzResolutionStep);
+            if(ind > 0 && this._stepsList[(ind - 1)]) {
+              _previousItem = this._stepsList[(ind - 1)];
+            }
+            if(this._stepsList.length >= (ind + 1) && this._stepsList[(ind + 1)]) {
+              _nextItem = this._stepsList[(ind + 1)]
+            }
+          }
+        });
+        // if previous item is either a step or a stack group we're going to add this step to that
+        if(_previousItem) {
+          let isStep  = (_previousItem as SzResolutionStep).resolvedVirtualEntityId ? true : false;
+          let isStack = (_previousItem as SzResolutionStepGroup).resolutionSteps ? true : false;
+          if(isStack) {
+            let _stackGroupToAddStepTo = (_previousItem as SzResolutionStepGroup);
+            console.log(`previous item is a stack, add step to stack group`, _stackGroupToAddStepTo);
+
+            if(_stackGroupToAddStepTo.resolutionSteps && _stackGroupToAddStepTo.resolutionSteps.push) {
+              // add step to end
+              _stackGroupToAddStepTo.resolutionSteps.push(_stepToMove);
+              _stackGroupToAddStepTo.virtualEntityIds.push(_stepToMove.resolvedVirtualEntityId);
+              // remove step from "stepsList"
+              if(_stepToMove && _stepIndex && this._stepsList[_stepIndex] && _stepToMove && (this._stepsList[_stepIndex] as SzResolutionStep).resolvedVirtualEntityId === _stepToMove.resolvedVirtualEntityId) {
+                this._stepsList.splice(_stepIndex, 1);
+              }
+              // update "stepGroup" in "_stepGroups" with updated members/virtualIds
+            }
+          } else if(isStep) {
+            console.log(`previous item is a step, create new group`);
+            let _membersOfNewGroup = [_previousItem, _stepToMove];
+            let _newGroup: SzResolutionStepGroup     = {
+              id: uuidv4(),
+              resolutionSteps: (_membersOfNewGroup as SzResolutionStep[]),
+              virtualEntityIds: _membersOfNewGroup.map((rStep) => { 
+                return (rStep as SzResolutionStep).resolvedVirtualEntityId; 
+              })
+            };
+            this._stepsList[(_stepIndex -1)] = _newGroup;
+            // update "stepGroups"
+            this._stepGroups.set(_newGroup.id, _newGroup);
+            // remove original step from list
+            this._stepsList = this._stepsList.filter((item) => {
+              if((item as SzResolutionStep).resolvedVirtualEntityId === _stepToMove.resolvedVirtualEntityId) {
+                return false;
+              }
+              return true;
+            });
+          }
+        }
+        // remove step from pinned items list
+        let _existingIndex = this._pinnedSteps.indexOf(vId);
+        if(_existingIndex && this._pinnedSteps[_existingIndex]) {
+          this._pinnedSteps.splice(_existingIndex, 1);
+        }
+      }
     }
 
     public stepCanBeUnPinned(vId: string): boolean {
