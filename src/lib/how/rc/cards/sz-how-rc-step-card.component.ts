@@ -68,8 +68,11 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     @HostBinding('class.group-member') get cssGroupMemberClass(): boolean {
         return this.isGroupMember;
     }
-    @HostBinding('class.is-pinned') get cssGroupMemberPinnedClass(): boolean {
+    @HostBinding('class.pinned') get cssGroupMemberPinnedClass(): boolean {
         return !this.isUnpinned;
+    }
+    @HostBinding('class.unpinned') get cssGroupMemberUnPinnedClass(): boolean {
+        return this.isUnpinned;
     }
 
     @Input() featureOrder: string[];
@@ -144,6 +147,12 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     }
     get isUnpinned(): boolean {
         return !this.howUIService.isStepPinned(this._data.resolvedVirtualEntityId, this._groupId);
+    }
+    public getIsUnpinned() {
+        console.log('getIsUnpinned(): isStepPinned ? '+ this.howUIService.isStepPinned(this._data.resolvedVirtualEntityId, this._groupId));
+    }
+    get canBeGrouped(): boolean {
+        return this.howUIService.stepCanBeUnPinned(this._data.resolvedVirtualEntityId);
     }
     get parentStep() {
         return this._parentStep;
@@ -379,6 +388,11 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     public pinStep() {
         console.log(`pinStep()`, this._data.resolvedVirtualEntityId, this._groupId);
         this.howUIService.pinStep(this._data.resolvedVirtualEntityId, this._groupId);
+    }
+
+    public unpinStep() {
+        console.log(`pinStep()`, this._data.resolvedVirtualEntityId, this._groupId);
+        //this.howUIService.unpinStep(this._data.resolvedVirtualEntityId, this._groupId);
     }
 
     constructor(

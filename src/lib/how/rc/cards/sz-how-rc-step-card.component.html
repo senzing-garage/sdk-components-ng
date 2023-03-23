@@ -3,13 +3,15 @@
     <mat-icon *ngIf="canExpand && !hasChildren" class="toggle-expansion-icon"       (click)="toggleExpansion()" fontIcon="arrow_right"></mat-icon>
     <div class="title-text">{{title}}</div>
     <mat-icon *ngIf="isGroupMember && isUnpinned" class="pin-icon" (click)="pinStep()" fontIcon="push_pin"></mat-icon>
+    <mat-icon *ngIf="canBeGrouped && !isUnpinned" class="unpin-icon" (click)="unpinStep()" fontIcon="adjust"></mat-icon>
 </h3>
 <h3 class="title hide-on-expanded hide-on-group-collapsed hide-on-group-interim">
     <mat-icon *ngIf="canExpand && hasChildren"  class="toggle-child-expansion-icon" (click)="toggleExpansion()" fontIcon="play_circle"></mat-icon>
     <mat-icon *ngIf="canExpand && !hasChildren" class="toggle-expansion-icon"       (click)="toggleExpansion()" fontIcon="arrow_right"></mat-icon>
     <div class="title-text">
         {{title}}<span *ngIf="isInterimEntity" class="datasources"> [ <span class="datasources-list">{{dataSourcesAsString}}</span> ]</span>
-        <span class="title-token" *ngIf="isCreateEntity"> from </span><div *ngIf="isCreateEntity" class="title-from" [innerHTML]="from"></div>
+        <span class="title-token" *ngIf="isCreateEntity"> from </span>
+        <div *ngIf="isCreateEntity" class="title-from" [innerHTML]="from"></div>
     </div>
 </h3>
 <!-- hasChildren: {{hasChildren}} | canExpand: {{canExpand}} -->

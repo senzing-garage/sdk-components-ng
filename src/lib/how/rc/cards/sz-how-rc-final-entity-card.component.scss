@@ -40,6 +40,11 @@
 
     &.collapsed {
         .toggle-child-expansion-icon {
+            transform: rotate(0deg);
+        }
+    }
+    &.expanded {
+        .toggle-child-expansion-icon {
             transform: rotate(90deg);
         }
     }

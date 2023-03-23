@@ -52,39 +52,35 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
 
     private _isLoading                        = false;
     private _showNavigation                   = true;
+    private _entityId: SzEntityIdentifier;
+    private _dataLoadedForId: SzEntityIdentifier;
     private _expandCardsWhenLessThan: number  = 2;
-    private _dataChange: Subject<SzHowEntityResult>         = new Subject<SzHowEntityResult>();
-    public   dataChange                                     = this._dataChange.asObservable();
+    private _entityIdChange: Subject<SzEntityIdentifier>      = new Subject<SzEntityIdentifier>();
+    public   entityIdChange                                   = this._entityIdChange.asObservable();
+    private _dataChange: Subject<SzHowEntityResult>           = new Subject<SzHowEntityResult>();
+    public   dataChange                                       = this._dataChange.asObservable();
+    private _finalEntitiesChange: Subject<SzVirtualEntity[]>  = new Subject<SzVirtualEntity[]>();
+    public  finalEntitiesChange                               = this._finalEntitiesChange.asObservable();
     private _virtualEntitiesDataChange: Subject<Map<string, SzResolvedVirtualEntity>> = new Subject<Map<string, SzResolvedVirtualEntity>>();
-    public  virtualEntitiesDataChange                       = this._virtualEntitiesDataChange.asObservable();
+    public  virtualEntitiesDataChange                         = this._virtualEntitiesDataChange.asObservable();
     private _virtualEntityInfoLinkClick: Subject<SzVirtualEntityRecordsClickEvent> = new Subject();
-    public  virtualEntityInfoLinkClick                      = this._virtualEntityInfoLinkClick.asObservable();
-    @Output() public dataChanged                            = new EventEmitter<SzHowEntityResult>();
-    @Output() public virtualEntityInfoLinkClicked           = new EventEmitter<SzVirtualEntityRecordsClickEvent>();
+    public  virtualEntityInfoLinkClick                        = this._virtualEntityInfoLinkClick.asObservable();
+    @Output() public dataChanged                              = new EventEmitter<SzHowEntityResult>();
+    @Output() public virtualEntityInfoLinkClicked             = new EventEmitter<SzVirtualEntityRecordsClickEvent>();
     @Output()
-    loading: EventEmitter<boolean>                          = new EventEmitter<boolean>();
-    @Output() public virtualEntitiesDataChanged             = new EventEmitter<Map<string, SzResolvedVirtualEntity>>();
-    @Input()
-    entityId: SzEntityIdentifier;
-
+    loading: EventEmitter<boolean>                            = new EventEmitter<boolean>();
+    @Output() public virtualEntitiesDataChanged               = new EventEmitter<Map<string, SzResolvedVirtualEntity>>();
+    @Input() public set entityId(value: SzEntityIdentifier) {
+      this._entityId = value;
+      if(this._dataLoadedForId != this.entityId) {
+        this._entityIdChange.next(this.entityId);
+      }
+    }
+    public get entityId(): SzEntityIdentifier {
+      return this._entityId;
+    }
     public get resolutionSteps(): Array<SzResolutionStep> | undefined {
       return this._resolutionSteps;
-    }
-
-    public cooerceToStep(stepItem: SzResolutionStep | SzResolutionStepGroup): SzResolutionStep {
-      let retVal: SzResolutionStep | undefined;
-      if((stepItem as SzResolutionStep).stepNumber) {
-        retVal = (stepItem as SzResolutionStep);
-      }
-      return retVal;
-    }
-
-    public cooerceToStepGroup(stepItem: SzResolutionStep | SzResolutionStepGroup): SzResolutionStepGroup {
-      let retVal: SzResolutionStepGroup | undefined;
-      if((stepItem as SzResolutionStepGroup).resolutionSteps || (stepItem as SzResolutionStepGroup).interimSteps || (stepItem as SzResolutionStepGroup).mergeStep) {
-        retVal = (stepItem as SzResolutionStepGroup);
-      }
-      return retVal;
     }
 
     public get resolutionStepsByVirtualId() {
@@ -127,7 +123,34 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       ).subscribe((data: Map<string, SzResolvedVirtualEntity>) => {
         this.virtualEntitiesDataChanged.emit(data);
       })
+      // expand final entities node(s) by default
+      this.finalEntitiesChange.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe((entities: SzVirtualEntity[]) => {
+        if(entities && entities.forEach) {
+          entities.forEach((vEnt) => {
+            this.howUIService.expandFinal(vEnt.virtualEntityId);
+          });
+        }
+      });
+      // when entity id changes get/transform/load data
+      this.entityIdChange.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe(this.onEntityIdChange.bind(this));
+      // when user clicks on the info icon on a card open up 
+      // a floating data box
+      this.virtualEntityInfoLinkClick.pipe(
+          takeUntil(this.unsubscribe$)
+      ).subscribe((evt: SzVirtualEntityRecordsClickEvent)=> {
+          this.virtualEntityInfoLinkClicked.emit(evt);
+      });
+      // make initial request
+      if(this._entityId && !this._dataLoadedForId) {
+        this._entityIdChange.next(this._entityId);
+      }
+    }
 
+    private onEntityIdChange() {
       if(this.entityId) {
         // get entity data
         this._isLoading = true;
@@ -136,7 +159,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
             console.log(`how response: ${resp}`, resp.data);
             this._data                                    = resp && resp.data ? resp.data : undefined;
             this._resolutionStepsByVirtualId              = resp && resp.data && resp.data.resolutionSteps ? this._data.resolutionSteps : undefined;
-            //this.howUIService.currentHowResult    = resp.data;
+            this._dataLoadedForId                         = this.entityId;
 
             if(this._data.finalStates && this._data.finalStates.length > 0) {
                 // has at least one final states
@@ -146,16 +169,8 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
                 .filter((fStateObj) => {
                     return this._data.resolutionSteps && this._data.resolutionSteps[ fStateObj.virtualEntityId ] ? true : false;
                 })
-                /*
-                .map((fStateObj) => {
-                    return (Object.assign(this._data.resolutionSteps[ fStateObj.virtualEntityId ], {
-                        resolvedVirtualEntity: fStateObj
-                    }) as SzHowFinalCardData)
-                });*/
-
-                this.finalCardsData = _finalStatesData;
+                this.finalCardsData            = _finalStatesData;
                 this.howUIService.finalStates  = _finalStatesData;
-                console.log(`final step(s): `, this.finalCardsData);
             }
             if(this._data.resolutionSteps && Object.keys(this._data.resolutionSteps).length > 0) {
                 // we have resolution steps
@@ -189,19 +204,30 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
             }
             this._isLoading = false;
             this.loading.emit(false);
+            this._finalEntitiesChange.next(this.finalCardsData);
             this._dataChange.next(resp.data);
         });
       }
-
-      this.virtualEntityInfoLinkClick.pipe(
-          takeUntil(this.unsubscribe$)
-      ).subscribe((evt: SzVirtualEntityRecordsClickEvent)=> {
-          this.virtualEntityInfoLinkClicked.emit(evt);
-      });
     }
 
     collapseAllSteps() {
       this.howUIService.collapseAll();
+    }
+
+    public cooerceToStep(stepItem: SzResolutionStep | SzResolutionStepGroup): SzResolutionStep {
+      let retVal: SzResolutionStep | undefined;
+      if((stepItem as SzResolutionStep).stepNumber) {
+        retVal = (stepItem as SzResolutionStep);
+      }
+      return retVal;
+    }
+
+    public cooerceToStepGroup(stepItem: SzResolutionStep | SzResolutionStepGroup): SzResolutionStepGroup {
+      let retVal: SzResolutionStepGroup | undefined;
+      if((stepItem as SzResolutionStepGroup).resolutionSteps || (stepItem as SzResolutionStepGroup).interimSteps || (stepItem as SzResolutionStepGroup).mergeStep) {
+        retVal = (stepItem as SzResolutionStepGroup);
+      }
+      return retVal;
     }
 
     public getResolutionSteps(): Array<SzResolutionStep | SzResolutionStep[]> {
@@ -436,7 +462,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       let finalEntity = this.getFinalEntityFromMember(member);
       let retVal = false;
       if(finalEntity) {
-        retVal = this.howUIService.isFinalEntityExpanded(finalEntity.virtualEntityId)
+        retVal = !this.howUIService.isFinalEntityExpanded(finalEntity.virtualEntityId)
       }
       //console.log(`isParentEntityHidden(${retVal})`, finalEntity, member);
       return retVal;

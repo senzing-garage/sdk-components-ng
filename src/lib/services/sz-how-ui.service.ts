@@ -123,7 +123,7 @@ export class SzHowUIService {
       }
     }
     expandFinal(virtualEntityId: string) {
-      console.log(`expandFinal(${virtualEntityId})`, this.isFinalEntityExpanded(virtualEntityId));
+      //console.log(`expandFinal(${virtualEntityId})`, this.isFinalEntityExpanded(virtualEntityId));
 
       if(!this.isFinalEntityExpanded(virtualEntityId)) {
         this._expandedFinalEntities.push(virtualEntityId);
@@ -343,6 +343,7 @@ export class SzHowUIService {
                 })
               };
               insertAfterGroup.push(_newGroup);
+              // update 
               if(!this._stepGroups.has(_newGroup.id)) {
                 this._stepGroups.set(_newGroup.id, _newGroup);
               }
@@ -372,14 +373,51 @@ export class SzHowUIService {
                 });
                 console.warn(`never found item(#${gId}|${_groupIndexInList}|${_group2IndexInList}) in list??? `, _groupIndexInList, this._stepsList, gId, this._stepGroups);
               }
-              console.log(`new step list: `,_newStepList, this._stepsList, insertBeforeGroup);
-              this._stepsList = _newStepList;
+              //console.log(`new step list: `,_newStepList, this._stepsList, insertBeforeGroup);
+              //this._stepsList = _newStepList;
             } 
 
-          }
+            // insert any new groups
+            let allGroupsAdded = insertBeforeGroup.concat(insertAfterGroup).filter((grpOrStp) => {
+              return (grpOrStp as SzResolutionStepGroup).virtualEntityIds !== undefined; // filter out any items that aren't specifically "groups"
+            });
+            (allGroupsAdded as SzResolutionStepGroup[]).forEach((stepGroup) => {
+              this._stepGroups.set(stepGroup.id, stepGroup);
+            });
+
+            // update any existing groups
+            if(this._stepGroups.has(gId)) {
+              _group.resolutionSteps = _members;
+              this._stepGroups.set(gId, _group);
+              if(_group.resolutionSteps && _group.resolutionSteps.length === 1) {
+                // remove step from group and delete group
+                let _indexInNewList = _newStepList.findIndex((item) => {
+                  if((item as SzResolutionStepGroup).id === _group.id) {
+                    return true;
+                  }
+                  return false;
+                });
+                if(_indexInNewList > -1 && _newStepList[_indexInNewList] && _group && _group.resolutionSteps && _group.resolutionSteps[0]) {
+                  console.warn(`\tmove item to same spot as group in _newStepList: `, _newStepList[_indexInNewList], _group.resolutionSteps[0]);
+                  _newStepList[_indexInNewList] = _group.resolutionSteps[0];
+                  // now remove old group from stepGroups
+                  this._stepGroups.delete(_group.id);
+                }
+              }
+            }
+
+            // update step list
+            console.log(`new step list: `,_newStepList, this._stepsList, insertBeforeGroup);
+            this._stepsList = _newStepList;
+
+            // add step id to pinnedItems list
+            this._pinnedSteps.push(vId);
+          } 
+
         } else {
           console.warn(`could not locate gId(${gId}) in stepsGroup: `, this._stepGroups);
         }
+
       } else {
         console.warn(`step already pinned: ${vId}`);
       }
@@ -389,8 +427,32 @@ export class SzHowUIService {
 
     }
 
+    public stepCanBeUnPinned(vId: string): boolean {
+      let retVal = false;
+      // if either the item before or after is a step card
+      // OR
+      // the item before or after is a stepGroup then the
+      // item can be unpinned
+      this._stepsList.forEach((item, ind) => {
+        if((item as SzResolutionStep).resolvedVirtualEntityId === vId) {
+          // this is the item
+          if(ind > 0 && this._stepsList[(ind - 1)]) {
+            // is previous item a step or stack group AND
+            // not an interim or merge step
+            retVal = ((this._stepsList[(ind - 1)] as SzResolutionStep).resolvedVirtualEntityId || (this._stepsList[(ind - 1)] as SzResolutionStepGroup).resolutionSteps) ? true : false;
+          }
+          if((ind+1) < this._stepsList.length && this._stepsList[(ind+1)] && !retVal) {
+            // there are items after item
+            // check if it is a step or stack group
+            retVal = ((this._stepsList[(ind + 1)] as SzResolutionStep).resolvedVirtualEntityId || (this._stepsList[(ind + 1)] as SzResolutionStepGroup).resolutionSteps) ? true : false;
+          }
+        }
+      });
+      return retVal;
+    }
+
     public isStepPinned(vId: string, gId?: string): boolean {
-      return this._pinnedSteps[vId] !== undefined;
+      return this._pinnedSteps.includes(vId);
     }
 
     public selectStep(vId: string) {

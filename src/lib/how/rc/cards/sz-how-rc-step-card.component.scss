@@ -138,15 +138,26 @@
             }
         }
     }
-    .pin-icon {
+    .pin-icon, .unpin-icon {
         top: 5px;
         right: 5px;
         width: 24px;
         height: 24px;
+        cursor: pointer;
+    }
+    .pin-icon {
         transform: rotate(90deg);
         font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
         fill: #000;
-        cursor: pointer;
+    }
+    .unpin-icon {
+        fill: #fff;
+        background-color: #fff;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 18px;
+        margin: 3px 3px 0 0;
     }
     .info-block {
         margin-left: 10px;
