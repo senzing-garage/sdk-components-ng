@@ -68,6 +68,9 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     @HostBinding('class.group-member') get cssGroupMemberClass(): boolean {
         return this.isGroupMember;
     }
+    @HostBinding('class.is-pinned') get cssGroupMemberPinnedClass(): boolean {
+        return !this.isUnpinned;
+    }
 
     @Input() featureOrder: string[];
 
@@ -138,6 +141,9 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     }
     get isGroupMember(): boolean {
         return this._groupId ? true : false;
+    }
+    get isUnpinned(): boolean {
+        return !this.howUIService.isStepPinned(this._data.resolvedVirtualEntityId, this._groupId);
     }
     get parentStep() {
         return this._parentStep;
@@ -353,7 +359,7 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     }
 
     openVirtualEntityDialog(evt) {
-      console.log('SzHowEntityComponent.openVirtualEntityDialog: ', evt);
+      console.log('openVirtualEntityDialog: ', evt);
       //return;
       //this._virtualEntityInfoLinkClick.next(evt);
       let targetEle = new ElementRef(evt.target);
@@ -368,6 +374,11 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
             event: evt
         }
       });
+    }
+
+    public pinStep() {
+        console.log(`pinStep()`, this._data.resolvedVirtualEntityId, this._groupId);
+        this.howUIService.pinStep(this._data.resolvedVirtualEntityId, this._groupId);
     }
 
     constructor(

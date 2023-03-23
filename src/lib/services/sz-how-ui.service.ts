@@ -1,5 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { v4 as uuidv4} from 'uuid';
 import {
   EntityDataService as SzEntityDataService,
   SzFeatureScore,
@@ -11,6 +12,7 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { SzResolutionStepDisplayType, SzResolutionStepGroup, SzResolutionStepListItemType } from '../models/data-how';
 import { SzPrefsService } from './sz-prefs.service';
+
 /**
  * Provides access to the /datasources api path.
  * See {@link https://github.com/Senzing/senzing-rest-api/blob/master/senzing-rest-api.yaml}
@@ -21,12 +23,13 @@ import { SzPrefsService } from './sz-prefs.service';
     providedIn: 'root'
 })
 export class SzHowUIService {
-    private _pinnedSteps: string[];
+    private _pinnedSteps: string[]              = [];
     private _expandedFinalEntities: string[]    = [];
     private _expandedStepsOrGroups: string[]    = [];
     private _expandedGroups: string[]           = [];
     private _expandedVirtualEntities: string[]  = [];
     private _stepGroups: Map<string, SzResolutionStepGroup> = new Map<string, SzResolutionStepGroup>();
+    private _stepsList: Array<SzResolutionStep | SzResolutionStepGroup>;
     private _finalEntities: SzVirtualEntity[]   = [];
     private _onGroupExpansionChange   = new Subject<string>()
     private _onStepExpansionChange    = new Subject<string>();
@@ -52,6 +55,14 @@ export class SzHowUIService {
 
     public set stepGroups(value: Map<string, SzResolutionStepGroup>) {
       this._stepGroups              = value;
+    }
+
+    public set stepsList(value: Array<SzResolutionStep | SzResolutionStepGroup>) {
+      this._stepsList = value;
+    }
+
+    public get stepsList(): Array<SzResolutionStep | SzResolutionStepGroup> {
+      return this._stepsList;
     }
 
     idIsGroupId(vId: string): boolean {
@@ -220,6 +231,166 @@ export class SzHowUIService {
         this._onStepExpansionChange.next(undefined);
         this._onGroupExpansionChange.next(undefined);
       }
+    }
+
+    public pinStep(vId: string, gId: string) {
+      if(!this.isStepPinned(vId)) {
+        this._pinnedSteps.push(vId);
+        console.log(`pinStep(${vId}, ${gId})`);
+        // find index of step in group members
+        if(gId && this._stepGroups && this._stepGroups.has(gId)) {
+          let _group              = this._stepGroups.get(gId);
+          let _groupIndexInList   = this._stepsList.findIndex((s)=>{ return (s as SzResolutionStepGroup).id === gId; });
+          let _members            = Object.assign([], _group.resolutionSteps);
+          let _itemIndex          = _members.findIndex((step) => {
+            return step.resolvedVirtualEntityId === vId ? true : false;
+          }); 
+          let insertBeforeGroup: Array<SzResolutionStepGroup | SzResolutionStep[]> = [];
+          let insertAfterGroup: Array<SzResolutionStepGroup | SzResolutionStep[]>  = [];
+          console.log(`\thas gId: ${this._stepGroups.has(gId)}`,this._stepGroups);
+          if(_itemIndex > -1) {
+            let _indexOfGroupInList = this._stepsList.findIndex((item: SzResolutionStepGroup | SzResolutionStep) => {
+              return (item as SzResolutionStepGroup).id === _group.id;
+            });
+
+            // remove member from group
+            if(_members[_itemIndex] && _members.splice) {
+              if(_itemIndex === 0) {
+                // insert before
+                insertBeforeGroup   = insertBeforeGroup.concat(_members.splice(_itemIndex, 1));
+              } else {
+                // insert after
+                insertAfterGroup    = insertAfterGroup.concat(_members.splice(_itemIndex, 1));
+              }
+            }
+
+            // if there are at least two members after the member being
+            // pinned we are making a new group with those steps
+            // in them
+            if((_members.length - _itemIndex) >= 1) {
+              if(insertBeforeGroup.length > 0) {
+                // grab any items previous to step and add those too
+              } else if(insertAfterGroup.length > 0) {
+                // grab any items after step being moved and add those too
+                // this is every scenario EXCEPT when step is first item in group
+                let _itemsToMove  = _members.splice(_itemIndex, (_members.length - _itemIndex));
+                
+                if(_itemsToMove && _itemsToMove.length >= 2) {
+                  console.log(`\t\titems to be moved to new group: `, _itemsToMove);
+                  insertAfterGroup = insertAfterGroup.concat(_itemsToMove);
+                } else if(_itemsToMove && _itemsToMove.length === 1) {
+                  insertAfterGroup = insertAfterGroup.concat(_itemsToMove);
+                  console.log(`\t\tadditional item to be removed from group: `, _itemsToMove);
+                }
+              }
+
+              if(_members.length === 1) {
+                // there is only one member left in group
+                // so remove this item too and delete the group
+                console.log(`\t\tthere is only one item left in group, move it and delete group: `, _members);
+              }
+            }
+            //console.log(`\tmembers removed from group: `, _members, _group.resolutionSteps, this._stepsList);
+            console.log(`\titems to move to before group: `, insertBeforeGroup);
+            console.log(`\titems to move to after group: `, insertAfterGroup);
+            let _newStepList = [];
+
+            if(insertBeforeGroup.length > 0){
+              // we need to move these items to before the item being
+              // pinned
+              this._stepsList.forEach((step, _ind) => {
+                let _cStep = (step as SzResolutionStepGroup);
+
+                if(_ind === _groupIndexInList) {
+                  // remove existing steps from current step
+                  let _cStep = (step as SzResolutionStepGroup);
+                  
+                  // before we add the step we should add preceeeding
+                  // steps
+                  _newStepList = _newStepList.concat(insertBeforeGroup);
+                }
+                if(_cStep && _cStep.resolutionSteps) {
+                  if(_cStep.resolutionSteps && insertBeforeGroup) {
+                    // remove any items in "insertBeforeGroup" from "resolutionSteps"
+                    let membersToKeep = _cStep.resolutionSteps.filter((_s)=> {
+                      return insertBeforeGroup.some((grp) => {
+                        return (grp as SzResolutionStep).resolvedVirtualEntityId !== _s.resolvedVirtualEntityId;
+                      })
+                    });
+                    if(membersToKeep.length > 0) {
+                      //_cStep.resolutionSteps = membersToKeep;
+                    }
+                    console.log(`\t\tmembersToKeep: `, membersToKeep);
+                  }
+                }
+                _newStepList.push(step);
+              });
+              console.log(`\tmoved items to group before step being pinned: `, insertBeforeGroup, _newStepList);
+
+            }
+
+            if(insertAfterGroup.length > 2) {
+              // we need to create a new group
+              // since this is an "insertAfter" we already know that the item 
+              // at index 0 is step being pinned. so just slice array.
+              let _membersOfNewGroup = insertAfterGroup.slice(1);
+              insertAfterGroup  = [insertAfterGroup[0]]; // delete all the items we sliced off
+              let _newGroup: SzResolutionStepGroup     = {
+                id: uuidv4(),
+                resolutionSteps: (_membersOfNewGroup as SzResolutionStep[]),
+                virtualEntityIds: _membersOfNewGroup.map((rStep) => { 
+                  return (rStep as SzResolutionStep).resolvedVirtualEntityId; 
+                })
+              };
+              insertAfterGroup.push(_newGroup);
+              if(!this._stepGroups.has(_newGroup.id)) {
+                this._stepGroups.set(_newGroup.id, _newGroup);
+              }
+              console.log(`\treplaced individual items in after list with group: `, insertAfterGroup);
+            }
+            if(insertAfterGroup.length > 0) {
+              // straight insert at index after group in _stepList
+              let _foundIndex = false;
+              this._stepsList.forEach((step, _ind) => {
+                // copy over item
+                _newStepList.push(step);
+                if(_ind === _groupIndexInList) {
+                  // this is the one
+                  _foundIndex = true;
+                  // update the members for this group
+                  (step as SzResolutionStepGroup).resolutionSteps = _members;
+                  console.log(`\t\tupdated resolution steps for #${(step as SzResolutionStepGroup).id}`, (step as SzResolutionStepGroup).resolutionSteps);
+                  // now insert new group(s)
+                  _newStepList = _newStepList.concat(insertAfterGroup);
+                  console.log(`\t\tinserted new steps for #${(step as SzResolutionStepGroup).id}`, insertAfterGroup, _newStepList);
+                }
+
+              });
+              if(!_foundIndex) {
+                let _group2IndexInList   = this._stepsList.findIndex((s)=>{ 
+                  return (s as SzResolutionStepGroup).id === gId; 
+                });
+                console.warn(`never found item(#${gId}|${_groupIndexInList}|${_group2IndexInList}) in list??? `, _groupIndexInList, this._stepsList, gId, this._stepGroups);
+              }
+              console.log(`new step list: `,_newStepList, this._stepsList, insertBeforeGroup);
+              this._stepsList = _newStepList;
+            } 
+
+          }
+        } else {
+          console.warn(`could not locate gId(${gId}) in stepsGroup: `, this._stepGroups);
+        }
+      } else {
+        console.warn(`step already pinned: ${vId}`);
+      }
+    }
+
+    public unPinStep(vId: string) {
+
+    }
+
+    public isStepPinned(vId: string, gId?: string): boolean {
+      return this._pinnedSteps[vId] !== undefined;
     }
 
     public selectStep(vId: string) {

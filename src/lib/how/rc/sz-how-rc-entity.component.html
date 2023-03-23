@@ -34,6 +34,7 @@
                     [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step-stack>
                 <div class="stack-control" 
                     [class.expanded]="isGroupExpanded(cooerceToStepGroup(item))"
+                    [class.collapsed]="!isGroupExpanded(cooerceToStepGroup(item))"
                     (click)="toggleGroupCollapsedState(cooerceToStepGroup(item))">
                     <!-- start collapsed  icon set -->
                     <mat-icon 

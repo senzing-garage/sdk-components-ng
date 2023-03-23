@@ -175,6 +175,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
               this._resolutionStepGroupsOld = this.getDefaultResolutionStepGroups(this._resolutionSteps);
               this._stepGroups              = this.getDefaultStepGroups(this._resolutionSteps);
               this.howUIService.stepGroups  = this._stepGroups;
+              this.howUIService.stepsList   = this.getResolutionStepsWithGroups(this._resolutionSteps, this._stepGroups);
             }
             // extend data with augmentation
             if(this._data && this._data.resolutionSteps) {
@@ -412,7 +413,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
         });
         //retVal  = _resolutionStepsWithGroups;
       }
-      console.info('getResolutionStepGroups: ', retVal);
+      //console.info('getResolutionStepGroups: ', retVal);
       return retVal;
     }
 
@@ -437,7 +438,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       if(finalEntity) {
         retVal = this.howUIService.isFinalEntityExpanded(finalEntity.virtualEntityId)
       }
-      console.log(`isParentEntityHidden(${retVal})`, finalEntity, member);
+      //console.log(`isParentEntityHidden(${retVal})`, finalEntity, member);
       return retVal;
     }
 
@@ -508,7 +509,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
     public isGroupExpanded(grp: SzResolutionStep | SzResolutionStepGroup) {
       let vId = (grp as SzResolutionStepGroup).id ? (grp as SzResolutionStepGroup).id : (grp as SzResolutionStep).resolvedVirtualEntityId ? (grp as SzResolutionStep).resolvedVirtualEntityId : undefined;
       if(vId) {
-        return this.howUIService.isExpanded(vId);
+        return this.howUIService.isGroupExpanded(vId);
       }
       return false;
     }
@@ -586,8 +587,10 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
     }
 
     public get stepsList(): Array<SzResolutionStep | SzResolutionStepGroup> {
-      let retVal   = this.getResolutionStepsWithGroups(this._resolutionSteps, this._stepGroups);
-      return retVal;
+      if(!this.howUIService.stepsList || this.howUIService.stepsList === undefined) {
+        this.howUIService.stepsList   = this.getResolutionStepsWithGroups(this._resolutionSteps, this._stepGroups);
+      }
+      return this.howUIService.stepsList;
     }
 
     public getResolutionStepsWithGroups(steps: SzResolutionStep[], groups: Map<string, SzResolutionStepGroup>): Array<SzResolutionStep | SzResolutionStepGroup> {
