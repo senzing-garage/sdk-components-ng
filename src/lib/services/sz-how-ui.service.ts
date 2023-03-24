@@ -429,6 +429,7 @@ export class SzHowUIService {
         let _stepIndex: number;
         let _stepToMove: SzResolutionStep;
         let _groupToMoveTo: SzResolutionStepGroup;
+        let _stepMovedToGroup: string;
 
         this._stepsList.forEach((s, ind)=>{ 
           if((s as SzResolutionStep).resolvedVirtualEntityId === vId) {
@@ -448,6 +449,7 @@ export class SzHowUIService {
           let isStack = (_previousItem as SzResolutionStepGroup).resolutionSteps ? true : false;
           if(isStack) {
             let _stackGroupToAddStepTo = (_previousItem as SzResolutionStepGroup);
+            _stepMovedToGroup = _stackGroupToAddStepTo.id;
             console.log(`previous item is a stack, add step to stack group`, _stackGroupToAddStepTo);
 
             if(_stackGroupToAddStepTo.resolutionSteps && _stackGroupToAddStepTo.resolutionSteps.push) {
@@ -470,6 +472,7 @@ export class SzHowUIService {
                 return (rStep as SzResolutionStep).resolvedVirtualEntityId; 
               })
             };
+            _stepMovedToGroup = _groupToMoveTo.id;
             this._stepsList[(_stepIndex -1)] = _groupToMoveTo;
             // update "stepGroups"
             this._stepGroups.set(_groupToMoveTo.id, _groupToMoveTo);
@@ -483,54 +486,101 @@ export class SzHowUIService {
           }
         }
         if(_nextItem) {
-          let isStep          = (_nextItem as SzResolutionStep).resolvedVirtualEntityId ? true : false;
-          let isStack         = (_nextItem as SzResolutionStepGroup).resolutionSteps ? true : false;
+          let isStep                = (_nextItem as SzResolutionStep).resolvedVirtualEntityId ? true : false;
+          let isStack               = (_nextItem as SzResolutionStepGroup).resolutionSteps ? true : false;
+          let _nextItemIsNotPinned  = isStep ? this.isStepPinned((_nextItem as SzResolutionStep).resolvedVirtualEntityId) : true;
 
-          let prevStack       = (_previousItem && (_previousItem as SzResolutionStepGroup).resolutionSteps) ? (_previousItem as SzResolutionStepGroup) : _previousItem;
-          let nextStack       = (isStack) ? (_nextItem as SzResolutionStepGroup) : _nextItem;
-          let isPrevItemStack = (_previousItem as SzResolutionStepGroup).resolutionSteps ? true : false;
-          if(isStack) {
-            // next item is stack
-            // if previous item was stack too then we merge stacks
-            if(isPrevItemStack) {
-              // copy items from nextStack to previous stack
-              if(nextStack && nextStack.resolutionSteps && _previousItem && _previousItem.resolutionSteps) {
-                // copy all items from nextStack to prevStack
-                let itemsToMerge = (nextStack as SzResolutionStepGroup).resolutionSteps;
-                (prevStack as SzResolutionStepGroup).resolutionSteps = (prevStack as SzResolutionStepGroup).resolutionSteps.concat(itemsToMerge);
-                // de-dupe jic
-                
-              }
-              //_previousItem.resolutionSteps = _nextItem.resolutionSteps;
-              _previousItem.virtualEntitiesById = (_previousItem as SzResolutionStepGroup).resolutionSteps.map((item: SzResolutionStep) => {
-                return item.resolvedVirtualEntityId;
-              });
-            }
-          } else if (isStep && isPrevItemStack) {
-            console.log(`next item is a step item. previous items is stack. move item(s) to prev stack`, (_nextItem as SzResolutionStep));
-            let _previousStack  = (_previousItem as SzResolutionStepGroup);
-            let _itemStep       = (_nextItem as SzResolutionStep);
-            // update stack virtual id's first
-            _previousStack.virtualEntityIds = _previousStack.resolutionSteps.map((item) => {
-              return item.resolvedVirtualEntityId;
-            });
-            // check to see if item is already in list
-            if(!_previousStack.virtualEntityIds.includes(_itemStep.resolvedVirtualEntityId)) {
-              _previousStack.resolutionSteps.push(_itemStep);
-              _previousStack.virtualEntityIds.push(_itemStep.resolvedVirtualEntityId);
-              console.log(`\tcopying over ${_itemStep.resolvedVirtualEntityId} to ${_previousStack.id}`);
-              // remove item from "stepsList"
+          if(isStep && _nextItemIsNotPinned) {
+            // next item is a un-pinned step
+            if(_stepMovedToGroup) {
+              // use the group the other item was moved to
+            } else {
+              // create new group here
+              console.log(`next item is a step item. `, (_nextItem as SzResolutionStep));
+              let _membersOfNewGroup = [_stepToMove];
+              _groupToMoveTo     = {
+                id: uuidv4(),
+                resolutionSteps: (_membersOfNewGroup as SzResolutionStep[]),
+                virtualEntityIds: _membersOfNewGroup.map((rStep) => { 
+                  return (rStep as SzResolutionStep).resolvedVirtualEntityId; 
+                })
+              };
+              _stepMovedToGroup = _groupToMoveTo.id;
+              this._stepsList[_stepIndex] = _groupToMoveTo;
+              // update "stepGroups"
+              this._stepGroups.set(_groupToMoveTo.id, _groupToMoveTo);
+              // remove original step from list
               this._stepsList = this._stepsList.filter((item) => {
-                if((item as SzResolutionStep).resolvedVirtualEntityId === _itemStep.resolvedVirtualEntityId) {
+                if((item as SzResolutionStep).resolvedVirtualEntityId === _stepToMove.resolvedVirtualEntityId) {
                   return false;
                 }
                 return true;
               });
-            } else {
-              console.log(`\tprevious stack already includes ${_itemStep.resolvedVirtualEntityId}`, _previousStack.virtualEntityIds, _previousStack.resolutionSteps);
             }
-          } else if(isStep) {
-            console.log(`next item is a step item. previous items a step.`);
+          }
+
+          if(!_stepMovedToGroup) {
+            // so there was no "previous" step or stack
+            // AND
+            // next item was not a step OR was pinned
+            console.warn(`\tstep was not moved to a group prior to executing "nextItem" block`);
+            if(isStack) {
+              // just move step to stack
+              let targetStack = (_nextItem as SzResolutionStepGroup);
+              console.log(`\t\tmoving step to stack after item`, targetStack);
+              targetStack.resolutionSteps   = [_stepToMove].concat(targetStack.resolutionSteps)
+              targetStack.virtualEntityIds  = targetStack.resolutionSteps.map((item: SzResolutionStep) => {
+                return item.resolvedVirtualEntityId;
+              });
+              // now remove "_stepToMove" from stepsList
+              console.log(`\t\tstep moved to new group`, targetStack, this._stepGroups.get(targetStack.id));
+              this._stepsList = this._stepsList.filter((item) => {
+                if((item as SzResolutionStep).resolvedVirtualEntityId === _stepToMove.resolvedVirtualEntityId) {
+                  return false;
+                }
+                return true;
+              });
+            }
+          } else if(_stepMovedToGroup) {
+            let targetStack     = this._stepsList.find((s) => {
+              return (s as SzResolutionStepGroup).id === _stepMovedToGroup;
+            }) as SzResolutionStepGroup;
+
+            // we moved the item to a group
+            if(isStack) {
+              console.log(`\tnext item is a stack item. move stack item(s) to other stack`, (_nextItem as SzResolutionStep));
+
+              // merge the two stacks
+              // copy items from nextStack to previous stack
+              let stackToMove       = (isStack) ? (_nextItem as SzResolutionStepGroup) : _nextItem;
+
+              if(stackToMove && stackToMove.resolutionSteps && targetStack && targetStack.resolutionSteps) {
+                // copy all items from nextStack to prevStack
+                let itemsToMerge = (stackToMove as SzResolutionStepGroup).resolutionSteps;
+                targetStack.resolutionSteps = targetStack.resolutionSteps.concat(itemsToMerge);
+                // de-dupe jic
+              }
+              //_previousItem.resolutionSteps = _nextItem.resolutionSteps;
+              targetStack.virtualEntityIds = (targetStack as SzResolutionStepGroup).resolutionSteps.map((item: SzResolutionStep) => {
+                return item.resolvedVirtualEntityId;
+              });
+              // now remove "stackToMove" from stepsList
+              this._stepsList = this._stepsList.filter((item) => {
+                // omit step that was moved
+                if((item as SzResolutionStep).resolvedVirtualEntityId === _stepToMove.resolvedVirtualEntityId) {
+                  return false;
+                }
+                // omit stack that was merged
+                if((item as SzResolutionStepGroup).id === (stackToMove as SzResolutionStepGroup).id) {
+                  return false;
+                }
+                return true;
+              });
+              // now remove "stackToMove.id" from "stepGroups"
+              if(this._stepGroups.has(stackToMove.id)) {
+                this._stepGroups.delete(stackToMove.id);
+              }
+            }
           }
         }
         // remove step from pinned items list
