@@ -2,6 +2,7 @@
     display: block;
     background-color: aqua;
     border: var(--sz-how-step-card-border);
+    color: var(--sz-how-step-card-color);
     margin-top: 14px;
     border-radius: 5px;
     padding: 3px 3px;
@@ -43,6 +44,7 @@
     }
     .title-text {
         flex-grow: 5;
+        margin-top: 3px;
     }
     .title-from {
         display: inline-block;

@@ -1,13 +1,10 @@
-import { Component, Inject, ViewChild, HostBinding, ElementRef } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject, HostBinding } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { 
-    EntityDataService as SzEntityDataService, 
-    SzEntityIdentifier, SzFeatureMode, SzHowEntityResponse, SzHowEntityResult, SzRecordId, SzRecordIdentifier, SzRecordIdentifiers, SzResolutionStep, SzResolvedEntity, SzVirtualEntity, SzVirtualEntityRecord, SzVirtualEntityResponse 
+    SzEntityIdentifier, SzResolutionStep, SzVirtualEntityRecord 
 } from '@senzing/rest-api-client-ng';
-import { SzConfigDataService } from '../../services/sz-config-data.service';
-import { SzHowUICoordinatorService } from '../../services/sz-how-ui-coordinator.service';
 import { Subject } from 'rxjs';
-import { SzResolutionStepDisplayType, SzResolvedVirtualEntity, SzVirtualEntityRecordsByDataSource } from 'src/lib/models/data-how';
+import { SzResolutionStepDisplayType, SzResolvedVirtualEntity, SzVirtualEntityRecordsByDataSource } from '../../models/data-how';
 import { SzHowUIService } from '../../services/sz-how-ui.service';
 
 

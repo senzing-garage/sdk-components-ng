@@ -8,7 +8,7 @@ import {
 import { SzConfigDataService } from '../../services/sz-config-data.service';
 import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolutionStepListItem, SzResolvedVirtualEntity } from '../../models/data-how';
 import { parseBool } from '../../common/utils';
-import { Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
+import { filter, Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { parseSzIdentifier, isNotNull } from '../../common/utils';
 import { SzHowUIService } from '../../services/sz-how-ui.service';
 
@@ -34,25 +34,37 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
     private _stepMap: {[key: string]: SzResolutionStep} = {};
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
 
-    @Input() public finalEntityId: SzEntityIdentifier;
-    @Input() public lowScoringFeatureThreshold: number = 80;
-    @Input() public set virtualEntitiesById(value: Map<string, SzResolvedVirtualEntity>) {
-        this._virtualEntitiesById = value;
+    @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
+        return !this.howUIService.isNavExpanded;
+    }
+    @HostBinding('class.expanded') get cssExpandedClass(): boolean {
+        return this.howUIService.isNavExpanded;
     }
 
+    private _virtualEntitiesDataChange: Subject<Map<string, SzResolvedVirtualEntity>> = new Subject<Map<string, SzResolvedVirtualEntity>>();
+    public  virtualEntitiesDataChange   = this._virtualEntitiesDataChange.asObservable();
+    private _listSteps: SzResolutionStepListItem[];
     private _finalVirtualEntities: SzVirtualEntity[];
-    @Input() set finalVirtualEntities(value: SzVirtualEntity[]) {
-        this._finalVirtualEntities = value;
-    }
-    public get finalVirtualEntities(): SzVirtualEntity[] {
-        return this._finalVirtualEntities;
-    }
     public pdModels = [
         '',
         '',
         '',
         '',
     ];
+
+    @Input() public finalEntityId: SzEntityIdentifier;
+    @Input() public lowScoringFeatureThreshold: number = 80;
+    @Input() public set virtualEntitiesById(value: Map<string, SzResolvedVirtualEntity>) {
+        this._virtualEntitiesById = value;
+        this._virtualEntitiesDataChange.next(this._virtualEntitiesById);
+    }
+
+    @Input() set finalVirtualEntities(value: SzVirtualEntity[]) {
+        this._finalVirtualEntities = value;
+    }
+    public get finalVirtualEntities(): SzVirtualEntity[] {
+        return this._finalVirtualEntities;
+    }
 
     get finalVirtualEntityStepNumber(): number {
         let retVal = 0;
@@ -180,6 +192,10 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         return retVal;
     }
 
+    toggleExpanded() {
+        this.howUIService.isNavExpanded = !this.howUIService.isNavExpanded;
+    }
+
     // ---------------------------------------- start parameters
     private _filterByTextOrRecordId: string             = undefined;
     private _filterByVirtualEntityCreation: boolean     = false;
@@ -225,9 +241,19 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
     
     public get listSteps(): SzResolutionStepListItem[] {
         let retVal: SzResolutionStepListItem[] = [];
+        if(!this._listSteps) {
+            this._listSteps = this.getListSteps();
+        }
+        if(this._listSteps){
+            retVal = this._listSteps;
+        }
+        return retVal;
+    }
+
+    private getListSteps(): SzResolutionStepListItem[] {
+        let retVal: SzResolutionStepListItem[] = [];
         if(this._stepMap) {
             let _steps = (Object.values(this._stepMap));
-            _steps[0].resolvedVirtualEntityId
             retVal = _steps.map((_s: SzResolutionStep) => {
                 let _t: SzResolutionStepListItem = Object.assign({
                     actionType: this.getStepListCardType(_s),
@@ -241,7 +267,6 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
                 return _t;
             });
         }
-        //retVal[0].
         return retVal;
     }
 
@@ -324,18 +349,28 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         if(this._filterByTextOrRecordId && isNotNull(this._filterByTextOrRecordId)){
             // check if text is in record Id's
             let _critStr            = this._filterByTextOrRecordId.toUpperCase().trim();
+            
             let _critTerms          = _critStr.split(' ');
+            let _critTerm           = _critStr;
 
             retVal  = retVal.filter((step: SzResolutionStepListItem) => {
+                // record id's specifically
                 let _hasMatchingRecords = step.recordIds.some((recordId: string) => {
                     return recordId.toUpperCase().trim().startsWith(_critStr);
                 });
+                // for matching individual words like compound ters like "Jenny Smith"
+                // or "Create V2000-4"
+                // result must match ALL words in search
                 let _hasMatchingTerms   = _critTerms.every(sTermTag => {
                     return step.freeTextTerms.some((termTag) => {
                         return termTag.toUpperCase().startsWith(sTermTag.toUpperCase());
                     })
-                });                
-                return _hasMatchingRecords || _hasMatchingTerms ? true : false;
+                });
+                // for matching things like multi-word address, full name etc
+                let _hasMatchingTerm    = step.freeTextTerms.some((termTag) => {
+                    return termTag.toUpperCase().startsWith(_critTerm.toUpperCase());
+                })             
+                return _hasMatchingRecords || _hasMatchingTerms || _hasMatchingTerm ? true : false;
             });
         }
 
@@ -464,10 +499,31 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
             step.description.forEach((desc: {text: string, cssClasses: string[]}) => {
                 retVal = retVal.concat(desc.text.split(' '));
             });
-
             retVal = retVal.concat(step.title.split(' '));
         }
-        return [...new Set(retVal)];
+        if(step.resolvedVirtualEntityId && this._virtualEntitiesById && this._virtualEntitiesById.has && this._virtualEntitiesById.has(step.resolvedVirtualEntityId)) {
+            // add important data from result entity in to search
+            let termsToAdd = [];
+            let itemToScan  = this._virtualEntitiesById.get(step.resolvedVirtualEntityId);
+            if(itemToScan.bestName) { 
+                termsToAdd.push(itemToScan.bestName); 
+            } else if(itemToScan.entityName) {
+                termsToAdd.push(itemToScan.entityName); 
+            }
+            if(itemToScan.features && Object.keys(itemToScan.features).length > 0) {
+                // has features, add them
+                for(var _k in itemToScan.features) {
+                    // each one of these items is an array
+                    termsToAdd = termsToAdd.concat(itemToScan.features[_k].map((_f)=>{
+                        return _f.primaryValue ? _f.primaryValue : undefined;
+                    })).filter((_fVal) => { return _fVal && _fVal !== undefined; });
+                }
+            }
+            retVal = retVal.concat(termsToAdd);
+        }
+        let ret = [...new Set(retVal)];
+        console.log(`getStepListItemFreeTextTerms()`, ret, step, this._virtualEntitiesById);
+        return ret;
     }    
 
     private getStepListCardType(step: SzResolutionStep): SzResolutionStepDisplayType {
@@ -535,6 +591,16 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.pdModels = ['','','',''];
+        this._virtualEntitiesDataChange.pipe(
+            takeUntil(this.unsubscribe$),
+            filter((val) => { return val !== undefined; })
+        ).subscribe((val) => {
+            console.warn(`virtual entities changed: `, val);
+            // this will change list data for search
+            // re-initialize
+            this._listSteps = this.getListSteps();
+            console.warn(`re-initialized search data: `, this._listSteps);
+        })
     }
 
     /**

@@ -23,6 +23,7 @@ import { SzPrefsService } from './sz-prefs.service';
     providedIn: 'root'
 })
 export class SzHowUIService {
+    private _navigationExpanded: boolean        = true;
     private _pinnedSteps: string[]              = [];
     private _expandedFinalEntities: string[]    = [];
     private _expandedStepsOrGroups: string[]    = [];
@@ -52,17 +53,20 @@ export class SzHowUIService {
       }
       this._finalEntities = value;
     }
-
     public set stepGroups(value: Map<string, SzResolutionStepGroup>) {
       this._stepGroups              = value;
     }
-
     public set stepsList(value: Array<SzResolutionStep | SzResolutionStepGroup>) {
       this._stepsList = value;
     }
-
     public get stepsList(): Array<SzResolutionStep | SzResolutionStepGroup> {
       return this._stepsList;
+    }
+    public get isNavExpanded(): boolean {
+      return this._navigationExpanded;
+    }
+    public set isNavExpanded(value: boolean) {
+      this._navigationExpanded = value;
     }
 
     idIsGroupId(vId: string): boolean {

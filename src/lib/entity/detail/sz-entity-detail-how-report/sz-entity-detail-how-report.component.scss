@@ -6,6 +6,7 @@
   margin-top: 2em;
 
   // ----------------- start scss overrides
+  /*
   --sz-how-step-card-border: 1px solid rgb(0 0 0 / 31%);
   --sz-how-step-card-type-color-add: rgb(254 174 0 / 58%);
   --sz-how-step-card-type-color-create: rgb(255 217 50 / 75%);
@@ -15,6 +16,19 @@
 
   --sz-how-step-card-data-table-border: 1px solid #1c1c1c45;
   --sz-how-step-card-data-table-cell-border: 1px solid #1c1c1c45;
+  */
+
+  --sz-how-step-card-color: var(--sz-entity-detail-section-how-step-card-color);
+  --sz-how-step-card-border: var(--sz-entity-detail-section-how-step-card-border);
+  --sz-how-step-card-type-color-add: var(--sz-entity-detail-section-how-step-card-type-color-add);
+  --sz-how-step-card-type-color-create: var(--sz-entity-detail-section-how-step-card-type-color-create);
+  --sz-how-step-card-type-color-merge: var(--sz-entity-detail-section-how-step-card-type-color-merge);
+  --sz-how-step-card-type-color-interim: var(--sz-entity-detail-section-how-step-card-type-color-interim);
+  --sz-how-step-card-type-color-final: var(--sz-entity-detail-section-how-step-card-type-color-final);
+  --sz-how-step-card-data-table-border: var(--sz-entity-detail-section-how-step-card-data-table-border);
+  --sz-how-step-card-data-table-cell-border:var(--sz-entity-detail-section-how-step-card-data-table-cell-border);
+
+
   // ----------------- end   scss overrides
 
 

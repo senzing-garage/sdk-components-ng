@@ -1,49 +1,54 @@
-<form class="how-nav-parameters" name="how-nav-parameters">
-  <section class="parameter-block free-text-search">
-    <label>Filter By Text or Record ID:</label>
-    <mat-form-field class="free-text-search">
-      <input matInput placeholder="" [(ngModel)]="filterByTextOrRecordId" name="textOrRecordIdField">
-    </mat-form-field>
-  </section>
-  <section class="parameter-block">
-    <label>Filter by How Step Type</label>
-    <ul>
-      <li *ngIf="getParameterCount('CREATE') > 0">
-        <mat-checkbox [(ngModel)]="filterByVirtualEntityCreation" name="filterByVirtualEntityCreationCheckbox" class="prevent-text-selection">Create Virtual Entity ({{getParameterCount('CREATE')}})</mat-checkbox>
-      </li>
-      <li *ngIf="getParameterCount('MERGE') > 0">
-        <mat-checkbox [(ngModel)]="filterByMergeInterimEntitites" name="filterByMergeInterimEntititesCheckbox" class="prevent-text-selection">Merge Interim Entitites ({{getParameterCount('MERGE')}})</mat-checkbox>
-      </li>
-      <li *ngIf="getParameterCount('ADD') > 0">
-        <mat-checkbox [(ngModel)]="filterByAddRecordtoVirtualEntity" name="filterByMergeInterimEntititesCheckbox" class="prevent-text-selection">Add Record to Virtual Entity ({{getParameterCount('ADD')}})</mat-checkbox>
-      </li>
-    </ul>
-  </section>
-  <section class="parameter-block" *ngIf="getParameterCount('LOW_SCORE_NAME') > 0 || getParameterCount('LOW_SCORE_ADDRESS') > 0">
-    <label>Filter by Low-Scoring Matches</label>
-    <ul>
-      <li *ngIf="getParameterCount('LOW_SCORE_NAME') > 0">
-        <mat-checkbox [(ngModel)]="filterByLowScoringNames" name="filterByLowScoringNamesCheckbox" class="prevent-text-selection">Low Scoring Names ({{getParameterCount('LOW_SCORE_NAME')}})</mat-checkbox>
-      </li>
-      <li *ngIf="getParameterCount('LOW_SCORE_ADDRESS') > 0">
-        <mat-checkbox [(ngModel)]="filterByLowScoringAddresses" name="filterByLowScoringAddressesCheckbox" class="prevent-text-selection">Low Scoring Addresses ({{getParameterCount('LOW_SCORE_ADDRESS')}})</mat-checkbox>
-      </li>
-      <li *ngIf="getParameterCount('LOW_SCORE_PHONE') > 0">
-        <mat-checkbox [(ngModel)]="filterByLowScoringPhoneNumbers" name="filterByLowScoringPhoneNumbersCheckbox" class="prevent-text-selection">Low Scoring Phone Numbers ({{getParameterCount('LOW_SCORE_PHONE')}})</mat-checkbox>
-      </li>
-    </ul>
-  </section>
-  <section class="results-block">
-    <label>Matching Steps</label>
-    <nav>
+<div class="scroll-panel">
+  <form class="how-nav-parameters" name="how-nav-parameters">
+    <section class="parameter-block free-text-search">
+      <label>Filter By Text or Record ID:</label>
+      <mat-form-field class="free-text-search">
+        <input matInput placeholder="" [(ngModel)]="filterByTextOrRecordId" name="textOrRecordIdField">
+      </mat-form-field>
+    </section>
+    <section class="parameter-block">
+      <label>Filter by How Step Type</label>
       <ul>
-        <li *ngFor="let step of filteredListSteps" [ngClass]="step.cssClasses" (click)="stepClicked(step)">
-          <h3>{{step.stepNumber}}. {{step.title}}</h3>
-          <ul>
-            <li *ngFor="let descLine of step.description" [ngClass]="descLine.cssClasses">{{descLine.text}}</li>
-          </ul>
+        <li *ngIf="getParameterCount('CREATE') > 0">
+          <mat-checkbox [(ngModel)]="filterByVirtualEntityCreation" name="filterByVirtualEntityCreationCheckbox" class="prevent-text-selection">Create Virtual Entity ({{getParameterCount('CREATE')}})</mat-checkbox>
+        </li>
+        <li *ngIf="getParameterCount('MERGE') > 0">
+          <mat-checkbox [(ngModel)]="filterByMergeInterimEntitites" name="filterByMergeInterimEntititesCheckbox" class="prevent-text-selection">Merge Interim Entitites ({{getParameterCount('MERGE')}})</mat-checkbox>
+        </li>
+        <li *ngIf="getParameterCount('ADD') > 0">
+          <mat-checkbox [(ngModel)]="filterByAddRecordtoVirtualEntity" name="filterByMergeInterimEntititesCheckbox" class="prevent-text-selection">Add Record to Virtual Entity ({{getParameterCount('ADD')}})</mat-checkbox>
         </li>
       </ul>
-    </nav>
-  </section>
-</form>
+    </section>
+    <section class="parameter-block" *ngIf="getParameterCount('LOW_SCORE_NAME') > 0 || getParameterCount('LOW_SCORE_ADDRESS') > 0">
+      <label>Filter by Low-Scoring Matches</label>
+      <ul>
+        <li *ngIf="getParameterCount('LOW_SCORE_NAME') > 0">
+          <mat-checkbox [(ngModel)]="filterByLowScoringNames" name="filterByLowScoringNamesCheckbox" class="prevent-text-selection">Low Scoring Names ({{getParameterCount('LOW_SCORE_NAME')}})</mat-checkbox>
+        </li>
+        <li *ngIf="getParameterCount('LOW_SCORE_ADDRESS') > 0">
+          <mat-checkbox [(ngModel)]="filterByLowScoringAddresses" name="filterByLowScoringAddressesCheckbox" class="prevent-text-selection">Low Scoring Addresses ({{getParameterCount('LOW_SCORE_ADDRESS')}})</mat-checkbox>
+        </li>
+        <li *ngIf="getParameterCount('LOW_SCORE_PHONE') > 0">
+          <mat-checkbox [(ngModel)]="filterByLowScoringPhoneNumbers" name="filterByLowScoringPhoneNumbersCheckbox" class="prevent-text-selection">Low Scoring Phone Numbers ({{getParameterCount('LOW_SCORE_PHONE')}})</mat-checkbox>
+        </li>
+      </ul>
+    </section>
+    <section class="results-block">
+      <label>Matching Steps</label>
+      <nav>
+        <ul>
+          <li *ngFor="let step of filteredListSteps" [ngClass]="step.cssClasses" (click)="stepClicked(step)">
+            <h3>{{step.stepNumber}}. {{step.title}}</h3>
+            <ul>
+              <li *ngFor="let descLine of step.description" [ngClass]="descLine.cssClasses">{{descLine.text}}</li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </section>
+  </form>
+</div>
+<div class="handle-resize">
+  <div class="handle-resize-toggle" (click)="toggleExpanded()"></div>
+</div>
