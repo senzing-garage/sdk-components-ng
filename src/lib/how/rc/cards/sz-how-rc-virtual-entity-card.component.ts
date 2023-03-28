@@ -112,7 +112,7 @@ export class SzHowRCVirtualEntityCardComponent implements OnInit {
     }
     get sources() {
         // check if we have a cached version of this first
-        if(!this._sources) {
+        if(!this._sources && this._data && this._data.records) {
             let _recordsByDataSource: {
                 [key: string]: Array<SzVirtualEntityRecord> 
             } = {};

@@ -25,10 +25,15 @@
         justify-content: right;
 
         .scroll-panel {
-            width: 10px;
+            width: 0px;
             overflow: hidden;
             white-space: nowrap;
         }
+
+        .handle-resize {
+            margin-left: 5px;
+        }
+
     }
     
     label {        

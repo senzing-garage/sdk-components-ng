@@ -45,6 +45,7 @@
     .title-text {
         flex-grow: 5;
         margin-top: 3px;
+        margin-top: var(--sz-how-step-card-title-text-margin-top);
     }
     .title-from {
         display: inline-block;

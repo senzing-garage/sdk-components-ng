@@ -86,7 +86,6 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     @Input() public set virtualEntitiesById(value: Map<string, SzResolvedVirtualEntity>) {
         if(this._virtualEntitiesById === undefined && value !== undefined) {
             this._virtualEntitiesById = value;
-            //console.log('SzHowRCStepCardComponent.setVirtualEntitiesById: ', this._virtualEntitiesById);
         }
         this._virtualEntitiesById = value;
     }
@@ -368,7 +367,7 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     }
 
     openVirtualEntityDialog(evt) {
-      console.log('openVirtualEntityDialog: ', evt);
+      console.log('openVirtualEntityDialog: ', evt, this.resolvedVirtualEntity, this._data, this.featureOrder);
       //return;
       //this._virtualEntityInfoLinkClick.next(evt);
       let targetEle = new ElementRef(evt.target);

@@ -31,70 +31,45 @@ export interface SzHowRCNavComponentParameterCounts {
 export class SzHowRCNavComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
+    /** 
+     * @internal
+     * object of steps to navigate keyed by virtualId
+     */
     private _stepMap: {[key: string]: SzResolutionStep} = {};
+    /** 
+     * @internal
+     * map of virtual entities keyed by virtualId
+     */
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
+    private _listSteps: SzResolutionStepListItem[];
+    private _virtualEntitiesDataChange: Subject<Map<string, SzResolvedVirtualEntity>> = new Subject<Map<string, SzResolvedVirtualEntity>>();
+    public  virtualEntitiesDataChange   = this._virtualEntitiesDataChange.asObservable();
 
+    /** whether or not to add the collapsed css class to the component */
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
         return !this.howUIService.isNavExpanded;
     }
+    /** whether or not to add the expanded css class to the component */
     @HostBinding('class.expanded') get cssExpandedClass(): boolean {
         return this.howUIService.isNavExpanded;
     }
-
-    private _virtualEntitiesDataChange: Subject<Map<string, SzResolvedVirtualEntity>> = new Subject<Map<string, SzResolvedVirtualEntity>>();
-    public  virtualEntitiesDataChange   = this._virtualEntitiesDataChange.asObservable();
-    private _listSteps: SzResolutionStepListItem[];
-    private _finalVirtualEntities: SzVirtualEntity[];
-    public pdModels = [
-        '',
-        '',
-        '',
-        '',
-    ];
-
-    @Input() public finalEntityId: SzEntityIdentifier;
+    /** when a feature's score falls below this value it is counted as "low scoring" */
     @Input() public lowScoringFeatureThreshold: number = 80;
+    /** map of virtual entities keyed by virtualId */
     @Input() public set virtualEntitiesById(value: Map<string, SzResolvedVirtualEntity>) {
         this._virtualEntitiesById = value;
         this._virtualEntitiesDataChange.next(this._virtualEntitiesById);
     }
-
-    @Input() set finalVirtualEntities(value: SzVirtualEntity[]) {
-        this._finalVirtualEntities = value;
-    }
-    public get finalVirtualEntities(): SzVirtualEntity[] {
-        return this._finalVirtualEntities;
-    }
-
-    get finalVirtualEntityStepNumber(): number {
-        let retVal = 0;
-        if(this._finalVirtualEntities)
-            if(this._finalVirtualEntities.length == 1 && this._stepMap[this._finalVirtualEntities[0].virtualEntityId]) {
-                // single result
-                this._finalVirtualEntities[0].virtualEntityId
-                retVal = parseInt( this._stepMap[this._finalVirtualEntities[0].virtualEntityId].stepNumber as unknown as string) + 1;
-            } else {
-                // hold on to your hat, this is kind of wild
-
-            }
-        return retVal;
-    }
-
-    public get numberOfSteps() {
-        let retVal = 0;
-        if(this._stepMap) {
-            retVal = Object.keys(this._stepMap).length;
-        }
-        return retVal;
-    }
-
+    /** an object of steps whos key value is the virtual id of the step */
     @Input() set stepsByVirtualId(value: {[key: string]: SzResolutionStep}) {
         this._stepMap = value;
         this._parameterCounts = this.getParameterCounts();
     }
+    /** an object of steps whos key value is the virtual id of the step */
     get stepsByVirtualId(): {[key: string]: SzResolutionStep} {
         return this._stepMap;
     }
+    /** returns an array of steps regardless of step type  */
     get allSteps(): SzResolutionStep[] {
         let retVal = [];
         if(this._stepMap) {
@@ -104,6 +79,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
+    /** gets the total number of steps */
     get numberOfTotalSteps(): number {
         let retVal = 0;
         if(this._stepMap && Object.keys(this._stepMap)) {
@@ -111,6 +87,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
+    /** gets the total number of steps where two virtual entitities where merged together */
     get numberOfMergeSteps(): number {
         let retVal = 0;
         if(this.mergeSteps) {
@@ -118,6 +95,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
+    /** gets the total number of steps where an individual record was added to an existing virtual entity */
     get numberOfAddRecordSteps(): number {
         let retVal = 0;
         if(this.addRecordSteps) {
@@ -125,6 +103,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
+    /** gets the total number of steps where two records created a new virtual entity */
     get numberOfCreateVirtualEntitySteps(): number {
         let retVal = 0;
         if(this.createEntitySteps) {
@@ -132,7 +111,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
-    
+    /** returns a array of resolution steps that merge virtual entities together */
     get mergeSteps(): SzResolutionStep[] {
         let retVal = undefined;
         if(this._stepMap && Object.keys(this._stepMap) && Object.keys(this._stepMap).length > 0) {
@@ -152,6 +131,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
+    /** returns a array of resolution steps that add a record to a previously created virtual entity */
     get addRecordSteps(): SzResolutionStep[] {
         let retVal = undefined;
         if(this._stepMap && Object.keys(this._stepMap) && Object.keys(this._stepMap).length > 0) {
@@ -174,6 +154,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
+    /** returns a array of resolution steps where both the inbound AND candidate entities are singletons */
     get createEntitySteps(): SzResolutionStep[] {
         let retVal = undefined;
         if(this._stepMap && Object.keys(this._stepMap) && Object.keys(this._stepMap).length > 0) {
@@ -192,6 +173,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         return retVal;
     }
 
+    /** sets whether or not the "collapsed" css class is applied to component */
     toggleExpanded() {
         this.howUIService.isNavExpanded = !this.howUIService.isNavExpanded;
     }
@@ -239,6 +221,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
 
     // ---------------------------------------- start filtered collection getters
     
+    /** list for steps extended with presentation and filtering specific data */
     public get listSteps(): SzResolutionStepListItem[] {
         let retVal: SzResolutionStepListItem[] = [];
         if(!this._listSteps) {
@@ -249,9 +232,10 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
-
+    /** @internal
+     * generates extended presentation and filtering specific data for steps and returns them as an array of extended items */
     private getListSteps(): SzResolutionStepListItem[] {
-        let retVal: SzResolutionStepListItem[] = [];
+        let retVal: SzResolutionStepListItem[];
         if(this._stepMap) {
             let _steps = (Object.values(this._stepMap));
             retVal = _steps.map((_s: SzResolutionStep) => {
@@ -269,7 +253,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
-
+    /** the list of steps filtered by user controls */
     public get filteredListSteps(): SzResolutionStepListItem[] {
         let oVal    = this.listSteps;
         let retVal  = oVal.filter((step: SzResolutionStepListItem) => {
@@ -379,7 +363,11 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         return retVal;
     }
 
-
+    /**
+     * @internal 
+     * map of counts for specific filtering criteria to show user how many items will be 
+     * selected when a filter is applied
+     */
     private _parameterCounts: SzHowRCNavComponentParameterCounts = {
         'CREATE': 0,
         'ADD': 0,
@@ -388,10 +376,13 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         'LOW_SCORE_ADDRESS':0,
         'LOW_SCORE_PHONE':0
     }
+    /** map of counts for specific filtering criteria to show user how many items will be 
+     * selected when a filter is applied
+     */
     public get parameterCounts(): SzHowRCNavComponentParameterCounts {
         return this._parameterCounts;
     }
-
+    /** gets the number of steps for a particular filter from the pre-generated parameterCounts map */
     public getParameterCount(name: string): number {
         let retVal = 0;
         if(this._parameterCounts && this._parameterCounts[ name ] !== undefined) {
@@ -399,7 +390,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
-
+    /** gets a map of how many step items match a particular filter parameter */
     private getParameterCounts() {
         let retVal = {
             'CREATE': 0,
@@ -590,7 +581,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
     ){}
 
     ngOnInit() {
-        this.pdModels = ['','','',''];
+        /** listen for virtual entities being lazily passed in */
         this._virtualEntitiesDataChange.pipe(
             takeUntil(this.unsubscribe$),
             filter((val) => { return val !== undefined; })
@@ -609,39 +600,6 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
-    }
-
-    public getIconForStep(step: SzResolutionStep) {
-        let retVal = 'merge';
-        if(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) {
-            // both items are records
-            retVal = 'merge';
-        } else if(!(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) && (step.candidateVirtualEntity.singleton === false || step.inboundVirtualEntity.singleton === false)) {
-            // one of the items is record, the other is virtual
-            retVal = 'ramp_left';
-        } else if(!step.candidateVirtualEntity.singleton && !step.inboundVirtualEntity.singleton) {
-            // both items are virtual entities
-            retVal = 'merge';
-        }
-        return retVal;
-    }
-
-    public stepDescription(step: SzResolutionStep) {
-        let retVal = '';
-        if(step && step.resolvedVirtualEntityId && this._stepMap && this._stepMap[step.resolvedVirtualEntityId]){
-            let isStepOneOfFinalEntities = false;
-            if(this._finalVirtualEntities) {
-                isStepOneOfFinalEntities = this._finalVirtualEntities.some((vEnt: SzVirtualEntity) => {
-                    return vEnt.virtualEntityId === step.resolvedVirtualEntityId;
-                });
-            }
-            if(isStepOneOfFinalEntities) {
-                retVal = (this._finalVirtualEntities && this._finalVirtualEntities.length === 1) ? `Entity ${this.finalEntityId}` : `Entity ${step.resolvedVirtualEntityId}`;
-            } else {
-                retVal = `Virtual Entity ${step.resolvedVirtualEntityId}`;
-            }
-        }
-        return retVal;
     }
 
     public stepClicked(step: SzResolutionStep) {

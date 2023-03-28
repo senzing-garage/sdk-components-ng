@@ -62,10 +62,9 @@ export class SzHowRCStepStackComponent implements OnInit, OnDestroy {
         }
         this._virtualEntitiesById = value;
     }
-    /*
-    @Input() set expanded(value: boolean) {
-        this._collapsed = !value;
-    }*/
+    public get virtualEntitiesById(): Map<string, SzResolvedVirtualEntity> {
+        return this._virtualEntitiesById;
+    }
 
     public get id(): string {
         return this._data && this._data.id ? this._data.id : undefined;
