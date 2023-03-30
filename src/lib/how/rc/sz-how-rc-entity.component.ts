@@ -470,6 +470,10 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
 
     private getFinalEntityFromMember(member: SzResolutionStep | SzResolutionStepGroup) {
       let isGroup = (member as SzResolutionStepGroup).virtualEntityIds ? true : false;
+      // you can dance if you want to !!! ... umm.. umm.. bumm.. SAFETY DANCE!!  OOOOOOhhhOOOhhhOooo SAFETY DANCE!
+      if(!(this.finalCardsData && this.finalCardsData.find)) {
+        return undefined;
+      }
       if(isGroup) {
         // check to see if all virtual entity ids are in a particula group
         let memberAsGroup = (member as SzResolutionStepGroup);

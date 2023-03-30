@@ -41,10 +41,15 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
      * map of virtual entities keyed by virtualId
      */
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
+    /** 
+     * @internal 
+     * when the list of steps is prepared for render it is extended with 
+     * metadata and cached in this variable*/
     private _listSteps: SzResolutionStepListItem[];
+    /** @internal when the full list of virtual entities is passed in or changed this subject emits */
     private _virtualEntitiesDataChange: Subject<Map<string, SzResolvedVirtualEntity>> = new Subject<Map<string, SzResolvedVirtualEntity>>();
+    /** when the full list of virtual entities is passed in or changed this subject emits */
     public  virtualEntitiesDataChange   = this._virtualEntitiesDataChange.asObservable();
-
     /** whether or not to add the collapsed css class to the component */
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
         return !this.howUIService.isNavExpanded;
@@ -253,7 +258,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
-    /** the list of steps filtered by user controls */
+    /** the list of steps filtered by user selected parameters */
     public get filteredListSteps(): SzResolutionStepListItem[] {
         let oVal    = this.listSteps;
         let retVal  = oVal.filter((step: SzResolutionStepListItem) => {
@@ -513,7 +518,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
             retVal = retVal.concat(termsToAdd);
         }
         let ret = [...new Set(retVal)];
-        console.log(`getStepListItemFreeTextTerms()`, ret, step, this._virtualEntitiesById);
+        //console.log(`getStepListItemFreeTextTerms()`, ret, step, this._virtualEntitiesById);
         return ret;
     }    
 

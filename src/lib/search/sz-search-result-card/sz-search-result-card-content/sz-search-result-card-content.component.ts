@@ -4,7 +4,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SzRelatedEntity, SzEntityRecord, SzAttributeSearchResult, SzEntityIdentifier } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
-
+import { howClickEvent } from '../../../models/data-how';
 /**
  * @internal
  * @export
@@ -88,7 +88,7 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
     return this._showHowButton;
   }
   /** (Event Emitter) when the user clicks on the "How" button */
-  @Output() howButtonClick = new EventEmitter<SzEntityIdentifier>();
+  @Output() howButtonClick = new EventEmitter<howClickEvent>();
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -237,14 +237,17 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
     return _otherData;
   }
 
-  public onHowButtonClick(event: Event) {
+  public onHowButtonClick(event: MouseEvent) {
     if(event.preventDefault) {
       event.preventDefault();
     }
     if(event.stopPropagation) {
       event.stopPropagation();
     }
-    this.howButtonClick.emit(this.entity.entityId);
+    let _payload: howClickEvent = Object.assign(event, {
+      entityId: this.entity.entityId
+    });
+    this.howButtonClick.emit(_payload);
   }
 
   private getEntityRecord(obj: any): SzEntityRecord {

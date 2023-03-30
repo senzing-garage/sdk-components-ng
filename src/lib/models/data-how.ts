@@ -1,4 +1,5 @@
-import { SzFeatureScore, SzRecordId, SzResolutionStep, SzResolvedEntity, SzVirtualEntity, SzVirtualEntityData, SzVirtualEntityRecord, SzVirtualEntityResponse } from '@senzing/rest-api-client-ng';
+import { SzFeatureScore, SzResolutionStep, SzResolvedEntity, SzVirtualEntity, SzVirtualEntityRecord } from '@senzing/rest-api-client-ng';
+import { SzEntityMouseEvent } from './event-basic-event';
 
 export interface SzHowFinalCardData extends SzResolutionStep {
     resolvedVirtualEntity: SzVirtualEntity
@@ -44,6 +45,7 @@ export interface SzResolutionStepGroup {
     resolutionSteps?: SzResolutionStep[]
 }
 
+export interface howClickEvent extends SzEntityMouseEvent {}
 export type SzResolutionStepListItemType = 'STACK' | 'GROUP' | 'STEP';
 export const SzResolutionStepListItemType = {
     STACK: 'STACK' as SzResolutionStepListItemType,

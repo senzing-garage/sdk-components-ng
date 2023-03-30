@@ -3,7 +3,7 @@ import { SzEntityDetailSectionData } from '../../models/entity-detail-section-da
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { SzAttributeSearchResult, SzEntityIdentifier } from '@senzing/rest-api-client-ng';
-
+import { howClickEvent } from '../../models/data-how';
 /**
  * @internal
  * @export
@@ -23,7 +23,7 @@ export class SzSearchResultCardComponent implements OnInit, OnDestroy {
   @Input()showDataSources: boolean;
   @Input()showMatchKey: boolean;
   /** (Event Emitter) when the user clicks on the "How" button */
-  @Output() howClick = new EventEmitter<SzEntityIdentifier>();
+  @Output() howClick = new EventEmitter<howClickEvent>();
 
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
@@ -70,8 +70,8 @@ export class SzSearchResultCardComponent implements OnInit, OnDestroy {
     //return `/search/details/${this.searchResult.entityId}`;
   }
 
-  public onHowButtonClick(entityId: SzEntityIdentifier) {
-    this.howClick.emit(entityId);
+  public onHowButtonClick(event: howClickEvent) {
+    this.howClick.emit(event);
   }
 
 }

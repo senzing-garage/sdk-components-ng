@@ -24,6 +24,8 @@ import { SzPrefsService } from '../../services/sz-prefs.service';
 import { parseBool } from '../../common/utils';
 import { SzDataSourceRecordsSelection, SzWhySelectionModeBehavior, SzWhySelectionMode } from '../../models/data-source-record-selection';
 import { SzMatchKeyTokenFilterScope } from '../../models/graph';
+import { howClickEvent } from '../../models/data-how';
+
 /**
  * The Entity Detail Component.
  * Generates a complex detail page from input parameters.
@@ -142,11 +144,11 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private _showGraphLinkContextMenu: boolean = false;
 
   /** @internal */
-  private _headerHowButtonClicked: Subject<SzEntityIdentifier> = new Subject<SzEntityIdentifier>();
+  private _headerHowButtonClicked: Subject<howClickEvent> = new Subject<howClickEvent>();
   /** (Observeable) when the user clicks on the "Why" button in header under the icon */
   public headerHowButtonClicked = this._headerHowButtonClicked.asObservable();
   /** (Event Emitter) when the user clicks on the "Why" button in header under the icon */
-  @Output() howButtonClick      = new EventEmitter<SzEntityIdentifier>();
+  @Output() howButtonClick      = new EventEmitter<howClickEvent>();
   /** @internal */
   private _headerWhyButtonClicked: Subject<SzEntityIdentifier> = new Subject<SzEntityIdentifier>();
   /** (Observeable) when the user clicks on the "Why" button in header under the icon */
@@ -810,8 +812,9 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   /**
    * proxies internal "how button" header click to "headerHowButtonClick" event.
    */
-  public onHeaderHowButtonClick(entityId: SzEntityIdentifier){
-    this.howButtonClick.emit(entityId);
+  public onHeaderHowButtonClick(event: howClickEvent){
+    //console.log(`SzEntityDetailComponent.onHeaderHowButtonClick()`, event);
+    this.howButtonClick.emit(event);
   }
   /**
    * proxies internal "why button" header click to "onHeaderWhyButtonClick" event.

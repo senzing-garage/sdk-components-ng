@@ -4,6 +4,7 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
+import { howClickEvent } from '../../../models/data-how';
 
 import {
   SzEntityData,
@@ -303,8 +304,8 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     // proxy internal "Subject" to event emitter for tidyness
     this._onHowButtonClicked.pipe(
       takeUntil(this.unsubscribe$)
-    ).subscribe( (entityId: SzEntityIdentifier) => {
-      this.onHowButtonClick.emit(entityId);
+    ).subscribe( (payload: howClickEvent) => {
+      this.onHowButtonClick.emit(payload);
     })
     
   }
@@ -364,11 +365,11 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
    * when the user clicks the "how" button (if enabled with "showHowFunction") 
    * @internal
   */
-  private _onHowButtonClicked = new Subject<SzEntityIdentifier>();
+  private _onHowButtonClicked = new Subject<howClickEvent>();
   /** (Observeable Event) when the user clicks the "how" button (if enabled with "showHowFunction") */
   public onHowButtonClicked   = this._onHowButtonClicked.asObservable();
   /** (Event Emitter) when the user clicks the "how" button (if enabled with "showHowFunction") */
-  @Output() onHowButtonClick: EventEmitter<SzEntityIdentifier> = new EventEmitter<SzEntityIdentifier>();
+  @Output() onHowButtonClick: EventEmitter<howClickEvent> = new EventEmitter<howClickEvent>();
   /** @internal */
   private _showHowFunction: boolean = false;
   /** whether or not to show the "How button" under the entity icon */
@@ -384,8 +385,12 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
    * which then proxies the event to observeables and emitters 
    * @internal 
   */
-  public onHowButtonClickHandler(event: any) {
-    this._onHowButtonClicked.next(this.entityId);
+  public onHowButtonClickHandler(event: MouseEvent) {
+    let _payload: howClickEvent = Object.assign(event);
+    _payload.entityId = this.entityId;
+
+    //console.info(`SzEntityDetailHeaderComponent.onHowButtonClickHandler()`, _payload, event);
+    this._onHowButtonClicked.next(_payload);
   }
   /**
    * When user clicks the "Why" button this handler is invoked 
