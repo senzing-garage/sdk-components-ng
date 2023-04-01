@@ -404,7 +404,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     }
   }
   public get showHowSection(): any {
-    return this._showGraphSection;
+    return this._showHowSection;
   }
   /**
    * show or hide the "Records" section.

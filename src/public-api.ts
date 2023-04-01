@@ -72,6 +72,7 @@ export { AdminStreamConnProperties, AdminStreamAnalysisConfig, AdminStreamLoadCo
 export { SzDataSourceRecordAnalysis, SzDataSourceComposite } from './lib/models/data-sources';
 export { SzGraphTooltipEntityModel, SzGraphTooltipLinkModel, SzGraphNodeFilterPair, SzMatchKeyComposite, SzMatchKeyTokenComposite, SzEntityNetworkMatchKeyTokens, SzNetworkGraphInputs, SzMatchKeyTokenFilterScope } from './lib/models/graph';
 export { SzDataSourceRecordsSelection, SzDataSourceRecordSelection, SzWhySelectionModeBehavior, SzWhySelectionMode } from './lib/models/data-source-record-selection';
+export * from './lib/models/data-how';
 
 /** why */
 export { SzWhyEntityComponent } from './lib/why/sz-why-entity.component';

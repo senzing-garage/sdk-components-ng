@@ -342,6 +342,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
                 _currentGroupId   = uuidv4();
                 retVal.set(_currentGroupId, {
                   id: _currentGroupId,
+                  isStackGroup: true,
                   resolutionSteps: []
                 });
 
@@ -422,6 +423,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
                 _currentGroupId   = uuidv4();
                 retVal.set(_currentGroupId, {
                   id: _currentGroupId,
+                  isStackGroup: true,
                   resolutionSteps: []
                 });
 
@@ -475,7 +477,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
         return undefined;
       }
       if(isGroup) {
-        // check to see if all virtual entity ids are in a particula group
+        // check to see if all virtual entity ids are in a particular group
         let memberAsGroup = (member as SzResolutionStepGroup);
         let parentFinal = this.finalCardsData.find((fEnt: SzVirtualEntity) => {
           let idToLookFor = fEnt.virtualEntityId;

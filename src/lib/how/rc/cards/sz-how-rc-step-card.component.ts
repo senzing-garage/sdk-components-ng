@@ -40,6 +40,7 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     private _parentStep: SzResolutionStep;
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
     private _highlighted: boolean = false;
+    private _isStackGroupMember: boolean = false;
 
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
         return !this.howUIService.isStepExpanded(this.id);
@@ -109,20 +110,16 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
         vId = vId ? vId : this.id;
         this.howUIService.toggleExpansion(vId);
     }
-
-    isGroupCollapsed() {
-        return this.howUIService.isGroupExpanded(this._groupId);
-    }
-
     public toggleGroupExpansion(gId?: string) {
         gId = gId ? gId : this.id;
         this.howUIService.toggleExpansion(undefined, gId);
     }
-
+    public get isGroupCollapsed() {
+        return !this.howUIService.isGroupExpanded(this._groupId);
+    }
     private get id(): string {
         return this._data && this._data.resolvedVirtualEntityId ? this._data.resolvedVirtualEntityId : undefined;
     }
-
     get canExpand(): boolean {
         return true;
         let vId = (this.isGroupMember || this.groupTitle !== undefined) && this._groupId ? this._groupId : this.id;
@@ -144,11 +141,11 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     get isGroupMember(): boolean {
         return this._groupId ? true : false;
     }
+    get isStackGroupMember(): boolean {
+        return this.howUIService.isStepMemberOfStack(this.id, this._groupId);
+    }
     get isUnpinned(): boolean {
         return !this.howUIService.isStepPinned(this._data.resolvedVirtualEntityId, this._groupId);
-    }
-    public getIsUnpinned() {
-        console.log('getIsUnpinned(): isStepPinned ? '+ this.howUIService.isStepPinned(this._data.resolvedVirtualEntityId, this._groupId));
     }
     get canBeGrouped(): boolean {
         return this.howUIService.stepCanBeUnPinned(this._data.resolvedVirtualEntityId);
@@ -165,9 +162,11 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     get inboundVirtualEntity(): SzVirtualEntity | undefined {
         return (this._data && this._data.inboundVirtualEntity) ? this._data.inboundVirtualEntity : undefined ;
     }
-    
     public get isCollapsed() {
         return !this.howUIService.isStepExpanded(this.id);
+    }
+    public get isMergeStep() {
+        return this.displayType === SzResolutionStepDisplayType.MERGE;
     }
     public get isInterimEntity() {
         return this.displayType === SzResolutionStepDisplayType.INTERIM;
@@ -175,42 +174,30 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     public get isInterimStep() {
         return this.displayType === SzResolutionStepDisplayType.INTERIM;
     }
-    public get isCreateEntity() {
+    public get isCreateEntityStep() {
         return this.displayType === SzResolutionStepDisplayType.CREATE;
     }
     public get isFinalEntity() {
         return this.displayType === SzResolutionStepDisplayType.FINAL;
     }
+    public get isAddRecordStep() {
+        return this.displayType === SzResolutionStepDisplayType.ADD;
+    }
     public get groupTitle(): string {
         return this._groupTitle;
     }
-    public get from(): string {
-        let retVal = '';
-        let _resolvedEntity = this.resolvedVirtualEntity;
-        let _dsArr = [];
-
+    public get from(): string[] {
+        let retVal = [];
         // do datasources
         if(this._data && this._data.candidateVirtualEntity && this._data.candidateVirtualEntity.records) {
-            _dsArr = _dsArr.concat(this._data.candidateVirtualEntity.records.map((record: SzVirtualEntityRecord) => {
+            retVal = retVal.concat(this._data.candidateVirtualEntity.records.map((record: SzVirtualEntityRecord) => {
                 return `${record.dataSource}:${record.recordId}`;
             }));
         }
         if(this._data && this._data.inboundVirtualEntity && this._data.inboundVirtualEntity.records) {
-            _dsArr = _dsArr.concat(this._data.inboundVirtualEntity.records.map((record: SzVirtualEntityRecord) => {
+            retVal = retVal.concat(this._data.inboundVirtualEntity.records.map((record: SzVirtualEntityRecord) => {
                 return `${record.dataSource}:${record.recordId}`;
             }));
-        }
-        if(_dsArr.length > 0) {
-            retVal = _dsArr.join('<span class="how-step-card-title-token">and</span>');
-        }
-        if(this._data && this._data.matchInfo) {
-            // now check matchkey and principle
-            if(this._data.matchInfo.matchKey) {
-                retVal = retVal +`<span class="how-step-card-title-token">on</span>${this._data.matchInfo.matchKey}`;
-            }
-            if(this._data.matchInfo.resolutionRule) {
-                retVal = retVal +`<span class="how-step-card-title-token">using</span>${this._data.matchInfo.resolutionRule}`;
-            }
         }
         return retVal;
     }
@@ -234,7 +221,7 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
             // one of the items is record, the other is virtual
             retVal = 'Add Record to Virtual Entity';
         }
-        return `Step ${this._data.stepNumber}: ${retVal}`;
+        return (displayType !== SzResolutionStepDisplayType.INTERIM) ? `Step ${this._data.stepNumber}: ${retVal}` : retVal;
     }
     public get description(): string[] {
         let retVal = [];
@@ -250,6 +237,31 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
             if(this._data.matchInfo && this._data.matchInfo.resolutionRule) {
                 retVal.push(`Using <span class="emphasized">${this._data.matchInfo.resolutionRule}</span>`);
             }
+        }
+        return retVal;
+    }
+    public get forms(): string {
+        return (this._data && this._data.resolvedVirtualEntityId) ? (this._data.resolvedVirtualEntityId) : undefined;
+    }
+    public get resolutionRule(): string {
+        if(this._data && this._data.matchInfo && this._data.matchInfo.resolutionRule) {
+            return this._data.matchInfo.resolutionRule;
+        }
+        return undefined;
+    }
+    public get matchKey(): string {
+        if(this._data && this._data.matchInfo && this._data.matchInfo.matchKey) {
+            return this._data.matchInfo.matchKey;
+        }
+        return undefined;
+    }
+    public get dataSources(): string[] {
+        let retVal;
+        let _resolvedEntity = this.resolvedVirtualEntity;
+        if(_resolvedEntity && _resolvedEntity.recordSummaries && _resolvedEntity.recordSummaries.length > 0) {
+            retVal = _resolvedEntity.recordSummaries.map((rs: SzDataSourceRecordSummary) => {
+                return `${rs.dataSource} (${rs.recordCount})`;
+            });
         }
         return retVal;
     }

@@ -39,6 +39,7 @@ export interface SzVirtualEntityRecordsByDataSource {
 export interface SzResolutionStepGroup {
     id: string,
     arrayIndex?: number,
+    isStackGroup?: boolean,
     virtualEntityIds?: string[],
     mergeStep?: SzResolutionStep,
     interimSteps?: SzResolutionStep[],

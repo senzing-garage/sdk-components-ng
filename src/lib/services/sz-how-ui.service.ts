@@ -341,6 +341,7 @@ export class SzHowUIService {
               insertAfterGroup  = [insertAfterGroup[0]]; // delete all the items we sliced off
               let _newGroup: SzResolutionStepGroup     = {
                 id: uuidv4(),
+                isStackGroup: true,
                 resolutionSteps: (_membersOfNewGroup as SzResolutionStep[]),
                 virtualEntityIds: _membersOfNewGroup.map((rStep) => { 
                   return (rStep as SzResolutionStep).resolvedVirtualEntityId; 
@@ -471,6 +472,7 @@ export class SzHowUIService {
             let _membersOfNewGroup = [_previousItem, _stepToMove];
             _groupToMoveTo     = {
               id: uuidv4(),
+              isStackGroup: true,
               resolutionSteps: (_membersOfNewGroup as SzResolutionStep[]),
               virtualEntityIds: _membersOfNewGroup.map((rStep) => { 
                 return (rStep as SzResolutionStep).resolvedVirtualEntityId; 
@@ -504,6 +506,7 @@ export class SzHowUIService {
               let _membersOfNewGroup = [_stepToMove];
               _groupToMoveTo     = {
                 id: uuidv4(),
+                isStackGroup: true,
                 resolutionSteps: (_membersOfNewGroup as SzResolutionStep[]),
                 virtualEntityIds: _membersOfNewGroup.map((rStep) => { 
                   return (rStep as SzResolutionStep).resolvedVirtualEntityId; 
@@ -618,6 +621,44 @@ export class SzHowUIService {
         }
       });
       return retVal;
+    }
+
+    private stepGroupStacks(): SzResolutionStepGroup[] {
+      let retVal;
+      let _groupsAsArray  = Array.from(this._stepGroups.values());
+      if(_groupsAsArray && _groupsAsArray.filter) {
+        retVal = _groupsAsArray.filter((_val: SzResolutionStepGroup)=>{
+          return _val.isStackGroup;
+        });
+      }
+      return retVal;
+    }
+
+    public isStepMemberOfStack(vId: string, gId?: string) {
+      if(vId) {
+        if(gId) {
+          // we are looking in a specific group
+          let _groupSpecified = this._stepGroups.has(gId) ? this._stepGroups.get(gId) : undefined;
+          if(_groupSpecified) {
+            // group exists
+            if(_groupSpecified && _groupSpecified.virtualEntityIds) {
+              return _groupSpecified.virtualEntityIds.indexOf(vId) > -1 ? true : false;
+            }
+          }
+        } else {
+          // check all groups
+          let _stackGroups = this.stepGroupStacks();
+          if(_stackGroups && _stackGroups.length > 0) {
+            let _memberInGroup = _stackGroups.find((grp: SzResolutionStepGroup) => {
+              return grp.virtualEntityIds.indexOf(vId) > -1 ? true : false;
+            });
+            if(_memberInGroup) {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
     }
 
     public isStepPinned(vId: string, gId?: string): boolean {
