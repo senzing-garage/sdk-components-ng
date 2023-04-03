@@ -954,6 +954,10 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   public canExpandNode(entityId: SzEntityIdentifier): boolean {
     return false;
   }
+
+  /** this is a hoisted function assigned from  "addSvg" inner */
+  private _expandNodeAndRelated: any;
+
   /**
    * Add to the chart entities immediately related to the specified entity
    * @internal
@@ -1051,7 +1055,11 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     let _node = this.getNodeByIdQuery(entityId);
     if(_node && _node.size && _node.size() > 0) {
       _node.each((d) => {
-        this._expandNode(d);
+        if(this._expandNodeAndRelated){
+          this._expandNodeAndRelated(d);  // hoisted function from "addSvg" inner
+        } else {
+          this._expandNode(d);
+        }
       });
     }
   }
@@ -2411,12 +2419,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       return Math.floor(Math.random() * (max - min + 1) + min)
     }
 
-    let onExpandCollapseClick     = (event, d) => {
-      // this handler always superceeds any click events etc
-      // so we stop propagation
-      event.stopPropagation();
-
-      if(!d.allRelatedEntitiesOnDeck) {
+    let expandNodeAndRelated = (d) =>{
         // get all related entities
         d.loadingRelatedToDeck = true;
         this.getNodeByIdQuery(d.entityId).attr('class', this.getEntityNodeClass.bind(this));
@@ -2477,6 +2480,18 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           this.updateIsRelatedToFocalEntitiesForLinks(this.link, this.linkLabel);
           return;
         });
+    }
+    // hoist the function inner scoped function to the outer
+    // scope so class level methods can call the inner function
+    this._expandNodeAndRelated = expandNodeAndRelated;
+
+    let onExpandCollapseClick     = (event, d) => {
+      // this handler always superceeds any click events etc
+      // so we stop propagation
+      if(event && event.stopPropagation){ event.stopPropagation(); }
+
+      if(!d.allRelatedEntitiesOnDeck) {
+        expandNodeAndRelated(d);
       } else {
         this.expandCollapseToggle(d);
         // update any "focal" link properties
