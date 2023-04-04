@@ -250,47 +250,8 @@
   @include no-text-selection;
 }
 
-.has-tooltip {
-  position: relative;
-  .tooltip {
-    position: absolute;
-    visibility: hidden;
-    opacity: 0;
-    right: -100%;
-    bottom: 115%;
-    /* width: 120px; */
-    background-color: #00000073;
-    color: #fff;
-    text-align: center;
-    padding: 5px 8px;
-    border-radius: 6px;
-    white-space: nowrap;
-    font-size: 10px;
-    z-index: 1;
-    transition: opacity .5s;
-  }
-  &.block-level-src {
-    .tooltip {
-      right: 10%;
-    }
-  }
-  /* tooltip has little pointer nub */
-  .tooltip::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 80%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #00000073 transparent transparent transparent;
-  }
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.has-tooltip:hover .tooltip {
-  visibility: visible;
-  opacity: 1;
+.tooltip-text {
+  display: none;
 }
 
 .cdk-drag-preview {

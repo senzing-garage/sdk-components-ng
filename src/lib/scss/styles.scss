@@ -210,6 +210,42 @@ mat-chip-listbox.match-keys {
   }
 }
 
+/* graph tooltips */
+.cdk-overlay-pane {
+  .sz-sdk-tooltip {
+    position: relative;
+    /*visibility: hidden;*/
+    opacity: 1;
+    left: -80%;
+    bottom: 60px;
+    /* width: 120px; */
+    background-color: #000000a6;
+    color: #fff;
+    text-align: center;
+    padding: 10px 16px;
+    border-radius: 6px;
+    white-space: nowrap;
+    font-size: 10px;
+    z-index: 1;
+    transition: opacity 500ms;
+  }
+  /* tooltip has little pointer nub */
+  .sz-sdk-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 80%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #000000a6 transparent transparent transparent;
+  }
+  &.fade-out {
+    .sz-sdk-tooltip {
+      opacity: 0;
+    }
+  }
+}
 
 .senzing-alarm:before {
   content: "\e900";

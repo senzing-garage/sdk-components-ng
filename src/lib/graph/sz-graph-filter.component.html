@@ -1,20 +1,25 @@
+<!-- start graph filtering tooltip template -->
+<ng-template #tooltip let-tooltipMessage>
+  <span class="sz-sdk-tooltip tooltip-left">{{tooltipMessage}}</span>
+</ng-template>
+<!-- end   graph filtering tooltip template -->
 <div class="drawer-wrapper">
   <h3>{{ sectionTitles[0] }}</h3>
 
   <form [formGroup]="slidersForm">
   <ul class="sliders-list">
-    <li class="has-tooltip block-level-src no-text-selection">
+    <li class="block-level-src no-text-selection" (mouseenter)="onShowTooltip(ttt1.innerHTML, $event)" (mouseleave)="hideTooltip(ttt1.innerHTML)">
       <label class="checkbox-row">
         <div class="checkbox-row">
-          <span class="has-tooltip">
+          <span>
             Show Match Keys
-            <span class="tooltip tooptip-left">display match keys on relationship lines</span>
+            <span #ttt1 class="tooltip-text">display match keys on relationship lines</span>
           </span>
           <span class="left-adjusted no-text"><mat-checkbox class="unpadded" [checked]="showLinkLabels" (change)="onCheckboxPrefToggle('showLinkLabels',$event.checked)"></mat-checkbox></span>
         </div>
       </label>
     </li>
-    <!--<li class="has-tooltip block-level-src no-text-selection">
+    <!--<li class="block-level-src no-text-selection">
       <span class="tooltip">do not show inter-related first level links</span>
       <label>
         <input type="checkbox"
@@ -24,23 +29,23 @@
         Suppress Indirect Links
       </label>
     </li>-->
-    <li class="has-tooltip block-level-src no-text-selection">
+    <li class="block-level-src no-text-selection" (mouseenter)="onShowTooltip(ttt2.innerHTML, $event)" (mouseleave)="hideTooltip(ttt2.innerHTML)">
       <label class="checkbox-row">
         <div class="checkbox-row">
-          <span class="has-tooltip">
+          <span cclass="has-tooltip">
             Hide Indirect Links
-            <span class="tooltip tooptip-left">do not show inter-related first level links</span>
+            <span #ttt2 class="tooltip-text">do not show inter-related first level links</span>
           </span>
           <span class="left-adjusted no-text"><mat-checkbox class="unpadded" [checked]="suppressL1InterLinks" (change)="onCheckboxPrefToggle('suppressL1InterLinks',$event.checked)"></mat-checkbox></span>
         </div>
       </label>
     </li>
-    <li class="has-tooltip block-level-src no-text-selection">
+    <li class="block-level-src no-text-selection" (mouseenter)="onShowTooltip(ttt3.innerHTML, $event)" (mouseleave)="hideTooltip(ttt3.innerHTML)">
       <label class="checkbox-row">
         <div class="checkbox-row">
-          <span class="has-tooltip">
+          <span>
             Scope
-            <span class="tooltip tooptip-left">number of relationship hops away from focused entity</span>
+            <span #ttt3 class="tooltip-text">number of relationship hops away from focused entity</span>
           </span>
           <span class="left-adjusted"><mat-checkbox class="unpadded" [checked]="unlimitedMaxScope" (change)="onMaxUnlimitedChange('unlimitedMaxScope',$event.checked)">unlimited</mat-checkbox></span>
         </div>
@@ -54,12 +59,12 @@
         <span class="intVal">({{ buildOut }})</span>
       </label>
     </li>
-    <li class="has-tooltip block-level-src no-text-selection" *ngIf="showMaxEntities">
+    <li class="block-level-src no-text-selection" *ngIf="showMaxEntities" (mouseenter)="onShowTooltip(ttt4.innerHTML, $event)" (mouseleave)="hideTooltip(ttt4.innerHTML)">
       <label class="checkbox-row">
         <div class="checkbox-row">
-          <span class="has-tooltip">
+          <span>
             Max
-            <span class="tooltip tooptip-left">hard limit on how many entities will be displayed</span>
+            <span #ttt4 class="tooltip-text">hard limit on how many entities will be displayed</span>
           </span>
           <span class="left-adjusted"><mat-checkbox class="unpadded" [checked]="unlimitedMaxEntities" (change)="onMaxUnlimitedChange('unlimitedMaxEntities',$event.checked)">unlimited</mat-checkbox></span>
         </div>
@@ -76,12 +81,12 @@
         <span style="white-space: nowrap;">({{ maxEntitiesValueLabel }}) of {{ maxEntitiesLimit }}</span>
       </label>
     </li>
-    <li *ngIf="showMaxDegreesOfSeparation">
+    <li *ngIf="showMaxDegreesOfSeparation" (mouseenter)="onShowTooltip(ttt5.innerHTML, $event)" (mouseleave)="hideTooltip(ttt5.innerHTML)">
       <label>
         <div>
-          <span class="has-tooltip">
+          <span>
             Degrees
-            <span class="tooltip tooptip-left">maximum degrees of separation between nodes and focus</span>
+            <span #ttt5 class="tooltip-text">maximum degrees of separation between nodes and focus</span>
           </span>
         </div>
         <input type="range" min="1" max="5" [value]="maxDegreesOfSeparation" formControlName="maxDegreesOfSeparation" 
@@ -93,7 +98,7 @@
   </form>
 
   <hr>
-  <h3>{{ sectionTitles[1] }}</h3>
+  <h3 (mouseenter)="onShowTooltip('Only display entities that are in the selected datasource(s)', $event)" (mouseleave)="hideTooltip()">{{ sectionTitles[1] }}</h3>
   <form [formGroup]="filterByDataSourcesForm">
   <ul class="filters-list">
     <ng-container *ngFor="let ds of filterByDataSourcesData.controls; let i = index">
@@ -111,14 +116,14 @@
   <hr>
   <h3>{{ sectionTitles[2] }}</h3>
   <ul class="colors-list">
-    <li class="color-box">
+    <li class="color-box" (mouseenter)="onShowTooltip('select color(s) for relationship lines that are directly related to the focal entity', $event)" (mouseleave)="hideTooltip()">
       <div class="color-box-placeholder"></div>
       <label>
         <input type="color" [(ngModel)]="linkColor" [style.background-color]="linkColor" (change)="onColorParameterChange('linkColor', getValueFromEventTarget($event))">
         Directly Related
       </label>
     </li>
-    <li class="color-box">
+    <li class="color-box" (mouseenter)="onShowTooltip('select color(s) for relationship lines that are not directly related to the focal entity', $event)" (mouseleave)="hideTooltip()">
       <div class="color-box-placeholder"></div>
       <label>
         <input type="color" [(ngModel)]="indirectLinkColor" [style.background-color]="indirectLinkColor" (change)="onColorParameterChange('indirectLinkColor', getValueFromEventTarget($event))">
@@ -128,7 +133,7 @@
   </ul>
 
   <hr>
-  <h3>{{ sectionTitles[3] }}</h3>
+  <h3 (mouseenter)="onShowTooltip('select color(s) for entities that are present in selected datasource(s)', $event)" (mouseleave)="hideTooltip()">{{ sectionTitles[3] }}</h3>
   <ul cdkDropList class="colors-list" (cdkDropListDropped)="onColorOrderDrop($event)">
     <ng-container *ngFor="let ds of dataSourceColors; let i = index">
       <li class="color-box" *ngIf="shouldDataSourceBeDisplayed(ds.name)" cdkDrag [cdkDragData]="ds.name">
@@ -148,13 +153,13 @@
   <h3>{{ sectionTitles[4] }}</h3>
   <form [formGroup]="colorsMiscForm">
   <ul class="other-colors-list">
-    <li>
+    <li (mouseenter)="onShowTooltip(ttt6.innerHTML, $event)" (mouseleave)="hideTooltip()">
       <label>
         <input #queriedNodesColorInput formControlName="queriedEntitiesColor" type="color" [style.background-color]="queriedNodesColorInput.value" 
           (change)="onColorParameterChange('queriedEntitiesColor', getValueFromEventTarget($event))">
-        <span class="has-tooltip block-level-src">
+        <span class="block-level-src">
           Active/Focused Enitity
-          <span class="tooltip tooptip-left">The color of the current entity or entities</span>
+          <span #ttt6 class="tooltip-text">The color of the current entity or entities</span>
         </span>
         <small class="note-sub">(*note overrides datasource member color if selected)</small>
       </label>
