@@ -133,7 +133,7 @@
   </ul>
 
   <hr>
-  <h3 (mouseenter)="onShowTooltip('select color(s) for entities that are present in selected datasource(s)', $event)" (mouseleave)="hideTooltip()">{{ sectionTitles[3] }}</h3>
+  <h3 class="no-text-selection" (mouseover)="onShowTooltip('select color(s) for entities that are present in selected datasource(s)', $event)" (mouseout)="hideTooltip('select color(s) for entities that are present in selected datasource(s)')">{{ sectionTitles[3] }}</h3>
   <ul cdkDropList class="colors-list" (cdkDropListDropped)="onColorOrderDrop($event)">
     <ng-container *ngFor="let ds of dataSourceColors; let i = index">
       <li class="color-box" *ngIf="shouldDataSourceBeDisplayed(ds.name)" cdkDrag [cdkDragData]="ds.name">
@@ -153,7 +153,7 @@
   <h3>{{ sectionTitles[4] }}</h3>
   <form [formGroup]="colorsMiscForm">
   <ul class="other-colors-list">
-    <li (mouseenter)="onShowTooltip(ttt6.innerHTML, $event)" (mouseleave)="hideTooltip()">
+    <li class="no-text-selection" (mouseover)="onShowTooltip(ttt6.innerHTML, $event)" (mouseout)="hideTooltip(ttt6.innerHTML)">
       <label>
         <input #queriedNodesColorInput formControlName="queriedEntitiesColor" type="color" [style.background-color]="queriedNodesColorInput.value" 
           (change)="onColorParameterChange('queriedEntitiesColor', getValueFromEventTarget($event))">

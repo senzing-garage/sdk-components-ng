@@ -214,19 +214,16 @@ mat-chip-listbox.match-keys {
 .cdk-overlay-pane {
   .sz-sdk-tooltip {
     position: relative;
-    /*visibility: hidden;*/
     opacity: 1;
     left: -80%;
-    bottom: 60px;
-    /* width: 120px; */
-    background-color: #000000a6;
-    color: #fff;
+    background-color: var(--sz-graph-filter-tooltip-background-color);
+    color: var(--sz-graph-filter-tooltip-color);
     text-align: center;
-    padding: 10px 16px;
-    border-radius: 6px;
+    padding: var(--sz-graph-filter-tooltip-padding);
+    border-radius: var(--sz-graph-filter-tooltip-border-radius);
     white-space: nowrap;
-    font-size: 10px;
-    z-index: 1;
+    font-size: var(--sz-graph-filter-tooltip-font-size);
+    z-index: var(--sz-graph-filter-tooltip-z-index);
     transition: opacity 500ms;
   }
   /* tooltip has little pointer nub */
@@ -234,11 +231,11 @@ mat-chip-listbox.match-keys {
     content: "";
     position: absolute;
     top: 100%;
-    left: 80%;
+    left: calc(80% - 20px);
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: #000000a6 transparent transparent transparent;
+    border-color: var(--sz-graph-filter-tooltip-background-color) transparent transparent transparent;
   }
   &.fade-out {
     .sz-sdk-tooltip {

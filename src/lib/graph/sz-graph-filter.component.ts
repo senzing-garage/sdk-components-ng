@@ -62,11 +62,17 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   /** @internal */
   private _tooltipSubCloseTimer;
   /** @internal */
-  private _tooltipElapsedTimer;
-  /** @internal */
   private _tooltipLastMessageShown: string;
   /** @internal */
-  private _tooltipElapsedTime: number;
+  private _showTooltips: boolean = true;
+  /** whether or not to show tooltip hints */
+  @Input() set showTooltips(value: boolean | string) {
+    this._showTooltips = parseBool(value);
+  }
+  /** whether or not to show tooltip hints */
+  get showTooltips(): boolean {
+    return this._showTooltips;
+  }
 
   /** private list of SzDataSourceComposite as stored in local storage 
    * @internal
@@ -492,8 +498,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
    * @internal
    */
   onShowTooltip(message: string, event: any) {
-    // extend event object to we can pass
-    //event = Object.assign(event, {tooltip: message});
+    if(!this.showTooltips) { return false; }
     let messageAlreadyShowing = this._tooltipLastMessageShown && this._tooltipLastMessageShown == message ? true : false;
 
     // if message is different immediately close last tooltip
@@ -502,18 +507,12 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     }
     // store new value
     this._tooltipLastMessageShown = message;
-    // update close timer if set
 
     if(this._tooltipSubCloseTimer) {
       // timer already exists, just adding time to it
       clearTimeout(this._tooltipSubCloseTimer);
     }
-    this._tooltipSubCloseTimer  = setTimeout(this.hideTooltip.bind(this), 2000);
-    if(!this._tooltipElapsedTimer){
-      // we want to count how much time is passed while tooltip is being displayed
-      // so we can prevent rapid flickering on mousemove
-      this._tooltipElapsedTimer   = setInterval(() => this._tooltipElapsedTime = this._tooltipElapsedTime+500,500);
-    }
+    this._tooltipSubCloseTimer  = setTimeout(this.hideTooltip.bind(this), 2500);
 
     if(messageAlreadyShowing || this.overlayRef) {
       // if message already showing no need to create new overlay
@@ -525,7 +524,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     const positionStrategy = this.overlay.position().global();
     //positionStrategy.top(Math.ceil(event.eventPageY - scrollY)+'px');
     //positionStrategy.left(Math.ceil(event.eventPageX)+'px');
-    positionStrategy.top(Math.ceil(event.y)+'px');
+    positionStrategy.top(Math.ceil(event.y - 50)+'px'); // the reason this is - pos is to avoid a mouseout/over flicker bug from the bubble stealing focus
     positionStrategy.left(Math.ceil(event.x)+'px');
 
     this.overlayRef = this.overlay.create({
@@ -545,20 +544,17 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
    * @internal 
    */
   hideTooltip(message?: string) {
-    if(message && this._tooltipLastMessageShown && message === this._tooltipLastMessageShown && this._tooltipElapsedTime < 1000) {
+    if(!this.showTooltips) { return false; }
+    if(message && this._tooltipLastMessageShown && message === this._tooltipLastMessageShown) {
       // this is the exact same message being currently displayed
-      // we care if there has been a minimum amount of time displayed (to avoid flicker)
-      return;
+      return false;
     }
     if (this.overlayRef) {
       this.overlayRef.dispose();
       this.overlayRef = undefined;
     }
-    if( this._tooltipElapsedTimer ){
-      clearInterval(this._tooltipElapsedTimer);
-    }
     this._tooltipLastMessageShown = undefined;
-    this._tooltipElapsedTime      = undefined;
+    return false;
   }
 
   /**
