@@ -108,7 +108,7 @@ export class SzStandaloneGraphComponent extends SzGraphComponent implements Afte
     public dialog: MatDialog,
     public viewContainerRef: ViewContainerRef
   ) {
-    super(_p_prefs, _p_cd, _p_css)
+    super(_p_prefs, _p_cd, _p_css);
   }
 
   ngAfterViewInit() {

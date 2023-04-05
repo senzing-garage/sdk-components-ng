@@ -259,15 +259,16 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   public filterShowDataSources: string[];
   public filterShowMatchKeys: string[];
   public filterShowMatchKeyTokens: Array<SzMatchKeyTokenComposite>;
-  private _showMatchKeysFilters: boolean = true;
-  private _showMatchKeyTokenFilters: boolean = false;
-  private _showMatchKeyControl: boolean = true;
+  private _showMatchKeysFilters: boolean      = true;
+  private _showMatchKeyTokenFilters: boolean  = false;
+  private _showMatchKeyControl: boolean       = true;
+  private _showFilterTooltips: boolean        = true;
 
   /** whether or not to show the [ALL] | [NONE] macro token actions button */
   @Input() public showMatchKeyTokenSelectAll: boolean       = true;
 
   /** @internal */
-  protected _showCoreMatchKeyTokenChips: boolean              = false;
+  protected _showCoreMatchKeyTokenChips: boolean            = false;
   /**
    * whether or not to show only the match key token chips that apply 
    * to "core" relationships. ie if the relationship is only between 
@@ -364,6 +365,12 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   get showMatchKeyTokenFilters(): boolean | string {
     return this._showMatchKeyTokenFilters;
   }
+  @Input() set showFilterTooltips(value: boolean | string) {
+    this._showFilterTooltips = parseBool(value);    
+  }
+  get showFilterTooltips(): boolean | string {
+    return this._showFilterTooltips;
+  } 
 
   private _showZoomControl: boolean = true;
   /** the whether or not the zoom control is shown */
