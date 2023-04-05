@@ -550,10 +550,17 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
       return false;
     }
     if (this.overlayRef) {
-      this.overlayRef.dispose();
-      this.overlayRef = undefined;
+      this.overlayRef.addPanelClass('fade-out');
+      // we want to give the animation time to finish 
+      // before fading out
+      setTimeout(() => {
+        if (this.overlayRef) {
+          this.overlayRef.dispose();
+          this.overlayRef = undefined;
+        }
+        this._tooltipLastMessageShown = undefined;
+      }, 150)
     }
-    this._tooltipLastMessageShown = undefined;
     return false;
   }
 

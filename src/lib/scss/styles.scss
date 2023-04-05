@@ -224,7 +224,7 @@ mat-chip-listbox.match-keys {
     white-space: nowrap;
     font-size: var(--sz-graph-filter-tooltip-font-size);
     z-index: var(--sz-graph-filter-tooltip-z-index);
-    transition: opacity 500ms;
+    transition: opacity 100ms;
   }
   /* tooltip has little pointer nub */
   .sz-sdk-tooltip::after {
