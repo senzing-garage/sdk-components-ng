@@ -210,6 +210,39 @@ mat-chip-listbox.match-keys {
   }
 }
 
+/* graph tooltips */
+.cdk-overlay-pane {
+  .sz-sdk-tooltip {
+    position: relative;
+    opacity: 1;
+    left: -80%;
+    background-color: var(--sz-graph-filter-tooltip-background-color);
+    color: var(--sz-graph-filter-tooltip-color);
+    text-align: center;
+    padding: var(--sz-graph-filter-tooltip-padding);
+    border-radius: var(--sz-graph-filter-tooltip-border-radius);
+    white-space: nowrap;
+    font-size: var(--sz-graph-filter-tooltip-font-size);
+    z-index: var(--sz-graph-filter-tooltip-z-index);
+    transition: opacity 100ms;
+  }
+  /* tooltip has little pointer nub */
+  .sz-sdk-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: calc(80% - 20px);
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--sz-graph-filter-tooltip-background-color) transparent transparent transparent;
+  }
+  &.fade-out {
+    .sz-sdk-tooltip {
+      opacity: 0;
+    }
+  }
+}
 
 .senzing-alarm:before {
   content: "\e900";

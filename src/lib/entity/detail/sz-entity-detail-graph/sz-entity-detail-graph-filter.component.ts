@@ -1,8 +1,9 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewContainerRef } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
 import { SzDataSourcesService } from '../../../services/sz-datasources.service';
 import { SzGraphFilterComponent } from '../../../graph/sz-graph-filter.component';
+import { Overlay } from '@angular/cdk/overlay';
 
 /**
  * Control Component allowing UI friendly changes
@@ -35,13 +36,17 @@ export class SzEntityDetailGraphFilterComponent extends SzGraphFilterComponent {
     _p_prefs: SzPrefsService,
     _p_dataSourcesService: SzDataSourcesService,
     _p_formBuilder: UntypedFormBuilder,
-    _p_cd: ChangeDetectorRef
+    _p_cd: ChangeDetectorRef,
+    _p_overlay: Overlay,
+    _p_viewContainerRef: ViewContainerRef,
   ) {
     super(
       _p_prefs, 
       _p_dataSourcesService, 
       _p_formBuilder, 
-      _p_cd
+      _p_cd,
+      _p_overlay,
+      _p_viewContainerRef
     );
   }
 }

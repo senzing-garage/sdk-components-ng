@@ -1,12 +1,16 @@
-import { Component, HostBinding, Input, OnInit, AfterViewInit, OnDestroy, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, HostBinding, Input, OnInit, AfterViewInit, 
+  OnDestroy, Output, EventEmitter, ChangeDetectorRef, ViewChild, TemplateRef, 
+  ViewContainerRef } from '@angular/core';
 import { SzPrefsService, SzSdkPrefsModel } from '../services/sz-prefs.service';
 import { SzDataSourcesService } from '../services/sz-datasources.service';
 import { takeUntil } from 'rxjs/operators';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { UntypedFormBuilder, UntypedFormGroup, UntypedFormArray, UntypedFormControl, Validators } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
 import { SzDataSourceComposite } from '../models/data-sources';
-import { SzMatchKeyComposite, SzMatchKeyTokenComposite, SzEntityNetworkMatchKeyTokens, SzMatchKeyTokenFilterScope } from '../models/graph';
+import { SzMatchKeyComposite, SzMatchKeyTokenComposite, SzMatchKeyTokenFilterScope } from '../models/graph';
 import { sortDataSourcesByIndex, parseBool, sortMatchKeysByIndex, sortMatchKeyTokensByIndex } from '../common/utils';
 import { isBoolean } from '../common/utils';
 
@@ -37,6 +41,11 @@ import { isBoolean } from '../common/utils';
   styleUrls: ['./sz-graph-filter.component.scss']
 })
 export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy {
+  /**
+   * used for displaying tooltips above all other page content 
+   * @internal */
+  overlayRef: OverlayRef | undefined;
+
   isOpen: boolean = true;
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
@@ -46,6 +55,24 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   private _dataSources: SzDataSourceComposite[]               = [];
   private _matchKeys: SzMatchKeyComposite[]                   = [];
   private _matchKeyTokens: SzMatchKeyTokenComposite[]         = [];
+
+  // ----------- tooltip related
+  /** @internal */
+  @ViewChild('tooltip') tooltip: TemplateRef<any>;
+  /** @internal */
+  private _tooltipSubCloseTimer;
+  /** @internal */
+  private _tooltipLastMessageShown: string;
+  /** @internal */
+  private _showTooltips: boolean = true;
+  /** whether or not to show tooltip hints */
+  @Input() set showTooltips(value: boolean | string) {
+    this._showTooltips = parseBool(value);
+  }
+  /** whether or not to show tooltip hints */
+  get showTooltips(): boolean {
+    return this._showTooltips;
+  }
 
   /** private list of SzDataSourceComposite as stored in local storage 
    * @internal
@@ -353,7 +380,9 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     public prefs: SzPrefsService,
     public dataSourcesService: SzDataSourcesService,
     private formBuilder: UntypedFormBuilder,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    public overlay: Overlay,
+    public viewContainerRef: ViewContainerRef,
   ) {
     // ----- initialize form control groups ------
     // sliders
@@ -463,6 +492,78 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
       console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onCoreMkTagFilterToggle: added ${mkName} to cloud value`,_matchKeyTokensIncludedMemCopy, this.matchKeyCoreTokensIncluded);
     }
   }
+
+  /**
+   * display a new tooltip using the template portal
+   * @internal
+   */
+  onShowTooltip(message: string, event: any) {
+    if(!this.showTooltips) { return false; }
+    let messageAlreadyShowing = this._tooltipLastMessageShown && this._tooltipLastMessageShown == message ? true : false;
+
+    // if message is different immediately close last tooltip
+    if(!messageAlreadyShowing) {
+      this.hideTooltip();
+    }
+    // store new value
+    this._tooltipLastMessageShown = message;
+
+    if(this._tooltipSubCloseTimer) {
+      // timer already exists, just adding time to it
+      clearTimeout(this._tooltipSubCloseTimer);
+    }
+    this._tooltipSubCloseTimer  = setTimeout(this.hideTooltip.bind(this), 2500);
+
+    if(messageAlreadyShowing || this.overlayRef) {
+      // if message already showing no need to create new overlay
+      // this.overlayRef should be undefined if old overlay cleared out
+      return false;
+    }
+
+    //let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+    const positionStrategy = this.overlay.position().global();
+    //positionStrategy.top(Math.ceil(event.eventPageY - scrollY)+'px');
+    //positionStrategy.left(Math.ceil(event.eventPageX)+'px');
+    positionStrategy.top(Math.ceil(event.y - 50)+'px'); // the reason this is - pos is to avoid a mouseout/over flicker bug from the bubble stealing focus
+    positionStrategy.left(Math.ceil(event.x)+'px');
+
+    this.overlayRef = this.overlay.create({
+      positionStrategy,
+      scrollStrategy: this.overlay.scrollStrategies.close()
+    });
+
+    this.overlayRef.attach(new TemplatePortal(this.tooltip, this.viewContainerRef, {
+      $implicit: message
+    }));
+
+    return false;
+  }
+
+  /**
+   * hides visible tooltip 
+   * @internal 
+   */
+  hideTooltip(message?: string) {
+    if(!this.showTooltips) { return false; }
+    if(message && this._tooltipLastMessageShown && message === this._tooltipLastMessageShown) {
+      // this is the exact same message being currently displayed
+      return false;
+    }
+    if (this.overlayRef) {
+      this.overlayRef.addPanelClass('fade-out');
+      // we want to give the animation time to finish 
+      // before fading out
+      setTimeout(() => {
+        if (this.overlayRef) {
+          this.overlayRef.dispose();
+          this.overlayRef = undefined;
+        }
+        this._tooltipLastMessageShown = undefined;
+      }, 150)
+    }
+    return false;
+  }
+
   /**
    * method for getting the selected pref color for a datasource 
    * by the datasource name. used for applying background color to 
