@@ -32,7 +32,7 @@ describe('SzGraphFilterComponent', () => {
     expect(component.isOpen).toBeTruthy();
   });
   // labels hidden by default
-  it('graph should default to hide link labels', () => {
+  it('graph should default to show link labels', () => {
     expect(component.showLinkLabels).toBeTruthy();
   });
 });
