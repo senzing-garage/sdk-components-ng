@@ -84,7 +84,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     relatedEntities: SzRelatedEntity[]
   }*/
   /** @internal */
-  public _showLinkLabels = false;
+  public _showLinkLabels = true;
   /** sets the visibility of edge labels on the node links */
   @Input() public set showLinkLabels(value: boolean | string) {
     this._showLinkLabels = parseBool(value);

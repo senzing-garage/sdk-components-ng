@@ -857,7 +857,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _dataSourceColors: SzDataSourceComposite[] = [];
   /** @internal */
-  private _showLinkLabels: boolean = false;
+  private _showLinkLabels: boolean = true;
   /** @internal */
   private _rememberStateOptions: boolean = true;
   /** @internal */
