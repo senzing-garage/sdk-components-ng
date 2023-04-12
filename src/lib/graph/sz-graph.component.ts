@@ -1253,7 +1253,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       if(_icoEnc) {
         _icoEnc.style('fill', color);
       }
-      let _icoInner = nodeList.select('.sz-graph-node-icon-fill');
+      let _icoInner = nodeList.selectAll('.sz-graph-node-icon-fill');
       if(_icoInner) {
         _icoInner.style('fill', color);
       }

@@ -83,21 +83,24 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         }
       },
       shapes: [
-        {'type': 'path',    attrs: {'d': 'M 43.298 34.741 L 32.197 28.61',  'style':'stroke-width: 2px;'}},
-        {'type': 'path',    attrs: {'d': 'M 4.443 34.741 L 14.551 28.61',   'style':'stroke-width: 2px;'}},
-        {'type': 'path',    attrs: {'d': 'M 24.219 0.743 L 23.769 8.483',  'style':'stroke-width: 2px;'}},
-        {'type': 'polygon', attrs: {points: "15.639 11.124 15.411 32.03 24.693 36.611 24.915 36.566 25.099 15.434", 'style':'fill-opacity: 0.5;'}},
+        {'type': 'path',    attrs: {'d': 'M 24.418 -0.732 L 43.918 10.518 L 43.918 33.018 L 24.418 44.268 L 4.918 33.018 L 4.918 10.518 Z',  'style':'fill: none; stroke-width: 4px; stroke-miterlimit: 1; stroke-linejoin: round;', transform: "matrix(1, 0, 0.000619, 1, -0.51193, 1.732)"}},
+        {'type': 'path',    attrs: {'d': 'M 45.918 9.363 L 45.918 34.173 L 24.418 46.577 L 2.918 34.173 L 2.918 9.363 L 24.418 -3.041 Z M 6.918 11.673 L 6.918 31.863 L 24.418 41.959 L 41.918 31.863 L 41.918 11.673 L 24.418 1.577 Z', transform: "matrix(1, 0, 0.000619, 1, -0.51193, 1.732)"}},
+        {'type': 'line',    attrs: {'x1': "43.298", 'y1': "34.741", 'x2': "35.197", 'y2': "30.61", 'style':'stroke-width: 2px;'}},
+        {'type': 'line',    attrs: {'x1': "4.443",  'y1': "34.741", 'x2': "15.385", 'y2': "28.751", 'style':'stroke-width: 2px;'}},
+        {'type': 'line',    attrs: {'x1': "23.779", 'y1': "1.105",  'x2': "23.664", 'y2': "7.596", 'style':'stroke-width: 2px;'}},
+        {'type': 'polygon', attrs: {points: "15.64 11.124 15.411 31.766 24.741 36.289 24.964 36.244 25.149 15.379", 'style':'fill-opacity: 0.75;', class: "sz-graph-node-icon-fill"}},
         {
           'type': 'rect',    
           attrs: {
-            height: "9.788", transform: "matrix(-0.018042, 0.999837, -1.007432, 0.402843, 40.160881, -13.675506)", x: "23.466", y: "4.329", width: "20.616"
+            style: 'fill-opacity: 0.35; stroke-width: 1px;', class: "sz-graph-node-icon-fill",
+            height: "9.788", transform: "matrix(-0.018042, 0.999837, -1.007432, 0.402843, 40.21048, -13.625907)", x: "23.466", y: "4.329", width: "20.616"
           }
         },
         {
           'type': 'rect',    
           attrs: {
-            'style':'fill-opacity: 0.5;',
-            height: "2.112", transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 28.508232, 10.607367)", x: "19.509", y: "9.62", width:"3.191"
+            'style':'fill-opacity: 0.25;', class: "sz-graph-node-icon-fill",
+            height: "2.112", transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 28.714645, 9.942789)", x: "19.509", y: "9.62", width:"3.191"
           }
         },
         {
@@ -109,55 +112,48 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         {
           'type': 'rect',    
           attrs: {
-            'style':'fill-opacity: 0.65;',
-            height: "7.268", transform: "matrix(-0.914328, -0.404975, 1.289519, -0.522545, 35.090717, 29.788177)", x: "24.535", y: "9.911", width: "10.319"
+            'style':'fill-opacity: 0.5;', class: "sz-graph-node-icon-fill",
+            height: "7.268", transform: "matrix(-0.914328, -0.404975, 1.289519, -0.522545, 35.140316, 29.862576)", x: "24.535", y: "9.911", width: "10.319"
           }
         },
         {
           'type': 'rect',    
           attrs: {
-            'style':'fill-opacity: 0.5;',
+            'style':'fill-opacity: 0.25;',
             x:"19.509", y: "9.62", width: "3.191", height: "2.112", 
-            transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 31.994673, 12.320662)"
+            transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 32.736656, 11.856229)"
           }
         },
         {
           'type': 'rect',    
           attrs: {
-            'style':'fill-opacity: 0.5;',
+            'style':'fill-opacity: 0.25;',
             x:"19.509", y: "9.62", width: "3.191", height: "2.112", 
-            transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 28.508232, 5.607367)"
+            transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 28.792051, 5.020195)"
           }
         },
         {
           'type': 'rect',    
           attrs: {
-            'style':'fill-opacity: 0.5;',
+            'style':'fill-opacity: 0.25;',
             x:"19.509", y: "9.62", width: "3.191", height: "2.112", 
-            transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 31.994673, 7.320662)"
+            transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 32.742924, 6.862499)"
           }
         },
         {
           'type': 'rect',    
           attrs: {
-            'style':'fill-opacity: 0.5;',
+            'style':'fill-opacity: 0.25;',
             x:"19.509", y: "9.62", width: "3.191", height: "2.112", 
-            transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 28.508232, -0.392633)"
+            transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 28.869457, -0.05721)"
           }
         },
         {
           'type': 'rect',    
           attrs: {
-            'style':'fill-opacity: 0.5;',
+            'style':'fill-opacity: 0.25;',
             x:"19.509", y: "9.62", width: "3.191", height: "2.112", 
-            transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 31.994675, 1.320661)"
-          }
-        },
-        {
-          'type': 'path', 
-          attrs: {
-            'd': 'M 22.16 24.248 L 18.88 22.327 L 13.815 19.478 L 13.864 19.391 L 6.414 15.029 L 6.426 33.595 L 22.092 42.63 Z M 20.333 19.703 L 23.822 21.666 L 39.836 12.495 L 23.907 3.309 L 8.006 12.486 Z M 25.16 24.358 L 25.091 43.022 L 41.426 33.595 L 41.414 15.049 Z M 45.427 35.905 L 23.935 48.31 L 2.427 35.905 L 2.412 11.095 L 23.904 -1.31 L 45.412 11.095 Z', 
-            'style':"stroke-width: 0px; stroke-linecap: round; stroke-linejoin: round;",
+            transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 32.794529, 1.810894)"
           }
         }
       ]
@@ -3739,14 +3735,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   static getIconType(resolvedEntity) {
     console.log(`getIconType(${resolvedEntity.entityId})`);
     let retVal = 'default';
-    if([120,134,20,35].includes(resolvedEntity.entityId)){
-      retVal = 'business';
-    }
     if(resolvedEntity && resolvedEntity.records) {
       resolvedEntity.records.slice(0, 9).forEach(element => {
         if(element.nameOrg || (element.addressData && element.addressData.some((addr) => addr.indexOf('BUSINESS') > -1))) {
-          retVal = 'business';
-        } else if(resolvedEntity.entityId === 120){
           retVal = 'business';
         }/* else if(element.gender && (element.gender === 'FEMALE' || element.gender === 'F') ) {
           retVal = 'userFemale';
