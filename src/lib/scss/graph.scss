@@ -20,15 +20,19 @@ body {
     }
 
     &.sz-graph-primary-node {
-      fill: var(--sz-graph-primary-entity-color);
+      //fill: var(--sz-graph-primary-entity-color);
       .sz-graph-node-icon {
-        fill: var(--sz-graph-primary-entity-color);
+        .sz-graph-node-icon-colored {
+          fill: var(--sz-graph-primary-entity-color);
+        }
       }
     }
     &.sz-graph-focused-node {
-      fill: var(--sz-graph-focused-entity-color);
+      //fill: var(--sz-graph-focused-entity-color);
       .sz-graph-node-icon {
-        fill: var(--sz-graph-focused-entity-color);
+        .sz-graph-node-icon-colored {
+          fill: var(--sz-graph-primary-entity-color);
+        }
       }
     }
   }
@@ -119,10 +123,33 @@ body {
   }
 
   .sz-graph-node-icon {
-    fill: lighten( $sz-dark2, 10% );
+    fill: var(--sz-graph-node-icon-outline-color);
+    stroke: var(--sz-graph-node-icon-outline-color);
+
+    .sz-graph-node-icon-colored {
+      fill: var(--sz-graph-node-icon-color);
+    }
 
     &.graph-node-rel-primary {
-      fill: $sz-dark2;
+      .sz-graph-node-icon-colored {
+        fill: var(--sz-graph-node-icon-color);
+      }
+    }
+
+    &.graph-node-rel-prel {
+      .sz-graph-node-icon-colored {
+        fill: var(--sz-color-possibly-related);
+      }
+    }
+    &.graph-node-rel-pmatch {
+      .sz-graph-node-icon-colored {
+        fill: var(--sz-color-possible-match);
+      }
+    }
+    &.graph-node-rel-disclosed {
+      .sz-graph-node-icon-colored {
+        fill: var(--sz-color-disclosed);
+      }
     }
   }
 
