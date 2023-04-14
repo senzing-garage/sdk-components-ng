@@ -951,8 +951,12 @@ export class SzGraphComponent implements OnInit, OnDestroy {
           return retVal;
         })
         .forEach((dsColorEntry: SzDataSourceComposite) => {
-          this.cssClassesService.setStyle(`.sz-node-ds-${dsColorEntry.name.toLowerCase()}`, "fill", dsColorEntry.color);
-          this.cssClassesService.setStyle(`.sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon`, "fill", dsColorEntry.color);
+          this.graphContainerEle.nativeElement.style.setProperty(
+            '--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill', 
+            dsColorEntry.color
+          );
+          //this.cssClassesService.setStyle(`.sz-node-ds-${dsColorEntry.name.toLowerCase()}`, "fill", dsColorEntry.color);
+          this.cssClassesService.setStyle(`.sz-relationship-network-graph .sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon-fill`, "fill", dsColorEntry.color);
         })
       }
     }
@@ -1243,11 +1247,15 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   /** used by "entityNodecolorsByDataSource" getter to set fill color of nodes in a nodelist */
   private setEntityNodeFillColor(color, nodeList, scope) {
     if (nodeList && nodeList.style) {
-      nodeList.style('fill', color);
+      //nodeList.style('fill', color);
       // check to see if we can sub-select "circle" filler
       let _icoEnc = nodeList.select('.sz-graph-icon-enclosure');
       if(_icoEnc) {
         _icoEnc.style('fill', color);
+      }
+      let _icoInner = nodeList.selectAll('.sz-graph-node-icon-fill');
+      if(_icoInner) {
+        _icoInner.style('fill', color);
       }
     } else if ( scope && nodeList instanceof Array && nodeList.every && nodeList.every( (nodeItem) => nodeItem.type === 'node')) {
       const modifierList = nodeList.map((item) => {

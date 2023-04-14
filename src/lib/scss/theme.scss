@@ -323,6 +323,9 @@ body {
     /* end relationship section list vars */
 
     /* graph */
+    --sz-graph-primary-entity-color: rgb(161, 219, 253);
+    --sz-graph-node-icon-color: $sz-dark2;
+    --sz-graph-node-icon-outline-color: #565656;
     --sz-graph-link-line-color: #999;
     --sz-graph-link-line-non-focused-color: var(--sz-graph-link-line-color);
     --sz-graph-link-line-non-focused-opacity: 1;
