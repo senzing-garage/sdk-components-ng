@@ -940,23 +940,28 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       }
       if(prefs.focusedEntitiesColor) {
         this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-focused-entity-color', prefs.focusedEntitiesColor);
+        this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-primary-entity-color', prefs.focusedEntitiesColor);
       }
       if(prefs.queriedEntitiesColor) {
         this.graphContainerEle.nativeElement.style.setProperty('--sz-graph-queried-entity-color', prefs.queriedEntitiesColor);
       }
       if(prefs.dataSourceColors && prefs.dataSourceColors.sort) {
         let sorted = Array.from(prefs.dataSourceColors)
+        .filter((dsColorEntry: SzDataSourceComposite) => {
+          return dsColorEntry.color !== undefined;
+        })
         .sort((dsColorEntry1: SzDataSourceComposite, dsColorEntry2: SzDataSourceComposite) => {
           let retVal = dsColorEntry1.index > dsColorEntry2.index ? -1 : (dsColorEntry1.index < dsColorEntry2.index) ? 1 : 0 ;
           return retVal;
         })
         .forEach((dsColorEntry: SzDataSourceComposite) => {
           this.graphContainerEle.nativeElement.style.setProperty(
-            '--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill', 
+            `--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill`, 
             dsColorEntry.color
           );
           //this.cssClassesService.setStyle(`.sz-node-ds-${dsColorEntry.name.toLowerCase()}`, "fill", dsColorEntry.color);
-          this.cssClassesService.setStyle(`.sz-relationship-network-graph .sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon-fill`, "fill", dsColorEntry.color);
+          this.cssClassesService.setStyle(`body .sz-relationship-network-graph .sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon .sz-node-ds-${dsColorEntry.name.toLowerCase()}-fill`, "fill", `var(--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill)`);
+          this.cssClassesService.setStyle(`body .sz-relationship-network-graph .sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon .sz-graph-node-icon-fill`, "fill", `var(--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill)`);
         })
       }
     }

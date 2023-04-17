@@ -2310,7 +2310,12 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
               if(SzRelationshipNetworkComponent.ICONS[_iconType].enclosure) {
                 let _backgrounds = _iconGroups.append(SzRelationshipNetworkComponent.ICONS[_iconType].enclosure['type']);
                 _backgrounds.attr('class', function(d) {
-                  return ['sz-graph-icon-enclosure'].concat(d.relationTypeClasses).join(' ');
+                  let _c = ['sz-graph-icon-enclosure'].concat(d.relationTypeClasses);
+                  if(d.dataSources && d.dataSources.map){            //sz-node-ds-${   .toLowerCase()}-fill
+                    let _cToAdd = d.dataSources.map((_ds) => { return `sz-node-ds-${_ds.toLowerCase()}-fill`; });
+                    _c = _c.concat(_cToAdd);
+                  }
+                  return _c.join(' ');
                 });
                 if(SzRelationshipNetworkComponent.ICONS[_iconType].enclosure.attrs) {
                   for(let _attrName in SzRelationshipNetworkComponent.ICONS[_iconType].enclosure.attrs){
