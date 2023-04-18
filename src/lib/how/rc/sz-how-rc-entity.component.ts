@@ -48,7 +48,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
     private _resolutionSteps: Array<SzResolutionStep>;
     private _resolutionStepsByVirtualId: {[key: string]: SzResolutionStep};
     private _resolutionStepGroupsOld: Map<string, SzResolutionStepGroup> = new Map<string, SzResolutionStepGroup>();
-    private _stepGroups: Map<string, SzResolutionStepGroup>     = new Map<string, SzResolutionStepGroup>();
+    //private _stepGroups: Map<string, SzResolutionStepGroup>     = new Map<string, SzResolutionStepGroup>();
     private _stepNodeGroups: Map<string, SzResolutionStepNode>  = new Map<string, SzResolutionStepNode>();
 
     private _isLoading                        = false;
@@ -188,11 +188,13 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
                 this._resolutionSteps = _resSteps.reverse(); // we want the steps in reverse for display purposes
             }
             if(this._resolutionSteps){
-              this._resolutionStepGroupsOld = this.getDefaultResolutionStepGroups(this._resolutionSteps);
-              this._stepGroups              = this.getDefaultStepGroups(this._resolutionSteps);
-              this._stepNodeGroups          = this.getDefaultStepNodeGroups(this._resolutionSteps);
-              this.howUIService.stepGroups  = this._stepGroups;
-              this.howUIService.stepsList   = this.getResolutionStepsWithGroups(this._resolutionSteps, this._stepGroups);
+              this._resolutionStepGroupsOld     = this.getDefaultResolutionStepGroups(this._resolutionSteps);
+              //this._stepGroups                  = this.getDefaultStepGroups(this._resolutionSteps);
+              this._stepNodeGroups              = this.getDefaultStepNodeGroups(this._resolutionSteps);
+              this.howUIService.stepNodeGroups  = this._stepNodeGroups;
+              //this.howUIService.stepGroups      = this._stepGroups;
+              this.howUIService.stepNodes       = this.getResolutionStepsAsNodes(this._resolutionSteps, this._stepNodeGroups);
+              //this.howUIService.stepsList       = this.getResolutionStepsWithGroups(this._resolutionSteps, this._stepGroups);
             }
             // extend data with augmentation
             if(this._data && this._data.resolutionSteps) {
@@ -600,9 +602,9 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       return retVal;
     }
 
-    private getGroupForMemberStep(step: SzResolutionStep, groups?: Map<string, SzResolutionStepGroup>): SzResolutionStepGroup {
+    private getGroupForMemberStep(step: SzResolutionStep, groups?: Map<string, SzResolutionStepGroup>): SzResolutionStepNode {
       let _retVal: SzResolutionStepGroup;
-      if(!groups) { groups = this._stepGroups; }
+      if(!groups) { groups = this._stepNodeGroups; }
       if(groups && step) {
         let _idToLookFor = step.resolvedVirtualEntityId;
         let _sk = false;
@@ -626,10 +628,47 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       return undefined;
     }
 
-    public getResolutionStepsWithRecursiveGroups() {
-      let nestedGroups  = this.getStepNodeGroupsRecursively(this._resolutionSteps);
-      //let steps   = this.getResolutionStepsWithGroups(this._resolutionSteps, groups);
-      console.info(`getResolutionStepsWithRecursiveGroups() `, this._resolutionSteps, nestedGroups);
+    public getResolutionStepsAsNodesDebug() {
+      return this.getResolutionStepsAsNodes(this._resolutionSteps, this._stepNodeGroups);
+    }
+
+    public getResolutionStepsAsNodes(steps: SzResolutionStep[], groups: Map<string, SzResolutionStepNode>): SzResolutionStepNode[] {
+      let retVal: SzResolutionStepNode[] = [];
+      // extend groups recursively
+      groups  = this.getStepNodeGroupsRecursively(this._resolutionSteps, groups);
+      //let steps         = this.getResolutionStepNodes(this._resolutionSteps, nestedGroups);
+      
+      // create "groups" for multiple sequential "add record" steps
+      if(steps && steps.length > 0) {
+        let _resolutionStepsWithGroups: Array<SzResolutionStepNode> = [];
+
+        steps.forEach((resStep: SzResolutionStep, stepArrIndex: number) => {
+          // check to see if step is member of group
+          let _stepIsMemberOfGroup        = this.stepIsMemberOfGroup(resStep.resolvedVirtualEntityId, groups);
+          let _stepHasMembers             = this.stepHasMembers(resStep.resolvedVirtualEntityId, groups);
+
+          // check whether or not step is member of group
+          if(!_stepIsMemberOfGroup && !_stepHasMembers) {
+            // item is not member of group or interim step group
+            // add item to array
+            _resolutionStepsWithGroups.push(Object.assign({
+              id: resStep.resolvedVirtualEntityId,
+              itemType: SzResolutionStepListItemType.STEP,
+              displayType: this.getListItemType(resStep)
+            }, resStep));
+          } else {
+            // item is in group, if group has not been added already add it
+            let _stepGroup            = _stepIsMemberOfGroup ? this.getResolutionStepGroupByMemberVirtualId(resStep.resolvedVirtualEntityId, groups) : this.getResolutionStepGroupById(resStep.resolvedVirtualEntityId, groups);
+            let groupAlreadyInArray   = _resolutionStepsWithGroups.includes(_stepGroup);
+            if(!groupAlreadyInArray) { 
+              _resolutionStepsWithGroups.push( _stepGroup ); 
+            }
+          }
+        });
+        retVal  = _resolutionStepsWithGroups;
+      }
+      console.info(`getResolutionStepsAsNodes() `, retVal, this._resolutionSteps, groups);
+      return retVal;
     }
 
     private getStepNodeForChild(step: SzResolutionStep, groups?: Map<string, SzResolutionStepNode>): SzResolutionStepGroup {
@@ -804,12 +843,11 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
         // now get parent group
         let finalEntity = this.getFinalEntityFromMember(member);
         console.log('getFinalEntityFromMemberByStepNumber: found step in stepsList: ', member, finalEntity);
-
       }
     }
 
-    public isGroupExpanded(grp: SzResolutionStep | SzResolutionStepGroup) {
-      let vId = (grp as SzResolutionStepGroup).id ? (grp as SzResolutionStepGroup).id : (grp as SzResolutionStep).resolvedVirtualEntityId ? (grp as SzResolutionStep).resolvedVirtualEntityId : undefined;
+    public isGroupExpanded(grp: SzResolutionStepNode) {
+      let vId = grp.id ? grp.id : grp.resolvedVirtualEntityId ? grp.resolvedVirtualEntityId : undefined;
       if(vId) {
         return this.howUIService.isGroupExpanded(vId);
       }
@@ -882,18 +920,18 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       return retVal;
     }
 
-    public get stepsList(): Array<SzResolutionStep | SzResolutionStepGroup> {
-      if(!this.howUIService.stepsList || this.howUIService.stepsList === undefined) {
-        this.howUIService.stepsList   = this.getResolutionStepsWithGroups(this._resolutionSteps, this._stepGroups);
+    public get stepsList(): Array<SzResolutionStepNode> {
+      if(!this.howUIService.stepNodes || this.howUIService.stepNodes === undefined) {
+        this.howUIService.stepNodes   = this.getResolutionStepsWithGroups(this._resolutionSteps, this._stepNodeGroups);
       }
-      return this.howUIService.stepsList;
+      return this.howUIService.stepNodes;
     }
 
-    public getResolutionStepsWithGroups(steps: SzResolutionStep[], groups: Map<string, SzResolutionStepGroup>): Array<SzResolutionStep | SzResolutionStepGroup> {
+    public getResolutionStepsWithGroups(steps: SzResolutionStep[], groups: Map<string, SzResolutionStepNode>): Array<SzResolutionStepNode> {
       let retVal = [];
       // create "groups" for multiple sequential "add record" steps
       if(steps && steps.length > 0) {
-        let _resolutionStepsWithGroups: Array<SzResolutionStep | SzResolutionStepGroup> = [];
+        let _resolutionStepsWithGroups: Array<SzResolutionStepNode> = [];
 
         steps.forEach((resStep: SzResolutionStep, stepArrIndex: number) => {
           // check to see if step is member of group
@@ -904,12 +942,18 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
           if(!_stepIsMemberOfGroup && !_stepHasMembers) {
             // item is not member of group or interim step group
             // add item to array
-            _resolutionStepsWithGroups.push(resStep);
+            _resolutionStepsWithGroups.push(Object.assign({
+              id: resStep.resolvedVirtualEntityId,
+              itemType: SzResolutionStepListItemType.STEP,
+              displayType: this.getListItemType(resStep)
+            }, resStep));
           } else {
             // item is in group, if group has not been added already add it
             let _stepGroup            = _stepIsMemberOfGroup ? this.getResolutionStepGroupByMemberVirtualId(resStep.resolvedVirtualEntityId, groups) : this.getResolutionStepGroupById(resStep.resolvedVirtualEntityId, groups);
             let groupAlreadyInArray   = _resolutionStepsWithGroups.includes(_stepGroup);
-            if(!groupAlreadyInArray) { _resolutionStepsWithGroups.push( _stepGroup ); }
+            if(!groupAlreadyInArray) { 
+              _resolutionStepsWithGroups.push( _stepGroup ); 
+            }
           }
         });
         retVal  = _resolutionStepsWithGroups;

@@ -10,7 +10,7 @@ import {
   SzVirtualEntity,
   SzHowEntityResponse
 } from '@senzing/rest-api-client-ng';
-import { SzResolutionStepDisplayType, SzResolutionStepGroup, SzResolutionStepListItemType } from '../models/data-how';
+import { SzResolutionStepDisplayType, SzResolutionStepGroup, SzResolutionStepListItemType, SzResolutionStepNode } from '../models/data-how';
 import { SzPrefsService } from './sz-prefs.service';
 
 /**
@@ -29,8 +29,10 @@ export class SzHowUIService {
     private _expandedStepsOrGroups: string[]    = [];
     private _expandedGroups: string[]           = [];
     private _expandedVirtualEntities: string[]  = [];
-    private _stepGroups: Map<string, SzResolutionStepGroup> = new Map<string, SzResolutionStepGroup>();
-    private _stepsList: Array<SzResolutionStep | SzResolutionStepGroup>;
+    //private _stepGroups: Map<string, SzResolutionStepGroup>     = new Map<string, SzResolutionStepGroup>();
+    private _stepNodeGroups: Map<string, SzResolutionStepNode>  = new Map<string, SzResolutionStepNode>();
+    //private _stepsList: Array<SzResolutionStep | SzResolutionStepGroup>;
+    private _stepNodes: Array<SzResolutionStepNode>;
     private _finalEntities: SzVirtualEntity[]   = [];
     private _onGroupExpansionChange   = new Subject<string>()
     private _onStepExpansionChange    = new Subject<string>();
@@ -53,7 +55,16 @@ export class SzHowUIService {
       }
       this._finalEntities = value;
     }
-    public set stepGroups(value: Map<string, SzResolutionStepGroup>) {
+    public set stepNodeGroups(value: Map<string, SzResolutionStepNode>) {
+      this._stepNodeGroups          = value;
+    }
+    public set stepNodes(value: Array<SzResolutionStepNode>) {
+      this._stepNodes = value;
+    }
+    public get stepNodes(): Array<SzResolutionStepNode> {
+      return this._stepNodes;
+    }
+    /*public set stepGroups(value: Map<string, SzResolutionStepGroup>) {
       this._stepGroups              = value;
     }
     public set stepsList(value: Array<SzResolutionStep | SzResolutionStepGroup>) {
@@ -61,7 +72,7 @@ export class SzHowUIService {
     }
     public get stepsList(): Array<SzResolutionStep | SzResolutionStepGroup> {
       return this._stepsList;
-    }
+    }*/
     public get isNavExpanded(): boolean {
       return this._navigationExpanded;
     }
@@ -142,8 +153,8 @@ export class SzHowUIService {
         // if a user expands a collapsed group it 
         // doesnt make sense to make them click expand again
         // right after
-        let _group = this._stepGroups.get(groupId);
-        if(_group && _group.interimSteps && _group.interimSteps.length === 1 && !this._userHasChangedStepState.has(groupId)) {
+        let _group = this._stepNodeGroups.get(groupId);
+        if(_group && _group.itemType === SzResolutionStepListItemType.GROUP && _group.children && _group.children.length === 1 && !this._userHasChangedStepState.has(groupId)) {
           // step will have the same id as the group so just use that
           this.expandStep(groupId);
         }
@@ -242,19 +253,19 @@ export class SzHowUIService {
         this._pinnedSteps.push(vId);
         console.log(`pinStep(${vId}, ${gId})`);
         // find index of step in group members
-        if(gId && this._stepGroups && this._stepGroups.has(gId)) {
-          let _group              = this._stepGroups.get(gId);
-          let _groupIndexInList   = this._stepsList.findIndex((s)=>{ return (s as SzResolutionStepGroup).id === gId; });
-          let _members            = Object.assign([], _group.resolutionSteps);
+        if(gId && this._stepNodeGroups && this._stepNodeGroups.has(gId)) {
+          let _group              = this._stepNodeGroups.get(gId);
+          let _groupIndexInList   = this._stepNodes.findIndex((s)=>{ return s.id === gId; });
+          let _members            = Object.assign([], _group.children);
           let _itemIndex          = _members.findIndex((step) => {
             return step.resolvedVirtualEntityId === vId ? true : false;
           }); 
           let insertBeforeGroup: Array<SzResolutionStepGroup | SzResolutionStep[]> = [];
           let insertAfterGroup: Array<SzResolutionStepGroup | SzResolutionStep[]>  = [];
-          console.log(`\thas gId: ${this._stepGroups.has(gId)}`,this._stepGroups);
+          console.log(`\thas gId: ${this._stepNodeGroups.has(gId)}`,this._stepNodeGroups);
           if(_itemIndex > -1) {
-            let _indexOfGroupInList = this._stepsList.findIndex((item: SzResolutionStepGroup | SzResolutionStep) => {
-              return (item as SzResolutionStepGroup).id === _group.id;
+            let _indexOfGroupInList = this._stepNodes.findIndex((item: SzResolutionStepNode) => {
+              return item.id === _group.id;
             });
 
             // remove member from group
@@ -302,8 +313,8 @@ export class SzHowUIService {
             if(insertBeforeGroup.length > 0){
               // we need to move these items to before the item being
               // pinned
-              this._stepsList.forEach((step, _ind) => {
-                let _cStep = (step as SzResolutionStepGroup);
+              this._stepNodes.forEach((step, _ind) => {
+                let _cStep = step;
 
                 if(_ind === _groupIndexInList) {
                   // remove existing steps from current step
@@ -313,10 +324,10 @@ export class SzHowUIService {
                   // steps
                   _newStepList = _newStepList.concat(insertBeforeGroup);
                 }
-                if(_cStep && _cStep.resolutionSteps) {
-                  if(_cStep.resolutionSteps && insertBeforeGroup) {
+                if(_cStep && _cStep.children) {
+                  if(_cStep.children && insertBeforeGroup) {
                     // remove any items in "insertBeforeGroup" from "resolutionSteps"
-                    let membersToKeep = _cStep.resolutionSteps.filter((_s)=> {
+                    let membersToKeep = _cStep.children.filter((_s)=> {
                       return insertBeforeGroup.some((grp) => {
                         return (grp as SzResolutionStep).resolvedVirtualEntityId !== _s.resolvedVirtualEntityId;
                       })
@@ -349,34 +360,34 @@ export class SzHowUIService {
               };
               insertAfterGroup.push(_newGroup);
               // update 
-              if(!this._stepGroups.has(_newGroup.id)) {
-                this._stepGroups.set(_newGroup.id, _newGroup);
+              if(!this._stepNodeGroups.has(_newGroup.id)) {
+                this._stepNodeGroups.set(_newGroup.id, _newGroup);
               }
               console.log(`\treplaced individual items in after list with group: `, insertAfterGroup);
             }
             if(insertAfterGroup.length > 0) {
               // straight insert at index after group in _stepList
               let _foundIndex = false;
-              this._stepsList.forEach((step, _ind) => {
+              this._stepNodes.forEach((step, _ind) => {
                 // copy over item
                 _newStepList.push(step);
                 if(_ind === _groupIndexInList) {
                   // this is the one
                   _foundIndex = true;
                   // update the members for this group
-                  (step as SzResolutionStepGroup).resolutionSteps = _members;
-                  console.log(`\t\tupdated resolution steps for #${(step as SzResolutionStepGroup).id}`, (step as SzResolutionStepGroup).resolutionSteps);
+                  step.children = _members;
+                  console.log(`\t\tupdated resolution steps for #${step.id}`, step.children);
                   // now insert new group(s)
                   _newStepList = _newStepList.concat(insertAfterGroup);
-                  console.log(`\t\tinserted new steps for #${(step as SzResolutionStepGroup).id}`, insertAfterGroup, _newStepList);
+                  console.log(`\t\tinserted new steps for #${step.id}`, insertAfterGroup, _newStepList);
                 }
 
               });
               if(!_foundIndex) {
-                let _group2IndexInList   = this._stepsList.findIndex((s)=>{ 
-                  return (s as SzResolutionStepGroup).id === gId; 
+                let _group2IndexInList   = this._stepNodes.findIndex((s)=>{ 
+                  return s.id === gId; 
                 });
-                console.warn(`never found item(#${gId}|${_groupIndexInList}|${_group2IndexInList}) in list??? `, _groupIndexInList, this._stepsList, gId, this._stepGroups);
+                console.warn(`never found item(#${gId}|${_groupIndexInList}|${_group2IndexInList}) in list??? `, _groupIndexInList, this._stepNodes, gId, this._stepNodeGroups);
               }
               //console.log(`new step list: `,_newStepList, this._stepsList, insertBeforeGroup);
               //this._stepsList = _newStepList;
@@ -387,14 +398,14 @@ export class SzHowUIService {
               return (grpOrStp as SzResolutionStepGroup).virtualEntityIds !== undefined; // filter out any items that aren't specifically "groups"
             });
             (allGroupsAdded as SzResolutionStepGroup[]).forEach((stepGroup) => {
-              this._stepGroups.set(stepGroup.id, stepGroup);
+              this._stepNodeGroups.set(stepGroup.id, stepGroup);
             });
 
             // update any existing groups
-            if(this._stepGroups.has(gId)) {
-              _group.resolutionSteps = _members;
-              this._stepGroups.set(gId, _group);
-              if(_group.resolutionSteps && _group.resolutionSteps.length === 1) {
+            if(this._stepNodeGroups.has(gId)) {
+              _group.children = _members;
+              this._stepNodeGroups.set(gId, _group);
+              if(_group.children && _group.children.length === 1) {
                 // remove step from group and delete group
                 let _indexInNewList = _newStepList.findIndex((item) => {
                   if((item as SzResolutionStepGroup).id === _group.id) {
@@ -402,22 +413,22 @@ export class SzHowUIService {
                   }
                   return false;
                 });
-                if(_indexInNewList > -1 && _newStepList[_indexInNewList] && _group && _group.resolutionSteps && _group.resolutionSteps[0]) {
+                if(_indexInNewList > -1 && _newStepList[_indexInNewList] && _group && _group.children && _group.children[0]) {
                   //console.warn(`\tmove item to same spot as group in _newStepList: `, _newStepList[_indexInNewList], _group.resolutionSteps[0]);
-                  _newStepList[_indexInNewList] = _group.resolutionSteps[0];
+                  _newStepList[_indexInNewList] = _group.children[0];
                   // now remove old group from stepGroups
-                  this._stepGroups.delete(_group.id);
+                  this._stepNodeGroups.delete(_group.id);
                 }
               }
             }
 
             // update step list
-            console.log(`new step list: `,_newStepList, this._stepsList, insertBeforeGroup);
-            this._stepsList = _newStepList;
+            console.log(`new step list: `,_newStepList, this._stepNodes, insertBeforeGroup);
+            this._stepNodes = _newStepList;
           } 
 
         } else {
-          console.warn(`could not locate gId(${gId}) in stepsGroup: `, this._stepGroups);
+          console.warn(`could not locate gId(${gId}) in stepsGroup: `, this._stepNodeGroups);
         }
 
       } else {
@@ -429,41 +440,41 @@ export class SzHowUIService {
       if(this.isStepPinned(vId)) {
         console.log(`unPinStep: ${vId}`, this._pinnedSteps);
         // this step is pinned
-        let _previousItem;
-        let _nextItem;
+        let _previousItem: SzResolutionStepNode;
+        let _nextItem: SzResolutionStepNode;
         let _stepIndex: number;
-        let _stepToMove: SzResolutionStep;
-        let _groupToMoveTo: SzResolutionStepGroup;
+        let _stepToMove: SzResolutionStepNode;
+        let _groupToMoveTo: SzResolutionStepNode;
         let _stepMovedToGroup: string;
 
-        this._stepsList.forEach((s, ind)=>{ 
-          if((s as SzResolutionStep).resolvedVirtualEntityId === vId) {
+        this._stepNodes.forEach((s, ind)=>{ 
+          if(s.resolvedVirtualEntityId === vId) {
             _stepIndex  = ind;
-            _stepToMove = (s as SzResolutionStep);
-            if(ind > 0 && this._stepsList[(ind - 1)]) {
-              _previousItem = this._stepsList[(ind - 1)];
+            _stepToMove = s;
+            if(ind > 0 && this._stepNodes[(ind - 1)]) {
+              _previousItem = this._stepNodes[(ind - 1)];
             }
-            if(this._stepsList.length >= (ind + 1) && this._stepsList[(ind + 1)]) {
-              _nextItem = this._stepsList[(ind + 1)]
+            if(this._stepNodes.length >= (ind + 1) && this._stepNodes[(ind + 1)]) {
+              _nextItem = this._stepNodes[(ind + 1)]
             }
           }
         });
         // if previous item is either a step or a stack group we're going to add this step to that
         if(_previousItem) {
-          let isStep  = (_previousItem as SzResolutionStep).resolvedVirtualEntityId ? true : false;
-          let isStack = (_previousItem as SzResolutionStepGroup).resolutionSteps ? true : false;
+          let isStep  = _previousItem.itemType === SzResolutionStepListItemType.STEP  ? true : false;
+          let isStack = _previousItem.itemType === SzResolutionStepListItemType.STACK ? true : false;
           if(isStack) {
-            let _stackGroupToAddStepTo = (_previousItem as SzResolutionStepGroup);
+            let _stackGroupToAddStepTo = _previousItem;
             _stepMovedToGroup = _stackGroupToAddStepTo.id;
             console.log(`previous item is a stack, add step to stack group`, _stackGroupToAddStepTo);
 
-            if(_stackGroupToAddStepTo.resolutionSteps && _stackGroupToAddStepTo.resolutionSteps.push) {
+            if(_stackGroupToAddStepTo.children && _stackGroupToAddStepTo.children.push) {
               // add step to end
-              _stackGroupToAddStepTo.resolutionSteps.push(_stepToMove);
+              _stackGroupToAddStepTo.children.push(_stepToMove);
               _stackGroupToAddStepTo.virtualEntityIds.push(_stepToMove.resolvedVirtualEntityId);
               // remove step from "stepsList"
-              if(_stepToMove && _stepIndex && this._stepsList[_stepIndex] && _stepToMove && (this._stepsList[_stepIndex] as SzResolutionStep).resolvedVirtualEntityId === _stepToMove.resolvedVirtualEntityId) {
-                this._stepsList.splice(_stepIndex, 1);
+              if(_stepToMove && _stepIndex && this._stepNodes[_stepIndex] && _stepToMove && this._stepNodes[_stepIndex].resolvedVirtualEntityId === _stepToMove.resolvedVirtualEntityId) {
+                this._stepNodes.splice(_stepIndex, 1);
               }
               // update "stepGroup" in "_stepGroups" with updated members/virtualIds
             }
@@ -472,18 +483,18 @@ export class SzHowUIService {
             let _membersOfNewGroup = [_previousItem, _stepToMove];
             _groupToMoveTo     = {
               id: uuidv4(),
-              isStackGroup: true,
-              resolutionSteps: (_membersOfNewGroup as SzResolutionStep[]),
+              itemType: SzResolutionStepListItemType.STACK,
+              children: _membersOfNewGroup,
               virtualEntityIds: _membersOfNewGroup.map((rStep) => { 
                 return (rStep as SzResolutionStep).resolvedVirtualEntityId; 
               })
             };
             _stepMovedToGroup = _groupToMoveTo.id;
-            this._stepsList[(_stepIndex -1)] = _groupToMoveTo;
+            this._stepNodes[(_stepIndex -1)] = _groupToMoveTo;
             // update "stepGroups"
-            this._stepGroups.set(_groupToMoveTo.id, _groupToMoveTo);
+            this._stepNodeGroups.set(_groupToMoveTo.id, _groupToMoveTo);
             // remove original step from list
-            this._stepsList = this._stepsList.filter((item) => {
+            this._stepNodes = this._stepNodes.filter((item) => {
               if((item as SzResolutionStep).resolvedVirtualEntityId === _stepToMove.resolvedVirtualEntityId) {
                 return false;
               }
@@ -492,9 +503,9 @@ export class SzHowUIService {
           }
         }
         if(_nextItem) {
-          let isStep                = (_nextItem as SzResolutionStep).resolvedVirtualEntityId ? true : false;
-          let isStack               = (_nextItem as SzResolutionStepGroup).resolutionSteps ? true : false;
-          let _nextItemIsNotPinned  = isStep ? this.isStepPinned((_nextItem as SzResolutionStep).resolvedVirtualEntityId) : true;
+          let isStep                = _nextItem.itemType === SzResolutionStepListItemType.STEP  ? true : false;
+          let isStack               = _nextItem.itemType === SzResolutionStepListItemType.STACK ? true : false;
+          let _nextItemIsNotPinned  = isStep ? this.isStepPinned(_nextItem.resolvedVirtualEntityId) : true;
 
           if(isStep && _nextItemIsNotPinned) {
             // next item is a un-pinned step
@@ -502,23 +513,23 @@ export class SzHowUIService {
               // use the group the other item was moved to
             } else {
               // create new group here
-              console.log(`next item is a step item. `, (_nextItem as SzResolutionStep));
+              console.log(`next item is a step item. `, _nextItem);
               let _membersOfNewGroup = [_stepToMove];
               _groupToMoveTo     = {
                 id: uuidv4(),
-                isStackGroup: true,
-                resolutionSteps: (_membersOfNewGroup as SzResolutionStep[]),
+                itemType: SzResolutionStepListItemType.STACK,
+                children: _membersOfNewGroup,
                 virtualEntityIds: _membersOfNewGroup.map((rStep) => { 
-                  return (rStep as SzResolutionStep).resolvedVirtualEntityId; 
+                  return rStep.resolvedVirtualEntityId; 
                 })
               };
               _stepMovedToGroup = _groupToMoveTo.id;
-              this._stepsList[_stepIndex] = _groupToMoveTo;
+              this._stepNodes[_stepIndex] = _groupToMoveTo;
               // update "stepGroups"
-              this._stepGroups.set(_groupToMoveTo.id, _groupToMoveTo);
+              this._stepNodeGroups.set(_groupToMoveTo.id, _groupToMoveTo);
               // remove original step from list
-              this._stepsList = this._stepsList.filter((item) => {
-                if((item as SzResolutionStep).resolvedVirtualEntityId === _stepToMove.resolvedVirtualEntityId) {
+              this._stepNodes = this._stepNodes.filter((item) => {
+                if(item.resolvedVirtualEntityId === _stepToMove.resolvedVirtualEntityId) {
                   return false;
                 }
                 return true;
@@ -533,25 +544,26 @@ export class SzHowUIService {
             console.warn(`\tstep was not moved to a group prior to executing "nextItem" block`);
             if(isStack) {
               // just move step to stack
-              let targetStack = (_nextItem as SzResolutionStepGroup);
+              let targetStack = _nextItem;
               console.log(`\t\tmoving step to stack after item`, targetStack);
-              targetStack.resolutionSteps   = [_stepToMove].concat(targetStack.resolutionSteps)
-              targetStack.virtualEntityIds  = targetStack.resolutionSteps.map((item: SzResolutionStep) => {
+              let _nStepChildren: Array<SzResolutionStepNode | SzResolutionStep> = [_stepToMove];
+              targetStack.children          = _nStepChildren.concat(targetStack.children)
+              targetStack.virtualEntityIds  = targetStack.children.map((item: SzResolutionStep) => {
                 return item.resolvedVirtualEntityId;
               });
               // now remove "_stepToMove" from stepsList
-              console.log(`\t\tstep moved to new group`, targetStack, this._stepGroups.get(targetStack.id));
-              this._stepsList = this._stepsList.filter((item) => {
-                if((item as SzResolutionStep).resolvedVirtualEntityId === _stepToMove.resolvedVirtualEntityId) {
+              console.log(`\t\tstep moved to new group`, targetStack, this._stepNodeGroups.get(targetStack.id));
+              this._stepNodes = this._stepNodes.filter((item) => {
+                if(item.resolvedVirtualEntityId === _stepToMove.resolvedVirtualEntityId) {
                   return false;
                 }
                 return true;
               });
             }
           } else if(_stepMovedToGroup) {
-            let targetStack     = this._stepsList.find((s) => {
-              return (s as SzResolutionStepGroup).id === _stepMovedToGroup;
-            }) as SzResolutionStepGroup;
+            let targetStack     = this._stepNodes.find((s) => {
+              return s.id === _stepMovedToGroup;
+            });
 
             // we moved the item to a group
             if(isStack) {
@@ -559,33 +571,33 @@ export class SzHowUIService {
 
               // merge the two stacks
               // copy items from nextStack to previous stack
-              let stackToMove       = (isStack) ? (_nextItem as SzResolutionStepGroup) : _nextItem;
+              let stackToMove       = _nextItem;
 
-              if(stackToMove && stackToMove.resolutionSteps && targetStack && targetStack.resolutionSteps) {
+              if(stackToMove && stackToMove.children && targetStack && targetStack.children) {
                 // copy all items from nextStack to prevStack
-                let itemsToMerge = (stackToMove as SzResolutionStepGroup).resolutionSteps;
-                targetStack.resolutionSteps = targetStack.resolutionSteps.concat(itemsToMerge);
+                let itemsToMerge = stackToMove.children;
+                targetStack.children = targetStack.children.concat(itemsToMerge);
                 // de-dupe jic
               }
               //_previousItem.resolutionSteps = _nextItem.resolutionSteps;
-              targetStack.virtualEntityIds = (targetStack as SzResolutionStepGroup).resolutionSteps.map((item: SzResolutionStep) => {
+              targetStack.virtualEntityIds = targetStack.children.map((item: SzResolutionStep) => {
                 return item.resolvedVirtualEntityId;
               });
               // now remove "stackToMove" from stepsList
-              this._stepsList = this._stepsList.filter((item) => {
+              this._stepNodes = this._stepNodes.filter((item) => {
                 // omit step that was moved
-                if((item as SzResolutionStep).resolvedVirtualEntityId === _stepToMove.resolvedVirtualEntityId) {
+                if(item .resolvedVirtualEntityId === _stepToMove.resolvedVirtualEntityId) {
                   return false;
                 }
                 // omit stack that was merged
-                if((item as SzResolutionStepGroup).id === (stackToMove as SzResolutionStepGroup).id) {
+                if(item.id === stackToMove.id) {
                   return false;
                 }
                 return true;
               });
               // now remove "stackToMove.id" from "stepGroups"
-              if(this._stepGroups.has(stackToMove.id)) {
-                this._stepGroups.delete(stackToMove.id);
+              if(this._stepNodeGroups.has(stackToMove.id)) {
+                this._stepNodeGroups.delete(stackToMove.id);
               }
             }
           }
@@ -605,30 +617,30 @@ export class SzHowUIService {
       // OR
       // the item before or after is a stepGroup then the
       // item can be unpinned
-      this._stepsList.forEach((item, ind) => {
-        if((item as SzResolutionStep).resolvedVirtualEntityId === vId) {
+      this._stepNodes.forEach((item, ind) => {
+        if(item.resolvedVirtualEntityId === vId) {
           // this is the item
-          if(ind > 0 && this._stepsList[(ind - 1)]) {
+          if(ind > 0 && this._stepNodes[(ind - 1)]) {
             // is previous item a step or stack group AND
             // not an interim or merge step
-            retVal = ((this._stepsList[(ind - 1)] as SzResolutionStep).resolvedVirtualEntityId || (this._stepsList[(ind - 1)] as SzResolutionStepGroup).resolutionSteps) ? true : false;
+            retVal = (this._stepNodes[(ind - 1)].itemType === SzResolutionStepListItemType.STEP || this._stepNodes[(ind - 1)].itemType === SzResolutionStepListItemType.STACK) ? true : false;
           }
-          if((ind+1) < this._stepsList.length && this._stepsList[(ind+1)] && !retVal) {
+          if((ind+1) < this._stepNodes.length && this._stepNodes[(ind+1)] && !retVal) {
             // there are items after item
             // check if it is a step or stack group
-            retVal = ((this._stepsList[(ind + 1)] as SzResolutionStep).resolvedVirtualEntityId || (this._stepsList[(ind + 1)] as SzResolutionStepGroup).resolutionSteps) ? true : false;
+            retVal = (this._stepNodes[(ind + 1)].itemType === SzResolutionStepListItemType.STEP || this._stepNodes[(ind + 1)].itemType === SzResolutionStepListItemType.STACK) ? true : false;
           }
         }
       });
       return retVal;
     }
 
-    private stepGroupStacks(): SzResolutionStepGroup[] {
+    private stepGroupStacks(): SzResolutionStepNode[] {
       let retVal;
-      let _groupsAsArray  = Array.from(this._stepGroups.values());
+      let _groupsAsArray  = Array.from(this._stepNodeGroups.values());
       if(_groupsAsArray && _groupsAsArray.filter) {
-        retVal = _groupsAsArray.filter((_val: SzResolutionStepGroup)=>{
-          return _val.isStackGroup;
+        retVal = _groupsAsArray.filter((_val: SzResolutionStepNode)=>{
+          return _val.itemType === SzResolutionStepListItemType.STACK;
         });
       }
       return retVal;
@@ -638,7 +650,7 @@ export class SzHowUIService {
       if(vId) {
         if(gId) {
           // we are looking in a specific group
-          let _groupSpecified = this._stepGroups.has(gId) ? this._stepGroups.get(gId) : undefined;
+          let _groupSpecified = this._stepNodeGroups.has(gId) ? this._stepNodeGroups.get(gId) : undefined;
           if(_groupSpecified) {
             // group exists
             if(_groupSpecified && _groupSpecified.virtualEntityIds) {
@@ -649,7 +661,7 @@ export class SzHowUIService {
           // check all groups
           let _stackGroups = this.stepGroupStacks();
           if(_stackGroups && _stackGroups.length > 0) {
-            let _memberInGroup = _stackGroups.find((grp: SzResolutionStepGroup) => {
+            let _memberInGroup = _stackGroups.find((grp: SzResolutionStepNode) => {
               return grp.virtualEntityIds.indexOf(vId) > -1 ? true : false;
             });
             if(_memberInGroup) {
@@ -666,8 +678,8 @@ export class SzHowUIService {
     }
 
     public selectStep(vId: string) {
-      let vIdInGroups = (this._stepGroups && this._stepGroups.has(vId)) ? true : false;
-      let stepGroup   = vIdInGroups ? this._stepGroups.get(vId) : undefined;
+      let vIdInGroups = (this._stepNodeGroups && this._stepNodeGroups.has(vId)) ? true : false;
+      let stepGroup   = vIdInGroups ? this._stepNodeGroups.get(vId) : undefined;
       //console.log(`SzHowUIService.selectStep()`, vIdInGroups, stepGroup);
       if(vIdInGroups) {
         // is group
@@ -685,7 +697,7 @@ export class SzHowUIService {
           // expand step
           this.expandStep(vId);
           // check if step is actually a member of a group
-          let groupForStep  = SzHowUIService.getGroupForMemberStep(vId, this._stepGroups);
+          let groupForStep  = SzHowUIService.getGroupForMemberStep(vId, this._stepNodeGroups);
           if(groupForStep) {
             this.expandGroup(groupForStep.id);
           }
@@ -693,12 +705,12 @@ export class SzHowUIService {
       }
     }
 
-    public static getGroupForMemberStep(step: SzResolutionStep | string, groups: Map<string, SzResolutionStepGroup>): SzResolutionStepGroup {
-      let _retVal: SzResolutionStepGroup;
+    public static getGroupForMemberStep(step: SzResolutionStep | string, groups: Map<string, SzResolutionStepNode>): SzResolutionStepNode {
+      let _retVal: SzResolutionStepNode;
       if(groups && step) {
         let _idToLookFor = ((step as SzResolutionStep).resolvedVirtualEntityId) ? (step as SzResolutionStep).resolvedVirtualEntityId : (step as string);
         let _sk = false;
-        groups.forEach((groupToSearch: SzResolutionStepGroup, key: string) => {
+        groups.forEach((groupToSearch: SzResolutionStepNode, key: string) => {
           if(!_sk && groupToSearch.virtualEntityIds && groupToSearch.virtualEntityIds.indexOf(_idToLookFor) > -1 || groupToSearch.id === _idToLookFor) {
             _retVal = groupToSearch;
           }
@@ -707,10 +719,10 @@ export class SzHowUIService {
       return _retVal;
     }
 
-    public static getResolutionStepListItemType(item: SzResolutionStep | SzResolutionStepGroup): SzResolutionStepListItemType {
+    public static getResolutionStepListItemType(item: SzResolutionStep | SzResolutionStepNode): SzResolutionStepListItemType {
       if(item && item !== undefined) {
-        let itemIsGroup   = (item as SzResolutionStepGroup).virtualEntityIds && (item as SzResolutionStepGroup).interimSteps ? true : false;
-        let itemsIsStack  = (item as SzResolutionStepGroup).virtualEntityIds && (item as SzResolutionStepGroup).resolutionSteps && !itemIsGroup ? true : false;
+        let itemIsGroup   = (item as SzResolutionStepNode).virtualEntityIds && (item as SzResolutionStepNode).itemType ===  SzResolutionStepListItemType.GROUP ? true : false;
+        let itemsIsStack  = (item as SzResolutionStepNode).virtualEntityIds && (item as SzResolutionStepNode).itemType ===  SzResolutionStepListItemType.STACK && !itemIsGroup ? true : false;
         
         if(itemIsGroup) {
           // item is a interim entity whos children are a collection of steps AND/OR stacks (single with subtree)
