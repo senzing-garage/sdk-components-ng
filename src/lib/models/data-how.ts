@@ -46,6 +46,14 @@ export interface SzResolutionStepGroup {
     resolutionSteps?: SzResolutionStep[]
 }
 
+export interface SzResolutionStepNode extends SzResolutionStep {
+    id: string,
+    virtualEntityIds?: string[],
+    stepType?: SzResolutionStepDisplayType,
+    itemType?: SzResolutionStepListItemType,
+    children?: Array<SzResolutionStepNode | SzResolutionStep>
+}
+
 export interface howClickEvent extends SzEntityMouseEvent {}
 export type SzResolutionStepListItemType = 'STACK' | 'GROUP' | 'STEP';
 export const SzResolutionStepListItemType = {
