@@ -26,7 +26,7 @@ export class SzHowUIService {
     private _navigationExpanded: boolean        = true;
     private _pinnedSteps: string[]              = [];
     private _expandedFinalEntities: string[]    = [];
-    private _expandedStepsOrGroups: string[]    = [];
+    private _expandedNodes: string[]            = [];
     private _expandedGroups: string[]           = [];
     private _expandedVirtualEntities: string[]  = [];
     //private _stepGroups: Map<string, SzResolutionStepGroup>     = new Map<string, SzResolutionStepGroup>();
@@ -90,7 +90,7 @@ export class SzHowUIService {
     }
 
     isStepExpanded(virtualEntityId: string): boolean {
-      return this._expandedStepsOrGroups.includes(virtualEntityId);
+      return this._expandedNodes.includes(virtualEntityId);
     }
     isGroupExpanded(groupId: string): boolean {
       return this._expandedGroups.includes(groupId);
@@ -99,11 +99,11 @@ export class SzHowUIService {
       return this._expandedFinalEntities.includes(vId);
     }
     isExpanded(vId: string) {
-      return this._expandedStepsOrGroups.includes(vId);
+      return this._expandedNodes.includes(vId);
     }
     expand(vId: string) {
       if(!this.isExpanded(vId)) {
-        this._expandedStepsOrGroups.push(vId);
+        this._expandedNodes.push(vId);
         if(this.idIsGroupId(vId)) { this._onGroupExpansionChange.next(vId); }
         if(this.idIsStepId(vId)) { this._onStepExpansionChange.next(vId); }
       }
@@ -111,9 +111,9 @@ export class SzHowUIService {
     }
     collapse(vId: string) {
       if(this.isExpanded(vId)) {
-        let _itemIndex  = this._expandedStepsOrGroups.indexOf(vId);
-        if(this._expandedStepsOrGroups[_itemIndex] && this._expandedStepsOrGroups.splice) {
-          this._expandedStepsOrGroups.splice(_itemIndex, 1);
+        let _itemIndex  = this._expandedNodes.indexOf(vId);
+        if(this._expandedNodes[_itemIndex] && this._expandedNodes.splice) {
+          this._expandedNodes.splice(_itemIndex, 1);
           if(this.idIsGroupId(vId)) { this._onGroupExpansionChange.next(vId); }
           if(this.idIsStepId(vId)) { this._onStepExpansionChange.next(vId); }
         }
@@ -123,16 +123,16 @@ export class SzHowUIService {
     expandStep(virtualEntityId: string) {
       //console.info(`SzHowUIService.expandStep(${virtualEntityId}): ${this.isStepExpanded(virtualEntityId)}`);
       if(!this.isStepExpanded(virtualEntityId)) {
-        this._expandedStepsOrGroups.push(virtualEntityId);
+        this._expandedNodes.push(virtualEntityId);
         this._userHasChangedStepState.set(virtualEntityId, true)
         this._onStepExpansionChange.next(virtualEntityId);
       }
     }
     collapseStep(virtualEntityId: string) {
       if(this.isStepExpanded(virtualEntityId)) {
-        let _itemIndex  = this._expandedStepsOrGroups.indexOf(virtualEntityId);
-        if(this._expandedStepsOrGroups[_itemIndex] && this._expandedStepsOrGroups.splice) {
-          this._expandedStepsOrGroups.splice(_itemIndex, 1);
+        let _itemIndex  = this._expandedNodes.indexOf(virtualEntityId);
+        if(this._expandedNodes[_itemIndex] && this._expandedNodes.splice) {
+          this._expandedNodes.splice(_itemIndex, 1);
           this._onStepExpansionChange.next(virtualEntityId);
         }
       }
@@ -159,6 +159,7 @@ export class SzHowUIService {
           this.expandStep(groupId);
         }
       }
+      console.log(`expandGroup(${groupId}): ${this.isGroupExpanded(groupId)}`, this._expandedGroups);
     }
     collapseGroup(groupId: string) {
       if(this.isGroupExpanded(groupId)) {
@@ -179,8 +180,8 @@ export class SzHowUIService {
         this._onFinalExpansionChange.next(virtualEntityId);
       }
     }    
-    public get expandedStepsOrGroups() {
-      return this._expandedStepsOrGroups;
+    public get expandedNodes() {
+      return this._expandedNodes;
     }
 
     toggleExpansion(id: string, groupId?: string, finalEntityId?: string) {
@@ -191,7 +192,7 @@ export class SzHowUIService {
       }
       //let isExpanded = (!groupId) ? this._expandedStepsOrGroups.includes(id) : this._expandedGroups.includes(groupId);
       let isExpanded = (finalEntityId) ? this._expandedFinalEntities.includes(finalEntityId) : 
-      (!groupId) ? this._expandedStepsOrGroups.includes(id) : this._expandedGroups.includes(groupId);
+      (!groupId) ? this._expandedNodes.includes(id) : this._expandedGroups.includes(groupId);
 
       if(!isExpanded) {
         if(finalEntityId) {
@@ -201,12 +202,12 @@ export class SzHowUIService {
           console.log(`\texpand step`);
           this.expand(id);
         } else {
-          console.log(`\texpand group`);
+          console.log(`\texpand group ${id}`);
           this.expandGroup(id);
         }
       } else {
         if(finalEntityId) {
-          console.log(`\collapse final`);
+          console.log(`\collapse final ${finalEntityId}`);
           this.collapseFinal(finalEntityId);
         } else if(!groupId) {
           console.log(`\tcollapse step`);
@@ -223,7 +224,7 @@ export class SzHowUIService {
       let _groupIdsLeft          = [];
 
       if(idsToExclude) {
-        _stepIdsLeft           = this._expandedStepsOrGroups.filter((gId: string) => {
+        _stepIdsLeft           = this._expandedNodes.filter((gId: string) => {
           if((idsToExclude as string) && (idsToExclude as string).substring) {
             // is single id
             return gId === (idsToExclude as string)
@@ -240,8 +241,8 @@ export class SzHowUIService {
           }
         });
       }
-      this._expandedStepsOrGroups = _stepIdsLeft;
-      this._expandedGroups        = _groupIdsLeft;
+      this._expandedNodes   = _stepIdsLeft;
+      this._expandedGroups  = _groupIdsLeft;
       if(emitEvent !== false) {
         this._onStepExpansionChange.next(undefined);
         this._onGroupExpansionChange.next(undefined);
@@ -695,7 +696,7 @@ export class SzHowUIService {
           this.expandStep(vId);
       } else {
         // is not in group
-        if(!(this._expandedStepsOrGroups && this._expandedStepsOrGroups.includes(vId))) {
+        if(!(this._expandedNodes && this._expandedNodes.includes(vId))) {
           // clear out any other selected
           this.collapseAll(undefined, false);
           // expand step

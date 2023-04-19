@@ -37,17 +37,17 @@ export class SzHowRCStepNodeComponent implements OnInit, OnDestroy {
     private _childrenCollapsed: boolean = false;
 
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
-        return !this.howUIService.isExpanded(this.id);
+        return this.isCollapsed;
     }
     @HostBinding('class.expanded') get cssExpandedClass(): boolean {
-        return this.howUIService.isExpanded(this.id);
+        return this.isExpanded;
     }
-    /*@HostBinding('class.group-collapsed') get cssHiddenGroupClass(): boolean {
-        return !this.howUIService.isGroupExpanded(this._groupId);
+    @HostBinding('class.group-collapsed') get cssHiddenGroupClass(): boolean {
+        return !this.howUIService.isGroupExpanded(this.id);
     }
     @HostBinding('class.group-expanded') get cssExpandedGroupClass(): boolean {
-        return this.howUIService.isGroupExpanded(this._groupId);
-    }*/
+        return this.howUIService.isGroupExpanded(this.id);
+    }
     @HostBinding('class.highlighted') get cssHighlightedClass(): boolean {
         return this._highlighted ? true : false;
     }
@@ -63,15 +63,27 @@ export class SzHowRCStepNodeComponent implements OnInit, OnDestroy {
         return this._data;
     }
     public get isCollapsed() {
-        return !this.howUIService.isExpanded(this.id);
+        if((this.isGroup || this.isStack) && this.hasChildren) {
+            // check group
+            return !this.howUIService.isGroupExpanded(this.id)
+        } else {
+            // check node
+            return !this.howUIService.isStepExpanded(this.id);
+        }
     }
     public get isExpanded() {
-        return this.howUIService.isExpanded(this.id);
+        if((this.isGroup || this.isStack) && this.hasChildren) {
+            // check group
+            return this.howUIService.isGroupExpanded(this.id)
+        } else {
+            // check node
+            return this.howUIService.isStepExpanded(this.id);
+        }
     }
     public get id(): string {
         return this.isStep ? (this._data as SzResolutionStep).resolvedVirtualEntityId : (this._data as SzResolutionStepNode).id;
     }
-    public get isStackGroup() {
+    public get isStack() {
         let _d = this._data;
         return ((_d as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STACK)
     }
@@ -92,7 +104,9 @@ export class SzHowRCStepNodeComponent implements OnInit, OnDestroy {
         }
         return undefined;
     }
-
+    get virtualEntitiesById(): Map<string, SzResolvedVirtualEntity> {
+        return this._virtualEntitiesById;
+    }
     constructor(
         public entityDataService: SzEntityDataService,
         public configDataService: SzConfigDataService,

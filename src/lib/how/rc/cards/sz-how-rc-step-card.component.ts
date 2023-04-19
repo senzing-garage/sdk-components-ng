@@ -35,12 +35,10 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     private _stepMap: {[key: string]: SzResolutionStep};
     private _data: SzResolutionStep | SzResolutionStepNode;
     private _groupId: string;
-    private _groupTitle: string;
     private _isInterimStep: boolean;
     private _parentStep: SzResolutionStep;
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
     private _highlighted: boolean = false;
-    private _isStackGroupMember: boolean = false;
 
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
         return !this.howUIService.isStepExpanded(this.id);
@@ -48,7 +46,7 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     @HostBinding('class.highlighted') get cssHighlightedClass(): boolean {
         return this._highlighted ? true : false;
     }
-    @HostBinding('class.type-interim') get cssTypeAddClass(): boolean {
+    @HostBinding('class.type-add') get cssTypeAddClass(): boolean {
         return this.stepType === SzResolutionStepDisplayType.ADD;
     }
     @HostBinding('class.type-merge') get cssTypeMergeClass(): boolean {
@@ -98,9 +96,6 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     }
     @Input() set groupId(value: string) {
         this._groupId = value;
-    }
-    @Input() set groupTitle(value: string) {
-        this._groupTitle = value;
     }
     @Output()
     onExpand: EventEmitter<boolean>                          = new EventEmitter<boolean>();
@@ -208,8 +203,8 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     public get isAddRecordStep() {
         return this.stepType === SzResolutionStepDisplayType.ADD;
     }
-    public get groupTitle(): string {
-        return this._groupTitle;
+    public get virtualEntitiesById(): Map<string, SzResolvedVirtualEntity> {
+        return this._virtualEntitiesById;
     }
     public get from(): string[] {
         let retVal = [];
@@ -223,6 +218,28 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
             retVal = retVal.concat(this._data.inboundVirtualEntity.records.map((record: SzVirtualEntityRecord) => {
                 return `${record.dataSource}:${record.recordId}`;
             }));
+        }
+        return retVal;
+    }
+    public get groupTitle(): string {
+        let retVal;
+        if(this.hasChildren) {
+            if(this.isInterimStep) {
+                let _data = (this._data as SzResolutionStepNode);
+                retVal = 'Interim Entity';
+                if(_data) {
+                    if(_data.id) {
+                        retVal = _data.id +': '+ retVal;
+                        // get just the single item matching the id
+                        if(this._virtualEntitiesById && this._virtualEntitiesById.has(_data.id)){
+                            // add name
+                            let _vEnt = this._virtualEntitiesById.get(_data.id);
+                            retVal = _vEnt ? retVal +': ' : retVal;
+                            retVal = retVal + (_vEnt.bestName ? _vEnt.bestName : _vEnt.entityName);
+                        }
+                    }
+                }
+            }
         }
         return retVal;
     }
@@ -394,14 +411,15 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     }
     public get resolvedVirtualEntity(): SzResolvedVirtualEntity {
         let retVal;
-        if(this._virtualEntitiesById && this._virtualEntitiesById.has(this._data.resolvedVirtualEntityId)) {
-            let retVal = this._virtualEntitiesById.get(this._data.resolvedVirtualEntityId);
+        if(this._virtualEntitiesById && this._virtualEntitiesById.has(this.id)) {
+            let retVal = this._virtualEntitiesById.get(this.id);
             return retVal;
         } else {
-            //console.log(`no virtual entity: ${this._data.resolvedVirtualEntityId}`, this._virtualEntitiesById);
+            console.log(`no virtual entity: ${this.id}`, this._virtualEntitiesById);
         }
         return retVal;
     }
+
 
     openVirtualEntityDialog(evt) {
       console.log('openVirtualEntityDialog: ', evt, this.resolvedVirtualEntity, this._data, this.featureOrder);

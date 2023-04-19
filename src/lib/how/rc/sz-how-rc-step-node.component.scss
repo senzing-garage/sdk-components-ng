@@ -1,0 +1,42 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    &.expanded {
+        .stack-card {
+            margin-top: 14px;
+        }
+    }
+    .hide-on-group-collapsed {
+        display: block;
+    }
+    &.collapsed {
+        .hide-on-group-collapsed {
+            display: none;
+        }
+    }
+    sz-how-rc-step {
+        margin-right: 20px;
+        margin-top: 10px;
+        flex-grow: 10;
+    }
+
+    .stack-card {
+        &.type-add {
+            background-color: #feae00;
+        }
+        &.type-create {
+            background-color: #ffd932;
+        }
+        &.type-interim {
+            background-color: #56c1ff;
+        }
+        &.type-merge {
+            background-color: #16e7cf;
+        }
+        &.type-final {
+            background-color: #88fa4e;
+        }
+    }
+}

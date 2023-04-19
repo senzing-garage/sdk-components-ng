@@ -21,6 +21,7 @@
 
             &.top-level {
                 margin-left: 0px;
+
                 sz-how-rc-final-entity-card {
                     flex-grow: 5;
                 }
@@ -28,18 +29,13 @@
             &.hidden {
                 display: none;
             }
-            sz-how-rc-step {
+            sz-how-rc-step-node {
                 flex-grow: 5;
                 margin-right: 20px;
             }
-            sz-how-rc-step-group {
-                flex-grow: 5;
-            }
         }
     }
-    sz-how-rc-step-stack {
-        width: 100%;
-    }
+    /*
     .stack-control {
         display: flex;
         flex-direction: column;
@@ -108,7 +104,7 @@
                 display: flex;
             }
         }
-    }
+    }*/
     .debug-box {
         position: relative;
         border: 1px inset #b1b1b1;

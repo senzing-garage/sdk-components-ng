@@ -90,7 +90,6 @@ import { SzHowRCEntityComponent } from './how/rc/sz-how-rc-entity.component';
 import { SzHowRCFinalEntityCardComponent } from './how/rc/cards/sz-how-rc-final-entity-card.component';
 import { SzHowRCNavComponent } from './how/rc/sz-how-rc-nav.component';
 import { SzHowRCStepCardComponent } from './how/rc/cards/sz-how-rc-step-card.component';
-import { SzHowRCStepComponent } from './how/rc/sz-how-rc-step.component';
 import { SzHowRCStepGroupComponent } from './how/rc/sz-how-rc-step-group.component';
 import { SzHowRCStepStackComponent } from './how/rc/sz-how-rc-step-stack.component';
 import { SzHowUIService } from './services/sz-how-ui.service';
@@ -159,7 +158,6 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowRCFinalEntityCardComponent,
         SzHowRCNavComponent,
         SzHowRCStepCardComponent,
-        SzHowRCStepComponent,
         SzHowRCStepGroupComponent,
         SzHowRCStepNodeComponent,
         SzHowRCStepStackComponent,
@@ -217,7 +215,6 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowECVirtualCardComponent,
         SzHowRCEntityComponent,
         SzHowRCNavComponent,
-        SzHowRCStepComponent,
         SzHowRCStepGroupComponent,
         SzHowRCStepNodeComponent,
         SzHowRCStepStackComponent,
