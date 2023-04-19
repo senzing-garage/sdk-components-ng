@@ -646,6 +646,10 @@ export class SzHowUIService {
       return retVal;
     }
 
+    public isNodeMemberOfGroup(vId: string, gId?: string) {
+      return false;
+    }
+
     public isStepMemberOfStack(vId: string, gId?: string) {
       if(vId) {
         if(gId) {

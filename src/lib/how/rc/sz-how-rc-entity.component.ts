@@ -481,6 +481,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       return retVal;
     }
 
+    /*
     public getStepNodes() {
       let _steps                = this._resolutionSteps;
       let _defaultStepGroups    = this.getDefaultStepNodeGroups(_steps);
@@ -503,6 +504,13 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
 
       console.info(`getStepNodes: `, _retVal, _stepGroups, _defaultStepGroups);
       return _retVal;
+    }*/
+
+    public get stepNodes(): Array<SzResolutionStepNode> {
+      if(!this.howUIService.stepNodes || this.howUIService.stepNodes === undefined) {
+        this.howUIService.stepNodes   = this.getResolutionStepsAsNodes(this._resolutionSteps, this._stepNodeGroups);
+      }
+      return this.howUIService.stepNodes;
     }
 
     public getDefaultStepNodeGroups(_rSteps?: Array<SzResolutionStep>): Map<string, SzResolutionStepNode> {
@@ -717,6 +725,12 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
         // set return value to temporary copy
         retVal  = _resolutionStepsWithGroups;
       }
+      // remove any top-level groups that are members of other groups
+      if(retVal) {
+        retVal = retVal.filter((rNode) => {
+          return !this.stepIsMemberOfGroup(rNode.id, groups);
+        });
+      }
       console.info(`getResolutionStepsAsNodes() `, retVal, this._resolutionSteps, groups);
       return retVal;
     }
@@ -909,12 +923,17 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       return _retVal;
     }
 
-    private stepIsMemberOfGroup(virtualEntityId: string, groups: Map<string, SzResolutionStepNode>) {
+    public stepIsMemberOfGroup(virtualEntityId: string, groups: Map<string, SzResolutionStepNode>) {
       let _retVal   = false;
       let _groupId  = this.getResolutionStepGroupIdByMemberVirtualId(virtualEntityId, groups);
       if(_groupId) {
         _retVal     = true; 
       }
+      return _retVal;
+    }
+    stepIsMemberOfGroupDebug(virtualEntityId: string, debug?: boolean) {
+      let _retVal = this.stepIsMemberOfGroup(virtualEntityId, this._stepNodeGroups);
+      if(debug !== false) { console.log(`stepIsMemberOfGroupDebug('${virtualEntityId}') ? ${_retVal}`); }
       return _retVal;
     }
 

@@ -97,6 +97,8 @@ import { SzHowUIService } from './services/sz-how-ui.service';
 import { SzHowRCVirtualEntityCardComponent } from './how/rc/cards/sz-how-rc-virtual-entity-card.component';
 import { SzHowRCVirtualEntityDialog } from './how/rc/sz-how-rc-virtual-entity-dialog.component';
 
+import { SzHowRCStepNodeComponent } from './how/rc/sz-how-rc-step-node.component';
+
 /**
  * Sets up a default set of service parameters for use
  * by the SDK Components.
@@ -159,6 +161,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowRCStepCardComponent,
         SzHowRCStepComponent,
         SzHowRCStepGroupComponent,
+        SzHowRCStepNodeComponent,
         SzHowRCStepStackComponent,
         SzHowRCVirtualEntityCardComponent,
         SzHowRCVirtualEntityDialog,
@@ -216,6 +219,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowRCNavComponent,
         SzHowRCStepComponent,
         SzHowRCStepGroupComponent,
+        SzHowRCStepNodeComponent,
         SzHowRCStepStackComponent,
         SzHowRCVirtualEntityCardComponent,
         SzHowRCVirtualEntityDialog,

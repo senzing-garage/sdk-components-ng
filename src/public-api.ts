@@ -89,6 +89,7 @@ export { SzHowECSourceRecordsComponent } from './lib/how/ec/sz-dialog-how-ec-sou
 export { SzHowECToolbarComponent } from './lib/how/ec/sz-how-ec-toolbar.component';
 
 export { SzHowRCEntityComponent } from './lib/how/rc/sz-how-rc-entity.component';
+export { SzHowRCStepNodeComponent } from './lib/how/rc/sz-how-rc-step-node.component'
 export { SzHowRCFinalEntityCardComponent } from './lib/how/rc/cards/sz-how-rc-final-entity-card.component';
 export { SzHowRCStepCardComponent } from './lib/how/rc/cards/sz-how-rc-step-card.component';
 export { SzHowRCStepComponent } from './lib/how/rc/sz-how-rc-step.component';

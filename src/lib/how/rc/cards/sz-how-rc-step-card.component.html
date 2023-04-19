@@ -5,7 +5,9 @@
 
     <mat-icon *ngIf="canExpand && !hasChildren && (groupTitle === undefined || (!isGroupCollapsed && isStackGroupMember))" class="toggle-expansion-icon"       (click)="toggleExpansion()" fontIcon="arrow_right"></mat-icon>
     <mat-icon *ngIf="canExpand && !hasChildren && groupTitle !== undefined && (isGroupCollapsed && isStackGroupMember)" class="toggle-expansion-icon"       (click)="toggleGroupExpansion(groupId)" fontIcon="arrow_right"></mat-icon>
-
+    <div class="title-text">
+        (isAddRecordStep: {{isAddRecordStep}} | isInterimStep: {{isInterimStep}} | isMergeStep: {{isMergeStep}} | isCreateEntityStep: {{isCreateEntityStep}}) | stepType: {{stepType}}
+    </div>
     <div class="title-text hide-on-group-collapsed" *ngIf="groupTitle === undefined || (!isGroupCollapsed && isStackGroupMember)">
         <span class="emphasized margin-right">{{title}}</span>
         <!--(isAddRecordStep: {{isAddRecordStep}} | isInterimStep: {{isInterimStep}} | isMergeStep: {{isMergeStep}} | isCreateEntityStep: {{isCreateEntityStep}})-->
@@ -43,23 +45,6 @@
     <mat-icon *ngIf="isStackGroupMember && isUnpinned && !isGroupCollapsed && !isCollapsed" class="pin-icon" (click)="pinStep()" fontIcon="push_pin"></mat-icon>
     <mat-icon *ngIf="canBeGrouped && !isUnpinned && !isCollapsed" class="unpin-icon" (click)="unPinStep()" fontIcon="adjust"></mat-icon>
 </h3>
-<!--<h3 class="title hide-on-expanded hide-on-group-collapsed hide-on-group-interim">
-    <mat-icon *ngIf="canExpand && hasChildren"  class="toggle-child-expansion-icon" (click)="toggleExpansion()" fontIcon="play_circle"></mat-icon>
-    <mat-icon *ngIf="canExpand && !hasChildren" class="toggle-expansion-icon"       (click)="toggleExpansion()" fontIcon="arrow_right"></mat-icon>
-    <div class="title-text">
-        {{title}}
-        <span *ngIf="isAddRecordStep"></span>
-        <span *ngIf="isInterimEntity" class="datasources"> [ <span class="datasources-list">{{dataSourcesAsString}}</span> ]</span>
-        <span class="title-token" *ngIf="isCreateEntity"> from </span>
-        <div *ngIf="isCreateEntity" class="title-from" [innerHTML]="from"></div>
-    </div>
-</h3>-->
-<!-- hasChildren: {{hasChildren}} | canExpand: {{canExpand}} -->
-<!--<h3 *ngIf="groupTitle !== undefined" class="title-group">
-    <mat-icon *ngIf="canExpand && hasChildren"  class="toggle-group-expansion-icon" (click)="toggleGroupExpansion(groupId)" fontIcon="play_circle"></mat-icon>
-    <mat-icon *ngIf="canExpand && !hasChildren" class="toggle-expansion-icon"       (click)="toggleGroupExpansion(groupId)" fontIcon="arrow_right"></mat-icon>
-    <div class="title-text">{{groupTitle}}<span *ngIf="dataSourcesAsString" class="datasources"> [ <span class="datasources-list">{{dataSourcesAsString}}</span> ]</span></div>
-</h3>-->
 <div class="columns hide-on-collapsed hide-on-group-collapsed">
     <div class="column info-block">
         <div class="info-line" *ngFor="let line of description; let l = index">

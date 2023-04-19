@@ -3,10 +3,10 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { DataSource } from '@angular/cdk/collections';
 import { 
     EntityDataService as SzEntityDataService, 
-    SzFeatureScore, SzResolutionStep, SzVirtualEntity, SzVirtualEntityRecord, SzDataSourceRecordSummary 
+    SzFeatureScore, SzResolutionStep, SzVirtualEntity, SzVirtualEntityRecord, SzDataSourceRecordSummary, SzResponseWithRawData 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../../services/sz-config-data.service';
-import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../../../models/data-how';
+import { SzHowFinalCardData, SzResolutionStepListItemType, SzResolutionStepDisplayType, SzResolutionStepNode, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../../../models/data-how';
 import {  Subject } from 'rxjs';
 import { parseSzIdentifier } from '../../../common/utils';
 //import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../../services/sz-how-ui-coordinator.service';
@@ -33,7 +33,7 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     public unsubscribe$ = new Subject<void>();
 
     private _stepMap: {[key: string]: SzResolutionStep};
-    private _data: SzResolutionStep;
+    private _data: SzResolutionStep | SzResolutionStepNode;
     private _groupId: string;
     private _groupTitle: string;
     private _isInterimStep: boolean;
@@ -48,17 +48,17 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     @HostBinding('class.highlighted') get cssHighlightedClass(): boolean {
         return this._highlighted ? true : false;
     }
-    @HostBinding('class.type-add') get cssTypeAddClass(): boolean {
-        return this.displayType === SzResolutionStepDisplayType.ADD;
+    @HostBinding('class.type-interim') get cssTypeAddClass(): boolean {
+        return this.stepType === SzResolutionStepDisplayType.ADD;
     }
     @HostBinding('class.type-merge') get cssTypeMergeClass(): boolean {
-        return this.displayType === SzResolutionStepDisplayType.MERGE;
+        return this.stepType === SzResolutionStepDisplayType.MERGE;
     }
     @HostBinding('class.type-interim') get cssTypeInterimClass(): boolean {
-        return this.displayType === SzResolutionStepDisplayType.INTERIM;
+        return this.stepType === SzResolutionStepDisplayType.INTERIM;
     }
     @HostBinding('class.type-create') get cssTypeCreateClass(): boolean {
-        return this.displayType === SzResolutionStepDisplayType.CREATE;
+        return this.stepType === SzResolutionStepDisplayType.CREATE;
     }
     @HostBinding('class.group-collapsed') get cssGroupCollapsedClass(): boolean {
         return this._groupId && !this.howUIService.isGroupExpanded(this._groupId);
@@ -125,21 +125,49 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
         let vId = (this.isGroupMember || this.groupTitle !== undefined) && this._groupId ? this._groupId : this.id;
         return !this.howUIService.isExpanded(vId);
     }
-    get hasChildren(): boolean {
-        return this.isInterimEntity || this.isFinalEntity ? true : false;
+    get itemType(): SzResolutionStepListItemType {
+        return (this._data as SzResolutionStepNode).itemType ? (this._data as SzResolutionStepNode).itemType : SzResolutionStepListItemType.STEP;
     }
-    get displayType(): SzResolutionStepDisplayType {
+    
+    public get isStack() {
+        let _d = this._data;
+        return ((_d as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STACK)
+    }
+    public get isGroup() {
+        let _d = this._data;
+        return ((_d as SzResolutionStepNode).itemType === SzResolutionStepListItemType.GROUP)
+    }
+    public get isStep() {
+        let _d = this._data;
+        return ((_d as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STEP) ? true : ((_d as SzResolutionStepNode).itemType === undefined ? true : false);
+    }
+
+    get stepType(): SzResolutionStepDisplayType {
+        if((this._data as SzResolutionStepNode).stepType){
+            return (this._data as SzResolutionStepNode).stepType;
+        }
+        // try and "sense" display type
+        return this.getStepListItemCardType((this._data as SzResolutionStep));
+    }
+    public get hasChildren(): boolean {
+        return (this._data as SzResolutionStepNode).children && (this._data as SzResolutionStepNode).children.length > 0;
+    }
+    public get children(): Array<SzResolutionStepNode | SzResolutionStep> {
+        if(this.hasChildren) {
+            return (this._data as SzResolutionStepNode).children;
+        }
+        return undefined;
+    }
+
+    /*get displayType(): SzResolutionStepDisplayType {
         let listItemVerb    = this.getStepListItemCardType(this._data);
         return listItemVerb;
-    }
+    }*/
     get data() : SzResolutionStep {
         return this._data;
     }
-    get groupId(): string {
-        return this._groupId;
-    }
     get isGroupMember(): boolean {
-        return this._groupId ? true : false;
+        return this.howUIService.isNodeMemberOfGroup(this._data.resolvedVirtualEntityId);
     }
     get isStackGroupMember(): boolean {
         return this.howUIService.isStepMemberOfStack(this.id, this._groupId);
@@ -166,22 +194,19 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
         return !this.howUIService.isStepExpanded(this.id);
     }
     public get isMergeStep() {
-        return this.displayType === SzResolutionStepDisplayType.MERGE;
-    }
-    public get isInterimEntity() {
-        return this.displayType === SzResolutionStepDisplayType.INTERIM;
+        return this.stepType === SzResolutionStepDisplayType.MERGE;
     }
     public get isInterimStep() {
-        return this.displayType === SzResolutionStepDisplayType.INTERIM;
+        return this.stepType === SzResolutionStepDisplayType.INTERIM;
     }
     public get isCreateEntityStep() {
-        return this.displayType === SzResolutionStepDisplayType.CREATE;
+        return this.stepType === SzResolutionStepDisplayType.CREATE;
     }
     public get isFinalEntity() {
-        return this.displayType === SzResolutionStepDisplayType.FINAL;
+        return this.stepType === SzResolutionStepDisplayType.FINAL;
     }
     public get isAddRecordStep() {
-        return this.displayType === SzResolutionStepDisplayType.ADD;
+        return this.stepType === SzResolutionStepDisplayType.ADD;
     }
     public get groupTitle(): string {
         return this._groupTitle;
@@ -229,7 +254,7 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
         let _resolvedEntity = this.resolvedVirtualEntity;
 
         if(this._data) {
-            let eType = this.isInterimEntity ? 'Interim Entity' : 'Virtual Entity';
+            let eType = this.isInterimStep && this.hasChildren ? 'Interim Entity' : 'Virtual Entity';
             retVal.push(`Forms <span class="emphasized">${eType} ${this._data.resolvedVirtualEntityId}</span>`);
             if(this._data.matchInfo && this._data.matchInfo.matchKey) {
                 retVal.push(`On <span class="emphasized">${this._data.matchInfo.matchKey}</span>`);

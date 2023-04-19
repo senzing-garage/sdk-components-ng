@@ -1,0 +1,18 @@
+<sz-how-rc-step-card *ngIf="!isStackGroup"
+    [attr.step-number]="data.stepNumber"
+    [attr.virtual-id]="data.resolvedVirtualEntityId"
+    [data]="data"
+    [featureOrder]="featureOrder" 
+    [virtualEntitiesById]="virtualEntitiesById"
+    ></sz-how-rc-step-card>
+<ul class="hide-on-group-collapsed" *ngIf="hasChildren">
+    <li *ngFor="let step of children; let groupInd=index;">
+        <sz-how-rc-step-node
+        [attr.step-index]="groupInd"
+        [attr.step-number]="step.stepNumber"
+        [attr.virtual-id]="step.resolvedVirtualEntityId"
+        [data]="step"
+        [featureOrder]="featureOrder" 
+        [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step-node>
+    </li>
+</ul>
