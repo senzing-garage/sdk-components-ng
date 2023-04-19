@@ -51,7 +51,9 @@ export interface SzResolutionStepNode extends SzResolutionStep {
     virtualEntityIds?: string[],
     stepType?: SzResolutionStepDisplayType,
     itemType?: SzResolutionStepListItemType,
-    children?: Array<SzResolutionStepNode | SzResolutionStep>
+    children?: Array<SzResolutionStepNode | SzResolutionStep>,
+    isMemberOfGroup?: boolean,
+    memberOfGroup?: string
 }
 
 export interface howClickEvent extends SzEntityMouseEvent {}
