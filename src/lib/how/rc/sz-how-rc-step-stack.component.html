@@ -3,13 +3,17 @@
     [class.type-add]="isStepDisplayType(step, 'ADD')">
     <h3 *ngIf="stepInd === 0">{{title}}</h3>
 </div>-->
-<!--<sz-how-rc-step *ngFor="let step of data.resolutionSteps; let groupInd=index;"
+<div class="stack-step-card-row" *ngFor="let step of data.children; let groupInd=index;">
+    <div class="tree-node-leaf-line"></div>
+    <sz-how-rc-step-card 
     class="stack-card"
     [attr.step-index]="groupInd"
     [attr.step-number]="step.stepNumber"
     [attr.virtual-id]="step.resolvedVirtualEntityId"
     [data]="step"
-    [groupId]="id" 
-    [groupTitle]="getCardTitleForStep(title, groupInd)"
+    [groupId]="id"
+    [groupIndex]="groupInd"
+    [siblings]="siblingsOf(step)"
     [featureOrder]="featureOrder" 
-    [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step>-->
+    [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step-card>
+</div>

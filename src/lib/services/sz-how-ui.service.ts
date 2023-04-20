@@ -656,6 +656,7 @@ export class SzHowUIService {
         if(gId) {
           // we are looking in a specific group
           let _groupSpecified = this._stepNodeGroups.has(gId) ? this._stepNodeGroups.get(gId) : undefined;
+          //console.log(`isStepMemberOfStack(${vId}, ${gId})`, _groupSpecified, ((_groupSpecified && _groupSpecified.virtualEntityIds) ? _groupSpecified.virtualEntityIds.indexOf(vId) > -1 : false), this._stepNodeGroups);
           if(_groupSpecified) {
             // group exists
             if(_groupSpecified && _groupSpecified.virtualEntityIds) {

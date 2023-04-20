@@ -4,18 +4,52 @@
     /*border: 2px dashed orange;*/
 
     &.expanded {
-        .stack-card {
-            margin-top: 14px;
+        .stack-step-card-row {
+            margin-top: 0px;
+
+            // hide the first node line
+            &:first-child .tree-node-leaf-line {
+                &:before {
+                    display: none;
+                }
+            }
+            // every other node gets an additional line
+            .tree-node-leaf-line {
+                position: relative;
+                &:before {
+                    position: absolute;
+                    top: 28px;
+                    left: -13px;
+                    height: 3px;
+                    width: 13px;
+                    border-bottom: 3px solid #000000;
+                    content: "";
+                    display: inline-block;
+                }
+            }
+        }
+    }
+
+    .stack-step-card-row {
+        min-height: 20px;
+        margin-top: -36px;
+
+        &:first-child {
+            margin-top: 0px;
+        }
+
+        @for $i from 1 through 100 {
+            &:nth-child(#{$i}) {
+                z-index: #{10 - $i};
+            }
         }
     }
 
     .stack-card {
         min-height: 20px;
-        margin-top: -20px;
+        /*margin-top: -20px;*/
+        /*display: list-item;*/
 
-        &:first-child {
-            margin-top: 14px;
-        }
         &.type-add {
             background-color: #feae00;
         }
@@ -34,12 +68,6 @@
     
         h3 {
             margin: 0;
-        }
-
-        @for $i from 1 through 100 {
-            &:nth-child(#{$i}) {
-                z-index: #{10 - $i};
-            }
         }
     }
 }

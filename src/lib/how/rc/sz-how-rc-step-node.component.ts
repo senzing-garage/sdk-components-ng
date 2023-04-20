@@ -62,6 +62,9 @@ export class SzHowRCStepNodeComponent implements OnInit, OnDestroy {
     get data() : SzResolutionStepNode | SzResolutionStep {
         return this._data;
     }
+    get dataAsNode(): SzResolutionStepNode {
+        return this._data as SzResolutionStepNode;
+    }
     public get isCollapsed() {
         if((this.isGroup || this.isStack) && this.hasChildren) {
             // check group

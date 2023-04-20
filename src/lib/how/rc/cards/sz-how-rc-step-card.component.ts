@@ -34,11 +34,13 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
 
     private _stepMap: {[key: string]: SzResolutionStep};
     private _data: SzResolutionStep | SzResolutionStepNode;
-    private _groupId: string;
+    private _siblings: Array<SzResolutionStep | SzResolutionStepNode>;
     private _isInterimStep: boolean;
     private _parentStep: SzResolutionStep;
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
-    private _highlighted: boolean = false;
+    private _highlighted: boolean           = false;
+    private _groupId: string;
+    private _groupIndex: number;
 
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
         return !this.howUIService.isStepExpanded(this.id);
@@ -76,6 +78,10 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
 
     @Input() featureOrder: string[];
 
+    @Input() set groupIndex(value: number) {
+        this._groupIndex = value;
+    }
+
     @Input() set isInterimStep(value: boolean) {
         this._isInterimStep = value;
     }
@@ -91,6 +97,10 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     @Input() set data(value: SzResolutionStep) {
         this._data = value;
     }
+    @Input() set siblings(value: Array<SzResolutionStep | SzResolutionStepNode>) {
+        this._siblings = value;
+    }
+    
     @Input() set parentStep(value: SzResolutionStep) {
         this._parentStep = value;
     }
@@ -160,6 +170,9 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     }*/
     get data() : SzResolutionStep {
         return this._data;
+    }
+    get groupId(): string {
+        return this._groupId;
     }
     get isGroupMember(): boolean {
         return this.howUIService.isNodeMemberOfGroup(this._data.resolvedVirtualEntityId);
@@ -237,6 +250,34 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
                             retVal = _vEnt ? retVal +': ' : retVal;
                             retVal = retVal + (_vEnt.bestName ? _vEnt.bestName : _vEnt.entityName);
                         }
+                    }
+                }
+            }
+        } else if(this.isStackGroupMember) {
+            if(this._groupIndex > 0){
+                retVal = '';
+            } else {
+                retVal = 'Stack group member';
+                if(this._siblings) {
+                    let _retTypes = new Map<SzResolutionStepDisplayType, number>();
+                    this._siblings.forEach((step: SzResolutionStep) => {
+                        let _retType = SzHowUIService.getResolutionStepCardType(step);
+                        if(_retTypes.has(_retType)){
+                            _retTypes.set(_retType, (_retTypes.get(_retType) + 1));
+                        } else {
+                            _retTypes.set(_retType, 1);
+                        }
+                    });
+                    if(_retTypes.size > 0) {
+                        retVal = '';
+                        //console.log('_retTypes: ', _retTypes);
+        
+                        _retTypes.forEach((typeCount, retType) => {
+                            //console.log(`\t\t${retType}`, typeCount);
+                            if(retType === SzResolutionStepDisplayType.ADD) {
+                                retVal += `${typeCount} x Add Record to Virtual Entity\n\r`;
+                            }
+                        });
                     }
                 }
             }
@@ -415,7 +456,7 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
             let retVal = this._virtualEntitiesById.get(this.id);
             return retVal;
         } else {
-            console.log(`no virtual entity: ${this.id}`, this._virtualEntitiesById);
+            //console.log(`no virtual entity: ${this.id}`, this._virtualEntitiesById);
         }
         return retVal;
     }

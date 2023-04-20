@@ -249,9 +249,9 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
         retVal = step.children.map(this.getVirtualEntityIdsForNode.bind(this));
         if(retVal && retVal.flat){ retVal = retVal.flat(); }
       } else {
-        retVal.push(step.id);
-        retVal.push(step.inboundVirtualEntity.virtualEntityId);
-        retVal.push(step.candidateVirtualEntity.virtualEntityId);
+        retVal.push(step.id ? step.id : step.resolvedVirtualEntityId);
+        //retVal.push(step.inboundVirtualEntity.virtualEntityId);
+        //retVal.push(step.candidateVirtualEntity.virtualEntityId);
       }
       return retVal = Array.from(new Set(retVal)); // de-dupe any values
     }
@@ -688,17 +688,23 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
           let _stepHasMembers             = this.stepHasMembers(resStep.resolvedVirtualEntityId, groups);
           
           // check whether or not step is member of group
+          if(resStep.resolvedVirtualEntityId === 'V200004-S1'){
+            console.log(`\tV200004-S1: is group member? ${_stepIsMemberOfGroup} | has members ? ${_stepHasMembers}`);
+          }
           if(!_stepIsMemberOfGroup && !_stepHasMembers) {
             // item is not member of group or interim step group
             // add item to array
             let _stepToAdd: SzResolutionStepNode = Object.assign({
               id: resStep.resolvedVirtualEntityId,
               itemType: SzResolutionStepListItemType.STEP,
-              displayType: this.getListItemType(resStep),
+              stepType: SzHowUIService.getResolutionStepCardType(resStep),
               isMemberOfGroup: _stepIsMemberOfGroup,
             }, resStep);
             if(_stepIsMemberOfGroup) { _stepToAdd.memberOfGroup = this.getResolutionStepGroupIdByMemberVirtualId(resStep.resolvedVirtualEntityId, groups); }
             _resolutionStepsWithGroups.push(_stepToAdd);
+            if(resStep.resolvedVirtualEntityId === 'V200004-S1'){
+              console.log(`\tadded V200004-S1 to steps list: `, _resolutionStepsWithGroups);
+            }
           } else {
             // item is in group, if group has not been added already add it
             let _stepGroup            = _stepIsMemberOfGroup ? this.getResolutionStepGroupByMemberVirtualId(resStep.resolvedVirtualEntityId, groups) : this.getResolutionStepGroupById(resStep.resolvedVirtualEntityId, groups);
@@ -727,9 +733,13 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
       }
       // remove any top-level groups that are members of other groups
       if(retVal) {
+        let _oldVal = retVal;
+        let isStep1AGroupMember = this.stepIsMemberOfGroup("V200004-S1", groups);
+        console.log(`\tfiltering out any top level groups that are part of another group`, _oldVal, isStep1AGroupMember);
         retVal = retVal.filter((rNode) => {
           return !this.stepIsMemberOfGroup(rNode.id, groups);
         });
+        console.log(`\t\t...done`, retVal);
       }
       console.info(`getResolutionStepsAsNodes() `, retVal, this._resolutionSteps, groups);
       return retVal;

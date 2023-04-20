@@ -6,7 +6,7 @@ import {
     SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse, SzVirtualEntityRecord, SzDataSourceRecordSummary, SzResolvedEntity 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../services/sz-config-data.service';
-import { SzResolutionStepDisplayType, SzResolutionStepGroup, SzResolvedVirtualEntity} from '../../models/data-how';
+import { SzResolutionStepDisplayType, SzResolutionStepGroup, SzResolutionStepNode, SzResolvedVirtualEntity} from '../../models/data-how';
 import { Subject, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../../common/utils';
 import { SzHowUIService } from '../../services/sz-how-ui.service';
@@ -34,7 +34,7 @@ export class SzHowRCStepStackComponent implements OnInit, OnDestroy {
     private _highlighted: boolean           = false;
     private _collapsed: boolean             = true;
     private _childrenCollapsed: boolean     = false;
-    private _data: SzResolutionStepGroup;
+    private _data: SzResolutionStepNode;
 
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
         return !this.howUIService.isGroupExpanded(this.id);
@@ -53,7 +53,7 @@ export class SzHowRCStepStackComponent implements OnInit, OnDestroy {
     @Input() set stepsByVirtualId(value: {[key: string]: SzResolutionStep}) {
         this._stepMap = value;
     }
-    @Input() set data(value: SzResolutionStepGroup) {
+    @Input() set data(value: SzResolutionStepNode) {
         this._data = value;
     }
     @Input() public set virtualEntitiesById(value: Map<string, SzResolvedVirtualEntity>) {
@@ -70,7 +70,7 @@ export class SzHowRCStepStackComponent implements OnInit, OnDestroy {
         return this._data && this._data.id ? this._data.id : undefined;
     }
 
-    public get data(): SzResolutionStepGroup {
+    public get data(): SzResolutionStepNode {
         return this._data;
     }
 
@@ -90,7 +90,7 @@ export class SzHowRCStepStackComponent implements OnInit, OnDestroy {
         let retVal = 'Steps';
         if(this._data) {
             let _retTypes = new Map<SzResolutionStepDisplayType, number>();
-            this._data.resolutionSteps.forEach((step: SzResolutionStep) => {
+            this._data.children.forEach((step: SzResolutionStep) => {
                 let _retType = SzHowUIService.getResolutionStepCardType(step);
                 if(_retTypes.has(_retType)){
                     _retTypes.set(_retType, (_retTypes.get(_retType) + 1));
@@ -111,6 +111,12 @@ export class SzHowRCStepStackComponent implements OnInit, OnDestroy {
             }
         }
         return retVal;
+    }
+
+    public siblingsOf(step: SzResolutionStep) {
+        return this._data.children.filter((n) => {
+            return n !== step;
+        })
     }
 
     getStepTitle(step: SzResolutionStep): string {
