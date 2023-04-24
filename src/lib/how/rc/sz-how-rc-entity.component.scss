@@ -3,6 +3,7 @@
     flex-direction: row;
     justify-items: flex-start;
     height: 100%;
+    padding-right: 24px;
 
     sz-how-rc-nav {
 
@@ -31,7 +32,16 @@
             }
             sz-how-rc-step-node {
                 flex-grow: 5;
-                //margin-right: 20px;
+            }
+        }
+    }
+    &.has-child-stacks {
+        padding-right: 0;
+        sz-how-rc-final-entity-card,
+        sz-how-rc-step-node {
+            margin-right: 24px;
+            &.is-stack {
+                margin-right: 4px;
             }
         }
     }

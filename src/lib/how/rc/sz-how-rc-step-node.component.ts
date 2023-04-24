@@ -32,6 +32,7 @@ export class SzHowRCStepNodeComponent implements OnInit, OnDestroy {
     private _data: SzResolutionStepNode | SzResolutionStep;
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
     private _highlighted: boolean = false;
+    private _hasChildStacksCached: boolean;
     //private _collapsed: boolean = false;
     //private _collapsedGroup: boolean = false;
     private _childrenCollapsed: boolean = false;
@@ -54,6 +55,10 @@ export class SzHowRCStepNodeComponent implements OnInit, OnDestroy {
     @HostBinding('class.is-stack') get cssIsStackClass(): boolean {
         return this.isStack ? true : false;
     }
+    @HostBinding('class.has-child-stacks') get cssHasChildStacksClass(): boolean {
+        return this.hasChildStacks ? true : false;
+    }
+    
     @Input() featureOrder: string[];
 
     @Input() public set virtualEntitiesById(value: Map<string, SzResolvedVirtualEntity>) {
@@ -103,6 +108,17 @@ export class SzHowRCStepNodeComponent implements OnInit, OnDestroy {
     }
     public get hasChildren(): boolean {
         return (this._data as SzResolutionStepNode).children && (this._data as SzResolutionStepNode).children.length > 0;
+    }
+    public get hasChildStacks(): boolean {
+        let _d = this._data as SzResolutionStepNode;
+        if(this._hasChildStacksCached === undefined) {
+            if(_d.children && _d.children.length > 0) {
+                this._hasChildStacksCached = _d.children.some((childItem) => {
+                    return (childItem as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STACK;
+                })
+            }
+        }
+        return this._hasChildStacksCached ? true : false;
     }
     public get children(): Array<SzResolutionStepNode | SzResolutionStep> {
         if(this.hasChildren) {

@@ -53,6 +53,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
 
     private _isLoading                        = false;
     private _showNavigation                   = true;
+    private _hasChildStacksCached: boolean;
     private _entityId: SzEntityIdentifier;
     private _dataLoadedForId: SzEntityIdentifier;
     private _expandCardsWhenLessThan: number  = 2;
@@ -101,6 +102,10 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
     }
     @Input() public set showNavigation(value: boolean | string) {
       this._showNavigation = parseBool(value);
+    }
+
+    @HostBinding('class.has-child-stacks') get cssHasChildStacksClass(): boolean {
+      return this.hasChildStacks ? true : false;
     }
 
     constructor(
@@ -1061,6 +1066,20 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
             this._featureTypesOrdered = res;
             console.log('getFeatureTypeOrderFromConfig: ', res);
         });
+    }
+
+    public get hasChildStacks(): boolean {
+      let retVal = false;
+      let _d = this.stepNodes;
+      if(_d && _d.length > 0) {
+        if(this._hasChildStacksCached === undefined) {
+            this._hasChildStacksCached = _d.some((childItem) => {
+                return (childItem as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STACK;
+            })
+        }
+        return this._hasChildStacksCached ? true : false;
+      }
+      return retVal;
     }
 
     /**
