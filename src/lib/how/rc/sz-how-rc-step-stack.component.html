@@ -3,17 +3,52 @@
     [class.type-add]="isStepDisplayType(step, 'ADD')">
     <h3 *ngIf="stepInd === 0">{{title}}</h3>
 </div>-->
-<div class="stack-step-card-row" *ngFor="let step of data.children; let groupInd=index;">
-    <div class="tree-node-leaf-line"></div>
-    <sz-how-rc-step-card 
-    class="stack-card"
-    [attr.step-index]="groupInd"
-    [attr.step-number]="step.stepNumber"
-    [attr.virtual-id]="step.resolvedVirtualEntityId"
-    [data]="step"
-    [groupId]="id"
-    [groupIndex]="groupInd"
-    [siblings]="siblingsOf(step)"
-    [featureOrder]="featureOrder" 
-    [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step-card>
+<div class="stack-step-cards">
+    <div class="stack-step-card-row" *ngFor="let step of data.children; let groupInd=index;">
+        <div class="tree-node-leaf-line"></div>
+        <sz-how-rc-step-card 
+        class="stack-card"
+        [attr.step-index]="groupInd"
+        [attr.step-number]="step.stepNumber"
+        [attr.virtual-id]="step.resolvedVirtualEntityId"
+        [data]="step"
+        [groupId]="id"
+        [groupIndex]="groupInd"
+        [siblings]="siblingsOf(step)"
+        [featureOrder]="featureOrder" 
+        [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step-card>
+    </div>
+</div>
+<div class="stack-control" 
+    [class.expanded]="isStackExpanded"
+    [class.collapsed]="!isStackExpanded"
+    (click)="toggleStackCollapsedState()">
+    <mat-icon 
+    aria-hidden="false" 
+    class="hide-on-expanded"
+    fontIcon="arrow_upward"></mat-icon>
+    <div class="center-area hide-on-expanded">
+        <mat-icon 
+        aria-hidden="false" 
+        class="center-button"
+        fontIcon="add_circle"></mat-icon>
+    </div>
+    <mat-icon 
+    aria-hidden="false" 
+    class="hide-on-expanded"
+    fontIcon="arrow_downward"></mat-icon>
+    <mat-icon 
+    aria-hidden="false" 
+    class="hide-on-collapsed arrow-down"
+    fontIcon="arrow_right"></mat-icon>
+    <div class="center-area hide-on-collapsed">
+        <mat-icon 
+        aria-hidden="false" 
+        class="center-button minus-button"
+        fontIcon="circle"><span>-</span></mat-icon>
+    </div>
+    <mat-icon 
+    aria-hidden="false" 
+    class="hide-on-collapsed arrow-up"
+    fontIcon="arrow_right"></mat-icon>
 </div>

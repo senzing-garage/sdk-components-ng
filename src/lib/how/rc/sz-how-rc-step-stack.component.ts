@@ -74,6 +74,20 @@ export class SzHowRCStepStackComponent implements OnInit, OnDestroy {
         return this._data;
     }
 
+    public get isStackExpanded() {
+        return this.howUIService.isGroupExpanded(this.id);
+    }
+
+    public toggleStackCollapsedState() {
+        /*
+        if(this.howUIService.isGroupExpanded(this.id)) {
+            this.howUIService.collapseGroup(this.id);
+        } else {
+            this.howUIService.expandGroup(this.id);
+        }*/
+        this.howUIService.toggleExpansion(undefined, this.id);
+    }
+
     get numberOfCards(): number {
         let retVal = 0;
         if(this._data && this._data.virtualEntityIds && this._data.virtualEntityIds.length) {

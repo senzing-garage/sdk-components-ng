@@ -51,6 +51,9 @@ export class SzHowRCStepNodeComponent implements OnInit, OnDestroy {
     @HostBinding('class.highlighted') get cssHighlightedClass(): boolean {
         return this._highlighted ? true : false;
     }
+    @HostBinding('class.is-stack') get cssIsStackClass(): boolean {
+        return this.isStack ? true : false;
+    }
     @Input() featureOrder: string[];
 
     @Input() public set virtualEntitiesById(value: Map<string, SzResolvedVirtualEntity>) {

@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    margin-right: 24px;
 
     &.expanded {
         .stack-card {
@@ -17,9 +18,13 @@
         }
     }
     sz-how-rc-step {
-        margin-right: 20px;
+        //margin-right: 20px;
         margin-top: 10px;
         flex-grow: 10;
+    }
+
+    &.is-stack {
+        margin-right: 4px;
     }
 
     .stack-card {

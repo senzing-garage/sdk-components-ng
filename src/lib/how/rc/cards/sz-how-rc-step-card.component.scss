@@ -235,6 +235,12 @@
     &.children-collapsed {
         
     }
+
+    &.group-collapsed {
+        .hide-on-group-collapsed {
+            display: none;
+        }
+    }
 }
 
 ::ng-deep .info-block .emphasized {
