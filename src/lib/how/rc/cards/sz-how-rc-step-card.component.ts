@@ -460,6 +460,67 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
+    public getMatchKeyAsObjects(matchKey?: string): Map<string, boolean> {
+        let retVal: Map<string, any> = new Map();
+        if(!matchKey) {
+            matchKey = (this._data && this._data.matchInfo && this._data.matchInfo.matchKey) ? this._data.matchInfo.matchKey : matchKey;
+            if(!matchKey) { return retVal; }
+        }
+        if(matchKey && matchKey.split) {
+            // break match key apart in to tokens
+            let posTokens = matchKey.split('+').filter((v) => { return v && v.trim ? v.trim() !== '' : false}).map((token: string)=>{
+                if(token.indexOf('-') > -1) {
+                    // token has a negative pair in it
+                    let _posTokenStr    = token.substring(0,token.indexOf('-'));
+                    let _negTokenStr    = token.substring(token.indexOf('-'));
+                    let _negTokens      = _negTokenStr.split('-').filter((v) => { return v && v.trim ? v.trim() !== '' : false});
+                    retVal.set(_posTokenStr, true);
+                    _negTokens.forEach((tokenStr: string) => {
+                        retVal.set(tokenStr, false);
+                    });
+                    retVal.set(_posTokenStr, true);
+                } else {
+                    // no negative tokens so no need to split
+                    retVal.set(token, true);
+                }
+            })
+        }
+        //console.log(`getMatchKeyAsObjects('${matchKey}'): `, retVal);
+        return retVal;
+    }
+    private isMatchKeyForFeaturePositive(feature: SzFeatureScore): boolean | undefined {
+        let matchKeysAsObjects  = this.getMatchKeyAsObjects();
+        if(matchKeysAsObjects && matchKeysAsObjects.has && matchKeysAsObjects.has(feature.featureType)) {
+            return matchKeysAsObjects.get(feature.featureType);
+        }
+        return undefined;
+    }
+    public isCellHighlightedRed(feature: SzFeatureScore, featureValue: any): boolean {
+        let matchKeyIsPositive  = this.isMatchKeyForFeaturePositive(feature);
+        if(matchKeyIsPositive !== undefined && matchKeyIsPositive === false) {
+            return true;
+        }
+        return false;
+    }
+    public isCellHighlightedYellow(feature: SzFeatureScore, featureValue: any): boolean {
+        let matchKeyIsPositive  = this.isMatchKeyForFeaturePositive(feature);
+        if(matchKeyIsPositive === true) {
+            if((feature.scoringBucket === 'CLOSE' || feature.scoringBucket === 'LIKELY') && feature.score < 95) {
+                return true
+            }
+        }
+        return false;
+    }
+    public isCellHighlightedGreen(feature: SzFeatureScore, featureValue: any): boolean {
+        let matchKeyIsPositive  = this.isMatchKeyForFeaturePositive(feature);
+        if(matchKeyIsPositive !== undefined && matchKeyIsPositive === true) {
+            if(feature.scoringBucket === 'SAME' || ((feature.scoringBucket === 'CLOSE' || feature.scoringBucket === 'LIKELY') && feature.score > 95)) {
+                return true
+            }
+            return false;
+        }
+        return false;
+    }
 
 
     openVirtualEntityDialog(evt) {

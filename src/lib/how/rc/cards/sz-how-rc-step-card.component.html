@@ -79,9 +79,18 @@
         <div class="body">
             <div class="row" *ngFor="let feature of dataRows; let i = index">
                 <div class="cell column-1">{{feature.featureType}}</div>
-                <div class="cell column-2">{{feature.candidateFeature?.featureValue}}</div>
-                <div class="cell column-3">{{feature.score}}</div>
-                <div class="cell column-4">{{feature.inboundFeature?.featureValue}}</div>
+                <div class="cell column-2">
+                    {{feature.candidateFeature?.featureValue}}
+                </div>
+                <div class="cell column-3"
+                    [class.red-highlight]="isCellHighlightedRed(feature, feature.score)"
+                    [class.yellow-highlight]="isCellHighlightedYellow(feature, feature.score)"
+                    [class.green-highlight]="isCellHighlightedGreen(feature, feature.score)">
+                    {{feature.score}}
+                </div>
+                <div class="cell column-4">
+                    {{feature.inboundFeature?.featureValue}}
+                </div>
             </div>
         </div>
     </div>

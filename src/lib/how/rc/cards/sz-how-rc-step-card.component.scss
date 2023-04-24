@@ -310,6 +310,16 @@
             &:last-child {
                 border-right: var(--sz-how-step-card-data-table-border);
             }
+
+            &.red-highlight {
+                background-color: #ff7c7c;
+            }
+            &.yellow-highlight {
+                background-color: #ffffbb;
+            }
+            &.green-highlight {
+                background-color: #b6ffb6;
+            }
         }
     }
     .row {
