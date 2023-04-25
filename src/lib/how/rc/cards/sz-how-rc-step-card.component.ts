@@ -504,20 +504,24 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     }
     public isCellHighlightedYellow(feature: SzFeatureScore, featureValue: any): boolean {
         let matchKeyIsPositive  = this.isMatchKeyForFeaturePositive(feature);
-        if(matchKeyIsPositive === true) {
-            if((feature.scoringBucket === 'CLOSE' || feature.scoringBucket === 'LIKELY') && feature.score < 95) {
-                return true
-            }
+        if(
+            (feature.scoringBucket !== 'CLOSE' && feature.scoringBucket !== 'SAME') && 
+            (matchKeyIsPositive === undefined || 
+                (matchKeyIsPositive !== undefined && matchKeyIsPositive !== false)
+            )
+        ) {
+            return true;
         }
         return false;
     }
     public isCellHighlightedGreen(feature: SzFeatureScore, featureValue: any): boolean {
         let matchKeyIsPositive  = this.isMatchKeyForFeaturePositive(feature);
-        if(matchKeyIsPositive !== undefined && matchKeyIsPositive === true) {
-            if(feature.scoringBucket === 'SAME' || ((feature.scoringBucket === 'CLOSE' || feature.scoringBucket === 'LIKELY') && feature.score > 95)) {
-                return true
-            }
-            return false;
+        if(
+            matchKeyIsPositive === true || 
+            feature.scoringBucket === 'SAME' || 
+            feature.scoringBucket === 'CLOSE'
+        ) {
+                return true;
         }
         return false;
     }
