@@ -44,16 +44,19 @@ export class SzHowRCStepNodeComponent implements OnInit, OnDestroy {
         return this.isExpanded;
     }
     @HostBinding('class.group-collapsed') get cssHiddenGroupClass(): boolean {
-        return !this.howUIService.isGroupExpanded(this.id);
+        return !this.isGroupExpanded;
     }
     @HostBinding('class.group-expanded') get cssExpandedGroupClass(): boolean {
-        return this.howUIService.isGroupExpanded(this.id);
+        return this.isGroupExpanded;
     }
     @HostBinding('class.highlighted') get cssHighlightedClass(): boolean {
         return this._highlighted ? true : false;
     }
     @HostBinding('class.is-stack') get cssIsStackClass(): boolean {
         return this.isStack ? true : false;
+    }
+    @HostBinding('class.is-final') get cssIsFinalClass(): boolean {
+        return this.isFinal ? true : false;
     }
     @HostBinding('class.has-child-stacks') get cssHasChildStacksClass(): boolean {
         return this.hasChildStacks ? true : false;
@@ -105,6 +108,13 @@ export class SzHowRCStepNodeComponent implements OnInit, OnDestroy {
     public get isStep() {
         let _d = this._data;
         return ((_d as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STEP) ? true : ((_d as SzResolutionStepNode).itemType === undefined ? true : false);
+    }
+    public get isFinal() {
+        let _d = this._data;
+        return ((_d as SzResolutionStepNode).itemType === SzResolutionStepListItemType.FINAL) ? true : ((_d as SzResolutionStepNode).itemType === undefined ? true : false);
+    }
+    public get isGroupExpanded() {
+        return this.howUIService.isGroupExpanded(this.id);
     }
     public get hasChildren(): boolean {
         return (this._data as SzResolutionStepNode).children && (this._data as SzResolutionStepNode).children.length > 0;

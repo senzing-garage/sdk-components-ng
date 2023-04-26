@@ -15,7 +15,7 @@
     .hide-on-group-collapsed {
         display: block;
     }
-    &.collapsed {
+    &.group-collapsed {
         .hide-on-group-collapsed {
             display: none;
         }
@@ -45,6 +45,43 @@
         }
         &.type-final {
             background-color: #88fa4e;
+        }
+    }
+}
+
+.tree {
+    list-style: none;
+
+    li {
+        display: flex;
+        flex-direction: row;
+        margin-left: 16px;
+
+        ul {
+            width: 100%;
+        }
+
+        &.top-level {
+            margin-left: 0px;
+            &::before {
+                display: none;
+            }
+
+            sz-how-rc-final-entity-card {
+                flex-grow: 5;
+            }
+        }
+        &.top-level-children {
+            margin-left: 0;
+            &::before {
+                display: none;
+            }
+        }
+        &.hidden {
+            display: none;
+        }
+        sz-how-rc-step-node {
+            flex-grow: 5;
         }
     }
 }

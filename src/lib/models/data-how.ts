@@ -46,31 +46,34 @@ export interface SzResolutionStepGroup {
     resolutionSteps?: SzResolutionStep[]
 }
 
-export interface SzResolutionStepNode extends SzResolutionStep {
+export interface SzResolutionStepNode extends SzResolutionStep, SzVirtualEntity {
     id: string,
     virtualEntityIds?: string[],
     stepType?: SzResolutionStepDisplayType,
     itemType?: SzResolutionStepListItemType,
     children?: Array<SzResolutionStepNode | SzResolutionStep>,
+    childRecords?: Array<SzVirtualEntityRecord>,
     isMemberOfGroup?: boolean,
-    memberOfGroup?: string
+    memberOfGroup?: string,
+    resolvedVirtualEntity?: SzResolvedVirtualEntity
 }
 
 export interface howClickEvent extends SzEntityMouseEvent {}
-export type SzResolutionStepListItemType = 'STACK' | 'GROUP' | 'STEP';
+export type SzResolutionStepListItemType = 'FINAL' | 'GROUP' | 'STACK' | 'STEP';
 export const SzResolutionStepListItemType = {
-    STACK: 'STACK' as SzResolutionStepListItemType,
+    FINAL: 'FINAL' as SzResolutionStepListItemType,
     GROUP: 'GROUP' as SzResolutionStepListItemType,
+    STACK: 'STACK' as SzResolutionStepListItemType,
     STEP: 'STEP' as SzResolutionStepListItemType
 };
 
-export type SzResolutionStepDisplayType = 'MERGE' | 'CREATE' | 'INTERIM' | 'ADD' | 'FINAL';
+export type SzResolutionStepDisplayType = 'ADD' | 'CREATE' | 'FINAL' | 'INTERIM' | 'MERGE';
 export const SzResolutionStepDisplayType = {
-    MERGE: 'MERGE' as SzResolutionStepDisplayType,
-    CREATE: 'CREATE' as SzResolutionStepDisplayType,
-    INTERIM: 'INTERIM' as SzResolutionStepDisplayType,
     ADD: 'ADD' as SzResolutionStepDisplayType,
-    FINAL: 'FINAL' as SzResolutionStepDisplayType
+    CREATE: 'CREATE' as SzResolutionStepDisplayType,
+    FINAL: 'FINAL' as SzResolutionStepDisplayType,
+    INTERIM: 'INTERIM' as SzResolutionStepDisplayType,
+    MERGE: 'MERGE' as SzResolutionStepDisplayType
 };
 
 export interface SzResolutionStepListItem extends SzResolutionStep {

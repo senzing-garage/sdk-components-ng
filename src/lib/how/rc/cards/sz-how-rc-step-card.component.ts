@@ -260,6 +260,9 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
                 retVal = 'Stack group member';
                 if(this._siblings) {
                     let _retTypes = new Map<SzResolutionStepDisplayType, number>();
+                    // get this type
+                    _retTypes.set(SzHowUIService.getResolutionStepCardType(this._data), 1);
+                    // get sibling types
                     this._siblings.forEach((step: SzResolutionStep) => {
                         let _retType = SzHowUIService.getResolutionStepCardType(step);
                         if(_retTypes.has(_retType)){
@@ -506,7 +509,8 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
         let matchKeyIsPositive  = this.isMatchKeyForFeaturePositive(feature);
         if(
             (feature.scoringBucket !== 'CLOSE' && feature.scoringBucket !== 'SAME') && 
-            (matchKeyIsPositive === undefined || 
+            (
+                matchKeyIsPositive === undefined || 
                 (matchKeyIsPositive !== undefined && matchKeyIsPositive !== false)
             )
         ) {

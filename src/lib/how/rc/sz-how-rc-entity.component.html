@@ -4,8 +4,8 @@
     *ngIf="showNavigation"
 ></sz-how-rc-nav>
 <div class="main">
-    <!--<div class="debug-box">
-        <h3>debug</h3>-->
+    <div class="debug-box">
+        <h3>debug</h3>
         <!--<button (click)="getStepGroupsForInterimEntities()">getStepGroupsForInterimEntities()</button>
         <button (click)="getDefaultStepGroups()">getDefaultStepGroups()</button>
         <button (click)="getDefaultResolutionStepGroups()">getDefaultResolutionStepGroups()</button>-->
@@ -15,13 +15,21 @@
         <button (click)="getResolutionStepGroupIdByMemberVirtualIdDebug('V401992-S2')">getResolutionStepGroupIdByMemberVirtualIdDebug('V401992-S2')()</button> 
         <button (click)="stepIsMemberOfGroupDebug('V401992-S2')">stepIsMemberOfGroup('V401992-S2')()</button> -->
 
-        <!--<button (click)="getStepNodes()">getStepNodes()</button>-->
+        <button (click)="getFullyNestedListDebug()">getFullyNestedList()</button>
         
         <!--<button (click)="collapseAllSteps()">collpseAll()</button>
         <button (click)="getFinalEntityFromMemberByStepNumber(1)">getFinalEntityFromMember(#1)</button> 
         <button (click)="getFinalEntityFromMemberByStepNumber(2)">getFinalEntityFromMember(#2)</button> -->
-    <!--</div>-->
-    <ul class="step-list tree">
+    </div>
+    <sz-how-rc-step-node *ngFor="let finalCardStepNode of fullyNestedList; let rsInd=index"
+                [attr.step-index]="rsInd"
+                [attr.step-number]="finalCardStepNode.stepNumber"
+                [attr.virtual-id]="finalCardStepNode.resolvedVirtualEntityId"
+                [data]="finalCardStepNode" 
+                [featureOrder]="orderedFeatures" 
+                [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step-node>
+    <!--<ul class="step-list"> 
+
         <li class="top-level">
             <sz-how-rc-final-entity-card *ngFor="let vCardData of finalCardsData"
                 [data]="vCardData"
