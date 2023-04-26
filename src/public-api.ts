@@ -92,7 +92,6 @@ export { SzHowRCEntityComponent } from './lib/how/rc/sz-how-rc-entity.component'
 export { SzHowRCStepNodeComponent } from './lib/how/rc/sz-how-rc-step-node.component'
 export { SzHowRCFinalEntityCardComponent } from './lib/how/rc/cards/sz-how-rc-final-entity-card.component';
 export { SzHowRCStepCardComponent } from './lib/how/rc/cards/sz-how-rc-step-card.component';
-export { SzHowRCStepGroupComponent } from './lib/how/rc//sz-how-rc-step-group.component';
 export { SzHowRCStepStackComponent } from './lib/how/rc/sz-how-rc-step-stack.component';
 export { SzHowRCNavComponent } from './lib/how/rc/sz-how-rc-nav.component';
 export { SzHowRCVirtualEntityCardComponent } from './lib/how/rc/cards/sz-how-rc-virtual-entity-card.component';
