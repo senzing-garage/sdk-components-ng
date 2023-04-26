@@ -113,11 +113,11 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
     public toggleExpansion(vId?: string) {
         //this.onExpand.next(!this._collapsed);
         vId = vId ? vId : this.id;
-        this.howUIService.toggleExpansion(vId);
+        this.howUIService.toggleExpansion(vId, undefined, this.itemType);
     }
     public toggleGroupExpansion(gId?: string) {
         gId = gId ? gId : this.id;
-        this.howUIService.toggleExpansion(undefined, gId);
+        this.howUIService.toggleExpansion(undefined, gId, this.itemType);
     }
     public get isGroupCollapsed() {
         return !this.howUIService.isGroupExpanded(this._groupId);
@@ -175,7 +175,8 @@ export class SzHowRCStepCardComponent implements OnInit, OnDestroy {
         return this._groupId;
     }
     get isGroupMember(): boolean {
-        return this.howUIService.isNodeMemberOfGroup(this._data.resolvedVirtualEntityId);
+        return (this._data as SzResolutionStepNode).isMemberOfGroup;
+        //return this.howUIService.isNodeMemberOfGroup((this._data as SzResolutionStepNode).isMemberOfGroup);
     }
     get isStackGroupMember(): boolean {
         return this.howUIService.isStepMemberOfStack(this.id, this._groupId);

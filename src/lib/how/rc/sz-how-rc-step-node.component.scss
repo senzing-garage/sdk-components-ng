@@ -47,6 +47,17 @@
             background-color: #88fa4e;
         }
     }
+
+    &.has-child-stacks {
+        padding-right: 0;
+        sz-how-rc-final-entity-card,
+        sz-how-rc-step-node {
+            margin-right: 24px;
+            &.is-stack {
+                margin-right: 4px;
+            }
+        }
+    }
 }
 
 .tree {

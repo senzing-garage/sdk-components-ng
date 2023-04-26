@@ -39,7 +39,7 @@
         transition: transform 300ms;
     }
 
-    &.collapsed {
+    /*&.collapsed {
         .toggle-child-expansion-icon {
             transform: rotate(0deg);
         }
@@ -48,7 +48,7 @@
         .toggle-child-expansion-icon {
             transform: rotate(90deg);
         }
-    }
+    }*/
 
     ul {
         list-style: none;

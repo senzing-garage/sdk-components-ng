@@ -20,9 +20,9 @@
     </div>
 </div>
 <div class="stack-control" 
-    [class.expanded]="isStackExpanded"
-    [class.collapsed]="!isStackExpanded"
-    (click)="toggleStackCollapsedState()">
+    [class.expanded]="!isGroupCollapsed"
+    [class.collapsed]="isGroupCollapsed"
+    (click)="toggleGroupExpansion()">
     <mat-icon 
     aria-hidden="false" 
     class="hide-on-expanded"

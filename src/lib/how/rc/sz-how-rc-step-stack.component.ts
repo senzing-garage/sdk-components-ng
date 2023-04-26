@@ -6,7 +6,7 @@ import {
     SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse, SzVirtualEntityRecord, SzDataSourceRecordSummary, SzResolvedEntity 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../services/sz-config-data.service';
-import { SzResolutionStepDisplayType, SzResolutionStepGroup, SzResolutionStepNode, SzResolvedVirtualEntity} from '../../models/data-how';
+import { SzResolutionStepDisplayType, SzResolutionStepGroup, SzResolutionStepListItemType, SzResolutionStepNode, SzResolvedVirtualEntity} from '../../models/data-how';
 import { Subject, takeUntil } from 'rxjs';
 import { parseSzIdentifier } from '../../common/utils';
 import { SzHowUIService } from '../../services/sz-how-ui.service';
@@ -73,19 +73,22 @@ export class SzHowRCStepStackComponent implements OnInit, OnDestroy {
     public get data(): SzResolutionStepNode {
         return this._data;
     }
-
-    public get isStackExpanded() {
-        return this.howUIService.isGroupExpanded(this.id);
+    get itemType(): SzResolutionStepListItemType {
+        return (this._data as SzResolutionStepNode).itemType ? (this._data as SzResolutionStepNode).itemType : SzResolutionStepListItemType.STEP;
     }
 
-    public toggleStackCollapsedState() {
-        /*
-        if(this.howUIService.isGroupExpanded(this.id)) {
-            this.howUIService.collapseGroup(this.id);
-        } else {
-            this.howUIService.expandGroup(this.id);
-        }*/
-        this.howUIService.toggleExpansion(undefined, this.id);
+    public get isGroupCollapsed() {
+        return !this.howUIService.isGroupExpanded(this.id);
+    }
+
+    public toggleExpansion(vId?: string) {
+        //this.onExpand.next(!this._collapsed);
+        vId = vId ? vId : this.id;
+        this.howUIService.toggleExpansion(vId, undefined, this.itemType);
+    }
+    public toggleGroupExpansion(gId?: string) {
+        gId = gId ? gId : this.id;
+        this.howUIService.toggleExpansion(undefined, gId, this.itemType);
     }
 
     get numberOfCards(): number {

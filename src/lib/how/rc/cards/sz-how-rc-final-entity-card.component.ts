@@ -29,10 +29,10 @@ export class SzHowRCFinalEntityCardComponent implements OnInit, OnDestroy {
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
 
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
-        return !this.howUIService.isFinalEntityExpanded(this.id);
+        return !this.howUIService.isGroupExpanded(this.id);
     }
     @HostBinding('class.expanded') get cssExpandedClass(): boolean {
-        return this.howUIService.isFinalEntityExpanded(this.id);
+        return this.howUIService.isGroupExpanded(this.id);
     }
     @HostBinding('class.group-collapsed') get cssGroupCollapsedClass(): boolean {
         return this.id && !this.howUIService.isGroupExpanded(this.id);
@@ -67,7 +67,7 @@ export class SzHowRCFinalEntityCardComponent implements OnInit, OnDestroy {
         return this._stepMap;
     }
     public get isCollapsed() {
-        return !this.howUIService.isFinalEntityExpanded(this.id);
+        return !this.howUIService.isGroupExpanded(this.id);
     }
     public get virtualEntitiesById(): Map<string, SzResolvedVirtualEntity> {
         return this._virtualEntitiesById;
@@ -113,7 +113,7 @@ export class SzHowRCFinalEntityCardComponent implements OnInit, OnDestroy {
     }
     public togglExpansion() {
         console.log('togglExpansion: ', this.id, this._data, this._virtualEntitiesById);
-        this.howUIService.toggleExpansion(undefined, this.id);
+        this.howUIService.toggleExpansion(undefined, this.id, this.data.itemType);
     }
     
     constructor(
