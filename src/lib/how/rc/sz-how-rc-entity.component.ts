@@ -260,7 +260,6 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
 
     private getVirtualEntityIdsForNode(isNested: boolean, step: SzResolutionStepNode) {
       let retVal: string[] = [];
-      if(step.itemType === SzResolutionStepDisplayType.FINAL) console.warn(`--------- ${step.id}: GETTING VIRTUAL IDS ---------`, step);
 
       if(isNested) {
         // this is already a sub-child make sure id is in return value
@@ -637,8 +636,11 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
               // current type is "add"
                 // check if previous step was add
                 // if so add this item to previous item
+                let _wrappedStep = Object.assign(resStep, {
+                  id: resStep.resolvedVirtualEntityId
+                });
                 if(lastStepType === SzResolutionStepDisplayType.ADD) {
-                  retVal.get(_currentGroupId).children.push(resStep);
+                  retVal.get(_currentGroupId).children.push(_wrappedStep);
                   this.howUIService.collapseNode(resStep.resolvedVirtualEntityId, SzResolutionStepListItemType.STEP);
                   //console.log(`${stepArrIndex} | previous step was add operation. append`, retVal.get(_currentGroupId));
                   //(_resolutionStepsWithGroups[(_resolutionStepsWithGroups.length - 1)] as SzResolutionStep[]).push(resStep);
@@ -652,7 +654,7 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
                     children: []
                   });
   
-                  retVal.get(_currentGroupId).children.push(resStep);
+                  retVal.get(_currentGroupId).children.push(_wrappedStep);
                   this.howUIService.collapseNode(resStep.resolvedVirtualEntityId);
                   //_resolutionStepsWithGroups.push([resStep]);
                   //console.log(`${stepArrIndex} | first add operation in series`, retVal.get(_currentGroupId));
@@ -661,7 +663,8 @@ export class SzHowRCEntityComponent implements OnInit, OnDestroy {
                   //_resolutionStepsWithGroups.push(resStep);
                 }
 
-                retVal.get(_currentGroupId).virtualEntityIds = retVal.get(_currentGroupId).children.map((rStep: SzResolutionStep) => { return rStep.resolvedVirtualEntityId; });
+                //retVal.get(_currentGroupId).virtualEntityIds = retVal.get(_currentGroupId).children.map((rStep: SzResolutionStep) => { return rStep.resolvedVirtualEntityId; });
+                retVal.get(_currentGroupId).virtualEntityIds = this.getVirtualEntityIdsForNode(false, retVal.get(_currentGroupId));
             }
           });
   

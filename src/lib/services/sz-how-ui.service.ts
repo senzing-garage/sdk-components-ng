@@ -133,7 +133,7 @@ export class SzHowUIService {
     }*/
     collapseNode(id: string, itemType?: SzResolutionStepListItemType) {
       let _stepNodes = this.getStepNodeById(id);
-      console.log(`collapseNode(${id}, ${itemType})`,_stepNodes, this._stepNodes);
+      //console.log(`collapseNode(${id}, ${itemType})`,_stepNodes, this._stepNodes);
 
       if(_stepNodes && (!itemType || itemType === SzResolutionStepListItemType.STEP) && this.isStepExpanded(id)) {
         // remove from expanded nodes
@@ -188,7 +188,7 @@ export class SzHowUIService {
     }*/
     expandNode(id: string, itemType?: SzResolutionStepListItemType) {
       let _stepNodes = this.getStepNodeById(id);
-      console.log(`expandNode(${id}, ${itemType})`, _stepNodes, this._stepNodes);
+      //console.log(`expandNode(${id}, ${itemType})`, _stepNodes, this._stepNodes);
       if(_stepNodes && (!itemType || itemType === SzResolutionStepListItemType.STEP) && !this.isStepExpanded(id)) {
         // add to expanded nodes
         this._expandedNodes.push(id);
@@ -196,12 +196,14 @@ export class SzHowUIService {
       }
       if(_stepNodes && _stepNodes.forEach) {
         _stepNodes.filter((_fn) => (itemType && _fn.itemType === itemType || !itemType)).forEach((_n) => {
-          if(itemType){ console.log(`${_n.id} matches ${itemType}`, _n); }
+          //if(itemType){ console.log(`${_n.id} matches ${itemType}`, _n); }
           // make sure any parent nodes are also expanded
           this.expandParentNodes(_n);
 
           // if it's a group 
-          if(_n.itemType === SzResolutionStepListItemType.GROUP || _n.itemType === SzResolutionStepListItemType.FINAL || _n.itemType === SzResolutionStepListItemType.STACK) {
+          if(_n.itemType === SzResolutionStepListItemType.GROUP 
+            || _n.itemType === SzResolutionStepListItemType.FINAL 
+            || _n.itemType === SzResolutionStepListItemType.STACK) {
             //this.expandGroup(_n.id);
             if(!this.isGroupExpanded(id)) {
               this._expandedGroups.push(id);
@@ -276,7 +278,7 @@ export class SzHowUIService {
       .filter((_s: SzResolutionStepNode) => {
         return (_s && _s.itemType === SzResolutionStepListItemType.FINAL && _s.virtualEntityIds.indexOf(id) > -1);
       }).forEach((_s) => {
-        let _indirectChildren = this.getChildrenContainingNode(2, id, _s).flat(100);
+        let _indirectChildren = this.getChildrenContainingNode(id, _s).flat(100);
         if(_indirectChildren) { 
           if(!_retVal) { _retVal = []; } 
           _retVal = _retVal.concat(_indirectChildren);
@@ -311,22 +313,16 @@ export class SzHowUIService {
       return _retVal;
     }
 
-    getChildrenContainingNode(lvl: number, id: string, node: SzResolutionStepNode): Array<SzResolutionStep | SzResolutionStepNode> {
+    getChildrenContainingNode(id: string, node: SzResolutionStepNode): Array<SzResolutionStep | SzResolutionStepNode> {
       let retVal: Array<SzResolutionStep | SzResolutionStepNode> = [];
-      let indt = (new Array(lvl)).join('\t');
 
       if(node && node.id === id){
-        console.warn(`${indt}found it! ${node.id}==${id}`, node);
         retVal.push((node as SzResolutionStepNode));
-      } else {
-        console.log(`${indt}|${node.id} is not the node(${id}), must be in child...`,[lvl, id, node]);
       }
-
       if(node && node.children) {
         let _childrenContaining = node.children.map(
           this.getChildrenContainingNode.bind(
             this,
-            (lvl+1), 
             id
           )
         );

@@ -112,7 +112,6 @@ export class SzHowRCFinalEntityCardComponent implements OnInit, OnDestroy {
         return retVal;
     }
     public togglExpansion() {
-        console.log('togglExpansion: ', this.id, this._data, this._virtualEntitiesById);
         this.howUIService.toggleExpansion(undefined, this.id, this.data.itemType);
     }
     
