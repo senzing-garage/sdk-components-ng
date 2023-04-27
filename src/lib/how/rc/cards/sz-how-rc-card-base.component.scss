@@ -1,6 +1,9 @@
 :host {
     display: block;
-    background-color: aqua;
+    /*display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;*/
     border: var(--sz-how-step-card-border);
     color: var(--sz-how-step-card-color);
     margin-top: 14px;
@@ -17,6 +20,13 @@
     }
     &.type-create {
         background-color: var(--sz-how-step-card-type-color-create);
+    }
+    &.type-final {
+        background-color: var(--sz-how-step-card-type-color-final);
+        display: flex;
+        justify-content: flex-start;
+        //align-items: center;
+        flex-direction: row;
     }
     &.type-interim {
         background-color: var(--sz-how-step-card-type-color-interim);
@@ -181,7 +191,13 @@
         margin-right: 20px;
         margin-bottom: 10px;
         font-size: 20px;
+        //min-width: 12%;
+        width: 30%;
+        flex-shrink: 2;
         .info-line {
+            //white-space: nowrap;
+        }
+        .virtual-id {
             white-space: nowrap;
         }
     }
@@ -205,14 +221,14 @@
     .toggle-group-expansion-icon {
         transform: rotate(90deg);
         transition: transform 300ms;
+        min-height: 24px;  // used for extremely constrained reflow
+        min-width: 24px;   // used for extremely constrained reflow
         cursor: pointer;
     }
 
     .hide-on-expanded {
         display: none;
     }
-
-
 
     &.collapsed {
         .toggle-child-expansion-icon {
@@ -237,6 +253,9 @@
     }
 
     &.group-collapsed {
+        .toggle-group-expansion-icon {
+            transform: rotate(0deg);
+        }
         .hide-on-group-collapsed {
             display: none;
         }
@@ -245,6 +264,12 @@
 
 ::ng-deep .info-block .emphasized {
     font-weight: 800;
+}
+::ng-deep .info-block .ilb {
+    display: inline-block;
+}
+::ng-deep .info-block .nw {
+    white-space: nowrap;
 }
 
 .columns {

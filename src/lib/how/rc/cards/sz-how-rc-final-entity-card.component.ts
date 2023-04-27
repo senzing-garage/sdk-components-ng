@@ -7,6 +7,8 @@ import { SzConfigDataService } from '../../../services/sz-config-data.service';
 import { SzResolutionStepNode, SzResolvedVirtualEntity } from '../../../models/data-how';
 import { Subject} from 'rxjs';
 import { SzHowUIService } from '../../../services/sz-how-ui.service';
+import { SzHowStepCardBase } from './sz-how-rc-card-base.component';
+import { MatDialog } from '@angular/material/dialog';
 
 /**
  * How Final Entity Card
@@ -19,31 +21,26 @@ import { SzHowUIService } from '../../../services/sz-how-ui.service';
 @Component({
     selector: 'sz-how-rc-final-entity-card',
     templateUrl: './sz-how-rc-final-entity-card.component.html',
-    styleUrls: ['./sz-how-rc-final-entity-card.component.scss']
+    styleUrls: ['./sz-how-rc-card-base.component.scss']
 })
-export class SzHowRCFinalEntityCardComponent implements OnInit, OnDestroy {
-    /** subscription to notify subscribers to unbind */
-    public unsubscribe$ = new Subject<void>();
-    private _stepMap: {[key: string]: SzResolutionStep};
-    private _data: SzResolutionStepNode;
-    private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
+export class SzHowRCFinalEntityCardComponent extends SzHowStepCardBase implements OnInit, OnDestroy  {
 
-    @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
+    @HostBinding('class.collapsed') override get cssHiddenClass(): boolean {
         return !this.howUIService.isGroupExpanded(this.id);
     }
-    @HostBinding('class.expanded') get cssExpandedClass(): boolean {
+    @HostBinding('class.expanded') override get cssExpandedClass(): boolean {
         return this.howUIService.isGroupExpanded(this.id);
     }
-    @HostBinding('class.group-collapsed') get cssGroupCollapsedClass(): boolean {
+    @HostBinding('class.group-collapsed') override get cssGroupCollapsedClass(): boolean {
         return this.id && !this.howUIService.isGroupExpanded(this.id);
     }
-    @HostBinding('class.group-expanded') get cssGroupExpandedClass(): boolean {
+    @HostBinding('class.group-expanded') override get cssGroupExpandedClass(): boolean {
         return this.id && this.howUIService.isGroupExpanded(this.id);
     }
-    @HostBinding('class.type-final') get cssTypeClass(): boolean {
+    @HostBinding('class.type-final') override get cssTypeClass(): boolean {
         return true;
     }
-
+    /*
     @Input() featureOrder: string[];
     @Input() set data(value: SzResolutionStep | SzResolutionStepNode) {
         this._data = (value as SzResolutionStepNode);
@@ -62,8 +59,8 @@ export class SzHowRCFinalEntityCardComponent implements OnInit, OnDestroy {
     }
     get data() : SzResolutionStepNode {
         return this._data;
-    }
-    get stepsByVirtualId(): {[key: string]: SzResolutionStep} {
+    }*/
+    /*get stepsByVirtualId(): {[key: string]: SzResolutionStep} {
         return this._stepMap;
     }
     public get isCollapsed() {
@@ -80,8 +77,8 @@ export class SzHowRCFinalEntityCardComponent implements OnInit, OnDestroy {
             retVal = _resolvedEntity.recordSummaries.length;
         }
         return retVal;
-    }
-    public get title(): string {
+    }*/
+    override get title(): string {
         let retVal = `Final Entity ${this.id}`;
         let _resolvedEntity = this.resolvedVirtualEntity;
         if(_resolvedEntity) {
@@ -89,7 +86,7 @@ export class SzHowRCFinalEntityCardComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
-    public get dataSourcesAsString(): string {
+    /*public get dataSourcesAsString(): string {
         let retVal = '';
         let _resolvedEntity = this.resolvedVirtualEntity;
         if(_resolvedEntity && _resolvedEntity.recordSummaries && _resolvedEntity.recordSummaries.length > 0) {
@@ -99,8 +96,8 @@ export class SzHowRCFinalEntityCardComponent implements OnInit, OnDestroy {
             retVal += `${db_str}`;
         }
         return retVal;
-    }
-    public get resolvedVirtualEntity(): SzResolvedVirtualEntity {
+    }*/
+    /*public get resolvedVirtualEntity(): SzResolvedVirtualEntity {
         let retVal;
         if(this._data && this._data.resolvedVirtualEntity) {
             retVal = this._data.resolvedVirtualEntity;
@@ -110,24 +107,22 @@ export class SzHowRCFinalEntityCardComponent implements OnInit, OnDestroy {
             //console.log(`no virtual entity: ${this._data.virtualEntityId}`, this._virtualEntitiesById, this._data);
         }
         return retVal;
-    }
-    public togglExpansion() {
+    }*/
+    public override toggleExpansion() {
         this.howUIService.toggleExpansion(undefined, this.id, this.data.itemType);
     }
     
     constructor(
-        public entityDataService: SzEntityDataService,
-        public configDataService: SzConfigDataService,
-        private howUIService: SzHowUIService
-    ){}
-
-    ngOnInit() {}
-
-    /**
-     * unsubscribe when component is destroyed
-     */
-    ngOnDestroy() {
-        this.unsubscribe$.next();
-        this.unsubscribe$.complete();
+        entityDataService: SzEntityDataService,
+        configDataService: SzConfigDataService,
+        howUIService: SzHowUIService,
+        dialog: MatDialog
+    ){
+        super(
+            entityDataService,
+            configDataService,
+            howUIService,
+            dialog
+        );
     }
 }
