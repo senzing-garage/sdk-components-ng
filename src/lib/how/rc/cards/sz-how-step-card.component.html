@@ -3,8 +3,8 @@
     <!--<mat-icon *ngIf="canExpand && !hasChildren && groupTitle === undefined" class="toggle-expansion-icon"       (click)="toggleExpansion()" fontIcon="arrow_right"></mat-icon>-->
     <mat-icon *ngIf="canExpand && hasChildren && groupTitle !== undefined"  class="toggle-group-expansion-icon" (click)="toggleGroupExpansion(groupId)" fontIcon="play_circle"></mat-icon>
 
-    <mat-icon *ngIf="canExpand && !hasChildren && (groupTitle === undefined || (!isGroupCollapsed && isStackGroupMember))" class="toggle-expansion-icon"    (click)="toggleExpansion()" fontIcon="arrow_right"></mat-icon>
-    <mat-icon *ngIf="canExpand && !hasChildren && groupTitle !== undefined && (isGroupCollapsed && isStackGroupMember)" class="toggle-expansion-icon"       (click)="toggleGroupExpansion(groupId)" fontIcon="arrow_right"></mat-icon>
+    <mat-icon *ngIf="canExpand && !hasChildren && (groupTitle === undefined || (!isGroupCollapsed && isStackGroupMember))" class="1 toggle-expansion-icon"    (click)="toggleExpansion()" fontIcon="arrow_right"></mat-icon>
+    <mat-icon *ngIf="canExpand && !hasChildren && groupTitle !== undefined && (isGroupCollapsed && isStackGroupMember)" class="2 toggle-expansion-icon"       (click)="toggleGroupExpansion(groupId)" fontIcon="arrow_right"></mat-icon>
     <!--<div class="title-text">
         isGroupCollapsed: {{isGroupCollapsed}} | isStackGroupMember: {{isStackGroupMember}} | groupId: {{groupId}}
     </div>

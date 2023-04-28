@@ -25,36 +25,17 @@ import { SzPrefsService } from './sz-prefs.service';
 export class SzHowUIService {
     private _navigationExpanded: boolean        = true;
     private _pinnedSteps: string[]              = [];
-    //private _expandedFinalEntities: string[]    = [];
     private _expandedNodes: string[]            = [];
     private _expandedGroups: string[]           = [];
-    //private _expandedVirtualEntities: string[]  = [];
-    //private _stepGroups: Map<string, SzResolutionStepGroup>     = new Map<string, SzResolutionStepGroup>();
     private _stepNodeGroups: Map<string, SzResolutionStepNode>  = new Map<string, SzResolutionStepNode>();
-    //private _stepsList: Array<SzResolutionStep | SzResolutionStepGroup>;
     private _stepNodes: Array<SzResolutionStepNode>;
-    //private _finalEntities: SzVirtualEntity[]   = [];
     private _onGroupExpansionChange   = new Subject<string>()
     private _onStepExpansionChange    = new Subject<string>();
-    //private _onFinalExpansionChange   = new Subject<string>();
     private _userHasChangedStepState  = new Map<string, boolean>();
     private static _entityDataService: SzEntityDataService;
-    //private _onStepChildExpansionChange;
-
     public onGroupExpansionChange     = this._onGroupExpansionChange.asObservable();
     public onStepExpansionChange      = this._onStepExpansionChange.asObservable();
-    //public onFinalExpansionChange     = this._onFinalExpansionChange.asObservable();
 
-    /*public set finalStates(value: SzVirtualEntity[]) {
-      if(value && this._finalEntities && this._finalEntities.length > 0) {
-        // when we initially set final entities populate expanded arr
-        // so the trees are expanded by default
-        this._expandedFinalEntities = value.map((fEnt) => {
-          return fEnt.virtualEntityId;
-        });
-      }
-      this._finalEntities = value;
-    }*/
     public set stepNodeGroups(value: Map<string, SzResolutionStepNode>) {
       this._stepNodeGroups          = value;
     }
@@ -64,74 +45,25 @@ export class SzHowUIService {
     public get stepNodes(): Array<SzResolutionStepNode> {
       return this._stepNodes;
     }
-    /*public set stepGroups(value: Map<string, SzResolutionStepGroup>) {
-      this._stepGroups              = value;
-    }
-    public set stepsList(value: Array<SzResolutionStep | SzResolutionStepGroup>) {
-      this._stepsList = value;
-    }
-    public get stepsList(): Array<SzResolutionStep | SzResolutionStepGroup> {
-      return this._stepsList;
-    }*/
     public get isNavExpanded(): boolean {
       return this._navigationExpanded;
     }
     public set isNavExpanded(value: boolean) {
       this._navigationExpanded = value;
     }
-    /*
-    idIsGroupId(vId: string): boolean {
-      // group id format "de9b1c0f-67a9-4b6d-9f63-bc90deabe3e4"
-      return vId && vId.split && vId.split('-').length > 4 ? true : false;
+    public get expandedNodes() {
+      return this._expandedNodes;
     }
-    idIsStepId(vId: string): boolean {
-      // step id format "V401992-S7"
-      return vId && vId.split && vId.split('-').length <= 2 ? true : false;
-    }*/
+    public get expandedGroups() {
+      return this._expandedGroups;
+    }
     isStepExpanded(virtualEntityId: string): boolean {
       return this._expandedNodes.includes(virtualEntityId);
     }
     isGroupExpanded(groupId: string): boolean {
       return this._expandedGroups.includes(groupId);
     }
-    /*isFinalEntityExpanded(vId: string): boolean {
-      return this._expandedFinalEntities.includes(vId);
-    }*/
-    isExpanded(vId: string) {
-      return this._expandedNodes.includes(vId);
-    }
-    /*
-    expand(vId: string) {
-      if(!this.isExpanded(vId)) {
-        this._expandedNodes.push(vId);
-        if(this.idIsGroupId(vId)) { this._onGroupExpansionChange.next(vId); }
-        if(this.idIsStepId(vId)) { this._onStepExpansionChange.next(vId); }
-      }
-      //console.info(`SzHowUIService.expand(${vId})`, this._expandedStepsOrGroups);
-    }
-    collapse(vId: string) {
-      if(this.isExpanded(vId)) {
-        let _itemIndex  = this._expandedNodes.indexOf(vId);
-        if(this._expandedNodes[_itemIndex] && this._expandedNodes.splice) {
-          this._expandedNodes.splice(_itemIndex, 1);
-          if(this.idIsGroupId(vId)) { this._onGroupExpansionChange.next(vId); }
-          if(this.idIsStepId(vId)) { this._onStepExpansionChange.next(vId); }
-        }
-      }
-      //console.info(`SzHowUIService.collapse(${vId})`, this._expandedStepsOrGroups);
-    }
-    expandStep(virtualEntityId: string) {
-      let _stepNode = this.getStepNodeById(virtualEntityId);
-      console.info(`SzHowUIService.expandStep(${virtualEntityId}): ${this.isStepExpanded(virtualEntityId)}`, _stepNode);
-      if(!this.isStepExpanded(virtualEntityId)) {
-        this._expandedNodes.push(virtualEntityId);
-        this._userHasChangedStepState.set(virtualEntityId, true)
-        this._onStepExpansionChange.next(virtualEntityId);
-      }
-      // check to see if group needs to be expanded
-      
-    }*/
-    collapseNode(id: string, itemType?: SzResolutionStepListItemType) {
+    collapseNode(id: string, itemType?: SzResolutionStepListItemType, forceState?: boolean) {
       let _stepNodes = this.getStepNodeById(id);
       //console.log(`collapseNode(${id}, ${itemType})`,_stepNodes, this._stepNodes);
 
@@ -143,16 +75,25 @@ export class SzHowUIService {
           this._onStepExpansionChange.next(id);
         }
       }
-      /*if(itemType === SzResolutionStepListItemType.FINAL) {
-        // this is a "meta" node not an actual step
-        if(this.isGroupExpanded(id)) {
-          let _itemIndex  = this._expandedGroups.indexOf(id);
-          if(this._expandedGroups[_itemIndex] && this._expandedGroups.splice) {
-            this._expandedGroups.splice(_itemIndex, 1);
+      if(id && (!this._stepNodes || (this._stepNodes && this._stepNodes.length === 0))) {
+        // okay, this has been called prematurely (before we actually have the nodelist)
+        // if we have a "type" we can pretty safely just modify the arrays
+        if(itemType && (itemType === SzResolutionStepListItemType.STACK || itemType === SzResolutionStepListItemType.GROUP || itemType === SzResolutionStepListItemType.FINAL)) {
+          if(this.isGroupExpanded(id)) {
+            let _itemIndex  = this._expandedGroups.indexOf(id);
+            if(this._expandedGroups[_itemIndex] && this._expandedGroups.splice) {
+              this._expandedGroups.splice(_itemIndex, 1);
+            }
+            this._onGroupExpansionChange.next(id);
           }
-          this._onGroupExpansionChange.next(id);
+        } else if(itemType && (itemType === SzResolutionStepListItemType.STEP)) {
+          let _itemIndex  = this._expandedNodes.indexOf(id);
+          if(this._expandedNodes[_itemIndex] && this._expandedNodes.splice) {
+            this._expandedNodes.splice(_itemIndex, 1);
+            this._onStepExpansionChange.next(id);
+          }
         }
-      }*/
+      }
       if(_stepNodes && _stepNodes.forEach) {
         _stepNodes.filter((_fn) => (itemType && _fn.itemType === itemType || !itemType)).forEach((_n) => {
           // should we collapse group(s) also matching this?
@@ -169,30 +110,27 @@ export class SzHowUIService {
         });
       }
     }
-    /*collapseStep(virtualEntityId: string) {
-      if(this.isStepExpanded(virtualEntityId)) {
-        let _itemIndex  = this._expandedNodes.indexOf(virtualEntityId);
-        if(this._expandedNodes[_itemIndex] && this._expandedNodes.splice) {
-          this._expandedNodes.splice(_itemIndex, 1);
-          this._onStepExpansionChange.next(virtualEntityId);
-        }
-      }
-    }
-    expandFinal(virtualEntityId: string) {
-      //console.log(`expandFinal(${virtualEntityId})`, this.isFinalEntityExpanded(virtualEntityId));
-
-      if(!this.isFinalEntityExpanded(virtualEntityId)) {
-        this._expandedFinalEntities.push(virtualEntityId);
-        this._onFinalExpansionChange.next(virtualEntityId);
-      }
-    }*/
     expandNode(id: string, itemType?: SzResolutionStepListItemType) {
       let _stepNodes = this.getStepNodeById(id);
       //console.log(`expandNode(${id}, ${itemType})`, _stepNodes, this._stepNodes);
       if(_stepNodes && (!itemType || itemType === SzResolutionStepListItemType.STEP) && !this.isStepExpanded(id)) {
         // add to expanded nodes
         this._expandedNodes.push(id);
+        this._userHasChangedStepState.set(id, true)
         //console.log(`"${id} added to expanded nodes: ${this._expandedNodes}"`, _stepNodes);
+      }
+      if(id && (!this._stepNodes || (this._stepNodes && this._stepNodes.length === 0))) {
+        // okay, this has been called prematurely (before we actually have the nodelist)
+        // if we have a "type" we can pretty safely just modify the arrays
+        if(itemType && (itemType === SzResolutionStepListItemType.STACK || itemType === SzResolutionStepListItemType.GROUP || itemType === SzResolutionStepListItemType.FINAL)) {
+          if(!this.isGroupExpanded(id)) {
+            this._expandedGroups.push(id);
+            this._onGroupExpansionChange.next(id);
+          }
+        } else if(itemType && (itemType === SzResolutionStepListItemType.STEP)) {
+          this._expandedNodes.push(id);
+          this._onStepExpansionChange.next(id);
+        }
       }
       if(_stepNodes && _stepNodes.forEach) {
         _stepNodes.filter((_fn) => (itemType && _fn.itemType === itemType || !itemType)).forEach((_n) => {
@@ -208,9 +146,16 @@ export class SzHowUIService {
             if(!this.isGroupExpanded(id)) {
               this._expandedGroups.push(id);
               this._onGroupExpansionChange.next(id);
+              // check to see if there is only one child
+              // if so expand that one too
+              if(_n.children && _n.children.length === 1) {                
+                let childType = (_n.children[0] as SzResolutionStepNode).itemType ? (_n.children[0] as SzResolutionStepNode).itemType : SzResolutionStepListItemType.STEP;
+                let childId   = (_n.children[0] as SzResolutionStepNode).id ? (_n.children[0] as SzResolutionStepNode).id : _n.children[0].resolvedVirtualEntityId;
+                this.expandNode(childId, childType);
+              }
             }
           }
-          // mark step as expaned
+          // mark step as expanded
           if(_n.itemType === SzResolutionStepListItemType.STEP) {
             if(!this.isStepExpanded(id)) {
               this._expandedNodes.push(id);
@@ -221,27 +166,17 @@ export class SzHowUIService {
         });
       }
     }
-    /*expandGroup(groupId: string) {
-      let _group = this._stepNodeGroups.get(groupId);
-      if(!this.isGroupExpanded(groupId)) {
-        this._expandedGroups.push(groupId);
-        this._onGroupExpansionChange.next(groupId);
-        // check if group has only one member card
-        // if a user expands a collapsed group it 
-        // doesnt make sense to make them click expand again
-        // right after
-        //let _group = this._stepNodeGroups.get(groupId);
-        if(_group && _group.itemType === SzResolutionStepListItemType.GROUP && _group.children && _group.children.length === 1 && !this._userHasChangedStepState.has(groupId)) {
-          // step will have the same id as the group so just use that
-          this.expandStep(groupId);
-        }
-        // make sure that any parent groups that this item belongs to are expanded
-        if(_group && _group.itemType !== SzResolutionStepListItemType.FINAL) {
-          this.expandParentNodes(_group);
-        }
+    toggleExpansion(id: string, groupId?: string, itemType?: SzResolutionStepListItemType) {
+      let isExpanded = (!groupId || groupId === undefined) ? this._expandedNodes.includes(id) : (groupId ? this._expandedGroups.includes(groupId) : false);
+      id = id ? id : (groupId ? groupId : undefined);
+      if(!isExpanded) {
+        //console.log(`\texpanding node: ${this._expandedNodes.includes(id)}, ${this._expandedGroups.includes(groupId)}`);
+        this.expandNode(id, itemType);
+      } else {
+        //console.log(`\collapsing node: ${this._expandedNodes.includes(id)}, ${this._expandedGroups.includes(groupId)}`);
+        this.collapseNode(id, itemType);
       }
-      console.log(`expandGroup(${groupId}): ${this.isGroupExpanded(groupId)}`, this._expandedGroups, _group, this._finalEntities, this.finalStates);
-    }*/
+    }
     private expandParentNodes(node: SzResolutionStepNode) {
       //let _group      = this._stepNodeGroups.get(id);
       let _stepNodes  = this._stepNodes;
@@ -255,6 +190,23 @@ export class SzHowUIService {
       }
       //console.log(`expandParentNodes(${node.id}):`, this._expandedGroups, _stepNodes);
     }
+    public expandChildNodes(groupId, itemType?: SzResolutionStepListItemType, childNodeTypes?: SzResolutionStepListItemType[]) {
+      let _stepNodes = this.getStepNodeById(groupId);
+      if(_stepNodes && _stepNodes.forEach) {
+        _stepNodes.filter((_fn) => (itemType && _fn.itemType === itemType || !itemType)).forEach((_n) => {
+          // type match
+          if(_n && _n.children && _n.children.filter) {
+            _n.children.filter((_c) => { 
+              return ((childNodeTypes && (_c as SzResolutionStepNode).itemType && childNodeTypes.includes((_c as SzResolutionStepNode).itemType)) || !childNodeTypes);
+            }).forEach((_cn) => {
+              // call expand for each child matching the type
+              this.expandNode(((_cn as SzResolutionStepNode).id ? (_cn as SzResolutionStepNode).id : _cn.resolvedVirtualEntityId), ((_cn as SzResolutionStepNode).itemType ? (_cn as SzResolutionStepNode).itemType : SzResolutionStepListItemType.STEP));
+            });
+          }
+        });
+      }
+    }
+    
     private expandNodesContainingChild(stepId: string, node: SzResolutionStepNode) {
       if(node && node.virtualEntityIds && node.virtualEntityIds.indexOf(stepId) > -1) {
         // node is a child of this node
@@ -270,7 +222,8 @@ export class SzHowUIService {
         //console.warn(`\t\t"${stepId} not found in [${ node && node.virtualEntityIds ? node.virtualEntityIds.join(',') : ''}]"`);
       }
     }
-    getStepNodeById(id: string): SzResolutionStepNode[] {
+
+    private getStepNodeById(id: string): SzResolutionStepNode[] {
       let _stepNodes  = this._stepNodes;
       let _retVal;
       if(!_stepNodes || (_stepNodes && _stepNodes.length <= 0)) { return undefined; }
@@ -351,44 +304,6 @@ export class SzHowUIService {
       }
       return undefined;
     }*/
-
-    /*collapseGroup(groupId: string) {
-      if(this.isGroupExpanded(groupId)) {
-        let _itemIndex  = this._expandedGroups.indexOf(groupId);
-        if(this._expandedGroups[_itemIndex] && this._expandedGroups.splice) {
-          this._expandedGroups.splice(_itemIndex, 1);
-        }
-        this._onGroupExpansionChange.next(groupId);
-      }
-    }
-    collapseFinal(virtualEntityId: string) {
-      console.log(`collapseFinal(${virtualEntityId})`, this.isFinalEntityExpanded(virtualEntityId));
-      if(this.isFinalEntityExpanded(virtualEntityId)) {
-        let _itemIndex  = this._expandedFinalEntities.indexOf(virtualEntityId);
-        if(this._expandedFinalEntities[_itemIndex] && this._expandedFinalEntities.splice) {
-          this._expandedFinalEntities.splice(_itemIndex, 1);
-        }
-        this._onFinalExpansionChange.next(virtualEntityId);
-      }
-    }
-    */   
-    public get expandedNodes() {
-      return this._expandedNodes;
-    }
-
-    toggleExpansion(id: string, groupId?: string, itemType?: SzResolutionStepListItemType) {
-      id = id ? id : (groupId ? groupId : undefined);
-      if(!id) {
-        console.warn('toggleExpansion: no id passed to method');
-        return;
-      }
-      let isExpanded = (!groupId) ? this._expandedNodes.includes(id) : this._expandedGroups.includes(groupId);
-      if(!isExpanded) {
-        this.expandNode(id, itemType);
-      } else {
-        this.collapseNode(id, itemType);
-      }
-    }
 
 
     /*
@@ -892,35 +807,11 @@ export class SzHowUIService {
     }
 
     public selectStep(vId: string) {
-      let vIdInGroups = (this._stepNodeGroups && this._stepNodeGroups.has(vId)) ? true : false;
-      let stepGroup   = vIdInGroups ? this._stepNodeGroups.get(vId) : undefined;
-      //console.log(`SzHowUIService.selectStep()`, vIdInGroups, stepGroup);
       // clear out any other selected
       this.collapseAll(undefined, false);
+      // expand node
       this.expandNode(vId);
       return;
-      /*if(vIdInGroups) {
-        // is group
-          // clear out any other selected
-          this.collapseAll(undefined, false);
-          // expand group
-          this.expandGroup(vId);
-          // also expand step(s)
-          this.expandStep(vId);
-      } else {
-        // is not in group
-        if(!(this._expandedNodes && this._expandedNodes.includes(vId))) {
-          // clear out any other selected
-          this.collapseAll(undefined, false);
-          // expand step
-          this.expandStep(vId);
-          // check if step is actually a member of a group
-          let groupForStep  = SzHowUIService.getGroupForMemberStep(vId, this._stepNodeGroups);
-          if(groupForStep) {
-            this.expandGroup(groupForStep.id);
-          }
-        }
-      }*/
     }
 
     /*public static getGroupForMemberStep(step: SzResolutionStep | string, groups: Map<string, SzResolutionStepNode>): SzResolutionStepNode {

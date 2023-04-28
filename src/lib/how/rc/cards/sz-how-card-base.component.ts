@@ -124,13 +124,13 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     onExpand: EventEmitter<boolean>                          = new EventEmitter<boolean>();
     
     public toggleExpansion(vId?: string) {
-        //this.onExpand.next(!this._collapsed);
         vId = vId ? vId : this.id;
         this.howUIService.toggleExpansion(vId, undefined, this.itemType);
     }
     public toggleGroupExpansion(gId?: string) {
-        gId = gId ? gId : this.id;
-        this.howUIService.toggleExpansion(undefined, gId, this.itemType);
+        gId             = gId ? gId : this.id;
+        let itemType    = this.isStackGroupMember ? SzResolutionStepListItemType.STACK : this.itemType;
+        this.howUIService.toggleExpansion(undefined, gId, itemType);
     }
     protected get isGroupCollapsed() {
         return !this.howUIService.isGroupExpanded(this._groupId);
@@ -140,8 +140,8 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     }
     get canExpand(): boolean {
         return true;
-        let vId = (this.isGroupMember || this.groupTitle !== undefined) && this._groupId ? this._groupId : this.id;
-        return !this.howUIService.isExpanded(vId);
+        /*let vId = (this.isGroupMember || this.groupTitle !== undefined) && this._groupId ? this._groupId : this.id;
+        return !this.howUIService.isExpanded(vId);*/
     }
     protected get itemType(): SzResolutionStepListItemType {
         return (this._data as SzResolutionStepNode).itemType ? (this._data as SzResolutionStepNode).itemType : SzResolutionStepListItemType.STEP;

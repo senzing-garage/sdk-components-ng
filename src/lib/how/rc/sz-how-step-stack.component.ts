@@ -151,10 +151,10 @@ export class SzHowStepStackComponent implements OnInit, OnDestroy {
         return retVal;
     }
 
-    isStepDisplayType(step: SzResolutionStep, typeVerb: SzResolutionStepDisplayType): boolean {
+    /*isStepDisplayType(step: SzResolutionStep, typeVerb: SzResolutionStepDisplayType): boolean {
         let stepType = SzHowUIService.getResolutionStepCardType(step);
         return stepType === typeVerb;
-    } 
+    } */
 
     constructor(
         public entityDataService: SzEntityDataService,
@@ -163,15 +163,16 @@ export class SzHowStepStackComponent implements OnInit, OnDestroy {
     ){}
 
     ngOnInit() {
-        this.howUIService.onGroupExpansionChange.pipe(
+        /*this.howUIService.onGroupExpansionChange.pipe(
             takeUntil(this.unsubscribe$)
-        ).subscribe(this.onGroupExpansionChange.bind(this));
+        ).subscribe(this.onGroupExpansionChange.bind(this));*/
     }
 
+    /*
     onGroupExpansionChange(gId: string) {
         console.log(`onGroupExpansionChange: ${gId}`, this);
         this._collapsed = !this.howUIService.isExpanded(gId);
-    }
+    }*/
 
     /**
      * unsubscribe when component is destroyed

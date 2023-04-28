@@ -10,8 +10,6 @@
         <!--<button (click)="collapseAllSteps()">collpseAll()</button>-->
         <!--<button (click)="getFinalEntityFromMemberByStepNumber(1)">getFinalEntityFromMember(#1)</button> 
         <button (click)="getFinalEntityFromMemberByStepNumber(2)">getFinalEntityFromMember(#2)</button>-->
-        <button (click)="getStepNodeById('V401992-S2')">getStepNodeById('V401992-S2')</button>
-        <button (click)="getVirtualEntityIdsForNodeDebug('V200002-S5')">getVirtualEntityIdsForNode('V200002-S5')</button>
     </div>
     <sz-how-step-node *ngFor="let finalCardStepNode of stepNodes; let rsInd=index"
                 [attr.step-index]="rsInd"
@@ -20,89 +18,4 @@
                 [data]="finalCardStepNode" 
                 [featureOrder]="orderedFeatures" 
                 [virtualEntitiesById]="virtualEntitiesById"></sz-how-step-node>
-    <!--<ul class="step-list"> 
-
-        <li class="top-level">
-            <sz-how-final-entity-card *ngFor="let vCardData of finalCardsData"
-                [data]="vCardData"
-                [featureOrder]="orderedFeatures"
-                [virtualEntitiesById]="virtualEntitiesById"></sz-how-final-entity-card>
-        </li>
-        <li *ngFor="let item of stepNodes; let rsInd=index"
-            [class.hidden]="isParentEntityHidden(item)">
-            <sz-how-step-node
-                [attr.step-index]="rsInd"
-                [attr.step-number]="item.stepNumber"
-                [attr.virtual-id]="item.resolvedVirtualEntityId"
-                [data]="item" 
-                [featureOrder]="orderedFeatures" 
-                [virtualEntitiesById]="virtualEntitiesById"></sz-how-step-node>
-        </li>
-    </ul>-->
-    <!--<ul class="step-list tree">
-        <li class="top-level">
-            <sz-how-final-entity-card *ngFor="let vCardData of finalCardsData"
-                [data]="vCardData"
-                [featureOrder]="orderedFeatures"
-                [virtualEntitiesById]="virtualEntitiesById"></sz-how-final-entity-card>
-        </li>
-        <li *ngFor="let item of stepsList; let rsInd=index"
-            [class.hidden]="isParentEntityHidden(item)"
-            [ngSwitch]="getListItemType(item)">
-            <ng-template [ngSwitchCase]="'STACK'">
-                <sz-how-step-stack
-                    [data]="cooerceToStepGroup(item)"
-                    [featureOrder]="orderedFeatures" 
-                    [virtualEntitiesById]="virtualEntitiesById"></sz-how-step-stack>
-                <div class="stack-control" 
-                    [class.expanded]="isGroupExpanded(cooerceToStepGroup(item))"
-                    [class.collapsed]="!isGroupExpanded(cooerceToStepGroup(item))"
-                    (click)="toggleGroupCollapsedState(cooerceToStepGroup(item))">
-                    <mat-icon 
-                    aria-hidden="false" 
-                    class="hide-on-expanded"
-                    fontIcon="arrow_upward"></mat-icon>
-                    <div class="center-area hide-on-expanded">
-                        <mat-icon 
-                        aria-hidden="false" 
-                        class="center-button"
-                        fontIcon="add_circle"></mat-icon>
-                    </div>
-                    <mat-icon 
-                    aria-hidden="false" 
-                    class="hide-on-expanded"
-                    fontIcon="arrow_downward"></mat-icon>
-                    <mat-icon 
-                    aria-hidden="false" 
-                    class="hide-on-collapsed arrow-down"
-                    fontIcon="arrow_right"></mat-icon>
-                    <div class="center-area hide-on-collapsed">
-                        <mat-icon 
-                        aria-hidden="false" 
-                        class="center-button minus-button"
-                        fontIcon="circle"><span>-</span></mat-icon>
-                    </div>
-                    <mat-icon 
-                    aria-hidden="false" 
-                    class="hide-on-collapsed arrow-up"
-                    fontIcon="arrow_right"></mat-icon>
-                </div>
-            </ng-template>
-            <ng-template [ngSwitchCase]="'GROUP'">
-                <sz-how-step-group
-                    [data]="cooerceToStepGroup(item)"
-                    [featureOrder]="orderedFeatures" 
-                    [virtualEntitiesById]="virtualEntitiesById"></sz-how-step-group>
-            </ng-template>
-            <ng-template [ngSwitchCase]="'STEP'">
-                <sz-how-step
-                [attr.step-index]="rsInd"
-                [attr.step-number]="cooerceToStep(item).stepNumber"
-                [attr.virtual-id]="cooerceToStep(item).resolvedVirtualEntityId"
-                [data]="cooerceToStep(item)" 
-                [featureOrder]="orderedFeatures" 
-                [virtualEntitiesById]="virtualEntitiesById"></sz-how-step>
-            </ng-template>
-        </li>
-    </ul>-->
 </div>

@@ -133,8 +133,8 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       ).subscribe((entities: SzVirtualEntity[]) => {
         if(entities && entities.forEach) {
           entities.forEach((vEnt) => {
-            this.howUIService.expandNode(vEnt.virtualEntityId);
-            //this.howUIService.expandGroup(vEnt.virtualEntityId);
+            this.howUIService.expandNode(vEnt.virtualEntityId, SzResolutionStepListItemType.FINAL);
+            this.howUIService.expandChildNodes(vEnt.virtualEntityId, SzResolutionStepListItemType.FINAL, [SzResolutionStepListItemType.STEP]);
           });
         }
       });
@@ -218,7 +218,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       }
     }
 
-    collapseAllSteps() {
+    /*collapseAllSteps() {
       this.howUIService.collapseAll();
     }
 
@@ -247,14 +247,14 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       return retVal;
     }
 
-    public getVirtualEntityIdsForNodeDebug(nodeId) {
-      let node = this.getStepNodeById(nodeId);
-      if(node && node.forEach) {
-        node.forEach((n) => {
-          let nodes = this.getVirtualEntityIdsForNode(false, n);
-        });
-      }
+    public getExpandedSteps() {
+      let retVal = this.howUIService.expandedNodes;
+      console.log(`getExpandedSteps(): `,retVal);
     }
+    public getExpandedGroups() {
+      let retVal = this.howUIService.expandedGroups;
+      console.log(`getExpandedGroups(): `,retVal);
+    }*/
 
     private getVirtualEntityIdsForNode(isNested: boolean, step: SzResolutionStepNode) {
       let retVal: string[] = [];
@@ -512,11 +512,12 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       return retVal;
     }*/
 
+    /*
     public getStepNodeById(id) {
       let _node = this.howUIService.getStepNodeById(id);
       console.log(`getStepNodeById(${id})`, _node);
       return _node;
-    }
+    }*/
 
     public get stepNodes(): Array<SzResolutionStepNode> {
       if(!this._resolutionSteps) { return undefined; }
@@ -651,9 +652,12 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
                     itemType: SzResolutionStepListItemType.STACK,
                     children: []
                   });
-  
+                  // add item to stack
                   retVal.get(_currentGroupId).children.push(_wrappedStep);
-                  this.howUIService.collapseNode(resStep.resolvedVirtualEntityId);
+                  // collapse stack itself by default, and all individual steps
+                  this.howUIService.collapseNode(_currentGroupId, SzResolutionStepListItemType.STACK, true);
+                  // step is always "ADD" type so it's always a "STEP"
+                  this.howUIService.collapseNode(resStep.resolvedVirtualEntityId, SzResolutionStepListItemType.STEP);
                   //_resolutionStepsWithGroups.push([resStep]);
                   //console.log(`${stepArrIndex} | first add operation in series`, retVal.get(_currentGroupId));
                 } else {
