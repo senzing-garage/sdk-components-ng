@@ -77,16 +77,15 @@ import { SzWhyEntitiesComparisonComponent } from './why/sz-why-entities.componen
 import { SzWhyEntityDialog } from './why/sz-why-entity.component';
 import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
 // how related
-import { SzHowEntityComponent } from './how/rc/sz-how-entity.component';
-import { SzHowFinalEntityCardComponent } from './how/rc/cards/sz-how-final-entity-card.component';
-import { SzHowNavComponent } from './how/rc/sz-how-nav.component';
-import { SzHowStepCardComponent } from './how/rc/cards/sz-how-step-card.component';
-import { SzHowStepStackComponent } from './how/rc/sz-how-step-stack.component';
+import { SzHowEntityComponent } from './how/sz-how-entity.component';
+import { SzHowFinalEntityCardComponent } from './how/cards/sz-how-final-entity-card.component';
+import { SzHowNavComponent } from './how/sz-how-nav.component';
+import { SzHowStepCardComponent } from './how/cards/sz-how-step-card.component';
+import { SzHowStepStackComponent } from './how/sz-how-step-stack.component';
 import { SzHowUIService } from './services/sz-how-ui.service';
-import { SzHowVirtualEntityCardComponent } from './how/rc/cards/sz-how-virtual-entity-card.component';
-import { SzHowVirtualEntityDialog } from './how/rc/sz-how-virtual-entity-dialog.component';
-
-import { SzHowStepNodeComponent } from './how/rc/sz-how-step-node.component';
+import { SzHowVirtualEntityCardComponent } from './how/cards/sz-how-virtual-entity-card.component';
+import { SzHowVirtualEntityDialog } from './how/sz-how-virtual-entity-dialog.component';
+import { SzHowStepNodeComponent } from './how/sz-how-step-node.component';
 
 /**
  * Sets up a default set of service parameters for use

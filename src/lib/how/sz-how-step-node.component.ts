@@ -5,11 +5,11 @@ import {
     EntityDataService as SzEntityDataService, 
     SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse, SzVirtualEntityRecord, SzDataSourceRecordSummary 
 } from '@senzing/rest-api-client-ng';
-import { SzConfigDataService } from '../../services/sz-config-data.service';
-import { SzHowFinalCardData, SzResolutionStepListItemType, SzResolutionStepNode, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../../models/data-how';
+import { SzConfigDataService } from '../services/sz-config-data.service';
+import { SzHowFinalCardData, SzResolutionStepListItemType, SzResolutionStepNode, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../models/data-how';
 import { filter, Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
-import { parseSzIdentifier } from '../../common/utils';
-import { SzHowUIService } from '../../services/sz-how-ui.service';
+import { parseSzIdentifier } from '../common/utils';
+import { SzHowUIService } from '../services/sz-how-ui.service';
 
 /**
  * Why

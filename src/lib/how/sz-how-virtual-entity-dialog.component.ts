@@ -4,8 +4,8 @@ import {
     SzEntityIdentifier, SzResolutionStep, SzVirtualEntityRecord 
 } from '@senzing/rest-api-client-ng';
 import { Subject } from 'rxjs';
-import { SzResolutionStepDisplayType, SzResolvedVirtualEntity, SzVirtualEntityRecordsByDataSource } from '../../models/data-how';
-import { SzHowUIService } from '../../services/sz-how-ui.service';
+import { SzResolutionStepDisplayType, SzResolvedVirtualEntity, SzVirtualEntityRecordsByDataSource } from '../models/data-how';
+import { SzHowUIService } from '../services/sz-how-ui.service';
 
 
 @Component({

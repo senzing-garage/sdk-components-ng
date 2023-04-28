@@ -1,15 +1,12 @@
-import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DataSource } from '@angular/cdk/collections';
+import { Component, OnInit, Input, OnDestroy, HostBinding } from '@angular/core';
 import { 
     EntityDataService as SzEntityDataService, 
-    SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse, SzVirtualEntityRecord, SzDataSourceRecordSummary, SzResolvedEntity 
+    SzResolutionStep 
 } from '@senzing/rest-api-client-ng';
-import { SzConfigDataService } from '../../services/sz-config-data.service';
-import { SzResolutionStepDisplayType, SzResolutionStepGroup, SzResolutionStepListItemType, SzResolutionStepNode, SzResolvedVirtualEntity} from '../../models/data-how';
-import { Subject, takeUntil } from 'rxjs';
-import { parseSzIdentifier } from '../../common/utils';
-import { SzHowUIService } from '../../services/sz-how-ui.service';
+import { SzConfigDataService } from '../services/sz-config-data.service';
+import { SzResolutionStepDisplayType, SzResolutionStepListItemType, SzResolutionStepNode, SzResolvedVirtualEntity} from '../models/data-how';
+import { Subject } from 'rxjs';
+import { SzHowUIService } from '../services/sz-how-ui.service';
 
 /**
  * How Step Stack (multiple steps represented as a collapsible group)

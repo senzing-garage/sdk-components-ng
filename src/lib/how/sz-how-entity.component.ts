@@ -4,19 +4,19 @@ import {
     EntityDataService as SzEntityDataService, 
     SzEntityIdentifier, SzFeatureMode, SzHowEntityResponse, SzHowEntityResult, SzRecordId, SzRecordIdentifier, SzRecordIdentifiers, SzResolutionStep, SzResolvedEntity, SzVirtualEntity, SzVirtualEntityRecord, SzVirtualEntityResponse 
 } from '@senzing/rest-api-client-ng';
-import { SzConfigDataService } from '../../services/sz-config-data.service';
-import { SzHowUIService } from '../../services/sz-how-ui.service';
+import { SzConfigDataService } from '../services/sz-config-data.service';
+import { SzHowUIService } from '../services/sz-how-ui.service';
 import { 
   SzHowFinalCardData, 
   SzVirtualEntityRecordsClickEvent, 
   SzResolvedVirtualEntity, 
   SzResolutionStepGroup,
   SzResolutionStepDisplayType 
-} from '../../models/data-how';
+} from '../models/data-how';
 import { Observable, Subject, take, takeUntil, zip, map } from 'rxjs';
-import { parseBool } from '../../common/utils';
+import { parseBool } from '../common/utils';
 import { v4 as uuidv4} from 'uuid';
-import { SzResolutionStepListItemType, SzResolutionStepNode } from '../../models/data-how';
+import { SzResolutionStepListItemType, SzResolutionStepNode } from '../models/data-how';
 
 
 /**

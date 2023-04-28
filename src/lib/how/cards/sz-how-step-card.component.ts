@@ -1,16 +1,12 @@
-import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, ElementRef, HostBinding } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DataSource } from '@angular/cdk/collections';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { 
     EntityDataService as SzEntityDataService, 
-    SzFeatureScore, SzResolutionStep, SzVirtualEntity, SzVirtualEntityRecord, SzDataSourceRecordSummary, SzResponseWithRawData 
+    SzResolutionStep 
 } from '@senzing/rest-api-client-ng';
-import { SzConfigDataService } from '../../../services/sz-config-data.service';
-import { SzHowFinalCardData, SzResolutionStepListItemType, SzResolutionStepDisplayType, SzResolutionStepNode, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../../../models/data-how';
-import {  Subject } from 'rxjs';
-import { parseSzIdentifier } from '../../../common/utils';
-//import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../../services/sz-how-ui-coordinator.service';
-import { SzHowUIService } from '../../../services/sz-how-ui.service';
+import { SzConfigDataService } from '../../services/sz-config-data.service';
+import { SzResolutionStepDisplayType, SzResolutionStepNode, } from '../../models/data-how';
+import { SzHowUIService } from '../../services/sz-how-ui.service';
 import { SzHowStepCardBase } from './sz-how-card-base.component';
 
 /**

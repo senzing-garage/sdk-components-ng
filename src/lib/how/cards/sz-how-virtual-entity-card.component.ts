@@ -2,18 +2,17 @@ import { Component, OnInit, Input, ViewChild, HostBinding, EventEmitter, Output 
 import { MatAccordion } from '@angular/material/expansion';
 import { 
     SzEntityFeature, SzEntityIdentifier, SzResolvedEntity, 
-    SzVirtualEntity, SzVirtualEntityRecord, EntityDataService as SzEntityDataService, SzRecordIdentifiers, SzRecordIdentifier, SzVirtualEntityResponse, SzFeatureMode, SzResolutionStep, SzFeatureScore } from '@senzing/rest-api-client-ng';
-import { take, takeUntil, tap, map, BehaviorSubject, Subject } from 'rxjs';
-import { SzSearchService } from '../../../services/sz-search.service';
-import { friendlyFeaturesName } from '../../../models/data-features';
-//import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../../services/sz-how-ui-coordinator.service';
+    SzVirtualEntityRecord, EntityDataService as SzEntityDataService, SzResolutionStep } from '@senzing/rest-api-client-ng';
+import { Subject } from 'rxjs';
+import { SzSearchService } from '../../services/sz-search.service';
+import { friendlyFeaturesName } from '../../models/data-features';
 import { 
     SzResolutionStepDisplayType, 
     SzResolvedVirtualEntity, 
     SzVirtualEntityRecordsClickEvent ,
     SzVirtualEntityRecordsByDataSource
-} from '../../../models/data-how';
-import { SzHowUIService } from '../../../services/sz-how-ui.service';
+} from '../../models/data-how';
+import { SzHowUIService } from '../../services/sz-how-ui.service';
 
 /**
  * Display the "Virtual Entity" information for how resolution step

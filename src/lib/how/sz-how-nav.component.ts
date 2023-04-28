@@ -5,12 +5,12 @@ import {
     EntityDataService as SzEntityDataService, 
     SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzConfigResponse, SzEntityIdentifier, SzVirtualEntityRecord, SzFeatureScore 
 } from '@senzing/rest-api-client-ng';
-import { SzConfigDataService } from '../../services/sz-config-data.service';
-import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolutionStepListItem, SzResolvedVirtualEntity } from '../../models/data-how';
-import { parseBool } from '../../common/utils';
+import { SzConfigDataService } from '../services/sz-config-data.service';
+import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolutionStepListItem, SzResolvedVirtualEntity } from '../models/data-how';
+import { parseBool } from '../common/utils';
 import { filter, Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
-import { parseSzIdentifier, isNotNull } from '../../common/utils';
-import { SzHowUIService } from '../../services/sz-how-ui.service';
+import { parseSzIdentifier, isNotNull } from '../common/utils';
+import { SzHowUIService } from '../services/sz-how-ui.service';
 
 import { MatSelect } from '@angular/material/select';
 
