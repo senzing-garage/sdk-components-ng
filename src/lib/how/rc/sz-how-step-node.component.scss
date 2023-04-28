@@ -20,7 +20,7 @@
             display: none;
         }
     }
-    sz-how-rc-step {
+    sz-how-step {
         //margin-right: 20px;
         margin-top: 10px;
         flex-grow: 10;
@@ -50,8 +50,8 @@
 
     &.has-child-stacks {
         padding-right: 0;
-        sz-how-rc-final-entity-card,
-        sz-how-rc-step-node {
+        sz-how-final-entity-card,
+        sz-how-step-node {
             margin-right: 24px;
             &.is-stack {
                 margin-right: 4px;
@@ -78,7 +78,7 @@
                 display: none;
             }
 
-            sz-how-rc-final-entity-card {
+            sz-how-final-entity-card {
                 flex-grow: 5;
             }
         }
@@ -91,7 +91,7 @@
         &.hidden {
             display: none;
         }
-        sz-how-rc-step-node {
+        sz-how-step-node {
             flex-grow: 5;
         }
     }

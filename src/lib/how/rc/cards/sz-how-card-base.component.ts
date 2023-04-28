@@ -1,32 +1,29 @@
-import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, ElementRef, HostBinding } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter, ElementRef, HostBinding } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DataSource } from '@angular/cdk/collections';
 import { 
     EntityDataService as SzEntityDataService, 
     SzFeatureScore, SzResolutionStep, SzVirtualEntity, SzVirtualEntityRecord, SzDataSourceRecordSummary, SzResponseWithRawData 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../../services/sz-config-data.service';
-import { SzHowFinalCardData, SzResolutionStepListItemType, SzResolutionStepDisplayType, SzResolutionStepNode, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../../../models/data-how';
-import {  Subject } from 'rxjs';
-import { parseSzIdentifier } from '../../../common/utils';
-//import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../../services/sz-how-ui-coordinator.service';
+import { SzResolutionStepListItemType, SzResolutionStepDisplayType, SzResolutionStepNode, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../../../models/data-how';
+import { Subject } from 'rxjs';
 import { SzHowUIService } from '../../../services/sz-how-ui.service';
-import { SzHowRCVirtualEntityDialog } from '../sz-how-rc-virtual-entity-dialog.component';
+import { SzHowVirtualEntityDialog } from '../sz-how-virtual-entity-dialog.component';
 
 /**
  * Why
  *
  * @example 
  * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-how-rc-step entityId="5"&gt;&lt;/sz-how-rc-step&gt;<br/><br/>
+ * &lt;sz-how-step entityId="5"&gt;&lt;/sz-how-step&gt;<br/><br/>
  *
  * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-how-rc-step entityId="5"&gt;&lt;/sz-how-rc-step&gt;<br/>
+ * &lt;sz-how-step entityId="5"&gt;&lt;/sz-how-step&gt;<br/>
 */
 @Component({
-    selector: 'sz-how-rc-step-card-base',
+    selector: 'sz-how-step-card-base',
     template: `<p>Step Card Base</p>`,
-    styleUrls: ['./sz-how-rc-card-base.component.scss']
+    styleUrls: ['./sz-how-card-base.component.scss']
 })
 export class SzHowStepCardBase implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
@@ -554,7 +551,7 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
       //return;
       //this._virtualEntityInfoLinkClick.next(evt);
       let targetEle = new ElementRef(evt.target);
-      const dialogRef = this.dialog.open(SzHowRCVirtualEntityDialog, {
+      const dialogRef = this.dialog.open(SzHowVirtualEntityDialog, {
           panelClass: 'how-virtual-entity-dialog-panel',
           hasBackdrop: false,
           data: {

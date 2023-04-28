@@ -6,7 +6,7 @@
 <div class="stack-step-cards">
     <div class="stack-step-card-row" *ngFor="let step of data.children; let groupInd=index;">
         <div class="tree-node-leaf-line"></div>
-        <sz-how-rc-step-card 
+        <sz-how-step-card 
         class="stack-card"
         [attr.step-index]="groupInd"
         [attr.step-number]="step.stepNumber"
@@ -16,7 +16,7 @@
         [groupIndex]="groupInd"
         [siblings]="siblingsOf(step)"
         [featureOrder]="featureOrder" 
-        [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step-card>
+        [virtualEntitiesById]="virtualEntitiesById"></sz-how-step-card>
     </div>
 </div>
 <div class="stack-control" 

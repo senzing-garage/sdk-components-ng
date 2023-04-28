@@ -16,17 +16,17 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
  *
  * @example 
  * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-how-rc-step entityId="5"&gt;&lt;/sz-how-rc-step&gt;<br/><br/>
+ * &lt;sz-how-step entityId="5"&gt;&lt;/sz-how-step&gt;<br/><br/>
  *
  * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-how-rc-step entityId="5"&gt;&lt;/sz-how-rc-step&gt;<br/>
+ * &lt;sz-how-step entityId="5"&gt;&lt;/sz-how-step&gt;<br/>
 */
 @Component({
-    selector: 'sz-how-rc-step-node',
-    templateUrl: './sz-how-rc-step-node.component.html',
-    styleUrls: ['./sz-how-rc-step-node.component.scss']
+    selector: 'sz-how-step-node',
+    templateUrl: './sz-how-step-node.component.html',
+    styleUrls: ['./sz-how-step-node.component.scss']
 })
-export class SzHowRCStepNodeComponent implements OnInit, OnDestroy {
+export class SzHowStepNodeComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
     private _data: SzResolutionStepNode | SzResolutionStep;

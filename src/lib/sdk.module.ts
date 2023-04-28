@@ -77,25 +77,16 @@ import { SzWhyEntitiesComparisonComponent } from './why/sz-why-entities.componen
 import { SzWhyEntityDialog } from './why/sz-why-entity.component';
 import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
 // how related
-import { SzHowECEntityComponent, SzHowECEntityDialog } from './how/ec/sz-how-ec-entity.component';
-import { SzHowECStepComponent } from './how/ec/sz-how-ec-step.component';
-import { SzHowECCardBaseComponent } from './how/ec/cards/sz-how-ec-entity-card-base.component';
-import { SzHowECFinalCardComponent } from './how/ec/cards/sz-how-ec-entity-card-final.component';
-import { SzHowECVirtualCardComponent } from './how/ec/cards/sz-how-ec-virtual-card.component';
-import { SzHowUICoordinatorService } from './services/sz-how-ui-coordinator.service';
-import { SzHowECToolbarComponent } from './how/ec/sz-how-ec-toolbar.component';
-import { SzHowECSourceRecordsComponent } from './how/ec/sz-dialog-how-ec-source-records.component';
-
-import { SzHowRCEntityComponent } from './how/rc/sz-how-rc-entity.component';
-import { SzHowRCFinalEntityCardComponent } from './how/rc/cards/sz-how-rc-final-entity-card.component';
-import { SzHowRCNavComponent } from './how/rc/sz-how-rc-nav.component';
-import { SzHowRCStepCardComponent } from './how/rc/cards/sz-how-rc-step-card.component';
-import { SzHowRCStepStackComponent } from './how/rc/sz-how-rc-step-stack.component';
+import { SzHowEntityComponent } from './how/rc/sz-how-entity.component';
+import { SzHowFinalEntityCardComponent } from './how/rc/cards/sz-how-final-entity-card.component';
+import { SzHowNavComponent } from './how/rc/sz-how-nav.component';
+import { SzHowStepCardComponent } from './how/rc/cards/sz-how-step-card.component';
+import { SzHowStepStackComponent } from './how/rc/sz-how-step-stack.component';
 import { SzHowUIService } from './services/sz-how-ui.service';
-import { SzHowRCVirtualEntityCardComponent } from './how/rc/cards/sz-how-rc-virtual-entity-card.component';
-import { SzHowRCVirtualEntityDialog } from './how/rc/sz-how-rc-virtual-entity-dialog.component';
+import { SzHowVirtualEntityCardComponent } from './how/rc/cards/sz-how-virtual-entity-card.component';
+import { SzHowVirtualEntityDialog } from './how/rc/sz-how-virtual-entity-dialog.component';
 
-import { SzHowRCStepNodeComponent } from './how/rc/sz-how-rc-step-node.component';
+import { SzHowStepNodeComponent } from './how/rc/sz-how-step-node.component';
 
 /**
  * Sets up a default set of service parameters for use
@@ -145,22 +136,14 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzGraphControlComponent,
         SzGraphComponent,
         SzGraphFilterComponent,
-        SzHowECCardBaseComponent,
-        SzHowECEntityComponent,
-        SzHowECEntityDialog,
-        SzHowECFinalCardComponent,
-        SzHowECSourceRecordsComponent,
-        SzHowECStepComponent,
-        SzHowECToolbarComponent,
-        SzHowECVirtualCardComponent,
-        SzHowRCEntityComponent,
-        SzHowRCFinalEntityCardComponent,
-        SzHowRCNavComponent,
-        SzHowRCStepCardComponent,
-        SzHowRCStepNodeComponent,
-        SzHowRCStepStackComponent,
-        SzHowRCVirtualEntityCardComponent,
-        SzHowRCVirtualEntityDialog,
+        SzHowEntityComponent,
+        SzHowFinalEntityCardComponent,
+        SzHowNavComponent,
+        SzHowStepCardComponent,
+        SzHowStepNodeComponent,
+        SzHowStepStackComponent,
+        SzHowVirtualEntityCardComponent,
+        SzHowVirtualEntityDialog,
         SzMultiSelectButtonComponent,
         SzPoweredByComponent,
         SzPreferencesComponent,
@@ -206,17 +189,12 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzGraphComponent,
         SzGraphControlComponent,
         SzGraphFilterComponent,
-        SzHowECEntityComponent,
-        SzHowECEntityDialog,
-        SzHowECSourceRecordsComponent,
-        SzHowECToolbarComponent,
-        SzHowECVirtualCardComponent,
-        SzHowRCEntityComponent,
-        SzHowRCNavComponent,
-        SzHowRCStepNodeComponent,
-        SzHowRCStepStackComponent,
-        SzHowRCVirtualEntityCardComponent,
-        SzHowRCVirtualEntityDialog,
+        SzHowEntityComponent,
+        SzHowNavComponent,
+        SzHowStepNodeComponent,
+        SzHowStepStackComponent,
+        SzHowVirtualEntityCardComponent,
+        SzHowVirtualEntityDialog,
         SzPoweredByComponent,
         SzPreferencesComponent,
         SzRelationshipNetworkComponent,
@@ -243,7 +221,6 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzCSSClassService,
         SzDataSourcesService,
         SzFoliosService,
-        SzHowUICoordinatorService,
         SzHowUIService,
         SzPrefsService,
         SzSearchService,

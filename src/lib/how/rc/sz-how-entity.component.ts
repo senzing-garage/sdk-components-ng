@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding, ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DataSource } from '@angular/cdk/collections';
 import { 
     EntityDataService as SzEntityDataService, 
     SzEntityIdentifier, SzFeatureMode, SzHowEntityResponse, SzHowEntityResult, SzRecordId, SzRecordIdentifier, SzRecordIdentifiers, SzResolutionStep, SzResolvedEntity, SzVirtualEntity, SzVirtualEntityRecord, SzVirtualEntityResponse 
@@ -14,11 +13,10 @@ import {
   SzResolutionStepGroup,
   SzResolutionStepDisplayType 
 } from '../../models/data-how';
-import { Observable, ReplaySubject, Subject, take, takeUntil, zip, map } from 'rxjs';
-import { parseBool, parseSzIdentifier } from '../../common/utils';
+import { Observable, Subject, take, takeUntil, zip, map } from 'rxjs';
+import { parseBool } from '../../common/utils';
 import { v4 as uuidv4} from 'uuid';
-import { SzResolutionStepListItem, SzResolutionStepListItemType, SzResolutionStepNode } from '../../models/data-how';
-import { SzHowRCVirtualEntityDialog } from './sz-how-rc-virtual-entity-dialog.component';
+import { SzResolutionStepListItemType, SzResolutionStepNode } from '../../models/data-how';
 
 
 /**
@@ -32,11 +30,11 @@ import { SzHowRCVirtualEntityDialog } from './sz-how-rc-virtual-entity-dialog.co
  * &lt;sz-wc-how-entity entityId="5"&gt;&lt;/sz-wc-how-entity&gt;<br/>
 */
 @Component({
-    selector: 'sz-how-rc-entity',
-    templateUrl: './sz-how-rc-entity.component.html',
-    styleUrls: ['./sz-how-rc-entity.component.scss']
+    selector: 'sz-how-entity',
+    templateUrl: './sz-how-entity.component.html',
+    styleUrls: ['./sz-how-entity.component.scss']
 })
-export class SzHowRCEntityComponent implements OnInit, OnDestroy {
+export class SzHowEntityComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
 

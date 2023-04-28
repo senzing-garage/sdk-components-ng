@@ -19,11 +19,11 @@ import { SzHowUIService } from '../../../services/sz-how-ui.service';
  * Display the "Virtual Entity" information for how resolution step
 */
 @Component({
-    selector: 'sz-how-rc-virtual-entity-card',
-    templateUrl: './sz-how-rc-virtual-entity-card.component.html',
-    styleUrls: ['./sz-how-rc-virtual-entity-card.component.scss']
+    selector: 'sz-how-virtual-entity-card',
+    templateUrl: './sz-how-virtual-entity-card.component.html',
+    styleUrls: ['./sz-how-virtual-entity-card.component.scss']
 })
-export class SzHowRCVirtualEntityCardComponent implements OnInit {
+export class SzHowVirtualEntityCardComponent implements OnInit {
 
     public stepsPanelOpenState = false;
     private _data: SzResolvedVirtualEntity;
@@ -307,7 +307,7 @@ export class SzHowRCVirtualEntityCardComponent implements OnInit {
 
     public getOrderedFeaturesDebug() {
         let _of = this.getOrderedFeatures(this._data);
-        console.log(`SzHowRCVirtualEntityCardComponent.getOrderedFeaturesDebug() `, _of);
+        console.log(`SzHowVirtualEntityCardComponent.getOrderedFeaturesDebug() `, _of);
     }
 
     constructor(

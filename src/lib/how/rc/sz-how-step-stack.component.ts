@@ -16,17 +16,17 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
  *
  * @example 
  * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-how-rc-step-stack&gt;&lt;/sz-how-rc-step-stack&gt;<br/><br/>
+ * &lt;sz-how-step-stack&gt;&lt;/sz-how-step-stack&gt;<br/><br/>
  *
  * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-how-rc-step-stack&gt;&lt;/sz-how-rc-step-stack&gt;<br/>
+ * &lt;sz-how-step-stack&gt;&lt;/sz-how-step-stack&gt;<br/>
 */
 @Component({
-    selector: 'sz-how-rc-step-stack',
-    templateUrl: './sz-how-rc-step-stack.component.html',
-    styleUrls: ['./sz-how-rc-step-stack.component.scss']
+    selector: 'sz-how-step-stack',
+    templateUrl: './sz-how-step-stack.component.html',
+    styleUrls: ['./sz-how-step-stack.component.scss']
 })
-export class SzHowRCStepStackComponent implements OnInit, OnDestroy {
+export class SzHowStepStackComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
     private _stepMap: {[key: string]: SzResolutionStep};

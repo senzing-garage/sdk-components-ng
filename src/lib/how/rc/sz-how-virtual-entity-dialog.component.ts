@@ -10,10 +10,10 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
 
 @Component({
     selector: 'sz-dialog-how-rc-virtual-entity-dialog',
-    templateUrl: 'sz-how-rc-virtual-entity-dialog.component.html',
-    styleUrls: ['sz-how-rc-virtual-entity-dialog.component.scss']
+    templateUrl: 'sz-how-virtual-entity-dialog.component.html',
+    styleUrls: ['sz-how-virtual-entity-dialog.component.scss']
   })
-  export class SzHowRCVirtualEntityDialog {
+  export class SzHowVirtualEntityDialog {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
     
@@ -39,7 +39,7 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
     @HostBinding('class.maximized') get maximized() { return this._isMaximized; }
     private set maximized(value: boolean) { this._isMaximized = value; }
   
-    //@ViewChild('howEntityTag') howEntityTag: SzHowRCEntityComponent;
+    //@ViewChild('howEntityTag') howEntityTag: SzHowEntityComponent;
   
     public get title(): string {
       let retVal = `Virtual Entity ${this.id}`;

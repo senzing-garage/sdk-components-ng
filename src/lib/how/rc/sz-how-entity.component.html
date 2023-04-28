@@ -1,8 +1,8 @@
-<sz-how-rc-nav
+<sz-how-nav
     [stepsByVirtualId]="resolutionStepsByVirtualId"
     [virtualEntitiesById]="virtualEntitiesById"
     *ngIf="showNavigation"
-></sz-how-rc-nav>
+></sz-how-nav>
 <div class="main">
     <div class="debug-box">
         <h3>debug</h3>
@@ -13,47 +13,47 @@
         <button (click)="getStepNodeById('V401992-S2')">getStepNodeById('V401992-S2')</button>
         <button (click)="getVirtualEntityIdsForNodeDebug('V200002-S5')">getVirtualEntityIdsForNode('V200002-S5')</button>
     </div>
-    <sz-how-rc-step-node *ngFor="let finalCardStepNode of stepNodes; let rsInd=index"
+    <sz-how-step-node *ngFor="let finalCardStepNode of stepNodes; let rsInd=index"
                 [attr.step-index]="rsInd"
                 [attr.step-number]="finalCardStepNode.stepNumber"
                 [attr.virtual-id]="finalCardStepNode.resolvedVirtualEntityId"
                 [data]="finalCardStepNode" 
                 [featureOrder]="orderedFeatures" 
-                [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step-node>
+                [virtualEntitiesById]="virtualEntitiesById"></sz-how-step-node>
     <!--<ul class="step-list"> 
 
         <li class="top-level">
-            <sz-how-rc-final-entity-card *ngFor="let vCardData of finalCardsData"
+            <sz-how-final-entity-card *ngFor="let vCardData of finalCardsData"
                 [data]="vCardData"
                 [featureOrder]="orderedFeatures"
-                [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-final-entity-card>
+                [virtualEntitiesById]="virtualEntitiesById"></sz-how-final-entity-card>
         </li>
         <li *ngFor="let item of stepNodes; let rsInd=index"
             [class.hidden]="isParentEntityHidden(item)">
-            <sz-how-rc-step-node
+            <sz-how-step-node
                 [attr.step-index]="rsInd"
                 [attr.step-number]="item.stepNumber"
                 [attr.virtual-id]="item.resolvedVirtualEntityId"
                 [data]="item" 
                 [featureOrder]="orderedFeatures" 
-                [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step-node>
+                [virtualEntitiesById]="virtualEntitiesById"></sz-how-step-node>
         </li>
     </ul>-->
     <!--<ul class="step-list tree">
         <li class="top-level">
-            <sz-how-rc-final-entity-card *ngFor="let vCardData of finalCardsData"
+            <sz-how-final-entity-card *ngFor="let vCardData of finalCardsData"
                 [data]="vCardData"
                 [featureOrder]="orderedFeatures"
-                [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-final-entity-card>
+                [virtualEntitiesById]="virtualEntitiesById"></sz-how-final-entity-card>
         </li>
         <li *ngFor="let item of stepsList; let rsInd=index"
             [class.hidden]="isParentEntityHidden(item)"
             [ngSwitch]="getListItemType(item)">
             <ng-template [ngSwitchCase]="'STACK'">
-                <sz-how-rc-step-stack
+                <sz-how-step-stack
                     [data]="cooerceToStepGroup(item)"
                     [featureOrder]="orderedFeatures" 
-                    [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step-stack>
+                    [virtualEntitiesById]="virtualEntitiesById"></sz-how-step-stack>
                 <div class="stack-control" 
                     [class.expanded]="isGroupExpanded(cooerceToStepGroup(item))"
                     [class.collapsed]="!isGroupExpanded(cooerceToStepGroup(item))"
@@ -89,19 +89,19 @@
                 </div>
             </ng-template>
             <ng-template [ngSwitchCase]="'GROUP'">
-                <sz-how-rc-step-group
+                <sz-how-step-group
                     [data]="cooerceToStepGroup(item)"
                     [featureOrder]="orderedFeatures" 
-                    [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step-group>
+                    [virtualEntitiesById]="virtualEntitiesById"></sz-how-step-group>
             </ng-template>
             <ng-template [ngSwitchCase]="'STEP'">
-                <sz-how-rc-step
+                <sz-how-step
                 [attr.step-index]="rsInd"
                 [attr.step-number]="cooerceToStep(item).stepNumber"
                 [attr.virtual-id]="cooerceToStep(item).resolvedVirtualEntityId"
                 [data]="cooerceToStep(item)" 
                 [featureOrder]="orderedFeatures" 
-                [virtualEntitiesById]="virtualEntitiesById"></sz-how-rc-step>
+                [virtualEntitiesById]="virtualEntitiesById"></sz-how-step>
             </ng-template>
         </li>
     </ul>-->

@@ -7,7 +7,7 @@ import { SzConfigDataService } from '../../../services/sz-config-data.service';
 import { SzResolutionStepNode, SzResolvedVirtualEntity } from '../../../models/data-how';
 import { Subject} from 'rxjs';
 import { SzHowUIService } from '../../../services/sz-how-ui.service';
-import { SzHowStepCardBase } from './sz-how-rc-card-base.component';
+import { SzHowStepCardBase } from './sz-how-card-base.component';
 import { MatDialog } from '@angular/material/dialog';
 
 /**
@@ -15,15 +15,15 @@ import { MatDialog } from '@angular/material/dialog';
  *
  * @example 
  * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-how-rc-final-entity-card [data]="szVirtualEntityInstance"&gt;&lt;/sz-how-rc-final-entity-card&gt;<br/><br/>
+ * &lt;sz-how-final-entity-card [data]="szVirtualEntityInstance"&gt;&lt;/sz-how-final-entity-card&gt;<br/><br/>
  *
 */
 @Component({
-    selector: 'sz-how-rc-final-entity-card',
-    templateUrl: './sz-how-rc-final-entity-card.component.html',
-    styleUrls: ['./sz-how-rc-card-base.component.scss']
+    selector: 'sz-how-final-entity-card',
+    templateUrl: './sz-how-final-entity-card.component.html',
+    styleUrls: ['./sz-how-card-base.component.scss']
 })
-export class SzHowRCFinalEntityCardComponent extends SzHowStepCardBase implements OnInit, OnDestroy  {
+export class SzHowFinalEntityCardComponent extends SzHowStepCardBase implements OnInit, OnDestroy  {
 
     @HostBinding('class.collapsed') override get cssHiddenClass(): boolean {
         return !this.howUIService.isGroupExpanded(this.id);

@@ -11,25 +11,24 @@ import {  Subject } from 'rxjs';
 import { parseSzIdentifier } from '../../../common/utils';
 //import { SzHowResolutionUIStep, SzHowStepUIStateChangeEvent, SzHowUICoordinatorService } from '../../../services/sz-how-ui-coordinator.service';
 import { SzHowUIService } from '../../../services/sz-how-ui.service';
-import { SzHowRCVirtualEntityDialog } from '../sz-how-rc-virtual-entity-dialog.component';
-import { SzHowStepCardBase } from './sz-how-rc-card-base.component';
+import { SzHowStepCardBase } from './sz-how-card-base.component';
 
 /**
  * Why
  *
  * @example 
  * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-how-rc-step-card [data]="data" [featureOrder]="featureOrder" [virtualEntitiesById]="virtualEntitiesById"&gt;&lt;/sz-how-rc-step-card&gt;<br/><br/>
+ * &lt;sz-how-step-card [data]="data" [featureOrder]="featureOrder" [virtualEntitiesById]="virtualEntitiesById"&gt;&lt;/sz-how-step-card&gt;<br/><br/>
  *
  * &lt;!-- (WC) --&gt;<br/>
  * &lt;sz-wc-how-rc-step-card data="data" featureOrder="featureOrder" virtualEntitiesById="virtualEntitiesById"&gt;&lt;/sz-wc-how-rc-step-card&gt;<br/>
 */
 @Component({
-    selector: 'sz-how-rc-step-card',
-    templateUrl: './sz-how-rc-step-card.component.html',
-    styleUrls: ['./sz-how-rc-card-base.component.scss']
+    selector: 'sz-how-step-card',
+    templateUrl: './sz-how-step-card.component.html',
+    styleUrls: ['./sz-how-card-base.component.scss']
 })
-export class SzHowRCStepCardComponent extends SzHowStepCardBase implements OnInit, OnDestroy {
+export class SzHowStepCardComponent extends SzHowStepCardBase implements OnInit, OnDestroy {
     
     override get groupTitle(): string {
         let retVal;

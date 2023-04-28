@@ -14,7 +14,7 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
 
 import { MatSelect } from '@angular/material/select';
 
-export interface SzHowRCNavComponentParameterCounts {
+export interface SzHowNavComponentParameterCounts {
     'CREATE': number,
     'ADD': number,
     'MERGE': number,
@@ -24,11 +24,11 @@ export interface SzHowRCNavComponentParameterCounts {
 }
 
 @Component({
-    selector: 'sz-how-rc-nav',
-    templateUrl: './sz-how-rc-nav.component.html',
-    styleUrls: ['./sz-how-rc-nav.component.scss']
+    selector: 'sz-how-nav',
+    templateUrl: './sz-how-nav.component.html',
+    styleUrls: ['./sz-how-nav.component.scss']
 })
-export class SzHowRCNavComponent implements OnInit, OnDestroy {
+export class SzHowNavComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
     /** 
@@ -373,7 +373,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
      * map of counts for specific filtering criteria to show user how many items will be 
      * selected when a filter is applied
      */
-    private _parameterCounts: SzHowRCNavComponentParameterCounts = {
+    private _parameterCounts: SzHowNavComponentParameterCounts = {
         'CREATE': 0,
         'ADD': 0,
         'MERGE': 0,
@@ -384,7 +384,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
     /** map of counts for specific filtering criteria to show user how many items will be 
      * selected when a filter is applied
      */
-    public get parameterCounts(): SzHowRCNavComponentParameterCounts {
+    public get parameterCounts(): SzHowNavComponentParameterCounts {
         return this._parameterCounts;
     }
     /** gets the number of steps for a particular filter from the pre-generated parameterCounts map */
@@ -444,7 +444,7 @@ export class SzHowRCNavComponent implements OnInit, OnDestroy {
             }
         });
 
-        console.log('SzHowRCNavComponent.getParameterCounts: ', retVal, this.listSteps);
+        console.log('SzHowNavComponent.getParameterCounts: ', retVal, this.listSteps);
 
         return retVal;
     }

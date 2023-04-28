@@ -14,12 +14,12 @@
 </div>
 <div #howContainer class="sz-entity-detail-section-collapsible-card">
     <!-- start entity how -->
-    <sz-how-rc-entity
+    <sz-how-entity
     *ngIf="howContentIsReasonable"
     #howGraph
     [entityId]="entityId"
     showNavigation="false"
     (dataChanged)="onDataChange($event)"
-    ></sz-how-rc-entity>
+    ></sz-how-entity>
     <!-- end entity how -->
 </div>
