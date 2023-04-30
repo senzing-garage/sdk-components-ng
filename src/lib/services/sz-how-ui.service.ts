@@ -286,7 +286,7 @@ export class SzHowUIService {
       }
       return retVal;
     }
-    private getRootNodeContainingNode(childNodeId: string): SzResolutionStepNode {
+    public getRootNodeContainingNode(childNodeId: string): SzResolutionStepNode {
       if(this._stepNodes) {
         return this._stepNodes.find((_rn) => {
           return _rn.virtualEntityIds.includes(childNodeId);
@@ -326,7 +326,7 @@ export class SzHowUIService {
       }
       return retVal;
     }
-    private getParentContainingNode(childNodeId: string): SzResolutionStepNode {
+    public getParentContainingNode(childNodeId: string): SzResolutionStepNode {
       let _retValArr = this.getParentsContainingNode(childNodeId);
       if(_retValArr) {
         if(_retValArr.length > 1) {
@@ -439,6 +439,29 @@ export class SzHowUIService {
         if(retVal && retVal.flat){ retVal = retVal.flat(); }
       }
       return retVal = Array.from(new Set(retVal)); // de-dupe any values
+    }
+    public static setVirtualEntityIdsForNode(isNested: boolean, step: SzResolutionStepNode) {
+      let retVal: string[] = [];
+      if(isNested) {
+        // this is already a sub-child make sure id is in return value
+        retVal.push(step.id ? step.id : step.resolvedVirtualEntityId);
+      }
+      if(step && step.children && step.children.map) {
+        retVal = retVal.concat(
+          step.children.map(this.setVirtualEntityIdsForNode.bind(this, true))
+        );
+        if(retVal && retVal.flat){ retVal = retVal.flat(); }
+        step.virtualEntityIds = retVal;
+      }
+      retVal = Array.from(new Set(retVal)); // de-dupe any values;
+      if(isNested) {
+        console.log(`setVirtualEntityIdsForNode(${step.id})`, retVal);
+      } else {
+        console.log(`\t\tsetVirtualEntityIdsForNode(${step.id})`, retVal);
+      }
+      step.virtualEntityIds = retVal;
+
+      return retVal;
     }
 
     public unPinStep(vId: string) {
@@ -567,6 +590,9 @@ export class SzHowUIService {
               console.log(`\tremoved children from parent: `, newChildren, parentNode);
             }
             // update virtualEntityIds for parent
+            //parentNode.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(parentNode.itemType !== SzResolutionStepListItemType.FINAL, parentNode);
+            SzHowUIService.setVirtualEntityIdsForNode(parentNode.itemType !== SzResolutionStepListItemType.FINAL, parentNode);
+            console.log(`\tupdated virtualEntityIds for parent: ${parentNode.virtualEntityIds}`);
           }
         }
       }
@@ -1110,7 +1136,7 @@ export class SzHowUIService {
       }
     }
 
-    public stepCanBeUnPinned(vId: string): boolean {
+    public stepCanBeUnPinned(vId: string, debug?: boolean): boolean {
       let retVal = false;
       let parentNode = this.getParentContainingNode(vId);
       if(parentNode && parentNode.children) {
@@ -1123,8 +1149,11 @@ export class SzHowUIService {
         if(itemNode) {
           // located node
           itemsBeforeNode     = itemsBeforeNode.concat(parentNode.children.slice(0, indexInParent));
-          if((indexInParent+1) < parentNode.children.length) { 
-            itemsAfterNode    = itemsAfterNode.concat(parentNode.children.slice(indexInParent+1)); 
+          if((indexInParent + 1) < parentNode.children.length) { 
+            itemsAfterNode    = itemsAfterNode.concat(parentNode.children.slice(indexInParent + 1)); 
+          }
+          if(debug) {
+            console.log(`stepCanBeUnPinned: `, itemsBeforeNode, itemsAfterNode);
           }
           // if either the item before or after is a step card
           // OR
@@ -1137,14 +1166,18 @@ export class SzHowUIService {
               (itemsBeforeNode[(itemsBeforeNode.length - 1)] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STEP || 
               (itemsBeforeNode[(itemsBeforeNode.length - 1)] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STACK) ? true : false;
           }
-          if(!retVal && itemsAfterNode && itemsAfterNode.length > 0 && itemsAfterNode[(itemsAfterNode.length - 1)]) {
+          if(!retVal && itemsAfterNode && itemsAfterNode.length > 0 && itemsAfterNode[0]) {
             // is next item a step or stack group AND
             // not an interim or merge step
             retVal = (
-              (itemsAfterNode[(itemsAfterNode.length - 1)] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STEP || 
-              (itemsAfterNode[(itemsAfterNode.length - 1)] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STACK) ? true : false;
+              (itemsAfterNode[0] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STEP || 
+              (itemsAfterNode[0] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STACK) ? true : false;
           }
+        } else {
+          console.warn(`\tcould not find itemNode!! `, parentNode, parentNode.children[indexInParent]);
         }
+      } else if(debug) {
+        console.warn(`${vId}: say whut nahw???? `, parentNode);
       }
       return retVal;
     }

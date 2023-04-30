@@ -11,8 +11,11 @@
         <!--<button (click)="getFinalEntityFromMemberByStepNumber(1)">getFinalEntityFromMember(#1)</button> 
         <button (click)="getFinalEntityFromMemberByStepNumber(2)">getFinalEntityFromMember(#2)</button>-->
         <button (click)="isStepMemberOfStack('V200002-S4')">isStepMemberOfStack('V200002-S4')</button>
+        <button (click)="stepCanBeUnPinned('V200002-S4')">stepCanBeUnPinned('V200002-S4')</button>
+        <button (click)="getRootNodeContainingNode('V200002-S4')">getRootNodeContainingNode('V200002-S4')</button>
+        <button (click)="getParentContainingNode('V200002-S4')">getParentContainingNode('V200002-S4')</button>
 
-    </div>
+    </div>getParentContainingNode
     <sz-how-step-node *ngFor="let finalCardStepNode of stepNodes; let rsInd=index"
                 [attr.step-index]="rsInd"
                 [attr.step-number]="finalCardStepNode.stepNumber"

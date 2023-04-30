@@ -345,6 +345,18 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
 
       console.log(`isStepMemberOfStack("${vId}") : `, retVal, this.howUIService.stepGroupStacks);
     }
+    stepCanBeUnPinned(vId) {
+      let retVal = this.howUIService.stepCanBeUnPinned(vId, true);
+      console.log(`stepCanBeUnPinned("${vId}") : ${retVal}`, this.howUIService.stepGroupStacks);
+    }
+    getRootNodeContainingNode(vId) {
+      let retVal = this.howUIService.getRootNodeContainingNode(vId);
+      console.log(`getRootNodeContainingNode("${vId}") : `, retVal);
+    }
+    getParentContainingNode(vId) {
+      let retVal = this.howUIService.getParentContainingNode(vId);
+      console.log(`getParentContainingNode("${vId}") : `, retVal);
+    }
 
     /*
     public getStepGroupsForInterimEntities(_rSteps?: Array<SzResolutionStep>): Map<string, SzResolutionStepGroup> {
@@ -667,7 +679,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
             retVal.set(key, group);
             this.howUIService.collapseNode(group.id, SzResolutionStepListItemType.STEP);
           });
-        }  
+        }
       }
       return retVal;
     }
