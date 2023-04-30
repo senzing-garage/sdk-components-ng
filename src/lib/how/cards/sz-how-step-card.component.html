@@ -12,7 +12,7 @@
         (isAddRecordStep: {{isAddRecordStep}} | isInterimStep: {{isInterimStep}} | isMergeStep: {{isMergeStep}} | isCreateEntityStep: {{isCreateEntityStep}}) | stepType: {{stepType}}
     </div>-->
     <div class="title-text hide-on-group-collapsed" *ngIf="groupTitle === undefined || (!isGroupCollapsed && isStackGroupMember)">
-        <span class="emphasized margin-right">{{title}}</span>
+        <span class="emphasized margin-right">{{title}} | isUnpinned: {{isUnpinned}} | canBeGrouped: {{canBeGrouped}}</span>
         <!--(isAddRecordStep: {{isAddRecordStep}} | isInterimStep: {{isInterimStep}} | isMergeStep: {{isMergeStep}} | isCreateEntityStep: {{isCreateEntityStep}})-->
         <span *ngIf="isAddRecordStep" class="hide-on-expanded">
             <span *ngIf="forms" class="margin-right">Forms <span class="emphasized">{{forms}}</span></span>

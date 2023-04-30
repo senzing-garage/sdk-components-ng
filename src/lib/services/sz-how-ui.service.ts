@@ -531,6 +531,23 @@ export class SzHowUIService {
                 _stack.children = _stack.children.filter((_nr) => {
                   return !idsOfItemsToRemove.includes(((_nr as SzResolutionStepNode).id ? (_nr as SzResolutionStepNode).id : _nr.resolvedVirtualEntityId));
                 });
+                // if there is less than 2 items left in stack
+                // convert from stack to single item
+                if(_stack && _stack.children && _stack.children.length <= 1) {
+
+                  _parentGroup.children = [
+                    ..._parentGroup.children.slice(0, _indexOfStackInParent),
+                    ..._stack.children.map((_step) => {
+                      return Object.assign({
+                        id: (_step as SzResolutionStepNode).id ? (_step as SzResolutionStepNode).id : _step.resolvedVirtualEntityId,
+                        itemType: (_step as SzResolutionStepNode).itemType ? (_step as SzResolutionStepNode).itemType : SzResolutionStepListItemType.STEP,
+                        stepType: (_step as SzResolutionStepNode).stepType ? (_step as SzResolutionStepNode).stepType : SzHowUIService.getResolutionStepCardType(_step)
+                      }, _step);
+                    }),
+                    ..._parentGroup.children.slice(_indexOfStackInParent+1)
+                  ];
+                  if(this._stepNodeGroups.has(_stack.id)) { this._stepNodeGroups.delete(_stack.id); }
+                }
                 // update virtualIds
                 _stack.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(true, _stack);
                 // update stack in "_stepNodeGroups"
@@ -964,25 +981,40 @@ export class SzHowUIService {
 
     public stepCanBeUnPinned(vId: string): boolean {
       let retVal = false;
-      // if either the item before or after is a step card
-      // OR
-      // the item before or after is a stepGroup then the
-      // item can be unpinned
-      this._stepNodes.forEach((item, ind) => {
-        if(item.resolvedVirtualEntityId === vId) {
-          // this is the item
-          if(ind > 0 && this._stepNodes[(ind - 1)]) {
+      let parentNode = this.getParentContainingNode(vId);
+      if(parentNode && parentNode.children) {
+        let itemsBeforeNode: (SzResolutionStepNode | SzResolutionStep)[]          = [];
+        let itemsAfterNode:  (SzResolutionStepNode | SzResolutionStep)[]          = [];
+        let indexInParent = parentNode.children.findIndex((step) => {
+          return (step as SzResolutionStepNode).id ? (step as SzResolutionStepNode).id === vId : step.resolvedVirtualEntityId === vId ? true : false;
+        });
+        let itemNode = parentNode.children && parentNode.children.length >= indexInParent && parentNode.children[indexInParent] ? parentNode.children[indexInParent] : undefined;
+        if(itemNode) {
+          // located node
+          itemsBeforeNode     = itemsBeforeNode.concat(parentNode.children.slice(0, indexInParent));
+          if((indexInParent+1) < parentNode.children.length) { 
+            itemsAfterNode    = itemsAfterNode.concat(parentNode.children.slice(indexInParent+1)); 
+          }
+          // if either the item before or after is a step card
+          // OR
+          // the item before or after is a stepGroup then the
+          // item can be unpinned
+          if(itemsBeforeNode && itemsBeforeNode.length > 0 && itemsBeforeNode[(itemsBeforeNode.length - 1)]) {
             // is previous item a step or stack group AND
             // not an interim or merge step
-            retVal = (this._stepNodes[(ind - 1)].itemType === SzResolutionStepListItemType.STEP || this._stepNodes[(ind - 1)].itemType === SzResolutionStepListItemType.STACK) ? true : false;
+            retVal = (
+              (itemsBeforeNode[(itemsBeforeNode.length - 1)] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STEP || 
+              (itemsBeforeNode[(itemsBeforeNode.length - 1)] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STACK) ? true : false;
           }
-          if((ind+1) < this._stepNodes.length && this._stepNodes[(ind+1)] && !retVal) {
-            // there are items after item
-            // check if it is a step or stack group
-            retVal = (this._stepNodes[(ind + 1)].itemType === SzResolutionStepListItemType.STEP || this._stepNodes[(ind + 1)].itemType === SzResolutionStepListItemType.STACK) ? true : false;
+          if(!retVal && itemsAfterNode && itemsAfterNode.length > 0 && itemsAfterNode[(itemsAfterNode.length - 1)]) {
+            // is next item a step or stack group AND
+            // not an interim or merge step
+            retVal = (
+              (itemsAfterNode[(itemsAfterNode.length - 1)] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STEP || 
+              (itemsAfterNode[(itemsAfterNode.length - 1)] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STACK) ? true : false;
           }
         }
-      });
+      }
       return retVal;
     }
 
