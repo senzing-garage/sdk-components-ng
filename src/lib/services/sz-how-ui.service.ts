@@ -441,6 +441,137 @@ export class SzHowUIService {
       return retVal = Array.from(new Set(retVal)); // de-dupe any values
     }
 
+    public unPinStep(vId: string) {
+      if(this.isStepPinned(vId)) {
+        console.log(`unPinStep: ${vId}`, this._pinnedSteps);
+        this._pinnedSteps.splice(this._pinnedSteps.indexOf(vId),1);
+        let parentNode = this.getParentContainingNode(vId);
+        if(parentNode && parentNode.children) {
+          let itemsBeforeNode: (SzResolutionStepNode | SzResolutionStep)[]          = [];
+          let itemsAfterNode:  (SzResolutionStepNode | SzResolutionStep)[]          = [];
+          let indexInParent = parentNode.children.findIndex((step) => {
+            return (step as SzResolutionStepNode).id ? (step as SzResolutionStepNode).id === vId : step.resolvedVirtualEntityId === vId ? true : false;
+          });
+          let itemNode = parentNode.children && parentNode.children.length >= indexInParent && parentNode.children[indexInParent] ? parentNode.children[indexInParent] : undefined;
+          if(itemNode) {
+            // located node
+            itemsBeforeNode     = itemsBeforeNode.concat(parentNode.children.slice(0, (indexInParent - 0)));
+            if((indexInParent+1) < parentNode.children.length) { 
+              itemsAfterNode      = itemsAfterNode.concat(parentNode.children.slice((indexInParent + 1))); 
+            }
+            let _pItem            = itemsBeforeNode && itemsBeforeNode.length > 0 ? (itemsBeforeNode[(itemsBeforeNode.length - 1)] as SzResolutionStepNode) : undefined;
+            let _nItem            = itemsAfterNode  && itemsAfterNode.length  > 0 ? (itemsAfterNode[0] as SzResolutionStepNode) : undefined;
+            let pItemIsStack      = _pItem ? _pItem.itemType === SzResolutionStepListItemType.STACK : false;
+            let nItemIsStack      = _nItem ? _nItem.itemType === SzResolutionStepListItemType.STACK : false;
+            let itemsToRemoveFromParent = [];
+            console.log(`\t _pItem(${(indexInParent - 1)})`,_pItem, parentNode.children[(indexInParent - 1)], itemsBeforeNode[(itemsBeforeNode.length - 1)], parentNode.children.slice(0, (indexInParent - 1)), parentNode.children.slice(0, (indexInParent - 0)));
+            console.log(`\t _nItem`,_nItem, parentNode.children[(indexInParent + 1)], itemsAfterNode[0], parentNode.children.slice((indexInParent + 1)));
+            console.log(`\tpItemIsStack ? ${pItemIsStack}`);
+            console.log(`\tnItemIsStack  ? ${nItemIsStack}`);
+
+            if(pItemIsStack && nItemIsStack) {
+              // merge two stacks
+              _pItem.children.push(itemNode);
+              _pItem.children = _pItem.children.concat(_nItem.children);
+              // add items to list of item to be removed from parent
+              itemsToRemoveFromParent.push(itemNode);
+              itemsToRemoveFromParent = itemsToRemoveFromParent.concat(_nItem.children);
+              // get rid of stack after current item
+              itemsToRemoveFromParent.push(_nItem);
+              console.log(`\t\tmerged two stacks in to a single stack`);
+            } else if(pItemIsStack) {
+              // add current item to previous stack
+              _pItem.children.push(itemNode);
+              itemsToRemoveFromParent.push(itemNode);
+              console.log(`\t\tadded current item to previous stack`);
+            } else if(nItemIsStack) {
+              // add current item to following stack
+              _nItem.children = [itemNode].concat(_nItem.children);
+              if(_pItem && (_pItem.itemType === SzResolutionStepListItemType.STEP || SzHowUIService.getResolutionStepCardType(_pItem) === SzResolutionStepDisplayType.ADD)){
+                // append contiguous previous items to beggining of children
+                let previousStepsToAdd      = [];
+                let itemsBeforeNodeInRev    = itemsBeforeNode;
+                let isContiguous            = true;
+                itemsBeforeNodeInRev.reverse().forEach((_n) => {
+                  // for each step that is a "ADD" step add to _childrenOfNewStack
+                  if(isContiguous && (_n as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STEP || SzHowUIService.getResolutionStepCardType(_n) === SzResolutionStepDisplayType.ADD) {
+                    previousStepsToAdd.push((_n as SzResolutionStepNode));
+                    itemsToRemoveFromParent.push(_n as SzResolutionStepNode);
+                  } else {
+                    // break
+                    isContiguous = false;
+                  }
+                });
+                // flip array back around
+                itemsBeforeNodeInRev.reverse();
+                _nItem.children = itemsBeforeNodeInRev.concat(_nItem.children);
+              }
+              itemsToRemoveFromParent.push(itemNode);
+              console.log(`\t\tadded current item to following stack`);
+            } else if(_pItem && (_pItem.itemType === SzResolutionStepListItemType.STEP || SzHowUIService.getResolutionStepCardType(_pItem) === SzResolutionStepDisplayType.ADD)) {
+              // previous item exists and is a step we can add to the current node 
+              // to create a new stack
+              let _childrenOfNewStack     = [];
+              let itemsBeforeNodeInRev    = itemsBeforeNode;
+              let isContiguous            = true;
+              itemsBeforeNodeInRev.reverse().forEach((_n) => {
+                // for each step that is a "ADD" step add to _childrenOfNewStack
+                if(isContiguous && (_n as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STEP || SzHowUIService.getResolutionStepCardType(_n) === SzResolutionStepDisplayType.ADD) {
+                  _childrenOfNewStack.push((_n as SzResolutionStepNode));
+                  itemsToRemoveFromParent.push(_n as SzResolutionStepNode);
+                } else {
+                  // break
+                  isContiguous = false;
+                }
+              });
+              // flip array back around
+              itemsBeforeNodeInRev.reverse();
+              if(nItemIsStack) {
+                // add contiguous items to beginning of stack after item
+                let newStepList = itemsBeforeNodeInRev;
+                newStepList.push(itemNode);
+                newStepList     = newStepList.concat(_nItem.children);
+                _nItem.children = newStepList;
+                itemsToRemoveFromParent.push(itemNode);
+
+                console.log(`\tadded previous steps and current item to following stack`, newStepList);
+              } else {
+                // just create the new one
+                // create new stack group for previous contiguous steps
+                let newStack = {
+                  id: uuidv4(),
+                  itemType: SzResolutionStepListItemType.STACK,
+                  children: itemsBeforeNodeInRev
+                }
+                // add current item to children
+                newStack.children.push(itemNode);
+                itemsToRemoveFromParent.push(itemNode);
+                parentNode.children[indexInParent] = newStack;
+                console.log(`\tcreated new stack from current item and previous step`, newStack);
+              }
+            } else if(_nItem && (_nItem.itemType === SzResolutionStepListItemType.STEP || SzHowUIService.getResolutionStepCardType(_nItem) === SzResolutionStepDisplayType.ADD)) {
+              // following immediate item is a type of step we can group in to a new stack
+              // create new stack group for following contiguous steps
+              let _childrenOfNewStack     = [];
+
+            }
+            // remove any items found in "itemsToRemoveFromParent"
+            if(itemsToRemoveFromParent && itemsToRemoveFromParent.length > 0) {
+              let newChildren = parentNode.children.filter((_sn)=> {
+                return !itemsToRemoveFromParent.some((itr) => {
+                  let _mId =  itr.id ? itr.id : itr.resolvedVirtualEntityId;
+                  return (_sn as SzResolutionStepNode).id ? (_sn as SzResolutionStepNode).id === _mId : _sn.resolvedVirtualEntityId === _mId;
+                })
+              });
+              parentNode.children = newChildren
+              console.log(`\tremoved children from parent: `, newChildren, parentNode);
+            }
+            // update virtualEntityIds for parent
+          }
+        }
+      }
+    }
+
     public pinStep(vId: string, gId: string) {
       if(!this.isStepPinned(vId)) {
         this._pinnedSteps.push(vId);
@@ -505,7 +636,7 @@ export class SzHowUIService {
                   let _newStack = Object.assign({
                     id: uuidv4(),
                     itemType: SzResolutionStepListItemType.STACK,
-                    children: itemsAfterNode,
+                    children: itemsAfterNode
                   });
                   // 5M00000SSHHH 1T G00D
                   _newStack.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(true, _newStack);
@@ -804,7 +935,7 @@ export class SzHowUIService {
       }
     }
 
-    public unPinStep(vId: string) {
+    public unPinStep2(vId: string) {
       if(this.isStepPinned(vId)) {
         console.log(`unPinStep: ${vId}`, this._pinnedSteps);
         // this step is pinned
