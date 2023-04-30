@@ -42,7 +42,7 @@
     </div>
     <!--<div class="title-text">groupTitle: "{{groupTitle}}" | isGroupCollapsed: {{isGroupCollapsed}} | isInterimStep: {{isInterimStep}}</div>-->
     <div class="title-text" *ngIf="groupTitle !== undefined && ((isGroupCollapsed && isStackGroupMember) || isInterimStep)">
-        <span class="emphasized margin-right">{{groupTitle}}</span>
+        <span class="emphasized margin-right">{{groupTitle}} | isStackGroupMember: {{isStackGroupMember}} | GID: {{groupId}}</span>
         <span *ngIf="dataSourcesAsString && !isStackGroupMember" class="datasources"> [ <span class="datasources-list">{{dataSourcesAsString}}</span> ]</span>
     </div>
     <!--<mat-icon class="debug-icon" (click)="checkIsStackGroup()" fontIcon="adb"></mat-icon>-->

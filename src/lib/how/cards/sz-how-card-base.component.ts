@@ -125,11 +125,13 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     
     public toggleExpansion(vId?: string) {
         vId = vId ? vId : this.id;
+        console.log(`SzHowStepCardBase.toggleExpansion(${vId})`);
         this.howUIService.toggleExpansion(vId, undefined, this.itemType);
     }
     public toggleGroupExpansion(gId?: string) {
         gId             = gId ? gId : this.id;
         let itemType    = this.isStackGroupMember ? SzResolutionStepListItemType.STACK : this.itemType;
+        console.log(`SzHowStepCardBase.toggleGroupExpansion(${gId})`, this.howUIService.getStepNodeById(gId, true), this.howUIService.stepNodes);
         this.howUIService.toggleExpansion(undefined, gId, itemType);
     }
     protected get isGroupCollapsed() {

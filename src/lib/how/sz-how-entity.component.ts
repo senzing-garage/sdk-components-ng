@@ -256,19 +256,6 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       console.log(`getExpandedGroups(): `,retVal);
     }*/
 
-    private getVirtualEntityIdsForNode(isNested: boolean, step: SzResolutionStepNode) {
-      let retVal: string[] = [];
-
-      if(isNested) {
-        // this is already a sub-child make sure id is in return value
-        retVal.push(step.id ? step.id : step.resolvedVirtualEntityId);
-      }
-      if(step && step.children && step.children.map) {
-        retVal = retVal.concat(step.children.map(this.getVirtualEntityIdsForNode.bind(this, true)));
-        if(retVal && retVal.flat){ retVal = retVal.flat(); }
-      }
-      return retVal = Array.from(new Set(retVal)); // de-dupe any values
-    }
 
     public getStepNodesForInterimEntities(_rSteps?: Array<SzResolutionStep>): Map<string, SzResolutionStepNode> {
       let retVal        = new Map<string, SzResolutionStepNode>();
@@ -351,6 +338,12 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
 
       console.log('getStepNodesForInterimEntities', retVal);
       return retVal;
+    }
+
+    isStepMemberOfStack(vId) {
+      let retVal = this.howUIService.isStepMemberOfStack(vId);
+
+      console.log(`isStepMemberOfStack("${vId}") : `, retVal, this.howUIService.stepGroupStacks);
     }
 
     /*
@@ -494,7 +487,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       if(_stepGroups && _stepGroups.forEach) {
         // for each map, collect it's virtual ids
         for (let [key, value] of  _stepGroups.entries()) {
-          _stepGroups.get(key).virtualEntityIds = this.getVirtualEntityIdsForNode(false, value);
+          _stepGroups.get(key).virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(false, value);
         }
       }
       return _recursiveGroups;
@@ -550,7 +543,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
               });
               _fEntityAsStepNode.children         = itemsAsChildren;
 
-              _fEntityAsStepNode.virtualEntityIds = this.getVirtualEntityIdsForNode(false, _fEntityAsStepNode);
+              _fEntityAsStepNode.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(false, _fEntityAsStepNode);
               if(_fEntityAsStepNode.virtualEntityIds) console.info(`final entities virtual id members: [${_fEntityAsStepNode.virtualEntityIds.join(',')}]`, _fEntityAsStepNode.virtualEntityIds, _fEntityAsStepNode.children);
             }
             return _fEntityAsStepNode;
@@ -666,7 +659,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
                 }
 
                 //retVal.get(_currentGroupId).virtualEntityIds = retVal.get(_currentGroupId).children.map((rStep: SzResolutionStep) => { return rStep.resolvedVirtualEntityId; });
-                retVal.get(_currentGroupId).virtualEntityIds = this.getVirtualEntityIdsForNode(false, retVal.get(_currentGroupId));
+                retVal.get(_currentGroupId).virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(false, retVal.get(_currentGroupId));
             }
           });
   
@@ -824,7 +817,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         // update "virtualEntityIds" with accurate data
         if(_resolutionStepsWithGroups && _resolutionStepsWithGroups.map) {
           _resolutionStepsWithGroups.map((_sN) => {
-            _sN.virtualEntityIds = this.getVirtualEntityIdsForNode(false, _sN);
+            _sN.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(false, _sN);
           });
         }
         // filter out top level groups or items that are members of groups
