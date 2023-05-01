@@ -660,7 +660,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
                   // add item to stack
                   retVal.get(_currentGroupId).children.push(_wrappedStep);
                   // collapse stack itself by default, and all individual steps
-                  this.howUIService.collapseNode(_currentGroupId, SzResolutionStepListItemType.STACK, true);
+                  this.howUIService.collapseNode(_currentGroupId, SzResolutionStepListItemType.STACK);
                   // step is always "ADD" type so it's always a "STEP"
                   this.howUIService.collapseNode(resStep.resolvedVirtualEntityId, SzResolutionStepListItemType.STEP);
                   //_resolutionStepsWithGroups.push([resStep]);
