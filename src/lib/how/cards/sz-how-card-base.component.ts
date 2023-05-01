@@ -380,13 +380,13 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
         if(this._data){
             let _dataSources    = new Map();
             let _records        = new Map();
-            if(this._data.candidateVirtualEntity.records.length > 0){
+            if(this._data.candidateVirtualEntity && this._data.candidateVirtualEntity.records && this._data.candidateVirtualEntity.records.length > 0){
                 this._data.candidateVirtualEntity.records.forEach((_rec: SzVirtualEntityRecord) => {
                     _dataSources.set(_rec.dataSource,_rec.internalId);
                     _records.set(_rec.recordId,_rec.internalId)
                 });
             }
-            if(this._data.inboundVirtualEntity.records.length > 0){
+            if(this._data.inboundVirtualEntity && this._data.inboundVirtualEntity.records && this._data.inboundVirtualEntity.records.length > 0){
                 this._data.inboundVirtualEntity.records.forEach((_rec: SzVirtualEntityRecord) => {
                     _dataSources.set(_rec.dataSource,_rec.internalId);
                     _records.set(_rec.recordId,_rec.internalId)

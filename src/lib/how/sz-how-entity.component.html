@@ -4,18 +4,17 @@
     *ngIf="showNavigation"
 ></sz-how-nav>
 <div class="main">
-    <div class="debug-box">
-        <h3>debug</h3>
+    <!--<div class="debug-box">
+        <h3>debug</h3>-->
         <!--<button (click)="getStepNodesDebug()">getStepNodesDebug()</button>-->
         <!--<button (click)="collapseAllSteps()">collpseAll()</button>-->
         <!--<button (click)="getFinalEntityFromMemberByStepNumber(1)">getFinalEntityFromMember(#1)</button> 
         <button (click)="getFinalEntityFromMemberByStepNumber(2)">getFinalEntityFromMember(#2)</button>-->
-        <button (click)="isStepMemberOfStack('V200002-S4')">isStepMemberOfStack('V200002-S4')</button>
+        <!--<button (click)="isStepMemberOfStack('V200002-S4')">isStepMemberOfStack('V200002-S4')</button>
         <button (click)="stepCanBeUnPinned('V200002-S4')">stepCanBeUnPinned('V200002-S4')</button>
         <button (click)="getRootNodeContainingNode('V200002-S4')">getRootNodeContainingNode('V200002-S4')</button>
-        <button (click)="getParentContainingNode('V200002-S4')">getParentContainingNode('V200002-S4')</button>
-
-    </div>getParentContainingNode
+        <button (click)="getParentContainingNode('V200002-S4')">getParentContainingNode('V200002-S4')</button>-->
+    <!--</div>-->
     <sz-how-step-node *ngFor="let finalCardStepNode of stepNodes; let rsInd=index"
                 [attr.step-index]="rsInd"
                 [attr.step-number]="finalCardStepNode.stepNumber"
