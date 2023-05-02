@@ -10,14 +10,16 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
 import { SzHowStepCardBase } from './sz-how-card-base.component';
 
 /**
- * Why
+ * This is the basic card that represents a step in the how report for an entity.
+ * The cards will display the step number, title, match keys, and inbound and outbound 
+ * features and scores etc.
  *
  * @example 
  * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-how-step-card [data]="data" [featureOrder]="featureOrder" [virtualEntitiesById]="virtualEntitiesById"&gt;&lt;/sz-how-step-card&gt;<br/><br/>
+ * &lt;sz-how-step-card [data]="data" [virtualEntitiesById]="virtualEntitiesById"&gt;&lt;/sz-how-step-card&gt;<br/><br/>
  *
  * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-wc-how-rc-step-card data="data" featureOrder="featureOrder" virtualEntitiesById="virtualEntitiesById"&gt;&lt;/sz-wc-how-rc-step-card&gt;<br/>
+ * &lt;sz-wc-how-rc-step-card data="data" virtualEntitiesById="virtualEntitiesById"&gt;&lt;/sz-wc-how-rc-step-card&gt;<br/>
 */
 @Component({
     selector: 'sz-how-step-card',
@@ -25,7 +27,7 @@ import { SzHowStepCardBase } from './sz-how-card-base.component';
     styleUrls: ['./sz-how-card-base.component.scss']
 })
 export class SzHowStepCardComponent extends SzHowStepCardBase implements OnInit, OnDestroy {
-    
+    /** the title if the cards itemType is a 'GROUP' or 'STACK' */
     override get groupTitle(): string {
         let retVal;
         if(this.hasChildren) {
@@ -79,6 +81,7 @@ export class SzHowStepCardComponent extends SzHowStepCardBase implements OnInit,
         }
         return retVal;
     }
+    /** the title if a card's itemType is 'STEP' */
     override get title(): string {
         let retVal = '';
         let displayType: SzResolutionStepDisplayType = this.getStepListItemCardType(this._data);
@@ -101,6 +104,7 @@ export class SzHowStepCardComponent extends SzHowStepCardBase implements OnInit,
         }
         return (displayType !== SzResolutionStepDisplayType.INTERIM) ? `Step ${this._data.stepNumber}: ${retVal}` : retVal;
     }
+    /** the description of a step with match keys and principle etc */
     override get description(): string[] {
         let retVal = [];
         //let displayType: SzResolutionStepDisplayType = this.getStepListItemCardType(this._data);
@@ -123,6 +127,10 @@ export class SzHowStepCardComponent extends SzHowStepCardBase implements OnInit,
             }
         }
         return retVal;
+    }
+    public isStackGroupMemberDbg() {
+        let retVal = this.isStackGroupMemberDebug();
+        console.log(`isStackGroupMemberDbg(): `, retVal);
     }
 
     constructor(

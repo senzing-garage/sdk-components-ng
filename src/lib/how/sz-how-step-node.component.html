@@ -3,7 +3,6 @@
         <sz-how-final-entity-card
         [attr.virtual-id]="data.resolvedVirtualEntityId"
         [data]="data"
-        [featureOrder]="featureOrder"
         [virtualEntitiesById]="virtualEntitiesById"></sz-how-final-entity-card>
     </li>
     <li class="top-level-children">
@@ -14,7 +13,6 @@
                 [attr.step-number]="step.stepNumber"
                 [attr.virtual-id]="step.resolvedVirtualEntityId"
                 [data]="step"
-                [featureOrder]="featureOrder" 
                 [virtualEntitiesById]="virtualEntitiesById"></sz-how-step-node>
             </li>
         </ul>
@@ -25,14 +23,12 @@
             [attr.step-number]="data.stepNumber"
             [attr.virtual-id]="data.resolvedVirtualEntityId"
             [data]="data"
-            [featureOrder]="featureOrder" 
             [virtualEntitiesById]="virtualEntitiesById"
             ></sz-how-step-card>
     <sz-how-step-stack *ngIf="isStack"
     [attr.step-number]="data.stepNumber"
     [attr.virtual-id]="data.resolvedVirtualEntityId"
     [data]="dataAsNode"
-    [featureOrder]="featureOrder" 
     [virtualEntitiesById]="virtualEntitiesById"
     ></sz-how-step-stack>
     <ul class="hide-on-group-collapsed" *ngIf="hasChildren && !isStack">
@@ -42,7 +38,6 @@
             [attr.step-number]="step.stepNumber"
             [attr.virtual-id]="step.resolvedVirtualEntityId"
             [data]="step"
-            [featureOrder]="featureOrder" 
             [virtualEntitiesById]="virtualEntitiesById"></sz-how-step-node>
         </li>
     </ul>

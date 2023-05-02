@@ -7,8 +7,9 @@ import {
   SzResolutionStep,
   SzHowEntityResponse
 } from '@senzing/rest-api-client-ng';
-import { SzResolutionStepDisplayType, SzResolutionStepListItemType, SzResolutionStepNode } from '../models/data-how';
+import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzPrefsService } from './sz-prefs.service';
+import { SzResolutionStepDisplayType, SzResolutionStepListItemType, SzResolutionStepNode } from '../models/data-how';
 
 /**
  * Provides methods, eventing, and utilities used to display the 
@@ -31,6 +32,8 @@ export class SzHowUIService {
   private _navigationExpanded: boolean        = true;
   /** @internal */
   private _pinnedSteps: string[]              = [];
+  /** @internal */
+  private _orderedFeatureTypes: string[] | undefined;
   /** @internal */
   private _onGroupExpansionChange   = new Subject<string>()
   /** @internal */
@@ -68,6 +71,10 @@ export class SzHowUIService {
   /** is the navigation rail expanded */
   public set isNavExpanded(value: boolean) {
     this._navigationExpanded = value;
+  }
+  /** this is the features ordered by what is returned from the config request */
+  public get orderedFeatures(): string[] | undefined {
+    return this._orderedFeatureTypes
   }
   /** get just the nodes found in "stepNodeGroups" that are of type "STACK" */
   public get stepGroupStacks(): SzResolutionStepNode[] {
@@ -451,12 +458,17 @@ export class SzHowUIService {
     return this._expandedNodes.includes(virtualEntityId);
   }
   /** is a step a child member of a group that is of itemType `STACK`. */
-  public isStepMemberOfStack(vId: string, gId?: string) {
+  public isStepMemberOfStack(vId: string, gId?: string, debug?: boolean) {
     if(vId) {
       if(gId) {
         // we are looking in a specific group
         let _groupSpecified = this._stepNodeGroups.has(gId) ? this._stepNodeGroups.get(gId) : undefined;
-        //console.log(`isStepMemberOfStack(${vId}, ${gId})`, _groupSpecified, ((_groupSpecified && _groupSpecified.virtualEntityIds) ? _groupSpecified.virtualEntityIds.indexOf(vId) > -1 : false), this._stepNodeGroups);
+        if(debug){
+          console.log(`isStepMemberOfStack(${vId}, ${gId})`, 
+          _groupSpecified, 
+          ((_groupSpecified && _groupSpecified.virtualEntityIds) ? _groupSpecified.virtualEntityIds.indexOf(vId) > -1 : false), 
+          this._stepNodeGroups);
+        }
         if(_groupSpecified) {
           // group exists
           if(_groupSpecified && _groupSpecified.virtualEntityIds) {
@@ -905,127 +917,137 @@ export class SzHowUIService {
     }
   }
 
-    /**
-     * Sets up the service class and sets the "entityDataService" injected in to it
-     * to a static reference so static methods can have access to the injected services.
-     * @param entityDataService 
-     * @param prefs 
-     */
-    constructor(
-      public entityDataService: SzEntityDataService,
-      public prefs: SzPrefsService
-    ) {
-      SzHowUIService._entityDataService = entityDataService;
-    }
+  /**
+   * Sets up the service class and sets the "entityDataService" injected in to it
+   * to a static reference so static methods can have access to the injected services.
+   * @param entityDataService 
+   * @param prefs 
+   */
+  constructor(
+    public configDataService: SzConfigDataService,
+    public entityDataService: SzEntityDataService,
+    public prefs: SzPrefsService
+  ) {
+    SzHowUIService._entityDataService = entityDataService;
+    /** get the list of features ordered by what is specific in the config response */
+    this.getFeatureTypeOrderFromConfig();
+  }
 
-    // -----------------------------  STATIC METHODS -----------------------------
+  // -----------------------------  STATIC METHODS -----------------------------
 
-    /**
-     * Query the `/entities/${entityId}/how` api server endpoint for data on HOW an 
-     * entity came together.
-     * @param entityId 
-     */
-    public static getHowDataForEntity(entityId: SzEntityIdentifier): Observable<SzHowEntityResponse> {
-      return this._entityDataService.howEntityByEntityID(
-          entityId as number
-      )
-    }
-    /**
-     * Get the type of `CARD` that should be displayed. Possible results are: 
-     * - `ADD` when a step added a singleton record to resolution
-     * - `CREATE` when a step created a virtual entity
-     * - `INTERIM` a virtual entity used to temporily hold the result of previous steps that are then used in subsequent steps.
-     * - `FINAL` the final result of a series of other steps used to resolve an entity
-     * - `MERGE` when two virtual entities are merged together to form a new virtual entity
-     * @param step the resolution step 
-     */
-    public static getResolutionStepCardType(step: SzResolutionStep, stepNumber?: number): SzResolutionStepDisplayType {
-      if(step && step !== undefined) {
-        //console.log(`#${stepNumber} getStepListItemType: `, step);
-        if(step.candidateVirtualEntity && step.candidateVirtualEntity.singleton && step.inboundVirtualEntity && step.inboundVirtualEntity.singleton) {
-          // both items are records
-          return SzResolutionStepDisplayType.CREATE;
-        } else if(step.candidateVirtualEntity && !step.candidateVirtualEntity.singleton && step.inboundVirtualEntity && !step.inboundVirtualEntity.singleton) {
-          // both items are virtual entities
-          return SzResolutionStepDisplayType.MERGE;
-        } else if(!(step.candidateVirtualEntity && step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) && ((step.candidateVirtualEntity && step.candidateVirtualEntity.singleton === false) || (step.inboundVirtualEntity && step.inboundVirtualEntity.singleton === false))) {
-          // one of the items is record, the other is virtual
-          return SzResolutionStepDisplayType.ADD;
-        }
+  /**
+   * Query the `/entities/${entityId}/how` api server endpoint for data on HOW an 
+   * entity came together.
+   * @param entityId 
+   */
+  public static getHowDataForEntity(entityId: SzEntityIdentifier): Observable<SzHowEntityResponse> {
+    return this._entityDataService.howEntityByEntityID(
+        entityId as number
+    )
+  }
+  /**
+   * Get the type of `CARD` that should be displayed. Possible results are: 
+   * - `ADD` when a step added a singleton record to resolution
+   * - `CREATE` when a step created a virtual entity
+   * - `INTERIM` a virtual entity used to temporily hold the result of previous steps that are then used in subsequent steps.
+   * - `FINAL` the final result of a series of other steps used to resolve an entity
+   * - `MERGE` when two virtual entities are merged together to form a new virtual entity
+   * @param step the resolution step 
+   */
+  public static getResolutionStepCardType(step: SzResolutionStep, stepNumber?: number): SzResolutionStepDisplayType {
+    if(step && step !== undefined) {
+      //console.log(`#${stepNumber} getStepListItemType: `, step);
+      if(step.candidateVirtualEntity && step.candidateVirtualEntity.singleton && step.inboundVirtualEntity && step.inboundVirtualEntity.singleton) {
+        // both items are records
+        return SzResolutionStepDisplayType.CREATE;
+      } else if(step.candidateVirtualEntity && !step.candidateVirtualEntity.singleton && step.inboundVirtualEntity && !step.inboundVirtualEntity.singleton) {
+        // both items are virtual entities
+        return SzResolutionStepDisplayType.MERGE;
+      } else if(!(step.candidateVirtualEntity && step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) && ((step.candidateVirtualEntity && step.candidateVirtualEntity.singleton === false) || (step.inboundVirtualEntity && step.inboundVirtualEntity.singleton === false))) {
+        // one of the items is record, the other is virtual
+        return SzResolutionStepDisplayType.ADD;
       }
-      return undefined;
     }
-    /**
-     * Used to get the `itemType` of a node or step. Potential results are:
-     * - `FINAL` a card representing a final result of previous steps that resulted in a entity.
-     * - `GROUP` used for nodes that have child nodes and/or groups. groups can expand and collapse child nodes.
-     * - `STACK` a special type of `GROUP` that displays a series of contiguous steps that can be collapsed and expanded only 1 level deep. Used
-     * to collapse multiple steps of the same type in to a meta group to declutter repetative steps.
-     * - `STEP` an individual card that has no child items.
-     * @param item 
-     */
-    public static getResolutionStepListItemType(item: SzResolutionStep | SzResolutionStepNode): SzResolutionStepListItemType {
-      if(item && item !== undefined) {
-        let itemIsGroup   = (item as SzResolutionStepNode).virtualEntityIds && (item as SzResolutionStepNode).itemType ===  SzResolutionStepListItemType.GROUP ? true : false;
-        let itemsIsStack  = (item as SzResolutionStepNode).virtualEntityIds && (item as SzResolutionStepNode).itemType ===  SzResolutionStepListItemType.STACK && !itemIsGroup ? true : false;
-        
-        if(itemIsGroup) {
-          // item is a interim entity whos children are a collection of steps AND/OR stacks (single with subtree)
-          return SzResolutionStepListItemType.GROUP;
-        } else if(itemsIsStack) {
-          // item is a collection of steps but not an interim entity (collapsible multi-step)
-          return SzResolutionStepListItemType.STACK;
-        } else {
-          // item is neither a collection of steps or a interim entity group (single)
-          return SzResolutionStepListItemType.STEP;
-        }
+    return undefined;
+  }
+  /**
+   * Used to get the `itemType` of a node or step. Potential results are:
+   * - `FINAL` a card representing a final result of previous steps that resulted in a entity.
+   * - `GROUP` used for nodes that have child nodes and/or groups. groups can expand and collapse child nodes.
+   * - `STACK` a special type of `GROUP` that displays a series of contiguous steps that can be collapsed and expanded only 1 level deep. Used
+   * to collapse multiple steps of the same type in to a meta group to declutter repetative steps.
+   * - `STEP` an individual card that has no child items.
+   * @param item 
+   */
+  public static getResolutionStepListItemType(item: SzResolutionStep | SzResolutionStepNode): SzResolutionStepListItemType {
+    if(item && item !== undefined) {
+      let itemIsGroup   = (item as SzResolutionStepNode).virtualEntityIds && (item as SzResolutionStepNode).itemType ===  SzResolutionStepListItemType.GROUP ? true : false;
+      let itemsIsStack  = (item as SzResolutionStepNode).virtualEntityIds && (item as SzResolutionStepNode).itemType ===  SzResolutionStepListItemType.STACK && !itemIsGroup ? true : false;
+      
+      if(itemIsGroup) {
+        // item is a interim entity whos children are a collection of steps AND/OR stacks (single with subtree)
+        return SzResolutionStepListItemType.GROUP;
+      } else if(itemsIsStack) {
+        // item is a collection of steps but not an interim entity (collapsible multi-step)
+        return SzResolutionStepListItemType.STACK;
+      } else {
+        // item is neither a collection of steps or a interim entity group (single)
+        return SzResolutionStepListItemType.STEP;
       }
-      return undefined;
     }
-    /**
-     * Get all virtualEntityId's or resolvedEntityId's or Id's and recordId's for steps or nodes that 
-     * are descendents of a step node. This is a recursive Tree traversal method and should not be used trivially.
-     * @param isNested is the step being passed as the `step` parameter a child of another card. pass `false` or `undefined` for 
-     * root level nodes.
-     * @param step the step to gather virtual entity ids's for
-     */
-    public static getVirtualEntityIdsForNode(isNested: boolean, step: SzResolutionStepNode) {
-      let retVal: string[] = [];
+    return undefined;
+  }
+  /**
+   * Get all virtualEntityId's or resolvedEntityId's or Id's and recordId's for steps or nodes that 
+   * are descendents of a step node. This is a recursive Tree traversal method and should not be used trivially.
+   * @param isNested is the step being passed as the `step` parameter a child of another card. pass `false` or `undefined` for 
+   * root level nodes.
+   * @param step the step to gather virtual entity ids's for
+   */
+  public static getVirtualEntityIdsForNode(isNested: boolean, step: SzResolutionStepNode) {
+    let retVal: string[] = [];
 
-      if(isNested) {
-        // this is already a sub-child make sure id is in return value
-        retVal.push(step.id ? step.id : step.resolvedVirtualEntityId);
-      }
-      if(step && step.children && step.children.map) {
-        retVal = retVal.concat(step.children.map(this.getVirtualEntityIdsForNode.bind(this, true)));
-        if(retVal && retVal.flat){ retVal = retVal.flat(); }
-      }
-      return retVal = Array.from(new Set(retVal)); // de-dupe any values
+    if(isNested) {
+      // this is already a sub-child make sure id is in return value
+      retVal.push(step.id ? step.id : step.resolvedVirtualEntityId);
     }
-    /**
-     * Set the `virtualEntityIds` property of a node/step to an array of virtualEntityId's or resolvedEntityId's or Id's and recordId's for steps or nodes that 
-     * are descendents of a step node. This is a recursive Tree traversal method and should not be used trivially.
-     * @param isNested is the step being passed as the `step` parameter a child of another card. pass `false` or `undefined` for 
-     * root level nodes.
-     * @param step the step to query for descendent steps/children
-     * @returns 
-     */
-    public static setVirtualEntityIdsForNode(isNested: boolean, step: SzResolutionStepNode) {
-      let retVal: string[] = [];
-      if(isNested) {
-        // this is already a sub-child make sure id is in return value
-        retVal.push(step.id ? step.id : step.resolvedVirtualEntityId);
-      }
-      if(step && step.children && step.children.map) {
-        retVal = retVal.concat(
-          step.children.map(this.setVirtualEntityIdsForNode.bind(this, true))
-        );
-        if(retVal && retVal.flat){ retVal = retVal.flat(); }
-        step.virtualEntityIds = retVal;
-      }
-      retVal = Array.from(new Set(retVal)); // de-dupe any values;
+    if(step && step.children && step.children.map) {
+      retVal = retVal.concat(step.children.map(this.getVirtualEntityIdsForNode.bind(this, true)));
+      if(retVal && retVal.flat){ retVal = retVal.flat(); }
+    }
+    return retVal = Array.from(new Set(retVal)); // de-dupe any values
+  }
+  /**
+   * Set the `virtualEntityIds` property of a node/step to an array of virtualEntityId's or resolvedEntityId's or Id's and recordId's for steps or nodes that 
+   * are descendents of a step node. This is a recursive Tree traversal method and should not be used trivially.
+   * @param isNested is the step being passed as the `step` parameter a child of another card. pass `false` or `undefined` for 
+   * root level nodes.
+   * @param step the step to query for descendent steps/children
+   * @returns 
+   */
+  public static setVirtualEntityIdsForNode(isNested: boolean, step: SzResolutionStepNode) {
+    let retVal: string[] = [];
+    if(isNested) {
+      // this is already a sub-child make sure id is in return value
+      retVal.push(step.id ? step.id : step.resolvedVirtualEntityId);
+    }
+    if(step && step.children && step.children.map) {
+      retVal = retVal.concat(
+        step.children.map(this.setVirtualEntityIdsForNode.bind(this, true))
+      );
+      if(retVal && retVal.flat){ retVal = retVal.flat(); }
       step.virtualEntityIds = retVal;
-
-      return retVal;
     }
+    retVal = Array.from(new Set(retVal)); // de-dupe any values;
+    step.virtualEntityIds = retVal;
+
+    return retVal;
+  }
+  /** get the features from the api server config endpoint */
+  private getFeatureTypeOrderFromConfig() {
+    this.configDataService.getOrderedFeatures().subscribe((res: any)=>{
+      this._orderedFeatureTypes = res;
+      console.log('getFeatureTypeOrderFromConfig: ', res);
+    });
+  }
 }

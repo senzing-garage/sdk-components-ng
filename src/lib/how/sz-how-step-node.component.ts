@@ -60,7 +60,7 @@ export class SzHowStepNodeComponent implements OnInit, OnDestroy {
         return this.hasChildStacks ? true : false;
     }
     
-    @Input() featureOrder: string[];
+    //@Input() featureOrder: string[];
 
     @Input() public set virtualEntitiesById(value: Map<string, SzResolvedVirtualEntity>) {
         this._virtualEntitiesById = value;

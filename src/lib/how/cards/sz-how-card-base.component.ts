@@ -11,14 +11,9 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
 import { SzHowVirtualEntityDialog } from '../sz-how-virtual-entity-dialog.component';
 
 /**
- * Why
- *
- * @example 
- * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-how-step entityId="5"&gt;&lt;/sz-how-step&gt;<br/><br/>
- *
- * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-how-step entityId="5"&gt;&lt;/sz-how-step&gt;<br/>
+ * This is the base class that provides common methods, inputs, outputs, getters, and setters 
+ * for step card components. This class is inherited by the basic step card component 
+ * and the final card component.
 */
 @Component({
     selector: 'sz-how-step-card-base',
@@ -28,7 +23,6 @@ import { SzHowVirtualEntityDialog } from '../sz-how-virtual-entity-dialog.compon
 export class SzHowStepCardBase implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     protected unsubscribe$ = new Subject<void>();
-
     protected _stepMap: {[key: string]: SzResolutionStep};
     //protected _data: SzResolutionStep | SzResolutionStepNode;
     protected _data: SzResolutionStepNode;
@@ -40,7 +34,7 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     protected _highlighted: boolean           = false;
     protected _groupId: string;
     protected _groupIndex: number;
-
+    // ----------------------------------- css classes -----------------------------------
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
         return !this.howUIService.isStepExpanded(this.id);
     }
@@ -53,28 +47,28 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     @HostBinding('class.type-add') get cssTypeAddClass(): boolean {
         return this.stepType === SzResolutionStepDisplayType.ADD;
     }
+    @HostBinding('class.type-create') get cssTypeCreateClass(): boolean {
+        return this.stepType === SzResolutionStepDisplayType.CREATE;
+    }
     @HostBinding('class.type-final') get cssTypeClass(): boolean {
         return false;
-    }
-    @HostBinding('class.type-merge') get cssTypeMergeClass(): boolean {
-        return this.stepType === SzResolutionStepDisplayType.MERGE;
     }
     @HostBinding('class.type-interim') get cssTypeInterimClass(): boolean {
         return this.stepType === SzResolutionStepDisplayType.INTERIM;
     }
-    @HostBinding('class.type-create') get cssTypeCreateClass(): boolean {
-        return this.stepType === SzResolutionStepDisplayType.CREATE;
+    @HostBinding('class.type-merge') get cssTypeMergeClass(): boolean {
+        return this.stepType === SzResolutionStepDisplayType.MERGE;
     }
     @HostBinding('class.group-collapsed') get cssGroupCollapsedClass(): boolean {
         let _grpId = this._groupId ? this._groupId : (this.isGroup ? this.id : undefined);
         return _grpId ? !this.howUIService.isGroupExpanded(_grpId) : false;
     }
+    @HostBinding('class.group-container') get cssGroupParentClass(): boolean {
+        return this.isGroup;
+    }
     @HostBinding('class.group-expanded') get cssGroupExpandedClass(): boolean {
         let _grpId = this._groupId ? this._groupId : (this.isGroup ? this.id : undefined);
         return _grpId ? this.howUIService.isGroupExpanded(_grpId) : false;
-    }
-    @HostBinding('class.group-container') get cssGroupParentClass(): boolean {
-        return this.isGroup;
     }
     @HostBinding('class.group-member') get cssGroupMemberClass(): boolean {
         return this.isGroupMember;
@@ -85,9 +79,7 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     @HostBinding('class.unpinned') get cssGroupMemberUnPinnedClass(): boolean {
         return this.isUnpinned;
     }
-
-    @Input() public featureOrder: string[];
-
+    // ------------------------------ getters and setters    -----------------------------
     @Input() set groupIndex(value: number) {
         this._groupIndex = value;
     }
@@ -189,6 +181,9 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     }
     get isStackGroupMember(): boolean {
         return this.howUIService.isStepMemberOfStack(this.id, this._groupId);
+    }
+    public isStackGroupMemberDebug() {
+        return this.howUIService.isStepMemberOfStack(this.id, this._groupId, true);
     }
     get isUnpinned(): boolean {
         return !this.howUIService.isStepPinned(this._data.resolvedVirtualEntityId, this._groupId);
@@ -436,13 +431,13 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
             retVal = [..._tempMap.values()];
             // if we have features from config we should return the  
             // values in that order
-            if(this.featureOrder && this.featureOrder.length > 0) {
+            if(this.howUIService.orderedFeatures && this.howUIService.orderedFeatures.length > 0) {
                 //console.log('reordering virtual card features by config order: ', this.featureOrder);
                 retVal.sort((
                     a: SzFeatureScore, 
                     b: SzFeatureScore
                 ) => {
-                    return this.featureOrder.indexOf(a.featureType) - this.featureOrder.indexOf(b.featureType);
+                    return this.howUIService.orderedFeatures.indexOf(a.featureType) - this.howUIService.orderedFeatures.indexOf(b.featureType);
                 });
             }
         }
@@ -546,10 +541,8 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
         }
         return false;
     }
-
-
     openVirtualEntityDialog(evt) {
-      console.log('openVirtualEntityDialog: ', evt, this.resolvedVirtualEntity, this._data, this.featureOrder);
+      console.log('openVirtualEntityDialog: ', evt, this.resolvedVirtualEntity, this._data, this.howUIService.orderedFeatures);
       //return;
       //this._virtualEntityInfoLinkClick.next(evt);
       let targetEle = new ElementRef(evt.target);
@@ -560,17 +553,15 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
             target: targetEle,
             virtualEntity: this.resolvedVirtualEntity,
             stepData: this._data,
-            featureOrder: this.featureOrder,
+            featureOrder: this.howUIService.orderedFeatures,
             event: evt
         }
       });
     }
-
     public pinStep() {
         console.log(`pinStep()`, this._data.resolvedVirtualEntityId, this._groupId);
         this.howUIService.pinStep(this._data.resolvedVirtualEntityId, this._groupId);
     }
-
     public unPinStep() {
         console.log(`unPinStep()`, this._data.resolvedVirtualEntityId, this._groupId);
         this.howUIService.unPinStep(this._data.resolvedVirtualEntityId);

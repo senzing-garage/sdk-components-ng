@@ -41,10 +41,13 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
      * the data retrieved from the how api request.
      */
     private _data: SzHowEntityResult;
-    /** @internal */
+    /** 
+     * @internal 
+     * we get the expanded "virtual entities" for every step in the how request.
+     * these must be retrieved individually per the api spec. this is where we store
+     * them while working with them.
+    */
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
-    /** @internal */
-    private _featureTypesOrdered: string[] | undefined;
     /** @internal */
     private _resolutionSteps: Array<SzResolutionStep>;
     /** @internal */
@@ -53,52 +56,92 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     private _stepNodeGroups: Map<string, SzResolutionStepNode>  = new Map<string, SzResolutionStepNode>();
     /** @internal */
     private _isLoading                        = false;
+    /** 
+     * @internal 
+     * whether or not to show the navigation rail
+     */
     private _showNavigation                   = true;
+    /** 
+     * @internal 
+     * the entity id to display in the component
+     */
     private _entityId: SzEntityIdentifier;
+    /** 
+     * @internal 
+     * used for ensuring the data of this component displayed matches the entity id passed in
+     */
     private _dataLoadedForId: SzEntityIdentifier;
+    /** 
+     * @internal 
+     * when the number of steps returned from a api request is less than or equal to this number
+     * the cards are automatically expanded.
+     */
     private _expandCardsWhenLessThan: number  = 2;
 
     // -------------------------------------------- observeables and emitters --------------------------------------------
     /** @internal */
     private _dataChange: Subject<SzHowEntityResult>           = new Subject<SzHowEntityResult>();
+    /** when the data has changed this event is emitted */
     public   dataChange                                       = this._dataChange.asObservable();
+    /** @internal */
     private _entityIdChange: Subject<SzEntityIdentifier>      = new Subject<SzEntityIdentifier>();
+    /** when the entity id passed to this component has changed this event is emitted */
     public   entityIdChange                                   = this._entityIdChange.asObservable();
+    /** @internal */
     private _finalEntitiesChange: Subject<SzVirtualEntity[]>  = new Subject<SzVirtualEntity[]>();
+    /** when the final entities are returned from the api request this event is emitted */
     public  finalEntitiesChange                               = this._finalEntitiesChange.asObservable();
+    /** @internal */
     private _virtualEntitiesDataChange: Subject<Map<string, SzResolvedVirtualEntity>> = new Subject<Map<string, SzResolvedVirtualEntity>>();
+    /** when the map of virtual entities found in the api response is returned from subsequent queries is returned this event is emitted */
     public  virtualEntitiesDataChange                         = this._virtualEntitiesDataChange.asObservable();
+    /** @internal */
     private _virtualEntityInfoLinkClick: Subject<SzVirtualEntityRecordsClickEvent> = new Subject();
+    /** when a user clicks the info link inside of a step card this event is emitted*/
     public  virtualEntityInfoLinkClick                        = this._virtualEntityInfoLinkClick.asObservable();
+    /** when the data has changed this event is emitted */
     @Output() public dataChanged                              = new EventEmitter<SzHowEntityResult>();
-    @Output() public virtualEntityInfoLinkClicked             = new EventEmitter<SzVirtualEntityRecordsClickEvent>();
+    /** when the entity id has changed and a data request response is pending this event is emitted */
     @Output() public loading: EventEmitter<boolean>           = new EventEmitter<boolean>();
+    /** when the map of virtual entities found in the api response is returned from subsequent queries is returned this event is emitted */
     @Output() public virtualEntitiesDataChanged               = new EventEmitter<Map<string, SzResolvedVirtualEntity>>();
+    /** when a user clicks the info link inside of a step card this event is emitted*/
+    @Output() public virtualEntityInfoLinkClicked             = new EventEmitter<SzVirtualEntityRecordsClickEvent>();
     
     // --------------------------------------------    getters and setters    --------------------------------------------
-
+    /**
+     * the entity id of the entity to display the How report for
+     */
     public get entityId(): SzEntityIdentifier {
       return this._entityId;
     }
+    /**
+     * the entity id of the entity to display the How report for
+     */
     @Input() public set entityId(value: SzEntityIdentifier) {
       this._entityId = value;
       if(this._dataLoadedForId != this.entityId) {
         this._entityIdChange.next(this.entityId);
       }
     }
+    /** when the entity id has changed and a data request response is pending this event is emitted */
     public get isLoading(): boolean {
       return this._isLoading;
     }
-    public get orderedFeatures(): string[] {
+    /*public get orderedFeatures(): string[] {
       return this._featureTypesOrdered
-    }
+    }*/
+    /** whether or not to show the navigation rail */
     public get showNavigation(): boolean {
       return this._showNavigation;
     }
+    /** whether or not to show the navigation rail */
     @Input() public set showNavigation(value: boolean | string) {
       this._showNavigation = parseBool(value);
     }
-
+    /** get the steps returned from the main api request as extended 'SzResolutionStepNode' objects.
+     * the extended objects are recursive, nested, grouped etc and used for display.
+     */
     public get stepNodes(): Array<SzResolutionStepNode> {
       if(!this._resolutionSteps) { return undefined; }
       if(!this.howUIService.stepNodes || this.howUIService.stepNodes === undefined || (this.howUIService.stepNodes && this.howUIService.stepNodes.length <= 0)) {
@@ -144,17 +187,26 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       }
       return this.howUIService.stepNodes;
     }
-    public get resolutionSteps(): Array<SzResolutionStep> | undefined {
-      return this._resolutionSteps;
-    }
+    /**
+     * resolutionSteps from the api response object
+     */
     public get resolutionStepsByVirtualId() {
       return this._resolutionStepsByVirtualId;
     }
+    /** map of virtual entities by id*/
     public get virtualEntitiesById(): Map<string, SzResolvedVirtualEntity> {
       return this._virtualEntitiesById;
     }
 
     // -------------------------------------------------- event handlers -------------------------------------------------
+    
+    /** 
+     * @internal 
+     * when the entity id changes this method 
+     * this method queries the api endpoint and 
+     * reinitializes all the various objects and collections that are generated from the data 
+     * returned.
+    */
     private onEntityIdChange() {
       if(this.entityId) {
         // get entity data
@@ -192,13 +244,9 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
                 this._resolutionSteps = _resSteps.reverse(); // we want the steps in reverse for display purposes
             }
             if(this._resolutionSteps){
-              //this._stepGroups                  = this.getDefaultStepGroups(this._resolutionSteps);
               this._stepNodeGroups              = this.getDefaultStepNodeGroups(this._resolutionSteps);
               this.howUIService.stepNodeGroups  = this._stepNodeGroups;
               this.howUIService.stepNodes       = this.stepNodes;
-              //this.howUIService.stepGroups      = this._stepGroups;
-              //this.howUIService.stepNodes       = this.getResolutionStepsAsNodes(this._resolutionSteps, this._stepNodeGroups);
-              //this.howUIService.stepsList       = this.getResolutionStepsWithGroups(this._resolutionSteps, this._stepGroups);
             }
             // extend data with augmentation
             if(this._data && this._data.resolutionSteps) {
@@ -219,10 +267,10 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     }
 
     // ------------------------------------------ utility methods and functions ------------------------------------------
-
+    /** @internal */
     private getGroupForMemberStep(step: SzResolutionStep, groups?: Map<string, SzResolutionStepNode>): SzResolutionStepNode {
       let _retVal: SzResolutionStepNode;
-      if(!groups) { groups = this._stepNodeGroups; }
+      if(!groups) { groups = this.howUIService.stepNodeGroups; }
       if(groups && step) {
         let _idToLookFor = step.resolvedVirtualEntityId;
         let _sk = false;
@@ -234,11 +282,12 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       }
       return _retVal;
     }
+    /** @internal */
     private getResolutionStepGroupById(id: string, groups: Map<string, SzResolutionStepNode>): SzResolutionStepNode {
       let _g = groups.get(id);
       return _g ? _g : undefined;
     }
-
+    /** @internal */
     private getResolutionStepGroupIdByMemberVirtualId(virtualEntityId: string, groups: Map<string, SzResolutionStepNode>) {
       let retVal;
       if(groups) {
@@ -251,6 +300,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       }
       return retVal;
     }
+    /** @internal */
     private getResolutionStepGroupByMemberVirtualId(virtualEntityId: string, groups: Map<string, SzResolutionStepNode>) {
       if(groups) {
         let _groupId = this.getResolutionStepGroupIdByMemberVirtualId(virtualEntityId, groups);
@@ -260,31 +310,33 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       }
       return undefined;
     }
-    
+    /** is a specific step a member of a stack group */
     isStepMemberOfStack(vId) {
       let retVal = this.howUIService.isStepMemberOfStack(vId);
 
       console.log(`isStepMemberOfStack("${vId}") : `, retVal, this.howUIService.stepGroupStacks);
     }
+    /** if step can be a member of a stack group returns true */
     stepCanBeUnPinned(vId) {
       let retVal = this.howUIService.stepCanBeUnPinned(vId, true);
       console.log(`stepCanBeUnPinned("${vId}") : ${retVal}`, this.howUIService.stepGroupStacks);
     }
-
-    private isStepMemberOfGroup(step: SzResolutionStep, groups?: Map<string, SzResolutionStepNode>) {
-      if(this.getGroupForMemberStep(step, groups) !== undefined) {
+    /** is a specific step a child of any other steps */
+    private isStepChildOfNode(step: SzResolutionStep, nodesWithChildren?: Map<string, SzResolutionStepNode>) {
+      if(this.getGroupForMemberStep(step, nodesWithChildren) !== undefined) {
         return true;
       }
       return false;
     }
-
-    private stepHasMembers(virtualEntityId: string, groups: Map<string, SzResolutionStepNode>) {
-      let _retVal   = groups && groups.get(virtualEntityId) !== undefined ? true : false;
+    /** does a step have children */
+    private stepHasMembers(virtualEntityId: string, nodesWithChildren: Map<string, SzResolutionStepNode>) {
+      let _retVal   = nodesWithChildren && nodesWithChildren.get(virtualEntityId) !== undefined ? true : false;
       return _retVal;
     }
-    public stepIsMemberOfGroup(virtualEntityId: string, groups: Map<string, SzResolutionStepNode>) {
+    /** is a specific step a child of any other steps */
+    public stepIsMemberOfGroup(virtualEntityId: string, nodesWithChildren: Map<string, SzResolutionStepNode>) {
       let _retVal   = false;
-      let _groupId  = this.getResolutionStepGroupIdByMemberVirtualId(virtualEntityId, groups);
+      let _groupId  = this.getResolutionStepGroupIdByMemberVirtualId(virtualEntityId, nodesWithChildren);
       if(_groupId) {
         _retVal     = true; 
       }
@@ -300,7 +352,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     
     /** get data and set up event subscribers on initialization */
     ngOnInit() {
-      this.getFeatureTypeOrderFromConfig();
+      //this.getFeatureTypeOrderFromConfig();
       // publish how step data on retrieval
       this.dataChange.pipe(
         takeUntil(this.unsubscribe$)
@@ -359,89 +411,94 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
             this.entityId as number
         )
     }
-    public getDefaultStepNodeGroups(_rSteps?: Array<SzResolutionStep>): Map<string, SzResolutionStepNode> {
+    /**
+     * @internal 
+     * this method returns node wrappers as SzResolutionStepNode that contain children SzResolutionStepNode or SzResolutionStep steps.
+     * This is primarily used for generating the default 'STACK' groups, but also include 'SzResolutionStepNode' objects 
+     * that contain other groups or individual steps
+     */
+    private getDefaultStepNodeGroups(_rSteps?: Array<SzResolutionStep>): Map<string, SzResolutionStepNode> {
       let retVal = new Map<string, SzResolutionStepNode>();
       if(!_rSteps) {
         _rSteps = this._resolutionSteps;
       }
+
       if(_rSteps && _rSteps.length > 1) {
-        if(_rSteps && _rSteps.length > 1) {
-          let _stepNodesForInterimEntities = this.getStepNodesForInterimEntities(_rSteps);
-          let _currentGroupId   = uuidv4();
+        let _stepNodesForInterimEntities = this.getStepNodesForInterimEntities(_rSteps);
+        let _currentGroupId;//   = uuidv4();
+        //console.log(`generated new uuid: ${_currentGroupId}`)
 
-          let _filteredSteps = _rSteps.filter((resStep: SzResolutionStep, stepArrIndex: number) => {
+        let _filteredSteps = _rSteps.filter((resStep: SzResolutionStep, stepArrIndex: number) => {
+          // if step is a member of an interim entity we should 
             // if step is a member of an interim entity we should 
-            // exclude it from list
-            return !this.isStepMemberOfGroup(resStep, _stepNodesForInterimEntities) && !(SzHowUIService.getResolutionStepCardType(resStep) === SzResolutionStepDisplayType.MERGE);
-          });
+          // if step is a member of an interim entity we should 
+            // if step is a member of an interim entity we should 
+          // if step is a member of an interim entity we should 
+            // if step is a member of an interim entity we should 
+          // if step is a member of an interim entity we should 
+          // exclude it from list
+          return !this.isStepChildOfNode(resStep, _stepNodesForInterimEntities) && !(SzHowUIService.getResolutionStepCardType(resStep) === SzResolutionStepDisplayType.MERGE);
+        });
 
-          _filteredSteps.forEach((resStep: SzResolutionStep, stepArrIndex: number) => {
-            // check to see if we have any "top-level" collapsible groups
-            let futureStepType  = _rSteps[(stepArrIndex + 1)]  ? SzHowUIService.getResolutionStepCardType((_rSteps[(stepArrIndex + 1)] as SzResolutionStep), resStep.stepNumber) : undefined;
-            let currentStepType = _rSteps[stepArrIndex]        ? SzHowUIService.getResolutionStepCardType((_rSteps[ stepArrIndex     ] as SzResolutionStep), resStep.stepNumber) : undefined;
-            let lastStepType    = _rSteps[(stepArrIndex - 1)]  ? SzHowUIService.getResolutionStepCardType((_rSteps[(stepArrIndex - 1)] as SzResolutionStep), resStep.stepNumber) : undefined;
-            if(currentStepType !== SzResolutionStepDisplayType.ADD){ 
-              //_resolutionStepsWithGroups.push(resStep);
-            } else {
-              // current type is "add"
-                // check if previous step was add
-                // if so add this item to previous item
-                let _wrappedStep = Object.assign(resStep, {
-                  id: resStep.resolvedVirtualEntityId
+        _filteredSteps.forEach((resStep: SzResolutionStep, stepArrIndex: number) => {
+          // check to see if we have any "top-level" collapsible groups
+          let futureStepType  = _rSteps[(stepArrIndex + 1)]  ? SzHowUIService.getResolutionStepCardType((_rSteps[(stepArrIndex + 1)] as SzResolutionStep), resStep.stepNumber) : undefined;
+          let currentStepType = _rSteps[stepArrIndex]        ? SzHowUIService.getResolutionStepCardType((_rSteps[ stepArrIndex     ] as SzResolutionStep), resStep.stepNumber) : undefined;
+          let lastStepType    = _rSteps[(stepArrIndex - 1)]  ? SzHowUIService.getResolutionStepCardType((_rSteps[(stepArrIndex - 1)] as SzResolutionStep), resStep.stepNumber) : undefined;
+          if(currentStepType !== SzResolutionStepDisplayType.ADD){ 
+            //_resolutionStepsWithGroups.push(resStep);
+          } else {
+            // current type is "add"
+              // check if previous step was add
+              // if so add this item to previous item
+              let _wrappedStep = Object.assign(resStep, {
+                id: resStep.resolvedVirtualEntityId
+              });
+              if(lastStepType === SzResolutionStepDisplayType.ADD) {
+                retVal.get(_currentGroupId).children.push(_wrappedStep);
+                this.howUIService.collapseNode(resStep.resolvedVirtualEntityId, SzResolutionStepListItemType.STEP);
+                //console.log(`${stepArrIndex} | previous step was add operation. append`, retVal.get(_currentGroupId));
+                //(_resolutionStepsWithGroups[(_resolutionStepsWithGroups.length - 1)] as SzResolutionStep[]).push(resStep);
+              } else if(futureStepType === SzResolutionStepDisplayType.ADD) {
+                // this is the first "add record" in a sequence of at least
+                // two add records
+                _currentGroupId   = uuidv4();
+                retVal.set(_currentGroupId, {
+                  id: _currentGroupId,
+                  itemType: SzResolutionStepListItemType.STACK,
+                  children: []
                 });
-                if(lastStepType === SzResolutionStepDisplayType.ADD) {
-                  retVal.get(_currentGroupId).children.push(_wrappedStep);
-                  this.howUIService.collapseNode(resStep.resolvedVirtualEntityId, SzResolutionStepListItemType.STEP);
-                  //console.log(`${stepArrIndex} | previous step was add operation. append`, retVal.get(_currentGroupId));
-                  //(_resolutionStepsWithGroups[(_resolutionStepsWithGroups.length - 1)] as SzResolutionStep[]).push(resStep);
-                } else if(futureStepType === SzResolutionStepDisplayType.ADD) {
-                  // this is the first "add record" in a sequence of at least
-                  // two add records
-                  _currentGroupId   = uuidv4();
-                  retVal.set(_currentGroupId, {
-                    id: _currentGroupId,
-                    itemType: SzResolutionStepListItemType.STACK,
-                    children: []
-                  });
-                  // add item to stack
-                  retVal.get(_currentGroupId).children.push(_wrappedStep);
-                  // collapse stack itself by default, and all individual steps
-                  this.howUIService.collapseNode(_currentGroupId, SzResolutionStepListItemType.STACK);
-                  // step is always "ADD" type so it's always a "STEP"
-                  this.howUIService.collapseNode(resStep.resolvedVirtualEntityId, SzResolutionStepListItemType.STEP);
-                  //_resolutionStepsWithGroups.push([resStep]);
-                  //console.log(`${stepArrIndex} | first add operation in series`, retVal.get(_currentGroupId));
-                } else {
-                  // this is a "singular" "add record" step, do not group it
-                  //_resolutionStepsWithGroups.push(resStep);
-                }
+                // add item to stack
+                retVal.get(_currentGroupId).children.push(_wrappedStep);
+                // collapse stack itself by default, and all individual steps
+                this.howUIService.collapseNode(_currentGroupId, SzResolutionStepListItemType.STACK);
+                // step is always "ADD" type so it's always a "STEP"
+                this.howUIService.collapseNode(resStep.resolvedVirtualEntityId, SzResolutionStepListItemType.STEP);
+                //_resolutionStepsWithGroups.push([resStep]);
+                //console.log(`${stepArrIndex} | first add operation in series`, retVal.get(_currentGroupId));
+              } else {
+                // this is a "singular" "add record" step, do not group it
+                //_resolutionStepsWithGroups.push(resStep);
+              }
 
-                //retVal.get(_currentGroupId).virtualEntityIds = retVal.get(_currentGroupId).children.map((rStep: SzResolutionStep) => { return rStep.resolvedVirtualEntityId; });
-                retVal.get(_currentGroupId).virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(false, retVal.get(_currentGroupId));
-            }
-          });
-  
-          _stepNodesForInterimEntities.forEach((group, key) => {
-            retVal.set(key, group);
-            this.howUIService.collapseNode(group.id, SzResolutionStepListItemType.STEP);
-          });
-        }
+              //retVal.get(_currentGroupId).virtualEntityIds = retVal.get(_currentGroupId).children.map((rStep: SzResolutionStep) => { return rStep.resolvedVirtualEntityId; });
+              retVal.get(_currentGroupId).virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(false, retVal.get(_currentGroupId));
+          }
+        });
+
+        _stepNodesForInterimEntities.forEach((group, key) => {
+          retVal.set(key, group);
+          this.howUIService.collapseNode(group.id, SzResolutionStepListItemType.STEP);
+        });
+        
       }
       return retVal;
     }
-
     /**
-     * @internal
-     * get features that are ordered from the config data service. this is necessary to 
-     * decide what order to list entity features in.
+     * @internal 
+     * this method extends the SzResolutionStep objects returned from the api endpoint and applies grouping
+     * and stack wrappers to contiguous steps etc so that the data is more appropriate for display.
      */
-    private getFeatureTypeOrderFromConfig() {
-        this.configDataService.getOrderedFeatures().subscribe((res: any)=>{
-            this._featureTypesOrdered = res;
-            console.log('getFeatureTypeOrderFromConfig: ', res);
-        });
-    }
-
     public getResolutionStepsAsNodes(steps: SzResolutionStep[], groups: Map<string, SzResolutionStepNode>): SzResolutionStepNode[] {
       let retVal: SzResolutionStepNode[] = [];
       // extend groups recursively
@@ -508,9 +565,10 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         });
         console.log(`\t\t...done`, retVal);
       }
-      console.info(`getResolutionStepsAsNodes() `, retVal, this._resolutionSteps, groups);
+      //console.info(`getResolutionStepsAsNodes() `, retVal, this._resolutionSteps, groups);
       return retVal;
     }
+    /** @internal */
     public getRecordsForNode(onlySingletons: boolean, step: SzResolutionStepNode): Array<SzVirtualEntityRecord> {
       let retVal: SzVirtualEntityRecord[] = [];
       if(step && step.inboundVirtualEntity && step.inboundVirtualEntity.records && step.inboundVirtualEntity.records.length > 0) {
@@ -525,8 +583,17 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       }
       return retVal = Array.from(new Set(retVal)); // de-dupe any values
     }
-
-    public getStepNodeGroupsRecursively (_rSteps?: Array<SzResolutionStep>, defaultStepGroups?: Map<string, SzResolutionStepNode>): Map<string, SzResolutionStepNode> {
+    /**
+     * @internal
+     * 
+     * This method returns node wrappers as SzResolutionStepNode objects. Objects can have 'children' objects of the same 
+     * type.. which can also have children etc. This is a method that converts the FLAT array of steps to a fully nested collection of 
+     * nodes suitable for rendering.
+     * @param _rSteps steps to be nested
+     * @param defaultStepGroups flat map of step nodes that contain other step nodes. nodes that have no children are excluded.
+     * @returns 
+     */
+    private getStepNodeGroupsRecursively (_rSteps?: Array<SzResolutionStep>, defaultStepGroups?: Map<string, SzResolutionStepNode>): Map<string, SzResolutionStepNode> {
       let _stepGroups       = defaultStepGroups ? defaultStepGroups : this.getDefaultStepNodeGroups(_rSteps);
       let _recursiveGroups:Map<string, SzResolutionStepNode> = new Map();
       _stepGroups.forEach((sGroup: SzResolutionStepNode, sGKey: string) => {
@@ -540,7 +607,11 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       }
       return _recursiveGroups;
     }
-    public getStepNodesForInterimEntities(_rSteps?: Array<SzResolutionStep>): Map<string, SzResolutionStepNode> {
+    /**
+     * @internal
+     * Gets a flat map of step nodes that are the precursor to merge/interim steps. 
+     */
+    private getStepNodesForInterimEntities(_rSteps?: Array<SzResolutionStep>): Map<string, SzResolutionStepNode> {
       let retVal        = new Map<string, SzResolutionStepNode>();
       let interimGroups = new Map<string, SzResolutionStepNode>();
 
@@ -619,7 +690,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         });
       }
 
-      console.log('getStepNodesForInterimEntities', retVal);
+      //console.log('getStepNodesForInterimEntities', retVal);
       return retVal;
     }
 
@@ -688,6 +759,15 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       }
       return _retObserveable;
     }
+    /**
+     * @internal
+     * 
+     * This is the recursive function used by 'getStepNodeGroupsRecursively' to recursively traverse and return the nested
+     * tree of step nodes.
+     * 
+     * @param stepNodeGroups flat map of step nodes that contain other step nodes. defaults to the result of 'getDefaultStepNodeGroups'.
+     * @param stepNode current node context. if the node is an interim step, the step is nested inside a step group.
+     */
     private nestInterimStepsForNodeGroup(stepNodeGroups: Map<string, SzResolutionStepNode>, stepNode: SzResolutionStepNode): SzResolutionStepNode {
       let _retVal: SzResolutionStepNode = Object.assign({}, stepNode);
       if(stepNode && stepNode.children && stepNode.itemType === SzResolutionStepListItemType.GROUP && stepNode.stepType === SzResolutionStepDisplayType.INTERIM) {
@@ -741,7 +821,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     // -------------------------------- debug methods (delete or comment out for release) --------------------------------
 
     stepIsMemberOfGroupDebug(virtualEntityId: string, debug?: boolean) {
-      let _retVal = this.stepIsMemberOfGroup(virtualEntityId, this._stepNodeGroups);
+      let _retVal = this.stepIsMemberOfGroup(virtualEntityId, this.howUIService.stepNodeGroups);
       if(debug !== false) { console.log(`stepIsMemberOfGroupDebug('${virtualEntityId}') ? ${_retVal}`); }
       return _retVal;
     }

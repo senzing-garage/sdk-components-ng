@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, HostBinding } from '@angular/core';
+import { Component, Input, OnDestroy, HostBinding } from '@angular/core';
 import { 
     EntityDataService as SzEntityDataService, 
     SzResolutionStep 
@@ -23,7 +23,7 @@ import { SzHowUIService } from '../services/sz-how-ui.service';
     templateUrl: './sz-how-step-stack.component.html',
     styleUrls: ['./sz-how-step-stack.component.scss']
 })
-export class SzHowStepStackComponent implements OnInit, OnDestroy {
+export class SzHowStepStackComponent implements OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
     private _stepMap: {[key: string]: SzResolutionStep};
@@ -148,28 +148,11 @@ export class SzHowStepStackComponent implements OnInit, OnDestroy {
         return retVal;
     }
 
-    /*isStepDisplayType(step: SzResolutionStep, typeVerb: SzResolutionStepDisplayType): boolean {
-        let stepType = SzHowUIService.getResolutionStepCardType(step);
-        return stepType === typeVerb;
-    } */
-
     constructor(
         public entityDataService: SzEntityDataService,
         public configDataService: SzConfigDataService,
         private howUIService: SzHowUIService
     ){}
-
-    ngOnInit() {
-        /*this.howUIService.onGroupExpansionChange.pipe(
-            takeUntil(this.unsubscribe$)
-        ).subscribe(this.onGroupExpansionChange.bind(this));*/
-    }
-
-    /*
-    onGroupExpansionChange(gId: string) {
-        console.log(`onGroupExpansionChange: ${gId}`, this);
-        this._collapsed = !this.howUIService.isExpanded(gId);
-    }*/
 
     /**
      * unsubscribe when component is destroyed
