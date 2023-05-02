@@ -21,7 +21,8 @@ export class AppComponent {
   //public currentlySelectedEntityId: number = 400124;
 
   //public currentlySelectedEntityId: number = 401992;
-  public currentlySelectedEntityId: number = 200003;
+  //public currentlySelectedEntityId: number = 200003;
+  public currentlySelectedEntityId: number = 200002;
 
   private howResult: SzHowEntityResult;  
   @ViewChild('howGraph') howGraph: SzSearchComponent;
