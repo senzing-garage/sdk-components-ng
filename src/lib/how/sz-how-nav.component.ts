@@ -1,19 +1,18 @@
-import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, HostBinding } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
 import { 
     EntityDataService as SzEntityDataService, 
-    SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzConfigResponse, SzEntityIdentifier, SzVirtualEntityRecord, SzFeatureScore 
+    SzResolutionStep, SzVirtualEntityRecord, SzFeatureScore 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../services/sz-config-data.service';
-import { SzHowFinalCardData, SzResolutionStepDisplayType, SzResolutionStepListItem, SzResolvedVirtualEntity } from '../models/data-how';
+import { SzResolutionStepDisplayType, SzResolvedVirtualEntity } from '../models/data-how';
 import { parseBool } from '../common/utils';
-import { filter, Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
-import { parseSzIdentifier, isNotNull } from '../common/utils';
+import { filter, Subject, takeUntil } from 'rxjs';
+import { isNotNull } from '../common/utils';
 import { SzHowUIService } from '../services/sz-how-ui.service';
 
-import { MatSelect } from '@angular/material/select';
-
+/** model for counting how many steps match a specific parameter */
 export interface SzHowNavComponentParameterCounts {
     'CREATE': number,
     'ADD': number,
@@ -22,7 +21,28 @@ export interface SzHowNavComponentParameterCounts {
     'LOW_SCORE_ADDRESS': number,
     'LOW_SCORE_PHONE': number
 }
-
+/** model that extends a resolution step with display specific metadata used in the matches list */
+export interface SzResolutionStepListItem extends SzResolutionStep {
+    actionType: SzResolutionStepDisplayType,
+    title: string,
+    cssClasses?: string[],
+    description: {text: string, cssClasses: string[]}[],
+    recordIds?: string[],
+    dataSources?: string[],
+    freeTextTerms?: string[]
+}
+/**
+ * Provides a collapsible list of steps from a "How" report that can 
+ * be used for quickly navigating a how report and filtering based on user 
+ * parameters.
+ *
+ * @example 
+ * &lt;!-- (Angular) --&gt;<br/>
+ * &lt;sz-how-nav&gt;&lt;/sz-how-nav&gt;<br/><br/>
+ *
+ * &lt;!-- (WC) --&gt;<br/>
+ * &lt;sz-wc-how-nav&gt;&lt;/sz-wc-how-nav&gt;<br/>
+*/
 @Component({
     selector: 'sz-how-nav',
     templateUrl: './sz-how-nav.component.html',
@@ -184,41 +204,62 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
     }
 
     // ---------------------------------------- start parameters
+    /** @internal */
     private _filterByTextOrRecordId: string             = undefined;
+    /** @internal */
     private _filterByVirtualEntityCreation: boolean     = false;
+    /** @internal */
     private _filterByMergeInterimEntitites: boolean     = false;
+    /** @internal */
     private _filterByAddRecordtoVirtualEntity: boolean  = false;
+    /** @internal */
     private _filterByLowScoringNames: boolean           = false;
+    /** @internal */
     private _filterByLowScoringAddresses                = false;
+    /** @internal */
     private _filterByLowScoringPhoneNumbers: boolean    = false;
         // ---------------------------------------- public getters
+        /** get the text or record id being searched for */
         get filterByTextOrRecordId(): string | undefined   { return this._filterByTextOrRecordId; }
+        /** whether or not to include steps that created a new virtual entity  */
         get filterByVirtualEntityCreation(): boolean       { return this._filterByVirtualEntityCreation; }
+        /** whether or not to include steps that merged one or more virtual entities */
         get filterByMergeInterimEntitites(): boolean       { return this._filterByMergeInterimEntitites; }
+        /** whether or not to include steps where a record was added to a virtual entity */
         get filterByAddRecordtoVirtualEntity(): boolean    { return this._filterByAddRecordtoVirtualEntity; }
+        /** whether or not to include steps where names where not a close or same match */
         get filterByLowScoringNames(): boolean             { return this._filterByLowScoringNames; }
+        /** whether or not to include steps where addresses were not a close or same match */
         get filterByLowScoringAddresses(): boolean         { return this._filterByLowScoringAddresses; }
+        /** whether or not to include steps where phone numbers were not a close or same match */
         get filterByLowScoringPhoneNumbers(): boolean      { return this._filterByLowScoringPhoneNumbers; }
 
         // ---------------------------------------- public setters
+        /** get the text or record id being searched for */
         @Input() set filterByTextOrRecordId(value: string | undefined) {
             this._filterByTextOrRecordId = value;
         }
+        /** whether or not to include steps that created a new virtual entity  */
         @Input() set filterByVirtualEntityCreation(value: boolean | undefined) {
             this._filterByVirtualEntityCreation = parseBool(value);
         }
+        /** whether or not to include steps that merged one or more virtual entities */
         @Input() set filterByMergeInterimEntitites(value: boolean | undefined) {
             this._filterByMergeInterimEntitites = parseBool(value);
         }
+        /** whether or not to include steps where a record was added to a virtual entity */
         @Input() set filterByAddRecordtoVirtualEntity(value: boolean | undefined) {
             this._filterByAddRecordtoVirtualEntity = parseBool(value);
         }
+        /** whether or not to include steps where names were not a close or same match */
         @Input() set filterByLowScoringNames(value: boolean | undefined) {
             this._filterByLowScoringNames = parseBool(value);
         }
+        /** whether or not to include steps where addresses were not a close or same match */
         @Input() set filterByLowScoringAddresses(value: boolean | undefined) {
             this._filterByLowScoringAddresses = parseBool(value);
         }
+        /** whether or not to include steps where phone numbers were not a close or same match */
         @Input() set filterByLowScoringPhoneNumbers(value: boolean | undefined) {
             this._filterByLowScoringPhoneNumbers = parseBool(value);
         }
@@ -237,7 +278,8 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
-    /** @internal
+    /** 
+     * @internal
      * generates extended presentation and filtering specific data for steps and returns them as an array of extended items */
     private getListSteps(): SzResolutionStepListItem[] {
         let retVal: SzResolutionStepListItem[];
@@ -448,7 +490,10 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
 
         return retVal;
     }
-
+    /**
+     * @internal 
+     * get a array of recordId's present in a particular step.
+     */
     private getStepListItemRecords(step: SzResolutionStep): string[] {
         let retVal = [];
         if(step && step.candidateVirtualEntity && step.candidateVirtualEntity.records && step.candidateVirtualEntity.singleton) {
@@ -463,7 +508,10 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
-
+    /**
+     * @internal 
+     * get a array of datasources present in a particular step.
+     */
     private getStepListItemDataSources(step: SzResolutionStep): string[] {
         let retVal = [];
         if(step && step.candidateVirtualEntity && step.candidateVirtualEntity.records) {
@@ -478,7 +526,11 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
-
+    /**
+     * @internal 
+     * get a array of text tokens in a particular step so a user can perform text searches for steps that 
+     * contain particular terms.
+     */
     private getStepListItemFreeTextTerms(step: SzResolutionStepListItem): string[] {
         let retVal = [];
         if(step.title) {
@@ -521,11 +573,17 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         //console.log(`getStepListItemFreeTextTerms()`, ret, step, this._virtualEntitiesById);
         return ret;
     }    
-
+    /**
+     * @internal
+     * get the type of card that the step will be displayed as.
+     */
     private getStepListCardType(step: SzResolutionStep): SzResolutionStepDisplayType {
         return SzHowUIService.getResolutionStepCardType(step);
     }
-
+    /**
+     * @internal
+     * get the title of a step to display in matches list
+     */
     private getStepListItemTitle(step: SzResolutionStep): string {
         let retVal = '';
         if(step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) {
@@ -540,7 +598,10 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
-
+    /**
+     * @internal
+     * get the description for a step that is displayed in the matches list. 
+     */
     private getStepListItemDescription(step: SzResolutionStep): {text: string, cssClasses: string[]}[] {
         let retVal = [];
         if(step){
@@ -566,7 +627,10 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
-
+    /**
+     * @internal
+     * get the css classes to apply to steps in the matches list.
+     */
     private getStepListItemCssClasses(step: SzResolutionStep) {
         let listItemVerb    = this.getStepListCardType(step);
         let cssClasses      = [];
@@ -606,7 +670,10 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
-
+    /**
+     * when a step is clicked this method collapses all other currently expanded steps, and expands the 
+     * step specified and all ancestors in it's tree.
+     */
     public stepClicked(step: SzResolutionStep) {
         this.howUIService.selectStep(step.resolvedVirtualEntityId);
     }

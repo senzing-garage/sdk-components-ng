@@ -1,25 +1,23 @@
-import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DataSource } from '@angular/cdk/collections';
+import { Component, OnInit, Input, OnDestroy, HostBinding } from '@angular/core';
 import { 
     EntityDataService as SzEntityDataService, 
-    SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzHowEntityResponse, SzHowEntityResult, SzMatchedRecord, SzRecordId, SzResolutionStep, SzVirtualEntity, SzVirtualEntityData, SzWhyEntityResponse, SzWhyEntityResult, SzConfigResponse, SzVirtualEntityRecord, SzDataSourceRecordSummary 
+    SzResolutionStep
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../services/sz-config-data.service';
-import { SzHowFinalCardData, SzResolutionStepListItemType, SzResolutionStepNode, SzResolvedVirtualEntity, SzVirtualEntityRecordsClickEvent } from '../models/data-how';
-import { filter, Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
-import { parseSzIdentifier } from '../common/utils';
+import { SzResolutionStepListItemType, SzResolutionStepNode, SzResolvedVirtualEntity } from '../models/data-how';
+import { Subject } from 'rxjs';
 import { SzHowUIService } from '../services/sz-how-ui.service';
 
 /**
- * Why
+ * Represents a step node in a How Report. Step Nodes wrap Step cards
+ * and can have child Step Nodes.
  *
  * @example 
  * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-how-step entityId="5"&gt;&lt;/sz-how-step&gt;<br/><br/>
+ * &lt;sz-how-step-node&gt;&lt;/sz-how-step&gt;<br/><br/>
  *
  * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-how-step entityId="5"&gt;&lt;/sz-how-step&gt;<br/>
+ * &lt;sz-wc-how-step-node&gt;&lt;/sz-wc-how-step-node&gt;<br/>
 */
 @Component({
     selector: 'sz-how-step-node',
