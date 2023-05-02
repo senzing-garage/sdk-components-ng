@@ -329,6 +329,9 @@ body {
     /* end relationship section list vars */
 
     /* graph */
+    --sz-graph-primary-entity-color: rgb(161, 219, 253);
+    --sz-graph-node-icon-color: $sz-dark2;
+    --sz-graph-node-icon-outline-color: #565656;
     --sz-graph-link-line-color: #999;
     --sz-graph-link-line-non-focused-color: var(--sz-graph-link-line-color);
     --sz-graph-link-line-non-focused-opacity: 1;
@@ -406,7 +409,13 @@ body {
     --sz-graph-filter-match-key-mode-select-handle-color: rgb(219, 219, 219);
     --sz-graph-filter-match-key-mode-select-active-track-color: rgba(15, 158, 247, 0.31);
     --sz-graph-filter-match-key-mode-select-active-handle-color: #{$sz-blue};
-
+    /* filter tooltips */
+    --sz-graph-filter-tooltip-background-color: #353535a6;
+    --sz-graph-filter-tooltip-color: #fff;
+    --sz-graph-filter-tooltip-padding: 10px 16px;
+    --sz-graph-filter-tooltip-border-radius: 6px;
+    --sz-graph-filter-tooltip-font-size: 10px;
+    --sz-graph-filter-tooltip-z-index: 1;
   /* end entity detail vars */
   /* start preferences component */
     --sz-preferences-column-border-radius: 5px;
