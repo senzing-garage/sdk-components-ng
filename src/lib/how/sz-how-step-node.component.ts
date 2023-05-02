@@ -31,10 +31,7 @@ export class SzHowStepNodeComponent implements OnInit, OnDestroy {
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
     private _highlighted: boolean = false;
     private _hasChildStacksCached: boolean;
-    //private _collapsed: boolean = false;
-    //private _collapsedGroup: boolean = false;
-    private _childrenCollapsed: boolean = false;
-
+    
     @HostBinding('class.collapsed') get cssHiddenClass(): boolean {
         return this.isCollapsed;
     }
