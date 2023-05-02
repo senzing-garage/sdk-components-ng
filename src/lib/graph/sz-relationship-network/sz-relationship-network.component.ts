@@ -41,26 +41,122 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   static MIN_RECORD_ID_LENGTH = 3;
 
   static readonly ICONS = {
-    business: {
-      shape: "M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z",
-      enclosed: "M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"
-    }, // TODO replace the business .png with SVG
-    userFemale: {
-      // The outline of the face and shoulders for the female icon
-      shape: "M687.543 599.771c-29.257 73.143-95.086 124.343-175.543 124.343s-146.286-51.2-175.543-117.029c-146.286 36.571-256 146.286-256 277.943v95.086h870.4v-95.086c0-138.971-117.029-248.686-263.314-285.257zM768 592.457c0 0-51.2-299.886-65.829-365.714-14.629-87.771-95.086-160.914-197.486-160.914-95.086 0-182.857 65.829-197.486 160.914-7.314 51.2-73.143 329.143-80.457 343.771 0 0 7.314 14.629 95.086-14.629 7.314 0 43.886-14.629 51.2-14.629 36.571 51.2 80.457 80.457 138.971 80.457 51.2 0 102.4-29.257 138.971-87.771 29.257 14.629 14.629 36.571 117.029 58.514zM512 599.771c-43.886 0-80.457-21.943-109.714-65.829v0c0 0-7.314-7.314-7.314-7.314s0 0 0 0-7.314-7.314-7.314-14.629c0 0 0 0 0 0 0-7.314-7.314-7.314-7.314-14.629 0 0 0 0 0 0 0-7.314-7.314-7.314-7.314-14.629 0 0 0 0 0 0-7.314 0-7.314-7.314-7.314-7.314s0 0 0 0c0-7.314 0-7.314-7.314-14.629 0 0 0 0 0 0 0-7.314 0-7.314-7.314-14.629 0 0 0 0 0 0 0-7.314 0-7.314 0-14.629 0 0 0-7.314-7.314-7.314-7.314-7.314-14.629-21.943-14.629-43.886s7.314-43.886 14.629-51.2c0 0 7.314 0 7.314-7.314 14.629 14.629 7.314-7.314 7.314-21.943 0-43.886 0-51.2 0-58.514 29.257-21.943 80.457-51.2 117.029-51.2 0 0 0 0 0 0 43.886 0 51.2 14.629 73.143 36.571 14.629 29.257 43.886 51.2 109.714 51.2 0 0 0 0 7.314 0 0 0 0 14.629 0 29.257s0 43.886 7.314 14.629c0 0 0 0 7.314 7.314s14.629 21.943 14.629 51.2c0 21.943-7.314 36.571-21.943 43.886 0 0-7.314 7.314-7.314 7.314 0 7.314 0 7.314 0 14.629 0 0 0 0 0 0-7.314 7.314-7.314 7.314-7.314 14.629 0 0 0 0 0 0 0 7.314 0 7.314-7.314 14.629 0 0 0 0 0 0 0 7.314 0 7.314-7.314 14.629 0 0 0 0 0 0 0 7.314 0 7.314-7.314 14.629 0 0 0 0 0 0s-0 7.314-0 7.314c0 0 0 0 0 0 0 7.314-7.314 7.314-7.314 14.629 0 0 0 0 0 0s-7.314 7.314-7.314 7.314v0c-29.257 43.886-73.143 65.829-109.714 65.829z",
-      // The space enclosed by the face of the female icon
-      enclosed: "M512 599.771c-43.886 0-80.457-21.943-109.714-65.829v0c0 0-7.314-7.314-7.314-7.314s0 0 0 0-7.314-7.314-7.314-14.629c0 0 0 0 0 0 0-7.314-7.314-7.314-7.314-14.629 0 0 0 0 0 0 0-7.314-7.314-7.314-7.314-14.629 0 0 0 0 0 0-7.314 0-7.314-7.314-7.314-7.314s0 0 0 0c0-7.314 0-7.314-7.314-14.629 0 0 0 0 0 0 0-7.314 0-7.314-7.314-14.629 0 0 0 0 0 0 0-7.314 0-7.314 0-14.629 0 0 0-7.314-7.314-7.314-7.314-7.314-14.629-21.943-14.629-43.886s7.314-43.886 14.629-51.2c0 0 7.314 0 7.314-7.314 14.629 14.629 7.314-7.314 7.314-21.943 0-43.886 0-51.2 0-58.514 29.257-21.943 80.457-51.2 117.029-51.2 0 0 0 0 0 0 43.886 0 51.2 14.629 73.143 36.571 14.629 29.257 43.886 51.2 109.714 51.2 0 0 0 0 7.314 0 0 0 0 14.629 0 29.257s0 43.886 7.314 14.629c0 0 0 0 7.314 7.314s14.629 21.943 14.629 51.2c0 21.943-7.314 36.571-21.943 43.886 0 0-7.314 7.314-7.314 7.314 0 7.314 0 7.314 0 14.629 0 0 0 0 0 0-7.314 7.314-7.314 7.314-7.314 14.629 0 0 0 0 0 0 0 7.314 0 7.314-7.314 14.629 0 0 0 0 0 0 0 7.314 0 7.314-7.314 14.629 0 0 0 0 0 0 0 7.314 0 7.314-7.314 14.629 0 0 0 0 0 0s-0 7.314-0 7.314c0 0 0 0 0 0 0 7.314-7.314 7.314-7.314 14.629 0 0 0 0 0 0s-7.314 7.314-7.314 7.314v0c-29.257 43.886-73.143 65.829-109.714 65.829z"
-    },
-    userMale: {
-      // The outline of the face and shoulders for the male icon
-      shape: "M256 48C148.5 48 60.1 129.5 49.2 234.1c-.8 7.2-1.2 14.5-1.2 21.9 0 7.4.4 14.7 1.2 21.9C60.1 382.5 148.5 464 256 464c114.9 0 208-93.1 208-208S370.9 48 256 48zm135.8 326.1c-22.7-8.6-59.5-21.2-82.4-28-2.4-.7-2.7-.9-2.7-10.7 0-8.1 3.3-16.3 6.6-23.3 3.6-7.5 7.7-20.2 9.2-31.6 4.2-4.9 10-14.5 13.6-32.9 3.2-16.2 1.7-22.1-.4-27.6-.2-.6-.5-1.2-.6-1.7-.8-3.8.3-23.5 3.1-38.8 1.9-10.5-.5-32.8-14.9-51.3-9.1-11.7-26.6-26-58.5-28h-17.5c-31.4 2-48.8 16.3-58 28-14.5 18.5-16.9 40.8-15 51.3 2.8 15.3 3.9 35 3.1 38.8-.2.7-.4 1.2-.6 1.8-2.1 5.5-3.7 11.4-.4 27.6 3.7 18.4 9.4 28 13.6 32.9 1.5 11.4 5.7 24 9.2 31.6 2.6 5.5 3.8 13 3.8 23.6 0 9.9-.4 10-2.6 10.7-23.7 7-58.9 19.4-80 27.8C91.6 341.4 76 299.9 76 256c0-48.1 18.7-93.3 52.7-127.3S207.9 76 256 76c48.1 0 93.3 18.7 127.3 52.7S436 207.9 436 256c0 43.9-15.6 85.4-44.2 118.1z",
-      // The space enclosed by the face of the male icon
-      enclosed: "M256 76c48.1 0 93.3 18.7 127.3 52.7S436 207.9 436 256s-18.7 93.3-52.7 127.3S304.1 436 256 436c-48.1 0-93.3-18.7-127.3-52.7S76 304.1 76 256s18.7-93.3 52.7-127.3S207.9 76 256 76m0-28C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"
-    },
-    // TODO introduce a gender-neutral person icon for when we can tell a node is a person but the gender isn't specified.
     default: {
-      shape: "M256 48C148.5 48 60.1 129.5 49.2 234.1c-.8 7.2-1.2 14.5-1.2 21.9 0 7.4.4 14.7 1.2 21.9C60.1 382.5 148.5 464 256 464c114.9 0 208-93.1 208-208S370.9 48 256 48zm135.8 326.1c-22.7-8.6-59.5-21.2-82.4-28-2.4-.7-2.7-.9-2.7-10.7 0-8.1 3.3-16.3 6.6-23.3 3.6-7.5 7.7-20.2 9.2-31.6 4.2-4.9 10-14.5 13.6-32.9 3.2-16.2 1.7-22.1-.4-27.6-.2-.6-.5-1.2-.6-1.7-.8-3.8.3-23.5 3.1-38.8 1.9-10.5-.5-32.8-14.9-51.3-9.1-11.7-26.6-26-58.5-28h-17.5c-31.4 2-48.8 16.3-58 28-14.5 18.5-16.9 40.8-15 51.3 2.8 15.3 3.9 35 3.1 38.8-.2.7-.4 1.2-.6 1.8-2.1 5.5-3.7 11.4-.4 27.6 3.7 18.4 9.4 28 13.6 32.9 1.5 11.4 5.7 24 9.2 31.6 2.6 5.5 3.8 13 3.8 23.6 0 9.9-.4 10-2.6 10.7-23.7 7-58.9 19.4-80 27.8C91.6 341.4 76 299.9 76 256c0-48.1 18.7-93.3 52.7-127.3S207.9 76 256 76c48.1 0 93.3 18.7 127.3 52.7S436 207.9 436 256c0 43.9-15.6 85.4-44.2 118.1z",
-      enclosed: "M256 76c48.1 0 93.3 18.7 127.3 52.7S436 207.9 436 256s-18.7 93.3-52.7 127.3S304.1 436 256 436c-48.1 0-93.3-18.7-127.3-52.7S76 304.1 76 256s18.7-93.3 52.7-127.3S207.9 76 256 76m0-28C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"
+      transform: "translate(-24, -24)",
+      enclosure: {
+        'type':'polygon',
+        attrs: {
+          style: '',
+          points: '4.971 12.483 23.721 1.216 43.332 12.225 43.332 34.416 24.065 45.426 4.885 34.76'
+        }
+      },
+      shapes: [
+        {
+          'type':'circle',
+          attrs: {
+            'style':"stroke-width: 2px;",
+            'class': 'sz-graph-node-icon-colored sz-graph-node-icon-fill',
+            'cx':"23.746",
+            'cy':"23.059",
+            'r':"10.28",
+          }
+        },
+        {
+          'type': 'path', 
+          attrs: {
+            'd': 'M 22.16 24.248 L 18.88 22.327 L 13.815 19.478 L 13.864 19.391 L 6.414 15.029 L 6.426 33.595 L 22.092 42.63 Z M 20.333 19.703 L 23.822 21.666 L 39.836 12.495 L 23.907 3.309 L 8.006 12.486 Z M 25.16 24.358 L 25.091 43.022 L 41.426 33.595 L 41.414 15.049 Z M 45.427 35.905 L 23.935 48.31 L 2.427 35.905 L 2.412 11.095 L 23.904 -1.31 L 45.412 11.095 Z', 
+            'style':"stroke-width: 0px; stroke-linecap: round; stroke-linejoin: round;"
+          }
+        },
+        {'type': 'path',    attrs: {'d': 'M 43.298 34.741 L 32.197 28.61',  'style':'stroke-width: 2px;'}},
+        {'type': 'path',    attrs: {'d': 'M 4.443 34.741 L 14.551 28.61',   'style':'stroke-width: 2px;'}},
+        {'type': 'path',    attrs: {'d': 'M 23.829 1.105 L 23.664 12.779',  'style':'stroke-width: 2px;'}}
+      ]
+    },
+    business: {
+      transform: "translate(-24, -24)",
+      enclosure: {
+        'type':'polygon',
+        attrs: {
+          style: '',
+          points: '4.971 12.483 23.721 1.216 43.332 12.225 43.332 34.416 24.065 45.426 4.885 34.76'
+        }
+      },
+      shapes: [
+        {'type': 'path',    attrs: {'d': 'M 24.418 -0.732 L 43.918 10.518 L 43.918 33.018 L 24.418 44.268 L 4.918 33.018 L 4.918 10.518 Z',  'style':'fill: none; stroke-width: 4px; stroke-miterlimit: 1; stroke-linejoin: round;', transform: "matrix(1, 0, 0.000619, 1, -0.51193, 1.732)"}},
+        {'type': 'path',    attrs: {'d': 'M 45.918 9.363 L 45.918 34.173 L 24.418 46.577 L 2.918 34.173 L 2.918 9.363 L 24.418 -3.041 Z M 6.918 11.673 L 6.918 31.863 L 24.418 41.959 L 41.918 31.863 L 41.918 11.673 L 24.418 1.577 Z', transform: "matrix(1, 0, 0.000619, 1, -0.51193, 1.732)"}},
+        {'type': 'line',    attrs: {'x1': "43.298", 'y1': "34.741", 'x2': "35.197", 'y2': "30.61", 'style':'stroke-width: 2px;'}},
+        {'type': 'line',    attrs: {'x1': "4.443",  'y1': "34.741", 'x2': "15.385", 'y2': "28.751", 'style':'stroke-width: 2px;'}},
+        {'type': 'line',    attrs: {'x1': "23.779", 'y1': "1.105",  'x2': "23.664", 'y2': "7.596", 'style':'stroke-width: 2px;'}},
+        {'type': 'polygon', attrs: {points: "15.64 11.124 15.411 31.766 24.741 36.289 24.964 36.244 25.149 15.379", 'style':'fill-opacity: 0.75;', class: "sz-graph-node-icon-fill"}},
+        {
+          'type': 'rect',    
+          attrs: {
+            style: 'fill-opacity: 0.35; stroke-width: 1px;', class: "sz-graph-node-icon-fill",
+            height: "9.788", transform: "matrix(-0.018042, 0.999837, -1.007432, 0.402843, 40.21048, -13.625907)", x: "23.466", y: "4.329", width: "20.616"
+          }
+        },
+        {
+          'type': 'rect',    
+          attrs: {
+            'style':'fill-opacity: 0.25;', class: "sz-graph-node-icon-fill",
+            height: "2.112", transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 28.714645, 9.942789)", x: "19.509", y: "9.62", width:"3.191"
+          }
+        },
+        {
+          'type': 'rect',    
+          attrs: {
+            height: "5.854", transform: "matrix(-0.003082, 0.999995, -1.001202, 0.388327, 51.197021, -12.424412)", x: "28.798", y: "17.702", width:"9.521"
+          }
+        },
+        {
+          'type': 'rect',    
+          attrs: {
+            'style':'fill-opacity: 0.5;', class: "sz-graph-node-icon-fill",
+            height: "7.268", transform: "matrix(-0.914328, -0.404975, 1.289519, -0.522545, 35.140316, 29.862576)", x: "24.535", y: "9.911", width: "10.319"
+          }
+        },
+        {
+          'type': 'rect',    
+          attrs: {
+            'style':'fill-opacity: 0.25;',
+            x:"19.509", y: "9.62", width: "3.191", height: "2.112", 
+            transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 32.736656, 11.856229)"
+          }
+        },
+        {
+          'type': 'rect',    
+          attrs: {
+            'style':'fill-opacity: 0.25;',
+            x:"19.509", y: "9.62", width: "3.191", height: "2.112", 
+            transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 28.792051, 5.020195)"
+          }
+        },
+        {
+          'type': 'rect',    
+          attrs: {
+            'style':'fill-opacity: 0.25;',
+            x:"19.509", y: "9.62", width: "3.191", height: "2.112", 
+            transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 32.742924, 6.862499)"
+          }
+        },
+        {
+          'type': 'rect',    
+          attrs: {
+            'style':'fill-opacity: 0.25;',
+            x:"19.509", y: "9.62", width: "3.191", height: "2.112", 
+            transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 28.869457, -0.05721)"
+          }
+        },
+        {
+          'type': 'rect',    
+          attrs: {
+            'style':'fill-opacity: 0.25;',
+            x:"19.509", y: "9.62", width: "3.191", height: "2.112", 
+            transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 32.794529, 1.810894)"
+          }
+        }
+      ]
     }
   };
   public entityId: number | undefined;
@@ -954,6 +1050,10 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   public canExpandNode(entityId: SzEntityIdentifier): boolean {
     return false;
   }
+
+  /** this is a hoisted function assigned from  "addSvg" inner */
+  private _expandNodeAndRelated: any;
+
   /**
    * Add to the chart entities immediately related to the specified entity
    * @internal
@@ -1051,7 +1151,11 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     let _node = this.getNodeByIdQuery(entityId);
     if(_node && _node.size && _node.size() > 0) {
       _node.each((d) => {
-        this._expandNode(d);
+        if(this._expandNodeAndRelated){
+          this._expandNodeAndRelated(d);  // hoisted function from "addSvg" inner
+        } else {
+          this._expandNode(d);
+        }
       });
     }
   }
@@ -2130,12 +2234,12 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
             _newLabels = _newNodes.append("svg:text")
             .attr("text-anchor", "middle")
             .attr("dy", ".25em")
-            .attr("y", 25)
+            .attr("y", 30)
             .attr("class", (d) => {
               let retVal = ["sz-graph-label"];
               return retVal.join(' ');
             });
-            let _newLabelBaseY = 25;
+            let _newLabelBaseY = 30;
             let _nameLabelLineHeight = 12;
             _newLabels
             .each(function(d, i) {
@@ -2179,39 +2283,72 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
 
           // --- render person nodes
 
-            // Add an SVG circle for the person's face.  This hides the links so they're not visible through the face.
-            _newNodes.filter(d => SzRelationshipNetworkComponent.ICONS[d.iconType])
-            .append('circle')
-            .attr('class', function(d) {
-              return ['sz-graph-icon-enclosure'].concat(d.relationTypeClasses).join(' ');
-            })
-            .attr("cx", 0)
-            .attr("cy", 0)
-            .attr("r", 15);
-
             let businessNodes = _newNodes.filter(d => d.iconType === "business");
-            let personNodes   = _newNodes.filter(d => d.iconType !== "business")
+            let genericNodes  = _newNodes.filter(d => d.iconType === "default")
+            
+            let _appendIconsForNodes = (_nodeList, _iconType) => {
+              let _iconGroups = _nodeList.append('g');
 
-            // Add an SVG icon for the person.
-            personNodes
-            .append('path')
-            .attr('class', function(d) {
-              let _classes = ['sz-graph-node-icon'].concat(d.relationTypeClasses);
-              if(d.isPrimaryEntity) {
-                _classes.push('sz-graph-primary-node')
+              _iconGroups.attr('class', function(d) {
+                  let _classes = ['sz-graph-node-icon'].concat(d.relationTypeClasses);
+                  if(d.isPrimaryEntity) {
+                    _classes.push('sz-graph-primary-node')
+                  }
+                  if(d.isQueriedNode) {
+                    _classes.push('sz-graph-queried-node')
+                  }
+                  if(d.isCoreNode) {
+                    _classes.push('sz-graph-core-node')
+                  }
+                  return _classes.join(' ');
+                })
+                //.attr('fill', d => d.isQueriedNode ? "#000000" : d.isCoreNode ? '#999999' : '#DDDDDD')
+                //.append(_tagType)
+              if(SzRelationshipNetworkComponent.ICONS[_iconType].transform) {
+                _iconGroups.attr('transform', SzRelationshipNetworkComponent.ICONS[_iconType].transform);
               }
-              return _classes.join(' ');
-            })
-            .attr('fill', d => d.isQueriedNode ? "#000000" : d.isCoreNode ? '#999999' : '#DDDDDD')
-            .attr("d", d => SzRelationshipNetworkComponent.ICONS[d.iconType] ?
-                            SzRelationshipNetworkComponent.ICONS[d.iconType]["shape"] :
-                            SzRelationshipNetworkComponent.ICONS["default"]["shape"])
-            .attr("transform", "translate(-20,-20) scale(.080)");
+              if(SzRelationshipNetworkComponent.ICONS[_iconType].enclosure) {
+                let _backgrounds = _iconGroups.append(SzRelationshipNetworkComponent.ICONS[_iconType].enclosure['type']);
+                _backgrounds.attr('class', function(d) {
+                  let _c = ['sz-graph-icon-enclosure'].concat(d.relationTypeClasses);
+                  if(d.dataSources && d.dataSources.map){            //sz-node-ds-${   .toLowerCase()}-fill
+                    let _cToAdd = d.dataSources.map((_ds) => { return `sz-node-ds-${_ds.toLowerCase()}-fill`; });
+                    _c = _c.concat(_cToAdd);
+                  }
+                  return _c.join(' ');
+                });
+                if(SzRelationshipNetworkComponent.ICONS[_iconType].enclosure.attrs) {
+                  for(let _attrName in SzRelationshipNetworkComponent.ICONS[_iconType].enclosure.attrs){
+                    _backgrounds.attr(_attrName, SzRelationshipNetworkComponent.ICONS[_iconType].enclosure.attrs[_attrName]);
+                  }
+                }
+
+              }
+
+              let _tagsToAppend = SzRelationshipNetworkComponent.ICONS[_iconType].shapes;
+              _tagsToAppend.forEach(tagObj => {
+                let _tagType = tagObj['type'];
+                let _appendedTags = _iconGroups.append(_tagType);
+
+                if(tagObj.attrs) {
+                  for(let _attrName in tagObj.attrs){
+                    if(_attrName !== 'type'){
+                      _appendedTags.attr(_attrName, tagObj.attrs[_attrName]);
+                    }
+                  }
+                }
+              });
+            }
+
+            // add icons for generic nodes
+            _appendIconsForNodes(genericNodes, 'default');
+            _appendIconsForNodes(businessNodes, 'business');
           
           // --- render business nodes
 
             // add svg mask for business so you cant click through the surface
             // two rectangles that fill in the building path
+            /*
             businessNodes
               .append('rect')
               .attr('x', 2.03)
@@ -2262,6 +2399,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
             .attr("height", 50)
             .attr("width", 50)
             .attr('class', this.getEntityNodeClass.bind(this));
+            */
 
           // --- add expand/collapse glyph
             // update entities with collapsed relationship information
@@ -2411,12 +2549,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       return Math.floor(Math.random() * (max - min + 1) + min)
     }
 
-    let onExpandCollapseClick     = (event, d) => {
-      // this handler always superceeds any click events etc
-      // so we stop propagation
-      event.stopPropagation();
-
-      if(!d.allRelatedEntitiesOnDeck) {
+    let expandNodeAndRelated = (d) =>{
         // get all related entities
         d.loadingRelatedToDeck = true;
         this.getNodeByIdQuery(d.entityId).attr('class', this.getEntityNodeClass.bind(this));
@@ -2477,6 +2610,18 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           this.updateIsRelatedToFocalEntitiesForLinks(this.link, this.linkLabel);
           return;
         });
+    }
+    // hoist the function inner scoped function to the outer
+    // scope so class level methods can call the inner function
+    this._expandNodeAndRelated = expandNodeAndRelated;
+
+    let onExpandCollapseClick     = (event, d) => {
+      // this handler always superceeds any click events etc
+      // so we stop propagation
+      if(event && event.stopPropagation){ event.stopPropagation(); }
+
+      if(!d.allRelatedEntitiesOnDeck) {
+        expandNodeAndRelated(d);
       } else {
         this.expandCollapseToggle(d);
         // update any "focal" link properties
@@ -3593,16 +3738,17 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   }
 
   static getIconType(resolvedEntity) {
+    console.log(`getIconType(${resolvedEntity.entityId})`);
     let retVal = 'default';
     if(resolvedEntity && resolvedEntity.records) {
       resolvedEntity.records.slice(0, 9).forEach(element => {
         if(element.nameOrg || (element.addressData && element.addressData.some((addr) => addr.indexOf('BUSINESS') > -1))) {
           retVal = 'business';
-        } else if(element.gender && (element.gender === 'FEMALE' || element.gender === 'F') ) {
+        }/* else if(element.gender && (element.gender === 'FEMALE' || element.gender === 'F') ) {
           retVal = 'userFemale';
         } else if(element.gender && (element.gender === 'MALE' || element.gender === 'M') ) {
           retVal = 'userMale';
-        }
+        }*/
       });
     }
     return retVal;

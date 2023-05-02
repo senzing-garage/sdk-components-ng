@@ -40,7 +40,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
   @Input() public whySelectionAction: SzWhySelectionActionBehavior = SzWhySelectionAction.NONE;
 
   @Input() public showWhyUtilities: boolean = false;
-  @Input() public showRecordIdWhenNative: boolean = false;
+  @Input() public showRecordIdWhenNative: boolean = true;
   /** allows records with empty columns to match up with records with non-empty columns. format is [true,false,true,true,true] */
   @Input() public columnsShown: boolean[] = undefined;
   @Input() public set ignorePrefOtherDataChanges(value: boolean) {

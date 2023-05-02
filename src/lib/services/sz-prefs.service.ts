@@ -605,7 +605,7 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _hideGraphWhenZeroRelations: boolean = true;
   /** @internal */
-  private _showRecordIdWhenNative: boolean = false;
+  private _showRecordIdWhenNative: boolean = true;
   /** @internal */
   private _showTopEntityRecordIdsWhenSingular: boolean = false;
 
@@ -894,7 +894,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _dataSourceColors: SzDataSourceComposite[] = [];
   /** @internal */
-  private _showLinkLabels: boolean = false;
+  private _showLinkLabels: boolean = true;
   /** @internal */
   private _rememberStateOptions: boolean = true;
   /** @internal */

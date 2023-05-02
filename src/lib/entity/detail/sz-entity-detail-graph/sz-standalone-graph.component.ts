@@ -108,7 +108,7 @@ export class SzStandaloneGraphComponent extends SzGraphComponent implements Afte
     public dialog: MatDialog,
     public viewContainerRef: ViewContainerRef
   ) {
-    super(_p_prefs, _p_cd, _p_css)
+    super(_p_prefs, _p_cd, _p_css);
   }
 
   ngAfterViewInit() {
@@ -139,6 +139,7 @@ export class SzStandaloneGraphComponent extends SzGraphComponent implements Afte
    * @internal 
    */
   private openGraphContextMenu(event: any, contextMenu: TemplateRef<any>) {
+    console.log('openGraphContextMenu: ', event, contextMenu);
     this.closeGraphContextMenu();
     let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
     const positionStrategy = this.overlay.position().global();
