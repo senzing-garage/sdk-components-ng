@@ -1,0 +1,84 @@
+/* mixins for "how" component base styles */
+$sz-how-card-handle-width: 17px;
+
+@mixin sz-how-entity-card {
+    /*border: 1px solid rgb(173, 102, 102);*/
+    display: inline-flex;
+    flex-direction: row-reverse;
+
+    .content {
+        border: 1px solid rgb(37, 37, 37);
+        border-color: var(--sz-how-card-border-color);
+        border-radius: 7px;
+        box-shadow: 0px 3px 7px 0px rgb(0 0 0 / 20%), 
+        0px 11px 12px 4px rgb(0 0 0 / 14%), 
+        11px 0px 18px 4px rgb(0 0 0 / 12%);
+        /*min-height: 700px;*/
+        min-width: 300px;
+        padding-bottom: 10px;
+    }
+    .handle {
+        display: flex;
+        position: relative;
+        align-items: center;
+        width: $sz-how-card-handle-width;
+        height: 120px;
+        /*background-color: #000;
+        background-color: var(--sz-how-card-ribbon-color);*/
+        /*background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><rect fill='rgb(0,0,0)' x='0' y='0' width='100%' height='100%'/></svg>");
+        background-position: 24px 0;*/
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='17' height='86'><rect fill='rgb(0,0,0)' x='0' y='0' width='100%' height='100%'/></svg>");
+        background-position: 0px 17px;
+        background-repeat: no-repeat;
+        margin-top: 28px;
+        color: #fff;
+        font-size: 33px;
+        line-height: 33px;
+        cursor: pointer;
+
+        &.expanded {
+            mat-icon, .mat-icon {
+                transform: rotate(180deg);
+                right: calc(0px - (16px / 2));
+            }
+        }
+
+        .material-icons {
+            display: block;
+            font-size: 33px;
+            line-height: 33px;
+            /* width: 14px; */
+            width: unset;
+            height: 33px;
+            /*right: calc((16px / 2) + 2px);*/
+            left: calc(0px - 8px); /* the real size of the text glyph is 33px. 33 /2 /2*/
+            position: absolute;
+            transition: right .2s, transform .5s;
+        }
+
+        &:before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 $sz-how-card-handle-width $sz-how-card-handle-width 0;
+            /*border-color: transparent #ffffff transparent transparent;*/
+            border-color: black #fff0 black transparent;
+            right: 0;
+            top: 0;
+            position: absolute;
+        }
+        &:after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: $sz-how-card-handle-width $sz-how-card-handle-width 0 0;
+            /*border-color: transparent #ffffff transparent transparent;*/
+            border-color: black transparent black black;
+            right: 0;
+            bottom: 0;
+            position: absolute;
+        }
+    }
+}

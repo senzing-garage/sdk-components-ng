@@ -1,0 +1,36 @@
+<div class="content">
+    <mat-accordion #features class="features" multi>
+        <mat-expansion-panel class="feature-drawer feature-drawer-sources" [expanded]="isExpanded('SOURCES')" (opened)="onDrawerOpen('SOURCES')" (closed)="onDrawerClose('SOURCES')" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-icon class="toggle-expansion-icon" fontIcon="arrow_right"></mat-icon>
+                Sources<span class="count-bubble">{{featureCount(sources)}}</span></mat-expansion-panel-header>
+            <ul>
+                <li *ngFor="let source of sources | keyvalue">
+                    {{source.key}}<span class="count-bubble">{{featureCount(source.value)}}</span>:
+                    <ul>
+                        <li *ngFor="let record of source.value | slice:0:recordLimit">
+                            {{record?.recordId}}
+                        </li>
+                        <li *ngIf="source.value.length > recordLimit" class="more-link" (click)="onMoreLinkClick(source.key, $event)">more...</li>
+                    </ul>
+                </li>
+            </ul>
+        </mat-expansion-panel>
+        <!-- start "other features" -->
+        <mat-expansion-panel class="feature-drawer feature-drawer-features" [expanded]="isExpanded(featBucket.name)" (opened)="onDrawerOpen(featBucket.name)" (closed)="onDrawerClose(featBucket.name)" hideToggle *ngFor="let featBucket of orderedFeatures">
+            <mat-expansion-panel-header>
+                <mat-icon class="toggle-expansion-icon" fontIcon="arrow_right"></mat-icon>
+                {{featureName(featBucket.name)}}<span class="count-bubble">{{featureCount(featBucket.features)}}</span></mat-expansion-panel-header>
+            <ul>
+                <li *ngFor="let value of featBucket.features">
+                    {{value.primaryValue}}
+                    <ul class="duplicate-tree" *ngIf="value.duplicateValues && value.duplicateValues.length > 0">
+                        <li *ngFor="let dupVal of value.duplicateValues">{{dupVal}}</li>
+                    </ul>
+                </li>
+            </ul>
+        </mat-expansion-panel>
+        <!-- end "other features" -->
+    </mat-accordion>
+    <!--<button (click)="getOrderedFeaturesDebug()">Get Ordered Features</button>-->
+</div>

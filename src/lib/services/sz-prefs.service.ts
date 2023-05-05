@@ -360,6 +360,8 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _showOtherData: boolean = false;
   /** @internal */
+  private _showHowButton: boolean = false;
+  /** @internal */
   private _showIdentifierData: boolean = false;
   /** @internal */
   private _showMatchKeys: boolean | undefined;
@@ -385,10 +387,11 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
    */
   override jsonKeys = [
     'openInNewTab',
-    'showOtherData',
-    'showIdentifierData',
     'showCharacteristicData',
+    'showHowButton',
+    'showIdentifierData',
     'showMatchKeys',
+    'showOtherData',
     'truncateRecordsAt',
     'truncateOtherDataAt',
     'truncateCharacteristicDataAt',
@@ -399,10 +402,11 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   ];
   override typemap = {
     'openInNewTab':                 'boolean',
-    'showOtherData':                'boolean',
-    'showIdentifierData':           'boolean',
     'showCharacteristicData':       'boolean',
+    'showHowButton':                'boolean',
+    'showIdentifierData':           'boolean',
     'showMatchKeys':                'boolean',
+    'showOtherData':                'boolean',
     'truncateRecordsAt':            'number',
     'truncateOtherDataAt':          'number',
     'truncateCharacteristicDataAt': 'number',
@@ -429,6 +433,15 @@ export class SzSearchResultsPrefs extends SzSdkPrefsBase {
   /** show "other data" in search results */
   public set showOtherData(value: boolean) {
     this._showOtherData = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** show "how" button in search results */
+  public get showHowButton(): boolean {
+    return this._showHowButton;
+  }
+  /** show "how" button in search results */
+  public set showHowButton(value: boolean) {
+    this._showHowButton = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** show "other data" in search results */
@@ -550,6 +563,8 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _showGraphSection: boolean = true;
   /** @internal */
+  private _showHowSection: boolean = true;
+  /** @internal */
   private _showMatchesSection: boolean = true;
   /** @internal */
   private _showPossibleMatchesSection: boolean = true;
@@ -559,6 +574,8 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
   private _showDisclosedSection: boolean = true;
   /** @internal */
   private _graphSectionCollapsed: boolean = false;
+  /** @internal */
+  private _howSectionCollapsed: boolean = false;
   /** @internal */
   private _recordsSectionCollapsed: boolean = false;
   /** @internal */
@@ -597,11 +614,13 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
    */
   override jsonKeys = [
     'showGraphSection',
+    'showHowSection',
     'showMatchesSection',
     'showPossibleMatchesSection',
     'showPossibleRelationshipsSection',
     'showDisclosedSection',
     'graphSectionCollapsed',
+    'howSectionCollapsed',
     'recordsSectionCollapsed',
     'possibleMatchesSectionCollapsed',
     'possibleRelationshipsSectionCollapsed',
@@ -628,6 +647,15 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
   /** show graph section */
   public set showGraphSection(value: boolean) {
     this._showGraphSection = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** show graph section */
+  public get showHowSection(): boolean {
+    return this._showHowSection;
+  }
+  /** show graph section */
+  public set showHowSection(value: boolean) {
+    this._showHowSection = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** show matches/records section */
@@ -673,6 +701,15 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
   /** graph section collapsed */
   public set graphSectionCollapsed(value: boolean) {
     this._graphSectionCollapsed = value;
+    if(!this.bulkSet && this._rememberSectionCollapsedState) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** how report section collapsed */
+  public get howSectionCollapsed(): boolean {
+    return this._howSectionCollapsed;
+  }
+  /** how report section collapsed */
+  public set howSectionCollapsed(value: boolean) {
+    this._howSectionCollapsed = value;
     if(!this.bulkSet && this._rememberSectionCollapsedState) this.prefsChanged.next( this.toJSONObject() );
   }
   /** records/matches section collapsed */

@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SzWhyEntitiesDialog } from '../../why/sz-why-entities.component';
 import { SzAlertMessageDialog } from '../../shared/alert-dialog/sz-alert-dialog.component';
 import { parseBool } from '../../common/utils';
+import { howClickEvent } from '../../models/data-how';
 
 /**
  * Provides a graphical search results component. Data can be provided a number of ways.
@@ -96,8 +97,24 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
    @Input() openWhyComparisonModalOnClick(value: boolean) {
     this._openWhyComparisonModalOnClick = value;
   }
+  private _showHowButton: boolean = false;
+  /**
+   * Shows or hides the multi-select "Why" comparison button.
+   * @memberof SzSearchResultsComponent
+   */
+  @Input() set showHowButton(value: boolean | string) {
+    this._showHowButton = parseBool(value);
+    if(value !== undefined) {
+      this.prefs.searchResults.showHowButton = parseBool(value);
+    }
+  }
+  public get showHowButton(): boolean {
+    return this._showHowButton;
+  }
   /** (Event Emitter) when the user clicks on the "Why" button */
   @Output() whyButtonClick = new EventEmitter<SzEntityIdentifier[]>();
+  /** (Event Emitter) when the user clicks on the "How" button */
+  @Output() howButtonClick = new EventEmitter<howClickEvent>();
 
   private _entitySelectActive = false;
   public get entitySelectActive(): boolean {
@@ -302,6 +319,11 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+  /** when the "how" button is clicked */
+  public onHowClicked(event: howClickEvent) {
+    //console.log('@senzing/sz-search-results/onHowClicked: ', entityId);
+    this.howButtonClick.emit(event);
   }
   /** clear any selected entity results if "_showWhyComparisonButton" set to true */
   public clearSelected() {

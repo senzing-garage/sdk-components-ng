@@ -1,5 +1,6 @@
 @import "./theme";
 @import "./graph";
+@import "./how-rc";
 
 [class^="senzing-"], [class*=" senzing-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
@@ -55,6 +56,12 @@ body {
     }
   }
 
+}
+
+.prevent-text-selection {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 .mat-mdc-slide-toggle.match-key-token-mode-select {

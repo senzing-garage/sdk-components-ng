@@ -1,0 +1,13 @@
+<sz-how-nav
+    [stepsByVirtualId]="resolutionStepsByVirtualId"
+    [virtualEntitiesById]="virtualEntitiesById"
+    *ngIf="showNavigation"
+></sz-how-nav>
+<div class="main">
+    <sz-how-step-node *ngFor="let finalCardStepNode of stepNodes; let rsInd=index"
+                [attr.step-index]="rsInd"
+                [attr.step-number]="finalCardStepNode.stepNumber"
+                [attr.virtual-id]="finalCardStepNode.resolvedVirtualEntityId"
+                [data]="finalCardStepNode" 
+                [virtualEntitiesById]="virtualEntitiesById"></sz-how-step-node>
+</div>

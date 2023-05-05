@@ -24,6 +24,8 @@ import { SzPrefsService } from '../../services/sz-prefs.service';
 import { parseBool } from '../../common/utils';
 import { SzDataSourceRecordsSelection, SzWhySelectionModeBehavior, SzWhySelectionMode } from '../../models/data-source-record-selection';
 import { SzMatchKeyTokenFilterScope } from '../../models/graph';
+import { howClickEvent } from '../../models/data-how';
+
 /**
  * The Entity Detail Component.
  * Generates a complex detail page from input parameters.
@@ -118,6 +120,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
   // show | hide specific sections
   private _showGraphSection: boolean = true;
+  private _showHowSection: boolean = true;
   private _showMatchesSection: boolean = true;
   private _showPossibleMatchesSection: boolean = true;
   private _showPossibleRelationshipsSection: boolean = true;
@@ -131,6 +134,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
   // why utilities
   private _whySelectionMode: SzWhySelectionModeBehavior = SzWhySelectionMode.NONE;
+  private _showEntityHowFunction: boolean = false;
   private _showEntityWhyFunction: boolean = false;
   private _showRecordWhyUtilities: boolean = false;
   private _showRelatedWhyNotUtilities: boolean = false;
@@ -139,6 +143,12 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private _showGraphNodeContextMenu: boolean = false;
   private _showGraphLinkContextMenu: boolean = false;
 
+  /** @internal */
+  private _headerHowButtonClicked: Subject<howClickEvent> = new Subject<howClickEvent>();
+  /** (Observeable) when the user clicks on the "Why" button in header under the icon */
+  public headerHowButtonClicked = this._headerHowButtonClicked.asObservable();
+  /** (Event Emitter) when the user clicks on the "Why" button in header under the icon */
+  @Output() howButtonClick      = new EventEmitter<howClickEvent>();
   /** @internal */
   private _headerWhyButtonClicked: Subject<SzEntityIdentifier> = new Subject<SzEntityIdentifier>();
   /** (Observeable) when the user clicks on the "Why" button in header under the icon */
@@ -223,7 +233,14 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   @Input() set whySelectionMode(value: SzWhySelectionModeBehavior) {
     this._whySelectionMode = value;
   }
-
+  /** whether or not the "how" button for the entire entity is shown */
+  public get showEntityHowFunction(): boolean {
+    return this._showEntityHowFunction;
+  }
+  /** whether or not to show the "how" button for the entire entity */
+  @Input() set showEntityHowFunction(value: boolean) {
+    this._showEntityHowFunction = value;
+  }
   /** whether or not the "why" comparison button for the entire entity is shown */
   public get showEntityWhyFunction(): boolean {
     return this._showEntityWhyFunction;
@@ -375,7 +392,21 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   public get showGraphSection(): any {
     return this._showGraphSection;
   }
-    /**
+  /**
+   * show or hide the "At a Glance" section.
+   */
+  @Input()
+  public set showHowSection(value: any) {
+    this._showHowSection = parseBool(value);
+    // update pref from setter
+    if(this.prefs.entityDetail.showHowSection !== this.showHowSection && this._updatePrefsOnChange){
+      this.prefs.entityDetail.showHowSection = this.showHowSection;
+    }
+  }
+  public get showHowSection(): any {
+    return this._showHowSection;
+  }
+  /**
    * show or hide the "Records" section.
    */
   @Input()
@@ -652,11 +683,12 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     // show or hide sections based on pref change
     if(this._updatePrefsOnChange){
       // if were not saving prefs then do not initialize with values
-      this.showGraphSection = this.prefs.entityDetail.showGraphSection;
+      this.showHowSection     = this.prefs.entityDetail.showHowSection;
+      this.showGraphSection   = this.prefs.entityDetail.showGraphSection;
       this.showMatchesSection = this.prefs.entityDetail.showMatchesSection;
-      this.showPossibleMatchesSection = this.prefs.entityDetail.showPossibleMatchesSection;
+      this.showPossibleMatchesSection       = this.prefs.entityDetail.showPossibleMatchesSection;
       this.showPossibleRelationshipsSection = this.prefs.entityDetail.showPossibleRelationshipsSection;
-      this.showDisclosedSection = this.prefs.entityDetail.showDisclosedSection;
+      this.showDisclosedSection             = this.prefs.entityDetail.showDisclosedSection;
     }
     // get and listen for prefs change
     this.prefs.entityDetail.prefsChanged.pipe(
@@ -680,7 +712,8 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
     // show or hide sections based on pref change
-    this.showGraphSection = prefs.showGraphSection;
+    this.showHowSection     = prefs.showHowSection;
+    this.showGraphSection   = prefs.showGraphSection;
     this.showMatchesSection = prefs.showMatchesSection;
     this.showPossibleMatchesSection = prefs.showPossibleMatchesSection;
     this.showPossibleRelationshipsSection = prefs.showPossibleRelationshipsSection;
@@ -775,8 +808,16 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   public onGraphPopoutClick(event: any) {
     this.graphPopOutClick.emit(event);
   }
+  
   /**
-   * proxies internal "why button" header click to "graphPopOutClick" event.
+   * proxies internal "how button" header click to "headerHowButtonClick" event.
+   */
+  public onHeaderHowButtonClick(event: howClickEvent){
+    //console.log(`SzEntityDetailComponent.onHeaderHowButtonClick()`, event);
+    this.howButtonClick.emit(event);
+  }
+  /**
+   * proxies internal "why button" header click to "onHeaderWhyButtonClick" event.
    */
   public onHeaderWhyButtonClick(entityId: SzEntityIdentifier){
     this.headerWhyButtonClick.emit(entityId);

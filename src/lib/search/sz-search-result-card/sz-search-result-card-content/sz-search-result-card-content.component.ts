@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { SzRelatedEntity, SzEntityRecord, SzAttributeSearchResult } from '@senzing/rest-api-client-ng';
+import { SzRelatedEntity, SzEntityRecord, SzAttributeSearchResult, SzEntityIdentifier } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../../services/sz-prefs.service';
-
+import { howClickEvent } from '../../../models/data-how';
 /**
  * @internal
  * @export
@@ -49,6 +49,7 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
   private _showOtherData: boolean = true;
   private _showIdentifierData: boolean = true;
   private _ignorePrefOtherDataChanges = false;
+  private _showHowButton = false;
   @Input() public showRecordIdWhenNative: boolean = false;
   @Input() public set ignorePrefOtherDataChanges(value: boolean) {
     this._ignorePrefOtherDataChanges = value;
@@ -80,6 +81,15 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
   get truncateIdentifierDataAt(): number {
     return this._truncateIdentifierDataAt;
   }
+  @Input() set showHowButton(value: boolean) {
+    this._showHowButton = value;
+  }
+  get showHowButton(): boolean {
+    return this._showHowButton;
+  }
+  /** (Event Emitter) when the user clicks on the "How" button */
+  @Output() howButtonClick = new EventEmitter<howClickEvent>();
+
   constructor(
     private cd: ChangeDetectorRef,
     public prefs: SzPrefsService
@@ -87,11 +97,12 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // get and listen for prefs change
-    this._showOtherData = this.prefs.searchResults.showOtherData;
-    this._showIdentifierData = this.prefs.searchResults.showIdentifierData;
-    this._showCharacteristicData = this.prefs.searchResults.showCharacteristicData;
-    this._truncateOtherDataAt = this.prefs.searchResults.truncateOtherDataAt;
-    this._truncateCharacteristicDataAt = this.prefs.searchResults.truncateCharacteristicDataAt;
+    this._showHowButton                 = this.prefs.searchResults.showHowButton;
+    this._showOtherData                 = this.prefs.searchResults.showOtherData;
+    this._showIdentifierData            = this.prefs.searchResults.showIdentifierData;
+    this._showCharacteristicData        = this.prefs.searchResults.showCharacteristicData;
+    this._truncateOtherDataAt           = this.prefs.searchResults.truncateOtherDataAt;
+    this._truncateCharacteristicDataAt  = this.prefs.searchResults.truncateCharacteristicDataAt;
 
     setTimeout(() => {
       this.cd.markForCheck();
@@ -111,12 +122,13 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
 
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: any) {
-    this._showOtherData = prefs.showOtherData;
-    this._showIdentifierData = prefs.showIdentifierData;
-    this._showCharacteristicData = prefs.showCharacteristicData;
-    this._truncateOtherDataAt = prefs.truncateOtherDataAt;
-    this._truncateCharacteristicDataAt = prefs.truncateCharacteristicDataAt;
-    this._truncateIdentifierDataAt = prefs.truncateIdentifierDataAt;
+    this._showOtherData                 = prefs.showOtherData;
+    this._showIdentifierData            = prefs.showIdentifierData;
+    this._showCharacteristicData        = prefs.showCharacteristicData;
+    this._truncateOtherDataAt           = prefs.truncateOtherDataAt;
+    this._truncateCharacteristicDataAt  = prefs.truncateCharacteristicDataAt;
+    this._truncateIdentifierDataAt      = prefs.truncateIdentifierDataAt;
+    this._showHowButton                 = prefs.showHowButton;
     // update view manually (for web components redraw reliability)
     this.cd.detectChanges();
   }
@@ -223,6 +235,19 @@ export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
       });*/
     }
     return _otherData;
+  }
+
+  public onHowButtonClick(event: MouseEvent) {
+    if(event.preventDefault) {
+      event.preventDefault();
+    }
+    if(event.stopPropagation) {
+      event.stopPropagation();
+    }
+    let _payload: howClickEvent = Object.assign(event, {
+      entityId: this.entity.entityId
+    });
+    this.howButtonClick.emit(_payload);
   }
 
   private getEntityRecord(obj: any): SzEntityRecord {

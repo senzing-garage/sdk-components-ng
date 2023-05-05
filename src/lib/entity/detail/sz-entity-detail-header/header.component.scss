@@ -87,6 +87,20 @@
       .detail-header-why-button {
         width: 145px;
         margin-right: 10px;
+        white-space: nowrap;
+      }
+      .detail-header-how-button {
+        margin-right: 10px;
+        white-space: nowrap;
+      }
+      .why-report-icon {
+        min-width: 20px;
+        transform: rotate(90deg);
+        margin-right: 4px;
+      }
+      .how-report-icon {
+        min-width: 20px;
+        transform: rotate(90deg);
       }
     }
 

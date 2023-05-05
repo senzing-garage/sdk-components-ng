@@ -1,0 +1,101 @@
+<h3 class="title">
+    <mat-icon *ngIf="canExpand && hasChildren && groupTitle === undefined"  class="toggle-child-expansion-icon" (click)="toggleExpansion()" fontIcon="play_circle"></mat-icon>
+    <!--<mat-icon *ngIf="canExpand && !hasChildren && groupTitle === undefined" class="toggle-expansion-icon"       (click)="toggleExpansion()" fontIcon="arrow_right"></mat-icon>-->
+    <mat-icon *ngIf="canExpand && hasChildren && groupTitle !== undefined"  class="toggle-group-expansion-icon" (click)="toggleGroupExpansion(groupId)" fontIcon="play_circle"></mat-icon>
+
+    <mat-icon *ngIf="canExpand && !hasChildren && (groupTitle === undefined || (!isGroupCollapsed && isStackGroupMember))" class="1 toggle-expansion-icon"    (click)="toggleExpansion()" fontIcon="arrow_right"></mat-icon>
+    <mat-icon *ngIf="canExpand && !hasChildren && groupTitle !== undefined && (isGroupCollapsed && isStackGroupMember)" class="2 toggle-expansion-icon"       (click)="toggleGroupExpansion(groupId)" fontIcon="arrow_right"></mat-icon>
+    <!--<div class="title-text">
+        isGroupCollapsed: {{isGroupCollapsed}} | isStackGroupMember: {{isStackGroupMember}} | groupId: {{groupId}}
+    </div>
+    <div class="title-text">
+        (isAddRecordStep: {{isAddRecordStep}} | isInterimStep: {{isInterimStep}} | isMergeStep: {{isMergeStep}} | isCreateEntityStep: {{isCreateEntityStep}}) | stepType: {{stepType}}
+    </div>-->
+    <div class="title-text hide-on-group-collapsed" *ngIf="groupTitle === undefined || (!isGroupCollapsed && isStackGroupMember)">
+        <span class="emphasized margin-right">{{title}}</span>
+        <!--(isAddRecordStep: {{isAddRecordStep}} | isInterimStep: {{isInterimStep}} | isMergeStep: {{isMergeStep}} | isCreateEntityStep: {{isCreateEntityStep}})-->
+        <span *ngIf="isAddRecordStep" class="hide-on-expanded">
+            <span *ngIf="forms" class="margin-right">Forms <span class="emphasized">{{forms}}</span></span>
+            <span *ngIf="matchKey" class="margin-right">On <span class="emphasized">{{matchKey}}</span></span>
+            <span *ngIf="resolutionRule">Using <span class="emphasized">{{resolutionRule}}</span></span>
+        </span>
+        <span *ngIf="isMergeStep" class="hide-on-expanded">
+            <span *ngIf="forms" class="margin-right">Forms <span class="emphasized">{{forms}}</span></span>
+            <span *ngIf="matchKey" class="margin-right">On <span class="emphasized">{{matchKey}}</span></span>
+            <span *ngIf="resolutionRule">Using <span class="emphasized">{{resolutionRule}}</span></span>
+        </span>
+        <span *ngIf="isInterimStep" class="hide-on-expanded">
+            [
+                <span class="datasource" *ngFor="let ds of dataSources; let dsI=index">
+                    {{ds}}<span *ngIf="dsI !== dataSources?.length"> | </span>
+                </span>
+            ]
+        </span>
+        <span *ngIf="isCreateEntityStep" class="hide-on-expanded">
+            <span *ngIf="from && from.length > 0" class="margin-right">from <span class="from" *ngFor="let ds of from; let dsI=index">
+                    <span class="emphasized">{{ds}}</span><span *ngIf="(dsI+1) < from?.length"> and </span>
+            </span>
+            </span>
+            <span *ngIf="matchKey" class="margin-right">On <span class="emphasized">{{matchKey}}</span></span>
+            <span *ngIf="resolutionRule">Using <span class="emphasized">{{resolutionRule}}</span></span>
+        </span>
+    </div>
+    <!--<div class="title-text">groupTitle: "{{groupTitle}}" | isGroupCollapsed: {{isGroupCollapsed}} | isInterimStep: {{isInterimStep}}</div>-->
+    <div class="title-text" *ngIf="groupTitle !== undefined && ((isGroupCollapsed && isStackGroupMember) || isInterimStep)">
+        <span class="emphasized margin-right">{{groupTitle}}</span>
+        <span *ngIf="dataSourcesAsString && !isStackGroupMember" class="datasources"> [ <span class="datasources-list">{{dataSourcesAsString}}</span> ]</span>
+    </div>
+    <!--<mat-icon class="debug-icon" (click)="checkIsStackGroup()" fontIcon="adb"></mat-icon>-->
+    <mat-icon *ngIf="isStackGroupMember && isUnpinned && !isGroupCollapsed && !isCollapsed" class="pin-icon" (click)="pinStep()" fontIcon="push_pin"></mat-icon>
+    <mat-icon *ngIf="canBeGrouped && !isUnpinned && !isCollapsed" class="unpin-icon" (click)="unPinStep()" fontIcon="adjust"></mat-icon>
+</h3>
+<div class="columns hide-on-collapsed hide-on-group-collapsed">
+    <div class="column info-block">
+        <div class="info-line" *ngFor="let line of description; let l = index">
+            <span [innerHTML]="line"></span>
+            <mat-icon *ngIf="l == 0" (click)="openVirtualEntityDialog($event)" class="info-icon" aria-hidden="false" aria-label="Show Virtual Entity Details" fontIcon="info"></mat-icon>
+        </div>
+        <!--<div>Forms <span class="emphasis">Virtual Entity V123-S12</span></div>
+        <div>On <span class="emphasis">NAME+ADDRESS</span></div>
+        <div>Using <span class="emphasis">Principle 162 (CNAME_CFF)</span></div>-->
+    </div>
+    <div class="column data-table horizontal">
+        <div class="pre-head">
+            <div class="cell"></div>
+            <div class="cell">{{candidateVirtualEntity?.virtualEntityId}}</div>
+            <div class="cell">Score</div>
+            <div class="cell">{{inboundVirtualEntity?.virtualEntityId}}</div>
+        </div>
+        <div class="head">
+            <div class="cell column-1">Sources ({{sourcesCount}}) / Records ({{recordsCount}})</div>
+            <div class="cell column-2">
+                {{getSourcesAndRecordsForEntity(candidateVirtualEntity)}}
+            </div>
+            <div class="cell column-3">N/A</div>
+            <div class="cell column-4">
+                {{getSourcesAndRecordsForEntity(inboundVirtualEntity)}}
+            </div>
+        </div>
+        <div class="body">
+            <div class="row" *ngFor="let feature of dataRows; let i = index">
+                <div class="cell column-1">{{feature.featureType}}</div>
+                <div class="cell column-2">
+                    {{feature.candidateFeature?.featureValue}}
+                </div>
+                <div class="cell column-3"
+                    [class.red-highlight]="isCellHighlightedRed(feature, feature.score)"
+                    [class.yellow-highlight]="isCellHighlightedYellow(feature, feature.score)"
+                    [class.green-highlight]="isCellHighlightedGreen(feature, feature.score)">
+                    {{feature.score}}
+                </div>
+                <div class="cell column-4">
+                    {{feature.inboundFeature?.featureValue}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<ul *ngIf="this.resolvedVirtualEntity && this.isInterimEntity" class="debug">
+    <li>this.resolvedVirtualEntity: {{this.resolvedVirtualEntity.virtualEntityId}}</li>
+    <li>this.isInterimEntity: {{this.isInterimEntity}}</li>
+</ul>-->
