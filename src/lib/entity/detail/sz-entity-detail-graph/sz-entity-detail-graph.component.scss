@@ -13,6 +13,7 @@
   }
   &.closed {
     height: var(--sz-entity-detail-section-graph-collapsed-height);
+
     .arrow {
       transition: all 300ms;
     }
@@ -21,7 +22,8 @@
       height: 6px;
     }
 
-    sz-entity-detail-graph-control, .sz-entity-detail-graph-control {
+    sz-entity-detail-graph-control, .sz-entity-detail-graph-control,
+    sz-graph-control, .sz-graph-control {
       opacity: 0;
       height: 0px;
       overflow: hidden;
@@ -47,6 +49,9 @@
       border-radius: var(--sz-entity-detail-graph-section-collapsed-border-bottom-radius);
       border: 1px solid;
       border-color: var(--sz-color-graph-relationships);
+    }
+    .section-header__wrapper {
+      padding-bottom: 3px;
     }
   }
 
@@ -161,6 +166,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
     max-width: 70%;
+    cursor: pointer;
 
     .section-header__title {
       overflow: hidden;

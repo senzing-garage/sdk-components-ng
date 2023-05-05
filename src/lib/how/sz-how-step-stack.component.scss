@@ -1,0 +1,168 @@
+:host {
+    display: flex;
+    flex-direction: row;
+    /*border: 2px dashed orange;*/
+
+    &.expanded {
+        .stack-step-card-row {
+            margin-top: 0px;
+
+            // hide the first node line
+            &:first-child .tree-node-leaf-line {
+                &:before {
+                    display: none;
+                }
+            }
+            // every other node gets an additional line
+            .tree-node-leaf-line {
+                position: relative;
+                &:before {
+                    position: absolute;
+                    top: 28px;
+                    left: -13px;
+                    height: 3px;
+                    width: 13px;
+                    border-bottom: 3px solid #000000;
+                    content: "";
+                    display: inline-block;
+                }
+            }
+        }
+    }
+
+    .stack-step-card-row {
+        min-height: 20px;
+        margin-top: -36px;
+
+        &:first-child {
+            margin-top: 0px;
+        }
+
+        @for $i from 1 through 100 {
+            &:nth-child(#{$i}) {
+                z-index: #{10 - $i};
+            }
+        }
+    }
+
+    .stack-card {
+        min-height: 20px;
+        /*margin-top: -20px;*/
+        /*display: list-item;*/
+
+        &.type-add {
+            background-color: #feae00;
+        }
+        &.type-create {
+            background-color: #ffd932;
+        }
+        &.type-interim {
+            background-color: #56c1ff;
+        }
+        &.type-merge {
+            background-color: #16e7cf;
+        }
+        &.type-final {
+            background-color: #88fa4e;
+        }
+    
+        h3 {
+            margin: 0;
+        }
+    }
+
+    .stack-step-cards {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 50;
+    }
+
+    .stack-control {
+        display: flex;
+        flex-direction: column;
+        min-width: 18px;
+        width: 18px;
+        white-space: nowrap;
+        cursor: pointer;
+        justify-content: space-between;
+        //margin: 12px 0 0 0;
+        margin: 11px 0 -5px 2px;
+
+        .center-area {
+            display: flex;
+            flex-grow: 20;
+            height: 100%;
+            width: 18px;
+            justify-content: center;
+            background-size: 2px 9px;
+            background-image: linear-gradient(transparent 4px, #000 4px);
+            background-repeat-x: no-repeat;
+            background-position-x: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mat-icon {
+            display: flex;
+            overflow: unset;
+            font-size: 18px;
+            height: 18px;
+            width: 18px;
+
+            &.center-button {
+                background-color: #ffffff;
+                clip-path: circle();
+            }
+            &.minus-button {
+                position: relative;
+                overflow: hidden;
+
+                span {
+                    position: absolute;
+                    color: #fff;
+                    top: calc(50% - 19px);
+                    left: calc(50% - 4px);
+                    font-weight: 900;
+                    font-size: 24px;
+                }
+            }
+            &.arrow-up, &.arrow-down {
+                width: 18px;
+                height: 18px;
+                overflow: hidden;
+                //display: block;
+            }
+            &.arrow-up {
+                margin-top: -1px;
+                margin-bottom: 0px;
+                transform: rotate(270deg);
+                &::before {
+                    position: relative;
+                    bottom: 2px;
+                }
+            }
+            &.arrow-down {
+                margin-top: 0px;
+                margin-bottom: -4px;
+                transform: rotate(90deg);
+                &::before {
+                    position: relative;
+                    //bottom: 1px;
+                }
+            }
+        }
+
+        .hide-on-collapsed {
+            display: none;
+        }
+
+        &.expanded {
+            .hide-on-expanded {
+                display: none;
+            }
+            .hide-on-collapsed { 
+                display: flex;
+            }
+        }
+    }
+}

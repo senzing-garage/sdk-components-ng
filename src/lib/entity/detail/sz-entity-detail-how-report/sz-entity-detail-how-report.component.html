@@ -1,0 +1,25 @@
+<div data-html2canvas-ignore class="section-header__wrapper how-report"
+  (click)="toggleExpanded($event)">
+  <div class="section-header__left-content">
+    <svg class="arrow" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+      viewBox="0 0 386.257 386.257" width="12" xml:space="preserve">
+      <polygon points="0,96.879 193.129,289.379 386.257,96.879 "/></svg>
+    <mat-icon class="how-report-icon" fontIcon="insert_chart_outlined"></mat-icon>
+    <span class="section-header__title">{{ this.title }}</span>
+  </div>
+  <div class="section-header__right-content">
+    <span class="section-header__count">{{ count }}</span>
+    <span class="section-header__countLabel">Steps</span>
+  </div>
+</div>
+<div #howContainer class="sz-entity-detail-section-collapsible-card">
+    <!-- start entity how -->
+    <sz-how-entity
+    *ngIf="howContentIsReasonable"
+    #howGraph
+    [entityId]="entityId"
+    showNavigation="false"
+    (dataChanged)="onDataChange($event)"
+    ></sz-how-entity>
+    <!-- end entity how -->
+</div>

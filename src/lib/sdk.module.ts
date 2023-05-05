@@ -25,6 +25,7 @@ import { SzDataSourcesService } from './services/sz-datasources.service';
 import { SzAdminService } from './services/sz-admin.service';
 import { SzBulkDataService } from './services/sz-bulk-data.service';
 import { SzCSSClassService } from './services/sz-css-class.service';
+import { SzConfigDataService } from './services/sz-config-data.service';
 
 /** components */
 import { SzMultiSelectButtonComponent } from './shared/multi-select-button/multi-select-button.component';
@@ -39,6 +40,7 @@ import { SzEntityDetailsSectionComponent } from './entity/detail/sz-entity-detai
 import { SzEntityDetailSectionHeaderComponent } from './entity/detail/sz-entity-details-section/header.component';
 import { SzEntityDetailSectionCollapsibleCardComponent } from './entity/detail/sz-entity-details-section/collapsible-card.component';
 import { SzEntityDetailGraphComponent } from './entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
+import { SzEntityDetailHowReportComponent } from './entity/detail/sz-entity-detail-how-report/sz-entity-detail-how-report.component';
 import { SzEntityMatchPillComponent } from './entity/sz-entity-match-pill/sz-entity-match-pill.component';
 import { SzEntityRecordCardComponent } from './entity/sz-entity-record-card/sz-entity-record-card.component';
 import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-card/sz-entity-record-card-header/sz-entity-record-card-header.component';
@@ -74,6 +76,16 @@ import { SzWhyEntityComponent } from './why/sz-why-entity.component';
 import { SzWhyEntitiesComparisonComponent } from './why/sz-why-entities.component';
 import { SzWhyEntityDialog } from './why/sz-why-entity.component';
 import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
+// how related
+import { SzHowEntityComponent } from './how/sz-how-entity.component';
+import { SzHowFinalEntityCardComponent } from './how/cards/sz-how-final-entity-card.component';
+import { SzHowNavComponent } from './how/sz-how-nav.component';
+import { SzHowStepCardComponent } from './how/cards/sz-how-step-card.component';
+import { SzHowStepStackComponent } from './how/sz-how-step-stack.component';
+import { SzHowUIService } from './services/sz-how-ui.service';
+import { SzHowVirtualEntityCardComponent } from './how/cards/sz-how-virtual-entity-card.component';
+import { SzHowVirtualEntityDialog } from './how/sz-how-virtual-entity-dialog.component';
+import { SzHowStepNodeComponent } from './how/sz-how-step-node.component';
 
 /**
  * Sets up a default set of service parameters for use
@@ -110,6 +122,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzEntityDetailGraphFilterComponent,
         SzEntityDetailHeaderComponent,
         SzEntityDetailHeaderContentComponent,
+        SzEntityDetailHowReportComponent,
         SzEntityDetailSectionSummaryComponent,
         SzEntityDetailSectionHeaderComponent,
         SzEntityDetailSectionCollapsibleCardComponent,
@@ -122,6 +135,14 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzGraphControlComponent,
         SzGraphComponent,
         SzGraphFilterComponent,
+        SzHowEntityComponent,
+        SzHowFinalEntityCardComponent,
+        SzHowNavComponent,
+        SzHowStepCardComponent,
+        SzHowStepNodeComponent,
+        SzHowStepStackComponent,
+        SzHowVirtualEntityCardComponent,
+        SzHowVirtualEntityDialog,
         SzMultiSelectButtonComponent,
         SzPoweredByComponent,
         SzPreferencesComponent,
@@ -160,12 +181,19 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzConfigurationAboutComponent,
         SzEntityDetailGraphComponent,
         SzEntityDetailComponent,
+        SzEntityDetailHowReportComponent,
         SzEntityDetailGraphControlComponent,
         SzEntityDetailGraphFilterComponent,
         SzEntityRecordViewerComponent,
         SzGraphComponent,
         SzGraphControlComponent,
         SzGraphFilterComponent,
+        SzHowEntityComponent,
+        SzHowNavComponent,
+        SzHowStepNodeComponent,
+        SzHowStepStackComponent,
+        SzHowVirtualEntityCardComponent,
+        SzHowVirtualEntityDialog,
         SzPoweredByComponent,
         SzPreferencesComponent,
         SzRelationshipNetworkComponent,
@@ -187,10 +215,12 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzMessageBundleService,
         SzAdminService,
         SzBulkDataService,
+        SzConfigDataService,
         SzConfigurationService,
         SzCSSClassService,
         SzDataSourcesService,
         SzFoliosService,
+        SzHowUIService,
         SzPrefsService,
         SzSearchService,
         HttpClient,

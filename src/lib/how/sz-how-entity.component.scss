@@ -1,0 +1,66 @@
+:host {
+    display: flex;
+    flex-direction: row;
+    justify-items: flex-start;
+    height: 100%;
+    padding-right: 24px;
+
+    sz-how-nav {
+
+    }
+    .main {
+        justify-items: flex-start;
+        flex-grow: 10;
+        margin: 10px 20px;
+    }
+    .step-list {
+        list-style: none;
+
+        li {
+            display: flex;
+            flex-direction: row;
+            margin-left: 40px;
+
+            &.top-level {
+                margin-left: 0px;
+
+                sz-how-final-entity-card {
+                    flex-grow: 5;
+                }
+            }
+            &.hidden {
+                display: none;
+            }
+            sz-how-step-node {
+                flex-grow: 5;
+            }
+        }
+    }
+    &.has-child-stacks {
+        padding-right: 0;
+        sz-how-final-entity-card,
+        sz-how-step-node {
+            margin-right: 24px;
+            &.is-stack {
+                margin-right: 4px;
+            }
+        }
+    }
+    .debug-box {
+        position: relative;
+        border: 1px inset #b1b1b1;
+        border-radius: 4px;
+        margin: 0 2px 2px 0;
+        padding: 22px 20px 14px;
+        
+        button {
+            margin-left: 5px;
+        }
+        h3 {
+            position: absolute;
+            top: -32px;
+            background-color: #fff;
+            padding: 0px 10px 0px 10px;
+        }
+    }
+}

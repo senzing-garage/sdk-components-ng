@@ -1,0 +1,156 @@
+
+/* this file contains global overrides to material component styles 
+* being used from within the context of "How" components. These 
+* cannot be at the ViewEncapsulated level or mixin level because 
+* angular will alias the scope.
+*/
+
+sz-how-nav, .sz-how-nav {
+
+    .mat-mdc-form-field.free-text-search {
+        .mat-mdc-form-field-infix {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            min-height: 14px;
+        }
+
+        .mat-mdc-text-field-wrapper.mdc-text-field--filled {
+            border: 1px solid #000;
+            border-radius: 3px;
+        }
+        .mat-mdc-form-field-focus-overlay {
+            display: none;
+        }
+        .mat-mdc-form-field-subscript-wrapper {
+            font-size: 8px;
+            line-height: 8px;
+            display: none;
+        }
+    }
+
+    .mat-mdc-checkbox .mdc-checkbox {
+        margin: 0;
+        padding: 0;
+
+        input[type=checkbox] {
+            top: 0;
+            left: 0;
+            width: 18px;
+            height: 18px;
+        }
+        .mdc-checkbox__background {
+            top: 0;
+            left: 0;
+            background-color: #fff !important;
+        }
+        .mat-mdc-checkbox-touch-target {
+            width: 18px;
+            height: 18px;
+        }
+    }
+    mat-checkbox {
+        .mdc-form-field,
+        label {
+            font-size: inherit !important;
+        }
+        label {
+            white-space: nowrap;
+        }
+    }
+}
+
+sz-how-step-card {
+    .how-step-card-title-token, .title-token {
+        font-weight: normal;
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+}
+
+.how-virtual-entity-dialog-panel {
+    .mat-mdc-dialog-surface {
+        background: none !important;
+        border-radius: 10px !important;
+    }
+    .mat-accordion {
+        .mat-expansion-panel-header  {
+            height: 34px;
+            padding-left: 0;
+        }
+        .mat-expansion-panel {
+            border-radius: 0;
+            box-shadow: none;
+        }
+        .mat-expansion-panel-spacing {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .mat-expansion-panel-body {
+            ul {
+                margin-block-start: 0;
+                margin-block-end: 0;
+                padding-inline-start: 25px;
+            }
+        }
+    }
+}
+
+ul.tree, ul.tree ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+} 
+ul.tree ul {
+    /* nested trees do have lines on first node */
+    li:first-child {
+        border-left: 3px solid #000000;
+        &:before {
+            border-bottom: 3px solid #000000;
+        }
+    }
+    li:last-child {
+        border-left: none;
+        &:before {
+            /*left: -3px;*/
+            top: 0;
+            height: 30px;
+        }
+    }
+    li {
+        position: relative;
+        margin-left: 20px;
+        display: flex;
+
+        &:before {
+
+        }
+    }
+}
+ul.tree li {
+    margin: 0;
+    border-left: 3px solid #000000;
+}
+ul.tree li:last-child {
+    border-left: none;
+}
+ul.tree li:before {
+    position:relative;
+    top: 30px;
+    height: 3px;
+    width: 13px;
+    border-bottom: 3px solid #000000;
+    content: "";
+    display: inline-block;
+}
+ul.tree li:first-child {
+    border-left: none;
+
+    &:before {
+        border-bottom: none;
+    }
+}
+ul.tree li:last-child:before {
+    border-left: 3px solid #000000;
+    height: 30px;
+    top: 0px;  
+}

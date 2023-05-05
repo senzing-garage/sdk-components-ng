@@ -20,7 +20,9 @@
   [entity]="entity"
   [forceLayout]="_forceLayout"
   [showWhyFunction]="showEntityWhyFunction"
+  [showHowFunction]="showEntityHowFunction"
   (onWhyButtonClick)="this.onHeaderWhyButtonClick($event)"
+  (onHowButtonClick)="this.onHeaderHowButtonClick($event)"
   [layoutClasses]="_layoutEnforcers">
   </sz-entity-detail-header>
   
@@ -44,6 +46,15 @@
     (entityClick)="onGraphEntityClick($event)"
     (relationshipClick)="onGraphRelationshipClick($event)"
   ></sz-entity-detail-graph>
+
+  <sz-entity-detail-section-how-report class="details-section how-report"
+    *ngIf="entityId && this.showHowSection"
+    collapsedStatePrefsKey="howSectionCollapsed"
+    (onCollapsedChange)="this.onSectionCollapsedChange('howSectionCollapsed', $event)"
+    [entityId]="entityId"
+    [forceLayout]="_forceLayout"
+    [layoutClasses]="_layoutEnforcers">
+  </sz-entity-detail-section-how-report>
 
   <sz-entity-details-section class="details-section datasources"
     *ngIf="entity?.resolvedEntity?.records?.length && this.showMatchesSection"

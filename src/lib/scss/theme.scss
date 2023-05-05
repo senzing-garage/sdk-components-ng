@@ -81,6 +81,7 @@ body {
   --sz-color-disclosed: #{$sz-green};
   --sz-color-ambiguous: #{$sz-purple};
   --sz-color-graph-relationships: #{$sz-magenta};
+  --sz-color-how-report: #{$sz-lime};
 
   /* search box vars */
   --sz-search-button-submit-color: #{$sz-white};
@@ -154,6 +155,11 @@ body {
   --sz-search-results-col-name-min-width: 300px;
   --sz-search-results-col-margin-right: 2em;
   --sz-search-results-datasources-spacing: 8px;
+  --sz-search-results-how-button-border: 1px solid #{$sz-dark-grey};
+  --sz-search-results-how-button-background-color: #{$sz-light-background};
+  --sz-search-results-how-button-padding: 0px 10px;
+  --sz-search-results-how-button-margin: 0;
+  --sz-search-results-how-button-color: #{$sz-dark-grey};
 
   --sz-search-results-header-width: calc(100% - 40px);
   --sz-search-results-header-display: block;
@@ -205,7 +211,7 @@ body {
     --sz-entity-detail-icon-person-fill: #353535;
     --sz-entity-detail-icon-company-fill: #565656;
     --sz-entity-detail-icon-background-color: #f3f3f3;
-    --sz-entity-detail-icon-margin: 0 30px 0 20px;
+    --sz-entity-detail-icon-margin: 0 30px 4px 20px;
 
     --sz-entity-detail-header-entity-name-font-size: 34px;
     --sz-entity-detail-header-entity-name-font-weight: 600;
@@ -415,6 +421,43 @@ body {
     --sz-preferences-column-border-radius: 5px;
     --sz-preferences-column-background-color: #d3d3d3;
   /* end preferences component */
+  /* how report vars */
+  --sz-how-nav-min-width: 230px;
+  --sz-how-nav-min-height: 100%;
+  --sz-how-nav-padding: 3px;
+  --sz-how-nav-border: 1px solid #{$sz-black};
+  --sz-how-nav-border-radius: 3px;
+  --sz-how-nav-border-top: var(-sz-how-nav-border);
+  --sz-how-nav-border-right: var(-sz-how-nav-border);
+  --sz-how-nav-border-bottom: var(-sz-how-nav-border);
+  --sz-how-nav-border-left: var(-sz-how-nav-border);
+  --sz-how-nav-overflow-y: auto;
+  --sz-how-nav-resize: horizontal;
+  --sz-how-nav-font-size: 12px;
+  --sz-how-nav-background: #{$sz-light-grey};
+  --sz-how-nav-color: #{$sz-black};
 
+  --sz-how-step-card-color: #{$sz-dark1};
+  --sz-how-step-card-border: 2px solid #{$sz-black};
+  --sz-how-step-card-type-color-add: #feae00;
+  --sz-how-step-card-type-color-create: #ffd932;
+  --sz-how-step-card-type-color-merge: #16e7cf;
+  --sz-how-step-card-type-color-interim: #56c1ff;
+  --sz-how-step-card-type-color-final: #88fa4e;
+  --sz-how-step-card-data-table-border: 2px solid #{$sz-dark1};
+  --sz-how-step-card-data-table-cell-border: 2px solid #{$sz-dark1};
+  --sz-how-step-card-title-text-margin-top: 0px;
+
+  /* entity detail how style overides, defaults to same as non-detail how styles */
+  --sz-entity-detail-section-how-step-card-color: var(--sz-how-step-card-color);
+  --sz-entity-detail-section-how-step-card-border: var(--sz-how-step-card-border);
+  --sz-entity-detail-section-how-step-card-type-color-add: var(--sz-how-step-card-type-color-add);
+  --sz-entity-detail-section-how-step-card-type-color-create: var(--sz-how-step-card-type-color-create);
+  --sz-entity-detail-section-how-step-card-type-color-merge: var(--sz-how-step-card-type-color-merge);
+  --sz-entity-detail-section-how-step-card-type-color-interim: var(--sz-how-step-card-type-color-interim);
+  --sz-entity-detail-section-how-step-card-type-color-final: var(--sz-how-step-card-type-color-final);
+  --sz-entity-detail-section-how-step-card-data-table-border: var(--sz-how-step-card-data-table-border);
+  --sz-entity-detail-section-how-step-card-data-table-cell-border: var(--sz-how-step-card-data-table-cell-border);
+  --sz-entity-detail-section-how-step-card-title-text-margin-top: 3px;
 }
 

@@ -12,5 +12,6 @@
     [showMatchKey]="showMatchKey"></sz-search-result-card-header>
 
   <sz-search-result-card-content
+  (howButtonClick)="onHowButtonClick($event)"
   [entity]="searchResult" [showAllInfo]="showAllInfo"></sz-search-result-card-content>
 </div>

@@ -59,7 +59,9 @@
   <sz-search-results *ngIf="showSearchResults" 
   [results]="currentSearchResults" 
   [parameters]="currentSearchParameters"
-  showWhyComparisonButton="true" 
+  showWhyComparisonButton="false" 
+  showHowButton="true"
+  (howButtonClick)="onHowButtonClick($event)"
   (resultClick)="onSearchResultClick($event)"></sz-search-results>
 </div>
 <!-- end search results -->
@@ -76,12 +78,22 @@
     (graphEntityClick)="onGraphEntityClick($event)"
     (graphEntityDblClick)="onGraphEntityDblClick($event)"
     (graphContextMenuClick)="onGraphContextClick($event)"
+    (howButtonClick)="onHowButtonClick($event)"
     [showGraphMatchKeys]="true"
     [showGraphLinkContextMenu]="true"
     [graphShowZoomControl]="true"
     graphZoomControlPosition="top-left"
     [showRecordWhyUtilities]="true"
-    [showEntityWhyFunction]="true"
+    [showEntityHowFunction]="true"
     [entityId]="currentlySelectedEntityId"></sz-entity-detail>
 </div>
 <!-- end entity detail -->
+<!-- start how report panel -->
+<div class="how-report-example">
+  <div class="detail-wrapper" *ngIf="showHowReport">
+      <button (click)="onBackToEntityClick($event)">&lt;&lt; Go Back to Entity</button>
+  </div>
+  <sz-how-entity *ngIf="showHowReport" 
+  [entityId]="howReportEntityId"></sz-how-entity>
+</div>
+<!--  end  how report panel -->

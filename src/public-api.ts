@@ -22,6 +22,7 @@ export * from './lib/services/sz-message-bundle.service';
 export { SzPrefsService, SzSdkPrefsModel} from './lib/services/sz-prefs.service';
 export * from './lib/services/sz-search.service';  // updated to use rest
 export * from './lib/services/sz-ui.service';
+export * from './lib/services/sz-how-ui.service';
 
 /** components */
   /** bulk data related */
@@ -41,6 +42,7 @@ export * from './lib/search/sz-search-results/sz-search-results.component';
 export * from './lib/search/sz-search-result-card/sz-search-result-card.component';
 export * from './lib/entity/detail/sz-entity-detail.component';
 export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph.component';
+export * from './lib/entity/detail/sz-entity-detail-how-report/sz-entity-detail-how-report.component';
 
 /** graph related */
 export { SzRelationshipNetworkComponent } from './lib/graph/sz-relationship-network/sz-relationship-network.component';
@@ -70,12 +72,23 @@ export { AdminStreamConnProperties, AdminStreamAnalysisConfig, AdminStreamLoadCo
 export { SzDataSourceRecordAnalysis, SzDataSourceComposite } from './lib/models/data-sources';
 export { SzGraphTooltipEntityModel, SzGraphTooltipLinkModel, SzGraphNodeFilterPair, SzMatchKeyComposite, SzMatchKeyTokenComposite, SzEntityNetworkMatchKeyTokens, SzNetworkGraphInputs, SzMatchKeyTokenFilterScope } from './lib/models/graph';
 export { SzDataSourceRecordsSelection, SzDataSourceRecordSelection, SzWhySelectionModeBehavior, SzWhySelectionMode } from './lib/models/data-source-record-selection';
+export * from './lib/models/data-how';
 
 /** why */
 export { SzWhyEntityComponent } from './lib/why/sz-why-entity.component';
 export { SzWhyEntitiesComparisonComponent } from './lib/why/sz-why-entities.component';
 export { SzWhyEntityDialog } from './lib/why/sz-why-entity.component';
 export { SzWhyEntitiesDialog } from './lib/why/sz-why-entities.component';
+
+/** how */
+export { SzHowEntityComponent } from './lib/how/sz-how-entity.component';
+export { SzHowStepNodeComponent } from './lib/how/sz-how-step-node.component'
+export { SzHowFinalEntityCardComponent } from './lib/how/cards/sz-how-final-entity-card.component';
+export { SzHowStepCardComponent } from './lib/how/cards/sz-how-step-card.component';
+export { SzHowStepStackComponent } from './lib/how/sz-how-step-stack.component';
+export { SzHowNavComponent } from './lib/how/sz-how-nav.component';
+export { SzHowVirtualEntityCardComponent } from './lib/how/cards/sz-how-virtual-entity-card.component';
+export { SzHowVirtualEntityDialog } from './lib/how/sz-how-virtual-entity-dialog.component';
 
 /** export some members of rest client to ease type use */
 export {
