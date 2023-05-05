@@ -1,6 +1,6 @@
 import { Component, Input, Output, HostBinding, OnInit, ViewChild, AfterViewInit, EventEmitter, OnDestroy, ElementRef } from '@angular/core';
 import * as d3 from 'd3';
-import { Graph, NodeInfo, LinkInfo } from './graph-types';
+import { NodeInfo, LinkInfo } from './graph-types';
 
 import { 
   EntityGraphService, 
@@ -13,19 +13,19 @@ import {
   SzEntityData, 
   SzEntityIdentifier, 
   SzEntityPath, 
-  SzEntityIdentifiers, 
   SzDetailLevel,
-  SzEntityResponse,
-  SzRecordIdentifier
+  SzEntityResponse
 } from '@senzing/rest-api-client-ng';
 import { map, tap, first, takeUntil, take, filter } from 'rxjs/operators';
-import { Subject, Observable, BehaviorSubject, of, forkJoin } from 'rxjs';
+import { Subject, Observable, BehaviorSubject, forkJoin } from 'rxjs';
 import { parseSzIdentifier, parseBool, isValueTypeOfArray } from '../../common/utils';
 import { SzNetworkGraphInputs, SzGraphTooltipEntityModel, SzGraphTooltipLinkModel, SzGraphNodeFilterPair, SzEntityNetworkMatchKeyTokens } from '../../../lib/models/graph';
 import { SzSearchService } from '../../services/sz-search.service';
 
 /**
  * Provides a SVG of a relationship network diagram via D3.
+ * This component is used internally in the public graph components.
+ * @internal
  * @export
  */
 @Component({

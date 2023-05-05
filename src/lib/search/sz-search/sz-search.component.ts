@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectorRef, Inject, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Subject  } from 'rxjs';
 import { map, first, filter, takeUntil } from 'rxjs/operators';
@@ -12,8 +12,7 @@ import {
   ConfigurationParameters as SzRestConfigurationParameters,
   SzAttributeSearchResult,
   SzAttributeType,
-  SzAttributeTypesResponse,
-  SzAttributeTypesResponseData
+  SzAttributeTypesResponse
 } from '@senzing/rest-api-client-ng';
 
 import { SzEntitySearchParams } from '../../models/entity-search';
@@ -22,7 +21,7 @@ import { JSONScrubber, parseBool } from '../../common/utils';
 import { SzConfigurationService } from '../../services/sz-configuration.service';
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzFoliosService } from '../../services/sz-folios.service';
-import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio, SzSearchParamsFolioItem } from '../../models/folio';
+import { SzSearchHistoryFolio, SzSearchHistoryFolioItem } from '../../models/folio';
 import { SzSearchIdentifiersPickerDialogComponent, SzSearchIdentifiersPickerSheetComponent } from './sz-search-identifiers-picker.component';
 
 /** @internal */
@@ -51,39 +50,41 @@ interface SzBoolFieldMapByName {
 /**
  * Provides a search box component that can execute search queries and return results.
  * @export
+ * 
  * @example 
- * <code>
- * &lt;!-- (WC javascript) SzSearchComponent --&gt;<br/>
- * &lt;sz-wc-search<br/>
- * id="sz-search"<br/>
- * name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
- * &lt;script&gt;<br/>
- *  document.getElementById('sz-search').addEventListener('resultsChange', (results) => {<br/>
- *    console.log('search results: ', results);<br/>
- *  });<br/>
- * &lt;/script&gt;<br/><br/>
+ * <!-- (WC javascript) SzSearchComponent -->
+ * <sz-wc-search
+ * id="sz-search"
+ * name="Isa Creepr"></sz-wc-search>
+ * <script>
+ *  document.getElementById('sz-search').addEventListener('resultsChange', (results) => {
+ *    console.log('search results: ', results);
+ *  });
+ * </script>
  *
- * &lt;!-- (Angular) SzSearchComponent --&gt;<br/>
- * &lt;sz-search<br/>
- * name="Isa Creepr"<br/>
- * (resultsChange)="myResultsHandler($event)"<br/>
- * (searchStart)="showSpinner()"<br/>
- * (searchEnd)="hideSpinner()"&gt;&lt;/sz-search&gt;<br/><br/>
+ * @example 
+ * <!-- (Angular) SzSearchComponent -->
+ * <sz-search
+ * name="Isa Creepr"
+ * (resultsChange)="myResultsHandler($event)"
+ * (searchStart)="showSpinner()"
+ * (searchEnd)="hideSpinner()"></sz-search>
  *
- * &lt;!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo --&gt;<br/>
- * &lt;sz-wc-search<br/>
- * id="sz-search"<br/>
- * name="Isa Creepr"&gt;&lt;/sz-wc-search&gt;<br/>
- * &lt;sz-wc-search-results id="sz-search-results"&gt;&lt;/sz-wc-search-results&gt;<br/>
- * &lt;script&gt;<br/>
- *  var szSearchComponent = document.getElementById('sz-search');<br/>
- *  var szSearchResultsComponent = document.getElementById('sz-search-results');<br/>
- *  szSearchComponent.addEventListener('resultsChange', (evt) => {<br/>
- *    console.log('search results: ', evt);<br/>
- *    szSearchResultsComponent.results = evt.detail;<br/>
- *  });<br/>
- * &lt;/script&gt;<br/>
- * </code>
+ * @example 
+ * <!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo -->
+ * <sz-wc-search
+ * id="sz-search"
+ * name="Isa Creepr"></sz-wc-search>
+ * <sz-wc-search-results id="sz-search-results"></sz-wc-search-results>
+ * <script>
+ *  var szSearchComponent = document.getElementById('sz-search');
+ *  var szSearchResultsComponent = document.getElementById('sz-search-results');
+ *  szSearchComponent.addEventListener('resultsChange', (evt) => {
+ *    console.log('search results: ', evt);
+ *    szSearchResultsComponent.results = evt.detail;
+ *  });
+ * </script>
+ * 
  */
 @Component({
   selector: 'sz-search',

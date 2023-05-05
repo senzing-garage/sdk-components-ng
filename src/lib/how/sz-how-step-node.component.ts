@@ -11,13 +11,16 @@ import { SzHowUIService } from '../services/sz-how-ui.service';
 /**
  * Represents a step node in a How Report. Step Nodes wrap Step cards
  * and can have child Step Nodes.
+ * 
+ * @internal
  *
  * @example 
- * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-how-step-node&gt;&lt;/sz-how-step&gt;<br/><br/>
+ * <!-- (Angular) -->
+ * <sz-how-step-node></sz-how-step>
  *
- * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-wc-how-step-node&gt;&lt;/sz-wc-how-step-node&gt;<br/>
+ * @example 
+ * <!-- (WC) -->
+ * <sz-wc-how-step-node></sz-wc-how-step-node>
 */
 @Component({
     selector: 'sz-how-step-node',

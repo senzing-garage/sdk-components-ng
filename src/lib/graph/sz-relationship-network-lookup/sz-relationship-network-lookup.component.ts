@@ -2,6 +2,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { EntityGraphService, SzDetailLevel } from '@senzing/rest-api-client-ng';
 import { SzNetworkGraphInputs } from '../../models/graph';
 
+/**
+ * @internal
+ */
 @Component({
   selector: 'sz-relationship-network-lookup',
   templateUrl: './sz-relationship-network-lookup.component.html',

@@ -12,7 +12,9 @@ import { filter, Subject, takeUntil } from 'rxjs';
 import { isNotNull } from '../common/utils';
 import { SzHowUIService } from '../services/sz-how-ui.service';
 
-/** model for counting how many steps match a specific parameter */
+/**
+ * @internal 
+ * model for counting how many steps match a specific parameter */
 export interface SzHowNavComponentParameterCounts {
     'CREATE': number,
     'ADD': number,
@@ -21,7 +23,9 @@ export interface SzHowNavComponentParameterCounts {
     'LOW_SCORE_ADDRESS': number,
     'LOW_SCORE_PHONE': number
 }
-/** model that extends a resolution step with display specific metadata used in the matches list */
+/** 
+ * @internal
+ * model that extends a resolution step with display specific metadata used in the matches list */
 export interface SzResolutionStepListItem extends SzResolutionStep {
     actionType: SzResolutionStepDisplayType,
     title: string,
@@ -32,16 +36,18 @@ export interface SzResolutionStepListItem extends SzResolutionStep {
     freeTextTerms?: string[]
 }
 /**
+ * @internal
  * Provides a collapsible list of steps from a "How" report that can 
  * be used for quickly navigating a how report and filtering based on user 
  * parameters.
  *
  * @example 
- * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-how-nav&gt;&lt;/sz-how-nav&gt;<br/><br/>
+ * <!-- (Angular) -->
+ * <sz-how-nav></sz-how-nav>
  *
- * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-wc-how-nav&gt;&lt;/sz-wc-how-nav&gt;<br/>
+ * @example 
+ * <!-- (WC) -->
+ * <sz-wc-how-nav></sz-wc-how-nav>
 */
 @Component({
     selector: 'sz-how-nav',

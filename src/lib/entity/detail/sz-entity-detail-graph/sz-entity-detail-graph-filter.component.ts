@@ -12,19 +12,18 @@ import { Overlay } from '@angular/cdk/overlay';
  * integrated with graph preferences and prefBUS.
  *
  * @example 
- * <code>
- * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-entity-detail-graph-filter #graphFilter<br/>
-      [showLinkLabels]="true"<br/>
-      (optionChanged)="onOptionChange($event)"<br/>
-      &gt;&lt;/sz-entity-detail-graph-filter&gt;<br/><br/>
+ * <!-- (Angular) -->
+ * <sz-entity-detail-graph-filter #graphFilter
+      [showLinkLabels]="true"
+      (optionChanged)="onOptionChange($event)"
+      ></sz-entity-detail-graph-filter>
  *
- * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-wc-standalone-graph-filters id="sz-entity-detail-graph-filter"&gt;&lt;/sz-wc-standalone-graph-filters&gt;<br/>
- * &lt;script&gt;<br/>
- * document.getElementById('sz-wc-standalone-graph-filters').addEventListener('optionChanged', function(data) { console.log('filter(s) changed', data); });<br/>
- * &lt;/script&gt;<br/>
- * </code>
+ * @example 
+ * <!-- (WC) -->
+ * <sz-wc-standalone-graph-filters id="sz-entity-detail-graph-filter"></sz-wc-standalone-graph-filters>
+ * <script>
+ * document.getElementById('sz-wc-standalone-graph-filters').addEventListener('optionChanged', function(data) { console.log('filter(s) changed', data); });
+ * </script>
  */
 @Component({
   selector: 'sz-entity-detail-graph-filter',

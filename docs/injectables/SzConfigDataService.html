@@ -40,7 +40,7 @@
 
 <ol class="breadcrumb">
   <li>Injectables</li>
-  <li >SzPdfUtilService</li>
+  <li >SzConfigDataService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -55,7 +55,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/lib/services/sz-pdf-util.service.ts</code>
+            <code>src/lib/services/sz-config-data.service.ts</code>
         </p>
 
 
@@ -63,7 +63,8 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Utility service for creating and manipulating PDF files from components and models.</p>
+                <p>methods used to get data from the api server about its
+configuration.</p>
 
             </p>
 
@@ -73,6 +74,21 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#configDataService" >configDataService</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -83,12 +99,13 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#createPdfFromAttributeSearch" >createPdfFromAttributeSearch</a>
+                                <a href="#getActiveConfig" >getActiveConfig</a>
                             </li>
                             <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#createPdfFromHtmlElement" >createPdfFromHtmlElement</a>
+                                <a href="#getFeaturesFromConfig" >getFeaturesFromConfig</a>
+                            </li>
+                            <li>
+                                <a href="#getOrderedFeatures" >getOrderedFeatures</a>
                             </li>
                         </ul>
                     </td>
@@ -108,7 +125,7 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(titleCasePipe: <a href="https://angular.io/api/common/TitleCasePipe" target="_blank">TitleCasePipe</a>)</code>
+<code>constructor(configDataService: SzConfigService)</code>
                     </td>
                 </tr>
 
@@ -126,10 +143,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>titleCasePipe</td>
+                                                        <td>configDataService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="https://angular.io/api/common/TitleCasePipe" target="_blank" >TitleCasePipe</a></code>
+                                                                    <code>SzConfigService</code>
                                                         </td>
                                                   
                                                     <td>
@@ -155,18 +172,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="createPdfFromAttributeSearch"></a>
+                    <a name="getActiveConfig"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>createPdfFromAttributeSearch</b></span>
-                        <a href="#createPdfFromAttributeSearch"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getActiveConfig</b></span>
+                        <a href="#getActiveConfig"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createPdfFromAttributeSearch(data: SzAttributeSearchResult[], searchParams?: <a href="../interfaces/SzEntitySearchParams.html" target="_self">SzEntitySearchParams</a>, resultsPerPage: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+<code>getActiveConfig()</code>
                 </td>
             </tr>
 
@@ -175,7 +190,40 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Create a downloadable PDF from a attribute search result.</p>
+                    <div class="io-description"><p>get the active config from the api/poc server</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFeaturesFromConfig"></a>
+                    <span class="name">
+                        <span ><b>getFeaturesFromConfig</b></span>
+                        <a href="#getFeaturesFromConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getFeaturesFromConfig(config: literal type)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>get features as defined/ordered from configuration response</p>
 </div>
 
                     <div class="io-description">
@@ -187,51 +235,19 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
-                                    <td>Default value</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>data</td>
+                                    <td>config</td>
                                     <td>
-                                            <code>SzAttributeSearchResult[]</code>
+                                            <code>literal type</code>
                                     </td>
 
                                     <td>
                                         No
                                     </td>
 
-                                    <td>
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td>searchParams</td>
-                                    <td>
-                                                <code><a href="../interfaces/SzEntitySearchParams.html" target="_self" >SzEntitySearchParams</a></code>
-                                    </td>
-
-                                    <td>
-                                        Yes
-                                    </td>
-
-                                    <td>
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td>resultsPerPage</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-                                    <td>
-                                        <code>10</code>
-                                    </td>
 
                                 </tr>
                             </tbody>
@@ -240,7 +256,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                     </div>
                     <div class="io-description">
@@ -254,18 +270,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="createPdfFromHtmlElement"></a>
+                    <a name="getOrderedFeatures"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>createPdfFromHtmlElement</b></span>
-                        <a href="#createPdfFromHtmlElement"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getOrderedFeatures</b></span>
+                        <a href="#getOrderedFeatures"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createPdfFromHtmlElement(node: HTMLElement | any, filename: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>getOrderedFeatures()</code>
                 </td>
             </tr>
 
@@ -274,65 +288,43 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Create a downloadable PDF from an HTMLElement node. Uses canvas as an intermediary.</p>
+                    <div class="io-description"><p>the feature names from a poc/api server in the order defined on the server</p>
 </div>
 
                     <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Default value</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>node</td>
-                                    <td>
-                                            <code>HTMLElement | any</code>
-                                    </td>
+                        <b>Returns : </b>    <code>Observable | undefined</code>
 
-                                    <td>
-                                        No
-                                    </td>
-
-                                    <td>
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td>filename</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-                                    <td>
-                                        <code>&#x27;result.pdf&#x27;</code>
-                                    </td>
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
-
-                    </div>
-                    <div class="io-description">
-                        
                     </div>
                 </td>
             </tr>
+        </tbody>
+    </table>
+</section>
+            <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="configDataService"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>configDataService</b></span>
+                        <a href="#configDataService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>SzConfigService</code>
+
+                    </td>
+                </tr>
+
+
         </tbody>
     </table>
 </section>
@@ -381,7 +373,7 @@
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'SzPdfUtilService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'SzConfigDataService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

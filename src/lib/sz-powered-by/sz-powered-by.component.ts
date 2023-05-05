@@ -6,11 +6,12 @@ import { Component, OnInit, Input } from '@angular/core';
  * not require any Rest API communication.
  *
  * @example 
- * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-powered-by&gt;&lt;/sz-powered-by&gt;<br/><br/>
+ * <!-- (Angular) -->
+ * <sz-powered-by></sz-powered-by>
  *
- * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-wc-powered-by&gt;&lt;/sz-wc-powered-by&gt;<br/>
+ * @example 
+ * <!-- (WC) -->
+ * <sz-wc-powered-by></sz-wc-powered-by>
  */
 @Component({
   selector: 'sz-powered-by',

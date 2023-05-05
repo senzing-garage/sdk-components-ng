@@ -21,19 +21,18 @@ import { isBoolean } from '../common/utils';
  * integrated with graph preferences and prefBUS.
  *
  * @example 
- * <code>
- * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-graph-filter #graphFilter<br/>
-      [showLinkLabels]="true"<br/>
-      (optionChanged)="onOptionChange($event)"<br/>
-      &gt;&lt;/sz-graph-filter&gt;<br/><br/>
+ * <!-- (Angular) -->
+ * <sz-graph-filter #graphFilter
+      [showLinkLabels]="true"
+      (optionChanged)="onOptionChange($event)"
+      ></sz-graph-filter>
  *
- * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-wc-graph-filters id="sz-graph-filter"&gt;&lt;/sz-wc-graph-filters&gt;<br/>
- * &lt;script&gt;<br/>
- * document.getElementById('sz-wc-graph-filters').addEventListener('optionChanged', function(data) { console.log('filter(s) changed', data); });<br/>
- * &lt;/script&gt;<br/><br/>
- * </code>
+ * @example
+ * <!-- (WC) -->
+ * <sz-wc-graph-filters id="sz-graph-filter"></sz-wc-graph-filters>
+ * <script>
+ * document.getElementById('sz-wc-graph-filters').addEventListener('optionChanged', function(data) { console.log('filter(s) changed', data); });
+ * </script>
  */
 @Component({
   selector: 'sz-graph-filter',

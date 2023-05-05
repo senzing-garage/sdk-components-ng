@@ -47,7 +47,7 @@
   <li>Interfaces</li>
   <li
   >
-  NodeInfo</li>
+  SzResolutionStepNode</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -62,16 +62,25 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/lib/graph/sz-relationship-network/graph-types.ts</code>
+            <code>src/lib/models/data-how.ts</code>
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Common wrapper for extending data from a How step with UI specific features
+and things like &quot;children&quot; for converting a flat dimensional step to a recursive
+heirarchal Tree of steps.</p>
+
+            </p>
 
             <p class="comment">
                 <h3>Extends</h3>
             </p>
             <p class="comment">
-                    <code>SimulationNodeDatum</code>
+                    <code>SzResolutionStep</code>
             </p>
 
         <section>
@@ -87,57 +96,65 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                        <a href="#address" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#childRecords" 
 >
-                                            address
+                                            childRecords
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#entityId" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#children" 
 >
-                                            entityId
+                                            children
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#iconType" 
+                                        <a href="#id" 
 >
-                                            iconType
+                                            id
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#index" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#isMemberOfGroup" 
 >
-                                            index
+                                            isMemberOfGroup
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#isCoreNode" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#itemType" 
 >
-                                            isCoreNode
+                                            itemType
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#isQueriedNode" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#memberOfGroup" 
 >
-                                            isQueriedNode
+                                            memberOfGroup
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#name" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#resolvedVirtualEntity" 
 >
-                                            name
+                                            resolvedVirtualEntity
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#orgName" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#stepType" 
 >
-                                            orgName
+                                            stepType
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#phone" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#virtualEntityIds" 
 >
-                                            phone
+                                            virtualEntityIds
                                         </a>
                                 </li>
                             </ul>
@@ -155,9 +172,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="address"></a>
-                                        <span class="name "><b>address</b>
-                                            <a href="#address">
+                                        <a name="childRecords"></a>
+                                        <span class="name "><b>childRecords</b>
+                                            <a href="#childRecords">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -165,7 +182,95 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>address:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>childRecords:     <code>Array&lt;SzVirtualEntityRecord&gt;</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>Array&lt;SzVirtualEntityRecord&gt;</code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>child records pulled out of steps found in the <code>children</code> steps</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="children"></a>
+                                        <span class="name "><b>children</b>
+                                            <a href="#children">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>children:         <code><a href="../interfaces/SzResolutionStepNode.html" target="_self" >Array&lt;SzResolutionStepNode | SzResolutionStep&gt;</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../interfaces/SzResolutionStepNode.html" target="_self" >Array&lt;SzResolutionStepNode | SzResolutionStep&gt;</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>child steps that were used to make this step</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="id"></a>
+                                        <span class="name "><b>id</b>
+                                            <a href="#id">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>id:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -182,15 +287,21 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>id of virtual entity or generated uuid</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="entityId"></a>
-                                        <span class="name "><b>entityId</b>
-                                            <a href="#entityId">
+                                        <a name="isMemberOfGroup"></a>
+                                        <span class="name "><b>isMemberOfGroup</b>
+                                            <a href="#isMemberOfGroup">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -198,106 +309,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>entityId:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="iconType"></a>
-                                        <span class="name "><b>iconType</b>
-                                            <a href="#iconType">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>iconType:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="index"></a>
-                                        <span class="name "><b>index</b>
-                                            <a href="#index">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>index:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="isCoreNode"></a>
-                                        <span class="name "><b>isCoreNode</b>
-                                            <a href="#isCoreNode">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>isCoreNode:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        <code>isMemberOfGroup:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -310,19 +322,30 @@
                                         </td>
                                     </tr>
 
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
 
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>is this step a child of another step</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="isQueriedNode"></a>
-                                        <span class="name "><b>isQueriedNode</b>
-                                            <a href="#isQueriedNode">
+                                        <a name="itemType"></a>
+                                        <span class="name "><b>itemType</b>
+                                            <a href="#itemType">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -330,7 +353,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>isQueriedNode:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        <code>itemType:         <code><a href="../miscellaneous/variables.html#SzResolutionStepListItemType" target="_self" >SzResolutionStepListItemType</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -338,57 +361,36 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#SzResolutionStepListItemType" target="_self" >SzResolutionStepListItemType</a></code>
 
                                         </td>
                                     </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="name"></a>
-                                        <span class="name "><b>name</b>
-                                            <a href="#name">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>name:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-</code>
-                                    </td>
-                                </tr>
-
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
+                                            <i>Optional</i>
                                         </td>
                                     </tr>
 
 
 
 
-
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>used for deciding what type of component to embed, whether or not the component has
+things like nested steps, or flat arrays of contiguous items etc</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="orgName"></a>
-                                        <span class="name "><b>orgName</b>
-                                            <a href="#orgName">
+                                        <a name="memberOfGroup"></a>
+                                        <span class="name "><b>memberOfGroup</b>
+                                            <a href="#memberOfGroup">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -396,7 +398,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>orgName:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>memberOfGroup:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -409,19 +411,30 @@
                                         </td>
                                     </tr>
 
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
 
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>the id of the parent group</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="phone"></a>
-                                        <span class="name "><b>phone</b>
-                                            <a href="#phone">
+                                        <a name="resolvedVirtualEntity"></a>
+                                        <span class="name "><b>resolvedVirtualEntity</b>
+                                            <a href="#resolvedVirtualEntity">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -429,7 +442,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>phone:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>resolvedVirtualEntity:         <code><a href="../interfaces/SzResolvedVirtualEntity.html" target="_self" >SzResolvedVirtualEntity</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -437,15 +450,115 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            <i>Type : </i>        <code><a href="../interfaces/SzResolvedVirtualEntity.html" target="_self" >SzResolvedVirtualEntity</a></code>
 
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
                                         </td>
                                     </tr>
 
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>the resolved virtual entity has much more information than a regular step
+and is more like an snapshot of an &quot;entity&quot; at a particular point in it&#39;s resolution</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="stepType"></a>
+                                        <span class="name "><b>stepType</b>
+                                            <a href="#stepType">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>stepType:         <code><a href="../miscellaneous/variables.html#SzResolutionStepDisplayType" target="_self" >SzResolutionStepDisplayType</a></code>
+</code>
+                                    </td>
+                                </tr>
 
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#SzResolutionStepDisplayType" target="_self" >SzResolutionStepDisplayType</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>used for deciding presentation information of a card</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="virtualEntityIds"></a>
+                                        <span class="name "><b>virtualEntityIds</b>
+                                            <a href="#virtualEntityIds">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>virtualEntityIds:     <code>string[]</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string[]</code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>the ids of virtual entities found in children steps</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -487,7 +600,7 @@
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'NodeInfo.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'SzResolutionStepNode.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

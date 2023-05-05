@@ -16,6 +16,8 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
 
 /**
  * Display the "Virtual Entity" information for how resolution step
+ * 
+ * @internal
 */
 @Component({
     selector: 'sz-how-virtual-entity-card',

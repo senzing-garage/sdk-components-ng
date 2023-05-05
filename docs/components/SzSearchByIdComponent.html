@@ -67,24 +67,21 @@
     </p>
     <p class="comment">
         <p>Provides a search box component that can search by id and/or record ids.</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;code&gt;
-&amp;lt;!-- (WC javascript) SzSearchByIdComponent --&amp;gt;&lt;br/&gt;
-&amp;lt;sz-wc-search-by-id&lt;br/&gt;
-id=&quot;sz-search&quot;&lt;br/&gt;
-data-source=&quot;SAMPLE_PERSON&quot;&lt;br/&gt;
-record-id=&quot;1001&quot;&amp;gt;&amp;lt;/sz-wc-search-by-id&amp;gt;&lt;br/&gt;
-&amp;lt;script&amp;gt;&lt;br/&gt;
- document.getElementById(&#39;sz-search&#39;).addEventListener(&#39;resultChange&#39;, function(results) {&lt;br/&gt;
-   console.log(&#39;results: &#39;, results);&lt;br/&gt;
- });&lt;br/&gt;
-&amp;lt;/script&amp;gt;&lt;br/&gt;&lt;br/&gt;</code></pre></div><p>&lt;!-- (Angular) SzSearchByIdComponent --&gt;<br/>
-&lt;sz-search-by-id<br/>
-entityId=&quot;1004&quot;<br/>
-(resultChange)=&quot;myResultsHandler($event)&quot;<br/>
-(searchStart)=&quot;showSpinner()&quot;<br/>
-(searchEnd)=&quot;hideSpinner()&quot;&gt;&lt;/sz-search-by-id&gt;<br/>
-</code></p>
-
+<div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC javascript) SzSearchByIdComponent --&gt;
+&lt;sz-wc-search-by-id
+id=&quot;sz-search&quot;
+data-source=&quot;SAMPLE_PERSON&quot;
+record-id=&quot;1001&quot;&gt;&lt;/sz-wc-search-by-id&gt;
+&lt;script&gt;
+ document.getElementById(&#39;sz-search&#39;).addEventListener(&#39;resultChange&#39;, function(results) {
+   console.log(&#39;results: &#39;, results);
+ });
+&lt;/script&gt;</code></pre></div><div><pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) SzSearchByIdComponent --&gt;
+&lt;sz-search-by-id
+entityId=&quot;1004&quot;
+(resultChange)=&quot;myResultsHandler($event)&quot;
+(searchStart)=&quot;showSpinner()&quot;
+(searchEnd)=&quot;hideSpinner()&quot;&gt;&lt;/sz-search-by-id&gt;</code></pre></div>
     </p>
 
 
@@ -2930,7 +2927,7 @@ conf to change before fetching resources like the identifiers list</p>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div>  <!-- @senzing/sdk/search/sz-search-by-id -->  <!--    NAME_FULL    DATE_OF_BIRTH    IDENTIFIER    IDENTIFIER_TYPE    ADDR_FULL    PHONE_NUMBER    EMAIL_ADDRESS  -->  <div class="content" *ngIf="true"  [ngClass]="_layoutClasses"  >      <section class="entity search" (ngSubmit)="submitSearch()">        <form class="form" [formGroup]="entitySearchForm" novalidate>          <div class="sz-row">              <div class="field datasource">                  <label for="entity-datasource">Get by Record ID</label>                  <select formControlName="dataSource"                  class="datasource-dropdown"                  id="datasource-name"                  name="datasource-name">                    <option [ngValue]="null" disabled [selected]="true">Data Source Name</option>                    <option *ngFor="let dsName of filteredDataSources"                            [value]="dsName">{{ dsName }}                    </option>                  </select>              </div>              <div class="field recordid" [class.disabled]="disabledFields[\'recordId\']" *ngIf="!hiddenFields[\'recordId\']">                <input formControlName="recordId"                        class="search-input"                        id="record-id"                        type="text"                        [attr.disabled]="getDisabled(\'recordId\')"                        (keyup.enter)="onKeyEnter()"                        placeholder="Record ID">              </div>              <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">                <button mat-button class="button__search-go"                [attr.disabled]="getDisabled(\'searchButton\')"                (click)="submitSearch()">{{searchButtonLabel}}</button>              </div>          </div>          <div class="sz-row">            <div class="field entityid">              <label for="entity-id">Get by Entity ID</label>              <input formControlName="entityId"                      class="search-input"                      id="entity-id"                      type="text"                      [attr.disabled]="getDisabled(\'entityId\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Entity ID">            </div>            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">{{cancelButtonLabel}}</button>            </div>          </div>          <div class="sz-row bottom">            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">{{cancelButtonLabelShort}}</button>            </div>            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">              <button mat-button class="button__search-go"              [attr.disabled]="getDisabled(\'searchButton\')"              (click)="submitSearch()">{{searchButtonLabelShort}}</button>            </div>          </div>        </form>      </section>    </div></div>'
-    var COMPONENTS = [{'name': 'SzAlertMessageDialog', 'selector': 'sz-alert-dialog'},{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzMultiSelectButtonComponent', 'selector': 'sz-button-multi-select'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipNetworkInputComponent', 'selector': 'sz-relationship-network-input'},{'name': 'SzRelationshipNetworkLookupComponent', 'selector': 'sz-relationship-network-lookup'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzSearchByIdComponent'};
 </script>

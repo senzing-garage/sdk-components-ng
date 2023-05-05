@@ -6,6 +6,8 @@ import { Subject } from 'rxjs';
  * A button component with a "selected" count and action emitters and methods.
  * used for selecting multiple search results for comparison.
  * used for selected multiple records on the entity detail for comparison.
+ * 
+ * @internal
  */
 @Component({
   selector: 'sz-button-multi-select',

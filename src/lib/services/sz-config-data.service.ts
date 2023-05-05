@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, of, BehaviorSubject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import {
     ConfigService as SzConfigService, SzConfigResponse,
 } from '@senzing/rest-api-client-ng';
 
-import { SzDataSourcesService } from './sz-datasources.service';
-import { SzAdminService } from './sz-admin.service';
 import { take, tap, map } from 'rxjs/operators';
+
 /**
  * methods used to get data from the api server about its 
- * configuration
+ * configuration.
  *
  * @export
  */
@@ -19,10 +18,9 @@ import { take, tap, map } from 'rxjs/operators';
 })
 export class SzConfigDataService {
     private _config: any;
-    constructor(public configDataService: SzConfigService) {
+    constructor(public configDataService: SzConfigService) {}
 
-    }
-
+    /** get the active config from the api/poc server */
     getActiveConfig() {
         return this.configDataService.getActiveConfig().pipe(
             take(1)
@@ -42,7 +40,7 @@ export class SzConfigDataService {
             })
         );
     }
-
+    /** get features as defined/ordered from configuration response */
     getFeaturesFromConfig(config: {[key: string]: Array<any> | any}) {
         console.log('getFeaturesFromConfig: ', config);
         if(config && config['CFG_FTYPE']) {
@@ -50,7 +48,7 @@ export class SzConfigDataService {
             return config['CFG_FTYPE']
         }
     }
-
+    /** the feature names from a poc/api server in the order defined on the server  */
     getOrderedFeatures(): Observable<string[]> | undefined{
         let _retVal = new Subject<string[]>();
         let retVal = _retVal.asObservable();

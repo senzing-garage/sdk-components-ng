@@ -164,6 +164,9 @@ this.prefs.searchResults.truncateIdentifierDataAt =  2;</code></pre></div><div><
                                     <a href="#showOtherData" >showOtherData</a>
                                 </li>
                                 <li>
+                                    <a href="#showHowButton" >showHowButton</a>
+                                </li>
+                                <li>
                                     <a href="#showIdentifierData" >showIdentifierData</a>
                                 </li>
                                 <li>
@@ -241,10 +244,11 @@ this.prefs.searchResults.truncateIdentifierDataAt =  2;</code></pre></div><div><
                     <td class="col-md-4">
                         <i>Default value : </i><code>[
     &#x27;openInNewTab&#x27;,
-    &#x27;showOtherData&#x27;,
-    &#x27;showIdentifierData&#x27;,
     &#x27;showCharacteristicData&#x27;,
+    &#x27;showHowButton&#x27;,
+    &#x27;showIdentifierData&#x27;,
     &#x27;showMatchKeys&#x27;,
+    &#x27;showOtherData&#x27;,
     &#x27;truncateRecordsAt&#x27;,
     &#x27;truncateOtherDataAt&#x27;,
     &#x27;truncateCharacteristicDataAt&#x27;,
@@ -288,10 +292,11 @@ to output in json, or to take as json input</p>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
     &#x27;openInNewTab&#x27;:                 &#x27;boolean&#x27;,
-    &#x27;showOtherData&#x27;:                &#x27;boolean&#x27;,
-    &#x27;showIdentifierData&#x27;:           &#x27;boolean&#x27;,
     &#x27;showCharacteristicData&#x27;:       &#x27;boolean&#x27;,
+    &#x27;showHowButton&#x27;:                &#x27;boolean&#x27;,
+    &#x27;showIdentifierData&#x27;:           &#x27;boolean&#x27;,
     &#x27;showMatchKeys&#x27;:                &#x27;boolean&#x27;,
+    &#x27;showOtherData&#x27;:                &#x27;boolean&#x27;,
     &#x27;truncateRecordsAt&#x27;:            &#x27;number&#x27;,
     &#x27;truncateOtherDataAt&#x27;:          &#x27;number&#x27;,
     &#x27;truncateCharacteristicDataAt&#x27;: &#x27;number&#x27;,
@@ -669,6 +674,78 @@ notifications.</p>
                     <tr>
                         <td class="col-md-4">
                                 <div class="io-description"><p>show &quot;other data&quot; in search results</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showHowButton"></a>
+                        <span class="name"><b>showHowButton</b><a href="#showHowButton"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>showHowButton()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>show &quot;how&quot; button in search results</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>showHowButton(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>show &quot;how&quot; button in search results</p>
 </div>
 
                                 <div class="io-description">

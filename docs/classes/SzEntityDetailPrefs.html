@@ -159,6 +159,9 @@ this.prefs.entityDetail.showOtherDataInSummary =  true;</code></pre></div><div><
                                     <a href="#showGraphSection" >showGraphSection</a>
                                 </li>
                                 <li>
+                                    <a href="#showHowSection" >showHowSection</a>
+                                </li>
+                                <li>
                                     <a href="#showMatchesSection" >showMatchesSection</a>
                                 </li>
                                 <li>
@@ -172,6 +175,9 @@ this.prefs.entityDetail.showOtherDataInSummary =  true;</code></pre></div><div><
                                 </li>
                                 <li>
                                     <a href="#graphSectionCollapsed" >graphSectionCollapsed</a>
+                                </li>
+                                <li>
+                                    <a href="#howSectionCollapsed" >howSectionCollapsed</a>
                                 </li>
                                 <li>
                                     <a href="#recordsSectionCollapsed" >recordsSectionCollapsed</a>
@@ -269,11 +275,13 @@ this.prefs.entityDetail.showOtherDataInSummary =  true;</code></pre></div><div><
                     <td class="col-md-4">
                         <i>Default value : </i><code>[
     &#x27;showGraphSection&#x27;,
+    &#x27;showHowSection&#x27;,
     &#x27;showMatchesSection&#x27;,
     &#x27;showPossibleMatchesSection&#x27;,
     &#x27;showPossibleRelationshipsSection&#x27;,
     &#x27;showDisclosedSection&#x27;,
     &#x27;graphSectionCollapsed&#x27;,
+    &#x27;howSectionCollapsed&#x27;,
     &#x27;recordsSectionCollapsed&#x27;,
     &#x27;possibleMatchesSectionCollapsed&#x27;,
     &#x27;possibleRelationshipsSectionCollapsed&#x27;,
@@ -663,6 +671,78 @@ notifications.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="showHowSection"></a>
+                        <span class="name"><b>showHowSection</b><a href="#showHowSection"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>showHowSection()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>show graph section</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>showHowSection(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>show graph section</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="showMatchesSection"></a>
                         <span class="name"><b>showMatchesSection</b><a href="#showMatchesSection"><span class="icon ion-ios-link"></span></a></span>
                     </td>
@@ -981,6 +1061,78 @@ notifications.</p>
                     <tr>
                         <td class="col-md-4">
                                 <div class="io-description"><p>graph section collapsed</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="howSectionCollapsed"></a>
+                        <span class="name"><b>howSectionCollapsed</b><a href="#howSectionCollapsed"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>howSectionCollapsed()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>how report section collapsed</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>howSectionCollapsed(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>how report section collapsed</p>
 </div>
 
                                 <div class="io-description">
