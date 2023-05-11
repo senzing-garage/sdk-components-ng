@@ -563,7 +563,7 @@ export class SzEntityDetailPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _showGraphSection: boolean = true;
   /** @internal */
-  private _showHowSection: boolean = true;
+  private _showHowSection: boolean = false;
   /** @internal */
   private _showMatchesSection: boolean = true;
   /** @internal */
