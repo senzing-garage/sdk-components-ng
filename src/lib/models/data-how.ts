@@ -1,7 +1,7 @@
 import { SzResolutionStep, SzResolvedEntity, SzVirtualEntity, SzVirtualEntityRecord } from '@senzing/rest-api-client-ng';
 import { SzEntityMouseEvent } from './event-basic-event';
 /** when a user clicks a "more info" link on a step card this event 
- * extends a regular mouse click with how specific information
+ * extends a regular mouse click with how specific information.
 */
 export interface SzVirtualEntityRecordsClickEvent extends MouseEvent {
     records?: Array<SzVirtualEntityRecord>,
@@ -45,7 +45,11 @@ export interface SzResolutionStepNode extends SzResolutionStep, SzVirtualEntity 
      */
     resolvedVirtualEntity?: SzResolvedVirtualEntity
 }
-/** when a user clicks on a "how" button in the entity detail or in a search result this payload of the click emitted */
+/** 
+ * when a user clicks on a "how" button in the entity detail or in a search result 
+ * this payload of the click emitted .
+ * @internal
+ */
 export interface howClickEvent extends SzEntityMouseEvent {}
 /** the custom type of `SzResolutionStepListItemType` */
 export type SzResolutionStepListItemType = 'FINAL' | 'GROUP' | 'STACK' | 'STEP';

@@ -68,12 +68,9 @@
     <p class="comment">
         <p>Provides a component that lists all current API connection config parameters as
 a human readable table.</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;code&gt;
-&amp;lt;!-- (Angular) --&amp;gt;&lt;br/&gt;
-&amp;lt;sz-configuration-about&amp;gt;&amp;lt;/sz-configuration-about&amp;gt;&lt;br/&gt;&lt;br/&gt;</code></pre></div><p>&lt;!-- (WC) by attribute --&gt;<br/>
-&lt;sz-wc-configuration-about&gt;&lt;/sz-wc-configuration-about&gt;<br/>
-</code></p>
-
+<div><pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;
+&lt;sz-configuration-about&gt;&lt;/sz-configuration-about&gt;</code></pre></div><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) by attribute --&gt;
+&lt;sz-wc-configuration-about&gt;&lt;/sz-wc-configuration-about&gt;</code></pre></div>
     </p>
 
 
@@ -536,7 +533,7 @@ a human readable table.</p>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><div class="sz-configuration-about">  <div class="header">      <div class="column">Property Name</div>      <div class="column">Property Value</div>  </div>    <div *ngFor=" let propObj of this.apiProperties" class="row">      <div class="column cell">{{propObj[\'key\']}}</div>      <div class="column cell">{{propObj[\'value\']}}</div>    </div></div></div>'
-    var COMPONENTS = [{'name': 'SzAlertMessageDialog', 'selector': 'sz-alert-dialog'},{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzMultiSelectButtonComponent', 'selector': 'sz-button-multi-select'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipNetworkInputComponent', 'selector': 'sz-relationship-network-input'},{'name': 'SzRelationshipNetworkLookupComponent', 'selector': 'sz-relationship-network-lookup'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzConfigurationAboutComponent'};
 </script>

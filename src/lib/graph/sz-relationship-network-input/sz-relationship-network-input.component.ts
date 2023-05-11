@@ -3,6 +3,9 @@ import { SzRelationshipNetworkComponent } from '../sz-relationship-network/sz-re
 import { EntityGraphService, SzDetailLevel } from '@senzing/rest-api-client-ng';
 import { SzNetworkGraphInputs } from '../../models/graph';
 
+/**
+ * @internal
+ */
 @Component({
   selector: 'sz-relationship-network-input',
   templateUrl: './sz-relationship-network-input.component.html',

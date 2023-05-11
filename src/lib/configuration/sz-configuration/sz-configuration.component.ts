@@ -11,14 +11,13 @@ import { SzConfigurationService } from '../../services/sz-configuration.service'
  * provides the more robust solution.
  *
  * @example 
- * <code>
- * &lt;!-- (WC) SzConfigurationComponent Example - javascript --&gt;<br/>
- * &lt;sz-wc-configuration id="sz-api-conf"&gt;&lt;/sz-wc-configuration&gt;<br/>
- * document.getElementById('sz-api-conf').basePath = 'http://apis.mydomain.com';<br/><br/>
+ * <!-- (WC) SzConfigurationComponent Example - javascript -->
+ * <sz-wc-configuration id="sz-api-conf"></sz-wc-configuration>
+ * document.getElementById('sz-api-conf').basePath = 'http://apis.mydomain.com';
  *
- * &lt;!-- (WC) SzConfigurationComponent Example - By attribute --&gt;<br/>
- * &lt;sz-wc-configuration base-path="http://apis.mydomain.com/api"&gt;&lt;/sz-wc-configuration&gt;<br/>
- * </code>
+ * @example 
+ * <!-- (WC) SzConfigurationComponent Example - By attribute -->
+ * <sz-wc-configuration base-path="http://apis.mydomain.com/api"></sz-wc-configuration>
  *
  * @export
  */

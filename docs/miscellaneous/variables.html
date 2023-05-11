@@ -67,6 +67,15 @@
                             <a href="#EMAIL_PATTERNS" title="src/lib/entity/entity-utils.ts" ><b>EMAIL_PATTERNS</b>&nbsp;&nbsp;&nbsp;(src/.../entity-utils.ts)</a>
                         </li>
                         <li>
+                            <a href="#friendlyFeaturesName" title="src/lib/models/data-features.ts" ><b>friendlyFeaturesName</b>&nbsp;&nbsp;&nbsp;(src/.../data-features.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#SzResolutionStepDisplayType" title="src/lib/models/data-how.ts" ><b>SzResolutionStepDisplayType</b>&nbsp;&nbsp;&nbsp;(src/.../data-how.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#SzResolutionStepListItemType" title="src/lib/models/data-how.ts" ><b>SzResolutionStepListItemType</b>&nbsp;&nbsp;&nbsp;(src/.../data-how.ts)</a>
+                        </li>
+                        <li>
                             <a href="#SzWhySelectionAction" title="src/lib/models/data-source-record-selection.ts" ><b>SzWhySelectionAction</b>&nbsp;&nbsp;&nbsp;(src/.../data-source-record-selection.ts)</a>
                         </li>
                         <li>
@@ -146,6 +155,144 @@
                     </td>
                 </tr>
 
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/lib/models/data-features.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="friendlyFeaturesName"></a>
+                    <span class="name">
+                        <span ><b>friendlyFeaturesName</b></span>
+                        <a href="#friendlyFeaturesName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, string&gt;([
+    [&#x27;NAME&#x27;, &#x27;Names&#x27;],
+    [&#x27;ADDRESS&#x27;, &#x27;Addresses&#x27;],
+    [&#x27;EMAIL&#x27;, &#x27;Emails&#x27;],
+    [&#x27;PHONE&#x27;, &#x27;Phone Numbers&#x27;],
+    [&#x27;PASSPORT&#x27;, &#x27;Passports&#x27;],
+    [&#x27;DOB&#x27;,&#x27;Date of Birth&#x27;],
+    [&#x27;ACCT_NUM&#x27;,&#x27;Account #&#x27;],
+    [&#x27;DOD&#x27;,&#x27;DOD&#x27;],
+    [&#x27;SSN&#x27;,&#x27;SSN&#x27;],
+    [&#x27;DRLIC&#x27;, &#x27;Drivers License&#x27;],
+    [&#x27;ACCT_NUM&#x27;, &#x27;Account Numbers&#x27;],
+    [&#x27;LOGIN_ID&#x27;, &#x27;Logins&#x27;],
+    [&#x27;TAX_ID&#x27;, &#x27;Tax ID\&#x27;s&#x27;],
+    [&#x27;GEO_LOC&#x27;, &#x27;Geo Location&#x27;],
+    [&#x27;WEBSITE&#x27;, &#x27;Websites&#x27;],
+    [&#x27;VEH_VIN&#x27;, &#x27;VIN&#x27;],
+    [&#x27;VEH_LIC_PLATE&#x27;, &#x27;License Plate&#x27;],
+    [&#x27;PLACE_OF_BIRTH&#x27;, &#x27;Birthplace&#x27;],
+    [&#x27;RECORD_TYPE&#x27;, &#x27;Record Type&#x27;],
+    [&#x27;OTHER_ID&#x27;, &#x27;Other ID&#x27;],
+    [&#x27;TRUSTED_ID&#x27;, &#x27;Trusted ID&#x27;],
+    [&#x27;REGISTRATION_DATE&#x27;, &#x27;Registered On&#x27;],
+    [&#x27;REGISTRATION_COUNTRY&#x27;, &#x27;Registered In&#x27;],
+    [&#x27;DUNS_NUMBER&#x27;, &#x27;DUNS&#x27;],
+    [&#x27;NPI_NUMBER&#x27;, &#x27;NPI&#x27;],
+    [&#x27;LEI_NUMBER&#x27;, &#x27;LEI&#x27;]
+])</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/lib/models/data-how.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="SzResolutionStepDisplayType"></a>
+                    <span class="name">
+                        <span ><b>SzResolutionStepDisplayType</b></span>
+                        <a href="#SzResolutionStepDisplayType"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    /** added a singleton to another virtual entity(commonly an interim or final) */
+    ADD: &#x27;ADD&#x27; as SzResolutionStepDisplayType,
+    /** create new virtual entity based on two singletons */
+    CREATE: &#x27;CREATE&#x27; as SzResolutionStepDisplayType,
+    /** a final state of an entity */
+    FINAL: &#x27;FINAL&#x27; as SzResolutionStepDisplayType,
+    /** interim cards are virtual entities used for applying additional steps (commonly merges) */
+    INTERIM: &#x27;INTERIM&#x27; as SzResolutionStepDisplayType,
+    /** merge records are individual cards */
+    MERGE: &#x27;MERGE&#x27; as SzResolutionStepDisplayType
+}</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>the enumeration of what the possible values of a <code>SzResolutionStepDisplayType</code> is</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="SzResolutionStepListItemType"></a>
+                    <span class="name">
+                        <span ><b>SzResolutionStepListItemType</b></span>
+                        <a href="#SzResolutionStepListItemType"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    /* use for final step states*/
+    FINAL: &#x27;FINAL&#x27; as SzResolutionStepListItemType,
+    /** use for steps that have other steps as children and are not &quot;STACK&quot;&#x27;s */
+    GROUP: &#x27;GROUP&#x27; as SzResolutionStepListItemType,
+    /** use to group CONTIGUOUS steps of the same type so they can be grouped together 
+     * (usually multiple &quot;ADD&quot; or &quot;CREATE&quot;) */
+    STACK: &#x27;STACK&#x27; as SzResolutionStepListItemType,
+    /** every step that is not a group of some kind */
+    STEP: &#x27;STEP&#x27; as SzResolutionStepListItemType
+}</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>the possible values of a <code>SzResolutionStepListItemType</code> is</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>

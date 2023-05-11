@@ -69,24 +69,20 @@
         <p>A component for displaying the result(s) of the sz-search-by-id component
 when the results are of type SzEntityRecord. The fragment only displays information
 that was present in the record itself. The easiest way to use this component is to pair it
-with the &lt;sz-search-by-id&gt;/&lt;sz-wc-search-by-id&gt; component(s).</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;code&gt;
-&amp;lt;!-- (Angular) --&amp;gt;&lt;br/&gt;
-&amp;lt;sz-search-by-id #searchBox&lt;br/&gt;
-[dataSource]=&quot;&#39;COMPANIES&#39;&quot;&lt;br/&gt;
-(resultChange)=&quot;formResult = $event&quot;&amp;gt;&amp;lt;/sz-search-by-id&amp;gt;&lt;br/&gt;
-&amp;lt;sz-entity-record-viewer *ngIf=&quot;formResult&quot; [record]=&quot;formResult&quot;&amp;gt;&amp;lt;/sz-entity-record-viewer&amp;gt;&lt;br/&gt;&lt;br/&gt;</code></pre></div><p>&lt;!-- (WC) --&gt;<br/>
-&lt;sz-wc-search-by-id id=&quot;formInput&quot;<br/>
-data-source=&quot;COMPANIES&quot;&gt;&lt;/sz-wc-search-by-id&gt;<br/>
-&lt;sz-wc-entity-record-viewer id=&quot;formResult&quot;&gt;<br/>
-&lt;/sz-wc-entity-record-viewer&gt;<br/>
-&lt;script&gt;<br/>
-document.getElementById(&#39;formInput&#39;).addEventListener(&#39;resultChange&#39;, function(evt) {<br/>
-    document.getElementById(&#39;formResult&#39;).record = evt.detail;<br/>
-});<br/>
-&lt;/script&gt;<br/>
-</code></p>
-
+with the <sz-search-by-id>/<sz-wc-search-by-id> component(s).</p>
+<div><pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;
+&lt;sz-search-by-id #searchBox
+[dataSource]=&quot;&#39;COMPANIES&#39;&quot;
+(resultChange)=&quot;formResult = $event&quot;&gt;&lt;/sz-search-by-id&gt;
+&lt;sz-entity-record-viewer *ngIf=&quot;formResult&quot; [record]=&quot;formResult&quot;&gt;&lt;/sz-entity-record-viewer&gt;</code></pre></div><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) --&gt;
+&lt;sz-wc-search-by-id id=&quot;formInput&quot;
+data-source=&quot;COMPANIES&quot;&gt;&lt;/sz-wc-search-by-id&gt;
+&lt;sz-wc-entity-record-viewer id=&quot;formResult&quot;&gt;&lt;/sz-wc-entity-record-viewer&gt;
+&lt;script&gt;
+document.getElementById(&#39;formInput&#39;).addEventListener(&#39;resultChange&#39;, function(evt) {
+    document.getElementById(&#39;formResult&#39;).record = evt.detail;
+});
+&lt;/script&gt;</code></pre></div>
     </p>
 
 
@@ -796,7 +792,7 @@ document.getElementById(&#39;formInput&#39;).addEventListener(&#39;resultChange&
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><!-- start json record viewer for sz-search-by-id --><div *ngIf="record">  <div class="tabset"    [class.overview]="overViewActive"    [class.json]="jsonViewActive"    >    <ul class="tabs">      <li class="overview" (click)="showTab(\'overview\')">Summary</li>      <li class="json" (click)="showTab(\'json\')">JSON</li>    </ul>    <div class="tabset-view">        <sz-entity-record-card-content        [showOtherData]="true"        [ignorePrefOtherDataChanges]="true"        [entity]="record"        [parentEntity]="record"        [layoutClasses]="layoutClasses"        [ngClass]="{\'open\': true, \'no-shade\': true}"        [truncateResults]="false"        [truncatedTooltip]="\'click to expand.\'"      ></sz-entity-record-card-content>      <ngx-json-viewer *ngIf="showJSON" [json]="record"></ngx-json-viewer>    </div>  </div></div><!-- start json record viewer for sz-search-by-id --></div>'
-    var COMPONENTS = [{'name': 'SzAlertMessageDialog', 'selector': 'sz-alert-dialog'},{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzMultiSelectButtonComponent', 'selector': 'sz-button-multi-select'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipNetworkInputComponent', 'selector': 'sz-relationship-network-input'},{'name': 'SzRelationshipNetworkLookupComponent', 'selector': 'sz-relationship-network-lookup'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzEntityRecordViewerComponent'};
 </script>

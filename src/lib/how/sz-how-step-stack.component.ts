@@ -10,13 +10,16 @@ import { SzHowUIService } from '../services/sz-how-ui.service';
 
 /**
  * How Step Stack (multiple steps represented as a collapsible group)
+ * 
+ * @internal
  *
  * @example 
- * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-how-step-stack&gt;&lt;/sz-how-step-stack&gt;<br/><br/>
+ * <!-- (Angular) -->
+ * <sz-how-step-stack></sz-how-step-stack>
  *
- * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-how-step-stack&gt;&lt;/sz-how-step-stack&gt;<br/>
+ * @example 
+ * <!-- (WC) -->
+ * <sz-wc-how-step-stack></sz-wc-how-step-stack>
 */
 @Component({
     selector: 'sz-how-step-stack',

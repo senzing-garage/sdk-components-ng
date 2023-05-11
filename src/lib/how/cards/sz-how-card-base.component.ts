@@ -11,6 +11,8 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
 import { SzHowVirtualEntityDialog } from '../sz-how-virtual-entity-dialog.component';
 
 /**
+ * @internal
+ * 
  * This is the base class that provides common methods, inputs, outputs, getters, and setters 
  * for step card components. This class is inherited by the basic step card component 
  * and the final card component.

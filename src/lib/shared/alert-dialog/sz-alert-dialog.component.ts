@@ -1,6 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
+/**
+ * @internal
+ */
 @Component({
     selector: 'sz-alert-dialog',
     templateUrl: 'sz-alert-dialog.component.html',

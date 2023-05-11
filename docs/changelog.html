@@ -36,8 +36,20 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 <a href="https://dlaa.me/markdownlint/">markdownlint</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="600---2023-01-20">[6.0.0] - 2023-01-20</h2>
+<h2 id="610---2023-05-05">[6.1.0] - 2023-05-05</h2>
+<p>The major feature being added for this release is the inclusion a a new &quot;How&quot; report component. The How api functions are meant to provide information on HOW records in an entity came together or were pushed apart during resolution. The Visual How component will illustrate the final entity and allow the user to walk back through the entities resolution steps, branching off when singletons are merged in or virtual entities are created from the result of previous record resolution steps.</p>
 <h3 id="modified">Modified</h3>
+<ul>
+<li>new graph icons. see #499</li>
+<li>match keys are now shown by default in the graph. #496</li>
+</ul>
+<h3 id="added">Added</h3>
+<ul>
+<li>&quot;How&quot; entity report component(s) added. see #438</li>
+</ul>
+<p>relevant tickets: #438 #496 #499</p>
+<h2 id="600---2023-01-20">[6.0.0] - 2023-01-20</h2>
+<h3 id="modified-1">Modified</h3>
 <ul>
 <li>Angular Framework updated to version 15. As of 6.0.0 release this package now requires <code>@angular@~15.0.0</code> to compile and run. Updating to angular 15 resolves major dependency compatibility issues so we can apply the latest security patches to the library. For information updating your project from a previous angular version to <code>~15.0.0</code> see the <a href="https://update.angular.io/">Angular Update Guide </a></li>
 <li><a href="https://material.angular.io/">Angular Material</a> updated to version 15. As of 6.0.0 release this package now requires v15 of angular material library. Since the compiled version of this package defines it&#39;s dependency as a <em>peer dependency</em> it&#39;s worth mentioning that your project will need to import it to function properly. <code>ng add @angular/material@15</code>.</li>
@@ -48,7 +60,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li><code>forceSimulation</code> property removed from <code>SzRelationshipNetworkComponent</code> base class. (no one should be directly using this anyways)</li>
 </ul>
 <h2 id="511---2022-10-31">[5.1.1] - 2022-10-31</h2>
-<h3 id="added">Added</h3>
+<h3 id="added-1">Added</h3>
 <ul>
 <li>Added &quot;hide indirect links&quot; UI control to graph filtering component.</li>
 <li>Added <code>suppressL1InterLinks</code> to graph preferences</li>
@@ -58,7 +70,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Added <em>Data Sources</em> list to graph hover tooltip</li>
 <li>Added &quot;Why Not&quot; button/report to &quot;Possible Matches&quot; section in the entity detail component.</li>
 </ul>
-<h3 id="modified-1">Modified</h3>
+<h3 id="modified-2">Modified</h3>
 <ul>
 <li>Match keys on graph entity link(s) are now in a vertically centered multi-line list.</li>
 <li>Bugfix for match key labels. (see #383)</li>
@@ -76,7 +88,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>the upper limit of the maximum entities ui slider is now dynamically set from the initial query.</li>
 <li>match key token counts now feature condensed notation instead of ellipsis.</li>
 </ul>
-<h3 id="added-1">Added</h3>
+<h3 id="added-2">Added</h3>
 <ul>
 <li>the following event emitters added to <code>SzGraphFilterComponent</code><ul>
 <li><code>matchKeyTokenSelectionScopeChanged</code> when the user switches from <code>CORE</code> to <code>EXTRANEOUS</code> match key token scope</li>
@@ -119,7 +131,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 </li>
 <li><code>getEntitiesByIds</code> method added to <code>SzSearchService</code> to get data for multiple entities by their id&#39;s in the form of <code>Observable&lt;SzEntityData[]&gt;</code></li>
 </ul>
-<h3 id="modified-2">Modified</h3>
+<h3 id="modified-3">Modified</h3>
 <ul>
 <li>Changed the behavior of <code>showCoreMatchKeyTokenChips</code> to automatically set <code>matchKeyTokenSelectionScope</code> to <code>CORE</code>.</li>
 <li>Changed the complete match key display to a comma deliminated list of tokens on each line for readability</li>
@@ -153,7 +165,7 @@ the observeable event streams for uniformity/reliability:<ul>
 <p>relevant tickets: #343 #344 #347 #348 #350 #355 #358</p>
 <h2 id="500---2022-07-01">[5.0.0] - 2022-07-01</h2>
 <p>This release adds new functionality around expanding and collapsing related entities in <em>Network Graph</em> related components. We&#39;ve moved the <code>@senzing/sdk-graph-components</code> to the scope of this package for easier maintenance and installation(now you just need this package instead of two). We&#39;re also adding the <em>Why Not</em> component that can be embedded between two or more entities to generate a report to show why two entities/records did not resolve.</p>
-<h3 id="added-2">Added</h3>
+<h3 id="added-3">Added</h3>
 <ul>
 <li>The <code>SzWhyEntitiesComparisonComponent</code> added for doing <em>WHY</em> comparison <em>between</em> entities. Adds the ability to run &quot;Why Not&quot; Reports from within the context of the search results and graph. </li>
 <li>The following input parameters added to <code>SzSearchResultsComponent</code>:<ul>
@@ -274,7 +286,7 @@ the observeable event streams for uniformity/reliability:<ul>
 </ul>
 </li>
 </ul>
-<h3 id="modified-3">Modified</h3>
+<h3 id="modified-4">Modified</h3>
 <ul>
 <li><code>_graphIds</code> property on <code>SzGraphComponent</code> type changed from <code>number[]</code> to <code>SzEntityIdentifier[]</code></li>
 <li><code>graphIds</code> property getter and setter on <code>SzGraphComponent</code> type changed from <code>number[]</code> to <code>SzEntityIdentifier[]</code></li>
@@ -297,7 +309,7 @@ the observeable event streams for uniformity/reliability:<ul>
 <h2 id="400---2022-05-09">[4.0.0] - 2022-05-09</h2>
 <p>This update brings the models in line with the changes for the <code>3.0.0</code> release of the <a href="https://github.com/Senzing/senzing-api-server">senzing rest api server</a>
 and <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/caceres.version-3.0.0/senzing-rest-api.yaml">rest api specification</a>.</p>
-<h3 id="added-3">Added</h3>
+<h3 id="added-4">Added</h3>
 <ul>
 <li><code>showMatchKeyFilters</code> property added to <code>sz-standalone-graph</code> tag. specifying a value of <code>false</code> will hide the <em>Filter By Match Key</em> section of the embedded graph controls. (defaults to <em>true</em>)</li>
 <li><code>showMatchKeyFilters</code> property added to <code>sz-graph-filter</code> tag. specifying a value of <code>false</code> will hide the <em>Filter By Match Key</em> list of checkboxes. (defaults to <em>true</em>)</li>
@@ -370,7 +382,7 @@ and <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/cace
 <li><code>SzSearchResultEntityData.matchScore</code> property</li>
 </ul>
 <h2 id="300---2021-12-17">[3.0.0] - 2021-12-17</h2>
-<h3 id="modified-4">Modified</h3>
+<h3 id="modified-5">Modified</h3>
 <ul>
 <li>Angular Framework Updated to version 13. As of 3.0.0 release this package now requires <code>@angular@~13.0.0</code> to compile and run. Updating to angular 13 resolves major dependency compatibility issues so we can apply the latest security patches to the library. For information updating your project from a previous angular version to <code>~13.0.0</code> see the <a href="https://update.angular.io/">Angular Update Guide </a></li>
 <li>SzSearchComponent.resultCleared event emitter payload is now of type <code>void</code> and not <code>SzEntitySearchParams</code>.</li>
@@ -383,7 +395,7 @@ and <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/cace
 </ul>
 <p>relevant tickets: #253 #252 #251 #250</p>
 <h2 id="226---2021-11-23">[2.2.6] - 2021-11-23</h2>
-<h3 id="added-4">Added</h3>
+<h3 id="added-5">Added</h3>
 <ul>
 <li><code>SzEntityDetailGraphComponent</code><ul>
 <li><code>showZoomControl</code> input setter for whether or not to show zoom controls.</li>

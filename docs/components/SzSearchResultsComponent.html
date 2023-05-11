@@ -69,26 +69,23 @@
         <p>Provides a graphical search results component. Data can be provided a number of ways.
 The simplest of which is to bind the results input setter to the output of the
 <a href="../components/SzSearchComponent.html">SzSearchComponent</a> resultsChange event.</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;code&gt;&lt;br/&gt;
-&amp;lt;!-- (Angular) SzSearchComponent --&amp;gt;&lt;br/&gt;
-&amp;lt;sz-search&lt;br/&gt;
-name=&quot;Isa Creepr&quot;&lt;br/&gt;
-(resultsChange)=&quot;resultsOfSearch=$event&quot;&amp;gt;&amp;lt;/sz-search&amp;gt;&lt;br/&gt;
-&amp;lt;sz-search-results [results]=&quot;resultsOfSearch&quot;&amp;gt;&amp;lt;/sz-search-results&amp;gt;&lt;br/&gt;&lt;br/&gt;</code></pre></div><p>&lt;!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo --&gt;<br/>
-&lt;sz-wc-search<br/>
-id=&quot;sz-search&quot;<br/>
-name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;<br/>
-&lt;sz-wc-search-results id=&quot;sz-search-results&quot;&gt;&lt;/sz-wc-search-results&gt;<br/>
-&lt;script&gt;<br/>
- var szSearchComponent = document.getElementById(&#39;sz-search&#39;);<br/>
- var szSearchResultsComponent = document.getElementById(&#39;sz-search-results&#39;);<br/>
- szSearchComponent.addEventListener(&#39;resultsChange&#39;, (evt) =&gt; {<br/>
-   console.log(&#39;search results: &#39;, evt);<br/>
-   szSearchResultsComponent.results = evt.detail;<br/>
- });<br/>
-&lt;/script&gt;<br/>
-</code></p>
-
+<div><pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) SzSearchComponent --&gt;
+&lt;sz-search
+name=&quot;Isa Creepr&quot;
+(resultsChange)=&quot;resultsOfSearch=$event&quot;&gt;&lt;/sz-search&gt;
+&lt;sz-search-results [results]=&quot;resultsOfSearch&quot;&gt;&lt;/sz-search-results&gt;</code></pre></div><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo --&gt;
+&lt;sz-wc-search
+id=&quot;sz-search&quot;
+name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;
+&lt;sz-wc-search-results id=&quot;sz-search-results&quot;&gt;&lt;/sz-wc-search-results&gt;
+&lt;script&gt;
+ var szSearchComponent = document.getElementById(&#39;sz-search&#39;);
+ var szSearchResultsComponent = document.getElementById(&#39;sz-search-results&#39;);
+ szSearchComponent.addEventListener(&#39;resultsChange&#39;, (evt) =&gt; {
+   console.log(&#39;search results: &#39;, evt);
+   szSearchResultsComponent.results = evt.detail;
+ });
+&lt;/script&gt;</code></pre></div>
     </p>
 
 
@@ -220,6 +217,10 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;<br/>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#onHowClicked" >onHowClicked</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#onResultClick" >onResultClick</a>
                             </li>
                             <li>
@@ -254,6 +255,9 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;<br/>
                                 <a href="#showDataSources" >showDataSources</a>
                             </li>
                             <li>
+                                <a href="#showHowButton" >showHowButton</a>
+                            </li>
+                            <li>
                                 <a href="#showMatchKeys" >showMatchKeys</a>
                             </li>
                             <li>
@@ -271,6 +275,9 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;<br/>
                 <tr>
                     <td class="col-md-4">
                         <ul class="index-list">
+                            <li>
+                                <a href="#howButtonClick" >howButtonClick</a>
+                            </li>
                             <li>
                                 <a href="#resultClick" >resultClick</a>
                             </li>
@@ -296,6 +303,9 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;<br/>
                                 </li>
                                 <li>
                                     <a href="#showWhyComparisonButton" >showWhyComparisonButton</a>
+                                </li>
+                                <li>
+                                    <a href="#showHowButton" >showHowButton</a>
                                 </li>
                                 <li>
                                     <a href="#entitySelectActive" >entitySelectActive</a>
@@ -512,6 +522,28 @@ used for displaying the parameters being searched on above result list.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="showHowButton"></a>
+                        <b>showHowButton</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>boolean | string</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Shows or hides the multi-select &quot;Why&quot; comparison button.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="showMatchKeys"></a>
                         <b>showMatchKeys</b>
                     </td>
@@ -555,6 +587,28 @@ used for displaying the parameters being searched on above result list.</p>
 </section>
     <section>
     <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="howButtonClick"></a>
+                        <b>howButtonClick</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>(Event Emitter) when the user clicks on the &quot;How&quot; button</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -951,6 +1005,73 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
                                     <td>evt</td>
                                     <td>
                                                 <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onHowClicked"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>onHowClicked</b></span>
+                        <a href="#onHowClicked"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onHowClicked(event: howClickEvent)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>when the &quot;how&quot; button is clicked</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                            <code>howClickEvent</code>
                                     </td>
 
                                     <td>
@@ -1463,6 +1584,67 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="showHowButton"></a>
+                        <span class="name"><b>showHowButton</b><a href="#showHowButton"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>showHowButton()</code></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>showHowButton(value: boolean | string)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Shows or hides the multi-select &quot;Why&quot; comparison button.</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code>boolean | string</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="entitySelectActive"></a>
                         <span class="name"><b>entitySelectActive</b><a href="#entitySelectActive"><span class="icon ion-ios-link"></span></a></span>
                     </td>
@@ -1853,6 +2035,7 @@ used for displaying the parameters being searched on above result list.</p>
       class&#x3D;&quot;matches&quot;
       *ngFor&#x3D;&quot;let searchResult of this.matches; let i &#x3D; index&quot;
       (click)&#x3D;&quot;onResultClick($event, searchResult)&quot;
+      (howClick)&#x3D;&quot;onHowClicked($event)&quot;
       [searchResult]&#x3D;&quot;searchResult&quot;
       [cardTitle]&#x3D;&quot;&#x27;Match&#x27;&quot;
       [class.selected]&#x3D;&quot;isSelected(searchResult)&quot;
@@ -1866,6 +2049,7 @@ used for displaying the parameters being searched on above result list.</p>
       class&#x3D;&quot;possible-match&quot;
       *ngFor&#x3D;&quot;let searchResult of this.possibleMatches; let i &#x3D; index&quot;
       (click)&#x3D;&quot;onResultClick($event, searchResult)&quot;
+      (howClick)&#x3D;&quot;onHowClicked($event)&quot;
       [searchResult]&#x3D;&quot;searchResult&quot;
       [cardTitle]&#x3D;&quot;&#x27;Possible Matches&#x27;&quot;
       [class.selected]&#x3D;&quot;isSelected(searchResult)&quot;
@@ -1879,6 +2063,7 @@ used for displaying the parameters being searched on above result list.</p>
       class&#x3D;&quot;possibly-related&quot;
       *ngFor&#x3D;&quot;let searchResult of this.discoveredRelationships; let i &#x3D; index&quot;
       (click)&#x3D;&quot;onResultClick($event, searchResult)&quot;
+      (howClick)&#x3D;&quot;onHowClicked($event)&quot;
       [searchResult]&#x3D;&quot;searchResult&quot;
       [cardTitle]&#x3D;&quot;&#x27;Discovered Relationships&#x27;&quot;
       [class.selected]&#x3D;&quot;isSelected(searchResult)&quot;
@@ -1892,6 +2077,7 @@ used for displaying the parameters being searched on above result list.</p>
       class&#x3D;&quot;name-only&quot;
       *ngFor&#x3D;&quot;let searchResult of this.nameOnlyMatches; let i &#x3D; index&quot;
       (click)&#x3D;&quot;onResultClick($event, searchResult)&quot;
+      (howClick)&#x3D;&quot;onHowClicked($event)&quot;
       [searchResult]&#x3D;&quot;searchResult&quot;
       [cardTitle]&#x3D;&quot;&#x27;Name Only Matches&#x27;&quot;
       [class.selected]&#x3D;&quot;isSelected(searchResult)&quot;
@@ -2058,8 +2244,8 @@ used for displaying the parameters being searched on above result list.</p>
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div [class.select-mode-active]="entitySelectActive">    <!-- @senzing/sdk/search/sz-search-results -->    <div class="sz-search-results-head">      <div class="sz-search-results-total-summary">        <div class="sz-search-results-total" *ngIf="searchResults && searchValue">          <span class="sz-search-results-total-bold">{{searchResultsTotal}} Results </span>found for          <div>            <ng-container *ngFor="let attribute of attributeDisplay">{{attribute?.attr}}              <span *ngIf="attribute?.value">:</span>              <span class="sz-search-results-parameter-value">{{attribute?.value}}&nbsp;</span>            </ng-container>          </div>        </div>      </div>      <!-- start "entity select control" mechanism -->      <sz-button-multi-select *ngIf="showWhyComparisonButton"        (onSelectActiveChange)="onComparisonModeActiveChange($event)"        (onSelectedClick)="onCompareClick($event)"        [selectedCount]="this.selectedEntities.length"        aria-hidden="false"         aria-label="Select Entities for Why comparison"        text="Compare Entities"        selectedItemTypeSingular="entity"        selectedItemTypePlural="entities"        selectedActionVerb="why comparison"        selectedActionVerbCTA="compare Why"        mat-icon="compare_arrows"        ></sz-button-multi-select>      <!-- end "entity select control" mechanism -->    </div>    <!--<div *ngIf="entitySelectActive">      <ul>        <li *ngFor="let selectedEntity of this.selectedEntities; let i = index">          {{ selectedEntity.nameData }}        </li>      </ul>    </div>-->    <div class="search-result__section-header matches"      *ngIf="this.matches?.length > 0"><span>Matches</span></div>    <sz-search-result-card      class="matches"      *ngFor="let searchResult of this.matches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Match\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys">    </sz-search-result-card>    <div class="search-result__section-header possible-match"      *ngIf="this.possibleMatches?.length > 0"><span>Possible Match</span></div>    <sz-search-result-card      class="possible-match"      *ngFor="let searchResult of this.possibleMatches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Possible Matches\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys">    </sz-search-result-card>    <div class="search-result__section-header possibly-related"      *ngIf="this.discoveredRelationships?.length > 0"><span>Possibly Related</span></div>    <sz-search-result-card      class="possibly-related"      *ngFor="let searchResult of this.discoveredRelationships; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Discovered Relationships\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys">    </sz-search-result-card>    <div class="search-result__section-header name-only-matches"      *ngIf="this.nameOnlyMatches?.length > 0"><span>Name Only Matches</span></div>    <sz-search-result-card      class="name-only"      *ngFor="let searchResult of this.nameOnlyMatches; let i = index"      (click)="onResultClick($event, searchResult)"      [searchResult]="searchResult"      [cardTitle]="\'Name Only Matches\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys"></sz-search-result-card></div></div>'
-    var COMPONENTS = [{'name': 'SzAlertMessageDialog', 'selector': 'sz-alert-dialog'},{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzMultiSelectButtonComponent', 'selector': 'sz-button-multi-select'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipNetworkComponent', 'selector': 'sz-relationship-network'},{'name': 'SzRelationshipNetworkInputComponent', 'selector': 'sz-relationship-network-input'},{'name': 'SzRelationshipNetworkLookupComponent', 'selector': 'sz-relationship-network-lookup'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
+        var COMPONENT_TEMPLATE = '<div><div [class.select-mode-active]="entitySelectActive">    <!-- @senzing/sdk/search/sz-search-results -->    <div class="sz-search-results-head">      <div class="sz-search-results-total-summary">        <div class="sz-search-results-total" *ngIf="searchResults && searchValue">          <span class="sz-search-results-total-bold">{{searchResultsTotal}} Results </span>found for          <div>            <ng-container *ngFor="let attribute of attributeDisplay">{{attribute?.attr}}              <span *ngIf="attribute?.value">:</span>              <span class="sz-search-results-parameter-value">{{attribute?.value}}&nbsp;</span>            </ng-container>          </div>        </div>      </div>      <!-- start "entity select control" mechanism -->      <sz-button-multi-select *ngIf="showWhyComparisonButton"        (onSelectActiveChange)="onComparisonModeActiveChange($event)"        (onSelectedClick)="onCompareClick($event)"        [selectedCount]="this.selectedEntities.length"        aria-hidden="false"         aria-label="Select Entities for Why comparison"        text="Compare Entities"        selectedItemTypeSingular="entity"        selectedItemTypePlural="entities"        selectedActionVerb="why comparison"        selectedActionVerbCTA="compare Why"        mat-icon="compare_arrows"        ></sz-button-multi-select>      <!-- end "entity select control" mechanism -->    </div>    <!--<div *ngIf="entitySelectActive">      <ul>        <li *ngFor="let selectedEntity of this.selectedEntities; let i = index">          {{ selectedEntity.nameData }}        </li>      </ul>    </div>-->    <div class="search-result__section-header matches"      *ngIf="this.matches?.length > 0"><span>Matches</span></div>    <sz-search-result-card      class="matches"      *ngFor="let searchResult of this.matches; let i = index"      (click)="onResultClick($event, searchResult)"      (howClick)="onHowClicked($event)"      [searchResult]="searchResult"      [cardTitle]="\'Match\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys">    </sz-search-result-card>    <div class="search-result__section-header possible-match"      *ngIf="this.possibleMatches?.length > 0"><span>Possible Match</span></div>    <sz-search-result-card      class="possible-match"      *ngFor="let searchResult of this.possibleMatches; let i = index"      (click)="onResultClick($event, searchResult)"      (howClick)="onHowClicked($event)"      [searchResult]="searchResult"      [cardTitle]="\'Possible Matches\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys">    </sz-search-result-card>    <div class="search-result__section-header possibly-related"      *ngIf="this.discoveredRelationships?.length > 0"><span>Possibly Related</span></div>    <sz-search-result-card      class="possibly-related"      *ngFor="let searchResult of this.discoveredRelationships; let i = index"      (click)="onResultClick($event, searchResult)"      (howClick)="onHowClicked($event)"      [searchResult]="searchResult"      [cardTitle]="\'Discovered Relationships\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys">    </sz-search-result-card>    <div class="search-result__section-header name-only-matches"      *ngIf="this.nameOnlyMatches?.length > 0"><span>Name Only Matches</span></div>    <sz-search-result-card      class="name-only"      *ngFor="let searchResult of this.nameOnlyMatches; let i = index"      (click)="onResultClick($event, searchResult)"      (howClick)="onHowClicked($event)"      [searchResult]="searchResult"      [cardTitle]="\'Name Only Matches\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys"></sz-search-result-card></div></div>'
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzSearchResultsComponent'};
 </script>

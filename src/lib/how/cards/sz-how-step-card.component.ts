@@ -10,16 +10,19 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
 import { SzHowStepCardBase } from './sz-how-card-base.component';
 
 /**
+ * @internal
+ * 
  * This is the basic card that represents a step in the how report for an entity.
  * The cards will display the step number, title, match keys, and inbound and outbound 
  * features and scores etc.
  *
  * @example 
- * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-how-step-card [data]="data" [virtualEntitiesById]="virtualEntitiesById"&gt;&lt;/sz-how-step-card&gt;<br/><br/>
- *
- * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-wc-how-rc-step-card data="data" virtualEntitiesById="virtualEntitiesById"&gt;&lt;/sz-wc-how-rc-step-card&gt;<br/>
+ * <!-- (Angular) -->
+ * <sz-how-step-card [data]="data" [virtualEntitiesById]="virtualEntitiesById"></sz-how-step-card>
+ * 
+ * @example 
+ * <!-- (WC) -->
+ * <sz-wc-how-rc-step-card data="data" virtualEntitiesById="virtualEntitiesById"></sz-wc-how-rc-step-card>
 */
 @Component({
     selector: 'sz-how-step-card',

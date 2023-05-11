@@ -9,13 +9,12 @@ import { SzConfigurationService } from '../../services/sz-configuration.service'
  * a human readable table.
  *
  * @example 
- * <code>
- * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-configuration-about&gt;&lt;/sz-configuration-about&gt;<br/><br/>
+ * <!-- (Angular) -->
+ * <sz-configuration-about></sz-configuration-about>
  *
- * &lt;!-- (WC) by attribute --&gt;<br/>
- * &lt;sz-wc-configuration-about&gt;&lt;/sz-wc-configuration-about&gt;<br/>
- * </code>
+ * @example 
+ * <!-- (WC) by attribute -->
+ * <sz-wc-configuration-about></sz-wc-configuration-about>
  */
 @Component({
   selector: 'sz-configuration-about',

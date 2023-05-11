@@ -20,11 +20,12 @@ import { SzResolutionStepListItemType, SzResolutionStepNode } from '../models/da
  * Display the "How" information for entity
  *
  * @example 
- * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-how-entity entityId="5"&gt;&lt;/sz-how-entity&gt;<br/><br/>
- *
- * &lt;!-- (WC) --&gt;<br/>
- * &lt;sz-wc-how-entity entityId="5"&gt;&lt;/sz-wc-how-entity&gt;<br/>
+ * <!-- (Angular) -->
+ * <sz-how-entity entityId="5"></sz-how-entity>
+ * 
+ * @example
+ * <!-- (WC) -->
+ * <sz-wc-how-entity entityId="5"></sz-wc-how-entity>
 */
 @Component({
     selector: 'sz-how-entity',

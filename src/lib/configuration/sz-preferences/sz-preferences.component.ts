@@ -13,33 +13,36 @@ import { takeUntil } from 'rxjs/operators';
  * provides the more robust solution.
  *
  * @example 
- * <code>
- * &lt;!-- (WC) javascript --&gt;<br/>
- * &lt;sz-wc-preferences id="prefsIntf"&gt;&lt;/sz-wc-preferences&gt;<br/>
- * &lt;script>document.getElementById('prefsIntf').GraphBuildOut = 5;&lt;/script&gt;<br/><br/>
+ * <!-- (WC) javascript -->
+ * <sz-wc-preferences id="prefsIntf"></sz-wc-preferences>
+ * <script>document.getElementById('prefsIntf').GraphBuildOut = 5;</script>
  *
- * &lt;!-- (WC) By attribute: --&gt;<br/>
- * &lt;sz-wc-preferences<br/>
- * graph-build-out="20"&gt;&lt;/sz-wc-preferences&gt;<br/><br/>
+ * @example 
+ * <!-- (WC) By attribute: -->
+ * <sz-wc-preferences
+ * graph-build-out="20"></sz-wc-preferences>
  *
- * &lt;!-- (WC) javascript bulk initialize from local storage: --&gt;<br/>
- * &lt;sz-wc-preferences id="prefsIntf" show-controls="true"&gt;&lt;/sz-wc-preferences&gt;<br/>
- * &lt;script&gt;<br/>
- * document.getElementById('prefsIntf').prefsFromJSONString = localStorage.getItem('NAME_OF_LS_KEY');<br/>
- * &lt;/script&gt;<br/><br/>
+ * @example 
+ * <!-- (WC) javascript bulk initialize from local storage: -->
+ * <sz-wc-preferences id="prefsIntf" show-controls="true"></sz-wc-preferences>
+ * <script>
+ * document.getElementById('prefsIntf').prefsFromJSONString = localStorage.getItem('NAME_OF_LS_KEY');
+ * </script>
  *
- * &lt;!-- (WC) show other data in search results: --&gt;<br/>
- * &lt;sz-wc-preferences<br/>
- * search-results-show-other-data="true"&gt;&lt;/sz-wc-preferences&gt;<br/><br/>
+ * @example 
+ * <!-- (WC) show other data in search results: -->
+ * <sz-wc-preferences
+ * search-results-show-other-data="true"></sz-wc-preferences>
  *
- * &lt;!-- (WC) show interactive UI: --&gt;<br/>
- * &lt;sz-wc-preferences<br/>
- * show-controls="true"&gt;&lt;/sz-wc-preferences&gt;<br/><br/>
+ * @example 
+ * <!-- (WC) show interactive UI: -->
+ * <sz-wc-preferences
+ * show-controls="true"></sz-wc-preferences>
  *
- * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-preferences<br/>
- * (prefsChange)="myPrefsChangeHandler($event)"&gt;<br/><br/>
- * </code>
+ * @example 
+ * <!-- (Angular) -->
+ * <sz-preferences
+ * (prefsChange)="myPrefsChangeHandler($event)">
  *
  * @export
  */

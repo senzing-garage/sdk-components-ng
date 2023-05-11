@@ -8,11 +8,12 @@ import { SzHowStepCardBase } from './sz-how-card-base.component';
 import { MatDialog } from '@angular/material/dialog';
 
 /**
+ * @internal
  * How Final Entity Card
  *
  * @example 
- * &lt;!-- (Angular) --&gt;<br/>
- * &lt;sz-how-final-entity-card [data]="szVirtualEntityInstance"&gt;&lt;/sz-how-final-entity-card&gt;<br/><br/>
+ * <!-- (Angular) -->
+ * <sz-how-final-entity-card [data]="szVirtualEntityInstance"></sz-how-final-entity-card>
  *
 */
 @Component({

@@ -1,18 +1,15 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef, Inject, OnDestroy } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Observable, Subject  } from 'rxjs';
-import { map, tap, mapTo, first, filter, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 
 import {
-  ConfigService,
   Configuration as SzRestConfiguration,
   ConfigurationParameters as SzRestConfigurationParameters,
   SzEntityRecord,
-  SzAttributeType,
   EntityDataService as SzEntityDataService,
-  SzEntityData,
-  SzResolvedEntity
+  SzEntityData
 } from '@senzing/rest-api-client-ng';
 import { SzEntitySearchParams } from '../../models/entity-search';
 import { SzSearchService } from '../../services/sz-search.service';
@@ -50,25 +47,25 @@ const parseBool = (value: any): boolean => {
  * Provides a search box component that can search by id and/or record ids.
  *
  * @example 
- * <code>
- * &lt;!-- (WC javascript) SzSearchByIdComponent --&gt;<br/>
- * &lt;sz-wc-search-by-id<br/>
- * id="sz-search"<br/>
- * data-source="SAMPLE_PERSON"<br/>
- * record-id="1001"&gt;&lt;/sz-wc-search-by-id&gt;<br/>
- * &lt;script&gt;<br/>
- *  document.getElementById('sz-search').addEventListener('resultChange', function(results) {<br/>
- *    console.log('results: ', results);<br/>
- *  });<br/>
- * &lt;/script&gt;<br/><br/>
+ * <!-- (WC javascript) SzSearchByIdComponent -->
+ * <sz-wc-search-by-id
+ * id="sz-search"
+ * data-source="SAMPLE_PERSON"
+ * record-id="1001"></sz-wc-search-by-id>
+ * <script>
+ *  document.getElementById('sz-search').addEventListener('resultChange', function(results) {
+ *    console.log('results: ', results);
+ *  });
+ * </script>
  *
- * &lt;!-- (Angular) SzSearchByIdComponent --&gt;<br/>
- * &lt;sz-search-by-id<br/>
- * entityId="1004"<br/>
- * (resultChange)="myResultsHandler($event)"<br/>
- * (searchStart)="showSpinner()"<br/>
- * (searchEnd)="hideSpinner()"&gt;&lt;/sz-search-by-id&gt;<br/>
- * </code>
+ * @example 
+ * <!-- (Angular) SzSearchByIdComponent -->
+ * <sz-search-by-id
+ * entityId="1004"
+ * (resultChange)="myResultsHandler($event)"
+ * (searchStart)="showSpinner()"
+ * (searchEnd)="hideSpinner()"></sz-search-by-id>
+ * 
  * @export
  *
  */
