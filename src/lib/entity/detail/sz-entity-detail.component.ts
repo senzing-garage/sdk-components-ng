@@ -119,7 +119,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
   // show | hide specific sections
   private _showGraphSection: boolean = true;
-  private _showHowSection: boolean = true;
+  private _showHowSection: boolean = false;
   private _showMatchesSection: boolean = true;
   private _showPossibleMatchesSection: boolean = true;
   private _showPossibleRelationshipsSection: boolean = true;
