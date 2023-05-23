@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { v4 as uuidv4} from 'uuid';
 import {
   EntityDataService as SzEntityDataService,
@@ -375,6 +375,21 @@ export class SzHowUIService {
     return retVal;
   }
   /**
+   * Query the `/entities/${entityId}/how` api server endpoint for data on HOW an 
+   * entity came together.
+   * @param entityId 
+   */
+  public getHowDataForEntity(entityId: SzEntityIdentifier): Observable<SzHowEntityResponse> {
+    return this.entityDataService.howEntityByEntityID(
+        entityId as number
+    ).pipe(
+      tap((r) => {
+        // clear out any old data on response
+        this.clear();
+      })
+    )
+  }
+  /**
    * Get all parent nodes of a specific child node.
    * This is a recursive method used for tree 
    * traversal and not meant to be used externally.
@@ -494,6 +509,17 @@ export class SzHowUIService {
   public isStepPinned(vId: string, gId?: string): boolean {
     return this._pinnedSteps.includes(vId);
   }
+
+  /** clear out any data previously loaded. call this method when a new entity is loaded */
+  public clear() {
+    // we need to clear out any previous results to ensure we're working with correct data
+    this._stepNodes       = undefined;
+    this._stepNodeGroups  = new Map<string, SzResolutionStepNode>();
+    this._expandedNodes   = [];
+    this._expandedGroups  = [];
+    this._pinnedSteps     = [];
+  }
+
   /**
    * Step nodes that are children of nodes with a itemType of `STACK` can be "pinned" in place. When a 
    * step in a stack is pinned in place we remove that node from the stack and place it in the stack's parent at the appropriate index.
