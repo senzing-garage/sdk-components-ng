@@ -214,8 +214,12 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-  public onHowButtonClick(entityId) {
-    console.log('onHowButtonClick: ', entityId);
+  public onHowButtonClick(howEvent) {
+    console.log('onHowButtonClick: ', howEvent.entityId);
+    this.loadHowReport(howEvent.entityId);
+  }
+
+  public loadHowReport(entityId) {
     this.howReportEntityId  = entityId;
     this._showSearchResults = false;
     this._showEntityDetail  = false;

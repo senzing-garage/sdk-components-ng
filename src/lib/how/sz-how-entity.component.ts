@@ -11,7 +11,7 @@ import {
   SzResolvedVirtualEntity, 
   SzResolutionStepDisplayType 
 } from '../models/data-how';
-import { Observable, Subject, take, takeUntil, zip, map } from 'rxjs';
+import { Observable, Subject, take, takeUntil, zip, map, tap } from 'rxjs';
 import { parseBool } from '../common/utils';
 import { v4 as uuidv4} from 'uuid';
 import { SzResolutionStepListItemType, SzResolutionStepNode } from '../models/data-how';
@@ -183,6 +183,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
           _nestedStepNodes = _stepNodes;
         }
         this.howUIService.stepNodes   = _nestedStepNodes;
+        //console.log(`stepNodes cache set: `, this.howUIService.stepNodes);
       } else {
         //console.warn(`stepNodes already initialized, pulling from cache: `, this.howUIService.stepNodes);
       }
@@ -214,7 +215,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         this._isLoading = true;
         this.loading.emit(true);
         this.getData(this.entityId).subscribe((resp: SzHowEntityResponse) => {
-            console.log(`how response: ${resp}`, resp.data);
+            //console.log(`how response(${this.entityId}): ${resp}`, resp.data);
             this._data                                    = resp && resp.data ? resp.data : undefined;
             this._resolutionStepsByVirtualId              = resp && resp.data && resp.data.resolutionSteps ? this._data.resolutionSteps : undefined;
             this._dataLoadedForId                         = this.entityId;
@@ -408,9 +409,9 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
      * @internal 
      * retrieve the how data for a entity */
     private getData(entityId: SzEntityIdentifier): Observable<SzHowEntityResponse> {
-        return this.entityDataService.howEntityByEntityID(
-            this.entityId as number
-        )
+        return this.howUIService.getHowDataForEntity(
+            this.entityId
+        );
     }
     /**
      * @internal 
@@ -430,12 +431,6 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         //console.log(`generated new uuid: ${_currentGroupId}`)
 
         let _filteredSteps = _rSteps.filter((resStep: SzResolutionStep, stepArrIndex: number) => {
-          // if step is a member of an interim entity we should 
-            // if step is a member of an interim entity we should 
-          // if step is a member of an interim entity we should 
-            // if step is a member of an interim entity we should 
-          // if step is a member of an interim entity we should 
-            // if step is a member of an interim entity we should 
           // if step is a member of an interim entity we should 
           // exclude it from list
           return !this.isStepChildOfNode(resStep, _stepNodesForInterimEntities) && !(SzHowUIService.getResolutionStepCardType(resStep) === SzResolutionStepDisplayType.MERGE);
@@ -493,6 +488,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         });
         
       }
+      //console.log(`getDefaultStepNodeGroups()`,retVal, _rSteps)
       return retVal;
     }
     /**
