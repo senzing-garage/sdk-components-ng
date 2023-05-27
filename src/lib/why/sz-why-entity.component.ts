@@ -1,28 +1,13 @@
 import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
-import { EntityDataService, SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { EntityDataService, SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityFeatureStatistics, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
+import { forkJoin, Observable, ReplaySubject, Subject, zip, zipAll } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
+import { SzConfigDataService } from '../services/sz-config-data.service';
+import { SzWhyEntityColumn, SzWhyFeatureRow, SzWhyFeatureWithStats } from '../models/data-why';
 
-class SzWhyEntityDataSource extends DataSource<any> {
-  private _dataStream = new ReplaySubject<any[]>();
 
-  constructor(initialData: any[]) {
-    super();
-    this.setData(initialData);
-  }
-
-  connect(): Observable<any[]> {
-    return this._dataStream;
-  }
-
-  disconnect() {}
-
-  setData(data: any[]) {
-    this._dataStream.next(data);
-  }
-}
 
 /**
  * Display the "Why" information for entity
@@ -52,27 +37,46 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
 
   /** if more than two records the view can be limited to just explicitly listed ones */
   @Input() recordsToShow: SzRecordId[] | undefined;
-
-  private _columnsToDisplay: string[] = [];
-  public get displayedColumns(): string[] {
-    return this._columnsToDisplay;
-  }
+  private _orderedFeatureTypes: string[] | undefined;
+  private _data: SzWhyEntityResult[];
+  private _entities: SzEntityData[];
+  private _formattedData;
+  private _rows: SzWhyFeatureRow[] = [
+    {key: 'INTERNAL_ID',   title: 'Internal ID'},
+    {key: 'DATA_SOURCES',  title: 'Data Sources'},
+    {key: 'WHY_RESULT',    title: 'Why Result'}
+  ];
+  
   public get isLoading(): boolean {
     return this._isLoading;
   }
   public set isLoading(value: boolean) {
     this._isLoading = value;
   }
-  private dataToDisplay = [];
-  public dataSource = new SzWhyEntityDataSource(this.dataToDisplay);
-  public gotColumnDefs = false;
 
-  constructor(private entityData: EntityDataService) {
+  constructor(
+    public configDataService: SzConfigDataService,
+    private entityData: EntityDataService) {
   }
   ngOnInit() {
     this._isLoading = true;
     this.loading.emit(true);
 
+    zip(
+      this.getWhyData(),
+      this.getOrderedFeatures()
+    ).subscribe((results) => {
+      this._isLoading = false;
+      this.loading.emit(false);
+      this._data      = results[0].data.whyResults;
+      this._entities  = results[0].data.entities;
+      this._orderedFeatureTypes = results[1];
+      this._formattedData = this.formatDataForTable(this._data, this._entities);
+      this._rows          = this.getRowsFromData(this._formattedData);
+      console.warn('SzWhyEntityComponent.getWhyData: ', results, this._rows, this._formattedData);
+
+    });
+    /*
     this.getWhyData().subscribe((resData: SzWhyEntityResponse) => {
       this._isLoading = false;
       this.loading.emit(false);
@@ -84,15 +88,11 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
           }
         });
       }
-      let formattedData = this.formatWhyDataForDataTable(resData.data.whyResults, resData.data.entities, matchedRecords);
+      //let formattedData = this.formatWhyDataForDataTable(resData.data.whyResults, resData.data.entities, matchedRecords);
       //this.columnsToDisplay   = formattedData.columns;
-      this._columnsToDisplay  = formattedData.columns;
       //this.columnsToDisplay   = formattedData.columns;
-      this.dataToDisplay      = formattedData.data;
-      this.dataSource.setData(this.dataToDisplay);
-      this.gotColumnDefs = true;  
-      console.log('SzWhyEntityComponent.getWhyData: ', resData.data, formattedData);
-    })
+      console.log('SzWhyEntityComponent.getWhyData: ', resData.data);
+    })*/
   }
   /**
    * unsubscribe when component is destroyed
@@ -102,9 +102,178 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  public get formattedData() {
+    return this._formattedData;
+  }
+
+  public get rows() {
+    return this._rows;
+  }
+
   getWhyData() {
     return this.entityData.whyEntityByEntityID(parseSzIdentifier(this.entityId), true, true, true, SzDetailLevel.VERBOSE, SzFeatureMode.REPRESENTATIVE, false, false)
   }
+  getOrderedFeatures() {
+    return this.configDataService.getOrderedFeatures(true);
+  }
+
+  getRowsFromData(data: SzWhyEntityColumn[]) {
+      // now that we have all our "results" grab the features so we 
+      // can iterate by those and blank out cells that are missing
+      let _rows         = this._rows;
+      data.forEach((res) => {
+        let _featuresOfResult = res.rows;
+        let _keysOfFeatures = Object.keys(_featuresOfResult);
+        _keysOfFeatures.forEach((fKey)=> {
+          let rowAlreadyDefined = _rows.some((f) => {
+            return f.key === fKey;
+          });
+          if(!rowAlreadyDefined) {
+            // add feature to list
+            _rows.push({key: fKey, title: fKey});
+          }
+        });
+      });
+      return _rows;
+  }
+  private getFeatureStatsByIdFromEntityData(entities: SzEntityData[]): Map<number, SzWhyFeatureWithStats> {
+    let retVal: Map<number, SzWhyFeatureWithStats>;
+    if(entities && entities.length > 0) {
+      entities.forEach((rEntRes) => {
+        let _resolvedEnt = rEntRes.resolvedEntity;
+        if(_resolvedEnt && _resolvedEnt.features) {
+          for(let _fName in _resolvedEnt.features) {
+            let _fTypeArray = _resolvedEnt.features[_fName];
+            if(_fTypeArray && _fTypeArray.forEach) {
+              _fTypeArray.forEach((_feat) => {
+                let _featValue: SzWhyFeatureWithStats = _feat;
+                if(!retVal) {
+                  // make sure we've got a map initialized
+                  retVal = new Map<number, SzWhyFeatureWithStats>();
+                }
+                // do "primaryValue" first
+                if(retVal.has(_feat.primaryId)) {
+                  // ruh roh
+                  console.warn(`Ruh Roh! (feature stat by id overwrite): ${_feat.primaryId}`);
+                } else {
+                  if(_featValue && _featValue.featureDetails && _featValue.featureDetails.length === 1) {
+                    // lift value up for map lookup
+                    _featValue.primaryStatistics = _featValue.featureDetails[0].statistics;
+                  } else {
+                    // I guuuuuueeessss we... search for one that has its "internalId" set to the 
+                    // same as the "primaryId" ??? .. 
+                    let statsForPrimary = _featValue.featureDetails.find((fDet) => {
+                      return fDet.internalId === _feat.primaryId;
+                    });
+                    // STARLIFTER YYEEEEEAAH BABY!
+                    if(statsForPrimary) {
+                      _featValue.primaryStatistics = Object.assign({featureValue: _featValue.primaryValue}, statsForPrimary.statistics);
+                    }
+                  }
+                }
+                // add "duplicateValues" if they exist
+                if(_feat.duplicateValues && _feat.duplicateValues.length > 0) {
+                  if (_feat.featureDetails.length > 0) {
+                    // pull the statistics for the item in "featureDetails" whos "featureValue" matches the "duplicateValue" Item
+                    let _duplicateValuesToFeatureDetails = _feat.duplicateValues.map((dupeValue) => {
+                      return _feat.featureDetails.find((fDet) => {
+                        return fDet.featureValue === dupeValue;
+                      })
+                    }).filter((fVal) => { return fVal && fVal.statistics; })
+                    if(_duplicateValuesToFeatureDetails.length > 0) {
+                      if(!_featValue.duplicateStatistics) {
+                        _featValue.duplicateStatistics = new Map<number, SzEntityFeatureStatistics>();
+                      }
+                      _duplicateValuesToFeatureDetails.forEach((dupeStat) => {
+                        _featValue.duplicateStatistics.set(dupeStat.internalId, 
+                          Object.assign({
+                            featureValue: dupeStat.featureValue
+                          }, dupeStat.statistics) 
+                        );
+                      });
+                    }
+                  }
+                }
+                retVal.set(_feat.primaryId, _featValue);
+              });
+            }
+          }
+        }
+      });
+    }
+    if(retVal && retVal.size > 0) {
+      // sort array by id's fer goblin-sake
+      retVal = new Map([...retVal.entries()].sort((a, b) => {
+        if ( a[0] < b[0] ){
+          return -1;
+        }
+        if ( a[0] > b[0] ){
+          return 1;
+        }
+        return 0;
+      }));
+    }
+    return retVal;
+  }
+
+  formatDataForTable(data: SzWhyEntityResult[], entities: SzEntityData[]): SzWhyEntityColumn[] {
+    let _internalIds   = data.map((matchWhyResult) => { return matchWhyResult.perspective.internalId; });
+    let _featureKeys  = [];
+    let _rows         = this._rows;
+    let _featureStatsById = this.getFeatureStatsByIdFromEntityData(entities);
+    // first create a map of all features found in "resolvedEntitie"'s by featureId for stat lookup
+    
+    console.log(`_featureStatsById: `, _featureStatsById);
+
+    let results = data.map((matchWhyResult) => {
+      // extend
+      let _tempRes: SzWhyEntityColumn = Object.assign({
+        internalId: matchWhyResult.perspective.internalId,
+        dataSources: matchWhyResult.perspective.focusRecords.map((record) => {
+          return record.dataSource +':'+ record.recordId;
+        }),
+        whyResult: (matchWhyResult.matchInfo.matchLevel !== 'NO_MATCH') ? {key: matchWhyResult.matchInfo.whyKey, rule: matchWhyResult.matchInfo.resolutionRule} : undefined,
+        rows: matchWhyResult.matchInfo.featureScores
+      },  matchWhyResult.perspective, matchWhyResult);
+      if(matchWhyResult.matchInfo && matchWhyResult.matchInfo.candidateKeys) {
+        // add "candidate keys" to features we want to display
+        for(let _k in matchWhyResult.matchInfo.candidateKeys) {
+          if(!_tempRes.rows[_k]) {
+            _tempRes.rows[_k] = matchWhyResult.matchInfo.candidateKeys[_k];
+          } else {
+            // selectively add
+            _tempRes.rows[_k] = _tempRes.rows[_k].concat(matchWhyResult.matchInfo.candidateKeys[_k]);
+          }
+        }
+      }
+      // list out other "features" that may be present on the resolved entity, but not
+      // present in the why result feature scores or candidate keys
+      // NOTE: we only do this for the item who's "internalId" is the same as the "entityId"
+      if(entities && entities.length > 0 && _tempRes.internalId === _tempRes.entityId) {
+        let entityResultForInternalId = entities.find((_entRes) => {
+          return _entRes.resolvedEntity && _entRes.resolvedEntity.entityId === _tempRes.internalId;
+        });
+        if(entityResultForInternalId && entityResultForInternalId.resolvedEntity){
+          let entityForInternalId = entityResultForInternalId.resolvedEntity;
+          if(entityForInternalId.features) {
+            // merge feature data
+            for(let _fKey in entityForInternalId.features) {
+              if(!_tempRes.rows[_fKey]) {
+                _tempRes.rows[_fKey] = entityForInternalId.features[_fKey];
+              } else {
+                // selectively add
+                _tempRes.rows[_fKey] = _tempRes.rows[_fKey].concat(entityForInternalId.features[_fKey]);
+              }
+            }
+          }
+        }
+      }
+      
+      return _tempRes;
+    });
+    return results;
+  }
+
   formatWhyDataForDataTable(data: SzWhyEntityResult[], entities: SzEntityData[], entityRecords: SzMatchedRecord[]): any {
     let internalIds   = data.map((matchWhyResult) => { return matchWhyResult.perspective.internalId; });
     let columnKeys    = internalIds;
