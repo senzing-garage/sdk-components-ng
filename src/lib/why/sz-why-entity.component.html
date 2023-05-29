@@ -1,1 +1,14 @@
-Oh hai! hey there. this is a why result.
+<div class="table-format">
+  <!--<div class="thead">
+    <div></div>
+    <div *ngFor="let hRow in this.headers">{{hRow}}</div>
+  </div>-->
+  <div class="tr" [class.thead]="rI==0" *ngFor="let row of rows; let rI = index">
+    <!-- show the title for the row -->
+    <div class="col-title">{{row.title}}</div>
+    <!-- now loop through a cell per item in formatted data -->
+    <div class="td" *ngFor="let tCell of getRowValuesForData(row.key)">
+      <div class="pre-text" [innerHTML]="tCell"></div>
+    </div>
+  </div>
+</div>

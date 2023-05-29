@@ -12,11 +12,18 @@ export interface SzWhyFeatureWithStats extends SzEntityFeature {
     statistics?: Map<number, SzEntityFeatureStatistics>
 }
 
+export interface SzWhyEntityHTMLFragment {
+    src: string,
+    tagName: string,
+    cssClasses: string[]
+}
+
 export interface SzWhyEntityColumn extends SzWhyEntityResult, SzWhyPerspective {
     internalId: number,
     dataSources: string[],
     whyResult?: {key: string, rule: string},
     rows: {[key: string]: Array<SzFeatureScore | SzCandidateKey | SzEntityFeature>}
+    formattedRows?: {[key: string]: string | string[] | SzWhyEntityHTMLFragment | SzWhyEntityHTMLFragment[] }
 }
 
 /** 
