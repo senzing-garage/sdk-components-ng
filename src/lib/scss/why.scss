@@ -2,10 +2,21 @@
 sz-table, .table-format {
     .indented {
         display: inline-block;
-        width: 25px;
+        width: 18px;
     }
-}
-
-.color-ds {
-    color: rgb(129, 47, 47);
+    .color-ds {
+        color: rgb(129, 47, 47);
+    }
+    
+    .child-same {
+        display: inline-block;
+        margin-left: 10px;
+        margin-right: 5px;
+        height: 10px;
+        width: 18px;
+        border-left: 1px solid #3b3b3b;
+        border-bottom: 1px solid #3b3b3b;
+        border-right: none;
+        border-top: none;
+    }
 }

@@ -258,13 +258,35 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
     return {
       'NAME': (data: (SzFeatureScore | SzCandidateKey | SzWhyFeatureWithStats)[]) => {
         let retVal = '';
-        data.forEach((_feature, i) => {
-          let le = (i < data.length-1) ? '\n': '';
+        let _filteredData = data;
+        if(data && data.filter && data.some) {
+          let hasSame       = data.some((_a)=>{ return (_a as SzFeatureScore).scoringBucket === 'SAME'; });
+          let hasClose      = data.some((_a)=>{ return (_a as SzFeatureScore).scoringBucket === 'CLOSE'; });
+          let hasPlausible  = data.some((_a)=>{ return (_a as SzFeatureScore).scoringBucket === 'PLAUSIBLE'; });
+          let hasNoChance   = data.some((_a)=>{ return (_a as SzFeatureScore).scoringBucket === 'NO_CHANCE'; });
+          let filterBuckets = hasSame ? ['SAME'] : (hasClose ? ['CLOSE'] : (hasPlausible ? ['PLAUSIBLE']: (hasNoChance ? ['NO_CHANCE'] : false)));
+          _filteredData = filterBuckets && filterBuckets.length > 0 ? data.filter((addrScore) => {
+            return (filterBuckets as string[]).indexOf((addrScore as SzFeatureScore).scoringBucket) > -1;
+          }) : data;
+        }
+        _filteredData.forEach((_feature, i) => {
+          let le = (i < _filteredData.length-1) ? '\n': '';
           if((_feature as SzFeatureScore).inboundFeature || (_feature as SzFeatureScore).candidateFeature) {
             let f = (_feature as SzFeatureScore);
-            retVal += f.inboundFeature.featureValue + le;
-            if(f.candidateFeature) {
-              retVal += ((i == data.length-1) ? '\n':'')+`<span class="indented"></span>${f.candidateFeature.featureValue}`;
+            if(f.inboundFeature) { 
+              retVal += f.inboundFeature.featureValue;
+              let stats = fBId && fBId.has(f.inboundFeature.featureId) ? fBId.get(f.inboundFeature.featureId) : false;
+              if(stats && stats.primaryStatistics && stats.primaryStatistics.entityCount) {
+                retVal += ` [${stats.primaryStatistics.entityCount}]`;
+              }
+              retVal += le;
+              if(f.inboundFeature.featureId !== f.candidateFeature.featureId) {
+                // add nesting
+                retVal += '\n<span class="child-same"></span>';
+              }
+            }
+            if(f.candidateFeature && ((f.inboundFeature && f.inboundFeature.featureId !== f.candidateFeature.featureId) || !f.inboundFeature)) {
+              retVal += `${f.candidateFeature.featureValue}${le}`;
               if(f.nameScoringDetails) {
                 let _nameScoreValues  = [];
                 if(f.nameScoringDetails.fullNameScore)    { _nameScoreValues.push(`full:${f.nameScoringDetails.fullNameScore}`);}
@@ -281,9 +303,38 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
         });
         return retVal;
       },
-      'ADDRESS__': (data: (SzFeatureScore | SzCandidateKey | SzWhyFeatureWithStats)[]) => {
+      'ADDRESS': (data: (SzFeatureScore | SzCandidateKey | SzWhyFeatureWithStats)[]) => {
         let retVal = '';
-
+        let _filteredData = data;
+        if(data && data.filter && data.some) {
+          let limitToXResults = 1;
+          let hasSame       = data.some((_a)=>{ return (_a as SzFeatureScore).scoringBucket === 'SAME'; });
+          let hasClose      = data.some((_a)=>{ return (_a as SzFeatureScore).scoringBucket === 'CLOSE'; });
+          let hasPlausible  = data.some((_a)=>{ return (_a as SzFeatureScore).scoringBucket === 'PLAUSIBLE'; });
+          let hasNoChance   = data.some((_a)=>{ return (_a as SzFeatureScore).scoringBucket === 'NO_CHANCE'; });
+          let filterBuckets = hasSame ? ['SAME'] : (hasClose ? ['CLOSE'] : (hasPlausible ? ['PLAUSIBLE']: (hasNoChance ? ['NO_CHANCE'] : false)));
+          _filteredData = filterBuckets && filterBuckets.length > 0 ? data.filter((addrScore) => {
+            return (filterBuckets as string[]).indexOf((addrScore as SzFeatureScore).scoringBucket) > -1;
+          }) : data;
+          if(limitToXResults > 0){ _filteredData = _filteredData.slice(undefined, limitToXResults) }
+        }
+        if(_filteredData && _filteredData.forEach) {
+          _filteredData.forEach((a, i) => {
+            let le = (i < _filteredData.length-1) ? '\n': '';
+            if((a as SzFeatureScore).candidateFeature) {
+              let _a = (a as SzFeatureScore);
+              if(_a.inboundFeature) {
+                retVal += `${_a.inboundFeature.featureValue}`;
+                let stats = fBId && fBId.has(_a.inboundFeature.featureId) ? fBId.get(_a.inboundFeature.featureId) : false;
+                if(stats && stats.primaryStatistics && stats.primaryStatistics.entityCount) {
+                  retVal += ` [${stats.primaryStatistics.entityCount}]`;
+                }
+                retVal += '\n<span class="child-same"></span>';
+              }
+              retVal += `${_a.candidateFeature.featureValue}\n`;
+            }
+          });
+        }
         return retVal;
       },
       'DATA_SOURCES': (data: SzFocusRecordId[]) => {
@@ -295,7 +346,7 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
         return retVal;
       },
       'WHY_RESULT': (data: {key: string, rule: string}) => {
-        return `<span class="color-mk">${data.key}</span>\n\t${data.rule}`;
+        return `<span class="color-mk">${data.key}</span>\n<span class="indented"></span>${data.rule}`;
       },
       default: (data: (SzFeatureScore | SzCandidateKey | SzWhyFeatureWithStats)[], fieldName?: string): string | string[] | SzWhyEntityHTMLFragment => {
         let retVal = '';
