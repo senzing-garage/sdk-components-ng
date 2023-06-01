@@ -54,8 +54,14 @@ export class SzConfigDataService {
     getOrderedFeatures(pullFromCacheIfAvailable?: boolean): Observable<string[]> | undefined{
         let _retVal = new Subject<string[]>();
         let retVal = _retVal.asObservable();
-        if(pullFromCacheIfAvailable && this._orderedFeatureTypes) {
-            _retVal.next(this._orderedFeatureTypes);
+        if(pullFromCacheIfAvailable && this._orderedFeatureTypes !== undefined) {
+            console.warn('pulling ordered features from cache');
+            //retVal.pipe(delay(1000)); // delay response so it waits
+            setTimeout(
+                ((v) => {
+                    //console.log(`getOrderedFeatures: from cache: `, v); 
+                    _retVal.next(v); 
+                }).bind(this, this._orderedFeatureTypes), 500);
         } else {
             this.getActiveConfig().subscribe((res: any)=>{
                 let fTypes = this.getFeaturesFromConfig(res)

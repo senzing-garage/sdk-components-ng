@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, View
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
 import { EntityDataService, SzAttributeSearchResult, SzCandidateKey, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityFeatureStatistics, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
-import { forkJoin, Observable, ReplaySubject, Subject, zip, zipAll } from 'rxjs';
+import { filter, forkJoin, Observable, ReplaySubject, Subject, zip, zipAll } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
 import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzWhyEntityColumn, SzWhyEntityHTMLFragment, SzWhyFeatureRow, SzWhyFeatureWithStats } from '../models/data-why';
@@ -76,24 +76,29 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
     zip(
       this.getWhyData(),
       this.getOrderedFeatures()
-    ).subscribe((results) => {
-      this._isLoading = false;
-      this.loading.emit(false);
-      this._data          = results[0].data.whyResults;
-      this._entities      = results[0].data.entities;
-      // add any fields defined in initial _rows value to the beginning of the order
-      // custom/meta fields go first basically
-      this._orderedFeatureTypes = this._rows.map((fr)=>{ return fr.key}).concat(results[1]);
-      this._featureStatsById  = this.getFeatureStatsByIdFromEntityData(this._entities);
-      console.log(`SzWhyEntityComponent._featureStatsById: `, this._featureStatsById);
+    ).subscribe({
+      next: (results) => {
+        this._isLoading = false;
+        this.loading.emit(false);
+        this._data          = results[0].data.whyResults;
+        this._entities      = results[0].data.entities;
+        // add any fields defined in initial _rows value to the beginning of the order
+        // custom/meta fields go first basically
+        this._orderedFeatureTypes = this._rows.map((fr)=>{ return fr.key}).concat(results[1]);
+        this._featureStatsById  = this.getFeatureStatsByIdFromEntityData(this._entities);
+        console.log(`SzWhyEntityComponent._featureStatsById: `, this._featureStatsById);
 
-      this._shapedData    = this.transformData(this._data, this._entities);
-      this._formattedData = this.formatData(this._shapedData);
-      // now that we have all our "results" grab the features so we 
-      // can iterate by those and blank out cells that are missing
-      this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
-      this._headers       = this.getHeadersFromData(this._shapedData);
-      console.warn('SzWhyEntityComponent.getWhyData: ', results, this._rows, this._shapedData);
+        this._shapedData    = this.transformData(this._data, this._entities);
+        this._formattedData = this.formatData(this._shapedData);
+        // now that we have all our "results" grab the features so we 
+        // can iterate by those and blank out cells that are missing
+        this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
+        this._headers       = this.getHeadersFromData(this._shapedData);
+        console.warn('SzWhyEntityComponent.getWhyData: ', results, this._rows, this._shapedData);
+      },
+      error: (err) => {
+        console.error(err);
+      }
     });
   }
   /**
@@ -255,8 +260,16 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
   }
   private get renderers() {
     let fBId = this._featureStatsById;
+    let _colors = {'CLOSE':'green','SAME':'green'};
+    let featureIsInMatchKey = (f, mk): boolean => {
+      let _r = false;
+      if(mk) {
+        _r = mk.indexOf(f) > -1;
+      }
+      return _r;
+    } 
     return {
-      'NAME': (data: (SzFeatureScore | SzCandidateKey | SzWhyFeatureWithStats)[]) => {
+      'NAME': (data: (SzFeatureScore | SzCandidateKey | SzWhyFeatureWithStats)[], fieldName?: string, mk?: string) => {
         let retVal = '';
         let _filteredData = data;
         if(data && data.filter && data.some) {
@@ -273,8 +286,9 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
           let le = (i < _filteredData.length-1) ? '\n': '';
           if((_feature as SzFeatureScore).inboundFeature || (_feature as SzFeatureScore).candidateFeature) {
             let f = (_feature as SzFeatureScore);
+            let c = _colors[f.scoringBucket] && featureIsInMatchKey('NAME', mk) ? 'color-'+ _colors[f.scoringBucket] : '';
             if(f.inboundFeature) { 
-              retVal += f.inboundFeature.featureValue;
+              retVal += `<span class="${c}">`+f.inboundFeature.featureValue;
               let stats = fBId && fBId.has(f.inboundFeature.featureId) ? fBId.get(f.inboundFeature.featureId) : false;
               if(stats && stats.primaryStatistics && stats.primaryStatistics.entityCount) {
                 retVal += ` [${stats.primaryStatistics.entityCount}]`;
@@ -296,14 +310,16 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
                 if(f.nameScoringDetails.generationScore)  { _nameScoreValues.push(`gen:${f.nameScoringDetails.generationScore}`);}
 
                 retVal += (_nameScoreValues.length > 0 ? `(${_nameScoreValues.join('|')})` : '');
-                retVal += le;
+                retVal += '</span>'+le;
               }
+            } else if(f.inboundFeature) {
+              retVal += '</span>'
             }
           }
         });
         return retVal;
       },
-      'ADDRESS': (data: (SzFeatureScore | SzCandidateKey | SzWhyFeatureWithStats)[]) => {
+      'ADDRESS': (data: (SzFeatureScore | SzCandidateKey | SzWhyFeatureWithStats)[], fieldName?: string, mk?: string) => {
         let retVal = '';
         let _filteredData = data;
         if(data && data.filter && data.some) {
@@ -314,7 +330,8 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
           let hasNoChance   = data.some((_a)=>{ return (_a as SzFeatureScore).scoringBucket === 'NO_CHANCE'; });
           let filterBuckets = hasSame ? ['SAME'] : (hasClose ? ['CLOSE'] : (hasPlausible ? ['PLAUSIBLE']: (hasNoChance ? ['NO_CHANCE'] : false)));
           _filteredData = filterBuckets && filterBuckets.length > 0 ? data.filter((addrScore) => {
-            return (filterBuckets as string[]).indexOf((addrScore as SzFeatureScore).scoringBucket) > -1;
+            let isFeatureScore = (addrScore as SzFeatureScore).scoringBucket;
+            return isFeatureScore ? (filterBuckets as string[]).indexOf((addrScore as SzFeatureScore).scoringBucket) > -1 : true;
           }) : data;
           if(limitToXResults > 0){ _filteredData = _filteredData.slice(undefined, limitToXResults) }
         }
@@ -323,21 +340,24 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
             let le = (i < _filteredData.length-1) ? '\n': '';
             if((a as SzFeatureScore).candidateFeature) {
               let _a = (a as SzFeatureScore);
+              let c = _colors[_a.scoringBucket] && featureIsInMatchKey('ADDRESS', mk) ? 'color-'+ _colors[_a.scoringBucket] : '';
               if(_a.inboundFeature) {
-                retVal += `${_a.inboundFeature.featureValue}`;
+                retVal += `<span class="${c}">${_a.inboundFeature.featureValue}`;
                 let stats = fBId && fBId.has(_a.inboundFeature.featureId) ? fBId.get(_a.inboundFeature.featureId) : false;
                 if(stats && stats.primaryStatistics && stats.primaryStatistics.entityCount) {
                   retVal += ` [${stats.primaryStatistics.entityCount}]`;
                 }
                 retVal += '\n<span class="child-same"></span>';
               }
-              retVal += `${_a.candidateFeature.featureValue}\n`;
+              retVal += `${_a.candidateFeature.featureValue}`;
+              if(_a.score) { retVal += `(full: ${_a.score})`};
+              retVal += '</span>';
             }
           });
         }
         return retVal;
       },
-      'DATA_SOURCES': (data: SzFocusRecordId[]) => {
+      'DATA_SOURCES': (data: SzFocusRecordId[], fieldName?: string, mk?: string) => {
         let retVal = '';
         data.forEach((r, i) => {
           let le = (i < data.length-1) ? '\n': '';
@@ -345,10 +365,21 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
         });
         return retVal;
       },
-      'WHY_RESULT': (data: {key: string, rule: string}) => {
-        return `<span class="color-mk">${data.key}</span>\n<span class="indented"></span>${data.rule}`;
+      'WHY_RESULT': (data: {key: string, rule: string}, fieldName?: string, mk?: string) => {
+        // colorize match key
+        let _value = data && data.key ? data.key : '';
+        if(data && data.key) {
+          // tokenize
+          let _pairs  = data.key.split('+').filter((t)=>{ return t !== undefined && t !== null && t.trim() !== ''; });
+          let _values = _pairs.map((t)=>{ return t.indexOf('-') > -1 ? {prefix: '-', value: t.replaceAll('-','')} : {prefix: '+', value: t}});
+          // now put it back together with colors
+          _value = _values.map((t) => { return `<span class="${t.prefix === '-' ? 'color-red' : 'color-green'}">${t.prefix+t.value}</span>`; }).join('');
+          return `<span class="color-mk">${_value}</span>\n`+ (data && data.rule ? `<span class="indented"></span>Principle: ${data.rule}`:'');
+        } else {
+          return `<span class="color-red">not found!</span>\n`;
+        }
       },
-      default: (data: (SzFeatureScore | SzCandidateKey | SzWhyFeatureWithStats)[], fieldName?: string): string | string[] | SzWhyEntityHTMLFragment => {
+      default: (data: (SzFeatureScore | SzCandidateKey | SzWhyFeatureWithStats)[], fieldName?: string, mk?: string): string | string[] | SzWhyEntityHTMLFragment => {
         let retVal = '';
         if(data && data.forEach){
           data.forEach((_feature, i) => {
@@ -358,18 +389,19 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
               let f = (_feature as SzWhyFeatureWithStats);
               retVal += f.primaryValue;
               if(f.primaryStatistics && f.primaryStatistics.entityCount) {
-                retVal += `[${f.primaryStatistics.entityCount}]`;
+                retVal += ` [${f.primaryStatistics.entityCount}]`;
               }
               retVal += le;
             } else if((_feature as SzFeatureScore).candidateFeature) {
               // feature score
               let f = (_feature as SzFeatureScore);
+              let c = _colors[f.scoringBucket] && featureIsInMatchKey(fieldName, mk) ? 'color-'+ _colors[f.scoringBucket] : '';
               let stats = fBId && fBId.has(f.candidateFeature.featureId) ? fBId.get(f.candidateFeature.featureId) : false;
-              retVal += f.candidateFeature.featureValue;
+              retVal += `<span class="${c}">`+f.candidateFeature.featureValue;
               if(stats && stats.primaryStatistics && stats.primaryStatistics.entityCount) {
                 retVal += ` [${stats.primaryStatistics.entityCount}]`;
               }
-              retVal += le;
+              retVal += '</span>'+le;
             } else if((_feature as SzCandidateKey).featureType) {
               // candidate key
               let f = (_feature as SzCandidateKey);
@@ -397,9 +429,10 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
         if(_retVal.rows) {
           // for each row figure out what "renderer" to use
           // for now just use the 'default'
+          let mk = columnData.whyResult ? columnData.whyResult.key : undefined;
           for(let fKey in _retVal.rows) {
             if(!_retVal.formattedRows) { _retVal.formattedRows = {}; }
-            _retVal.formattedRows[ fKey ] = this.renderers[fKey] ? this.renderers[fKey](_retVal.rows[ fKey ], fKey) : this.renderers.default(_retVal.rows[ fKey ], fKey);
+            _retVal.formattedRows[ fKey ] = this.renderers[fKey] ? this.renderers[fKey](_retVal.rows[ fKey ], fKey, mk) : this.renderers.default(_retVal.rows[ fKey ], fKey, mk);
           }
         }
         return columnData;
@@ -434,12 +467,19 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
         // add "candidate keys" to features we want to display
         for(let _k in matchWhyResult.matchInfo.candidateKeys) {
           if(!_tempRes.rows[_k]) {
-            //_tempRes.rows[_k] = matchWhyResult.matchInfo.candidateKeys[_k];
+            _tempRes.rows[_k] = matchWhyResult.matchInfo.candidateKeys[_k];
           } else {
             // selectively add
             // aaaaaaactually, if we already have entries for this field we should probably just 
             // use those instead
+            let _featuresOmittingExsiting = matchWhyResult.matchInfo.candidateKeys[_k].filter((_cFeat) => {
+              let alreadyHasFeat = _tempRes.rows[_k].some((_rowFeat) => {
+                return (_rowFeat as SzFeatureScore).candidateFeature.featureId === _cFeat.featureId;
+              });
+              return !alreadyHasFeat;
+            });
             //_tempRes.rows[_k] = _tempRes.rows[_k].concat(matchWhyResult.matchInfo.candidateKeys[_k]);
+            _tempRes.rows[_k] = _tempRes.rows[_k].concat(_featuresOmittingExsiting);
           }
         }
       }
@@ -460,8 +500,17 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
               } else {
                 // selectively add
                 // hmmmm..... .. actuuuuuaaaaaallly..
-
-                //_tempRes.rows[_fKey] = _tempRes.rows[_fKey].concat(entityForInternalId.features[_fKey]);
+                let _featuresOmittingExsiting = entityForInternalId.features[_fKey].filter((_eFeat) => {
+                  let alreadyHasFeat = _tempRes.rows[_fKey].some((_rowFeat) => {
+                    let _retVal = true;
+                    if((_rowFeat as SzFeatureScore).candidateFeature) {
+                      _retVal = (_rowFeat as SzFeatureScore).candidateFeature.featureId === _eFeat.primaryId
+                    }
+                    return _retVal;
+                  });
+                  return !alreadyHasFeat;
+                });
+                _tempRes.rows[_fKey] = _tempRes.rows[_fKey].concat(_featuresOmittingExsiting);
               }
             }
           }
@@ -733,6 +782,6 @@ export class SzWhyEntityDialog {
     this.maximized = !this.maximized;
   }
   public onDoubleClick(event) {
-    this.toggleMaximized();
+    //this.toggleMaximized();
   }
 }
