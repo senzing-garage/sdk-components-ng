@@ -6,11 +6,11 @@ export interface SzWhyFeatureRow {
     key: string, title: string
 }
 
-export interface SzWhyFeatureWithStats extends SzEntityFeature {
+/*export interface SzWhyFeatureWithStats extends SzEntityFeature {
     primaryStatistics?: SzEntityFeatureStatistics,
     duplicateStatistics?: Map<number, SzEntityFeatureStatistics>
     statistics?: Map<number, SzEntityFeatureStatistics>
-}
+}*/
 
 export interface SzWhyEntityHTMLFragment {
     src: string,

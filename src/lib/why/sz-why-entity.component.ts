@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
-import { EntityDataService, SzAttributeSearchResult, SzCandidateKey, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityFeatureStatistics, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
+import { EntityDataService, SzAttributeSearchResult, SzCandidateKey, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityFeatureDetail, SzEntityFeatureStatistics, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
 import { filter, forkJoin, Observable, ReplaySubject, Subject, zip, zipAll } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
 import { SzConfigDataService } from '../services/sz-config-data.service';
-import { SzWhyEntityColumn, SzWhyEntityHTMLFragment, SzWhyFeatureRow, SzWhyFeatureWithStats } from '../models/data-why';
+import { SzWhyEntityColumn, SzWhyEntityHTMLFragment, SzWhyFeatureRow } from '../models/data-why';
 
 
 
@@ -56,7 +56,7 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
   ];
 
   private _headers: string[];
-  private _featureStatsById: Map<number, SzWhyFeatureWithStats>;
+  private _featureStatsById: Map<number, SzEntityFeatureDetail>;
   
   public get isLoading(): boolean {
     return this._isLoading;
@@ -179,8 +179,8 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
       }
       return _rows;
   }
-  private getFeatureStatsByIdFromEntityData(entities: SzEntityData[]): Map<number, SzWhyFeatureWithStats> {
-    let retVal: Map<number, SzWhyFeatureWithStats>;
+  private getFeatureStatsByIdFromEntityData(entities: SzEntityData[]): Map<number, SzEntityFeatureDetail> {
+    let retVal: Map<number, SzEntityFeatureDetail>;
     if(entities && entities.length > 0) {
       entities.forEach((rEntRes) => {
         let _resolvedEnt = rEntRes.resolvedEntity;
@@ -189,17 +189,17 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
             let _fTypeArray = _resolvedEnt.features[_fName];
             if(_fTypeArray && _fTypeArray.forEach) {
               _fTypeArray.forEach((_feat) => {
-                let _featValue: SzWhyFeatureWithStats = _feat;
+                //let _featValue: SzWhyFeatureWithStats = _feat;
                 if(!retVal) {
                   // make sure we've got a map initialized
-                  retVal = new Map<number, SzWhyFeatureWithStats>();
+                  retVal = new Map<number, SzEntityFeatureDetail>();
                 }
                 // do "primaryValue" first
                 if(retVal.has(_feat.primaryId)) {
                   // ruh roh
                   console.warn(`Ruh Roh! (feature stat by id overwrite): ${_feat.primaryId}`);
                 } else {
-                  if(_featValue && _featValue.featureDetails && _featValue.featureDetails.length === 1) {
+                 /*if(_featValue && _featValue.featureDetails && _featValue.featureDetails.length === 1) {
                     // lift value up for map lookup
                     _featValue.primaryStatistics = _featValue.featureDetails[0].statistics;
                   } else {
@@ -212,9 +212,18 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
                     if(statsForPrimary) {
                       _featValue.primaryStatistics = Object.assign({featureValue: _featValue.primaryValue}, statsForPrimary.statistics);
                     }
+                  }*/
+                  if(_feat && _feat.featureDetails && _feat.featureDetails.forEach) {
+                    _feat.featureDetails.forEach((_featDetailItem) => {
+                      if(!retVal.has(_featDetailItem.internalId)) {
+                        // add stat
+                        retVal.set(_featDetailItem.internalId, _featDetailItem);
+                      }
+                    });
                   }
                 }
                 // add "duplicateValues" if they exist
+                /*
                 if(_feat.duplicateValues && _feat.duplicateValues.length > 0) {
                   if (_feat.featureDetails.length > 0) {
                     // pull the statistics for the item in "featureDetails" whos "featureValue" matches the "duplicateValue" Item
@@ -236,8 +245,8 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
                       });
                     }
                   }
-                }
-                retVal.set(_feat.primaryId, _featValue);
+                }*/
+                //retVal.set(_feat.primaryId, _featValue);
               });
             }
           }
@@ -269,7 +278,7 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
       return _r;
     } 
     return {
-      'NAME': (data: (SzFeatureScore | SzCandidateKey | SzWhyFeatureWithStats)[], fieldName?: string, mk?: string) => {
+      'NAME': (data: (SzFeatureScore | SzCandidateKey)[], fieldName?: string, mk?: string) => {
         let retVal = '';
         let _filteredData = data;
         if(data && data.filter && data.some) {
@@ -290,8 +299,8 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
             if(f.inboundFeature) { 
               retVal += `<span class="${c}">`+f.inboundFeature.featureValue;
               let stats = fBId && fBId.has(f.inboundFeature.featureId) ? fBId.get(f.inboundFeature.featureId) : false;
-              if(stats && stats.primaryStatistics && stats.primaryStatistics.entityCount) {
-                retVal += ` [${stats.primaryStatistics.entityCount}]`;
+              if(stats && stats.statistics && stats.statistics.entityCount) {
+                retVal += ` [${stats.statistics.entityCount}]`;
               }
               retVal += le;
               if(f.inboundFeature.featureId !== f.candidateFeature.featureId) {
@@ -319,7 +328,7 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
         });
         return retVal;
       },
-      'ADDRESS': (data: (SzFeatureScore | SzCandidateKey | SzWhyFeatureWithStats)[], fieldName?: string, mk?: string) => {
+      'ADDRESS': (data: (SzFeatureScore | SzCandidateKey)[], fieldName?: string, mk?: string) => {
         let retVal = '';
         let _filteredData = data;
         if(data && data.filter && data.some) {
@@ -344,13 +353,13 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
               if(_a.inboundFeature) {
                 retVal += `<span class="${c}">${_a.inboundFeature.featureValue}`;
                 let stats = fBId && fBId.has(_a.inboundFeature.featureId) ? fBId.get(_a.inboundFeature.featureId) : false;
-                if(stats && stats.primaryStatistics && stats.primaryStatistics.entityCount) {
-                  retVal += ` [${stats.primaryStatistics.entityCount}]`;
+                if(stats && stats.statistics && stats.statistics.entityCount) {
+                  retVal += ` [${stats.statistics.entityCount}]`;
                 }
                 retVal += '\n<span class="child-same"></span>';
               }
               retVal += `${_a.candidateFeature.featureValue}`;
-              if(_a.score) { retVal += `(full: ${_a.score})`};
+              if(_a.score) { retVal += ` (full: ${_a.score})`};
               retVal += '</span>';
             }
           });
@@ -379,33 +388,38 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
           return `<span class="color-red">not found!</span>\n`;
         }
       },
-      default: (data: (SzFeatureScore | SzCandidateKey | SzWhyFeatureWithStats)[], fieldName?: string, mk?: string): string | string[] | SzWhyEntityHTMLFragment => {
+      default: (data: (SzFeatureScore | SzCandidateKey | SzEntityFeature)[], fieldName?: string, mk?: string): string | string[] | SzWhyEntityHTMLFragment => {
         let retVal = '';
         if(data && data.forEach){
           data.forEach((_feature, i) => {
             let le = (i < data.length-1) ? '\n': '';
-            if((_feature as SzWhyFeatureWithStats).primaryValue) {
+            if((_feature as SzEntityFeature).primaryValue) {
               // this is a entity feature, make sure we're not duplicating values
-              let f = (_feature as SzWhyFeatureWithStats);
+              let f = (_feature as SzEntityFeature);
+              let stats = fBId && fBId.has(f.primaryId) ? fBId.get(f.primaryId).statistics : false;
               retVal += f.primaryValue;
-              if(f.primaryStatistics && f.primaryStatistics.entityCount) {
-                retVal += ` [${f.primaryStatistics.entityCount}]`;
+              if(stats && stats.entityCount) {
+                retVal += ` [${stats.entityCount}]`;
               }
               retVal += le;
             } else if((_feature as SzFeatureScore).candidateFeature) {
               // feature score
               let f = (_feature as SzFeatureScore);
               let c = _colors[f.scoringBucket] && featureIsInMatchKey(fieldName, mk) ? 'color-'+ _colors[f.scoringBucket] : '';
-              let stats = fBId && fBId.has(f.candidateFeature.featureId) ? fBId.get(f.candidateFeature.featureId) : false;
+              let stats = fBId && fBId.has(f.candidateFeature.featureId) ? fBId.get(f.candidateFeature.featureId).statistics : false;
               retVal += `<span class="${c}">`+f.candidateFeature.featureValue;
-              if(stats && stats.primaryStatistics && stats.primaryStatistics.entityCount) {
-                retVal += ` [${stats.primaryStatistics.entityCount}]`;
+              if(stats && stats.entityCount) {
+                retVal += ` [${stats.entityCount}]`;
               }
               retVal += '</span>'+le;
             } else if((_feature as SzCandidateKey).featureType) {
               // candidate key
               let f = (_feature as SzCandidateKey);
+              let stats = fBId && fBId.has(f.featureId) ? fBId.get(f.featureId).statistics : false;
               retVal += f.featureValue;
+              if(stats && stats.entityCount) {
+                retVal += ` [${stats.entityCount}]`;
+              }
               retVal += le;
             } else if(_feature) {
               // nnnnnooooooot suuuuure, maybe single value???
@@ -462,12 +476,33 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
           'WHY_RESULT': (matchWhyResult.matchInfo.matchLevel !== 'NO_MATCH') ? {key: matchWhyResult.matchInfo.whyKey, rule: matchWhyResult.matchInfo.resolutionRule} : undefined
         }, matchWhyResult.matchInfo.featureScores)
       },  matchWhyResult.perspective, matchWhyResult);
+      for(let k in _tempRes.rows) {
+        if(_tempRes && _tempRes.rows && _tempRes.rows[k] && _tempRes.rows[k].sort) {
+          _tempRes.rows[k] = _tempRes.rows[k].sort((a, b)=>{
+            if ( (a as SzFeatureScore).candidateFeature.featureValue < (b as SzFeatureScore).candidateFeature.featureValue ){
+              return -1;
+            }
+            if ( (a as SzFeatureScore).candidateFeature.featureValue > (b as SzFeatureScore).candidateFeature.featureValue ){
+              return 1;
+            }
+            return 0;
+          });
+        }
+      }
       
       if(matchWhyResult.matchInfo && matchWhyResult.matchInfo.candidateKeys) {
         // add "candidate keys" to features we want to display
         for(let _k in matchWhyResult.matchInfo.candidateKeys) {
           if(!_tempRes.rows[_k]) {
-            _tempRes.rows[_k] = matchWhyResult.matchInfo.candidateKeys[_k];
+            _tempRes.rows[_k] = matchWhyResult.matchInfo.candidateKeys[_k].sort((a, b)=>{
+              if ( a.featureValue < b.featureValue ){
+                return -1;
+              }
+              if ( a.featureValue > b.featureValue ){
+                return 1;
+              }
+              return 0;
+            });
           } else {
             // selectively add
             // aaaaaaactually, if we already have entries for this field we should probably just 
@@ -477,6 +512,14 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
                 return (_rowFeat as SzFeatureScore).candidateFeature.featureId === _cFeat.featureId;
               });
               return !alreadyHasFeat;
+            }).sort((a, b)=>{
+              if ( a.featureValue < b.featureValue ){
+                return -1;
+              }
+              if ( a.featureValue > b.featureValue ){
+                return 1;
+              }
+              return 0;
             });
             //_tempRes.rows[_k] = _tempRes.rows[_k].concat(matchWhyResult.matchInfo.candidateKeys[_k]);
             _tempRes.rows[_k] = _tempRes.rows[_k].concat(_featuresOmittingExsiting);
@@ -486,6 +529,7 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
       // list out other "features" that may be present on the resolved entity, but not
       // present in the why result feature scores or candidate keys
       // NOTE: we only do this for the item who's "internalId" is the same as the "entityId"
+      /*
       if(entities && entities.length > 0 && _tempRes.internalId === _tempRes.entityId) {
         let entityResultForInternalId = entities.find((_entRes) => {
           return _entRes.resolvedEntity && _entRes.resolvedEntity.entityId === _tempRes.internalId;
@@ -500,22 +544,38 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
               } else {
                 // selectively add
                 // hmmmm..... .. actuuuuuaaaaaallly..
+                console.log(`${_fKey} existing: `,_tempRes.rows[_fKey]);
                 let _featuresOmittingExsiting = entityForInternalId.features[_fKey].filter((_eFeat) => {
                   let alreadyHasFeat = _tempRes.rows[_fKey].some((_rowFeat) => {
-                    let _retVal = true;
+                    let _retVal = false;
+                    if((_rowFeat as SzCandidateKey).featureId) {
+                      _retVal = (_rowFeat as SzCandidateKey).featureId === _eFeat.primaryId
+                    }
+                    if((_rowFeat as SzEntityFeature).primaryId) {
+                      _retVal = (_rowFeat as SzEntityFeature).primaryId === _eFeat.primaryId
+                    }
                     if((_rowFeat as SzFeatureScore).candidateFeature) {
                       _retVal = (_rowFeat as SzFeatureScore).candidateFeature.featureId === _eFeat.primaryId
                     }
                     return _retVal;
                   });
                   return !alreadyHasFeat;
+                }).sort((a, b)=>{
+                  if ( a.primaryValue < b.primaryValue ){
+                    return -1;
+                  }
+                  if ( a.primaryValue > b.primaryValue ){
+                    return 1;
+                  }
+                  return 0;
                 });
+                console.log(`\t${_fKey} omitted: `, _featuresOmittingExsiting);
                 _tempRes.rows[_fKey] = _tempRes.rows[_fKey].concat(_featuresOmittingExsiting);
               }
             }
           }
         }
-      }
+      }*/
       
       return _tempRes;
     });
