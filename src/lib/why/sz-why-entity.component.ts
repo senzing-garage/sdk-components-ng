@@ -6,6 +6,7 @@ import { filter, forkJoin, Observable, ReplaySubject, Subject, zip, zipAll } fro
 import { parseSzIdentifier } from '../common/utils';
 import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzWhyEntityColumn, SzWhyEntityHTMLFragment, SzWhyFeatureRow } from '../models/data-why';
+import { SzCSSClassService } from '../services/sz-css-class.service';
 
 
 
@@ -34,6 +35,10 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
   private _isLoading = false;
   @Output()
   loading: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output()
+  onResult: EventEmitter<SzWhyEntityResult[]>     = new EventEmitter<SzWhyEntityResult[]>();
+  @Output()
+  onRowsChanged: EventEmitter<SzWhyFeatureRow[]>  = new EventEmitter<SzWhyFeatureRow[]>();
 
   /** if more than two records the view can be limited to just explicitly listed ones */
   @Input() recordsToShow: SzRecordId[] | undefined;
@@ -95,6 +100,8 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
         this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
         this._headers       = this.getHeadersFromData(this._shapedData);
         console.warn('SzWhyEntityComponent.getWhyData: ', results, this._rows, this._shapedData);
+        this.onResult.emit(this._data);
+        this.onRowsChanged.emit(this._rows);
       },
       error: (err) => {
         console.error(err);
@@ -179,6 +186,7 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
       }
       return _rows;
   }
+
   private getFeatureStatsByIdFromEntityData(entities: SzEntityData[]): Map<number, SzEntityFeatureDetail> {
     let retVal: Map<number, SzEntityFeatureDetail>;
     if(entities && entities.length > 0) {
@@ -189,7 +197,6 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
             let _fTypeArray = _resolvedEnt.features[_fName];
             if(_fTypeArray && _fTypeArray.forEach) {
               _fTypeArray.forEach((_feat) => {
-                //let _featValue: SzWhyFeatureWithStats = _feat;
                 if(!retVal) {
                   // make sure we've got a map initialized
                   retVal = new Map<number, SzEntityFeatureDetail>();
@@ -199,20 +206,7 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
                   // ruh roh
                   console.warn(`Ruh Roh! (feature stat by id overwrite): ${_feat.primaryId}`);
                 } else {
-                 /*if(_featValue && _featValue.featureDetails && _featValue.featureDetails.length === 1) {
-                    // lift value up for map lookup
-                    _featValue.primaryStatistics = _featValue.featureDetails[0].statistics;
-                  } else {
-                    // I guuuuuueeessss we... search for one that has its "internalId" set to the 
-                    // same as the "primaryId" ??? .. 
-                    let statsForPrimary = _featValue.featureDetails.find((fDet) => {
-                      return fDet.internalId === _feat.primaryId;
-                    });
-                    // STARLIFTER YYEEEEEAAH BABY!
-                    if(statsForPrimary) {
-                      _featValue.primaryStatistics = Object.assign({featureValue: _featValue.primaryValue}, statsForPrimary.statistics);
-                    }
-                  }*/
+                  // for each item in the details array create an entry by the items internal featureId
                   if(_feat && _feat.featureDetails && _feat.featureDetails.forEach) {
                     _feat.featureDetails.forEach((_featDetailItem) => {
                       if(!retVal.has(_featDetailItem.internalId)) {
@@ -222,31 +216,6 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
                     });
                   }
                 }
-                // add "duplicateValues" if they exist
-                /*
-                if(_feat.duplicateValues && _feat.duplicateValues.length > 0) {
-                  if (_feat.featureDetails.length > 0) {
-                    // pull the statistics for the item in "featureDetails" whos "featureValue" matches the "duplicateValue" Item
-                    let _duplicateValuesToFeatureDetails = _feat.duplicateValues.map((dupeValue) => {
-                      return _feat.featureDetails.find((fDet) => {
-                        return fDet.featureValue === dupeValue;
-                      })
-                    }).filter((fVal) => { return fVal && fVal.statistics; })
-                    if(_duplicateValuesToFeatureDetails.length > 0) {
-                      if(!_featValue.duplicateStatistics) {
-                        _featValue.duplicateStatistics = new Map<number, SzEntityFeatureStatistics>();
-                      }
-                      _duplicateValuesToFeatureDetails.forEach((dupeStat) => {
-                        _featValue.duplicateStatistics.set(dupeStat.internalId, 
-                          Object.assign({
-                            featureValue: dupeStat.featureValue
-                          }, dupeStat.statistics) 
-                        );
-                      });
-                    }
-                  }
-                }*/
-                //retVal.set(_feat.primaryId, _featValue);
               });
             }
           }
@@ -267,6 +236,10 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
     }
     return retVal;
   }
+  /**
+   * returns a Object who's keys correspond to a particular type of 'featureType' of each type of feature 
+   * in the "matchInfo.featureScores" result of why api response.
+   */
   private get renderers() {
     let fBId = this._featureStatsById;
     let _colors = {'CLOSE':'green','SAME':'green'};
@@ -433,7 +406,11 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
       }
     }
   }
-  /** add specific formatted and render ready fields like "rawValue", "formattedValue", "htmlValue" */
+  /** 
+   * Add "formattedRows" that correspond to the string renderer output of each item in each collection returned from the result of
+   * #transformData's rows property. The result of each item is a string or collection of strings that is the result of either a 
+   * renderer specific for that feature type, or the 'default' renderer found in this.renderers.default.
+   */
   private formatData(data: SzWhyEntityColumn[], ): SzWhyEntityColumn[] {
     let retVal;
     if(data) {
@@ -454,7 +431,11 @@ export class SzWhyEntityComponent implements OnInit, OnDestroy {
     }
     return retVal;
   }
-
+  /**
+   * Extends the data response from the why api with data found "rows" that can be more directly utilized by the rendering template.
+   * Every why result column gets additional fields like "dataSources", "internalId", "rows", "whyResult" that are pulled, hoisted, 
+   * or joined from other places. 
+   */
   private transformData(data: SzWhyEntityResult[], entities: SzEntityData[]): SzWhyEntityColumn[] {
     let _internalIds   = data.map((matchWhyResult) => { return matchWhyResult.perspective.internalId; });
     let _featureKeys  = [];
@@ -809,7 +790,10 @@ export class SzWhyEntityDialog {
   public get entityName(): string | undefined {
     return this._entityName;
   }
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { entityId: SzEntityIdentifier, entityName?:string, records?: SzRecordId[], okButtonText?: string, showOkButton?: boolean }) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: { entityId: SzEntityIdentifier, entityName?:string, records?: SzRecordId[], okButtonText?: string, showOkButton?: boolean },
+    private cssClassesService: SzCSSClassService
+    ) {
     if(data) {
       if(data.entityId) {
         this._entityId = data.entityId;
@@ -838,10 +822,27 @@ export class SzWhyEntityDialog {
   public onDataLoading(isLoading: boolean) {
     this._isLoading = isLoading;
   }
+  public onRowsChanged(data: SzWhyFeatureRow[]) {
+    console.warn(`onRowsChanged: `, data);
+    if(data && data.length > 5) {
+      // set default height to something larger
+      this.cssClassesService.setStyle(`body`, "--sz-why-dialog-default-height", `800px`);
+    } else {
+      this.cssClassesService.setStyle(`body`, "--sz-why-dialog-default-height", `var(--sz-why-dialog-default-height)`);
+    }
+  }
   public toggleMaximized() {
-    this.maximized = !this.maximized;
+    //this.maximized = !this.maximized;
+    if(!this.maximized) {
+      this.maximized = true;
+      this.cssClassesService.setStyle(`body`, "--sz-why-dialog-min-height", `98vh`);
+    } else {
+      this.maximized = false;
+      this.cssClassesService.setStyle(`body`, "--sz-why-dialog-min-height", `400px`);
+    }
+
   }
   public onDoubleClick(event) {
-    //this.toggleMaximized();
+    this.toggleMaximized();
   }
 }
