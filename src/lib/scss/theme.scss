@@ -82,6 +82,7 @@ body {
   --sz-color-ambiguous: #{$sz-purple};
   --sz-color-graph-relationships: #{$sz-magenta};
   --sz-color-how-report: #{$sz-lime};
+  --sz-color-why-report: #{$sz-teal};
 
   /* search box vars */
   --sz-search-button-submit-color: #{$sz-white};
@@ -421,6 +422,11 @@ body {
     --sz-preferences-column-border-radius: 5px;
     --sz-preferences-column-background-color: #d3d3d3;
   /* end preferences component */
+  /* why report vars*/
+  --sz-why-dialog-header-background-color: var(--sz-color-why-report);
+  --sz-why-dialog-header-color: #0909098c;
+  --sz-why-dialog-min-height: 400px;
+  --sz-why-dialog-default-height: var(--sz-why-dialog-min-height);
   /* how report vars */
   --sz-how-nav-min-width: 230px;
   --sz-how-nav-min-height: 100%;

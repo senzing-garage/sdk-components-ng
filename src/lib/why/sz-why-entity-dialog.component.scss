@@ -10,10 +10,10 @@
     }*/
 
     .mat-mdc-dialog-title {
-        background-color: #6d738c;
+        background-color: var(--sz-why-dialog-header-background-color);
         text-align: center;
         padding: 6px;
-        color: #fff;
+        color: var(--sz-why-dialog-header-color);
         border-radius: 3px;
         margin: 0px 0px;
         border-bottom-left-radius: 0;
