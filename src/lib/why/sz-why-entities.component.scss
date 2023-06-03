@@ -1,11 +1,11 @@
-
 :host {
-  display: inline-flex;
+  /* display: inline-flex;
   align-items: center;
   justify-content: center;
-  line-height: 14px;
+  line-height: 14px;*/
+  display: block;
   font-size: 14px;
-  margin: 2px 4px;
+  margin: 0px 4px;
 
   span {
     /* align-self: flex-start;*/
@@ -19,6 +19,56 @@
 
 .mat-why-report-table {
   width: 100%;
+}
+
+.table-format {
+  display: table;
+  min-width: 100%;
+  width: auto;
+  background-color: #f5f5f5;
+  border-spacing: 1px;
+
+  .thead { 
+    display: table-row;
+    position: sticky;
+  }
+  .tr {
+    display:  table-row;
+    width: auto;
+    min-height: 32px;
+  }
+  .td {
+    display: table-cell;
+    background-color:#ffffff;
+    padding-left: 16px;
+    padding-right: 16px;
+    white-space: pre;
+    font-family: monospace;
+    padding: 5px 10px;
+    border-right: 2px solid #dcdcdc;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #0000001f;
+
+    &:last-child {
+      padding-right: 10px;
+      border-right: none;
+    }
+  }
+  .col-title {
+    display: table-cell;
+    padding: 5px 16px;
+    color: #2977a7;
+    font-size: 16px;
+    border-right: 2px solid #dcdcdc;
+    text-transform: uppercase;
+    font-family: inherit;
+    vertical-align: middle;
+    border-right: 2px solid #dcdcdc;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #0000001f;
+  }
 }
 
 .mat-column-title {

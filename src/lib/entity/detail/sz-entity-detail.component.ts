@@ -856,7 +856,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   public onCompareEntitiesForWhyNot(entityIds: any) {
-    //console.log('SzEntityDetailComponent.onCompareEntitiesForWhyNot: ', entityIds, this._openWhyComparisonModalOnClick);
+    console.log('SzEntityDetailComponent.onCompareEntitiesForWhyNot: ', entityIds, this._openWhyComparisonModalOnClick);
     if(entityIds && entityIds.length > 0 && entityIds.push){
       entityIds.push(this.entity.resolvedEntity.entityId);
     }
@@ -865,8 +865,8 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     if(this._openWhyComparisonModalOnClick) {
       this.dialog.open(SzWhyEntitiesDialog, {
         panelClass: 'why-entities-dialog-panel',
-        minHeight: 400,
         minWidth: 800,
+        height: 'var(--sz-why-dialog-default-height)',
         data: {
           entities: entityIds,
           showOkButton: false,

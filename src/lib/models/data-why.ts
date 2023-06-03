@@ -1,4 +1,4 @@
-import { SzCandidateKey, SzEntityFeature, SzEntityFeatureStatistics, SzFeatureScore, SzWhyEntityResult, SzWhyPerspective } from '@senzing/rest-api-client-ng';
+import { SzCandidateKey, SzEntityData, SzEntityFeature, SzEntityFeatureStatistics, SzEntityIdentifier, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzResolvedEntity, SzWhyEntityResult, SzWhyPerspective } from '@senzing/rest-api-client-ng';
 import { SzEntityMouseEvent } from './event-basic-event';
 
 /** used to categorize records in a virtual entity by their datasources */
@@ -18,11 +18,12 @@ export interface SzWhyEntityHTMLFragment {
     cssClasses: string[]
 }
 
-export interface SzWhyEntityColumn extends SzWhyEntityResult, SzWhyPerspective {
-    internalId: number,
-    dataSources: string[],
+export interface SzWhyEntityColumn extends SzWhyEntityResult, SzWhyPerspective, SzResolvedEntity {
+    internalId?: number,
+    entityId?: number,
+    dataSources?: string[],
     whyResult?: {key: string, rule: string},
-    rows: {[key: string]: Array<SzFeatureScore | SzCandidateKey | SzEntityFeature>}
+    rows?: {[key: string]: Array<SzFeatureScore | SzCandidateKey | SzEntityFeature | SzFocusRecordId>}
     formattedRows?: {[key: string]: string | string[] | SzWhyEntityHTMLFragment | SzWhyEntityHTMLFragment[] }
 }
 

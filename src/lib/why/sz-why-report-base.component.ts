@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { EntityDataService, SzCandidateKey, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityFeatureDetail, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntitiesResult, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
 import { Subject, zip } from 'rxjs';
-import { parseSzIdentifier } from '../common/utils';
+import { getArrayOfPairsFromMatchKey, parseSzIdentifier } from '../common/utils';
 import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzWhyEntityColumn, SzWhyEntityHTMLFragment, SzWhyFeatureRow } from '../models/data-why';
 
@@ -198,21 +198,44 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
           }
           return retVal;
         },
-        'DATA_SOURCES': (data: SzFocusRecordId[], fieldName?: string, mk?: string) => {
-          let retVal = '';
-          data.forEach((r, i) => {
+        'DATA_SOURCES': (data: Array<SzFocusRecordId>, fieldName?: string, mk?: string) => {
+            let retVal = '';
+            let _recordsBySource = new Map<string, SzFocusRecordId[]>();
+            data.forEach((r, i) => {
+                if(!_recordsBySource.has(r.dataSource)){ 
+                    _recordsBySource.set(r.dataSource, [r]);
+                } else {
+                    // add to existing records
+                    let _vTA =  _recordsBySource.get(r.dataSource);
+                    _recordsBySource.set(r.dataSource, _vTA.concat([r]));
+                }
+            });
+            let alphaSorted = new Map([..._recordsBySource.entries()].sort((a, b) => {
+                if ( a[0] < b[0] ){
+                    return -1;
+                }
+                if ( a[0] > b[0] ){
+                    return 1;
+                }
+                return 0;
+            }));
+            for (let [key, value] of  alphaSorted.entries()) {
+                retVal += `<span class="color-ds">${key}</span>: ${value.map((r)=>{ return r.recordId; }).join(',')}\n`;
+            }
+            
+            /*data.forEach((r, i) => {
             let le = (i < data.length-1) ? '\n': '';
             retVal += `<span class="color-ds">${r.dataSource}</span>: ${r.recordId}${le}`;
-          });
-          return retVal;
+            });*/
+            return retVal;
         },
         'WHY_RESULT': (data: {key: string, rule: string}, fieldName?: string, mk?: string) => {
           // colorize match key
           let _value = data && data.key ? data.key : '';
           if(data && data.key) {
             // tokenize
-            let _pairs  = data.key.split('+').filter((t)=>{ return t !== undefined && t !== null && t.trim() !== ''; });
-            let _values = _pairs.map((t)=>{ return t.indexOf('-') > -1 ? {prefix: '-', value: t.replaceAll('-','')} : {prefix: '+', value: t}});
+            let _values = getArrayOfPairsFromMatchKey(data.key);
+            console.log(`renderers.WHY_RESULT: ${data.key}`, _values);
             // now put it back together with colors
             _value = _values.map((t) => { return `<span class="${t.prefix === '-' ? 'color-red' : 'color-green'}">${t.prefix+t.value}</span>`; }).join('');
             return `<span class="color-mk">${_value}</span>\n`+ (data && data.rule ? `<span class="indented"></span>Principle: ${data.rule}`:'');
@@ -220,7 +243,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
             return `<span class="color-red">not found!</span>\n`;
           }
         },
-        default: (data: (SzFeatureScore | SzCandidateKey | SzEntityFeature)[], fieldName?: string, mk?: string): string | string[] | SzWhyEntityHTMLFragment => {
+        default: (data: (SzFeatureScore | SzCandidateKey | SzEntityFeature | SzFocusRecordId)[], fieldName?: string, mk?: string): string | string[] | SzWhyEntityHTMLFragment => {
           let retVal = '';
           if(data && data.forEach){
             data.forEach((_feature, i) => {

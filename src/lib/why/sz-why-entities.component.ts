@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding, ElementRef, NgZone, AfterViewInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
-import { EntityDataService, SzDataSourceRecordSummary, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzRecordId, SzWhyEntitiesResponse, SzWhyEntitiesResponseData, SzWhyEntitiesResult, SzWhyEntityResponseData } from '@senzing/rest-api-client-ng';
+import { EntityDataService, SzDataSourceRecordSummary, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzRecordId, SzWhyEntitiesResponse, SzWhyEntitiesResponseData, SzWhyEntitiesResult, SzWhyEntityResponseData } from '@senzing/rest-api-client-ng';
 import { BehaviorSubject, Observable, ReplaySubject, Subject, takeUntil, throwError, zip } from 'rxjs';
 import { debounceTime, filter } from "rxjs/operators";
 
@@ -11,6 +11,8 @@ import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzWhyEntityComponent } from './sz-why-entity.component';
 import { SzWhyEntityColumn, SzWhyFeatureRow } from '../models/data-why';
 import { SzWhyReportBaseComponent } from './sz-why-report-base.component';
+import * as e from 'express';
+import { SzCSSClassService } from '../services/sz-css-class.service';
 
 /**
  * Display the "Why" information for entities
@@ -34,6 +36,15 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
      * @internal
      */
     protected override _data: SzWhyEntitiesResult;
+    /** 
+     * rows that will be rendered vertically. auto generated from #getRowsFromData 
+     * @internal
+     */
+    protected override _rows: SzWhyFeatureRow[] = [
+        {key: 'ENTITY_ID',      title: 'Entity ID'},
+        {key: 'DATA_SOURCES',   title: 'Data Sources'},
+        {key: 'WHY_RESULT',     title: 'Why Result'}
+    ];
 
     constructor(
         override configDataService: SzConfigDataService,
@@ -53,6 +64,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
             this.loading.emit(false);
             this._data          = results[0].data.whyResult;
             this._entities      = results[0].data.entities;
+            this.onEntitiesChanged.emit(this._entities);
             /** 
              * 
         entityId1?: number;
@@ -77,7 +89,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
             // can iterate by those and blank out cells that are missing
             this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
             this._headers       = this.getHeadersFromData(this._shapedData);
-            //console.warn('SzWhyEntityComponent.getWhyData: ', results, this._rows, this._shapedData);
+            console.warn('SzWhyEntitiesComparisonComponent.rows: ', this._rows);
             this.onResult.emit(this._data);
             this.onRowsChanged.emit(this._rows);
             },
@@ -88,8 +100,8 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
     }
   
     /** when the respone from the server is returned this even is emitted */
-    @Output() onResult: EventEmitter<SzWhyEntitiesResult>     = new EventEmitter<SzWhyEntitiesResult>();
-
+    @Output() onResult: EventEmitter<SzWhyEntitiesResult>               = new EventEmitter<SzWhyEntitiesResult>();
+    @Output() onEntitiesChanged: EventEmitter<SzEntityData[]>           = new EventEmitter<SzEntityData[]>();
     // --------------------------- data manipulation subs and routines ---------------------------
 
     @Input() entityIds: SzEntityIdentifier[];
@@ -134,9 +146,123 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
      * @internal
      */
     override transformWhyNotResultData(data: SzWhyEntitiesResult, entities: SzEntityData[]): SzWhyEntityColumn[] {
-        console.log(`transformData: `, data);
+        console.log(`transformWhyNotResultData: ${this.entityIds.join(',')}`, data);
         //console.log(`_featureStatsById: `, _featureStatsById);
-        let results = [];
+        let results:SzWhyEntityColumn[] = [];
+        if(entities && entities.length > 0) {
+            results = entities.map((ent, entIndex)=>{
+                let retObj: SzWhyEntityColumn = Object.assign({
+                    rows: Object.assign({
+                        'ENTITY_ID': [ent.resolvedEntity.entityId],
+                        'WHY_RESULT': (data.matchInfo.matchLevel !== 'NO_MATCH') ? {key: data.matchInfo.whyKey, rule: data.matchInfo.resolutionRule} : undefined
+                    })
+                }, ent.resolvedEntity);
+                // do why info
+                if(data && data.matchInfo) {
+                    if(data.matchInfo.whyKey && data.matchInfo.resolutionRule) { 
+                        retObj.whyResult = {key: data.matchInfo.whyKey, rule: data.matchInfo.resolutionRule };
+                    }
+                }
+                if(ent.resolvedEntity.recordSummaries){
+                    retObj.dataSources = ent.resolvedEntity.records.map((r)=>{
+                        return r.dataSource+':'+r.recordId
+                    });
+                    retObj.rows['DATA_SOURCES'] = ent.resolvedEntity.records.map((matchedRecord)=>{
+                        return {
+                            dataSource: matchedRecord.dataSource,
+                            recordId: matchedRecord.recordId
+                        } as SzFocusRecordId;
+                    })
+                }
+                return retObj;
+            });
+            // go over the initial rows
+            // now for each item in an entities features, check if it can be found in 
+            // the matchInfo results
+            results.forEach((ent)=>{
+                for(let fKey in ent.features) {
+
+                    if(data.matchInfo && data.matchInfo.featureScores && data.matchInfo.featureScores[fKey]) {
+                        // there was some sort of related why not scoring done on feature
+                        // double check each one
+                        let matchInfoForFeature = data.matchInfo.featureScores[fKey];
+                        let fArr = ent.features[fKey];
+                        fArr = fArr.map((feat)=> {
+                            let scoreThatHasFeature = matchInfoForFeature.find((fScore) => {
+                                /*let h = feat.featureDetails.some((fDetail)=>{
+                                    let hasCandidateFeature = fDetail.internalId === fScore.candidateFeature.featureId;
+                                    let hasInboundFeature   = fDetail.internalId === fScore.inboundFeature.featureId;
+                                    return (hasCandidateFeature || hasInboundFeature) ? true : false;
+                                });*/
+                                let y = feat.featureDetails.find((fDetail)=>{
+                                    let hasCandidateFeature = fDetail.internalId === fScore.candidateFeature.featureId;
+                                    let hasInboundFeature   = fDetail.internalId === fScore.inboundFeature.featureId;
+                                    return (hasCandidateFeature || hasInboundFeature) ? true : false;
+                                });
+                                if(y) {
+                                    return true;
+                                }
+                                return false;
+                            });
+                            // default to "feature"
+                            let _valueToAdd: SzEntityFeature | SzFeatureScore = feat;
+                            // if this is a scored feature we want the 
+                            // extra metadata so we can color etc
+                            if(scoreThatHasFeature) {
+                                _valueToAdd = scoreThatHasFeature;
+                            }
+                            // add this to "rows"
+                            if(!ent.rows) { ent.rows = {}; }
+                            if(!ent.rows[fKey]) { ent.rows[fKey] = []; }
+                            ent.rows[fKey].push(_valueToAdd);
+                            return feat;
+                        });
+                    } else {
+                        // add this to "rows"
+                        if(!ent.rows) { ent.rows = {}; }
+                        if(!ent.rows[fKey]) { ent.rows[fKey] = []; }
+                        ent.rows[fKey]  = ent.features[fKey];
+                    }
+                }
+            });
+        }
+        console.log(`transformWhyNotResultData: ${this.entityIds.join(',')}`, results);
+
+        /*
+        if(data && this.entityIds && this.entityIds.forEach) {
+            // first entity id will be values for
+            this.entityIds.forEach((entityId, eInd) => {
+                let colFeatureKey = eInd === 0 ? 'inboundFeature' : 'candidateFeature'
+                // this object will become the column
+                let _colTemp: SzWhyEntityColumn = {
+                    entityId: (entityId as number)
+                }  
+                if(data && data.matchInfo) {
+                    _colTemp.matchInfo = data.matchInfo;
+                    if(data.matchInfo.whyKey && data.matchInfo.resolutionRule) { _colTemp.whyResult = {key: data.matchInfo.whyKey, rule: data.matchInfo.resolutionRule };}
+                }
+                if(data.matchInfo && data.matchInfo.featureScores) {
+                    for(let featKey in data.matchInfo.featureScores) {
+                        let featArr = data.matchInfo.featureScores[featKey];
+                        if(featArr && featArr.length > 0) {
+                            // we should add this to "rows" collection
+                            _colTemp.rows[featKey] = featArr;
+                        }
+                    }
+                }
+            });
+            
+        }*/
+        /**
+         * 
+SzWhyEntityColumn extends SzWhyEntityResult, SzWhyPerspective {
+    internalId: number,
+    dataSources: string[],
+    whyResult?: {key: string, rule: string},
+    rows: {[key: string]: Array<SzFeatureScore | SzCandidateKey | SzEntityFeature>}
+    formattedRows?: {[key: string]: string | string[] | SzWhyEntityHTMLFragment | SzWhyEntityHTMLFragment[] }
+}
+        */
         return results;
         /*
         let results = data.map((matchWhyResult) => {
@@ -270,7 +396,7 @@ export class SzWhyEntitiesDialog implements OnDestroy {
   public get entities(): SzEntityIdentifier[] {
     return this._entities;
   }
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private cssClassesService: SzCSSClassService) {
     if(data && data.entities) {
       this._entities = data.entities;
     }
@@ -286,25 +412,41 @@ export class SzWhyEntitiesDialog implements OnDestroy {
   public onDataLoading(isLoading: boolean) {
     this._isLoading = isLoading;
   }
+  public onRowsChanged(data: SzWhyFeatureRow[]) {
+    console.warn(`onRowsChanged: `, data);
+    if(data && data.length > 8) {
+      // set default height to something larger
+      this.cssClassesService.setStyle(`body`, "--sz-why-dialog-default-height", `800px`);
+    } else {
+      this.cssClassesService.setStyle(`body`, "--sz-why-dialog-default-height", `var(--sz-why-dialog-default-height)`);
+    }
+  }
   public toggleMaximized() {
-    this.maximized = !this.maximized;
+    //this.maximized = !this.maximized;
+    if(!this.maximized) {
+      this.maximized = true;
+      this.cssClassesService.setStyle(`body`, "--sz-why-dialog-min-height", `98vh`);
+    } else {
+      this.maximized = false;
+      this.cssClassesService.setStyle(`body`, "--sz-why-dialog-min-height", `400px`);
+    }
   }
   public onDoubleClick(event) {
     this.toggleMaximized();
   }
-  public onDataResponse(data: any) {
+  public onEntitiesChanged(entities: SzEntityData[]) {
     let _names: string[];
-    console.log(`onDataResponse: `, data);
-    /*if(data && data.entities && data.entities.length > 0 && data.entities.forEach) {
+    console.log(`onEntitiesChanged: `, entities);
+    if(entities && entities.length > 0 && entities.forEach) {
       let _title = `Why `;
-      data.entities.forEach((entity: SzEntityData, _ind) => {
+      entities.forEach((entity: SzEntityData, _ind) => {
         let _bName = entity.resolvedEntity.bestName ? entity.resolvedEntity.bestName : entity.resolvedEntity.entityName;
         let _eId = entity.resolvedEntity.entityId;
-        _title += `${_bName}(${_eId})` + (_ind === (data.entities.length - 1) ? '' : ' and ');
+        _title += `${_bName}(${_eId})` + (_ind === (entities.length - 1) ? '' : ' and ');
       })
 
       _title += ' did not resolve';
       this._title = _title;
-    }*/
+    }
   }
 }
