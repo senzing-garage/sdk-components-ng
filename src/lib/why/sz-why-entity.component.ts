@@ -315,7 +315,6 @@ export class SzWhyEntityDialog {
       this.maximized = false;
       this.cssClassesService.setStyle(`body`, "--sz-why-dialog-min-height", `400px`);
     }
-
   }
   public onDoubleClick(event) {
     this.toggleMaximized();

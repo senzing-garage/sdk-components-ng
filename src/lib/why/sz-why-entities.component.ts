@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding, ElementRef, NgZone, AfterViewInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
-import { EntityDataService, SzDataSourceRecordSummary, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzRecordId, SzWhyEntitiesResponse, SzWhyEntitiesResponseData, SzWhyEntitiesResult, SzWhyEntityResponseData } from '@senzing/rest-api-client-ng';
+import { EntityDataService, SzCandidateKey, SzDataSourceRecordSummary, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzRecordId, SzWhyEntitiesResponse, SzWhyEntitiesResponseData, SzWhyEntitiesResult, SzWhyEntityResponseData } from '@senzing/rest-api-client-ng';
 import { BehaviorSubject, Observable, ReplaySubject, Subject, takeUntil, throwError, zip } from 'rxjs';
 import { debounceTime, filter } from "rxjs/operators";
 
@@ -106,6 +106,71 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
 
     @Input() entityIds: SzEntityIdentifier[];
 
+    /** override renderers that may be different from "WHY" report */
+    protected override get renderers() {
+        let _retVal = this._renderers;
+        _retVal = Object.assign(_retVal, {
+            'NAME': (data: (SzFeatureScore | SzCandidateKey)[], fieldName?: string, mk?: string) => {
+                let _retVal = undefined;
+                if(data && data.length > 0 && data.forEach) {
+                    data.forEach((_d)=>{
+                        // for each item render a line
+                        if((_d as SzEntityFeature).featureDetails) {
+                            // go through each detail item
+                            let _feat = (_d as SzEntityFeature);
+                            if(_feat.featureDetails && _feat.featureDetails.forEach){
+                                _feat.featureDetails.forEach((fd)=>{
+                                    // check if it has a duplicate value
+                                    // if yes add a '└'
+                                    let isDuplicate = false;
+                                    if(!_retVal) { _retVal = ``; }
+                                    if(!isDuplicate) {
+                                        _retVal += fd.featureValue+'\n';
+                                    }
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    _retVal += 'undefined';
+                }
+                console.log(`SzWhyEntitiesComparisonComponent.renderers[${fieldName}]: `, data, (data as SzEntityFeature).featureDetails, _retVal);
+
+                return _retVal;
+                //return _retVal ? _retVal : this._renderers['NAME'](data, fieldName, mk);
+            },
+            'ADDRESS': (data: (SzFeatureScore | SzCandidateKey)[], fieldName?: string, mk?: string) => {
+                let _retVal = undefined;
+                if(data && data.length > 0 && data.forEach) {
+                    data.forEach((_d)=>{
+                        // for each item render a line
+                        if((_d as SzEntityFeature).featureDetails) {
+                            // go through each detail item
+                            let _feat = (_d as SzEntityFeature);
+                            if(_feat.featureDetails && _feat.featureDetails.forEach){
+                                _feat.featureDetails.forEach((fd)=>{
+                                    // check if it has a duplicate value
+                                    // if yes add a '└'
+                                    let isDuplicate = false;
+                                    if(!_retVal) { _retVal = ``; }
+                                    if(!isDuplicate) {
+                                        _retVal += fd.featureValue+'\n';
+                                    }
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    _retVal += 'undefined';
+                }
+                console.log(`SzWhyEntitiesComparisonComponent.renderers[${fieldName}]: `, data, (data as SzEntityFeature).featureDetails, _retVal);
+                return _retVal;
+            }
+        })
+        //console.info(`what is going on here??? `, _retVal);
+        return _retVal;
+    }
+
     /** call the /why api endpoint and return a observeable */
     protected override getWhyData() {
         if(this.entityIds && this.entityIds.length == 2) {
@@ -187,13 +252,15 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                         // double check each one
                         let matchInfoForFeature = data.matchInfo.featureScores[fKey];
                         let fArr = ent.features[fKey];
-                        fArr = fArr.map((feat)=> {
+                        // make sure feat row exists
+                        if(!ent.rows) { ent.rows = {}; }
+                        if(!ent.rows[fKey]) { ent.rows[fKey] = []; }
+                        // add this to "rows"
+                        ent.rows[fKey]  = ent.rows[fKey].concat(fArr);
+                        // now extend with scoring data
+                        ent.rows[fKey] = ent.rows[fKey].map((feat)=> {
+                            /*
                             let scoreThatHasFeature = matchInfoForFeature.find((fScore) => {
-                                /*let h = feat.featureDetails.some((fDetail)=>{
-                                    let hasCandidateFeature = fDetail.internalId === fScore.candidateFeature.featureId;
-                                    let hasInboundFeature   = fDetail.internalId === fScore.inboundFeature.featureId;
-                                    return (hasCandidateFeature || hasInboundFeature) ? true : false;
-                                });*/
                                 let y = feat.featureDetails.find((fDetail)=>{
                                     let hasCandidateFeature = fDetail.internalId === fScore.candidateFeature.featureId;
                                     let hasInboundFeature   = fDetail.internalId === fScore.inboundFeature.featureId;
@@ -214,7 +281,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                             // add this to "rows"
                             if(!ent.rows) { ent.rows = {}; }
                             if(!ent.rows[fKey]) { ent.rows[fKey] = []; }
-                            ent.rows[fKey].push(_valueToAdd);
+                            ent.rows[fKey].push(_valueToAdd);*/
                             return feat;
                         });
                     } else {

@@ -100,6 +100,14 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
      * @internal
      */
     protected get renderers() {
+        return this._renderers;
+    }
+    /**
+     * returns a Object who's keys correspond to a particular type of 'featureType' of each type of feature 
+     * in the "matchInfo.featureScores" result of why api response.
+     * @internal
+     */
+    protected get _renderers() {
       let fBId = this._featureStatsById;
       let _colors = {'CLOSE':'green','SAME':'green'};
       let featureIsInMatchKey = (f, mk): boolean => {
@@ -222,11 +230,6 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
             for (let [key, value] of  alphaSorted.entries()) {
                 retVal += `<span class="color-ds">${key}</span>: ${value.map((r)=>{ return r.recordId; }).join(',')}\n`;
             }
-            
-            /*data.forEach((r, i) => {
-            let le = (i < data.length-1) ? '\n': '';
-            retVal += `<span class="color-ds">${r.dataSource}</span>: ${r.recordId}${le}`;
-            });*/
             return retVal;
         },
         'WHY_RESULT': (data: {key: string, rule: string}, fieldName?: string, mk?: string) => {
