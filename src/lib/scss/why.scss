@@ -36,8 +36,11 @@ sz-table, .table-format {
     .color-blue {
         color: rgb(7, 164, 192);
     }
+    .color-yellow {
+        color: rgb(192, 149, 7);
+    }
     
-    .child-same {
+    .child-same, .child-node {
         display: inline-block;
         margin-left: 10px;
         margin-right: 5px;

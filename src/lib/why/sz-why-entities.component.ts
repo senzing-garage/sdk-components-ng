@@ -9,7 +9,7 @@ import { parseSzIdentifier } from '../common/utils';
 import { SzPrefsService } from '../services/sz-prefs.service';
 import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzWhyEntityComponent } from './sz-why-entity.component';
-import { SzWhyEntityColumn, SzWhyFeatureRow } from '../models/data-why';
+import { SzEntityFeatureWithScoring, SzWhyEntityColumn, SzWhyFeatureRow } from '../models/data-why';
 import { SzWhyReportBaseComponent } from './sz-why-report-base.component';
 import * as e from 'express';
 import { SzCSSClassService } from '../services/sz-css-class.service';
@@ -109,23 +109,104 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
     /** override renderers that may be different from "WHY" report */
     protected override get renderers() {
         let _retVal = this._renderers;
+        let fBId    = this._featureStatsById;
+
+        let _colors = {'CLOSE':'green','SAME':'green','NO_CHANCE':'red','PLAUSIBLE':'yellow','UNLIKELY':'yellow'};
+        let featureIsInMatchKey = (f, mk): boolean => {
+            f = (f === 'SURNAME') ? 'NAME' : f; // convert surname to name field
+            let _r = false;
+            if(mk) {
+                _r = mk.indexOf(f) > -1;
+            }
+            return _r;
+        } 
         _retVal = Object.assign(_retVal, {
-            'NAME': (data: (SzFeatureScore | SzCandidateKey)[], fieldName?: string, mk?: string) => {
+            'NAME': (data: (SzFeatureScore | SzEntityFeatureWithScoring | SzCandidateKey)[], fieldName?: string, mk?: string) => {
                 let _retVal = undefined;
                 if(data && data.length > 0 && data.forEach) {
+                    // sort by feature scores if present
+                    data = data.sort((rowA, rowB)=>{
+                        let rowAAsScored    = (rowA as SzEntityFeatureWithScoring);
+                        let rowBAsScored    = (rowB as SzEntityFeatureWithScoring);
+
+                        let rowASortValue   = rowAAsScored.primaryId;
+                        let rowBSortValue   = rowBAsScored.primaryId;
+
+                        if(rowA && rowAAsScored.scoringDetails) {
+                            rowASortValue = rowAAsScored.scoringDetails.score;
+                        }
+                        if(rowB && rowBAsScored.scoringDetails) {
+                            rowBSortValue = rowBAsScored.scoringDetails.score;
+                        }
+                        if(rowAAsScored && rowBAsScored && rowAAsScored.scoringDetails && rowBAsScored.scoringDetails){
+                            // we want to list 'descending' from highest score
+                            return rowBSortValue - rowASortValue;
+                        }
+                        return rowASortValue - rowBSortValue;
+                    });
+                    console.log(`sorted "${fieldName}": `, data);
                     data.forEach((_d)=>{
                         // for each item render a line
                         if((_d as SzEntityFeature).featureDetails) {
                             // go through each detail item
                             let _feat = (_d as SzEntityFeature);
+                            let _scoreDetails = (_d as SzEntityFeatureWithScoring).scoringDetails ? (_d as SzEntityFeatureWithScoring).scoringDetails : undefined;
                             if(_feat.featureDetails && _feat.featureDetails.forEach){
                                 _feat.featureDetails.forEach((fd)=>{
                                     // check if it has a duplicate value
                                     // if yes add a '└'
                                     let isDuplicate = false;
                                     if(!_retVal) { _retVal = ``; }
+                                    if((_feat as SzEntityFeatureWithScoring).featureScores) {
+                                        let _fScore = (_feat as SzEntityFeatureWithScoring).featureScores.find((fs)=>{
+                                            return fs.candidateFeature.featureId === fd.internalId || fs.inboundFeature.featureId === fd.internalId;
+                                        });
+                                        if(_fScore) { _scoreDetails = _fScore;}
+                                    }
                                     if(!isDuplicate) {
-                                        _retVal += fd.featureValue+'\n';
+                                        //_retVal += fd.featureValue;
+                                        if(_scoreDetails){
+                                            let idsInScore = [_scoreDetails.candidateFeature.featureId, _scoreDetails.inboundFeature.featureId];
+                                            let featIsInScore   = idsInScore.indexOf(fd.internalId) > -1;
+                                            // is scored name, add colors
+                                            let c = _colors[_scoreDetails.scoringBucket] && featIsInScore && featureIsInMatchKey('NAME', mk) ? 'color-'+ _colors[_scoreDetails.scoringBucket] : '';
+                                            _retVal += `<span class="score-${_scoreDetails.scoringBucket} ${c}">`;
+                                            let stats = fBId && fBId.has(fd.internalId) ? fBId.get(fd.internalId) : false;
+                                            if(featIsInScore){
+                                                _retVal += fd.featureValue;
+                                                if(stats && stats.statistics && stats.statistics.entityCount) {
+                                                    _retVal += ` [${stats.statistics.entityCount}]`;
+                                                }
+                                                //_retVal += '\n';
+                                                if(['SAME','CLOSE','PLAUSIBLE'].indexOf(_scoreDetails.scoringBucket) > -1) {
+                                                    _retVal += '\n<span class="child-node"></span>';
+                                                    if(fd.internalId === _scoreDetails.candidateFeature.featureId) {
+                                                        // show "inboundFeature"
+                                                        _retVal += _scoreDetails.inboundFeature.featureValue;
+                                                    } else {
+                                                        _retVal += _scoreDetails.candidateFeature.featureValue;
+                                                    }
+                                                }
+                                            } else {
+                                                _retVal += fd.featureValue;
+                                                if(stats && stats.statistics && stats.statistics.entityCount) {
+                                                    _retVal += ` [${stats.statistics.entityCount}]`;
+                                                }
+                                            }
+                                            
+                                            if(_scoreDetails.nameScoringDetails) {
+                                                let _nameScoreValues  = [];
+                                                if(_scoreDetails.nameScoringDetails.fullNameScore)    { _nameScoreValues.push(`full:${_scoreDetails.nameScoringDetails.fullNameScore}`);}
+                                                if(_scoreDetails.nameScoringDetails.orgNameScore)     { _nameScoreValues.push(`org:${_scoreDetails.nameScoringDetails.orgNameScore}`);}
+                                                if(_scoreDetails.nameScoringDetails.givenNameScore)   { _nameScoreValues.push(`giv:${_scoreDetails.nameScoringDetails.givenNameScore}`);}
+                                                if(_scoreDetails.nameScoringDetails.surnameScore)     { _nameScoreValues.push(`sur:${_scoreDetails.nameScoringDetails.surnameScore}`);}
+                                                if(_scoreDetails.nameScoringDetails.generationScore)  { _nameScoreValues.push(`gen:${_scoreDetails.nameScoringDetails.generationScore}`);}
+                                                _retVal += (_nameScoreValues.length > 0 ? ` (${_nameScoreValues.join('|')})` : '');
+                                            }
+                                            _retVal += '</span>\n';
+                                        } else {
+                                            _retVal += fd.featureValue +'\n';
+                                        }
                                     }
                                 });
                             }
@@ -139,7 +220,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                 return _retVal;
                 //return _retVal ? _retVal : this._renderers['NAME'](data, fieldName, mk);
             },
-            'ADDRESS': (data: (SzFeatureScore | SzCandidateKey)[], fieldName?: string, mk?: string) => {
+            'ADDRESS': (data: (SzFeatureScore | SzCandidateKey | SzEntityFeatureWithScoring)[], fieldName?: string, mk?: string) => {
                 let _retVal = undefined;
                 if(data && data.length > 0 && data.forEach) {
                     data.forEach((_d)=>{
@@ -256,10 +337,32 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                         if(!ent.rows) { ent.rows = {}; }
                         if(!ent.rows[fKey]) { ent.rows[fKey] = []; }
                         // add this to "rows"
-                        ent.rows[fKey]  = ent.rows[fKey].concat(fArr);
+                        ent.rows[fKey]  = ent.rows[fKey].concat(fArr.map((entFeat)=>{
+                            let _retVal: SzEntityFeatureWithScoring = Object.assign({}, entFeat);
+                            let scoresThatHaveFeature = matchInfoForFeature.filter((fScore)=>{
+                                let y = entFeat.featureDetails.find((fDetail)=>{
+                                    let hasCandidateFeature = fDetail.internalId === fScore.candidateFeature.featureId;
+                                    let hasInboundFeature   = fDetail.internalId === fScore.inboundFeature.featureId;
+                                    return (hasCandidateFeature || hasInboundFeature) ? true : false;
+                                });
+                                if(y) {
+                                    return true;
+                                }
+                                return false;
+                            });
+                            if(scoresThatHaveFeature && scoresThatHaveFeature.length > 0) {
+                                // sort by score
+                                scoresThatHaveFeature = scoresThatHaveFeature.sort((a, b)=>{
+                                    return b.score - a.score;
+                                });
+                                _retVal.scoringDetails = scoresThatHaveFeature[0];
+                                _retVal.featureScores = scoresThatHaveFeature;
+                            }
+                            return _retVal;
+                        }));
                         // now extend with scoring data
+                        /*
                         ent.rows[fKey] = ent.rows[fKey].map((feat)=> {
-                            /*
                             let scoreThatHasFeature = matchInfoForFeature.find((fScore) => {
                                 let y = feat.featureDetails.find((fDetail)=>{
                                     let hasCandidateFeature = fDetail.internalId === fScore.candidateFeature.featureId;
@@ -281,9 +384,9 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                             // add this to "rows"
                             if(!ent.rows) { ent.rows = {}; }
                             if(!ent.rows[fKey]) { ent.rows[fKey] = []; }
-                            ent.rows[fKey].push(_valueToAdd);*/
+                            ent.rows[fKey].push(_valueToAdd);
                             return feat;
-                        });
+                        });*/
                     } else {
                         // add this to "rows"
                         if(!ent.rows) { ent.rows = {}; }

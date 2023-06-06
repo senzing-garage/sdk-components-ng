@@ -12,6 +12,11 @@ export interface SzWhyFeatureRow {
     statistics?: Map<number, SzEntityFeatureStatistics>
 }*/
 
+export interface SzEntityFeatureWithScoring extends SzEntityFeature, SzFeatureScore {
+    scoringDetails?: SzFeatureScore,
+    featureScores?: SzFeatureScore[]
+}
+
 export interface SzWhyEntityHTMLFragment {
     src: string,
     tagName: string,
@@ -23,7 +28,7 @@ export interface SzWhyEntityColumn extends SzWhyEntityResult, SzWhyPerspective, 
     entityId?: number,
     dataSources?: string[],
     whyResult?: {key: string, rule: string},
-    rows?: {[key: string]: Array<SzFeatureScore | SzCandidateKey | SzEntityFeature | SzFocusRecordId>}
+    rows?: {[key: string]: Array<SzFeatureScore | SzCandidateKey | SzEntityFeature | SzEntityFeatureWithScoring | SzFocusRecordId>}
     formattedRows?: {[key: string]: string | string[] | SzWhyEntityHTMLFragment | SzWhyEntityHTMLFragment[] }
 }
 
