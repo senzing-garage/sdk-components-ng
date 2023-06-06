@@ -137,6 +137,16 @@ export function getArrayOfPairsFromMatchKey(matchKey: string): Array<{prefix: st
   let _values = pairs.flat();
   return _values;
 }
+export function getMapFromMatchKey(matchKey: string): Map<string, {prefix: string, value: string}> {
+  let retVal = new Map();
+  let matchKeyAsArray = getArrayOfPairsFromMatchKey(matchKey);
+  if(matchKeyAsArray && matchKeyAsArray.length > 0 && matchKeyAsArray.forEach) {
+    matchKeyAsArray.forEach((mkPair)=>{
+      retVal.set(mkPair.value, mkPair);
+    });
+  }
+  return retVal;
+}
 
 export function sortMatchKeyTokensByIndex(value: SzMatchKeyTokenComposite[]): SzMatchKeyTokenComposite[] {
   let retVal  = value;

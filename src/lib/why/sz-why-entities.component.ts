@@ -1,15 +1,15 @@
 import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding, ElementRef, NgZone, AfterViewInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
-import { EntityDataService, SzCandidateKey, SzDataSourceRecordSummary, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzRecordId, SzWhyEntitiesResponse, SzWhyEntitiesResponseData, SzWhyEntitiesResult, SzWhyEntityResponseData } from '@senzing/rest-api-client-ng';
+import { EntityDataService, SzCandidateKey, SzDataSourceRecordSummary, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityFeatureDetail, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzRecordId, SzWhyEntitiesResponse, SzWhyEntitiesResponseData, SzWhyEntitiesResult, SzWhyEntityResponseData } from '@senzing/rest-api-client-ng';
 import { BehaviorSubject, Observable, ReplaySubject, Subject, takeUntil, throwError, zip } from 'rxjs';
 import { debounceTime, filter } from "rxjs/operators";
 
-import { parseSzIdentifier } from '../common/utils';
+import { getMapFromMatchKey, parseSzIdentifier } from '../common/utils';
 import { SzPrefsService } from '../services/sz-prefs.service';
 import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzWhyEntityComponent } from './sz-why-entity.component';
-import { SzEntityFeatureWithScoring, SzWhyEntityColumn, SzWhyFeatureRow } from '../models/data-why';
+import { SzEntityFeatureWithScoring, SzWhyEntityColumn, SzWhyEntityHTMLFragment, SzWhyFeatureRow } from '../models/data-why';
 import { SzWhyReportBaseComponent } from './sz-why-report-base.component';
 import * as e from 'express';
 import { SzCSSClassService } from '../services/sz-css-class.service';
@@ -65,18 +65,6 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
             this._data          = results[0].data.whyResult;
             this._entities      = results[0].data.entities;
             this.onEntitiesChanged.emit(this._entities);
-            /** 
-             * 
-        entityId1?: number;
-        entityId2?: number;
-        matchInfo?: SzWhyMatchInfo;
-
-
-        SzWhyEntityResult {
-        perspective?: SzWhyPerspective;
-        matchInfo?: SzWhyMatchInfo;
-        }
-            */
             // add any fields defined in initial _rows value to the beginning of the order
             // custom/meta fields go first basically
             this._orderedFeatureTypes = this._rows.map((fr)=>{ return fr.key}).concat(results[1]);
@@ -89,7 +77,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
             // can iterate by those and blank out cells that are missing
             this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
             this._headers       = this.getHeadersFromData(this._shapedData);
-            console.warn('SzWhyEntitiesComparisonComponent.rows: ', this._rows);
+            //console.warn('SzWhyEntitiesComparisonComponent.rows: ', this._rows);
             this.onResult.emit(this._data);
             this.onRowsChanged.emit(this._rows);
             },
@@ -119,10 +107,40 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                 _r = mk.indexOf(f) > -1;
             }
             return _r;
-        } 
+        }
+        let featureIsInMatchKey2 = (f: SzEntityFeatureDetail, fieldName: string, featureScores?: SzFeatureScore[], mk?: string | Map<string, {prefix: string, value: string}>) => {
+            let retVal = false;
+            let matchKeyAsMap = mk && (mk as string).length ? getMapFromMatchKey((mk as string)) : (mk as Map<string, {prefix: string, value: string}>);
+            if(matchKeyAsMap && matchKeyAsMap.size > 0 && matchKeyAsMap.has(fieldName)) {
+                // if there is a matching score entry for the feature AAAAANNNNNDDD
+                // the feature is p
+                if(featureScores) {
+                    //featWithScoring.featureScores'
+                    // just grab the items from featureScores that have the correct id
+                    let relevantFeatureScores = featureScores.filter((fs)=>{
+                        return fs.candidateFeature.featureId === f.internalId || fs.inboundFeature.featureId === f.internalId;
+                        //return fs.inboundFeature.featureId === f.internalId;
+                    });
+                    if(relevantFeatureScores && relevantFeatureScores.length > 0) {
+                        // has at least one feature score that contains this items id
+                        let mkAsPair = matchKeyAsMap.get(fieldName);
+                        let featureScoreShouldBePositive    = mkAsPair && mkAsPair.prefix === '+';
+                        let featureScoreShouldBeNegative    = mkAsPair && mkAsPair.prefix === '-';
+                        let scoringBucketsForMK             = featureScoreShouldBeNegative ? ['NO_CHANCE'] : (featureScoreShouldBePositive ? ['CLOSE','SAME','PLAUSIBLE','UNLIKELY'] : []);
+                        if(relevantFeatureScores.length > -1) {
+                            retVal = scoringBucketsForMK.indexOf(relevantFeatureScores[0].scoringBucket) > -1 ? true : false;
+                            //console.log(`is "${relevantFeatureScores[0].scoringBucket}" in [${scoringBucketsForMK.join(',')}] ? ${retVal}`, relevantFeatureScores, f);
+                        }
+                    }
+                }
+            }
+            return retVal;
+        }
         _retVal = Object.assign(_retVal, {
             'NAME': (data: (SzFeatureScore | SzEntityFeatureWithScoring | SzCandidateKey)[], fieldName?: string, mk?: string) => {
                 let _retVal = undefined;
+                let mkAsMap = mk ? getMapFromMatchKey(mk) : undefined;
+
                 if(data && data.length > 0 && data.forEach) {
                     // sort by feature scores if present
                     data = data.sort((rowA, rowB)=>{
@@ -144,13 +162,13 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                         }
                         return rowASortValue - rowBSortValue;
                     });
-                    console.log(`sorted "${fieldName}": `, data);
                     data.forEach((_d)=>{
                         // for each item render a line
                         if((_d as SzEntityFeature).featureDetails) {
                             // go through each detail item
                             let _feat = (_d as SzEntityFeature);
                             let _scoreDetails = (_d as SzEntityFeatureWithScoring).scoringDetails ? (_d as SzEntityFeatureWithScoring).scoringDetails : undefined;
+                            let _allScoreDetails = (_d as SzEntityFeatureWithScoring).featureScores ? (_d as SzEntityFeatureWithScoring).featureScores : undefined;
                             if(_feat.featureDetails && _feat.featureDetails.forEach){
                                 _feat.featureDetails.forEach((fd)=>{
                                     // check if it has a duplicate value
@@ -169,6 +187,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                                             let idsInScore = [_scoreDetails.candidateFeature.featureId, _scoreDetails.inboundFeature.featureId];
                                             let featIsInScore   = idsInScore.indexOf(fd.internalId) > -1;
                                             // is scored name, add colors
+                                            //let fInMatchKey = featureIsInMatchKey2(fd, fieldName, _allScoreDetails, mkAsMap);
                                             let c = _colors[_scoreDetails.scoringBucket] && featIsInScore && featureIsInMatchKey('NAME', mk) ? 'color-'+ _colors[_scoreDetails.scoringBucket] : '';
                                             _retVal += `<span class="score-${_scoreDetails.scoringBucket} ${c}">`;
                                             let stats = fBId && fBId.has(fd.internalId) ? fBId.get(fd.internalId) : false;
@@ -215,7 +234,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                 } else {
                     _retVal += 'undefined';
                 }
-                console.log(`SzWhyEntitiesComparisonComponent.renderers[${fieldName}]: `, data, (data as SzEntityFeature).featureDetails, _retVal);
+                //console.log(`SzWhyEntitiesComparisonComponent.renderers[${fieldName}]: `, data, (data as SzEntityFeature).featureDetails, _retVal);
 
                 return _retVal;
                 //return _retVal ? _retVal : this._renderers['NAME'](data, fieldName, mk);
@@ -228,13 +247,33 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                         if((_d as SzEntityFeature).featureDetails) {
                             // go through each detail item
                             let _feat = (_d as SzEntityFeature);
+                            let _scoreDetails = (_d as SzEntityFeatureWithScoring).scoringDetails ? (_d as SzEntityFeatureWithScoring).scoringDetails : undefined;
+
                             if(_feat.featureDetails && _feat.featureDetails.forEach){
                                 _feat.featureDetails.forEach((fd)=>{
                                     // check if it has a duplicate value
                                     // if yes add a '└'
-                                    let isDuplicate = false;
                                     if(!_retVal) { _retVal = ``; }
-                                    if(!isDuplicate) {
+                                    if(_scoreDetails){
+                                        let idsInScore = [_scoreDetails.candidateFeature.featureId, _scoreDetails.inboundFeature.featureId];
+                                        let featIsInScore   = idsInScore.indexOf(fd.internalId) > -1;
+                                        // is scored name, add colors
+                                        let c = _colors[_scoreDetails.scoringBucket] && featIsInScore && featureIsInMatchKey('NAME', mk) ? 'color-'+ _colors[_scoreDetails.scoringBucket] : '';
+                                        _retVal += `<span class="score-${_scoreDetails.scoringBucket} ${c}">`;
+                                        let stats = fBId && fBId.has(fd.internalId) ? fBId.get(fd.internalId) : false;
+                                        if(featIsInScore){
+                                            _retVal += fd.featureValue;
+                                            if(stats && stats.statistics && stats.statistics.entityCount) {
+                                                _retVal += ` [${stats.statistics.entityCount}]`;
+                                            }
+                                        } else {
+                                            _retVal += fd.featureValue;
+                                            if(stats && stats.statistics && stats.statistics.entityCount) {
+                                                _retVal += ` [${stats.statistics.entityCount}]`;
+                                            }
+                                        }
+                                        _retVal += '</span>\n';
+                                    } else {
                                         _retVal += fd.featureValue+'\n';
                                     }
                                 });
@@ -244,7 +283,72 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                 } else {
                     _retVal += 'undefined';
                 }
-                console.log(`SzWhyEntitiesComparisonComponent.renderers[${fieldName}]: `, data, (data as SzEntityFeature).featureDetails, _retVal);
+                //console.log(`SzWhyEntitiesComparisonComponent.renderers[${fieldName}]: `, data, (data as SzEntityFeature).featureDetails, _retVal);
+                return _retVal;
+            },
+            'ENTITY_ID':(data) => {
+                return data;
+            },
+            default: (data: (SzFeatureScore | SzCandidateKey | SzEntityFeature | SzFocusRecordId)[], fieldName?: string, mk?: string): string | string[] | SzWhyEntityHTMLFragment => {
+                let _retVal = '';
+                let mkAsMap = mk ? getMapFromMatchKey(mk) : undefined;
+                if(data && data.length > 0 && data.forEach) {
+                    data.forEach((_d, i) => {
+                        // for each item render a line
+                        if((_d as SzEntityFeature).featureDetails) {
+                            // go through each detail item
+                            let _feat = (_d as SzEntityFeature);
+                            let _scoreDetails = (_d as SzEntityFeatureWithScoring).scoringDetails ? (_d as SzEntityFeatureWithScoring).scoringDetails : undefined;
+                            let _allScoreDetails = (_d as SzEntityFeatureWithScoring).featureScores ? (_d as SzEntityFeatureWithScoring).featureScores : undefined;
+
+                            if(_feat.featureDetails && _feat.featureDetails.forEach){
+                                let uniqueFeatureDetails = _feat.featureDetails;
+                                uniqueFeatureDetails.forEach((fd)=>{
+                                    if(!_retVal) { _retVal = ``; }
+                                    if(_scoreDetails){
+                                        let idsInScore = [_scoreDetails.candidateFeature.featureId, _scoreDetails.inboundFeature.featureId];
+                                        let featIsInScore   = idsInScore.indexOf(fd.internalId) > -1;
+                                        // is scored name, add colors
+                                        let fInMatchKey = featureIsInMatchKey2(fd, fieldName, _allScoreDetails, mkAsMap);
+                                        let c           = fInMatchKey ? 'color-'+ _colors[_scoreDetails.scoringBucket] : '';
+                                        
+                                        _retVal += `<span class="score-${_scoreDetails.scoringBucket} ${c}">`;
+                                        let stats = fBId && fBId.has(fd.internalId) ? fBId.get(fd.internalId) : false;
+                                        if(featIsInScore){
+                                            _retVal += fd.featureValue;
+                                            if(stats && stats.statistics && stats.statistics.entityCount) {
+                                                _retVal += ` [${stats.statistics.entityCount}]`;
+                                            }                                            
+                                            if(['SAME','CLOSE','PLAUSIBLE'].indexOf(_scoreDetails.scoringBucket) > -1) {
+                                                _retVal += '\n<span class="child-node"></span>';
+                                                if(fd.internalId === _scoreDetails.candidateFeature.featureId) {
+                                                    // show "inboundFeature"
+                                                    _retVal += _scoreDetails.inboundFeature.featureValue;
+                                                } else {
+                                                    _retVal += _scoreDetails.candidateFeature.featureValue;
+                                                }
+                                            }
+                                        } else {
+                                            _retVal += fd.featureValue;
+                                            if(stats && stats.statistics && stats.statistics.entityCount) {
+                                                _retVal += ` [${stats.statistics.entityCount}]`;
+                                            }
+                                        }
+                                        _retVal += '</span>\n';
+                                    } else {
+                                        _retVal += fd.featureValue+'\n';
+                                    }
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    // assume it's just aaaaahhh... actually.. I dunno.
+                    // cast to string
+                    if(data && data.toString) {
+                        _retVal += `${data}`;
+                    }
+                }
                 return _retVal;
             }
         })
@@ -292,7 +396,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
      * @internal
      */
     override transformWhyNotResultData(data: SzWhyEntitiesResult, entities: SzEntityData[]): SzWhyEntityColumn[] {
-        console.log(`transformWhyNotResultData: ${this.entityIds.join(',')}`, data);
+        //console.log(`transformWhyNotResultData: ${this.entityIds.join(',')}`, data);
         //console.log(`_featureStatsById: `, _featureStatsById);
         let results:SzWhyEntityColumn[] = [];
         if(entities && entities.length > 0) {
@@ -360,33 +464,6 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                             }
                             return _retVal;
                         }));
-                        // now extend with scoring data
-                        /*
-                        ent.rows[fKey] = ent.rows[fKey].map((feat)=> {
-                            let scoreThatHasFeature = matchInfoForFeature.find((fScore) => {
-                                let y = feat.featureDetails.find((fDetail)=>{
-                                    let hasCandidateFeature = fDetail.internalId === fScore.candidateFeature.featureId;
-                                    let hasInboundFeature   = fDetail.internalId === fScore.inboundFeature.featureId;
-                                    return (hasCandidateFeature || hasInboundFeature) ? true : false;
-                                });
-                                if(y) {
-                                    return true;
-                                }
-                                return false;
-                            });
-                            // default to "feature"
-                            let _valueToAdd: SzEntityFeature | SzFeatureScore = feat;
-                            // if this is a scored feature we want the 
-                            // extra metadata so we can color etc
-                            if(scoreThatHasFeature) {
-                                _valueToAdd = scoreThatHasFeature;
-                            }
-                            // add this to "rows"
-                            if(!ent.rows) { ent.rows = {}; }
-                            if(!ent.rows[fKey]) { ent.rows[fKey] = []; }
-                            ent.rows[fKey].push(_valueToAdd);
-                            return feat;
-                        });*/
                     } else {
                         // add this to "rows"
                         if(!ent.rows) { ent.rows = {}; }
@@ -396,135 +473,8 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                 }
             });
         }
-        console.log(`transformWhyNotResultData: ${this.entityIds.join(',')}`, results);
-
-        /*
-        if(data && this.entityIds && this.entityIds.forEach) {
-            // first entity id will be values for
-            this.entityIds.forEach((entityId, eInd) => {
-                let colFeatureKey = eInd === 0 ? 'inboundFeature' : 'candidateFeature'
-                // this object will become the column
-                let _colTemp: SzWhyEntityColumn = {
-                    entityId: (entityId as number)
-                }  
-                if(data && data.matchInfo) {
-                    _colTemp.matchInfo = data.matchInfo;
-                    if(data.matchInfo.whyKey && data.matchInfo.resolutionRule) { _colTemp.whyResult = {key: data.matchInfo.whyKey, rule: data.matchInfo.resolutionRule };}
-                }
-                if(data.matchInfo && data.matchInfo.featureScores) {
-                    for(let featKey in data.matchInfo.featureScores) {
-                        let featArr = data.matchInfo.featureScores[featKey];
-                        if(featArr && featArr.length > 0) {
-                            // we should add this to "rows" collection
-                            _colTemp.rows[featKey] = featArr;
-                        }
-                    }
-                }
-            });
-            
-        }*/
-        /**
-         * 
-SzWhyEntityColumn extends SzWhyEntityResult, SzWhyPerspective {
-    internalId: number,
-    dataSources: string[],
-    whyResult?: {key: string, rule: string},
-    rows: {[key: string]: Array<SzFeatureScore | SzCandidateKey | SzEntityFeature>}
-    formattedRows?: {[key: string]: string | string[] | SzWhyEntityHTMLFragment | SzWhyEntityHTMLFragment[] }
-}
-        */
+        //console.log(`transformWhyNotResultData: ${this.entityIds.join(',')}`, results);
         return results;
-        /*
-        let results = data.map((matchWhyResult) => {
-        // extend
-        let _tempRes: SzWhyEntityColumn = Object.assign({
-            internalId: matchWhyResult.perspective.internalId,
-            dataSources: matchWhyResult.perspective.focusRecords.map((record) => {
-            return record.dataSource +':'+ record.recordId;
-            }),
-            whyResult: (matchWhyResult.matchInfo.matchLevel !== 'NO_MATCH') ? {key: matchWhyResult.matchInfo.whyKey, rule: matchWhyResult.matchInfo.resolutionRule} : undefined,
-            rows: Object.assign({
-            'INTERNAL_ID': [matchWhyResult.perspective.internalId],
-            'DATA_SOURCES': matchWhyResult.perspective.focusRecords,
-            'WHY_RESULT': (matchWhyResult.matchInfo.matchLevel !== 'NO_MATCH') ? {key: matchWhyResult.matchInfo.whyKey, rule: matchWhyResult.matchInfo.resolutionRule} : undefined
-            }, matchWhyResult.matchInfo.featureScores)
-        },  matchWhyResult.perspective, matchWhyResult);
-        for(let k in _tempRes.rows) {
-            if(_tempRes && _tempRes.rows && _tempRes.rows[k] && _tempRes.rows[k].sort) {
-            _tempRes.rows[k] = _tempRes.rows[k].sort((a, b)=>{
-                if ( (a as SzFeatureScore).candidateFeature.featureValue < (b as SzFeatureScore).candidateFeature.featureValue ){
-                return -1;
-                }
-                if ( (a as SzFeatureScore).candidateFeature.featureValue > (b as SzFeatureScore).candidateFeature.featureValue ){
-                return 1;
-                }
-                return 0;
-            });
-            }
-        }
-        
-        if(matchWhyResult.matchInfo && matchWhyResult.matchInfo.candidateKeys) {
-            // add "candidate keys" to features we want to display
-            for(let _k in matchWhyResult.matchInfo.candidateKeys) {
-            if(!_tempRes.rows[_k]) {
-                _tempRes.rows[_k] = matchWhyResult.matchInfo.candidateKeys[_k].sort((a, b)=>{
-                if ( a.featureValue < b.featureValue ){
-                    return -1;
-                }
-                if ( a.featureValue > b.featureValue ){
-                    return 1;
-                }
-                return 0;
-                });
-            } else {
-                // selectively add
-                // aaaaaaactually, if we already have entries for this field we should probably just 
-                // use those instead
-                let _featuresOmittingExsiting = matchWhyResult.matchInfo.candidateKeys[_k].filter((_cFeat) => {
-                let alreadyHasFeat = _tempRes.rows[_k].some((_rowFeat) => {
-                    return (_rowFeat as SzFeatureScore).candidateFeature.featureId === _cFeat.featureId;
-                });
-                return !alreadyHasFeat;
-                }).sort((a, b)=>{
-                if ( a.featureValue < b.featureValue ){
-                    return -1;
-                }
-                if ( a.featureValue > b.featureValue ){
-                    return 1;
-                }
-                return 0;
-                });
-                //_tempRes.rows[_k] = _tempRes.rows[_k].concat(matchWhyResult.matchInfo.candidateKeys[_k]);
-                _tempRes.rows[_k] = _tempRes.rows[_k].concat(_featuresOmittingExsiting);
-            }
-            }
-        }
-        // list out other "features" that may be present on the resolved entity, but not
-        // present in the why result feature scores or candidate keys
-        // NOTE: we only do this for the item who's "internalId" is the same as the "entityId"
-        if(entities && entities.length > 0 && _tempRes.internalId === _tempRes.entityId) {
-            let entityResultForInternalId = entities.find((_entRes) => {
-            return _entRes.resolvedEntity && _entRes.resolvedEntity.entityId === _tempRes.internalId;
-            });
-            if(entityResultForInternalId && entityResultForInternalId.resolvedEntity){
-            let entityForInternalId = entityResultForInternalId.resolvedEntity;
-            if(entityForInternalId.features) {
-                // merge feature data
-                for(let _fKey in entityForInternalId.features) {
-                if(!_tempRes.rows[_fKey]) {
-                    _tempRes.rows[_fKey] = entityForInternalId.features[_fKey];
-                } else {
-                    // selectively add
-                    // hmmmm..... .. actuuuuuaaaaaallly..
-                }
-                }
-            }
-            }
-        }
-        return _tempRes;
-        });
-        return results;
-        */
     }
 }
 
@@ -583,7 +533,7 @@ export class SzWhyEntitiesDialog implements OnDestroy {
     this._isLoading = isLoading;
   }
   public onRowsChanged(data: SzWhyFeatureRow[]) {
-    console.warn(`onRowsChanged: `, data);
+    //console.warn(`onRowsChanged: `, data);
     if(data && data.length > 8) {
       // set default height to something larger
       this.cssClassesService.setStyle(`body`, "--sz-why-dialog-default-height", `800px`);

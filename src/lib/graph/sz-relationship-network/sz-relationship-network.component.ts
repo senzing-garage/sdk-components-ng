@@ -3738,7 +3738,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   }
 
   static getIconType(resolvedEntity) {
-    console.log(`getIconType(${resolvedEntity.entityId})`);
+    //console.log(`getIconType(${resolvedEntity.entityId})`);
     let retVal = 'default';
     if(resolvedEntity && resolvedEntity.records) {
       resolvedEntity.records.slice(0, 9).forEach(element => {

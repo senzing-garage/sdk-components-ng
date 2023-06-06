@@ -238,7 +238,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
           if(data && data.key) {
             // tokenize
             let _values = getArrayOfPairsFromMatchKey(data.key);
-            console.log(`renderers.WHY_RESULT: ${data.key}`, _values);
+            //console.log(`renderers.WHY_RESULT: ${data.key}`, _values);
             // now put it back together with colors
             _value = _values.map((t) => { return `<span class="${t.prefix === '-' ? 'color-red' : 'color-green'}">${t.prefix+t.value}</span>`; }).join('');
             return `<span class="color-mk">${_value}</span>\n`+ (data && data.rule ? `<span class="indented"></span>Principle: ${data.rule}`:'');
@@ -436,7 +436,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
                   // do "primaryValue" first
                   if(retVal.has(_feat.primaryId)) {
                     // ruh roh
-                    console.warn(`Ruh Roh! (feature stat by id overwrite): ${_feat.primaryId}`);
+                    //console.warn(`Ruh Roh! (feature stat by id overwrite): ${_feat.primaryId}`);
                   } else {
                     // for each item in the details array create an entry by the items internal featureId
                     if(_feat && _feat.featureDetails && _feat.featureDetails.forEach) {
