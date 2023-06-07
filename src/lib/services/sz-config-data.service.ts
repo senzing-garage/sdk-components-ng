@@ -18,6 +18,8 @@ import { take, tap, map } from 'rxjs/operators';
 })
 export class SzConfigDataService {
     private _config: any;
+    private _orderedFeatureTypes: string[] | undefined;
+
     constructor(public configDataService: SzConfigService) {}
 
     /** get the active config from the api/poc server */
@@ -49,17 +51,28 @@ export class SzConfigDataService {
         }
     }
     /** the feature names from a poc/api server in the order defined on the server  */
-    getOrderedFeatures(): Observable<string[]> | undefined{
+    getOrderedFeatures(pullFromCacheIfAvailable?: boolean): Observable<string[]> | undefined{
         let _retVal = new Subject<string[]>();
         let retVal = _retVal.asObservable();
-        this.getActiveConfig().subscribe((res: any)=>{
-            let fTypes = this.getFeaturesFromConfig(res)
-            let assocFtypes = fTypes.map((feat: any) => {
-                return feat.FTYPE_CODE;
+        if(pullFromCacheIfAvailable && this._orderedFeatureTypes !== undefined) {
+            console.warn('pulling ordered features from cache');
+            //retVal.pipe(delay(1000)); // delay response so it waits
+            setTimeout(
+                ((v) => {
+                    //console.log(`getOrderedFeatures: from cache: `, v); 
+                    _retVal.next(v); 
+                }).bind(this, this._orderedFeatureTypes), 500);
+        } else {
+            this.getActiveConfig().subscribe((res: any)=>{
+                let fTypes = this.getFeaturesFromConfig(res)
+                let assocFtypes = fTypes.map((feat: any) => {
+                    return feat.FTYPE_CODE;
+                });
+                this._orderedFeatureTypes = assocFtypes;
+                _retVal.next(assocFtypes);
+                console.log('getOrderedFeatures: ', assocFtypes);
             });
-            _retVal.next(assocFtypes);
-            console.log('getOrderedFeatures: ', assocFtypes);
-        });
+        }
         return retVal;
     }
 }

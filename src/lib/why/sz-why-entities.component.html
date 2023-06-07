@@ -1,9 +1,22 @@
-<table *ngIf="gotColumnDefs && !isLoading" mat-table [dataSource]="dataSource" class="mat-why-report-table mat-elevation-z8">
+<!--<table *ngIf="gotColumnDefs && !isLoading" mat-table [dataSource]="dataSource" class="mat-why-report-table mat-elevation-z8">
   <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
     <th mat-header-cell *matHeaderCellDef> {{column}} </th>
     <td mat-cell *matCellDef="let element" class="mat-cell"> {{element[column]}} </td>
   </ng-container>
 
-  <!--<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+</table>-->
+<div class="table-format">
+  <!--<div class="thead">
+    <div></div>
+    <div *ngFor="let hRow in this.headers">{{hRow}}</div>
+  </div>-->
+  <div class="tr" [class.thead]="rI==0" *ngFor="let row of rows; let rI = index">
+    <!-- show the title for the row -->
+    <div class="col-title">{{row.title}}</div>
+    <!-- now loop through a cell per item in formatted data -->
+    <div class="td" *ngFor="let tCell of getRowValuesForData(row.key)">
+      <div class="pre-text" [innerHTML]="tCell"></div>
+    </div>
+  </div>
+</div>

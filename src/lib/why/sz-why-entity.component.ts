@@ -1,28 +1,15 @@
 import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
-import { EntityDataService, SzAttributeSearchResult, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { EntityDataService, SzAttributeSearchResult, SzCandidateKey, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityFeatureDetail, SzEntityFeatureStatistics, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntitiesResult, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
+import { filter, forkJoin, Observable, ReplaySubject, Subject, zip, zipAll } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
+import { SzConfigDataService } from '../services/sz-config-data.service';
+import { SzWhyEntityColumn, SzWhyEntityHTMLFragment, SzWhyFeatureRow } from '../models/data-why';
+import { SzCSSClassService } from '../services/sz-css-class.service';
+import { SzWhyReportBaseComponent } from './sz-why-report-base.component';
 
-class SzWhyEntityDataSource extends DataSource<any> {
-  private _dataStream = new ReplaySubject<any[]>();
 
-  constructor(initialData: any[]) {
-    super();
-    this.setData(initialData);
-  }
-
-  connect(): Observable<any[]> {
-    return this._dataStream;
-  }
-
-  disconnect() {}
-
-  setData(data: any[]) {
-    this._dataStream.next(data);
-  }
-}
 
 /**
  * Display the "Why" information for entity
@@ -39,250 +26,196 @@ class SzWhyEntityDataSource extends DataSource<any> {
   templateUrl: './sz-why-entity.component.html',
   styleUrls: ['./sz-why-entity.component.scss']
 })
-export class SzWhyEntityComponent implements OnInit, OnDestroy {
-  /** subscription to notify subscribers to unbind */
-  public unsubscribe$ = new Subject<void>();
+export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements OnInit, OnDestroy {
+  protected override _data: SzWhyEntityResult[] | SzWhyEntitiesResult;
+  // -------------------------- component input and output parameters --------------------------
+  /** the entity id to display the why report for. */
+  @Input()  override entityId: SzEntityIdentifier;
+  /** when the respone from the server is returned this even is emitted */
+  @Output() onResult: EventEmitter<SzWhyEntityResult[] | SzWhyEntitiesResult>     = new EventEmitter<SzWhyEntityResult[] | SzWhyEntitiesResult>();
+  // ----------------------------------- getters and setters -----------------------------------
 
-  @Input()
-  entityId: SzEntityIdentifier;
-  private _tableData: any[] = [];
-  private _isLoading = false;
-  @Output()
-  loading: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  /** if more than two records the view can be limited to just explicitly listed ones */
-  @Input() recordsToShow: SzRecordId[] | undefined;
-
-  private _columnsToDisplay: string[] = [];
-  public get displayedColumns(): string[] {
-    return this._columnsToDisplay;
+  constructor(
+    override configDataService: SzConfigDataService,
+    override entityData: EntityDataService) {
+      super(configDataService, entityData);
   }
-  public get isLoading(): boolean {
-    return this._isLoading;
-  }
-  public set isLoading(value: boolean) {
-    this._isLoading = value;
-  }
-  private dataToDisplay = [];
-  public dataSource = new SzWhyEntityDataSource(this.dataToDisplay);
-  public gotColumnDefs = false;
-
-  constructor(private entityData: EntityDataService) {
-  }
-  ngOnInit() {
+  override ngOnInit() {
     this._isLoading = true;
     this.loading.emit(true);
 
-    this.getWhyData().subscribe((resData: SzWhyEntityResponse) => {
-      this._isLoading = false;
-      this.loading.emit(false);
-      let matchedRecords:SzMatchedRecord[] = [];
-      if(resData.data.entities && resData.data.entities.length > 0) {
-        resData.data.entities.forEach((_data: SzEntityData) => {
-          if(_data.resolvedEntity && _data.resolvedEntity.records) {
-            matchedRecords = matchedRecords.concat(_data.resolvedEntity.records);
-          }
-        });
+    zip(
+      this.getWhyData(),
+      this.getOrderedFeatures()
+    ).subscribe({
+      next: (results) => {
+        this._isLoading = false;
+        this.loading.emit(false);
+        this._data          = results[0].data.whyResults;
+        this._entities      = results[0].data.entities;
+        // add any fields defined in initial _rows value to the beginning of the order
+        // custom/meta fields go first basically
+        this._orderedFeatureTypes = this._rows.map((fr)=>{ return fr.key}).concat(results[1]);
+        this._featureStatsById  = this.getFeatureStatsByIdFromEntityData(this._entities);
+        //console.log(`SzWhyEntityComponent._featureStatsById: `, this._featureStatsById);
+
+        this._shapedData    = this.transformData(this._data, this._entities);
+        this._formattedData = this.formatData(this._shapedData);
+        // now that we have all our "results" grab the features so we 
+        // can iterate by those and blank out cells that are missing
+        this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
+        this._headers       = this.getHeadersFromData(this._shapedData);
+        //console.warn('SzWhyEntityComponent.getWhyData: ', results, this._rows, this._shapedData);
+        this.onResult.emit(this._data);
+        this.onRowsChanged.emit(this._rows);
+      },
+      error: (err) => {
+        console.error(err);
       }
-      let formattedData = this.formatWhyDataForDataTable(resData.data.whyResults, resData.data.entities, matchedRecords);
-      //this.columnsToDisplay   = formattedData.columns;
-      this._columnsToDisplay  = formattedData.columns;
-      //this.columnsToDisplay   = formattedData.columns;
-      this.dataToDisplay      = formattedData.data;
-      this.dataSource.setData(this.dataToDisplay);
-      this.gotColumnDefs = true;  
-      console.log('SzWhyEntityComponent.getWhyData: ', resData.data, formattedData);
-    })
-  }
-  /**
-   * unsubscribe when component is destroyed
-   */
-   ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+    });
   }
 
-  getWhyData() {
+  // --------------------------- data manipulation subs and routines ---------------------------
+
+  /** call the /why api endpoint and return a observeable */
+  override getWhyData() {
     return this.entityData.whyEntityByEntityID(parseSzIdentifier(this.entityId), true, true, true, SzDetailLevel.VERBOSE, SzFeatureMode.REPRESENTATIVE, false, false)
   }
-  formatWhyDataForDataTable(data: SzWhyEntityResult[], entities: SzEntityData[], entityRecords: SzMatchedRecord[]): any {
-    let internalIds   = data.map((matchWhyResult) => { return matchWhyResult.perspective.internalId; });
-    let columnKeys    = internalIds;
-    let internalIdRow = {title:'Internal Id'};
-    let dataSourceRow = {title:'Data Sources'};
-    let whyKeyRow     = {title:'Why Result'};
-    let featureKeys   = [];
-    let features      = {};
-    if(this.recordsToShow && this.recordsToShow.length > 0) {
-      // only show specific records
-      let filteredInternalIds     = data.filter((matchWhyResult) => {
-        let hasSelectionMatch = matchWhyResult.perspective.focusRecords.some((frId: SzFocusRecordId) => {
-          let focusRecordInSelection = this.recordsToShow.find((rToShow: SzRecordId) => {
-            return rToShow.id == frId.recordId && rToShow.src == frId.dataSource;
-          })
-          return focusRecordInSelection !== undefined ? true : false;
-        })
-        return hasSelectionMatch ? true : false;
-      }).map((matchWhyResult) => {
-        return matchWhyResult.perspective.internalId;
-      });
-      if(filteredInternalIds && filteredInternalIds.length > 0) {
-        // we found at least one
-        internalIds   = filteredInternalIds;
-        columnKeys    = internalIds;
-      }
-      console.warn('formatWhyDataForDataTable: filtered internal ids? ',filteredInternalIds);
-    }
-
-    columnKeys.forEach((colKey, _index) => {
-      internalIdRow[ colKey ] = colKey;
-    });
-    data.map((matchWhyResult) => { 
-      // datasources
-      dataSourceRow[ matchWhyResult.perspective.internalId ]  = matchWhyResult.perspective.focusRecords.map((record) => {
-        return record.dataSource +':'+ record.recordId;
-      }).join('\n');
-      // why keys
-      if(matchWhyResult.matchInfo.matchLevel !== 'NO_MATCH') {
-        whyKeyRow[ matchWhyResult.perspective.internalId ]      = matchWhyResult.matchInfo.whyKey + '\n '+ matchWhyResult.matchInfo.resolutionRule;
-      } else {
-        // -------------------- NO MATCH PULL FROM ENTITY INSTEAD --------------------
-        whyKeyRow[ matchWhyResult.perspective.internalId ]      = 'not found!'; // matchWhyResult.matchInfo.matchLevel;
-        if(entities && entities.length == 1 && entities[0].resolvedEntity && entities[0].resolvedEntity && entities[0].resolvedEntity.features) {
-          let entityData      = entities[0].resolvedEntity;
-          let entityFeatures  = entityData.features;
-          // for each member of entityData.features create a new row to add to result
-          let featureRowKeys  = Object.keys( entityFeatures );
-          featureRowKeys.forEach((keyStr) => {
-            if(!featureKeys.includes( keyStr )){ featureKeys.push(keyStr); }
-            let featValueForColumn = entityFeatures[ keyStr ].map((feature: SzEntityFeature) => {
-              let retFeatValue = feature.primaryValue;
-              return retFeatValue;
-            }).join('\n ');
-            // append feature
-            if(!features[keyStr] || features[keyStr] === undefined) { features[keyStr] = {title: keyStr}; }
-            features[keyStr][ matchWhyResult.perspective.internalId ] = featValueForColumn;
+  /**
+   * Extends the data response from the why api with data found "rows" that can be more directly utilized by the rendering template.
+   * Every why result column gets additional fields like "dataSources", "internalId", "rows", "whyResult" that are pulled, hoisted, 
+   * or joined from other places. 
+   * @internal
+   */
+  override transformData(data: SzWhyEntityResult[], entities: SzEntityData[]): SzWhyEntityColumn[] {
+    console.log(`transformData: `, data);
+    //console.log(`_featureStatsById: `, _featureStatsById);
+    let results = data.map((matchWhyResult) => {
+      // extend
+      let _tempRes: SzWhyEntityColumn = Object.assign({
+        internalId: matchWhyResult.perspective.internalId,
+        dataSources: matchWhyResult.perspective.focusRecords.map((record) => {
+          return record.dataSource +':'+ record.recordId;
+        }),
+        whyResult: (matchWhyResult.matchInfo.matchLevel !== 'NO_MATCH') ? {key: matchWhyResult.matchInfo.whyKey, rule: matchWhyResult.matchInfo.resolutionRule} : undefined,
+        rows: Object.assign({
+          'INTERNAL_ID': [matchWhyResult.perspective.internalId],
+          'DATA_SOURCES': matchWhyResult.perspective.focusRecords,
+          'WHY_RESULT': (matchWhyResult.matchInfo.matchLevel !== 'NO_MATCH') ? {key: matchWhyResult.matchInfo.whyKey, rule: matchWhyResult.matchInfo.resolutionRule} : undefined
+        }, matchWhyResult.matchInfo.featureScores)
+      },  matchWhyResult.perspective, matchWhyResult);
+      for(let k in _tempRes.rows) {
+        if(_tempRes && _tempRes.rows && _tempRes.rows[k] && _tempRes.rows[k].sort) {
+          _tempRes.rows[k] = _tempRes.rows[k].sort((a, b)=>{
+            if ( (a as SzFeatureScore).candidateFeature.featureValue < (b as SzFeatureScore).candidateFeature.featureValue ){
+              return -1;
+            }
+            if ( (a as SzFeatureScore).candidateFeature.featureValue > (b as SzFeatureScore).candidateFeature.featureValue ){
+              return 1;
+            }
+            return 0;
           });
         }
       }
-      // results with "NO_MATCH" may not have "featureScores"
-      if(matchWhyResult.matchInfo && matchWhyResult.matchInfo.featureScores) {
-        // for each member of matchInfo.featureScores create a new row to add to result
-        let featureRowKeys  = Object.keys( matchWhyResult.matchInfo.featureScores ); 
-        featureRowKeys.forEach((keyStr) => {
-          if(!featureKeys.includes( keyStr )){ featureKeys.push(keyStr); }
-          let featValueForColumn = matchWhyResult.matchInfo.featureScores[ keyStr ].map((featScore: SzFeatureScore) => {
-            let retFeatValue = featScore.inboundFeature.featureValue;
-            if(featScore.featureType === 'NAME' && featScore.nameScoringDetails) {
-              let _nameScoreValues  = [];
-              if(featScore.nameScoringDetails.fullNameScore)    { _nameScoreValues.push(`full:${featScore.nameScoringDetails.fullNameScore}`);}
-              if(featScore.nameScoringDetails.orgNameScore)     { _nameScoreValues.push(`org:${featScore.nameScoringDetails.orgNameScore}`);}
-              if(featScore.nameScoringDetails.givenNameScore)   { _nameScoreValues.push(`giv:${featScore.nameScoringDetails.givenNameScore}`);}
-              if(featScore.nameScoringDetails.surnameScore)     { _nameScoreValues.push(`sur:${featScore.nameScoringDetails.surnameScore}`);}
-              if(featScore.nameScoringDetails.generationScore)  { _nameScoreValues.push(`gen:${featScore.nameScoringDetails.generationScore}`);}
-
-              retFeatValue = retFeatValue +'\n '+ featScore.candidateFeature.featureValue +(_nameScoreValues.length > 0 ? `(${_nameScoreValues.join('|')})` : '');
-            } else if(featScore.featureType === 'DOB' && featScore.scoringBucket == "SAME") {
-              retFeatValue = retFeatValue + (featScore.score? ` (${featScore.score})`: '');
-            } else {
-              retFeatValue = retFeatValue +'\n '+ featScore.candidateFeature.featureValue + (featScore.score? ` (${featScore.score})`: '');
-            }
-            return retFeatValue;
-          }).join('\n');
-          // append feature
-          if(!features[keyStr] || features[keyStr] === undefined) { features[keyStr] = {title: keyStr}; }
-          features[keyStr][ matchWhyResult.perspective.internalId ] = featValueForColumn;
-        });
-      }
       
-      // see if we have any identifier data to show
-      if(entityRecords && matchWhyResult.perspective && matchWhyResult.perspective.focusRecords) {
-        let focusRecordIds = matchWhyResult.perspective.focusRecords.map((fRec) => { return fRec.recordId; })
-        let matchingRecord = entityRecords.find((entityRecord) => {
-          return focusRecordIds.indexOf(entityRecord.recordId) > -1;
-        });
-        if(matchingRecord && matchingRecord.identifierData) {
-          //console.log(`has entity records: ${matchingRecord.recordId}|${matchWhyResult.perspective.internalId}|${matchWhyResult.perspective.focusRecords.map((v)=>{ return v.recordId}).join(',')}`, matchingRecord.identifierData);
-          matchingRecord.identifierData.forEach((identifierField: string) => {
-            // should be `key:value` pair
-            if(identifierField && identifierField.indexOf(':') > -1) {
-              // has key
-              let identifierFields = identifierField.split(':');
-              let keyStr = identifierFields[0];
-              if(!featureKeys.includes( keyStr )){ featureKeys.push(keyStr); }
-              if(!features[keyStr] || features[keyStr] === undefined) { features[keyStr] = {title: keyStr}; }
-              features[keyStr][ matchWhyResult.perspective.internalId ] = identifierFields[1];
-              //console.log(`added "${keyStr}" field for ${matchWhyResult.perspective.internalId}`, features[keyStr][ matchWhyResult.perspective.internalId ]);
-            } else {
-              // no key???
-              //console.log('no identifier field for '+matchWhyResult.perspective.internalId);
-            }
-          });
-        }
-      }
-      // now get the candidate key info
-      
-      if(matchWhyResult.matchInfo.candidateKeys) {
-        let candidateKeys = Object.keys(matchWhyResult.matchInfo.candidateKeys).filter((cKeyName) => {
-          return cKeyName && cKeyName.substring && cKeyName.indexOf('_KEY') > -1;
-        });
-        candidateKeys.forEach((kStr) => {
-          let cKeyArrValue = matchWhyResult.matchInfo.candidateKeys[ kStr ];
-          if(cKeyArrValue && cKeyArrValue.map) {
-            let cKeyValue = cKeyArrValue.map((ckArrVal, ind) => {
-              //return (ckArrVal.featureValue && ckArrVal.featureValue.trim) ? ckArrVal.featureValue.trim() : ckArrVal.featureValue;
-              let rVal = ' '+ ckArrVal.featureValue.trim()
-              //return (ind === 0) ? ind+'|'+rVal : ' '+ rVal;
-              return rVal;
-            }).sort().map((cStrVal, ind) => {
-              return ind === 0 ? cStrVal : cStrVal;
-            }).join('\n');
-            //console.log(`adding ${kStr} to features (${featureKeys.join('|')})`, cKeyValue, cKeyValue.substring(0,1));
-            if(!featureKeys.includes( kStr )){ featureKeys.push(kStr); }
-            if(!features[kStr] || features[kStr] === undefined) { features[kStr] = {title: kStr}; }
-            features[kStr][ matchWhyResult.perspective.internalId ] = cKeyValue.trim();
+      if(matchWhyResult.matchInfo && matchWhyResult.matchInfo.candidateKeys) {
+        // add "candidate keys" to features we want to display
+        for(let _k in matchWhyResult.matchInfo.candidateKeys) {
+          if(!_tempRes.rows[_k]) {
+            _tempRes.rows[_k] = matchWhyResult.matchInfo.candidateKeys[_k].sort((a, b)=>{
+              if ( a.featureValue < b.featureValue ){
+                return -1;
+              }
+              if ( a.featureValue > b.featureValue ){
+                return 1;
+              }
+              return 0;
+            });
+          } else {
+            // selectively add
+            // aaaaaaactually, if we already have entries for this field we should probably just 
+            // use those instead
+            let _featuresOmittingExsiting = matchWhyResult.matchInfo.candidateKeys[_k].filter((_cFeat) => {
+              let alreadyHasFeat = _tempRes.rows[_k].some((_rowFeat) => {
+                return (_rowFeat as SzFeatureScore).candidateFeature.featureId === _cFeat.featureId;
+              });
+              return !alreadyHasFeat;
+            }).sort((a, b)=>{
+              if ( a.featureValue < b.featureValue ){
+                return -1;
+              }
+              if ( a.featureValue > b.featureValue ){
+                return 1;
+              }
+              return 0;
+            });
+            //_tempRes.rows[_k] = _tempRes.rows[_k].concat(matchWhyResult.matchInfo.candidateKeys[_k]);
+            _tempRes.rows[_k] = _tempRes.rows[_k].concat(_featuresOmittingExsiting);
           }
-        });
+        }
       }
+      // list out other "features" that may be present on the resolved entity, but not
+      // present in the why result feature scores or candidate keys
+      // NOTE: we only do this for the item who's "internalId" is the same as the "entityId"
+      if(entities && entities.length > 0 && _tempRes.internalId === _tempRes.entityId) {
+        let entityResultForInternalId = entities.find((_entRes) => {
+          return _entRes.resolvedEntity && _entRes.resolvedEntity.entityId === _tempRes.internalId;
+        });
+        if(entityResultForInternalId && entityResultForInternalId.resolvedEntity){
+          let entityForInternalId = entityResultForInternalId.resolvedEntity;
+          if(entityForInternalId.features) {
+            // merge feature data
+            for(let _fKey in entityForInternalId.features) {
+              if(!_tempRes.rows[_fKey]) {
+                _tempRes.rows[_fKey] = entityForInternalId.features[_fKey];
+              } else {
+                // selectively add
+                // hmmmm..... .. actuuuuuaaaaaallly..
+                /*
+                console.log(`${_fKey} existing: `,_tempRes.rows[_fKey]);
+                let _featuresOmittingExsiting = entityForInternalId.features[_fKey].filter((_eFeat) => {
+                  let alreadyHasFeat = _tempRes.rows[_fKey].some((_rowFeat) => {
+                    let _retVal = false;
+                    if((_rowFeat as SzCandidateKey).featureId) {
+                      _retVal = (_rowFeat as SzCandidateKey).featureId === _eFeat.primaryId
+                    }
+                    if((_rowFeat as SzEntityFeature).primaryId) {
+                      _retVal = (_rowFeat as SzEntityFeature).primaryId === _eFeat.primaryId
+                    }
+                    if((_rowFeat as SzFeatureScore).candidateFeature) {
+                      _retVal = (_rowFeat as SzFeatureScore).candidateFeature.featureId === _eFeat.primaryId
+                    }
+                    return _retVal;
+                  });
+                  return !alreadyHasFeat;
+                }).sort((a, b)=>{
+                  if ( a.primaryValue < b.primaryValue ){
+                    return -1;
+                  }
+                  if ( a.primaryValue > b.primaryValue ){
+                    return 1;
+                  }
+                  return 0;
+                });
+                console.log(`\t${_fKey} omitted: `, _featuresOmittingExsiting);
+                _tempRes.rows[_fKey] = _tempRes.rows[_fKey].concat(_featuresOmittingExsiting);
+                */
+              }
+            }
+          }
+        }
+      }
+      return _tempRes;
     });
-
-    // we're reformatting for a horizontal datatable
-    // instead of the standard vertical datatable
-    // so we change columns in to rows, and rows in to columns
-    let retVal = [];
-    // internalId's is the first row
-    retVal.push( internalIdRow );
-    // datasources are the second row
-    retVal.push( dataSourceRow );
-    // why result
-    retVal.push( whyKeyRow );
-    // add feature rows
-    if(featureKeys) {
-      // reorder keys
-      let defaultOrder        = [
-        'AMBIGUOUS_ENTITY',
-        'NAME',
-        'DOB',
-        'ADDRESS',
-        'PHONE',
-        'NAME_KEY',
-        'ADDR_KEY',
-        'PHONE_KEY'
-      ].filter((oFeatKey) => { return featureKeys.indexOf(oFeatKey) > -1;});
-      let orderedFeatureKeys  = defaultOrder.concat(featureKeys.filter((uoFeatKey) => { return defaultOrder.indexOf(uoFeatKey) < 0; }));
-      
-      orderedFeatureKeys.forEach((featureKeyStr) => {
-        retVal.push( features[ featureKeyStr ] );
-      });
-    }
-
-    return {
-      columns: ['title'].concat(columnKeys.map((kNum: number) => { return kNum.toString(); })),
-      data: retVal
-    };
+    return results;
   }
 }
 
+/**
+ * This is the modal component wrapper used for optional built-in handling of "why" buttons
+ * found in the entity detail header and records.
+ * @internal
+ */
 @Component({
   selector: 'sz-dialog-why-entity',
   templateUrl: 'sz-why-entity-dialog.component.html',
@@ -332,7 +265,10 @@ export class SzWhyEntityDialog {
   public get entityName(): string | undefined {
     return this._entityName;
   }
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { entityId: SzEntityIdentifier, entityName?:string, records?: SzRecordId[], okButtonText?: string, showOkButton?: boolean }) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: { entityId: SzEntityIdentifier, entityName?:string, records?: SzRecordId[], okButtonText?: string, showOkButton?: boolean },
+    private cssClassesService: SzCSSClassService
+    ) {
     if(data) {
       if(data.entityId) {
         this._entityId = data.entityId;
@@ -361,8 +297,24 @@ export class SzWhyEntityDialog {
   public onDataLoading(isLoading: boolean) {
     this._isLoading = isLoading;
   }
+  public onRowsChanged(data: SzWhyFeatureRow[]) {
+    console.warn(`onRowsChanged: `, data);
+    if(data && data.length > 8) {
+      // set default height to something larger
+      this.cssClassesService.setStyle(`body`, "--sz-why-dialog-default-height", `800px`);
+    } else {
+      this.cssClassesService.setStyle(`body`, "--sz-why-dialog-default-height", `var(--sz-why-dialog-default-height)`);
+    }
+  }
   public toggleMaximized() {
-    this.maximized = !this.maximized;
+    //this.maximized = !this.maximized;
+    if(!this.maximized) {
+      this.maximized = true;
+      this.cssClassesService.setStyle(`body`, "--sz-why-dialog-min-height", `98vh`);
+    } else {
+      this.maximized = false;
+      this.cssClassesService.setStyle(`body`, "--sz-why-dialog-min-height", `400px`);
+    }
   }
   public onDoubleClick(event) {
     this.toggleMaximized();

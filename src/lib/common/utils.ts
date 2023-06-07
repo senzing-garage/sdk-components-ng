@@ -117,6 +117,37 @@ export function sortMatchKeysByIndex(value: SzMatchKeyComposite[]): SzMatchKeyCo
   return retVal;
 }
 
+export function getArrayOfPairsFromMatchKey(matchKey: string): Array<{prefix: string, value: string}> {
+  // tokenize by "+" first
+  let _pairs  = matchKey.split('+').filter((t)=>{ return t !== undefined && t !== null && t.trim() !== ''; });
+  // do secondary parse for "-" signs and then flatten array
+  let pairs = _pairs.map((t)=>{
+      if(t.indexOf('-') > -1) {
+          // first clip off positive part of array
+          let posToken    = t.substring(0, t.indexOf('-'));
+          //console.log(`\tfound exclusion tokens: "${t.substring(t.indexOf('-'))}"`);
+          let exTokens    = t.substring(t.indexOf('-')).split('-').filter((t)=>{ return t !== undefined && t !== null && t.trim() !== ''; })
+          let retVal      = [{prefix: '+', value: posToken }];
+          retVal = retVal.concat(exTokens.map((exclusionToken) => { return {prefix: '-', value: exclusionToken }; }));
+          return retVal;
+      } else {
+          return {prefix: '+', value: t}
+      }
+  });
+  let _values = pairs.flat();
+  return _values;
+}
+export function getMapFromMatchKey(matchKey: string): Map<string, {prefix: string, value: string}> {
+  let retVal = new Map();
+  let matchKeyAsArray = getArrayOfPairsFromMatchKey(matchKey);
+  if(matchKeyAsArray && matchKeyAsArray.length > 0 && matchKeyAsArray.forEach) {
+    matchKeyAsArray.forEach((mkPair)=>{
+      retVal.set(mkPair.value, mkPair);
+    });
+  }
+  return retVal;
+}
+
 export function sortMatchKeyTokensByIndex(value: SzMatchKeyTokenComposite[]): SzMatchKeyTokenComposite[] {
   let retVal  = value;
   if(retVal && retVal.sort) {

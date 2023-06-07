@@ -2,31 +2,29 @@
     display: block;
     position: relative;
     height: 100%;
-
-    &.maximized {
-        width: 100vw;
-        height: 100vh;
-    }
+    min-height: 400px;
 
     .mat-mdc-dialog-title {
-        background-color: #6d738c;
+        background-color: var(--sz-why-dialog-header-background-color);
         text-align: center;
         padding: 6px;
-        color: #fff;
+        color: var(--sz-why-dialog-header-color);
         border-radius: 3px;
         margin: 0px 0px;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
     }
     .mat-mdc-dialog-content {
-        height: calc(100% - 100px);
+        height: calc(100% - 44px - 52px);
+        min-height: calc(var(--sz-why-dialog-min-height) - 10px - 44px - 52px);
+        max-height: unset;
         width: 100%;
         margin: 0;
         padding: 0;
     }
     .mat-mdc-dialog-actions {
         justify-content: flex-end;
-        padding: 0 0 10px 0;
+        padding: 0;
         margin-bottom: 0px;
         bottom: 0px;
         width: 100%;
@@ -47,9 +45,10 @@
         }
     }
 
-    sz-why-entities {
-        overflow: auto;
+    sz-why-entity, sz-why-entities {
+        /*overflow: auto;*/
         width: 100%;
+        min-height: calc(var(--sz-why-dialog-min-height) - 10px - 44px - 52px);
         margin: 0px;
     }
 
@@ -105,7 +104,4 @@
     resize: both; 
     overflow: auto;
     background: #fff;
-}
-::ng-deep.why-entities-dialog-panel {
-    resize: both; 
 }
