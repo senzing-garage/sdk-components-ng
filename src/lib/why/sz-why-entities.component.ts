@@ -1,19 +1,13 @@
-import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding, ElementRef, NgZone, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DataSource } from '@angular/cdk/collections';
-import { EntityDataService, SzCandidateKey, SzDataSourceRecordSummary, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityFeatureDetail, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzRecordId, SzWhyEntitiesResponse, SzWhyEntitiesResponseData, SzWhyEntitiesResult, SzWhyEntityResponseData } from '@senzing/rest-api-client-ng';
-import { BehaviorSubject, Observable, ReplaySubject, Subject, takeUntil, throwError, zip } from 'rxjs';
-import { debounceTime, filter } from "rxjs/operators";
+import { EntityDataService, SzCandidateKey, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityFeatureDetail, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzWhyEntitiesResponse, SzWhyEntitiesResult } from '@senzing/rest-api-client-ng';
+import { Observable, Subject, takeUntil, throwError, zip } from 'rxjs';
 
-import { getMapFromMatchKey, parseSzIdentifier } from '../common/utils';
-import { SzPrefsService } from '../services/sz-prefs.service';
+import { getMapFromMatchKey } from '../common/utils';
 import { SzConfigDataService } from '../services/sz-config-data.service';
-import { SzWhyEntityComponent } from './sz-why-entity.component';
 import { SzEntityFeatureWithScoring, SzWhyEntityColumn, SzWhyEntityHTMLFragment, SzWhyFeatureRow } from '../models/data-why';
 import { SzWhyReportBaseComponent } from './sz-why-report-base.component';
-import * as e from 'express';
 import { SzCSSClassService } from '../services/sz-css-class.service';
-import { HttpEvent } from '@angular/common/http';
 
 /**
  * Display the "Why" information for entities

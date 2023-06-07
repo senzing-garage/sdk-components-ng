@@ -48,7 +48,7 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
         takeUntil(this.unsubscribe$)
     ).subscribe({
         next: this.onDataResponse,
-        error: (err, params?) => {
+        error: (err) => {
             this._isLoading = false;
             if(err && err.url && err.url.indexOf && err.url.indexOf('configs/active') > -1) {
                 // ok, we're going to try one more time without the active config
@@ -60,36 +60,6 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
                 })
             }
         }
-    });
-
-    zip(
-      this.getData(),
-      this.getOrderedFeatures()
-    ).subscribe({
-      next: (results) => {
-        this._isLoading = false;
-        this.loading.emit(false);
-        this._data          = results[0].data.whyResults;
-        this._entities      = results[0].data.entities;
-        // add any fields defined in initial _rows value to the beginning of the order
-        // custom/meta fields go first basically
-        this._orderedFeatureTypes = this._rows.map((fr)=>{ return fr.key}).concat(results[1]);
-        this._featureStatsById  = this.getFeatureStatsByIdFromEntityData(this._entities);
-        //console.log(`SzWhyEntityComponent._featureStatsById: `, this._featureStatsById);
-
-        this._shapedData    = this.transformData(this._data, this._entities);
-        this._formattedData = this.formatData(this._shapedData);
-        // now that we have all our "results" grab the features so we 
-        // can iterate by those and blank out cells that are missing
-        this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
-        this._headers       = this.getHeadersFromData(this._shapedData);
-        //console.warn('SzWhyEntityComponent.getWhyData: ', results, this._rows, this._shapedData);
-        this.onResult.emit(this._data);
-        this.onRowsChanged.emit(this._rows);
-      },
-      error: (err) => {
-        console.error(err);
-      }
     });
   }
 
@@ -123,7 +93,9 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
     // can iterate by those and blank out cells that are missing
     this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
     this._headers       = this.getHeadersFromData(this._shapedData);
-    this.onResult.next(this._shapedData);
+    //console.warn('SzWhyEntityComponent.getWhyData: ', results, this._rows, this._shapedData);
+    this.onResult.emit(this._data);
+    this.onRowsChanged.emit(this._rows);
   }
   /**
    * Extends the data response from the why api with data found "rows" that can be more directly utilized by the rendering template.

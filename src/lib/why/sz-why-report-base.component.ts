@@ -303,7 +303,6 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
     ngOnInit() {
       this._isLoading = true;
       this.loading.emit(true);
-      
       zip(
         this.getData(),
         this.getOrderedFeatures()
@@ -311,7 +310,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
           takeUntil(this.unsubscribe$)
       ).subscribe({
           next: this.onDataResponse,
-          error: (err, params?) => {
+          error: (err) => {
               this._isLoading = false;
               if(err && err.url && err.url.indexOf && err.url.indexOf('configs/active') > -1) {
                   // ok, we're going to try one more time without the active config
