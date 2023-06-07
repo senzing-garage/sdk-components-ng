@@ -13,6 +13,7 @@ import { SzEntityFeatureWithScoring, SzWhyEntityColumn, SzWhyEntityHTMLFragment,
 import { SzWhyReportBaseComponent } from './sz-why-report-base.component';
 import * as e from 'express';
 import { SzCSSClassService } from '../services/sz-css-class.service';
+import { HttpEvent } from '@angular/common/http';
 
 /**
  * Display the "Why" information for entities
@@ -56,33 +57,23 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
         this.loading.emit(true);
 
         zip(
-            this.getWhyData(),
+            this.getData(),
             this.getOrderedFeatures()
+        ).pipe(
+            takeUntil(this.unsubscribe$)
         ).subscribe({
-            next: (results) => {
-            this._isLoading = false;
-            this.loading.emit(false);
-            this._data          = results[0].data.whyResult;
-            this._entities      = results[0].data.entities;
-            this.onEntitiesChanged.emit(this._entities);
-            // add any fields defined in initial _rows value to the beginning of the order
-            // custom/meta fields go first basically
-            this._orderedFeatureTypes = this._rows.map((fr)=>{ return fr.key}).concat(results[1]);
-            this._featureStatsById  = this.getFeatureStatsByIdFromEntityData(this._entities);
-            //console.log(`SzWhyEntityComponent._featureStatsById: `, this._featureStatsById);
-
-            this._shapedData    = this.transformData(this._data, this._entities);
-            this._formattedData = this.formatData(this._shapedData);
-            // now that we have all our "results" grab the features so we 
-            // can iterate by those and blank out cells that are missing
-            this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
-            this._headers       = this.getHeadersFromData(this._shapedData);
-            //console.warn('SzWhyEntitiesComparisonComponent.rows: ', this._rows);
-            this.onResult.emit(this._data);
-            this.onRowsChanged.emit(this._rows);
-            },
-            error: (err) => {
-            console.error(err);
+            next: this.onDataResponse,
+            error: (err, params?) => {
+                this._isLoading = false;
+                if(err && err.url && err.url.indexOf && err.url.indexOf('configs/active') > -1) {
+                    // ok, we're going to try one more time without the active config
+                    this._isLoading = true;
+                    this.getData().pipe(
+                        takeUntil(this.unsubscribe$)
+                    ).subscribe((res) => {
+                        this.onDataResponse([res, undefined]);
+                    })
+                }
             }
         });
     }
@@ -357,12 +348,13 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
     }
 
     /** call the /why api endpoint and return a observeable */
-    protected override getWhyData() {
+    protected override getData(): Observable<SzWhyEntitiesResponse> {
         if(this.entityIds && this.entityIds.length == 2) {
-        return this.entityData.whyEntities(this.entityIds[0].toString(), this.entityIds[1].toString(), true, true, true, SzDetailLevel.VERBOSE, SzFeatureMode.REPRESENTATIVE, false, false)
+            return this.entityData.whyEntities(this.entityIds[0].toString(), this.entityIds[1].toString(), true, true, true, SzDetailLevel.VERBOSE, SzFeatureMode.REPRESENTATIVE, false, false)
         }
         return throwError(()=> { return new Error("entity id's not specified")})
     }
+
     /** 
      * Add "formattedRows" that correspond to the string renderer output of each item in each collection returned from the result of
      * #transformData's rows property. The result of each item is a string or collection of strings that is the result of either a 
@@ -388,6 +380,35 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
             });
         }
         return retVal;
+    }
+    /**
+     * when the api requests respond this method properly sets up all the 
+     * properties that get set/generated from some part of those requests
+     * @interal
+     */
+    protected override onDataResponse(results: [SzWhyEntitiesResponse, string[]]) {
+        this._isLoading = false;
+        this.loading.emit(false);
+        this._data          = results[0].data.whyResult;
+        this._entities      = results[0].data.entities;
+        this.onEntitiesChanged.emit(this._entities);
+        // add any fields defined in initial _rows value to the beginning of the order
+        // custom/meta fields go first basically
+        if(results[1]){ 
+            this._orderedFeatureTypes = this._rows.map((fr)=>{ return fr.key}).concat(results[1]);
+        }
+        this._featureStatsById  = this.getFeatureStatsByIdFromEntityData(this._entities);
+        //console.log(`SzWhyEntityComponent._featureStatsById: `, this._featureStatsById);
+
+        this._shapedData    = this.transformData(this._data, this._entities);
+        this._formattedData = this.formatData(this._shapedData);
+        // now that we have all our "results" grab the features so we 
+        // can iterate by those and blank out cells that are missing
+        this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
+        this._headers       = this.getHeadersFromData(this._shapedData);
+        //console.warn('SzWhyEntitiesComparisonComponent.rows: ', this._rows);
+        this.onResult.emit(this._data);
+        this.onRowsChanged.emit(this._rows);
     }
     /**
      * Extends the data response from the why api with data found "rows" that can be more directly utilized by the rendering template.
@@ -478,7 +499,10 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
     }
 }
 
-
+/** 
+ * Dialog component for displaying a WHY NOT report in a modal window
+ * @internal
+*/
 @Component({
   selector: 'sz-dialog-why-entities',
   styleUrls: ['sz-why-entities-dialog.component.scss'],

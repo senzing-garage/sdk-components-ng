@@ -1,15 +1,12 @@
 import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DataSource } from '@angular/cdk/collections';
-import { EntityDataService, SzAttributeSearchResult, SzCandidateKey, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityFeatureDetail, SzEntityFeatureStatistics, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntitiesResult, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
-import { filter, forkJoin, Observable, ReplaySubject, Subject, zip, zipAll } from 'rxjs';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { EntityDataService, SzDetailLevel, SzEntityData, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntitiesResult, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
+import { Observable, Subject, takeUntil, zip } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
 import { SzConfigDataService } from '../services/sz-config-data.service';
-import { SzWhyEntityColumn, SzWhyEntityHTMLFragment, SzWhyFeatureRow } from '../models/data-why';
+import { SzWhyEntityColumn, SzWhyFeatureRow } from '../models/data-why';
 import { SzCSSClassService } from '../services/sz-css-class.service';
 import { SzWhyReportBaseComponent } from './sz-why-report-base.component';
-
-
 
 /**
  * Display the "Why" information for entity
@@ -31,7 +28,7 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
   // -------------------------- component input and output parameters --------------------------
   /** the entity id to display the why report for. */
   @Input()  override entityId: SzEntityIdentifier;
-  /** when the respone from the server is returned this even is emitted */
+  /** when the respone from the server is returned this event is emitted */
   @Output() onResult: EventEmitter<SzWhyEntityResult[] | SzWhyEntitiesResult>     = new EventEmitter<SzWhyEntityResult[] | SzWhyEntitiesResult>();
   // ----------------------------------- getters and setters -----------------------------------
 
@@ -45,7 +42,28 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
     this.loading.emit(true);
 
     zip(
-      this.getWhyData(),
+      this.getData(),
+      this.getOrderedFeatures()
+    ).pipe(
+        takeUntil(this.unsubscribe$)
+    ).subscribe({
+        next: this.onDataResponse,
+        error: (err, params?) => {
+            this._isLoading = false;
+            if(err && err.url && err.url.indexOf && err.url.indexOf('configs/active') > -1) {
+                // ok, we're going to try one more time without the active config
+                this._isLoading = true;
+                this.getData().pipe(
+                    takeUntil(this.unsubscribe$)
+                ).subscribe((res) => {
+                    this.onDataResponse([res, undefined]);
+                })
+            }
+        }
+    });
+
+    zip(
+      this.getData(),
       this.getOrderedFeatures()
     ).subscribe({
       next: (results) => {
@@ -78,8 +96,34 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
   // --------------------------- data manipulation subs and routines ---------------------------
 
   /** call the /why api endpoint and return a observeable */
-  override getWhyData() {
+  override getData(): Observable<SzWhyEntityResponse> {
     return this.entityData.whyEntityByEntityID(parseSzIdentifier(this.entityId), true, true, true, SzDetailLevel.VERBOSE, SzFeatureMode.REPRESENTATIVE, false, false)
+  }
+  /**
+   * when the api requests respond this method properly sets up all the 
+   * properties that get set/generated from some part of those requests
+   * @interal
+   */
+  protected override onDataResponse(results: [SzWhyEntityResponse, string[]]) {
+    this._isLoading = false;
+    this.loading.emit(false);
+    this._data          = results[0].data.whyResults;
+    this._entities      = results[0].data.entities;
+    // add any fields defined in initial _rows value to the beginning of the order
+    // custom/meta fields go first basically
+    if(results[1]){ 
+      this._orderedFeatureTypes = this._rows.map((fr)=>{ return fr.key}).concat(results[1]);
+    }
+    this._featureStatsById  = this.getFeatureStatsByIdFromEntityData(this._entities);
+    //console.log(`SzWhyEntityComponent._featureStatsById: `, this._featureStatsById);
+
+    this._shapedData    = this.transformData(this._data, this._entities);
+    this._formattedData = this.formatData(this._shapedData);
+    // now that we have all our "results" grab the features so we 
+    // can iterate by those and blank out cells that are missing
+    this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
+    this._headers       = this.getHeadersFromData(this._shapedData);
+    this.onResult.next(this._shapedData);
   }
   /**
    * Extends the data response from the why api with data found "rows" that can be more directly utilized by the rendering template.
