@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, throwError } from 'rxjs';
 
 import {
     ConfigService as SzConfigService, SzConfigResponse,
@@ -63,14 +63,20 @@ export class SzConfigDataService {
                     _retVal.next(v); 
                 }).bind(this, this._orderedFeatureTypes), 500);
         } else {
-            this.getActiveConfig().subscribe((res: any)=>{
-                let fTypes = this.getFeaturesFromConfig(res)
-                let assocFtypes = fTypes.map((feat: any) => {
-                    return feat.FTYPE_CODE;
-                });
-                this._orderedFeatureTypes = assocFtypes;
-                _retVal.next(assocFtypes);
-                console.log('getOrderedFeatures: ', assocFtypes);
+            this.getActiveConfig().subscribe({
+                next: (res: any)=>{
+                    let fTypes = this.getFeaturesFromConfig(res)
+                    let assocFtypes = fTypes.map((feat: any) => {
+                        return feat.FTYPE_CODE;
+                    });
+                    this._orderedFeatureTypes = assocFtypes;
+                    _retVal.next(assocFtypes);
+                    console.log('getOrderedFeatures: ', assocFtypes);
+                },
+                error: (err) => {
+                    console.warn('could not get active config: ', err);
+                    _retVal.error(err);
+                }
             });
         }
         return retVal;

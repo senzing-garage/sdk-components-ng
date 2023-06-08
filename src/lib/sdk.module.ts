@@ -76,6 +76,7 @@ import { SzWhyEntityComponent } from './why/sz-why-entity.component';
 import { SzWhyEntitiesComparisonComponent } from './why/sz-why-entities.component';
 import { SzWhyEntityDialog } from './why/sz-why-entity.component';
 import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
+import { SzWhyReportBaseComponent } from './why/sz-why-report-base.component';
 // how related
 import { SzHowEntityComponent } from './how/sz-how-entity.component';
 import { SzHowFinalEntityCardComponent } from './how/cards/sz-how-final-entity-card.component';
@@ -163,7 +164,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzWhyEntitiesComparisonComponent,
         SzWhyEntityComponent,
         SzWhyEntitiesDialog,
-        SzWhyEntityDialog
+        SzWhyEntityDialog,
+        SzWhyReportBaseComponent
     ],
     imports: [
         CommonModule,

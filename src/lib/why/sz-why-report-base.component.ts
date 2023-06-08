@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { EntityDataService, SzCandidateKey, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityFeatureDetail, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntitiesResult, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
-import { Subject, zip } from 'rxjs';
+import { EntityDataService, SzCandidateKey, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityFeatureDetail, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntitiesResult, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
+import { Observable, Subject, takeUntil, zip } from 'rxjs';
 import { getArrayOfPairsFromMatchKey, parseSzIdentifier } from '../common/utils';
 import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzWhyEntityColumn, SzWhyEntityHTMLFragment, SzWhyFeatureRow } from '../models/data-why';
@@ -303,35 +303,25 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
     ngOnInit() {
       this._isLoading = true;
       this.loading.emit(true);
-  
       zip(
-        this.getWhyData(),
+        this.getData(),
         this.getOrderedFeatures()
+      ).pipe(
+          takeUntil(this.unsubscribe$)
       ).subscribe({
-        next: (results) => {
-          this._isLoading = false;
-          this.loading.emit(false);
-          this._data          = results[0].data.whyResults;
-          this._entities      = results[0].data.entities;
-          // add any fields defined in initial _rows value to the beginning of the order
-          // custom/meta fields go first basically
-          this._orderedFeatureTypes = this._rows.map((fr)=>{ return fr.key}).concat(results[1]);
-          this._featureStatsById  = this.getFeatureStatsByIdFromEntityData(this._entities);
-          //console.log(`SzWhyEntityComponent._featureStatsById: `, this._featureStatsById);
-  
-          this._shapedData    = this.transformData(this._data, this._entities);
-          this._formattedData = this.formatData(this._shapedData);
-          // now that we have all our "results" grab the features so we 
-          // can iterate by those and blank out cells that are missing
-          this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
-          this._headers       = this.getHeadersFromData(this._shapedData);
-          //console.warn('SzWhyEntityComponent.getWhyData: ', results, this._rows, this._shapedData);
-          //this.onResult.emit(this._data);
-          //this.onRowsChanged.emit(this._rows);
-        },
-        error: (err) => {
-          console.error(err);
-        }
+          next: this.onDataResponse,
+          error: (err) => {
+              this._isLoading = false;
+              if(err && err.url && err.url.indexOf && err.url.indexOf('configs/active') > -1) {
+                  // ok, we're going to try one more time without the active config
+                  this._isLoading = true;
+                  this.getData().pipe(
+                      takeUntil(this.unsubscribe$)
+                  ).subscribe((res) => {
+                      this.onDataResponse([res, undefined]);
+                  })
+              }
+          }
       });
     }
     /**
@@ -345,7 +335,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
     // --------------------------- data manipulation subs and routines ---------------------------
   
     /** call the /why api endpoint and return a observeable */
-    protected getWhyData() {
+    protected getData(): Observable<SzWhyEntityResponse> {
       return this.entityData.whyEntityByEntityID(parseSzIdentifier(this.entityId), true, true, true, SzDetailLevel.VERBOSE, SzFeatureMode.REPRESENTATIVE, false, false)
     }
     /** get the features in the order found in the server config */
@@ -493,6 +483,31 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
         });
       }
       return retVal;
+    }
+    /**
+     * when the api requests respond this method properly sets up all the 
+     * properties that get set/generated from some part of those requests
+     * @interal
+     */
+    protected onDataResponse(results: [SzWhyEntityResponse, string[]]) {
+      this._isLoading = false;
+      this.loading.emit(false);
+      this._data          = results[0].data.whyResults;
+      this._entities      = results[0].data.entities;
+      // add any fields defined in initial _rows value to the beginning of the order
+      // custom/meta fields go first basically
+      if(results[1]){ 
+        this._orderedFeatureTypes = this._rows.map((fr)=>{ return fr.key}).concat(results[1]);
+      }
+      this._featureStatsById  = this.getFeatureStatsByIdFromEntityData(this._entities);
+      //console.log(`SzWhyEntityComponent._featureStatsById: `, this._featureStatsById);
+
+      this._shapedData    = this.transformData(this._data, this._entities);
+      this._formattedData = this.formatData(this._shapedData);
+      // now that we have all our "results" grab the features so we 
+      // can iterate by those and blank out cells that are missing
+      this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
+      this._headers       = this.getHeadersFromData(this._shapedData);
     }
     /**
      * Extends the data response from the why api with data found "rows" that can be more directly utilized by the rendering template.
