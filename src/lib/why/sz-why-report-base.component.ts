@@ -309,7 +309,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
       ).pipe(
           takeUntil(this.unsubscribe$)
       ).subscribe({
-          next: this.onDataResponse,
+          next: this.onDataResponse.bind(this),
           error: (err) => {
               this._isLoading = false;
               if(err && err.url && err.url.indexOf && err.url.indexOf('configs/active') > -1) {

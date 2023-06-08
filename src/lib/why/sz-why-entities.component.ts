@@ -56,7 +56,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
         ).pipe(
             takeUntil(this.unsubscribe$)
         ).subscribe({
-            next: this.onDataResponse,
+            next: this.onDataResponse.bind(this),
             error: (err, params?) => {
                 this._isLoading = false;
                 if(err && err.url && err.url.indexOf && err.url.indexOf('configs/active') > -1) {
