@@ -18,7 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SzEntityDetailGraphComponent } from './sz-entity-detail-graph/sz-entity-detail-graph.component';
 import { SzWhyEntityDialog } from '../../why/sz-why-entity.component';
 import { SzWhyEntitiesDialog } from '../../why/sz-why-entities.component';
-
+import { SzWhyRecordDialog } from '../../why/sz-why-record.component';
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { parseBool } from '../../common/utils';
 import { SzDataSourceRecordsSelection, SzWhySelectionModeBehavior, SzWhySelectionMode } from '../../models/data-source-record-selection';
@@ -838,15 +838,16 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   public onCompareRecordsForWhy(records: SzRecordId[]) {
-    //console.log('SzEntityDetailComponent.onCompareRecordsForWhy: ', records);
+    console.log('SzEntityDetailComponent.onCompareRecordsForWhy: ', records);
     this.recordsWhyButtonClick.emit(records);
     if(this._openWhyComparisonModalOnClick) {
-      this.dialog.open(SzWhyEntityDialog, {
+      this.dialog.open(SzWhyRecordDialog, {
         panelClass: 'why-entity-dialog-panel',
         minHeight: 400,
         minWidth: 800,
         data: {
-          entityId: this.entity.resolvedEntity.entityId,
+          recordId: records[0].id,
+          dataSource: records[0].src,
           showOkButton: false,
           okButtonText: 'Close',
           records: records

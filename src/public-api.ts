@@ -75,10 +75,9 @@ export { SzDataSourceRecordsSelection, SzDataSourceRecordSelection, SzWhySelecti
 export * from './lib/models/data-how';
 
 /** why */
-export { SzWhyEntityComponent } from './lib/why/sz-why-entity.component';
-export { SzWhyEntitiesComparisonComponent } from './lib/why/sz-why-entities.component';
-export { SzWhyEntityDialog } from './lib/why/sz-why-entity.component';
-export { SzWhyEntitiesDialog } from './lib/why/sz-why-entities.component';
+export { SzWhyEntityComponent, SzWhyEntityDialog } from './lib/why/sz-why-entity.component';
+export { SzWhyEntitiesComparisonComponent, SzWhyEntitiesDialog } from './lib/why/sz-why-entities.component';
+export { SzWhyRecordComponent, SzWhyRecordDialog } from './lib/why/sz-why-record.component';
 
 /** how */
 export { SzHowEntityComponent } from './lib/how/sz-how-entity.component';

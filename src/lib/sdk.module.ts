@@ -72,10 +72,9 @@ import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
 import { SzPreferencesComponent } from './configuration/sz-preferences/sz-preferences.component';
 import { SzPrefDictComponent } from './configuration/sz-preferences/sz-pref-dict/sz-pref-dict.component';
 // why related
-import { SzWhyEntityComponent } from './why/sz-why-entity.component';
-import { SzWhyEntitiesComparisonComponent } from './why/sz-why-entities.component';
-import { SzWhyEntityDialog } from './why/sz-why-entity.component';
-import { SzWhyEntitiesDialog } from './why/sz-why-entities.component';
+import { SzWhyEntityComponent, SzWhyEntityDialog } from './why/sz-why-entity.component';
+import { SzWhyEntitiesComparisonComponent, SzWhyEntitiesDialog } from './why/sz-why-entities.component';
+import { SzWhyRecordComponent, SzWhyRecordDialog } from './why/sz-why-record.component';
 import { SzWhyReportBaseComponent } from './why/sz-why-report-base.component';
 // how related
 import { SzHowEntityComponent } from './how/sz-how-entity.component';
@@ -165,6 +164,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzWhyEntityComponent,
         SzWhyEntitiesDialog,
         SzWhyEntityDialog,
+        SzWhyRecordComponent,
+        SzWhyRecordDialog,
         SzWhyReportBaseComponent
     ],
     imports: [
@@ -211,6 +212,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzWhyEntityComponent,
         SzWhyEntitiesDialog,
         SzWhyEntityDialog,
+        SzWhyRecordComponent,
+        SzWhyRecordDialog,
         SzPreferencesComponent
     ],
     providers: [
