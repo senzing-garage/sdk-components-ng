@@ -71,8 +71,8 @@ export class SzWhyRecordComponent extends SzWhyReportBaseComponent implements On
 
   /** call the /why api endpoint and return a observeable */
   override getData(): Observable<SzWhyEntityResponse> {
-    return this.entityData.whyRecords(this.dataSource, this.recordId, undefined, undefined, true, true, true, SzDetailLevel.VERBOSE, SzFeatureMode.REPRESENTATIVE, false, false)
-    //return this.entityData.whyEntityByRecordID(this.dataSource, this.recordId, true, true, true, SzDetailLevel.VERBOSE, SzFeatureMode.REPRESENTATIVE, false, false)
+    //return this.entityData.whyRecords(this.dataSource, this.recordId, undefined, undefined, true, true, true, SzDetailLevel.VERBOSE, SzFeatureMode.REPRESENTATIVE, false, false)
+    return this.entityData.whyEntityByRecordID(this.dataSource, this.recordId, true, true, true, SzDetailLevel.VERBOSE, SzFeatureMode.REPRESENTATIVE, false, false)
   }
   /**
    * when the api requests respond this method properly sets up all the 
