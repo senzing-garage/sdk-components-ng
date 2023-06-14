@@ -149,7 +149,8 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                     });
                     data.forEach((_d)=>{
                         // for each item render a line
-                        if((_d as SzEntityFeature).featureDetails) {
+                        let isEntityFeature = (_d as SzEntityFeature) && (_d as SzEntityFeature).featureDetails;
+                        if(isEntityFeature) {
                             // go through each detail item
                             let _feat = (_d as SzEntityFeature);
                             let _scoreDetails = (_d as SzEntityFeatureWithScoring).scoringDetails ? (_d as SzEntityFeatureWithScoring).scoringDetails : undefined;
@@ -214,6 +215,15 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                                     }
                                 });
                             }
+                        } else if((_d as SzCandidateKey).featureType) {
+                            // candidate key
+                            let f = (_d as SzCandidateKey);
+                            let stats = fBId && fBId.has(f.featureId) ? fBId.get(f.featureId).statistics : false;
+                            _retVal += f.featureValue;
+                            if(stats && stats.entityCount) {
+                                _retVal += ` [${stats.entityCount}]`;
+                            }
+                            _retVal += '\n';
                         }
                     });
                 } else {
@@ -263,6 +273,15 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                                     }
                                 });
                             }
+                        } else if((_d as SzCandidateKey).featureType) {
+                            // candidate key
+                            let f = (_d as SzCandidateKey);
+                            let stats = fBId && fBId.has(f.featureId) ? fBId.get(f.featureId).statistics : false;
+                            _retVal += f.featureValue;
+                            if(stats && stats.entityCount) {
+                                _retVal += ` [${stats.entityCount}]`;
+                            }
+                            _retVal += '\n';
                         }
                     });
                 } else {
@@ -325,6 +344,15 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                                     }
                                 });
                             }
+                        } else if((_d as SzCandidateKey).featureType) {
+                            // candidate key
+                            let f = (_d as SzCandidateKey);
+                            let stats = fBId && fBId.has(f.featureId) ? fBId.get(f.featureId).statistics : false;
+                            _retVal += f.featureValue;
+                            if(stats && stats.entityCount) {
+                                _retVal += ` [${stats.entityCount}]`;
+                            }
+                            _retVal += '\n';
                         }
                     });
                 } else {
