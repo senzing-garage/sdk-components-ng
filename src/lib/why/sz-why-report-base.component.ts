@@ -467,8 +467,21 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
     protected formatData(data: SzWhyEntityColumn[], ): SzWhyEntityColumn[] {
       let retVal;
       if(data) {
-        console.log(`formatData()`, data);
-        retVal = data.map((columnData) => {
+        //console.log(`formatData()`, data);
+        let recordsToShow = (this.recordsToShow && this.recordsToShow.length > 0) ? this.recordsToShow.map((rToShow)=>{
+          return `${rToShow.src}:${rToShow.id}`;
+        }) : [];
+        retVal = data.filter((columnData)=>{
+          if(recordsToShow && recordsToShow.length > 0) {
+            // we only want the records in question
+            if(columnData && columnData.focusRecords && columnData.focusRecords.some){
+              return columnData.focusRecords.some((fRec)=>{
+                return recordsToShow.includes(`${fRec.dataSource}:${fRec.recordId}`);
+              });
+            }
+          }
+          return true;
+        }).map((columnData) => {
           let _retVal = Object.assign(columnData, {});
           if(_retVal.rows) {
             // for each row figure out what "renderer" to use
