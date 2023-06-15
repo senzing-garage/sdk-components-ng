@@ -118,7 +118,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
         return _r;
       } 
       return {
-        'NAME': (data: (SzFeatureScore | SzCandidateKey)[], fieldName?: string, mk?: string) => {
+        'NAME': (data: (SzFeatureScore | SzCandidateKey | SzEntityFeature)[], fieldName?: string, mk?: string) => {
           let retVal = '';
           let _filteredData = data;
           if(data && data.filter && data.some) {
@@ -128,12 +128,14 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
             let hasNoChance   = data.some((_a)=>{ return (_a as SzFeatureScore).scoringBucket === 'NO_CHANCE'; });
             let filterBuckets = hasSame ? ['SAME'] : (hasClose ? ['CLOSE'] : (hasPlausible ? ['PLAUSIBLE']: (hasNoChance ? ['NO_CHANCE'] : false)));
             _filteredData = filterBuckets && filterBuckets.length > 0 ? data.filter((addrScore) => {
-              return (filterBuckets as string[]).indexOf((addrScore as SzFeatureScore).scoringBucket) > -1;
+              let isFeatureScore = (addrScore as SzFeatureScore) && (addrScore as SzFeatureScore).score > -1;
+              return isFeatureScore ? (filterBuckets as string[]).indexOf((addrScore as SzFeatureScore).scoringBucket) > -1 : true;
             }) : data;
           }
           _filteredData.forEach((_feature, i) => {
             let le = (i < _filteredData.length-1) ? '\n': '';
-            if((_feature as SzFeatureScore).inboundFeature || (_feature as SzFeatureScore).candidateFeature) {
+            let isFeatureScore = (_feature as SzFeatureScore) && (_feature as SzFeatureScore).score > -1;
+            if(isFeatureScore && (_feature as SzFeatureScore).inboundFeature || (_feature as SzFeatureScore).candidateFeature) {
               let f = (_feature as SzFeatureScore);
               let c = _colors[f.scoringBucket] && featureIsInMatchKey('NAME', mk) ? 'color-'+ _colors[f.scoringBucket] : '';
               if(f.inboundFeature) { 
@@ -164,6 +166,24 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
               } else if(f.inboundFeature) {
                 retVal += '</span>'
               }
+            } else if((_feature as SzEntityFeature) && (_feature as SzEntityFeature).primaryValue) {
+              // no scoring available
+              let f = (_feature as SzEntityFeature);
+              retVal += f.primaryValue;
+              let stats = fBId && fBId.has(f.primaryId) ? fBId.get(f.primaryId).statistics : false;
+              if(stats && stats.entityCount) {
+                retVal += ` [${stats.entityCount}]`;
+              }
+              retVal += le;
+            } else if((_feature as SzCandidateKey).featureType) {
+              // candidate key
+              let f = (_feature as SzCandidateKey);
+              let stats = fBId && fBId.has(f.featureId) ? fBId.get(f.featureId).statistics : false;
+              retVal += f.featureValue;
+              if(stats && stats.entityCount) {
+                retVal += ` [${stats.entityCount}]`;
+              }
+              retVal += le;
             }
           });
           return retVal;
@@ -201,6 +221,24 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
                 retVal += `${_a.candidateFeature.featureValue}`;
                 if(_a.score) { retVal += ` (full: ${_a.score})`};
                 retVal += '</span>';
+              } else if((a as SzEntityFeature) && (a as SzEntityFeature).primaryValue) {
+                // no scoring available
+                let f = (a as SzEntityFeature);
+                retVal += f.primaryValue;
+                let stats = fBId && fBId.has(f.primaryId) ? fBId.get(f.primaryId).statistics : false;
+                if(stats && stats.entityCount) {
+                  retVal += ` [${stats.entityCount}]`;
+                }
+                retVal += le;
+              } else if((a as SzCandidateKey).featureType) {
+                // candidate key
+                let f = (a as SzCandidateKey);
+                let stats = fBId && fBId.has(f.featureId) ? fBId.get(f.featureId).statistics : false;
+                retVal += f.featureValue;
+                if(stats && stats.entityCount) {
+                  retVal += ` [${stats.entityCount}]`;
+                }
+                retVal += le;
               }
             });
           }

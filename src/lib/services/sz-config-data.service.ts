@@ -55,7 +55,7 @@ export class SzConfigDataService {
         let _retVal = new Subject<string[]>();
         let retVal = _retVal.asObservable();
         if(pullFromCacheIfAvailable && this._orderedFeatureTypes !== undefined) {
-            console.warn('pulling ordered features from cache');
+            console.log('pulling ordered features from cache');
             //retVal.pipe(delay(1000)); // delay response so it waits
             setTimeout(
                 ((v) => {
