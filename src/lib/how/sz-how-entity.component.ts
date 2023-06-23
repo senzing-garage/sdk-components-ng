@@ -478,7 +478,11 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
               }
 
               //retVal.get(_currentGroupId).virtualEntityIds = retVal.get(_currentGroupId).children.map((rStep: SzResolutionStep) => { return rStep.resolvedVirtualEntityId; });
-              retVal.get(_currentGroupId).virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(false, retVal.get(_currentGroupId));
+              if(retVal.has(_currentGroupId)) {
+                retVal.get(_currentGroupId).virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(false, retVal.get(_currentGroupId));
+              } else {
+                console.warn(`NO GROUP(${_currentGroupId}) ID!!! `, retVal);
+              }
           }
         });
 
