@@ -287,6 +287,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    */
   @Input() set showHowFunctionWarnings(value: boolean) {
     this._showHowFunctionWarnings = value;
+    if(value === true) { this.dynamicHowFeatures = true; }
   }
   /** when set to true a request to the how report for the entity is made to check whether or not anything 
    * would be displayed and if the result has no steps in it's "resolutionSteps" collection when the user clicks
