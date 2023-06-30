@@ -372,6 +372,8 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
   @Output() onHowButtonClick: EventEmitter<howClickEvent> = new EventEmitter<howClickEvent>();
   /** @internal */
   private _showHowFunction: boolean = false;
+  /** @internal */
+  private _howButtonDisabled: boolean = false;
   /** whether or not to show the "How button" under the entity icon */
   @Input() public set showHowFunction(value: boolean) {
     this._showHowFunction = value;
@@ -379,6 +381,17 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
   /** whether or not the "Why button" under the entity icon is being shown*/
   public get showHowFunction(): boolean {
     return (this._showWhyFunction && this._showHowFunction) ? false : this._showHowFunction;
+  }
+  /** whether or not to disable the "How button" under the entity icon is disabled*/
+  @Input() public set howButtonDisabled(value: boolean) {
+    this._howButtonDisabled = value;
+  }
+  /** whether or not the "How button" under the entity icon is disabled */
+  public get howButtonDisabled(): boolean {
+    return this._howButtonDisabled;
+  }
+  public howButtonTooltipText(): string {
+    return this._howButtonDisabled ? "How not available. No resolution was required. " : "Click to see How this entity was resolved";
   }
   /**
    * When user clicks the "How" button this handler is invoked 

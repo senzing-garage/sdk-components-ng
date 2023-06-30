@@ -17,7 +17,10 @@
             </ul>
         </mat-expansion-panel>
         <!-- start "other features" -->
-        <mat-expansion-panel class="feature-drawer feature-drawer-features" [expanded]="isExpanded(featBucket.name)" (opened)="onDrawerOpen(featBucket.name)" (closed)="onDrawerClose(featBucket.name)" hideToggle *ngFor="let featBucket of orderedFeatures">
+        <mat-expansion-panel class="feature-drawer feature-drawer-features" 
+        [expanded]="isExpanded(featBucket.name)" 
+        (opened)="onDrawerOpen(featBucket.name)" 
+        (closed)="onDrawerClose(featBucket.name)" hideToggle *ngFor="let featBucket of orderedFeatures">
             <mat-expansion-panel-header>
                 <mat-icon class="toggle-expansion-icon" fontIcon="arrow_right"></mat-icon>
                 {{featureName(featBucket.name)}}<span class="count-bubble">{{featureCount(featBucket.features)}}</span></mat-expansion-panel-header>

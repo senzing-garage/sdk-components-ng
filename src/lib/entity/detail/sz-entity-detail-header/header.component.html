@@ -21,12 +21,17 @@
       matTooltipPosition="above"
       matTooltip="Click to display this entities Why Report"
       >Why Analysis<mat-icon class="why-report-icon" fontIcon="merge_type"></mat-icon></button>
-      <button *ngIf="showHowFunction" class="detail-header-how-button" mat-stroked-button 
-      (click)="onHowButtonClickHandler($event)"
-      color="accent"
-      matTooltipPosition="above"
-      matTooltip="Click to see How this entity was resolved"
-      >How Report<mat-icon class="how-report-icon" fontIcon="insert_chart_outlined"></mat-icon></button>
+      <div *ngIf="showHowFunction"
+        matTooltipPosition="above"
+        [matTooltip]="howButtonTooltipText()"
+        [matTooltipDisabled]="!howButtonDisabled"
+      >
+        <button *ngIf="showHowFunction" class="detail-header-how-button" mat-stroked-button 
+        (click)="onHowButtonClickHandler($event)"
+        color="accent"
+        [disabled]="howButtonDisabled"
+        >How Report<mat-icon class="how-report-icon" fontIcon="insert_chart_outlined"></mat-icon></button>
+      </div>
     </div>
     <div class="detail-header__top-right">
       <div><span class="detail-header__entity-name">{{bestName | titlecase}}</span></div>
