@@ -24,6 +24,8 @@ import { parseBool } from '../../common/utils';
 import { SzDataSourceRecordsSelection, SzWhySelectionModeBehavior, SzWhySelectionMode } from '../../models/data-source-record-selection';
 import { SzMatchKeyTokenFilterScope } from '../../models/graph';
 import { howClickEvent } from '../../models/data-how';
+import { SzHowUIService } from '../../services/sz-how-ui.service';
+import { SzAlertMessageDialog } from '../../shared/alert-dialog/sz-alert-dialog.component';
 
 /**
  * The Entity Detail Component.
@@ -130,14 +132,18 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private _possibleMatchesSectionCollapsed: boolean = false;
   private _possibleRelationshipsSectionCollapsed: boolean = false;
   private _disclosedRelationshipsSectionCollapsed: boolean = false;
-
   // why utilities
   private _whySelectionMode: SzWhySelectionModeBehavior = SzWhySelectionMode.NONE;
-  private _showEntityHowFunction: boolean = false;
   private _showEntityWhyFunction: boolean = false;
   private _showRecordWhyUtilities: boolean = false;
   private _showRelatedWhyNotUtilities: boolean = false;
   private _openWhyComparisonModalOnClick: boolean = true;
+  // how utilities
+  private _showEntityHowFunction: boolean = false;
+  private _entityHasHowSteps: boolean = undefined;
+  private _dynamicHowFeatures: boolean = false;
+  private _showHowFunctionWarnings: boolean = false;
+  private _howFunctionDisabled: boolean = false;
   // graph utilities
   private _showGraphNodeContextMenu: boolean = false;
   private _showGraphLinkContextMenu: boolean = false;
@@ -146,8 +152,10 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private _headerHowButtonClicked: Subject<howClickEvent> = new Subject<howClickEvent>();
   /** (Observeable) when the user clicks on the "Why" button in header under the icon */
   public headerHowButtonClicked = this._headerHowButtonClicked.asObservable();
-  /** (Event Emitter) when the user clicks on the "Why" button in header under the icon */
-  @Output() howButtonClick      = new EventEmitter<howClickEvent>();
+  /** (Event Emitter) when the user clicks on the "How" button in header under the icon */
+  @Output() howButtonClick        = new EventEmitter<howClickEvent>();
+  /** (Event Emitter) when the how report would have no resolution steps resulting in an empty report */
+  @Output() howReportUnavailable  = new EventEmitter<boolean>();
   /** @internal */
   private _headerWhyButtonClicked: Subject<SzEntityIdentifier> = new Subject<SzEntityIdentifier>();
   /** (Observeable) when the user clicks on the "Why" button in header under the icon */
@@ -232,13 +240,61 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   @Input() set whySelectionMode(value: SzWhySelectionModeBehavior) {
     this._whySelectionMode = value;
   }
+  /** when "dynamicHowFeatures" or "showHowFunctionWarnings" is set to true
+   * an api request to the entity's how report is made and this value is set to true.
+   */
+  @Input() set howFunctionDisabled(value: boolean) {
+    this._howFunctionDisabled = value;
+  }
+  /** when "dynamicHowFeatures" or "showHowFunctionWarnings" is set to true
+   * an api request to the entity's how report is made and this value is set to true.
+   */
+  get howFunctionDisabled(): boolean {
+    return this._howFunctionDisabled;
+  }
+  /** if the entity's how report has no resolution steps and this value is set to true the button for the 
+   * how report in the header will be disabled and will not emit the click event when the user clicks it
+   */
+  @Input() set dynamicHowFeatures(value: boolean) {
+    this._dynamicHowFeatures = value;
+  }
+  /** if the entity's how report has no resolution steps and this value is set to true the button for the 
+   * how report in the header will be disabled and will not emit the click event when the user clicks it
+   */
+  get dynamicHowFeatures(): boolean {
+    return this._dynamicHowFeatures;
+  }
   /** whether or not the "how" button for the entire entity is shown */
   public get showEntityHowFunction(): boolean {
     return this._showEntityHowFunction;
   }
   /** whether or not to show the "how" button for the entire entity */
   @Input() set showEntityHowFunction(value: boolean) {
+    if(value !== this._showEntityHowFunction && 
+      value === true && 
+      this._entityId !== undefined &&
+      (this._dynamicHowFeatures === true || 
+      this._showHowFunctionWarnings === true)
+      ) {
+        // check to see if entity has how steps, if not disable how functions
+        this.checkIfEntityHasHowSteps();
+    }
     this._showEntityHowFunction = value;
+  }
+  /** when set to true a request to the how report for the entity is made to check whether or not anything 
+   * would be displayed and if the result has no steps in it's "resolutionSteps" collection when the user clicks
+   * the how report button an alert will be displayed telling the user that the report is unavailable.
+   */
+  @Input() set showHowFunctionWarnings(value: boolean) {
+    this._showHowFunctionWarnings = value;
+    if(value === true) { this.dynamicHowFeatures = true; }
+  }
+  /** when set to true a request to the how report for the entity is made to check whether or not anything 
+   * would be displayed and if the result has no steps in it's "resolutionSteps" collection when the user clicks
+   * the how report button an alert will be displayed telling the user that the report is unavailable.
+   */
+  get showHowFunctionWarnings(): boolean {
+    return this._showHowFunctionWarnings;
   }
   /** whether or not the "why" comparison button for the entire entity is shown */
   public get showEntityWhyFunction(): boolean {
@@ -670,12 +726,13 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   constructor(
-    private searchService: SzSearchService,
-    public prefs: SzPrefsService,
     private cd: ChangeDetectorRef,
-    public overlay: Overlay,
     public dialog: MatDialog,
-    public viewContainerRef: ViewContainerRef
+    private howUIService: SzHowUIService,
+    public overlay: Overlay,
+    public prefs: SzPrefsService,
+    private searchService: SzSearchService,
+    public viewContainerRef: ViewContainerRef,
   ) {}
 
   ngOnInit() {
@@ -813,7 +870,31 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    */
   public onHeaderHowButtonClick(event: howClickEvent){
     //console.log(`SzEntityDetailComponent.onHeaderHowButtonClick()`, event);
-    this.howButtonClick.emit(event);
+    if(this._showHowFunctionWarnings && !this._entityHasHowSteps){
+      this.dialog.open(SzAlertMessageDialog, {
+        panelClass: 'alert-dialog-panel',
+        width: '350px',
+        height: '200px',
+        data: {
+          title: 'Not Available',
+          text: 'How not available. No resolution was required.',
+          showOkButton: false,
+          buttonText: 'Close'
+        }
+      });
+    } else {
+      // do pre-flight check
+      this.checkIfEntityHasHowSteps(false).pipe(
+        takeUntil(this.unsubscribe$),
+        take(1)
+      ).subscribe((hasResults) => {
+        if(hasResults) {
+          this.howButtonClick.emit(event);
+        } else {
+          this.howReportUnavailable.emit(true);
+        }
+      })
+    }
   }
   /**
    * proxies internal "why button" header click to "onHeaderWhyButtonClick" event.
@@ -904,18 +985,28 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
       this.searchService.getEntityById(this._entityId, true).
       pipe(
-        tap(res => console.log('SzSearchService.getEntityById: ' + this._entityId, res))
+        tap(res => console.log('SzSearchService.getEntityById: ' + this._entityId, res)),
+        takeUntil(this.unsubscribe$),
+        take(1)
       ).
-      subscribe((entityData: SzEntityData) => {
-        // console.log('sz-entity-detail.onEntityIdChange: ', entityData);
-        this.entityDetailJSON = JSON.stringify(entityData, null, 4);
-        this.entity = entityData;
-        this.onEntityDataChanged();
-        this.requestEnd.emit( entityData );
-        this.dataChanged.next( entityData );
-      }, (err)=> {
-        this.requestEnd.emit( err );
-        this.exception.next( err );
+      subscribe({
+        next: (entityData: SzEntityData) => {
+          // console.log('sz-entity-detail.onEntityIdChange: ', entityData);
+          this.entityDetailJSON = JSON.stringify(entityData, null, 4);
+          this.entity = entityData;
+          this.onEntityDataChanged();
+          this.requestEnd.emit( entityData );
+          this.dataChanged.next( entityData );
+          if(this._showEntityHowFunction && (this._dynamicHowFeatures === true || 
+            this._showHowFunctionWarnings === true)) {
+            // check to see if entity has how steps, if not disable how functions
+            this.checkIfEntityHasHowSteps();
+          }
+        }, 
+        error: (err)=> {
+          this.requestEnd.emit( err );
+          this.exception.next( err );
+        }
       });
     }
   }
@@ -1006,6 +1097,51 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
         }
       });
     }
+  }
+  /** 
+   * when a entity id has been changed and the "" flag is set to true we run a 
+   * pre-click check to make sure that the how button returns a valid report.
+   * @internal
+  */
+  private checkIfEntityHasHowSteps(emitEvents?: boolean) {
+    let _retObs = new Subject<boolean>();
+    let retObs  = _retObs.asObservable();
+    retObs.pipe(
+      takeUntil(this.unsubscribe$),
+      take(1)
+    ).subscribe((hasHowSteps) => {
+      this._entityHasHowSteps = hasHowSteps;
+      if(emitEvents !== false) {
+        this.howReportUnavailable.emit(!hasHowSteps);
+      }
+      if(this._dynamicHowFeatures) {
+        this._howFunctionDisabled = (this._dynamicHowFeatures && !hasHowSteps);
+      }
+    })
+    if(this._entityId){
+      // check to see if entity has how steps, if not disable how functions
+      this.howUIService.getHowDataForEntity(this._entityId).pipe(
+        takeUntil(this.unsubscribe$),
+        take(1)
+      ).subscribe({
+        next: (resp)=>{
+          if(resp && resp.data && resp.data.resolutionSteps && Object.keys(resp.data.resolutionSteps).length > 0) {
+            _retObs.next(true);
+          } else {
+            _retObs.next(false);
+          }
+        },
+        error: (err) => {
+          this.exception.next( err );
+          _retObs.next(false);
+        }
+      });
+    } else {
+      setTimeout(() => {
+        _retObs.next(false);
+      }, 1000);
+    }
+    return _retObs.asObservable();
   }
 
 }
