@@ -38,9 +38,9 @@
             margin-top: 0px;
         }
 
-        @for $i from 1 through 100 {
+        @for $i from 1 through 2000 {
             &:nth-child(#{$i}) {
-                z-index: #{10 - $i};
+                z-index: #{2001 - $i};
             }
         }
     }
