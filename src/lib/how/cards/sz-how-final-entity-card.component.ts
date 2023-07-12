@@ -6,6 +6,7 @@ import { SzConfigDataService } from '../../services/sz-config-data.service';
 import { SzHowUIService } from '../../services/sz-how-ui.service';
 import { SzHowStepCardBase } from './sz-how-card-base.component';
 import { MatDialog } from '@angular/material/dialog';
+import { SzPrefsService } from '../../services/sz-prefs.service';
 
 /**
  * @internal
@@ -54,13 +55,15 @@ export class SzHowFinalEntityCardComponent extends SzHowStepCardBase implements 
         entityDataService: SzEntityDataService,
         configDataService: SzConfigDataService,
         howUIService: SzHowUIService,
-        dialog: MatDialog
+        dialog: MatDialog,
+        prefs: SzPrefsService
     ){
         super(
             entityDataService,
             configDataService,
             howUIService,
-            dialog
+            dialog,
+            prefs
         );
     }
 }

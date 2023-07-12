@@ -1177,6 +1177,50 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   }
 }
 
+
+/**
+ * How Report related preferences bus class.
+ * used by {@link SzPrefsService} to store it's
+ * How related prefs.
+ * Should really be used from {@link SzPrefsService} context, not on its own.
+ *
+ * @example
+ * this.prefs.how.showResolutionRule = true;
+ *
+ * @example
+ * this.prefs.graph.prefsChanged.subscribe( (prefs) => { console.log('how pref change happened.', prefs); })
+ */
+export class SzHowPrefs extends SzSdkPrefsBase {
+  // private vars
+  /** @internal */
+  private _showResolutionRule: boolean = false;
+  /** the keys of member setters or variables in the object
+   * to output in json, or to take as json input
+   */
+  override jsonKeys = [
+    'showResolutionRule'
+  ]
+  // -------------- getters and setters
+  /** whether or not to show the Resolution Rule code or principle in a card */
+  public get showResolutionRule(): boolean {
+    return this._showResolutionRule;
+  }
+  /** whether or not to show the Resolution Rule code or principle in a card */
+  public set showResolutionRule(value: boolean) {
+    this._showResolutionRule = value;
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /**
+   * publish out a "first" real payload so that
+   * subscribers get an initial payload from this subclass
+   * instead of the empty superclass
+   **/
+  constructor(){
+    super();
+    this.prefsChanged.next( this.toJSONObject() );
+  }
+}
+
 /**
  * top level prefs model used for publishing preference
  * events.
@@ -1186,6 +1230,7 @@ export interface SzSdkPrefsModel {
   searchResults?: any,
   entityDetail?: any,
   graph?: any,
+  how?: any,
   admin?: any
 };
 
@@ -1244,6 +1289,8 @@ export class SzPrefsService implements OnDestroy {
   public entityDetail?: SzEntityDetailPrefs   = new SzEntityDetailPrefs();
   /** instance of {@link SzGraphPrefs} */
   public graph?: SzGraphPrefs                 = new SzGraphPrefs();
+  /** instance of {@link SzHowPrefs} */
+  public how?: SzHowPrefs                     = new SzHowPrefs();
   /** instance of {@link SzAdminPrefs} */
   public admin?: SzAdminPrefs                 = new SzAdminPrefs();
 
@@ -1273,6 +1320,9 @@ export class SzPrefsService implements OnDestroy {
     }
     if(this.graph){
       retObj.graph = this.graph.toJSONObject();
+    }
+    if(this.how){
+      retObj.how = this.how.toJSONObject();
     }
     if(this.admin){
       retObj.admin = this.admin.toJSONObject();
@@ -1327,6 +1377,9 @@ export class SzPrefsService implements OnDestroy {
     if(_sVal.graph){
       this.graph.fromJSONObject( _sVal.graph );
     }
+    if(_sVal.how){
+      this.how.fromJSONObject( _sVal.how );
+    }
     if(_sVal.admin){
       this.entityDetail.fromJSONObject( _sVal.admin );
     }
@@ -1344,6 +1397,7 @@ export class SzPrefsService implements OnDestroy {
       this.searchResults.prefsChanged,
       this.entityDetail.prefsChanged,
       this.graph.prefsChanged,
+      this.how.prefsChanged,
       this.admin.prefsChanged,
     );
     // now filter and debounce

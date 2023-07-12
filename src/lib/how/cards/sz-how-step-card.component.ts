@@ -8,6 +8,7 @@ import { SzConfigDataService } from '../../services/sz-config-data.service';
 import { SzResolutionStepDisplayType, SzResolutionStepNode, } from '../../models/data-how';
 import { SzHowUIService } from '../../services/sz-how-ui.service';
 import { SzHowStepCardBase } from './sz-how-card-base.component';
+import { SzPrefsService } from '../../services/sz-prefs.service';
 
 /**
  * @internal
@@ -125,7 +126,7 @@ export class SzHowStepCardComponent extends SzHowStepCardBase implements OnInit,
                 });
                 retVal.push(_desc);
             }
-            if(this._data.matchInfo && this._data.matchInfo.resolutionRule) {
+            if(this._data.matchInfo && this._data.matchInfo.resolutionRule && this.showResolutionRule) {
                 retVal.push(`Using <span class="emphasized">${this._data.matchInfo.resolutionRule}</span>`);
             }
         }
@@ -140,13 +141,15 @@ export class SzHowStepCardComponent extends SzHowStepCardBase implements OnInit,
         entityDataService: SzEntityDataService,
         configDataService: SzConfigDataService,
         howUIService: SzHowUIService,
-        dialog: MatDialog
+        dialog: MatDialog,
+        prefs: SzPrefsService
     ){
         super(
             entityDataService,
             configDataService,
             howUIService,
-            dialog
+            dialog,
+            prefs
         );
     }
 }

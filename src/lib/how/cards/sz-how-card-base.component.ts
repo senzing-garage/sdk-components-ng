@@ -9,6 +9,7 @@ import { SzResolutionStepListItemType, SzResolutionStepDisplayType, SzResolution
 import { Subject } from 'rxjs';
 import { SzHowUIService } from '../../services/sz-how-ui.service';
 import { SzHowVirtualEntityDialog } from '../sz-how-virtual-entity-dialog.component';
+import { SzPrefsService } from '../../services/sz-prefs.service';
 
 /**
  * @internal
@@ -327,7 +328,7 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
             if(this._data.matchInfo && this._data.matchInfo.matchKey) {
                 retVal.push(`On <span class="emphasized">${this._data.matchInfo.matchKey}</span>`);
             }
-            if(this._data.matchInfo && this._data.matchInfo.resolutionRule) {
+            if(this._data.matchInfo && this._data.matchInfo.resolutionRule && this.showResolutionRule) {
                 retVal.push(`Using <span class="emphasized">${this._data.matchInfo.resolutionRule}</span>`);
             }
         }
@@ -335,6 +336,9 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     }
     public get forms(): string {
         return (this._data && this._data.resolvedVirtualEntityId) ? (this._data.resolvedVirtualEntityId) : undefined;
+    }
+    public get showResolutionRule(): boolean {
+        return this.prefs && this.prefs.how && this.prefs.how.showResolutionRule;
     }
     public get resolutionRule(): string {
         if(this._data && this._data.matchInfo && this._data.matchInfo.resolutionRule) {
@@ -573,7 +577,8 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
         public entityDataService: SzEntityDataService,
         public configDataService: SzConfigDataService,
         protected howUIService: SzHowUIService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private prefs: SzPrefsService
     ){}
 
     ngOnInit() {}
