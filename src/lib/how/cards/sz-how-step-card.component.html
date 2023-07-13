@@ -17,12 +17,12 @@
         <span *ngIf="isAddRecordStep" class="hide-on-expanded">
             <span *ngIf="forms" class="margin-right">Forms <span class="emphasized">{{forms}}</span></span>
             <span *ngIf="matchKey" class="margin-right">On <span class="emphasized">{{matchKey}}</span></span>
-            <span *ngIf="resolutionRule">Using <span class="emphasized">{{resolutionRule}}</span></span>
+            <span *ngIf="resolutionRule && showResolutionRule">Using <span class="emphasized">{{resolutionRule}}</span></span>
         </span>
         <span *ngIf="isMergeStep" class="hide-on-expanded">
             <span *ngIf="forms" class="margin-right">Forms <span class="emphasized">{{forms}}</span></span>
             <span *ngIf="matchKey" class="margin-right">On <span class="emphasized">{{matchKey}}</span></span>
-            <span *ngIf="resolutionRule">Using <span class="emphasized">{{resolutionRule}}</span></span>
+            <span *ngIf="resolutionRule && showResolutionRule">Using <span class="emphasized">{{resolutionRule}}</span></span>
         </span>
         <span *ngIf="isInterimStep" class="hide-on-expanded">
             [
@@ -37,7 +37,7 @@
             </span>
             </span>
             <span *ngIf="matchKey" class="margin-right">On <span class="emphasized">{{matchKey}}</span></span>
-            <span *ngIf="resolutionRule">Using <span class="emphasized">{{resolutionRule}}</span></span>
+            <span *ngIf="resolutionRule && showResolutionRule">Using <span class="emphasized">{{resolutionRule}}</span></span>
         </span>
     </div>
     <!--<div class="title-text">groupTitle: "{{groupTitle}}" | isGroupCollapsed: {{isGroupCollapsed}} | isInterimStep: {{isInterimStep}}</div>-->
