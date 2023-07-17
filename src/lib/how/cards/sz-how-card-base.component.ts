@@ -418,7 +418,7 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
             });
 
             for (let [key, value] of _dataSourceCounts) {
-                let strVal  = value === 1 ? `${key} (${value}): ${cellSource.records[0].recordId}` : `${key} (${value})`;
+                let strVal  = value === 1 ? `${key}:${cellSource.records[0].recordId}` : `${key} (${value})`;
                 retVal.push(strVal);
             }
         }
@@ -526,7 +526,7 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
         //console.log(`getMatchKeyAsObjects('${matchKey}'): `, retVal);
         return retVal;
     }
-    private candidateDataOnLeft(): boolean {
+    private get candidateDataOnLeft(): boolean {
         let candidateOnLeft = true;
         if(this._data && this._data.candidateVirtualEntity && this._data.inboundVirtualEntity) {
             let candidateRecCount   = this._data.candidateVirtualEntity.records && this._data.candidateVirtualEntity.records.length ? this._data.candidateVirtualEntity.records : 0;

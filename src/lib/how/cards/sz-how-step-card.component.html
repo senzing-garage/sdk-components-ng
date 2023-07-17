@@ -80,7 +80,7 @@
             <div class="row" *ngFor="let feature of dataRows; let i = index">
                 <div class="cell column-1">{{feature.featureType}}</div>
                 <div class="cell column-2">
-                    {{getDataRowColumn1Feature(feature)?.featureValue}}
+                    {{getDataRowColumn1Score(feature)?.featureValue}}
                 </div>
                 <div class="cell column-3"
                     [class.red-highlight]="isCellHighlightedRed(feature, feature.score)"
@@ -89,7 +89,7 @@
                     {{feature.score}}
                 </div>
                 <div class="cell column-4">
-                    {{getDataRowColumn2Feature(feature)?.featureValue}}
+                    {{getDataRowColumn2Score(feature)?.featureValue}}
                 </div>
             </div>
         </div>
