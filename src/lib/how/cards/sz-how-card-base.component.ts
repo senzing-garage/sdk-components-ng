@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy, Output, EventEmitter, ElementRef, 
 import { MatDialog } from '@angular/material/dialog';
 import { 
     EntityDataService as SzEntityDataService, 
-    SzFeatureScore, SzResolutionStep, SzVirtualEntity, SzVirtualEntityRecord, SzDataSourceRecordSummary 
+    SzFeatureScore, SzResolutionStep, SzScoredFeature, SzVirtualEntity, SzVirtualEntityRecord, SzDataSourceRecordSummary 
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../../services/sz-config-data.service';
 import { SzResolutionStepListItemType, SzResolutionStepDisplayType, SzResolutionStepNode, SzResolvedVirtualEntity } from '../../models/data-how';
@@ -202,6 +202,14 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     }
     get candidateVirtualEntity(): SzVirtualEntity | undefined {
         return (this._data && this._data.candidateVirtualEntity) ? this._data.candidateVirtualEntity : undefined ;
+    }
+    get column1VirtualEntity(): SzVirtualEntity | undefined {
+        let candidateOnLeft = this.candidateDataOnLeft;
+        return candidateOnLeft ? (this._data && this._data.candidateVirtualEntity ? this._data.candidateVirtualEntity : undefined) : (this._data && this._data.inboundVirtualEntity ? this._data.inboundVirtualEntity : undefined) ;
+    }
+    get column2VirtualEntity(): SzVirtualEntity | undefined {
+        let candidateOnLeft = this.candidateDataOnLeft;
+        return candidateOnLeft ? (this._data && this._data.inboundVirtualEntity ? this._data.inboundVirtualEntity : undefined) : (this._data && this._data.candidateVirtualEntity ? this._data.candidateVirtualEntity : undefined);
     }
     get inboundVirtualEntity(): SzVirtualEntity | undefined {
         return (this._data && this._data.inboundVirtualEntity) ? this._data.inboundVirtualEntity : undefined ;
@@ -410,7 +418,7 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
             });
 
             for (let [key, value] of _dataSourceCounts) {
-                let strVal  = value === 1 ? `${key} (${value}): ${cellSource.records[0].recordId}` : `${key} (${value})`;
+                let strVal  = value === 1 ? `${key}:${cellSource.records[0].recordId}` : `${key} (${value})`;
                 retVal.push(strVal);
             }
         }
@@ -419,6 +427,8 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
 
     public get dataRows(): SzFeatureScore[] {
         let retVal = [];
+        let candidateDataOnLeft = this.candidateDataOnLeft;
+
         if(this._data && this._data.matchInfo && this._data.matchInfo.featureScores) {
             let _tempMap = new Map<string,SzFeatureScore>();
             for(let fkey in this._data.matchInfo.featureScores) {
@@ -450,7 +460,14 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
         //console.info('dataRows: ', retVal, this.featureOrder);
         return retVal;
     }
-
+    public getDataRowColumn1Score(feature: SzFeatureScore): SzScoredFeature {
+        let candidateDataOnLeft = this.candidateDataOnLeft;
+        return candidateDataOnLeft ? feature.candidateFeature : feature.inboundFeature;
+    }
+    public getDataRowColumn2Score(feature: SzFeatureScore): SzScoredFeature {
+        let candidateDataOnLeft = this.candidateDataOnLeft;
+        return candidateDataOnLeft ? feature.candidateFeature : feature.inboundFeature;
+    }
     public get sourcesCount(): number {
         let res = this.getSourceAndRecordCount();
         return res.dataSources;
@@ -508,6 +525,15 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
         }
         //console.log(`getMatchKeyAsObjects('${matchKey}'): `, retVal);
         return retVal;
+    }
+    private get candidateDataOnLeft(): boolean {
+        let candidateOnLeft = true;
+        if(this._data && this._data.candidateVirtualEntity && this._data.inboundVirtualEntity) {
+            let candidateRecCount   = this._data.candidateVirtualEntity.records && this._data.candidateVirtualEntity.records.length ? this._data.candidateVirtualEntity.records : 0;
+            let inboundRecCount     = this._data.inboundVirtualEntity.records && this._data.inboundVirtualEntity.records.length ? this._data.inboundVirtualEntity.records : 0;
+            candidateOnLeft         = candidateRecCount <= inboundRecCount;
+        }
+        return candidateOnLeft;
     }
     protected isMatchKeyForFeaturePositive(feature: SzFeatureScore): boolean | undefined {
         let matchKeysAsObjects  = this.getMatchKeyAsObjects();

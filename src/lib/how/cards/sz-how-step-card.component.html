@@ -62,25 +62,25 @@
     <div class="column data-table horizontal">
         <div class="pre-head">
             <div class="cell"></div>
-            <div class="cell">{{candidateVirtualEntity?.virtualEntityId}}</div>
+            <div class="cell">{{column1VirtualEntity?.virtualEntityId}}</div>
             <div class="cell">Score</div>
-            <div class="cell">{{inboundVirtualEntity?.virtualEntityId}}</div>
+            <div class="cell">{{column2VirtualEntity?.virtualEntityId}}</div>
         </div>
         <div class="head">
             <div class="cell column-1">Sources ({{sourcesCount}}) / Records ({{recordsCount}})</div>
             <div class="cell column-2">
-                {{getSourcesAndRecordsForEntity(candidateVirtualEntity)}}
+                {{getSourcesAndRecordsForEntity(column1VirtualEntity)}}
             </div>
             <div class="cell column-3">N/A</div>
             <div class="cell column-4">
-                {{getSourcesAndRecordsForEntity(inboundVirtualEntity)}}
+                {{getSourcesAndRecordsForEntity(column2VirtualEntity)}}
             </div>
         </div>
         <div class="body">
             <div class="row" *ngFor="let feature of dataRows; let i = index">
                 <div class="cell column-1">{{feature.featureType}}</div>
                 <div class="cell column-2">
-                    {{feature.candidateFeature?.featureValue}}
+                    {{getDataRowColumn1Score(feature)?.featureValue}}
                 </div>
                 <div class="cell column-3"
                     [class.red-highlight]="isCellHighlightedRed(feature, feature.score)"
@@ -89,7 +89,7 @@
                     {{feature.score}}
                 </div>
                 <div class="cell column-4">
-                    {{feature.inboundFeature?.featureValue}}
+                    {{getDataRowColumn2Score(feature)?.featureValue}}
                 </div>
             </div>
         </div>
