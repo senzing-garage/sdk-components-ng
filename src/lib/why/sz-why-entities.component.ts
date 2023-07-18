@@ -121,6 +121,30 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
             }
             return retVal;
         }
+        let sortByScore = (data: (SzFeatureScore | SzEntityFeatureWithScoring | SzCandidateKey)[]) => {
+             // sort by feature scores if present
+             data = data.sort((rowA, rowB)=>{
+                let rowAAsScored    = (rowA as SzEntityFeatureWithScoring);
+                let rowBAsScored    = (rowB as SzEntityFeatureWithScoring);
+
+                let rowASortValue   = rowAAsScored.primaryId;
+                let rowBSortValue   = rowBAsScored.primaryId;
+
+                if(rowA && rowAAsScored.scoringDetails) {
+                    rowASortValue = rowAAsScored.scoringDetails.score;
+                }
+                if(rowB && rowBAsScored.scoringDetails) {
+                    rowBSortValue = rowBAsScored.scoringDetails.score;
+                }
+                if(rowAAsScored && rowBAsScored && rowAAsScored.scoringDetails && rowBAsScored.scoringDetails){
+                    // we want to list 'descending' from highest score
+                    return rowBSortValue - rowASortValue;
+                }
+                // for items with no scores move to bottom
+                return -1;
+            });
+            return data;
+        }
         _retVal = Object.assign(_retVal, {
             'NAME': (data: (SzFeatureScore | SzEntityFeatureWithScoring | SzCandidateKey)[], fieldName?: string, mk?: string) => {
                 let _retVal = undefined;
@@ -128,25 +152,8 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
 
                 if(data && data.length > 0 && data.forEach) {
                     // sort by feature scores if present
-                    data = data.sort((rowA, rowB)=>{
-                        let rowAAsScored    = (rowA as SzEntityFeatureWithScoring);
-                        let rowBAsScored    = (rowB as SzEntityFeatureWithScoring);
-
-                        let rowASortValue   = rowAAsScored.primaryId;
-                        let rowBSortValue   = rowBAsScored.primaryId;
-
-                        if(rowA && rowAAsScored.scoringDetails) {
-                            rowASortValue = rowAAsScored.scoringDetails.score;
-                        }
-                        if(rowB && rowBAsScored.scoringDetails) {
-                            rowBSortValue = rowBAsScored.scoringDetails.score;
-                        }
-                        if(rowAAsScored && rowBAsScored && rowAAsScored.scoringDetails && rowBAsScored.scoringDetails){
-                            // we want to list 'descending' from highest score
-                            return rowBSortValue - rowASortValue;
-                        }
-                        return rowASortValue - rowBSortValue;
-                    });
+                    data = sortByScore(data);
+                    let entryIndex = -1;
                     data.forEach((_d)=>{
                         // for each item render a line
                         let isEntityFeature = (_d as SzEntityFeature) && (_d as SzEntityFeature).featureDetails;
@@ -157,6 +164,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                             let _allScoreDetails = (_d as SzEntityFeatureWithScoring).featureScores ? (_d as SzEntityFeatureWithScoring).featureScores : undefined;
                             if(_feat.featureDetails && _feat.featureDetails.forEach){
                                 _feat.featureDetails.forEach((fd)=>{
+                                    entryIndex++;
                                     // check if it has a duplicate value
                                     // if yes add a '└'
                                     let isDuplicate = false;
@@ -169,7 +177,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                                     }
                                     if(!isDuplicate) {
                                         //_retVal += fd.featureValue;
-                                        if(_scoreDetails){
+                                        if(_scoreDetails && entryIndex === 0){
                                             let idsInScore = [_scoreDetails.candidateFeature.featureId, _scoreDetails.inboundFeature.featureId];
                                             let featIsInScore   = idsInScore.indexOf(fd.internalId) > -1;
                                             // is scored name, add colors
@@ -237,6 +245,9 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
             'ADDRESS': (data: (SzFeatureScore | SzCandidateKey | SzEntityFeatureWithScoring)[], fieldName?: string, mk?: string) => {
                 let _retVal = undefined;
                 if(data && data.length > 0 && data.forEach) {
+                    let entryIndex = -1;
+                    // sort by feature scores if present
+                    data = sortByScore(data);
                     data.forEach((_d)=>{
                         // for each item render a line
                         if((_d as SzEntityFeature).featureDetails) {
@@ -246,6 +257,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
 
                             if(_feat.featureDetails && _feat.featureDetails.forEach){
                                 _feat.featureDetails.forEach((fd)=>{
+                                    entryIndex++;
                                     // check if it has a duplicate value
                                     // if yes add a '└'
                                     if(!_retVal) { _retVal = ``; }
@@ -253,13 +265,17 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                                         let idsInScore = [_scoreDetails.candidateFeature.featureId, _scoreDetails.inboundFeature.featureId];
                                         let featIsInScore   = idsInScore.indexOf(fd.internalId) > -1;
                                         // is scored name, add colors
-                                        let c = _colors[_scoreDetails.scoringBucket] && featIsInScore && featureIsInMatchKey('NAME', mk) ? 'color-'+ _colors[_scoreDetails.scoringBucket] : '';
+                                        let c = _colors[_scoreDetails.scoringBucket] && featIsInScore && featureIsInMatchKey('ADDRESS', mk) && entryIndex === 0 ? 'color-'+ _colors[_scoreDetails.scoringBucket] : '';
                                         _retVal += `<span class="score-${_scoreDetails.scoringBucket} ${c}">`;
                                         let stats = fBId && fBId.has(fd.internalId) ? fBId.get(fd.internalId) : false;
                                         if(featIsInScore){
                                             _retVal += fd.featureValue;
+                                            
                                             if(stats && stats.statistics && stats.statistics.entityCount) {
                                                 _retVal += ` [${stats.statistics.entityCount}]`;
+                                            }
+                                            if(stats && stats.statistics && entryIndex === 0) {
+                                                _retVal += ` (${_scoreDetails.score})`;
                                             }
                                         } else {
                                             _retVal += fd.featureValue;
@@ -297,6 +313,29 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                 let _retVal = '';
                 let mkAsMap = mk ? getMapFromMatchKey(mk) : undefined;
                 if(data && data.length > 0 && data.forEach) {
+                    let entryIndex = -1;
+                    let entriesAlreadyPrinted = [];
+
+                    data = data.sort((rowA, rowB)=>{
+                        let rowAAsScored    = (rowA as SzEntityFeatureWithScoring);
+                        let rowBAsScored    = (rowB as SzEntityFeatureWithScoring);
+        
+                        let rowASortValue   = rowAAsScored.primaryId;
+                        let rowBSortValue   = rowBAsScored.primaryId;
+        
+                        if(rowA && rowAAsScored.scoringDetails) {
+                            rowASortValue = rowAAsScored.scoringDetails.score;
+                        }
+                        if(rowB && rowBAsScored.scoringDetails) {
+                            rowBSortValue = rowBAsScored.scoringDetails.score;
+                        }
+                        if(rowAAsScored && rowBAsScored && rowAAsScored.scoringDetails && rowBAsScored.scoringDetails){
+                            // we want to list 'descending' from highest score
+                            return rowBSortValue - rowASortValue;
+                        }
+                        // for items with no scores move to bottom
+                        return -1;
+                    });
                     data.forEach((_d, i) => {
                         // for each item render a line
                         if((_d as SzEntityFeature).featureDetails) {
@@ -308,43 +347,57 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                             if(_feat.featureDetails && _feat.featureDetails.forEach){
                                 let uniqueFeatureDetails = _feat.featureDetails;
                                 uniqueFeatureDetails.forEach((fd)=>{
+                                    entryIndex++;
+                                    let isDuplicate = entriesAlreadyPrinted.indexOf(fd.featureValue) > -1;
+                                    entriesAlreadyPrinted.push(fd.featureValue);
                                     if(!_retVal) { _retVal = ``; }
-                                    if(_scoreDetails){
-                                        let idsInScore = [_scoreDetails.candidateFeature.featureId, _scoreDetails.inboundFeature.featureId];
-                                        let featIsInScore   = idsInScore.indexOf(fd.internalId) > -1;
-                                        // is scored name, add colors
-                                        let fInMatchKey = featureIsInMatchKey2(fd, fieldName, _allScoreDetails, mkAsMap);
-                                        let c           = fInMatchKey ? 'color-'+ _colors[_scoreDetails.scoringBucket] : '';
-                                        
-                                        _retVal += `<span class="score-${_scoreDetails.scoringBucket} ${c}">`;
-                                        let stats = fBId && fBId.has(fd.internalId) ? fBId.get(fd.internalId) : false;
-                                        if(featIsInScore){
-                                            _retVal += fd.featureValue;
-                                            if(stats && stats.statistics && stats.statistics.entityCount) {
-                                                _retVal += ` [${stats.statistics.entityCount}]`;
-                                            }                                            
-                                            if(['SAME','CLOSE','PLAUSIBLE'].indexOf(_scoreDetails.scoringBucket) > -1) {
-                                                _retVal += '\n<span class="child-node"></span>';
-                                                if(fd.internalId === _scoreDetails.candidateFeature.featureId) {
-                                                    // show "inboundFeature"
-                                                    _retVal += _scoreDetails.inboundFeature.featureValue;
-                                                } else {
-                                                    _retVal += _scoreDetails.candidateFeature.featureValue;
+                                    if(!isDuplicate) {
+                                        if(_scoreDetails){
+                                            let idsInScore = [_scoreDetails.candidateFeature.featureId, _scoreDetails.inboundFeature.featureId];
+                                            let featIsInScore   = idsInScore.indexOf(fd.internalId) > -1;
+                                            // is scored name, add colors
+                                            let fInMatchKey = featureIsInMatchKey2(fd, fieldName, _allScoreDetails, mkAsMap);
+                                            let c           = fInMatchKey && entryIndex === 0 ? 'color-'+ _colors[_scoreDetails.scoringBucket] : '';
+                                            
+                                            _retVal += `<span class="score-${_scoreDetails.scoringBucket} ${c}">`;
+                                            let stats = fBId && fBId.has(fd.internalId) ? fBId.get(fd.internalId) : false;
+                                            if(featIsInScore){
+                                                _retVal += fd.featureValue;
+                                                if(stats && stats.statistics && stats.statistics.entityCount) {
+                                                    _retVal += ` [${stats.statistics.entityCount}]`;
+                                                }
+                                                if(entryIndex === 0 && (
+                                                    (fd.internalId === _scoreDetails.candidateFeature.featureId) || 
+                                                    (fd.internalId === _scoreDetails.inboundFeature.featureId)
+                                                )) {
+                                                    _retVal += '\n<span class="child-node"></span>';
+                                                    if(fd.internalId === _scoreDetails.candidateFeature.featureId) {
+                                                        // show "inboundFeature"
+                                                        _retVal += _scoreDetails.inboundFeature.featureValue;
+                                                    } else {
+                                                        _retVal += _scoreDetails.candidateFeature.featureValue;
+                                                    }
+                                                }
+                                                if(entryIndex === 0 && _scoreDetails && _scoreDetails.score) {
+                                                    _retVal += ` (${_scoreDetails.score})`;
+                                                }
+                                            } else {
+                                                _retVal += fd.featureValue;
+                                                if(stats && stats.statistics && stats.statistics.entityCount) {
+                                                    _retVal += ` [${stats.statistics.entityCount}]`;
                                                 }
                                             }
+
+                                            _retVal += `</span>\n`;
                                         } else {
-                                            _retVal += fd.featureValue;
-                                            if(stats && stats.statistics && stats.statistics.entityCount) {
-                                                _retVal += ` [${stats.statistics.entityCount}]`;
-                                            }
+
+                                            _retVal += fd.featureValue+`\n`;
                                         }
-                                        _retVal += '</span>\n';
-                                    } else {
-                                        _retVal += fd.featureValue+'\n';
                                     }
                                 });
                             }
                         } else if((_d as SzCandidateKey).featureType) {
+                            entryIndex++;
                             // candidate key
                             let f = (_d as SzCandidateKey);
                             let stats = fBId && fBId.has(f.featureId) ? fBId.get(f.featureId).statistics : false;
