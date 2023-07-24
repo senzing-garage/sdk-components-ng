@@ -466,7 +466,7 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     }
     public getDataRowColumn2Score(feature: SzFeatureScore): SzScoredFeature {
         let candidateDataOnLeft = this.candidateDataOnLeft;
-        return candidateDataOnLeft ? feature.candidateFeature : feature.inboundFeature;
+        return candidateDataOnLeft ? feature.inboundFeature : feature.candidateFeature;
     }
     public get sourcesCount(): number {
         let res = this.getSourceAndRecordCount();
