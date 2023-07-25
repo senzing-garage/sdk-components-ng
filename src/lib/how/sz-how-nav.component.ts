@@ -33,7 +33,8 @@ export interface SzResolutionStepListItem extends SzResolutionStep {
     description: {text: string, cssClasses: string[]}[],
     recordIds?: string[],
     dataSources?: string[],
-    freeTextTerms?: string[]
+    freeTextTerms?: string[],
+    fullTextTerms?: string[],
 }
 /**
  * @internal
@@ -300,7 +301,7 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
                     recordIds: this.getStepListItemRecords(_s),
                     dataSources: this.getStepListItemDataSources(_s)
                 }, _s);
-                _t.freeTextTerms = this.getStepListItemFreeTextTerms(_t)
+                _t.freeTextTerms    = this.getStepListItemFreeTextTerms(_t);
                 return _t;
             });
         }
@@ -395,7 +396,7 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
                 let _hasMatchingRecords = step.recordIds.some((recordId: string) => {
                     return recordId.toUpperCase().trim().startsWith(_critStr);
                 });
-                // for matching individual words like compound ters like "Jenny Smith"
+                // for matching individual words like compound terms like "Jenny Smith"
                 // or "Create V2000-4"
                 // result must match ALL words in search
                 let _hasMatchingTerms   = _critTerms.every(sTermTag => {
@@ -405,8 +406,9 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
                 });
                 // for matching things like multi-word address, full name etc
                 let _hasMatchingTerm    = step.freeTextTerms.some((termTag) => {
-                    return termTag.toUpperCase().startsWith(_critTerm.toUpperCase());
-                })             
+                    return termTag.toUpperCase().indexOf(_critTerm.toUpperCase()) > -1; // changed to match full search term at any position in keyterms
+                    //return termTag.toUpperCase().startsWith(_critTerm.toUpperCase()); // has to match search term from the beginning of keyterm
+                })
                 return _hasMatchingRecords || _hasMatchingTerms || _hasMatchingTerm ? true : false;
             });
         }
