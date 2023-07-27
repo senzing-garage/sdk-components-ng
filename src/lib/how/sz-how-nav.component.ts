@@ -406,15 +406,13 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
                 });
                 // for matching things like multi-word address, full name etc
                 let _hasMatchingTerm    = step.freeTextTerms.some((termTag) => {
-                    return termTag.toUpperCase().indexOf(_critTerm.toUpperCase()) > -1; // changed to match full search term at any position in keyterms
+                    return termTag.toUpperCase().indexOf(' '+_critTerm.toUpperCase()) > -1 || termTag.toUpperCase().startsWith(_critTerm.toUpperCase());
+                    //return termTag.toUpperCase().indexOf(_critTerm.toUpperCase()) > -1; // changed to match full search term at any position in keyterms
                     //return termTag.toUpperCase().startsWith(_critTerm.toUpperCase()); // has to match search term from the beginning of keyterm
-                })
+                });
                 return _hasMatchingRecords || _hasMatchingTerms || _hasMatchingTerm ? true : false;
             });
         }
-
-        //console.log('filteredListSteps: ', oVal, retVal);
-
         return retVal;
     }
 
@@ -545,18 +543,32 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
             retVal = retVal.concat(step.title.split(' '));
         }
         if(step.description && step.description.length > 0) {
-            /*
-            let _desc = [{text: 'Virtual Entity V509570-S1', cssClasses: []},
-            {text: 'Virtual Entity V401992-S2', cssClasses: Array(1)},
-            {text: 'Virtual Entity V401992-S3', cssClasses: Array(1)}]
-            .forEach((desc: {text: string, cssClasses: string[]}) => {
-                retVal = retVal.concat(desc.text.split(' '));
-            });*/
             step.description.forEach((desc: {text: string, cssClasses: string[]}) => {
                 retVal = retVal.concat(desc.text.split(' '));
             });
             retVal = retVal.concat(step.title.split(' '));
         }
+        if(step && step.matchInfo && step.matchInfo.featureScores && Object.keys(step.matchInfo.featureScores).length > 0) {
+            for(let fKey in step.matchInfo.featureScores) {
+                let featBucket = step.matchInfo.featureScores[fKey];
+                if(featBucket && featBucket.length > 0) {
+                    // sort featBucket by highest score
+                    featBucket = featBucket.sort((featA, featB) => {
+                        return (featA.score > featB.score) ? -1 : 1;
+                    });
+                    // just take the top 1 result
+                    if(featBucket && featBucket[0]) {
+                        if(featBucket[0] && featBucket[0].inboundFeature && !retVal.includes(featBucket[0].inboundFeature.featureValue)) {
+                            retVal.push(featBucket[0].inboundFeature.featureValue);
+                        }
+                        if(featBucket[0] && featBucket[0].candidateFeature && !retVal.includes(featBucket[0].candidateFeature.featureValue)) {
+                            retVal.push(featBucket[0].candidateFeature.featureValue);
+                        }
+                    }
+                }
+            }
+        }
+        /*
         if(step.resolvedVirtualEntityId && this._virtualEntitiesById && this._virtualEntitiesById.has && this._virtualEntitiesById.has(step.resolvedVirtualEntityId)) {
             // add important data from result entity in to search
             let termsToAdd = [];
@@ -576,7 +588,7 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
                 }
             }
             retVal = retVal.concat(termsToAdd);
-        }
+        }*/
         let ret = [...new Set(retVal)];
         //console.log(`getStepListItemFreeTextTerms()`, ret, step, this._virtualEntitiesById);
         return ret;
