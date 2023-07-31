@@ -84,7 +84,8 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
     if(results[1]){ 
       this._orderedFeatureTypes = this._rows.map((fr)=>{ return fr.key}).concat(results[1]);
     }
-    this._featureStatsById  = this.getFeatureStatsByIdFromEntityData(this._entities);
+    this._featureStatsById    = this.getFeatureStatsByIdFromEntityData(this._entities);
+    this._featuresByDetailIds = this.getFeaturesByDetailIdFromEntityData(this._entities);
     //console.log(`SzWhyEntityComponent._featureStatsById: `, this._featureStatsById);
 
     this._shapedData    = this.transformData(this._data, this._entities);
@@ -93,7 +94,7 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
     // can iterate by those and blank out cells that are missing
     this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
     this._headers       = this.getHeadersFromData(this._shapedData);
-    //console.warn('SzWhyEntityComponent.getWhyData: ', results, this._rows, this._shapedData);
+    console.warn('SzWhyEntityComponent.getWhyData: ', results, this._rows, this._shapedData);
     this.onResult.emit(this._data);
     this.onRowsChanged.emit(this._rows);
   }

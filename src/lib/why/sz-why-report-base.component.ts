@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { EntityDataService, SzCandidateKey, SzDetailLevel, SzEntityData, SzEntityFeature, SzEntityFeatureDetail, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntitiesResult, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
 import { Observable, Subject, takeUntil, zip } from 'rxjs';
-import { getArrayOfPairsFromMatchKey, parseSzIdentifier } from '../common/utils';
+import { getMapFromMatchKey, getArrayOfPairsFromMatchKey, parseSzIdentifier } from '../common/utils';
 import { SzConfigDataService } from '../services/sz-config-data.service';
-import { SzWhyEntityColumn, SzWhyEntityHTMLFragment, SzWhyFeatureRow } from '../models/data-why';
+import { SzEntityFeatureWithScoring, SzWhyEntityColumn, SzWhyEntityHTMLFragment, SzWhyFeatureRow } from '../models/data-why';
 
 @Component({
     selector: 'sz-why-entity-base',
@@ -29,6 +29,8 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
      * @internal 
      */
     protected _featureStatsById: Map<number, SzEntityFeatureDetail>;
+    protected _featuresByDetailIds: Map<number, SzEntityFeature>;
+    
     /** data thats ready to be used for UI/UX rendering, multiple fields
      * concatenated in to meta-fields, embedded line breaks, html tags etc.
      */
@@ -108,7 +110,8 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
      * @internal
      */
     protected get _renderers() {
-      let fBId = this._featureStatsById;
+      let fBId    = this._featureStatsById;
+      let fBDId = this._featuresByDetailIds;
       let _colors = {'CLOSE':'green','SAME':'green'};
       let featureIsInMatchKey = (f, mk): boolean => {
         let _r = false;
@@ -116,12 +119,31 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
           _r = mk.indexOf(f) > -1;
         }
         return _r;
-      } 
+      }
+      let sortByScore = (data: (SzFeatureScore | SzEntityFeatureWithScoring | SzCandidateKey)[]) => {
+        // sort by feature scores if present
+        data = data.sort((rowA, rowB)=>{
+          let rowAAsScored    = (rowA as SzFeatureScore);
+          let rowBAsScored    = (rowB as SzFeatureScore);
+          let rowASortValue   = rowAAsScored.score;
+          let rowBSortValue   = rowBAsScored.score;
+
+          if(rowAAsScored && rowBAsScored){
+            // we want to list 'descending' from highest score
+            return rowBSortValue - rowASortValue;
+          }
+          // for items with no scores move to bottom
+          return -1;
+        });
+        return data;
+      }
       return {
-        'NAME': (data: (SzFeatureScore | SzCandidateKey | SzEntityFeature)[], fieldName?: string, mk?: string) => {
+        'NAME': (data: (SzFeatureScore | SzEntityFeatureWithScoring | SzCandidateKey)[], fieldName?: string, mk?: string) => {
           let retVal = '';
-          let _filteredData = data;
+          let _filteredData = sortByScore(data);
+          let entryIndex = -1;
           if(data && data.filter && data.some) {
+            /*
             let hasSame       = data.some((_a)=>{ return (_a as SzFeatureScore).scoringBucket === 'SAME'; });
             let hasClose      = data.some((_a)=>{ return (_a as SzFeatureScore).scoringBucket === 'CLOSE'; });
             let hasPlausible  = data.some((_a)=>{ return (_a as SzFeatureScore).scoringBucket === 'PLAUSIBLE'; });
@@ -131,15 +153,26 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
               let isFeatureScore = (addrScore as SzFeatureScore) && (addrScore as SzFeatureScore).score > -1;
               return isFeatureScore ? (filterBuckets as string[]).indexOf((addrScore as SzFeatureScore).scoringBucket) > -1 : true;
             }) : data;
+            */
           }
           _filteredData.forEach((_feature, i) => {
             let le = (i < _filteredData.length-1) ? '\n': '';
+            entryIndex++;
+
             let isFeatureScore = (_feature as SzFeatureScore) && (_feature as SzFeatureScore).score > -1;
+            
             if(isFeatureScore && (_feature as SzFeatureScore).inboundFeature || (_feature as SzFeatureScore).candidateFeature) {
               let f = (_feature as SzFeatureScore);
-              let c = _colors[f.scoringBucket] && featureIsInMatchKey('NAME', mk) ? 'color-'+ _colors[f.scoringBucket] : '';
+              let c = entryIndex === 0 && _colors[f.scoringBucket] && featureIsInMatchKey('NAME', mk) ? 'color-'+ _colors[f.scoringBucket] : '';
               if(f.inboundFeature) { 
-                retVal += `<span class="${c}">`+f.inboundFeature.featureValue;
+                if(fBDId && fBDId.has(f.inboundFeature.featureId)){
+                  let _fbyDId = fBDId.get(f.inboundFeature.featureId);
+                  retVal += `<span class="${c}">`+f.inboundFeature.featureValue;
+                  console.log(`${f.inboundFeature.featureValue}(${f.inboundFeature.featureId}) has stats: `, _fbyDId);
+                } else {
+                  console.warn(`${f.inboundFeature.featureValue} has no feat: `,  fBDId);
+                  retVal += `<span class="${c}">`+f.inboundFeature.featureValue;
+                }
                 let stats = fBId && fBId.has(f.inboundFeature.featureId) ? fBId.get(f.inboundFeature.featureId) : false;
                 if(stats && stats.statistics && stats.statistics.entityCount) {
                   retVal += ` [${stats.statistics.entityCount}]`;
@@ -188,7 +221,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
           });
           return retVal;
         },
-        'ADDRESS': (data: (SzFeatureScore | SzCandidateKey)[], fieldName?: string, mk?: string) => {
+        'ADDRESS': (data: (SzFeatureScore | SzEntityFeatureWithScoring | SzCandidateKey)[], fieldName?: string, mk?: string) => {
           let retVal = '';
           let _filteredData = data;
           if(data && data.filter && data.some) {
@@ -443,6 +476,70 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
         }
         return _rows;
     }
+    
+    /** generate a map of features, keyed by id so we can get things like "duplicate" counts and 
+     * other meta data for display.
+     * @internal
+     */
+    protected getFeaturesByDetailIdFromEntityData(entities: SzEntityData[]): Map<number, SzEntityFeature> {
+      let retVal: Map<number, SzEntityFeature>;
+      if(entities && entities.length > 0) {
+        entities.forEach((rEntRes) => {
+          let _resolvedEnt = rEntRes.resolvedEntity;
+          if(_resolvedEnt && _resolvedEnt.features) {
+            for(let _fName in _resolvedEnt.features) {
+              let _fTypeArray = _resolvedEnt.features[_fName];
+              if(_fTypeArray && _fTypeArray.forEach) {
+                _fTypeArray.forEach((_feat) => {
+                  if(!retVal) {
+                    // make sure we've got a map initialized
+                    retVal = new Map<number, SzEntityFeature>();
+                  }
+                  // do "primaryValue" first
+                  if(retVal.has(_feat.primaryId)) {
+                    // ruh roh
+                    //console.warn(`Ruh Roh! (feature stat by id overwrite): ${_feat.primaryId}`);
+                  } else {
+                    //retVal.set(_feat.primaryId, Object.assign(_feat));
+                    if(_feat && _feat.featureDetails && _feat.featureDetails.forEach) {
+                      _feat.featureDetails.forEach((_featDetailItem) => {
+                        if(!retVal.has(_featDetailItem.internalId)) {
+                          // add stat
+                          retVal.set(_featDetailItem.internalId, _feat);
+                        }
+                      });
+                    }
+                    /*
+                    // for each item in the details array create an entry by the items internal featureId
+                    if(_feat && _feat.featureDetails && _feat.featureDetails.forEach) {
+                      _feat.featureDetails.forEach((_featDetailItem) => {
+                        if(!retVal.has(_featDetailItem.internalId)) {
+                          // add stat
+                          retVal.set(_featDetailItem.internalId, _featDetailItem);
+                        }
+                      });
+                    }*/
+                  }
+                });
+              }
+            }
+          }
+        });
+      }
+      if(retVal && retVal.size > 0) {
+        // sort array by id's fer goblin-sake
+        retVal = new Map([...retVal.entries()].sort((a, b) => {
+          if ( a[0] < b[0] ){
+            return -1;
+          }
+          if ( a[0] > b[0] ){
+            return 1;
+          }
+          return 0;
+        }));
+      }
+      return retVal;
+    }
     /** generate a map of feature stats, keyed by id so we can get things like "duplicate" counts and 
      * other meta data for display.
      * @internal
@@ -550,7 +647,8 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
       if(results[1]){ 
         this._orderedFeatureTypes = this._rows.map((fr)=>{ return fr.key}).concat(results[1]);
       }
-      this._featureStatsById  = this.getFeatureStatsByIdFromEntityData(this._entities);
+      this._featureStatsById    = this.getFeatureStatsByIdFromEntityData(this._entities);
+      this._featuresByDetailIds = this.getFeaturesByDetailIdFromEntityData(this._entities);
       //console.log(`SzWhyEntityComponent._featureStatsById: `, this._featureStatsById);
 
       this._shapedData    = this.transformData(this._data, this._entities);
@@ -559,6 +657,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
       // can iterate by those and blank out cells that are missing
       this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
       this._headers       = this.getHeadersFromData(this._shapedData);
+      console.warn('SzWhyEntitiesComparisonComponent.rows: ', this._rows);
     }
     /**
      * Extends the data response from the why api with data found "rows" that can be more directly utilized by the rendering template.
@@ -595,6 +694,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
             'WHY_RESULT': (matchWhyResult.matchInfo.matchLevel !== 'NO_MATCH') ? {key: matchWhyResult.matchInfo.whyKey, rule: matchWhyResult.matchInfo.resolutionRule} : undefined
           }, matchWhyResult.matchInfo.featureScores)
         },  matchWhyResult.perspective, matchWhyResult);
+        // sort rows by feature values
         for(let k in _tempRes.rows) {
           if(_tempRes && _tempRes.rows && _tempRes.rows[k] && _tempRes.rows[k].sort) {
             _tempRes.rows[k] = _tempRes.rows[k].sort((a, b)=>{
@@ -608,6 +708,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
             });
           }
         }
+        // extend rows with "scoringDetails"
         
         if(matchWhyResult.matchInfo && matchWhyResult.matchInfo.candidateKeys) {
           // add "candidate keys" to features we want to display
