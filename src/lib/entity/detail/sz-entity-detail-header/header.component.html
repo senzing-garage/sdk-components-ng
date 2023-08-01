@@ -32,16 +32,19 @@
         [disabled]="howButtonDisabled"
         >How Report<mat-icon class="how-report-icon" fontIcon="insert_chart_outlined"></mat-icon></button>
       </div>
-      <div *ngIf="showReEvaluateFunction"
+      <div *ngIf="requiresReEvaluation"
         matTooltipPosition="above"
         matTooltip="Entity needs re evaluation."
         [matTooltipDisabled]="!howButtonDisabled"
       >
-        <button *ngIf="showReEvaluateFunction" class="detail-header-reevaluate-button" mat-stroked-button 
+        <button *ngIf="showReEvaluateButton" class="detail-header-reevaluate-button" mat-stroked-button 
         (click)="onReEvaluateButtonClickHandler($event)"
         color="accent"
         [disabled]="reEvaluateButtonDisabled"
         >Re-Evaluate<mat-icon class="why-report-icon" fontIcon="merge_type"></mat-icon></button>
+        <div *ngIf="showReEvaluateMessage && !showReEvaluateButton" class="detail-header-reevaluate-message">
+          {{reEvaluationMessage}}
+        </div>
       </div>
     </div>
     <div class="detail-header__top-right">

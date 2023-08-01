@@ -141,7 +141,11 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private _openWhyComparisonModalOnClick: boolean = true;
   // how utilities
   private _showEntityHowFunction: boolean       = false;
-  private _showReEvaluateFunction: boolean      = false;
+  private _enableReEvaluateFunction: boolean    = false;
+  private _entityRequiresReEvaluation: boolean  = false;
+  private _showReEvaluateButton: boolean        = false;
+  private _reEvaluationMessage: string          = "Entity needs to be Re-Evaluated before the How Report can be generated. Contact your Senzing admin."
+  private _showReEvaluateMessage: boolean       = true;
   private _entityHasHowSteps: boolean           = undefined;
   private _dynamicHowFeatures: boolean          = false;
   private _showHowFunctionWarnings: boolean     = false;
@@ -304,13 +308,42 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     }
     this._showEntityHowFunction = value;
   }
-  /** whether or not the "reevaluate" button*/
-  public get showReEvaluateFunction(): boolean {
-    return this._showReEvaluateFunction;
+  /** whether or not to show the "re-evaluate" button AND/OR message when needed */
+  public get enableReEvaluateFunction(): boolean {
+    return this._enableReEvaluateFunction;
   }
-  /** whether or not to show the "re-evaluate" button */
-  @Input() set showReEvaluateFunction(value: boolean) {
-    this._showReEvaluateFunction = value;
+  /** whether or not to show the "re-evaluate" button AND/OR message when needed */
+  @Input() set enableReEvaluateFunction(value: boolean) {
+    this._enableReEvaluateFunction = value;
+  }
+
+  /** whether or not the "reevaluate" messaging shows when needed*/
+  public get showReEvaluateMessage(): boolean {
+    return this._showReEvaluateMessage;
+  }
+  /** whether or not the "reevaluate" messaging shows when needed*/
+  @Input() set showReEvaluateMessage(value: boolean) {
+    this._showReEvaluateMessage = value;
+  }
+  /** whether or not the "reevaluate" button shows when needed*/
+  public get showReEvaluateButton(): boolean {
+    return this._showReEvaluateButton;
+  }
+  /** whether or not the "reevaluate" button shows when needed*/
+  @Input() set showReEvaluateButton(value: boolean) {
+    this._showReEvaluateButton = value;
+  }
+  /** whether or not the "reevaluate" messaging */
+  public get entityRequiresReEvaluation(): boolean {
+    return this._entityRequiresReEvaluation;
+  }
+  /** message to show when re-evalution is required */
+  public get reEvaluateMessage(): string {
+    return this._reEvaluationMessage;
+  }
+  /** message to show when re-evalution is required */
+  @Input() set reEvaluateMessage(value: string) {
+    this._reEvaluationMessage = value;
   }
   /** when set to true a request to the how report for the entity is made to check whether or not anything 
    * would be displayed and if the result has no steps in it's "resolutionSteps" collection when the user clicks
@@ -1167,8 +1200,8 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.howReportUnavailable.emit(!results[0]);
       }
       if(this._dynamicHowFeatures) {
-        this._howFunctionDisabled     = (this._dynamicHowFeatures && !results[0]);
-        this._showReEvaluateFunction  = (this._dynamicHowFeatures && !results[0]);
+        this._howFunctionDisabled         = (this._dynamicHowFeatures && !results[0]);
+        this._entityRequiresReEvaluation  = (this._dynamicHowFeatures && !results[0]);
       }
     })
     if(this._entityId){

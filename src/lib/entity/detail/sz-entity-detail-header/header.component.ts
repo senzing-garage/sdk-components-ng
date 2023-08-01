@@ -396,7 +396,7 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     return this._howButtonDisabled;
   }
   public howButtonTooltipText(): string {
-    if(this.showReEvaluateFunction && this._howButtonDisabled) {
+    if(this._requiresReEvaluation && this._howButtonDisabled) {
       return "How not available. Entity needs re evaluation.";
     }
     return this._howButtonDisabled ? "How not available. No resolution was required. " : "Click to see How this entity was resolved";
@@ -423,8 +423,11 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
   }
 
   /** @internal */
-  private _showReEvaluateFunction: boolean = false;
-  private _reEvaluateButtonDisabled: boolean = false;
+  private _requiresReEvaluation: boolean      = false;
+  private _showReEvaluateButton: boolean      = false;
+  private _showReEvaluateMessage: boolean     = true;
+  private _reEvaluateButtonDisabled: boolean  = false;
+  private _reEvaluationMessage: string        = "Entity needs re evaluation.";
   /** whether or not to disable the "Re-Evaluate" under the entity icon is disabled*/
   @Input() public set reEvaluateButtonDisabled(value: boolean) {
     this._reEvaluateButtonDisabled = value;
@@ -433,14 +436,40 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
   public get reEvaluateButtonDisabled(): boolean {
     return this._reEvaluateButtonDisabled;
   }
-  /** whether or not to show the "Why button" under the entity icon */
-  @Input() public set showReEvaluateFunction(value: boolean) {
-    this._showReEvaluateFunction = value;
+
+  /** whether or not the entity requires re-evaluation*/
+  @Input() public set requiresReEvaluation(value: boolean) {
+    this._requiresReEvaluation = value;
   }
-  /** whether or not the "Why button" under the entity icon is being shown*/
-  public get showReEvaluateFunction(): boolean {
-    return this._showReEvaluateFunction;
+  /** whether or not the entity requires re-evaluation*/
+  public get requiresReEvaluation(): boolean {
+    return this._requiresReEvaluation;
   }
+  /** whether or not "re-evaluate" button is shown when "requiresReEvaluation" equals true */
+  @Input() public set showReEvaluateButton(value: boolean) {
+    this._showReEvaluateButton = value;
+  }
+  /** whether or not "re-evaluate" button is shown when "requiresReEvaluation" equals true */
+  public get showReEvaluateButton(): boolean {
+    return this._showReEvaluateButton;
+  }
+  /** whether or not "re-evaluate" messaging is shown when "requiresReEvaluation" equals true */
+  @Input() public set showReEvaluateMessage(value: boolean) {
+    this._showReEvaluateMessage = value;
+  }
+  /** whether or not "re-evaluate" messaging is shown when "requiresReEvaluation" equals true */
+  public get showReEvaluateMessage(): boolean {
+    return this._showReEvaluateMessage;
+  }
+  /** when "showReEvaluateMessage" is true this message is shown to the user */
+  @Input() public set reEvaluationMessage(value: string) {
+    this._reEvaluationMessage = value;
+  }
+  /** when "showReEvaluateMessage" is true this message is shown to the user */
+  public get reEvaluationMessage(): string {
+    return this._reEvaluationMessage;
+  }
+  
   /** 
    * when the user clicks the "how" button (if enabled with "showHowFunction") 
    * @internal
