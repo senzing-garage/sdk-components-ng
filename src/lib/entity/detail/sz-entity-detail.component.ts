@@ -7,6 +7,7 @@ import { TemplatePortal } from '@angular/cdk/portal';
 
 import {
   SzEntityData,
+  EntityDataService as SzEntityDataService,
   SzRelatedEntity,
   SzEntityRecord,
   SzRelationshipType,
@@ -139,29 +140,45 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private _showRelatedWhyNotUtilities: boolean = false;
   private _openWhyComparisonModalOnClick: boolean = true;
   // how utilities
-  private _showEntityHowFunction: boolean = false;
-  private _entityHasHowSteps: boolean = undefined;
-  private _dynamicHowFeatures: boolean = false;
-  private _showHowFunctionWarnings: boolean = false;
-  private _howFunctionDisabled: boolean = false;
+  private _showEntityHowFunction: boolean       = false;
+  private _enableReEvaluateFunction: boolean    = false;
+  private _entityRequiresReEvaluation: boolean  = false;
+  private _showReEvaluateButton: boolean        = false;
+  private _reEvaluationMessage: string          = "Entity needs to be Re-Evaluated before the How Report can be generated. Contact your Senzing admin."
+  private _showReEvaluateMessage: boolean       = true;
+  private _entityHasHowSteps: boolean           = undefined;
+  private _dynamicHowFeatures: boolean          = false;
+  private _showHowFunctionWarnings: boolean     = false;
+  private _howFunctionDisabled: boolean         = false;
+  private _reEvaluateButtonDisabled: boolean    = false;
+  private _entityNeedsReEvaluation: boolean     = false;
   // graph utilities
   private _showGraphNodeContextMenu: boolean = false;
   private _showGraphLinkContextMenu: boolean = false;
 
   /** @internal */
   private _headerHowButtonClicked: Subject<howClickEvent> = new Subject<howClickEvent>();
-  /** (Observeable) when the user clicks on the "Why" button in header under the icon */
+  /** (Observeable) when the user clicks on the "how" button in header under the icon */
   public headerHowButtonClicked = this._headerHowButtonClicked.asObservable();
   /** (Event Emitter) when the user clicks on the "How" button in header under the icon */
   @Output() howButtonClick        = new EventEmitter<howClickEvent>();
+  @Output() reEvaluateButtonClick = new EventEmitter<howClickEvent>();
   /** (Event Emitter) when the how report would have no resolution steps resulting in an empty report */
   @Output() howReportUnavailable  = new EventEmitter<boolean>();
+  @Output() requiresReEvaluation  = new EventEmitter<boolean>();
+
   /** @internal */
   private _headerWhyButtonClicked: Subject<SzEntityIdentifier> = new Subject<SzEntityIdentifier>();
   /** (Observeable) when the user clicks on the "Why" button in header under the icon */
   public headerWhyButtonClicked = this._headerWhyButtonClicked.asObservable();
+  /** @internal */
+  private _headerReEvaluateButtonClicked: Subject<howClickEvent> = new Subject<howClickEvent>();
+  /** (Observeable) when the user clicks on the "reevalute" button in header under the icon */
+  public headerReEvaluateButtonClicked = this._headerReEvaluateButtonClicked.asObservable();
   /** (Event Emitter) when the user clicks on the "Why" button in header under the icon */
   @Output() headerWhyButtonClick = new EventEmitter<SzEntityIdentifier>();
+  /** (Event Emitter) when the user clicks on the "Re-Evaluate* button in header under the icon **/
+  @Output() headerReEvaluateButtonClick = new EventEmitter<SzEntityIdentifier>();
   /** (Event Emitter) when the user clicks on the "Why" button in records section */
   @Output() recordsWhyButtonClick = new EventEmitter<SzRecordId[]>();
   /** (Event Emitter) when the user clicks on the "Why Not" button in a related entity card */
@@ -252,6 +269,16 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   get howFunctionDisabled(): boolean {
     return this._howFunctionDisabled;
   }
+  /**
+   */
+  @Input() set reEvaluateButtonDisabled(value: boolean) {
+    this._reEvaluateButtonDisabled = value;
+  }
+  /**
+   */
+  get reEvaluateButtonDisabled(): boolean {
+    return this._reEvaluateButtonDisabled;
+  }
   /** if the entity's how report has no resolution steps and this value is set to true the button for the 
    * how report in the header will be disabled and will not emit the click event when the user clicks it
    */
@@ -280,6 +307,43 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.checkIfEntityHasHowSteps();
     }
     this._showEntityHowFunction = value;
+  }
+  /** whether or not to show the "re-evaluate" button AND/OR message when needed */
+  public get enableReEvaluateFunction(): boolean {
+    return this._enableReEvaluateFunction;
+  }
+  /** whether or not to show the "re-evaluate" button AND/OR message when needed */
+  @Input() set enableReEvaluateFunction(value: boolean) {
+    this._enableReEvaluateFunction = value;
+  }
+
+  /** whether or not the "reevaluate" messaging shows when needed*/
+  public get showReEvaluateMessage(): boolean {
+    return this._showReEvaluateMessage;
+  }
+  /** whether or not the "reevaluate" messaging shows when needed*/
+  @Input() set showReEvaluateMessage(value: boolean) {
+    this._showReEvaluateMessage = value;
+  }
+  /** whether or not the "reevaluate" button shows when needed*/
+  public get showReEvaluateButton(): boolean {
+    return this._showReEvaluateButton;
+  }
+  /** whether or not the "reevaluate" button shows when needed*/
+  @Input() set showReEvaluateButton(value: boolean) {
+    this._showReEvaluateButton = value;
+  }
+  /** whether or not the "reevaluate" messaging */
+  public get entityRequiresReEvaluation(): boolean {
+    return this._entityRequiresReEvaluation;
+  }
+  /** message to show when re-evalution is required */
+  public get reEvaluateMessage(): string {
+    return this._reEvaluationMessage;
+  }
+  /** message to show when re-evalution is required */
+  @Input() set reEvaluateMessage(value: string) {
+    this._reEvaluationMessage = value;
   }
   /** when set to true a request to the how report for the entity is made to check whether or not anything 
    * would be displayed and if the result has no steps in it's "resolutionSteps" collection when the user clicks
@@ -729,6 +793,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     private cd: ChangeDetectorRef,
     public dialog: MatDialog,
     private howUIService: SzHowUIService,
+    private entityDataService: SzEntityDataService,
     public overlay: Overlay,
     public prefs: SzPrefsService,
     private searchService: SzSearchService,
@@ -917,6 +982,25 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
       });
     }
   }
+  /**
+   * proxies internal "reevaluate button" header click to "onHeaderReEvaluateButtonClick" event.
+   */
+  public onHeaderReEvaluateButtonClick(event: howClickEvent){
+    let entityId: SzEntityIdentifier = event.entityId;
+    this.headerReEvaluateButtonClick.emit(entityId);
+    console.log('SzEntityDetailComponent.onHeaderReEvaluateButtonClick: ', entityId);
+    this._reEvaluateButtonDisabled = true;
+    // periodically check if how report available
+
+    // trigger re-evaluation
+    this.entityDataService.reevaluateEntity(entityId as number).pipe(
+      takeUntil(this.unsubscribe$),
+      take(1)
+    )
+    .subscribe((res)=>{
+      console.info('re-evaluating record..', res);
+    });
+  }
 
   public onCompareRecordsForWhy(records: SzRecordId[]) {
     //console.log('SzEntityDetailComponent.onCompareRecordsForWhy: ', records);
@@ -1104,18 +1188,20 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    * @internal
   */
   private checkIfEntityHasHowSteps(emitEvents?: boolean) {
-    let _retObs = new Subject<boolean>();
+    let _retObs = new Subject<[boolean, boolean]>();
     let retObs  = _retObs.asObservable();
     retObs.pipe(
       takeUntil(this.unsubscribe$),
       take(1)
-    ).subscribe((hasHowSteps) => {
-      this._entityHasHowSteps = hasHowSteps;
+    ).subscribe((results) => {
+      this._entityHasHowSteps       = results[0];
+      this._entityNeedsReEvaluation = results[1];
       if(emitEvents !== false) {
-        this.howReportUnavailable.emit(!hasHowSteps);
+        this.howReportUnavailable.emit(!results[0]);
       }
       if(this._dynamicHowFeatures) {
-        this._howFunctionDisabled = (this._dynamicHowFeatures && !hasHowSteps);
+        this._howFunctionDisabled         = (this._dynamicHowFeatures && !results[0]);
+        this._entityRequiresReEvaluation  = (this._dynamicHowFeatures && !results[0]);
       }
     })
     if(this._entityId){
@@ -1125,20 +1211,25 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
         take(1)
       ).subscribe({
         next: (resp)=>{
-          if(resp && resp.data && resp.data.resolutionSteps && Object.keys(resp.data.resolutionSteps).length > 0) {
-            _retObs.next(true);
+          console.info(`checkIfEntityHasHowSteps: `, resp);
+          if(resp && resp.data && resp.data && (resp.data.resolutionSteps && Object.keys(resp.data.resolutionSteps).length <= 0 &&  resp.data.finalStates && resp.data.finalStates.length > 0)){
+            // needs re-evaluation
+            _retObs.next([false, true]);
+          } else if(resp && resp.data && resp.data.resolutionSteps && Object.keys(resp.data.resolutionSteps).length > 0) {
+            _retObs.next([true, false]);
           } else {
-            _retObs.next(false);
+            _retObs.next([false, false]);
           }
         },
         error: (err) => {
+          console.warn(`checkIfEntityHasHowSteps: ERROR!`, err);
           this.exception.next( err );
-          _retObs.next(false);
+          _retObs.next([false, false]);
         }
       });
     } else {
       setTimeout(() => {
-        _retObs.next(false);
+        _retObs.next([false, false]);
       }, 1000);
     }
     return _retObs.asObservable();

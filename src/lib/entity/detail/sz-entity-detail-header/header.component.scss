@@ -16,7 +16,7 @@
   flex-direction: column;
   font-family: var(--sz-entity-detail-header-font-family);
   font-size: var(--sz-entity-detail-header-font-size);
-  color:  var(--sz-entity-detail-header-color);
+  color: var(--sz-entity-detail-header-color);
 
   .detail-header__wrapper {
     &.layout-wide {
@@ -88,6 +88,23 @@
         width: 145px;
         margin-right: 10px;
         white-space: nowrap;
+      }
+      .detail-header-reevaluate-button {
+        width: 145px;
+        margin-right: 10px;
+        white-space: nowrap;
+      }
+      .detail-header-reevaluate-message {
+        width: calc(145px - 21px);
+        margin-right: 10px;
+        margin-top: 6px;
+        font-weight: var(--sz-entity-detail-header-message-font-weight); //700;
+        font-size: var(--sz-entity-detail-header-message-font-size); //12px;
+        color: var(--sz-entity-detail-header-message-color); //#8b8b8b;
+        border: var(--sz-entity-detail-header-message-border); //1px solid #c0c0c0;
+        background-color: var(--sz-entity-detail-header-message-background-color); //#dfdfdf;
+        border-radius: 4px;
+        padding: 4px 8px 4px 8px;
       }
       .detail-header-how-button {
         margin-right: 10px;

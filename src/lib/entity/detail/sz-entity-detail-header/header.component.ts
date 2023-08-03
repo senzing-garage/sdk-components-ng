@@ -307,7 +307,12 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     ).subscribe( (payload: howClickEvent) => {
       this.onHowButtonClick.emit(payload);
     })
-    
+    // proxy internal "Subject" to event emitter for tidyness
+    this._onReEvaluateButtonClicked.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( (payload: howClickEvent) => {
+      this.onReEvaluateButtonClick.emit(payload);
+    })
   }
 
   /**
@@ -391,6 +396,9 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     return this._howButtonDisabled;
   }
   public howButtonTooltipText(): string {
+    if(this._requiresReEvaluation && this._howButtonDisabled) {
+      return "How not available. Entity needs re evaluation.";
+    }
     return this._howButtonDisabled ? "How not available. No resolution was required. " : "Click to see How this entity was resolved";
   }
   /**
@@ -412,6 +420,74 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
   */
   public onWhyButtonClickHandler(event: any) {
     this._onWhyButtonClicked.next(this.entityId);
+  }
+
+  /** @internal */
+  private _requiresReEvaluation: boolean      = false;
+  private _showReEvaluateButton: boolean      = false;
+  private _showReEvaluateMessage: boolean     = true;
+  private _reEvaluateButtonDisabled: boolean  = false;
+  private _reEvaluationMessage: string        = "Entity needs re evaluation.";
+  /** whether or not to disable the "Re-Evaluate" under the entity icon is disabled*/
+  @Input() public set reEvaluateButtonDisabled(value: boolean) {
+    this._reEvaluateButtonDisabled = value;
+  }
+  /** whether or not the "Re-Evaluate button" under the entity icon is disabled */
+  public get reEvaluateButtonDisabled(): boolean {
+    return this._reEvaluateButtonDisabled;
+  }
+
+  /** whether or not the entity requires re-evaluation*/
+  @Input() public set requiresReEvaluation(value: boolean) {
+    this._requiresReEvaluation = value;
+  }
+  /** whether or not the entity requires re-evaluation*/
+  public get requiresReEvaluation(): boolean {
+    return this._requiresReEvaluation;
+  }
+  /** whether or not "re-evaluate" button is shown when "requiresReEvaluation" equals true */
+  @Input() public set showReEvaluateButton(value: boolean) {
+    this._showReEvaluateButton = value;
+  }
+  /** whether or not "re-evaluate" button is shown when "requiresReEvaluation" equals true */
+  public get showReEvaluateButton(): boolean {
+    return this._showReEvaluateButton;
+  }
+  /** whether or not "re-evaluate" messaging is shown when "requiresReEvaluation" equals true */
+  @Input() public set showReEvaluateMessage(value: boolean) {
+    this._showReEvaluateMessage = value;
+  }
+  /** whether or not "re-evaluate" messaging is shown when "requiresReEvaluation" equals true */
+  public get showReEvaluateMessage(): boolean {
+    return this._showReEvaluateMessage;
+  }
+  /** when "showReEvaluateMessage" is true this message is shown to the user */
+  @Input() public set reEvaluationMessage(value: string) {
+    this._reEvaluationMessage = value;
+  }
+  /** when "showReEvaluateMessage" is true this message is shown to the user */
+  public get reEvaluationMessage(): string {
+    return this._reEvaluationMessage;
+  }
+  
+  /** 
+   * when the user clicks the "how" button (if enabled with "showHowFunction") 
+   * @internal
+  */
+  private _onReEvaluateButtonClicked = new Subject<howClickEvent>();
+  /** (Observeable Event) when the user clicks the "how" button (if enabled with "showHowFunction") */
+  public onReEvaluateButtonClicked   = this._onReEvaluateButtonClicked.asObservable();
+  /** (Event Emitter) when the user clicks the "how" button (if enabled with "showHowFunction") */
+  @Output() onReEvaluateButtonClick: EventEmitter<howClickEvent> = new EventEmitter<howClickEvent>();
+  /**
+   * When user clicks the "Why" button this handler is invoked 
+   * which then proxies the event to observeables and emitters 
+   * @internal 
+  */
+  public onReEvaluateButtonClickHandler(event: any) {
+    let _payload: howClickEvent = Object.assign(event);
+    _payload.entityId = this.entityId;
+    this._onReEvaluateButtonClicked.next(_payload);
   }
 
 }
