@@ -8,6 +8,8 @@
     border: 2px solid #000;
     border-radius: 10px;
     background-color: #fff;
+    overflow: auto;
+    resize: both;
 
     &.maximized {
         width: 100vw;
@@ -76,4 +78,7 @@
     resize: both; 
     overflow: auto;
     background: #fff;
+}
+::ng-deep .cdk-overlay-container:has(.how-virtual-entity-dialog-panel) {
+    z-index: 3000;
 }
