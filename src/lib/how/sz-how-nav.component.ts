@@ -86,11 +86,12 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         return this.howUIService.isNavExpanded;
     }
     /** when a feature's score falls below this value it is counted as "low scoring" */
-    @Input() public lowScoringFeatureThreshold: number = 80;
+    @Input() public lowScoringFeatureThreshold: number = 85;
     /** map of virtual entities keyed by virtualId */
     @Input() public set virtualEntitiesById(value: Map<string, SzResolvedVirtualEntity>) {
         this._virtualEntitiesById = value;
         this._virtualEntitiesDataChange.next(this._virtualEntitiesById);
+        this._parameterCounts = this.getParameterCounts();
     }
     /** an object of steps whos key value is the virtual id of the step */
     @Input() set stepsByVirtualId(value: {[key: string]: SzResolutionStep}) {
@@ -465,28 +466,28 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
             }
             if(step.matchInfo && step.matchInfo.featureScores && step.matchInfo.featureScores['NAME'] && step.matchInfo.featureScores['NAME'].some){
                 // check for low scoring name
-                let hasLowScoringFeature = step.matchInfo.featureScores['NAME'].some((featScore: SzFeatureScore) => {
+                let allFeaturesAreLowScoring = step.matchInfo.featureScores['NAME'].every((featScore: SzFeatureScore) => {
                     return !(featScore.score > this.lowScoringFeatureThreshold);
                 });
-                if(hasLowScoringFeature) {
+                if(allFeaturesAreLowScoring) {
                     retVal.LOW_SCORE_NAME = retVal.LOW_SCORE_NAME+1;
                 }
             }
             if(step.matchInfo && step.matchInfo.featureScores && step.matchInfo.featureScores['ADDRESS'] && step.matchInfo.featureScores['ADDRESS'].some){
                 // check for low scoring name
-                let hasLowScoringFeature = step.matchInfo.featureScores['ADDRESS'].some((featScore: SzFeatureScore) => {
+                let allFeaturesAreLowScoring = step.matchInfo.featureScores['ADDRESS'].every((featScore: SzFeatureScore) => {
                     return !(featScore.score > this.lowScoringFeatureThreshold);
                 });
-                if(hasLowScoringFeature) {
+                if(allFeaturesAreLowScoring) {
                     retVal.LOW_SCORE_ADDRESS = retVal.LOW_SCORE_ADDRESS+1;
                 }
             }
             if(step.matchInfo && step.matchInfo.featureScores && step.matchInfo.featureScores['PHONE'] && step.matchInfo.featureScores['PHONE'].some){
                 // check for low scoring name
-                let hasLowScoringFeature = step.matchInfo.featureScores['PHONE'].some((featScore: SzFeatureScore) => {
+                let allFeaturesAreLowScoring = step.matchInfo.featureScores['PHONE'].every((featScore: SzFeatureScore) => {
                     return !(featScore.score > this.lowScoringFeatureThreshold);
                 });
-                if(hasLowScoringFeature) {
+                if(allFeaturesAreLowScoring) {
                     retVal.LOW_SCORE_PHONE = retVal.LOW_SCORE_PHONE+1;
                 }
             }
