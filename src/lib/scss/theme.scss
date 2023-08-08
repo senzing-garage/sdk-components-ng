@@ -427,6 +427,7 @@ body {
   --sz-why-dialog-header-color: #0909098c;
   --sz-why-dialog-min-height: 400px;
   --sz-why-dialog-default-height: var(--sz-why-dialog-min-height);
+  
   /* how report vars */
   --sz-how-nav-min-width: 230px;
   --sz-how-nav-min-height: 100%;
@@ -453,6 +454,7 @@ body {
   --sz-how-step-card-data-table-border: 2px solid #{$sz-dark1};
   --sz-how-step-card-data-table-cell-border: 2px solid #{$sz-dark1};
   --sz-how-step-card-title-text-margin-top: 0px;
+  --sz-how-step-card-base-z-index: 500;
 
   /* entity detail how style overides, defaults to same as non-detail how styles */
   --sz-entity-detail-section-how-step-card-color: var(--sz-how-step-card-color);

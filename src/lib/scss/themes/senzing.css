@@ -187,4 +187,6 @@ body {
   --sz-entity-graph-control-item-cursor: pointer;
   --sz-entity-graph-control-item-background-color: #fff;
   --sz-entity-graph-control-item-margin: 0;
+  /* how related */
+  --sz-how-step-card-base-z-index: 500;
 }
