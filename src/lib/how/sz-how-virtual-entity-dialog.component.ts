@@ -45,6 +45,9 @@ import { SzHowUIService } from '../services/sz-how-ui.service';
   
     public get title(): string {
       let retVal = `Virtual Entity ${this.id}`;
+      if(this._stepData && this._stepData.stepNumber) {
+        retVal = `Step ${this._stepData.stepNumber}: `+ retVal;
+      }
       return retVal
     }
   

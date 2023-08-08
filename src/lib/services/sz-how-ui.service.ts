@@ -440,7 +440,7 @@ export class SzHowUIService {
     let _retValArr = this.getParentsContainingNode(childNodeId);
     if(_retValArr) {
       if(_retValArr.length > 1) {
-        console.warn(`more than one node is parent of child!`);
+        //console.warn(`more than one node is parent of child!`);
         // take ... first I guess??
         return _retValArr[0];
       } else if(_retValArr.length === 1) {

@@ -40,7 +40,8 @@
 
         @for $i from 1 through 2000 {
             &:nth-child(#{$i}) {
-                z-index: #{2001 - $i};
+                /*z-index: #{2001 - $i};*/
+                z-index: calc( var(--sz-how-step-card-base-z-index) + 2001 - $i);
             }
         }
     }
