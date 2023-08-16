@@ -17,6 +17,15 @@ export interface SzEntityFeatureWithScoring extends SzEntityFeature, SzFeatureSc
     featureScores?: SzFeatureScore[]
 }
 
+export interface SzNonScoringRecordFeature {
+    featureValue: string,
+    dataSource: string,
+    matchLevel: number,
+    recordId: string,
+    nonscoring?: boolean,
+    featureType: string
+}
+
 export interface SzWhyEntityHTMLFragment {
     src: string,
     tagName: string,
@@ -28,7 +37,7 @@ export interface SzWhyEntityColumn extends SzWhyEntityResult, SzWhyPerspective, 
     entityId?: number,
     dataSources?: string[],
     whyResult?: {key: string, rule: string},
-    rows?: {[key: string]: Array<SzFeatureScore | SzCandidateKey | SzEntityFeature | SzEntityFeatureWithScoring | SzFocusRecordId>}
+    rows?: {[key: string]: Array<SzFeatureScore | SzCandidateKey | SzEntityFeature | SzNonScoringRecordFeature | SzEntityFeatureWithScoring | SzFocusRecordId>}
     formattedRows?: {[key: string]: string | string[] | SzWhyEntityHTMLFragment | SzWhyEntityHTMLFragment[] }
 }
 

@@ -8,7 +8,7 @@
     <div class="col-title">{{row.title}}</div>
     <!-- now loop through a cell per item in formatted data -->
     <div class="td" *ngFor="let tCell of getRowValuesForData(row.key)">
-      <div class="pre-text" [innerHTML]="tCell"></div>
+      <div [innerHTML]="tCell"></div>
     </div>
   </div>
 </div>

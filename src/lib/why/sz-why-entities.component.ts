@@ -183,7 +183,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                                             // is scored name, add colors
                                             //let fInMatchKey = featureIsInMatchKey2(fd, fieldName, _allScoreDetails, mkAsMap);
                                             let c = _colors[_scoreDetails.scoringBucket] && featIsInScore && featureIsInMatchKey('NAME', mk) ? 'color-'+ _colors[_scoreDetails.scoringBucket] : '';
-                                            _retVal += `<span class="score-${_scoreDetails.scoringBucket} ${c}">`;
+                                            _retVal += `<div class="ws-nowrap line-text score-${_scoreDetails.scoringBucket} ${c}">`;
                                             let stats = fBId && fBId.has(fd.internalId) ? fBId.get(fd.internalId) : false;
                                             if(featIsInScore){
                                                 _retVal += fd.featureValue;
@@ -192,7 +192,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                                                 }
                                                 //_retVal += '\n';
                                                 if(['SAME','CLOSE','PLAUSIBLE'].indexOf(_scoreDetails.scoringBucket) > -1) {
-                                                    _retVal += '\n<span class="child-node"></span>';
+                                                    _retVal += '\n<div><span class="child-node"></span>';
                                                     if(fd.internalId === _scoreDetails.candidateFeature.featureId) {
                                                         // show "inboundFeature"
                                                         _retVal += _scoreDetails.inboundFeature.featureValue;
@@ -216,9 +216,12 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                                                 if(_scoreDetails.nameScoringDetails.generationScore)  { _nameScoreValues.push(`gen:${_scoreDetails.nameScoringDetails.generationScore}`);}
                                                 _retVal += (_nameScoreValues.length > 0 ? ` (${_nameScoreValues.join('|')})` : '');
                                             }
-                                            _retVal += '</span>\n';
+                                            if(['SAME','CLOSE','PLAUSIBLE'].indexOf(_scoreDetails.scoringBucket) > -1) {
+                                                _retVal += '</div>\n';
+                                            }
+                                            _retVal += '</div>\n';
                                         } else {
-                                            _retVal += fd.featureValue +'\n';
+                                            _retVal += '<div class="ws-nowrap line-text">'+ fd.featureValue +'</div>\n';
                                         }
                                     }
                                 });
@@ -227,11 +230,11 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                             // candidate key
                             let f = (_d as SzCandidateKey);
                             let stats = fBId && fBId.has(f.featureId) ? fBId.get(f.featureId).statistics : false;
-                            _retVal += f.featureValue;
+                            _retVal += '<div class="ws-nowrap line-text">'+ f.featureValue;
                             if(stats && stats.entityCount) {
                                 _retVal += ` [${stats.entityCount}]`;
                             }
-                            _retVal += '\n';
+                            _retVal += '</div>\n';
                         }
                     });
                 } else {
@@ -266,7 +269,8 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                                         let featIsInScore   = idsInScore.indexOf(fd.internalId) > -1;
                                         // is scored name, add colors
                                         let c = _colors[_scoreDetails.scoringBucket] && featIsInScore && featureIsInMatchKey('ADDRESS', mk) && entryIndex === 0 ? 'color-'+ _colors[_scoreDetails.scoringBucket] : '';
-                                        _retVal += `<span class="score-${_scoreDetails.scoringBucket} ${c}">`;
+                                        //retVal += '<div class="ws-nowrap">';
+                                        _retVal += `<div class="ws-nowrap line-text score-${_scoreDetails.scoringBucket} ${c}">`;
                                         let stats = fBId && fBId.has(fd.internalId) ? fBId.get(fd.internalId) : false;
                                         if(featIsInScore){
                                             _retVal += fd.featureValue;
@@ -283,9 +287,9 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                                                 _retVal += ` [${stats.statistics.entityCount}]`;
                                             }
                                         }
-                                        _retVal += '</span>\n';
+                                        _retVal += '</div>\n';
                                     } else {
-                                        _retVal += fd.featureValue+'\n';
+                                        _retVal += '<div class="ws-nowrap line-text">'+ fd.featureValue+'</div>\n';
                                     }
                                 });
                             }
@@ -293,11 +297,11 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                             // candidate key
                             let f = (_d as SzCandidateKey);
                             let stats = fBId && fBId.has(f.featureId) ? fBId.get(f.featureId).statistics : false;
-                            _retVal += f.featureValue;
+                            _retVal += '<div class="ws-nowrap line-text">'+ f.featureValue;
                             if(stats && stats.entityCount) {
                                 _retVal += ` [${stats.entityCount}]`;
                             }
-                            _retVal += '\n';
+                            _retVal += '</div>\n';
                         }
                     });
                 } else {
@@ -359,7 +363,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                                             let fInMatchKey = featureIsInMatchKey2(fd, fieldName, _allScoreDetails, mkAsMap);
                                             let c           = fInMatchKey && entryIndex === 0 ? 'color-'+ _colors[_scoreDetails.scoringBucket] : '';
                                             
-                                            _retVal += `<span class="score-${_scoreDetails.scoringBucket} ${c}">`;
+                                            _retVal += `<div class="ws-nowrap line-text score-${_scoreDetails.scoringBucket} ${c}">`;
                                             let stats = fBId && fBId.has(fd.internalId) ? fBId.get(fd.internalId) : false;
                                             if(featIsInScore){
                                                 _retVal += fd.featureValue;
@@ -382,16 +386,15 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                                                     _retVal += ` (${_scoreDetails.score})`;
                                                 }
                                             } else {
-                                                _retVal += fd.featureValue;
+                                                _retVal += '<div class="ws-nowrap line-text">'+ fd.featureValue;
                                                 if(stats && stats.statistics && stats.statistics.entityCount) {
                                                     _retVal += ` [${stats.statistics.entityCount}]`;
                                                 }
                                             }
 
-                                            _retVal += `</span>\n`;
+                                            _retVal += `</div>\n`;
                                         } else {
-
-                                            _retVal += fd.featureValue+`\n`;
+                                            _retVal += '<div class="ws-nowrap line-text">'+ fd.featureValue+`</div>\n`;
                                         }
                                     }
                                 });
@@ -401,11 +404,11 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                             // candidate key
                             let f = (_d as SzCandidateKey);
                             let stats = fBId && fBId.has(f.featureId) ? fBId.get(f.featureId).statistics : false;
-                            _retVal += f.featureValue;
+                            _retVal += '<div class="ws-nowrap line-text>'+ f.featureValue;
                             if(stats && stats.entityCount) {
                                 _retVal += ` [${stats.entityCount}]`;
                             }
-                            _retVal += '\n';
+                            _retVal += '</div>\n';
                         }
                     });
                 } else {

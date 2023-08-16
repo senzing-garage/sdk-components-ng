@@ -3,7 +3,7 @@ import { EntityDataService, SzCandidateKey, SzDetailLevel, SzEntityData, SzEntit
 import { Observable, Subject, takeUntil, zip } from 'rxjs';
 import { getMapFromMatchKey, getArrayOfPairsFromMatchKey, parseSzIdentifier } from '../common/utils';
 import { SzConfigDataService } from '../services/sz-config-data.service';
-import { SzEntityFeatureWithScoring, SzWhyEntityColumn, SzWhyEntityHTMLFragment, SzWhyFeatureRow } from '../models/data-why';
+import { SzEntityFeatureWithScoring, SzNonScoringRecordFeature, SzWhyEntityColumn, SzWhyEntityHTMLFragment, SzWhyFeatureRow } from '../models/data-why';
 
 @Component({
     selector: 'sz-why-entity-base',
@@ -137,6 +137,29 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
         });
         return data;
       }
+      let mapHighestScoringFeaturesByInboundId = (featuresArray: (SzFeatureScore | SzEntityFeatureWithScoring | SzCandidateKey)[]) => {
+        let featuresByInboundId = new Map<number|string, SzFeatureScore | SzEntityFeatureWithScoring | SzCandidateKey>();
+        featuresArray.forEach((_feature, i) => {
+          let isFeatureScore = (_feature as SzFeatureScore) && (_feature as SzFeatureScore).score > -1;
+          if(isFeatureScore && (_feature as SzFeatureScore).inboundFeature){
+            let f = (_feature as SzFeatureScore);
+            if(!featuresByInboundId.has(f.inboundFeature.featureId)) {
+              featuresByInboundId.set(f.inboundFeature.featureId, f);
+            }
+          } else if((_feature as SzEntityFeature).primaryId) {
+            let f = (_feature as SzEntityFeature);
+            if(!featuresByInboundId.has(f.primaryId)) {
+              featuresByInboundId.set(f.primaryId, f);
+            }
+          } else if(_feature.featureType == 'NS') {
+            // no id to map by, map by ds:recordId:featureValue instead
+            let f = (_feature as SzNonScoringRecordFeature);
+            let fId = f.dataSource+':'+f.recordId+':'+f.featureValue
+            featuresByInboundId.set(fId, f);
+          }
+        });
+        return featuresByInboundId;
+      }
       return {
         'NAME': (data: (SzFeatureScore | SzEntityFeatureWithScoring | SzCandidateKey)[], fieldName?: string, mk?: string) => {
           let retVal = '';
@@ -155,10 +178,14 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
             }) : data;
             */
           }
-          _filteredData.forEach((_feature, i) => {
-            let le = (i < _filteredData.length-1) ? '\n': '';
+          // first add map of each feature with the inbound featureId being the key
+          // order by score and just pull the top result
+          let featuresByInboundId = mapHighestScoringFeaturesByInboundId(_filteredData);
+          //console.warn('iterate by highest scoring inbound value', featuresByInboundId);
+          let displayedFeatures = Array.from(featuresByInboundId.values());
+          displayedFeatures.forEach((_feature, i) => {
+            let le = (i < displayedFeatures.length-1) ? '\n': '';
             entryIndex++;
-
             let isFeatureScore = (_feature as SzFeatureScore) && (_feature as SzFeatureScore).score > -1;
             
             if(isFeatureScore && (_feature as SzFeatureScore).inboundFeature || (_feature as SzFeatureScore).candidateFeature) {
@@ -167,11 +194,11 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
               if(f.inboundFeature) { 
                 if(fBDId && fBDId.has(f.inboundFeature.featureId)){
                   let _fbyDId = fBDId.get(f.inboundFeature.featureId);
-                  retVal += `<span class="${c}">`+f.inboundFeature.featureValue;
-                  console.log(`${f.inboundFeature.featureValue}(${f.inboundFeature.featureId}) has stats: `, _fbyDId);
+                  retVal += `<div class="ws-nowrap line-text ${c}">`+f.inboundFeature.featureValue;
+                  //console.log(`${f.inboundFeature.featureValue}(${f.inboundFeature.featureId}) has stats: `, _fbyDId, f);
                 } else {
-                  console.warn(`${f.inboundFeature.featureValue} has no feat: `,  fBDId);
-                  retVal += `<span class="${c}">`+f.inboundFeature.featureValue;
+                  //console.warn(`${f.inboundFeature.featureValue} has no feat: `,  fBDId);
+                  retVal += `<div class="ws-nowrap line-text ${c}">`+f.inboundFeature.featureValue;
                 }
                 let stats = fBId && fBId.has(f.inboundFeature.featureId) ? fBId.get(f.inboundFeature.featureId) : false;
                 if(stats && stats.statistics && stats.statistics.entityCount) {
@@ -180,7 +207,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
                 retVal += le;
                 if(f.inboundFeature.featureId !== f.candidateFeature.featureId) {
                   // add nesting
-                  retVal += '\n<span class="child-same"></span>';
+                  retVal += '\n<div class="ws-nowrap"><span class="child-same"></span>';
                 }
               }
               if(f.candidateFeature && ((f.inboundFeature && f.inboundFeature.featureId !== f.candidateFeature.featureId) || !f.inboundFeature)) {
@@ -194,10 +221,13 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
                   if(f.nameScoringDetails.generationScore)  { _nameScoreValues.push(`gen:${f.nameScoringDetails.generationScore}`);}
   
                   retVal += (_nameScoreValues.length > 0 ? `(${_nameScoreValues.join('|')})` : '');
-                  retVal += '</span>'+le;
+                  if(f.inboundFeature.featureId !== f.candidateFeature.featureId) {
+                    retVal += '</div>'+le;
+                  }
+                  retVal += '</div>'+le;
                 }
               } else if(f.inboundFeature) {
-                retVal += '</span>'
+                retVal += '</div>'
               }
             } else if((_feature as SzEntityFeature) && (_feature as SzEntityFeature).primaryValue) {
               // no scoring available
@@ -221,10 +251,12 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
           });
           return retVal;
         },
-        'ADDRESS': (data: (SzFeatureScore | SzEntityFeatureWithScoring | SzCandidateKey)[], fieldName?: string, mk?: string) => {
+        'ADDRESS': (data: (SzFeatureScore | SzEntityFeatureWithScoring | SzNonScoringRecordFeature | SzCandidateKey)[], fieldName?: string, mk?: string) => {
           let retVal = '';
-          let _filteredData = data;
+          let _filteredData = sortByScore(data);
+          let entryIndex = -1;
           if(data && data.filter && data.some) {
+            /*
             let limitToXResults = 1;
             let hasSame       = data.some((_a)=>{ return (_a as SzFeatureScore).scoringBucket === 'SAME'; });
             let hasClose      = data.some((_a)=>{ return (_a as SzFeatureScore).scoringBucket === 'CLOSE'; });
@@ -236,42 +268,60 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
               return isFeatureScore ? (filterBuckets as string[]).indexOf((addrScore as SzFeatureScore).scoringBucket) > -1 : true;
             }) : data;
             if(limitToXResults > 0){ _filteredData = _filteredData.slice(undefined, limitToXResults) }
+            */
           }
-          if(_filteredData && _filteredData.forEach) {
-            _filteredData.forEach((a, i) => {
-              let le = (i < _filteredData.length-1) ? '\n': '';
+          let featuresByInboundId = mapHighestScoringFeaturesByInboundId(_filteredData);
+          let displayedFeatures = Array.from(featuresByInboundId.values());
+          if(displayedFeatures && displayedFeatures.forEach) {
+            displayedFeatures.forEach((a, i) => {
+              entryIndex++;
+              let le = (i < displayedFeatures.length-1) ? '\n': '';
               if((a as SzFeatureScore).candidateFeature) {
                 let _a = (a as SzFeatureScore);
-                let c = _colors[_a.scoringBucket] && featureIsInMatchKey('ADDRESS', mk) ? 'color-'+ _colors[_a.scoringBucket] : '';
+                let c = entryIndex === 0 && _colors[_a.scoringBucket] && featureIsInMatchKey('ADDRESS', mk) ? 'color-'+ _colors[_a.scoringBucket] : '';
+                retVal += '<div class="ws-nowrap">';
                 if(_a.inboundFeature) {
-                  retVal += `<span class="${c}">${_a.inboundFeature.featureValue}`;
+                  retVal += `<div class="line-text ${c}">${_a.inboundFeature.featureValue}`;
                   let stats = fBId && fBId.has(_a.inboundFeature.featureId) ? fBId.get(_a.inboundFeature.featureId) : false;
                   if(stats && stats.statistics && stats.statistics.entityCount) {
                     retVal += ` [${stats.statistics.entityCount}]`;
                   }
-                  retVal += '\n<span class="child-same"></span>';
+                  if(_a.inboundFeature.featureId !== _a.candidateFeature.featureId) {
+                    // add nesting
+                    retVal += `</div>\n<div class="${c}"><span class="child-same"></span>`;
+                  }
                 }
-                retVal += `${_a.candidateFeature.featureValue}`;
-                if(_a.score) { retVal += ` (full: ${_a.score})`};
-                retVal += '</span>';
+                if(_a.candidateFeature && ((_a.inboundFeature && _a.inboundFeature.featureId !== _a.candidateFeature.featureId) || !_a.inboundFeature)) {
+                  retVal += `${_a.candidateFeature.featureValue}`;
+                }
+                if(_a.score){
+                  retVal += ` (full: ${_a.score})`;
+                  if(_a.inboundFeature && _a.candidateFeature && _a.inboundFeature.featureId !== _a.candidateFeature.featureId) {
+                    retVal += '</div>'+le;
+                  }
+                }
+                retVal += '</div>';
               } else if((a as SzEntityFeature) && (a as SzEntityFeature).primaryValue) {
                 // no scoring available
                 let f = (a as SzEntityFeature);
-                retVal += f.primaryValue;
+                retVal += '<div class="line-text ws-nowrap">'+ f.primaryValue;
                 let stats = fBId && fBId.has(f.primaryId) ? fBId.get(f.primaryId).statistics : false;
                 if(stats && stats.entityCount) {
                   retVal += ` [${stats.entityCount}]`;
                 }
-                retVal += le;
+                retVal += '</div>'+le;
+              } else if((a as SzNonScoringRecordFeature).featureType === 'NS') {
+                let f = (a as SzNonScoringRecordFeature);
+                retVal += `<div class="line-text ws-nowrap">${f.featureValue}</div>`+ le;
               } else if((a as SzCandidateKey).featureType) {
                 // candidate key
                 let f = (a as SzCandidateKey);
                 let stats = fBId && fBId.has(f.featureId) ? fBId.get(f.featureId).statistics : false;
-                retVal += f.featureValue;
+                retVal += '<div class="line-text ws-nowrap">'+ f.featureValue;
                 if(stats && stats.entityCount) {
                   retVal += ` [${stats.entityCount}]`;
                 }
-                retVal += le;
+                retVal += '</div>'+le;
               }
             });
           }
@@ -298,9 +348,11 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
                 }
                 return 0;
             }));
+            retVal += `<div>`;
             for (let [key, value] of  alphaSorted.entries()) {
-                retVal += `<span class="color-ds">${key}</span>: ${value.map((r)=>{ return r.recordId; }).join(',')}\n`;
+                retVal += `<span class="color-ds">${key}</span>: ${value.map((r)=>{ return r.recordId; }).join(', ')}\n`;
             }
+            retVal += `</div>`;
             return retVal;
         },
         'WHY_RESULT': (data: {key: string, rule: string}, fieldName?: string, mk?: string) => {
@@ -311,8 +363,10 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
             let _values = getArrayOfPairsFromMatchKey(data.key);
             //console.log(`renderers.WHY_RESULT: ${data.key}`, _values);
             // now put it back together with colors
-            _value = _values.map((t) => { return `<span class="${t.prefix === '-' ? 'color-red' : 'color-green'}">${t.prefix+t.value}</span>`; }).join('');
-            return `<span class="color-mk">${_value}</span>\n`+ (data && data.rule ? `<span class="indented"></span>Principle: ${data.rule}`:'');
+            _value = _values.map((t) => { 
+              return `<span class="${t.prefix === '-' ? 'color-red' : 'color-green'}">${t.prefix+t.value}</span>`; 
+            }).join('');
+            return `<div class="color-mk">${_value}</div>\n`+ (data && data.rule ? `<div><span class="indented"></span>Principle: ${data.rule}</div>`:'');
           } else {
             return `<span class="color-red">not found!</span>\n`;
           }
@@ -336,20 +390,22 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
                 let f = (_feature as SzFeatureScore);
                 let c = _colors[f.scoringBucket] && featureIsInMatchKey(fieldName, mk) ? 'color-'+ _colors[f.scoringBucket] : '';
                 let stats = fBId && fBId.has(f.candidateFeature.featureId) ? fBId.get(f.candidateFeature.featureId).statistics : false;
+                retVal += '<div class="pre-text">';
                 retVal += `<span class="${c}">`+f.candidateFeature.featureValue;
                 if(stats && stats.entityCount) {
                   retVal += ` [${stats.entityCount}]`;
                 }
-                retVal += '</span>'+le;
+                retVal += '</span></div>'+le;
               } else if((_feature as SzCandidateKey).featureType) {
                 // candidate key
                 let f = (_feature as SzCandidateKey);
                 let stats = fBId && fBId.has(f.featureId) ? fBId.get(f.featureId).statistics : false;
+                retVal += '<div class="pre-text">';
                 retVal += f.featureValue;
                 if(stats && stats.entityCount) {
                   retVal += ` [${stats.entityCount}]`;
                 }
-                retVal += le;
+                retVal += '</div>'+ le;
               } else if(_feature) {
                 // nnnnnooooooot suuuuure, maybe single value???
                 // just call toString on it for now
@@ -657,7 +713,6 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
       // can iterate by those and blank out cells that are missing
       this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
       this._headers       = this.getHeadersFromData(this._shapedData);
-      console.warn('SzWhyEntitiesComparisonComponent.rows: ', this._rows);
     }
     /**
      * Extends the data response from the why api with data found "rows" that can be more directly utilized by the rendering template.
@@ -708,6 +763,44 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
             });
           }
         }
+        // look up records on final entity with the same recordId as the one 
+        // in the whyResult[i].perspective.focusRecords
+        /*
+        if(matchWhyResult.perspective.focusRecords && matchWhyResult.perspective.focusRecords.length > 0) {
+          matchWhyResult.perspective.focusRecords.forEach((fr) => {
+            if(entities) {
+              entities.forEach((e)=>{
+                let recordsMatchingFocusRecords = e.resolvedEntity.records.filter((er)=>{
+                  return er.recordId === fr.recordId && er.dataSource === fr.dataSource
+                });
+                recordsMatchingFocusRecords.forEach(mr => {
+                  // check if it is an address
+                  if(mr.addressData) {
+                    if(!_tempRes.rows['ADDRESS']) {
+                      _tempRes.rows['ADDRESS'] = [];
+                    }
+                    let _tAddrItems: SzNonScoringRecordFeature[] = mr.addressData.map((addr)=>{
+                      return {
+                        featureValue: addr,
+                        dataSource: mr.dataSource,
+                        matchLevel: mr.matchLevel,
+                        recordId: mr.recordId,
+                        nonscoring: true,
+                        featureType: 'NS'
+                      }
+                    });
+                    _tempRes.rows['ADDRESS'] = _tempRes.rows['ADDRESS'].concat(_tAddrItems);
+                  }
+                  // check if it is a name
+                  if(mr.nameData) {
+
+                  }
+                });
+              });
+            }
+          });
+        }
+        */
         // extend rows with "scoringDetails"
         
         if(matchWhyResult.matchInfo && matchWhyResult.matchInfo.candidateKeys) {
