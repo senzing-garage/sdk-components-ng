@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { EntityDataService, SzDetailLevel, SzEntityData, SzEntityIdentifier, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntitiesResult, SzWhyEntityResponse, SzWhyEntityResult } from '@senzing/rest-api-client-ng';
+import { EntityDataService, SzDetailLevel, SzEntityData, SzEntityIdentifier, SzEntityFeature, SzFeatureMode, SzFeatureScore, SzFocusRecordId, SzMatchedRecord, SzRecordId, SzWhyEntitiesResult, SzWhyEntityResponse, SzWhyEntityResult, SzCandidateKey } from '@senzing/rest-api-client-ng';
 import { Observable, Subject, takeUntil, zip } from 'rxjs';
 import { parseSzIdentifier } from '../common/utils';
 import { SzConfigDataService } from '../services/sz-config-data.service';
-import { SzWhyEntityColumn, SzWhyFeatureRow } from '../models/data-why';
+import { SzWhyEntityColumn, SzWhyFeatureRow, SzNonScoringRecordFeature } from '../models/data-why';
 import { SzCSSClassService } from '../services/sz-css-class.service';
 import { SzWhyReportBaseComponent } from './sz-why-report-base.component';
 
@@ -84,7 +84,8 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
     if(results[1]){ 
       this._orderedFeatureTypes = this._rows.map((fr)=>{ return fr.key}).concat(results[1]);
     }
-    this._featureStatsById  = this.getFeatureStatsByIdFromEntityData(this._entities);
+    this._featureStatsById    = this.getFeatureStatsByIdFromEntityData(this._entities);
+    this._featuresByDetailIds = this.getFeaturesByDetailIdFromEntityData(this._entities);
     //console.log(`SzWhyEntityComponent._featureStatsById: `, this._featureStatsById);
 
     this._shapedData    = this.transformData(this._data, this._entities);
@@ -93,7 +94,7 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
     // can iterate by those and blank out cells that are missing
     this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
     this._headers       = this.getHeadersFromData(this._shapedData);
-    //console.warn('SzWhyEntityComponent.getWhyData: ', results, this._rows, this._shapedData);
+    console.warn('SzWhyEntityComponent.getWhyData: ', results, this._rows, this._shapedData);
     this.onResult.emit(this._data);
     this.onRowsChanged.emit(this._rows);
   }
@@ -104,7 +105,6 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
    * @internal
    */
   override transformData(data: SzWhyEntityResult[], entities: SzEntityData[]): SzWhyEntityColumn[] {
-    console.log(`transformData: `, data);
     //console.log(`_featureStatsById: `, _featureStatsById);
     let results = data.map((matchWhyResult) => {
       // extend
@@ -123,17 +123,83 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
       for(let k in _tempRes.rows) {
         if(_tempRes && _tempRes.rows && _tempRes.rows[k] && _tempRes.rows[k].sort) {
           _tempRes.rows[k] = _tempRes.rows[k].sort((a, b)=>{
-            if ( (a as SzFeatureScore).candidateFeature.featureValue < (b as SzFeatureScore).candidateFeature.featureValue ){
-              return -1;
+            let isFeatureScore = (a as SzFeatureScore).candidateFeature ? true : false;
+            let isScore = (a as SzCandidateKey).featureValue ? true : false;
+            if(!isFeatureScore && isScore) {
+              if ( (a as SzCandidateKey).featureValue < (b as SzCandidateKey).featureValue ){
+                return -1;
+              }
+              if ( (a as SzCandidateKey).featureValue > (b as SzCandidateKey).featureValue ){
+                return 1;
+              }
+              return 0;
+            } else if(isFeatureScore) {
+              if ( (a as SzFeatureScore).candidateFeature.featureValue < (b as SzFeatureScore).candidateFeature.featureValue ){
+                return -1;
+              }
+              if ( (a as SzFeatureScore).candidateFeature.featureValue > (b as SzFeatureScore).candidateFeature.featureValue ){
+                return 1;
+              }
+              return 0;
+            } else {
+              return 0
             }
-            if ( (a as SzFeatureScore).candidateFeature.featureValue > (b as SzFeatureScore).candidateFeature.featureValue ){
-              return 1;
-            }
-            return 0;
+            
           });
         }
       }
-      
+      // look up records on final entity with the same recordId as the one 
+      // in the whyResult[i].perspective.focusRecords to show
+      if(matchWhyResult.perspective.focusRecords && matchWhyResult.perspective.focusRecords.length > 0) {
+        matchWhyResult.perspective.focusRecords.forEach((fr) => {
+          if(entities) {
+            entities.forEach((e)=>{
+              let recordsMatchingFocusRecords = e.resolvedEntity.records.filter((er)=>{
+                return er.recordId === fr.recordId && er.dataSource === fr.dataSource
+              });
+              recordsMatchingFocusRecords.forEach(mr => {
+                // check if it is an address
+                if(mr.addressData) {
+                  let _tAddrItems: SzNonScoringRecordFeature[] = mr.addressData.map((addr)=>{
+                    let strippedValue = addr;
+                    if(strippedValue && strippedValue.indexOf(':') < 10) {
+                      strippedValue = strippedValue.substring(strippedValue.indexOf(':')+2).trim();
+                    }
+                    return {
+                      featureValue: strippedValue,
+                      dataSource: mr.dataSource,
+                      matchLevel: mr.matchLevel,
+                      recordId: mr.recordId,
+                      nonscoring: true,
+                      featureType: 'NS'
+                    }
+                  });
+                  if(!_tempRes.rows['ADDRESS']) {
+                    _tempRes.rows['ADDRESS'] = [];
+                  } else {
+                    // we already have addresses
+                    // make sure we dont duplicate
+                    let valuesToExclude = _tempRes.rows['ADDRESS'].map((faddr)=>{
+                      let isFeatureScore = (faddr as SzFeatureScore).candidateFeature ? true : false;
+                      //let isScore = (faddr as SzCandidateKey).featureValue ? true : false;
+                      return isFeatureScore ? (faddr as SzFeatureScore).candidateFeature.featureValue : (faddr as SzCandidateKey).featureValue;
+                    });
+                    _tAddrItems = _tAddrItems.filter((tAddr)=>{
+                      return valuesToExclude.indexOf(tAddr.featureValue) < 0;
+                    });
+                  }
+                  _tempRes.rows['ADDRESS'] = _tempRes.rows['ADDRESS'].concat(_tAddrItems);
+                }
+                // check if it is a name
+                if(mr.nameData) {
+
+                }
+              });
+            });
+          }
+        });
+      }
+
       if(matchWhyResult.matchInfo && matchWhyResult.matchInfo.candidateKeys) {
         // add "candidate keys" to features we want to display
         for(let _k in matchWhyResult.matchInfo.candidateKeys) {
@@ -167,57 +233,6 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
             });
             //_tempRes.rows[_k] = _tempRes.rows[_k].concat(matchWhyResult.matchInfo.candidateKeys[_k]);
             _tempRes.rows[_k] = _tempRes.rows[_k].concat(_featuresOmittingExsiting);
-          }
-        }
-      }
-      // list out other "features" that may be present on the resolved entity, but not
-      // present in the why result feature scores or candidate keys
-      // NOTE: we only do this for the item who's "internalId" is the same as the "entityId"
-      if(entities && entities.length > 0 && _tempRes.internalId === _tempRes.entityId) {
-        let entityResultForInternalId = entities.find((_entRes) => {
-          return _entRes.resolvedEntity && _entRes.resolvedEntity.entityId === _tempRes.internalId;
-        });
-        if(entityResultForInternalId && entityResultForInternalId.resolvedEntity){
-          let entityForInternalId = entityResultForInternalId.resolvedEntity;
-          if(entityForInternalId.features) {
-            // merge feature data
-            for(let _fKey in entityForInternalId.features) {
-              if(!_tempRes.rows[_fKey]) {
-                _tempRes.rows[_fKey] = entityForInternalId.features[_fKey];
-              } else {
-                // selectively add
-                // hmmmm..... .. actuuuuuaaaaaallly..
-                /*
-                console.log(`${_fKey} existing: `,_tempRes.rows[_fKey]);
-                let _featuresOmittingExsiting = entityForInternalId.features[_fKey].filter((_eFeat) => {
-                  let alreadyHasFeat = _tempRes.rows[_fKey].some((_rowFeat) => {
-                    let _retVal = false;
-                    if((_rowFeat as SzCandidateKey).featureId) {
-                      _retVal = (_rowFeat as SzCandidateKey).featureId === _eFeat.primaryId
-                    }
-                    if((_rowFeat as SzEntityFeature).primaryId) {
-                      _retVal = (_rowFeat as SzEntityFeature).primaryId === _eFeat.primaryId
-                    }
-                    if((_rowFeat as SzFeatureScore).candidateFeature) {
-                      _retVal = (_rowFeat as SzFeatureScore).candidateFeature.featureId === _eFeat.primaryId
-                    }
-                    return _retVal;
-                  });
-                  return !alreadyHasFeat;
-                }).sort((a, b)=>{
-                  if ( a.primaryValue < b.primaryValue ){
-                    return -1;
-                  }
-                  if ( a.primaryValue > b.primaryValue ){
-                    return 1;
-                  }
-                  return 0;
-                });
-                console.log(`\t${_fKey} omitted: `, _featuresOmittingExsiting);
-                _tempRes.rows[_fKey] = _tempRes.rows[_fKey].concat(_featuresOmittingExsiting);
-                */
-              }
-            }
           }
         }
       }

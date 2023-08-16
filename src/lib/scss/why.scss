@@ -39,6 +39,15 @@ sz-table, .table-format {
     .color-yellow {
         color: rgb(192, 149, 7);
     }
+    .ws-nowrap {
+        white-space: nowrap;
+    }
+    .pre-text {
+        white-space: pre;
+    }
+    .line-text {
+        padding-bottom: 5px;
+    }
     
     .child-same, .child-node {
         display: inline-block;
