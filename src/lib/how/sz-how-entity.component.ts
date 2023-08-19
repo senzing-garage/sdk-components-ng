@@ -615,19 +615,39 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       return _recursiveGroups;
     }
     private traverseStepsFromFinalStates(finalStates: SzVirtualEntity[], rSteps: {[key: string]: SzResolutionStep}) {
-      let topLevelSteps = finalStates.map((fVirt)=>{
-        return rSteps[fVirt.virtualEntityId] ? rSteps[fVirt.virtualEntityId] : undefined;
-      }).filter((fTopLvlStep)=>{ return fTopLvlStep !== undefined});
-      console.info(`traverseStepsFromFinalStates: `, finalStates, topLevelSteps);
-
-      if(topLevelSteps && topLevelSteps.length > 0) {
-        let stepsByVirtualId  = new Map<string, SzResolutionStep>();
-        for(let rKey in rSteps) {
-          stepsByVirtualId.set(rKey, rSteps[rKey]);
-        }
-        let retVal = this.traverseStepsAndNestInterimNodes(topLevelSteps, stepsByVirtualId, false, true);
-        console.info(`traverseStepsFromFinalStates lineage: `, retVal);
+      let stepsByVirtualId              = new Map<string, SzResolutionStep>();
+      for(let rKey in rSteps) {
+        stepsByVirtualId.set(rKey, rSteps[rKey]);
       }
+      let retVal: SzResolutionStepNode[] = finalStates.map((fVirt)=>{
+        let fStep = rSteps[fVirt.virtualEntityId] ? rSteps[fVirt.virtualEntityId] : fVirt;
+        // initialize final step as a stepNode
+        let finalStepAsStepNode: SzResolutionStepNode = Object.assign({
+          id: fVirt.virtualEntityId,
+          stepType: SzResolutionStepDisplayType.FINAL,
+          itemType: SzResolutionStepListItemType.FINAL,
+          children: []
+        }, fStep);
+
+        // if we can traverse then do it
+        if(rSteps[fVirt.virtualEntityId]) {
+          // this will only ever return "1" top level item since that's all we're passing in
+          finalStepAsStepNode = this.traverseStepsAndNestInterimNodes([rSteps[fVirt.virtualEntityId]], stepsByVirtualId, false, true)[0];
+        } else {
+          // otherwise append final state as child of itself
+          // since it is an expandable node
+          let firstChild = (Object.assign({
+            id: fVirt.virtualEntityId,
+            stepType: rSteps[fVirt.virtualEntityId] ? this.getResolutionStepCardType(rSteps[fVirt.virtualEntityId]) : SzResolutionStepListItemType.STEP,
+            itemType: SzResolutionStepListItemType.STEP,
+          }, fStep) as SzResolutionStepNode);
+          finalStepAsStepNode.children.push(firstChild);
+        }
+        return finalStepAsStepNode;
+      });
+
+      console.info(`traverseStepsFromFinalStates: `, finalStates, retVal);
+      return retVal;
     }
     private traverseStepsAndNestInterimNodes(_rSteps: Array<SzResolutionStep>, stepsByVirtualId: Map<string, SzResolutionStep>, parentIsMerge?: boolean, parentIsFinal?: boolean): Array<SzResolutionStepNode> {
       let retVal:Array<SzResolutionStepNode> = [];
@@ -679,11 +699,18 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
             let stepAncestors = this.traverseStepsAndNestInterimNodes(stepsToTraverse, stepsByVirtualId, isMerge);
             if(parentIsFinal) {
               // we want to grab the ancestors and just append as children
-              extendedNode.children  = stepAncestors;
+              extendedNode.stepType   = SzResolutionStepDisplayType.FINAL;
+              extendedNode.itemType   = SzResolutionStepListItemType.FINAL;
+              extendedNode.children   = [(Object.assign({
+                id: step.resolvedVirtualEntityId,
+                stepType: stepType,
+                itemType: SzResolutionStepListItemType.STEP,
+                isInterim: false
+              }, step) as SzResolutionStepNode)].concat(stepAncestors);
               retVal.push(extendedNode);
             } else {
               // we are just going to inject the ancestors at the same level
-              // these nodes
+              // as these nodes
               extendedNode.ancestors  = stepAncestors;
               retVal.push(extendedNode);
               retVal = retVal.concat(stepAncestors);
