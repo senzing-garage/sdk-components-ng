@@ -654,6 +654,60 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       if(!_rSteps) {
         _rSteps = this._resolutionSteps;
       }
+      let sortByStepNumber = (a: SzResolutionStepNode, b: SzResolutionStepNode) => {
+        return (a.stepNumber > b.stepNumber) ? -1 : 1;
+      }
+      let createStacksForContiguousAddRecords = (_stepNodes: Array<SzResolutionStepNode | SzResolutionStep>): SzResolutionStepNode[] => {
+        let itemsToRemove = [];
+        //let addChildrenAtIndexPosition = -1;
+        let stackToAddChildrenTo: SzResolutionStepNode;
+        let _retVal = _stepNodes.map((sNode, nodeIndex, sNodes)=>{
+          if((sNode as SzResolutionStepNode).stepType === SzResolutionStepDisplayType.ADD) {
+            //let previousNodeStepType  = stepNodes[ nodeIndex - 1] ? stepNodes[ nodeIndex - 1].stepType : undefined;
+            let nextNodeStepType      = sNodes[ nodeIndex + 1] ? (sNodes[ nodeIndex + 1] as SzResolutionStepNode).stepType : undefined;
+            if(!stackToAddChildrenTo) {
+              // no stack initialized, is the next item a ADD
+              // if so init the stack
+              if(nextNodeStepType && nextNodeStepType === SzResolutionStepDisplayType.ADD) {
+                //addChildrenAtIndexPosition = nodeIndex;
+                stackToAddChildrenTo = Object.assign({}, (sNode as SzResolutionStepNode));
+                stackToAddChildrenTo.id       = uuidv4()
+                stackToAddChildrenTo.itemType = SzResolutionStepListItemType.STACK;
+                stackToAddChildrenTo.children = [sNode];
+                stackToAddChildrenTo.stepType = undefined;
+                delete stackToAddChildrenTo.stepType;
+                // mark for deletion
+                //itemsToRemove.push(stepNode.id);
+                return stackToAddChildrenTo;
+              }
+            } else if(stackToAddChildrenTo) {
+              // we already have a stack to add to
+              // append item to children
+              stackToAddChildrenTo.children.push(sNode);
+              // mark for deletion
+              let _idToDelete = (sNode as SzResolutionStepNode).id ? (sNode as SzResolutionStepNode).id : ((sNode as SzResolutionStep).resolvedVirtualEntityId);
+              itemsToRemove.push(_idToDelete);
+
+            }
+          } else if(stackToAddChildrenTo) {
+            // node is not an "ADD" but the previous one was
+            // end stack chain
+            //addChildrenAtIndexPosition = -1;
+            stackToAddChildrenTo = undefined;
+          }
+          return sNode;
+        });
+        // check if we need to remove items that were moved to stack
+        if(itemsToRemove && itemsToRemove.length > 0){
+          _retVal = _retVal.filter((stepNode) => {
+            let _idOfStep = (stepNode as SzResolutionStepNode).id ? (stepNode as SzResolutionStepNode).id : ((stepNode as SzResolutionStep).resolvedVirtualEntityId);
+
+            return itemsToRemove.indexOf(_idOfStep) < 0 ;
+          });
+        }
+        //console.log(`\tcreateStacksForContiguousAddRecords: created stacks`, _retVal, itemsToRemove);
+        return _retVal.map((_s)=>{ return _s as SzResolutionStepNode});
+      }
       _rSteps.forEach((step)=>{
         let stepsToTraverse = [];
         let stepType  = this.getResolutionStepCardType(step);
@@ -692,7 +746,10 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
               stepType: stepType,
               itemType: SzResolutionStepListItemType.STEP,
               isInterim: false
-            }, step) as SzResolutionStepNode)].concat(stepChildren);
+            }, step) as SzResolutionStepNode)]
+            .concat(stepChildren)
+            .sort(sortByStepNumber);
+            if(extendedNode.children && extendedNode.children.length > 1) { extendedNode.children = createStacksForContiguousAddRecords(extendedNode.children); }
             retVal.push(extendedNode);
           } else {
             // we still need to traverse these but we're not going to mark them as interim
@@ -706,7 +763,10 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
                 stepType: stepType,
                 itemType: SzResolutionStepListItemType.STEP,
                 isInterim: false
-              }, step) as SzResolutionStepNode)].concat(stepAncestors);
+              }, step) as SzResolutionStepNode)]
+              .concat(stepAncestors)
+              .sort(sortByStepNumber);
+              if(extendedNode.children && extendedNode.children.length > 1) { extendedNode.children = createStacksForContiguousAddRecords(extendedNode.children); }
               retVal.push(extendedNode);
             } else {
               // we are just going to inject the ancestors at the same level
@@ -732,6 +792,12 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
           retVal.push(extendedNode);
         }
       });
+      // sort by step number
+      retVal.sort(sortByStepNumber);
+      // if we have contiguous items wrap them in stack containers
+      if(retVal && retVal.length > 1) {
+        //retVal = createStacksForContiguousAddRecords(retVal);
+      }
       return retVal;
     }
 
