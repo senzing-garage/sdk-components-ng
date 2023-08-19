@@ -675,7 +675,12 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
                 stackToAddChildrenTo.itemType = SzResolutionStepListItemType.STACK;
                 stackToAddChildrenTo.children = [sNode];
                 stackToAddChildrenTo.stepType = undefined;
+                stackToAddChildrenTo.candidateVirtualEntity = undefined;
+                stackToAddChildrenTo.inboundVirtualEntity   = undefined;
+
                 delete stackToAddChildrenTo.stepType;
+                delete stackToAddChildrenTo.candidateVirtualEntity;
+                delete stackToAddChildrenTo.inboundVirtualEntity;
                 // mark for deletion
                 //itemsToRemove.push(stepNode.id);
                 return stackToAddChildrenTo;
