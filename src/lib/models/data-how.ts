@@ -32,8 +32,11 @@ export interface SzResolutionStepNode extends SzResolutionStep, SzVirtualEntity 
      * things like nested steps, or flat arrays of contiguous items etc
      */
     itemType?: SzResolutionStepListItemType,
+    isInterim?: boolean,
     /** child steps that were used to make this step */
     children?: Array<SzResolutionStepNode | SzResolutionStep>,
+    /** previous steps that were used to make this step */
+    ancestors?: Array<SzResolutionStepNode | SzResolutionStep>,
     /** child records pulled out of steps found in the `children` steps */
     childRecords?: Array<SzVirtualEntityRecord>,
     /** is this step a child of another step */

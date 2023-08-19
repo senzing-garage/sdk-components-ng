@@ -175,7 +175,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
               _fEntityAsStepNode.children         = itemsAsChildren;
 
               _fEntityAsStepNode.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(false, _fEntityAsStepNode);
-              if(_fEntityAsStepNode.virtualEntityIds) console.info(`final entities virtual id members: [${_fEntityAsStepNode.virtualEntityIds.join(',')}]`, _fEntityAsStepNode.virtualEntityIds, _fEntityAsStepNode.children);
+              //if(_fEntityAsStepNode.virtualEntityIds) console.info(`final entities virtual id members: [${_fEntityAsStepNode.virtualEntityIds.join(',')}]`, _fEntityAsStepNode.virtualEntityIds, _fEntityAsStepNode.children);
             }
             return _fEntityAsStepNode;
           });
@@ -246,9 +246,15 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
                 this._resolutionSteps = _resSteps.reverse(); // we want the steps in reverse for display purposes
             }
             if(this._resolutionSteps){
+
               this._stepNodeGroups              = this.getDefaultStepNodeGroups(this._resolutionSteps);
+              //let _interimSteps                 = this.getInterimStepNodes(this._resolutionSteps);
+              //console.log(`interim steps: `, _interimSteps);
               this.howUIService.stepNodeGroups  = this._stepNodeGroups;
               this.howUIService.stepNodes       = this.stepNodes;
+            }
+            if(this._data && this._data.finalStates && this._data.resolutionSteps) {
+              let traversedNodes = this.traverseStepsFromFinalStates(this._data.finalStates, this._data.resolutionSteps);
             }
             // extend data with augmentation
             if(this._data && this._data.resolutionSteps) {
@@ -608,6 +614,284 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       }
       return _recursiveGroups;
     }
+    private traverseStepsFromFinalStates(finalStates: SzVirtualEntity[], rSteps: {[key: string]: SzResolutionStep}) {
+      let topLevelSteps = finalStates.map((fVirt)=>{
+        return rSteps[fVirt.virtualEntityId] ? rSteps[fVirt.virtualEntityId] : undefined;
+      }).filter((fTopLvlStep)=>{ return fTopLvlStep !== undefined});
+      console.info(`traverseStepsFromFinalStates: `, finalStates, topLevelSteps);
+
+      if(topLevelSteps && topLevelSteps.length > 0) {
+        let stepsByVirtualId  = new Map<string, SzResolutionStep>();
+        for(let rKey in rSteps) {
+          stepsByVirtualId.set(rKey, rSteps[rKey]);
+        }
+        let retVal = this.traverseStepsAndNestInterimNodes(topLevelSteps, stepsByVirtualId, false, true);
+        console.info(`traverseStepsFromFinalStates lineage: `, retVal);
+      }
+    }
+    private traverseStepsAndNestInterimNodes(_rSteps: Array<SzResolutionStep>, stepsByVirtualId: Map<string, SzResolutionStep>, parentIsMerge?: boolean, parentIsFinal?: boolean): Array<SzResolutionStepNode> {
+      let retVal:Array<SzResolutionStepNode> = [];
+      if(!_rSteps) {
+        _rSteps = this._resolutionSteps;
+      }
+      _rSteps.forEach((step)=>{
+        let stepsToTraverse = [];
+        let stepType  = this.getResolutionStepCardType(step);
+        let isMerge   = stepType === SzResolutionStepDisplayType.MERGE;
+        if(step && step.candidateVirtualEntity && !step.candidateVirtualEntity.singleton && stepsByVirtualId.has(step.candidateVirtualEntity.virtualEntityId)){
+          stepsToTraverse.push(stepsByVirtualId.get(step.candidateVirtualEntity.virtualEntityId));
+        }
+        if(step && step.inboundVirtualEntity && !step.inboundVirtualEntity.singleton && stepsByVirtualId.has(step.inboundVirtualEntity.virtualEntityId)){
+          stepsToTraverse.push(stepsByVirtualId.get(step.inboundVirtualEntity.virtualEntityId));
+        }
+        let isGroup = parentIsMerge ? true : false;
+
+        let extendedNode: SzResolutionStepNode = Object.assign({
+          id: step.resolvedVirtualEntityId,
+          stepType: stepType,
+          itemType: isGroup ? SzResolutionStepListItemType.GROUP : SzResolutionStepListItemType.STEP,
+          isInterim: false
+          /*virtualEntityIds: [resStep.candidateVirtualEntity.virtualEntityId, resStep.inboundVirtualEntity.virtualEntityId].filter((virtualEntityId: string) => {
+            // make sure step is not another interim group
+            return !interimGroups.has(virtualEntityId);
+          })*/
+        }, step);
+
+        if(parentIsMerge) {
+          // no matter what if the parent is a merge this is an interim
+          extendedNode.isInterim  = true;
+        }
+
+        if(stepsToTraverse && stepsToTraverse.length > 0) {
+          if(parentIsMerge) {
+            // these are interim virtual entities
+            let stepChildren = this.traverseStepsAndNestInterimNodes(stepsToTraverse, stepsByVirtualId, isMerge);
+            // for interim steps we need to add the step as a child of itself so it shows up INSIDE the group
+            extendedNode.children   = [(Object.assign({
+              id: step.resolvedVirtualEntityId,
+              stepType: stepType,
+              itemType: SzResolutionStepListItemType.STEP,
+              isInterim: false
+            }, step) as SzResolutionStepNode)].concat(stepChildren);
+            retVal.push(extendedNode);
+          } else {
+            // we still need to traverse these but we're not going to mark them as interim
+            let stepAncestors = this.traverseStepsAndNestInterimNodes(stepsToTraverse, stepsByVirtualId, isMerge);
+            if(parentIsFinal) {
+              // we want to grab the ancestors and just append as children
+              extendedNode.children  = stepAncestors;
+              retVal.push(extendedNode);
+            } else {
+              // we are just going to inject the ancestors at the same level
+              // these nodes
+              extendedNode.ancestors  = stepAncestors;
+              retVal.push(extendedNode);
+              retVal = retVal.concat(stepAncestors);
+            }
+          }
+        } else if(extendedNode.isInterim) {
+          // if the node is an interim node and there are no nodes to traverse
+          // then it's probably an interim with just one step(CREATE)
+          // then add node as child of iteself
+          extendedNode.children   = [(Object.assign({
+            id: step.resolvedVirtualEntityId,
+            stepType: stepType,
+            itemType: SzResolutionStepListItemType.STEP,
+            isInterim: false
+          }, step) as SzResolutionStepNode)];
+          retVal.push(extendedNode);
+        } else {
+          // just append to list
+          retVal.push(extendedNode);
+        }
+      });
+      return retVal;
+    }
+
+    /**
+     * @internal
+     * Gets a flat map of step nodes that are the precursor to merge/interim steps. 
+     */
+    private getInterimStepNodes(_rSteps?: Array<SzResolutionStep>, stepsByVirtualId?: Map<string, SzResolutionStep>, interimSteps?: Map<string, SzResolutionStepNode>, isTopLevel?: boolean, levelsDeep?: number): Map<string, SzResolutionStepNode> {
+      /**
+       * 
+        iterate over steps
+        for each top level merge
+            get component children of merge
+            direct children are automatically "interim entities" even if they are singletons
+            if top level merge
+                add merge to return as "interim entity"
+            for each child that is not singleton
+                recurse
+                    add recursive return value to return value 
+            
+            return interims
+       */
+      let retVal            = new Map<string, SzResolutionStepNode>();
+      levelsDeep            = levelsDeep === undefined ? -1 : levelsDeep
+      interimSteps          = interimSteps ? interimSteps : new Map<string, SzResolutionStepNode>();
+      let localInterimSteps = [];
+      let stepsToCrawl      = [];
+      let mergeSteps        = [];
+      let itemsToDebug      = ['V100001-S43','V100001-S42','V100001-S41'];
+
+      if(isTopLevel === undefined) {
+        console.warn(`TOP LEVEL`);
+      }
+      isTopLevel            = isTopLevel === undefined ? true : isTopLevel;
+      
+      if(!stepsByVirtualId) {
+        stepsByVirtualId  = new Map<string, SzResolutionStep>();
+        if(_rSteps && _rSteps.length > 1) {
+          _rSteps.forEach((step)=>{
+            stepsByVirtualId.set(step.resolvedVirtualEntityId, step);
+          });
+        }
+      }
+      levelsDeep++;
+      let _ts = '';
+      for(var i=0; i <= levelsDeep; i++) {
+        _ts = _ts+'\t';
+      }
+       
+      if(!_rSteps) {
+        _rSteps = this._resolutionSteps;
+      }
+      if(_rSteps && _rSteps.length > 0) {
+        let iDbg      = !isTopLevel && _rSteps && _rSteps.some((cs) => {
+          return cs && cs.resolvedVirtualEntityId && itemsToDebug.indexOf(cs.resolvedVirtualEntityId) > -1;
+        });
+        if(iDbg) {
+          console.warn(`scan check for V100001-S42!!!`);
+        }
+
+        _rSteps.forEach((step)=>{
+          
+          let _stepType = this.getResolutionStepCardType(step);
+          // if items are direct descendents of a interim step
+          // then we check those too regardless
+          if(isTopLevel) {
+            if(_stepType === SzResolutionStepDisplayType.MERGE) {
+              // this is an interim
+              mergeSteps.push(step.resolvedVirtualEntityId);
+              localInterimSteps.push(step);
+              stepsToCrawl.push(step);
+              // nodes directly related to this node that are not singletons
+              // !!ARE!! interim nodes regardless of what they actually are
+            }
+          } else {
+            // for items below 0, they are already nested
+            // we want to scan those if they're not singletons
+            if(
+              (step.candidateVirtualEntity && !step.candidateVirtualEntity.singleton) || 
+              (step.inboundVirtualEntity && !step.inboundVirtualEntity.singleton)) {
+              stepsToCrawl.push(step);
+            }
+          }
+          if(iDbg) {
+            console.log(`${_ts}\tdo we have subchildren?`, (isTopLevel && _stepType === SzResolutionStepDisplayType.MERGE), (
+              (step.candidateVirtualEntity && !step.candidateVirtualEntity.singleton) || 
+              (step.inboundVirtualEntity && !step.inboundVirtualEntity.singleton)), stepsToCrawl);
+          }
+        });
+
+        // for each merge step OR child of merge step, check to see if their members are also interim steps
+        stepsToCrawl.forEach((iStep)=>{
+          let cMember = stepsByVirtualId.get(iStep.candidateVirtualEntity.virtualEntityId);
+          let iMember = stepsByVirtualId.get(iStep.inboundVirtualEntity.virtualEntityId);
+          let stepsToCheck = Array<SzResolutionStep>();
+          
+          
+          if(
+            (cMember && cMember.candidateVirtualEntity && !cMember.candidateVirtualEntity.singleton) || 
+            (cMember && cMember.inboundVirtualEntity && !cMember.inboundVirtualEntity.singleton)
+          ) { 
+            stepsToCheck.push(cMember); 
+          }
+          if(
+            (iMember && iMember.candidateVirtualEntity && !iMember.candidateVirtualEntity.singleton) || 
+            (iMember && iMember.inboundVirtualEntity && !iMember.inboundVirtualEntity.singleton)
+          ) { 
+            stepsToCheck.push(iMember); 
+          }
+          if(iDbg) {
+            console.log(`${_ts}\tchild steps to crawl: `, stepsToCheck);
+          }
+          // add local interim steps to retVal
+          let _gVal = Object.assign({
+            id: iStep.resolvedVirtualEntityId,
+            //stepType: SzHowUIService.getResolutionStepCardType(resStep),
+            stepType: SzResolutionStepDisplayType.INTERIM,
+            itemType: SzResolutionStepListItemType.GROUP,
+            children: []
+          }, iStep);
+          retVal.set(iStep.resolvedVirtualEntityId, _gVal);
+
+          if(stepsToCheck && stepsToCheck.length > 0) {
+            // call method again and let it modify the interimSteps array in place by passing
+            // it down the chain
+            let subInterimNodes = this.getInterimStepNodes(stepsToCheck, stepsByVirtualId, interimSteps, false, levelsDeep);
+            if(iDbg) {
+              console.log(`${_ts}\tresult of Sub Call for [${stepsToCheck.map((sr)=>{ return sr.resolvedVirtualEntityId}).join(',')}]: `, subInterimNodes);
+            }
+            
+            if(subInterimNodes && subInterimNodes.size > 0) {
+              // merge map
+              interimSteps = new Map([...interimSteps, ...subInterimNodes]);
+              retVal  = new Map([...retVal, ...subInterimNodes])
+            }
+          }
+        });
+      }
+      if(isTopLevel){
+        console.log(`${_ts}steps by vid:`, stepsByVirtualId, retVal);
+      }
+      console.log(`${_ts}interim steps recursive: `, _rSteps, interimSteps);
+
+      return retVal;
+    }
+
+    public getResolutionStepCardType(step: SzResolutionStep, stepNumber?: number): SzResolutionStepDisplayType {
+      if(step && step !== undefined) {
+        let _agg    = [];
+        let _sngltn = [];
+        //console.log(`#${stepNumber} getStepListItemType: `, step);
+        if(step.candidateVirtualEntity && step.candidateVirtualEntity.singleton) {
+          _sngltn.push(step.candidateVirtualEntity);
+        } else {
+          _agg.push(step.candidateVirtualEntity);
+        }
+        if(step.inboundVirtualEntity && step.inboundVirtualEntity.singleton) {
+          _sngltn.push(step.inboundVirtualEntity);
+        } else {
+          _agg.push(step.inboundVirtualEntity);
+        }
+        if(_sngltn.length === 2) {
+          // create virtual entity
+          return SzResolutionStepDisplayType.CREATE;
+        } else if(_agg.length === 2) {
+          // merge virtual entities
+          return SzResolutionStepDisplayType.MERGE;
+        } else {
+          // add record to virtual entity
+          return SzResolutionStepDisplayType.ADD;
+        }
+        /*
+        if(step.candidateVirtualEntity && step.candidateVirtualEntity.singleton && step.inboundVirtualEntity && step.inboundVirtualEntity.singleton) {
+          // both items are records
+          return SzResolutionStepDisplayType.CREATE;
+        } else if(step.candidateVirtualEntity && !step.candidateVirtualEntity.singleton && step.inboundVirtualEntity && !step.inboundVirtualEntity.singleton) {
+          // both items are virtual entities
+          return SzResolutionStepDisplayType.MERGE;
+        } else if(!(step.candidateVirtualEntity && step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) && ((step.candidateVirtualEntity && step.candidateVirtualEntity.singleton === false) || (step.inboundVirtualEntity && step.inboundVirtualEntity.singleton === false))) {
+          // one of the items is record, the other is virtual
+          return SzResolutionStepDisplayType.ADD;
+        }
+        */
+      }
+      return undefined;
+    }
+
     /**
      * @internal
      * Gets a flat map of step nodes that are the precursor to merge/interim steps. 
