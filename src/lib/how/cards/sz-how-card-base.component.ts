@@ -197,7 +197,8 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
         return !this.howUIService.isStepPinned(this._data.resolvedVirtualEntityId, this._groupId);
     }
     get canBeGrouped(): boolean {
-        return this.howUIService.stepCanBeUnPinned(this._data.resolvedVirtualEntityId);
+        return false;
+        //return this.howUIService.stepCanBeUnPinned(this._data.resolvedVirtualEntityId);
     }
     get parentStep() {
         return this._parentStep;
