@@ -332,7 +332,45 @@ export class SzHowUIService {
   public getStepNodeById(id: string, debug?: boolean): SzResolutionStepNode[] {
     let _stepNodes  = this._stepNodes;
     let _retVal;
+    let parentsThatContainNode = [];
+
     if(!_stepNodes || (_stepNodes && _stepNodes.length <= 0)) { return undefined; }
+    /** because "_stepNodes" is now fully nested we have to do a nested scan */
+    let _getStepNodeByIdRecursive = (stepNode: SzResolutionStepNode | SzResolutionStep) => {
+      let retVal: Array<SzResolutionStep | SzResolutionStepNode> = [];
+      let _id = stepNode && (stepNode as SzResolutionStepNode).id ? (stepNode as SzResolutionStepNode).id : (stepNode as SzResolutionStep).resolvedVirtualEntityId ;
+      if(_id === id) {
+        // we found our huckleberry
+        // we assign this to the "hoisted" retVal
+        _retVal.push(stepNode);
+      }
+      // check nodes "children" for nodes that contain the id being looked for
+      if(stepNode && (stepNode as SzResolutionStepNode).virtualEntityIds && (stepNode as SzResolutionStepNode).virtualEntityIds.indexOf(id) > -1 && (stepNode as SzResolutionStepNode).children) {
+        parentsThatContainNode.push((stepNode as SzResolutionStepNode));
+        (stepNode as SzResolutionStepNode).children.forEach((cNode)=>{
+          let _childrenThatContainNode = _getStepNodeByIdRecursive(cNode);
+          if(_childrenThatContainNode && _childrenThatContainNode.length > -1) {
+            retVal = retVal.concat(_childrenThatContainNode);
+          }
+        })
+      }
+      return _retVal;
+    }
+    // first get final node that contains node
+    let finalStepNode = _stepNodes.find((fNode)=>{
+      return fNode.virtualEntityIds.indexOf(id) > -1;
+    });
+    if(finalStepNode){
+      //_retVal = [finalStepNode];
+      _retVal = [];
+      let _traversedTree = _getStepNodeByIdRecursive(finalStepNode);
+      if(debug) {
+        console.info(`getStepNodeById(${id}): `,_retVal, _traversedTree, _stepNodes);
+      }
+    }
+    
+
+    /*
     _stepNodes
     .filter((_s: SzResolutionStepNode) => {
       return (_s && _s.itemType === SzResolutionStepListItemType.FINAL && _s.virtualEntityIds.indexOf(id) > -1);
@@ -343,9 +381,11 @@ export class SzHowUIService {
         _retVal = _retVal.concat(_indirectChildren);
       }
     })
+    */
     //console.warn(`getStepNodeById(${id}): `,_retVal);
     return _retVal;
   }
+
   /**
    * Get a flat array of all nodes and groups that contain the node who's id 
    * matches what's being searched for. This is a recursive method used for tree 
@@ -474,6 +514,9 @@ export class SzHowUIService {
   }
   /** is a step a child member of a group that is of itemType `STACK`. */
   public isStepMemberOfStack(vId: string, gId?: string, debug?: boolean) {
+    if(debug){
+      console.info(`isStepMemberOfStack(${vId}, ${gId})`);
+    }
     if(vId) {
       if(gId) {
         // we are looking in a specific group
@@ -493,6 +536,9 @@ export class SzHowUIService {
       } else {
         // check all groups
         let _stackGroups = this.stepGroupStacks;
+        if(debug){
+          console.log(`isStepMemberOfStack(${vId}, ${gId})`, _stackGroups);
+        }
         if(_stackGroups && _stackGroups.length > 0) {
           let _memberInGroup = _stackGroups.find((grp: SzResolutionStepNode) => {
             return grp.virtualEntityIds.indexOf(vId) > -1 ? true : false;
@@ -501,6 +547,10 @@ export class SzHowUIService {
             return true;
           }
         }
+      }
+    } else {
+      if(debug){
+        console.warn(`isStepMemberOfStack(${vId}, ${gId})`);
       }
     }
     return false;
@@ -728,14 +778,14 @@ export class SzHowUIService {
    * @param groupId Id of the group to toggle expansion on. Pass `id` as `undefined` to toggle a node with type `STACK`,`GROUP`, or `FINAL`.
    * @param itemType optionally specify the item type you want to toggle.
    */
-  public toggleExpansion(id: string, groupId?: string, itemType?: SzResolutionStepListItemType) {
+  public toggleExpansion(id: string, groupId?: string, itemType?: SzResolutionStepListItemType, debug?: boolean) {
     let isExpanded = (!groupId || groupId === undefined) ? this._expandedNodes.includes(id) : (groupId ? this._expandedGroups.includes(groupId) : false);
     id = id ? id : (groupId ? groupId : undefined);
     if(!isExpanded) {
-      //console.log(`\texpanding node: ${this._expandedNodes.includes(id)}, ${this._expandedGroups.includes(groupId)}`);
+      if(debug) console.log(`\texpanding node: ${this._expandedNodes.includes(id)}, ${this._expandedGroups.includes(groupId)}, "${itemType}`);
       this.expandNode(id, itemType);
     } else {
-      //console.log(`\collapsing node: ${this._expandedNodes.includes(id)}, ${this._expandedGroups.includes(groupId)}`);
+      if(debug) console.log(`\collapsing node: ${this._expandedNodes.includes(id)}, ${this._expandedGroups.includes(groupId)}, "${itemType}"`);
       this.collapseNode(id, itemType);
     }
   }
@@ -982,15 +1032,27 @@ export class SzHowUIService {
    */
   public static getResolutionStepCardType(step: SzResolutionStep, stepNumber?: number): SzResolutionStepDisplayType {
     if(step && step !== undefined) {
+      let _agg    = [];
+      let _sngltn = [];
       //console.log(`#${stepNumber} getStepListItemType: `, step);
-      if(step.candidateVirtualEntity && step.candidateVirtualEntity.singleton && step.inboundVirtualEntity && step.inboundVirtualEntity.singleton) {
-        // both items are records
+      if(step.candidateVirtualEntity && step.candidateVirtualEntity.singleton) {
+        _sngltn.push(step.candidateVirtualEntity);
+      } else {
+        _agg.push(step.candidateVirtualEntity);
+      }
+      if(step.inboundVirtualEntity && step.inboundVirtualEntity.singleton) {
+        _sngltn.push(step.inboundVirtualEntity);
+      } else {
+        _agg.push(step.inboundVirtualEntity);
+      }
+      if(_sngltn.length === 2) {
+        // create virtual entity
         return SzResolutionStepDisplayType.CREATE;
-      } else if(step.candidateVirtualEntity && !step.candidateVirtualEntity.singleton && step.inboundVirtualEntity && !step.inboundVirtualEntity.singleton) {
-        // both items are virtual entities
+      } else if(_agg.length === 2) {
+        // merge virtual entities
         return SzResolutionStepDisplayType.MERGE;
-      } else if(!(step.candidateVirtualEntity && step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) && ((step.candidateVirtualEntity && step.candidateVirtualEntity.singleton === false) || (step.inboundVirtualEntity && step.inboundVirtualEntity.singleton === false))) {
-        // one of the items is record, the other is virtual
+      } else {
+        // add record to virtual entity
         return SzResolutionStepDisplayType.ADD;
       }
     }

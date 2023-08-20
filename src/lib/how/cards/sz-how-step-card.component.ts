@@ -133,7 +133,7 @@ export class SzHowStepCardComponent extends SzHowStepCardBase implements OnInit,
         return retVal;
     }
     public isStackGroupMemberDbg() {
-        let retVal = this.isStackGroupMemberDebug();
+        let retVal = this.isStackGroupMemberDebug;
         console.log(`isStackGroupMemberDbg(): `, retVal);
     }
 

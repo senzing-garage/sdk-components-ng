@@ -693,7 +693,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
           // since it is an expandable node
           let firstChild = (Object.assign({
             id: fVirt.virtualEntityId,
-            stepType: rSteps[fVirt.virtualEntityId] ? this.getResolutionStepCardType(rSteps[fVirt.virtualEntityId]) : SzResolutionStepListItemType.STEP,
+            stepType: rSteps[fVirt.virtualEntityId] ? SzHowUIService.getResolutionStepCardType(rSteps[fVirt.virtualEntityId]) : SzResolutionStepListItemType.STEP,
             itemType: SzResolutionStepListItemType.STEP,
           }, fStep) as SzResolutionStepNode);
           finalStepAsStepNode.virtualEntityIds = [fVirt.virtualEntityId];
@@ -777,7 +777,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       }
       _rSteps.forEach((step)=>{
         let stepsToTraverse = [];
-        let stepType  = this.getResolutionStepCardType(step);
+        let stepType  = SzHowUIService.getResolutionStepCardType(step);
         let isMerge   = stepType === SzResolutionStepDisplayType.MERGE;
         if(step && step.candidateVirtualEntity && !step.candidateVirtualEntity.singleton && stepsByVirtualId.has(step.candidateVirtualEntity.virtualEntityId)){
           stepsToTraverse.push(stepsByVirtualId.get(step.candidateVirtualEntity.virtualEntityId));
@@ -869,47 +869,6 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         //retVal = createStacksForContiguousAddRecords(retVal);
       }
       return retVal;
-    }
-
-    public getResolutionStepCardType(step: SzResolutionStep, stepNumber?: number): SzResolutionStepDisplayType {
-      if(step && step !== undefined) {
-        let _agg    = [];
-        let _sngltn = [];
-        //console.log(`#${stepNumber} getStepListItemType: `, step);
-        if(step.candidateVirtualEntity && step.candidateVirtualEntity.singleton) {
-          _sngltn.push(step.candidateVirtualEntity);
-        } else {
-          _agg.push(step.candidateVirtualEntity);
-        }
-        if(step.inboundVirtualEntity && step.inboundVirtualEntity.singleton) {
-          _sngltn.push(step.inboundVirtualEntity);
-        } else {
-          _agg.push(step.inboundVirtualEntity);
-        }
-        if(_sngltn.length === 2) {
-          // create virtual entity
-          return SzResolutionStepDisplayType.CREATE;
-        } else if(_agg.length === 2) {
-          // merge virtual entities
-          return SzResolutionStepDisplayType.MERGE;
-        } else {
-          // add record to virtual entity
-          return SzResolutionStepDisplayType.ADD;
-        }
-        /*
-        if(step.candidateVirtualEntity && step.candidateVirtualEntity.singleton && step.inboundVirtualEntity && step.inboundVirtualEntity.singleton) {
-          // both items are records
-          return SzResolutionStepDisplayType.CREATE;
-        } else if(step.candidateVirtualEntity && !step.candidateVirtualEntity.singleton && step.inboundVirtualEntity && !step.inboundVirtualEntity.singleton) {
-          // both items are virtual entities
-          return SzResolutionStepDisplayType.MERGE;
-        } else if(!(step.candidateVirtualEntity && step.candidateVirtualEntity.singleton && step.inboundVirtualEntity.singleton) && ((step.candidateVirtualEntity && step.candidateVirtualEntity.singleton === false) || (step.inboundVirtualEntity && step.inboundVirtualEntity.singleton === false))) {
-          // one of the items is record, the other is virtual
-          return SzResolutionStepDisplayType.ADD;
-        }
-        */
-      }
-      return undefined;
     }
 
     /**
