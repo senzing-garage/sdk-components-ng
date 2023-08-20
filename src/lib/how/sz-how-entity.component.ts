@@ -55,6 +55,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     private _resolutionStepsByVirtualId: {[key: string]: SzResolutionStep};
     /** @internal */
     private _stepNodeGroups: Map<string, SzResolutionStepNode>  = new Map<string, SzResolutionStepNode>();
+    private _stepNodes: Array<SzResolutionStepNode>;
     /** @internal */
     private _isLoading                        = false;
     /** 
@@ -144,6 +145,10 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
      * the extended objects are recursive, nested, grouped etc and used for display.
      */
     public get stepNodes(): Array<SzResolutionStepNode> {
+      return this._stepNodes;
+    };
+    /*
+    public get stepNodess(): Array<SzResolutionStepNode> {
       if(!this._resolutionSteps) { return undefined; }
       if(!this.howUIService.stepNodes || this.howUIService.stepNodes === undefined || (this.howUIService.stepNodes && this.howUIService.stepNodes.length <= 0)) {
         let _stepNodes = this.getResolutionStepsAsNodes(this._resolutionSteps, this._stepNodeGroups);
@@ -188,7 +193,8 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         //console.warn(`stepNodes already initialized, pulling from cache: `, this.howUIService.stepNodes);
       }
       return this.howUIService.stepNodes;
-    }
+    }*/
+
     /**
      * resolutionSteps from the api response object
      */
@@ -246,15 +252,18 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
                 this._resolutionSteps = _resSteps.reverse(); // we want the steps in reverse for display purposes
             }
             if(this._resolutionSteps){
-
-              this._stepNodeGroups              = this.getDefaultStepNodeGroups(this._resolutionSteps);
+              //this._stepNodeGroups              = this.getGroupsFromStepNodes(this._resolutionSteps);
               //let _interimSteps                 = this.getInterimStepNodes(this._resolutionSteps);
               //console.log(`interim steps: `, _interimSteps);
-              this.howUIService.stepNodeGroups  = this._stepNodeGroups;
-              this.howUIService.stepNodes       = this.stepNodes;
             }
             if(this._data && this._data.finalStates && this._data.resolutionSteps) {
-              let traversedNodes = this.traverseStepsFromFinalStates(this._data.finalStates, this._data.resolutionSteps);
+              this._stepNodes       = this.getStepNodesFromFinalStates(this._data.finalStates, this._data.resolutionSteps);
+              // get step nodes that are groups
+              this._stepNodeGroups  = this.getGroupsFromStepNodes(this._stepNodes);
+              console.log(`step node groups: `, this._stepNodeGroups);
+              // store in the service
+              this.howUIService.stepNodeGroups  = this._stepNodeGroups;
+              this.howUIService.stepNodes       = this._stepNodes;
             }
             // extend data with augmentation
             if(this._data && this._data.resolutionSteps) {
@@ -425,7 +434,49 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
      * This is primarily used for generating the default 'STACK' groups, but also include 'SzResolutionStepNode' objects 
      * that contain other groups or individual steps
      */
-    private getDefaultStepNodeGroups(_rSteps?: Array<SzResolutionStep>): Map<string, SzResolutionStepNode> {
+    getGroupsFromStepNodes(_rSteps?: Array<SzResolutionStepNode | SzResolutionStep>): Map<string, SzResolutionStepNode> {
+      let retVal = new Map<string, SzResolutionStepNode>();
+      if(!_rSteps) {
+        _rSteps = this._stepNodes;
+      }
+      if(_rSteps && _rSteps.forEach) {
+        _rSteps.forEach((sNode, ind)=>{
+          if(sNode && (sNode as SzResolutionStepNode).children) {
+            // this is a group
+            let stepAsNode = (sNode as SzResolutionStepNode);
+            retVal.set(stepAsNode.id, stepAsNode);
+            // recurse children
+            let childrenGroups = this.getGroupsFromStepNodes(stepAsNode.children);
+            // add any children that are groups to result
+            if(childrenGroups && childrenGroups.size > 0){
+              retVal = new Map([...retVal, ...childrenGroups ]);
+            }
+          }
+        });
+      }
+      return retVal;
+    }
+    getVirtualEntityIdsForNode(_rStep?: SzResolutionStepNode): string[] {
+      let retVal: Array<string> = [];
+      
+      if(_rStep && _rStep.children) {
+        _rStep.children.forEach((sNode, ind)=>{
+          let idToAdd = (sNode as SzResolutionStepNode).id ? (sNode as SzResolutionStepNode).id : (sNode as SzResolutionStep).resolvedVirtualEntityId;
+          retVal.push(idToAdd);
+
+          let childrenOfChildIds = this.getVirtualEntityIdsForNode((sNode as SzResolutionStepNode));
+          if(childrenOfChildIds && childrenOfChildIds.length > 0) {
+            retVal = retVal.concat(childrenOfChildIds);
+          }
+        });
+        if(_rStep.id === 'V100001-S55') {
+          console.warn(`getVirtualEntityIdsForNode for 'V100001-S55': `, retVal, _rStep);
+        }
+      }
+      return retVal;
+    }
+    /*
+    private getDefaultStepNodeGroupss(_rSteps?: Array<SzResolutionStep>): Map<string, SzResolutionStepNode> {
       let retVal = new Map<string, SzResolutionStepNode>();
       if(!_rSteps) {
         _rSteps = this._resolutionSteps;
@@ -500,12 +551,14 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       }
       //console.log(`getDefaultStepNodeGroups()`,retVal, _rSteps)
       return retVal;
-    }
+    }*/
+
     /**
      * @internal 
      * this method extends the SzResolutionStep objects returned from the api endpoint and applies grouping
      * and stack wrappers to contiguous steps etc so that the data is more appropriate for display.
      */
+    /*
     public getResolutionStepsAsNodes(steps: SzResolutionStep[], groups: Map<string, SzResolutionStepNode>): SzResolutionStepNode[] {
       let retVal: SzResolutionStepNode[] = [];
       // extend groups recursively
@@ -574,7 +627,8 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       }
       //console.info(`getResolutionStepsAsNodes() `, retVal, this._resolutionSteps, groups);
       return retVal;
-    }
+    }*/
+
     /** @internal */
     public getRecordsForNode(onlySingletons: boolean, step: SzResolutionStepNode): Array<SzVirtualEntityRecord> {
       let retVal: SzVirtualEntityRecord[] = [];
@@ -600,6 +654,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
      * @param defaultStepGroups flat map of step nodes that contain other step nodes. nodes that have no children are excluded.
      * @returns 
      */
+    /*
     private getStepNodeGroupsRecursively (_rSteps?: Array<SzResolutionStep>, defaultStepGroups?: Map<string, SzResolutionStepNode>): Map<string, SzResolutionStepNode> {
       let _stepGroups       = defaultStepGroups ? defaultStepGroups : this.getDefaultStepNodeGroups(_rSteps);
       let _recursiveGroups:Map<string, SzResolutionStepNode> = new Map();
@@ -613,8 +668,8 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         }
       }
       return _recursiveGroups;
-    }
-    private traverseStepsFromFinalStates(finalStates: SzVirtualEntity[], rSteps: {[key: string]: SzResolutionStep}) {
+    }*/
+    private getStepNodesFromFinalStates(finalStates: SzVirtualEntity[], rSteps: {[key: string]: SzResolutionStep}) {
       let stepsByVirtualId              = new Map<string, SzResolutionStep>();
       for(let rKey in rSteps) {
         stepsByVirtualId.set(rKey, rSteps[rKey]);
@@ -632,7 +687,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         // if we can traverse then do it
         if(rSteps[fVirt.virtualEntityId]) {
           // this will only ever return "1" top level item since that's all we're passing in
-          finalStepAsStepNode = this.traverseStepsAndNestInterimNodes([rSteps[fVirt.virtualEntityId]], stepsByVirtualId, false, true)[0];
+          finalStepAsStepNode = this.getNestedStepNodesFromSteps([rSteps[fVirt.virtualEntityId]], stepsByVirtualId, false, true)[0];
         } else {
           // otherwise append final state as child of itself
           // since it is an expandable node
@@ -641,15 +696,16 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
             stepType: rSteps[fVirt.virtualEntityId] ? this.getResolutionStepCardType(rSteps[fVirt.virtualEntityId]) : SzResolutionStepListItemType.STEP,
             itemType: SzResolutionStepListItemType.STEP,
           }, fStep) as SzResolutionStepNode);
+          finalStepAsStepNode.virtualEntityIds = [fVirt.virtualEntityId];
           finalStepAsStepNode.children.push(firstChild);
         }
         return finalStepAsStepNode;
       });
 
-      console.info(`traverseStepsFromFinalStates: `, finalStates, retVal);
+      console.info(`getStepNodesFromFinalStates: `, finalStates, retVal);
       return retVal;
     }
-    private traverseStepsAndNestInterimNodes(_rSteps: Array<SzResolutionStep>, stepsByVirtualId: Map<string, SzResolutionStep>, parentIsMerge?: boolean, parentIsFinal?: boolean): Array<SzResolutionStepNode> {
+    private getNestedStepNodesFromSteps(_rSteps: Array<SzResolutionStep>, stepsByVirtualId: Map<string, SzResolutionStep>, parentIsMerge?: boolean, parentIsFinal?: boolean): Array<SzResolutionStepNode> {
       let retVal:Array<SzResolutionStepNode> = [];
       if(!_rSteps) {
         _rSteps = this._resolutionSteps;
@@ -674,10 +730,10 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
                 stackToAddChildrenTo.id       = uuidv4()
                 stackToAddChildrenTo.itemType = SzResolutionStepListItemType.STACK;
                 stackToAddChildrenTo.children = [sNode];
+                // clear out unused properties
                 stackToAddChildrenTo.stepType = undefined;
                 stackToAddChildrenTo.candidateVirtualEntity = undefined;
                 stackToAddChildrenTo.inboundVirtualEntity   = undefined;
-
                 delete stackToAddChildrenTo.stepType;
                 delete stackToAddChildrenTo.candidateVirtualEntity;
                 delete stackToAddChildrenTo.inboundVirtualEntity;
@@ -698,7 +754,13 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
             // node is not an "ADD" but the previous one was
             // end stack chain
             //addChildrenAtIndexPosition = -1;
+            stackToAddChildrenTo.virtualEntityIds = this.getVirtualEntityIdsForNode(stackToAddChildrenTo);
             stackToAddChildrenTo = undefined;
+          }
+          if(stackToAddChildrenTo && nodeIndex === (sNodes.length - 1)) {
+            // we were currently in a stack aggregation step but this is the last one
+            // calculate virtualEntityIds from members
+            stackToAddChildrenTo.virtualEntityIds = this.getVirtualEntityIdsForNode(stackToAddChildrenTo);
           }
           return sNode;
         });
@@ -706,9 +768,9 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         if(itemsToRemove && itemsToRemove.length > 0){
           _retVal = _retVal.filter((stepNode) => {
             let _idOfStep = (stepNode as SzResolutionStepNode).id ? (stepNode as SzResolutionStepNode).id : ((stepNode as SzResolutionStep).resolvedVirtualEntityId);
-
             return itemsToRemove.indexOf(_idOfStep) < 0 ;
           });
+
         }
         //console.log(`\tcreateStacksForContiguousAddRecords: created stacks`, _retVal, itemsToRemove);
         return _retVal.map((_s)=>{ return _s as SzResolutionStepNode});
@@ -744,7 +806,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         if(stepsToTraverse && stepsToTraverse.length > 0) {
           if(parentIsMerge) {
             // these are interim virtual entities
-            let stepChildren = this.traverseStepsAndNestInterimNodes(stepsToTraverse, stepsByVirtualId, isMerge);
+            let stepChildren = this.getNestedStepNodesFromSteps(stepsToTraverse, stepsByVirtualId, isMerge);
             // for interim steps we need to add the step as a child of itself so it shows up INSIDE the group
             extendedNode.children   = [(Object.assign({
               id: step.resolvedVirtualEntityId,
@@ -755,10 +817,11 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
             .concat(stepChildren)
             .sort(sortByStepNumber);
             if(extendedNode.children && extendedNode.children.length > 1) { extendedNode.children = createStacksForContiguousAddRecords(extendedNode.children); }
+            extendedNode.virtualEntityIds = this.getVirtualEntityIdsForNode(extendedNode);
             retVal.push(extendedNode);
           } else {
             // we still need to traverse these but we're not going to mark them as interim
-            let stepAncestors = this.traverseStepsAndNestInterimNodes(stepsToTraverse, stepsByVirtualId, isMerge);
+            let stepAncestors = this.getNestedStepNodesFromSteps(stepsToTraverse, stepsByVirtualId, isMerge);
             if(parentIsFinal) {
               // we want to grab the ancestors and just append as children
               extendedNode.stepType   = SzResolutionStepDisplayType.FINAL;
@@ -772,6 +835,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
               .concat(stepAncestors)
               .sort(sortByStepNumber);
               if(extendedNode.children && extendedNode.children.length > 1) { extendedNode.children = createStacksForContiguousAddRecords(extendedNode.children); }
+              extendedNode.virtualEntityIds = this.getVirtualEntityIdsForNode(extendedNode);
               retVal.push(extendedNode);
             } else {
               // we are just going to inject the ancestors at the same level
@@ -792,6 +856,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
             isInterim: false
           }, step) as SzResolutionStepNode)];
           retVal.push(extendedNode);
+          extendedNode.virtualEntityIds = [step.resolvedVirtualEntityId];
         } else {
           // just append to list
           retVal.push(extendedNode);
@@ -803,149 +868,6 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       if(retVal && retVal.length > 1) {
         //retVal = createStacksForContiguousAddRecords(retVal);
       }
-      return retVal;
-    }
-
-    /**
-     * @internal
-     * Gets a flat map of step nodes that are the precursor to merge/interim steps. 
-     */
-    private getInterimStepNodes(_rSteps?: Array<SzResolutionStep>, stepsByVirtualId?: Map<string, SzResolutionStep>, interimSteps?: Map<string, SzResolutionStepNode>, isTopLevel?: boolean, levelsDeep?: number): Map<string, SzResolutionStepNode> {
-      /**
-       * 
-        iterate over steps
-        for each top level merge
-            get component children of merge
-            direct children are automatically "interim entities" even if they are singletons
-            if top level merge
-                add merge to return as "interim entity"
-            for each child that is not singleton
-                recurse
-                    add recursive return value to return value 
-            
-            return interims
-       */
-      let retVal            = new Map<string, SzResolutionStepNode>();
-      levelsDeep            = levelsDeep === undefined ? -1 : levelsDeep
-      interimSteps          = interimSteps ? interimSteps : new Map<string, SzResolutionStepNode>();
-      let localInterimSteps = [];
-      let stepsToCrawl      = [];
-      let mergeSteps        = [];
-      let itemsToDebug      = ['V100001-S43','V100001-S42','V100001-S41'];
-
-      if(isTopLevel === undefined) {
-        console.warn(`TOP LEVEL`);
-      }
-      isTopLevel            = isTopLevel === undefined ? true : isTopLevel;
-      
-      if(!stepsByVirtualId) {
-        stepsByVirtualId  = new Map<string, SzResolutionStep>();
-        if(_rSteps && _rSteps.length > 1) {
-          _rSteps.forEach((step)=>{
-            stepsByVirtualId.set(step.resolvedVirtualEntityId, step);
-          });
-        }
-      }
-      levelsDeep++;
-      let _ts = '';
-      for(var i=0; i <= levelsDeep; i++) {
-        _ts = _ts+'\t';
-      }
-       
-      if(!_rSteps) {
-        _rSteps = this._resolutionSteps;
-      }
-      if(_rSteps && _rSteps.length > 0) {
-        let iDbg      = !isTopLevel && _rSteps && _rSteps.some((cs) => {
-          return cs && cs.resolvedVirtualEntityId && itemsToDebug.indexOf(cs.resolvedVirtualEntityId) > -1;
-        });
-        if(iDbg) {
-          console.warn(`scan check for V100001-S42!!!`);
-        }
-
-        _rSteps.forEach((step)=>{
-          
-          let _stepType = this.getResolutionStepCardType(step);
-          // if items are direct descendents of a interim step
-          // then we check those too regardless
-          if(isTopLevel) {
-            if(_stepType === SzResolutionStepDisplayType.MERGE) {
-              // this is an interim
-              mergeSteps.push(step.resolvedVirtualEntityId);
-              localInterimSteps.push(step);
-              stepsToCrawl.push(step);
-              // nodes directly related to this node that are not singletons
-              // !!ARE!! interim nodes regardless of what they actually are
-            }
-          } else {
-            // for items below 0, they are already nested
-            // we want to scan those if they're not singletons
-            if(
-              (step.candidateVirtualEntity && !step.candidateVirtualEntity.singleton) || 
-              (step.inboundVirtualEntity && !step.inboundVirtualEntity.singleton)) {
-              stepsToCrawl.push(step);
-            }
-          }
-          if(iDbg) {
-            console.log(`${_ts}\tdo we have subchildren?`, (isTopLevel && _stepType === SzResolutionStepDisplayType.MERGE), (
-              (step.candidateVirtualEntity && !step.candidateVirtualEntity.singleton) || 
-              (step.inboundVirtualEntity && !step.inboundVirtualEntity.singleton)), stepsToCrawl);
-          }
-        });
-
-        // for each merge step OR child of merge step, check to see if their members are also interim steps
-        stepsToCrawl.forEach((iStep)=>{
-          let cMember = stepsByVirtualId.get(iStep.candidateVirtualEntity.virtualEntityId);
-          let iMember = stepsByVirtualId.get(iStep.inboundVirtualEntity.virtualEntityId);
-          let stepsToCheck = Array<SzResolutionStep>();
-          
-          
-          if(
-            (cMember && cMember.candidateVirtualEntity && !cMember.candidateVirtualEntity.singleton) || 
-            (cMember && cMember.inboundVirtualEntity && !cMember.inboundVirtualEntity.singleton)
-          ) { 
-            stepsToCheck.push(cMember); 
-          }
-          if(
-            (iMember && iMember.candidateVirtualEntity && !iMember.candidateVirtualEntity.singleton) || 
-            (iMember && iMember.inboundVirtualEntity && !iMember.inboundVirtualEntity.singleton)
-          ) { 
-            stepsToCheck.push(iMember); 
-          }
-          if(iDbg) {
-            console.log(`${_ts}\tchild steps to crawl: `, stepsToCheck);
-          }
-          // add local interim steps to retVal
-          let _gVal = Object.assign({
-            id: iStep.resolvedVirtualEntityId,
-            //stepType: SzHowUIService.getResolutionStepCardType(resStep),
-            stepType: SzResolutionStepDisplayType.INTERIM,
-            itemType: SzResolutionStepListItemType.GROUP,
-            children: []
-          }, iStep);
-          retVal.set(iStep.resolvedVirtualEntityId, _gVal);
-
-          if(stepsToCheck && stepsToCheck.length > 0) {
-            // call method again and let it modify the interimSteps array in place by passing
-            // it down the chain
-            let subInterimNodes = this.getInterimStepNodes(stepsToCheck, stepsByVirtualId, interimSteps, false, levelsDeep);
-            if(iDbg) {
-              console.log(`${_ts}\tresult of Sub Call for [${stepsToCheck.map((sr)=>{ return sr.resolvedVirtualEntityId}).join(',')}]: `, subInterimNodes);
-            }
-            
-            if(subInterimNodes && subInterimNodes.size > 0) {
-              // merge map
-              interimSteps = new Map([...interimSteps, ...subInterimNodes]);
-              retVal  = new Map([...retVal, ...subInterimNodes])
-            }
-          }
-        });
-      }
-      if(isTopLevel){
-        console.log(`${_ts}steps by vid:`, stepsByVirtualId, retVal);
-      }
-      console.log(`${_ts}interim steps recursive: `, _rSteps, interimSteps);
-
       return retVal;
     }
 
@@ -994,6 +916,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
      * @internal
      * Gets a flat map of step nodes that are the precursor to merge/interim steps. 
      */
+    /*
     private getStepNodesForInterimEntities(_rSteps?: Array<SzResolutionStep>): Map<string, SzResolutionStepNode> {
       let retVal        = new Map<string, SzResolutionStepNode>();
       let interimGroups = new Map<string, SzResolutionStepNode>();
@@ -1035,10 +958,6 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
                   itemType: SzResolutionStepListItemType.GROUP,
                   children: [Object.assign({id: resStep.resolvedVirtualEntityId, stepType: SzHowUIService.getResolutionStepCardType(resStep), itemType: SzResolutionStepListItemType.STEP}, resStep)],
                   virtualEntityIds: [resStep.candidateVirtualEntity.virtualEntityId, resStep.inboundVirtualEntity.virtualEntityId]
-                  /*virtualEntityIds: [resStep.candidateVirtualEntity.virtualEntityId, resStep.inboundVirtualEntity.virtualEntityId].filter((virtualEntityId: string) => {
-                    // make sure step is not another interim group
-                    return !interimGroups.has(virtualEntityId);
-                  })*/
                 }, stepToInherit));
               }
               // for each step who's resolvedId matches the
@@ -1075,7 +994,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
 
       //console.log('getStepNodesForInterimEntities', retVal);
       return retVal;
-    }
+    }*/
 
     /** 
      * @internal
@@ -1151,6 +1070,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
      * @param stepNodeGroups flat map of step nodes that contain other step nodes. defaults to the result of 'getDefaultStepNodeGroups'.
      * @param stepNode current node context. if the node is an interim step, the step is nested inside a step group.
      */
+    /*
     private nestInterimStepsForNodeGroup(stepNodeGroups: Map<string, SzResolutionStepNode>, stepNode: SzResolutionStepNode): SzResolutionStepNode {
       let _retVal: SzResolutionStepNode = Object.assign({}, stepNode);
       if(stepNode && stepNode.children && stepNode.itemType === SzResolutionStepListItemType.GROUP && stepNode.stepType === SzResolutionStepDisplayType.INTERIM) {
@@ -1199,7 +1119,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         //console.warn('umm.. whut?? ', stepNode);
       }
       return _retVal;
-    }
+    }*/
 
     // -------------------------------- debug methods (delete or comment out for release) --------------------------------
 
