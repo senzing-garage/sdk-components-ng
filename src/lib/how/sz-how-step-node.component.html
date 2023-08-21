@@ -19,7 +19,12 @@
     </li>
 </ul>
 <div *ngIf="!isFinal">
-    <sz-how-step-card *ngIf="!isStack && !isFinal"
+    <sz-how-singleton-card *ngIf="isSingleton"
+        [attr.step-number]="data.stepNumber"
+        [attr.virtual-id]="data.resolvedVirtualEntityId"
+        [data]="data"
+        [virtualEntitiesById]="virtualEntitiesById"></sz-how-singleton-card>
+    <sz-how-step-card *ngIf="!isStack && !isFinal && !isSingleton"
             [attr.step-number]="data.stepNumber"
             [attr.virtual-id]="data.resolvedVirtualEntityId"
             [data]="data"

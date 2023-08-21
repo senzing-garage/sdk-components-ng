@@ -32,8 +32,11 @@ export interface SzResolutionStepNode extends SzResolutionStep, SzVirtualEntity 
      * things like nested steps, or flat arrays of contiguous items etc
      */
     itemType?: SzResolutionStepListItemType,
+    isInterim?: boolean,
     /** child steps that were used to make this step */
     children?: Array<SzResolutionStepNode | SzResolutionStep>,
+    /** previous steps that were used to make this step */
+    ancestors?: Array<SzResolutionStepNode | SzResolutionStep>,
     /** child records pulled out of steps found in the `children` steps */
     childRecords?: Array<SzVirtualEntityRecord>,
     /** is this step a child of another step */
@@ -52,7 +55,7 @@ export interface SzResolutionStepNode extends SzResolutionStep, SzVirtualEntity 
  */
 export interface howClickEvent extends SzEntityMouseEvent {}
 /** the custom type of `SzResolutionStepListItemType` */
-export type SzResolutionStepListItemType = 'FINAL' | 'GROUP' | 'STACK' | 'STEP';
+export type SzResolutionStepListItemType = 'FINAL' | 'GROUP' | 'STACK' | 'STEP' | 'SINGLETON';
 /** the possible values of a `SzResolutionStepListItemType` is */
 export const SzResolutionStepListItemType = {
     /* use for final step states*/
@@ -63,10 +66,12 @@ export const SzResolutionStepListItemType = {
      * (usually multiple "ADD" or "CREATE") */
     STACK: 'STACK' as SzResolutionStepListItemType,
     /** every step that is not a group of some kind */
-    STEP: 'STEP' as SzResolutionStepListItemType
+    STEP: 'STEP' as SzResolutionStepListItemType,
+    /** when final results are unresolved sometimes they are single unresoved records */
+    SINGLETON: 'SINGLETON' as SzResolutionStepListItemType
 };
 /** the custom type of `SzResolutionStepDisplayType` */
-export type SzResolutionStepDisplayType = 'ADD' | 'CREATE' | 'FINAL' | 'INTERIM' | 'MERGE';
+export type SzResolutionStepDisplayType = 'ADD' | 'CREATE' | 'FINAL' | 'INTERIM' | 'MERGE' | 'SINGLETON';
 /** the enumeration of what the possible values of a `SzResolutionStepDisplayType` is */
 export const SzResolutionStepDisplayType = {
     /** added a singleton to another virtual entity(commonly an interim or final) */
@@ -78,5 +83,7 @@ export const SzResolutionStepDisplayType = {
     /** interim cards are virtual entities used for applying additional steps (commonly merges) */
     INTERIM: 'INTERIM' as SzResolutionStepDisplayType,
     /** merge records are individual cards */
-    MERGE: 'MERGE' as SzResolutionStepDisplayType
+    MERGE: 'MERGE' as SzResolutionStepDisplayType,
+    /** singleton cards for unmerged final entities */
+    SINGLETON: 'SINGLETON' as SzResolutionStepDisplayType
 };

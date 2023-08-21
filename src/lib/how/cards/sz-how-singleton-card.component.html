@@ -1,0 +1,30 @@
+<h3 class="title">
+    <!--<div class="title-text">groupTitle: "{{groupTitle}}" | isGroupCollapsed: {{isGroupCollapsed}} | isInterimStep: {{isInterimStep}}</div>-->
+    <div class="title-text">
+        <span class="emphasized margin-right">{{title}}</span>
+        <span *ngIf="dataSourcesAsString && !isStackGroupMember" class="datasources"> [ <span class="datasources-list">{{dataSourcesAsString}}</span> ]</span>
+    </div>
+    <!--<mat-icon class="debug-icon" (click)="checkIsStackGroup()" fontIcon="adb"></mat-icon>-->
+    <!--<mat-icon *ngIf="isStackGroupMember && isUnpinned && !isGroupCollapsed && !isCollapsed" class="pin-icon" (click)="pinStep()" fontIcon="push_pin"></mat-icon>
+    <mat-icon *ngIf="canBeGrouped && !isUnpinned && !isCollapsed" class="unpin-icon" (click)="unPinStep()" fontIcon="adjust"></mat-icon>-->
+</h3>
+<div class="columns">
+    <div class="column info-block">
+        <div class="info-line"></div>
+    </div>
+    <div class="column data-table horizontal">
+        <div class="pre-head">
+            <div class="cell"></div>
+        </div>
+        <div class="head">
+            <div class="cell column-1">Data Source</div>
+            <div class="cell column-2">Record Id</div>
+        </div>
+        <div class="body">
+            <div class="row" *ngFor="let record of dataRecords; let i = index">
+                <div class="cell column-1">{{record.dataSource}}</div>
+                <div class="cell column-2">{{record?.recordId}}</div>
+            </div>
+        </div>
+    </div>
+</div>

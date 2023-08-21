@@ -57,10 +57,10 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
         return false;
     }
     @HostBinding('class.type-interim') get cssTypeInterimClass(): boolean {
-        return this.stepType === SzResolutionStepDisplayType.INTERIM;
+        return this.isInterimStep;
     }
     @HostBinding('class.type-merge') get cssTypeMergeClass(): boolean {
-        return this.stepType === SzResolutionStepDisplayType.MERGE;
+        return this.stepType === SzResolutionStepDisplayType.MERGE && !this.isInterimStep;
     }
     @HostBinding('class.group-collapsed') get cssGroupCollapsedClass(): boolean {
         let _grpId = this._groupId ? this._groupId : (this.isGroup ? this.id : undefined);
@@ -82,6 +82,14 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     @HostBinding('class.unpinned') get cssGroupMemberUnPinnedClass(): boolean {
         return this.isUnpinned;
     }
+    @HostBinding('class.singleton') get cssSingletonClass(): boolean {
+        return this.isSingleton;
+    }
+    @HostBinding('class.unresolved') get cssUnResolvedClass(): boolean {
+        // by default all "steps" have been resolved otherwise they wouldn't be in the steps list
+        return false;
+    }
+    
     // ------------------------------ getters and setters    -----------------------------
     @Input() set groupIndex(value: number) {
         this._groupIndex = value;
@@ -120,14 +128,15 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     
     public toggleExpansion(vId?: string) {
         vId = vId ? vId : this.id;
-        console.log(`SzHowStepCardBase.toggleExpansion(${vId})`);
+        //console.log(`SzHowStepCardBase.toggleExpansion(${vId})`);
         this.howUIService.toggleExpansion(vId, undefined, this.itemType);
     }
     public toggleGroupExpansion(gId?: string) {
         gId             = gId ? gId : this.id;
-        let itemType    = this.isStackGroupMember ? SzResolutionStepListItemType.STACK : this.itemType;
-        console.log(`SzHowStepCardBase.toggleGroupExpansion(${gId})`, this.howUIService.getStepNodeById(gId, true), this.howUIService.stepNodes);
-        this.howUIService.toggleExpansion(undefined, gId, itemType);
+        // groups cannot be members of stacks
+        let itemType    = this.isInterimStep ? SzResolutionStepListItemType.GROUP : this.isStackGroupMember ? SzResolutionStepListItemType.STACK : this.itemType;
+        //console.log(`SzHowStepCardBase.toggleGroupExpansion(${gId}) match ${itemType}`, this.howUIService.getStepNodeById(gId, true), this.howUIService.stepNodes);
+        this.howUIService.toggleExpansion(undefined, gId, itemType, true);
     }
     protected get isGroupCollapsed() {
         return !this.howUIService.isGroupExpanded(this._groupId);
@@ -155,6 +164,14 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     protected get isStep() {
         let _d = this._data;
         return ((_d as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STEP) ? true : ((_d as SzResolutionStepNode).itemType === undefined ? true : false);
+    }
+    protected get isInterim() {
+        let _d = this._data;
+        return ((_d as SzResolutionStepNode).isInterim === true) ? true :  false;
+    }
+    protected get isSingleton() {
+        let _d = this._data;
+        return ((_d as SzResolutionStepNode).singleton === true) ? true :  false;
     }
 
     protected get stepType(): SzResolutionStepDisplayType {
@@ -185,14 +202,15 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     get isStackGroupMember(): boolean {
         return this.howUIService.isStepMemberOfStack(this.id, this._groupId);
     }
-    public isStackGroupMemberDebug() {
+    get isStackGroupMemberDebug(): boolean {
         return this.howUIService.isStepMemberOfStack(this.id, this._groupId, true);
     }
     get isUnpinned(): boolean {
         return !this.howUIService.isStepPinned(this._data.resolvedVirtualEntityId, this._groupId);
     }
     get canBeGrouped(): boolean {
-        return this.howUIService.stepCanBeUnPinned(this._data.resolvedVirtualEntityId);
+        return false;
+        //return this.howUIService.stepCanBeUnPinned(this._data.resolvedVirtualEntityId);
     }
     get parentStep() {
         return this._parentStep;
@@ -221,7 +239,7 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
         return this.stepType === SzResolutionStepDisplayType.MERGE;
     }
     protected get isInterimStep() {
-        return this.stepType === SzResolutionStepDisplayType.INTERIM;
+        return this.itemType === SzResolutionStepListItemType.GROUP && this.isInterim;
     }
     public get isCreateEntityStep() {
         return this.stepType === SzResolutionStepDisplayType.CREATE;

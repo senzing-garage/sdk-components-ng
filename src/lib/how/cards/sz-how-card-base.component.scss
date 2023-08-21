@@ -43,6 +43,16 @@
     &.type-merge {
         background-color: var(--sz-how-step-card-type-color-merge);
     }
+    &.unresolved {
+        background-color: #ec6527;
+    }
+    &.singleton {
+        background-color: #ec6527;
+        .title {
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+    }
     .title-group {
         display: flex;
         justify-content: flex-start;

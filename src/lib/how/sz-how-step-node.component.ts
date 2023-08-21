@@ -117,6 +117,9 @@ export class SzHowStepNodeComponent implements OnInit, OnDestroy {
     public get hasChildren(): boolean {
         return (this._data as SzResolutionStepNode).children && (this._data as SzResolutionStepNode).children.length > 0;
     }
+    public get isSingleton(): boolean {
+        return this._data && (this._data as SzResolutionStepNode).singleton ? true : false;
+    }
     public get hasChildStacks(): boolean {
         let _d = this._data as SzResolutionStepNode;
         if(this._hasChildStacksCached === undefined) {
