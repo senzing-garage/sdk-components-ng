@@ -84,6 +84,7 @@ export { SzWhyEntitiesDialog } from './lib/why/sz-why-entities.component';
 export { SzHowEntityComponent } from './lib/how/sz-how-entity.component';
 export { SzHowStepNodeComponent } from './lib/how/sz-how-step-node.component'
 export { SzHowFinalEntityCardComponent } from './lib/how/cards/sz-how-final-entity-card.component';
+export { SzHowSingletonCardComponent } from './lib/how/cards/sz-how-singleton-card.component';
 export { SzHowStepCardComponent } from './lib/how/cards/sz-how-step-card.component';
 export { SzHowStepStackComponent } from './lib/how/sz-how-step-stack.component';
 export { SzHowNavComponent } from './lib/how/sz-how-nav.component';

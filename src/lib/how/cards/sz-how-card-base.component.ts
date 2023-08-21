@@ -82,6 +82,14 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     @HostBinding('class.unpinned') get cssGroupMemberUnPinnedClass(): boolean {
         return this.isUnpinned;
     }
+    @HostBinding('class.singleton') get cssSingletonClass(): boolean {
+        return this.isSingleton;
+    }
+    @HostBinding('class.unresolved') get cssUnResolvedClass(): boolean {
+        // by default all "steps" have been resolved otherwise they wouldn't be in the steps list
+        return false;
+    }
+    
     // ------------------------------ getters and setters    -----------------------------
     @Input() set groupIndex(value: number) {
         this._groupIndex = value;
@@ -160,6 +168,10 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     protected get isInterim() {
         let _d = this._data;
         return ((_d as SzResolutionStepNode).isInterim === true) ? true :  false;
+    }
+    protected get isSingleton() {
+        let _d = this._data;
+        return ((_d as SzResolutionStepNode).singleton === true) ? true :  false;
     }
 
     protected get stepType(): SzResolutionStepDisplayType {

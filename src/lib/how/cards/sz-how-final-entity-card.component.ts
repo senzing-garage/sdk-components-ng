@@ -7,6 +7,7 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
 import { SzHowStepCardBase } from './sz-how-card-base.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SzPrefsService } from '../../services/sz-prefs.service';
+import { SzResolutionStepListItemType } from '../../models/data-how';
 
 /**
  * @internal
@@ -39,14 +40,22 @@ export class SzHowFinalEntityCardComponent extends SzHowStepCardBase implements 
     @HostBinding('class.type-final') override get cssTypeClass(): boolean {
         return true;
     }
+    @HostBinding('class.unresolved') override get cssUnResolvedClass(): boolean {
+        return this.isUnResolved;
+    }
+    public get isUnResolved(): boolean {
+        return this._data && this._data.itemType === SzResolutionStepListItemType.FINAL && (this._data.singleton || !this._data.resolvedVirtualEntityId) ? true : false;
+    }
     override get title(): string {
-        let retVal = `Final Entity ${this.id}`;
+        let _isUnResolved = this.isUnResolved;
+        let retVal = _isUnResolved ? `Un-Resolved Records ${this.id}` : `Final Entity ${this.id}`;
         let _resolvedEntity = this.resolvedVirtualEntity;
-        if(_resolvedEntity) {
-            retVal = `Final Entity ${this.id}: ${_resolvedEntity.entityName}`;
+        if(!_isUnResolved && _resolvedEntity) {
+            retVal += `: ${_resolvedEntity.entityName}`;
         }
         return retVal;
     }
+    
     public override toggleExpansion() {
         this.howUIService.toggleExpansion(undefined, this.id, this.data.itemType);
     }

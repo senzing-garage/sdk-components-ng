@@ -479,8 +479,8 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
           // since it is an expandable node
           let firstChild = (Object.assign({
             id: fVirt.virtualEntityId,
-            stepType: rSteps[fVirt.virtualEntityId] ? SzHowUIService.getResolutionStepCardType(rSteps[fVirt.virtualEntityId]) : SzResolutionStepListItemType.STEP,
-            itemType: SzResolutionStepListItemType.STEP,
+            stepType: fVirt.singleton ? SzResolutionStepDisplayType.SINGLETON: rSteps[fVirt.virtualEntityId] ? SzHowUIService.getResolutionStepCardType(rSteps[fVirt.virtualEntityId]) : SzResolutionStepListItemType.STEP,
+            itemType: fVirt.singleton ? SzResolutionStepListItemType.SINGLETON : SzResolutionStepListItemType.STEP,
           }, fStep) as SzResolutionStepNode);
           finalStepAsStepNode.virtualEntityIds = [fVirt.virtualEntityId];
           finalStepAsStepNode.children.push(firstChild);
