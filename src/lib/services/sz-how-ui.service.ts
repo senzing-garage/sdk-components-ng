@@ -230,7 +230,7 @@ export class SzHowUIService {
    */
   expandNode(id: string, itemType?: SzResolutionStepListItemType) {
     let _stepNodes = this.getStepNodeById(id);
-    //console.log(`expandNode(${id}, ${itemType})`, _stepNodes, this._stepNodes);
+    //console.log(`expandNode(${id}, ${itemType}): ["${this._expandedNodes.join('",')}]`, _stepNodes, this._stepNodes);
     if(_stepNodes && (!itemType || itemType === SzResolutionStepListItemType.STEP) && !this.isStepExpanded(id)) {
       // add to expanded nodes
       this._expandedNodes.push(id);
@@ -291,16 +291,19 @@ export class SzHowUIService {
    * @param stepId The id of the child node
    * @param node The node at the top of the tree you want to expand
    */
-  private expandNodesContainingChild(stepId: string, node: SzResolutionStepNode) {
+  private expandNodesContainingChild(stepId: string, typesToExclude: SzResolutionStepListItemType, node: SzResolutionStepNode) {
     if(node && node.virtualEntityIds && node.virtualEntityIds.indexOf(stepId) > -1) {
       // node is a child of this node
-      if(!this.isGroupExpanded(node.id)) { 
+      let nodeIsExcludedType = typesToExclude && typesToExclude.length > 0 ? typesToExclude.indexOf(node.stepType) < 0 : false;
+      if(!this.isGroupExpanded(node.id) && !nodeIsExcludedType) { 
         this._expandedGroups.push(node.id); 
-        //console.log(`\t\tadded "${node.id} to [${this._expandedGroups.join(',')}]"`);
+        //console.log(`\t\tadded "${node.id} to [${this._expandedGroups.join(',')}]"`, typesToExclude);
       }
       // check the children recursively
-      if(node.children && node.children.forEach) {
-        node.children.forEach(this.expandNodesContainingChild.bind(this, stepId));
+      if(node.stepType !== SzResolutionStepListItemType.STACK && node.stepType !== SzResolutionStepListItemType.GROUP && node.children && node.children.forEach) {
+        node.children.filter((cNode) => {
+          return (cNode as SzResolutionStepNode).stepType !== SzResolutionStepListItemType.STACK;
+        }).forEach(this.expandNodesContainingChild.bind(this, stepId, typesToExclude));
       }
     } else {
       //console.warn(`\t\t"${stepId} not found in [${ node && node.virtualEntityIds ? node.virtualEntityIds.join(',') : ''}]"`);
@@ -316,13 +319,14 @@ export class SzHowUIService {
     let _stepNodes  = this._stepNodes;
     if(node.itemType !== SzResolutionStepListItemType.FINAL){
       // we need to start at the final node, not the child
+      // stacks should not be auto-expanded when parent groups are expanded
+      let typesToExclude = node.itemType === SzResolutionStepListItemType.GROUP ? [SzResolutionStepListItemType.STACK] : [];
       _stepNodes
         .filter((_s: SzResolutionStepNode) => {
           return (_s && _s.itemType === SzResolutionStepListItemType.FINAL && _s.virtualEntityIds.indexOf(node.id) > -1);
         })
-        .forEach(this.expandNodesContainingChild.bind(this, node.id));
+        .forEach(this.expandNodesContainingChild.bind(this, node.id, typesToExclude));
     }
-    //console.log(`expandParentNodes(${node.id}):`, this._expandedGroups, _stepNodes);
   }
   /**
    * Get an array of StepNodes that match a specific id.
@@ -369,19 +373,6 @@ export class SzHowUIService {
       }
     }
     
-
-    /*
-    _stepNodes
-    .filter((_s: SzResolutionStepNode) => {
-      return (_s && _s.itemType === SzResolutionStepListItemType.FINAL && _s.virtualEntityIds.indexOf(id) > -1);
-    }).forEach((_s) => {
-      let _indirectChildren = this.getChildrenContainingNode(id, _s).flat(100);
-      if(_indirectChildren) { 
-        if(!_retVal) { _retVal = []; } 
-        _retVal = _retVal.concat(_indirectChildren);
-      }
-    })
-    */
     //console.warn(`getStepNodeById(${id}): `,_retVal);
     return _retVal;
   }

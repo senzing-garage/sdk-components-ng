@@ -94,7 +94,6 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     @Input() set groupIndex(value: number) {
         this._groupIndex = value;
     }
-
     @Input() protected set isInterimStep(value: boolean) {
         this._isInterimStep = value;
     }
@@ -136,7 +135,7 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
         // groups cannot be members of stacks
         let itemType    = this.isInterimStep ? SzResolutionStepListItemType.GROUP : this.isStackGroupMember ? SzResolutionStepListItemType.STACK : this.itemType;
         //console.log(`SzHowStepCardBase.toggleGroupExpansion(${gId}) match ${itemType}`, this.howUIService.getStepNodeById(gId, true), this.howUIService.stepNodes);
-        this.howUIService.toggleExpansion(undefined, gId, itemType, true);
+        this.howUIService.toggleExpansion(undefined, gId, itemType);
     }
     protected get isGroupCollapsed() {
         return !this.howUIService.isGroupExpanded(this._groupId);
@@ -173,7 +172,6 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
         let _d = this._data;
         return ((_d as SzResolutionStepNode).singleton === true) ? true :  false;
     }
-
     protected get stepType(): SzResolutionStepDisplayType {
         if((this._data as SzResolutionStepNode).stepType){
             return (this._data as SzResolutionStepNode).stepType;
