@@ -652,8 +652,28 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
           retVal.push(extendedNode);
           extendedNode.virtualEntityIds = [step.resolvedVirtualEntityId];
         } else {
-          // just append to list
-          retVal.push(extendedNode);
+          if(parentIsFinal) { 
+            // this is a final step node so append it to itself for display purposes
+            let finalNode: SzResolutionStepNode = Object.assign({
+              id: step.resolvedVirtualEntityId,
+              stepType: SzResolutionStepDisplayType.FINAL,
+              itemType: SzResolutionStepListItemType.FINAL,
+              isInterim: false
+            }, step);
+            finalNode.children   = [(Object.assign({
+              id: step.resolvedVirtualEntityId,
+              stepType: stepType,
+              itemType: SzResolutionStepListItemType.STEP,
+              isInterim: false
+            }, step) as SzResolutionStepNode)]
+            .sort(sortByStepNumber);
+            //if(extendedNode.children && extendedNode.children.length > 1) { extendedNode.children = createStacksForContiguousAddRecords(extendedNode.children); }
+            finalNode.virtualEntityIds = this.getVirtualEntityIdsForNode(finalNode);
+            retVal.push(finalNode);
+          } else {
+            // just append to list
+            retVal.push(extendedNode);
+          }
         }
       });
       // sort by step number

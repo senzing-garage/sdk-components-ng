@@ -323,7 +323,7 @@ export class SzHowUIService {
       let typesToExclude = node.itemType === SzResolutionStepListItemType.GROUP ? [SzResolutionStepListItemType.STACK] : [];
       _stepNodes
         .filter((_s: SzResolutionStepNode) => {
-          return (_s && _s.itemType === SzResolutionStepListItemType.FINAL && _s.virtualEntityIds.indexOf(node.id) > -1);
+          return (_s && _s.itemType === SzResolutionStepListItemType.FINAL && _s.virtualEntityIds && _s.virtualEntityIds.indexOf(node.id) > -1);
         })
         .forEach(this.expandNodesContainingChild.bind(this, node.id, typesToExclude));
     }
@@ -362,7 +362,7 @@ export class SzHowUIService {
     }
     // first get final node that contains node
     let finalStepNode = _stepNodes.find((fNode)=>{
-      return fNode.virtualEntityIds.indexOf(id) > -1;
+      return fNode && fNode.virtualEntityIds && fNode.virtualEntityIds.indexOf(id) > -1;
     });
     if(finalStepNode){
       //_retVal = [finalStepNode];
