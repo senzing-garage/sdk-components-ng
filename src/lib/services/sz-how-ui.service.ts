@@ -149,9 +149,9 @@ export class SzHowUIService {
    * @param itemType some groups have the same id's as steps inside them(interim merge steps) which are 
    * actually "GROUP"'s, this parameter allows you to specify between node's and groups with the same ID's.
    */
-  public collapseNode(id: string, itemType?: SzResolutionStepListItemType) {
-    let _stepNodes = this.getStepNodeById(id);
-    //console.log(`collapseNode(${id}, ${itemType})`,_stepNodes, this._stepNodes);
+  public collapseNode(id: string, itemType?: SzResolutionStepListItemType, debug?: boolean) {
+    let _stepNodes = this.getStepNodeById(id, debug);
+    if(debug) console.log(`collapseNode(${id}, ${itemType})`,_stepNodes, this._stepNodes);
 
     if(_stepNodes && (!itemType || itemType === SzResolutionStepListItemType.STEP) && this.isStepExpanded(id)) {
       // remove from expanded nodes
@@ -228,7 +228,7 @@ export class SzHowUIService {
    * @param itemType some groups have the same id's as steps inside them(interim merge steps) which are 
    * actually "GROUP"'s, this parameter allows you to specify between node's and groups with the same ID's.
    */
-  expandNode(id: string, itemType?: SzResolutionStepListItemType) {
+  expandNode(id: string, itemType?: SzResolutionStepListItemType, debug?: boolean) {
     let _stepNodes = this.getStepNodeById(id);
     //console.log(`expandNode(${id}, ${itemType}): ["${this._expandedNodes.join('",')}]`, _stepNodes, this._stepNodes);
     if(_stepNodes && (!itemType || itemType === SzResolutionStepListItemType.STEP) && !this.isStepExpanded(id)) {
@@ -348,7 +348,6 @@ export class SzHowUIService {
         // we assign this to the "hoisted" retVal
         _retVal.push(stepNode);
       }
-      // check nodes "children" for nodes that contain the id being looked for
       if(stepNode && (stepNode as SzResolutionStepNode).virtualEntityIds && (stepNode as SzResolutionStepNode).virtualEntityIds.indexOf(id) > -1 && (stepNode as SzResolutionStepNode).children) {
         parentsThatContainNode.push((stepNode as SzResolutionStepNode));
         (stepNode as SzResolutionStepNode).children.forEach((cNode)=>{
@@ -611,10 +610,10 @@ export class SzHowUIService {
       this._pinnedSteps.push(vId);
       if(gId && this._stepNodeGroups && this._stepNodeGroups.has(gId)) {
         let _stack              = this.getParentContainingNode(vId, undefined, SzResolutionStepListItemType.STACK);
-        let _parentGroup        = this.getParentContainingNode(gId, undefined, undefined, true);
+        let _parentGroup        = this.getParentContainingNode(gId, undefined, undefined);
         let _rootNode           = this.getRootNodeContainingNode(gId);
-        console.log(`\t_stack:`,_stack);
-        console.log(`\t_parentGroup: `, _parentGroup);
+        //console.log(`\t_stack:`,_stack);
+        //console.log(`\t_parentGroup: `, _parentGroup);
         if(_stack && _parentGroup){
           // we can safely create new stacks, split by index
           let itemsBeforeNode: (SzResolutionStepNode | SzResolutionStep)[]          = [];
@@ -726,7 +725,7 @@ export class SzHowUIService {
             }
             // update root node all the way down the tree
             if(_rootNode) {
-              _rootNode.virtualEntityIds  = SzHowUIService.getVirtualEntityIdsForNode(_rootNode);
+              _rootNode.virtualEntityIds  = SzHowUIService.setVirtualEntityIdsForNode(false, _rootNode);
             }
             /*console.log(`\tindex of stack in parent: ${_indexOfStackInParent}`);
             console.log(`\titems before node: `, itemsBeforeNode);
@@ -817,10 +816,10 @@ export class SzHowUIService {
     id = id ? id : (groupId ? groupId : undefined);
     if(!isExpanded) {
       if(debug) console.log(`\texpanding node: ${this._expandedNodes.includes(id)}, ${this._expandedGroups.includes(groupId)}, "${itemType}"`);
-      this.expandNode(id, itemType);
+      this.expandNode(id, itemType, debug);
     } else {
       if(debug) console.log(`\collapsing node: ${this._expandedNodes.includes(id)}, ${this._expandedGroups.includes(groupId)}, "${itemType}"`);
-      this.collapseNode(id, itemType);
+      this.collapseNode(id, itemType, debug);
     }
   }
   /**

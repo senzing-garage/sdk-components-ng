@@ -209,12 +209,7 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
     get canBeGrouped(): boolean {
         if(this.isAddRecordStep && !this.isGroup) {
             // only bother checking if this step is an ADD step
-            let debug = this._data.resolvedVirtualEntityId === 'V100126-S10' || this._data.resolvedVirtualEntityId === 'V100126-S40'
-            let retVal = this.howUIService.stepCanBeUnPinned(this._data.resolvedVirtualEntityId, debug);
-            if(debug) {
-                console.info(`canBeGrouped #${this._data.resolvedVirtualEntityId}: ${this.stepType}`, retVal);
-            }
-            return retVal;
+            return this.howUIService.stepCanBeUnPinned(this._data.resolvedVirtualEntityId);
         }
         return false;
     }
@@ -619,8 +614,7 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
         console.log(`pinStep()`, this._data.resolvedVirtualEntityId, this._groupId, res);
     }
     public unPinStep() {
-        let debug = this._data.resolvedVirtualEntityId === 'V100126-S40';
-        let res = this.howUIService.unPinStep(this._data.resolvedVirtualEntityId, debug);
+        let res = this.howUIService.unPinStep(this._data.resolvedVirtualEntityId);
         console.log(`unPinStep(${this._data.resolvedVirtualEntityId},${this.stepType})`, this._data.resolvedVirtualEntityId, this._groupId, this.howUIService.stepNodes);
     }
 
