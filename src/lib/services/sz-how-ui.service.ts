@@ -773,7 +773,7 @@ export class SzHowUIService {
     let isExpanded = (!groupId || groupId === undefined) ? this._expandedNodes.includes(id) : (groupId ? this._expandedGroups.includes(groupId) : false);
     id = id ? id : (groupId ? groupId : undefined);
     if(!isExpanded) {
-      if(debug) console.log(`\texpanding node: ${this._expandedNodes.includes(id)}, ${this._expandedGroups.includes(groupId)}, "${itemType}`);
+      if(debug) console.log(`\texpanding node: ${this._expandedNodes.includes(id)}, ${this._expandedGroups.includes(groupId)}, "${itemType}"`);
       this.expandNode(id, itemType);
     } else {
       if(debug) console.log(`\collapsing node: ${this._expandedNodes.includes(id)}, ${this._expandedGroups.includes(groupId)}, "${itemType}"`);

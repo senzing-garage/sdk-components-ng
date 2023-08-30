@@ -210,7 +210,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
               this._stepNodes       = this.getStepNodesFromFinalStates(this._data.finalStates, this._data.resolutionSteps);
               // get step nodes that are groups
               this._stepNodeGroups  = this.getGroupsFromStepNodes(this._stepNodes);
-              console.log(`step node groups: `, this._stepNodeGroups);
+              //console.log(`step node groups: `, this._stepNodeGroups);
               // store in the service
               this.howUIService.stepNodeGroups  = this._stepNodeGroups;
               this.howUIService.stepNodes       = this._stepNodes;
@@ -507,6 +507,13 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       let sortByStepNumber = (a: SzResolutionStepNode, b: SzResolutionStepNode) => {
         return (a.stepNumber > b.stepNumber) ? -1 : 1;
       }
+      let collapseSteps = (virtualEntityIds: string[]) => {
+        if(virtualEntityIds && virtualEntityIds.forEach) {
+          virtualEntityIds.forEach((vId)=>{
+            this.howUIService.collapseNode(vId, SzResolutionStepListItemType.STEP);
+          });
+        }
+      }
       let createStacksForContiguousAddRecords = (_stepNodes: Array<SzResolutionStepNode | SzResolutionStep>): SzResolutionStepNode[] => {
         let itemsToRemove = [];
         //let addChildrenAtIndexPosition = -1;
@@ -542,19 +549,22 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
               // mark for deletion
               let _idToDelete = (sNode as SzResolutionStepNode).id ? (sNode as SzResolutionStepNode).id : ((sNode as SzResolutionStep).resolvedVirtualEntityId);
               itemsToRemove.push(_idToDelete);
-
             }
           } else if(stackToAddChildrenTo) {
             // node is not an "ADD" but the previous one was
             // end stack chain
             //addChildrenAtIndexPosition = -1;
             stackToAddChildrenTo.virtualEntityIds = this.getVirtualEntityIdsForNode(stackToAddChildrenTo);
+            // make sure that steps are collapsed by default
+            collapseSteps(stackToAddChildrenTo.virtualEntityIds);
             stackToAddChildrenTo = undefined;
           }
           if(stackToAddChildrenTo && nodeIndex === (sNodes.length - 1)) {
             // we were currently in a stack aggregation step but this is the last one
             // calculate virtualEntityIds from members
             stackToAddChildrenTo.virtualEntityIds = this.getVirtualEntityIdsForNode(stackToAddChildrenTo);
+            // make sure that steps are collapsed by default
+            collapseSteps(stackToAddChildrenTo.virtualEntityIds);
           }
           return sNode;
         });

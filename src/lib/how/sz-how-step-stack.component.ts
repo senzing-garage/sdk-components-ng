@@ -88,7 +88,7 @@ export class SzHowStepStackComponent implements OnDestroy {
     }
     public toggleGroupExpansion(gId?: string) {
         gId = gId ? gId : this.id;
-        this.howUIService.toggleExpansion(undefined, gId, this.itemType);
+        this.howUIService.toggleExpansion(undefined, gId, this.itemType, true);
     }
 
     get numberOfCards(): number {
