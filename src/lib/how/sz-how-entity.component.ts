@@ -412,6 +412,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
      * recursively scan a nodes children and their childrens children to collect
      * all virtual entity id's that are decendents of this node
      */
+    /*
     getVirtualEntityIdsForNode(_rStep?: SzResolutionStepNode): string[] {
       let retVal: Array<string> = [];
       
@@ -427,7 +428,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         });
       }
       return retVal;
-    }
+    }*/
 
     /** @internal */
     public getRecordsForNode(onlySingletons: boolean, step: SzResolutionStepNode): Array<SzVirtualEntityRecord> {
@@ -554,7 +555,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
             // node is not an "ADD" but the previous one was
             // end stack chain
             //addChildrenAtIndexPosition = -1;
-            stackToAddChildrenTo.virtualEntityIds = this.getVirtualEntityIdsForNode(stackToAddChildrenTo);
+            stackToAddChildrenTo.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(stackToAddChildrenTo);
             // make sure that steps are collapsed by default
             collapseSteps(stackToAddChildrenTo.virtualEntityIds);
             stackToAddChildrenTo = undefined;
@@ -562,7 +563,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
           if(stackToAddChildrenTo && nodeIndex === (sNodes.length - 1)) {
             // we were currently in a stack aggregation step but this is the last one
             // calculate virtualEntityIds from members
-            stackToAddChildrenTo.virtualEntityIds = this.getVirtualEntityIdsForNode(stackToAddChildrenTo);
+            stackToAddChildrenTo.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(stackToAddChildrenTo);
             // make sure that steps are collapsed by default
             collapseSteps(stackToAddChildrenTo.virtualEntityIds);
           }
@@ -621,7 +622,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
             .concat(stepChildren)
             .sort(sortByStepNumber);
             if(extendedNode.children && extendedNode.children.length > 1) { extendedNode.children = createStacksForContiguousAddRecords(extendedNode.children); }
-            extendedNode.virtualEntityIds = this.getVirtualEntityIdsForNode(extendedNode);
+            extendedNode.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(extendedNode);
             retVal.push(extendedNode);
           } else {
             // we still need to traverse these but we're not going to mark them as interim
@@ -639,7 +640,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
               .concat(stepAncestors)
               .sort(sortByStepNumber);
               if(extendedNode.children && extendedNode.children.length > 1) { extendedNode.children = createStacksForContiguousAddRecords(extendedNode.children); }
-              extendedNode.virtualEntityIds = this.getVirtualEntityIdsForNode(extendedNode);
+              extendedNode.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(extendedNode);
               retVal.push(extendedNode);
             } else {
               // we are just going to inject the ancestors at the same level
@@ -678,7 +679,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
             }, step) as SzResolutionStepNode)]
             .sort(sortByStepNumber);
             //if(extendedNode.children && extendedNode.children.length > 1) { extendedNode.children = createStacksForContiguousAddRecords(extendedNode.children); }
-            finalNode.virtualEntityIds = this.getVirtualEntityIdsForNode(finalNode);
+            finalNode.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(finalNode);
             retVal.push(finalNode);
           } else {
             // just append to list
