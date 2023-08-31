@@ -46,8 +46,9 @@
         <span *ngIf="dataSourcesAsString && !isStackGroupMember" class="datasources"> [ <span class="datasources-list">{{dataSourcesAsString}}</span> ]</span>
     </div>
     <!--<mat-icon class="debug-icon" (click)="checkIsStackGroup()" fontIcon="adb"></mat-icon>-->
-    <!--<mat-icon *ngIf="isStackGroupMember && isUnpinned && !isGroupCollapsed && !isCollapsed" class="pin-icon" (click)="pinStep()" fontIcon="push_pin"></mat-icon>
-    <mat-icon *ngIf="canBeGrouped && !isUnpinned && !isCollapsed" class="unpin-icon" (click)="unPinStep()" fontIcon="adjust"></mat-icon>-->
+    <mat-icon *ngIf="isStackGroupMember && isUnpinned && !isGroupCollapsed && !isCollapsed" class="pin-icon" (click)="pinStep()" fontIcon="push_pin"></mat-icon>
+    <mat-icon *ngIf="canBeGrouped && !isUnpinned && !isCollapsed" class="unpin-icon" (click)="unPinStep()" fontIcon="adjust"></mat-icon>
+    <!--(isUnpinned: {{isUnpinned}} | canBeGrouped: {{canBeGrouped}})-->
 </h3>
 <div class="columns hide-on-collapsed hide-on-group-collapsed">
     <div class="column info-block">

@@ -207,8 +207,11 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
         return !this.howUIService.isStepPinned(this._data.resolvedVirtualEntityId, this._groupId);
     }
     get canBeGrouped(): boolean {
+        if(this.isAddRecordStep && !this.isGroup) {
+            // only bother checking if this step is an ADD step
+            return this.howUIService.stepCanBeUnPinned(this._data.resolvedVirtualEntityId);
+        }
         return false;
-        //return this.howUIService.stepCanBeUnPinned(this._data.resolvedVirtualEntityId);
     }
     get parentStep() {
         return this._parentStep;
@@ -607,12 +610,12 @@ export class SzHowStepCardBase implements OnInit, OnDestroy {
       });
     }
     public pinStep() {
-        console.log(`pinStep()`, this._data.resolvedVirtualEntityId, this._groupId);
-        this.howUIService.pinStep(this._data.resolvedVirtualEntityId, this._groupId);
+        let res = this.howUIService.pinStep(this._data.resolvedVirtualEntityId, this._groupId);
+        console.log(`pinStep()`, this._data.resolvedVirtualEntityId, this._groupId, res);
     }
     public unPinStep() {
-        console.log(`unPinStep()`, this._data.resolvedVirtualEntityId, this._groupId);
-        this.howUIService.unPinStep(this._data.resolvedVirtualEntityId);
+        let res = this.howUIService.unPinStep(this._data.resolvedVirtualEntityId);
+        console.log(`unPinStep(${this._data.resolvedVirtualEntityId},${this.stepType})`, this._data.resolvedVirtualEntityId, this._groupId, this.howUIService.stepNodes);
     }
 
     constructor(

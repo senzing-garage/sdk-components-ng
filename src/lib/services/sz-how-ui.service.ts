@@ -149,9 +149,9 @@ export class SzHowUIService {
    * @param itemType some groups have the same id's as steps inside them(interim merge steps) which are 
    * actually "GROUP"'s, this parameter allows you to specify between node's and groups with the same ID's.
    */
-  public collapseNode(id: string, itemType?: SzResolutionStepListItemType) {
-    let _stepNodes = this.getStepNodeById(id);
-    //console.log(`collapseNode(${id}, ${itemType})`,_stepNodes, this._stepNodes);
+  public collapseNode(id: string, itemType?: SzResolutionStepListItemType, debug?: boolean) {
+    let _stepNodes = this.getStepNodeById(id, debug);
+    if(debug) console.log(`collapseNode(${id}, ${itemType})`,_stepNodes, this._stepNodes);
 
     if(_stepNodes && (!itemType || itemType === SzResolutionStepListItemType.STEP) && this.isStepExpanded(id)) {
       // remove from expanded nodes
@@ -228,7 +228,7 @@ export class SzHowUIService {
    * @param itemType some groups have the same id's as steps inside them(interim merge steps) which are 
    * actually "GROUP"'s, this parameter allows you to specify between node's and groups with the same ID's.
    */
-  expandNode(id: string, itemType?: SzResolutionStepListItemType) {
+  expandNode(id: string, itemType?: SzResolutionStepListItemType, debug?: boolean) {
     let _stepNodes = this.getStepNodeById(id);
     //console.log(`expandNode(${id}, ${itemType}): ["${this._expandedNodes.join('",')}]`, _stepNodes, this._stepNodes);
     if(_stepNodes && (!itemType || itemType === SzResolutionStepListItemType.STEP) && !this.isStepExpanded(id)) {
@@ -348,7 +348,6 @@ export class SzHowUIService {
         // we assign this to the "hoisted" retVal
         _retVal.push(stepNode);
       }
-      // check nodes "children" for nodes that contain the id being looked for
       if(stepNode && (stepNode as SzResolutionStepNode).virtualEntityIds && (stepNode as SzResolutionStepNode).virtualEntityIds.indexOf(id) > -1 && (stepNode as SzResolutionStepNode).children) {
         parentsThatContainNode.push((stepNode as SzResolutionStepNode));
         (stepNode as SzResolutionStepNode).children.forEach((cNode)=>{
@@ -429,15 +428,15 @@ export class SzHowUIService {
    * @param startingNode The starting node who's tree we should search down. This is usually a "final" card but it could be any level 
    * in a tree.
    */
-  private getParentsContainingNode(childNodeId: string, startingNode?: SzResolutionStepNode): SzResolutionStepNode[] {
+  private getParentsContainingNode(childNodeId: string, startingNode?: SzResolutionStepNode, debug?: boolean): SzResolutionStepNode[] {
     let retVal: Array<SzResolutionStepNode> = [];
-    startingNode = startingNode ? startingNode : this.getRootNodeContainingNode(childNodeId); // change this to pull root final node when undefined
+    startingNode = startingNode ? startingNode : this.getRootNodeContainingNode(childNodeId, debug); // change this to pull root final node when undefined
 
     if(startingNode && startingNode.virtualEntityIds && startingNode.virtualEntityIds.includes(childNodeId)){
       // child node is present in tree
       // limit to direct descendents
       if(startingNode && startingNode.children && startingNode.children.some) {
-        //has direct descendent
+        //has descendent
         let _dd = startingNode.children.some((_n) => {
           return (_n as SzResolutionStepNode).id === childNodeId || _n.resolvedVirtualEntityId === childNodeId
         });
@@ -462,24 +461,54 @@ export class SzHowUIService {
     return retVal;
   }
   /**
+   * Get the parent node of a specific child node.
+   * @internal
+   * @param childNodeId The id of the node who's ancestral tree we should traverse.
+   */
+  private getDirectParentContainingNode(childNodeId: string, childNodeItemType?: SzResolutionStepListItemType, parentItemType?: SzResolutionStepListItemType, debug?: boolean) {
+    // first get ALL nodes in tree that might contain node
+    let parentNodes: Array<SzResolutionStepNode> = this.getParentsContainingNode(childNodeId, undefined, debug);
+    let retVal: SzResolutionStepNode;
+    // now filter those down to a single node that has the node we're 
+    // looking for in it's children array
+    if(parentNodes && parentNodes.find) {
+      if(parentItemType) {
+        parentNodes =  parentNodes.filter((pNode)=>{
+          return pNode.itemType === parentItemType;
+        });
+      }
+      if(debug) {
+        console.info(`getDirectParentContainingNode(${childNodeId}): `, parentNodes);
+      }
+      // we should have all descendents at this point
+      retVal = parentNodes.find((pNode)=>{
+        if(pNode.children && pNode.children.find) {
+          let childMatchingId = pNode.children.find((cNode)=>{
+            let isCorrectItemType = childNodeItemType !== undefined ? (cNode as SzResolutionStepNode).itemType === childNodeItemType : true;
+            return (cNode as SzResolutionStepNode).id === childNodeId && isCorrectItemType;
+          });
+          if(childMatchingId) {
+            return true;
+          }
+          return false;
+        }
+        return false
+      })
+    }
+    return retVal;
+  }
+  /**
    * Get the direct ancestor of a child node. It is technically possible that there is more 
    * than 1 parent of a child but exceedingly unlikely except in cases that resolved to two separate 
    * final entities.
    * @param childNodeId the id of the child
    */
-  public getParentContainingNode(childNodeId: string): SzResolutionStepNode {
-    let _retValArr = this.getParentsContainingNode(childNodeId);
-    if(_retValArr) {
-      if(_retValArr.length > 1) {
-        //console.warn(`more than one node is parent of child!`);
-        // take ... first I guess??
-        return _retValArr[0];
-      } else if(_retValArr.length === 1) {
-        // only one item in array, pop
-        return _retValArr[0];
-      }
+  public getParentContainingNode(childNodeId: string, childNodeItemType?: SzResolutionStepListItemType, parentItemType?: SzResolutionStepListItemType, debug?: boolean): SzResolutionStepNode {
+    let retVal = this.getDirectParentContainingNode(childNodeId, childNodeItemType, parentItemType, debug);
+    if(debug) {
+      console.warn(`parent node for #${childNodeId}: `, retVal);
     }
-    return undefined;
+    return retVal;
   }
   /**
    * Get the Root level node group that contains a specific child step. So say if you have a 
@@ -487,11 +516,18 @@ export class SzHowUIService {
    * a final result card you can get the "FINAL" card from the child id of the record step.
    * @param childNodeId the id of the child
    */
-  public getRootNodeContainingNode(childNodeId: string): SzResolutionStepNode {
+  public getRootNodeContainingNode(childNodeId: string, debug?: boolean): SzResolutionStepNode {
     if(this._stepNodes) {
-      return this._stepNodes.find((_rn) => {
+      let retVal = this._stepNodes.find((_rn) => {
         return _rn.virtualEntityIds.includes(childNodeId);
-      })
+      });
+      if(debug) {
+        console.log(`getRootNodeContainingNode(#${childNodeId})`, retVal);
+        if(!retVal) {
+          console.warn(`No Root Node!!!`, this._stepNodes);
+        }
+      }
+      return retVal;
     }
     return undefined;
   }
@@ -573,10 +609,11 @@ export class SzHowUIService {
     if(!this.isStepPinned(vId)) {
       this._pinnedSteps.push(vId);
       if(gId && this._stepNodeGroups && this._stepNodeGroups.has(gId)) {
-        let _stack              = this.getParentContainingNode(vId);
-        let _parentGroup        = this.getParentContainingNode(gId);
+        let _stack              = this.getParentContainingNode(vId, undefined, SzResolutionStepListItemType.STACK);
+        let _parentGroup        = this.getParentContainingNode(gId, undefined, undefined);
+        let _rootNode           = this.getRootNodeContainingNode(gId);
         //console.log(`\t_stack:`,_stack);
-        //console.log(`\t_parentGroup`, _parentGroup);
+        //console.log(`\t_parentGroup: `, _parentGroup);
         if(_stack && _parentGroup){
           // we can safely create new stacks, split by index
           let itemsBeforeNode: (SzResolutionStepNode | SzResolutionStep)[]          = [];
@@ -632,7 +669,7 @@ export class SzHowUIService {
                   children: itemsAfterNode
                 });
                 // 5M00000SSHHH 1T G00D
-                _newStack.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(true, _newStack);
+                _newStack.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(_newStack);
                 this._stepNodeGroups.set(_newStack.id, _newStack);
                 this._expandedGroups.push(_newStack.id); // by default stack should be expanded
                 // 5M00000SSHHH 1T R33AL G00D!
@@ -674,7 +711,7 @@ export class SzHowUIService {
                 if(this._stepNodeGroups.has(_stack.id)) { this._stepNodeGroups.delete(_stack.id); }
               }
               // update virtualIds
-              _stack.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(true, _stack);
+              _stack.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(_stack);
               // update stack in "_stepNodeGroups"
               if(this._stepNodeGroups.has(_stack.id)) {
                 this._stepNodeGroups.set(_stack.id, _stack);
@@ -684,7 +721,11 @@ export class SzHowUIService {
 
             // update parent nodes virtual ids
             if(_parentGroup) {
-              _parentGroup.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(false, _parentGroup);
+              _parentGroup.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(_parentGroup);
+            }
+            // update root node all the way down the tree
+            if(_rootNode) {
+              _rootNode.virtualEntityIds  = SzHowUIService.setVirtualEntityIdsForNode(false, _rootNode);
             }
             /*console.log(`\tindex of stack in parent: ${_indexOfStackInParent}`);
             console.log(`\titems before node: `, itemsBeforeNode);
@@ -697,6 +738,7 @@ export class SzHowUIService {
     } else {
       //console.warn(`step already pinned: ${vId}`);
     }
+    return this._stepNodeGroups;
   }
   /**
    * Expand a specific node and all parent nodes of node that need to be expanded in order for the node to 
@@ -752,8 +794,8 @@ export class SzHowUIService {
             (itemsAfterNode[0] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STEP || 
             (itemsAfterNode[0] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STACK) ? true : false;
         }
-      } else {
-        console.warn(`\tcould not find itemNode!! `, parentNode, parentNode.children[indexInParent]);
+      } else if(debug) {
+        console.warn(`\tcould not find #${vId}!! `, parentNode, parentNode.children[indexInParent]);
       }
     } else if(debug) {
       console.warn(`stepCanBeUnPinned(${vId}): parentNode has no children `, parentNode);
@@ -773,11 +815,11 @@ export class SzHowUIService {
     let isExpanded = (!groupId || groupId === undefined) ? this._expandedNodes.includes(id) : (groupId ? this._expandedGroups.includes(groupId) : false);
     id = id ? id : (groupId ? groupId : undefined);
     if(!isExpanded) {
-      if(debug) console.log(`\texpanding node: ${this._expandedNodes.includes(id)}, ${this._expandedGroups.includes(groupId)}, "${itemType}`);
-      this.expandNode(id, itemType);
+      if(debug) console.log(`\texpanding node: ${this._expandedNodes.includes(id)}, ${this._expandedGroups.includes(groupId)}, "${itemType}"`);
+      this.expandNode(id, itemType, debug);
     } else {
       if(debug) console.log(`\collapsing node: ${this._expandedNodes.includes(id)}, ${this._expandedGroups.includes(groupId)}, "${itemType}"`);
-      this.collapseNode(id, itemType);
+      this.collapseNode(id, itemType, debug);
     }
   }
   /**
@@ -787,11 +829,13 @@ export class SzHowUIService {
    * items are also not pinned we merge all the steps together in order to their new target STACK.
    * @param vId the id of the step to pin
    */
-  public unPinStep(vId: string) {
+  public unPinStep(vId: string, debug?: boolean) {
     if(this.isStepPinned(vId)) {
-      //console.log(`unPinStep: ${vId}`, this._pinnedSteps);
       this._pinnedSteps.splice(this._pinnedSteps.indexOf(vId),1);
-      let parentNode = this.getParentContainingNode(vId);
+      let parentNode = this.getParentContainingNode(vId, SzResolutionStepListItemType.STEP);
+      if(debug) {
+        console.log(`unPinStep: ${vId}`, parentNode, this._pinnedSteps);
+      }
       if(parentNode && parentNode.children) {
         let itemsBeforeNode: (SzResolutionStepNode | SzResolutionStep)[]          = [];
         let itemsAfterNode:  (SzResolutionStepNode | SzResolutionStep)[]          = [];
@@ -943,7 +987,7 @@ export class SzHowUIService {
               _nItem.children = _nItem.children.concat(itemsToAdd);
               itemsToRemoveFromParent.push(itemNode);
               // update virtualIds
-              _nItem.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(false, _nItem);
+              _nItem.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(_nItem);
               // update stack in "_stepNodeGroups"
               this._stepNodeGroups.set(_nItem.id, _nItem);
               //console.log(`\tadded previous steps and current item to following stack`, newStepList);
@@ -955,7 +999,7 @@ export class SzHowUIService {
                 children: itemsToAdd
               }
               // update virtualIds
-              newStack.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(false, newStack);
+              newStack.virtualEntityIds = SzHowUIService.getVirtualEntityIdsForNode(newStack);
               itemsToRemoveFromParent.push(itemNode);
               parentNode.children[indexInParent] = newStack;
               // update stack in "_stepNodeGroups"
@@ -1083,7 +1127,7 @@ export class SzHowUIService {
    * root level nodes.
    * @param step the step to gather virtual entity ids's for
    */
-  public static getVirtualEntityIdsForNode(isNested: boolean, step: SzResolutionStepNode) {
+  /*public static getVirtualEntityIdsForNode(isNested: boolean, step: SzResolutionStepNode) {
     let retVal: string[] = [];
 
     if(isNested) {
@@ -1095,6 +1139,27 @@ export class SzHowUIService {
       if(retVal && retVal.flat){ retVal = retVal.flat(); }
     }
     return retVal = Array.from(new Set(retVal)); // de-dupe any values
+  }*/
+  /**
+   * @internal
+   * recursively scan a nodes children and their childrens children to collect
+   * all virtual entity id's that are decendents of this node
+   */
+  public static getVirtualEntityIdsForNode(_rStep?: SzResolutionStepNode): string[] {
+    let retVal: Array<string> = [];
+    
+    if(_rStep && _rStep.children) {
+      _rStep.children.forEach((sNode, ind)=>{
+        let idToAdd = (sNode as SzResolutionStepNode).id ? (sNode as SzResolutionStepNode).id : (sNode as SzResolutionStep).resolvedVirtualEntityId;
+        retVal.push(idToAdd);
+
+        let childrenOfChildIds = this.getVirtualEntityIdsForNode((sNode as SzResolutionStepNode));
+        if(childrenOfChildIds && childrenOfChildIds.length > 0) {
+          retVal = retVal.concat(childrenOfChildIds);
+        }
+      });
+    }
+    return retVal;
   }
   /**
    * Set the `virtualEntityIds` property of a node/step to an array of virtualEntityId's or resolvedEntityId's or Id's and recordId's for steps or nodes that 
