@@ -67,7 +67,7 @@
     "document-register-element": "^1.14.10",
     "ngx-json-viewer": "^3.2.1",
     "rxjs": "~7.8.1",
-    "sass": "^1.54.5",
+    "sass": "^1.66.1",
     "tslib": "^2.5.0",
     "uuid": "^9.0.0",
     "zone.js": "~0.12.0"
