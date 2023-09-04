@@ -374,7 +374,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                                                     (fd.internalId === _scoreDetails.candidateFeature.featureId) || 
                                                     (fd.internalId === _scoreDetails.inboundFeature.featureId)
                                                 )) {
-                                                    _retVal += '\n<span class="child-node"></span>';
+                                                    _retVal += '</div>\n<span class="child-node"></span>';
                                                     if(fd.internalId === _scoreDetails.candidateFeature.featureId) {
                                                         // show "inboundFeature"
                                                         _retVal += _scoreDetails.inboundFeature.featureValue;
