@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">Senzing SDK Components</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -49,11 +49,11 @@
 
 
 <ol class="breadcrumb">
-  <li>Miscellaneous</li>
-  <li>Variables</li>
+  <li class="breadcrumb-item">Miscellaneous</li>
+  <li class="breadcrumb-item">Variables</li>
 </ol>
 
-<section>
+<section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -89,7 +89,7 @@
 </section>
 
     <h3>src/lib/models/data-admin.ts</h3>
-    <section>
+    <section data-compodoc="block-properties">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -126,7 +126,7 @@
     </table>
 </section>
     <h3>src/lib/entity/entity-utils.ts</h3>
-    <section>
+    <section data-compodoc="block-properties">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -160,7 +160,7 @@
     </table>
 </section>
     <h3>src/lib/models/data-features.ts</h3>
-    <section>
+    <section data-compodoc="block-properties">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -210,7 +210,7 @@
     </table>
 </section>
     <h3>src/lib/models/data-how.ts</h3>
-    <section>
+    <section data-compodoc="block-properties">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -240,7 +240,9 @@
     /** interim cards are virtual entities used for applying additional steps (commonly merges) */
     INTERIM: &#x27;INTERIM&#x27; as SzResolutionStepDisplayType,
     /** merge records are individual cards */
-    MERGE: &#x27;MERGE&#x27; as SzResolutionStepDisplayType
+    MERGE: &#x27;MERGE&#x27; as SzResolutionStepDisplayType,
+    /** singleton cards for unmerged final entities */
+    SINGLETON: &#x27;SINGLETON&#x27; as SzResolutionStepDisplayType
 }</code>
                     </td>
                 </tr>
@@ -282,7 +284,9 @@
      * (usually multiple &quot;ADD&quot; or &quot;CREATE&quot;) */
     STACK: &#x27;STACK&#x27; as SzResolutionStepListItemType,
     /** every step that is not a group of some kind */
-    STEP: &#x27;STEP&#x27; as SzResolutionStepListItemType
+    STEP: &#x27;STEP&#x27; as SzResolutionStepListItemType,
+    /** when final results are unresolved sometimes they are single unresoved records */
+    SINGLETON: &#x27;SINGLETON&#x27; as SzResolutionStepListItemType
 }</code>
                     </td>
                 </tr>
@@ -298,7 +302,7 @@
     </table>
 </section>
     <h3>src/lib/models/data-source-record-selection.ts</h3>
-    <section>
+    <section data-compodoc="block-properties">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>

@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">Senzing SDK Components</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -49,11 +49,11 @@
 
 
 <ol class="breadcrumb">
-  <li>Miscellaneous</li>
-  <li>Functions</li>
+  <li class="breadcrumb-item">Miscellaneous</li>
+  <li class="breadcrumb-item">Functions</li>
 </ol>
 
-<section>
+<section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -68,6 +68,12 @@
                         </li>
                         <li>
                             <a href="#checkEmailPattern" title="src/lib/entity/entity-utils.ts" ><b>checkEmailPattern</b>&nbsp;&nbsp;&nbsp;(src/.../entity-utils.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#getArrayOfPairsFromMatchKey" title="src/lib/common/utils.ts" ><b>getArrayOfPairsFromMatchKey</b>&nbsp;&nbsp;&nbsp;(src/.../utils.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#getMapFromMatchKey" title="src/lib/common/utils.ts" ><b>getMapFromMatchKey</b>&nbsp;&nbsp;&nbsp;(src/.../utils.ts)</a>
                         </li>
                         <li>
                             <a href="#installPackageJsonDependencies" title="src/schematics/ng-add/index.ts" ><b>installPackageJsonDependencies</b>&nbsp;&nbsp;&nbsp;(src/.../index.ts)</a>
@@ -113,7 +119,7 @@
 </section>
 
     <h3>src/schematics/ng-add/index.ts</h3>
-    <section>
+    <section data-compodoc="block-methods">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -240,7 +246,7 @@
         </tbody>
     </table>
 </section>    <h3>src/lib/entity/entity-utils.ts</h3>
-    <section>
+    <section data-compodoc="block-methods">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -389,8 +395,134 @@ As a fall back a name is created using the entity ID.</p>
         </tbody>
     </table>
 </section>    <h3>src/lib/common/utils.ts</h3>
-    <section>
+    <section data-compodoc="block-methods">
     <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getArrayOfPairsFromMatchKey"></a>
+                    <span class="name">
+                        <span ><b>getArrayOfPairsFromMatchKey</b></span>
+                        <a href="#getArrayOfPairsFromMatchKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getArrayOfPairsFromMatchKey(matchKey: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>matchKey</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Array&lt;literal type&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMapFromMatchKey"></a>
+                    <span class="name">
+                        <span ><b>getMapFromMatchKey</b></span>
+                        <a href="#getMapFromMatchKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getMapFromMatchKey(matchKey: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>matchKey</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Map&lt;string, literal type&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">

@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">Senzing SDK Components</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -35,29 +35,33 @@
 
 
 <ol class="breadcrumb">
-  <li>Components</li>
-  <li
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
   >
   SzSearchComponent</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#readme" role="tab" id="readme-tab" data-toggle="tab" data-link="readme">README</a>
+        <li class="nav-item">
+            <a href="#readme" class="nav-link"
+                role="tab" id="readme-tab" data-bs-toggle="tab" data-link="readme">README</a>
         </li>
-        <li >
-            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
         </li>
-        <li >
-            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
     <h3>File</h3>
 </p>
 <p class="comment">
@@ -103,15 +107,16 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;
         <h3>Implements</h3>
     </p>
     <p class="comment">
-                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
-                    <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
+                <code>OnInit</code>
+                <code>OnDestroy</code>
     </p>
 
 
-<section>
+<section data-compodoc="block-metadata">
     <h3>Metadata</h3>
     <table class="table table-sm table-hover metadata">
         <tbody>
+
 
 
 
@@ -127,6 +132,8 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;
                 <td class="col-md-3">selector</td>
                 <td class="col-md-9"><code>sz-search</code></td>
             </tr>
+
+
 
             <tr>
                 <td class="col-md-3">styleUrls</td>
@@ -151,7 +158,7 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;
     </table>
 </section>
 
-    <section>
+    <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -670,13 +677,13 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;
     </table>
 </section>
 
-    <section>
+    <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(fb: UntypedFormBuilder, configService: ConfigService, cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>, apiConfigService: <a href="../injectables/SzConfigurationService.html" target="_self">SzConfigurationService</a>, prefs: <a href="../injectables/SzPrefsService.html" target="_self">SzPrefsService</a>, searchService: <a href="../injectables/SzSearchService.html" target="_self">SzSearchService</a>, folios: <a href="../injectables/SzFoliosService.html" target="_self">SzFoliosService</a>, dialog: MatDialog, bottomSheet: MatBottomSheet, breakpointObserver: BreakpointObserver)</code>
+<code>constructor(fb: UntypedFormBuilder, configService: ConfigService, cd: ChangeDetectorRef, apiConfigService: <a href="../injectables/SzConfigurationService.html" target="_self">SzConfigurationService</a>, prefs: <a href="../injectables/SzPrefsService.html" target="_self">SzPrefsService</a>, searchService: <a href="../injectables/SzSearchService.html" target="_self">SzSearchService</a>, folios: <a href="../injectables/SzFoliosService.html" target="_self">SzFoliosService</a>, dialog: MatDialog, bottomSheet: MatBottomSheet, breakpointObserver: BreakpointObserver)</code>
                     </td>
                 </tr>
 
@@ -721,7 +728,7 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;
                                                         <td>cd</td>
                                                   
                                                         <td>
-                                                                        <code><a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank" >ChangeDetectorRef</a></code>
+                                                                    <code>ChangeDetectorRef</code>
                                                         </td>
                                                   
                                                     <td>
@@ -822,7 +829,7 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;
         </table>
 </section>
 
-    <section>
+    <section data-compodoc="block-inputs">
     <h3 id="inputs">Inputs</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -2263,7 +2270,7 @@ conf to change before fetching resources like the identifiers list</p>
             </tbody>
         </table>
 </section>
-    <section>
+    <section data-compodoc="block-outputs">
     <h3 id="outputs">Outputs</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -2422,7 +2429,7 @@ conf to change before fetching resources like the identifiers list</p>
 </section>
 
 
-    <section>
+    <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -2509,7 +2516,7 @@ that were also in the form at the time of the search.</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>chooseIdentifiers(event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                    <code>chooseIdentifiers(event: Event)</code>
                 </td>
             </tr>
 
@@ -2534,7 +2541,7 @@ that were also in the form at the time of the search.</p>
                                 <tr>
                                     <td>event</td>
                                     <td>
-                                                <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                            <code>Event</code>
                                     </td>
 
                                     <td>
@@ -3010,7 +3017,7 @@ any parameter changes through the paramsChange emmitter.</p>
         </tbody>
     </table>
 </section>
-    <section>
+    <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -3094,7 +3101,7 @@ any parameter changes through the paramsChange emmitter.</p>
     </table>
 </section>
 
-    <section>
+    <section data-compodoc="block-accessors">
     <h3 id="accessors">
         Accessors
     </h3>
@@ -6339,11 +6346,11 @@ conf to change before fetching resources like the identifiers list</p>
 </section>
 </div>
 
-    <div class="tab-pane fade " id="c-readme">
+    <div class="tab-pane fade " id="readme">
         <p><p>The search box component and the search results component are split up. this is done for some practical reasons. most noteably, so results can be placed wherever it makes sense to put them. This does complicate set up a tiny bit, but the tradeoff in flexibility is well worth it.</p>
 <p>So, lets get down to business.
 lets bind the output of the search component to the input of the search results component.</p>
-<h2 id="angular">Angular</h2>
+<h2>Angular</h2>
 <p>first two methods to your component(or app.component.ts) that will handle the output of our search component:</p>
 <div><pre class="line-numbers"><code class="language-typescript">  public onSearchResults(evt: SzSearchResults) {
     console.log(&#39;&#64;senzing/sdk-components-ng/sz-search/searchResults: &#39;, evt);
@@ -6391,12 +6398,12 @@ export class AppComponent implements AfterViewInit {
 <p>Now we should be getting the results of the search, and assigning it to the class property <code>currentSearchResults</code>. The next step is to do something with that data, so add the following to your app.component.html file:</p>
 <div><pre class="line-numbers"><code class="language-html">&lt;!-- start search results --&gt;
 &lt;sz-search-results [results]=&quot;currentSearchResults&quot; [parameters]=&quot;currentSearchParameters&quot;&gt;&lt;/sz-search-results&gt;
-&lt;!-- end search results --&gt;</code></pre></div><h2 id="web-components">Web Components</h2>
+&lt;!-- end search results --&gt;</code></pre></div><h2>Web Components</h2>
 </p>
     </div>
 
 
-    <div class="tab-pane fade " id="c-templateData">
+    <div class="tab-pane fade " id="templateData">
         <pre class="line-numbers"><code class="language-html">
   &lt;!-- @senzing/sdk/search/sz-search --&gt;
   &lt;!--
@@ -6547,7 +6554,7 @@ export class AppComponent implements AfterViewInit {
 </code></pre>
     </div>
 
-    <div class="tab-pane fade " id="c-styleData">
+    <div class="tab-pane fade " id="styleData">
                 <p class="comment">
                     <code>./sz-search.component.scss</code>
                 </p>
@@ -6871,7 +6878,7 @@ export class AppComponent implements AfterViewInit {
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div>  <!-- @senzing/sdk/search/sz-search -->  <!--    NAME_FULL    DATE_OF_BIRTH    IDENTIFIER    IDENTIFIER_TYPE    ADDR_FULL    PHONE_NUMBER    EMAIL_ADDRESS  -->  <div class="content" *ngIf="true"  [ngClass]="_layoutClasses"  >      <section class="entity search" (ngSubmit)="submitSearch()">        <form class="form" [formGroup]="entitySearchForm" novalidate>          <div class="sz-row">            <div class="field name" [class.disabled]="disabledFields[\'name\']" *ngIf="!hiddenFields[\'name\']">              <label for="entity-name">Name</label>              <input formControlName="NAME_FULL"                      class="search-input"                      id="entity-name"                      type="text"                      list="search-history-entity-name"                      [attr.disabled]="getDisabled(\'name\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Search for Name"                      (input)="checkHistoryForMatchOnChange($event)">              <datalist *ngIf="searchHistoryName.length > 0 && !searchHistoryDisabled" id="search-history-entity-name">                <option *ngFor="let item of searchHistoryName" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field dob" [class.disabled]="disabledFields[\'dob\']" *ngIf="!hiddenFields[\'dob\']">              <label for="entity-dob">Date of Birth</label>              <input formControlName="DATE_OF_BIRTH"                      id="entity-dob"                      type="text"                      list="search-history-entity-dob"                      [attr.disabled]="getDisabled(\'dob\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="mm/dd/yyyy">              <datalist *ngIf="searchHistoryDob.length > 0 && !searchHistoryDisabled" id="search-history-entity-dob">                <option *ngFor="let item of searchHistoryDob" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field identifier" [class.disabled]="disabledFields[\'identifier\']" *ngIf="!hiddenFields[\'identifier\']">              <label for="entity-identifier">Identifier</label>              <input formControlName="IDENTIFIER"                      id="entity-identifier"                      type="text"                      list="search-history-entity-identifier"                      [attr.disabled]="getDisabled(\'identifier\')"                      (keyup.enter)="onKeyEnter()"                      [placeholder]="placeHolderTextForIdentifierField">              <datalist *ngIf="searchHistoryIdentifier.length > 0 && !searchHistoryDisabled" id="search-history-entity-identifier">                <option *ngFor="let item of searchHistoryIdentifier" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field type" [class.disabled]="disabledFields[\'identifierType\'] || disabledFields[\'identifier\']" *ngIf="!hiddenFields[\'identifier\'] && !hiddenFields[\'identifierType\']">              <label for="entity-type">Type</label>              <div class="flex-type-row">                <mat-icon *ngIf="showIdentifierTypesPicker" class="identifier-type-icon left hide-on-medium hide-on-wide" matTooltipPosition="above" matTooltip="Choose Identifiers in List" aria-hidden="false" aria-label="Choose Identifiers in List" (click)="chooseIdentifiers($event)">filter_list</mat-icon>                <select formControlName="IDENTIFIER_TYPE"                        class="identifier-dropdown"                        [class.filterShowing]="showIdentifierTypesPicker"                        id="entity-type"                        [attr.disabled]="getAnyDisabled([\'identifierType\',\'identifier\'])"                        name="type">                  <option [ngValue]="null" disabled>Choose ID type</option>                  <option *ngFor="let type of orderedAttributes()"                          [value]="type.attributeCode"                          [selected]="type.attributeCode === \'PASSPORT_NUMBER\'">{{ attributeCodeAsHumanReadable(type.attributeCode) | uppercase }}                  </option>                </select>                <mat-icon *ngIf="showIdentifierTypesPicker" class="identifier-type-icon right  hide-on-narrow" matTooltipPosition="left" matTooltip="Choose Identifiers in List" aria-hidden="false" aria-label="Choose Identifiers in List" (click)="chooseIdentifiers($event)">filter_list</mat-icon>              </div>            </div>            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">              <button mat-button class="button__search-go"              [attr.disabled]="getDisabled(\'searchButton\')"              (click)="submitSearch()">{{searchButtonLabel}}</button>            </div>          </div>          <div class="sz-row">            <div class="field address" [class.disabled]="disabledFields[\'address\']" *ngIf="!hiddenFields[\'address\']">              <label for="entity-address">Address</label>              <input formControlName="ADDR_FULL"                      id="entity-address"                      type="text"                      list="search-history-entity-address"                      [attr.disabled]="getDisabled(\'address\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Search for Address">              <datalist *ngIf="searchHistoryAddress.length > 0 && !searchHistoryDisabled" id="search-history-entity-address">                <option *ngFor="let item of searchHistoryAddress" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field phone" [class.disabled]="disabledFields[\'phone\']" *ngIf="!hiddenFields[\'phone\']">              <label for="entity-phone">Phone</label>              <input formControlName="PHONE_NUMBER"                      id="entity-phone"                      type="text"                      list="search-history-entity-phone"                      [attr.disabled]="getDisabled(\'phone\')"                      placeholder="Phone #">              <datalist *ngIf="searchHistoryPhone.length > 0 && !searchHistoryDisabled" id="search-history-entity-phone">                <option *ngFor="let item of searchHistoryPhone" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field email" [class.disabled]="disabledFields[\'email\']" *ngIf="!hiddenFields[\'email\']">              <label for="entity-email">Email</label>              <input formControlName="EMAIL_ADDRESS"                      id="entity-email"                      type="text"                      list="search-history-entity-email"                      [attr.disabled]="getDisabled(\'email\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Email Address">              <datalist *ngIf="searchHistoryEmail.length > 0 && !searchHistoryDisabled" id="search-history-entity-email">                <option *ngFor="let item of searchHistoryEmail" [value]="item">{{item}}</option>              </datalist>            </div>            <div class="field spacer">            </div>            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">{{cancelButtonLabel}}</button>            </div>          </div>          <div class="sz-row bottom">            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">{{cancelButtonLabelShort}}</button>            </div>            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">              <button mat-button class="button__search-go"              [attr.disabled]="getDisabled(\'searchButton\')"              (click)="submitSearch()">{{searchButtonLabelShort}}</button>            </div>          </div>        </form>      </section>    </div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzSearchComponent'};
 </script>

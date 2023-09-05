@@ -44,7 +44,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Classes</li>
-  <li class="breadcrumb-item" >SzSdkPrefsBase</li>
+  <li class="breadcrumb-item" >SzHowPrefs</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -70,12 +70,19 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>preferences bus base class. provides common methods for
-publishing and responding to value changes. bulk-set and get.</p>
-<p>used by <a href="../classes/SzSearchFormPrefs.html">SzSearchFormPrefs</a>, <a href="../classes/SzSearchResultsPrefs.html">SzSearchResultsPrefs</a>, <a href="../classes/SzEntityDetailPrefs.html">SzEntityDetailPrefs</a>, <a href="../classes/SzGraphPrefs.html">SzGraphPrefs</a></p>
-
+                <p>How Report related preferences bus class.
+used by <a href="../injectables/SzPrefsService.html">SzPrefsService</a> to store it&#39;s
+How related prefs.
+Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsService</a> context, not on its own.</p>
+<div><pre class="line-numbers"><code class="language-html">this.prefs.how.showResolutionRule = true;</code></pre></div><div><pre class="line-numbers"><code class="language-html">this.prefs.graph.prefsChanged.subscribe( (prefs) =&gt; { console.log(&#39;how pref change happened.&#39;, prefs); })</code></pre></div>
             </p>
 
+            <p class="comment">
+                <h3>Extends</h3>
+            </p>
+            <p class="comment">
+                        <code><a href="../classes/SzSdkPrefsBase.html" target="_self" >SzSdkPrefsBase</a></code>
+            </p>
 
 
 
@@ -92,11 +99,12 @@ publishing and responding to value changes. bulk-set and get.</p>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#bulkSet" >bulkSet</a>
+                                    <span class="modifier"></span>
+                                <a href="#jsonKeys" >jsonKeys</a>
                             </li>
                             <li>
-                                <a href="#jsonKeys" >jsonKeys</a>
+                                    <span class="modifier">Public</span>
+                                <a href="#bulkSet" >bulkSet</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -141,16 +149,87 @@ publishing and responding to value changes. bulk-set and get.</p>
 
 
 
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#showResolutionRule" >showResolutionRule</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
         </tbody>
     </table>
 </section>
 
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>publish out a &quot;first&quot; real payload so that
+subscribers get an initial payload from this subclass
+instead of the empty superclass</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
 
             <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
     </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="jsonKeys"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>jsonKeys</b></span>
+                        <a href="#jsonKeys"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    &#x27;showResolutionRule&#x27;
+  ]</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>the keys of member setters or variables in the object
+to output in json, or to take as json input</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -179,39 +258,6 @@ publishing and responding to value changes. bulk-set and get.</p>
                 <td class="col-md-4">
                     <div class="io-description"><p>during a bulk property set, set this to true to
 not publish change events on every single value change</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="jsonKeys"></a>
-                    <span class="name">
-                        <span ><b>jsonKeys</b></span>
-                        <a href="#jsonKeys"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>[]</code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>[]</code>
-                    </td>
-                </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>the keys of member setters or variables in the object
-to output in json, or to take as json input</p>
 </div>
                 </td>
             </tr>
@@ -463,6 +509,83 @@ notifications.</p>
 
 
 
+            <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showResolutionRule"></a>
+                        <span class="name"><b>showResolutionRule</b><a href="#showResolutionRule"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>showResolutionRule()</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>whether or not to show the Resolution Rule code or principle in a card</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>showResolutionRule(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>whether or not to show the Resolution Rule code or principle in a card</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+</section>
     </div>
 
 
@@ -502,7 +625,7 @@ notifications.</p>
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'SzSdkPrefsBase.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'SzHowPrefs.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

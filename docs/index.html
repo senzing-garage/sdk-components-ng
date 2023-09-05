@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="./" class="navbar-brand">Senzing SDK Components</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -31,15 +31,15 @@
                <div class="content getting-started">
                    <div class="content-data">
 
-<h1 id="senzingsdk-components-ng">@senzing/sdk-components-ng</h1>
-<h2 id="overview">Overview</h2>
+<h1>@senzing/sdk-components-ng</h1>
+<h2>Overview</h2>
 <p>This project is for the Senzing&reg; SDK components that can be used in other projects. There are two flavors that the components come in. The <a href="https://www.npmjs.com/package/@senzing/sdk-components-ng">@senzing/sdk-components-ng</a> package which is based around the Angular 13.x.x framework, and the <a href="https://www.npmjs.com/package/@senzing/sdk-components-web">@senzing/sdk-components-web</a> package which is framework agnostic and based around the <a href="https://developers.google.com/web/fundamentals/web-components/">Web Components</a> standard. The usage for both packages is noted in the <a href="http://hub.senzing.com/sdk-components-ng/">documentation examples</a>.</p>
 <p>For information on the Web Components version see the <a href="https://github.com/Senzing/sdk-components-ng/tree/master/sdk-components-web">sdk-components-web guide</a>. </p>
 <p><a href="https://travis-ci.com/Senzing/sdk-components-ng"><img src="https://travis-ci.com/Senzing/sdk-components-ng.svg?branch=master" alt="Build Status" class="img-responsive"></a>
 <a href="https://badge.fury.io/js/%40senzing%2Fsdk-components-ng"><img src="https://badge.fury.io/js/%40senzing%2Fsdk-components-ng.svg" alt="npm version" class="img-responsive"></a>
 <img src="https://img.shields.io/github/v/release/senzing/sdk-components-ng?color=%2300c4ff&logo=latest%20tag" alt="GitHub release (latest SemVer)" class="img-responsive">
 <img src="https://img.shields.io/github/package-json/v/senzing/sdk-components-ng?color=orange&logo=latest&logoColor=blue" alt="GitHub package.json version" class="img-responsive"></p>
-<h2 id="dependencies">Dependencies</h2>
+<h2>Dependencies</h2>
 <p>For building from Source:</p>
 <ul>
 <li><a href="https://nodejs.org/">Node/NPM</a>.</li>
@@ -47,20 +47,20 @@
 <li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
 </ul>
 <p>Please see the installation instructions for each of these for how to install and setup each one properly.</p>
-<h3 id="installation">Installation</h3>
-<h4 id="shortcuts">Shortcuts</h4>
+<h3>Installation</h3>
+<h4>Shortcuts</h4>
 <p>If you&#39;re developing on Windows or macOS, you can make use of the <a href="https://senzing.com/#download">Senzing app</a>
 to help populate an entity repository to test with.  It also gives you an easy way to load and browse data
 outside of the <a href="https://github.com/Senzing/senzing-api-server">Senzing REST API Sever</a>.  See the instructions
 for using the <a href="https://github.com/Senzing/senzing-api-server/tree/master/app-scripts">Senzing App Integration Scripts</a>
 to start the Senzing REST API Server using your existing projects in the Senzing app.</p>
-<h4 id="rest-api-server">REST API Server</h4>
+<h4>REST API Server</h4>
 <p>These components require an implementation of the <a href="https://github.com/Senzing/senzing-rest-api">Senzing REST API</a>
 to function.  You can use the <a href="https://github.com/Senzing/senzing-api-server">Senzing REST API Server</a> as a default
 implementation in Java.  Follow <a href="https://github.com/Senzing/senzing-api-server">the instructions</a> to check out and
 build the <a href="https://github.com/Senzing/senzing-api-server">Senzing REST API Sever</a> from source or download a pre-built
 version when available.</p>
-<h3 id="sdk-components">SDK Components</h3>
+<h3>SDK Components</h3>
 <p>Open a terminal window to the location of your project and type:
 <code>ng add @angular/material</code>
 <code>ng add @senzing/sdk-components-ng</code></p>
@@ -68,12 +68,12 @@ version when available.</p>
 <p>Alternatively you can install the components and dependencies without the angular-cli via npm individually:
 <code>npm i @angular/material @angular/cdk @senzing/sdk-components-ng --save</code></p>
 <p>Please take note that all the same <a href="https://senzing.github.io/rest-api-client-ng/">interfaces</a>, and <a href="https://senzing.github.io/rest-api-client-ng/">services</a> from the <a href="https://www.npmjs.com/package/@senzing/rest-api-client-ng">@senzing/rest-api-client-ng package</a> will also be available for convenience.</p>
-<h4 id="usage">Usage</h4>
+<h4>Usage</h4>
 <p>Just add the import statement for the particular component, service, or model that you want to use.</p>
 <div><pre class="line-numbers"><code class="language-typescript">import {
   SzEntitySearchParams,
   SzAttributeSearchResult
-} from &#39;&#64;senzing/sdk-components-ng&#39;;</code></pre></div><h3 id="quick-start">Quick Start</h3>
+} from &#39;&#64;senzing/sdk-components-ng&#39;;</code></pre></div><h3>Quick Start</h3>
 <p><strong>1)</strong> Start up an instance of the <a href="https://github.com/Senzing/senzing-api-server">Senzing REST API Server</a>
 if not currently running.</p>
 <p>See the <a href="https://github.com/Senzing/senzing-api-server">README.md</a> for instructions on how
@@ -146,7 +146,7 @@ export class AppComponent {
 and you should be greeted by a page like with a search box. And search results list right below it.</p>
 <p><img src="docs/images/ss-search-with-results.small.png" alt="screen shot of working example" class="img-responsive"></p>
 <p>And that&#39;s it! At least for the quickstart. There are a ton more options for running the rest server, interacting with the components and services.</p>
-<h2 id="configuration--parameters">Configuration &amp; Parameters</h2>
+<h2>Configuration &amp; Parameters</h2>
 <p>The SenzingSDKModule accepts a factory method that returns an instance of the
 <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> class. By adding a factory like the following to the forRoot method, you can change services configuration to point to non-default values.</p>
 <p>The following tells any components to turn on CORS functionality and make all api requests to localhost port 8080 (i.e.: <a href="http://localhost:8080/">http://localhost:8080/</a>).</p>
@@ -175,14 +175,14 @@ export function SzRestConfigurationFactory() {
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }</code></pre></div><h3 id="parameters">Parameters</h3>
+export class AppModule { }</code></pre></div><h3>Parameters</h3>
 <p>See <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">online documentation</a> for a complete list of configuration parameters that can control the connection behavior of the sdk components.</p>
-<h2 id="documentation">Documentation</h2>
+<h2>Documentation</h2>
 <p>Installation contains a statically generated API and component references. They can be found in
 node_modules/@senzing/sdk-components-ng/docs or <a href="https://senzing.github.io/sdk-components-ng/">Online here</a>.</p>
-<h2 id="examples">Examples</h2>
+<h2>Examples</h2>
 <p>When you check out the source for this repository there is a directory of Angular project examples. Please see the <a href="https://github.com/Senzing/sdk-components-ng/tree/master/examples">Examples Readme</a> for more information on how these work.</p>
-<h2 id="troubleshooting">Troubleshooting</h2>
+<h2>Troubleshooting</h2>
 <p>Occasionally something does go wrong (I know, I know right?). Here are some common things we run in to:</p>
 <table style="border: 2px solid #eee; border-collapse: separate; border-spacing: 2px;">
   <thead style="background-color: #c0c0c0; color: #454545; font-weight: bold;">

@@ -26,6 +26,7 @@ The major feature being added for this release is the inclusion a a new "How" re
     - `SzHowStepCardComponent` is the card component representing a Add Record, Singleton, Merge, Interim.
     - `SzHowSingletonCardComponent` represents a step or a non-resolved state with a single record that was not merged in.
     - `SzHowFinalEntityCardComponent` represents the top level node for a final state in a tree.
+- "How" UI service(`SzHowUIService`) that provides inter-op, eventing, and caching for different How components to use a shared service so things only need to be parsed/transformed once, and if something changes all the components can be notified etc.
 
 relevant tickets: #438 #496 #499 #513 #516 #525 #527 #529 #531 #534 #538 #545 #547 #548 #551 #555 #557 #558 #565 #567 #571 #572 #574 #581
 

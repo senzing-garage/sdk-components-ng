@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">Senzing SDK Components</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -35,26 +35,29 @@
 
 
 <ol class="breadcrumb">
-  <li>Components</li>
-  <li
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
   >
   SzSearchResultsComponent</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
         </li>
-        <li >
-            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
     <h3>File</h3>
 </p>
 <p class="comment">
@@ -93,15 +96,16 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;
         <h3>Implements</h3>
     </p>
     <p class="comment">
-                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
-                    <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
+                <code>OnInit</code>
+                <code>OnDestroy</code>
     </p>
 
 
-<section>
+<section data-compodoc="block-metadata">
     <h3>Metadata</h3>
     <table class="table table-sm table-hover metadata">
         <tbody>
+
 
 
 
@@ -117,6 +121,8 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;
                 <td class="col-md-3">selector</td>
                 <td class="col-md-9"><code>sz-search-results</code></td>
             </tr>
+
+
 
             <tr>
                 <td class="col-md-3">styleUrls</td>
@@ -141,7 +147,7 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;
     </table>
 </section>
 
-    <section>
+    <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -224,6 +230,7 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;
                                 <a href="#onResultClick" >onResultClick</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                 <a href="#openWhyComparisonModalOnClick" >openWhyComparisonModalOnClick</a>
                             </li>
                             <li>
@@ -341,13 +348,13 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;
     </table>
 </section>
 
-    <section>
+    <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(titleCasePipe: <a href="https://angular.io/api/common/TitleCasePipe" target="_blank">TitleCasePipe</a>, prefs: <a href="../injectables/SzPrefsService.html" target="_self">SzPrefsService</a>, cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>, dialog: MatDialog)</code>
+<code>constructor(titleCasePipe: TitleCasePipe, prefs: <a href="../injectables/SzPrefsService.html" target="_self">SzPrefsService</a>, cd: ChangeDetectorRef, dialog: MatDialog)</code>
                     </td>
                 </tr>
 
@@ -368,7 +375,7 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;
                                                         <td>titleCasePipe</td>
                                                   
                                                         <td>
-                                                                        <code><a href="https://angular.io/api/common/TitleCasePipe" target="_blank" >TitleCasePipe</a></code>
+                                                                    <code>TitleCasePipe</code>
                                                         </td>
                                                   
                                                     <td>
@@ -392,7 +399,7 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;
                                                         <td>cd</td>
                                                   
                                                         <td>
-                                                                        <code><a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank" >ChangeDetectorRef</a></code>
+                                                                    <code>ChangeDetectorRef</code>
                                                         </td>
                                                   
                                                     <td>
@@ -421,7 +428,7 @@ name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;
         </table>
 </section>
 
-    <section>
+    <section data-compodoc="block-inputs">
     <h3 id="inputs">Inputs</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -585,7 +592,7 @@ used for displaying the parameters being searched on above result list.</p>
             </tbody>
         </table>
 </section>
-    <section>
+    <section data-compodoc="block-outputs">
     <h3 id="outputs">Outputs</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -597,7 +604,7 @@ used for displaying the parameters being searched on above result list.</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                        <i>Type : </i>    <code>EventEmitter</code>
 
                     </td>
                 </tr>
@@ -641,7 +648,7 @@ used for displaying the parameters being searched on above result list.</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                        <i>Type : </i>    <code>EventEmitter</code>
 
                     </td>
                 </tr>
@@ -656,7 +663,7 @@ used for displaying the parameters being searched on above result list.</p>
 </section>
 
 
-    <section>
+    <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -1181,6 +1188,7 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
                 <td class="col-md-4">
                     <a name="openWhyComparisonModalOnClick"></a>
                     <span class="name">
+                        <span class="modifier"></span>
                         <span ><b>openWhyComparisonModalOnClick</b></span>
                         <a href="#openWhyComparisonModalOnClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1188,7 +1196,8 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>openWhyComparisonModalOnClick(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openWhyComparisonModalOnClick(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
@@ -1316,7 +1325,7 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
         </tbody>
     </table>
 </section>
-    <section>
+    <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -1454,7 +1463,7 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
     </table>
 </section>
 
-    <section>
+    <section data-compodoc="block-accessors">
     <h3 id="accessors">
         Accessors
     </h3>
@@ -1991,7 +2000,7 @@ used for displaying the parameters being searched on above result list.</p>
 
 
 
-    <div class="tab-pane fade " id="c-templateData">
+    <div class="tab-pane fade " id="templateData">
         <pre class="line-numbers"><code class="language-html">&lt;div [class.select-mode-active]&#x3D;&quot;entitySelectActive&quot;&gt;
     &lt;!-- @senzing/sdk/search/sz-search-results --&gt;
     &lt;div class&#x3D;&quot;sz-search-results-head&quot;&gt;
@@ -2087,7 +2096,7 @@ used for displaying the parameters being searched on above result list.</p>
 </code></pre>
     </div>
 
-    <div class="tab-pane fade " id="c-styleData">
+    <div class="tab-pane fade " id="styleData">
                 <p class="comment">
                     <code>./sz-search-results.component.scss</code>
                 </p>
@@ -2245,7 +2254,7 @@ used for displaying the parameters being searched on above result list.</p>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><div [class.select-mode-active]="entitySelectActive">    <!-- @senzing/sdk/search/sz-search-results -->    <div class="sz-search-results-head">      <div class="sz-search-results-total-summary">        <div class="sz-search-results-total" *ngIf="searchResults && searchValue">          <span class="sz-search-results-total-bold">{{searchResultsTotal}} Results </span>found for          <div>            <ng-container *ngFor="let attribute of attributeDisplay">{{attribute?.attr}}              <span *ngIf="attribute?.value">:</span>              <span class="sz-search-results-parameter-value">{{attribute?.value}}&nbsp;</span>            </ng-container>          </div>        </div>      </div>      <!-- start "entity select control" mechanism -->      <sz-button-multi-select *ngIf="showWhyComparisonButton"        (onSelectActiveChange)="onComparisonModeActiveChange($event)"        (onSelectedClick)="onCompareClick($event)"        [selectedCount]="this.selectedEntities.length"        aria-hidden="false"         aria-label="Select Entities for Why comparison"        text="Compare Entities"        selectedItemTypeSingular="entity"        selectedItemTypePlural="entities"        selectedActionVerb="why comparison"        selectedActionVerbCTA="compare Why"        mat-icon="compare_arrows"        ></sz-button-multi-select>      <!-- end "entity select control" mechanism -->    </div>    <!--<div *ngIf="entitySelectActive">      <ul>        <li *ngFor="let selectedEntity of this.selectedEntities; let i = index">          {{ selectedEntity.nameData }}        </li>      </ul>    </div>-->    <div class="search-result__section-header matches"      *ngIf="this.matches?.length > 0"><span>Matches</span></div>    <sz-search-result-card      class="matches"      *ngFor="let searchResult of this.matches; let i = index"      (click)="onResultClick($event, searchResult)"      (howClick)="onHowClicked($event)"      [searchResult]="searchResult"      [cardTitle]="\'Match\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys">    </sz-search-result-card>    <div class="search-result__section-header possible-match"      *ngIf="this.possibleMatches?.length > 0"><span>Possible Match</span></div>    <sz-search-result-card      class="possible-match"      *ngFor="let searchResult of this.possibleMatches; let i = index"      (click)="onResultClick($event, searchResult)"      (howClick)="onHowClicked($event)"      [searchResult]="searchResult"      [cardTitle]="\'Possible Matches\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys">    </sz-search-result-card>    <div class="search-result__section-header possibly-related"      *ngIf="this.discoveredRelationships?.length > 0"><span>Possibly Related</span></div>    <sz-search-result-card      class="possibly-related"      *ngFor="let searchResult of this.discoveredRelationships; let i = index"      (click)="onResultClick($event, searchResult)"      (howClick)="onHowClicked($event)"      [searchResult]="searchResult"      [cardTitle]="\'Discovered Relationships\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys">    </sz-search-result-card>    <div class="search-result__section-header name-only-matches"      *ngIf="this.nameOnlyMatches?.length > 0"><span>Name Only Matches</span></div>    <sz-search-result-card      class="name-only"      *ngFor="let searchResult of this.nameOnlyMatches; let i = index"      (click)="onResultClick($event, searchResult)"      (howClick)="onHowClicked($event)"      [searchResult]="searchResult"      [cardTitle]="\'Name Only Matches\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys"></sz-search-result-card></div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzSearchResultsComponent'};
 </script>

@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../../" class="navbar-brand">Senzing SDK Components</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -59,13 +59,13 @@
             style="width:100%; height:100%; margin:1%;">
     </object>
 </div>-->
-<h1 id="szrelationshipnetworkcomponent">SzRelationshipNetworkComponent</h1>
+<h1>SzRelationshipNetworkComponent</h1>
 <p>The <code>SzRelationshipNetworkComponent</code> creates a graphical representation of an entity and it&#39;s relationships to other entities.</p>
 <p><img src="../../images/ss-sz-relationship-network.png" alt="screen shot of SzRelationshipNetworkComponent" class="img-responsive"></p>
-<h2 id="properties-and-methods">Properties and Methods</h2>
+<h2>Properties and Methods</h2>
 <p>see <code>sdk-graph-components</code> documentation for the full list of component methods and properties: <a href="http://certified.senzing.com/sdk-graph-components/components/SzRelationshipNetworkComponent.html" target="_szdocs_graph">http://certified.senzing.com/sdk-graph-components/components/SzRelationshipNetworkComponent.html</a></p>
-<h2 id="examples">Examples</h2>
-<h4 id="angular">Angular</h4>
+<h2>Examples</h2>
+<h4>Angular</h4>
 <div><pre class="line-numbers"><code class="language-html">  &lt;sz-relationship-network
     svgWidth=2000
     svgHeight=1000
@@ -73,7 +73,7 @@
     entityIds=&quot;1001&quot;
     maxDegrees=3
     buildOut=2
-    maxEntities=1000&gt;&lt;/sz-relationship-network&gt;</code></pre></div><h4 id="web-component">Web Component</h4>
+    maxEntities=1000&gt;&lt;/sz-relationship-network&gt;</code></pre></div><h4>Web Component</h4>
 <div><pre class="line-numbers"><code class="language-html">  &lt;sz-wc-relationship-network-graph
     entity-ids=&quot;1,1001,1002&quot;
     svg-view-box=&quot;150 50 400 300&quot;
@@ -81,7 +81,7 @@
     max-degrees=&quot;2&quot;
     build-out=&quot;5&quot;
     show-link-labels=&quot;true&quot;
-  &gt;&lt;/sz-wc-relationship-network-graph&gt;</code></pre></div><h1 id="differences-between-web-components-and-angular-implementations">Differences between Web Components and Angular Implementations</h1>
+  &gt;&lt;/sz-wc-relationship-network-graph&gt;</code></pre></div><h1>Differences between Web Components and Angular Implementations</h1>
 <p>The <code>SzRelationshipNetworkComponent</code> is not native to the <em>SDK Components</em> package, but is re-exported and included for convenience. The <code>sdk-components-ng</code> and <code>sdk-components-web</code> npm packages both re-export the graph components network relationship component. Due to tag namespace collision issues all web components are prefixed with <code>sz-wc</code>.</p>
 <p>If using the <code>sdk-components-ng</code> package the tag is called <code>sz-relationship-network</code>.
 If using the <code>sdk-components-web</code> package the tag is prefixed with <code>sz-wc-relationship-network</code>.</p>
