@@ -6,18 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [6.1.0] - 2023-05-05
+## [6.1.0] - 2023-09-06
 
 The major feature being added for this release is the inclusion a a new "How" report component. The How api functions are meant to provide information on HOW records in an entity came together or were pushed apart during resolution. The Visual How component will illustrate the final entity and allow the user to walk back through the entities resolution steps, branching off when singletons are merged in or virtual entities are created from the result of previous record resolution steps.
 
 ### Modified
 - new graph icons. see #499
 - match keys are now shown by default in the graph. #496
+- new why and why not report column formatting to match g2Explorer. #558 #551
+- why and why not datatransforms changed to match g2Explorer. #529
 
 ### Added
 - "How" entity report component(s) added. see #438
+  - Added `SzHowEntityComponent` component which is the only component that should be used at an implementation level. The other components listed below are components that this component uses to create things like different color cards, nested trees, navigation, groups etc.
+  - Added `SzHowNavComponent` component which is used to provide quick step jumping based on filter criteria.
+  - Added `SzHowStepNodeComponent` component which represents a *node* in the step tree. Nodes are different that *Steps* since they can be other trees, groups, and recurse. Step nodes will contain `SzHowStepCardComponent`, `SzHowStepStackComponent`, `SzHowFinalEntityCardComponent`, `SzHowSingletonCardComponent`, and/or nested `SzHowStepNodeComponent` components.
+  - Added `SzHowStepStackComponent` component which represents a collapsible group of `ADD Record` steps found in sequence.
+  - Added `SzHowStepCardBase` which serves as a base class for card permutations.
+    - `SzHowStepCardComponent` is the card component representing a Add Record, Singleton, Merge, Interim.
+    - `SzHowSingletonCardComponent` represents a step or a non-resolved state with a single record that was not merged in.
+    - `SzHowFinalEntityCardComponent` represents the top level node for a final state in a tree.
 
-relevant tickets: #438 #496 #499
+relevant tickets: #438 #496 #499 #513 #516 #525 #527 #529 #531 #534 #538 #545 #547 #548 #551 #555 #557 #558 #565 #567 #571 #572 #574 #581
 
 ## [6.0.0] - 2023-01-20
 
