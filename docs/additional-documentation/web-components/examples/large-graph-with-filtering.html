@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../../../" class="navbar-brand">Senzing SDK Components</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -51,11 +51,11 @@
 
 
 
-<h1 id="large-graph-with-filtering">Large Graph with Filtering</h1>
+<h1>Large Graph with Filtering</h1>
 <p>This is an example of how to wire the large graph used to display entity relationships to a attribute search form. You submit the search, it sends it to the api server, returns and results. Then those results are iterated over and fed in to the <code>graphIds</code> setter for the component.</p>
 <p><img src="../../../images/ss-graph-large.png" alt="screen shot of SzStandaloneGraphComponent" class="img-responsive">
 <br/><br/><br/><br/></p>
-<h2 id="source">Source</h2>
+<h2>Source</h2>
 <div><pre class="line-numbers"><code class="language-html">&lt;!doctype html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 &lt;head&gt;

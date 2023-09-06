@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">Senzing SDK Components</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -35,26 +35,29 @@
 
 
 <ol class="breadcrumb">
-  <li>Components</li>
-  <li
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
   >
   SzRelationshipPathComponent</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
         </li>
-        <li >
-            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
     <h3>File</h3>
 </p>
 <p class="comment">
@@ -68,15 +71,16 @@
         <h3>Implements</h3>
     </p>
     <p class="comment">
-                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
-                    <code><a href="https://angular.io/api/core/AfterViewInit" target="_blank" >AfterViewInit</a></code>
+                <code>OnInit</code>
+                <code>AfterViewInit</code>
     </p>
 
 
-<section>
+<section data-compodoc="block-metadata">
     <h3>Metadata</h3>
     <table class="table table-sm table-hover metadata">
         <tbody>
+
 
 
 
@@ -92,6 +96,8 @@
                 <td class="col-md-3">selector</td>
                 <td class="col-md-9"><code>sz-relationship-path</code></td>
             </tr>
+
+
 
             <tr>
                 <td class="col-md-3">styleUrls</td>
@@ -116,7 +122,7 @@
     </table>
 </section>
 
-    <section>
+    <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -152,6 +158,7 @@
                                 <a href="#nodeLabel" >nodeLabel</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                 <a href="#svgComponent" >svgComponent</a>
                             </li>
                             <li>
@@ -338,7 +345,7 @@
     </table>
 </section>
 
-    <section>
+    <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -382,7 +389,7 @@
         </table>
 </section>
 
-    <section>
+    <section data-compodoc="block-inputs">
     <h3 id="inputs">Inputs</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -611,7 +618,7 @@ used to set aspect ratio, centering etc for dynamic scaling.</p>
 
 
 
-    <section>
+    <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -1561,7 +1568,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
         </tbody>
     </table>
 </section>
-    <section>
+    <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -1718,6 +1725,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
                 <td class="col-md-4">
                     <a name="svgComponent"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                         <span ><b>svgComponent</b></span>
                         <a href="#svgComponent"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1725,7 +1733,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://angular.io/api/core/ElementRef" target="_blank" >ElementRef</a></code>
+                        <i>Type : </i>    <code>ElementRef</code>
 
                     </td>
                 </tr>
@@ -1855,7 +1863,7 @@ Not called when D3&#39;s forces reach equilibrium</p>
     </table>
 </section>
 
-    <section>
+    <section data-compodoc="block-accessors">
     <h3 id="accessors">
         Accessors
     </h3>
@@ -2450,7 +2458,7 @@ used to set aspect ratio, centering etc for dynamic scaling.</p>
 
 
 
-    <div class="tab-pane fade " id="c-templateData">
+    <div class="tab-pane fade " id="templateData">
         <pre class="line-numbers"><code class="language-html">&lt;svg #graphEle 
 class&#x3D;&quot;graph-chart&quot;
 [attr.viewBox]&#x3D;&quot;this.svgViewBox&quot;
@@ -2458,7 +2466,7 @@ class&#x3D;&quot;graph-chart&quot;
 </code></pre>
     </div>
 
-    <div class="tab-pane fade " id="c-styleData">
+    <div class="tab-pane fade " id="styleData">
                 <p class="comment">
                     <code>./sz-relationship-path.component.scss</code>
                 </p>
@@ -2601,7 +2609,7 @@ class&#x3D;&quot;graph-chart&quot;
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><svg #graphEle class="graph-chart"[attr.viewBox]="this.svgViewBox"[attr.preserveAspectRatio]="this.svgPreserveAspectRatio"></svg></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzRelationshipPathComponent'};
 </script>

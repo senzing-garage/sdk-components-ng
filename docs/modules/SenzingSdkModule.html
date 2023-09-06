@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">Senzing SDK Components</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -34,22 +34,28 @@
 
 
 <ol class="breadcrumb">
-    <li>Modules</li>
-    <li >SenzingSdkModule</li>
+    <li class="breadcrumb-item">Modules</li>
+    <li class="breadcrumb-item" >SenzingSdkModule</li>
 </ol>
 
 
 <ul class="nav nav-tabs" role="tablist">
-    <li  class="active" >
-        <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+    <li class="nav-item">
+        <a href="#info" 
+            class="nav-link"
+            class="nav-link active"
+            role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
     </li>
-    <li >
-        <a href="#readme" role="tab" id="readme-tab" data-toggle="tab" data-link="readme">README</a>
+    <li class="nav-item">
+        <a href="#readme" 
+            class="nav-link"
+            
+            role="tab" id="readme-tab" data-bs-toggle="tab" data-link="readme">README</a>
     </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
 
         <p class="comment">
             <h3>File</h3>
@@ -73,7 +79,7 @@ Add to your applications module imports array.</p>
         <div class="container-fluid module">
             <div class="row">
                 <div class="col-sm-3">
-                    <h3>Declarations<a href="https://angular.io/api/core/NgModule#declarations" target="_blank"
+                    <h3>Declarations<a href="https://angular.io/api/core/NgModule#declarations" target="_blank" rel="noopener noreferrer"
                             title="Official documentation about module declarations"><span class="icon ion-ios-information-circle-outline"></span></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
@@ -134,18 +140,21 @@ Add to your applications module imports array.</p>
                             <a href="../components/SzWhyEntitiesComparisonComponent.html">SzWhyEntitiesComparisonComponent</a>
                         </li>
                         <li class="list-group-item">
-                            <a href="../components/SzWhyEntitiesDialog.html">SzWhyEntitiesDialog</a>
+                            <a href="../s/SzWhyEntitiesDialog.html">SzWhyEntitiesDialog</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzWhyEntityComponent.html">SzWhyEntityComponent</a>
                         </li>
                         <li class="list-group-item">
-                            <a href="../components/SzWhyEntityDialog.html">SzWhyEntityDialog</a>
+                            <a href="../s/SzWhyEntityDialog.html">SzWhyEntityDialog</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../components/SzWhyReportBaseComponent.html">SzWhyReportBaseComponent</a>
                         </li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
-                    <h3>Providers<a href="https://angular.io/api/core/NgModule#providers" target="_blank"
+                    <h3>Providers<a href="https://angular.io/api/core/NgModule#providers" target="_blank" rel="noopener noreferrer"
                             title="Official documentation about module providers"><span class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
@@ -184,7 +193,8 @@ Add to your applications module imports array.</p>
                     </ul>
                 </div>
                 <div class="col-sm-3">
-                    <h3>Imports<a href="https://angular.io/api/core/NgModule#imports" target="_blank" title="Official documentation about module imports"><span
+                    <h3>Imports<a href="https://angular.io/api/core/NgModule#imports" target="_blank" rel="noopener noreferrer"
+                            title="Official documentation about module imports"><span
                                 class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
@@ -193,7 +203,8 @@ Add to your applications module imports array.</p>
                     </ul>
                 </div>
                 <div class="col-sm-3">
-                    <h3>Exports<a href="https://angular.io/api/core/NgModule#exports" target="_blank" title="Official documentation about module exports"><span
+                    <h3>Exports<a href="https://angular.io/api/core/NgModule#exports" target="_blank" rel="noopener noreferrer"
+                            title="Official documentation about module exports"><span
                                 class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
@@ -248,20 +259,20 @@ Add to your applications module imports array.</p>
                             <a href="../components/SzWhyEntitiesComparisonComponent.html">SzWhyEntitiesComparisonComponent</a>
                         </li>
                         <li class="list-group-item">
-                            <a href="../components/SzWhyEntitiesDialog.html">SzWhyEntitiesDialog</a>
+                            <a href="../s/SzWhyEntitiesDialog.html">SzWhyEntitiesDialog</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzWhyEntityComponent.html">SzWhyEntityComponent</a>
                         </li>
                         <li class="list-group-item">
-                            <a href="../components/SzWhyEntityDialog.html">SzWhyEntityDialog</a>
+                            <a href="../s/SzWhyEntityDialog.html">SzWhyEntityDialog</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <section>
+        <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -334,7 +345,7 @@ return new SzRestConfiguration({ basePath: \&quot;myapiserverhostname.com:8080\&
                         </div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>ModuleWithProviders&lt;SenzingSdkModule&gt;</code>
+                        <b>Returns : </b>        <code><a href="../modules/SenzingSdkModule.html" target="_self" >ModuleWithProviders&lt;SenzingSdkModule&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -347,11 +358,11 @@ return new SzRestConfiguration({ basePath: \&quot;myapiserverhostname.com:8080\&
 </section>
     </div>
 
-    <div class="tab-pane fade " id="c-readme">
-        <p><h1 id="sdk-module-installation-and-usage">SDK Module Installation and Usage</h1>
-<h2 id="installation">Installation</h2>
+    <div class="tab-pane fade " id="readme">
+        <p><h1>SDK Module Installation and Usage</h1>
+<h2>Installation</h2>
 <p>Open up a terminal to your application root and type <code>npm install @senzing/sdk-components-ng --save</code>.</p>
-<h2 id="add-to-appmodulets">Add to app.module.ts</h2>
+<h2>Add to app.module.ts</h2>
 <p>Now open up your applications main module file, in most cases this will be app.module.ts for projects generated by angular-cli.</p>
 <div><pre class="line-numbers"><code class="language-typescript">import { BrowserModule } from &#39;&#64;angular/platform-browser&#39;;
 import { NgModule } from &#39;&#64;angular/core&#39;;

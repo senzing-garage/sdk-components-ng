@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">Senzing SDK Components</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -39,18 +39,21 @@
 
 
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li >SzHowUIService</li>
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >SzHowUIService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -71,7 +74,7 @@ that were taken to resolve multiple input streams to a single entity.</p>
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -117,6 +120,10 @@ that were taken to resolve multiple input streams to a single entity.</p>
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#clear" >clear</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#collapseAll" >collapseAll</a>
                             </li>
                             <li>
@@ -129,6 +136,10 @@ that were taken to resolve multiple input streams to a single entity.</p>
                             </li>
                             <li>
                                 <a href="#expandNode" >expandNode</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getHowDataForEntity" >getHowDataForEntity</a>
                             </li>
                             <li>
                                     <span class="modifier">Static</span>
@@ -153,10 +164,6 @@ that were taken to resolve multiple input streams to a single entity.</p>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#getStepNodeById" >getStepNodeById</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Static</span>
-                                <a href="#getVirtualEntityIdsForNode" >getVirtualEntityIdsForNode</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -242,7 +249,7 @@ that were taken to resolve multiple input streams to a single entity.</p>
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -313,11 +320,46 @@ to a static reference so static methods can have access to the injected services
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
     </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clear"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>clear</b></span>
+                        <a href="#clear"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>clear()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>clear out any data previously loaded. call this method when a new entity is loaded</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -421,7 +463,7 @@ to a static reference so static methods can have access to the injected services
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>collapseNode(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, itemType?: <a href="../objects/SzResolutionStepListItemType.html" target="_self">SzResolutionStepListItemType</a>)</code>
+                    <code>collapseNode(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, itemType?: <a href="../objects/SzResolutionStepListItemType.html" target="_self">SzResolutionStepListItemType</a>, debug?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
@@ -482,6 +524,20 @@ isn&#39;t an actual resolution step itself.</p>
                                         <p>some groups have the same id&#39;s as steps inside them(interim merge steps) which are 
 actually &quot;GROUP&quot;&#39;s, this parameter allows you to specify between node&#39;s and groups with the same ID&#39;s.</p>
 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>debug</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                    <td>
                                     </td>
                                 </tr>
                             </tbody>
@@ -620,7 +676,7 @@ specify that you want just the group or the node inside the group.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>expandNode(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, itemType?: <a href="../objects/SzResolutionStepListItemType.html" target="_self">SzResolutionStepListItemType</a>)</code>
+<code>expandNode(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, itemType?: <a href="../objects/SzResolutionStepListItemType.html" target="_self">SzResolutionStepListItemType</a>, debug?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
@@ -683,6 +739,20 @@ actually &quot;GROUP&quot;&#39;s, this parameter allows you to specify between n
 
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>debug</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -690,6 +760,74 @@ actually &quot;GROUP&quot;&#39;s, this parameter allows you to specify between n
                     </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getHowDataForEntity"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>getHowDataForEntity</b></span>
+                        <a href="#getHowDataForEntity"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getHowDataForEntity(entityId: SzEntityIdentifier)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Query the <code>/entities/${entityId}/how</code> api server endpoint for data on HOW an
+entity came together.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>entityId</td>
+                                    <td>
+                                            <code>SzEntityIdentifier</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;SzHowEntityResponse&gt;</code>
 
                     </div>
                     <div class="io-description">
@@ -782,7 +920,7 @@ entity came together.</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getParentContainingNode(childNodeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>getParentContainingNode(childNodeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, childNodeItemType?: <a href="../objects/SzResolutionStepListItemType.html" target="_self">SzResolutionStepListItemType</a>, parentItemType?: <a href="../objects/SzResolutionStepListItemType.html" target="_self">SzResolutionStepListItemType</a>, debug?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
@@ -823,6 +961,48 @@ final entities.</p>
                                     <td>
                                         <p>the id of the child</p>
 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>childNodeItemType</td>
+                                    <td>
+                                                <code><a href="../miscellaneous/variables.html#SzResolutionStepListItemType" target="_self" >SzResolutionStepListItemType</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>parentItemType</td>
+                                    <td>
+                                                <code><a href="../miscellaneous/variables.html#SzResolutionStepListItemType" target="_self" >SzResolutionStepListItemType</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>debug</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                    <td>
                                     </td>
                                 </tr>
                             </tbody>
@@ -1023,7 +1203,7 @@ to collapse multiple steps of the same type in to a meta group to declutter repe
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getRootNodeContainingNode(childNodeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>getRootNodeContainingNode(childNodeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, debug?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
@@ -1064,6 +1244,20 @@ a final result card you can get the &quot;FINAL&quot; card from the child id of 
                                     <td>
                                         <p>the id of the child</p>
 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>debug</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                    <td>
                                     </td>
                                 </tr>
                             </tbody>
@@ -1164,97 +1358,6 @@ a final result card you can get the &quot;FINAL&quot; card from the child id of 
                     <div class="io-description">
                         <p>an array of SzResolutionStepNode that have the matching id</p>
 
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getVirtualEntityIdsForNode"></a>
-                    <span class="name">
-                        <span class="modifier">Static</span>
-                        <span ><b>getVirtualEntityIdsForNode</b></span>
-                        <a href="#getVirtualEntityIdsForNode"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getVirtualEntityIdsForNode(isNested: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, step: <a href="../interfaces/SzResolutionStepNode.html" target="_self">SzResolutionStepNode</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Get all virtualEntityId&#39;s or resolvedEntityId&#39;s or Id&#39;s and recordId&#39;s for steps or nodes that
-are descendents of a step node. This is a recursive Tree traversal method and should not be used trivially.
-root level nodes.</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>isNested</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>is the step being passed as the <code>step</code> parameter a child of another card. pass <code>false</code> or <code>undefined</code> for 
-root level nodes.</p>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>step</td>
-                                    <td>
-                                                <code><a href="../interfaces/SzResolutionStepNode.html" target="_self" >SzResolutionStepNode</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>the step to gather virtual entity ids&#39;s for</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
                     </div>
                 </td>
             </tr>
@@ -1645,7 +1748,7 @@ new stack directly after or before the item being pinned.</p>
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <b>Returns : </b>        <code><a href="../interfaces/SzResolutionStepNode.html" target="_self" >Map&lt;string, SzResolutionStepNode&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -1916,7 +2019,7 @@ stack would have at least 2 items it in.</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>toggleExpansion(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, groupId?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, itemType?: <a href="../objects/SzResolutionStepListItemType.html" target="_self">SzResolutionStepListItemType</a>)</code>
+                    <code>toggleExpansion(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, groupId?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, itemType?: <a href="../objects/SzResolutionStepListItemType.html" target="_self">SzResolutionStepListItemType</a>, debug?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
@@ -1995,6 +2098,20 @@ want to toggle a group node.</p>
 
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>debug</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -2026,7 +2143,7 @@ want to toggle a group node.</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>unPinStep(vId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>unPinStep(vId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, debug?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
@@ -2070,6 +2187,20 @@ items are also not pinned we merge all the steps together in order to their new 
 
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>debug</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -2087,7 +2218,7 @@ items are also not pinned we merge all the steps together in order to their new 
         </tbody>
     </table>
 </section>
-            <section>
+            <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -2214,7 +2345,7 @@ items are also not pinned we merge all the steps together in order to their new 
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-accessors">
     <h3 id="accessors">
         Accessors
     </h3>

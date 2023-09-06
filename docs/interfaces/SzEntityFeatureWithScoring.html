@@ -47,7 +47,7 @@
   <li class="breadcrumb-item">Interfaces</li>
   <li class="breadcrumb-item"
   >
-  SzGraphTooltipLinkModel</li>
+  SzEntityFeatureWithScoring</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -65,11 +65,17 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/lib/models/graph.ts</code>
+            <code>src/lib/models/data-why.ts</code>
         </p>
 
 
 
+            <p class="comment">
+                <h3>Extends</h3>
+            </p>
+            <p class="comment">
+                    <code>SzEntityFeature</code>
+            </p>
 
         <section data-compodoc="block-index">
             <h3 id="index">Index</h3>
@@ -84,15 +90,17 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                        <a href="#label" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#featureScores" 
 >
-                                            label
+                                            featureScores
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#matchKey" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#scoringDetails" 
 >
-                                            matchKey
+                                            scoringDetails
                                         </a>
                                 </li>
                             </ul>
@@ -110,9 +118,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="label"></a>
-                                        <span class="name "><b>label</b>
-                                            <a href="#label">
+                                        <a name="featureScores"></a>
+                                        <span class="name "><b>featureScores</b>
+                                            <a href="#featureScores">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -120,7 +128,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>label:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>featureScores:     <code>SzFeatureScore[]</code>
 </code>
                                     </td>
                                 </tr>
@@ -128,11 +136,16 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            <i>Type : </i>    <code>SzFeatureScore[]</code>
 
                                         </td>
                                     </tr>
 
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
 
 
 
@@ -143,9 +156,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="matchKey"></a>
-                                        <span class="name "><b>matchKey</b>
-                                            <a href="#matchKey">
+                                        <a name="scoringDetails"></a>
+                                        <span class="name "><b>scoringDetails</b>
+                                            <a href="#scoringDetails">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -153,7 +166,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>matchKey:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>scoringDetails:     <code>SzFeatureScore</code>
 </code>
                                     </td>
                                 </tr>
@@ -161,11 +174,16 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            <i>Type : </i>    <code>SzFeatureScore</code>
 
                                         </td>
                                     </tr>
 
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
 
 
 
@@ -211,7 +229,7 @@
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'SzGraphTooltipLinkModel.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'SzEntityFeatureWithScoring.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="./" class="navbar-brand">Senzing SDK Components</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -31,7 +31,7 @@
                <div class="content getting-started">
                    <div class="content-data">
 
-<h1 id="contributing">Contributing</h1>
+<h1>Contributing</h1>
 <p>Welcome to the project!</p>
 <p>We encourage contribution in a manner consistent with the <a href="CODE_OF_CONDUCT.md">Code of Conduct</a>.
 The following will guide you through the process.</p>
@@ -42,37 +42,37 @@ The following will guide you through the process.</p>
 <li><a href="#bug-reporting">Reporting bugs</a></li>
 <li><a href="#contributing-code-or-documentation">Contributing code or documentation</a></li>
 </ol>
-<h2 id="license-agreements">License Agreements</h2>
+<h2>License Agreements</h2>
 <p>If your contribution modifies the git repository, the following agreements must be established.</p>
 <p><em>Note:</em>  License agreements are only needed for adding, modifying, and deleting artifacts kept within the repository.
 In simple terms, license agreements are needed before pull requests can be accepted.
 A license agreement is not needed for submitting feature request, bug reporting, or other project management.</p>
-<h3 id="individual-contributor-license-agreement">Individual Contributor License Agreement</h3>
+<h3>Individual Contributor License Agreement</h3>
 <p>In order to contribute to this repository, an
 <a href=".github/senzing-individual-contributor-license-agreement.pdf">Individual Contributor License Agreement (ICLA)</a>
 must be completed, submitted and accepted.</p>
-<h3 id="corporate-contributor-license-agreement">Corporate Contributor License Agreement</h3>
+<h3>Corporate Contributor License Agreement</h3>
 <p>If the contribution to this repository is on behalf of a company, a
 <a href=".github/senzing-corporate-contributor-license-agreement.pdf">Corporate Contributor License Agreement (CCLA)</a>
 must also be completed, submitted and accepted.</p>
-<h3 id="project-license-agreement">Project License Agreement</h3>
+<h3>Project License Agreement</h3>
 <p>The license agreement for this repository is stated in the
 <a href="LICENSE">LICENSE</a> file.</p>
-<h2 id="questions">Questions</h2>
+<h2>Questions</h2>
 <p>Please do not use the GitHub issue tracker to submit questions.</p>
 <p>TODO: Instead, use ???</p>
 <ol>
 <li>??? Slack ???</li>
 <li>??? stackoverflow.com ???</li>
 </ol>
-<h2 id="feature-requests">Feature Requests</h2>
+<h2>Feature Requests</h2>
 <p>All feature requests are &quot;GitHub issues&quot;.
 To request a feature, create a
 <a href="https://help.github.com/articles/creating-an-issue/">GitHub issue</a>
 in this repository.</p>
 <p>When creating an issue, there will be a choice to create a &quot;Bug report&quot; or a &quot;Feature request&quot;.
 Choose &quot;Feature request&quot;.</p>
-<h2 id="bug-reporting">Bug Reporting</h2>
+<h2>Bug Reporting</h2>
 <p>All bug reports are &quot;GitHub issues&quot;.
 Before reporting on a bug, check to see if it has
 <a href="https://github.com/search?q=+is%3Aissue+user%3Asenzing">already been reported</a>.
@@ -81,28 +81,28 @@ To report a bug, create a
 in this repository.</p>
 <p>When creating an issue, there will be a choice to create a &quot;Bug report&quot; or a &quot;Feature request&quot;.
 Choose &quot;Bug report&quot;.</p>
-<h2 id="contributing-code-or-documentation">Contributing code or documentation</h2>
+<h2>Contributing code or documentation</h2>
 <p>To contribute code or documentation to the repository, you must have
 <a href="#license-agreements">License Agreements</a> in place.
 This needs to be complete before a <a href="#pull-requests">Pull Request</a> can be accepted.</p>
-<h3 id="setting-up-a-development-environment">Setting up a development environment</h3>
-<h4 id="set-environment-variables">Set Environment variables</h4>
+<h3>Setting up a development environment</h3>
+<h4>Set Environment variables</h4>
 <p>These variables may be modified, but do not need to be modified.
 The variables are used throughout the installation procedure.</p>
 <div><pre class="line-numbers"><code class="language-console">export GIT_ACCOUNT=senzing
 export GIT_REPOSITORY=sdk-components-ng</code></pre></div><p>Synthesize environment variables.</p>
 <div><pre class="line-numbers"><code class="language-console">export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
 export GIT_REPOSITORY_DIR=&quot;${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}&quot;
-export GIT_REPOSITORY_URL=&quot;git&#64;github.com:${GIT_ACCOUNT}/${GIT_REPOSITORY}.git&quot;</code></pre></div><h4 id="clone-repository">Clone repository</h4>
+export GIT_REPOSITORY_URL=&quot;git&#64;github.com:${GIT_ACCOUNT}/${GIT_REPOSITORY}.git&quot;</code></pre></div><h4>Clone repository</h4>
 <p>Get repository.</p>
 <div><pre class="line-numbers"><code class="language-console">mkdir --parents ${GIT_ACCOUNT_DIR}
 cd  ${GIT_ACCOUNT_DIR}
 git clone ${GIT_REPOSITORY_URL}
-cd ${GIT_REPOSITORY_DIR}</code></pre></div><h3 id="coding-conventions">Coding conventions</h3>
+cd ${GIT_REPOSITORY_DIR}</code></pre></div><h3>Coding conventions</h3>
 <p>TODO:</p>
-<h3 id="testing">Testing</h3>
+<h3>Testing</h3>
 <p>TODO:</p>
-<h3 id="pull-requests">Pull Requests</h3>
+<h3>Pull Requests</h3>
 <p>Code in the master branch is modified via GitHub pull request.
 Follow GitHub&#39;s
 <a href="https://help.github.com/articles/creating-a-pull-request/">Creating a pull request from a branch</a>

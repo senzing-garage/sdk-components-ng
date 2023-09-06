@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">Senzing SDK Components</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -35,26 +35,29 @@
 
 
 <ol class="breadcrumb">
-  <li>Components</li>
-  <li
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
   >
   SzWhyEntityComponent</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
         </li>
-        <li >
-            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
     <h3>File</h3>
 </p>
 <p class="comment">
@@ -73,20 +76,27 @@
 
     </p>
 
+    <p class="comment">
+        <h3>Extends</h3>
+    </p>
+    <p class="comment">
+                <code><a href="../components/SzWhyReportBaseComponent.html" target="_self" >SzWhyReportBaseComponent</a></code>
+    </p>
 
     <p class="comment">
         <h3>Implements</h3>
     </p>
     <p class="comment">
-                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
-                    <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
+                <code>OnInit</code>
+                <code>OnDestroy</code>
     </p>
 
 
-<section>
+<section data-compodoc="block-metadata">
     <h3>Metadata</h3>
     <table class="table table-sm table-hover metadata">
         <tbody>
+
 
 
 
@@ -102,6 +112,8 @@
                 <td class="col-md-3">selector</td>
                 <td class="col-md-9"><code>sz-why-entity</code></td>
             </tr>
+
+
 
             <tr>
                 <td class="col-md-3">styleUrls</td>
@@ -126,7 +138,7 @@
     </table>
 </section>
 
-    <section>
+    <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -139,12 +151,21 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#dataSource" >dataSource</a>
+                                    <span class="modifier">Protected</span>
+                                    <span class="modifier"></span>
+                                <a href="#_data" >_data</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#_featuresByDetailIds" >_featuresByDetailIds</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#_formattedData" >_formattedData</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#gotColumnDefs" >gotColumnDefs</a>
+                                <a href="#configDataService" >configDataService</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -163,16 +184,36 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#formatWhyDataForDataTable" >formatWhyDataForDataTable</a>
+                                    <span class="modifier"></span>
+                                <a href="#getData" >getData</a>
                             </li>
                             <li>
-                                <a href="#getWhyData" >getWhyData</a>
+                                    <span class="modifier"></span>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                    <span class="modifier"></span>
+                                <a href="#onDataResponse" >onDataResponse</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#getOrderedFeatures" >getOrderedFeatures</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getRowValuesForData" >getRowValuesForData</a>
                             </li>
                             <li>
                                 <a href="#ngOnDestroy" >ngOnDestroy</a>
                             </li>
                             <li>
-                                <a href="#ngOnInit" >ngOnInit</a>
+                                    <span class="modifier">Protected</span>
+                                <a href="#transformWhyNotResultData" >transformWhyNotResultData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#transformWhyResultData" >transformWhyResultData</a>
                             </li>
                         </ul>
                     </td>
@@ -205,7 +246,13 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#onResult" >onResult</a>
+                            </li>
+                            <li>
                                 <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                <a href="#onRowsChanged" >onRowsChanged</a>
                             </li>
                         </ul>
                     </td>
@@ -213,34 +260,17 @@
 
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <h6><b>Accessors</b></h6>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <ul class="index-list">
-                                <li>
-                                    <a href="#displayedColumns" >displayedColumns</a>
-                                </li>
-                                <li>
-                                    <a href="#isLoading" >isLoading</a>
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
         </tbody>
     </table>
 </section>
 
-    <section>
+    <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(entityData: EntityDataService)</code>
+<code>constructor(configDataService: <a href="../injectables/SzConfigDataService.html" target="_self">SzConfigDataService</a>, entityData: EntityDataService)</code>
                     </td>
                 </tr>
 
@@ -257,6 +287,18 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                                <tr>
+                                                        <td>configDataService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SzConfigDataService.html" target="_self" >SzConfigDataService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
                                                 <tr>
                                                         <td>entityData</td>
                                                   
@@ -278,7 +320,7 @@
         </table>
 </section>
 
-    <section>
+    <section data-compodoc="block-inputs">
     <h3 id="inputs">Inputs</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -292,6 +334,12 @@
                     <td class="col-md-4">
                         <i>Type : </i>    <code>SzEntityIdentifier</code>
 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>the entity id to display the why report for.</p>
+</div>
                     </td>
                 </tr>
             </tbody>
@@ -319,8 +367,30 @@
             </tbody>
         </table>
 </section>
-    <section>
+    <section data-compodoc="block-outputs">
     <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onResult"></a>
+                        <b>onResult</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter&lt;[] | SzWhyEntitiesResult&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>when the respone from the server is returned this event is emitted</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -335,12 +405,41 @@
 
                     </td>
                 </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>returns true when waiting for network requests to complete</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onRowsChanged"></a>
+                        <b>onRowsChanged</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/SzWhyFeatureRow.html" target="_self" >EventEmitter&lt;SzWhyFeatureRow[]&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>when the row definitions(that list all the fields that will be displayed) have been
+pulled from the results this even is emitted</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
 
 
-    <section>
+    <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -349,16 +448,380 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="formatWhyDataForDataTable"></a>
+                    <a name="getData"></a>
                     <span class="name">
-                        <span ><b>formatWhyDataForDataTable</b></span>
-                        <a href="#formatWhyDataForDataTable"><span class="icon ion-ios-link"></span></a>
+                        <span class="modifier"></span>
+                        <span ><b>getData</b></span>
+                        <a href="#getData"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>formatWhyDataForDataTable(data: SzWhyEntityResult[], entities: SzEntityData[], entityRecords: SzMatchedRecord[])</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getData()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>call the /why api endpoint and return a observeable</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;SzWhyEntityResponse&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span class="modifier"></span>
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onDataResponse"></a>
+                    <span class="name">
+                        <span class="modifier">Protected</span>
+                        <span class="modifier"></span>
+                        <span ><b>onDataResponse</b></span>
+                        <a href="#onDataResponse"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onDataResponse(results: [SzWhyEntityResponse, string[]])</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>when the api requests respond this method properly sets up all the
+properties that get set/generated from some part of those requests</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>results</td>
+                                    <td>
+                                            <code>[SzWhyEntityResponse, string[]]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getOrderedFeatures"></a>
+                    <span class="name">
+                        <span class="modifier">Protected</span>
+                        <span ><b>getOrderedFeatures</b></span>
+                        <a href="#getOrderedFeatures"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getOrderedFeatures()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>get the features in the order found in the server config</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getRowValuesForData"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>getRowValuesForData</b></span>
+                        <a href="#getRowValuesForData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getRowValuesForData(rowKey: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, data?: <a href="../interfaces/SzWhyEntityColumn.html" target="_self">SzWhyEntityColumn[]</a>)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>when iterating over each cell for the table this method is called to pull the field value
+from the &quot;formattedRows&quot; which contain html markup.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>rowKey</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="../interfaces/SzWhyEntityColumn.html" target="_self" >SzWhyEntityColumn[]</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>unsubscribe when component is destroyed</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="transformWhyNotResultData"></a>
+                    <span class="name">
+                        <span class="modifier">Protected</span>
+                        <span ><b>transformWhyNotResultData</b></span>
+                        <a href="#transformWhyNotResultData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>transformWhyNotResultData(data: SzWhyEntitiesResult, entities: SzEntityData[])</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                            <code>SzWhyEntitiesResult</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>entities</td>
+                                    <td>
+                                            <code>SzEntityData[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/SzWhyEntityColumn.html" target="_self" >SzWhyEntityColumn[]</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="transformWhyResultData"></a>
+                    <span class="name">
+                        <span class="modifier">Protected</span>
+                        <span ><b>transformWhyResultData</b></span>
+                        <a href="#transformWhyResultData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>transformWhyResultData(data: SzWhyEntityResult[], entities: SzEntityData[])</code>
                 </td>
             </tr>
 
@@ -404,25 +867,13 @@
 
 
                                 </tr>
-                                <tr>
-                                    <td>entityRecords</td>
-                                    <td>
-                                            <code>SzMatchedRecord[]</code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
                             </tbody>
                         </table>
                     </div>
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <b>Returns : </b>        <code><a href="../interfaces/SzWhyEntityColumn.html" target="_self" >SzWhyEntityColumn[]</a></code>
 
                     </div>
                     <div class="io-description">
@@ -432,103 +883,8 @@
             </tr>
         </tbody>
     </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getWhyData"></a>
-                    <span class="name">
-                        <span ><b>getWhyData</b></span>
-                        <a href="#getWhyData"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getWhyData()</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="ngOnDestroy"></a>
-                    <span class="name">
-                        <span ><b>ngOnDestroy</b></span>
-                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>ngOnDestroy()</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>unsubscribe when component is destroyed</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="ngOnInit"></a>
-                    <span class="name">
-                        <span ><b>ngOnInit</b></span>
-                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>ngOnInit()</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </section>
-    <section>
+    <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -537,17 +893,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="dataSource"></a>
+                    <a name="_data"></a>
                     <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>dataSource</b></span>
-                        <a href="#dataSource"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Protected</span>
+                            <span class="modifier"></span>
+                        <span ><b>_data</b></span>
+                        <a href="#_data"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>new SzWhyEntityDataSource(this.dataToDisplay)</code>
+                        <i>Type : </i>    <code>SzWhyEntityResult[] | SzWhyEntitiesResult</code>
+
                     </td>
                 </tr>
 
@@ -558,17 +916,63 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="gotColumnDefs"></a>
+                    <a name="_featuresByDetailIds"></a>
                     <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>gotColumnDefs</b></span>
-                        <a href="#gotColumnDefs"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Protected</span>
+                        <span ><b>_featuresByDetailIds</b></span>
+                        <a href="#_featuresByDetailIds"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>false</code>
+                        <i>Type : </i>    <code>Map&lt;number | SzEntityFeature&gt;</code>
+
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_formattedData"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>_formattedData</b></span>
+                        <a href="#_formattedData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>data thats ready to be used for UI/UX rendering, multiple fields
+concatenated in to meta-fields, embedded line breaks, html tags etc.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="configDataService"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>configDataService</b></span>
+                        <a href="#configDataService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/SzConfigDataService.html" target="_self" >SzConfigDataService</a></code>
+
                     </td>
                 </tr>
 
@@ -604,104 +1008,28 @@
     </table>
 </section>
 
-    <section>
-    <h3 id="accessors">
-        Accessors
-    </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="displayedColumns"></a>
-                        <span class="name"><b>displayedColumns</b><a href="#displayedColumns"><span class="icon ion-ios-link"></span></a></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>displayedColumns()</code></span>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="isLoading"></a>
-                        <span class="name"><b>isLoading</b><a href="#isLoading"><span class="icon ion-ios-link"></span></a></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>isLoading()</code></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>isLoading(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code></span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-
-                                <div class="io-description">
-                                        <b>Parameters :</b>
-                                        <table class="params">
-                                            <thead>
-                                                <tr>
-                                                    <td>Name</td>
-                                                        <td>Type</td>
-                                                    <td>Optional</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                    <tr>
-                                                            <td>value</td>
-                                                    
-                                                            <td>
-                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-                                                            </td>
-                                                    
-                                                        <td>
-                                                                No
-                                                        </td>
-                                                        
-                                                    </tr>
-                                            </tbody>
-                                        </table>
-                                </div>
-                                <div>
-                                </div>
-                                <div class="io-description">
-                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                                </div>
-                        </td>
-                    </tr>
-            </tbody>
-        </table>
-</section>
 </div>
 
 
 
-    <div class="tab-pane fade " id="c-templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;table *ngIf&#x3D;&quot;gotColumnDefs &amp;&amp; !isLoading&quot; mat-table [dataSource]&#x3D;&quot;dataSource&quot; class&#x3D;&quot;mat-why-report-table mat-elevation-z8&quot;&gt;
-  &lt;ng-container [matColumnDef]&#x3D;&quot;column&quot; *ngFor&#x3D;&quot;let column of displayedColumns&quot;&gt;
-    &lt;th mat-header-cell *matHeaderCellDef&gt; {{column}} &lt;/th&gt;
-    &lt;td mat-cell *matCellDef&#x3D;&quot;let element&quot; class&#x3D;&quot;mat-cell&quot;&gt; {{element[column]}} &lt;/td&gt;
-  &lt;/ng-container&gt;
-
-  &lt;!--&lt;tr mat-header-row *matHeaderRowDef&#x3D;&quot;displayedColumns&quot;&gt;&lt;/tr&gt;--&gt;
-  &lt;tr mat-row *matRowDef&#x3D;&quot;let row; columns: displayedColumns;&quot;&gt;&lt;/tr&gt;
-&lt;/table&gt;</code></pre>
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;table-format&quot;&gt;
+  &lt;!--&lt;div class&#x3D;&quot;thead&quot;&gt;
+    &lt;div&gt;&lt;/div&gt;
+    &lt;div *ngFor&#x3D;&quot;let hRow in this.headers&quot;&gt;{{hRow}}&lt;/div&gt;
+  &lt;/div&gt;--&gt;
+  &lt;div class&#x3D;&quot;tr&quot; [class.thead]&#x3D;&quot;rI&#x3D;&#x3D;0&quot; *ngFor&#x3D;&quot;let row of rows; let rI &#x3D; index&quot;&gt;
+    &lt;!-- show the title for the row --&gt;
+    &lt;div class&#x3D;&quot;col-title&quot;&gt;{{row.title}}&lt;/div&gt;
+    &lt;!-- now loop through a cell per item in formatted data --&gt;
+    &lt;div class&#x3D;&quot;td&quot; *ngFor&#x3D;&quot;let tCell of getRowValuesForData(row.key)&quot;&gt;
+      &lt;div [innerHTML]&#x3D;&quot;tCell&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
     </div>
 
-    <div class="tab-pane fade " id="c-styleData">
+    <div class="tab-pane fade " id="styleData">
                 <p class="comment">
                     <code>./sz-why-entity.component.scss</code>
                 </p>
@@ -725,20 +1053,58 @@
   }
 }
 
-.demo-table {
-  width: 100%;
-}
-
-.demo-button-container {
-  padding-bottom: 16px;
-}
-
-.demo-button + .demo-button {
-  margin-left: 8px;
-}
-
 .mat-why-report-table {
   width: 100%;
+}
+
+.table-format {
+  display: table;
+  min-width: 100%;
+  width: auto;
+  background-color: #f5f5f5;
+  border-spacing: 1px;
+
+  .thead { 
+    display: table-row;
+    position: sticky;
+  }
+  .tr {
+    display:  table-row;
+    width: auto;
+    min-height: 32px;
+  }
+  .td {
+    display: table-cell;
+    background-color:#ffffff;
+    padding-left: 16px;
+    padding-right: 16px;
+    /*white-space: pre;*/
+    font-family: monospace;
+    padding: 5px 10px;
+    border-right: 2px solid #dcdcdc;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #0000001f;
+
+    &amp;:last-child {
+      padding-right: 10px;
+      border-right: none;
+    }
+  }
+  .col-title {
+    display: table-cell;
+    padding: 5px 16px;
+    color: #2977a7;
+    font-size: 16px;
+    border-right: 2px solid #dcdcdc;
+    text-transform: uppercase;
+    font-family: inherit;
+    vertical-align: middle;
+    border-right: 2px solid #dcdcdc;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #0000001f;
+  }
 }
 
 .mat-column-title {
@@ -771,8 +1137,8 @@
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><table *ngIf="gotColumnDefs && !isLoading" mat-table [dataSource]="dataSource" class="mat-why-report-table mat-elevation-z8">  <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">    <th mat-header-cell *matHeaderCellDef> {{column}} </th>    <td mat-cell *matCellDef="let element" class="mat-cell"> {{element[column]}} </td>  </ng-container>  <!--<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr></table></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntitiesDialog', 'selector': 'sz-dialog-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyEntityDialog', 'selector': 'sz-dialog-why-entity'}];
+        var COMPONENT_TEMPLATE = '<div><div class="table-format">  <!--<div class="thead">    <div></div>    <div *ngFor="let hRow in this.headers">{{hRow}}</div>  </div>-->  <div class="tr" [class.thead]="rI==0" *ngFor="let row of rows; let rI = index">    <!-- show the title for the row -->    <div class="col-title">{{row.title}}</div>    <!-- now loop through a cell per item in formatted data -->    <div class="td" *ngFor="let tCell of getRowValuesForData(row.key)">      <div [innerHTML]="tCell"></div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SzWhyEntityComponent'};
 </script>

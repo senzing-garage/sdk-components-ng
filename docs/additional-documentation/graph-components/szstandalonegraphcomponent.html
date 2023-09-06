@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../../" class="navbar-brand">Senzing SDK Components</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -51,14 +51,14 @@
 
 
 
-<h1 id="szstandalonegraphcomponent">SzStandaloneGraphComponent</h1>
+<h1>SzStandaloneGraphComponent</h1>
 <p>The <code>SzStandaloneGraphComponent</code> creates a graphical representation of an entity and it&#39;s relationships to other entities and includes optional filtering and parameter control tray.</p>
 <p><img src="../../images/ss-graph-large.png" alt="screen shot of SzRelationshipNetworkComponent" class="img-responsive">
 <br/><br/><br/><br/></p>
-<h2 id="properties-and-methods">Properties and Methods</h2>
+<h2>Properties and Methods</h2>
 <p>see the component <code>sdk-graph-components</code> documentation for the full list of component methods and properties: <a href="http://certified.senzing.com/sdk-components-ng/components/SzStandaloneGraphComponent.html">http://certified.senzing.com/sdk-components-ng/components/SzStandaloneGraphComponent.html</a></p>
-<h2 id="examples">Examples</h2>
-<h4 id="angular">Angular</h4>
+<h2>Examples</h2>
+<h4>Angular</h4>
 <div><pre class="line-numbers"><code class="language-html">  &lt;sz-standalone-graph
     filterWidth=&quot;320&quot;
     [graphIds]=&quot;graphIds&quot;
@@ -68,7 +68,7 @@
     [filterControlPosition]=&quot;&#39;top-right&#39;&quot;
     (entityClick)=&quot;onGraphEntityClick($event)&quot;
     [showMatchKeys]=&quot;true&quot;
-    &gt;&lt;/sz-standalone-graph&gt;</code></pre></div><h4 id="web-component">Web Component</h4>
+    &gt;&lt;/sz-standalone-graph&gt;</code></pre></div><h4>Web Component</h4>
 <div><pre class="line-numbers"><code class="language-html">  &lt;sz-wc-standalone-graph
     filter-width=&quot;320&quot;
     graph-ids=&quot;1,1001,1002&quot;
@@ -76,7 +76,7 @@
     show-match-key-control=&quot;false&quot;
     show-filters-control=&quot;false&quot;
     filter-control-position=&quot;top-right&quot;
-    show-match-keys=&quot;true&quot;&gt;&lt;/sz-wc-standalone-graph&gt;</code></pre></div><h1 id="differences-between-web-components-and-angular-implementations">Differences between Web Components and Angular Implementations</h1>
+    show-match-keys=&quot;true&quot;&gt;&lt;/sz-wc-standalone-graph&gt;</code></pre></div><h1>Differences between Web Components and Angular Implementations</h1>
 <p>If using the <code>sdk-components-ng</code> package the tag is called <code>sz-standalone-graph</code>.
 If using the <code>sdk-components-web</code> package the tag is called <code>sz-wc-standalone-graph</code>.</p>
 <p>The other main difference between the two implementations is that if using angular the attributes are <a href="https://en.wikipedia.org/wiki/Camel_case">Camel Case</a>, and if using web components the attributes are kabob case. See <a href="https://en.wikipedia.org/wiki/Letter_case#Special_case_styles">https://en.wikipedia.org/wiki/Letter_case#Special_case_styles</a></p>

@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../../" class="navbar-brand">Senzing SDK Components</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -51,7 +51,7 @@
 
 
 
-<h1 id="what-are-web-components-">What are Web Components ?</h1>
+<h1>What are Web Components ?</h1>
 <p>Web components are a set of web platform APIs that allow you to create new custom, reusable, encapsulated HTML tags to use in web pages and web apps. Custom components and widgets built on the Web Component standards, will work across modern browsers, and can be used with any JavaScript library or framework that work with HTML.</p>
 <p>For more information on the subject see the following sites:</p>
 <ul>
@@ -59,7 +59,7 @@
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components">Web Components | MDN</a></li>
 <li><a href="https://developers.google.com/web/fundamentals/web-components/">Building Components | Web Fundamentals | Google Developers</a></li>
 </ul>
-<h1 id="web-components-vs-angular">Web Components Vs. Angular</h1>
+<h1>Web Components Vs. Angular</h1>
 <ul>
 <li>Tag Attributes are kabob-case</li>
 <li>Tag names are prefixed with <code>sz-wc</code></li>
@@ -81,10 +81,10 @@
 &lt;script&gt;
     // hide graph filter control programatically
     document.querySelector(&#39;sz-wc-standalone-graph&#39;).showFiltersControl = false;
-&lt;/script&gt;</code></pre></div><h1 id="getting-started">Getting Started</h1>
+&lt;/script&gt;</code></pre></div><h1>Getting Started</h1>
 <p>Getting set up to work with the Senzing SDK Components can be done in as little as 10 minutes if you already have an Senzing REST API Server installation running. </p>
 <p>See the <a href="web-components/quick-start.html">Quick Start Guide</a> for instructions.</p>
-<h1 id="compatibility">Compatibility</h1>
+<h1>Compatibility</h1>
 <p>Any web page or application that can render web component tags can be enabled by adding the <code>@senzing/sdk-components-web</code> package to it&#39;s dependencies. The basic requirement is that the application hosting the tags can parse javascript and supports rendering custom component tags. All modern web browsers, some mobile browsers, and any native applications that support embedded web views should be able to render these components.</p>
 <p>Add the css file to your document:</p>
 <div><pre class="line-numbers"><code class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;/node_modules/\&#64;senzing/sdk-components-web/senzing-components-web.css&quot;&gt;</code></pre></div><p>Add the javascript to your document:</p>

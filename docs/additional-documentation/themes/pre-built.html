@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../../" class="navbar-brand">Senzing SDK Components</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -51,15 +51,15 @@
 
 
 
-<h1 id="pre-defined">Pre Defined</h1>
+<h1>Pre Defined</h1>
 <p>We&#39;ve included some pre-built themes for quick usage to get you up and running. You&#39;ll almost certainly want to create your own, or tweak things to match your application&#39;s styling as needed. The compiled css files are located in the styles/themes directory in the package being used.</p>
-<h2 id="using-sass">using SASS</h2>
+<h2>using SASS</h2>
 <p>if you&#39;re using sass(and scss processor can reference node_modules), open up your main scss file(src/styles.scss in default angular layout) and include the following.</p>
-<div><pre class="line-numbers"><code class="language-scss">&#64;import &#39;&#64;senzing/sdk-components-ng/styles/themes/senzing.css&#39;;</code></pre></div><h2 id="using-css">using CSS</h2>
+<div><pre class="line-numbers"><code class="language-scss">&#64;import &#39;&#64;senzing/sdk-components-ng/styles/themes/senzing.css&#39;;</code></pre></div><h2>using CSS</h2>
 <p>there are several different ways to include a pre-built theme in your project.
 You could just add the stylesheet path to your main html file and include the css reference in the HEAD of your document.</p>
 <div><pre class="line-numbers"><code class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;node_modules/&#64;senzing/sdk-components-ng/styles/themes/senzing.css&quot;&gt;</code></pre></div><p>for production it is recommended you copy the theme stylesheet you will be using over to a static directory(probably a bad idea to leave node_modules open to the world) and change the above reference to point to it&#39;s location. </p>
-<h3 id="angular-projects">Angular projects</h3>
+<h3>Angular projects</h3>
 <p>if you&#39;re using the sdk components in the scope of an angular project the recommended way is to add the theme file path to your <em>angular.json</em> file for your project.</p>
 <img style="border: 1px solid #CCC; padding: 10px 20px 30px 20px; margin: 12px 0 40px 0;" src="../../docs/images/themes/add-to-style-paths.png">
 

@@ -47,7 +47,7 @@
   <li class="breadcrumb-item">Interfaces</li>
   <li class="breadcrumb-item"
   >
-  SzDataSourceComposite</li>
+  SzNonScoringRecordFeature</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -65,7 +65,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/lib/models/data-sources.ts</code>
+            <code>src/lib/models/data-why.ts</code>
         </p>
 
 
@@ -84,30 +84,40 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#color" 
+                                        <a href="#dataSource" 
 >
-                                            color
+                                            dataSource
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#featureType" 
+>
+                                            featureType
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#featureValue" 
+>
+                                            featureValue
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#matchLevel" 
+>
+                                            matchLevel
                                         </a>
                                 </li>
                                 <li>
                                             <span class="modifier">Optional</span>
-                                        <a href="#hidden" 
+                                        <a href="#nonscoring" 
 >
-                                            hidden
+                                            nonscoring
                                         </a>
                                 </li>
                                 <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#index" 
+                                        <a href="#recordId" 
 >
-                                            index
-                                        </a>
-                                </li>
-                                <li>
-                                        <a href="#name" 
->
-                                            name
+                                            recordId
                                         </a>
                                 </li>
                             </ul>
@@ -125,9 +135,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="color"></a>
-                                        <span class="name "><b>color</b>
-                                            <a href="#color">
+                                        <a name="dataSource"></a>
+                                        <span class="name "><b>dataSource</b>
+                                            <a href="#dataSource">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -135,7 +145,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>color:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>dataSource:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -148,11 +158,6 @@
                                         </td>
                                     </tr>
 
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
 
 
 
@@ -163,9 +168,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="hidden"></a>
-                                        <span class="name "><b>hidden</b>
-                                            <a href="#hidden">
+                                        <a name="featureType"></a>
+                                        <span class="name "><b>featureType</b>
+                                            <a href="#featureType">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -173,7 +178,106 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>hidden:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        <code>featureType:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="featureValue"></a>
+                                        <span class="name "><b>featureValue</b>
+                                            <a href="#featureValue">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>featureValue:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="matchLevel"></a>
+                                        <span class="name "><b>matchLevel</b>
+                                            <a href="#matchLevel">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>matchLevel:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="nonscoring"></a>
+                                        <span class="name "><b>nonscoring</b>
+                                            <a href="#nonscoring">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>nonscoring:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -201,9 +305,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="index"></a>
-                                        <span class="name "><b>index</b>
-                                            <a href="#index">
+                                        <a name="recordId"></a>
+                                        <span class="name "><b>recordId</b>
+                                            <a href="#recordId">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -211,45 +315,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>index:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="name"></a>
-                                        <span class="name "><b>name</b>
-                                            <a href="#name">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>name:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>recordId:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -307,7 +373,7 @@
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'SzDataSourceComposite.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'SzNonScoringRecordFeature.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 
