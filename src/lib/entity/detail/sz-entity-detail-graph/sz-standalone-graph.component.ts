@@ -233,6 +233,8 @@ export class SzStandaloneGraphComponent extends SzGraphComponent implements Afte
       this.closeGraphContextMenu();
       this.dialog.open(SzWhyEntitiesDialog, {
         panelClass: 'why-entities-dialog-panel',
+        minWidth: 800,
+        height: 'var(--sz-why-dialog-default-height)',
         data: {
           entities: [event.sourceEntityId, event.targetEntityId],
           showOkButton: false,
