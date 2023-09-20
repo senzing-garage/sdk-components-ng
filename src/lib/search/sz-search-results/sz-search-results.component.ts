@@ -310,8 +310,8 @@ export class SzSearchResultsComponent implements OnInit, OnDestroy {
     if(this._openWhyComparisonModalOnClick) {
       this.dialog.open(SzWhyEntitiesDialog, {
         panelClass: 'why-entities-dialog-panel',
-        minWidth: '800px',
-        minHeight: '400px',
+        minWidth: 800,
+        height: 'var(--sz-why-dialog-default-height)',
         data: {
           entities: selectedEntityIds,
           showOkButton: false,

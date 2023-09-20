@@ -1172,8 +1172,8 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
       this.closeGraphContextMenu();
       this.dialog.open(SzWhyEntitiesDialog, {
         panelClass: 'why-entities-dialog-panel',
-        minHeight: 400,
         minWidth: 800,
+        height: 'var(--sz-why-dialog-default-height)',
         data: {
           entities: [event.sourceEntityId, event.targetEntityId],
           showOkButton: false,
