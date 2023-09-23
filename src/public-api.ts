@@ -67,6 +67,7 @@ export * from './lib/models/folio';
 export { SzBulkDataAnalysis } from './lib/models/data-analysis';
 export { SzBulkLoadStatus } from './lib/models/data-importing';
 export { SzEntitySearchParams } from './lib/models/entity-search';
+export { SzEntityDetailSectionData } from './lib/models/entity-detail-section-data';
 export { SzSearchResultEntityData } from './lib/models/responces/search-results/sz-search-result-entity-data';
 export { AdminStreamConnProperties, AdminStreamAnalysisConfig, AdminStreamLoadConfig, AdminStreamUploadRates } from './lib/models/data-admin';
 export { SzDataSourceRecordAnalysis, SzDataSourceComposite } from './lib/models/data-sources';

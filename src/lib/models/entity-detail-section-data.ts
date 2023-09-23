@@ -1,11 +1,11 @@
-import { SzEntityRecord, SzEntityFeature, SzDataSourceRecordSummary, SzRelatedEntity } from '@senzing/rest-api-client-ng';
+import { SzEntityRecord, SzEntityFeature, SzDataSourceRecordSummary, SzRelatedEntity, SzResolvedEntity } from '@senzing/rest-api-client-ng';
 
 export interface SzSectionDataByDataSource {
   'dataSource'?: string;
   'records'?: SzEntityRecord[] | SzRelatedEntity[]
 }
 
-export interface SzEntityDetailSectionData {
+export interface SzEntityDetailSectionData extends SzResolvedEntity {
   'resolutionRuleCode': string;
   'matchLevel': number;
   'refScore': number;

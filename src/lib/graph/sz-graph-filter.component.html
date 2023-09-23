@@ -36,7 +36,9 @@
             Hide Indirect Links
             <span #ttt2 class="tooltip-text">do not show inter-related first level links</span>
           </span>
-          <span class="left-adjusted no-text"><mat-checkbox class="unpadded" [checked]="suppressL1InterLinks" (change)="onCheckboxPrefToggle('suppressL1InterLinks',$event.checked)"></mat-checkbox></span>
+          <span class="left-adjusted no-text">
+            <mat-checkbox class="unpadded" [checked]="suppressL1InterLinks" 
+            (change)="onCheckboxPrefToggle('suppressL1InterLinks',$event.checked); onMatchKeyCoreModeToggle($event.checked)"></mat-checkbox></span>
         </div>
       </label>
     </li>
@@ -203,10 +205,10 @@
         [<span (click)="onSelectAllMatchKeyTokens(true)">All On</span> | <span (click)="onSelectAllMatchKeyTokens(false)">All Off</span>]
       </div>
     </div>
-    <mat-slide-toggle 
+    <!--<mat-slide-toggle 
       class="match-key-token-mode-select" 
       [checked]="isMatchKeyTokenSelectionScopeCore"
-      (change)="onMatchKeyCoreModeToggle($event.checked)">Directly Related Only</mat-slide-toggle>
+      (change)="onMatchKeyCoreModeToggle($event.checked)">Directly Related Only</mat-slide-toggle>-->
     <mat-chip-listbox 
       #matchKeyChipList
       multiple
@@ -214,7 +216,7 @@
       aria-orientation="vertical" 
       aria-label="Match Key Filters">
       
-      <div *ngIf="isMatchKeyTokenSelectionScopeCore" class="chip-group core">
+      <div *ngIf="suppressL1InterLinks" class="chip-group core">
         <!--matchKeyCoreTokensIncluded: {{matchKeyCoreTokensIncluded}}<br/>-->
         <mat-chip-option *ngFor="let mk of matchKeyCoreTokens; let i = index"
           class="core-key"
@@ -228,7 +230,8 @@
           {{mk.name}}
         </mat-chip-option>
       </div>
-      <div *ngIf="!isMatchKeyTokenSelectionScopeCore" class="chip-group extraneous">
+      <div *ngIf="!suppressL1InterLinks" class="chip-group extraneous">
+        <!--matchKeyTokensIncluded: {{matchKeyTokensIncluded}}<br/>-->
         <mat-chip-option *ngFor="let mk of matchKeyTokens; let i = index"
           class="extra-key"
           [class.selected]="isMatchKeyTokenSelected(mk.name)"
