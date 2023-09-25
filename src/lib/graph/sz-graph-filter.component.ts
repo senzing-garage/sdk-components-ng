@@ -206,7 +206,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
         // assume it's already cast correctly
         this._matchKeyTokenSelectionScope = (value as SzMatchKeyTokenFilterScope);
     }
-    //console.log(`@senzing/sdk-components-ng/sz-graph-filter.matchKeyTokenSelectionScope(${value} | ${(this._matchKeyTokenSelectionScope as unknown as string)})`, this._matchKeyTokenSelectionScope);
+    console.log(`@senzing/sdk-components-ng/sz-graph-filter.matchKeyTokenSelectionScope(${value} | ${(this._matchKeyTokenSelectionScope as unknown as string)})`, this._matchKeyTokenSelectionScope);
   }
   /**
    * get the value of match key token filterings scope. possible values are 
