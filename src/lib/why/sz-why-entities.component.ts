@@ -124,19 +124,19 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
         let sortByScore = (data: (SzFeatureScore | SzEntityFeatureWithScoring | SzCandidateKey)[]) => {
              // sort by feature scores if present
              data = data.sort((rowA, rowB)=>{
-                let rowAAsScored    = (rowA as SzEntityFeatureWithScoring);
-                let rowBAsScored    = (rowB as SzEntityFeatureWithScoring);
+                let rowAAsScored    = (rowA as SzEntityFeatureWithScoring) && (rowA as SzEntityFeatureWithScoring).score ? (rowA as SzEntityFeatureWithScoring) : (rowA as SzFeatureScore);
+                let rowBAsScored    = (rowB as SzEntityFeatureWithScoring) && (rowB as SzEntityFeatureWithScoring).score ? (rowB as SzEntityFeatureWithScoring) : (rowB as SzFeatureScore);
+                let rowASortValue   = rowAAsScored.score ? rowAAsScored.score : (rowAAsScored as SzEntityFeatureWithScoring).primaryId;
+                let rowBSortValue   = rowBAsScored.score ? rowBAsScored.score : (rowBAsScored as SzEntityFeatureWithScoring).primaryId;
 
-                let rowASortValue   = rowAAsScored.primaryId;
-                let rowBSortValue   = rowBAsScored.primaryId;
+                if(rowA && (rowAAsScored as SzEntityFeatureWithScoring).scoringDetails) {
+                    rowASortValue = (rowAAsScored as SzEntityFeatureWithScoring).scoringDetails.score;
+                }
+                if(rowB && (rowBAsScored as SzEntityFeatureWithScoring).scoringDetails) {
+                    rowBSortValue = (rowBAsScored as SzEntityFeatureWithScoring).scoringDetails.score;
+                }
 
-                if(rowA && rowAAsScored.scoringDetails) {
-                    rowASortValue = rowAAsScored.scoringDetails.score;
-                }
-                if(rowB && rowBAsScored.scoringDetails) {
-                    rowBSortValue = rowBAsScored.scoringDetails.score;
-                }
-                if(rowAAsScored && rowBAsScored && rowAAsScored.scoringDetails && rowBAsScored.scoringDetails){
+                if(rowAAsScored !== undefined && rowBAsScored !== undefined){
                     // we want to list 'descending' from highest score
                     return rowBSortValue - rowASortValue;
                 }
@@ -145,91 +145,148 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
             });
             return data;
         }
+        let addFeatureToResult = (_feat: SzEntityFeatureDetail | SzFeatureScore, _scoreDetails: SzFeatureScore, _entityFeatDetails: SzEntityFeatureDetail[], mk?: string, fieldName?: string, valuesAlreadyAdded?: string[]) => {
+            let valueAdded;
+            let _retVal                 = '';
+            let featIsInScore           = true;
+            let stats;
+            let featureIsScore          = (_feat as SzFeatureScore).inboundFeature ? true : false;
+            let candidateIsInDetails    = false;
+            let inboundIsInDetails      = false;
+            let detailIds               = _entityFeatDetails.map((featDetail)=>{
+                return featDetail.internalId;
+            });
+            let idsInScore              = [];
+            if(_scoreDetails) {
+                if(_scoreDetails.candidateFeature) idsInScore.push(_scoreDetails.candidateFeature.featureId);
+                if(_scoreDetails.inboundFeature) idsInScore.push(_scoreDetails.inboundFeature.featureId);
+            }
+            if(featureIsScore) {
+                stats           = fBId && fBId.has((_feat as SzFeatureScore).inboundFeature.featureId) ? fBId.get((_feat as SzFeatureScore).inboundFeature.featureId) : false;
+                candidateIsInDetails    = detailIds.indexOf((_feat as SzFeatureScore).candidateFeature.featureId) > -1;
+                inboundIsInDetails      = detailIds.indexOf((_feat as SzFeatureScore).inboundFeature.featureId) > -1;
+            } else {
+                featIsInScore   = idsInScore.indexOf((_feat as SzEntityFeatureDetail).internalId) > -1;
+                stats           = fBId && fBId.has((_feat as SzEntityFeatureDetail).internalId) ? fBId.get((_feat as SzEntityFeatureDetail).internalId) : false;
+            }            
+            let c   = _scoreDetails && 
+                ((valuesAlreadyAdded && valuesAlreadyAdded.length === 0) || !valuesAlreadyAdded) 
+                && _colors[_scoreDetails.scoringBucket] && 
+                featIsInScore && 
+                featureIsInMatchKey(fieldName, mk) ? 'color-'+ _colors[_scoreDetails.scoringBucket] : '';
+            let sb  = (_scoreDetails && _scoreDetails. scoringBucket) ? `score-${_scoreDetails.scoringBucket}` : '';
+            let featureValue    = undefined;
+            let externalVal     = undefined;
+            if((_feat as SzFeatureScore).candidateFeature || (_feat as SzFeatureScore).inboundFeature) { 
+                let hasExternalValue    = !candidateIsInDetails || !inboundIsInDetails;
+                if(hasExternalValue) {
+                    // ok, which one
+                    if(candidateIsInDetails && !inboundIsInDetails) {
+                        featureValue    = (_feat as SzFeatureScore).candidateFeature.featureValue;
+                        externalVal     = (_feat as SzFeatureScore).inboundFeature.featureValue;
+                    } else if(!candidateIsInDetails && inboundIsInDetails) {
+                        featureValue    = (_feat as SzFeatureScore).inboundFeature.featureValue;
+                        externalVal     = (_feat as SzFeatureScore).candidateFeature.featureValue;
+                    } else {
+                        // both external??
+                        externalVal     = [(_feat as SzFeatureScore).inboundFeature.featureValue];
+                        if(externalVal.indexOf((_feat as SzFeatureScore).candidateFeature.featureValue) < 0) externalVal.push((_feat as SzFeatureScore).candidateFeature.featureValue);
+                        //console.warn(`BOTH EXT values!! ${externalVal}`, externalVal, (_feat as SzFeatureScore));
+                    }
+                } else {
+                    // both local??
+                    featureValue        = [(_feat as SzFeatureScore).inboundFeature.featureValue];
+                    if(featureValue.indexOf((_feat as SzFeatureScore).candidateFeature.featureValue) < 0) featureValue.push((_feat as SzFeatureScore).candidateFeature.featureValue);
+                    //console.warn(`BOTH local values!! ${featureValue}`, featureValue, (_feat as SzFeatureScore));
+                }
+            } else {
+                featureValue    = (_feat as SzEntityFeatureDetail).featureValue;
+            }
+
+            if((valuesAlreadyAdded && valuesAlreadyAdded.indexOf(featureValue) == -1) || !valuesAlreadyAdded){
+                if(_scoreDetails && ((valuesAlreadyAdded && valuesAlreadyAdded.length === 0) || !valuesAlreadyAdded)){
+                    _retVal += `<div class="ws-nowrap line-text ${sb} ${c}">`;
+                    if(featIsInScore){
+                        valueAdded  = featureValue;
+                        _retVal     += featureValue;
+                        if(stats && stats.statistics && stats.statistics.entityCount) {
+                            _retVal += ` [${stats.statistics.entityCount}]`;
+                        }
+
+                        if(['SAME','CLOSE','PLAUSIBLE'].indexOf(_scoreDetails.scoringBucket) > -1 && externalVal) {
+                            _retVal += '\n<div><span class="child-node"></span>';
+                            _retVal += externalVal;
+                        }
+                    } else {
+                        valueAdded   = featureValue;
+                        _retVal     += featureValue;
+                        if(stats && stats.statistics && stats.statistics.entityCount) {
+                            _retVal += ` [${stats.statistics.entityCount}]`;
+                        }
+                    }
+                    
+                    if(_scoreDetails.nameScoringDetails) {
+                        let _nameScoreValues  = [];
+                        if(_scoreDetails.nameScoringDetails.fullNameScore)    { _nameScoreValues.push(`full:${_scoreDetails.nameScoringDetails.fullNameScore}`);}
+                        if(_scoreDetails.nameScoringDetails.orgNameScore)     { _nameScoreValues.push(`org:${_scoreDetails.nameScoringDetails.orgNameScore}`);}
+                        if(_scoreDetails.nameScoringDetails.givenNameScore)   { _nameScoreValues.push(`giv:${_scoreDetails.nameScoringDetails.givenNameScore}`);}
+                        if(_scoreDetails.nameScoringDetails.surnameScore)     { _nameScoreValues.push(`sur:${_scoreDetails.nameScoringDetails.surnameScore}`);}
+                        if(_scoreDetails.nameScoringDetails.generationScore)  { _nameScoreValues.push(`gen:${_scoreDetails.nameScoringDetails.generationScore}`);}
+                        _retVal += (_nameScoreValues.length > 0 ? ` (${_nameScoreValues.join('|')})` : '');
+                    } else if(_scoreDetails && _scoreDetails.score) {
+                        _retVal += `(full:${_scoreDetails.score})`;
+                    }
+                    if(['SAME','CLOSE','PLAUSIBLE'].indexOf(_scoreDetails.scoringBucket) > -1) {
+                        _retVal += '</div>\n';
+                    }
+                    _retVal += '</div>\n';
+                } else {
+                    valueAdded = featureValue;
+                    _retVal += '<div class="ws-nowrap line-text">'+ featureValue +'</div>\n';
+                }
+            }
+            return [_retVal, valueAdded];
+        }
         _retVal = Object.assign(_retVal, {
             'NAME': (data: (SzFeatureScore | SzEntityFeatureWithScoring | SzCandidateKey)[], fieldName?: string, mk?: string) => {
                 let _retVal = undefined;
                 let mkAsMap = mk ? getMapFromMatchKey(mk) : undefined;
-
+                // sort by feature scores if present
+                data = sortByScore(data);
                 if(data && data.length > 0 && data.forEach) {
                     // sort by feature scores if present
                     data = sortByScore(data);
-                    let entryIndex = -1;
+                    let valuesAlreadyAdded      = [];
                     data.forEach((_d)=>{
                         // for each item render a line
                         let isEntityFeature = (_d as SzEntityFeature) && (_d as SzEntityFeature).featureDetails;
                         if(isEntityFeature) {
                             // go through each detail item
-                            let _feat = (_d as SzEntityFeature);
-                            let _scoreDetails = (_d as SzEntityFeatureWithScoring).scoringDetails ? (_d as SzEntityFeatureWithScoring).scoringDetails : undefined;
-                            let _allScoreDetails = (_d as SzEntityFeatureWithScoring).featureScores ? (_d as SzEntityFeatureWithScoring).featureScores : undefined;
-                            if(_feat.featureDetails && _feat.featureDetails.forEach){
+                            let _feat                   = (_d as SzEntityFeature);
+                            let _scoreDetails           = (_d as SzEntityFeatureWithScoring).scoringDetails ? (_d as SzEntityFeatureWithScoring).scoringDetails : undefined;
+                            let _allScoreDetails        = (_d as SzEntityFeatureWithScoring).featureScores ? (_d as SzEntityFeatureWithScoring).featureScores : undefined;
+                            if(_allScoreDetails && _allScoreDetails.forEach){
+                                let featureScores = sortByScore(_allScoreDetails);
+                                featureScores.forEach((fs)=>{
+                                    let _res = addFeatureToResult(fs, _scoreDetails, _feat.featureDetails, mk, fieldName, valuesAlreadyAdded);
+                                    if(_res[1]) valuesAlreadyAdded.push(_res[1]);
+                                    if(_res[0] && !_retVal || _retVal === undefined) _retVal = '';
+                                    if(_res[0]) _retVal += _res[0];
+                                });
+
+                            } else if(_feat.featureDetails && _feat.featureDetails.forEach){
                                 _feat.featureDetails.forEach((fd)=>{
-                                    entryIndex++;
-                                    // check if it has a duplicate value
-                                    // if yes add a '└'
-                                    let isDuplicate = false;
-                                    if(!_retVal) { _retVal = ``; }
-                                    if((_feat as SzEntityFeatureWithScoring).featureScores) {
-                                        let _fScore = (_feat as SzEntityFeatureWithScoring).featureScores.find((fs)=>{
-                                            return fs.candidateFeature.featureId === fd.internalId || fs.inboundFeature.featureId === fd.internalId;
-                                        });
-                                        if(_fScore) { _scoreDetails = _fScore;}
-                                    }
-                                    if(!isDuplicate) {
-                                        //_retVal += fd.featureValue;
-                                        if(_scoreDetails && entryIndex === 0){
-                                            let idsInScore = [_scoreDetails.candidateFeature.featureId, _scoreDetails.inboundFeature.featureId];
-                                            let featIsInScore   = idsInScore.indexOf(fd.internalId) > -1;
-                                            // is scored name, add colors
-                                            //let fInMatchKey = featureIsInMatchKey2(fd, fieldName, _allScoreDetails, mkAsMap);
-                                            let c = _colors[_scoreDetails.scoringBucket] && featIsInScore && featureIsInMatchKey('NAME', mk) ? 'color-'+ _colors[_scoreDetails.scoringBucket] : '';
-                                            _retVal += `<div class="ws-nowrap line-text score-${_scoreDetails.scoringBucket} ${c}">`;
-                                            let stats = fBId && fBId.has(fd.internalId) ? fBId.get(fd.internalId) : false;
-                                            if(featIsInScore){
-                                                _retVal += fd.featureValue;
-                                                if(stats && stats.statistics && stats.statistics.entityCount) {
-                                                    _retVal += ` [${stats.statistics.entityCount}]`;
-                                                }
-                                                //_retVal += '\n';
-                                                if(['SAME','CLOSE','PLAUSIBLE'].indexOf(_scoreDetails.scoringBucket) > -1) {
-                                                    _retVal += '\n<div><span class="child-node"></span>';
-                                                    if(fd.internalId === _scoreDetails.candidateFeature.featureId) {
-                                                        // show "inboundFeature"
-                                                        _retVal += _scoreDetails.inboundFeature.featureValue;
-                                                    } else {
-                                                        _retVal += _scoreDetails.candidateFeature.featureValue;
-                                                    }
-                                                }
-                                            } else {
-                                                _retVal += fd.featureValue;
-                                                if(stats && stats.statistics && stats.statistics.entityCount) {
-                                                    _retVal += ` [${stats.statistics.entityCount}]`;
-                                                }
-                                            }
-                                            
-                                            if(_scoreDetails.nameScoringDetails) {
-                                                let _nameScoreValues  = [];
-                                                if(_scoreDetails.nameScoringDetails.fullNameScore)    { _nameScoreValues.push(`full:${_scoreDetails.nameScoringDetails.fullNameScore}`);}
-                                                if(_scoreDetails.nameScoringDetails.orgNameScore)     { _nameScoreValues.push(`org:${_scoreDetails.nameScoringDetails.orgNameScore}`);}
-                                                if(_scoreDetails.nameScoringDetails.givenNameScore)   { _nameScoreValues.push(`giv:${_scoreDetails.nameScoringDetails.givenNameScore}`);}
-                                                if(_scoreDetails.nameScoringDetails.surnameScore)     { _nameScoreValues.push(`sur:${_scoreDetails.nameScoringDetails.surnameScore}`);}
-                                                if(_scoreDetails.nameScoringDetails.generationScore)  { _nameScoreValues.push(`gen:${_scoreDetails.nameScoringDetails.generationScore}`);}
-                                                _retVal += (_nameScoreValues.length > 0 ? ` (${_nameScoreValues.join('|')})` : '');
-                                            }
-                                            if(['SAME','CLOSE','PLAUSIBLE'].indexOf(_scoreDetails.scoringBucket) > -1) {
-                                                _retVal += '</div>\n';
-                                            }
-                                            _retVal += '</div>\n';
-                                        } else {
-                                            _retVal += '<div class="ws-nowrap line-text">'+ fd.featureValue +'</div>\n';
-                                        }
-                                    }
+                                    let _res = addFeatureToResult(fd, _scoreDetails, _feat.featureDetails, mk, fieldName, valuesAlreadyAdded);
+                                    if(_res[1]) valuesAlreadyAdded.push(_res[1]);
+                                    if(_res[0] && !_retVal || _retVal === undefined) _retVal = '';
+                                    if(_res[0]) _retVal += _res[0];
                                 });
                             }
                         } else if((_d as SzCandidateKey).featureType) {
                             // candidate key
                             let f = (_d as SzCandidateKey);
                             let stats = fBId && fBId.has(f.featureId) ? fBId.get(f.featureId).statistics : false;
+                            if(!_retVal || _retVal === undefined) _retVal = '';
                             _retVal += '<div class="ws-nowrap line-text">'+ f.featureValue;
                             if(stats && stats.entityCount) {
                                 _retVal += ` [${stats.entityCount}]`;
@@ -243,60 +300,42 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                 //console.log(`SzWhyEntitiesComparisonComponent.renderers[${fieldName}]: `, data, (data as SzEntityFeature).featureDetails, _retVal);
 
                 return _retVal;
-                //return _retVal ? _retVal : this._renderers['NAME'](data, fieldName, mk);
             },
             'ADDRESS': (data: (SzFeatureScore | SzCandidateKey | SzEntityFeatureWithScoring)[], fieldName?: string, mk?: string) => {
                 let _retVal = undefined;
                 if(data && data.length > 0 && data.forEach) {
-                    let entryIndex = -1;
                     // sort by feature scores if present
                     data = sortByScore(data);
+                    let valuesAlreadyAdded      = [];
                     data.forEach((_d)=>{
                         // for each item render a line
                         if((_d as SzEntityFeature).featureDetails) {
                             // go through each detail item
-                            let _feat = (_d as SzEntityFeature);
-                            let _scoreDetails = (_d as SzEntityFeatureWithScoring).scoringDetails ? (_d as SzEntityFeatureWithScoring).scoringDetails : undefined;
+                            let _feat               = (_d as SzEntityFeature);
+                            let _scoreDetails       = (_d as SzEntityFeatureWithScoring).scoringDetails ? (_d as SzEntityFeatureWithScoring).scoringDetails : undefined;
+                            let _allScoreDetails    = (_d as SzEntityFeatureWithScoring).featureScores ? (_d as SzEntityFeatureWithScoring).featureScores : undefined;
 
-                            if(_feat.featureDetails && _feat.featureDetails.forEach){
+                            if(_allScoreDetails && _allScoreDetails.forEach){
+                                let featureScores = sortByScore(_allScoreDetails);
+                                featureScores.forEach((fs)=>{
+                                    let _res = addFeatureToResult(fs, _scoreDetails, _feat.featureDetails, mk, fieldName, valuesAlreadyAdded);
+                                    if(_res[1]) valuesAlreadyAdded.push(_res[1]);
+                                    if(_res[0] && !_retVal || _retVal === undefined) _retVal = '';
+                                    if(_res[0]) _retVal += _res[0];
+                                });
+                            }else if(_feat.featureDetails && _feat.featureDetails.forEach){
                                 _feat.featureDetails.forEach((fd)=>{
-                                    entryIndex++;
-                                    // check if it has a duplicate value
-                                    // if yes add a '└'
-                                    if(!_retVal) { _retVal = ``; }
-                                    if(_scoreDetails){
-                                        let idsInScore = [_scoreDetails.candidateFeature.featureId, _scoreDetails.inboundFeature.featureId];
-                                        let featIsInScore   = idsInScore.indexOf(fd.internalId) > -1;
-                                        // is scored name, add colors
-                                        let c = _colors[_scoreDetails.scoringBucket] && featIsInScore && featureIsInMatchKey('ADDRESS', mk) && entryIndex === 0 ? 'color-'+ _colors[_scoreDetails.scoringBucket] : '';
-                                        //retVal += '<div class="ws-nowrap">';
-                                        _retVal += `<div class="ws-nowrap line-text score-${_scoreDetails.scoringBucket} ${c}">`;
-                                        let stats = fBId && fBId.has(fd.internalId) ? fBId.get(fd.internalId) : false;
-                                        if(featIsInScore){
-                                            _retVal += fd.featureValue;
-                                            
-                                            if(stats && stats.statistics && stats.statistics.entityCount) {
-                                                _retVal += ` [${stats.statistics.entityCount}]`;
-                                            }
-                                            if(stats && stats.statistics && entryIndex === 0) {
-                                                _retVal += ` (${_scoreDetails.score})`;
-                                            }
-                                        } else {
-                                            _retVal += fd.featureValue;
-                                            if(stats && stats.statistics && stats.statistics.entityCount) {
-                                                _retVal += ` [${stats.statistics.entityCount}]`;
-                                            }
-                                        }
-                                        _retVal += '</div>\n';
-                                    } else {
-                                        _retVal += '<div class="ws-nowrap line-text">'+ fd.featureValue+'</div>\n';
-                                    }
+                                    let _res = addFeatureToResult(fd, _scoreDetails, _feat.featureDetails, mk, fieldName, valuesAlreadyAdded);
+                                    if(_res[1]) valuesAlreadyAdded.push(_res[1]);
+                                    if(_res[0] && !_retVal || _retVal === undefined) _retVal = '';
+                                    if(_res[0]) _retVal += _res[0];
                                 });
                             }
                         } else if((_d as SzCandidateKey).featureType) {
                             // candidate key
                             let f = (_d as SzCandidateKey);
                             let stats = fBId && fBId.has(f.featureId) ? fBId.get(f.featureId).statistics : false;
+                            if(!_retVal || _retVal === undefined) _retVal = '';
                             _retVal += '<div class="ws-nowrap line-text">'+ f.featureValue;
                             if(stats && stats.entityCount) {
                                 _retVal += ` [${stats.entityCount}]`;
@@ -318,7 +357,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                 let mkAsMap = mk ? getMapFromMatchKey(mk) : undefined;
                 if(data && data.length > 0 && data.forEach) {
                     let entryIndex = -1;
-                    let entriesAlreadyPrinted = [];
+                    let valuesAlreadyAdded      = [];
 
                     data = data.sort((rowA, rowB)=>{
                         let rowAAsScored    = (rowA as SzEntityFeatureWithScoring);
@@ -349,55 +388,24 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                             let _allScoreDetails = (_d as SzEntityFeatureWithScoring).featureScores ? (_d as SzEntityFeatureWithScoring).featureScores : undefined;
 
                             if(_feat.featureDetails && _feat.featureDetails.forEach){
-                                let uniqueFeatureDetails = _feat.featureDetails;
-                                uniqueFeatureDetails.forEach((fd)=>{
-                                    entryIndex++;
-                                    let isDuplicate = entriesAlreadyPrinted.indexOf(fd.featureValue) > -1;
-                                    entriesAlreadyPrinted.push(fd.featureValue);
-                                    if(!_retVal) { _retVal = ``; }
-                                    if(!isDuplicate) {
-                                        if(_scoreDetails){
-                                            let idsInScore = [_scoreDetails.candidateFeature.featureId, _scoreDetails.inboundFeature.featureId];
-                                            let featIsInScore   = idsInScore.indexOf(fd.internalId) > -1;
-                                            // is scored name, add colors
-                                            let fInMatchKey = featureIsInMatchKey2(fd, fieldName, _allScoreDetails, mkAsMap);
-                                            let c           = fInMatchKey && entryIndex === 0 ? 'color-'+ _colors[_scoreDetails.scoringBucket] : '';
-                                            
-                                            _retVal += `<div class="ws-nowrap line-text score-${_scoreDetails.scoringBucket} ${c}">`;
-                                            let stats = fBId && fBId.has(fd.internalId) ? fBId.get(fd.internalId) : false;
-                                            if(featIsInScore){
-                                                _retVal += fd.featureValue;
-                                                if(stats && stats.statistics && stats.statistics.entityCount) {
-                                                    _retVal += ` [${stats.statistics.entityCount}]`;
-                                                }
-                                                if(entryIndex === 0 && (
-                                                    (fd.internalId === _scoreDetails.candidateFeature.featureId) || 
-                                                    (fd.internalId === _scoreDetails.inboundFeature.featureId)
-                                                )) {
-                                                    _retVal += '</div>\n<div><span class="child-node"></span>';
-                                                    if(fd.internalId === _scoreDetails.candidateFeature.featureId) {
-                                                        // show "inboundFeature"
-                                                        _retVal += _scoreDetails.inboundFeature.featureValue;
-                                                    } else {
-                                                        _retVal += _scoreDetails.candidateFeature.featureValue;
-                                                    }
-                                                }
-                                                if(entryIndex === 0 && _scoreDetails && _scoreDetails.score) {
-                                                    _retVal += ` (${_scoreDetails.score})`;
-                                                }
-                                            } else {
-                                                _retVal += '<div class="ws-nowrap line-text">'+ fd.featureValue;
-                                                if(stats && stats.statistics && stats.statistics.entityCount) {
-                                                    _retVal += ` [${stats.statistics.entityCount}]`;
-                                                }
-                                            }
 
-                                            _retVal += `</div>\n`;
-                                        } else {
-                                            _retVal += '<div class="ws-nowrap line-text">'+ fd.featureValue+`</div>\n`;
-                                        }
-                                    }
-                                });
+                                if(_allScoreDetails && _allScoreDetails.forEach){
+                                    let featureScores = sortByScore(_allScoreDetails);
+                                    console.log(`addresses sorted by score: `,featureScores);
+                                    featureScores.forEach((fs)=>{
+                                        let _res = addFeatureToResult(fs, _scoreDetails, _feat.featureDetails, mk, fieldName, valuesAlreadyAdded);
+                                        if(_res[1]) valuesAlreadyAdded.push(_res[1]);
+                                        if(_res[0] && !_retVal || _retVal === undefined) _retVal = '';
+                                        if(_res[0]) _retVal += _res[0];
+                                    });
+                                }else if(_feat.featureDetails && _feat.featureDetails.forEach){
+                                    _feat.featureDetails.forEach((fd)=>{
+                                        let _res = addFeatureToResult(fd, _scoreDetails, _feat.featureDetails, mk, fieldName, valuesAlreadyAdded);
+                                        if(_res[1]) valuesAlreadyAdded.push(_res[1]);
+                                        if(_res[0] && !_retVal || _retVal === undefined) _retVal = '';
+                                        if(_res[0]) _retVal += _res[0];
+                                    });
+                                }
                             }
                         } else if((_d as SzCandidateKey).featureType) {
                             entryIndex++;
