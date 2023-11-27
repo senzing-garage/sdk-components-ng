@@ -1201,7 +1201,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
       }
       if(this._dynamicHowFeatures) {
         this._howFunctionDisabled         = (this._dynamicHowFeatures && !results[0]);
-        this._entityRequiresReEvaluation  = (this._dynamicHowFeatures && !results[0]);
+        this._entityRequiresReEvaluation  = (this._dynamicHowFeatures && results[1]);
       }
     })
     if(this._entityId){
@@ -1211,14 +1211,26 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
         take(1)
       ).subscribe({
         next: (resp)=>{
-          console.info(`checkIfEntityHasHowSteps: `, resp);
-          if(resp && resp.data && resp.data && (resp.data.resolutionSteps && Object.keys(resp.data.resolutionSteps).length <= 0 &&  resp.data.finalStates && resp.data.finalStates.length > 0)){
+          let hasSteps = (resp && resp.data && resp.data.resolutionSteps && Object.keys(resp.data.resolutionSteps).length > 0);
+          let numberOfFinalStates = resp && resp.data && resp.data.finalStates && resp.data.finalStates.length ? resp.data.finalStates.length : 0
+          let isSingleton = (numberOfFinalStates === 1 && resp && resp.data && resp.data.finalStates && resp.data.finalStates[0]) ? resp.data.finalStates[0].singleton: false;
+          
+          if(isSingleton) {
+            // entity only has one record,
+            // dont show re-eval
+            _retObs.next([false, false]);
+          } else if (!hasSteps || numberOfFinalStates > 1){
+            // no resolution steps and more than one final state
             // needs re-evaluation
             _retObs.next([false, true]);
-          } else if(resp && resp.data && resp.data.resolutionSteps && Object.keys(resp.data.resolutionSteps).length > 0) {
-            _retObs.next([true, false]);
+            //console.warn(`needs re-evaluation`);
+          } else if(hasSteps && numberOfFinalStates < 1) {
+            // has resolution steps but no final states???
+            // disable the button
+            _retObs.next([hasSteps, true]);
           } else {
-            _retObs.next([false, false]);
+            // resolution was normal
+            _retObs.next([hasSteps, false]);
           }
         },
         error: (err) => {
