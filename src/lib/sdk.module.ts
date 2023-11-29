@@ -18,6 +18,7 @@ import { SzSdkMaterialModule } from './sdk.material.module';
 import { SzMessageBundleService } from './services/sz-message-bundle.service';
 import { SzSearchService } from './services/sz-search.service';
 import { SzConfigurationService } from './services/sz-configuration.service';
+import { SzDataMartService } from './services/sz-datamart.service';
 import { SzFoliosService } from './services/sz-folios.service';
 import { SzUIEventService } from './services/sz-ui.service';
 import { SzPrefsService } from './services/sz-prefs.service';
@@ -26,6 +27,9 @@ import { SzAdminService } from './services/sz-admin.service';
 import { SzBulkDataService } from './services/sz-bulk-data.service';
 import { SzCSSClassService } from './services/sz-css-class.service';
 import { SzConfigDataService } from './services/sz-config-data.service';
+
+/** charts */
+import { SzRecordStatsDonutChart } from './charts/records-by-datasources/sz-donut.component'
 
 /** components */
 import { SzMultiSelectButtonComponent } from './shared/multi-select-button/multi-select-button.component';
@@ -150,6 +154,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzPoweredByComponent,
         SzPreferencesComponent,
         SzPrefDictComponent,
+        SzRecordStatsDonutChart,
         SzRelationshipNetworkComponent,
         SzRelationshipNetworkInputComponent,
         SzRelationshipNetworkLookupComponent,
@@ -201,6 +206,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowVirtualEntityDialog,
         SzPoweredByComponent,
         SzPreferencesComponent,
+        SzRecordStatsDonutChart,
         SzRelationshipNetworkComponent,
         SzRelationshipNetworkInputComponent,
         SzRelationshipNetworkLookupComponent,
@@ -223,6 +229,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzConfigDataService,
         SzConfigurationService,
         SzCSSClassService,
+        SzDataMartService,
         SzDataSourcesService,
         SzFoliosService,
         SzHowUIService,

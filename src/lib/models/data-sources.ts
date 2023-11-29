@@ -11,3 +11,15 @@ export interface SzDataSourceComposite {
   index?: number,
   hidden?: boolean
 }
+
+export interface SzStatCountsForDataSources {
+  totalRecordCount: number,
+  totalEntityCount: number,
+  dataSourceCounts: SzRecordCountDataSource[]
+}
+
+export interface SzRecordCountDataSource {
+  dataSourceCode: string,
+  recordCount: number,
+  entityCount?: number
+}
