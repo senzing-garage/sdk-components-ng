@@ -2,6 +2,11 @@ import { Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, Ev
 import { SzGraphPrefs, SzPrefsService } from '../../services/sz-prefs.service';
 import { map, take, takeUntil } from 'rxjs/operators';
 import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
+//import * as d3 from 'd3';
+import * as d3 from 'd3-selection';
+import * as d3Scale from 'd3-scale';
+import * as d3Shape from 'd3-shape';
+
 import { SzEntityData, SzEntityIdentifier, SzEntityNetworkData, SzDataSourcesResponseData } from '@senzing/rest-api-client-ng';
 //import { SzGraphControlComponent } from './sz-graph-control.component';
 //import { SzGraphNodeFilterPair, SzEntityNetworkMatchKeyTokens, SzMatchKeyTokenComposite, SzNetworkGraphInputs, SzMatchKeyTokenFilterScope } from '../../models/graph';
@@ -50,7 +55,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
   //private colorPalette = ['#081fad', 'lightblue', this.$szGrey, '#6b486b', '#a05d56', '#d0743c', '#ff8c00'];
   private _colorPalette: string[];
 
-  private color: any;
+  //private color: any;
   private _pendingLoadColor: string;    /** if unset will be pulled from position 200 of auto generated colors */
   private _unnamedRecordsColor: string; /** if unset will be pulled from last position of auto generated colors */
 
@@ -62,6 +67,28 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
   private donutRadius: number;
   private arc: any;
   private pie: any;
+
+  /** event emitters */
+  /**
+   * emitted when the component begins a request for data.
+   * @returns entityId of the request being made.
+   */
+  @Output() requestStart: EventEmitter<any> = new EventEmitter();
+  /**
+   * emitted when a search is done being performed.
+   * @returns the result of the entity request OR an Error object if something went wrong.
+   */
+  @Output() requestEnd: EventEmitter<SzRecordCountDataSource[]|Error> = new EventEmitter<SzRecordCountDataSource[]|Error>();
+  /**
+   * emitted when a search encounters an exception
+   * @returns error object.
+   */
+  @Output() exception: EventEmitter<Error> = new EventEmitter<Error>();
+  /**
+   * emmitted when the entity data to display has been changed.
+   */
+  @Output('dataChanged')
+  dataChanged: Subject<SzRecordCountDataSource[]> = new Subject<SzRecordCountDataSource[]>();
   
   /** -------------------------------------- getters and setters -------------------------------------- */
 
@@ -142,8 +169,16 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     // get data source counts
     this.getDataSourceRecordCounts().pipe(
       takeUntil(this.unsubscribe$)
-    ).subscribe((recordCounts: SzRecordCountDataSource[])=>{
-      console.log(`got counts: `, recordCounts);
+    ).subscribe({
+      next: (recordCounts: SzRecordCountDataSource[])=>{
+        console.log(`got counts: `, recordCounts);
+        if(this._dataSourceCounts && this._dataSources) {
+          this.dataChanged.next(this._dataSourceCounts);
+        }
+      },
+      error: (err) => {
+        this.exception.next(err);
+      }
     });
     // get data sources
     this.getDataSources().pipe(
@@ -155,11 +190,139 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       if(this._dataSources && this._dataSources.dataSources) {
         this._colorPalette = this.getHslColors(this._dataSources.dataSources.length)
       }
+      if(this._dataSourceCounts && this._dataSources) {
+        this.dataChanged.next(this._dataSourceCounts);
+      }
     });
+
+    // only execute draw once we have the data
+    this.dataChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe({
+      next: (data) => {
+        this.initDonut()
+        this.renderDonut(data);
+      },
+      error: (err) => {
+        this.exception.next(err);
+      }
+    }); 
     
   }
 
   /** ---------------------------------------- methods and subs --------------------------------------- */
+  private renderDonut(data?: SzRecordCountDataSource[]) {
+
+    console.log(`render donut: `, data);
+
+    /** sub-routine for getting fill color */
+    let getD3ColorByDataSource = (d) => {
+      let retVal;
+      let dataSourceCode = d.data ? d.data.dataSourceCode : undefined;
+      //console.log(`getColorByDataSource()`, dataSourceCode);
+      let colorVal = this.getColorByDataSourceCode(dataSourceCode);
+      if(colorVal) {
+        // wrap value in css hsl value
+        retVal = 'hsl('+ colorVal +', 100%, 50%)';
+      }
+      return retVal;
+    }
+
+    const dataAndUnloaded = data.slice(0);
+    if (this._totalPendingRecordCount > 0) {
+      /*const unloadedSummary = new SourceSummary();
+      unloadedSummary.dataSource = 'Pending Load';
+      unloadedSummary.recordCount = this.pendingRecordCount;
+      dataAndUnloaded.push(unloadedSummary);*/
+    }
+
+    if(!this.pie){
+      // this.initDonutSvg has not run yet
+      return;
+    }
+
+    const g = this.donutSvg.selectAll('.arc')
+      .data(this.pie(dataAndUnloaded))
+      .enter().append('g')
+        .attr('class', 'arc')
+      .append('path')
+        .attr('d', this.arc)
+        .style('fill', getD3ColorByDataSource.bind(this));
+
+    g.each(function (d, i) {
+      const ele = d3.select(this);
+      // light blue gets a lighter stroke(looks weird dark)
+      const sAlpha = i === 0 ? '0.8' : '0.3';
+
+      ele.style('stroke', '#000')
+      .style('stroke-width', '1px')
+      .style('stroke-opacity', sAlpha);
+    });
+  }
+
+  private initDonut() {
+    this.donutSvg = d3.select('svg.donut-chart');
+    if (!this.donutSvg) { console.warn('no donut svg'); return; }
+    if (this.donutSvg.empty && this.donutSvg.empty()) { console.warn('donut already rendered'); return; }
+    
+    this.donutSvg.selectAll('*').remove();
+    this.donutWidth   = +this.donutSvg.attr('width');
+    this.donutHeight  = +this.donutSvg.attr('height');
+    this.donutRadius  = Math.min(this.donutWidth, this.donutHeight) / 2;
+
+    // pretty pixies
+    const defs = d3.select('svg').append("defs");
+    const filter = defs.append("filter")
+    .attr("id", "dropshadow")
+    .attr("color-interpolation-filters", "sRGB");
+
+    // Glow
+    const glow = filter.append("feComponentTransfer")
+    .attr("in", "SourceAlpha");
+    // Alpha
+    glow.append("feFuncA")
+    .attr("type", "linear")
+    .attr("slope", "0.5");
+    // Shadow
+    filter.append("feGaussianBlur")
+    //.attr("in", "SourceAlpha")
+    .attr("stdDeviation", 4)
+    .attr("result", "blur");
+    filter.append("feOffset")
+    .attr("in", "blur")
+    .attr("dx", 2)
+    .attr("dy", 5)
+    .attr("result", "offsetBlur");
+
+    const feMerge = filter.append("feMerge");
+    feMerge.append("feMergeNode")
+      .attr("in", "offsetBlur");
+    feMerge.append("feMergeNode")
+      .attr("in", "SourceGraphic");
+
+    // Normally a scale maps from a domain to a range.  You would specify the domain here with the range.
+    // scaleOrdinal maps from discrete value to discrete value.  This allows the domain to be generated from the data as it's processed.
+    
+    /*this.color = d3Scale.scaleOrdinal()
+      .range(this._colorPalette);
+    //  .range(this.getColors());*/
+
+    this.arc = d3Shape.arc()
+      .outerRadius(this.donutRadius - 10)
+      .innerRadius(this.donutRadius - 40);
+
+    this.pie = d3Shape.pie()
+      .padAngle(.015)
+      .value((d: any) => d.recordCount);
+
+    // for some reason donutWidth comes back as NaN when in background on new ds add
+    if ( !Number.isNaN(this.donutWidth / 2) && !Number.isNaN(this.donutHeight / 2) ) {
+      this.donutSvg = d3.select('svg.donut-chart')
+        .append('g')
+        .attr('transform', 'translate(' + this.donutWidth / 2 + ',' + this.donutHeight / 2 + ')')
+        .attr("filter", "url(#dropshadow)");
+    }
+  }
 
   private getDataSourceRecordCounts(): Observable<SzRecordCountDataSource[]> {
     //let retObsSub = new BehaviorSubject<SzRecordCountDataSource[]>(undefined);
@@ -229,8 +392,25 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     return this._colorPalette && this._colorPalette[index] ? this._colorPalette[index] : 0;
   }
 
+  getColorByDataSourceCode(dataSourceCode: string) {
+    let retVal;
+    if(this._dataSourceCountsByCode.has(dataSourceCode)) {
+      // ds exists, get color code
+      let indexOfDS = this._dataSourceCounts.findIndex((ds) => ds.dataSourceCode === dataSourceCode);
+      if(this._colorPalette && this._colorPalette.length > 0 && this._colorPalette[indexOfDS]) {
+        //retVal = this._colorPalette[indexOfDS];
+        retVal = this._colorPalette[indexOfDS];
+      }
+      //console.log(`got fill color "${retVal}" for "${dataSourceCode}"`);
+    } else {
+      //console.warn(`"${dataSourceCode}"S not found in ds codes`);
+    }
+    return retVal;
+  }
+
   getHslColors(num: number) {
-    const initialColor = Math.floor(Math.random() * 360);
+    //const initialColor = Math.floor(Math.random() * 360);
+    const initialColor = 1;
     const increment = 360 / num;
     const hsls = [];
     for (let i = 0; i < num; i++) {
