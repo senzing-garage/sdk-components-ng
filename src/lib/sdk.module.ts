@@ -27,6 +27,8 @@ import { SzAdminService } from './services/sz-admin.service';
 import { SzBulkDataService } from './services/sz-bulk-data.service';
 import { SzCSSClassService } from './services/sz-css-class.service';
 import { SzConfigDataService } from './services/sz-config-data.service';
+/** pipes */
+import { SzShortNumberPipe } from './pipes/numeral-pipe'
 
 /** charts */
 import { SzRecordStatsDonutChart } from './charts/records-by-datasources/sz-donut.component'
@@ -167,6 +169,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzSearchResultCardComponent,
         SzSearchResultCardContentComponent,
         SzSearchResultCardHeaderComponent,
+        SzShortNumberPipe,
         SzStandaloneGraphComponent,
         SzWhyEntitiesComparisonComponent,
         SzWhyEntityComponent,
@@ -211,6 +214,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzRelationshipNetworkInputComponent,
         SzRelationshipNetworkLookupComponent,
         SzRelationshipPathComponent,
+        SzShortNumberPipe,
         SzSearchComponent,
         SzSearchByIdComponent,
         SzSearchResultsComponent,

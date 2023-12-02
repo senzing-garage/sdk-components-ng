@@ -78,6 +78,8 @@ export { SzDataSourceRecordAnalysis, SzDataSourceComposite } from './lib/models/
 export { SzGraphTooltipEntityModel, SzGraphTooltipLinkModel, SzGraphNodeFilterPair, SzMatchKeyComposite, SzMatchKeyTokenComposite, SzEntityNetworkMatchKeyTokens, SzNetworkGraphInputs, SzMatchKeyTokenFilterScope } from './lib/models/graph';
 export { SzDataSourceRecordsSelection, SzDataSourceRecordSelection, SzWhySelectionModeBehavior, SzWhySelectionMode } from './lib/models/data-source-record-selection';
 export * from './lib/models/data-how';
+/** pipes */
+export { SzShortNumberPipe } from './lib/pipes/numeral-pipe'
 
 /** why */
 export { SzWhyEntityComponent } from './lib/why/sz-why-entity.component';

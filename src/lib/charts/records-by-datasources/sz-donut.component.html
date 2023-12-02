@@ -1,1 +1,72 @@
-<h1>sz-records-by-datasources works!</h1>
+<div class="graph">
+    <svg id="donut-chart" class="donut-chart" width="200" height="200"></svg>
+    <div class="total-record-title__wrapper">
+        <div class="total-record-title">{{
+        totalRecordCount < 1000
+        ? totalRecordCount
+        : (totalRecordCount | SzShortNumber )
+        }}
+        </div>
+        <div class="total-record-subtitle">Total Records</div>
+    </div>
+</div>
+<div class="stats">
+    <div class="total-data-sources__label"><span class="strong">{{totalDataSources}} Data Sources</span></div>
+    <div class="records-label__wrapper">
+        <ul class="legend from-data-source">
+            <li class="legend-items" *ngFor="let dsCount of dataSourceCounts; let i = index" >
+            <button class="from-data-source"
+                    (click)="onDataSourceDetailClick(dsCount.dataSourceCode)"
+                    [matTooltip]="getDataSourceName(dsCount.dataSourceCode)"
+                    matTooltipPosition="below">
+                <span class="legend__color-dot item-{{i + 1}}" 
+                [style.backgroundColor]="getColorAtIndex(i)"
+                ></span>
+                <span class="legend__count">{{
+                dsCount.recordCount < 1000
+                    ? dsCount.recordCount
+                    : (dsCount.recordCount | SzShortNumber)
+                }}</span>
+                <span class="legend__subtitle">{{
+                getDataSourceName(dsCount.dataSourceCode)
+                }}</span>
+            </button>
+            </li>
+            <li class="legend-items" *ngIf="totalUnnamedRecordCount > 0">
+            <div>
+                <span class="{{'legend__color-dot item-' + getLastColorIndex()}}" [style.backgroundColor]="unnamedRecordsColor"></span>
+                <span class="legend__count">{{
+                totalUnnamedRecordCount < 1000? totalUnnamedRecordCount: (totalUnnamedRecordCount | SzShortNumber : '0.0a')
+                }}</span>
+                <span class="legend__subtitle">Other Sources</span>
+            </div>
+            </li>
+            <li class="legend-items" *ngIf="totalPendingRecordCount > 0">
+            <div>
+                <span class="legend__color-dot item-Pending" [style.backgroundColor]="pendingLoadColor"></span>
+                <span class="legend__count">{{
+                totalPendingRecordCount < 1000? totalPendingRecordCount: (totalPendingRecordCount | SzShortNumber : '0.0a')
+                }}</span>
+                <span class="legend__subtitle">Pending Load</span>
+            </div>
+            </li>
+        </ul>
+        <ul class="legend legend__percentages">
+            <li class="legend-items" *ngFor="let summary of dataSourceCounts; let i = index">
+            <span>{{
+                (summary.recordCount) | percent:'1.0-0'
+            }}</span>
+            </li>
+            <li class="legend-items" *ngIf="totalUnnamedRecordCount > 0">
+            <span>{{
+                (totalUnnamedRecordCount/this.totalRecordCount) | percent:'1.0-0'
+            }}</span>
+            </li>
+            <li class="legend-items" *ngIf="totalPendingRecordCount > 0">
+            <span>{{
+                (totalPendingRecordCount/this.totalRecordCount) | percent:'1.0-0'
+            }}</span>
+            </li>
+        </ul>
+    </div>
+</div>
