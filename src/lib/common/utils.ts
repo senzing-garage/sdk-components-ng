@@ -27,6 +27,17 @@ export function parseBool(value: any): boolean {
   return false;
 };
 
+export function parseNumber(value: any) {
+  if (!value || value === undefined) {
+    return -1; // not a number
+  } else if (typeof value === 'string') {
+    return parseInt(value.trim());
+  } else if (typeof value === 'number') { 
+    return value as number; 
+  }
+  return value as number;
+}
+
 export function parseSzIdentifier(value: any): number {
   let retVal = 0;
   if (value && value !== undefined) {

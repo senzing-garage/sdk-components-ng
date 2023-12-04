@@ -10,7 +10,7 @@ import * as d3Shape from 'd3-shape';
 import { SzEntityData, SzEntityIdentifier, SzEntityNetworkData, SzDataSourcesResponseData } from '@senzing/rest-api-client-ng';
 //import { SzGraphControlComponent } from './sz-graph-control.component';
 //import { SzGraphNodeFilterPair, SzEntityNetworkMatchKeyTokens, SzMatchKeyTokenComposite, SzNetworkGraphInputs, SzMatchKeyTokenFilterScope } from '../../models/graph';
-import { isValueTypeOfArray, parseBool, parseSzIdentifier, sortDataSourcesByIndex } from '../../common/utils';
+import { isValueTypeOfArray, parseBool, parseNumber, parseSzIdentifier, sortDataSourcesByIndex } from '../../common/utils';
 import { SzRecordCountDataSource, SzStatCountsForDataSources } from '../../models/stats';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzDataSourcesService } from '../../services/sz-datasources.service';
@@ -50,7 +50,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
   private _totalUnnamedRecordCount: number;
   private _totalPendingRecordCount: number;
   private _unlistedDataSources: string[];
-
+  private _limitToNumber: number;
 
   /** colors */
   private $szGrey = '#434447';
@@ -180,6 +180,10 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     if(this._orderBy) {
       retVal = this.sortBy(retVal, this._orderBy);
     }
+    // limit top results
+    if(this._limitToNumber > 0) {
+      retVal = retVal.slice(0, this._limitToNumber);
+    }
     return retVal;
   }
   set dataSourceCounts(value: SzRecordCountDataSource[]) {
@@ -203,6 +207,9 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     return this._dataSourceCountsByCode;
   }
 
+  @Input() public set limitToNumber(value: number | string) {
+    this._limitToNumber = parseNumber(value);
+  } 
 
   constructor(
     public prefs: SzPrefsService,
@@ -267,27 +274,14 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
 
   /** ---------------------------------------- methods and subs --------------------------------------- */
   private renderDonut(data?: SzRecordCountDataSource[]) {
-
     console.log(`render donut: `, data);
-
-    /** sub-routine for getting fill color */
-    /*let getD3ColorByDataSource = (d) => {
-      let retVal;
-      let dataSourceCode = d.data ? d.data.dataSourceCode : undefined;
-      //console.log(`getColorByDataSource()`, dataSourceCode);
-      let colorVal = this.getColorByDataSourceCode(dataSourceCode);
-      if(colorVal) {
-        // wrap value in css hsl value
-        retVal = colorVal;
-        //retVal = 'hsl('+ colorVal +', 100%, 50%, 56%)';
-      }
-      if(dataSourceCode === 'BIG-COMPANY') {
-        console.warn(`D3 color for "BIG-COMPANY" is ${colorVal}`, this._colorPalette, this._colors);
-      }
-      return retVal;
-    }*/
-
+    let removedItems = (this._limitToNumber > 0) ? data.splice(this._limitToNumber): [];
+    if(this._limitToNumber > 0) {
+      // show total unlisted as single item
+      removedItems = data.splice(this._limitToNumber);
+    }
     const dataAndUnloaded = data.slice(0);
+
     if (this._totalPendingRecordCount > 0) {
       /*const unloadedSummary = new SourceSummary();
       unloadedSummary.dataSource = 'Pending Load';
@@ -384,8 +378,6 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
   }
 
   private getDataSourceRecordCounts(): Observable<SzRecordCountDataSource[]> {
-    //let retObsSub = new BehaviorSubject<SzRecordCountDataSource[]>(undefined);
-    //let retVal    = retObsSub.asObservable();
     return this.dataMartService.getCountStatistics().pipe(
       map((response)=> {
         console.info(`SzRecordStatsDonutChart.getDataSources(): response: `, response);
@@ -405,12 +397,6 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
         return this.dataSourceCounts;
       })
     );
-    //.subscribe((response)=>{
-      
-      //retObsSub.next(this.dataSourceCounts);
-    //});
-    // retrieve the stub data
-    //return retVal;
   }
   private getDataSources(): Observable<SzDataSourcesResponseData> {
     return this.dataSourcesService.listDataSourcesDetails();
@@ -423,36 +409,10 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     }
     return dsCode
   }
+
   public onDataSourceDetailClick(dsCode: string) {
     // emit event that can be listed for
   }
-  /*
-  private getColorssss() {
-    if (this.totalPendingRecordCount > 0) {
-      const loadedSourceColors = this.colorPalette.slice(0, this._dataSourceCounts.length);
-      loadedSourceColors.push(this.colorPendingLoad);
-      return loadedSourceColors;
-    } else {
-      return this.colorPalette;
-    }
-  }*/
-
-  /*getLastColorIndex() {
-    return this._colorPalette.length;
-  }
-  getColorAtIndex(index: number) {
-    let retVal = "green";
-    if(this._colorPalette && this._colorPalette[index]) {
-      retVal = this._colorPalette[index];
-      //retVal = 'hsl('+ this._colorPalette[index] +', 100%, 50%, 56%)';
-    }
-    return retVal;
-    //return 'hsl('+ this.getHslColorAtIndex(index) +', 100%, 50%)';
-    //return this._colorPalette && this._colorPalette.length > index ? `'hsl(${ this._colorPalette[index] }, 100%, 50%)'` : "'green'";
-  }
-  getHslColorAtIndex(index: number) {
-    return this._colorPalette && this._colorPalette[index] ? this._colorPalette[index] : 0;
-  }*/
 
   sortBy(value: SzRecordCountDataSource[], by: 'alphadesc' | 'alphaasc' | 'countdesc' | 'countasc') {
     let retVal = value;
@@ -470,35 +430,18 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
           break;
         case 'countasc':
           retVal = retVal.sort((a,b)=>{
-            return a.recordCount < b.recordCount ? 1 : -1;
+            return a.recordCount < b.recordCount ? -1 : 1;
           });
           break;
         case 'countdesc':
           retVal = retVal.sort((a,b)=>{
-            return a.recordCount < b.recordCount ? -1 : 1;
+            return a.recordCount < b.recordCount ? 1 : -1;
           });
           break;
       }
     }
     return retVal;
   }
-
-  /*getColorByDataSourceCode(dataSourceCode: string) {
-    let retVal;
-    if(this._dataSourceCountsByCode.has(dataSourceCode)) {
-      // ds exists, get color code
-      let indexOfDS = this.sortBy(this._dataSourceCounts, this._orderBy).findIndex((ds) => ds.dataSourceCode === dataSourceCode);
-      let colorsMinusHidden = this.colorPalletteMinusHiddenDataSources;
-      if(colorsMinusHidden && colorsMinusHidden.length > 0 && colorsMinusHidden[indexOfDS]) {
-        //retVal = this._colorPalette[indexOfDS];
-        retVal = colorsMinusHidden[indexOfDS];
-      }
-      //console.log(`got fill color "${retVal}" for "${dataSourceCode}"`);
-    } else {
-      //console.warn(`"${dataSourceCode}"S not found in ds codes`);
-    }
-    return retVal;
-  }*/
 
   extendData(data: SzStatCountsForDataSources) {
     if(data) {
@@ -511,28 +454,24 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     const initialColor  = 1;
     const increment     = 360 / numOfColors;
     const colors        = [];
+        
     for (let i = 0; i < numOfColors; i++) {
       let _colorNum   = Math.round((initialColor + (i * increment)) % 360);
       let _colorStyle = (this._colors && this._colors.length >= i && this._colors[i]) ? this._colors[i] : 'hsl('+ _colorNum +', 100%, 50%, 56%)';
       colors.push(_colorStyle);
     }
-    data = data.map((ds, ind)=>{
-      ds.color = ds.color ? ds.color : colors[ind];
-      return ds;
-    })
+    // we want the colors to respect the sort order
+    if(this._orderBy) {
+      let sortedData    = this.sortBy(data, this._orderBy);
+      sortedData.forEach((sdata, ind) => {
+        sdata.color = sdata.color ? sdata.color : colors[ind];
+      });
+    } else {
+      data = data.map((ds, ind)=>{
+        ds.color = ds.color ? ds.color : colors[ind];
+        return ds;
+      });
+    }
     return data
   }
-
-  /*autoGenerateColorPallete(num: number) {
-    //const initialColor = Math.floor(Math.random() * 360);
-    const initialColor = 1;
-    const increment = 360 / num;
-    const hsls = [];
-    for (let i = 0; i < num; i++) {
-      let _colorNum   = Math.round((initialColor + (i * increment)) % 360);
-      let _colorStyle = (this._colors && this._colors.length >= i && this._colors[i]) ? this._colors[i] : 'hsl('+ _colorNum +', 100%, 50%, 56%)';
-      hsls.push(_colorStyle);
-    }
-    return hsls;
-  }*/
 }
