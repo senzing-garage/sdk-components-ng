@@ -20,7 +20,7 @@
                     [matTooltip]="getDataSourceName(dsCount.dataSourceCode)"
                     matTooltipPosition="below">
                 <span class="legend__color-dot item-{{i + 1}}" 
-                [style.backgroundColor]="getColorAtIndex(i)"
+                [style.backgroundColor]="dsCount.color"
                 ></span>
                 <span class="legend__count">{{
                 dsCount.recordCount < 1000
@@ -34,7 +34,7 @@
             </li>
             <li class="legend-items" *ngIf="totalUnnamedRecordCount > 0">
             <div>
-                <span class="{{'legend__color-dot item-' + getLastColorIndex()}}" [style.backgroundColor]="unnamedRecordsColor"></span>
+                <span class="legend__color-dot" [style.backgroundColor]="unnamedRecordsColor"></span>
                 <span class="legend__count">{{
                 totalUnnamedRecordCount < 1000? totalUnnamedRecordCount: (totalUnnamedRecordCount | SzShortNumber : '0.0a')
                 }}</span>
