@@ -8,7 +8,7 @@ import { SzRelationshipNetworkComponent } from '@senzing/sdk-components-ng';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styles: []
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = 'graph';

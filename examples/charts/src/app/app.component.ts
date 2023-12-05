@@ -5,7 +5,7 @@ import { Subscription} from 'rxjs';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styles: []
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   sub: Subscription;

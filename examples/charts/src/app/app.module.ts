@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { SenzingSdkModule, SzRestConfiguration  } from '@senzing/sdk-components-ng';
 import { AppComponent } from './app.component';
+import { SzExamplesHeader } from '../common/header.component';
 
 /**
 * Pull in api configuration(SzRestConfigurationParameters)
@@ -27,7 +28,8 @@ export function SzRestConfigurationFactory() {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SzExamplesHeader
   ],
   imports: [
     BrowserModule,

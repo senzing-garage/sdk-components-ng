@@ -79,7 +79,8 @@ export { SzGraphTooltipEntityModel, SzGraphTooltipLinkModel, SzGraphNodeFilterPa
 export { SzDataSourceRecordsSelection, SzDataSourceRecordSelection, SzWhySelectionModeBehavior, SzWhySelectionMode } from './lib/models/data-source-record-selection';
 export * from './lib/models/data-how';
 /** pipes */
-export { SzShortNumberPipe } from './lib/pipes/numeral-pipe'
+export { SzShortNumberPipe } from './lib/pipes/shortnumber.pipe'
+export { SzDecimalPercentPipe } from './lib/pipes/decimalpercent.pipe'
 
 /** why */
 export { SzWhyEntityComponent } from './lib/why/sz-why-entity.component';

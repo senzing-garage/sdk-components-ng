@@ -1,0 +1,9 @@
+sz-record-counts-donut {
+    .donut-chart {
+        .arc path {
+            stroke: var(--sz-donut-chart-graph-arc-stroke);
+            stroke-width: var(--sz-donut-chart-graph-arc-stroke-width);
+            stroke-opacity: var(--sz-donut-chart-graph-arc-stroke-opacity);
+        }
+    }
+}

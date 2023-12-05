@@ -53,19 +53,19 @@
         </ul>
         <ul class="legend legend__percentages">
             <li class="legend-items" *ngFor="let summary of dataSourceCounts; let i = index">
-            <span>{{
-                (summary.recordCount) | percent:'1.0-0'
-            }}</span>
+                <span>{{
+                    (summary.recordCount/this.totalRecordCount) | SzDecimalPercent: 1 
+                }}</span>
             </li>
             <li class="legend-items" *ngIf="totalUnnamedRecordCount > 0">
-            <span>{{
-                (totalUnnamedRecordCount/this.totalRecordCount) | percent:'1.0-0'
-            }}</span>
+                <span>{{
+                    (totalUnnamedRecordCount/this.totalRecordCount) | SzDecimalPercent: 1
+                }}||{{(totalUnnamedRecordCount/this.totalRecordCount)}}</span>
             </li>
             <li class="legend-items" *ngIf="totalPendingRecordCount > 0">
-            <span>{{
-                (totalPendingRecordCount/this.totalRecordCount) | percent:'1.0-0'
-            }}</span>
+                <span>{{
+                    (totalPendingRecordCount/this.totalRecordCount) | SzDecimalPercent: 1
+                }}</span>
             </li>
         </ul>
     </div>

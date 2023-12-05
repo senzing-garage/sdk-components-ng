@@ -262,6 +262,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$)
     ).subscribe({
       next: (data) => {
+        console.log('counted totals', this.getTotalsFromCounts(data));
         this.initDonut()
         this.renderDonut(data);
       },
@@ -302,7 +303,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
         .attr('d', this.arc)
         .style('fill', (d) => d.data.color );
 
-    g.each(function (d, i) {
+    /*g.each(function (d, i) {
       const ele = d3.select(this);
       // light blue gets a lighter stroke(looks weird dark)
       const sAlpha = i === 0 ? '0.8' : '0.3';
@@ -310,7 +311,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       ele.style('stroke', '#000')
       .style('stroke-width', '1px')
       .style('stroke-opacity', sAlpha);
-    });
+    })*/;
   }
 
   private initDonut() {
@@ -447,6 +448,26 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     if(data) {
       this.addColorsToData(data.dataSourceCounts);
     }
+  }
+
+  getTotalsFromCounts(data: SzRecordCountDataSource[]): { totalEntityCount: number, totalRecordCount: number, totalUnmatchedRecordCount: number} 
+  {
+    let retVal = 0;
+    let recordTotals    = 0;
+    let entityTotals    = 0;
+    let unmatchedTotals = 0;
+    if(data && data.forEach) {
+      data.forEach((element) => {
+        recordTotals    = recordTotals + element.recordCount;
+        entityTotals    = entityTotals + element.entityCount;
+        unmatchedTotals = unmatchedTotals + element.unmatchedRecordCount;
+      });
+    }
+    return {
+      totalEntityCount: entityTotals,
+      totalRecordCount: recordTotals,
+      totalUnmatchedRecordCount: unmatchedTotals
+    };
   }
 
   addColorsToData(data: SzRecordCountDataSource[]) {

@@ -189,4 +189,8 @@ body {
   --sz-entity-graph-control-item-margin: 0;
   /* how related */
   --sz-how-step-card-base-z-index: 500;
+
+  /* charts */
+    /* record stats donut */
+    --sz-donut-chart-graph-align-items: center;
 }
