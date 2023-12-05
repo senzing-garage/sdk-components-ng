@@ -16,7 +16,7 @@
         <ul class="legend from-data-source">
             <li class="legend-items" *ngFor="let dsCount of dataSourceCounts; let i = index" >
             <button class="from-data-source"
-                    (click)="onDataSourceDetailClick(dsCount.dataSourceCode)"
+                    (click)="onDataSourceDetailClick(dsCount)"
                     [matTooltip]="getDataSourceName(dsCount.dataSourceCode)"
                     matTooltipPosition="below">
                 <span class="legend__color-dot item-{{i + 1}}" 
@@ -32,18 +32,18 @@
                 }}</span>
             </button>
             </li>
-            <li class="legend-items" *ngIf="totalUnnamedRecordCount > 0">
+            <li class="legend-items" *ngIf="totalUnmatchedRecordCount > 0">
             <div>
-                <span class="legend__color-dot" [style.backgroundColor]="unnamedRecordsColor"></span>
+                <span class="legend__color-dot item-unmatched" [style.backgroundColor]="unnamedRecordsColor"></span>
                 <span class="legend__count">{{
-                totalUnnamedRecordCount < 1000? totalUnnamedRecordCount: (totalUnnamedRecordCount | SzShortNumber : '0.0a')
+                totalUnmatchedRecordCount < 1000? totalUnmatchedRecordCount: (totalUnmatchedRecordCount | SzShortNumber : '0.0a')
                 }}</span>
-                <span class="legend__subtitle">Other Sources</span>
+                <span class="legend__subtitle">Unmatched Records</span>
             </div>
             </li>
             <li class="legend-items" *ngIf="totalPendingRecordCount > 0">
             <div>
-                <span class="legend__color-dot item-Pending" [style.backgroundColor]="pendingLoadColor"></span>
+                <span class="legend__color-dot item-pending" [style.backgroundColor]="pendingLoadColor"></span>
                 <span class="legend__count">{{
                 totalPendingRecordCount < 1000? totalPendingRecordCount: (totalPendingRecordCount | SzShortNumber : '0.0a')
                 }}</span>
@@ -57,10 +57,10 @@
                     (summary.recordCount/this.totalRecordCount) | SzDecimalPercent: 1 
                 }}</span>
             </li>
-            <li class="legend-items" *ngIf="totalUnnamedRecordCount > 0">
+            <li class="legend-items" *ngIf="totalUnmatchedRecordCount > 0">
                 <span>{{
-                    (totalUnnamedRecordCount/this.totalRecordCount) | SzDecimalPercent: 1
-                }}||{{(totalUnnamedRecordCount/this.totalRecordCount)}}</span>
+                    (totalUnmatchedRecordCount/this.totalRecordCount) | SzDecimalPercent: 1
+                }}</span>
             </li>
             <li class="legend-items" *ngIf="totalPendingRecordCount > 0">
                 <span>{{

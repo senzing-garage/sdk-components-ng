@@ -47,7 +47,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
   private _dataSources: SzDataSourcesResponseData;
   private _totalRecordCount: number;
   private _totalEntityCount: number;
-  private _totalUnnamedRecordCount: number;
+  private _totalUnmatchedRecordCount: number;
   private _totalPendingRecordCount: number;
   private _unlistedDataSources: string[];
   private _limitToNumber: number;
@@ -102,6 +102,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
   private donutRadius: number;
   private arc: any;
   private pie: any;
+  private _tooltip: d3.Selection<d3.BaseType, unknown, HTMLElement, any>;
 
   /** event emitters */
   /**
@@ -124,7 +125,12 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
    */
   @Output('dataChanged')
   dataChanged: Subject<SzRecordCountDataSource[]> = new Subject<SzRecordCountDataSource[]>();
-  
+  /**
+   * emitted when the user clicks a datasource arc node.
+   * @returns object with various datasource and ui properties.
+   */
+  @Output() dataSourceClick: EventEmitter<SzRecordCountDataSource> = new EventEmitter<SzRecordCountDataSource>();
+
   /** -------------------------------------- getters and setters -------------------------------------- */
 
   get totalEntityCount(): number {
@@ -133,8 +139,8 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
   get totalRecordCount(): number {
     return this._totalRecordCount;
   }
-  get totalUnnamedRecordCount(): number {
-    return this._totalUnnamedRecordCount;
+  get totalUnmatchedRecordCount(): number {
+    return this._totalUnmatchedRecordCount;
   }
   get totalPendingRecordCount(): number {
     return this._totalPendingRecordCount;
@@ -269,7 +275,13 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       error: (err) => {
         this.exception.next(err);
       }
-    }); 
+    });
+    // listend for datasource clicks
+    this.dataSourceClick.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((d)=>{
+      console.log('data source clicked', d);
+    })
     
   }
 
@@ -281,13 +293,24 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       // show total unlisted as single item
       removedItems = data.splice(this._limitToNumber);
     }
-    const dataAndUnloaded = data.slice(0);
-
+    const dataSourcesToDisplay = data.slice(0);
+    // unmatched/singletons
+    if (this._totalUnmatchedRecordCount) {
+      const unMatchedSummary: SzRecordCountDataSource = {
+        dataSourceCode: 'Unmatched',
+        entityCount: 0,
+        recordCount: this._totalUnmatchedRecordCount
+      }
+      dataSourcesToDisplay.push(unMatchedSummary);
+    }
+    // pending load
     if (this._totalPendingRecordCount > 0) {
-      /*const unloadedSummary = new SourceSummary();
-      unloadedSummary.dataSource = 'Pending Load';
-      unloadedSummary.recordCount = this.pendingRecordCount;
-      dataAndUnloaded.push(unloadedSummary);*/
+      const unMatchedSummary: SzRecordCountDataSource = {
+        dataSourceCode: 'Pending Load',
+        entityCount: 0,
+        recordCount: this._totalPendingRecordCount
+      }
+      dataSourcesToDisplay.push(unMatchedSummary);
     }
 
     if(!this.pie){
@@ -295,23 +318,53 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       return;
     }
 
+    let attachEventListenersToNodes   = (_nodes, _tooltip, _scope?: any) => {
+      _scope  = _scope ? _scope : this;
+      // Make the tooltip visible when mousing over nodes. 
+      if(_nodes && _nodes.on) {
+        _nodes.on('mouseover.tooltip', function (event, d, j) {
+          _tooltip.transition()
+            .duration(300)
+            .style("opacity", 1)
+          _tooltip.html(SzRecordStatsDonutChart.arcTooltipText(d))
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY + 10) + "px");
+        })
+        .on("mouseout.tooltip", function (event, d) {
+          _tooltip.transition()
+            .duration(100)
+            .style("opacity", 0);
+        })
+        .on('click', this.onArcClick.bind(_scope))
+      }
+    }
+    let detachEventListeners  = (_nodes) => {
+      if(_nodes && _nodes.on) {
+        _nodes.on('mouseover.tooltip', null)
+        .on("mouseout.tooltip", null)
+        .on('click', null)
+      }
+    }
+
     const g = this.donutSvg.selectAll('.arc')
-      .data(this.pie(dataAndUnloaded))
+      .data(this.pie(dataSourcesToDisplay))
       .enter().append('g')
-        .attr('class', 'arc')
-      .append('path')
+        .attr('class', 'arc');
+    let arcPaths = g.append('path')
         .attr('d', this.arc)
+        .attr('class', (d) => { 
+          if(d.data.dataSourceCode === 'unmatched'){
+            return 'item-unmatched';
+          }
+          if(d.data.dataSourceCode === 'pending load'){
+            return 'item-pending';
+          }
+          return 'item-'+ (d.data && d.data.dataSourceCode && d.data.dataSourceCode.toLowerCase ? d.data.dataSourceCode.toLowerCase() : 'unknown');
+        })
         .style('fill', (d) => d.data.color );
 
-    /*g.each(function (d, i) {
-      const ele = d3.select(this);
-      // light blue gets a lighter stroke(looks weird dark)
-      const sAlpha = i === 0 ? '0.8' : '0.3';
-
-      ele.style('stroke', '#000')
-      .style('stroke-width', '1px')
-      .style('stroke-opacity', sAlpha);
-    })*/;
+    // attach event listeners to arc elements
+    attachEventListenersToNodes(arcPaths, this._tooltip, this);
   }
 
   private initDonut() {
@@ -365,6 +418,12 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       .outerRadius(this.donutRadius - 10)
       .innerRadius(this.donutRadius - 40);
 
+    // Make the tooltip visible when mousing over nodes.
+    this._tooltip = d3.select("body")
+    .append("div")
+    .attr("class", "sz-donut-chart-tooltip")
+    .style("opacity", 0);
+
     this.pie = d3Shape.pie()
       .padAngle(.015)
       .value((d: any) => d.recordCount);
@@ -376,6 +435,25 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
         .attr('transform', 'translate(' + this.donutWidth / 2 + ',' + this.donutHeight / 2 + ')')
         .attr("filter", "url(#dropshadow)");
     }
+  }
+
+  static arcTooltipText(d: any) {
+    let retVal = `<strong>${d.data.dataSourceCode}</strong>: ${d.data.recordCount} record`+(d.data.recordCount !== 1 ? 's':''); ;
+    return retVal;
+  }
+
+  /**
+   * handler for when a arc node is clicked.
+   * proxies to synthetic event "dataSourceClick"
+   * @param event
+   */
+  onArcClick(ptrEvent: PointerEvent, evtData: any) {
+    if(evtData && ptrEvent.pageX && ptrEvent.pageY) {
+      evtData.eventPageX = (ptrEvent.pageX);
+      evtData.eventPageY = (ptrEvent.pageY);
+    }
+    console.log('Arc clicked for datasource: ', evtData);
+    this.dataSourceClick.emit(evtData.data as SzRecordCountDataSource);
   }
 
   private getDataSourceRecordCounts(): Observable<SzRecordCountDataSource[]> {
@@ -390,6 +468,9 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
           }
           if(response.data.totalRecordCount) {
             this._totalRecordCount = response.data.totalRecordCount;
+          }
+          if(response.data.totalUnmatchedRecordCount) {
+            this._totalUnmatchedRecordCount = response.data.totalUnmatchedRecordCount
           }
           if(response.data.dataSourceCounts && response.data.dataSourceCounts.length > 0){
             this.dataSourceCounts = response.data.dataSourceCounts;
@@ -411,8 +492,9 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     return dsCode
   }
 
-  public onDataSourceDetailClick(dsCode: string) {
+  public onDataSourceDetailClick(data: SzRecordCountDataSource) {
     // emit event that can be listed for
+    this.dataSourceClick.emit(data);
   }
 
   sortBy(value: SzRecordCountDataSource[], by: 'alphadesc' | 'alphaasc' | 'countdesc' | 'countasc') {
