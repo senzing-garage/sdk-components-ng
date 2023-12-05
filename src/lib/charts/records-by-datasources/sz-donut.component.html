@@ -34,7 +34,7 @@
             </li>
             <li class="legend-items" *ngIf="totalUnmatchedRecordCount > 0">
             <div>
-                <span class="legend__color-dot item-unmatched" [style.backgroundColor]="unnamedRecordsColor"></span>
+                <span class="legend__color-dot item-unmatched"></span>
                 <span class="legend__count">{{
                 totalUnmatchedRecordCount < 1000? totalUnmatchedRecordCount: (totalUnmatchedRecordCount | SzShortNumber : '0.0a')
                 }}</span>
@@ -43,7 +43,7 @@
             </li>
             <li class="legend-items" *ngIf="totalPendingRecordCount > 0">
             <div>
-                <span class="legend__color-dot item-pending" [style.backgroundColor]="pendingLoadColor"></span>
+                <span class="legend__color-dot item-pending"></span>
                 <span class="legend__count">{{
                 totalPendingRecordCount < 1000? totalPendingRecordCount: (totalPendingRecordCount | SzShortNumber : '0.0a')
                 }}</span>
