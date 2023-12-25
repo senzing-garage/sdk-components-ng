@@ -1,10 +1,10 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Observable, of, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject, throwError } from 'rxjs';
 
 import {
     ConfigService as SzConfigService, SzConfigResponse,
     StatisticsService as SzStatisticsService,
-    SzCountStatsResponse
+    SzCountStats
 } from '@senzing/rest-api-client-ng';
 
 import { take, tap, map } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import { SzCountStatsForDataSourcesResponse } from '../models/stats';
 
 // use mock data
-import * as recordStatsStubData from '../../stubs/record-counts/by-datasource/1.json';
+import * as recordStatsStubData from '../../stubs/statistics/loaded/1.json';
 
 
 /**
@@ -27,14 +27,21 @@ import * as recordStatsStubData from '../../stubs/record-counts/by-datasource/1.
 export class SzDataMartService {
     private _recordStatsStubData = recordStatsStubData;
 
-    constructor(private http: HttpClient, private statsService: SzStatisticsService) {
-    }
+    public onCountStats: Subject<SzCountStats | undefined> = new BehaviorSubject<SzCountStats>(undefined);
+    
+    constructor(private http: HttpClient, private statsService: SzStatisticsService) {}
 
     public getCountStatistics(): Observable<SzCountStatsForDataSourcesResponse> {
         //return this.statsService.getCountStatistics();
         let retVal = new Observable<SzCountStatsForDataSourcesResponse>();
         // for now just return stub data
-        return of(this._recordStatsStubData as unknown as SzCountStatsForDataSourcesResponse);
+        return of(this._recordStatsStubData as unknown as SzCountStatsForDataSourcesResponse).pipe(
+            tap((response) => {
+                if(response && response.data) {
+                    this.onCountStats.next(response.data);
+                }
+            })
+        )
     }
 
     /*public getRecordCounts(): Observable<any> {

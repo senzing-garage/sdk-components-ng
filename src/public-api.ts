@@ -64,6 +64,7 @@ export { SzRecordStatsDonutChart } from './lib/charts/records-by-datasources/sz-
 export * from './lib/sz-powered-by/sz-powered-by.component';
 export * from './lib/configuration/sz-configuration/sz-configuration.component';
 export * from './lib/configuration/sz-configuration-about/sz-configuration-about.component';
+export { SzLicenseInfoComponent } from './lib/configuration/license/sz-license.component';
 export { SzPreferencesComponent } from './lib/configuration/sz-preferences/sz-preferences.component';
 
 /** models */

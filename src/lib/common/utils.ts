@@ -17,7 +17,7 @@ export function JSONScrubber(value: any): any {
     return JSON.parse(JSON.stringify(value, _repl));
   }
 }
-
+/** convert value of any type who's value can be converted to boolean */
 export function parseBool(value: any): boolean {
   if (!value || value === undefined) {
     return false;
@@ -26,7 +26,7 @@ export function parseBool(value: any): boolean {
   } else if (value > 0) { return true; }
   return false;
 };
-
+/** convert value of any type who's value can be converted to number */
 export function parseNumber(value: any) {
   if (!value || value === undefined) {
     return -1; // not a number
@@ -37,7 +37,25 @@ export function parseNumber(value: any) {
   }
   return value as number;
 }
-
+/** convert value of any type who's value can be converted to Date object */
+export function parseDate(value: any) {
+  if (!value || value === undefined) {
+    return undefined;
+  } else if(value && value.getTime) {
+    // is already valid date object
+    return value;
+  } else if(value && !value.getTime) {
+    // not a date object
+    // check to see if it can be parsed
+    if(Date && !isNaN( Date.parse(value))) {
+      // valid date, cast to object
+      return new Date(value);
+    }
+    // not parseable datetime
+    return undefined
+  } 
+}
+/** convert value of any type who's value can be converted to SzIdentifier */
 export function parseSzIdentifier(value: any): number {
   let retVal = 0;
   if (value && value !== undefined) {
@@ -49,7 +67,6 @@ export function parseSzIdentifier(value: any): number {
   }
   return retVal;
 }
-
 /** check whether a value is boolean */
 export function isBoolean(value: any) {
   let retVal = false;
@@ -60,12 +77,12 @@ export function isBoolean(value: any) {
   }
   return retVal;
 }
-
+/** trim empty values */
 export function nonTextTrim(value: string): string {
   let retVal = value;
   return retVal;
 }
-
+/** is a value null */
 export function isNotNull(value?: string | any) {
   let retVal = false;
   if((value as string) && (value as string) !== undefined) {
@@ -182,7 +199,7 @@ export function sortMatchKeyTokensByIndex(value: SzMatchKeyTokenComposite[]): Sz
   }
   return retVal;
 }
-
+/** is value a type of array object */
 export function isValueTypeOfArray(value: any) {
   let retVal = false;
   if(value) {

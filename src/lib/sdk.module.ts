@@ -30,14 +30,17 @@ import { SzConfigDataService } from './services/sz-config-data.service';
 /** pipes */
 import { SzShortNumberPipe } from './pipes/shortnumber.pipe'
 import { SzDecimalPercentPipe } from './pipes/decimalpercent.pipe';
-
 /** charts */
 import { SzRecordStatsDonutChart } from './charts/records-by-datasources/sz-donut.component'
-
 /** components */
-import { SzMultiSelectButtonComponent } from './shared/multi-select-button/multi-select-button.component';
 import { SzAlertMessageDialog } from './shared/alert-dialog/sz-alert-dialog.component';
-
+import { SzConfigurationAboutComponent } from './configuration/sz-configuration-about/sz-configuration-about.component';
+import { SzConfigurationComponent } from './configuration/sz-configuration/sz-configuration.component';
+import { SzLicenseInfoComponent } from './configuration/license/sz-license.component';
+import { SzMultiSelectButtonComponent } from './shared/multi-select-button/multi-select-button.component';
+import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
+import { SzPreferencesComponent } from './configuration/sz-preferences/sz-preferences.component';
+import { SzPrefDictComponent } from './configuration/sz-preferences/sz-pref-dict/sz-pref-dict.component';
 /** entity resume related */
 import { SzEntityDetailComponent } from './entity/detail/sz-entity-detail.component';
 import { SzEntityDetailHeaderComponent } from './entity/detail/sz-entity-detail-header/header.component';
@@ -52,7 +55,6 @@ import { SzEntityMatchPillComponent } from './entity/sz-entity-match-pill/sz-ent
 import { SzEntityRecordCardComponent } from './entity/sz-entity-record-card/sz-entity-record-card.component';
 import { SzEntityRecordCardHeaderComponent } from './entity/sz-entity-record-card/sz-entity-record-card-header/sz-entity-record-card-header.component';
 import { SzEntityRecordCardContentComponent } from './entity/sz-entity-record-card/sz-entity-record-card-content/sz-entity-record-card-content.component';
-
 // graph components
 import { SzRelationshipNetworkComponent } from './graph/sz-relationship-network/sz-relationship-network.component';
 import { SzRelationshipNetworkInputComponent } from './graph/sz-relationship-network-input/sz-relationship-network-input.component';
@@ -73,11 +75,6 @@ import { SzSearchResultsComponent } from './search/sz-search-results/sz-search-r
 import { SzSearchResultCardComponent } from './search/sz-search-result-card/sz-search-result-card.component';
 import { SzSearchResultCardContentComponent } from './search/sz-search-result-card/sz-search-result-card-content/sz-search-result-card-content.component';
 import { SzSearchResultCardHeaderComponent } from './search/sz-search-result-card/sz-search-result-card-header/sz-search-result-card-header.component';
-import { SzConfigurationAboutComponent } from './configuration/sz-configuration-about/sz-configuration-about.component';
-import { SzConfigurationComponent } from './configuration/sz-configuration/sz-configuration.component';
-import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
-import { SzPreferencesComponent } from './configuration/sz-preferences/sz-preferences.component';
-import { SzPrefDictComponent } from './configuration/sz-preferences/sz-pref-dict/sz-pref-dict.component';
 // why related
 import { SzWhyEntityComponent } from './why/sz-why-entity.component';
 import { SzWhyEntitiesComparisonComponent } from './why/sz-why-entities.component';
@@ -154,6 +151,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowStepStackComponent,
         SzHowVirtualEntityCardComponent,
         SzHowVirtualEntityDialog,
+        SzLicenseInfoComponent,
         SzMultiSelectButtonComponent,
         SzPoweredByComponent,
         SzPreferencesComponent,
@@ -210,6 +208,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowStepStackComponent,
         SzHowVirtualEntityCardComponent,
         SzHowVirtualEntityDialog,
+        SzLicenseInfoComponent,
         SzPoweredByComponent,
         SzPreferencesComponent,
         SzRecordStatsDonutChart,

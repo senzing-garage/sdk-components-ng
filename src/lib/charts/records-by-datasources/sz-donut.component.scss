@@ -41,7 +41,7 @@ button[mat-menu-item].selected-to-data-source:hover {
 
 :host {
   display: flex;
-  flex-grow: 10;
+  /*flex-grow: 10;*/
   justify-content: flex-start;
   flex-flow: row;
   align-content: stretch;

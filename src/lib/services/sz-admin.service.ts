@@ -13,6 +13,7 @@ import {
   BulkDataService, SzBulkDataAnalysisResponse,
   SzServerInfo, SzServerInfoResponse, SzDataSourcesResponseData } from '@senzing/rest-api-client-ng';
 import { map, tap } from 'rxjs/operators';
+import { parseDate } from '../common/utils';
 
 /**
  * Service to provide methods and properties from the
@@ -101,7 +102,15 @@ export class SzAdminService {
   public getLicenseInfo(): Observable<SzLicenseInfo> {
     return this.adminService.license()
     .pipe(
-      map( (resp: SzLicenseResponse) => resp.data.license ),
+      map( (resp: SzLicenseResponse) => {
+        // cast Date strings to actual Date Object(s) if available
+        let retVal = resp.data.license;
+        let expiryDate    = parseDate(retVal.expirationDate);
+        let issuanceDate  = parseDate(retVal.issuanceDate);
+        if(expiryDate) { retVal.expirationDate = expiryDate}
+        if(issuanceDate) { retVal.issuanceDate = issuanceDate}
+        return retVal;
+      }),
       tap( (licInfo: SzLicenseInfo ) => { this.licenseInfo = licInfo; })
     );
   }
