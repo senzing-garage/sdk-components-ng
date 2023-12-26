@@ -36,7 +36,7 @@ import { SzRecordStatsDonutChart } from './charts/records-by-datasources/sz-donu
 import { SzAlertMessageDialog } from './shared/alert-dialog/sz-alert-dialog.component';
 import { SzConfigurationAboutComponent } from './configuration/sz-configuration-about/sz-configuration-about.component';
 import { SzConfigurationComponent } from './configuration/sz-configuration/sz-configuration.component';
-import { SzLicenseInfoComponent } from './configuration/license/sz-license.component';
+import { SzLicenseInfoComponent } from './configuration/sz-license/sz-license.component';
 import { SzMultiSelectButtonComponent } from './shared/multi-select-button/multi-select-button.component';
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
 import { SzPreferencesComponent } from './configuration/sz-preferences/sz-preferences.component';
