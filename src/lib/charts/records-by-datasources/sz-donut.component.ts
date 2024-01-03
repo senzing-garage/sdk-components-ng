@@ -141,7 +141,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     return this._totalPendingRecordCount;
   }
   get totalDataSources(): number {
-    let retVal = (this._dataSourceCountsByCode.size) ? this._dataSourceCountsByCode.size : 0;
+    let retVal = (this._dataSourceCountsByCode && this._dataSourceCountsByCode.size) ? this._dataSourceCountsByCode.size : 0;
     return retVal;
   }
   /*
@@ -172,7 +172,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
 
   get dataSourceCounts(): SzRecordCountDataSource[] {
     let retVal = this._dataSourceCounts;
-    if(this._unlistedDataSources && this._unlistedDataSources.length > 0) {
+    if(this._unlistedDataSources && this._unlistedDataSources.length > 0 && this._dataSourceCounts) {
       // hand back datasource counts minus the unlisted items
       retVal = this._dataSourceCounts.filter((ds) => {
         return this._unlistedDataSources.indexOf(ds.dataSourceCode) === -1;
@@ -230,7 +230,6 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$)
     ).subscribe({
       next: (recordCounts: SzRecordCountDataSource[])=>{
-        console.log(`got counts: `, recordCounts);
         if(this._dataSourceCounts && this._dataSources) {
           this.dataChanged.next(this._dataSourceCounts);
         }
