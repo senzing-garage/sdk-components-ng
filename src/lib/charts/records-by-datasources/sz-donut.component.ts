@@ -473,7 +473,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       return dsCode
     }
     private getDataSourceRecordCounts(): Observable<SzRecordCountDataSource[]> {
-      return this.dataMartService.getCountStatistics().pipe(
+      return this.dataMartService.getLoadedStatistics().pipe(
         map((response)=> {
           console.info(`SzRecordStatsDonutChart.getDataSources(): response: `, response);
           if(response && response.data) {

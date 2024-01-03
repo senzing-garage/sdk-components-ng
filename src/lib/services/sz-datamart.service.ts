@@ -12,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import { SzCountStatsForDataSourcesResponse } from '../models/stats';
 
 // use mock data
-import * as recordStatsStubData from '../../stubs/statistics/loaded/1.json';
+//import * as recordStatsStubData from '../../stubs/statistics/loaded/1.json';
 
 
 /**
@@ -25,14 +25,15 @@ import * as recordStatsStubData from '../../stubs/statistics/loaded/1.json';
   providedIn: 'root'
 })
 export class SzDataMartService {
-    private _recordStatsStubData = recordStatsStubData;
+    //private _recordStatsStubData = recordStatsStubData;
 
     public onCountStats: Subject<SzCountStats | undefined> = new BehaviorSubject<SzCountStats>(undefined);
     
     constructor(private http: HttpClient, private statsService: SzStatisticsService) {}
 
-    public getCountStatistics(): Observable<SzCountStatsForDataSourcesResponse> {
-        //return this.statsService.getCountStatistics();
+    public getLoadedStatistics(): Observable<SzCountStatsForDataSourcesResponse> {
+        return this.statsService.getLoadedStatistics();
+        /*
         let retVal = new Observable<SzCountStatsForDataSourcesResponse>();
         // for now just return stub data
         return of(this._recordStatsStubData as unknown as SzCountStatsForDataSourcesResponse).pipe(
@@ -41,7 +42,7 @@ export class SzDataMartService {
                     this.onCountStats.next(response.data);
                 }
             })
-        )
+        )*/
     }
 
     /*public getRecordCounts(): Observable<any> {

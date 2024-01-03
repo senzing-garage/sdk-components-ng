@@ -2,7 +2,26 @@
   .graph-context-menu {
     border: 1px solid #686868;
   }
-  sz-record-counts-donut {
-    height: 200px;
-  }
   
+  :host {
+    display: block;
+    width: 1200px;
+
+    sz-record-counts-donut {
+      height: 200px;
+    }
+    sz-license {
+      margin-left: 20px;
+      width: 98%;
+
+      padding: 0 20px 20px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .cols {
+    display: flex;;
+    flex-direction: row;
+    
+  }
