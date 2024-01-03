@@ -160,7 +160,9 @@ export class SzLicenseInfoComponent implements OnInit {
   ngOnInit() {
     this.dmService.onCountStats.pipe(filter( (val) => val !== undefined)).subscribe( (resp: SzCountStats) => {
       this._countStats = resp;
-      if(this._countStats.totalRecordCount) this._recordCount = this._countStats.totalRecordCount;
+      if(this._countStats.totalRecordCount) {
+        this._recordCount = this._countStats.totalRecordCount;
+      }
     });
     this.adminService.onLicenseInfo.subscribe( (resp: SzLicenseInfo) => {
       this._licenseInfo = resp;

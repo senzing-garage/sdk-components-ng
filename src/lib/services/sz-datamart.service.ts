@@ -32,7 +32,13 @@ export class SzDataMartService {
     constructor(private http: HttpClient, private statsService: SzStatisticsService) {}
 
     public getLoadedStatistics(): Observable<SzCountStatsForDataSourcesResponse> {
-        return this.statsService.getLoadedStatistics();
+        return this.statsService.getLoadedStatistics().pipe(
+            tap((response) => {
+                if(response && response.data) {
+                    this.onCountStats.next(response.data);
+                }
+            })
+        )
         /*
         let retVal = new Observable<SzCountStatsForDataSourcesResponse>();
         // for now just return stub data
