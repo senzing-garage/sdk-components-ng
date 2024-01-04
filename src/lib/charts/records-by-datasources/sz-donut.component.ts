@@ -242,10 +242,15 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     this.getDataSources().pipe(
       takeUntil(this.unsubscribe$),
       take(1)
-    ).subscribe((dataSources: SzDataSourcesResponseData)=>{
-      this._dataSources = dataSources;
-      if(this._dataSourceCounts && this._dataSources) {
-        this.dataChanged.next(this._dataSourceCounts);
+    ).subscribe({
+      next: (dataSources: SzDataSourcesResponseData)=>{
+        this._dataSources = dataSources;
+        if(this._dataSourceCounts && this._dataSources) {
+          this.dataChanged.next(this._dataSourceCounts);
+        }
+      },
+      error: (err) => {
+        this.exception.next(err);
       }
     });
 
@@ -496,7 +501,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       );
     }
     private getDataSources(): Observable<SzDataSourcesResponseData> {
-      return this.dataSourcesService.listDataSourcesDetails();
+      return this.dataSourcesService.listDataSourcesDetails()
     }
     getTotalsFromCounts(data: SzRecordCountDataSource[]): { totalEntityCount: number, totalRecordCount: number, totalUnmatchedRecordCount: number} 
     {
