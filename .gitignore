@@ -40,6 +40,10 @@ testem.log
 /typings
 *.old
 
+# mock data
+/stubs
+/src/stubs
+
 # System Files
 .DS_Store
 Thumbs.db

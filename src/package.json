@@ -20,6 +20,6 @@
     "@angular/common": "^15.0.0",
     "@angular/core": "^15.0.0",
     "@angular/material": "^15.0.0",
-    "@senzing/rest-api-client-ng": "^6.0.0"
+    "@senzing/rest-api-client-ng": "^6.1.0"
   }
 }

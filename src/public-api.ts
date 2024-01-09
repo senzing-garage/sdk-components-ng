@@ -12,6 +12,7 @@ export * from './lib/entity/entity-utils';
 /** services */
 export * from './lib/services/sz-message-bundle.service';
 export * from './lib/services/sz-configuration.service';
+export * from './lib/services/sz-datamart.service';
 export { SzAdminService } from './lib/services/sz-admin.service';
 export { SzBulkDataService } from './lib/services/sz-bulk-data.service';
 
@@ -56,10 +57,14 @@ export { SzEntityDetailGraphComponent } from './lib/entity/detail/sz-entity-deta
 export { SzStandaloneGraphComponent } from './lib/entity/detail/sz-entity-detail-graph/sz-standalone-graph.component';
 export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-control.component';
 export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-filter.component';
+/* charts */
+export { SzRecordStatsDonutChart } from './lib/charts/records-by-datasources/sz-donut.component'
 
+/** components */
 export * from './lib/sz-powered-by/sz-powered-by.component';
 export * from './lib/configuration/sz-configuration/sz-configuration.component';
 export * from './lib/configuration/sz-configuration-about/sz-configuration-about.component';
+export { SzLicenseInfoComponent } from './lib/configuration/sz-license/sz-license.component';
 export { SzPreferencesComponent } from './lib/configuration/sz-preferences/sz-preferences.component';
 
 /** models */
@@ -74,6 +79,9 @@ export { SzDataSourceRecordAnalysis, SzDataSourceComposite } from './lib/models/
 export { SzGraphTooltipEntityModel, SzGraphTooltipLinkModel, SzGraphNodeFilterPair, SzMatchKeyComposite, SzMatchKeyTokenComposite, SzEntityNetworkMatchKeyTokens, SzNetworkGraphInputs, SzMatchKeyTokenFilterScope } from './lib/models/graph';
 export { SzDataSourceRecordsSelection, SzDataSourceRecordSelection, SzWhySelectionModeBehavior, SzWhySelectionMode } from './lib/models/data-source-record-selection';
 export * from './lib/models/data-how';
+/** pipes */
+export { SzShortNumberPipe } from './lib/pipes/shortnumber.pipe'
+export { SzDecimalPercentPipe } from './lib/pipes/decimalpercent.pipe'
 
 /** why */
 export { SzWhyEntityComponent } from './lib/why/sz-why-entity.component';
