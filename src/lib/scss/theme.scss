@@ -83,6 +83,7 @@ body {
   --sz-color-graph-relationships: #{$sz-magenta};
   --sz-color-how-report: #{$sz-lime};
   --sz-color-why-report: #{$sz-teal};
+  --sz-color-config-warning: #{$sz-config-warn-color};
 
   /* search box vars */
   --sz-search-button-submit-color: #{$sz-white};
@@ -467,5 +468,14 @@ body {
   --sz-entity-detail-section-how-step-card-data-table-border: var(--sz-how-step-card-data-table-border);
   --sz-entity-detail-section-how-step-card-data-table-cell-border: var(--sz-how-step-card-data-table-cell-border);
   --sz-entity-detail-section-how-step-card-title-text-margin-top: 3px;
+
+  /* charts */
+    /* record stats donut */
+    --sz-donut-chart-graph-align-items: start;
+    --sz-donut-chart-graph-arc-stroke: rgba(0, 0, 0, 0.7);
+    --sz-donut-chart-graph-arc-stroke-width: 1px;
+    --sz-donut-chart-graph-arc-stroke-opacity: 0.5;
+    --sz-donut-chart-unmatched-color: rgb(255 150 125);
+    --sz-donut-chart-pending-color: rgb(235 255 125);
 }
 

@@ -1,0 +1,66 @@
+<ul class="license-messages">
+    <li *ngIf="!limitInvalid">
+        <ng-template #evalLicenseUsage [ngIf]="trialLicense" [ngIfElse]="licenseUsage">
+            Using {{licenseLimitRatio | percent:'1.0-0'}} of your {{recordLimit | SzShortNumber}} evaluation license.
+        </ng-template>
+        <ng-template #licenseUsage>
+            Using {{licenseLimitRatio | percent:'1.0-0'}} of your {{recordLimit | SzShortNumber}} record license.
+        </ng-template>
+    </li>
+    <li *ngIf="limitInvalid"
+      ><span class="material-icons warning-prefix">warning</span
+        ><span class="warning-prefix">WARNING:</span
+        > <span class="warning-message">Your subscription record limit is invalid.</span
+    ></li>
+    <li *ngIf="!expirationInvalid">
+        <ng-template #evalLicenseTimeLeft [ngIf]="trialLicense" [ngIfElse]="licenseTimeLeft">
+            Your evaluation license is valid through {{expirationDate | date: 'longDate'}} for non production use
+        </ng-template>
+        <ng-template #licenseTimeLeft>
+            Your subscription is valid through {{expirationDate | date: 'longDate'}}
+        </ng-template>
+    </li>
+    <li *ngIf="expirationInvalid"
+      ><span class="material-icons warning-prefix">warning</span
+        ><span class="warning-prefix">WARNING:</span
+        > <span class="warning-message">Your subscription expiration date is invalid.</span
+    ></li>
+    <li *ngIf="!limitInvalid && approachingLimit"
+      ><span class="material-icons warning-prefix">warning</span
+        ><span class="warning-prefix">WARNING:</span
+        > <span class="warning-message">You are near your licensed record limit.</span
+    ></li>
+    <li *ngIf="!expirationInvalid && expiringSoon"
+      ><span class="material-icons warning-prefix">warning</span
+        ><span class="warning-prefix">WARNING:</span
+        >
+        <span class="warning-message" *ngIf="expired">
+            <ng-template #trialLicenseExpired [ngIf]="trialLicense" [ngIfElse]="licenseExpired">
+                Your free trial has expired!
+            </ng-template>
+            <ng-template #licenseExpired>
+                Your subscription has expired!
+            </ng-template>
+        </span>
+        <span class="warning-message" *ngIf="!expired">
+            <ng-template #licenseExpiryPlural [ngIf]="licenseDays > 1" [ngIfElse]="licenseExpirySingular">
+                Your subscription will expire in {{licenseDays}} days.
+            </ng-template>
+            <ng-template #licenseExpirySingular>
+                Your subscription will expire in {{licenseDays}} day.
+            </ng-template>
+        </span>
+    ></li>
+</ul>
+<div class="buttons" *ngIf="showUpgradeButton">
+    <div [ngSwitch]="upgradeType">
+        <button mat-button color="primary" *ngSwitchCase="SzLicenseUpgradeType.SUBSCRIBE" 
+        (click)="handleUpgradeButtonClicked($event)">Subscribe Now</button>
+        <button class="upgrade" mat-button color="primary" *ngSwitchCase="SzLicenseUpgradeType.UPGRADE" 
+        (click)="handleUpgradeButtonClicked($event)">Request a License with More Records</button>
+        <button class="upgrade" mat-button color="primary" *ngSwitchCase="SzLicenseUpgradeType.RENEW" 
+        (click)="handleUpgradeButtonClicked($event)">Request a License with More Time</button>
+        <button class="upgrade" mat-button color="primary" *ngSwitchCase="SzLicenseUpgradeType.VIEW" 
+        (click)="handleUpgradeButtonClicked($event)">Request a License with More Records</button>
+    </div>
+</div>
