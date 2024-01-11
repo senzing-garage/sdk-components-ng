@@ -1,0 +1,93 @@
+<h2>SzCrossSourceSummaryComponent</h2>
+<div class="cols">
+    <!--<sz-venn-diagram></sz-venn-diagram>
+    <sz-venn-diagram></sz-venn-diagram>
+    <sz-venn-diagram
+        sz-color="#246289"
+        backgorundColorA="rgb(213, 164, 133)"
+        borderColorA="rgb(255, 255, 255)"
+        blendModeA="difference"
+        backgorundColorB="rgb(173, 216, 230)"
+        borderColorB="rgb(75, 116, 142)"
+        blendModeB="multiply"
+        sz-left-legend="A"
+        sz-right-legend="B"
+    ></sz-venn-diagram>-->
+
+    <div class="venn-wrapper matches">
+        <sz-venn-diagram class="data-venn-matches"
+            [sz-singular]="singular"
+            sz-color="#246289"
+  
+            backgorundColorA="rgb(213, 164, 133)"
+            borderColorA="rgb(255, 255, 255)"
+            blendModeA="difference"
+            backgorundColorB="rgb(173, 216, 230)"
+            borderColorB="rgb(75, 116, 142)"
+            blendModeB="multiply"
+  
+            sz-left-legend="A"
+            sz-right-legend="B"
+            [sz-left-count]="25"
+            [sz-overlap-count]="2"
+            [sz-right-count]="31"
+            [sz-left-caption]="singular ? '' : 'Duplicates'"
+            [sz-right-caption]="singular ? '' : 'Duplicates'"
+            (sz-left-clicked)="diagramClick('LEFT', 1)"
+            (sz-right-clicked)="diagramClick('RIGHT', 1)"
+            (sz-overlap-clicked)="diagramClick('OVERLAP', 1)"
+        ></sz-venn-diagram>
+        <div class="matches diagram-caption">{{
+            singular ? 'Duplicates'
+                     : 'Matches'
+        }}</div>
+    </div>
+    <div class="venn-wrapper possibles">
+        <sz-venn-diagram class="data-venn-possibles"
+            [sz-singular]="singular"
+            sz-color="#CE8235"
+  
+            backgorundColorA="rgb(255, 157, 58)"
+            borderColorA="rgb(107, 107, 107)"
+            blendModeA="multiply"
+            backgorundColorB="rgba(251, 128, 3, 0.79)"
+            borderColorB="rgb(76, 55, 47)"
+            blendModeB="multiply"
+  
+            sz-left-legend="A"
+            sz-right-legend="B"
+            
+            [sz-left-caption]="singular ? '' : 'Possible Duplicates'"
+            [sz-right-caption]="singular ? '' : 'Possible Duplicates'"
+            (sz-left-clicked)="diagramClick('LEFT', 2)"
+            (sz-right-clicked)="diagramClick('RIGHT', 2)"
+            (sz-overlap-clicked)="diagramClick('OVERLAP', 2)"
+        ></sz-venn-diagram>
+        <div class="possibles diagram-caption">{{
+          singular ? 'Possible Duplicates'
+                   : 'Possible Matches'
+        }}</div>
+    </div>
+    <div class="venn-wrapper relationships">
+        <sz-venn-diagram class="data-venn-relationships"
+            [sz-singular]="singular"
+            sz-color="#A99B37"
+  
+            backgorundColorA="rgb(141, 148, 210)"
+            borderColorA="rgb(212, 212, 212)"
+            blendModeA="difference"
+            backgorundColorB="rgb(204, 197, 140)"
+            borderColorB="rgb(169, 155, 55)"
+  
+            sz-left-legend="A"
+            sz-right-legend="B"
+            [sz-left-count]="fromAuditInfo?.discoveredRelationshipCount"
+            [sz-overlap-count]="overlapAuditInfo?.discoveredRelationshipCount"
+            [sz-right-count]="toAuditInfo?.discoveredRelationshipCount"
+            (sz-left-clicked)="diagramClick('LEFT', 3)"
+            (sz-right-clicked)="diagramClick('RIGHT', 3)"
+            (sz-overlap-clicked)="diagramClick('OVERLAP', 3)"
+        ></sz-venn-diagram>
+        <div class="relationships diagram-caption">Possibly Related</div>
+    </div>
+</div>

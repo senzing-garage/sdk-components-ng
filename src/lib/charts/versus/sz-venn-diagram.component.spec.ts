@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SzVennDiagramsComponent } from './sz-venn-diagrams.component';
+import { SzVennDiagramsComponent } from './sz-venn-diagram.component';
 import { SenzingSdkModule } from '../../sdk.module';
 
 describe('SzRecordStatsDonutChart', () => {

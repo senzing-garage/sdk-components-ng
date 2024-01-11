@@ -32,7 +32,10 @@ import { SzShortNumberPipe } from './pipes/shortnumber.pipe'
 import { SzDecimalPercentPipe } from './pipes/decimalpercent.pipe';
 /** charts */
 import { SzRecordStatsDonutChart } from './charts/records-by-datasources/sz-donut.component';
-import { SzVennDiagramsComponent } from './charts/versus/sz-venn-diagrams.component';
+import { SzVennDiagramsComponent } from './charts/versus/sz-venn-diagram.component';
+/** statistics */
+import { SzCrossSourceSummaryComponent } from './summary/cross-source/sz-cross-source-summary.component';
+
 /** components */
 import { SzAlertMessageDialog } from './shared/alert-dialog/sz-alert-dialog.component';
 import { SzConfigurationAboutComponent } from './configuration/sz-configuration-about/sz-configuration-about.component';
@@ -123,6 +126,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzAlertMessageDialog,
         SzConfigurationAboutComponent,
         SzConfigurationComponent,
+        SzCrossSourceSummaryComponent,
         SzDecimalPercentPipe,
         SzEntityDetailComponent,
         SzEntityDetailGraphControlComponent,
@@ -193,6 +197,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     exports: [
         SzConfigurationComponent,
         SzConfigurationAboutComponent,
+        SzCrossSourceSummaryComponent,
         SzDecimalPercentPipe,
         SzEntityDetailGraphComponent,
         SzEntityDetailComponent,
