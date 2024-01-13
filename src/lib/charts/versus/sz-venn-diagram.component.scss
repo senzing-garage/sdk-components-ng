@@ -35,6 +35,10 @@
         .right-set {
             background-image: none;
             background-color: transparent;
+            &:hover {
+                /*opacity: 1;*/
+                filter: hue-rotate(9deg)
+            }
         }
         .left-set {
             opacity: 0.85;

@@ -1,4 +1,94 @@
 <h2>SzCrossSourceSummaryComponent</h2>
+<div class="data-select-wrapper">
+    <div class="dsrc-select from-dsrc">
+      <div class="legend"><label>A</label></div>
+      <mat-menu #fromSourceMenu="matMenu" class="data-source-menu" [overlapTrigger]="false">
+        <!--<div class="heading"
+          ><label class="dsrc-name">{{
+            msg.get("menu-heading-source-name")
+          }}</label
+          ><label class="versus-connections">{{
+            msg.get("menu-heading-versus-connections")
+          }}</label
+        ></div>-->
+        <button mat-menu-item *ngFor="let ds of dataSources"
+            [disabled]="ds === fromDataSource"
+            [class.selected]="ds === fromDataSource"
+            (click)="setFromDataSource(ds)"
+          ><label class="dsrc-name">{{ ds }}</label
+          ><span class="connection-count">({{getDiscoveredConnectionCount(ds, toDataSource)}})</span
+        ></button>
+      </mat-menu>
+      <button #displayFromDS class="dsrc-select from-dsrc" *ngIf="dataSources.length > 1"
+              [matMenuTriggerFor]="fromSourceMenu"
+        ><span class="material-icons">more_vert</span
+        ><label>{{ fromDataSource }}</label
+      ></button>
+
+      <button #displayFromDS class="dsrc-select from-dsrc only" *ngIf="dataSources.length == 1"
+        ><span class="material-icons">&nbsp;</span
+        ><label>{{ fromDataSource }}</label
+      ></button>
+
+      <div class="spinner-buttons" *ngIf="dataSources.length > 1">
+        <button class="up-button" (click)="stepFromDataSource(true)"
+          ><span class="material-icons">keyboard_arrow_up</span
+        ></button>
+        <button class="down-button" (click)="stepFromDataSource(false)"
+          ><span class="material-icons">keyboard_arrow_down</span
+        ></button>
+      </div>
+    </div>
+    <div class="dsrc-versus" *ngIf="dataSources.length > 1">vs.</div>
+    <div class="dsrc-select to-dsrc" *ngIf="dataSources.length > 1">
+      <div class="legend"><label>B</label></div>
+      <mat-menu #toSourceMenu="matMenu" class="data-source-menu" [overlapTrigger]="false">
+        <!--<div class="heading"
+          ><label class="dsrc-name">{{
+            msg.get("menu-heading-source-name")
+          }}</label
+          ><label class="versus-connections">{{
+            msg.get("menu-heading-versus-connections")
+          }}</label
+        ></div>-->
+        <button mat-menu-item
+            [disabled]="fromDataSource === toDataSource"
+            [class.selected]="fromDataSource === toDataSource"
+            (click)="setToDataSource(fromDataSource)"
+          ><label class="dsrc-name">[ NONE ]</label
+          ><span class="connection-count">({{ getFromAuditInfoDiscoveredConnectionCount()
+          }})</span
+        ></button>
+        <ng-container *ngFor="let ds of dataSources">
+          <button mat-menu-item *ngIf="fromDataSource !== ds"
+              [disabled]="ds === toDataSource"
+              [class.selected]="ds === toDataSource"
+              (click)="setToDataSource(ds)"
+            ><label class="dsrc-name">{{ ds }}</label
+            ><span class="connection-count">({{getDiscoveredConnectionCount(ds, toDataSource)}})</span
+          ></button>
+        </ng-container>
+      </mat-menu>
+      <button #displayToDS class="dsrc-select to-dsrc"
+              [matMenuTriggerFor]="toSourceMenu"
+        ><span class="material-icons">more_vert</span
+        ><label>{{
+          fromDataSource === toDataSource
+              ? '[ NONE ]'
+              : (toDataSource)
+        }}</label
+      ></button>
+
+      <div class="spinner-buttons">
+        <button class="up-button" (click)="stepToDataSource(true)"
+          ><span class="material-icons">keyboard_arrow_up</span
+        ></button>
+        <button class="down-button" (click)="stepToDataSource(false)"
+          ><span class="material-icons">keyboard_arrow_down</span
+        ></button>
+      </div>
+    </div>
+</div>
 <div class="cols">
     <!--<sz-venn-diagram></sz-venn-diagram>
     <sz-venn-diagram></sz-venn-diagram>
@@ -91,3 +181,49 @@
         <div class="relationships diagram-caption">Possibly Related</div>
     </div>
 </div>
+
+<!--<div #messages *ngIf="!msg.messagesRegistered" style="display: none;">
+    <div message-key="label-versus" i18n="Label shown for 'versus' between selected data sources">
+      vs.
+    </div>
+    <div message-key="label-matches" i18n="Label shown for matches (cross data source matches)">
+      Matches
+    </div>
+    <div message-key="label-duplicates" i18n="Label shown for duplicates (same data source matches)">
+      Duplicates
+    </div>
+    <div message-key="label-possible-matches" i18n="Label shown for possible matches">
+      Possible Matches
+    </div>
+    <div message-key="label-possible-duplicates" i18n="Label shown for possible duplicates">
+      Possible Duplicates
+    </div>
+    <div message-key="label-relationships" i18n="Label shown for relationships">
+      Relationships
+    </div>
+    <div message-key="label-discovered-relationships" i18n="Label shown for discovered relationships">
+      Possibly Related
+    </div>
+    <div message-key="label-disclosed-relationships" i18n="Label shown for discovered relationships">
+      Related
+    </div>
+    <div message-key="label-versus-none"
+        i18n="Label for the 'to data source' when the 'from' data source is versus itself only (no versus)">
+        [ NONE ]
+    </div>
+    <div message-key="menu-heading-source-name" i18n="Heading for data source name in data source menu">
+      Name
+    </div>
+    <div message-key="menu-heading-versus-connections" i18n="Heading for versus connection count in data source menu">
+      Versus Connections
+    </div>
+    <div message-key="diagram-label-a" i18n="Legend label for left-side diagram.">
+      A
+    </div>
+    <div message-key="diagram-label-b" i18n="Legend label for right-side diagram.">
+      B
+    </div>
+    <div message-key="long-busy-message">
+      (for large repositories this could take a while)
+    </div>
+  </div>-->

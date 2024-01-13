@@ -52,7 +52,8 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   private _totalEntityCount: number = 0;
   private _totalSingleCount: number = 0;
   private _totalConnectionCount : number = 0;
-
+  private stepFromNone = false;
+  private dataSourceLookup : { [code: string]: string } = {};
 
   public get auditSummaryLookup(): any {
     return this._summaryLookup;
@@ -62,21 +63,21 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
     return this._dataSources;
   }
 
-  public get fromDataSources(): string[] {
+  /*public get fromDataSources(): string[] {
     return this._fromDataSources;
-  }
+  }*/
 
-  public get fromDataSourceInfos() : string[] {
+  /*public get fromDataSourceInfos() : string[] {
     return this._fromDataSourceInfos;
-  }
+  }*/
 
-  public get toDataSources(): string[] {
+  /*public get toDataSources(): string[] {
     return this._toDataSources;
-  }
+  }*/
 
-  public get toDataSourceInfos(): any[] {
+  /*public get toDataSourceInfos(): any[] {
     return this._toDataSourceInfos;
-  }
+  }*/
 
   public get totalRecordCount(): number {
     return this._totalRecordCount;
@@ -98,6 +99,14 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
     return false
     return (this.dataSources.length === 1
             || this.fromDataSource === this.toDataSource);
+  }
+  public getDataSourceName(code: string) : string {
+    let obs = this.dataSourceLookup[code];
+    if (!obs) {
+      obs = this.dataSources.find((dcode)=>{ return dcode === code;})
+      this.dataSourceLookup[code] = obs;
+    }
+    return obs;
   }
 
   @Output() summaryDiagramClick: EventEmitter<any> = new EventEmitter();
@@ -139,6 +148,21 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   public get overlapAuditInfo() : any | null {
     return this._overlapAuditInfo;
   }
+  /**
+   * emitted when the component begins a request for data.
+   * @returns entityId of the request being made.
+   */
+  @Output() requestStart: EventEmitter<any> = new EventEmitter();
+  /**
+   * emitted when a search is done being performed.
+   * @returns the result of the entity request OR an Error object if something went wrong.
+   */
+  @Output() requestEnd: EventEmitter<SzRecordCountDataSource[]|Error> = new EventEmitter<SzRecordCountDataSource[]|Error>();
+  /**
+   * emitted when a search encounters an exception
+   * @returns error object.
+   */
+  @Output() exception: EventEmitter<Error> = new EventEmitter<Error>();
 
   constructor(
     public prefs: SzPrefsService,
@@ -156,7 +180,23 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
+    // get data sources
+    this.getDataSources().pipe(
+      takeUntil(this.unsubscribe$),
+      take(1)
+    ).subscribe({
+      next: (dataSources: SzDataSourcesResponseData)=>{
+        this._dataSources = dataSources.dataSources;
+        console.log(`got datasources: `, this._dataSources);
+        //this.dataChanged.next(this._dataSourceCounts);
+        /*if(this._dataSourceCounts && this._dataSources) {
+          this.dataChanged.next(this._dataSourceCounts);
+        }*/
+      },
+      error: (err) => {
+        this.exception.next(err);
+      }
+    });
   }
 
   diagramClick(diagramSection: string, matchLevel: number) {
@@ -181,6 +221,120 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
       currentToDataSource: this.toDataSource,
       newFromDataSource: newFromDataSource,
       newToDataSource: newToDataSource,
+    });
+  }
+
+  public getFromAuditInfoDiscoveredConnectionCount() {
+    return 0
+    return (this.fromAuditInfo.discoveredConnectionCount < 1000)
+              ? ("" + this.fromAuditInfo.discoveredConnectionCount)
+              : (this.fromAuditInfo.discoveredConnectionCount)
+  }
+
+  private getDataSources(): Observable<SzDataSourcesResponseData> {
+    return this.dataSourcesService.listDataSourcesDetails()
+  }
+
+  public getDiscoveredConnectionCount(dataSource1: string, dataSource2: string) {
+    return '';
+  }
+
+  stepFromDataSource(backwards: boolean) : void
+  {
+    const fromDS = this.fromDataSource;
+    const sources = this.dataSources;
+    if (sources && sources.length === 1) {
+      this.setFromDataSource(sources[0]);
+      return;
+    }
+
+    if (!fromDS && sources && sources.length > 0) {
+      this.setFromDataSource(sources[0]);
+      return;
+    }
+
+    let index = sources.indexOf(fromDS) + (backwards ? -1 : 1);
+    const length = sources.length;
+
+    if (index < 0) {
+      index = length + (index%length);
+    } else if (index >= length) {
+      index = index % length;
+    }
+
+    if (this.stepFromNone) {
+      this.setBothDataSources(sources[index]);
+    } else {
+      this.setFromDataSource(sources[index]);
+    }
+  }
+
+  stepToDataSource(backwards: boolean) : void
+  {
+    const sources = this.dataSources;
+    if (sources && sources.length === 1) {
+      this.setToDataSource(sources[0]);
+      return;
+    }
+
+    let index = 0;
+    const length = sources.length;
+
+    if (!this.toDataSource && sources && sources.length > 0) {
+      if (backwards) {
+        index = sources.length-1;
+      } else {
+        index = 0;
+      }
+    } else {
+      index = sources.indexOf(this.toDataSource) + (backwards ? -1 : 1);
+    }
+
+    if (index < 0) {
+      index = length + (index % length);
+    } else if (index >= length) {
+      index = index % length;
+    }
+    this.setToDataSource(sources[index]);
+    this.stepFromNone = sources[index] === this.fromDataSource;
+  }
+
+  private setBothDataSources(dataSource: string) {
+    setTimeout(() => {
+      if (this.dataSources && this.dataSources.indexOf(dataSource) >= 0)
+      {
+        this._fromDataSource  = dataSource;
+        this._toDataSource    = dataSource;
+        //this.currentProjectService.setAttribute(FROM_DATA_SOURCE_KEY, dataSource);
+        //this.currentProjectService.setAttribute(TO_DATA_SOURCE_KEY, dataSource);
+        //this.onSummaryDataChanged();
+      }
+    });
+  }
+
+  public setFromDataSource(dataSource: string) {
+    setTimeout(() => {
+      if (this.dataSources && this.dataSources.indexOf(dataSource) >= 0) {
+        this._fromDataSource = dataSource;
+        console.log(`from datasource: ${this._fromDataSource}`);
+        if (this.stepFromNone && (this.fromDataSource !== this.toDataSource)) {
+          this.stepFromNone = false;
+        }
+        //this.currentProjectService.setAttribute(FROM_DATA_SOURCE_KEY, dataSource);
+        //this.onSummaryDataChanged();
+      }
+    });
+  }
+
+  public setToDataSource(dataSource: string) {
+    setTimeout(() => {
+      if (!dataSource || (this.dataSources.indexOf(dataSource) >= 0)) {
+        this._toDataSource = dataSource;
+        this.stepFromNone = (this._toDataSource === this._fromDataSource);
+        console.log(`to datasource: ${this._toDataSource}`);
+        //this.currentProjectService.setAttribute(TO_DATA_SOURCE_KEY, dataSource);
+        //this.onSummaryDataChanged();
+      }
     });
   }
 }

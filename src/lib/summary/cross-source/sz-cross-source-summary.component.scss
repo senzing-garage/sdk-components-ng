@@ -1,3 +1,4 @@
+@import "../../scss/theme.scss";
 
 :host {
     width: 100%;
@@ -9,5 +10,180 @@
         flex-wrap: nowrap;
         justify-content: space-between;
         align-items: flex-start;
+    }
+
+    .data-select-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        height: 40px;
+        max-height: 40px;
+        min-height: 40px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: 100%;
+    
+        .dsrc-versus {
+          color: $sz-grey;
+          font: 20px Arial;
+          padding: 0 10px;
+        }
+    
+        .dsrc-select {
+          border: 0 none transparent;
+          height: 38px;
+          width: 45%;
+          max-width: 450px;
+          position: relative;
+          background-color: #F8F8F8;
+          border: 1px solid #666666;
+          border-radius: 3px;
+    
+          div.legend {
+            background-color: #BBBBBB;
+            border-right: 1px solid #666666;
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: auto;
+            width: 20px;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 38px;
+          }
+    
+          button.dsrc-select {
+            display: inline-block;
+            color: #666666;
+            font-size: 16px;
+            background-color: transparent;
+            border: 0 none transparent;
+            text-align: left;
+            padding: 0;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            left: 22px;
+            transform: translateY(-50%);
+            vertical-align: middle;
+            line-height: 30px;
+            width: calc(100% - 20px);
+            height: 30px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            outline: none;
+    
+            span.material-icons {
+              display: inline-block;
+              visibility: hidden;
+              padding: 0;
+              margin: -2px 0 0 0;
+              color: #666666;
+              vertical-align: middle;
+              line-height: 30px;
+              width: 20px;
+              text-align: center;
+              cursor: pointer;
+            }
+            label {
+              cursor: pointer;
+              display: inline-block;
+              padding: 0;
+              margin: -2px 0 0 0;
+              line-height: 30px;
+              font-size: 16px;
+              vertical-align: middle;
+              text-overflow: ellipsis;
+              width: calc(100% - 40px);
+              overflow: hidden;
+              white-space: nowrap;
+            }
+          }
+          button.dsrc-select:hover {
+            span.material-icons {
+              visibility: visible;
+            }
+          }
+          button.dsrc-select:active {
+            background-color: rgba(240,240,240,0.2);
+            cursor: pointer;
+          }
+          button.dsrc-select.only {
+            cursor: default;
+    
+            label {
+              cursor: default;
+            }
+            span.material-icons {
+              cursor: default;
+            }
+          }
+          button.dsrc-select.only:active {
+            background-color: transparent;
+          }
+          select {
+            position: absolute;
+            display: inline-block;
+            font-size: 18px;
+            color: white;
+            visibility: hidden;
+          }
+    
+          .spinner-buttons {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+    
+            button {
+              margin: 1px 0;
+              padding: 0;
+              box-sizing: content-box;
+              background-color: transparent;
+              outline: none;
+              font-size: 16px;
+              min-height: 0;
+              min-width: 0;
+              width: 18px;
+              height: 18px;
+              border: 0 none transparent;
+              border-radius: 50%;
+              position: relative;
+              overflow: hidden;
+              cursor: pointer;
+    
+              label {
+                cursor: pointer;
+              }
+              span.material-icons {
+                box-sizing: border-box;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                display: block;
+                width: 25px;
+                height: 16px;
+                line-height: 16px;
+                color: $sz-blue;
+                text-shadow: 1px 1px rgba(30,30,30,0.3);
+                cursor: pointer;
+              }
+            }
+    
+            button:active {
+              background-color: rgba(240,240,240,0.2);
+            }
+          }
+        }
     }
 }

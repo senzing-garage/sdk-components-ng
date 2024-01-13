@@ -142,7 +142,6 @@ export class SzVennDiagramsComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  ngOnInit() {
+  ngOnInit() {}
 
-  }
 }
