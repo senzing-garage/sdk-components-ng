@@ -30,6 +30,8 @@ import { SzConfigDataService } from './services/sz-config-data.service';
 /** pipes */
 import { SzShortNumberPipe } from './pipes/shortnumber.pipe'
 import { SzDecimalPercentPipe } from './pipes/decimalpercent.pipe';
+/** common */
+import { SzDataTable } from './shared/data-table/sz-data-table.component';
 /** charts */
 import { SzRecordStatsDonutChart } from './charts/records-by-datasources/sz-donut.component'
 /** components */
@@ -122,6 +124,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzAlertMessageDialog,
         SzConfigurationAboutComponent,
         SzConfigurationComponent,
+        SzDataTable,
         SzDecimalPercentPipe,
         SzEntityDetailComponent,
         SzEntityDetailGraphControlComponent,
@@ -191,6 +194,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     exports: [
         SzConfigurationComponent,
         SzConfigurationAboutComponent,
+        SzDataTable,
         SzDecimalPercentPipe,
         SzEntityDetailGraphComponent,
         SzEntityDetailComponent,

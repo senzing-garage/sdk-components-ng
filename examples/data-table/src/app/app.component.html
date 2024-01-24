@@ -1,0 +1,39 @@
+<div style="text-align:left; font-weight: bold; font-size: 1.5em">
+  @senzing/sdk-components-ng/examples/search-with-results-and-details
+</div>
+<div style="text-align:left; text-decoration: italic; font-size: 0.8em; margin: 2px 0 10px 0;">
+  An example Angular app showing usage of the sz-search, sz-search-results,
+  and sz-entity-detail components working together
+</div>
+
+<!-- start search box -->
+<div class="component-example">
+  <sz-search
+    #searchBox
+    name="Acmemobil"
+    phone="702-333-3333"
+    address="909 Jenga Way Las Vegas NV 89111"
+    showIdentifierTypesPicker="false"
+    disableIdentifierOptions="SSN_LAST4"
+    enableIdentifierOptions="SOCIAL_NETWORK"
+    (resultsChange)="onSearchResults($event)"
+    (resultsCleared)="onSearchResultsCleared($event)"
+    (exception)="onSearchException($event)"
+    (parameterChange)="onSearchParameterChange($event)"></sz-search>
+</div>
+<!-- end search box -->
+<!-- start data table results -->
+<sz-data-table></sz-data-table>
+<!--  end data table results  -->
+
+<!-- start search results -->
+<div class="component-example">
+  <sz-search-results *ngIf="showSearchResults" 
+  [results]="currentSearchResults" 
+  [parameters]="currentSearchParameters"
+  showWhyComparisonButton="false" 
+  showHowButton="true"
+  (howButtonClick)="onHowButtonClick($event)"
+  (resultClick)="onSearchResultClick($event)"></sz-search-results>
+</div>
+<!-- end search results -->
