@@ -6,15 +6,7 @@
         display: grid;
         border-collapse: collapse;
         min-width: 100%;
-        grid-template-columns: 
-          minmax(150px, 1fr)
-          minmax(150px, 1.67fr)
-          minmax(150px, 1.67fr)
-          minmax(150px, 1.67fr)
-          minmax(150px, 3.33fr)
-          minmax(150px, 1.67fr)
-          minmax(150px, 3.33fr)
-          minmax(150px, 1.67fr);
+        /*grid-template-columns: minmax(100px, auto);*/
 
         thead,
         tbody,

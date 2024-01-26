@@ -1,24 +1,13 @@
-<table class="data-table">
+<!--<h2>gridStyle: "{{gridStyle}}"</h2>-->
+<table class="data-table" [style]="gridStyle">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>Email</th>
-        <th>Street</th>
-        <th>Country</th>
-        <th>University</th>
+        <th *ngFor="let col of this.cols | keyvalue; let i = index">{{col.value}}</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>000001</td>
-        <td>Some</td>
-        <td>Guy</td>
-        <td>some.guy@somewhere.com</td>
-        <td>7850 Mullholland Drive</td>
-        <td>United States</td>
-        <td>UCLA</td>
-      </tr>
+        <tr *ngFor="let row of this.data">
+            <td *ngFor="let col of this.cols | keyvalue;">{{row[col.key]}}</td>
+        </tr>
     </tbody>
   </table>
