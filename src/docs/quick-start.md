@@ -9,7 +9,7 @@ Before you begin, make sure your development environment includes Node.js® and 
 ### Node.js
 Angular and this specific SDK package requires Node.js version 8.x or 10.x.
 
-If you are looking for the Web Component version of this package it can be found [here](https://github.com/Senzing/sdk-components-web)
+If you are looking for the Web Component version of this package it can be found [here](https://github.com/senzing-garage/sdk-components-web)
 
 * To check your version, run `node -v` in a terminal/console window.
 * To get Node.js, go to [nodejs.org](http://nodejs.org/download).

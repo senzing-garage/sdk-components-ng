@@ -4,10 +4,9 @@
 
 This project is for the Senzing&reg; SDK components that can be used in other projects. There are two flavors that the components come in. The [@senzing/sdk-components-ng](https://www.npmjs.com/package/@senzing/sdk-components-ng) package which is based around the Angular 13.x.x framework, and the [@senzing/sdk-components-web](https://www.npmjs.com/package/@senzing/sdk-components-web) package which is framework agnostic and based around the [Web Components](https://developers.google.com/web/fundamentals/web-components/) standard. The usage for both packages is noted in the [documentation examples](http://hub.senzing.com/sdk-components-ng/).
 
-For information on the Web Components version see the [sdk-components-web guide](https://github.com/Senzing/sdk-components-ng/tree/master/sdk-components-web). 
+For information on the Web Components version see the [sdk-components-web guide](https://github.com/senzing-garage/sdk-components-ng/tree/master/sdk-components-web). 
 
 
-[![Build Status](https://travis-ci.com/Senzing/sdk-components-ng.svg?branch=master)](https://travis-ci.com/Senzing/sdk-components-ng)
 [![npm version](https://badge.fury.io/js/%40senzing%2Fsdk-components-ng.svg)](https://badge.fury.io/js/%40senzing%2Fsdk-components-ng)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/senzing/sdk-components-ng?color=%2300c4ff&logo=latest%20tag)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/senzing/sdk-components-ng?color=orange&logo=latest&logoColor=blue)
@@ -28,16 +27,16 @@ Please see the installation instructions for each of these for how to install an
 
 If you're developing on Windows or macOS, you can make use of the [Senzing app](https://senzing.com/#download)
 to help populate an entity repository to test with.  It also gives you an easy way to load and browse data
-outside of the [Senzing REST API Sever](https://github.com/Senzing/senzing-api-server).  See the instructions
-for using the [Senzing App Integration Scripts](https://github.com/Senzing/senzing-api-server/tree/master/app-scripts)
+outside of the [Senzing REST API Sever](https://github.com/senzing-garage/senzing-api-server).  See the instructions
+for using the [Senzing App Integration Scripts](https://github.com/senzing-garage/senzing-api-server/tree/master/app-scripts)
 to start the Senzing REST API Server using your existing projects in the Senzing app.
 
 #### REST API Server
 
-These components require an implementation of the [Senzing REST API](https://github.com/Senzing/senzing-rest-api)
-to function.  You can use the [Senzing REST API Server](https://github.com/Senzing/senzing-api-server) as a default
-implementation in Java.  Follow [the instructions](https://github.com/Senzing/senzing-api-server) to check out and
-build the [Senzing REST API Sever](https://github.com/Senzing/senzing-api-server) from source or download a pre-built
+These components require an implementation of the [Senzing REST API](https://github.com/senzing-garage/senzing-rest-api-specification)
+to function.  You can use the [Senzing REST API Server](https://github.com/senzing-garage/senzing-api-server) as a default
+implementation in Java.  Follow [the instructions](https://github.com/senzing-garage/senzing-api-server) to check out and
+build the [Senzing REST API Sever](https://github.com/senzing-garage/senzing-api-server) from source or download a pre-built
 version when available.
 
 ### SDK Components
@@ -66,10 +65,10 @@ import {
 
 ### Quick Start
 
-**1)** Start up an instance of the [Senzing REST API Server](https://github.com/Senzing/senzing-api-server)
+**1)** Start up an instance of the [Senzing REST API Server](https://github.com/senzing-garage/senzing-api-server)
 if not currently running.
 
-See the [README.md](https://github.com/Senzing/senzing-api-server) for instructions on how
+See the [README.md](https://github.com/senzing-garage/senzing-api-server) for instructions on how
 to start the Senzing REST API Server on the command line or with Docker.
 
 **2)** Add the SenzingSDKModule to your angular app's app.module.ts
@@ -118,7 +117,7 @@ The result should be a list of service configuration parameters and values.
 
 **5)** Load the engine with data to resolve. The easiest way to do this currently is to load a CSV using the
 [Senzing app](https://senzing.com/#download).  This can also be done through the
-[Senzing REST API](https://github.com/Senzing/senzing-rest-api) using the [Senzing REST API Server](https://github.com/Senzing/senzing-api-server).
+[Senzing REST API](https://github.com/senzing-garage/senzing-rest-api-specification) using the [Senzing REST API Server](https://github.com/senzing-garage/senzing-api-server).
 
 **6)** Verify that the components are working properly. The easiest way to do this is to is to just implement a search box, and a result list. Copy the following to your app.component.html file
 
@@ -220,7 +219,7 @@ node_modules/@senzing/sdk-components-ng/docs or [Online here](https://senzing.gi
 
 ## Examples
 
-When you check out the source for this repository there is a directory of Angular project examples. Please see the [Examples Readme](https://github.com/Senzing/sdk-components-ng/tree/master/examples) for more information on how these work.
+When you check out the source for this repository there is a directory of Angular project examples. Please see the [Examples Readme](https://github.com/senzing-garage/sdk-components-ng/tree/master/examples) for more information on how these work.
 
 ## Troubleshooting
 

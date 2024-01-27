@@ -68,7 +68,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <ul>
 <li>Angular Framework updated to version 15. As of 6.0.0 release this package now requires <code>@angular@~15.0.0</code> to compile and run. Updating to angular 15 resolves major dependency compatibility issues so we can apply the latest security patches to the library. For information updating your project from a previous angular version to <code>~15.0.0</code> see the <a href="https://update.angular.io/">Angular Update Guide </a></li>
 <li><a href="https://material.angular.io/">Angular Material</a> updated to version 15. As of 6.0.0 release this package now requires v15 of angular material library. Since the compiled version of this package defines it&#39;s dependency as a <em>peer dependency</em> it&#39;s worth mentioning that your project will need to import it to function properly. <code>ng add @angular/material@15</code>.</li>
-<li>D3.js updated to version 7. version 5 was exposing a security defect in d3.color(see <a href="https://security.snyk.io/vuln/SNYK-JS-D3COLOR-1076592">SNYK-JS-D3COLOR-1076592</a>) that had no patches available until version 7. <a href="https://github.com/Senzing/sdk-components-ng/issues/466">see #466</a></li>
+<li>D3.js updated to version 7. version 5 was exposing a security defect in d3.color(see <a href="https://security.snyk.io/vuln/SNYK-JS-D3COLOR-1076592">SNYK-JS-D3COLOR-1076592</a>) that had no patches available until version 7. <a href="https://github.com/senzing-garage/sdk-components-ng/issues/466">see #466</a></li>
 </ul>
 <h3>Removed</h3>
 <ul>
@@ -322,8 +322,8 @@ the observeable event streams for uniformity/reliability:<ul>
 </ul>
 <p>relevant tickets: #280 #299 #302 #304 #307 #310 #311 #313 #315 #319 #321</p>
 <h2>[4.0.0] - 2022-05-09</h2>
-<p>This update brings the models in line with the changes for the <code>3.0.0</code> release of the <a href="https://github.com/Senzing/senzing-api-server">senzing rest api server</a>
-and <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/caceres.version-3.0.0/senzing-rest-api.yaml">rest api specification</a>.</p>
+<p>This update brings the models in line with the changes for the <code>3.0.0</code> release of the <a href="https://github.com/senzing-garage/senzing-api-server">senzing rest api server</a>
+and <a href="https://github.com/senzing-garage/senzing-rest-api-specification/blob/caceres.version-3.0.0/senzing-rest-api.yaml">rest api specification</a>.</p>
 <h3>Added</h3>
 <ul>
 <li><code>showMatchKeyFilters</code> property added to <code>sz-standalone-graph</code> tag. specifying a value of <code>false</code> will hide the <em>Filter By Match Key</em> section of the embedded graph controls. (defaults to <em>true</em>)</li>
@@ -405,7 +405,7 @@ and <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/cace
 </ul>
 <h3>Deleted</h3>
 <ul>
-<li>Admin Import example and related code. The admin load functionality has been deprecated since there is just too much movement of the methodology and complexity used to achieve this functionality for it be practical to expose it via the sdk-components-ng package. For a working example of how to implement load and analyze functionality see the consuming <a href="https://github.com/Senzing/entity-search-web-app">Entity Search Web App</a> repository.</li>
+<li>Admin Import example and related code. The admin load functionality has been deprecated since there is just too much movement of the methodology and complexity used to achieve this functionality for it be practical to expose it via the sdk-components-ng package. For a working example of how to implement load and analyze functionality see the consuming <a href="https://github.com/senzing-garage/entity-search-web-app">Entity Search Web App</a> repository.</li>
 <li>Angular Schematics support. see #253</li>
 </ul>
 <p>relevant tickets: #253 #252 #251 #250</p>
@@ -448,14 +448,14 @@ and <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/cace
 <li>Graph now allows the user to be able to show/hide entities on the graph control whos&#39; relationships belong to specific match keys present in the graph in the filters control.</li>
 <li><em>Search by Datasource/RecordId</em> now gets the full <code>SzEntityData</code> instead of just the <code>SzEntityRecord</code></li>
 <li>Old behavior(to return just <code>SzEntityRecord</code> instead of <code>SzEntityData</code>) relocated from <code>SzSearchService.getEntityByRecordId</code> to <code>SzSearchService.getRecordById</code></li>
-<li>Various new CSS Variables added for styling granularity relevant to <a href="https://github.com/Senzing/entity-search-web-app/issues/213">https://github.com/Senzing/entity-search-web-app/issues/213</a></li>
+<li>Various new CSS Variables added for styling granularity relevant to <a href="https://github.com/senzing-garage/entity-search-web-app/issues/213">https://github.com/senzing-garage/entity-search-web-app/issues/213</a></li>
 </ul>
 <p>relevant tickets: #232 #233 #235</p>
 <h2>[2.2.4] - 2021-08-06</h2>
 <ul>
-<li><a href="https://github.com/Senzing/rest-api-client-ng/releases">API Client package</a> updated to version <a href="https://github.com/Senzing/rest-api-client-ng/releases/tag/2.3.0">2.3.0</a></li>
-<li>Compatibility updates for <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/master/CHANGELOG.md#270---2021-07-22">Senzing OAS 2.7.0</a> specification</li>
-<li>Compatibility updates for <a href="https://github.com/Senzing/senzing-api-server/blob/master/CHANGELOG.md#270---2021-07-22">Senzing Rest Server@2.7.0</a></li>
+<li><a href="https://github.com/senzing-garage/rest-api-client-ng/releases">API Client package</a> updated to version <a href="https://github.com/senzing-garage/rest-api-client-ng/releases/tag/2.3.0">2.3.0</a></li>
+<li>Compatibility updates for <a href="https://github.com/senzing-garage/senzing-rest-api-specification/blob/master/CHANGELOG.md#270---2021-07-22">Senzing OAS 2.7.0</a> specification</li>
+<li>Compatibility updates for <a href="https://github.com/senzing-garage/senzing-api-server/blob/master/CHANGELOG.md#270---2021-07-22">Senzing Rest Server@2.7.0</a></li>
 <li>Preferences has several models added to facilitate stateful storage of <strong>Stream Loading</strong> features found in the [POC Server] extensions:<ul>
 <li><code>AdminStreamConnProperties</code>, <code>AdminStreamAnalysisConfig</code>, <code>AdminStreamLoadConfig</code>, <code>AdminStreamUploadRates</code> in src/lib/models/data-admin.ts</li>
 <li><code>SzAdminPrefs</code> added to <code>src/lib/services/sz-prefs.service.ts</code></li>
@@ -503,8 +503,8 @@ and <a href="https://github.com/Senzing/senzing-rest-api-specification/blob/cace
 </ul>
 <h2>[2.1.2] - 2020-11-03</h2>
 <ul>
-<li>API Client package updated to the <a href="https://github.com/Senzing/senzing-rest-api-specification/releases/tag/2.2.0">Senzing OAS 2.2.0</a> specification.</li>
-<li>Web Components code integrated as a child project in to the the <code>sdk-components-ng</code> repository. see ticket <a href="https://github.com/Senzing/sdk-components-ng/issues/169">#169</a>.
+<li>API Client package updated to the <a href="https://github.com/senzing-garage/senzing-rest-api-specification/releases/tag/2.2.0">Senzing OAS 2.2.0</a> specification.</li>
+<li>Web Components code integrated as a child project in to the the <code>sdk-components-ng</code> repository. see ticket <a href="https://github.com/senzing-garage/sdk-components-ng/issues/169">#169</a>.
 Documentation for <code>@senzing/sdk-components-web</code> now <a href="http://hub.senzing.com/sdk-components-ng/additional-documentation/web-components.html">available here</a>.</li>
 <li>Bugfixes: #169, #170, #173, #174, #175, #176, #177, #178, #179, #180, #181</li>
 </ul>
@@ -520,16 +520,16 @@ Documentation for <code>@senzing/sdk-components-web</code> now <a href="http://h
 <p>The following Senzing projects have also been updated to operate on Angular 10,
 see the following links for associated tickets:</p>
 <ul>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/143">sdk-components-ng/issues/143</a></li>
-<li><a href="https://github.com/Senzing/rest-api-client-ng/issues/39">rest-api-client-ng/issues/39</a></li>
-<li><a href="https://github.com/Senzing/sdk-graph-components/issues/37">sdk-graph-components/issues/37</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/143">sdk-components-ng/issues/143</a></li>
+<li><a href="https://github.com/senzing-garage/rest-api-client-ng/issues/39">rest-api-client-ng/issues/39</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-graph-components/issues/37">sdk-graph-components/issues/37</a></li>
 </ul>
 <h2>[2.0.0] - 2020-07-12</h2>
-<p>Compatibility release for interacting with the 2.0.0 <a href="https://github.com/Senzing/senzing-rest-api-specification">senzing-rest-api-spec</a> and <a href="https://github.com/Senzing/senzing-api-server">senzing-api-server</a>. For information on specifics of endpoint changes see below:</p>
+<p>Compatibility release for interacting with the 2.0.0 <a href="https://github.com/senzing-garage/senzing-rest-api-specification">senzing-rest-api-spec</a> and <a href="https://github.com/senzing-garage/senzing-api-server">senzing-api-server</a>. For information on specifics of endpoint changes see below:</p>
 <ul>
-<li><a href="https://github.com/Senzing/rest-api-client-ng/releases/tag/2.0.0">@senzing/rest-api-client-ng@2.0.0</a></li>
-<li><a href="https://github.com/Senzing/senzing-rest-api-specification/pull/44">senzing-rest-api-specification PR #44</a></li>
-<li><a href="https://github.com/Senzing/senzing-api-server/pull/172">senzing-api-server PR #172</a></li>
+<li><a href="https://github.com/senzing-garage/rest-api-client-ng/releases/tag/2.0.0">@senzing/rest-api-client-ng@2.0.0</a></li>
+<li><a href="https://github.com/senzing-garage/senzing-rest-api-specification/pull/44">senzing-rest-api-specification PR #44</a></li>
+<li><a href="https://github.com/senzing-garage/senzing-api-server/pull/172">senzing-api-server PR #172</a></li>
 </ul>
 <h2>[1.3.0] - 2020-02-06</h2>
 <h3>Added to 1.3.0</h3>
@@ -568,7 +568,7 @@ see the following links for associated tickets:</p>
 </ul>
 </li>
 <li>relevant tickets<ul>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/133">#133</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/133">#133</a></li>
 </ul>
 </li>
 </ul>
@@ -611,15 +611,15 @@ see the following links for associated tickets:</p>
 </ul>
 </li>
 <li>relevant tickets<ul>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/109">#109</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/110">#110</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/112">#112</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/114">#114</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/115">#115</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/121">#121</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/123">#123</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/125">#125</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/126">#126</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/109">#109</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/110">#110</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/112">#112</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/114">#114</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/115">#115</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/121">#121</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/123">#123</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/125">#125</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/126">#126</a></li>
 </ul>
 </li>
 </ul>
@@ -636,8 +636,8 @@ see the following links for associated tickets:</p>
 <li>modified existing SzGraphComponent code, adding all new properties to keep feature parity with SzStandaloneGraphComponent&#39;s implementation.</li>
 <li>added new <em>layout-rail</em> layout for ... well, exactly what it sounds like, a rail version of the entity detail component.</li>
 <li>relevant tickets<ul>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/105">#105</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/104">#104</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/105">#105</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/104">#104</a></li>
 </ul>
 </li>
 </ul>
@@ -654,18 +654,18 @@ see the following links for associated tickets:</p>
 <li>Text highlighting no longer triggers click-thru</li>
 <li>Search identifiers drop-down should auto-update on api config change</li>
 <li>relevant tickets:<ul>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/102">#102</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/100">#100</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/96">#96</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/94">#94</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/92">#92</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/90">#90</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/88">#88</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/86">#86</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/84">#84</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/82">#82</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/79">#79</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/78">#78</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/102">#102</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/100">#100</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/96">#96</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/94">#94</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/92">#92</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/90">#90</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/88">#88</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/86">#86</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/84">#84</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/82">#82</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/79">#79</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/78">#78</a></li>
 </ul>
 </li>
 </ul>
@@ -679,12 +679,12 @@ see the following links for associated tickets:</p>
 <li>fix for identifier searches sending the wrong parameter format to the api server</li>
 <li>fix for PDF service ignoring filename parameter</li>
 <li>relevant issues:<ul>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/74">#74</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/71">#71</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/70">#70</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/65">#65</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/67">#67</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/69">#69</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/74">#74</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/71">#71</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/70">#70</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/65">#65</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/67">#67</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/69">#69</a></li>
 </ul>
 </li>
 </ul>
@@ -700,7 +700,7 @@ see the following links for associated tickets:</p>
 <h3>Added to 1.0.6</h3>
 <ul>
 <li>added &quot;print to PDF&quot; service.</li>
-<li>now uses separate <a href="https://github.com/senzing/sdk-graph-components">sdk-graph-components</a> package for embedded graphs.</li>
+<li>now uses separate <a href="https://github.com/senzing-garage/sdk-graph-components">sdk-graph-components</a> package for embedded graphs.</li>
 <li>Removed all graph components from package and moved code to /deprecated folder. will be removed in future release.</li>
 <li>Update all graph component references to use separate package namespace</li>
 <li>Changed default api server port to 8080, this way you can run the services directly against a default docker image of the senzing-api-server. factors in to e2e.</li>
@@ -708,11 +708,11 @@ see the following links for associated tickets:</p>
 <li>Added better css classes to components to allow for more precise e2e test cases</li>
 <li>bugfix for constant redraw issue on &quot;possible matches&quot; node #47</li>
 <li>relevant issues:<ul>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/39">#39</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/47">#47</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/56">#56</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/60">#60</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/63">#63</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/39">#39</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/47">#47</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/56">#56</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/60">#60</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/63">#63</a></li>
 </ul>
 </li>
 </ul>
@@ -720,9 +720,9 @@ see the following links for associated tickets:</p>
 <h3>Added to 1.0.5</h3>
 <p>fixes, features for:</p>
 <ul>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/26">#26</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/38">#38</a></li>
-<li><a href="https://github.com/Senzing/sdk-components-ng/issues/40">#40</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/26">#26</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/38">#38</a></li>
+<li><a href="https://github.com/senzing-garage/sdk-components-ng/issues/40">#40</a></li>
 </ul>
 <p><img src="https://user-images.githubusercontent.com/13721038/58986445-3f63f080-8792-11e9-913e-137253d54b7e.png" alt="2019-06-05_130246" class="img-responsive"></p>
 <ul>

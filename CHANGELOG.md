@@ -35,7 +35,7 @@ relevant tickets: #438 #496 #499 #513 #516 #525 #527 #529 #531 #534 #538 #545 #5
 ### Modified
 - Angular Framework updated to version 15. As of 6.0.0 release this package now requires `@angular@~15.0.0` to compile and run. Updating to angular 15 resolves major dependency compatibility issues so we can apply the latest security patches to the library. For information updating your project from a previous angular version to `~15.0.0` see the [Angular Update Guide ](https://update.angular.io/)
 - [Angular Material](https://material.angular.io/) updated to version 15. As of 6.0.0 release this package now requires v15 of angular material library. Since the compiled version of this package defines it's dependency as a *peer dependency* it's worth mentioning that your project will need to import it to function properly. `ng add @angular/material@15`.
-- D3.js updated to version 7. version 5 was exposing a security defect in d3.color(see [SNYK-JS-D3COLOR-1076592](https://security.snyk.io/vuln/SNYK-JS-D3COLOR-1076592)) that had no patches available until version 7. [see #466](https://github.com/Senzing/sdk-components-ng/issues/466)
+- D3.js updated to version 7. version 5 was exposing a security defect in d3.color(see [SNYK-JS-D3COLOR-1076592](https://security.snyk.io/vuln/SNYK-JS-D3COLOR-1076592)) that had no patches available until version 7. [see #466](https://github.com/senzing-garage/sdk-components-ng/issues/466)
 
 ### Removed
 - `forceSimulation` property removed from `SzRelationshipNetworkComponent` base class. (no one should be directly using this anyways)
@@ -238,8 +238,8 @@ relevant tickets: #280 #299 #302 #304 #307 #310 #311 #313 #315 #319 #321
 
 ## [4.0.0] - 2022-05-09
 
-This update brings the models in line with the changes for the `3.0.0` release of the [senzing rest api server](https://github.com/Senzing/senzing-api-server)
-and [rest api specification](https://github.com/Senzing/senzing-rest-api-specification/blob/caceres.version-3.0.0/senzing-rest-api.yaml).
+This update brings the models in line with the changes for the `3.0.0` release of the [senzing rest api server](https://github.com/senzing-garage/senzing-api-server)
+and [rest api specification](https://github.com/senzing-garage/senzing-rest-api-specification/blob/caceres.version-3.0.0/senzing-rest-api.yaml).
 
 ### Added
 - `showMatchKeyFilters` property added to `sz-standalone-graph` tag. specifying a value of `false` will hide the *Filter By Match Key* section of the embedded graph controls. (defaults to _true_)
@@ -302,7 +302,7 @@ and [rest api specification](https://github.com/Senzing/senzing-rest-api-specifi
 - Small bugfix to properly clip the graph scale ui control when graph section in entity detail is collapsed.
 
 ### Deleted
-- Admin Import example and related code. The admin load functionality has been deprecated since there is just too much movement of the methodology and complexity used to achieve this functionality for it be practical to expose it via the sdk-components-ng package. For a working example of how to implement load and analyze functionality see the consuming [Entity Search Web App](https://github.com/Senzing/entity-search-web-app) repository.
+- Admin Import example and related code. The admin load functionality has been deprecated since there is just too much movement of the methodology and complexity used to achieve this functionality for it be practical to expose it via the sdk-components-ng package. For a working example of how to implement load and analyze functionality see the consuming [Entity Search Web App](https://github.com/senzing-garage/entity-search-web-app) repository.
 - Angular Schematics support. see #253
 
 relevant tickets: #253 #252 #251 #250
@@ -340,15 +340,15 @@ relevant tickets: #245 #240
 - Graph now allows the user to be able to show/hide entities on the graph control whos' relationships belong to specific match keys present in the graph in the filters control.
 - *Search by Datasource/RecordId* now gets the full `SzEntityData` instead of just the `SzEntityRecord`
 - Old behavior(to return just `SzEntityRecord` instead of `SzEntityData`) relocated from `SzSearchService.getEntityByRecordId` to `SzSearchService.getRecordById`
-- Various new CSS Variables added for styling granularity relevant to https://github.com/Senzing/entity-search-web-app/issues/213
+- Various new CSS Variables added for styling granularity relevant to https://github.com/senzing-garage/entity-search-web-app/issues/213
 
 relevant tickets: #232 #233 #235
 
 ## [2.2.4] - 2021-08-06
 
-- [API Client package](https://github.com/Senzing/rest-api-client-ng/releases) updated to version [2.3.0](https://github.com/Senzing/rest-api-client-ng/releases/tag/2.3.0)
-- Compatibility updates for [Senzing OAS 2.7.0](https://github.com/Senzing/senzing-rest-api-specification/blob/master/CHANGELOG.md#270---2021-07-22) specification
-- Compatibility updates for [Senzing Rest Server@2.7.0](https://github.com/Senzing/senzing-api-server/blob/master/CHANGELOG.md#270---2021-07-22)
+- [API Client package](https://github.com/senzing-garage/rest-api-client-ng/releases) updated to version [2.3.0](https://github.com/senzing-garage/rest-api-client-ng/releases/tag/2.3.0)
+- Compatibility updates for [Senzing OAS 2.7.0](https://github.com/senzing-garage/senzing-rest-api-specification/blob/master/CHANGELOG.md#270---2021-07-22) specification
+- Compatibility updates for [Senzing Rest Server@2.7.0](https://github.com/senzing-garage/senzing-api-server/blob/main/CHANGELOG.md#270---2021-07-22)
 - Preferences has several models added to facilitate stateful storage of **Stream Loading** features found in the [POC Server] extensions:
   - `AdminStreamConnProperties`, `AdminStreamAnalysisConfig`, `AdminStreamLoadConfig`, `AdminStreamUploadRates` in src/lib/models/data-admin.ts
   - `SzAdminPrefs` added to `src/lib/services/sz-prefs.service.ts`
@@ -389,8 +389,8 @@ relevant tickets: #202
 
 ## [2.1.2] - 2020-11-03
 
-- API Client package updated to the [Senzing OAS 2.2.0](https://github.com/Senzing/senzing-rest-api-specification/releases/tag/2.2.0) specification.
-- Web Components code integrated as a child project in to the the `sdk-components-ng` repository. see ticket [#169](https://github.com/Senzing/sdk-components-ng/issues/169).
+- API Client package updated to the [Senzing OAS 2.2.0](https://github.com/senzing-garage/senzing-rest-api-specification/releases/tag/2.2.0) specification.
+- Web Components code integrated as a child project in to the the `sdk-components-ng` repository. see ticket [#169](https://github.com/senzing-garage/sdk-components-ng/issues/169).
 Documentation for `@senzing/sdk-components-web` now [available here](http://hub.senzing.com/sdk-components-ng/additional-documentation/web-components.html).
 - Bugfixes: #169, #170, #173, #174, #175, #176, #177, #178, #179, #180, #181
 
@@ -409,17 +409,17 @@ Major updates to most dependency versions have also been made which should impro
 
 The following Senzing projects have also been updated to operate on Angular 10,
 see the following links for associated tickets:
-- [sdk-components-ng/issues/143](https://github.com/Senzing/sdk-components-ng/issues/143)
-- [rest-api-client-ng/issues/39](https://github.com/Senzing/rest-api-client-ng/issues/39)
-- [sdk-graph-components/issues/37](https://github.com/Senzing/sdk-graph-components/issues/37)
+- [sdk-components-ng/issues/143](https://github.com/senzing-garage/sdk-components-ng/issues/143)
+- [rest-api-client-ng/issues/39](https://github.com/senzing-garage/rest-api-client-ng/issues/39)
+- [sdk-graph-components/issues/37](https://github.com/senzing-garage/sdk-graph-components/issues/37)
 
 ## [2.0.0] - 2020-07-12
 
-Compatibility release for interacting with the 2.0.0 [senzing-rest-api-spec](https://github.com/Senzing/senzing-rest-api-specification) and [senzing-api-server](https://github.com/Senzing/senzing-api-server). For information on specifics of endpoint changes see below:
+Compatibility release for interacting with the 2.0.0 [senzing-rest-api-spec](https://github.com/senzing-garage/senzing-rest-api-specification) and [senzing-api-server](https://github.com/senzing-garage/senzing-api-server). For information on specifics of endpoint changes see below:
 
-- [@senzing/rest-api-client-ng@2.0.0](https://github.com/Senzing/rest-api-client-ng/releases/tag/2.0.0)
-- [senzing-rest-api-specification PR #44](https://github.com/Senzing/senzing-rest-api-specification/pull/44)
-- [senzing-api-server PR #172](https://github.com/Senzing/senzing-api-server/pull/172)
+- [@senzing/rest-api-client-ng@2.0.0](https://github.com/senzing-garage/rest-api-client-ng/releases/tag/2.0.0)
+- [senzing-rest-api-specification PR #44](https://github.com/senzing-garage/senzing-rest-api-specification/pull/44)
+- [senzing-api-server PR #172](https://github.com/senzing-garage/senzing-api-server/pull/172)
 
 ## [1.3.0] - 2020-02-06
 
@@ -452,7 +452,7 @@ Added in components that can be used for bulk analysis and bulk loading. The com
 - new examples:
   - example/admin-importing
 - relevant tickets
-  - [#133](https://github.com/Senzing/sdk-components-ng/issues/133)
+  - [#133](https://github.com/senzing-garage/sdk-components-ng/issues/133)
 
 ## [1.2.0] - 2019-12-11
 
@@ -483,15 +483,15 @@ New *"Search By Id"* component, *"record viewer"* component, search history type
 - new examples:
   - search-by-id
 - relevant tickets
-  - [#109](https://github.com/Senzing/sdk-components-ng/issues/109)
-  - [#110](https://github.com/Senzing/sdk-components-ng/issues/110)
-  - [#112](https://github.com/Senzing/sdk-components-ng/issues/112)
-  - [#114](https://github.com/Senzing/sdk-components-ng/issues/114)
-  - [#115](https://github.com/Senzing/sdk-components-ng/issues/115)
-  - [#121](https://github.com/Senzing/sdk-components-ng/issues/121)
-  - [#123](https://github.com/Senzing/sdk-components-ng/issues/123)
-  - [#125](https://github.com/Senzing/sdk-components-ng/issues/125)
-  - [#126](https://github.com/Senzing/sdk-components-ng/issues/126)
+  - [#109](https://github.com/senzing-garage/sdk-components-ng/issues/109)
+  - [#110](https://github.com/senzing-garage/sdk-components-ng/issues/110)
+  - [#112](https://github.com/senzing-garage/sdk-components-ng/issues/112)
+  - [#114](https://github.com/senzing-garage/sdk-components-ng/issues/114)
+  - [#115](https://github.com/senzing-garage/sdk-components-ng/issues/115)
+  - [#121](https://github.com/senzing-garage/sdk-components-ng/issues/121)
+  - [#123](https://github.com/senzing-garage/sdk-components-ng/issues/123)
+  - [#125](https://github.com/senzing-garage/sdk-components-ng/issues/125)
+  - [#126](https://github.com/senzing-garage/sdk-components-ng/issues/126)
 
 ## [1.1.0] - 2019-11-11
 
@@ -507,8 +507,8 @@ New *"Search By Id"* component, *"record viewer"* component, search history type
 - modified existing SzGraphComponent code, adding all new properties to keep feature parity with SzStandaloneGraphComponent's implementation.
 - added new *layout-rail* layout for ... well, exactly what it sounds like, a rail version of the entity detail component.
 - relevant tickets
-  - [#105](https://github.com/Senzing/sdk-components-ng/issues/105)
-  - [#104](https://github.com/Senzing/sdk-components-ng/issues/104)
+  - [#105](https://github.com/senzing-garage/sdk-components-ng/issues/105)
+  - [#104](https://github.com/senzing-garage/sdk-components-ng/issues/104)
 
 ## [1.0.9] - 2019-09-23
 
@@ -524,18 +524,18 @@ New *"Search By Id"* component, *"record viewer"* component, search history type
 - Text highlighting no longer triggers click-thru
 - Search identifiers drop-down should auto-update on api config change
 - relevant tickets:
-  - [#102](https://github.com/Senzing/sdk-components-ng/issues/102)
-  - [#100](https://github.com/Senzing/sdk-components-ng/issues/100)
-  - [#96](https://github.com/Senzing/sdk-components-ng/issues/96)
-  - [#94](https://github.com/Senzing/sdk-components-ng/issues/94)
-  - [#92](https://github.com/Senzing/sdk-components-ng/issues/92)
-  - [#90](https://github.com/Senzing/sdk-components-ng/issues/90)
-  - [#88](https://github.com/Senzing/sdk-components-ng/issues/88)
-  - [#86](https://github.com/Senzing/sdk-components-ng/issues/86)
-  - [#84](https://github.com/Senzing/sdk-components-ng/issues/84)
-  - [#82](https://github.com/Senzing/sdk-components-ng/issues/82)
-  - [#79](https://github.com/Senzing/sdk-components-ng/issues/79)
-  - [#78](https://github.com/Senzing/sdk-components-ng/issues/78)
+  - [#102](https://github.com/senzing-garage/sdk-components-ng/issues/102)
+  - [#100](https://github.com/senzing-garage/sdk-components-ng/issues/100)
+  - [#96](https://github.com/senzing-garage/sdk-components-ng/issues/96)
+  - [#94](https://github.com/senzing-garage/sdk-components-ng/issues/94)
+  - [#92](https://github.com/senzing-garage/sdk-components-ng/issues/92)
+  - [#90](https://github.com/senzing-garage/sdk-components-ng/issues/90)
+  - [#88](https://github.com/senzing-garage/sdk-components-ng/issues/88)
+  - [#86](https://github.com/senzing-garage/sdk-components-ng/issues/86)
+  - [#84](https://github.com/senzing-garage/sdk-components-ng/issues/84)
+  - [#82](https://github.com/senzing-garage/sdk-components-ng/issues/82)
+  - [#79](https://github.com/senzing-garage/sdk-components-ng/issues/79)
+  - [#78](https://github.com/senzing-garage/sdk-components-ng/issues/78)
 
 ## [1.0.8] - 2019-07-30
 
@@ -548,12 +548,12 @@ New *"Search By Id"* component, *"record viewer"* component, search history type
 - fix for identifier searches sending the wrong parameter format to the api server
 - fix for PDF service ignoring filename parameter
 - relevant issues:
-  - [#74](https://github.com/Senzing/sdk-components-ng/issues/74)
-  - [#71](https://github.com/Senzing/sdk-components-ng/issues/71)
-  - [#70](https://github.com/Senzing/sdk-components-ng/issues/70)
-  - [#65](https://github.com/Senzing/sdk-components-ng/issues/65)
-  - [#67](https://github.com/Senzing/sdk-components-ng/issues/67)
-  - [#69](https://github.com/Senzing/sdk-components-ng/issues/69)
+  - [#74](https://github.com/senzing-garage/sdk-components-ng/issues/74)
+  - [#71](https://github.com/senzing-garage/sdk-components-ng/issues/71)
+  - [#70](https://github.com/senzing-garage/sdk-components-ng/issues/70)
+  - [#65](https://github.com/senzing-garage/sdk-components-ng/issues/65)
+  - [#67](https://github.com/senzing-garage/sdk-components-ng/issues/67)
+  - [#69](https://github.com/senzing-garage/sdk-components-ng/issues/69)
 
 ## [1.0.7] - 2019-07-19
 
@@ -569,7 +569,7 @@ New *"Search By Id"* component, *"record viewer"* component, search history type
 ### Added to 1.0.6
 
 - added "print to PDF" service.
-- now uses separate [sdk-graph-components](https://github.com/senzing/sdk-graph-components) package for embedded graphs.
+- now uses separate [sdk-graph-components](https://github.com/senzing-garage/sdk-graph-components) package for embedded graphs.
 - Removed all graph components from package and moved code to /deprecated folder. will be removed in future release.
 - Update all graph component references to use separate package namespace
 - Changed default api server port to 8080, this way you can run the services directly against a default docker image of the senzing-api-server. factors in to e2e.
@@ -577,11 +577,11 @@ New *"Search By Id"* component, *"record viewer"* component, search history type
 - Added better css classes to components to allow for more precise e2e test cases
 - bugfix for constant redraw issue on "possible matches" node #47
 - relevant issues:
-  - [#39](https://github.com/Senzing/sdk-components-ng/issues/39)
-  - [#47](https://github.com/Senzing/sdk-components-ng/issues/47)
-  - [#56](https://github.com/Senzing/sdk-components-ng/issues/56)
-  - [#60](https://github.com/Senzing/sdk-components-ng/issues/60)
-  - [#63](https://github.com/Senzing/sdk-components-ng/issues/63)
+  - [#39](https://github.com/senzing-garage/sdk-components-ng/issues/39)
+  - [#47](https://github.com/senzing-garage/sdk-components-ng/issues/47)
+  - [#56](https://github.com/senzing-garage/sdk-components-ng/issues/56)
+  - [#60](https://github.com/senzing-garage/sdk-components-ng/issues/60)
+  - [#63](https://github.com/senzing-garage/sdk-components-ng/issues/63)
 
 ## [1.0.5] - 2019-06-05
 
@@ -589,9 +589,9 @@ New *"Search By Id"* component, *"record viewer"* component, search history type
 
 fixes, features for:
 
-- [#26](https://github.com/Senzing/sdk-components-ng/issues/26)
-- [#38](https://github.com/Senzing/sdk-components-ng/issues/38)
-- [#40](https://github.com/Senzing/sdk-components-ng/issues/40)
+- [#26](https://github.com/senzing-garage/sdk-components-ng/issues/26)
+- [#38](https://github.com/senzing-garage/sdk-components-ng/issues/38)
+- [#40](https://github.com/senzing-garage/sdk-components-ng/issues/40)
 
 ![2019-06-05_130246](https://user-images.githubusercontent.com/13721038/58986445-3f63f080-8792-11e9-913e-137253d54b7e.png)
 
