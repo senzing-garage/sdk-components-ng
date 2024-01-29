@@ -6,7 +6,7 @@
   "license" : "SEE LICENSE IN LICENSE",
   "repository": {
     "type" : "git",
-    "url" : "https://github.com/Senzing/sdk-components-ng"
+    "url" : "https://github.com/senzing-garage/sdk-components-ng"
   },
   "homepage" :"https://senzing.github.io/sdk-components-ng/",
   "dependencies": {
