@@ -3,6 +3,7 @@
 @import "./graph";
 @import "./why";
 @import "./how-rc";
+@import "./data-table";
 
 [class^="senzing-"], [class*=" senzing-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
@@ -238,6 +239,12 @@ mat-chip-listbox.match-keys {
     .sz-sdk-tooltip {
       opacity: 0;
     }
+  }
+}
+.sz-g-flexbox-vertical {
+  .mat-mdc-menu-content.mdc-list {
+    display: flex;
+    flex-direction: column;
   }
 }
 

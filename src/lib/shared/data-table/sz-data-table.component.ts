@@ -28,12 +28,16 @@ export class SzDataTable implements OnInit, OnDestroy {
   private _cols: Map<string,string>;
   /** controlling the column order is easier to do as a map since were just using those in css */
   private _colOrder: Map<string,number>;
+  private _selectableColumns: string[];
+  private _selectedColumns: Map<string,string>;
   private _fieldOrder: string[];
-  private _sortBy: string;
   private _columnResizing     = false;
   private _columnBeingResized: HTMLElement;
   private _colSizes: Map<string,string> = new Map<string, string>();
-  private _sortOrder: 'DESC' | 'ASC' = 'ASC';
+  private _sortBy: string;
+  private _sortDirection: 'DESC' | 'ASC' = 'ASC';
+  private _sortOrder: Map<number, number> = new Map<number, number>();
+  private _hiddenColumns: string[] = [];
 
   @Input()
   set data(value: any[]){
@@ -47,20 +51,57 @@ export class SzDataTable implements OnInit, OnDestroy {
           console.log('set column order: ', _cOrder);
         }
     }
+    if(!this._selectedColumns || this._selectedColumns && this._selectedColumns.size < 1) {
+      // select all by default
+      this._selectedColumns = new Map<string, string>(this._cols);
+    }
   }
   get data() {
     return this._data;
   }
-  get cols() {
-    let retVal = this._cols ? this._cols : [];
+  @Input()
+  set columns(value: string[] |  string){
+    if((value as string[]).length === 1){
+      this._selectableColumns = [(value as string[])[0]];
+    } else if((value as string[]).length > 1){
+      this._selectableColumns = (value as string[]);
+    } else if((value as string).indexOf(',') > -1){
+      // string as 'field1,field2'
+      let _v = (value as string).trim().split(',').map((_f)=>{
+        return _f.trim();
+      }).filter((_fv)=>{
+        return _fv !== null && _fv !== '';
+      });
+      this._selectableColumns = _v;
+    } else if((value as string).trim().length > 0){
+      this._selectableColumns = [(value as string)];
+    }
+  }
+  get selectableColumns(): Map<string,string> {
+    let retVal = this._cols ? this._cols : new Map<string,string>();
+    if(this._selectableColumns && this._selectableColumns.length > 0) {
+      // only return columns in data AND in selectable list
+      let _pear = new Map<string,string>(
+        [...retVal]
+        .filter(([k,v])=>{
+          return this._selectableColumns.includes(k);
+        }));
+      if(_pear.size > 0){
+        retVal = _pear;
+      }
+    }
+    return retVal;
+  }
+  get selectedColumns(): Map<string,string> {
+    let retVal = this._selectedColumns && this._selectedColumns.size > 0 ? this._selectedColumns : (this._cols ? this._cols : new Map<string,string>());
     return retVal;
   }
   get gridStyle(): string {
     let retVal = '';
-    if(this._cols && this._cols.size > 0) {
+    if(this._selectedColumns && this._selectedColumns.size > 0) {
         // append default col values
         retVal += 'grid-template-columns:';
-        this._cols.forEach((value, key)=>{
+        this._selectedColumns.forEach((value, key)=>{
           let _colSize = this._colSizes && this._colSizes.has(key) ? this._colSizes.get(key) : '100px';
           retVal += ' minmax('+_colSize+',auto)';
         });
@@ -74,8 +115,8 @@ export class SzDataTable implements OnInit, OnDestroy {
     //console.log(`grid style:`, retVal);
     return retVal;
   }
-  get sortOrder(): 'DESC' | 'ASC' {
-    return this._sortOrder;
+  get sortDirection(): 'DESC' | 'ASC' {
+    return this._sortDirection;
   }
   get numberOfColumns() {
     return this._cols && this._cols.size > 0 ? this._cols.size : 0;
@@ -117,8 +158,29 @@ export class SzDataTable implements OnInit, OnDestroy {
               retVal.set(fName, indy);
           })
       }
-  });
-  return retVal;
+    });
+    return retVal;
+  }
+
+  isColumnSelected(fieldName: string) {
+    let retVal = this._selectedColumns && this._selectedColumns.size > 0 ? this._selectedColumns.has(fieldName) : false;
+    return retVal;
+  }
+
+  selectColumn(fieldName: string, selected: boolean) {
+    if(!this._selectedColumns || this._selectedColumns === undefined) {
+      this._selectedColumns = new Map<string, string>();
+    }
+    console.log(`selectColumn(${fieldName}, ${selected})`, this._selectedColumns.get(fieldName), this._cols.get(fieldName));
+
+    if(selected === true && ((this._selectedColumns && !this._selectedColumns.has(fieldName)))) {
+      let _mKey = fieldName;
+      let _mVal = this._cols.has(fieldName) ? this._cols.get(fieldName) : this.breakWordOnCamelCase(fieldName);
+      this._selectedColumns.set(_mKey, _mVal);
+    } else if(selected === false && this._selectedColumns.has(fieldName)) {
+      this._selectedColumns.delete(fieldName);
+    }
+    console.log('updated selected columns: ', this._selectedColumns);
   }
 
   breakWordOnCamelCase(value: string): string {
@@ -132,7 +194,7 @@ export class SzDataTable implements OnInit, OnDestroy {
   }
 
   columnStyle(fieldName: string): string {
-    let retVal = 'border: 1px solid #666;';
+    let retVal = '';
     if(this._colOrder && this._colOrder.has(fieldName)) {
       retVal += 'order: '+ this._colOrder.get(fieldName)+';';
     }
@@ -161,9 +223,12 @@ export class SzDataTable implements OnInit, OnDestroy {
   isSortedBy(fieldName: string) {
     return this._sortBy !== undefined && this._sortBy === fieldName;
   }
-  sortBy(fieldName: string, sortOrder: 'DESC' | 'ASC') {
-    this._sortBy    = fieldName;
-    this._sortOrder = sortOrder;
+  sortBy(fieldName: string, sortDirection: 'DESC' | 'ASC') {
+    this._sortBy          = fieldName;
+    this._sortDirection   = sortDirection;
+  }
+  showColumnSelector() {
+    
   }
   onColMouseDown(fieldName: string, event: MouseEvent) {
     // listen for mousemove
@@ -227,5 +292,10 @@ export class SzDataTable implements OnInit, OnDestroy {
       // set width for column
       console.log(`resize`, this._columnBeingResized);
     }
+  }
+  getRowOrderFromData(data): Map<string,number> {
+    let retVal = new Map<string, number>();
+
+    return retVal;
   }
 }

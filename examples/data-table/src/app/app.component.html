@@ -1,9 +1,8 @@
 <div style="text-align:left; font-weight: bold; font-size: 1.5em">
-  @senzing/sdk-components-ng/examples/search-with-results-and-details
+  @senzing/sdk-components-ng/examples/data-table
 </div>
 <div style="text-align:left; text-decoration: italic; font-size: 0.8em; margin: 2px 0 10px 0;">
-  An example Angular app showing usage of the sz-search, sz-search-results,
-  and sz-entity-detail components working together
+  An example Angular app showing usage of the sz-search, and sz-data-table
 </div>
 
 <!-- start search box -->
@@ -23,17 +22,8 @@
 </div>
 <!-- end search box -->
 <!-- start data table results -->
-<sz-data-table></sz-data-table>
-<!--  end data table results  -->
-
-<!-- start search results -->
 <div class="component-example">
-  <sz-search-results *ngIf="showSearchResults" 
-  [results]="currentSearchResults" 
-  [parameters]="currentSearchParameters"
-  showWhyComparisonButton="false" 
-  showHowButton="true"
-  (howButtonClick)="onHowButtonClick($event)"
-  (resultClick)="onSearchResultClick($event)"></sz-search-results>
+  <sz-data-table *ngIf="showSearchResults"
+  [data]="currentSearchResults"></sz-data-table>
 </div>
-<!-- end search results -->
+<!--  end data table results  -->

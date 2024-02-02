@@ -1,18 +1,34 @@
 <!--<h2>gridStyle: "{{gridStyle}}"</h2>-->
+<div class="column-picker-button">
+  <button mat-raised-button 
+    matTooltip="Choose Columns.." 
+    matTooltipPosition="left"
+    [matMenuTriggerFor]="columnsSelector" aria-label="Choose Columns">
+    <div class="icon-columns-select mdi--view-column-outline" (click)="showColumnSelector()"></div>
+  </button>
+</div>
+<mat-menu #columnsSelector="matMenu" class="sz-g-flexbox-vertical" yPosition="below" (click)="$event.stopPropagation();">
+  <button mat-menu-item *ngFor="let col of this.selectableColumns | keyvalue; let i = index"
+    [attr.data-col-order]="columnOrder(col.key)"
+    [style.order]="columnOrder(col.key)"
+    (click)="$event.stopPropagation();">
+    <mat-checkbox [checked]="isColumnSelected(col.key)" (change)="selectColumn(col.key, $event.checked)" (click)="$event.stopPropagation();">{{col.value}}</mat-checkbox>
+  </button>
+</mat-menu>
 <table class="data-table" [style]="gridStyle">
     <thead>
       <tr style="order: 0" (mousemove)="onHeaderMouseMove($event)">
-        <ng-container *ngFor="let col of this.cols | keyvalue; let i = index">
+        <ng-container *ngFor="let col of this.selectedColumns | keyvalue; let i = index">
           <th 
             [class.sorted]="isSortedBy(col.key)" 
-            [class.sorted-asc]="sortOrder === 'ASC'" 
-            [class.sorted-desc]="sortOrder === 'DESC'"
+            [class.sorted-asc]="sortDirection === 'ASC'" 
+            [class.sorted-desc]="sortDirection === 'DESC'"
             [style]="columnStyle(col.key)"
             [attr.data-field-name]="col.key"
             [attr.data-col-order]="columnOrder(col.key)"
             (mouseup)="onColMouseUp(col.key, $event)"
             >
-            {{col.value}}({{columnOrder(col.key)}})
+            {{col.value}}
             <span class="icon-sort descending mdi--sort-descending" (click)="sortBy(col.key,'DESC')"></span>
             <span class="icon-sort ascending mdi--sort-ascending" (click)="sortBy(col.key,'ASC')"></span>
             <div class="handle-resize"
@@ -26,7 +42,7 @@
     </thead>
     <tbody>
         <tr *ngFor="let row of this.data; let rI=index" [style.order]="rI+1">
-            <td *ngFor="let col of this.cols | keyvalue;" [style]="cellStyle(col.key, rI+1)">{{row[col.key]}}</td>
+            <td *ngFor="let col of this.selectedColumns | keyvalue;" [style]="cellStyle(col.key, rI+1)">{{row[col.key]}}</td>
         </tr>
     </tbody>
   </table>
