@@ -30,9 +30,69 @@
             font-weight: normal;
             font-size: 1.1rem;
             color: white;
+            /*resize: horizontal;*/
+            min-width: 100px;
+            &:active {
+                /*resize: horizontal;*/
+            }
 
-            td {
+            /*td {
                 resize: horizontal;
+            }*/
+
+            .icon-sort {
+                position: absolute;
+                right: 5px;
+                display: none;
+                cursor: pointer;
+            }
+            .handle-resize {
+                width: 2px;
+                background-color: #00f;
+                cursor: ew-resize;
+                display: block;
+                position: absolute;
+                right: 0px;
+                top: 0px;
+                height: 100%;
+            }
+
+            &:hover {
+                .icon-sort {
+                    &.ascending {
+                        display: inline-block;
+                    }
+                }
+            }
+
+            /* don't show icon for sort option already selected */
+            &.sorted {
+                &.sorted-asc {
+                    .icon-sort.ascending {
+                        display: inline-block;
+                    }
+                    &:hover {
+                        .icon-sort.ascending {
+                            display: none;
+                        }
+                        .icon-sort.descending {
+                            display: inline-block;
+                        }
+                    }
+                }
+                &.sorted-desc {
+                    .icon-sort.descending {
+                        display: inline-block;
+                    }
+                    &:hover {
+                        .icon-sort.descending {
+                            display: none;
+                        }
+                        .icon-sort.ascending {
+                            display: inline-block;
+                        }
+                    }
+                }
             }
         }
         
@@ -49,5 +109,38 @@
         tr:nth-child(even) td {
             background: #f8f6ff;
         }
+    }
+    .leftdragbar {
+        background-color: black;
+        grid-area: leftdragbar;
+        cursor: ew-resize;
+    }
+
+    /* icons */
+    .mdi--sort-descending {
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M19 7h3l-4-4l-4 4h3v14h2M2 17h10v2H2M6 5v2H2V5m0 6h7v2H2z'/%3E%3C/svg%3E");
+        background-color: currentColor;
+        -webkit-mask-image: var(--svg);
+        mask-image: var(--svg);
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+    }
+    .mdi--sort-ascending {
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M19 17h3l-4 4l-4-4h3V3h2M2 17h10v2H2M6 5v2H2V5m0 6h7v2H2z'/%3E%3C/svg%3E");
+        background-color: currentColor;
+        -webkit-mask-image: var(--svg);
+        mask-image: var(--svg);
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
     }
 }

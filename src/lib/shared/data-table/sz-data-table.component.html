@@ -1,13 +1,32 @@
 <!--<h2>gridStyle: "{{gridStyle}}"</h2>-->
 <table class="data-table" [style]="gridStyle">
     <thead>
-      <tr>
-        <th *ngFor="let col of this.cols | keyvalue; let i = index">{{col.value}}</th>
+      <tr style="order: 0" (mousemove)="onHeaderMouseMove($event)">
+        <ng-container *ngFor="let col of this.cols | keyvalue; let i = index">
+          <th 
+            [class.sorted]="isSortedBy(col.key)" 
+            [class.sorted-asc]="sortOrder === 'ASC'" 
+            [class.sorted-desc]="sortOrder === 'DESC'"
+            [style]="columnStyle(col.key)"
+            [attr.data-field-name]="col.key"
+            [attr.data-col-order]="columnOrder(col.key)"
+            (mouseup)="onColMouseUp(col.key, $event)"
+            >
+            {{col.value}}({{columnOrder(col.key)}})
+            <span class="icon-sort descending mdi--sort-descending" (click)="sortBy(col.key,'DESC')"></span>
+            <span class="icon-sort ascending mdi--sort-ascending" (click)="sortBy(col.key,'ASC')"></span>
+            <div class="handle-resize"
+            (mousedown)="onResizeMouseDown(col.key, $event)"
+            (mouseup)="onResizeMouseUp(col.key, $event)"></div>
+          </th>
+          <!--<div class="leftdragbar" onmousedown="startColResize(col.key)" onmouseup="endColResize(col.key)"></div>-->
+        </ng-container>
+        
       </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let row of this.data">
-            <td *ngFor="let col of this.cols | keyvalue;">{{row[col.key]}}</td>
+        <tr *ngFor="let row of this.data; let rI=index" [style.order]="rI+1">
+            <td *ngFor="let col of this.cols | keyvalue;" [style]="cellStyle(col.key, rI+1)">{{row[col.key]}}</td>
         </tr>
     </tbody>
   </table>
