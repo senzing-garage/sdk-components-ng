@@ -1,7 +1,15 @@
-import { Component, Input, OnInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, HostBinding, Input, Output, OnInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef, AfterContentInit, AfterViewInit } from '@angular/core';
 import { SzGraphPrefs, SzPrefsService } from '../../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { camelToKebabCase, underscoresToDashes } from '../../common/utils';
+import * as e from 'express';
+
+export interface SzDataTableCellEvent {
+  "key": string,
+  "value": any,
+  "event"?: MouseEvent
+}
 
 /**
  * Embeddable Data Table Component
@@ -21,13 +29,15 @@ import { Subject } from 'rxjs';
   templateUrl: './sz-data-table.component.html',
   styleUrls: ['./sz-data-table.component.scss']
 })
-export class SzDataTable implements OnInit, OnDestroy {
+export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
   private _data: any[];
+  private _cellContentSizes = new Map<HTMLElement, number[]>();
   private _cols: Map<string,string>;
   /** controlling the column order is easier to do as a map since were just using those in css */
   private _colOrder: Map<string,number>;
+  private _expandedCells = new Map<string, Map<HTMLElement, number>>();
   private _selectableColumns: string[];
   private _selectedColumns: Map<string,string>;
   private _fieldOrder: string[];
@@ -38,6 +48,9 @@ export class SzDataTable implements OnInit, OnDestroy {
   private _sortDirection: 'DESC' | 'ASC' = 'ASC';
   private _sortOrder: Map<number, number> = new Map<number, number>();
   private _hiddenColumns: string[] = [];
+
+  // adds attribute to tag itself
+  @HostBinding('attr.sz-data-table')  readOnly = '';
 
   @Input()
   set data(value: any[]){
@@ -55,6 +68,8 @@ export class SzDataTable implements OnInit, OnDestroy {
       // select all by default
       this._selectedColumns = new Map<string, string>(this._cols);
     }
+    // reset these so we can get valid values
+    this._cellContentSizes = new Map<HTMLElement, number[]>();
   }
   get data() {
     return this._data;
@@ -112,9 +127,19 @@ export class SzDataTable implements OnInit, OnDestroy {
         });
         retVal += ';';*/
     }
+    /*if(this.data) {
+      retVal += 'grid-template-rows: min-content';
+      this.data.forEach((rowData, index)=>{
+        // if row has expanded items, set row to tallest element
+        // set height to that items ideal height
+        retVal += ' 30px';
+      });
+    }*/
     //console.log(`grid style:`, retVal);
     return retVal;
   }
+  @Output() cellClick: EventEmitter<SzDataTableCellEvent> = new EventEmitter<SzDataTableCellEvent>();
+
   get sortDirection(): 'DESC' | 'ASC' {
     return this._sortDirection;
   }
@@ -124,7 +149,12 @@ export class SzDataTable implements OnInit, OnDestroy {
 
   constructor() {}
   ngOnInit() {}
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+    // we need to wait until we have data before trying to 
+    // get the real sizes of inner content
+    this.resetCellSizes();
+  }
+  //ngAfterContentInit
 
   /**
    * unsubscribe when component is destroyed
@@ -142,7 +172,7 @@ export class SzDataTable implements OnInit, OnDestroy {
         if(fields && fields.length > 0){
             // the beauty of using a map is we don't have to care about whether or not value already exists
             fields.forEach((fName) => {
-                retVal.set(fName, this.breakWordOnCamelCase(fName));
+                retVal.set(fName, this.breakWordOnCamelCase(fName, true));
             })
         }
     });
@@ -175,7 +205,7 @@ export class SzDataTable implements OnInit, OnDestroy {
 
     if(selected === true && ((this._selectedColumns && !this._selectedColumns.has(fieldName)))) {
       let _mKey = fieldName;
-      let _mVal = this._cols.has(fieldName) ? this._cols.get(fieldName) : this.breakWordOnCamelCase(fieldName);
+      let _mVal = this._cols.has(fieldName) ? this._cols.get(fieldName) : this.breakWordOnCamelCase(fieldName, true);
       this._selectedColumns.set(_mKey, _mVal);
     } else if(selected === false && this._selectedColumns.has(fieldName)) {
       this._selectedColumns.delete(fieldName);
@@ -183,12 +213,12 @@ export class SzDataTable implements OnInit, OnDestroy {
     console.log('updated selected columns: ', this._selectedColumns);
   }
 
-  breakWordOnCamelCase(value: string): string {
+  breakWordOnCamelCase(value: string, capitalize?: true): string {
     const humps = value.replace(/([a-z])([A-Z])/g, '$1 $2').split(" ")
     let retVal = "";
 
-    humps.forEach(word => {    
-        retVal = retVal + word.charAt(0).toUpperCase() + word.slice(1) + " "
+    humps.forEach(word => {
+      retVal = capitalize ? (retVal + word.charAt(0).toUpperCase() + word.slice(1) + " ") : (retVal + word + " ");
     });
     return retVal;
   }
@@ -209,6 +239,53 @@ export class SzDataTable implements OnInit, OnDestroy {
     }
     return retVal;
   }
+  cellClass(fieldName: string, prefix?: string, suffix?: string) {
+    return (prefix !== undefined ? prefix+ '-' : '')+ underscoresToDashes(camelToKebabCase(fieldName)) + (suffix !== undefined ? '-' + suffix : '')
+  }
+  cellValue(value: unknown | unknown[], fieldName?: string) {
+    let retVal = value;
+    if(!retVal) { return retVal; }
+    // get renderer for specific type
+    if(Array.isArray(value) ) {
+      retVal = value.join(', ');
+    } else if (value.toString ) {
+      return value.toString();
+    }
+    // if [object Object] is in output something needs to be rendered better
+    if(retVal && (retVal as string).indexOf('object Object') > -1) {
+      // is json, check if array of object
+      if(retVal && (retVal as string).indexOf('[object Object]') > -1) {
+        // array of objects
+        if(fieldName === 'features'){
+          //console.log(`features('${(retVal as string)}'): `,);
+        }
+        let retStr = [];
+        (value as unknown[]).forEach((_v)=>{
+          // is value an object?
+          if(JSON.stringify(_v, null, 4).indexOf('{') > -1) {
+            // iterate over each key
+            for(const k in _v as object) {
+              retStr.push('<label>'+this.breakWordOnCamelCase(k, true)+'</label>:'+ (_v as object)[k]);
+            }
+          } else if(JSON.stringify(_v, null, 4).indexOf('[object Object]') > -1){
+            // array of objects, we better just call this fn recursively
+            retStr.push(this.cellValue(_v, fieldName));
+          } else {
+            // not object
+            retStr.push(value.toString());
+          }
+        });
+        if(fieldName === 'features'){
+          console.log(`features('${(retVal as string)}'): `,retStr);
+        }
+        retVal = retStr && retStr.length > 1 ? '<div>'+retStr.join('</div><div>')+'</div>' : retStr.length === 1 ? retStr[1] : retVal;
+      } else {
+        // assume json structure
+        retVal = JSON.stringify(value, null, 4);
+      }
+    }
+    return retVal;
+  }
   columnOrder(fieldName: string): number {
     let retVal = 0;
     if(this._colOrder){
@@ -226,9 +303,6 @@ export class SzDataTable implements OnInit, OnDestroy {
   sortBy(fieldName: string, sortDirection: 'DESC' | 'ASC') {
     this._sortBy          = fieldName;
     this._sortDirection   = sortDirection;
-  }
-  showColumnSelector() {
-    
   }
   onColMouseDown(fieldName: string, event: MouseEvent) {
     // listen for mousemove
@@ -284,7 +358,7 @@ export class SzDataTable implements OnInit, OnDestroy {
           //this._columnBeingResized.style.width = colWidth+'px';
           this._colSizes.set(colName, colWidth+'px');
         }
-        console.log(`resize "${colName}": ${colWidth}  ${cellOffset}/${mouseX}`);
+        //console.log(`resize "${colName}": ${colWidth}  ${cellOffset}/${mouseX}`);
       }
     }
     return;
@@ -297,5 +371,111 @@ export class SzDataTable implements OnInit, OnDestroy {
     let retVal = new Map<string, number>();
 
     return retVal;
+  }
+  hasExpandedCells() {
+    return false;
+  }
+  onCellClick(cellName: string, data: any, event?: MouseEvent, element?: HTMLElement) { 
+    console.log(`on${cellName}Click: `, event, data);
+    this.cellClick.emit({key: cellName, value: data});
+    if(element) {
+      console.log('element: ', element, element.offsetHeight, element.scrollHeight);
+    }
+  }
+  resetCellSizes() {
+    this._cellContentSizes = new Map<HTMLElement, number[]>();
+  }
+  getCellSizes(element?: HTMLElement) {
+    if(element){
+      console.log(`cell size: `, this._cellContentSizes.get(element));
+    } else {
+      console.log(`cell sizes: `, this._cellContentSizes);
+    }
+  }
+  getContentHeight(element: HTMLElement) {
+    return element ? element.scrollHeight : undefined;
+  }
+  getCellContentSizeHeight(element: HTMLElement) {
+    // get from map
+    let retVal;
+    if(element && this._cellContentSizes.has(element)){
+      return this._cellContentSizes.get(element)[1];
+    }
+    return retVal;
+  }
+  isCellTruncated(element: HTMLElement) {
+    return element ? (element && (element.offsetHeight+5) < element.scrollHeight) : false;
+  }
+  isCellExpandable(element: HTMLElement) {
+    let _sizes = [];
+    if(this._cellContentSizes.has(element)) {
+      // grab previous values
+      // we do this to avoid calculating whether or not
+      // something is collapseable after being expanded
+      _sizes = this._cellContentSizes.get(element);
+
+    } else if(element) {
+      _sizes = [element.offsetHeight+5, element.scrollHeight];
+      this._cellContentSizes.set(element, _sizes);
+    }
+    if(_sizes && _sizes.length > 0) {
+      return _sizes[0] < _sizes[1];
+    }
+    return false;
+  }
+  toggleCellExpansion(element: HTMLElement) {
+    if(element && element.hasAttribute && element.hasAttribute('data-row-index')) {
+      let rowId               = element.getAttribute('data-row-index');
+      let rowHasExpadedCells  = (this._expandedCells.has(rowId));
+      if(!rowHasExpadedCells) {
+        // easy-peasy, just add
+        this._expandedCells.set(rowId, new Map([[element, 0]]));
+      } else {
+        // check to see if cell exists
+        let cellAlreadyExists = this._expandedCells.get(rowId).has(element);
+        if(cellAlreadyExists) {
+          // expanded, remove it
+          this._expandedCells.get(rowId).delete(element);
+          console.log(`removed element from expanded `, element, this._expandedCells.get(rowId));
+        } else {
+          // expand
+          this._expandedCells.set(rowId, this._expandedCells.get(rowId).set(element, 0));
+          console.log('added element to expanded ', element, this._expandedCells.get(rowId));
+          console.log(`is cell expanded? `, this.isCellExpanded(element));
+        }
+      }
+    }
+    /*
+    if(this._expandedCells.has(rowId)) {
+      this._expandedCells.delete(element);
+    } else {
+      this._expandedCells.set(element, true);
+      // set all cells in row to a min-height of this cell
+      if(this._rowMinimumHeights.has(rId)) {
+        if(this._rowMinimumHeights.get(rId) < element.scrollHeight) {
+          this._rowMinimumHeights.set(rId, element.scrollHeight);
+        }
+      }
+      this._rowMinimumHeights.set(rId, element.scrollHeight)
+    }*/
+  }
+  public getRowId(data, index) {
+    // if reverse lookup map check that first 
+
+    // if it's not in there use the index
+    return index;
+  }
+  plus(value){ return value+1;}
+  isCellExpanded(element: HTMLElement, debug?: boolean) {
+    if(element && element.hasAttribute && element.hasAttribute('data-row-index')) {
+      let rowId = element.getAttribute('data-row-index');
+      let retVal = this._expandedCells.has(rowId) && this._expandedCells.get(rowId).has(element);
+      return retVal;
+    } else {
+      if(debug) {
+        console.warn('could not find row id on element, ', element.hasAttribute('data-row-index'), element);
+      }
+    }
+    return false;
   }
 }

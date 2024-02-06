@@ -52,3 +52,20 @@ body {
     color:#c0c0c0;
   }
 }
+
+sz-data-table[sz-data-table] .data-table {
+  tbody {
+    tr td.sz-dt-entity-id-cell{
+      cursor: pointer;
+      &:hover {
+        color: blue;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+sz-data-table tbody td.sz-dt-cell {
+  max-height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

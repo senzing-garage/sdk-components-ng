@@ -240,4 +240,8 @@ export class AppComponent implements AfterViewInit {
     console.log('onSearchParameterChange: ', searchParams);
     this.currentSearchParameters = searchParams;
   }
+  /** since data can be any format we have to use loose typing */
+  onCellClick(data: any) {
+    console.log(data);
+  }
 }

@@ -1,10 +1,17 @@
 <!--<h2>gridStyle: "{{gridStyle}}"</h2>-->
+<ng-template #sz_dt_context_menu>
+  <div class="sz-dt-header-context-menu" cdkMenu>
+    <button class="header-context-menu-item" cdkMenuItem>Show/Hide</button>
+    <button class="header-context-menu-item" cdkMenuItem>Shift Left</button>
+    <button class="header-context-menu-item" cdkMenuItem>Shift Right</button>
+  </div>
+</ng-template>
 <div class="column-picker-button">
   <button mat-raised-button 
     matTooltip="Choose Columns.." 
     matTooltipPosition="left"
     [matMenuTriggerFor]="columnsSelector" aria-label="Choose Columns">
-    <div class="icon-columns-select mdi--view-column-outline" (click)="showColumnSelector()"></div>
+    <div class="icon-columns-select mdi--view-column-outline"></div>
   </button>
 </div>
 <mat-menu #columnsSelector="matMenu" class="sz-g-flexbox-vertical" yPosition="below" (click)="$event.stopPropagation();">
@@ -15,11 +22,16 @@
     <mat-checkbox [checked]="isColumnSelected(col.key)" (change)="selectColumn(col.key, $event.checked)" (click)="$event.stopPropagation();">{{col.value}}</mat-checkbox>
   </button>
 </mat-menu>
+<button (click)="resetCellSizes()"> reset row cell sizes</button>
+<button (click)="getCellSizes()">get row cell sizes</button>
+
 <table class="data-table" [style]="gridStyle">
     <thead>
       <tr style="order: 0" (mousemove)="onHeaderMouseMove($event)">
         <ng-container *ngFor="let col of this.selectedColumns | keyvalue; let i = index">
           <th 
+            [cdkContextMenuTriggerFor]="sz_dt_context_menu"
+            [class]="'sz-dt-column '+cellClass(col.key, 'sz-dt-header','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
             [class.sorted]="isSortedBy(col.key)" 
             [class.sorted-asc]="sortDirection === 'ASC'" 
             [class.sorted-desc]="sortDirection === 'DESC'"
@@ -41,8 +53,28 @@
       </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let row of this.data; let rI=index" [style.order]="rI+1">
-            <td *ngFor="let col of this.selectedColumns | keyvalue;" [style]="cellStyle(col.key, rI+1)">{{row[col.key]}}</td>
+        <tr *ngFor="let row of this.data; let rI=index;" 
+        #rowRef
+        [attr.data-row-index]="rI+1" 
+        [class.hasExpandedCells]="hasExpandedCells(rowRef)"
+        [style.order]="rI+1">
+            <td #cellRef [attr.data-row-index]="rI+1" *ngFor="let col of this.selectedColumns | keyvalue" 
+              [style]="cellStyle(col.key, getRowId(row, rI+1))"
+              [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
+              [class.expandable]="isCellExpandable(cellRef)"
+              [class.expanded]="isCellExpanded(cellRef)"
+              [attr.data-cell-height]="getContentHeight(cellRef)"
+              [attr.data-content-height]="getCellContentSizeHeight(cellRef)"
+              (click)="onCellClick(col.key, row[col.key], $event, cellRef)">
+              <div class="cell-content" [innerHTML]="cellValue(row[col.key])"></div>
+              <svg xmlns="http://www.w3.org/2000/svg" 
+                height="24" 
+                viewBox="0 -960 960 960" 
+                width="24" 
+                class="min-max-toggle"
+                (click)="toggleCellExpansion(cellRef, getRowId(row, rI+1)); $event.stopPropagation();"
+                ><path d="M440-440v240h-80v-160H200v-80h240Zm160-320v160h160v80H520v-240h80Z"/></svg>
+            </td>
         </tr>
     </tbody>
   </table>

@@ -17,6 +17,14 @@ export function JSONScrubber(value: any): any {
     return JSON.parse(JSON.stringify(value, _repl));
   }
 }
+/** convert camelCase to snake-case */
+export function camelToKebabCase(str): string {
+  return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+}
+/** convert underscores to dashes */
+export function underscoresToDashes(str): string {
+  return str.replace(/_/g, '-');
+}
 /** convert value of any type who's value can be converted to boolean */
 export function parseBool(value: any): boolean {
   if (!value || value === undefined) {
