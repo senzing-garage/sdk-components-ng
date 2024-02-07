@@ -2,8 +2,7 @@ import { Component, HostBinding, Input, Output, OnInit, OnDestroy, EventEmitter,
 import { SzGraphPrefs, SzPrefsService } from '../../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { camelToKebabCase, underscoresToDashes } from '../../common/utils';
-import * as e from 'express';
+import { camelToKebabCase, underscoresToDashes, getMapKeyByValue } from '../../common/utils';
 
 export interface SzDataTableCellEvent {
   "key": string,
@@ -48,6 +47,37 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   private _sortDirection: 'DESC' | 'ASC' = 'ASC';
   private _sortOrder: Map<number, number> = new Map<number, number>();
   private _hiddenColumns: string[] = [];
+  
+  /** name of field in data to be used as the primary key 
+   * for storing reverse lookups, row state etc.
+   * @required
+  */
+  @Input()
+  get primaryKey() {
+    throw new Error('Attribute "primaryKey" is required');
+  }
+  set primaryKey(value: string){
+    let overwriteProperty = true;
+    // any time we change this we should check to make sure that it is valid
+    if(this._cols && this._cols.size > 0) {
+      // check to see if field is in the columns list
+      overwriteProperty = this._cols.has(value);
+    } else if(this._data && this._data.length > 0) {
+      /** 
+       * @TODO check to see if field is in the columns list
+       **/
+    }
+
+    // passed sanity checks
+    if(overwriteProperty) {
+      // overwrite default value that throws with value supplied
+      Object.defineProperty(this, 'primaryKey', {
+        value,
+        writable: true,
+        configurable: true,
+      });
+    }
+  }
 
   // adds attribute to tag itself
   @HostBinding('attr.sz-data-table')  readOnly = '';
@@ -111,16 +141,38 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
     let retVal = this._selectedColumns && this._selectedColumns.size > 0 ? this._selectedColumns : (this._cols ? this._cols : new Map<string,string>());
     return retVal;
   }
+  /** return ordered columns in sorted by value */
+  get orderedColumns(): Map<string, string> {
+    let retVal = this._cols;
+    if(this._colOrder) {
+      //retVal = [...this._colOrder.entries()].sort((a, b) => b[1] - a[1]);
+      retVal = new Map([...this._cols.entries()]
+      .sort((a, b) => {
+        return this._colOrder.get(a[0]) - this._colOrder.get(b[0]);
+      }));
+    }
+    return retVal;
+  }
   get gridStyle(): string {
     let retVal = '';
-    if(this._selectedColumns && this._selectedColumns.size > 0) {
+    if(this._cols && this._cols.size > 0) {
         // append default col values
         retVal += 'grid-template-columns:';
-        this._selectedColumns.forEach((value, key)=>{
+        let sortedCols = new Map([...this._selectedColumns.entries()]
+        .sort((a, b) => {
+          return this._colOrder.get(a[0]) - this._colOrder.get(b[0]);
+        }));
+
+        sortedCols.forEach((value, key)=>{
           let _colSize = this._colSizes && this._colSizes.has(key) ? this._colSizes.get(key) : '100px';
           retVal += ' minmax('+_colSize+',auto)';
         });
         retVal += '; ';
+        /*this._cols.forEach((value, key)=>{
+          let _colSize = this._colSizes && this._colSizes.has(key) ? this._colSizes.get(key) : '100px';
+          retVal += ' minmax('+_colSize+',auto)';
+        });
+        retVal += '; ';*/
         /*retVal += 'grid-template-areas:';
         this._cols.forEach((value, key)=>{
           retVal += ' col-'+key+' drag-'+key;
@@ -297,9 +349,107 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
     return retVal;
   }
 
+  moveColumn(fieldName: string, orderModifier: number) {
+    let currentIndex    = this._colOrder.get(fieldName);
+    let newIndex        = currentIndex + orderModifier;
+    let shiftLeft       = orderModifier === -1;
+    let shiftRight      = orderModifier === +1;
+
+    if(shiftLeft || shiftRight) {
+      // simple swap operation
+      // swap new position with current one
+      let _k            = getMapKeyByValue(this._colOrder, newIndex);
+      this._colOrder.set(_k, currentIndex);
+      this._colOrder.set(fieldName, newIndex);
+    //} else if(shiftRight) {
+      // swap 
+    } else {
+      // were probably jumping more than one item
+      if(newIndex === 0) {
+        // insert at front
+        let newOrderMap = new Map<string, number>()
+        console.log('insert at front');
+        this._colOrder.set(fieldName, newIndex);
+        this._colOrder.forEach((value, key)=>{
+          if(key !== fieldName) {
+            if(value > currentIndex) {
+              // decrement
+              this._colOrder.set(key, value-1);
+            } else {
+              // increment
+              this._colOrder.set(key, value+1);
+            }
+          }
+        });
+      }
+      // insert at new position, then every item 
+      // > (lowest new || old) old position && < new position needs to decrement
+    }
+    console.log(`reordered columns: `, this.orderedColumns, this._colOrder);
+  }
+
+  copyCellContent(cell: HTMLElement, json?: any) {
+    console.log(`copy cell content: `, cell);
+    if(typeof ClipboardItem === "undefined") {
+      console.warn('copy to clipboard is not available');
+      return;
+    }
+    if(cell) {
+      // get content
+      let contentNodes = cell.getElementsByClassName('cell-content');
+      let contentNode  = contentNodes.length > 0 ? contentNodes.item(0) : undefined;
+      if(contentNode) {
+        const content = json ? JSON.stringify(json, undefined, 4) : contentNode.innerHTML;
+        navigator.clipboard.writeText(content).then( (r) => {
+          (contentNode as HTMLElement).style.opacity = '0.4';
+          console.log('wrote to clipboard: ', contentNode, content);
+          setTimeout(() => {
+            (contentNode as HTMLElement).style.opacity = '1';
+          }, 80);
+        }, () => {
+            // Fallback in case the copy did not work
+            alert('could not copy');
+        });
+      }
+    }
+  }
+  copyRowContent(row: HTMLElement, json: any) {
+    console.log(`copy row content: `, row, json);
+    if(typeof ClipboardItem === "undefined") {
+      console.warn('copy to clipboard is not available');
+      return;
+    }
+    if(row) {
+      // get content
+        const content = JSON.stringify(json, undefined, 4);
+        navigator.clipboard.writeText(content).then( (r) => {
+          (row as HTMLElement).style.opacity = '0.4';
+          console.log('wrote to clipboard: ', content);
+          setTimeout(() => {
+            (row as HTMLElement).style.opacity = '1';
+          }, 80);
+        }, () => {
+            // Fallback in case the copy did not work
+            alert('could not copy');
+        });
+    }
+  }
+  minimizeCol(col: {value: string, key: string}) {
+    console.log(`minimize column: `, col);
+  }
+
+  isColumnVisible(fieldName: string) {
+    return this._selectedColumns && this._selectedColumns.has(fieldName) ? true : false;
+  }
+
+  isColumnHidden(fieldName: string) {
+    return !this.isColumnVisible(fieldName);
+  }
+
   isSortedBy(fieldName: string) {
     return this._sortBy !== undefined && this._sortBy === fieldName;
   }
+  
   sortBy(fieldName: string, sortDirection: 'DESC' | 'ASC') {
     this._sortBy          = fieldName;
     this._sortDirection   = sortDirection;
@@ -395,7 +545,10 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   getContentHeight(element: HTMLElement) {
     return element ? element.scrollHeight : undefined;
   }
-  getCellContentSizeHeight(element: HTMLElement) {
+  getCellHeight(element: HTMLElement) {
+    return element ? element.offsetHeight : undefined;
+  }
+  getCachedContentHeight(element: HTMLElement) {
     // get from map
     let retVal;
     if(element && this._cellContentSizes.has(element)){
@@ -417,6 +570,10 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
     } else if(element) {
       _sizes = [element.offsetHeight+5, element.scrollHeight];
       this._cellContentSizes.set(element, _sizes);
+    }
+    if(element) { 
+      // always grab the scroll height off live
+      _sizes[1] = element.scrollHeight;
     }
     if(_sizes && _sizes.length > 0) {
       return _sizes[0] < _sizes[1];

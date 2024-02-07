@@ -1,9 +1,38 @@
 <!--<h2>gridStyle: "{{gridStyle}}"</h2>-->
-<ng-template #sz_dt_context_menu>
+<ng-template #sz_dt_header_context_menu let-col>
   <div class="sz-dt-header-context-menu" cdkMenu>
-    <button class="header-context-menu-item" cdkMenuItem>Show/Hide</button>
-    <button class="header-context-menu-item" cdkMenuItem>Shift Left</button>
-    <button class="header-context-menu-item" cdkMenuItem>Shift Right</button>
+    <button class="header-context-menu-item" cdkMenuItem *ngIf="!isColumnHidden(col.key)" (click)="selectColumn(col.key, false)">Hide Column</button>
+    <button class="header-context-menu-item" cdkMenuItem *ngIf="isColumnHidden(col.key)" (click)="selectColumn(col.key, true)">Show Column</button>
+    <button class="header-context-menu-item" cdkMenuItem 
+      [cdkMenuTriggerFor]="sz_dt_header_column_order_context_menu"
+      [cdkMenuTriggerData]="{$implicit: col}"
+    >Column Order</button>
+    <button class="header-context-menu-item" cdkMenuItem 
+    [cdkMenuTriggerFor]="sz_dt_header_row_order_context_menu"
+    [cdkMenuTriggerData]="{$implicit: col}">Order By {{col.value}}</button>
+  </div>
+</ng-template>
+<ng-template #sz_dt_header_column_order_context_menu let-col>
+  <div class="sz-dt-header-context-menu submenu" cdkMenu>
+    <button class="header-context-menu-item" cdkMenuItem (click)="moveColumn(col.key, -1)">Move Left</button>
+    <button class="header-context-menu-item" cdkMenuItem (click)="moveColumn(col.key, +1)">Move Right</button>
+    <button class="header-context-menu-item" cdkMenuItem (click)="moveColumn(col.key, (0 - columnOrder(col.key)))">Send to Front</button>
+  </div>
+</ng-template>
+<ng-template #sz_dt_header_row_order_context_menu let-col> 
+  <div class="sz-dt-header-context-menu submenu" cdkMenu>
+    <button class="header-context-menu-item" cdkMenuItemRadio 
+      [cdkMenuItemChecked]="_sortDirection === 'ASC'"
+      (cdkMenuItemTriggered)="sortBy(col.key,'ASC')">Ascending</button>
+    <button class="header-context-menu-item" cdkMenuItemRadio 
+      [cdkMenuItemChecked]="_sortDirection === 'DESC'">Decending</button>
+  </div>
+</ng-template>
+<ng-template #sz_dt_cell_context_menu let-data>
+  <div class="sz-dt-header-context-menu" cdkMenu>
+    <button class="header-context-menu-item" cdkMenuItem (click)="copyCellContent(data.cell, data.cellData)">Copy Cell As JSON</button>
+    <button class="header-context-menu-item" cdkMenuItem (click)="copyRowContent(data.row, data.rowData)">Copy Row As JSON</button>
+    <button class="header-context-menu-item" cdkMenuItem (click)="minimizeCol(data.col)">Minimize Column</button>
   </div>
 </ng-template>
 <div class="column-picker-button">
@@ -28,13 +57,15 @@
 <table class="data-table" [style]="gridStyle">
     <thead>
       <tr style="order: 0" (mousemove)="onHeaderMouseMove($event)">
-        <ng-container *ngFor="let col of this.selectedColumns | keyvalue; let i = index">
+        <ng-container *ngFor="let col of this.selectableColumns | keyvalue; let i = index">
           <th 
-            [cdkContextMenuTriggerFor]="sz_dt_context_menu"
+            [cdkContextMenuTriggerFor]="sz_dt_header_context_menu"
+            [cdkContextMenuTriggerData]="{$implicit: col}"
             [class]="'sz-dt-column '+cellClass(col.key, 'sz-dt-header','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
             [class.sorted]="isSortedBy(col.key)" 
             [class.sorted-asc]="sortDirection === 'ASC'" 
             [class.sorted-desc]="sortDirection === 'DESC'"
+            [class.hidden]="isColumnHidden(col.key)"
             [style]="columnStyle(col.key)"
             [attr.data-field-name]="col.key"
             [attr.data-col-order]="columnOrder(col.key)"
@@ -58,13 +89,17 @@
         [attr.data-row-index]="rI+1" 
         [class.hasExpandedCells]="hasExpandedCells(rowRef)"
         [style.order]="rI+1">
-            <td #cellRef [attr.data-row-index]="rI+1" *ngFor="let col of this.selectedColumns | keyvalue" 
+            <td #cellRef [attr.data-row-index]="rI+1" *ngFor="let col of this.selectableColumns | keyvalue" 
               [style]="cellStyle(col.key, getRowId(row, rI+1))"
               [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
               [class.expandable]="isCellExpandable(cellRef)"
               [class.expanded]="isCellExpanded(cellRef)"
-              [attr.data-cell-height]="getContentHeight(cellRef)"
-              [attr.data-content-height]="getCellContentSizeHeight(cellRef)"
+              [class.hidden]="isColumnHidden(col.key)"
+              [attr.data-cell-height]="getCellHeight(cellRef)"
+              [attr.data-content-height]="getContentHeight(cellRef)"
+              [attr.data-cached-content-height]="getCachedContentHeight(cellRef)"
+              [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
+              [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: row[col.key], rowData: row}}"
               (click)="onCellClick(col.key, row[col.key], $event, cellRef)">
               <div class="cell-content" [innerHTML]="cellValue(row[col.key])"></div>
               <svg xmlns="http://www.w3.org/2000/svg" 

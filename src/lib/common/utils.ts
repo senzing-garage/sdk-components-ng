@@ -25,6 +25,12 @@ export function camelToKebabCase(str): string {
 export function underscoresToDashes(str): string {
   return str.replace(/_/g, '-');
 }
+export function getMapKeyByValue(map, searchValue) {
+  for (let [key, value] of map.entries()) {
+    if (value === searchValue)
+      return key;
+  }
+}
 /** convert value of any type who's value can be converted to boolean */
 export function parseBool(value: any): boolean {
   if (!value || value === undefined) {
