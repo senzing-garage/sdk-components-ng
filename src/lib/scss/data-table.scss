@@ -105,9 +105,23 @@ sz-data-table {
         td.expandable {
             max-height: 40px;
             /* hide everything after first row */
+            .cell-content div:has(.list){
+                /* has sub lists, give it some breathing room */
+                margin-bottom: 20px;
+            }
             .cell-content {
                 div {
                     visibility: hidden;
+                    margin-bottom: 0px;
+                    div {
+                        margin-bottom: 0px;
+                        &.list {
+                            margin-bottom: 10px;
+                        }
+                    }
+                    div:first-child {
+                        visibility: hidden;
+                    }
                     &:first-child {
                         visibility: visible;
                     }
@@ -119,6 +133,9 @@ sz-data-table {
 
                 .cell-content div {
                     visibility: unset;
+                    div {
+                        visibility: unset;
+                    }
                 }
             }
         }

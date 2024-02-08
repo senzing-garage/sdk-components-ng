@@ -301,34 +301,55 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
     if(Array.isArray(value) ) {
       retVal = value.join(', ');
     } else if (value.toString ) {
-      return value.toString();
+      retVal = value.toString();
     }
     // if [object Object] is in output something needs to be rendered better
+    /*if(fieldName === 'featureDetails') {
+      console.warn(`${fieldName} type: `, 
+      (retVal as string).indexOf('object Object'), 
+      (value as unknown).constructor === Object,
+      Object.prototype.toString.call(value) === "[object Object]");
+    }*/
     if(retVal && (retVal as string).indexOf('object Object') > -1) {
       // is json, check if array of object
       if(retVal && (retVal as string).indexOf('[object Object]') > -1) {
         // array of objects
-        if(fieldName === 'features'){
+        if(fieldName === 'features') {
           //console.log(`features('${(retVal as string)}'): `,);
         }
         let retStr = [];
-        (value as unknown[]).forEach((_v)=>{
-          // is value an object?
-          if(JSON.stringify(_v, null, 4).indexOf('{') > -1) {
-            // iterate over each key
-            for(const k in _v as object) {
-              retStr.push('<label>'+this.breakWordOnCamelCase(k, true)+'</label>:'+ (_v as object)[k]);
+        if((value as unknown[]).forEach) {
+          (value as unknown[]).forEach((_v)=>{
+            // is value an object?
+            if(JSON.stringify(_v, null, 4).indexOf('{') > -1) {
+              // iterate over each key
+              for(const k in _v as object) {
+                // if array of objects just traverse
+                if(JSON.stringify((_v as object)[k], null, 4).indexOf('[object Object]') > -1 || Object.prototype.toString.call((_v as object)[k]) === "[object Array]"){
+                  let _cVal = this.cellValue((_v as object)[k], k);
+                  retStr.push('<div class="list">'+_cVal+'</div>');
+                } else {
+                  retStr.push('<label>'+this.breakWordOnCamelCase(k, true)+'</label>:'+ (_v as object)[k]+'');
+                }
+              }
+            } else if(JSON.stringify(_v, null, 4).indexOf('[object Object]') > -1){
+              // array of objects, we better just call this fn recursively
+              retStr.push(this.cellValue(_v, fieldName));
+            } else {
+              // not object
+              retStr.push(value.toString());
             }
-          } else if(JSON.stringify(_v, null, 4).indexOf('[object Object]') > -1){
-            // array of objects, we better just call this fn recursively
-            retStr.push(this.cellValue(_v, fieldName));
-          } else {
-            // not object
-            retStr.push(value.toString());
-          }
-        });
-        if(fieldName === 'features'){
-          console.log(`features('${(retVal as string)}'): `,retStr);
+          });
+        } else if((value as unknown).constructor && (value as unknown).constructor === Object) {
+          //if(fieldName === 'features'){
+            //console.log(`features('${(retVal as string)}'): `,retStr);
+            Object.keys(value).forEach((_oKey)=> {
+              let _oVal = this.cellValue(value[_oKey], _oKey);
+              retStr.push('<label>'+this.breakWordOnCamelCase(_oKey, true)+'</label>:'+ _oVal);
+            })
+          //}
+        } else if(fieldName === 'features') {
+          console.warn('features type: ', (value as unknown).constructor);
         }
         retVal = retStr && retStr.length > 1 ? '<div>'+retStr.join('</div><div>')+'</div>' : retStr.length === 1 ? retStr[1] : retVal;
       } else {
@@ -529,7 +550,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
     console.log(`on${cellName}Click: `, event, data);
     this.cellClick.emit({key: cellName, value: data});
     if(element) {
-      console.log('element: ', element, element.offsetHeight, element.scrollHeight);
+      //console.log('element: ', element, element.offsetHeight, element.scrollHeight);
     }
   }
   resetCellSizes() {
