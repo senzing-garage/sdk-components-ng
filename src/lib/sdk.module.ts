@@ -33,7 +33,11 @@ import { SzDecimalPercentPipe } from './pipes/decimalpercent.pipe';
 /** common */
 import { SzDataTable } from './shared/data-table/sz-data-table.component';
 /** charts */
-import { SzRecordStatsDonutChart } from './charts/records-by-datasources/sz-donut.component'
+import { SzRecordStatsDonutChart } from './charts/records-by-datasources/sz-donut.component';
+import { SzVennDiagramsComponent } from './charts/versus/sz-venn-diagram.component';
+/** statistics */
+import { SzCrossSourceSummaryComponent } from './summary/cross-source/sz-cross-source-summary.component';
+
 /** components */
 import { SzAlertMessageDialog } from './shared/alert-dialog/sz-alert-dialog.component';
 import { SzConfigurationAboutComponent } from './configuration/sz-configuration-about/sz-configuration-about.component';
@@ -125,6 +129,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzConfigurationAboutComponent,
         SzConfigurationComponent,
         SzDataTable,
+        SzCrossSourceSummaryComponent,
         SzDecimalPercentPipe,
         SzEntityDetailComponent,
         SzEntityDetailGraphControlComponent,
@@ -174,6 +179,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzSearchResultCardHeaderComponent,
         SzShortNumberPipe,
         SzStandaloneGraphComponent,
+        SzVennDiagramsComponent,
         SzWhyEntitiesComparisonComponent,
         SzWhyEntityComponent,
         SzWhyEntitiesDialog,
@@ -195,6 +201,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzConfigurationComponent,
         SzConfigurationAboutComponent,
         SzDataTable,
+        SzCrossSourceSummaryComponent,
         SzDecimalPercentPipe,
         SzEntityDetailGraphComponent,
         SzEntityDetailComponent,
@@ -226,6 +233,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzSearchResultsComponent,
         SzSearchResultCardComponent,
         SzStandaloneGraphComponent,
+        SzVennDiagramsComponent,
         SzWhyEntitiesComparisonComponent,
         SzWhyEntityComponent,
         SzWhyEntitiesDialog,
