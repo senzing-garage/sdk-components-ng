@@ -1,27 +1,35 @@
-name: Build, Compile, and Test Angular Components
+name: npm build
+
 on: push
+
 jobs:
-  build:
+  npm-build:
+    name: build, compile, and test angular components
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js 16.x
+
+      - name: use Node.js 16.x
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
 
-      - name: Setup
+      - name: setup
         run: npm ci
 
-      - name: Run Static Tests
+      - name: run Static Tests
         run: |
           npm test -- --no-watch --watch=false --progress=false --no-progress --browsers=ChromeHeadlessCI
-      - name: Ensure Documentation is Buildable
+
+      - name: ensure documentation is buildable
         run: |
           npm run build:docs
-      - name: Ensure Angular Components Package Compiles
+
+      - name: ensure angular components package compiles
         run: |
           npm run build
-      - name: Ensure Web Components Package Compiles
+
+      - name: ensure web components package compiles
         run: |
           npm run build:web
