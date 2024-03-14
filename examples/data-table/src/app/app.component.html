@@ -23,6 +23,7 @@
 <!-- end search box -->
 <!-- start data table results -->
 <div class="component-example">
+  <sz-cross-source-statistics></sz-cross-source-statistics>
   <sz-data-table sz-venn-dt *ngIf="showSearchResults"
   [data]="currentSearchResults"
   (cellClick)="onCellClick($event)"></sz-data-table>

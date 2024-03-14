@@ -63,6 +63,7 @@ export { SzRecordStatsDonutChart } from './lib/charts/records-by-datasources/sz-
 export { SzDataTable } from './lib/shared/data-table/sz-data-table.component';
 export { SzVennDiagramsComponent } from './lib/charts/versus/sz-venn-diagram.component';
 /** statistics */
+export { SzCrossSourceStatistics } from './lib/statistics/cross-source/sz-cross-source-statistics.component';
 export { SzCrossSourceSummaryComponent } from './lib/summary/cross-source/sz-cross-source-summary.component';
 /** components */
 export * from './lib/sz-powered-by/sz-powered-by.component';

@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, of, Subject, throwError } from 'rxjs';
 import {
     ConfigService as SzConfigService, SzConfigResponse,
     StatisticsService as SzStatisticsService,
-    SzCountStats
+    SzLoadedStats
 } from '@senzing/rest-api-client-ng';
 
 import { take, tap, map } from 'rxjs/operators';
@@ -27,7 +27,7 @@ import { SzCountStatsForDataSourcesResponse } from '../models/stats';
 export class SzDataMartService {
     //private _recordStatsStubData = recordStatsStubData;
 
-    public onCountStats: Subject<SzCountStats | undefined> = new BehaviorSubject<SzCountStats>(undefined);
+    public onCountStats: Subject<SzLoadedStats | undefined> = new BehaviorSubject<SzLoadedStats>(undefined);
     
     constructor(private http: HttpClient, private statsService: SzStatisticsService) {}
 

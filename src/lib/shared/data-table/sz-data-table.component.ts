@@ -543,7 +543,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
 
     return retVal;
   }
-  hasExpandedCells() {
+  hasExpandedCells(rowRef?: HTMLElement) {
     return false;
   }
   onCellClick(cellName: string, data: any, event?: MouseEvent, element?: HTMLElement) { 
@@ -601,7 +601,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
     }
     return false;
   }
-  toggleCellExpansion(element: HTMLElement) {
+  toggleCellExpansion(element: HTMLElement, rowId?: number) {
     if(element && element.hasAttribute && element.hasAttribute('data-row-index')) {
       let rowId               = element.getAttribute('data-row-index');
       let rowHasExpadedCells  = (this._expandedCells.has(rowId));

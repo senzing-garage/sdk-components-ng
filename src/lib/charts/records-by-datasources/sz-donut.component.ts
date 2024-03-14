@@ -175,7 +175,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     if(this._unlistedDataSources && this._unlistedDataSources.length > 0 && this._dataSourceCounts) {
       // hand back datasource counts minus the unlisted items
       retVal = this._dataSourceCounts.filter((ds) => {
-        return this._unlistedDataSources.indexOf(ds.dataSourceCode) === -1;
+        return this._unlistedDataSources.indexOf(ds.dataSource) === -1;
       });
     }
     // sort
@@ -192,7 +192,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     this._dataSourceCounts = value;
     if(value && value.length) {
       // create map by code
-      let _rCountByCode = new Map<string, SzRecordCountDataSource>(value.map((obj)=>[obj.dataSourceCode, obj]));
+      let _rCountByCode = new Map<string, SzRecordCountDataSource>(value.map((obj)=>[obj.dataSource, obj]));
       this._dataSourceCountsByCode = _rCountByCode;
     }
   }
@@ -365,7 +365,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       // unmatched/singletons
       if (this._totalUnmatchedRecordCount) {
         const unMatchedSummary: SzRecordCountDataSource = {
-          dataSourceCode: 'Unmatched',
+          dataSource: 'Unmatched',
           entityCount: 0,
           recordCount: this._totalUnmatchedRecordCount
         }
@@ -374,7 +374,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       // pending load
       if (this._totalPendingRecordCount > 0) {
         const unMatchedSummary: SzRecordCountDataSource = {
-          dataSourceCode: 'Pending Load',
+          dataSource: 'Pending Load',
           entityCount: 0,
           recordCount: this._totalPendingRecordCount
         }
@@ -529,12 +529,12 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
         switch(by) {
           case 'alphaasc':
             retVal = retVal.sort((a,b)=>{
-              return a.dataSourceCode.toUpperCase() > b.dataSourceCode.toUpperCase() ? 1 : -1;
+              return a.dataSource.toUpperCase() > b.dataSource.toUpperCase() ? 1 : -1;
             });
             break;
           case 'alphadesc':
             retVal = retVal.sort((a,b)=>{
-              return a.dataSourceCode.toUpperCase() < b.dataSourceCode.toUpperCase() ? 1 : -1;
+              return a.dataSource.toUpperCase() < b.dataSource.toUpperCase() ? 1 : -1;
             });
             break;
           case 'countasc':

@@ -17,7 +17,7 @@
             <li class="legend-items" *ngFor="let dsCount of dataSourceCounts; let i = index" >
             <button class="from-data-source"
                     (click)="onDataSourceDetailClick(dsCount)"
-                    [matTooltip]="getDataSourceName(dsCount.dataSourceCode)"
+                    [matTooltip]="getDataSourceName(dsCount.dataSource)"
                     matTooltipPosition="below">
                 <span class="legend__color-dot item-{{i + 1}}" 
                 [style.backgroundColor]="dsCount.color"
@@ -28,7 +28,7 @@
                     : (dsCount.recordCount | SzShortNumber)
                 }}</span>
                 <span class="legend__subtitle">{{
-                getDataSourceName(dsCount.dataSourceCode)
+                getDataSourceName(dsCount.dataSource)
                 }}</span>
             </button>
             </li>

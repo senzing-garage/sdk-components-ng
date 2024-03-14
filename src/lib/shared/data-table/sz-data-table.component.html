@@ -22,10 +22,10 @@
 <ng-template #sz_dt_header_row_order_context_menu let-col> 
   <div class="sz-dt-header-context-menu submenu" cdkMenu>
     <button class="header-context-menu-item" cdkMenuItemRadio 
-      [cdkMenuItemChecked]="_sortDirection === 'ASC'"
+      [cdkMenuItemChecked]="sortDirection === 'ASC'"
       (cdkMenuItemTriggered)="sortBy(col.key,'ASC')">Ascending</button>
     <button class="header-context-menu-item" cdkMenuItemRadio 
-      [cdkMenuItemChecked]="_sortDirection === 'DESC'">Decending</button>
+      [cdkMenuItemChecked]="sortDirection === 'DESC'">Decending</button>
   </div>
 </ng-template>
 <ng-template #sz_dt_cell_context_menu let-data>
