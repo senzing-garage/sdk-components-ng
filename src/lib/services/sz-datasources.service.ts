@@ -21,6 +21,7 @@ import { tap, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class SzDataSourcesService {
+  private _dataSourceDetails: SzDataSourcesResponseData | undefined;
 
   constructor(
     private configService: ConfigService) {}
@@ -46,7 +47,10 @@ export class SzDataSourcesService {
     // get attributes
     return this.configService.getDataSources()
     .pipe(
-      map( (resp: SzDataSourcesResponse) => resp.data )
+      map( (resp: SzDataSourcesResponse) => resp.data ),
+      tap( (data) => {
+        this._dataSourceDetails = data;
+      })
     );
   }
   /**

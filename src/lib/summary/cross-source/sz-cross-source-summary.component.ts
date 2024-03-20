@@ -1,15 +1,27 @@
 import { Component, Input, Output, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { SzPrefsService } from '../../services/sz-prefs.service';
-import { map, take, takeUntil } from 'rxjs/operators';
-import { Observable, Subject } from 'rxjs';
+import { map, skipWhile, take, takeUntil, takeWhile } from 'rxjs/operators';
+import { Observable, Subject, forkJoin, of } from 'rxjs';
 import * as d3 from 'd3-selection';
 import * as d3Shape from 'd3-shape';
 
-import { SzDataSourcesResponseData } from '@senzing/rest-api-client-ng';
+import { SzCrossSourceSummary, SzDataSourcesResponseData } from '@senzing/rest-api-client-ng';
 import { isValueTypeOfArray, parseBool, parseNumber, parseSzIdentifier, sortDataSourcesByIndex } from '../../common/utils';
 import { SzRecordCountDataSource, SzStatCountsForDataSources } from '../../models/stats';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzDataSourcesService } from '../../services/sz-datasources.service';
+import { filter } from 'd3';
+
+export interface crossSourceSummaryRequests {
+  fromDataSource?: Observable<SzCrossSourceSummary> | Observable<boolean> 
+  overlapDataSource?: Observable<SzCrossSourceSummary> | Observable<boolean> 
+  toDataSource?: Observable<SzCrossSourceSummary> | Observable<boolean>
+}
+export interface crossSourceSummaryResponses {
+  fromDataSource?: SzCrossSourceSummary
+  overlapDataSource?: SzCrossSourceSummary
+  toDataSource?: SzCrossSourceSummary
+}
 
 /**
  * Embeddable Donut Graph showing how many 
@@ -32,36 +44,15 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
 
-  private _project: any | null = null;
-  private _resultsSummary : any | null = null;
-  private _summaryData = [];
-  private _summaryLookup = {};
-  private _fromDataSource: string | null = null;
-  private _defaultFromDataSource: string | null = null;
-  private _toDataSource: string | null = null;
-  private _defaultToDataSource: string | null = null;
-  private _dataSources : string[] = [];
-  private _fromDataSources: string[] = [];
-  private _fromDataSourceInfos : any[] = [];
-  private _toDataSources: string[] = [];
-  private _toDataSourceInfos: any[] = [];
-  private _fromAuditInfo : any | null = null;
-  private _toAuditInfo : any | null = null;
-  private _overlapAuditInfo : any | null = null;
+  private _crossSourceSummaryData : SzCrossSourceSummary | undefined;
+  private _fromDataSourceSummaryData: SzCrossSourceSummary | undefined;
+  private _toDataSourceSummaryData: SzCrossSourceSummary | undefined;
   private _totalRecordCount: number = 0;
   private _totalEntityCount: number = 0;
   private _totalSingleCount: number = 0;
   private _totalConnectionCount : number = 0;
-  private stepFromNone = false;
   private dataSourceLookup : { [code: string]: string } = {};
 
-  public get auditSummaryLookup(): any {
-    return this._summaryLookup;
-  }
-
-  public get dataSources() : string[] {
-    return this._dataSources;
-  }
 
   /*public get fromDataSources(): string[] {
     return this._fromDataSources;
@@ -96,58 +87,29 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   }
 
   public get singular() : boolean {
-    return false
-    return (this.dataSources.length === 1
-            || this.fromDataSource === this.toDataSource);
-  }
-  public getDataSourceName(code: string) : string {
-    let obs = this.dataSourceLookup[code];
-    if (!obs) {
-      obs = this.dataSources.find((dcode)=>{ return dcode === code;})
-      this.dataSourceLookup[code] = obs;
-    }
-    return obs;
+    return (this.dataMartService.dataSources && this.dataMartService.dataSources.length === 1) || ((this.dataMartService.dataSource1 !== undefined || this.dataMartService.dataSource2 !== undefined) && (this.dataMartService.dataSource1 === this.dataMartService.dataSource2));
   }
 
   @Output() summaryDiagramClick: EventEmitter<any> = new EventEmitter();
 
-  public get fromDataSource(): string | null {
-    return this._fromDataSource;
-  }
-
-  public get defaultFromDataSource() : string {
-    return this._defaultFromDataSource;
-  }
-
-  @Input("default-from-data-source")
-  public set defaultFromDataSource(source: string) {
-    this._defaultFromDataSource = source;
+  public get fromDataSource(): string | undefined {
+    return this.dataMartService.dataSource1;
   }
 
   public get toDataSource(): string | null {
-    return this._toDataSource;
+    return this.dataMartService.dataSource2;
   }
 
-  public get defaultToDataSource() : string {
-    return this._defaultToDataSource;
+  public get fromDataSourceMatches() {
+    return 25;
+  }
+  public get overlapDataSourceMatches() {
+    return this._crossSourceSummaryData && this._crossSourceSummaryData.matches.length > 0 ? this._crossSourceSummaryData.matches[0].entityCount : 0;
+  }
+  public get toDataSourceMatches() {
+    return 30;
   }
 
-  @Input("default-to-data-source")
-  public set defaultToDataSource(source: string) {
-    this._defaultToDataSource = source;
-  }
-
-  public get fromAuditInfo() : any | null {
-    return this._fromAuditInfo;
-  }
-
-  public get toAuditInfo() : any | null {
-    return this._toAuditInfo;
-  }
-
-  public get overlapAuditInfo() : any | null {
-    return this._overlapAuditInfo;
-  }
   /**
    * emitted when the component begins a request for data.
    * @returns entityId of the request being made.
@@ -181,6 +143,7 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // get data sources
+    /*
     this.getDataSources().pipe(
       takeUntil(this.unsubscribe$),
       take(1)
@@ -189,14 +152,63 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
         this._dataSources = dataSources.dataSources;
         console.log(`got datasources: `, this._dataSources);
         //this.dataChanged.next(this._dataSourceCounts);
-        /*if(this._dataSourceCounts && this._dataSources) {
-          this.dataChanged.next(this._dataSourceCounts);
-        }*/
       },
       error: (err) => {
         this.exception.next(err);
       }
+    });*/
+    this.dataMartService.onDataSourceSelected.pipe(
+      takeUntil(this.unsubscribe$),
+      skipWhile((dsName: string)=>{
+        // at least one datasource must be selected
+        return this.dataMartService.dataSource1 === undefined && this.dataMartService.dataSource2 === undefined;
+      })
+    ).subscribe(this.onDataSourceSelectionChange.bind(this))
+  }
+  private onDataSourceSelectionChange(dsName: string) {
+    console.log(`onDataSourceSelectionChange: ${dsName}`, this.dataMartService.dataSource1, this.dataMartService.dataSource2);
+
+    // stat requests
+    let dataRequests = forkJoin({
+      fromDataSource: this.dataMartService.dataSource1 ? this.dataMartService.getCrossSourceStatistics(this.dataMartService.dataSource1) : of(false),
+      overlapDataSource: this.dataMartService.dataSource1 && this.dataMartService.dataSource2 && this.dataMartService.dataSource1 !== this.dataMartService.dataSource2 ? this.dataMartService.getCrossSourceStatistics(
+        this.dataMartService.dataSource1, 
+        this.dataMartService.dataSource2): of(false),
+      toDataSource: this.dataMartService.dataSource2 ? this.dataMartService.getCrossSourceStatistics(this.dataMartService.dataSource2) : of(false)
+      });
+
+    dataRequests.pipe(
+      take(1),
+      takeUntil(this.unsubscribe$),
+    ).subscribe({
+      next: this.onCrossSourceDataChanged.bind(this),
+      error: (err) => {
+        console.warn('error: ',err);
+      }
     });
+
+    // update stats shown
+    /*
+    this.dataMartService.getCrossSourceStatistics(
+      this.dataMartService.dataSource1, 
+      this.dataMartService.dataSource2)
+      .pipe(
+        take(1),
+        takeUntil(this.unsubscribe$)
+      ).subscribe(this.onCrossSourceDataChanged.bind(this));
+    */
+  }
+  private onCrossSourceDataChanged(data: crossSourceSummaryResponses) {
+    if(data && data.fromDataSource) {
+      this._fromDataSourceSummaryData = data.fromDataSource;
+    }
+    if(data && data.overlapDataSource) {
+      this._crossSourceSummaryData = data.overlapDataSource;
+    }
+    if(data && data.toDataSource) {
+      this._toDataSourceSummaryData = data.toDataSource;
+    }
+    console.log(`onCrossSourceDataChanged: `, this._fromDataSourceSummaryData, this._crossSourceSummaryData, this._toDataSourceSummaryData);
   }
 
   diagramClick(diagramSection: string, matchLevel: number) {
@@ -221,120 +233,6 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
       currentToDataSource: this.toDataSource,
       newFromDataSource: newFromDataSource,
       newToDataSource: newToDataSource,
-    });
-  }
-
-  public getFromAuditInfoDiscoveredConnectionCount() {
-    return 0
-    return (this.fromAuditInfo.discoveredConnectionCount < 1000)
-              ? ("" + this.fromAuditInfo.discoveredConnectionCount)
-              : (this.fromAuditInfo.discoveredConnectionCount)
-  }
-
-  private getDataSources(): Observable<SzDataSourcesResponseData> {
-    return this.dataSourcesService.listDataSourcesDetails()
-  }
-
-  public getDiscoveredConnectionCount(dataSource1: string, dataSource2: string) {
-    return '';
-  }
-
-  stepFromDataSource(backwards: boolean) : void
-  {
-    const fromDS = this.fromDataSource;
-    const sources = this.dataSources;
-    if (sources && sources.length === 1) {
-      this.setFromDataSource(sources[0]);
-      return;
-    }
-
-    if (!fromDS && sources && sources.length > 0) {
-      this.setFromDataSource(sources[0]);
-      return;
-    }
-
-    let index = sources.indexOf(fromDS) + (backwards ? -1 : 1);
-    const length = sources.length;
-
-    if (index < 0) {
-      index = length + (index%length);
-    } else if (index >= length) {
-      index = index % length;
-    }
-
-    if (this.stepFromNone) {
-      this.setBothDataSources(sources[index]);
-    } else {
-      this.setFromDataSource(sources[index]);
-    }
-  }
-
-  stepToDataSource(backwards: boolean) : void
-  {
-    const sources = this.dataSources;
-    if (sources && sources.length === 1) {
-      this.setToDataSource(sources[0]);
-      return;
-    }
-
-    let index = 0;
-    const length = sources.length;
-
-    if (!this.toDataSource && sources && sources.length > 0) {
-      if (backwards) {
-        index = sources.length-1;
-      } else {
-        index = 0;
-      }
-    } else {
-      index = sources.indexOf(this.toDataSource) + (backwards ? -1 : 1);
-    }
-
-    if (index < 0) {
-      index = length + (index % length);
-    } else if (index >= length) {
-      index = index % length;
-    }
-    this.setToDataSource(sources[index]);
-    this.stepFromNone = sources[index] === this.fromDataSource;
-  }
-
-  private setBothDataSources(dataSource: string) {
-    setTimeout(() => {
-      if (this.dataSources && this.dataSources.indexOf(dataSource) >= 0)
-      {
-        this._fromDataSource  = dataSource;
-        this._toDataSource    = dataSource;
-        //this.currentProjectService.setAttribute(FROM_DATA_SOURCE_KEY, dataSource);
-        //this.currentProjectService.setAttribute(TO_DATA_SOURCE_KEY, dataSource);
-        //this.onSummaryDataChanged();
-      }
-    });
-  }
-
-  public setFromDataSource(dataSource: string) {
-    setTimeout(() => {
-      if (this.dataSources && this.dataSources.indexOf(dataSource) >= 0) {
-        this._fromDataSource = dataSource;
-        console.log(`from datasource: ${this._fromDataSource}`);
-        if (this.stepFromNone && (this.fromDataSource !== this.toDataSource)) {
-          this.stepFromNone = false;
-        }
-        //this.currentProjectService.setAttribute(FROM_DATA_SOURCE_KEY, dataSource);
-        //this.onSummaryDataChanged();
-      }
-    });
-  }
-
-  public setToDataSource(dataSource: string) {
-    setTimeout(() => {
-      if (!dataSource || (this.dataSources.indexOf(dataSource) >= 0)) {
-        this._toDataSource = dataSource;
-        this.stepFromNone = (this._toDataSource === this._fromDataSource);
-        console.log(`to datasource: ${this._toDataSource}`);
-        //this.currentProjectService.setAttribute(TO_DATA_SOURCE_KEY, dataSource);
-        //this.onSummaryDataChanged();
-      }
     });
   }
 }

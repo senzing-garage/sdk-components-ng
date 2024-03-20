@@ -67,6 +67,7 @@ export { SzCrossSourceStatistics } from './lib/statistics/cross-source/sz-cross-
 export { SzCrossSourceSummaryComponent } from './lib/summary/cross-source/sz-cross-source-summary.component';
 /** components */
 export * from './lib/sz-powered-by/sz-powered-by.component';
+export * from './lib/statistics/cross-source/sz-cross-source-select.component';
 export * from './lib/configuration/sz-configuration/sz-configuration.component';
 export * from './lib/configuration/sz-configuration-about/sz-configuration-about.component';
 export { SzLicenseInfoComponent } from './lib/configuration/sz-license/sz-license.component';

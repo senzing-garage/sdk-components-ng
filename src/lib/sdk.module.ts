@@ -44,6 +44,7 @@ import { SzCrossSourceSummaryComponent } from './summary/cross-source/sz-cross-s
 import { SzAlertMessageDialog } from './shared/alert-dialog/sz-alert-dialog.component';
 import { SzConfigurationAboutComponent } from './configuration/sz-configuration-about/sz-configuration-about.component';
 import { SzConfigurationComponent } from './configuration/sz-configuration/sz-configuration.component';
+import { SzCrossSourceSelectComponent } from './statistics/cross-source/sz-cross-source-select.component';
 import { SzLicenseInfoComponent } from './configuration/sz-license/sz-license.component';
 import { SzMultiSelectButtonComponent } from './shared/multi-select-button/multi-select-button.component';
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
@@ -132,6 +133,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzConfigurationComponent,
         SzDataTable,
         SzCrossSourceResultsDataTable,
+        SzCrossSourceSelectComponent,
         SzCrossSourceStatistics,
         SzCrossSourceSummaryComponent,
         SzDecimalPercentPipe,

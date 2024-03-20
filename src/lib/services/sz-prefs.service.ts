@@ -22,7 +22,12 @@ export class SzSdkPrefsBase {
    * behavior subject that can be subscribed to for change
    * notifications.
    */
-  public prefsChanged: BehaviorSubject<any> = new BehaviorSubject<any>(this.toJSONObject());
+  public prefsChanged:  BehaviorSubject<any> = new BehaviorSubject<any>(this.toJSONObject());
+  /**
+   * subject that can be subscribed to for INDIVIDUAL value change
+   * notifications.
+   */
+  public prefChanged:   Subject<{name: string, value: any}> = new Subject<{name: string, value: any}>();
 
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
@@ -82,6 +87,74 @@ export class SzSdkPrefsBase {
       });
     }
     return retObj;
+  }
+}
+
+/**
+ * Data Mart related preferences bus class.
+ * used by {@link SzPrefsService} to store it's
+ * DataMart related prefs.
+ * Should really be used from {@link SzPrefsService} context, not on its own.
+ *
+ * @example
+ * this.prefs.datamart.datasource1 = 'MYDS_NAME';
+ *
+ * @example
+ * this.prefs.datamart.prefsChanged.subscribe( (prefs) => { console.log('datamart pref change happened.', prefs); })
+ */
+export class SzDataMartPrefs extends SzSdkPrefsBase {
+  // private vars
+  /** @internal */
+  private _dataSource1: string = undefined;
+  private _dataSource2: string = undefined;
+  private _sampleSize: number = 100;
+  /** the keys of member setters or variables in the object
+   * to output in json, or to take as json input
+   */
+  override jsonKeys = [
+    'dataSource1',
+    'dataSource2',
+    'sampleSize'
+  ]
+  // -------------- getters and setters
+  /** first datasource to use in the datamart stats queries */
+  public get dataSource1(): string {
+    return this._dataSource1;
+  }
+  /** first datasource to use in the datamart stats queries */
+  public set dataSource1(value: string) {
+    this._dataSource1 = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'dataSource1', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** first datasource to use in the datamart stats queries */
+  public get dataSource2(): string {
+    return this._dataSource2;
+  }
+  /** first datasource to use in the datamart stats queries */
+  public set dataSource2(value: string) {
+    this._dataSource2 = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'dataSource2', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** samplesize parameter to use in stats queries */
+  public get sampleSize(): number {
+    return this._sampleSize;
+  }
+  /** samplesize parameter to use in stats queries */
+  public set sampleSize(value: number) {
+    this._sampleSize = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'sampleSize', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /**
+   * publish out a "first" real payload so that
+   * subscribers get an initial payload from this subclass
+   * instead of the empty superclass
+   **/
+  constructor(){
+    super();
+    this.prefsChanged.next( this.toJSONObject() );
   }
 }
 
@@ -1226,12 +1299,13 @@ export class SzHowPrefs extends SzSdkPrefsBase {
  * events.
  */
 export interface SzSdkPrefsModel {
-  searchForm?: any,
-  searchResults?: any,
+  admin?: any
+  dataMart?: any,
   entityDetail?: any,
   graph?: any,
   how?: any,
-  admin?: any
+  searchForm?: any,
+  searchResults?: any,
 };
 
 
@@ -1285,6 +1359,8 @@ export class SzPrefsService implements OnDestroy {
   public searchForm?: SzSearchFormPrefs       = new SzSearchFormPrefs();
   /** instance of {@link SzSearchResultsPrefs} */
   public searchResults?: SzSearchResultsPrefs = new SzSearchResultsPrefs();
+  /** instance of {@link SzGraphPrefs} */
+  public dataMart?: SzDataMartPrefs           = new SzDataMartPrefs();
   /** instance of {@link SzEntityDetailPrefs} */
   public entityDetail?: SzEntityDetailPrefs   = new SzEntityDetailPrefs();
   /** instance of {@link SzGraphPrefs} */
@@ -1297,6 +1373,10 @@ export class SzPrefsService implements OnDestroy {
   /**
    * subscribe for state change representation. */
   public prefsChanged: BehaviorSubject<SzSdkPrefsModel> = new BehaviorSubject<SzSdkPrefsModel>( this.toJSONObject() );
+
+  /**
+   * subscribe for state change representation. */
+  public prefChanged: Subject<{name: string, value: any}> = new Subject<{name: string, value: any}>();
 
   /** get shallow JSON copy of services object state by calling
    * same method on namespace members.
@@ -1314,6 +1394,9 @@ export class SzPrefsService implements OnDestroy {
     }
     if(this.searchResults){
       retObj.searchResults = this.searchResults.toJSONObject();
+    }
+    if(this.dataMart){
+      retObj.dataMart = this.dataMart.toJSONObject();
     }
     if(this.entityDetail){
       retObj.entityDetail = this.entityDetail.toJSONObject();
@@ -1364,12 +1447,11 @@ export class SzPrefsService implements OnDestroy {
    **/
   public fromJSONString(value: string) {
     let _sVal = JSON.parse(value);
-
-    if(_sVal.searchForm){
-      this.searchForm.fromJSONObject( _sVal.searchForm );
+    if(_sVal.admin){
+      this.entityDetail.fromJSONObject( _sVal.admin );
     }
-    if(_sVal.searchResults){
-      this.searchResults.fromJSONObject( _sVal.searchResults );
+    if(_sVal.dataMart){
+      this.dataMart.fromJSONObject( _sVal.admin );
     }
     if(_sVal.entityDetail){
       this.entityDetail.fromJSONObject( _sVal.entityDetail );
@@ -1380,8 +1462,11 @@ export class SzPrefsService implements OnDestroy {
     if(_sVal.how){
       this.how.fromJSONObject( _sVal.how );
     }
-    if(_sVal.admin){
-      this.entityDetail.fromJSONObject( _sVal.admin );
+    if(_sVal.searchForm){
+      this.searchForm.fromJSONObject( _sVal.searchForm );
+    }
+    if(_sVal.searchResults){
+      this.searchResults.fromJSONObject( _sVal.searchResults );
     }
   }
   /** get a serialized JSON string from current instance. bulk export. */
@@ -1393,12 +1478,13 @@ export class SzPrefsService implements OnDestroy {
     // listen for any prefs changes
     // as one meta-observeable
     const concat_prefchanges = merge(
-      this.searchForm.prefsChanged,
-      this.searchResults.prefsChanged,
+      this.admin.prefsChanged,
+      this.dataMart.prefChanged,
       this.entityDetail.prefsChanged,
       this.graph.prefsChanged,
       this.how.prefsChanged,
-      this.admin.prefsChanged,
+      this.searchForm.prefsChanged,
+      this.searchResults.prefsChanged
     );
     // now filter and debounce
     // so that any back to back changes are
