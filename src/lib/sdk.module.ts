@@ -27,9 +27,12 @@ import { SzAdminService } from './services/sz-admin.service';
 import { SzBulkDataService } from './services/sz-bulk-data.service';
 import { SzCSSClassService } from './services/sz-css-class.service';
 import { SzConfigDataService } from './services/sz-config-data.service';
+import { SzElementResizeService } from './services/sz-element-resize-listener.service';
 /** pipes */
 import { SzShortNumberPipe } from './pipes/shortnumber.pipe'
 import { SzDecimalPercentPipe } from './pipes/decimalpercent.pipe';
+/** directives */
+import { SzElementResizeObserverDirective } from './directives/sz-element-resize-observer.directive';
 /** common */
 import { SzDataTable } from './shared/data-table/sz-data-table.component';
 /** charts */
@@ -175,6 +178,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzRelationshipNetworkInputComponent,
         SzRelationshipNetworkLookupComponent,
         SzRelationshipPathComponent,
+        SzElementResizeObserverDirective,
         SzSearchComponent,
         SzSearchByIdComponent,
         SzSearchIdentifiersPickerDialogComponent,
@@ -259,6 +263,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzFoliosService,
         SzHowUIService,
         SzPrefsService,
+        SzElementResizeService,
         SzSearchService,
         HttpClient,
         TitleCasePipe,

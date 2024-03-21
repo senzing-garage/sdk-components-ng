@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input, Output, OnInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef, AfterContentInit, AfterViewInit } from '@angular/core';
+import { Component, HostBinding, Input, Output, OnInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef, AfterContentInit, AfterViewInit, ViewChild } from '@angular/core';
 import { SzGraphPrefs, SzPrefsService } from '../../services/sz-prefs.service';
 import { take, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
@@ -8,6 +8,7 @@ import { isValueTypeOfArray, parseBool, parseNumber, parseSzIdentifier, sortData
 import { SzRecordCountDataSource } from '../../models/stats';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzDataSourcesService } from '../../services/sz-datasources.service';
+import { SzCSSClassService } from '../../services/sz-css-class.service';
 /**
  * pull down menus for selecting what datasources to show in other components.
  *
@@ -46,6 +47,9 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
   //private _totalSingleCount: number = 0;
   //private _totalConnectionCount : number = 0;
   private stepFromNone = false;
+
+  @ViewChild('displayFromDS') public displayFromDS:  ElementRef;
+  @ViewChild('displayToDS')   public displayToDS:    ElementRef;
 
   public get auditSummaryLookup(): any {
     return this._summaryLookup;
@@ -139,6 +143,7 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
   constructor(
     public prefs: SzPrefsService,
     private cd: ChangeDetectorRef,
+    private cssService: SzCSSClassService,
     private dataMartService: SzDataMartService,
     private dataSourcesService: SzDataSourcesService) {}
   ngOnInit() {
@@ -178,7 +183,9 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
       //  take(1)
       //).subscribe();
   }
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+
+  }
   //ngAfterContentInit
 
   /**
@@ -215,6 +222,21 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
         connectionCount: this.getDiscoveredConnectionCount(ds, this.toDataSource)
       }
     });
+    // grab the width of the menu if not already defined
+    //let menuWidth = this.displayFromDS.nativeElement.clientWidth;
+    //console.log(`menu width: ${menuWidth}`);
+
+    //setTimeout(() => console.log(`this.displayFromDS: `, this.displayFromDS), 3000);
+  }
+
+  public onPulldownMenuSizeChange(menubox: HTMLButtonElement, event: Event | any) {
+    if(menubox && menubox.clientWidth) {
+      let menuWidth = menubox.clientWidth;
+      console.log(`onPulldownMenuSizeChange: ${menuWidth}`, menubox, event);
+      this.cssService.setVariable('--sz-css-pulldown-width', menuWidth+'px');
+    } else {
+      console.log(`onPulldownMenuSizeChange: `, menubox, event);
+    }
   }
 
   private onLoadedStatsChanged(stats) {
@@ -418,7 +440,7 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
       if (!dataSource || (this.dataSources.indexOf(dataSource) >= 0)) {
         this.toDataSource = dataSource;
         this.stepFromNone = (this.toDataSource === this.fromDataSource);
-        console.log(`to datasource: ${this.toDataSource}`);
+        console.log(`to datasource: ${dataSource}|${this.toDataSource}`);
         //this.currentProjectService.setAttribute(TO_DATA_SOURCE_KEY, dataSource);
         //this.onSummaryDataChanged();
       }

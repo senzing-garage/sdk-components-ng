@@ -1,7 +1,7 @@
 <div class="data-select-wrapper">
     <div class="dsrc-select from-dsrc">
       <div class="legend"><label>A</label></div>
-      <mat-menu #fromSourceMenu="matMenu" class="data-source-menu" [overlapTrigger]="false">
+      <mat-menu #fromSourceMenu="matMenu" #fromDataSourcePulldown class="sz-css-versus-menu data-source-menu" [overlapTrigger]="false">
         <!--<div class="heading"
           ><label class="dsrc-name">{{
             msg.get("menu-heading-source-name")
@@ -19,8 +19,11 @@
           ><span class="connection-count" *ngIf="ds.connectionCount > 0">({{ds.connectionCount}})</span
         ></button>
       </mat-menu>
-      <button #displayFromDS class="dsrc-select from-dsrc" *ngIf="fromDataSources.length > 1"
-              [matMenuTriggerFor]="fromSourceMenu"
+      <button #displayFromDS 
+        class="dsrc-select from-dsrc" 
+        *ngIf="fromDataSources.length > 1"
+        [matMenuTriggerFor]="fromSourceMenu"
+        (onResize)="onPulldownMenuSizeChange(displayFromDS, $event)"
         ><span class="material-icons">more_vert</span
         ><label>{{ fromDataSource }}</label
       ></button>
@@ -42,7 +45,7 @@
     <div class="dsrc-versus" *ngIf="dataSources.length > 1">vs.</div>
     <div class="dsrc-select to-dsrc" *ngIf="dataSources.length > 1">
       <div class="legend"><label>B</label></div>
-      <mat-menu #toSourceMenu="matMenu" class="data-source-menu" [overlapTrigger]="false">
+      <mat-menu #toSourceMenu="matMenu" class="sz-css-versus-menu data-source-menu" [overlapTrigger]="false">
         <!--<div class="heading"
           ><label class="dsrc-name">{{
             msg.get("menu-heading-source-name")
@@ -54,11 +57,11 @@
         <button mat-menu-item
             [disabled]="fromDataSource === toDataSource"
             [class.selected]="fromDataSource === toDataSource"
-            (click)="setToDataSource(fromDataSource)"
+            (click)="setToDataSource(undefined)"
           ><label class="dsrc-name">[ NONE ]</label
-          ><span class="connection-count">{{ getFromAuditInfoDiscoveredConnectionCount()
+          ><!--<span class="connection-count">{{ getFromAuditInfoDiscoveredConnectionCount()
           }}</span
-        ></button>
+        >--></button>
         <ng-container *ngFor="let ds of toDataSources">
           <button mat-menu-item *ngIf="fromDataSource !== ds.name"
               [disabled]="ds.name === toDataSource"
@@ -72,6 +75,7 @@
       </mat-menu>
       <button #displayToDS class="dsrc-select to-dsrc"
               [matMenuTriggerFor]="toSourceMenu"
+              (onResize)="onPulldownMenuSizeChange(displayToDS, $event)"
         ><span class="material-icons">more_vert</span
         ><label>{{
           fromDataSource === toDataSource

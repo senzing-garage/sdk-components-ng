@@ -32,9 +32,9 @@
             [sz-right-count]="toDataSourceMatches"
             [sz-left-caption]="singular ? '' : 'Duplicates'"
             [sz-right-caption]="singular ? '' : 'Duplicates'"
-            (sz-left-clicked)="diagramClick('LEFT', 1)"
-            (sz-right-clicked)="diagramClick('RIGHT', 1)"
-            (sz-overlap-clicked)="diagramClick('OVERLAP', 1)"
+            (sz-left-clicked)="diagramClick('LEFT', 1, 'MATCHES')"
+            (sz-right-clicked)="diagramClick('RIGHT', 1, 'MATCHES')"
+            (sz-overlap-clicked)="diagramClick('OVERLAP', 1, 'MATCHES')"
         ></sz-venn-diagram>
         <div class="matches diagram-caption">{{
             singular ? 'Duplicates'
@@ -55,19 +55,22 @@
   
             sz-left-legend="A"
             sz-right-legend="B"
-            
+            [sz-left-count]="fromDataSourcePossibles"
+            [sz-overlap-count]="overlapDataSourcePossibles"
+            [sz-right-count]="toDataSourcePossibles"
+
             [sz-left-caption]="singular ? '' : 'Possible Duplicates'"
             [sz-right-caption]="singular ? '' : 'Possible Duplicates'"
-            (sz-left-clicked)="diagramClick('LEFT', 2)"
-            (sz-right-clicked)="diagramClick('RIGHT', 2)"
-            (sz-overlap-clicked)="diagramClick('OVERLAP', 2)"
+            (sz-left-clicked)="diagramClick('LEFT', 2, 'POSSIBLE')"
+            (sz-right-clicked)="diagramClick('RIGHT', 2, 'POSSIBLE')"
+            (sz-overlap-clicked)="diagramClick('OVERLAP', 2, 'POSSIBLE')"
         ></sz-venn-diagram>
         <div class="possibles diagram-caption">{{
           singular ? 'Possible Duplicates'
                    : 'Possible Matches'
         }}</div>
     </div>
-    <!--<div class="venn-wrapper relationships">
+    <div class="venn-wrapper relationships">
         <sz-venn-diagram class="data-venn-relationships"
             [sz-singular]="singular"
             sz-color="#A99B37"
@@ -80,17 +83,16 @@
   
             sz-left-legend="A"
             sz-right-legend="B"
-            [sz-left-count]="fromAuditInfo?.discoveredRelationshipCount"
-            [sz-overlap-count]="overlapAuditInfo?.discoveredRelationshipCount"
-            [sz-right-count]="toAuditInfo?.discoveredRelationshipCount"
-            (sz-left-clicked)="diagramClick('LEFT', 3)"
-            (sz-right-clicked)="diagramClick('RIGHT', 3)"
-            (sz-overlap-clicked)="diagramClick('OVERLAP', 3)"
+            [sz-left-count]="fromDataSourceRelated"
+            [sz-overlap-count]="overlapDataSourceRelated"
+            [sz-right-count]="toDataSourceRelated"
+            (sz-left-clicked)="diagramClick('LEFT', 3, 'RELATIONSHIPS')"
+            (sz-right-clicked)="diagramClick('RIGHT', 3, 'RELATIONSHIPS')"
+            (sz-overlap-clicked)="diagramClick('OVERLAP', 3, 'RELATIONSHIPS')"
         ></sz-venn-diagram>
         <div class="relationships diagram-caption">Possibly Related</div>
-    </div>-->
+    </div>
 </div>
-
 <!--<div #messages *ngIf="!msg.messagesRegistered" style="display: none;">
     <div message-key="label-versus" i18n="Label shown for 'versus' between selected data sources">
       vs.

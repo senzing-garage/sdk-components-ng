@@ -38,3 +38,19 @@ sz-record-counts-donut {
     box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
     pointer-events: none;
   }
+
+.mat-mdc-menu-panel.mat-mdc-menu-panel.sz-css-versus-menu, .sz-css-versus-menu {
+    min-width: unset; // we unset this because we dynamicall match the src element
+    max-width: unset; // same
+    width: var(--sz-css-pulldown-width); // var is dynamically set on resize to match host ele
+    top: 4px;
+    left: -2px;
+    border: 1px solid #666666;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    background-color: #f8f8f8;
+
+    .mat-mdc-menu-content {
+        padding: 0;
+    }
+}

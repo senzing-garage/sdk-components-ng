@@ -51,8 +51,8 @@
     <mat-checkbox [checked]="isColumnSelected(col.key)" (change)="selectColumn(col.key, $event.checked)" (click)="$event.stopPropagation();">{{col.value}}</mat-checkbox>
   </button>
 </mat-menu>
-<button (click)="resetCellSizes()"> reset row cell sizes</button>
-<button (click)="getCellSizes()">get row cell sizes</button>
+<!--<button (click)="resetCellSizes()"> reset row cell sizes</button>
+<button (click)="getCellSizes()">get row cell sizes</button>-->
 
 <table class="data-table" [style]="gridStyle">
     <thead>
