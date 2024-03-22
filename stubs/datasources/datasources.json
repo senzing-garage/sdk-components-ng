@@ -1,0 +1,23 @@
+{
+    "data": {
+        "dataSources": [
+            "TRUTHSET1",
+            "TRUTHSET2",
+            "TRUTHSET3"
+        ],
+        "dataSourceDetails": {
+            "TRUTHSET1": {
+                "dataSourceCode": "TRUTHSET1",
+                "dataSourceId": 1006
+            },
+            "TRUTHSET2": {
+                "dataSourceCode": "TRUTHSET2",
+                "dataSourceId": 1007
+            },
+            "TRUTHSET3": {
+                "dataSourceCode": "TRUTHSET3",
+                "dataSourceId": 1008
+            }
+        }
+    }
+}

@@ -17,10 +17,6 @@ import { SzCountStatsForDataSourcesResponse, SzStatCountsForDataSources } from '
 import { SzPrefsService } from '../services/sz-prefs.service';
 import { SzDataSourcesService } from './sz-datasources.service';
 
-// use mock data
-//import * as recordStatsStubData from '../../stubs/statistics/loaded/1.json';
-
-
 /**
  * methods used to get data from the poc server using the 
  * datamart api(s)
@@ -110,6 +106,9 @@ export class SzDataMartService {
         return this.dataSourcesService.listDataSources().pipe(
             tap((ds: string[]) => {
                 this._dataSources = ds;
+            }),
+            catchError((error) => {
+                return of(false);
             })
         );
     }

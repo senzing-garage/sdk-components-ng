@@ -79,6 +79,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
    */
   @Output('dataChanged')
   dataChanged: Subject<SzRecordCountDataSource[]> = new Subject<SzRecordCountDataSource[]>();
+
   /**
    * emitted when the user clicks a datasource arc node.
    * @returns object with various datasource and ui properties.
@@ -225,35 +226,6 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // get data source counts
-    this.getDataSourceRecordCounts().pipe(
-      takeUntil(this.unsubscribe$)
-    ).subscribe({
-      next: (recordCounts: SzRecordCountDataSource[])=>{
-        if(this._dataSourceCounts && this._dataSources) {
-          this.dataChanged.next(this._dataSourceCounts);
-        }
-      },
-      error: (err) => {
-        this.exception.next(err);
-      }
-    });
-    // get data sources
-    this.getDataSources().pipe(
-      takeUntil(this.unsubscribe$),
-      take(1)
-    ).subscribe({
-      next: (dataSources: SzDataSourcesResponseData)=>{
-        this._dataSources = dataSources;
-        if(this._dataSourceCounts && this._dataSources) {
-          this.dataChanged.next(this._dataSourceCounts);
-        }
-      },
-      error: (err) => {
-        this.exception.next(err);
-      }
-    });
-
     // only execute draw once we have the data
     this.dataChanged.pipe(
       takeUntil(this.unsubscribe$)
@@ -267,13 +239,45 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
         this.exception.next(err);
       }
     });
+
     // listend for datasource clicks
     this.dataSourceClick.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe((d)=>{
       console.log('data source clicked', d);
     })
-    
+
+    // get data sources
+    this.getDataSources().pipe(
+      takeUntil(this.unsubscribe$),
+      take(1)
+    ).subscribe({
+      next: (dataSources: SzDataSourcesResponseData)=>{
+        this._dataSources = dataSources;
+        if(this._dataSourceCounts && this._dataSources) {
+          this.dataChanged.next(this._dataSourceCounts);
+        } else {
+          console.warn('huh?', dataSources);
+        }
+      },
+      error: (err) => {
+        this.exception.next(err);
+      }
+    });
+
+    // get data source counts
+    this.getDataSourceRecordCounts().pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe({
+      next: (recordCounts: SzRecordCountDataSource[])=>{
+        if(this._dataSourceCounts && this._dataSources) {
+          this.dataChanged.next(this._dataSourceCounts);
+        }
+      },
+      error: (err) => {
+        this.exception.next(err);
+      }
+    });
   }
 
   /** --------------------------------------- methods and subs -------------------------------------- */

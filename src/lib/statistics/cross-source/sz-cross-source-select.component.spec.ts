@@ -2,12 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MockTestDataInterceptor } from '../../interceptors/mock-test-data.interceptor.service';
 
-import { SzCrossSourceSummaryComponent } from './sz-cross-source-summary.component';
+import { SzCrossSourceSelectComponent } from './sz-cross-source-select.component';
 import { SenzingSdkModule } from '../../sdk.module';
 
-describe('SzCrossSourceSummaryComponent', () => {
-  let component: SzCrossSourceSummaryComponent;
-  let fixture: ComponentFixture<SzCrossSourceSummaryComponent>;
+describe('SzCrossSourceSelectComponent', () => {
+  let component: SzCrossSourceSelectComponent;
+  let fixture: ComponentFixture<SzCrossSourceSelectComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,7 +22,7 @@ describe('SzCrossSourceSummaryComponent', () => {
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SzCrossSourceSummaryComponent);
+    fixture = TestBed.createComponent(SzCrossSourceSelectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

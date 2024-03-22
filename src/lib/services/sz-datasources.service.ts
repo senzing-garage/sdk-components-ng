@@ -47,9 +47,13 @@ export class SzDataSourcesService {
     // get attributes
     return this.configService.getDataSources()
     .pipe(
+      tap( (resp: SzDataSourcesResponse) => {
+        console.log(`listDataSourcesDetails[1]: `, resp);
+      }),
       map( (resp: SzDataSourcesResponse) => resp.data ),
       tap( (data) => {
         this._dataSourceDetails = data;
+        console.log(`listDataSourcesDetails[2]: `, data);
       })
     );
   }
