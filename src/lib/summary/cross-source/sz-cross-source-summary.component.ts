@@ -71,6 +71,9 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
     //console.log(`singular: `, onlyHasOneDataSource || (hasOneDsSelected && ds1NotEqds2));
     return onlyHasOneDataSource || (hasOneDsSelected && ds1NotEqds2);
   }
+  public get hasData() :  boolean {
+    return this._fromDataSourceSummaryData || this._toDataSourceSummaryData || this._crossSourceSummaryData ? true : false;
+  }
 
   /** get the name of the first datasource to compare */
   public get fromDataSource(): string | undefined {
@@ -128,6 +131,10 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   @HostBinding("class.singular") get classSingular() {
     return this.singular;
   }
+    /** before data is available OR on error retrieving data */
+  @HostBinding("class.no-data") get classNoData() {
+    return !this.hasData;
+  }
 
   constructor(
     public prefs: SzPrefsService,
@@ -179,6 +186,8 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
    */
   private onDataSourceSelectionChange(dsName: string) {
     console.log(`onDataSourceSelectionChange: ${dsName}`, this.dataMartService.dataSource1, this.dataMartService.dataSource2);
+    // clear old data (for animations)
+    this.clear();
 
     // stat requests
     let dataRequests = forkJoin({
@@ -198,6 +207,11 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
         console.warn('error: ',err);
       }
     });
+  }
+  private clear() {
+    this._fromDataSourceSummaryData = undefined;
+    this._crossSourceSummaryData    = undefined;
+    this._toDataSourceSummaryData   = undefined;
   }
   /** when all the api requests respond this method is called to store the data on the instance for 
    * retrieval through variables/getters/setters.

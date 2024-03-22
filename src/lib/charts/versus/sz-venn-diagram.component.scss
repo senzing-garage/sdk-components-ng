@@ -9,6 +9,23 @@
     min-width: 225px;
     box-sizing: border-box;
 
+    @keyframes circle-fade-in {
+        0% { opacity: 0; }
+        100% {opacity: .85;}
+    }
+    @keyframes overlap-fade-in {
+        0% { opacity: 0; }
+        100% {opacity: .85;}
+    }
+    @keyframes left-circle-fade-in {
+        0% { opacity: 0; left: -100px; top: -50px}
+        100% {opacity: .85; left: 0px; top: 0px;}
+    }
+    @keyframes right-circle-fade-in {
+        0% { opacity: 0; right: -100px; bottom: -5px;}
+        100% {opacity: .85; right: 0px; bottom:  0px;}
+    }
+
     &.singular {
         width: 150px;
         height: 150px;
@@ -18,6 +35,7 @@
             width: 100%;
             height: 100%;
             background-image: none;
+            animation-name: circle-fade-in;
         }
         .left {
             top: 50%;
@@ -29,7 +47,7 @@
         &.colorized {
             .left-set,
             .right-set {
-              opacity: 1.0;
+              opacity: .85;
             }
         }
         .left-legend,
@@ -39,7 +57,8 @@
     }
     &.colorized {
         .left-set,
-        .right-set {
+        .right-set,
+        .overlap-set {
             background-image: none;
             background-color: transparent;
             &:hover {
@@ -85,11 +104,34 @@
         background-repeat: no-repeat;
         background-size: 100% 100%;
         z-index: 1;
+        animation-name: left-circle-fade-in;
+        animation-duration: .5s;
+        animation-fill-mode: both;
     }
     .right-set {
         right: 0px;
         bottom: 0px;
         background-color: #2A93BC;
+        animation-name: right-circle-fade-in;
+        animation-duration: .5s;
+        animation-fill-mode: both;
+    }
+    .overlap-set {
+        opacity: 0;
+        width: 85px;
+        height: 122px;
+        z-index: 3;
+        position: absolute;
+        left: 31%;
+        top: 14%;
+        animation-name: overlap-fade-in;
+        animation-duration: 1s;
+        animation-delay: .5s;
+        animation-fill-mode: forwards;
+
+        path {
+            cursor: pointer;
+        }
     }
 
     .left-outline,
@@ -124,8 +166,9 @@
         right: 2px;
         color: #2A93BC;
     }
-  }
-  
+}
+.left-set {}
+
 button.count-button {
     position: absolute;
     z-index: 3;
@@ -135,6 +178,13 @@ button.count-button {
     line-height: 20px;
     padding: 2px;
     text-shadow: -1px -1px 1px #000;
+
+    &.hover {
+        .mat-mdc-button-persistent-ripple,
+        .mdc-button__ripple {
+            display: none !important;
+        }
+    }
 
     label.count-button {
         text-decoration: underline;

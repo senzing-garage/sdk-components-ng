@@ -120,6 +120,7 @@ export class SzVennDiagramsComponent implements OnInit, OnDestroy {
   }
 
   public handleOverlapClick() {
+    console.log(`overlapClicked: ${this.overlapCount}`);
     this.overlapClicked.emit(this.overlapCount);
   }
 

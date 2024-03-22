@@ -17,6 +17,7 @@
         <sz-venn-diagram class="data-venn-matches"
             [sz-singular]="singular"
             sz-color="#246289"
+            *ngIf="hasData"
   
             backgorundColorA="rgb(213, 164, 133)"
             borderColorA="rgb(255, 255, 255)"
@@ -45,6 +46,7 @@
         <sz-venn-diagram class="data-venn-possibles"
             [sz-singular]="singular"
             sz-color="#CE8235"
+            *ngIf="hasData"
   
             backgorundColorA="rgb(255, 157, 58)"
             borderColorA="rgb(107, 107, 107)"
@@ -74,6 +76,7 @@
         <sz-venn-diagram class="data-venn-relationships"
             [sz-singular]="singular"
             sz-color="#A99B37"
+            *ngIf="hasData"
   
             backgorundColorA="rgb(141, 148, 210)"
             borderColorA="rgb(212, 212, 212)"

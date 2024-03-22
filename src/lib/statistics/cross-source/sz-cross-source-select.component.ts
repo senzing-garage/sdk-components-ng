@@ -321,6 +321,10 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
     }
     return '';
   }
+  /**
+   * 
+   * "matchedCount", "possibleMatchCount", "discoveredRelationshipCount"
+   */
   private getDiscoveredConnectionCount(dataSource1: string, dataSource2: string): number {
     //console.log(`getDiscoveredConnectionCount: ${dataSource1} vs ${dataSource2}`, this.dataMartService.summaryStatistics)
     if(this.dataMartService.summaryStatistics && this.dataMartService.summaryStatistics.sourceSummaries) {
@@ -337,8 +341,9 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
         });
         if(_css){
           let _tConnections = 0;
-          if(_css.ambiguousMatches && _css.ambiguousMatches.length > 0)     { _tConnections += _css.ambiguousMatches[0].entityCount; }
-          if(_css.disclosedRelations && _css.disclosedRelations.length > 0) { _tConnections += _css.disclosedRelations[0].entityCount; }
+          //if(_css.ambiguousMatches && _css.ambiguousMatches.length > 0)     { _tConnections += _css.ambiguousMatches[0].entityCount; }
+          //if(_css.disclosedRelations && _css.disclosedRelations.length > 0) { _tConnections += _css.disclosedRelations[0].entityCount; }
+          if(_css.matches && _css.matches.length > 0)       { _tConnections += _css.matches[0].entityCount; }
           if(_css.possibleMatches && _css.possibleMatches.length > 0)       { _tConnections += _css.possibleMatches[0].entityCount; }
           if(_css.possibleRelations && _css.possibleRelations.length > 0)   { _tConnections += _css.possibleRelations[0].entityCount; }
           return _tConnections;

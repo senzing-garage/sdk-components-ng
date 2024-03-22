@@ -54,3 +54,13 @@ sz-record-counts-donut {
         padding: 0;
     }
 }
+
+/* make sure ripple highlight doesnt show */
+sz-venn-diagram button.count-button {
+    //&.hover {
+        .mat-mdc-button-persistent-ripple,
+        .mdc-button__ripple {
+            display: none !important;
+        }
+    //}
+}

@@ -12,6 +12,17 @@
         align-items: flex-start;
     }
 
+    &.no-data {
+      .venn-wrapper {
+        opacity: 0;
+      }
+    }
+    &.has-data {
+      .venn-wrapper {
+        opacity: 0;
+      }
+    }
+
     .data-select-wrapper {
         display: flex;
         flex-direction: row;
