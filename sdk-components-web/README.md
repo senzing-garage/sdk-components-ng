@@ -2,7 +2,7 @@
 
 ## Overview
 This project is for the senzing sdk web components. It provides web component versions built 
-off of the components found in [@senzing/sdk-components-ng](https://github.com/Senzing/sdk-components-ng). The components themselves leverage the [rest-api-client-ng package](https://www.npmjs.com/package/@senzing/rest-api-client-ng) which itself is generated from the [OAS specification](https://github.com/Senzing/rest-api-proposal).
+off of the components found in [@senzing/sdk-components-ng](https://github.com/senzing-garage/sdk-components-ng). The components themselves leverage the [rest-api-client-ng package](https://www.npmjs.com/package/@senzing/rest-api-client-ng) which itself is generated from the [OAS specification](https://github.com/senzing-garage/senzing-rest-api-specification).
 
 The idea is to provide a framework agnostic option of those same components. 
 
@@ -41,7 +41,7 @@ And include the component tag in your document like so:
 
 ## Scripting Components
 
-All the components support all the same inputs and output as the [@senzing/sdk-components-ng](https://github.com/Senzing/sdk-components-ng) package. [See documentation](https://senzing.github.io/sdk-components-ng/)
+All the components support all the same inputs and output as the [@senzing/sdk-components-ng](https://github.com/senzing-garage/sdk-components-ng) package. [See documentation](https://senzing.github.io/sdk-components-ng/)
 
 The only major difference between the two packages is the dependency requirements and the way that eventing is handled outside of the components. The web components are accessible just like any other DOM elements.
 
@@ -86,13 +86,13 @@ body {
 }
 ```
 
-Another option is to bake the styles in to the components themselves. This is the extreme option, but skips over the issue entirely. The requirements for doing so are the same as building the sdk-components-ng package from source. The repo is [publicly avaiable](https://github.com/Senzing/sdk-components-ng), fork it and have yourself an afternoon. 
+Another option is to bake the styles in to the components themselves. This is the extreme option, but skips over the issue entirely. The requirements for doing so are the same as building the sdk-components-ng package from source. The repo is [publicly avaiable](https://github.com/senzing-garage/sdk-components-ng), fork it and have yourself an afternoon. 
 
 
 ## Dependencies
 
 ### REST API Server
-These components require the senzing [Senzing REST API Sever](https://github.com/Senzing/rest-api-server-java/) to function. Follow [the instructions](https://github.com/Senzing/rest-api-server-java/) to check out and build the [Senzing REST API Sever](https://github.com/Senzing/rest-api-server-java/) from source or download a pre-built. 
+These components require the senzing [Senzing REST API Sever](https://github.com/senzing-garage/senzing-api-server/) to function. Follow [the instructions](https://github.com/senzing-garage/senzing-api-server/) to check out and build the [Senzing REST API Sever](https://github.com/senzing-garage/senzing-api-server/) from source or download a pre-built. 
 
 
 ### Example Notes

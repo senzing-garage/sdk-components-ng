@@ -13,7 +13,7 @@ import { tap, map } from 'rxjs/operators';
 
 /**
  * Provides access to the /datasources api path.
- * See {@link https://github.com/Senzing/senzing-rest-api/blob/master/senzing-rest-api.yaml#L172}
+ * See {@link https://github.com/senzing-garage/senzing-rest-api-specification/blob/main/senzing-rest-api.yaml#L172}
  *
  * @export
  */
