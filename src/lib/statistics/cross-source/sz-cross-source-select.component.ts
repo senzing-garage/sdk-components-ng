@@ -25,27 +25,14 @@ import { SzCSSClassService } from '../../services/sz-css-class.service';
 export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDestroy {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
-  //private _fromDataSource: string | null = null;
   private _defaultFromDataSource: string | undefined;
-  //private _toDataSource: string | null = null;
   private _defaultToDataSource: string | undefined;
   private _dataSources : string[] = [];
   private _fromDataSources: {name: string, connectionCount: number}[] = [];
   private _toDataSources: {name: string, connectionCount: number}[]   = [];
   private dataSourceLookup : { [code: string]: string } = {};
-  //private _fromDataSources: string[] = [];
-  //private _fromDataSourceInfos : any[] = [];
-  //private _toDataSources: string[] = [];
-  //private _toDataSourceInfos: any[] = [];
-  //private _fromAuditInfo : any | null = null;
-  //private _toAuditInfo : any | null = null;
-  //private _overlapAuditInfo : any | null = null;
   private _summaryLookup = {};
   private _summaryData: SzSummaryStats | undefined;
-  //private _totalRecordCount: number = 0;
-  //private _totalEntityCount: number = 0;
-  //private _totalSingleCount: number = 0;
-  //private _totalConnectionCount : number = 0;
   private stepFromNone = false;
 
   @ViewChild('displayFromDS') public displayFromDS:  ElementRef;
@@ -101,18 +88,6 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
   public set defaultToDataSource(source: string) {
     this._defaultToDataSource = source;
   }
-
-  /*public get fromAuditInfo() : any | null {
-    return this._fromAuditInfo;
-  }
-
-  public get toAuditInfo() : any | null {
-    return this._toAuditInfo;
-  }
-
-  public get overlapAuditInfo() : any | null {
-    return this._overlapAuditInfo;
-  }*/
 
   /**
    * emitted when the component begins a request for data.
@@ -179,14 +154,13 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
         takeUntil(this.unsubscribe$)
       ).subscribe(this.onDataSourceSelectionChanged.bind(this));
       // make sure we start off with the latest stats
-      //this.dataMartService.getSummaryStatistics().pipe(
-      //  take(1)
-      //).subscribe();
+      this.dataMartService.getSummaryStatistics().pipe(
+        take(1)
+      ).subscribe();
   }
   ngAfterViewInit() {
 
   }
-  //ngAfterContentInit
 
   /**
    * unsubscribe when component is destroyed
@@ -222,20 +196,12 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
         connectionCount: this.getDiscoveredConnectionCount(ds, this.toDataSource)
       }
     });
-    // grab the width of the menu if not already defined
-    //let menuWidth = this.displayFromDS.nativeElement.clientWidth;
-    //console.log(`menu width: ${menuWidth}`);
-
-    //setTimeout(() => console.log(`this.displayFromDS: `, this.displayFromDS), 3000);
   }
 
   public onPulldownMenuSizeChange(menubox: HTMLButtonElement, event: Event | any) {
     if(menubox && menubox.clientWidth) {
       let menuWidth = menubox.clientWidth;
-      console.log(`onPulldownMenuSizeChange: ${menuWidth}`, menubox, event);
       this.cssService.setVariable('--sz-css-pulldown-width', menuWidth+'px');
-    } else {
-      console.log(`onPulldownMenuSizeChange: `, menubox, event);
     }
   }
 
@@ -342,10 +308,10 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
         if(_css){
           let _tConnections = 0;
           //if(_css.ambiguousMatches && _css.ambiguousMatches.length > 0)     { _tConnections += _css.ambiguousMatches[0].entityCount; }
-          //if(_css.disclosedRelations && _css.disclosedRelations.length > 0) { _tConnections += _css.disclosedRelations[0].entityCount; }
-          if(_css.matches && _css.matches.length > 0)       { _tConnections += _css.matches[0].entityCount; }
-          if(_css.possibleMatches && _css.possibleMatches.length > 0)       { _tConnections += _css.possibleMatches[0].entityCount; }
-          if(_css.possibleRelations && _css.possibleRelations.length > 0)   { _tConnections += _css.possibleRelations[0].entityCount; }
+          //if(_css.disclosedRelations && _css.disclosedRelations.length > 0) { _tConnections += _css.disclosedRelations[0].relationCount; }
+          if(_css.matches && _css.matches.length > 0)                       { _tConnections += _css.matches[0].entityCount; }
+          if(_css.possibleMatches && _css.possibleMatches.length > 0)       { _tConnections += _css.possibleMatches[0].relationCount; }
+          if(_css.possibleRelations && _css.possibleRelations.length > 0)   { _tConnections += _css.possibleRelations[0].relationCount; }
           return _tConnections;
         }
       }

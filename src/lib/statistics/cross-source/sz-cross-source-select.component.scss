@@ -106,6 +106,9 @@
               overflow: hidden;
               white-space: nowrap;
             }
+            .connection-count {
+              float: right;
+            }
           }
           button.dsrc-select:hover {
             span.material-icons {

@@ -2,7 +2,7 @@ import { Component, Output, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, 
 import { Observable, Subject, forkJoin, of } from 'rxjs';
 import { skipWhile, take, takeUntil } from 'rxjs/operators';
 
-import { SzCrossSourceSummary } from '@senzing/rest-api-client-ng';
+import { SzCrossSourceSummary, SzRelationCounts } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzRecordCountDataSource } from '../../models/stats';
 import { SzDataMartService } from '../../services/sz-datamart.service';
@@ -85,39 +85,39 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   }
   /** get the number of matches for the first datasource to compare */
   public get fromDataSourceMatches() {
-    return this._fromDataSourceSummaryData && this._fromDataSourceSummaryData.matches.length > 0 ? this._fromDataSourceSummaryData.matches[0].entityCount : 0;
+    return this._getCountFromSummaryData(this._fromDataSourceSummaryData, 'matches');
   }
   /** get the number of matches that are in both the first and second datasource */
   public get overlapDataSourceMatches() {
-    return this._crossSourceSummaryData && this._crossSourceSummaryData.matches.length > 0 ? this._crossSourceSummaryData.matches[0].entityCount : 0;
+    return this._getCountFromSummaryData(this._crossSourceSummaryData, 'matches');
   }
   /** get the number of matches for the second datasource to compare */
   public get toDataSourceMatches() {
-    return this._toDataSourceSummaryData && this._toDataSourceSummaryData.matches.length > 0 ? this._toDataSourceSummaryData.matches[0].entityCount : 0;
+    return this._getCountFromSummaryData(this._toDataSourceSummaryData, 'matches');
   }
   /** get the number of possible matches for the first datasource to compare */
   public get fromDataSourcePossibles() {
-    return this._fromDataSourceSummaryData && this._fromDataSourceSummaryData.possibleMatches.length > 0 ? this._fromDataSourceSummaryData.possibleMatches[0].entityCount : 0;
+    return this._getCountFromSummaryData(this._fromDataSourceSummaryData, 'possibleMatches');
   }
   /** get the number of possible matches that are in both the first and second datasource */
   public get overlapDataSourcePossibles() {
-    return this._crossSourceSummaryData && this._crossSourceSummaryData.possibleMatches.length > 0 ? this._crossSourceSummaryData.possibleMatches[0].entityCount : 0;
+    return this._getCountFromSummaryData(this._crossSourceSummaryData, 'possibleMatches');
   }
   /** get the number of possible matches for the second datasource to compare */
   public get toDataSourcePossibles() {
-    return this._toDataSourceSummaryData && this._toDataSourceSummaryData.possibleMatches.length > 0 ? this._toDataSourceSummaryData.possibleMatches[0].entityCount : 0;
+    return this._getCountFromSummaryData(this._toDataSourceSummaryData, 'possibleMatches');
   }
   /** get the number of possibly related entities for the first datasource to compare */
   public get fromDataSourceRelated() {
-    return this._fromDataSourceSummaryData && this._fromDataSourceSummaryData.possibleRelations.length > 0 ? this._fromDataSourceSummaryData.possibleRelations[0].entityCount : 0;
+    return this._getCountFromSummaryData(this._fromDataSourceSummaryData, 'possibleRelations');
   }
   /** get the number of possibly related entities that are in both the first and second datasource */
   public get overlapDataSourceRelated() {
-    return this._crossSourceSummaryData && this._crossSourceSummaryData.possibleRelations.length > 0 ? this._crossSourceSummaryData.possibleRelations[0].entityCount : 0;
+    return this._getCountFromSummaryData(this._crossSourceSummaryData, 'possibleRelations');
   }
   /** get the number of possibly related entities for the second datasource to compare */
   public get toDataSourceRelated() {
-    return this._toDataSourceSummaryData && this._toDataSourceSummaryData.possibleRelations.length > 0 ? this._toDataSourceSummaryData.possibleRelations[0].entityCount : 0;
+    return this._getCountFromSummaryData(this._toDataSourceSummaryData, 'possibleRelations');
   }
 
   // ------------------------------------ event emitters ------------------------------------
@@ -207,6 +207,14 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
         console.warn('error: ',err);
       }
     });
+  }
+  private _getCountFromSummaryData(data: SzCrossSourceSummary, stype: 'possibleMatches' | 'possibleRelations' | 'matches') {
+    let retVal = 0;
+    if(data && data[stype] && data[stype].length > 0) {
+      let _rc: SzRelationCounts[] = data[stype].filter((rc: SzRelationCounts)=>{ return !rc.matchKey && !rc.principle && rc.matchKey !== null && rc.principle !== null ? true : false;});
+      retVal = _rc && _rc.length > 0 ? (['possibleMatches','possibleRelations'].indexOf(stype) > -1 ? _rc[0].relationCount : _rc[0].entityCount) : retVal;
+    }
+    return retVal;
   }
   private clear() {
     this._fromDataSourceSummaryData = undefined;
