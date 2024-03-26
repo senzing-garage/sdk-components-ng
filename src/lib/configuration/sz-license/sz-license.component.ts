@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, filter, takeUntil } from 'rxjs';
-import { SzCountStats, SzLicenseInfo } from '@senzing/rest-api-client-ng';
+import { SzLoadedStats, SzLicenseInfo } from '@senzing/rest-api-client-ng';
 
 import { parseBool, parseNumber } from '../../common/utils';
 import { SzAdminService } from '../../services/sz-admin.service';
@@ -32,7 +32,7 @@ export class SzLicenseInfoComponent implements OnInit {
   readonly SzLicenseUpgradeType = SzLicenseUpgradeType;
 
   private _licenseInfo: SzLicenseInfo = {};
-  private _countStats: SzCountStats;
+  private _countStats: SzLoadedStats;
   private _recordCount: number;
   private _showUpgradeButton: boolean = true;
   
@@ -158,7 +158,7 @@ export class SzLicenseInfoComponent implements OnInit {
     private router: Router) {}
 
   ngOnInit() {
-    this.dmService.onCountStats.pipe(filter( (val) => val !== undefined)).subscribe( (resp: SzCountStats) => {
+    this.dmService.onCountStats.pipe(filter( (val) => val !== undefined)).subscribe( (resp: SzLoadedStats) => {
       this._countStats = resp;
       if(this._countStats.totalRecordCount) {
         this._recordCount = this._countStats.totalRecordCount;

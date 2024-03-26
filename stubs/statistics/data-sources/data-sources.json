@@ -1,0 +1,51 @@
+{
+    "meta": {
+        "server": "Senzing POC API Server",
+        "httpMethod": "GET",
+        "httpStatusCode": 200,
+        "timings": {
+            "overall": 1,
+            "enqueued": 0,
+            "nativeAPI": 0,
+            "nativeAPI:engine.exportConfig": 0,
+            "nativeAPI:config.load": 0,
+            "nativeAPI:config.listDataSources": 0,
+            "processRawData": 0
+        },
+        "timestamp": "2024-03-22T20:15:27.059Z",
+        "version": "",
+        "restApiVersion": "3.4.1",
+        "nativeApiVersion": "3.8.0",
+        "nativeApiBuildVersion": "3.8.0.23303",
+        "nativeApiBuildNumber": "2023_10_30__10_45",
+        "nativeApiBuildDate": "2023-10-30T17:45:00.000Z",
+        "configCompatibilityVersion": "10",
+        "pocServerVersion": "3.5.2",
+        "pocApiVersion": "3.6.0"
+    },
+    "links": {
+        "self": "http://localhost:4300/data-sources",
+        "openApiSpecification": "http://localhost:4300/specifications/open-api"
+    },
+    "data": {
+        "dataSources": [
+            "TRUTHSET1",
+            "TRUTHSET2",
+            "TRUTHSET3"
+        ],
+        "dataSourceDetails": {
+            "TRUTHSET1": {
+                "dataSourceCode": "TRUTHSET1",
+                "dataSourceId": 1006
+            },
+            "TRUTHSET2": {
+                "dataSourceCode": "TRUTHSET2",
+                "dataSourceId": 1007
+            },
+            "TRUTHSET3": {
+                "dataSourceCode": "TRUTHSET3",
+                "dataSourceId": 1008
+            }
+        }
+    }
+}

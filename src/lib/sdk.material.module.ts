@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
+import { CdkMenuModule } from '@angular/cdk/menu';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -32,6 +33,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
   declarations: [],
   imports: [ 
     CdkAccordionModule,
+    CdkMenuModule,
     CdkTreeModule,
     DragDropModule, 
     MatBadgeModule, 
@@ -60,6 +62,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     NoopAnimationsModule],
   exports: [ 
     CdkAccordionModule,
+    CdkMenuModule,
     CdkTreeModule,
     DragDropModule, 
     MatBadgeModule, 

@@ -1,0 +1,27 @@
+{
+    "data": {
+        "totalRecordCount": 193,
+        "totalEntityCount": 101,
+        "totalUnmatchedRecordCount": 33,
+        "dataSourceCounts": [
+            {
+                "dataSource": "TRUTHSET1",
+                "recordCount": 90,
+                "entityCount": 45,
+                "unmatchedRecordCount": 12
+            },
+            {
+                "dataSource": "TRUTHSET2",
+                "recordCount": 13,
+                "entityCount": 11,
+                "unmatchedRecordCount": 9
+            },
+            {
+                "dataSource": "TRUTHSET3",
+                "recordCount": 90,
+                "entityCount": 45,
+                "unmatchedRecordCount": 12
+            }
+        ]
+    }
+}
