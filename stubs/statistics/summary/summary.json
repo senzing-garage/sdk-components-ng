@@ -1,0 +1,418 @@
+{
+    "lastModified": 1696876711786,
+    "dataSources": [
+        "REFERENCE",
+        "WATCHLIST"
+    ],
+    "projectId": 1,
+    "recordCount": 39,
+    "entityCount": 34,
+    "singletonCount": 9,
+    "connectionCount": 59,
+    "sourceResults": [
+        {
+            "discoveredRelationshipCount": 12,
+            "disclosedRelationshipCount": 14,
+            "possibleMatchCount": 1,
+            "matchedCount": 4,
+            "connectionCount": 31,
+            "fromDataSource": "REFERENCE",
+            "toDataSource": "REFERENCE",
+            "discoveredConnectionCount": 17,
+            "relationshipCount": 26,
+            "fromEntityCount": 18,
+            "toSingleCount": 0,
+            "fromRecordCount": 22,
+            "toEntityCount": 18,
+            "toRecordCount": 22,
+            "fromSingleCount": 0
+        },
+        {
+            "discoveredRelationshipCount": 4,
+            "disclosedRelationshipCount": 4,
+            "possibleMatchCount": 0,
+            "matchedCount": 4,
+            "connectionCount": 12,
+            "fromDataSource": "REFERENCE",
+            "toDataSource": "WATCHLIST",
+            "discoveredConnectionCount": 8,
+            "relationshipCount": 8,
+            "fromEntityCount": 18,
+            "toSingleCount": 9,
+            "fromRecordCount": 22,
+            "toEntityCount": 16,
+            "toRecordCount": 17,
+            "fromSingleCount": 0
+        },
+        {
+            "discoveredRelationshipCount": 4,
+            "disclosedRelationshipCount": 4,
+            "possibleMatchCount": 0,
+            "matchedCount": 4,
+            "connectionCount": 12,
+            "fromDataSource": "WATCHLIST",
+            "toDataSource": "REFERENCE",
+            "discoveredConnectionCount": 8,
+            "relationshipCount": 8,
+            "fromEntityCount": 16,
+            "toSingleCount": 0,
+            "fromRecordCount": 17,
+            "toEntityCount": 18,
+            "toRecordCount": 22,
+            "fromSingleCount": 9
+        },
+        {
+            "discoveredRelationshipCount": 2,
+            "disclosedRelationshipCount": 0,
+            "possibleMatchCount": 1,
+            "matchedCount": 1,
+            "connectionCount": 4,
+            "fromDataSource": "WATCHLIST",
+            "toDataSource": "WATCHLIST",
+            "discoveredConnectionCount": 4,
+            "relationshipCount": 2,
+            "fromEntityCount": 16,
+            "toSingleCount": 9,
+            "fromRecordCount": 17,
+            "toEntityCount": 16,
+            "toRecordCount": 17,
+            "fromSingleCount": 9
+        }
+    ],
+    "sourceSummaries": [
+        {
+            "dataSource": "REFERENCE",
+            "recordCount": 22,
+            "entityCount": 18,
+            "singletonCount": 0,
+            "connectionCount": 43,
+            "versusResults": [
+                {
+                    "discoveredRelationshipCount": 12,
+                    "disclosedRelationshipCount": 14,
+                    "possibleMatchCount": 1,
+                    "matchedCount": 4,
+                    "connectionCount": 31,
+                    "fromDataSource": "REFERENCE",
+                    "toDataSource": "REFERENCE",
+                    "discoveredConnectionCount": 17,
+                    "relationshipCount": 26,
+                    "fromEntityCount": 18,
+                    "toSingleCount": 0,
+                    "fromRecordCount": 22,
+                    "toEntityCount": 18,
+                    "toRecordCount": 22,
+                    "fromSingleCount": 0
+                },
+                {
+                    "discoveredRelationshipCount": 4,
+                    "disclosedRelationshipCount": 4,
+                    "possibleMatchCount": 0,
+                    "matchedCount": 4,
+                    "connectionCount": 12,
+                    "fromDataSource": "REFERENCE",
+                    "toDataSource": "WATCHLIST",
+                    "discoveredConnectionCount": 8,
+                    "relationshipCount": 8,
+                    "fromEntityCount": 18,
+                    "toSingleCount": 9,
+                    "fromRecordCount": 22,
+                    "toEntityCount": 16,
+                    "toRecordCount": 17,
+                    "fromSingleCount": 0
+                }
+            ],
+            "versusResultsBySource": {
+                "WATCHLIST": {
+                    "discoveredRelationshipCount": 4,
+                    "disclosedRelationshipCount": 4,
+                    "possibleMatchCount": 0,
+                    "matchedCount": 4,
+                    "connectionCount": 12,
+                    "fromDataSource": "REFERENCE",
+                    "toDataSource": "WATCHLIST",
+                    "discoveredConnectionCount": 8,
+                    "relationshipCount": 8,
+                    "fromEntityCount": 18,
+                    "toSingleCount": 9,
+                    "fromRecordCount": 22,
+                    "toEntityCount": 16,
+                    "toRecordCount": 17,
+                    "fromSingleCount": 0
+                },
+                "REFERENCE": {
+                    "discoveredRelationshipCount": 12,
+                    "disclosedRelationshipCount": 14,
+                    "possibleMatchCount": 1,
+                    "matchedCount": 4,
+                    "connectionCount": 31,
+                    "fromDataSource": "REFERENCE",
+                    "toDataSource": "REFERENCE",
+                    "discoveredConnectionCount": 17,
+                    "relationshipCount": 26,
+                    "fromEntityCount": 18,
+                    "toSingleCount": 0,
+                    "fromRecordCount": 22,
+                    "toEntityCount": 18,
+                    "toRecordCount": 22,
+                    "fromSingleCount": 0
+                }
+            },
+            "versusDataSources": [
+                "REFERENCE",
+                "WATCHLIST"
+            ]
+        },
+        {
+            "dataSource": "WATCHLIST",
+            "recordCount": 17,
+            "entityCount": 16,
+            "singletonCount": 9,
+            "connectionCount": 16,
+            "versusResults": [
+                {
+                    "discoveredRelationshipCount": 4,
+                    "disclosedRelationshipCount": 4,
+                    "possibleMatchCount": 0,
+                    "matchedCount": 4,
+                    "connectionCount": 12,
+                    "fromDataSource": "WATCHLIST",
+                    "toDataSource": "REFERENCE",
+                    "discoveredConnectionCount": 8,
+                    "relationshipCount": 8,
+                    "fromEntityCount": 16,
+                    "toSingleCount": 0,
+                    "fromRecordCount": 17,
+                    "toEntityCount": 18,
+                    "toRecordCount": 22,
+                    "fromSingleCount": 9
+                },
+                {
+                    "discoveredRelationshipCount": 2,
+                    "disclosedRelationshipCount": 0,
+                    "possibleMatchCount": 1,
+                    "matchedCount": 1,
+                    "connectionCount": 4,
+                    "fromDataSource": "WATCHLIST",
+                    "toDataSource": "WATCHLIST",
+                    "discoveredConnectionCount": 4,
+                    "relationshipCount": 2,
+                    "fromEntityCount": 16,
+                    "toSingleCount": 9,
+                    "fromRecordCount": 17,
+                    "toEntityCount": 16,
+                    "toRecordCount": 17,
+                    "fromSingleCount": 9
+                }
+            ],
+            "versusResultsBySource": {
+                "WATCHLIST": {
+                    "discoveredRelationshipCount": 2,
+                    "disclosedRelationshipCount": 0,
+                    "possibleMatchCount": 1,
+                    "matchedCount": 1,
+                    "connectionCount": 4,
+                    "fromDataSource": "WATCHLIST",
+                    "toDataSource": "WATCHLIST",
+                    "discoveredConnectionCount": 4,
+                    "relationshipCount": 2,
+                    "fromEntityCount": 16,
+                    "toSingleCount": 9,
+                    "fromRecordCount": 17,
+                    "toEntityCount": 16,
+                    "toRecordCount": 17,
+                    "fromSingleCount": 9
+                },
+                "REFERENCE": {
+                    "discoveredRelationshipCount": 4,
+                    "disclosedRelationshipCount": 4,
+                    "possibleMatchCount": 0,
+                    "matchedCount": 4,
+                    "connectionCount": 12,
+                    "fromDataSource": "WATCHLIST",
+                    "toDataSource": "REFERENCE",
+                    "discoveredConnectionCount": 8,
+                    "relationshipCount": 8,
+                    "fromEntityCount": 16,
+                    "toSingleCount": 0,
+                    "fromRecordCount": 17,
+                    "toEntityCount": 18,
+                    "toRecordCount": 22,
+                    "fromSingleCount": 9
+                }
+            },
+            "versusDataSources": [
+                "REFERENCE",
+                "WATCHLIST"
+            ]
+        }
+    ],
+    "summariesBySource": {
+        "WATCHLIST": {
+            "dataSource": "WATCHLIST",
+            "recordCount": 17,
+            "entityCount": 16,
+            "singletonCount": 9,
+            "connectionCount": 16,
+            "versusResults": [
+                {
+                    "discoveredRelationshipCount": 4,
+                    "disclosedRelationshipCount": 4,
+                    "possibleMatchCount": 0,
+                    "matchedCount": 4,
+                    "connectionCount": 12,
+                    "fromDataSource": "WATCHLIST",
+                    "toDataSource": "REFERENCE",
+                    "discoveredConnectionCount": 8,
+                    "relationshipCount": 8,
+                    "fromEntityCount": 16,
+                    "toSingleCount": 0,
+                    "fromRecordCount": 17,
+                    "toEntityCount": 18,
+                    "toRecordCount": 22,
+                    "fromSingleCount": 9
+                },
+                {
+                    "discoveredRelationshipCount": 2,
+                    "disclosedRelationshipCount": 0,
+                    "possibleMatchCount": 1,
+                    "matchedCount": 1,
+                    "connectionCount": 4,
+                    "fromDataSource": "WATCHLIST",
+                    "toDataSource": "WATCHLIST",
+                    "discoveredConnectionCount": 4,
+                    "relationshipCount": 2,
+                    "fromEntityCount": 16,
+                    "toSingleCount": 9,
+                    "fromRecordCount": 17,
+                    "toEntityCount": 16,
+                    "toRecordCount": 17,
+                    "fromSingleCount": 9
+                }
+            ],
+            "versusResultsBySource": {
+                "WATCHLIST": {
+                    "discoveredRelationshipCount": 2,
+                    "disclosedRelationshipCount": 0,
+                    "possibleMatchCount": 1,
+                    "matchedCount": 1,
+                    "connectionCount": 4,
+                    "fromDataSource": "WATCHLIST",
+                    "toDataSource": "WATCHLIST",
+                    "discoveredConnectionCount": 4,
+                    "relationshipCount": 2,
+                    "fromEntityCount": 16,
+                    "toSingleCount": 9,
+                    "fromRecordCount": 17,
+                    "toEntityCount": 16,
+                    "toRecordCount": 17,
+                    "fromSingleCount": 9
+                },
+                "REFERENCE": {
+                    "discoveredRelationshipCount": 4,
+                    "disclosedRelationshipCount": 4,
+                    "possibleMatchCount": 0,
+                    "matchedCount": 4,
+                    "connectionCount": 12,
+                    "fromDataSource": "WATCHLIST",
+                    "toDataSource": "REFERENCE",
+                    "discoveredConnectionCount": 8,
+                    "relationshipCount": 8,
+                    "fromEntityCount": 16,
+                    "toSingleCount": 0,
+                    "fromRecordCount": 17,
+                    "toEntityCount": 18,
+                    "toRecordCount": 22,
+                    "fromSingleCount": 9
+                }
+            },
+            "versusDataSources": [
+                "REFERENCE",
+                "WATCHLIST"
+            ]
+        },
+        "REFERENCE": {
+            "dataSource": "REFERENCE",
+            "recordCount": 22,
+            "entityCount": 18,
+            "singletonCount": 0,
+            "connectionCount": 43,
+            "versusResults": [
+                {
+                    "discoveredRelationshipCount": 12,
+                    "disclosedRelationshipCount": 14,
+                    "possibleMatchCount": 1,
+                    "matchedCount": 4,
+                    "connectionCount": 31,
+                    "fromDataSource": "REFERENCE",
+                    "toDataSource": "REFERENCE",
+                    "discoveredConnectionCount": 17,
+                    "relationshipCount": 26,
+                    "fromEntityCount": 18,
+                    "toSingleCount": 0,
+                    "fromRecordCount": 22,
+                    "toEntityCount": 18,
+                    "toRecordCount": 22,
+                    "fromSingleCount": 0
+                },
+                {
+                    "discoveredRelationshipCount": 4,
+                    "disclosedRelationshipCount": 4,
+                    "possibleMatchCount": 0,
+                    "matchedCount": 4,
+                    "connectionCount": 12,
+                    "fromDataSource": "REFERENCE",
+                    "toDataSource": "WATCHLIST",
+                    "discoveredConnectionCount": 8,
+                    "relationshipCount": 8,
+                    "fromEntityCount": 18,
+                    "toSingleCount": 9,
+                    "fromRecordCount": 22,
+                    "toEntityCount": 16,
+                    "toRecordCount": 17,
+                    "fromSingleCount": 0
+                }
+            ],
+            "versusResultsBySource": {
+                "WATCHLIST": {
+                    "discoveredRelationshipCount": 4,
+                    "disclosedRelationshipCount": 4,
+                    "possibleMatchCount": 0,
+                    "matchedCount": 4,
+                    "connectionCount": 12,
+                    "fromDataSource": "REFERENCE",
+                    "toDataSource": "WATCHLIST",
+                    "discoveredConnectionCount": 8,
+                    "relationshipCount": 8,
+                    "fromEntityCount": 18,
+                    "toSingleCount": 9,
+                    "fromRecordCount": 22,
+                    "toEntityCount": 16,
+                    "toRecordCount": 17,
+                    "fromSingleCount": 0
+                },
+                "REFERENCE": {
+                    "discoveredRelationshipCount": 12,
+                    "disclosedRelationshipCount": 14,
+                    "possibleMatchCount": 1,
+                    "matchedCount": 4,
+                    "connectionCount": 31,
+                    "fromDataSource": "REFERENCE",
+                    "toDataSource": "REFERENCE",
+                    "discoveredConnectionCount": 17,
+                    "relationshipCount": 26,
+                    "fromEntityCount": 18,
+                    "toSingleCount": 0,
+                    "fromRecordCount": 22,
+                    "toEntityCount": 18,
+                    "toRecordCount": 22,
+                    "fromSingleCount": 0
+                }
+            },
+            "versusDataSources": [
+                "REFERENCE",
+                "WATCHLIST"
+            ]
+        }
+    }
+}

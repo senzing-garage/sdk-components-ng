@@ -1,0 +1,172 @@
+
+.sz-dt-header-context-menu {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 150px;
+    color: #666;
+
+    &.submenu {
+        margin-left: -1px;
+
+        button {
+            &:first-child {
+                border-top-left-radius: 0;
+            }
+            &:last-child {
+                border-bottom-left-radius: 0;
+            }
+        }
+    }
+
+    &:has(button[aria-checked]) {
+        /* menu has check marks that have been checked
+        pad all text with space for empty checkmarks */
+        button {
+            padding-left: 14px;
+        }
+    }
+
+    button {
+        color: #666;
+        background-color: #f7f8fc;
+        font-size: .75em;
+        padding: 2px 4px;
+        border-top: none;
+        border-left: 1px solid #666;
+        border-bottom: 1px solid #666;
+        border-right: 1px solid #666;
+        border-radius: 0;
+        text-align: left;
+        cursor: pointer;
+        -webkit-user-select: none;
+        user-select: none;
+
+        &:focus, &:focus-visible, &:focus-within {
+            outline: none;
+        }
+        &:hover, &[aria-expanded=true] {
+            background-color: #ddf4ff;
+        }
+
+        &:first-child {
+            border-top: 1px solid #666;
+            border-top-left-radius: 2px;
+            border-top-right-radius: 2px;
+        }
+        &:last-child {
+            border-bottom-left-radius: 2px;
+            border-bottom-right-radius: 2px;
+            border-bottom: 1px solid #666;
+        }
+
+        &[aria-haspopup=menu] {
+            position: relative;
+            &:before {
+                /* submenu */
+                content: '';
+                position: absolute;
+                top: 50%;
+                right: 5px;
+                transform: translateY(-50%);
+                width: 0;
+                height: 0;
+                border-width: 5px 0 5px 5px;
+                border-color: transparent transparent transparent #6a6a6a;
+                border-style: solid;
+            }
+        }
+
+        &[aria-checked=true] {
+            background-color: #b8b8b8;
+            color: #666;
+            position: relative;
+
+            &:before {
+                content: '';
+                display: block;
+                position: absolute;
+                top: 50%;
+                left: 2px;
+                transform: translateY(-50%);
+                width: 12px;
+                height: 12px;
+                background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="%23666"/></svg>');
+                background-size: 12px;
+            }
+        }
+    }
+}
+/*  when content is through innerHTML the View Encapsulation 
+    considers the tags to be outside of the component
+ */
+sz-data-table {
+    tbody {
+        td.expandable {
+            max-height: 40px;
+            /* hide everything after first row */
+            .cell-content div:has(.list){
+                /* has sub lists, give it some breathing room */
+                margin-bottom: 20px;
+            }
+            .cell-content {
+                div {
+                    visibility: hidden;
+                    margin-bottom: 0px;
+                    div {
+                        margin-bottom: 0px;
+                        &.list {
+                            margin-bottom: 10px;
+                        }
+                    }
+                    div:first-child {
+                        visibility: hidden;
+                    }
+                    &:first-child {
+                        visibility: visible;
+                    }
+                }
+            }
+            /*when expanded show content */
+            &.expanded {
+                max-height: 2000px;
+
+                .cell-content div {
+                    visibility: unset;
+                    div {
+                        visibility: unset;
+                    }
+                }
+            }
+        }
+        tr:has(td.expanded) {
+            td {
+                max-height: unset;
+                /*&.expanded .min-max-toggle {
+                    bottom: unset;
+                }*/
+            }
+            td.expandable:not(.expanded) .min-max-toggle {
+                top: 25px;
+            }
+            td.expandable.expanded .min-max-toggle {
+                /*position: relative !important;*/
+                /*bottom: unset !important;*/
+            }
+            /*
+            td.expandable.expanded .min-max-toggle {
+                bottom: unset;
+            }
+            td.expandable:not(.expanded) {
+                border: 1px solid rgb(250, 215, 149);
+                .min-max-toggle {
+                    
+                    // we unpin from the bottom of cell
+                    // so it will stick right below the first
+                    // line of content
+                    bottom: unset;
+                }
+            }*/
+        }
+    }
+}

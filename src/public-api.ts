@@ -59,9 +59,15 @@ export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph
 export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph-filter.component';
 /* charts */
 export { SzRecordStatsDonutChart } from './lib/charts/records-by-datasources/sz-donut.component'
-
+/** shared */
+export { SzDataTable } from './lib/shared/data-table/sz-data-table.component';
+export { SzVennDiagramsComponent } from './lib/charts/versus/sz-venn-diagram.component';
+/** statistics */
+export { SzCrossSourceStatistics } from './lib/statistics/cross-source/sz-cross-source-statistics.component';
+export { SzCrossSourceSummaryComponent } from './lib/summary/cross-source/sz-cross-source-summary.component';
 /** components */
 export * from './lib/sz-powered-by/sz-powered-by.component';
+export * from './lib/statistics/cross-source/sz-cross-source-select.component';
 export * from './lib/configuration/sz-configuration/sz-configuration.component';
 export * from './lib/configuration/sz-configuration-about/sz-configuration-about.component';
 export { SzLicenseInfoComponent } from './lib/configuration/sz-license/sz-license.component';

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 
 /**
  * A service that provides the capability to "dynamically" add CSS
- * classes to the head of the document or app
+ * classes to the head of the document or app. Also can dynamically set css vars 
+ * on the document body.
  *
  * @export
  */
@@ -11,16 +12,31 @@ import { Injectable } from '@angular/core';
 })
 export class SzCSSClassService {
   private _headElement: HTMLHeadElement;
+  private _bodyElement: HTMLBodyElement;
   private _styleSheetTitle: string = 'senzing-dyn-css-classing';
   private _styleSheet: CSSStyleSheet;
 
+  /** get head element
+   * @internal
+   */
   private get headElement(): HTMLHeadElement {
     if(!this._headElement && document.getElementsByTagName("head").length > 0) {
       this._headElement = document.getElementsByTagName("head")[0];
     }
     return this._headElement;
   }
-
+  /** get body element 
+   * @internal
+  */
+  private get bodyElement(): HTMLBodyElement {
+    if(!this._bodyElement && document.getElementsByTagName("body").length > 0) {
+      this._bodyElement = document.getElementsByTagName("body")[0];
+    }
+    return this._bodyElement;
+  }
+  /** get the existing styleshee
+   * @internal
+   */
   private get styleSheet(): CSSStyleSheet {
     if(!this._styleSheet) {
       if(!document.styleSheets || this.headElement === null) return null;
@@ -49,7 +65,7 @@ export class SzCSSClassService {
     this.headElement.appendChild(cssEle);
     return cssEle.sheet as CSSStyleSheet;
   }
-
+  /** dynamicall set/create a css class and it's values */
   public setStyle(selectorText: string, styleName: string, value: string): void {
     let rules: CSSRuleList = this.styleSheet.cssRules.length > 0 || this.styleSheet.rules.length == 0 ? this.styleSheet.cssRules : this.styleSheet.rules;
     let ruleIndex: number  = Array.from(rules).findIndex(r => r instanceof CSSStyleRule && r.selectorText.toLowerCase() == selectorText.toLowerCase());
@@ -64,6 +80,12 @@ export class SzCSSClassService {
     } else {
       this.styleSheet.deleteRule(ruleIndex);
       this.styleSheet.insertRule(selectorText + `{ ${styleName}: ${value}}`, rules.length);
+    }
+  }
+  /** dynamically set a css variable on the body element */
+  public setVariable(variableName: string, value: string) {
+    if(this.bodyElement && this.bodyElement.style && this.bodyElement.style.setProperty) {
+      this.bodyElement.style.setProperty(variableName, value);
     }
   }
 }

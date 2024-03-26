@@ -27,15 +27,27 @@ import { SzAdminService } from './services/sz-admin.service';
 import { SzBulkDataService } from './services/sz-bulk-data.service';
 import { SzCSSClassService } from './services/sz-css-class.service';
 import { SzConfigDataService } from './services/sz-config-data.service';
+import { SzElementResizeService } from './services/sz-element-resize-listener.service';
 /** pipes */
 import { SzShortNumberPipe } from './pipes/shortnumber.pipe'
 import { SzDecimalPercentPipe } from './pipes/decimalpercent.pipe';
+/** directives */
+import { SzElementResizeObserverDirective } from './directives/sz-element-resize-observer.directive';
+/** common */
+import { SzDataTable } from './shared/data-table/sz-data-table.component';
 /** charts */
-import { SzRecordStatsDonutChart } from './charts/records-by-datasources/sz-donut.component'
+import { SzRecordStatsDonutChart } from './charts/records-by-datasources/sz-donut.component';
+import { SzVennDiagramsComponent } from './charts/versus/sz-venn-diagram.component';
+/** statistics */
+import { SzCrossSourceResultsDataTable } from './statistics/cross-source/sz-cross-source-results.data-table'
+import { SzCrossSourceStatistics } from './statistics/cross-source/sz-cross-source-statistics.component';
+import { SzCrossSourceSummaryComponent } from './summary/cross-source/sz-cross-source-summary.component';
+
 /** components */
 import { SzAlertMessageDialog } from './shared/alert-dialog/sz-alert-dialog.component';
 import { SzConfigurationAboutComponent } from './configuration/sz-configuration-about/sz-configuration-about.component';
 import { SzConfigurationComponent } from './configuration/sz-configuration/sz-configuration.component';
+import { SzCrossSourceSelectComponent } from './statistics/cross-source/sz-cross-source-select.component';
 import { SzLicenseInfoComponent } from './configuration/sz-license/sz-license.component';
 import { SzMultiSelectButtonComponent } from './shared/multi-select-button/multi-select-button.component';
 import { SzPoweredByComponent } from './sz-powered-by/sz-powered-by.component';
@@ -122,6 +134,11 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzAlertMessageDialog,
         SzConfigurationAboutComponent,
         SzConfigurationComponent,
+        SzDataTable,
+        SzCrossSourceResultsDataTable,
+        SzCrossSourceSelectComponent,
+        SzCrossSourceStatistics,
+        SzCrossSourceSummaryComponent,
         SzDecimalPercentPipe,
         SzEntityDetailComponent,
         SzEntityDetailGraphControlComponent,
@@ -161,6 +178,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzRelationshipNetworkInputComponent,
         SzRelationshipNetworkLookupComponent,
         SzRelationshipPathComponent,
+        SzElementResizeObserverDirective,
         SzSearchComponent,
         SzSearchByIdComponent,
         SzSearchIdentifiersPickerDialogComponent,
@@ -171,6 +189,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzSearchResultCardHeaderComponent,
         SzShortNumberPipe,
         SzStandaloneGraphComponent,
+        SzVennDiagramsComponent,
         SzWhyEntitiesComparisonComponent,
         SzWhyEntityComponent,
         SzWhyEntitiesDialog,
@@ -191,6 +210,9 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
     exports: [
         SzConfigurationComponent,
         SzConfigurationAboutComponent,
+        SzDataTable,
+        SzCrossSourceStatistics,
+        SzCrossSourceSummaryComponent,
         SzDecimalPercentPipe,
         SzEntityDetailGraphComponent,
         SzEntityDetailComponent,
@@ -222,6 +244,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzSearchResultsComponent,
         SzSearchResultCardComponent,
         SzStandaloneGraphComponent,
+        SzVennDiagramsComponent,
         SzWhyEntitiesComparisonComponent,
         SzWhyEntityComponent,
         SzWhyEntitiesDialog,
@@ -240,6 +263,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzFoliosService,
         SzHowUIService,
         SzPrefsService,
+        SzElementResizeService,
         SzSearchService,
         HttpClient,
         TitleCasePipe,
