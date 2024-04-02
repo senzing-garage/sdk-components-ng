@@ -65,6 +65,7 @@ export { SzVennDiagramsComponent } from './lib/charts/versus/sz-venn-diagram.com
 /** statistics */
 export { SzCrossSourceStatistics } from './lib/statistics/cross-source/sz-cross-source-statistics.component';
 export { SzCrossSourceSummaryComponent } from './lib/summary/cross-source/sz-cross-source-summary.component';
+export { SzCrossSourceResultsDataTable } from './lib/statistics/cross-source/sz-cross-source-results.data-table';
 /** components */
 export * from './lib/sz-powered-by/sz-powered-by.component';
 export * from './lib/statistics/cross-source/sz-cross-source-select.component';

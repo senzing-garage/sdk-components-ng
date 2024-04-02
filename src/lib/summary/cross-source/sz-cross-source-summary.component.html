@@ -33,9 +33,9 @@
             [sz-right-count]="toDataSourceMatches"
             [sz-left-caption]="singular ? '' : 'Duplicates'"
             [sz-right-caption]="singular ? '' : 'Duplicates'"
-            (sz-left-clicked)="diagramClick('LEFT', 1, 'MATCHES')"
-            (sz-right-clicked)="diagramClick('RIGHT', 1, 'MATCHES')"
-            (sz-overlap-clicked)="diagramClick('OVERLAP', 1, 'MATCHES')"
+            (sz-left-clicked)="diagramClick($event, 'LEFT', 1, 'MATCHES')"
+            (sz-right-clicked)="diagramClick($event, 'RIGHT', 1, 'MATCHES')"
+            (sz-overlap-clicked)="diagramClick($event, 'OVERLAP', 1, 'MATCHES')"
         ></sz-venn-diagram>
         <div class="matches diagram-caption">{{
             singular ? 'Duplicates'
@@ -63,9 +63,9 @@
 
             [sz-left-caption]="singular ? '' : 'Possible Duplicates'"
             [sz-right-caption]="singular ? '' : 'Possible Duplicates'"
-            (sz-left-clicked)="diagramClick('LEFT', 2, 'POSSIBLE')"
-            (sz-right-clicked)="diagramClick('RIGHT', 2, 'POSSIBLE')"
-            (sz-overlap-clicked)="diagramClick('OVERLAP', 2, 'POSSIBLE')"
+            (sz-left-clicked)="diagramClick($event, 'LEFT', 2, 'POSSIBLE_MATCHES')"
+            (sz-right-clicked)="diagramClick($event, 'RIGHT', 2, 'POSSIBLE_MATCHES')"
+            (sz-overlap-clicked)="diagramClick($event, 'OVERLAP', 2, 'POSSIBLE_MATCHES')"
         ></sz-venn-diagram>
         <div class="possibles diagram-caption">{{
           singular ? 'Possible Duplicates'
@@ -89,10 +89,55 @@
             [sz-left-count]="fromDataSourceRelated"
             [sz-overlap-count]="overlapDataSourceRelated"
             [sz-right-count]="toDataSourceRelated"
-            (sz-left-clicked)="diagramClick('LEFT', 3, 'RELATIONSHIPS')"
-            (sz-right-clicked)="diagramClick('RIGHT', 3, 'RELATIONSHIPS')"
-            (sz-overlap-clicked)="diagramClick('OVERLAP', 3, 'RELATIONSHIPS')"
+            (sz-left-clicked)="diagramClick($event, 'LEFT', 3, 'POSSIBLE_RELATIONS')"
+            (sz-right-clicked)="diagramClick($event, 'RIGHT', 3, 'POSSIBLE_RELATIONS')"
+            (sz-overlap-clicked)="diagramClick($event, 'OVERLAP', 3, 'POSSIBLE_RELATIONS')"
         ></sz-venn-diagram>
         <div class="relationships diagram-caption">Possibly Related</div>
+    </div>
+    <div class="venn-wrapper disclosed">
+        <sz-venn-diagram class="data-venn-disclosed"
+            [sz-singular]="singular"
+            sz-color="var(--sz-color-disclosed)"
+            *ngIf="hasData"
+  
+            backgorundColorA="var(--sz-color-disclosed)"
+            borderColorA="rgb(212, 212, 212)"
+            blendModeA="difference"
+            backgorundColorB="var(--sz-color-disclosed)"
+            borderColorB="rgb(169, 155, 55)"
+  
+            sz-left-legend="A"
+            sz-right-legend="B"
+            [sz-left-count]="fromDataSourceDisclosed"
+            [sz-overlap-count]="overlapDataSourceDisclosed"
+            [sz-right-count]="toDataSourceDisclosed"
+            (sz-left-clicked)="diagramClick($event, 'LEFT', 3, 'DISCLOSED_RELATIONS')"
+            (sz-right-clicked)="diagramClick($event, 'RIGHT', 3, 'DISCLOSED_RELATIONS')"
+            (sz-overlap-clicked)="diagramClick($event, 'OVERLAP', 3, 'DISCLOSED_RELATIONS')"
+        ></sz-venn-diagram>
+        <div class="relationships diagram-caption">Disclosed Relationships</div>
+    </div>
+    <div class="venn-wrapper ambiguous">
+        <sz-venn-diagram class="data-venn-ambiguous"
+            [sz-singular]="singular"
+            sz-color="var(--sz-color-ambiguous)"
+            *ngIf="hasData"
+            backgorundColorA="var(--sz-color-ambiguous)"
+            borderColorA="rgb(212, 212, 212)"
+            blendModeA="difference"
+            backgorundColorB="var(--sz-color-ambiguous)"
+            borderColorB="rgb(169, 155, 55)"
+  
+            sz-left-legend="A"
+            sz-right-legend="B"
+            [sz-left-count]="fromDataSourceAmbiguous"
+            [sz-overlap-count]="overlapDataSourceAmbiguous"
+            [sz-right-count]="toDataSourceAmbiguous"
+            (sz-left-clicked)="diagramClick($event, 'LEFT', 3, 'AMBIGUOUS_MATCHES')"
+            (sz-right-clicked)="diagramClick($event, 'RIGHT', 3, 'AMBIGUOUS_MATCHES')"
+            (sz-overlap-clicked)="diagramClick($event, 'OVERLAP', 3, 'AMBIGUOUS_MATCHES')"
+        ></sz-venn-diagram>
+        <div class="relationships diagram-caption">Ambiguous Matches</div>
     </div>
 </div>

@@ -14,3 +14,27 @@ export interface SzRecordCountDataSource extends SzSourceLoadedStats {
     pendingCount?: number,
     color?: string
 }
+
+export type SzCrossSourceSummaryCategoryType = 'MATCHES' | 'AMBIGUOUS_MATCHES' | 'POSSIBLE_MATCHES' | 'POSSIBLE_RELATIONS' | 'DISCLOSED_RELATIONS';
+/** the possible values of a `SzCrossSourceSummaryCategoryType` is */
+export const SzCrossSourceSummaryCategoryType = {
+    MATCHES: 'MATCHES' as SzCrossSourceSummaryCategoryType,
+    AMBIGUOUS_MATCHES: 'AMBIGUOUS_MATCHES' as SzCrossSourceSummaryCategoryType,
+    POSSIBLE_MATCHES: 'POSSIBLE_MATCHES' as SzCrossSourceSummaryCategoryType,
+    POSSIBLE_RELATIONS: 'POSSIBLE_RELATIONS' as SzCrossSourceSummaryCategoryType,
+    DISCLOSED_RELATIONS: 'DISCLOSED_RELATIONS' as SzCrossSourceSummaryCategoryType
+};
+
+export interface SzCrossSourceSummarySelectionEvent {
+    dataSource1?: string,
+    dataSource2?: string,
+    matchLevel?: number,
+    statType?: SzCrossSourceSummaryCategoryType
+}
+
+export interface SzCrossSourceSummarySelectionClickEvent extends MouseEvent {
+    dataSource1?: string,
+    dataSource2?: string,
+    matchLevel?: number,
+    statType?: SzCrossSourceSummaryCategoryType
+}

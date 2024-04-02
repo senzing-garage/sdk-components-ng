@@ -4,7 +4,7 @@ import { skipWhile, take, takeUntil } from 'rxjs/operators';
 
 import { SzCrossSourceSummary, SzRelationCounts } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../services/sz-prefs.service';
-import { SzRecordCountDataSource } from '../../models/stats';
+import { SzCrossSourceSummaryCategoryType, SzCrossSourceSummarySelectionClickEvent } from '../../models/stats';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzDataSourcesService } from '../../services/sz-datasources.service';
 
@@ -83,6 +83,30 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   public get toDataSource(): string | null {
     return this.dataMartService.dataSource2;
   }
+  /** get the number of ambiguous matches for the first datasource to compare */
+  public get fromDataSourceAmbiguous() {
+    return this._getCountFromSummaryData(this._fromDataSourceSummaryData, 'ambiguousMatches');
+  }
+  /** get the number of ambiguous that are in both the first and second datasource */
+  public get overlapDataSourceAmbiguous() {
+    return this._getCountFromSummaryData(this._crossSourceSummaryData, 'ambiguousMatches');
+  }
+  /** get the number of ambiguous for the second datasource to compare */
+  public get toDataSourceAmbiguous() {
+    return this._getCountFromSummaryData(this._toDataSourceSummaryData, 'ambiguousMatches');
+  }
+  /** get the number of ambiguous matches for the first datasource to compare */
+  public get fromDataSourceDisclosed() {
+    return this._getCountFromSummaryData(this._fromDataSourceSummaryData, 'disclosedRelations');
+  }
+  /** get the number of ambiguous that are in both the first and second datasource */
+  public get overlapDataSourceDisclosed() {
+    return this._getCountFromSummaryData(this._crossSourceSummaryData, 'disclosedRelations');
+  }
+  /** get the number of ambiguous for the second datasource to compare */
+  public get toDataSourceDisclosed() {
+    return this._getCountFromSummaryData(this._toDataSourceSummaryData, 'disclosedRelations');
+  }
   /** get the number of matches for the first datasource to compare */
   public get fromDataSourceMatches() {
     return this._getCountFromSummaryData(this._fromDataSourceSummaryData, 'matches');
@@ -125,7 +149,7 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   /** when a diagram is clicked this event is emitted */
   @Output() summaryDiagramClick: EventEmitter<any> = new EventEmitter();
   /** when a datasource section on one side or both of the venn diagram is clicked this event is emitted */
-  @Output() sourceStatisticClicked: EventEmitter<any> = new EventEmitter();
+  @Output() sourceStatisticClicked: EventEmitter<SzCrossSourceSummarySelectionClickEvent> = new EventEmitter();
 
   /** if singular datasource set css class 'singular' on host */
   @HostBinding("class.singular") get classSingular() {
@@ -208,11 +232,11 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
       }
     });
   }
-  private _getCountFromSummaryData(data: SzCrossSourceSummary, stype: 'possibleMatches' | 'possibleRelations' | 'matches') {
+  private _getCountFromSummaryData(data: SzCrossSourceSummary, stype: 'ambiguousMatches' | 'possibleMatches' | 'possibleRelations' | 'matches' | 'disclosedRelations') {
     let retVal = 0;
     if(data && data[stype] && data[stype].length > 0) {
       let _rc: SzRelationCounts[] = data[stype].filter((rc: SzRelationCounts)=>{ return !rc.matchKey && !rc.principle && rc.matchKey !== null && rc.principle !== null ? true : false;});
-      retVal = _rc && _rc.length > 0 ? (['possibleMatches','possibleRelations'].indexOf(stype) > -1 ? _rc[0].relationCount : _rc[0].entityCount) : retVal;
+      retVal = _rc && _rc.length > 0 ? (['possibleMatches','possibleRelations','disclosedRelations'].indexOf(stype) > -1 ? _rc[0].relationCount : _rc[0].entityCount) : retVal;
     }
     return retVal;
   }
@@ -241,7 +265,7 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
    * a 'summaryDiagramClick' event that can be listened for.
    * @internal
    */
-  diagramClick(diagramSection: string, matchLevel: number, statType: string) {
+  diagramClick(clickEvent: MouseEvent, diagramSection: string, matchLevel: number, statType: SzCrossSourceSummaryCategoryType) {
     let newFromDataSource;
     let newToDataSource;
     if (diagramSection === 'LEFT') {
@@ -254,6 +278,7 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
       newFromDataSource = this.fromDataSource;
       newToDataSource = this.toDataSource;
     }
+    console.log(`SzCrossSourceSummaryComponent.diagramClick: ${diagramSection}, ${matchLevel}, ${statType}`);
 
     // emit event
     this.summaryDiagramClick.emit({
@@ -264,11 +289,11 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
       newFromDataSource: newFromDataSource,
       newToDataSource: newToDataSource,
     });
-    this.sourceStatisticClicked.emit({
-      dataSource1: this.fromDataSource,
-      dataSource2: this.toDataSource,
+    this.sourceStatisticClicked.emit(Object.assign(clickEvent, {
+      dataSource1: newFromDataSource,
+      dataSource2: newToDataSource,
       matchLevel: matchLevel,
       statType: statType
-    });
+    }) as SzCrossSourceSummarySelectionClickEvent);
   }
 }

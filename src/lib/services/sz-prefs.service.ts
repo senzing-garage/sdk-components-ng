@@ -5,6 +5,7 @@ import { SzDataSourceComposite } from '../models/data-sources';
 import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio } from '../models/folio';
 import { AdminStreamAnalysisConfig, AdminStreamConnProperties, AdminStreamLoadConfig } from '../models/data-admin';
 import { SzMatchKeyTokenFilterScope } from '../models/graph';
+import { SzCrossSourceSummaryCategoryType } from '../models/stats';
 //import { Configuration as SzRestConfiguration, ConfigurationParameters as SzRestConfigurationParameters } from '@senzing/rest-api-client-ng';
 
 /**
@@ -107,14 +108,22 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _dataSource1: string = undefined;
   private _dataSource2: string = undefined;
+  private _sampleDataSource1: string = undefined;
+  private _sampleDataSource2: string = undefined;
   private _sampleSize: number = 100;
+  private _sampleStatType: SzCrossSourceSummaryCategoryType;
+  private _sampleMatchLevel: number;
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
    */
   override jsonKeys = [
     'dataSource1',
     'dataSource2',
-    'sampleSize'
+    'sampleDataSource1',
+    'sampleDataSource2',
+    'sampleMatchLevel',
+    'sampleSize',
+    'sampleStatType'
   ]
   // -------------- getters and setters
   /** first datasource to use in the datamart stats queries */
@@ -137,6 +146,36 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
     if(!this.bulkSet) this.prefChanged.next({name: 'dataSource2', value: value});
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
+  /** first datasource to use in the datamart sampling stats queries */
+  public get sampleDataSource1(): string {
+    return this._sampleDataSource1;
+  }
+  /** first datasource to use in the datamart sampling stats queries */
+  public set sampleDataSource1(value: string) {
+    this._sampleDataSource1 = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'sampleDataSource1', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** second datasource to use in the datamart sampling stats queries */
+  public get sampleDataSource2(): string {
+    return this._sampleDataSource2;
+  }
+  /** second datasource to use in the datamart sampling stats queries */
+  public set sampleDataSource2(value: string) {
+    this._sampleDataSource2 = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'sampleDataSource2', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** sample match level parameter to use in stats queries */
+  public get sampleMatchLevel(): number {
+    return this._sampleMatchLevel;
+  }
+  /** sample match leve parameter to use in stats queries */
+  public set sampleMatchLevel(value: number) {
+    this._sampleMatchLevel = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'sampleMatchLevel', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
   /** samplesize parameter to use in stats queries */
   public get sampleSize(): number {
     return this._sampleSize;
@@ -145,6 +184,16 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   public set sampleSize(value: number) {
     this._sampleSize = value;
     if(!this.bulkSet) this.prefChanged.next({name: 'sampleSize', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** sample stat type enum member value*/
+  public get sampleStatType(): SzCrossSourceSummaryCategoryType {
+    return this._sampleStatType;
+  }
+  /** sample stat type enum member value*/
+  public set sampleStatType(value: SzCrossSourceSummaryCategoryType) {
+    this._sampleStatType = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'sampleStatType', value: value});
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /**

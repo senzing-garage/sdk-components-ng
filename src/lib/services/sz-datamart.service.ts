@@ -16,6 +16,12 @@ import { HttpClient } from '@angular/common/http';
 import { SzCountStatsForDataSourcesResponse, SzStatCountsForDataSources } from '../models/stats';
 import { SzPrefsService } from '../services/sz-prefs.service';
 import { SzDataSourcesService } from './sz-datasources.service';
+import { SzCrossSourceSummaryCategoryType } from '../models/stats';
+
+export interface sampleDataSourceChangeEvent {
+    dataSource1?: string,
+    dataSource2?: string
+}
 
 /**
  * methods used to get data from the poc server using the 
@@ -33,6 +39,42 @@ export class SzDataMartService {
     private _onlyShowLoadedSummaryStatistics = false;
     private _dataSources: string[] | undefined;
     private _dataSourceDetails: SzDataSourcesResponseData | undefined;
+    //private _sampleStatType: SzCrossSourceSummaryCategoryType | undefined;
+
+    public get sampleStatType() : SzCrossSourceSummaryCategoryType {
+        return this.prefs.dataMart.sampleStatType;
+    }
+    public set sampleStatType(value: SzCrossSourceSummaryCategoryType) {
+        let _oType = this.prefs.dataMart.sampleStatType;
+        this.prefs.dataMart.sampleStatType = value;
+        if(_oType !== value) this.onSampleTypeChange.next(this.prefs.dataMart.sampleStatType);  // only emit on change
+    }
+    public get sampleMatchLevel() {
+        return this.prefs.dataMart.sampleMatchLevel;
+    }
+    public set sampleMatchLevel(value: number) {
+        this.prefs.dataMart.sampleMatchLevel = value;
+        console.log();
+        this.onSampleMatchLevelChange.next(value);
+    }
+    public get sampleDataSource1() {
+        return this.prefs.dataMart.sampleDataSource1;
+    }
+    public set sampleDataSource1(value: string) {
+        let _oType = this.prefs.dataMart.sampleDataSource1;
+        this.prefs.dataMart.sampleDataSource1 = value;
+        let _evt = this.prefs.dataMart.sampleDataSource2 ? {dataSource2: this.prefs.dataMart.sampleDataSource2, dataSource1: value} : {dataSource2: value};
+        if(_oType !== value) this.onSampleDataSourceChange.next(_evt); // only emit on change
+    }
+    public get sampleDataSource2() {
+        return this.prefs.dataMart.sampleDataSource2;
+    }
+    public set sampleDataSource2(value: string) {
+        let _oType = this.prefs.dataMart.sampleDataSource2;
+        this.prefs.dataMart.sampleDataSource2 = value;
+        let _evt = this.prefs.dataMart.sampleDataSource1 ? {dataSource1: this.prefs.dataMart.sampleDataSource1, dataSource2: value} : {dataSource2: value};
+        if(_oType !== value) this.onSampleDataSourceChange.next(_evt); // only emit on change
+    }
 
     public get dataSource1() {
         return this.prefs.dataMart.dataSource1;
@@ -57,8 +99,12 @@ export class SzDataMartService {
     public onSummaryStats: Subject<SzSummaryStats | undefined> = new BehaviorSubject<SzSummaryStats>(undefined);
     public onCrossSourceSummaryStats: Subject<SzCrossSourceSummary | undefined> = new BehaviorSubject<SzCrossSourceSummary>(undefined);
 
+    public onSampleMatchLevelChange: BehaviorSubject<number | undefined> = new BehaviorSubject<number>(undefined);
+    public onSampleTypeChange: BehaviorSubject<SzCrossSourceSummaryCategoryType | undefined> = new BehaviorSubject<SzCrossSourceSummaryCategoryType>(undefined);
+    public onSampleDataSourceChange: BehaviorSubject<sampleDataSourceChangeEvent | undefined> = new BehaviorSubject<sampleDataSourceChangeEvent | undefined>(undefined);
     public onDataSource1Change: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
     public onDataSource2Change: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
+    
     
     private _onDataSourceSelected: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
     public onDataSourceSelected = this._onDataSourceSelected.asObservable();
