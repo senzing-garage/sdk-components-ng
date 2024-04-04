@@ -101,7 +101,7 @@
                 [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
                 [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: row[col.key], rowData: row}}"
                 (click)="onCellClick(col.key, row[col.key], $event, cellRef)">
-                <div class="cell-content" [innerHTML]="cellValue(row[col.key], col.key)"></div>
+                <div class="cell-content" [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
                 <svg xmlns="http://www.w3.org/2000/svg" 
                 height="24" 
                 viewBox="0 -960 960 960" 

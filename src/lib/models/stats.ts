@@ -1,4 +1,4 @@
-import { SzLoadedStats, SzSourceLoadedStats, SzLoadedStatsResponse } from "@senzing/rest-api-client-ng";
+import { SzLoadedStats, SzSourceLoadedStats, SzLoadedStatsResponse, SzResolvedEntity, SzRelatedEntity } from "@senzing/rest-api-client-ng";
 
 export interface SzCountStatsForDataSourcesResponse extends SzLoadedStatsResponse {
     /** override with extended */
@@ -29,6 +29,8 @@ export interface SzCrossSourceSummarySelectionEvent {
     dataSource1?: string,
     dataSource2?: string,
     matchLevel?: number,
+    matchKey?: string,
+    principle?: string,
     statType?: SzCrossSourceSummaryCategoryType
 }
 
@@ -37,4 +39,8 @@ export interface SzCrossSourceSummarySelectionClickEvent extends MouseEvent {
     dataSource2?: string,
     matchLevel?: number,
     statType?: SzCrossSourceSummaryCategoryType
+}
+
+export interface SzStatSampleEntityTableItem extends SzResolvedEntity {
+    relatedEntities: SzRelatedEntity[]
 }

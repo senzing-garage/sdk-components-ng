@@ -1,10 +1,11 @@
 import { Component, HostBinding, Input, Output, OnInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef, AfterContentInit, AfterViewInit } from '@angular/core';
 import { SzGraphPrefs, SzPrefsService } from '../../services/sz-prefs.service';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { camelToKebabCase, underscoresToDashes, getMapKeyByValue } from '../../common/utils';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzCrossSourceSummaryCategoryType, SzCrossSourceSummarySelectionEvent, SzCrossSourceSummarySelectionClickEvent } from '../../models/stats';
+import { SzEntitiesPage } from '@senzing/rest-api-client-ng';
 
 export interface dataSourceSelectionChangeEvent {
   dataSource1?: string,
@@ -104,5 +105,23 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     this.sampleParametersChange.emit(_parametersEvt);
     this.sourceStatisticClick.emit(evt);  // emit the raw event jic someone needs to use stopPropagation or access to the DOM node
 
+    // get new sample set
+    this.getNewSampleSet(_parametersEvt).subscribe((obs)=>{
+      // initialized
+      console.log('initialized new sample set: ', obs);
+      this.dataMartService.onSampleResultChange.subscribe();
+    })
+  }
+
+  private getNewSampleSet(parameters: SzCrossSourceSummarySelectionEvent) {
+    return this.dataMartService.createNewSampleSetFromParameters(
+      parameters.statType, 
+      parameters.dataSource1, 
+      parameters.dataSource2, 
+      parameters.matchKey, 
+      parameters.principle).pipe(
+        takeUntil(this.unsubscribe$),
+        take(1)
+      )
   }
 }

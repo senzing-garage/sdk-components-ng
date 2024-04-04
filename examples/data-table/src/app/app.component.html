@@ -18,7 +18,6 @@
     <div *ngIf="sampleStatType === 'DISCLOSED_RELATIONS'">Disclosed Relationships:</div>
   </div>
   <sz-cross-source-results sz-venn-dt *ngIf="showSampleTable"
-  [data]="currentSampleData"
   (cellClick)="onCellClick($event)"></sz-cross-source-results>
 </div>
 <!--  end data table results  -->

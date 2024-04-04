@@ -198,6 +198,18 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   get numberOfColumns() {
     return this._cols && this._cols.size > 0 ? this._cols.size : 0;
   }
+  /** custom cell renderers for data */
+  /*protected _cellFormatters() {
+    return {}
+  }*/
+
+  /*@Input()
+  set cellFormatters(value) {
+    this._cellFormatters = value;
+  }*/
+  get cellFormatters() {
+    return {};
+  }
 
   constructor() {}
   ngOnInit() {}
@@ -296,21 +308,31 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   }
   cellValue(value: unknown | unknown[], fieldName?: string) {
     let retVal = value;
+    let bespokeRenderer;
+
     if(!retVal) { return retVal; }
-    // get renderer for specific type
-    if(Array.isArray(value) ) {
-      retVal = value.join(', ');
-    } else if (value.toString ) {
-      retVal = value.toString();
+    // check to see if we have a custom cell value renderer first
+    if(this.cellFormatters && this.cellFormatters[fieldName]) {
+      // use this renderer
+      bespokeRenderer = this.cellFormatters[fieldName];
+      retVal          = bespokeRenderer(value, fieldName);
     }
-    // if [object Object] is in output something needs to be rendered better
-    /*if(fieldName === 'featureDetails') {
-      console.warn(`${fieldName} type: `, 
-      (retVal as string).indexOf('object Object'), 
-      (value as unknown).constructor === Object,
-      Object.prototype.toString.call(value) === "[object Object]");
-    }*/
-    if(retVal && (retVal as string).indexOf('object Object') > -1) {
+    // get renderer for specific type
+    if(!bespokeRenderer) {
+      if(Array.isArray(value) ) {
+        retVal = value.join(', ');
+      } else if (value.toString ) {
+        retVal = value.toString();
+      }
+      // if [object Object] is in output something needs to be rendered better
+      /*if(fieldName === 'featureDetails') {
+        console.warn(`${fieldName} type: `, 
+        (retVal as string).indexOf('object Object'), 
+        (value as unknown).constructor === Object,
+        Object.prototype.toString.call(value) === "[object Object]");
+      }*/
+    }
+    if(retVal && !bespokeRenderer && (retVal as string).indexOf('object Object') > -1) {
       // is json, check if array of object
       if(retVal && (retVal as string).indexOf('[object Object]') > -1) {
         // array of objects

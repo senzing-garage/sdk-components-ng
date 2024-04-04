@@ -8,6 +8,7 @@ import { ApiModule as SenzingDataServiceModule } from '@senzing/rest-api-client-
 import { SenzingSdkModule, SzRestConfiguration, SzPoweredByComponent, SzPrefsService, SzConfigurationService  } from '@senzing/sdk-components-ng';
 
 import { AppComponent } from './app.component';
+import { SzDataMartService } from '@senzing/sdk-components-ng';
 
 /**
 * Pull in api configuration(SzRestConfigurationParameters)
@@ -43,8 +44,9 @@ export function SzRestConfigurationFactory() {
     SenzingDataServiceModule.forRoot( SzRestConfigurationFactory )
   ],
   providers: [
-    SzPrefsService,
-    SzConfigurationService
+    SzConfigurationService,
+    SzDataMartService,
+    SzPrefsService
   ],
   bootstrap: [AppComponent]
 })

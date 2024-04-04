@@ -2,10 +2,11 @@ import { Component, ChangeDetectorRef, OnInit, Input, Inject, OnDestroy, Output,
 import { Observable, Subject, takeUntil, throwError, zip } from 'rxjs';
 
 import { SzDataTable } from '../../shared/data-table/sz-data-table.component';
-import { SzCrossSourceSummaryCategoryType } from '../../models/stats';
+import { SzCrossSourceSummaryCategoryType, SzStatSampleEntityTableItem } from '../../models/stats';
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzCSSClassService } from '../../services/sz-css-class.service';
+import { SzEntityData } from '@senzing/rest-api-client-ng';
 /**
  * Data Table with specific overrides and formatting for displaying 
  * sample results from the cross source summary component.
@@ -23,8 +24,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       'Data Source',
       'Name Data',
       'Attribute Data',
-      'Address Data',
-      '',
+      'Address Data'
     ];
     private _allColumns = [
       'Entity ID',
@@ -40,6 +40,21 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       'Address Data',
       'Relationship Data'
     ];
+    
+    override get cellFormatters() {
+      return {
+        'addressData': (addresses: string[]) => {
+          let retVal = '';
+          if(addresses && addresses.length > 0) {
+            let retStr = addresses.map((value: string) => {
+              return `${value}`;
+            });
+            retVal = '<div class="sz-stat-table-cell address">'+ retStr.join('</div><div class="sz-stat-table-cell address">')+'</div>'
+          }
+          return retVal;
+        }
+      }
+    }
     
     /** if singular datasource set css class 'singular' on host */
     @HostBinding("class.sample-type-ambiguous-matches") get classAmbiguousMatches() {
@@ -66,4 +81,22 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     ) {
         super();
     }
+
+    override ngOnInit() {
+      // listen for new sampleset data
+      this.dataMartService.onSampleResultChange.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe(this.onSampleSetDataChange.bind(this));
+    }
+
+    private onSampleSetDataChange(data: SzEntityData[]) {
+      // flatten data so we can display it
+      let transformed: SzStatSampleEntityTableItem[] = data.map((item) => {
+        let baseItem = item.resolvedEntity;
+        return Object.assign(baseItem, {relatedEntities: item.relatedEntities});
+      })
+      console.log(`@senzing/sdk-components-ng/sz-cross-source-results.onSampleSetDataChange()`, data, transformed);
+      this.data = transformed;
+    }
+
 }
