@@ -84,12 +84,15 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
       // flip-flop if only one ds is defined
       this.dataMartService.sampleDataSource1  = evt.dataSource2;
       this.dataMartService.sampleDataSource2  = undefined;
+      console.log(`\tflip flopped datasources: ["${this.dataMartService.sampleDataSource1}","${this.dataMartService.sampleDataSource2}"]`);
     } else if((evt.dataSource1 && !evt.dataSource2) || ((evt.dataSource1 === evt.dataSource2) && evt.dataSource1 !== undefined)) {
       this.dataMartService.sampleDataSource1  = evt.dataSource1;
       this.dataMartService.sampleDataSource2  = undefined;
+      console.log(`\tnulled second datasource due to equivalence: ["${this.dataMartService.sampleDataSource1}","${this.dataMartService.sampleDataSource2}" | "${evt.dataSource1}","${evt.dataSource2}"]`);
     } else {
       this.dataMartService.sampleDataSource1  = evt.dataSource1;
       this.dataMartService.sampleDataSource2  = evt.dataSource2;
+      console.log(`\tset both datasources: ["${this.dataMartService.sampleDataSource1}","${this.dataMartService.sampleDataSource2}"]`);
     }
     this.dataMartService.sampleMatchLevel   = evt.matchLevel;
     this.dataMartService.sampleStatType     = evt.statType as SzCrossSourceSummaryCategoryType;

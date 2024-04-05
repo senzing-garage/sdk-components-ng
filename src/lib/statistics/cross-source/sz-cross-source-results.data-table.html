@@ -44,7 +44,7 @@
     </button>
 </div>
 <mat-menu #columnsSelector="matMenu" class="sz-g-flexbox-vertical" yPosition="below" (click)="$event.stopPropagation();">
-    <button mat-menu-item *ngFor="let col of this.selectableColumns | keyvalue; let i = index"
+    <button mat-menu-item *ngFor="let col of this.selectableColumns | SzOrderedMapEntries; let i = index"
     [attr.data-col-order]="columnOrder(col.key)"
     [style.order]="columnOrder(col.key)"
     (click)="$event.stopPropagation();">
@@ -53,11 +53,10 @@
 </mat-menu>
 <!--<button (click)="resetCellSizes()"> reset row cell sizes</button>
 <button (click)="getCellSizes()">get row cell sizes</button>-->
-  
-<table class="data-table" [style]="gridStyle">
+<table class="data-table data-sample-table" [style]="gridStyle">
     <thead>
         <tr style="order: 0" (mousemove)="onHeaderMouseMove($event)">
-        <ng-container *ngFor="let col of this.selectableColumns | keyvalue; let i = index">
+        <ng-container *ngFor="let col of this.selectableColumns | SzOrderedMapEntries; let i = index">
             <th 
             [cdkContextMenuTriggerFor]="sz_dt_header_context_menu"
             [cdkContextMenuTriggerData]="{$implicit: col}"
@@ -83,33 +82,43 @@
         
         </tr>
     </thead>
-    <tbody>
-        <tr *ngFor="let row of this.data; let rI=index;" 
+    <!--<tbody>-->
+        <tbody class="row-group" *ngFor="let row of this.data; let rI=index;" 
         #rowRef
         [attr.data-row-index]="rI+1" 
         [class.hasExpandedCells]="hasExpandedCells(rowRef)"
         [style.order]="rI+1">
-            <td #cellRef [attr.data-row-index]="rI+1" *ngFor="let col of this.selectableColumns | keyvalue" 
-                [style]="cellStyle(col.key, getRowId(row, rI+1))"
-                [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
-                [class.expandable]="isCellExpandable(cellRef)"
-                [class.expanded]="isCellExpanded(cellRef)"
-                [class.hidden]="isColumnHidden(col.key)"
-                [attr.data-cell-height]="getCellHeight(cellRef)"
-                [attr.data-content-height]="getContentHeight(cellRef)"
-                [attr.data-cached-content-height]="getCachedContentHeight(cellRef)"
-                [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
-                [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: row[col.key], rowData: row}}"
-                (click)="onCellClick(col.key, row[col.key], $event, cellRef)">
-                <div class="cell-content" [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                height="24" 
-                viewBox="0 -960 960 960" 
-                width="24" 
-                class="min-max-toggle"
-                (click)="toggleCellExpansion(cellRef, getRowId(row, rI+1)); $event.stopPropagation();"
-                ><path d="M440-440v240h-80v-160H200v-80h240Zm160-320v160h160v80H520v-240h80Z"/></svg>
-            </td>
-        </tr>
-    </tbody>
+            <tr
+            [attr.group-record-index]="rI+1" class="row-entity">
+                <td #cellRef [attr.data-row-index]="rI+1" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries" 
+                    [style]="cellStyle(col.key, getRowId(row, rI+1))"
+                    [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
+                    [class.expandable]="isCellExpandable(cellRef)"
+                    [class.expanded]="isCellExpanded(cellRef)"
+                    [class.hidden]="isColumnHidden(col.key)"
+                    [attr.data-cell-height]="getCellHeight(cellRef)"
+                    [attr.data-content-height]="getContentHeight(cellRef)"
+                    [attr.data-cached-content-height]="getCachedContentHeight(cellRef)"
+                    [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
+                    [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: row[col.key], rowData: row}}"
+                    (click)="onCellClick(col.key, row[col.key], $event, cellRef)">
+                    <div class="cell-content" [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                    <svg xmlns="http://www.w3.org/2000/svg" 
+                    height="24" 
+                    viewBox="0 -960 960 960" 
+                    width="24" 
+                    class="min-max-toggle"
+                    (click)="toggleCellExpansion(cellRef, getRowId(row, rI+1)); $event.stopPropagation();"
+                    ><path d="M440-440v240h-80v-160H200v-80h240Zm160-320v160h160v80H520v-240h80Z"/></svg>
+                </td>
+            </tr>
+            <tr *ngFor="let rowQ of row.rows; let rowI=index;" class="row-record">
+                <td #cellRef [attr.data-row-index]="rI+1" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries" 
+                    [style]="cellStyle(col.key, getRowId(rowQ, rI+1))"
+                >
+                <div class="cell-content" [innerHTML]="cellValue(rowQ[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                </td>
+            </tr>
+        </tbody>
+    <!--</tbody>-->
     </table>

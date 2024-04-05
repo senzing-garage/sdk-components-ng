@@ -35,6 +35,27 @@
         
         /*grid-template-columns: minmax(100px, auto);*/
 
+        &.data-sample-table {
+            display: table;
+            
+            tr {
+                display: table-row;
+                &.row-entity {
+                    display: none;
+                }
+            }
+            thead,
+            tbody {
+                display: table-row-group;
+            }
+            td {
+                vertical-align: top;
+            }
+            tbody.row-group {
+                border: 1px solid rgb(104, 104, 104);
+            }
+        }
+
         thead,
         tbody,
         tr {

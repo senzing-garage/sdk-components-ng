@@ -1,4 +1,4 @@
-import { SzLoadedStats, SzSourceLoadedStats, SzLoadedStatsResponse, SzResolvedEntity, SzRelatedEntity } from "@senzing/rest-api-client-ng";
+import { SzLoadedStats, SzSourceLoadedStats, SzLoadedStatsResponse, SzResolvedEntity, SzRelatedEntity, SzRecord, SzMatchedRecord, SzEntityRecord } from "@senzing/rest-api-client-ng";
 
 export interface SzCountStatsForDataSourcesResponse extends SzLoadedStatsResponse {
     /** override with extended */
@@ -42,5 +42,44 @@ export interface SzCrossSourceSummarySelectionClickEvent extends MouseEvent {
 }
 
 export interface SzStatSampleEntityTableItem extends SzResolvedEntity {
-    relatedEntities: SzRelatedEntity[]
+    relatedEntities?: SzRelatedEntity[],
+    recordCount?: number,
+    records?: SzRecord[] | SzMatchedRecord[],
+    rows?: SzStatSampleEntityTableRow[]
+}
+
+/*
+let _allColumns = [
+    'Entity ID',
+    'More',
+    'ER Code',
+    'Match Key',
+    'Related Entity ID',
+    'Data Source',
+    'Record ID',
+    'Entity Type',
+    'Name Data',
+    'Attribute Data',
+    'Address Data',
+    'Relationship Data'
+  ];
+*/
+
+export interface SzStatSampleEntityTableRow extends SzResolvedEntity, SzMatchedRecord {
+    /**
+     * The data source code identifying the data source from  which the record was loaded.
+     */
+    dataSource?: string;
+    /**
+     * The record ID that uniquely identifies the record within the data source from which it was loaded.
+     */
+    recordId?: string;
+    /**
+     * The optional match key describing why the record merged into the entity to which it belongs.  This may be absent or `null` if this record belongs to a single-record entity or if it was the inital record of the first multi-record entity to which it belonged (even if it later re-resolved into a larger entity).
+     */
+    matchKey?: string;
+    /**
+     * The optioanl principle identifying the resolution rule that was used to merge the record into the entity to which it belonss.  This may be absent or `null` if this record belongs to a single-record entity or if it was the inital record of the first multi-record entity to which it belonged (even if it later re-resolved into a larger entity).
+     */
+    principle?: string;
 }

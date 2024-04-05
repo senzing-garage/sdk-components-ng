@@ -89,6 +89,7 @@ export * from './lib/models/data-how';
 /** pipes */
 export { SzShortNumberPipe } from './lib/pipes/shortnumber.pipe'
 export { SzDecimalPercentPipe } from './lib/pipes/decimalpercent.pipe'
+export { SzOrderedMapEntries } from './lib/pipes/mapentries.pipe';
 
 /** why */
 export { SzWhyEntityComponent } from './lib/why/sz-why-entity.component';

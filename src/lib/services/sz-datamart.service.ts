@@ -121,6 +121,13 @@ export class SzStatSampleSet {
                     return ent.entityId;
                 });
 
+                if((entitiesToRequest && entitiesToRequest.length === 0) || !entitiesToRequest) {
+                    // there are no entities
+                    // just emit empty result
+                    this._onDataUpdated.next(this.currentPageResults);
+
+                    return;
+                }
                 this.getEntitiesByIds(entitiesToRequest).pipe(
                     takeUntil(this.unsubscribe$),
                     take(1)
@@ -128,11 +135,12 @@ export class SzStatSampleSet {
                     // expanded data
                     if(edata && edata.forEach) {
                         edata.forEach((ent: SzEntityData) => {
+                            // add to internal array
                             this._entities.set(ent.resolvedEntity.entityId, ent);
                         })
                     }
                     let dataset = this.currentPageResults;
-                    console.log(`got expanded entity data for sample set: `, this._currentPageEntities, this._entities);
+                    console.log(`got expanded entity data for sample set: `, this._entities, this._currentPageEntities);
                     this._onDataUpdated.next(dataset);
                 });
             });
@@ -142,14 +150,14 @@ export class SzStatSampleSet {
     /** get the SzEntityData[] responses for multiple entities 
      * @memberof
      */
-    private getEntitiesByIds(entityIds: SzEntityIdentifiers, withRelated = false, detailLevel = SzDetailLevel.BRIEF): Observable<SzEntityData[]> {
+    private getEntitiesByIds(entityIds: SzEntityIdentifiers, withRelated = true, detailLevel = SzDetailLevel.VERBOSE): Observable<SzEntityData[]> {
         console.log('@senzing/sdk/services/sz-datamart[getEntitiesByIds('+ entityIds +', '+ withRelated +')] ');
         const withRelatedStr = withRelated ? 'FULL' : 'NONE';
         let _retSubject = new Subject<SzEntityData[]>();
         let _retVal     = _retSubject.asObservable();
 
         let _listOfObserveables = entityIds.map((eId) => {
-            return this.entityDataService.getEntityByEntityId(eId, detailLevel, undefined, undefined, undefined, undefined, withRelatedStr)
+            return this.entityDataService.getEntityByEntityId(eId, detailLevel, undefined, undefined, undefined, false, withRelatedStr)
         })
 
         forkJoin(_listOfObserveables).pipe(
@@ -177,6 +185,8 @@ export class SzStatSampleSet {
         let isVersus = false;
         let isOneDataSourceUndefined = dataSource1 === undefined || dataSource2 === undefined;
         let apiMethod = 'getEntityIdsForCrossMatches';
+        // immediately show empty results while we wait
+        this._onDataUpdated.next([]);
 
         // are we doing cross-source or single-source?
         if(dataSource1 && dataSource2 && dataSource1 !== dataSource2 && !isOneDataSourceUndefined) { isVersus = true; }

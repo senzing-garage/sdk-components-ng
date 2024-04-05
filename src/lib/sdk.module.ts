@@ -31,6 +31,7 @@ import { SzElementResizeService } from './services/sz-element-resize-listener.se
 /** pipes */
 import { SzShortNumberPipe } from './pipes/shortnumber.pipe'
 import { SzDecimalPercentPipe } from './pipes/decimalpercent.pipe';
+import { SzOrderedMapEntries } from './pipes/mapentries.pipe';
 /** directives */
 import { SzElementResizeObserverDirective } from './directives/sz-element-resize-observer.directive';
 /** common */
@@ -169,6 +170,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowVirtualEntityCardComponent,
         SzHowVirtualEntityDialog,
         SzLicenseInfoComponent,
+        SzOrderedMapEntries,
         SzMultiSelectButtonComponent,
         SzPoweredByComponent,
         SzPreferencesComponent,
@@ -232,6 +234,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowVirtualEntityCardComponent,
         SzHowVirtualEntityDialog,
         SzLicenseInfoComponent,
+        SzOrderedMapEntries,
         SzPoweredByComponent,
         SzPreferencesComponent,
         SzRecordStatsDonutChart,

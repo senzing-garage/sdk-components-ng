@@ -33,11 +33,11 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   private _data: any[];
   private _cellContentSizes = new Map<HTMLElement, number[]>();
-  private _cols: Map<string,string>;
+  protected _cols: Map<string,string>;
   /** controlling the column order is easier to do as a map since were just using those in css */
-  private _colOrder: Map<string,number>;
+  protected _colOrder: Map<string,number>;
   private _expandedCells = new Map<string, Map<HTMLElement, number>>();
-  private _selectableColumns: string[];
+  protected _selectableColumns: string[];
   private _selectedColumns: Map<string,string>;
   private _fieldOrder: string[];
   private _columnResizing     = false;
@@ -151,6 +151,11 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
         return this._colOrder.get(a[0]) - this._colOrder.get(b[0]);
       }));
     }
+    return retVal;
+  }
+  get colOrder(): Map<string, number> {
+    let retVal  = this._colOrder;
+    retVal      = new Map([...retVal.entries()].sort((a, b) => a[1] - (b[1])));
     return retVal;
   }
   get gridStyle(): string {

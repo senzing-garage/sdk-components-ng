@@ -8,7 +8,7 @@
       [style.border-color]="color"
       (click)="handleRightClick($event)"></div>
 <div *ngIf="!singular" class="right-outline"></div>
-<svg  #overlapArea *ngIf="!singular && overlapCount > 0" class="overlap-set"
+<svg  #overlapArea *ngIf="!singular" class="overlap-set"
   viewBox="83.876 25.526 82.426 137.082" xmlns="http://www.w3.org/2000/svg">
   <path
     [style.fill]="color"

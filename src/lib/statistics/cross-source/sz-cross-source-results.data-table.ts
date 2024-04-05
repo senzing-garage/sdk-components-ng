@@ -2,11 +2,11 @@ import { Component, ChangeDetectorRef, OnInit, Input, Inject, OnDestroy, Output,
 import { Observable, Subject, takeUntil, throwError, zip } from 'rxjs';
 
 import { SzDataTable } from '../../shared/data-table/sz-data-table.component';
-import { SzCrossSourceSummaryCategoryType, SzStatSampleEntityTableItem } from '../../models/stats';
+import { SzCrossSourceSummaryCategoryType, SzStatSampleEntityTableItem, SzStatSampleEntityTableRow } from '../../models/stats';
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzCSSClassService } from '../../services/sz-css-class.service';
-import { SzEntityData } from '@senzing/rest-api-client-ng';
+import { SzEntityData, SzMatchedRecord } from '@senzing/rest-api-client-ng';
 /**
  * Data Table with specific overrides and formatting for displaying 
  * sample results from the cross source summary component.
@@ -40,6 +40,44 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       'Address Data',
       'Relationship Data'
     ];
+
+    override _colOrder: Map<string,number> = new Map([
+      ['entityId',0],
+      ['erCode',1],
+      ['matchKey',2],
+      ['dataSource',3],
+      ['recordId',4],
+      ['entityType',5],
+      ['nameData',6],
+      ['attributeData',7],
+      ['addressData',8],
+      ['relationshipData',9]
+    ])
+    override _cols: Map<string,string> = new Map([
+      ['entityId','Entity Id'],
+      ['erCode','ER Code'],
+      ['matchKey','Match Key'],
+      ['dataSource','Data Source'],
+      ['recordId','Record ID'],
+      ['entityType','Entity Type'],
+      ['nameData','Name Data'],
+      ['attributeData','Attribute Data'],
+      ['addressData','Address Data'],
+      ['relationshipData','Relationship Data']
+    ])
+
+    override _selectableColumns: string[] = [
+      'entityId',
+      'erCode',
+      'matchKey',
+      'dataSource',
+      'recordId',
+      'entityType',
+      'nameData',
+      'attributeData',
+      'addressData',
+      'relationshipData'
+    ]
     
     override get cellFormatters() {
       return {
@@ -89,11 +127,20 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       ).subscribe(this.onSampleSetDataChange.bind(this));
     }
 
-    private onSampleSetDataChange(data: SzEntityData[]) {
+    private onSampleSetDataChange(data: SzEntityData[] | undefined) {
+      if(data === undefined) {
+        this.data = [];
+      }
       // flatten data so we can display it
       let transformed: SzStatSampleEntityTableItem[] = data.map((item) => {
+        // base row
         let baseItem = item.resolvedEntity;
-        return Object.assign(baseItem, {relatedEntities: item.relatedEntities});
+        // add "rows: SzStatSampleEntityTableRow[]" // SzStatSampleEntityTableRow
+        let rows = item.resolvedEntity.records && item.resolvedEntity.records.map ? item.resolvedEntity.records.map((rec: SzMatchedRecord) => {
+          let retVal: SzStatSampleEntityTableRow = rec;
+          return retVal;
+        }) : undefined;
+        return Object.assign(baseItem, {relatedEntities: item.relatedEntities, rows: rows});
       })
       console.log(`@senzing/sdk-components-ng/sz-cross-source-results.onSampleSetDataChange()`, data, transformed);
       this.data = transformed;
