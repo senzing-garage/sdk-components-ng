@@ -35,7 +35,7 @@
         
         /*grid-template-columns: minmax(100px, auto);*/
 
-        &.data-sample-table {
+        /*&.data-sample-table {
             display: table;
             
             tr {
@@ -54,7 +54,7 @@
             tbody.row-group {
                 border: 1px solid rgb(104, 104, 104);
             }
-        }
+        }*/
 
         thead,
         tbody,
@@ -152,6 +152,9 @@
         }
         
         tbody {
+            &.row-group {
+                border: 1px solid rgb(104, 104, 104);
+            }
             tr:nth-child(even) td {
                 background: #f8f6ff;
                 .min-max-toggle {

@@ -126,11 +126,53 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
         takeUntil(this.unsubscribe$)
       ).subscribe(this.onSampleSetDataChange.bind(this));
     }
+    private rowCount  = 0;
+    private headerCellCount = this.selectableColumns.size;
+    private cellIndex = this.headerCellCount + 1;
+
+    getCellOrder(columnName: string, rowsPreceeding: number) {
+      let rowCellOrderOffset  = this.numberOfColumns * rowsPreceeding;
+      let retVal  = 0;
+      if(this._colOrder && this._colOrder.has(columnName)) {
+        retVal = (rowCellOrderOffset+this._colOrder.get(columnName));
+      }
+      return retVal;
+    }
+
+    resetTableIndexes() {
+      this.rowCount   = 0;
+      this.cellIndex  = 0;
+    }
+
+    incrementRowCount() {
+      this.rowCount++;
+      return this.rowCount;
+    }
+
+    getRowIndex() {
+      return this.rowCount;
+    }
+
+    override cellStyle(fieldName: string, rowsPreceeding): string {
+      let retVal = '';
+      let rowOrderPrefix      = 0;
+      let rowCellOrderOffset  = this.numberOfColumns * rowsPreceeding;
+      if(this._colOrder && this._colOrder.has(fieldName)) {
+        retVal += 'order: '+ (rowCellOrderOffset+this._colOrder.get(fieldName))+';';
+      }
+      return retVal;
+    }
+
+    resetRenderingIndexes() {
+      this.rowCount   = 0;
+      this.cellIndex  = 0;
+    }
 
     private onSampleSetDataChange(data: SzEntityData[] | undefined) {
       if(data === undefined) {
         this.data = [];
       }
+      this.resetRenderingIndexes();
       // flatten data so we can display it
       let transformed: SzStatSampleEntityTableItem[] = data.map((item) => {
         // base row

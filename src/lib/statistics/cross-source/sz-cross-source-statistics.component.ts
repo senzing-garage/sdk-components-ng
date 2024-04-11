@@ -33,6 +33,12 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
 
+  public showAllColumns = false;
+  private _showTable    = false;
+  public get showTable() {
+    return this._showTable;
+  }
+
   /** when a datasource section on one side or both of the venn diagram is clicked this event is emitted */
   @Output() sourceStatisticClick: EventEmitter<SzCrossSourceSummarySelectionClickEvent> = new EventEmitter();
   @Output() dataSourceSelectionChange: EventEmitter<dataSourceSelectionChangeEvent> = new EventEmitter();
@@ -40,7 +46,70 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   @Output() sampleTypeChange: EventEmitter<SzCrossSourceSummarySelectionEvent> = new EventEmitter();
   @Output() sampleParametersChange: EventEmitter<SzCrossSourceSummarySelectionEvent> = new EventEmitter();
 
-  constructor(private dataMartService: SzDataMartService) {}
+  public toggleExpanded() {
+    this.prefs.dataMart.showDiagramHeader = !this.prefs.dataMart.showDiagramHeader;
+  }
+  public get headerExpanded(): boolean {
+    return this.prefs.dataMart.showDiagramHeader;
+  }
+
+  public get resolutionMode()  {
+    switch (this.dataMartService.sampleMatchLevel) {
+      case 1:
+          return "match";
+      case 2:
+          return "possible_match";
+      case 3:
+      case 4:
+        return "relationship";
+    default:
+      return "";
+    }
+  }
+
+  get title() {
+    let retVal    = '';
+    let isSingle  = true;
+    if(this.dataMartService.dataSource1 && this.dataMartService.dataSource2 && this.dataMartService.dataSource1 !== this.dataMartService.dataSource2) {
+      isSingle = false;
+    } else if(this.dataMartService.dataSource1 || this.dataMartService.dataSource2) {
+      isSingle  = true;
+    }
+    if(this.dataMartService.sampleStatType) {
+      switch(this.dataMartService.sampleStatType) {
+        case 'MATCHES':
+          retVal = isSingle ? 'Duplicates' : 'Matches';
+          break;
+        case 'AMBIGUOUS_MATCHES':
+          retVal = 'Ambiguous Matches';
+          break;
+        case 'POSSIBLE_MATCHES':
+          retVal = isSingle ? 'Possible Duplicates' : 'Possible Matches';
+          break;
+        case 'POSSIBLE_RELATIONS':
+          retVal = isSingle ? 'Possible Relationships' : 'Possibly Related';
+          break;
+        case 'DISCLOSED_RELATIONS':
+          retVal = 'Disclosed Relationships';
+          break;
+      };
+
+      if(this.dataMartService.dataSource1 && this.dataMartService.dataSource2 && this.dataMartService.dataSource1 !== this.dataMartService.dataSource2) {
+        retVal  += `: ${this.dataMartService.dataSource1} to ${this.dataMartService.dataSource2}`;
+      } else if(this.dataMartService.dataSource1) {
+        retVal  += `: ${this.dataMartService.dataSource1}`;
+      } else if(this.dataMartService.dataSource2) {
+        retVal  += `: ${this.dataMartService.dataSource2}`;
+      }
+    }
+
+    return retVal;
+  }
+
+  constructor(
+    private dataMartService: SzDataMartService,
+    public prefs: SzPrefsService
+  ) {}
   ngOnInit() {
     this.dataMartService.onSampleTypeChange.pipe(
       takeUntil(this.unsubscribe$)
@@ -65,6 +134,12 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
       takeUntil(this.unsubscribe$)
     ).subscribe((event: {dataSource1?: string, dataSource2?: string}) => {
       this.sampleSourcesChange.emit(event);
+    });
+    this.dataMartService.onSampleResultChange.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((data) => {
+      console.log(`new sample set data ready... `);
+      this._showTable = true;
     })
   }
   ngAfterViewInit() {}
@@ -103,12 +178,13 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
       statType: evt.statType
     }
     if(this.dataMartService.sampleDataSource1)  _parametersEvt.dataSource1 = this.dataMartService.sampleDataSource1;
-    if(this.dataMartService.sampleDataSource2)  _parametersEvt.dataSource2 = this.dataMartService.sampleDataSource1;
+    if(this.dataMartService.sampleDataSource2)  _parametersEvt.dataSource2 = this.dataMartService.sampleDataSource2;
 
     this.sampleParametersChange.emit(_parametersEvt);
     this.sourceStatisticClick.emit(evt);  // emit the raw event jic someone needs to use stopPropagation or access to the DOM node
 
     // get new sample set
+    console.log(`\t\tgetting new sample set: `, _parametersEvt, evt);
     this.getNewSampleSet(_parametersEvt).subscribe((obs)=>{
       // initialized
       console.log('initialized new sample set: ', obs);
@@ -116,7 +192,13 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     })
   }
 
+  /** since data can be any format we have to use loose typing */
+  onTableCellClick(data: any) {
+    console.log('cell click: ', data);
+  }
+
   private getNewSampleSet(parameters: SzCrossSourceSummarySelectionEvent) {
+
     return this.dataMartService.createNewSampleSetFromParameters(
       parameters.statType, 
       parameters.dataSource1, 

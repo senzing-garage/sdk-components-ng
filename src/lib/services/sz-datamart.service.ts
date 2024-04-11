@@ -534,6 +534,9 @@ export class SzDataMartService {
             this._onSampleResultChange$.unsubscribe();
             this._onSampleResultChange$ = undefined;
         }
+        console.log('createNewSampleSetFromParameters: ', {
+            statType: statType, dataSource1: dataSource1, dataSource2: dataSource2, matchKey: matchKey, principle: principle, bound: bound, sampleSize: sampleSize, pageSize: pageSize
+        });
         // initialize new sample set
         this._sampleSet = new SzStatSampleSet({
             statType: statType,

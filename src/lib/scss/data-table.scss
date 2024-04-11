@@ -97,6 +97,22 @@
         }
     }
 }
+
+sz-cross-source-statistics {
+    .report-header {
+        button {
+            cursor: pointer;
+            --mat-icon-button-state-layer-color: transparent;
+            --mat-mdc-button-persistent-ripple-color: transparent;
+        }
+        mat-slide-toggle {
+            .mdc-switch__ripple {
+                display: none !important;
+            }
+        }
+    }
+}
+
 /*  when content is through innerHTML the View Encapsulation 
     considers the tags to be outside of the component
  */

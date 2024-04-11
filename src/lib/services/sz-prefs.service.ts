@@ -113,6 +113,7 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   private _sampleSize: number = 100;
   private _sampleStatType: SzCrossSourceSummaryCategoryType;
   private _sampleMatchLevel: number;
+  private _showDiagramHeader: boolean = true;
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
    */
@@ -123,7 +124,8 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
     'sampleDataSource2',
     'sampleMatchLevel',
     'sampleSize',
-    'sampleStatType'
+    'sampleStatType',
+    'showDiagramHeader'
   ]
   // -------------- getters and setters
   /** first datasource to use in the datamart stats queries */
@@ -196,6 +198,18 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
     if(!this.bulkSet) this.prefChanged.next({name: 'sampleStatType', value: value});
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
+  /** whether or not the venn diagrams are expanded */
+  public get showDiagramHeader(): boolean {
+    return this._showDiagramHeader;
+  }
+  /** whether or not the venn diagrams are expanded */
+  public set showDiagramHeader(value: boolean) {
+    this._showDiagramHeader = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'showDiagramHeader', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+
+  
   /**
    * publish out a "first" real payload so that
    * subscribers get an initial payload from this subclass

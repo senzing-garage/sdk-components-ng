@@ -53,7 +53,7 @@
 </mat-menu>
 <!--<button (click)="resetCellSizes()"> reset row cell sizes</button>
 <button (click)="getCellSizes()">get row cell sizes</button>-->
-<table class="data-table data-sample-table" [style]="gridStyle">
+<table class="data-table data-sample-table" [style]="gridStyle" [attr.data-table-index]="resetTableIndexes()">
     <thead>
         <tr style="order: 0" (mousemove)="onHeaderMouseMove($event)">
         <ng-container *ngFor="let col of this.selectableColumns | SzOrderedMapEntries; let i = index">
@@ -83,13 +83,12 @@
         </tr>
     </thead>
     <!--<tbody>-->
-        <tbody class="row-group" *ngFor="let row of this.data; let rI=index;" 
+        <tbody class="row-group" *ngFor="let row of this.data; let groupIndex=index;" 
         #rowRef
-        [attr.data-row-index]="rI+1" 
-        [class.hasExpandedCells]="hasExpandedCells(rowRef)"
-        [style.order]="rI+1">
-            <tr
-            [attr.group-record-index]="rI+1" class="row-entity">
+        [attr.group-row-index]="groupIndex" 
+        [class.hasExpandedCells]="hasExpandedCells(rowRef)">
+            <!--<tr
+            [attr.group-record-index]="rI+2" class="row-entity">
                 <td #cellRef [attr.data-row-index]="rI+1" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries" 
                     [style]="cellStyle(col.key, getRowId(row, rI+1))"
                     [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
@@ -111,12 +110,33 @@
                     (click)="toggleCellExpansion(cellRef, getRowId(row, rI+1)); $event.stopPropagation();"
                     ><path d="M440-440v240h-80v-160H200v-80h240Zm160-320v160h160v80H520v-240h80Z"/></svg>
                 </td>
-            </tr>
-            <tr *ngFor="let rowQ of row.rows; let rowI=index;" class="row-record">
-                <td #cellRef [attr.data-row-index]="rI+1" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries" 
-                    [style]="cellStyle(col.key, getRowId(rowQ, rI+1))"
+            </tr>-->
+            <tr
+                class="row-entity"
+                [attr.data-row-index]="incrementRowCount()"
+                [attr.data-source]="row.dataSource"
                 >
-                <div class="cell-content" [innerHTML]="cellValue(rowQ[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                <td #cellRef *ngFor="let col of this.selectableColumns | SzOrderedMapEntries"
+                    [attr.data-row-index]="getRowIndex()" 
+                    [attr.data-cell-order]="getCellOrder(col.key, getRowIndex())"
+                    [style]="cellStyle(col.key, getRowIndex())"
+                    [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
+                    [class.hidden]="isColumnHidden(col.key)"
+                    [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
+                    [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: row[col.key], rowData: row}}"
+                    (click)="onCellClick(col.key, row[col.key], $event, cellRef)">
+                    <div class="cell-content" [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                </td>
+            </tr>
+            <tr *ngFor="let rowQ of row.rows; let recordIndex=index;" 
+                [attr.data-row-index]="incrementRowCount()"
+                [attr.data-source]="rowQ.dataSource"
+                class="row-record">
+                <td #cellRef [attr.data-record-index]="recordIndex+1" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries" 
+                    [attr.data-cell-order]="getCellOrder(col.key, getRowIndex())"
+                    [style]="cellStyle(col.key, getRowIndex())"
+                >
+                    <div class="cell-content" [innerHTML]="cellValue(rowQ[col.key], col.key)" [attr.cell-key]="col.key"></div>
                 </td>
             </tr>
         </tbody>

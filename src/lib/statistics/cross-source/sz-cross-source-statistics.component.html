@@ -1,3 +1,36 @@
-<sz-cross-source-select></sz-cross-source-select>
-<sz-cross-source-summary
-(sourceStatisticClicked)="onSourceStatClicked($event)"></sz-cross-source-summary>
+<div class="sz-css-heading"
+    [class.expanded]="headerExpanded">
+    <sz-cross-source-select></sz-cross-source-select>
+    <sz-cross-source-summary
+    (sourceStatisticClicked)="onSourceStatClicked($event)"></sz-cross-source-summary>
+</div>
+<div class="report-header">
+    <button mat-icon-button [disableRipple]="true" class="header-toggle"
+            (click)="toggleExpanded()"
+    ><span class="material-icons">{{
+        headerExpanded ? "expand_less" : "expand_more"
+    }}</span></button>
+    <h2 class="title {{ resolutionMode }}" *ngIf="title"
+        [class.small-font]="title.length > 50"
+        [class.smaller-font]="title.length > 60"
+        [class.smallest-font]="title.length > 70"
+    >{{ title }}</h2>
+    <mat-slide-toggle [disableRipple]="true" class="show-all-columns" color="$sz-green" [(ngModel)]="showAllColumns">
+        <span class="show-all-columns" [class.selected]="showAllColumns">Show All Columns</span>
+    </mat-slide-toggle>
+    <!--<sz-paginator [totalCount]="totalCount"  [sampleCount]="sampleCount"
+                [filteredCount]="auditData?.AUDIT_PAGE?.FILTER ? filteredCount : null"
+                [firstRecord]="firstIndex+1" [lastRecord]="lastIndex+1"
+                [pageSize]="50" [pageSizeOptions]="[ 10, 25, 50, 75, 100 ]"
+                [filters]="allFilters" (page-change)="onPageChange($event)"
+                (clearFilters)="clearFilters($event)"
+                (sampleClicked)="handleSampleClicked($event)"
+    ></sz-paginator>-->
+    <!--<button mat-button
+            (click)="exportAsCsv()"
+            class="button__export">
+    <span class="material-icons">file_download</span>
+    </button>-->
+</div>
+<sz-cross-source-results sz-venn-dt *ngIf="showTable"
+(cellClick)="onTableCellClick($event)"></sz-cross-source-results>
