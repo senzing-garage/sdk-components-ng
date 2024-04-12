@@ -17,31 +17,7 @@ import { SzEntityData, SzMatchedRecord } from '@senzing/rest-api-client-ng';
   styleUrls: ['./sz-cross-source-results.data-table.scss']
 })
 export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit, OnDestroy {
-    private _defaultColumns = [
-      'Entity ID',
-      'More',
-      'Match Key',
-      'Data Source',
-      'Name Data',
-      'Attribute Data',
-      'Address Data'
-    ];
-    private _allColumns = [
-      'Entity ID',
-      'More',
-      'ER Code',
-      'Match Key',
-      'Related Entity ID',
-      'Data Source',
-      'Record ID',
-      'Entity Type',
-      'Name Data',
-      'Attribute Data',
-      'Address Data',
-      'Relationship Data'
-    ];
-
-    override _colOrder: Map<string,number> = new Map([
+    /*override _colOrder: Map<string,number> = new Map([
       ['entityId',0],
       ['erCode',1],
       ['matchKey',2],
@@ -52,8 +28,27 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       ['attributeData',7],
       ['addressData',8],
       ['relationshipData',9]
+    ])*/
+    override _colOrder: Map<string,number> = new Map([
+      ['entityId', 0],
+      ['resolutionRuleCode', 1],
+      ['matchKey', 2],
+      ['relatedEntityId', 3],
+      ['dataSource', 4],
+      ['recordId', 5],
+      ['entityType', 6],
+      ['nameData', 7],
+      ['attributeData', 8],
+      ['identifierData', 9],
+      ['addressData', 10],
+      ['phoneData', 11],
+      ['relationshipData', 12],
+      ['entityData', 13],
+      ['otherData', 14]
     ])
-    override _cols: Map<string,string> = new Map([
+
+
+    /*override _cols: Map<string,string> = new Map([
       ['entityId','Entity Id'],
       ['erCode','ER Code'],
       ['matchKey','Match Key'],
@@ -64,20 +59,99 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       ['attributeData','Attribute Data'],
       ['addressData','Address Data'],
       ['relationshipData','Relationship Data']
+    ])*/
+    override _cols: Map<string,string> = new Map([
+      ['entityId', 'Entity ID'],
+      ['resolutionRuleCode', 'ER Code'],
+      ['matchKey', 'Match Key'],
+      ['relatedEntityId', 'Related Entity'],
+      ['dataSource', 'Data Source'],
+      ['recordId', 'Record ID'],
+      ['entityType', 'Entity Type'],
+      ['nameData', 'Name Data'],
+      ['attributeData', 'Attribute Data'],
+      ['identifierData', 'Identifier Data'],
+      ['addressData', 'Address Data'],
+      ['phoneData', 'Phone Data'],
+      ['relationshipData', 'Relationship Data'],
+      ['entityData', 'Entity Data'],
+      ['otherData', 'Other Data']
     ])
 
     override _selectableColumns: string[] = [
       'entityId',
-      'erCode',
+      'resolutionRuleCode',
       'matchKey',
+      'relatedEntityId',
       'dataSource',
       'recordId',
       'entityType',
       'nameData',
       'attributeData',
+      'identifierData',
       'addressData',
-      'relationshipData'
+      'phoneData',
+      'relationshipData',
+      'entityData',
+      'otherData'
     ]
+
+    private _matchLevelToColumnsMap  = new Map<number, string[]>([
+      [1,[
+        'entityId',
+        'resolutionRuleCode',
+        'matchKey',
+        'dataSource',
+        'recordId',
+        'entityType',
+        'nameData',
+        'attributeData',
+        'identifierData',
+        'addressData',
+        'phoneData',
+        'relationshipData',
+        'entityData',
+        'otherData'
+      ]],
+      [2,[
+        'entityId',
+        'resolutionRuleCode',
+        'matchKey',
+        'relatedEntityId',
+        'dataSource',
+        'recordId',
+        'entityType',
+        'nameData',
+        'attributeData',
+        'identifierData',
+        'addressData',
+        'phoneData',
+        'relationshipData',
+        'entityData',
+        'otherData'
+      ]],
+      [3,[
+        'entityId',
+        'resolutionRuleCode',
+        'matchKey',
+        'relatedEntityId',
+        'dataSource',
+        'recordId',
+        'entityType',
+        'nameData',
+        'attributeData',
+        'identifierData',
+        'addressData',
+        'phoneData',
+        'relationshipData',
+        'entityData',
+        'otherData'
+      ]]
+    ]);
+
+    private get matchLevel() {
+      return this.dataMartService.sampleMatchLevel;
+    }
     
     override get cellFormatters() {
       return {
@@ -121,6 +195,11 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     }
 
     override ngOnInit() {
+      // listen for match level change(changes visible columns)
+      this.dataMartService.onSampleMatchLevelChange.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe(this.onSampleMatchLevelChange.bind(this));
+
       // listen for new sampleset data
       this.dataMartService.onSampleResultChange.pipe(
         takeUntil(this.unsubscribe$)
@@ -153,12 +232,16 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       return this.rowCount;
     }
 
-    override cellStyle(fieldName: string, rowsPreceeding): string {
+    override cellStyle(fieldName: string, rowsPreceeding, cellRowSpan?: {[fieldName: string]: number}): string {
       let retVal = '';
       let rowOrderPrefix      = 0;
       let rowCellOrderOffset  = this.numberOfColumns * rowsPreceeding;
       if(this._colOrder && this._colOrder.has(fieldName)) {
         retVal += 'order: '+ (rowCellOrderOffset+this._colOrder.get(fieldName))+';';
+        if(cellRowSpan && cellRowSpan[fieldName] && this._colOrder.get(fieldName) === 0) {
+          // apply row span to cell
+          retVal += 'grid-row: span '+ cellRowSpan[fieldName] +';'
+        }
       }
       return retVal;
     }
@@ -166,6 +249,32 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     resetRenderingIndexes() {
       this.rowCount   = 0;
       this.cellIndex  = 0;
+    }
+
+    private onSampleMatchLevelChange(matchLevel: number) {
+      if(this._matchLevelToColumnsMap.has(matchLevel)) {
+        this._selectableColumns = this._matchLevelToColumnsMap.get(matchLevel);
+      } else {
+        // we still need columns sooo...
+        console.warn(`NO column map for MATCH LEVEL ${matchLevel}`);
+        this._selectableColumns = this._matchLevelToColumnsMap.get(1);
+      }
+    }
+
+    public getRowCellOrder(fieldName: string) {
+      let retVal = 0;
+      if(this._colOrder && this._colOrder.has(fieldName)) { 
+        retVal = this._colOrder.get(fieldName);
+      }
+      return retVal;
+    }
+
+    public getRowSpanForEntityIdCell(rows: SzStatSampleEntityTableRow[]) {
+      let retVal = 0;
+      if(rows) {
+        retVal = rows.length + 1;
+      }
+      return retVal;
     }
 
     private onSampleSetDataChange(data: SzEntityData[] | undefined) {
