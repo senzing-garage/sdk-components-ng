@@ -157,15 +157,53 @@
         }
         
         tbody {
+            .row-record:nth-child(even of .data-source-selected) td {
+                background-color: #f2f2f2;
+            }
+
             &.row-group {
                 border: 1px solid rgb(104, 104, 104);
+                .row-entity {
+                    /* we want the entity id cell to span all children row cells 
+                    the variables '--selected-datasources-row-count' and '--total-row-count'
+                    are defined on the scope of each .row-group through the style tag
+                    */
+                    .sz-dt-entity-id-cell {
+                        grid-row: span calc(var(--selected-datasources-row-count) + 1);
+                        .more-button.collapsed  { display: block;}
+                        .more-button.expanded   { display: none; }
+                    }
+                }
+                .row-record.data-source-not-selected {
+                    display: none;
+                    td {
+                        background-color: #cdedff;
+                    }
+                }
+                &.expanded {
+                    .row-record:nth-child(even) td {
+                        background-color: #f2f2f2;
+                    }
+                    .row-record.data-source-not-selected td {
+                        background-color: #cdedff;
+                    }
+                    .row-entity .sz-dt-entity-id-cell {
+                        grid-row: span calc(var(--total-row-count) + 1);
+                        .more-button.collapsed  { display: none;  }
+                        .more-button.expanded   { display: block; }
+                    }
+                    .row-record.data-source-not-selected {
+                        display: contents;
+                    }
+                }
             }
-            tr:nth-child(even) td {
+            
+            /*tr:nth-child(even) td {
                 background: #f8f6ff;
                 .min-max-toggle {
                     background-color: #f8f6ff;
                 }
-            }
+            }*/
             td {
                 position: relative;
                 
@@ -211,8 +249,12 @@
                 background-color: #ececec;
             }
         }
-        .row-record:nth-child(even) td {
-            background-color: #f2f2f2;
+        .row-record {
+            &.data-source-not-selected {
+                td {
+                    background-color: #cdedff;
+                }
+            }
         }
     }
 

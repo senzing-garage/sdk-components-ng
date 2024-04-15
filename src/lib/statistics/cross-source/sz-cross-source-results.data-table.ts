@@ -232,33 +232,61 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       return this.rowCount;
     }
 
-    override cellStyle(fieldName: string, rowsPreceeding, cellRowSpan?: {[fieldName: string]: number}): string {
+    toggleRowExpansion(rowGroupElement?: HTMLElement) {
+      //console.log(`toggleRowExpansion() `, rowGroupElement);
+      if(rowGroupElement) {
+        if(rowGroupElement.classList.contains('expanded')) {
+          rowGroupElement.classList.remove('expanded');
+        } else {
+          rowGroupElement.classList.add('expanded');
+        }
+      }
+    }
+
+    rowGroupStyle(item: SzStatSampleEntityTableItem) {
+      let retVal = '';
+      retVal += '--total-row-count: '+ this.getTotalRowCount(item.rows) +';';
+      retVal += ' --selected-datasources-row-count: '+ this.getRowCountInSelectedDataSources(item.rows) +';';
+      return retVal;
+    }
+
+    /*override cellStyle(fieldName: string, rowsPreceeding): string {
       let retVal = '';
       let rowOrderPrefix      = 0;
       let rowCellOrderOffset  = this.numberOfColumns * rowsPreceeding;
       if(this._colOrder && this._colOrder.has(fieldName)) {
         retVal += 'order: '+ (rowCellOrderOffset+this._colOrder.get(fieldName))+';';
-        if(cellRowSpan && cellRowSpan[fieldName] && this._colOrder.get(fieldName) === 0) {
+        //if(cellRowSpan && cellRowSpan[fieldName] && this._colOrder.get(fieldName) === 0) {
           // apply row span to cell
-          retVal += 'grid-row: span '+ cellRowSpan[fieldName] +';'
-        }
+        //  retVal += 'grid-row: span '+ cellRowSpan[fieldName] +';'
+        //}
       }
       return retVal;
-    }
+    }*/
 
     resetRenderingIndexes() {
       this.rowCount   = 0;
       this.cellIndex  = 0;
     }
 
+    /**
+     * When the match level changes we need to change which columns are displayed. This method 
+     * is called when that change is made in the datamart service.
+     * @param matchLevel Whe  
+     */
     private onSampleMatchLevelChange(matchLevel: number) {
       if(this._matchLevelToColumnsMap.has(matchLevel)) {
-        this._selectableColumns = this._matchLevelToColumnsMap.get(matchLevel);
+        this._selectableColumns   = this._matchLevelToColumnsMap.get(matchLevel);
       } else {
         // we still need columns sooo...
         console.warn(`NO column map for MATCH LEVEL ${matchLevel}`);
         this._selectableColumns = this._matchLevelToColumnsMap.get(1);
       }
+      // refresh the cols list so that grid column style is correct
+      let _colsForMatchLevel    = new Map<string, string>([...this._cols].filter((_col)=>{
+        return this._selectableColumns.includes(_col[0]);
+      }));
+      this._selectedColumns     = _colsForMatchLevel;
     }
 
     public getRowCellOrder(fieldName: string) {
@@ -272,9 +300,37 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     public getRowSpanForEntityIdCell(rows: SzStatSampleEntityTableRow[]) {
       let retVal = 0;
       if(rows) {
-        retVal = rows.length + 1;
+        let rowsInSelectedDataSources = rows.filter((row) => {
+          return (row.dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
+        });
       }
       return retVal;
+    }
+
+    getTotalRowCount(rows: SzStatSampleEntityTableRow[]) {
+      return rows && rows.length ? rows.length : 0;
+    }
+
+    getRowCountInSelectedDataSources(rows: SzStatSampleEntityTableRow[]) {
+      let retVal = 0;
+      if(rows) {
+        let rowsInSelectedDataSources = rows.filter((row) => {
+          return (row.dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
+        });
+        retVal  = rowsInSelectedDataSources && rowsInSelectedDataSources.length ? rowsInSelectedDataSources.length : retVal;
+      }
+      return retVal;
+    }
+
+    get selectedDataSource1(): string | undefined {
+      return this.dataMartService.dataSource1;
+    }
+    get selectedDataSource2(): string | undefined {
+      return this.dataMartService.dataSource2;
+    }
+
+    public isDataSourceSelected(dataSource: string) {
+      return (dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(dataSource) > -1) ? true : false;
     }
 
     private onSampleSetDataChange(data: SzEntityData[] | undefined) {
@@ -295,6 +351,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       })
       console.log(`@senzing/sdk-components-ng/sz-cross-source-results.onSampleSetDataChange()`, data, transformed);
       this.data = transformed;
+      this.cd.markForCheck();
     }
 
 }

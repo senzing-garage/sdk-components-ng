@@ -38,7 +38,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   protected _colOrder: Map<string,number>;
   private _expandedCells = new Map<string, Map<HTMLElement, number>>();
   protected _selectableColumns: string[];
-  private _selectedColumns: Map<string,string>;
+  protected _selectedColumns: Map<string,string>;
   private _fieldOrder: string[];
   private _columnResizing     = false;
   private _columnBeingResized: HTMLElement;

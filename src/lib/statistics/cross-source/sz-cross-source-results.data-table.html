@@ -86,7 +86,12 @@
         <tbody class="row-group" *ngFor="let row of this.data; let groupIndex=index;" 
         #rowRef
         [attr.group-row-index]="groupIndex" 
-        [class.hasExpandedCells]="hasExpandedCells(rowRef)">
+        [class.hasExpandedCells]="hasExpandedCells(rowRef)"
+        [attr.data-source-1]="selectedDataSource1"
+        [attr.data-source-2]="selectedDataSource2"
+        [class.has-additional-data]="getTotalRowCount(row.rows) !== getRowCountInSelectedDataSources(row.rows)"
+        [style]="rowGroupStyle(row)"
+        >
             <!--<tr
             [attr.group-record-index]="rI+2" class="row-entity">
                 <td #cellRef [attr.data-row-index]="rI+1" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries" 
@@ -119,24 +124,32 @@
                 <td #cellRef *ngFor="let col of this.selectableColumns | SzOrderedMapEntries"
                     [attr.data-row-index]="getRowIndex()" 
                     [attr.data-cell-order]="getCellOrder(col.key, getRowIndex())"
-                    [style]="cellStyle(col.key, getRowIndex(), col.key === 'entityId' ? {'entityId': getRowSpanForEntityIdCell(row.rows)}: undefined)"
+                    [style]="cellStyle(col.key, getRowIndex())"
                     [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
                     [class.hidden]="isColumnHidden(col.key)"
                     [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
                     [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: row[col.key], rowData: row}}"
                     (click)="onCellClick(col.key, row[col.key], $event, cellRef)">
                     <div class="cell-content" [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                    <div *ngIf="col.key === 'entityId'">
+                        <!-- toggle button -->
+                        <button mat-stroked-button class="more-button expanded"  (click)="toggleRowExpansion(rowRef)">{{getTotalRowCount(row.rows) - getRowCountInSelectedDataSources(row.rows)}} Less</button>
+                        <button mat-stroked-button class="more-button collapsed" (click)="toggleRowExpansion(rowRef)">{{getTotalRowCount(row.rows) - getRowCountInSelectedDataSources(row.rows)}} More</button>
+                    </div>
                 </td>
             </tr>
             <tr *ngFor="let rowQ of row.rows; let recordIndex=index;" 
                 [attr.data-row-index]="incrementRowCount()"
                 [attr.data-source]="rowQ.dataSource"
+                [class.data-source-selected]="isDataSourceSelected(rowQ.dataSource)"
+                [class.data-source-not-selected]="!isDataSourceSelected(rowQ.dataSource)"
                 class="row-record">
                 <td #cellRef [attr.data-record-index]="recordIndex+1" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries" 
                     [attr.data-cell-order]="getCellOrder(col.key, getRowIndex())"
                     [class.no-cell]="col.key === 'entityId'"
                     [style]="cellStyle(col.key, getRowIndex())"
                     [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
+                    (click)="onCellClick(col.key, rowQ[col.key], $event, cellRef)"
                 >
                     <div class="cell-content" [innerHTML]="cellValue(rowQ[col.key], col.key)" [attr.cell-key]="col.key"></div>
                 </td>
