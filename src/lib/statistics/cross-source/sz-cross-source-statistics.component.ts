@@ -33,7 +33,6 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
 
-  public showAllColumns = false;
   private _showTable    = false;
   public get showTable() {
     return this._showTable;
@@ -51,6 +50,14 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   }
   public get headerExpanded(): boolean {
     return this.prefs.dataMart.showDiagramHeader;
+  }
+
+  public get showAllColumns() {
+    return this.prefs.dataMart.showAllColumns;
+  }
+
+  public set showAllColumns(value: boolean) {
+    this.prefs.dataMart.showAllColumns = value;
   }
 
   public get resolutionMode()  {

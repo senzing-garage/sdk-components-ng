@@ -42,7 +42,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   private _fieldOrder: string[];
   private _columnResizing     = false;
   private _columnBeingResized: HTMLElement;
-  private _colSizes: Map<string,string> = new Map<string, string>();
+  protected _colSizes: Map<string,string> = new Map<string, string>();
   private _sortBy: string;
   private _sortDirection: 'DESC' | 'ASC' = 'ASC';
   private _sortOrder: Map<number, number> = new Map<number, number>();

@@ -7,6 +7,8 @@ import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzCSSClassService } from '../../services/sz-css-class.service';
 import { SzEntityData, SzMatchedRecord } from '@senzing/rest-api-client-ng';
+import { interpolateTemplate } from '../../common/utils';
+
 /**
  * Data Table with specific overrides and formatting for displaying 
  * sample results from the cross source summary component.
@@ -45,21 +47,9 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       ['relationshipData', 12],
       ['entityData', 13],
       ['otherData', 14]
-    ])
+    ]);
 
-
-    /*override _cols: Map<string,string> = new Map([
-      ['entityId','Entity Id'],
-      ['erCode','ER Code'],
-      ['matchKey','Match Key'],
-      ['dataSource','Data Source'],
-      ['recordId','Record ID'],
-      ['entityType','Entity Type'],
-      ['nameData','Name Data'],
-      ['attributeData','Attribute Data'],
-      ['addressData','Address Data'],
-      ['relationshipData','Relationship Data']
-    ])*/
+    private _colDataCount: Map<string, number> = new Map();
     override _cols: Map<string,string> = new Map([
       ['entityId', 'Entity ID'],
       ['resolutionRuleCode', 'ER Code'],
@@ -149,8 +139,13 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       ]]
     ]);
 
+    private _expandedEmptyColumns = [];
+
     private get matchLevel() {
       return this.dataMartService.sampleMatchLevel;
+    }
+    public get colDataCount(): Map<string, number> {
+      return this._colDataCount;
     }
     
     override get cellFormatters() {
@@ -183,6 +178,9 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     }
     @HostBinding("class.sample-type-disclosed-relations") get classDisclosedRelations() {
       return this.dataMartService.sampleStatType === SzCrossSourceSummaryCategoryType.DISCLOSED_RELATIONS;
+    }
+    @HostBinding("class.show-all-columns") get showAllColumns() {
+      return this.prefs.dataMart.showAllColumns;
     }
 
     constructor(
@@ -232,7 +230,21 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       return this.rowCount;
     }
 
-    toggleRowExpansion(rowGroupElement?: HTMLElement) {
+    public getRowCountForField(fieldName: string): number {
+      return this._colDataCount && this._colDataCount.has(fieldName) ? this._colDataCount.get(fieldName) : 0;
+    }
+
+    public isEmpty(value: any) {
+      if(!value || value === null) { return true; }
+      if(value && (value as string).trim && ((value as string).trim()) === '') {
+        return false;
+      } else if((value as number) > -1) {
+        return false;
+      }
+      return true;
+    }
+
+    public toggleRowExpansion(rowGroupElement?: HTMLElement) {
       //console.log(`toggleRowExpansion() `, rowGroupElement);
       if(rowGroupElement) {
         if(rowGroupElement.classList.contains('expanded')) {
@@ -249,20 +261,6 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       retVal += ' --selected-datasources-row-count: '+ this.getRowCountInSelectedDataSources(item.rows) +';';
       return retVal;
     }
-
-    /*override cellStyle(fieldName: string, rowsPreceeding): string {
-      let retVal = '';
-      let rowOrderPrefix      = 0;
-      let rowCellOrderOffset  = this.numberOfColumns * rowsPreceeding;
-      if(this._colOrder && this._colOrder.has(fieldName)) {
-        retVal += 'order: '+ (rowCellOrderOffset+this._colOrder.get(fieldName))+';';
-        //if(cellRowSpan && cellRowSpan[fieldName] && this._colOrder.get(fieldName) === 0) {
-          // apply row span to cell
-        //  retVal += 'grid-row: span '+ cellRowSpan[fieldName] +';'
-        //}
-      }
-      return retVal;
-    }*/
 
     resetRenderingIndexes() {
       this.rowCount   = 0;
@@ -322,6 +320,82 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       return retVal;
     }
 
+    override get gridStyle(): string {
+      let retVal = '';
+      if(this._cols && this._cols.size > 0) {
+          // append default col values
+          retVal += 'grid-template-columns:';
+          let sortedCols = new Map([...this._selectedColumns.entries()]
+          .sort((a, b) => {
+            return this._colOrder.get(a[0]) - this._colOrder.get(b[0]);
+          }));
+  
+          sortedCols.forEach((value, key)=>{
+            let _colSize = this._colSizes && this._colSizes.has(key) ? this._colSizes.get(key) : '100px';
+            if([0, undefined].includes(this._colDataCount.get(key)) && !this._expandedEmptyColumns.includes(key) && !this.showAllColumns) {
+              // no data and not expanded
+              retVal += ' 20px'; // no data
+            } else {
+              retVal += ' minmax('+_colSize+',auto)';
+            }
+          });
+          retVal += '; ';
+      }
+      return retVal;
+    }
+
+    isColumnExpanded(columnKey: string): boolean {
+      if(columnKey) {
+        return this._expandedEmptyColumns.includes(columnKey);
+      }
+      return false;
+    }
+
+    toggleNoDataLabel(columnKey: string) {
+      if(columnKey) {
+        let _cIndex = this._expandedEmptyColumns.indexOf(columnKey);
+        console.log(`toggleNoDataLabel(${columnKey}): ${this._expandedEmptyColumns[_cIndex]}`,_cIndex );
+        if(_cIndex > -1 && this._expandedEmptyColumns[_cIndex]) {
+          // column is expanded, collapse it
+          this._expandedEmptyColumns.splice(_cIndex, 1);
+        } else {
+          // add it
+          this._expandedEmptyColumns.push(columnKey);
+        }
+      } else {
+        console.warn(`toggleNoDataLabel: no element`);
+      }
+    }
+
+    public replaceText(template: string, value: any) {
+      return interpolateTemplate(template, value);
+    }
+
+    getGridColumnSizes() {
+      let _currentGridSizes = this.gridStyle;
+      let retVal = '';
+      if(this._cols && this._cols.size > 0) {
+        // append default col values
+        retVal += 'grid-template-columns:';
+        let sortedCols = new Map([...this._selectedColumns.entries()]
+        .sort((a, b) => {
+          return this._colOrder.get(a[0]) - this._colOrder.get(b[0]);
+        }));
+
+        sortedCols.forEach((value, key)=>{
+          let _colSize = this._colSizes && this._colSizes.has(key) ? this._colSizes.get(key) : '100px';
+          console.log(`${key} count: ${this._colDataCount.get(key)}`, this._colDataCount.get(key) === 0);
+          if(this._colDataCount.get(key) === 0) {
+            retVal += ' 10px'; // no data
+          } else {
+            retVal += ' minmax('+_colSize+',auto)';
+          }
+        });
+        retVal += '; ';
+      }
+      window.alert('Grid Sizes:\n\r'+_currentGridSizes)
+    }
+
     get selectedDataSource1(): string | undefined {
       return this.dataMartService.dataSource1;
     }
@@ -348,7 +422,27 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
           return retVal;
         }) : undefined;
         return Object.assign(baseItem, {relatedEntities: item.relatedEntities, rows: rows});
-      })
+      });
+      // get data counts
+      transformed.forEach((item) =>{
+        // for each column
+        this._selectableColumns.forEach((colName) => {
+          let _eCount = this._colDataCount.has(colName) ? this._colDataCount.get(colName) : 0;
+          if(item[colName] !== undefined && item[colName] !== null) {
+            this._colDataCount.set(colName, _eCount+1);
+          }
+        });
+        if(item.rows && item.rows.length > 0) {
+          item.rows.forEach((rowItem) => {
+            this._selectableColumns.forEach((colName) => {
+              let _eCount = this._colDataCount.has(colName) ? this._colDataCount.get(colName) : 0;
+              if(rowItem[colName] !== undefined && rowItem[colName] !== null) {
+                this._colDataCount.set(colName, _eCount+1);
+              }
+            });
+          })
+        }
+      });
       console.log(`@senzing/sdk-components-ng/sz-cross-source-results.onSampleSetDataChange()`, data, transformed);
       this.data = transformed;
       this.cd.markForCheck();

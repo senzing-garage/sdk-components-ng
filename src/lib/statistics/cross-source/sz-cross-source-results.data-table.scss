@@ -28,12 +28,26 @@
             background-color: var(--sz-color-disclosed);
         }
     }
+    // override any collapsed or hidden columns
+    &.show-all-columns {
+        .data-table {
+            th.empty-column {
+                .col-name-text {
+                    display: inline-block;
+                }
+                .no-data-icon {
+                    margin-top: unset;
+                }
+            }
+        }
+    }
 
     .data-table {
         display: grid;
         border-collapse: collapse;
         min-width: 100%;
         column-gap: 2px;
+        font-size: 12px;
         
         /*grid-template-columns: minmax(100px, auto);*/
 
@@ -83,12 +97,27 @@
             top: 0;
             background: #6c7ae0;
             text-align: left;
+            font-size: 14px;
             font-weight: 400;
             color: #fff;
             min-width: 100px;
             -webkit-user-select: none;
             user-select: none;
             border-right: 1px solid #666;
+            &.empty-column {
+                -webkit-user-select: auto;
+                user-select: auto;
+                width: unset !important;
+                &.expanded {
+                    width: unset;
+                    .col-name-text {
+                        display: inline-block;
+                    }
+                    .no-data-icon {
+                        margin-top: unset;
+                    }
+                }
+            }
 
             .icon-sort {
                 position: absolute;
@@ -144,6 +173,34 @@
                     }
                 }
             }
+            .no-data-icon {
+                display: none;
+                padding: 0;
+                --mdc-icon-button-state-layer-size: 14px;
+                width: 18px;
+                height: 18px;
+                line-height: 18px;
+                margin-top: calc(50% - 6px);
+
+                mat-icon {
+                    font-size: 18px;
+                    line-height: 18px;
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+
+            &[data-col-value-count="0"] {
+                width: 20px;
+                padding: 0;
+                min-width: unset;
+                span:not(.no-data-icon) {
+                    display: none;
+                }
+                .no-data-icon {
+                    display: inline-block;;
+                }
+            }
         }
         
         th:last-child {
@@ -170,6 +227,13 @@
                     */
                     .sz-dt-entity-id-cell {
                         grid-row: span calc(var(--selected-datasources-row-count) + 1);
+                        .more-button {
+                            font-size: 10px;
+                            height: 22px;
+                            padding: 2px 0px;
+                            background-color: #55bfeb;
+                            color: #fff;
+                        }
                         .more-button.collapsed  { display: block;}
                         .more-button.expanded   { display: none; }
                     }
@@ -189,6 +253,7 @@
                     }
                     .row-entity .sz-dt-entity-id-cell {
                         grid-row: span calc(var(--total-row-count) + 1);
+                        border-bottom: none;
                         .more-button.collapsed  { display: none;  }
                         .more-button.expanded   { display: block; }
                     }
@@ -204,6 +269,19 @@
                     background-color: #f8f6ff;
                 }
             }*/
+            /* because display='contents' we cant just add a row-grap or margin 
+             * on the row itself
+            */
+            tr {
+                td {
+                    margin-bottom: 2px;
+                }
+                &:first-child, &:last-child {
+                    td {
+                        margin-bottom: 0;
+                    }
+                }
+            }
             td {
                 position: relative;
                 
@@ -215,6 +293,11 @@
                     right: 0;
                     fill: #808080;
                     cursor: pointer;
+                }
+                &.empty-column {
+                    min-width: unset;
+                    width: unset;
+                    padding: 0;
                 }
             }
             td.expandable {

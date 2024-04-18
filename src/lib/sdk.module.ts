@@ -34,6 +34,8 @@ import { SzDecimalPercentPipe } from './pipes/decimalpercent.pipe';
 import { SzOrderedMapEntries } from './pipes/mapentries.pipe';
 /** directives */
 import { SzElementResizeObserverDirective } from './directives/sz-element-resize-observer.directive';
+import { SzTooltipComponent } from './directives/sz-tooltip.component';
+import { SzTooltipDirective } from './directives/sz-tooltip.directive';
 /** common */
 import { SzDataTable } from './shared/data-table/sz-data-table.component';
 /** charts */
@@ -191,6 +193,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzSearchResultCardHeaderComponent,
         SzShortNumberPipe,
         SzStandaloneGraphComponent,
+        SzTooltipComponent,
+        SzTooltipDirective,
         SzVennDiagramsComponent,
         SzWhyEntitiesComparisonComponent,
         SzWhyEntityComponent,

@@ -113,6 +113,7 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   private _sampleSize: number = 100;
   private _sampleStatType: SzCrossSourceSummaryCategoryType;
   private _sampleMatchLevel: number;
+  private _showAllColumns: boolean = false;
   private _showDiagramHeader: boolean = true;
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
@@ -125,6 +126,7 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
     'sampleMatchLevel',
     'sampleSize',
     'sampleStatType',
+    'showAllColumns',
     'showDiagramHeader'
   ]
   // -------------- getters and setters
@@ -196,6 +198,16 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   public set sampleStatType(value: SzCrossSourceSummaryCategoryType) {
     this._sampleStatType = value;
     if(!this.bulkSet) this.prefChanged.next({name: 'sampleStatType', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** whether or not hidden or empty columns are shown by default */
+  public get showAllColumns(): boolean {
+    return this._showAllColumns;
+  }
+  /** whether or not hidden or empty columns are shown by default */
+  public set showAllColumns(value: boolean) {
+    this._showAllColumns = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'showAllColumns', value: value});
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** whether or not the venn diagrams are expanded */

@@ -28,6 +28,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [],
@@ -59,7 +60,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     MatToolbarModule, 
     MatTooltipModule, 
     MatTreeModule, 
-    NoopAnimationsModule],
+    NoopAnimationsModule,
+    OverlayModule],
   exports: [ 
     CdkAccordionModule,
     CdkMenuModule,
@@ -88,7 +90,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     MatToolbarModule, 
     MatTooltipModule, 
     MatTreeModule, 
-    NoopAnimationsModule
+    NoopAnimationsModule,
+    OverlayModule
   ],
 })
 export class SzSdkMaterialModule { }

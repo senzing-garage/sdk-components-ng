@@ -9,16 +9,7 @@
 <div class="component-example">
   <sz-cross-source-statistics 
     (dataSourceSelectionChange)="onDataSourceSelectionChanged($event)"
-    (sampleParametersChange)="getNewSampleData($event)"></sz-cross-source-statistics>
-  <div class="sz-css-divider-heading">
-    <div *ngIf="sampleStatType === 'MATCHES'">Matches:</div>
-    <div *ngIf="sampleStatType === 'AMBIGUOUS_MATCHES'">Ambiguous Matches:</div>
-    <div *ngIf="sampleStatType === 'POSSIBLE_MATCHES'">Possible Matches:</div>
-    <div *ngIf="sampleStatType === 'POSSIBLE_RELATIONS'">Possible Relationships:</div>
-    <div *ngIf="sampleStatType === 'DISCLOSED_RELATIONS'">Disclosed Relationships:</div>
-  </div>
-  <sz-cross-source-results sz-venn-dt *ngIf="showSampleTable"
-  (cellClick)="onCellClick($event)"></sz-cross-source-results>
+    ></sz-cross-source-statistics>
 </div>
 <!--  end data table results  -->
 <!-- start entity detail -->
