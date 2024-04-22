@@ -1,6 +1,7 @@
 <div class="sz-css-heading"
     [class.expanded]="headerExpanded">
-    <sz-cross-source-select></sz-cross-source-select>
+    <sz-cross-source-select
+        (defaultToSourceSelected)="onDefaultToSourceSelected($event)"></sz-cross-source-select>
     <sz-cross-source-summary
     (sourceStatisticClicked)="onSourceStatClicked($event)"></sz-cross-source-summary>
 </div>

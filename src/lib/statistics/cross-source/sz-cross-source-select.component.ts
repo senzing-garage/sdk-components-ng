@@ -3,9 +3,9 @@ import { SzGraphPrefs, SzPrefsService } from '../../services/sz-prefs.service';
 import { take, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { camelToKebabCase, underscoresToDashes, getMapKeyByValue } from '../../common/utils';
-import { SzCrossSourceSummary, SzDataSourcesResponseData, SzSummaryStats } from '@senzing/rest-api-client-ng';
+import { SzCrossSourceSummary, SzDataSourcesResponseData, SzSourceSummary, SzSummaryStats } from '@senzing/rest-api-client-ng';
 import { isValueTypeOfArray, parseBool, parseNumber, parseSzIdentifier, sortDataSourcesByIndex } from '../../common/utils';
-import { SzRecordCountDataSource } from '../../models/stats';
+import { SzCrossSourceSummaryCategoryType, SzCrossSourceSummaryCategoryTypeToMatchLevel, SzCrossSourceSummarySelectionEvent, SzRecordCountDataSource } from '../../models/stats';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzDataSourcesService } from '../../services/sz-datasources.service';
 import { SzCSSClassService } from '../../services/sz-css-class.service';
@@ -89,7 +89,11 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
   public set defaultToDataSource(source: string) {
     this._defaultToDataSource = source;
   }
-
+  /**
+   * event is emitted only after a initial pulldown selection is made. This event will contain 
+   * necessary data to initialize a new SzSampleSet if desired.
+   */
+  @Output() defaultToSourceSelected: EventEmitter<SzCrossSourceSummarySelectionEvent> = new EventEmitter();
   /**
    * emitted when the component begins a request for data.
    * @returns entityId of the request being made.
@@ -183,6 +187,7 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
     }
   }
   private regenerateDataSourceLists(value: string[]) {
+    console.log(`regenerateDataSourceLists()`);
     // regenerate toDataSources
     this._toDataSources = value.map((ds: string) => {
       return {
@@ -219,6 +224,7 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
         // pull first valid
         if(stats) {
           // we only care about the ones that have some sort of information
+
           let crossSourcesWithStats = stats.sourceSummaries.filter((_ss) => {
             let retVal = false;
             // if no vs ds, match to self
@@ -230,7 +236,8 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
               });
               if(_css) {
                 // do we have any relevant counts?
-                retVal = this._getTotalRelevantCount(_css) > 0;
+                let connCount = this.getDiscoveredConnectionCount(_ss.dataSource, toSrcKeyToMatch)
+                retVal = connCount > 0;
               }
             }
             return retVal
@@ -239,6 +246,46 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
             console.log(`found datasource with stats "${crossSourcesWithStats[0].dataSource}"`, crossSourcesWithStats);
             // grab the first one
             this.dataMartService.dataSource1 = crossSourcesWithStats[0].dataSource;
+            
+            // auto populate data table without user click from this event emitter
+            // emitter always broadcasts but it's up to subscriber to actually initialize new 
+            // SzSampleSet
+            if(crossSourcesWithStats[0]) {
+              // figure out what type of selection to make
+              // we go in order until we find one that will return a sampleset result
+              let _css = crossSourcesWithStats[0].crossSourceSummaries.find((_css) => {
+                if(!this.dataMartService.dataSource2) {
+                  // vs itself
+                  return _css.versusDataSource === this.dataMartService.dataSource1;
+                } else {
+                  return _css.versusDataSource === this.dataMartService.dataSource2;
+                }
+              });
+              if(_css) {
+                let _ml: number;
+                let _mt: SzCrossSourceSummaryCategoryType;
+                if(_css.matches && _css.matches.length > 0 && _css.matches[0].entityCount > 0) {
+                  _ml = SzCrossSourceSummaryCategoryTypeToMatchLevel.MATCHES;
+                  _mt = SzCrossSourceSummaryCategoryType.MATCHES;
+                } else if(_css.possibleMatches && _css.possibleMatches.length > 0 && _css.possibleMatches[0].relationCount > 0) {
+                  _ml = SzCrossSourceSummaryCategoryTypeToMatchLevel.POSSIBLE_MATCHES;
+                  _mt = SzCrossSourceSummaryCategoryType.POSSIBLE_MATCHES;
+                } else if(_css.possibleRelations && _css.possibleRelations.length > 0 && _css.possibleRelations[0].relationCount > 0) {
+                  _ml = SzCrossSourceSummaryCategoryTypeToMatchLevel.POSSIBLE_RELATIONS;
+                  _mt = SzCrossSourceSummaryCategoryType.POSSIBLE_RELATIONS;
+                }
+                if(_ml && _mt) {
+                  let _parametersEvt: SzCrossSourceSummarySelectionEvent = {
+                    matchLevel: _ml,
+                    statType: _mt,
+                    dataSource1: this.dataMartService.dataSource1
+                  }
+                  if(this.dataMartService.dataSource2) { _parametersEvt.dataSource2 = this.dataMartService.dataSource2; }
+                  // emit event
+                  this.defaultToSourceSelected.emit(_parametersEvt);
+                }
+              }
+            };
           }
         }
       }
@@ -278,7 +325,7 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
   }
 
   private getDataSources(): Observable<SzDataSourcesResponseData> {
-    return this.dataSourcesService.listDataSourcesDetails()
+    return this.dataSourcesService.listDataSourcesDetails('sz-cross-source-select')
   }
 
   public getFormattedConnectionCount(dataSource1: string, dataSource2: string) {
@@ -307,17 +354,24 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
           }
         });
         if(_css){
-          let _tConnections = 0;
-          //if(_css.ambiguousMatches && _css.ambiguousMatches.length > 0)     { _tConnections += _css.ambiguousMatches[0].entityCount; }
-          //if(_css.disclosedRelations && _css.disclosedRelations.length > 0) { _tConnections += _css.disclosedRelations[0].relationCount; }
-          if(_css.matches && _css.matches.length > 0)                       { _tConnections += _css.matches[0].entityCount; }
-          if(_css.possibleMatches && _css.possibleMatches.length > 0)       { _tConnections += _css.possibleMatches[0].relationCount; }
-          if(_css.possibleRelations && _css.possibleRelations.length > 0)   { _tConnections += _css.possibleRelations[0].relationCount; }
-          return _tConnections;
+          return this._getDiscoveredConnectionCount(_css);
         }
       }
     }
     return 0;
+  }
+  private _getDiscoveredConnectionCount(crossSourceSummary: SzCrossSourceSummary): number {
+    let _retVal = 0;
+    if(crossSourceSummary){
+      let _tConnections = 0;
+      //if(_css.ambiguousMatches && _css.ambiguousMatches.length > 0)     { _tConnections += _css.ambiguousMatches[0].entityCount; }
+      //if(_css.disclosedRelations && _css.disclosedRelations.length > 0) { _tConnections += _css.disclosedRelations[0].relationCount; }
+      if(crossSourceSummary.matches && crossSourceSummary.matches.length > 0)                       { _tConnections += crossSourceSummary.matches[0].entityCount; }
+      if(crossSourceSummary.possibleMatches && crossSourceSummary.possibleMatches.length > 0)       { _tConnections += crossSourceSummary.possibleMatches[0].relationCount; }
+      if(crossSourceSummary.possibleRelations && crossSourceSummary.possibleRelations.length > 0)   { _tConnections += crossSourceSummary.possibleRelations[0].relationCount; }
+      return _tConnections;
+    }
+    return _retVal;
   }
 
   stepFromDataSource(backwards: boolean) : void

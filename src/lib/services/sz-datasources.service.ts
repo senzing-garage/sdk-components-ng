@@ -31,11 +31,14 @@ export class SzDataSourcesService {
    *
    * @memberof SzDataSourcesService
    */
-  public listDataSources(): Observable<string[]> {
+  public listDataSources(debugPath?: string): Observable<string[]> {
     // get attributes
     return this.configService.getDataSources()
     .pipe(
-      map( (resp: SzDataSourcesResponse) => resp.data.dataSources )
+      map( (resp: SzDataSourcesResponse) => resp.data.dataSources ),
+      tap( (data) => {
+        console.log(`listDataSources(): ${debugPath ? debugPath : ''}`, data);
+      })
     );
   }
   /**
@@ -43,17 +46,14 @@ export class SzDataSourcesService {
    *
    * @memberof SzDataSourcesService
    */
-  public listDataSourcesDetails(): Observable<SzDataSourcesResponseData> {
+  public listDataSourcesDetails(debugPath?: string): Observable<SzDataSourcesResponseData> {
     // get attributes
     return this.configService.getDataSources()
     .pipe(
-      tap( (resp: SzDataSourcesResponse) => {
-        console.log(`listDataSourcesDetails[1]: `, resp);
-      }),
       map( (resp: SzDataSourcesResponse) => resp.data ),
       tap( (data) => {
         this._dataSourceDetails = data;
-        console.log(`listDataSourcesDetails[2]: `, data);
+        console.log(`listDataSourcesDetails: ${debugPath ? debugPath : ''}`, data);
       })
     );
   }

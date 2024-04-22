@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { camelToKebabCase, underscoresToDashes, getMapKeyByValue } from '../../common/utils';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzCrossSourceSummaryCategoryType, SzCrossSourceSummarySelectionEvent, SzCrossSourceSummarySelectionClickEvent } from '../../models/stats';
-import { SzEntitiesPage } from '@senzing/rest-api-client-ng';
+import { SzEntitiesPage, SzSourceSummary } from '@senzing/rest-api-client-ng';
 
 export interface dataSourceSelectionChangeEvent {
   dataSource1?: string,
@@ -158,6 +158,24 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+  onDefaultToSourceSelected(evt: SzCrossSourceSummarySelectionEvent) {
+    console.warn(`onDefaultToSourceSelected: `, evt);
+    if(evt) {
+      if(evt.dataSource1) {
+        this.dataMartService.sampleDataSource1  = evt.dataSource1;
+      }
+      if(evt.dataSource2) {
+        this.dataMartService.sampleDataSource2  = evt.dataSource2;
+      }
+      this.dataMartService.sampleMatchLevel   = evt.matchLevel;
+      this.dataMartService.sampleStatType     = evt.statType as SzCrossSourceSummaryCategoryType;
+      this.getNewSampleSet(evt).subscribe((obs)=>{
+        // initialized
+        console.log('initialized new sample set: ', obs);
+        this.dataMartService.onSampleResultChange.subscribe();
+      })
+    }
   }
   /** when user clicks a source stat, change it in the service */
   onSourceStatClicked(evt: SzCrossSourceSummarySelectionClickEvent) {

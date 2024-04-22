@@ -283,6 +283,7 @@ export class SzDataMartService {
     private _onlyShowLoadedSummaryStatistics = false;
     private _dataSources: string[] | undefined;
     private _dataSourceDetails: SzDataSourcesResponseData | undefined;
+    private _dataSourcesInFlight: boolean = false;
     private _sampleSet: SzStatSampleSet;
     //private _sampleStatType: SzCrossSourceSummaryCategoryType | undefined;
 
@@ -384,7 +385,7 @@ export class SzDataMartService {
     }
 
     public get dataSources() {
-        if(this._dataSources){ return this._dataSources; }
+        if(this._dataSources || this._dataSourcesInFlight){ return this._dataSources; }
         // if we dont have any datasources init
         this.getDataSources().pipe(
             take(1)
@@ -401,11 +402,14 @@ export class SzDataMartService {
     }
 
     public getDataSources() {
-        return this.dataSourcesService.listDataSources().pipe(
+        this._dataSourcesInFlight = true;
+        return this.dataSourcesService.listDataSources('sz-datamart.service.getDataSources').pipe(
             tap((ds: string[]) => {
                 this._dataSources = ds;
+                this._dataSourcesInFlight = false;
             }),
             catchError((error) => {
+                this._dataSourcesInFlight = false;
                 return of(false);
             })
         );

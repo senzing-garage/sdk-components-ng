@@ -25,6 +25,14 @@ export const SzCrossSourceSummaryCategoryType = {
     DISCLOSED_RELATIONS: 'DISCLOSED_RELATIONS' as SzCrossSourceSummaryCategoryType
 };
 
+export const SzCrossSourceSummaryCategoryTypeToMatchLevel = {
+    MATCHES: 1,
+    AMBIGUOUS_MATCHES: 3,
+    POSSIBLE_MATCHES: 2,
+    POSSIBLE_RELATIONS: 3,
+    DISCLOSED_RELATIONS: 3
+}
+
 export interface SzCrossSourceSummarySelectionEvent {
     dataSource1?: string,
     dataSource2?: string,
