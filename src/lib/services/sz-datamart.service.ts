@@ -111,7 +111,10 @@ export class SzStatSampleSet {
     public init() {
         if(this.hasEnoughParametersForRequest) {
             this._getNewSampleSet(this._statType, this._dataSource1, this._dataSource2, this._matchKey, this._principle, this._bound, this._sampleSize, this._pageSize).pipe(
-                takeUntil(this.unsubscribe$)
+                takeUntil(this.unsubscribe$),
+                filter((data: SzEntitiesPage) => {
+                    return this._dataSource1 !== undefined || this._dataSource2 !== undefined ? true : false;
+                })
             ).subscribe((data: SzEntitiesPage)=>{
                 this._currentPageEntities = data.entities;
                 // get exploded entity data
@@ -131,17 +134,21 @@ export class SzStatSampleSet {
                 this.getEntitiesByIds(entitiesToRequest).pipe(
                     takeUntil(this.unsubscribe$),
                     take(1)
-                ).subscribe((edata: SzEntityData[]) => {
-                    // expanded data
-                    if(edata && edata.forEach) {
-                        edata.forEach((ent: SzEntityData) => {
-                            // add to internal array
-                            this._entities.set(ent.resolvedEntity.entityId, ent);
-                        })
+                ).subscribe({next: (edata: SzEntityData[]) => {
+                        // expanded data
+                        if(edata && edata.forEach) {
+                            edata.forEach((ent: SzEntityData) => {
+                                // add to internal array
+                                this._entities.set(ent.resolvedEntity.entityId, ent);
+                            })
+                        }
+                        let dataset = this.currentPageResults;
+                        console.warn(`got expanded entity data for sample set: `, this._entities, this._currentPageEntities);
+                        this._onDataUpdated.next(dataset);
+                    },
+                    error: (err) => {
+                        console.error(err);
                     }
-                    let dataset = this.currentPageResults;
-                    console.log(`got expanded entity data for sample set: `, this._entities, this._currentPageEntities);
-                    this._onDataUpdated.next(dataset);
                 });
             });
         }
@@ -186,7 +193,7 @@ export class SzStatSampleSet {
         let isOneDataSourceUndefined = dataSource1 === undefined || dataSource2 === undefined;
         let apiMethod = 'getEntityIdsForCrossMatches';
         // immediately show empty results while we wait
-        this._onDataUpdated.next([]);
+        this._onDataUpdated.next(undefined);
 
         // are we doing cross-source or single-source?
         if(dataSource1 && dataSource2 && dataSource1 !== dataSource2 && !isOneDataSourceUndefined) { isVersus = true; }
@@ -348,9 +355,21 @@ export class SzDataMartService {
     public onSampleMatchLevelChange: BehaviorSubject<number | undefined> = new BehaviorSubject<number>(undefined);
     public onSampleTypeChange: BehaviorSubject<SzCrossSourceSummaryCategoryType | undefined> = new BehaviorSubject<SzCrossSourceSummaryCategoryType>(undefined);
     public onSampleDataSourceChange: BehaviorSubject<sampleDataSourceChangeEvent | undefined> = new BehaviorSubject<sampleDataSourceChangeEvent | undefined>(undefined);
+    /** when a new sample set is being requested */
+    private _onSampleRequest: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    public  onSampleRequest = this._onSampleRequest.asObservable().pipe(
+        filter((res)=>{ return res === true; }),
+        tap((res) => {
+            console.log(`DataMartService._onSampleRequest`, res);
+        })
+    );
+    /** when a new sample set has completed */
     public _onSampleResultChange: BehaviorSubject<SzEntityData[] | undefined> = new BehaviorSubject<SzEntityData[] | undefined>(undefined);
     public onSampleResultChange = this._onSampleResultChange.asObservable().pipe(
-        filter(r => r !== undefined)
+        filter(r => r !== undefined),
+        tap((r) => {
+            //console.log(`the fuck? onSampleResultChange: `, r)
+        })
     );
     private _onSampleResultChange$: Subscription;
 
@@ -373,6 +392,9 @@ export class SzDataMartService {
                 this._dataSourceDetails = dsDetails.dataSourceDetails;
             })
         }
+        this.onSampleRequest.subscribe((isLoading)=>{
+            console.warn(`DataMartService.onSampleRequest: ${isLoading}`);
+        });
     }
 
     public get loadedStatistics(): SzLoadedStats | undefined {
@@ -537,11 +559,13 @@ export class SzDataMartService {
         if(this._onSampleResultChange$) {
             this._onSampleResultChange$.unsubscribe();
             this._onSampleResultChange$ = undefined;
+            this._onSampleRequest.next(false);
         }
         console.log('createNewSampleSetFromParameters: ', {
             statType: statType, dataSource1: dataSource1, dataSource2: dataSource2, matchKey: matchKey, principle: principle, bound: bound, sampleSize: sampleSize, pageSize: pageSize
         });
         // initialize new sample set
+        this._onSampleRequest.next(true);
         this._sampleSet = new SzStatSampleSet({
             statType: statType,
             dataSource1: dataSource1,
@@ -551,6 +575,9 @@ export class SzDataMartService {
         this._onSampleResultChange$ = this._sampleSet.onDataUpdated.pipe(
             tap((res) =>{
                 // bubble up sample set evt to service scope
+                if(res && res.length === 0) {
+                    console.error('NOOOOO ${res}', res);
+                }
                 this._onSampleResultChange.next(res);
             })
         ).subscribe();

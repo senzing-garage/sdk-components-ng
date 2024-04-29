@@ -28,6 +28,11 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   public showSampleTable    = false;
   public showEntityDetail   = false;
   public sampleStatType;
+  private _isLoading        = false;
+
+  public get isLoading(): boolean {
+    return this._isLoading;
+  }
 
   @ViewChild(SzEntityDetailComponent) entityDetailComponent: SzEntityDetailComponent;
 
@@ -49,10 +54,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
         this.searchBox.submitSearch();
       }
     }*/
-    this.dataMart.onSampleResultChange.subscribe((data) => {
+    /*this.dataMart.onSampleResultChange.subscribe((data) => {
       console.log(`new sample set data ready... `);
       this.showSampleTable = true;
-    })
+    })*/
   }
 
   /**
@@ -68,21 +73,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     console.log(data);
   }
 
-  onDataSourceSelectionChanged(data: any) {
-    console.log(`app onDataSourceSelectionChanged: `, data);
-    //this.sampleStatDataSources = data
-  }
-  getNewSampleData(parameters: any) {
-    console.log(`app getNewSampleData: `, parameters);
-    if(parameters.statType) {
-      this.sampleStatType = parameters.statType;
-    }
-    /*this.dataMart.getSampleDataEntityIds(parameters.statType, parameters.dataSource1, parameters.dataSource2, parameters.matchKey, parameters.principle).pipe(
-
-    ).subscribe((data: SzEntitiesPage)=>{
-      console.log(`got entity id's for sample set data`, data);
-    })*/
-    //this.sampleStatDataSources = data
+  onLoading(value: boolean) {
+    this._isLoading = value;
   }
   
 }

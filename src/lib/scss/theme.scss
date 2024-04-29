@@ -477,5 +477,10 @@ body {
     --sz-donut-chart-graph-arc-stroke-opacity: 0.5;
     --sz-donut-chart-unmatched-color: rgb(255 150 125);
     --sz-donut-chart-pending-color: rgb(235 255 125);
+  
+  /* sample data table */
+    --sz-sample-table-spinner-background: rgba(68, 68, 68, 0.3); 
+    --sz-sample-table-spinner-height: calc(99vh - 120px);
+    --sz-sample-table-spinner-width: calc(99vw - 10px);
 }
 

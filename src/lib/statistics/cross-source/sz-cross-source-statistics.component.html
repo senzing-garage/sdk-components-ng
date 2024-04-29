@@ -33,5 +33,11 @@
     <span class="material-icons">file_download</span>
     </button>-->
 </div>
-<sz-cross-source-results sz-venn-dt *ngIf="showTable"
-(cellClick)="onTableCellClick($event)"></sz-cross-source-results>
+<div [class.loading]="isLoading" class="data-table-container">
+    <sz-cross-source-results sz-venn-dt *ngIf="showTable"
+    (loading)="onTableLoading($event)"
+    (cellClick)="onTableCellClick($event)"></sz-cross-source-results>
+    <div class="spinner-container">
+        <ng-content select=".spinner"></ng-content>
+    </div>
+</div>

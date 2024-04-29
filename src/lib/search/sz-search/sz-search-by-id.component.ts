@@ -460,7 +460,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
    */
   @Input()
   public updateDataSources = (): void => {
-    this.dataSourcesService.listDataSources().subscribe((dataSrc: string[]) => {
+    this.dataSourcesService.listDataSources('sz-search-by-id').subscribe((dataSrc: string[]) => {
       this._datasources = dataSrc;
       this.cd.markForCheck();
       this.cd.detectChanges();

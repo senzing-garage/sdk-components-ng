@@ -56,6 +56,11 @@ export interface SzStatSampleEntityTableItem extends SzResolvedEntity {
     rows?: SzStatSampleEntityTableRow[]
 }
 
+export interface SzStatsSampleTableLoadingEvent {
+    inflight: boolean, 
+    source: string
+}
+
 /*
 let _allColumns = [
     'Entity ID',

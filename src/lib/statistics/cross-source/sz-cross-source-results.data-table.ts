@@ -2,7 +2,7 @@ import { Component, ChangeDetectorRef, OnInit, Input, Inject, OnDestroy, Output,
 import { Observable, Subject, takeUntil, throwError, zip } from 'rxjs';
 
 import { SzDataTable } from '../../shared/data-table/sz-data-table.component';
-import { SzCrossSourceSummaryCategoryType, SzStatSampleEntityTableItem, SzStatSampleEntityTableRow } from '../../models/stats';
+import { SzCrossSourceSummaryCategoryType, SzStatSampleEntityTableItem, SzStatSampleEntityTableRow, SzStatsSampleTableLoadingEvent } from '../../models/stats';
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzCSSClassService } from '../../services/sz-css-class.service';
@@ -140,6 +140,9 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     ]);
 
     private _expandedEmptyColumns = [];
+    private _hasLoadedOnce = false;
+    private _isLoading = false;
+    private _noData = false;
 
     private get matchLevel() {
       return this.dataMartService.sampleMatchLevel;
@@ -182,6 +185,21 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     @HostBinding("class.show-all-columns") get showAllColumns() {
       return this.prefs.dataMart.showAllColumns;
     }
+    @HostBinding("class.first-load") get firstLoad() {
+      return !this._hasLoadedOnce;
+    }
+    @HostBinding("class.no-data") get noData() {
+      return this._noData;
+    }
+    @HostBinding("class.loading") get isLoading() {
+      return this._isLoading;
+    }
+
+    /** aggregate observeable for when the component is "doing stuff" */
+    private _loading: Subject<SzStatsSampleTableLoadingEvent> = new Subject();
+    @Output() loading: Observable<SzStatsSampleTableLoadingEvent> = this._loading.asObservable();
+    private _onNoData: Subject<boolean> = new Subject();
+    @Output() onNoData: Observable<boolean> = this._onNoData.asObservable();
 
     constructor(
       public prefs: SzPrefsService,
@@ -197,11 +215,20 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       this.dataMartService.onSampleMatchLevelChange.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe(this.onSampleMatchLevelChange.bind(this));
-
-      // listen for new sampleset data
+      // listen for new sample set requests
+      this.dataMartService.onSampleRequest.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe(this.onSampleSetRequest.bind(this, 'results table via dataMartService.onSampleRequest'));
+      
+      // listen for new sampleset data response
       this.dataMartService.onSampleResultChange.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe(this.onSampleSetDataChange.bind(this));
+
+      // listen for "loading" event
+      this.loading.subscribe((isLoading) =>{
+        this._isLoading = isLoading.inflight;
+      });
     }
     private rowCount  = 0;
     private headerCellCount = this.selectableColumns.size;
@@ -406,10 +433,19 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     public isDataSourceSelected(dataSource: string) {
       return (dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(dataSource) > -1) ? true : false;
     }
+    private onSampleSetRequest(source: string, isInProgress: boolean | undefined) {
+      console.warn(`SzCrossSourceResultsDataTable.onSampleSetRequest: ${isInProgress}`);
+      this._loading.next({inflight: isInProgress, source: source});
+    }
 
+    // when new sample set data has changed
     private onSampleSetDataChange(data: SzEntityData[] | undefined) {
       if(data === undefined) {
         this.data = [];
+        this._noData = true;
+        this._onNoData.next(true);
+      } else {
+        this._hasLoadedOnce = true;
       }
       this.resetRenderingIndexes();
       // flatten data so we can display it
@@ -423,6 +459,12 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
         }) : undefined;
         return Object.assign(baseItem, {relatedEntities: item.relatedEntities, rows: rows});
       });
+      if(transformed && transformed.length > 0) {
+        this._noData = false;
+      } else {
+        console.warn('!!no data available!!');
+        this._noData = true;
+      }
       // get data counts
       transformed.forEach((item) =>{
         // for each column
@@ -443,8 +485,9 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
           })
         }
       });
-      console.log(`@senzing/sdk-components-ng/sz-cross-source-results.onSampleSetDataChange()`, data, transformed);
-      this.data = transformed;
+      console.warn(`@senzing/sdk-components-ng/sz-cross-source-results.onSampleSetDataChange()`, data, transformed);
+      this.data     = transformed;
+      this._loading.next({inflight: false, source: 'SzCrossSourceResultsDataTable.onSampleSetDataChange'});
       this.cd.markForCheck();
     }
 

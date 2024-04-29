@@ -42,6 +42,10 @@
         }
     }
 
+    &.loading .data-table tbody td {
+        opacity: .2;
+    }
+
     .data-table {
         display: grid;
         border-collapse: collapse;

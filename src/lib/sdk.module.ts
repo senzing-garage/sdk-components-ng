@@ -42,6 +42,7 @@ import { SzDataTable } from './shared/data-table/sz-data-table.component';
 import { SzRecordStatsDonutChart } from './charts/records-by-datasources/sz-donut.component';
 import { SzVennDiagramsComponent } from './charts/versus/sz-venn-diagram.component';
 /** statistics */
+import { SzCrossSourcePagingComponent } from './statistics/cross-source/sz-cross-source-results.pager';
 import { SzCrossSourceResultsDataTable } from './statistics/cross-source/sz-cross-source-results.data-table'
 import { SzCrossSourceStatistics } from './statistics/cross-source/sz-cross-source-statistics.component';
 import { SzCrossSourceSummaryComponent } from './summary/cross-source/sz-cross-source-summary.component';
@@ -138,6 +139,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzConfigurationAboutComponent,
         SzConfigurationComponent,
         SzDataTable,
+        SzCrossSourcePagingComponent,
         SzCrossSourceResultsDataTable,
         SzCrossSourceSelectComponent,
         SzCrossSourceStatistics,

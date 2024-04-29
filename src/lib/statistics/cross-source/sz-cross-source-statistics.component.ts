@@ -1,11 +1,11 @@
 import { Component, HostBinding, Input, Output, OnInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef, AfterContentInit, AfterViewInit } from '@angular/core';
 import { SzGraphPrefs, SzPrefsService } from '../../services/sz-prefs.service';
-import { take, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { camelToKebabCase, underscoresToDashes, getMapKeyByValue } from '../../common/utils';
+import { take, takeUntil, tap } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { camelToKebabCase, underscoresToDashes, getMapKeyByValue, parseBool } from '../../common/utils';
 import { SzDataMartService } from '../../services/sz-datamart.service';
-import { SzCrossSourceSummaryCategoryType, SzCrossSourceSummarySelectionEvent, SzCrossSourceSummarySelectionClickEvent } from '../../models/stats';
-import { SzEntitiesPage, SzSourceSummary } from '@senzing/rest-api-client-ng';
+import { SzCrossSourceSummaryCategoryType, SzCrossSourceSummarySelectionEvent, SzCrossSourceSummarySelectionClickEvent, SzStatsSampleTableLoadingEvent } from '../../models/stats';
+import { SzEntitiesPage, SzEntityData, SzSourceSummary } from '@senzing/rest-api-client-ng';
 
 export interface dataSourceSelectionChangeEvent {
   dataSource1?: string,
@@ -38,6 +38,23 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     return this._showTable;
   }
 
+  private _isLoading = false;
+  private _showTableLoadingSpinner = true;
+
+  @HostBinding("class.loading") get isLoading() {
+    return this._isLoading;
+  }
+  @HostBinding("class.show-table-loading-indicator") get showTableLoadingIndicator() {
+    return this._showTableLoadingSpinner;
+  }
+  @HostBinding("class.expanded") get headerExpanded() {
+    return this.prefs.dataMart.showDiagramHeader;
+  }
+  /** if set to false no loading spinner for the table will be shown */
+  @Input() set showTableLoadingSpinner(value: boolean | string) {
+    this._showTableLoadingSpinner = parseBool(value);
+  }
+
   /** when a datasource section on one side or both of the venn diagram is clicked this event is emitted */
   @Output() sourceStatisticClick: EventEmitter<SzCrossSourceSummarySelectionClickEvent> = new EventEmitter();
   @Output() dataSourceSelectionChange: EventEmitter<dataSourceSelectionChangeEvent> = new EventEmitter();
@@ -45,11 +62,18 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   @Output() sampleTypeChange: EventEmitter<SzCrossSourceSummarySelectionEvent> = new EventEmitter();
   @Output() sampleParametersChange: EventEmitter<SzCrossSourceSummarySelectionEvent> = new EventEmitter();
 
+  /** when a new sample set is being requested */
+  private   _onNewSampleSetRequested: Subject<boolean> = new Subject();
+  @Output() onNewSampleSetRequested = this._onNewSampleSetRequested.asObservable();
+  /** when a new sample set has completed it's data requests/initialization */
+  private _onNewSampleSet: Subject<SzEntityData[]> = new Subject();
+  @Output() onNewSampleSet = this._onNewSampleSet.asObservable();
+  /** aggregate observeable for when the component is "doing stuff" */
+  private _loading: Subject<boolean> = new Subject();
+  @Output() loading: Observable<boolean> = this._loading.asObservable();
+
   public toggleExpanded() {
     this.prefs.dataMart.showDiagramHeader = !this.prefs.dataMart.showDiagramHeader;
-  }
-  public get headerExpanded(): boolean {
-    return this.prefs.dataMart.showDiagramHeader;
   }
 
   public get showAllColumns() {
@@ -147,7 +171,7 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     ).subscribe((data) => {
       console.log(`new sample set data ready... `);
       this._showTable = true;
-    })
+    });
   }
   ngAfterViewInit() {}
   //ngAfterContentInit
@@ -160,8 +184,9 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     this.unsubscribe$.complete();
   }
   onDefaultToSourceSelected(evt: SzCrossSourceSummarySelectionEvent) {
-    console.warn(`onDefaultToSourceSelected: `, evt);
+    console.log(`onDefaultToSourceSelected: `, evt);
     if(evt) {
+      this._isLoading = true;
       if(evt.dataSource1) {
         this.dataMartService.sampleDataSource1  = evt.dataSource1;
       }
@@ -172,7 +197,7 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
       this.dataMartService.sampleStatType     = evt.statType as SzCrossSourceSummaryCategoryType;
       this.getNewSampleSet(evt).subscribe((obs)=>{
         // initialized
-        console.log('initialized new sample set: ', obs);
+        console.log('initialized new sample set: ', evt, obs);
         this.dataMartService.onSampleResultChange.subscribe();
       })
     }
@@ -212,7 +237,7 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     console.log(`\t\tgetting new sample set: `, _parametersEvt, evt);
     this.getNewSampleSet(_parametersEvt).subscribe((obs)=>{
       // initialized
-      console.log('initialized new sample set: ', obs);
+      console.log('initialized new sample set: ', obs, _parametersEvt);
       this.dataMartService.onSampleResultChange.subscribe();
     })
   }
@@ -222,8 +247,18 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     console.log('cell click: ', data);
   }
 
-  private getNewSampleSet(parameters: SzCrossSourceSummarySelectionEvent) {
+  onTableLoading(isLoading: SzStatsSampleTableLoadingEvent) {
+    console.warn(`onTableLoading ${isLoading.inflight}|${isLoading.source}`, isLoading);
+    this._isLoading = isLoading.inflight;
+    this._loading.next(this._isLoading);
+  }
 
+  private getNewSampleSet(parameters: SzCrossSourceSummarySelectionEvent) {
+    // set loading emitter(s)
+    this._onNewSampleSetRequested.next(true);
+    this._loading.next(true);
+
+    // initialize new sample set
     return this.dataMartService.createNewSampleSetFromParameters(
       parameters.statType, 
       parameters.dataSource1, 
@@ -231,7 +266,11 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
       parameters.matchKey, 
       parameters.principle).pipe(
         takeUntil(this.unsubscribe$),
-        take(1)
+        take(1),
+        tap((data: SzEntityData[]) => {
+          this._loading.next(false);
+          this._onNewSampleSet.next(data);
+        })
       )
   }
 }
