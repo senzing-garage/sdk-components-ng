@@ -101,9 +101,9 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   get title() {
     let retVal    = '';
     let isSingle  = true;
-    if(this.dataMartService.dataSource1 && this.dataMartService.dataSource2 && this.dataMartService.dataSource1 !== this.dataMartService.dataSource2) {
+    if(this.dataMartService.sampleDataSource1 && this.dataMartService.sampleDataSource2 && this.dataMartService.sampleDataSource1 !== this.dataMartService.sampleDataSource2) {
       isSingle = false;
-    } else if(this.dataMartService.dataSource1 || this.dataMartService.dataSource2) {
+    } else if(this.dataMartService.sampleDataSource1 || this.dataMartService.sampleDataSource2) {
       isSingle  = true;
     }
     if(this.dataMartService.sampleStatType) {
@@ -125,12 +125,12 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
           break;
       };
 
-      if(this.dataMartService.dataSource1 && this.dataMartService.dataSource2 && this.dataMartService.dataSource1 !== this.dataMartService.dataSource2) {
-        retVal  += `: ${this.dataMartService.dataSource1} to ${this.dataMartService.dataSource2}`;
-      } else if(this.dataMartService.dataSource1) {
-        retVal  += `: ${this.dataMartService.dataSource1}`;
-      } else if(this.dataMartService.dataSource2) {
-        retVal  += `: ${this.dataMartService.dataSource2}`;
+      if(this.dataMartService.sampleDataSource1 && this.dataMartService.sampleDataSource2 && this.dataMartService.sampleDataSource1 !== this.dataMartService.sampleDataSource2) {
+        retVal  += `: ${this.dataMartService.sampleDataSource1} to ${this.dataMartService.sampleDataSource2}`;
+      } else if(this.dataMartService.sampleDataSource1) {
+        retVal  += `: ${this.dataMartService.sampleDataSource1}`;
+      } else if(this.dataMartService.sampleDataSource2) {
+        retVal  += `: ${this.dataMartService.sampleDataSource2}`;
       }
     }
 
