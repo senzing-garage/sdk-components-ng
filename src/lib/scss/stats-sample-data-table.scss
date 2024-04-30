@@ -1,1 +1,19 @@
 @import '@angular/cdk/overlay-prebuilt.css';
+
+sz-cross-source-results {
+    /* specific cell styles */
+    span.data-item {
+        white-space: nowrap;
+        display: block;
+        margin-right: 1px;
+        &:before {
+            content: "\2022 ";
+            margin-right: 4px;
+        }
+        
+        &:only-of-type:before {
+            content: "";
+            margin-right: 0;
+        }
+    }
+}

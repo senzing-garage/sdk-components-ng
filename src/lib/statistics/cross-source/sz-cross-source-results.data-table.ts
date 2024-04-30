@@ -152,17 +152,22 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     }
     
     override get cellFormatters() {
-      return {
-        'addressData': (addresses: string[]) => {
-          let retVal = '';
-          if(addresses && addresses.length > 0) {
-            let retStr = addresses.map((value: string) => {
-              return `${value}`;
-            });
-            retVal = '<div class="sz-stat-table-cell address">'+ retStr.join('</div><div class="sz-stat-table-cell address">')+'</div>'
-          }
-          return retVal;
+      let dataFieldRenderer = (data: string[]) => {
+        let retVal = '';
+        if(data && data.length > 0) {
+          retVal = data.map((strVal: string) => {
+            return `<span class="data-item">${strVal}</span>`;
+          }).join('');
         }
+        return retVal;
+      }
+      return {
+        'nameData': dataFieldRenderer,
+        'identifierData': dataFieldRenderer,
+        'addressData': dataFieldRenderer,
+        'phoneData': dataFieldRenderer,
+        'relationshipData': dataFieldRenderer,
+        'otherData': dataFieldRenderer,
       }
     }
     
