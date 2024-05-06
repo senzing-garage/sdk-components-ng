@@ -346,13 +346,17 @@
     }
 
     /* column picker */
-    .column-picker-button {
+    .column-picker {
         position: relative;
         .right {
             right: 0px;
             position: relative;
         }
-        button {
+        .sz-mat-menu {
+            right: 0px;
+            position: absolute;
+        }
+        button.column-picker-button {
             position: absolute;
             right: 0px;
             top: -33px;

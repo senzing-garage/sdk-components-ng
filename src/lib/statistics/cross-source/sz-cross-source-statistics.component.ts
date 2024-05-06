@@ -208,12 +208,12 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     if(!evt.dataSource1 && evt.dataSource2) {
       // flip-flop if only one ds is defined
       this.dataMartService.sampleDataSource1  = evt.dataSource2;
-      this.dataMartService.sampleDataSource2  = undefined;
-      console.log(`\tflip flopped datasources: ["${this.dataMartService.sampleDataSource1}","${this.dataMartService.sampleDataSource2}"]`);
+      this.dataMartService.sampleDataSource2  = evt.dataSource2;
+      console.log(`\tdatasource1 set to datasource2: ["${this.dataMartService.sampleDataSource1}","${this.dataMartService.sampleDataSource2}"]`);
     } else if((evt.dataSource1 && !evt.dataSource2) || ((evt.dataSource1 === evt.dataSource2) && evt.dataSource1 !== undefined)) {
       this.dataMartService.sampleDataSource1  = evt.dataSource1;
-      this.dataMartService.sampleDataSource2  = undefined;
-      console.log(`\tnulled second datasource due to equivalence: ["${this.dataMartService.sampleDataSource1}","${this.dataMartService.sampleDataSource2}" | "${evt.dataSource1}","${evt.dataSource2}"]`);
+      this.dataMartService.sampleDataSource2  = evt.dataSource1;
+      console.log(`\tdatasource2 set to datasource1: ["${this.dataMartService.sampleDataSource1}","${this.dataMartService.sampleDataSource2}" | "${evt.dataSource1}","${evt.dataSource2}"]`);
     } else {
       this.dataMartService.sampleDataSource1  = evt.dataSource1;
       this.dataMartService.sampleDataSource2  = evt.dataSource2;

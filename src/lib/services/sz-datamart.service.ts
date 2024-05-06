@@ -18,12 +18,15 @@ import {
     SzEntityIdentifiers,
     EntityDataService,
     SzEntityResponse,
-    SzDetailLevel
+    SzDetailLevel,
+    SzPagedRelationsResponse,
+    SzRelationsPage,
+    SzRelation
 } from '@senzing/rest-api-client-ng';
 
 import { take, tap, map, catchError, takeUntil, filter } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { SzCountStatsForDataSourcesResponse, SzStatCountsForDataSources } from '../models/stats';
+import { SzCountStatsForDataSourcesResponse, SzDataTableRelation, SzStatCountsForDataSources } from '../models/stats';
 import { SzPrefsService } from '../services/sz-prefs.service';
 import { SzDataSourcesService } from './sz-datasources.service';
 import { SzCrossSourceSummaryCategoryType } from '../models/stats';
@@ -57,6 +60,7 @@ export class SzStatSampleSet {
     private _matchKey: string;
     private _currentPage: number;
     private _currentPageEntities: SzEntity[];
+    private _currentPageRelations: SzRelation[];
     private _entities = new Map<SzEntityIdentifier, SzEntityData>();
     private _maximumValue: number;
     private _minimumValue: number;
@@ -67,15 +71,20 @@ export class SzStatSampleSet {
     private _totalEntityCount: number = 0;
     private _principle: string;
     private _sampleSize: number = 100;
+    private _isRelationsResponse = false;
 
-    public get currentPageResults(): SzEntityData[] {
-        let retVal = this._currentPageEntities.map((res: SzEntity) => {
-            return this._entities.has(res.entityId) ? this._entities.get(res.entityId) : {};
-        });
-        return retVal;
+    public get currentPageResults(): SzEntityData[] | SzRelation[] {
+        if(this._isRelationsResponse) {
+            return this._currentPageRelations;
+        } else {
+            return this._currentPageEntities.map((res: SzEntity) => {
+                return this._entities.has(res.entityId) ? this._entities.get(res.entityId) : {};
+            });
+        }
     }
 
-    private _onDataUpdated: BehaviorSubject<SzEntityData[]> = new BehaviorSubject<SzEntityData[]>(undefined);
+    private _onDataUpdated: BehaviorSubject<SzEntityData[] | SzRelation[]> = new BehaviorSubject<SzEntityData[]>(undefined);
+
     // we only want these publicly if they're not undefined
     public onDataUpdated = this._onDataUpdated.asObservable().pipe(
         takeUntil(this.unsubscribe$),
@@ -110,46 +119,124 @@ export class SzStatSampleSet {
 
     public init() {
         if(this.hasEnoughParametersForRequest) {
+            console.log(`\tinit(): `, this._dataSource1, this._dataSource2);
+            console.time('SzStatSampleSet.init()');
             this._getNewSampleSet(this._statType, this._dataSource1, this._dataSource2, this._matchKey, this._principle, this._bound, this._sampleSize, this._pageSize).pipe(
                 takeUntil(this.unsubscribe$),
-                filter((data: SzEntitiesPage) => {
+                filter((data: SzEntitiesPage | SzRelationsPage) => {
                     return this._dataSource1 !== undefined || this._dataSource2 !== undefined ? true : false;
                 })
-            ).subscribe((data: SzEntitiesPage)=>{
-                this._currentPageEntities = data.entities;
-                // get exploded entity data
-                let entitiesToRequest = this._currentPageEntities.filter((ent: SzEntity) => {
-                    return !this._entities.has(ent.entityId);
-                }).map((ent: SzEntity) => {
-                    return ent.entityId;
-                });
+            ).subscribe((data: SzEntitiesPage | SzRelationsPage) => {
+                let isEntityResponse        = (data as SzEntitiesPage).entities ? true : false; 
+                this._isRelationsResponse   = !isEntityResponse;
+                console.timeLog('SzStatSampleSet.init()', ': got sampleset page: ', data);
 
-                if((entitiesToRequest && entitiesToRequest.length === 0) || !entitiesToRequest) {
-                    // there are no entities
-                    // just emit empty result
-                    this._onDataUpdated.next(this.currentPageResults);
+                if(isEntityResponse) {
+                    this._currentPageEntities   = (data as SzEntitiesPage).entities;
+                    // get exploded entity data
+                    let entitiesToRequest = this._currentPageEntities.filter((ent: SzEntity) => {
+                        return !this._entities.has(ent.entityId);
+                    }).map((ent: SzEntity) => {
+                        return ent.entityId;
+                    });
 
-                    return;
-                }
-                this.getEntitiesByIds(entitiesToRequest).pipe(
-                    takeUntil(this.unsubscribe$),
-                    take(1)
-                ).subscribe({next: (edata: SzEntityData[]) => {
-                        // expanded data
-                        if(edata && edata.forEach) {
-                            edata.forEach((ent: SzEntityData) => {
-                                // add to internal array
-                                this._entities.set(ent.resolvedEntity.entityId, ent);
-                            })
-                        }
-                        let dataset = this.currentPageResults;
-                        console.warn(`got expanded entity data for sample set: `, this._entities, this._currentPageEntities);
-                        this._onDataUpdated.next(dataset);
-                    },
-                    error: (err) => {
-                        console.error(err);
+                    if((entitiesToRequest && entitiesToRequest.length === 0) || !entitiesToRequest) {
+                        // there are no entities
+                        // just emit empty result
+                        this._onDataUpdated.next(this.currentPageResults);
+                        console.timeEnd('SzStatSampleSet.init()');
+                        return;
                     }
-                });
+                    console.timeLog('SzStatSampleSet.init()', ': get entity data: ', entitiesToRequest);
+
+                    this.getEntitiesByIds(entitiesToRequest, false, SzDetailLevel.VERBOSE).pipe(
+                        takeUntil(this.unsubscribe$),
+                        take(1)
+                    ).subscribe({next: (edata: SzEntityData[]) => {
+                            console.timeLog('SzStatSampleSet.init()', ': got entities: ', edata);
+                            // expanded data
+                            if(edata && edata.forEach) {
+                                edata.forEach((ent: SzEntityData) => {
+                                    // add to internal array
+                                    this._entities.set(ent.resolvedEntity.entityId, ent);
+                                })
+                            }
+                            let dataset = this.currentPageResults;
+                            console.timeLog('SzStatSampleSet.init()', ': extended data: ', dataset);
+                            console.timeEnd('SzStatSampleSet.init()');
+                            this._onDataUpdated.next(dataset);
+                        },
+                        error: (err) => {
+                            console.error(err);
+                        }
+                    });
+                } else {
+                    // expand "relations" nodes with more complete data
+                    this._currentPageRelations  = (data as SzRelationsPage).relations;
+                    // get entity ids
+                    let entitiesToRequest  = [];
+                    this._currentPageRelations.forEach((rel: SzRelation) => {
+                        let _entId  = rel && rel.entity && rel.entity.entityId ? rel.entity.entityId : undefined;
+                        let _relId  = rel && rel.relatedEntity && rel.relatedEntity.entityId ? rel.relatedEntity.entityId : undefined;
+                        if(_entId && !this._entities.has(_entId) && entitiesToRequest.indexOf(_entId) < 0) { entitiesToRequest.push(_entId); }
+                        if(_relId && !this._entities.has(_relId) && entitiesToRequest.indexOf(_relId) < 0) { entitiesToRequest.push(_relId); }
+                    });
+                    if((entitiesToRequest && entitiesToRequest.length === 0) || !entitiesToRequest) {
+                        // there are no entities
+                        // just emit empty result
+                        this._onDataUpdated.next(this.currentPageResults);
+                        console.timeEnd('SzStatSampleSet.init()');
+                        return;
+                    }
+                    console.timeLog('SzStatSampleSet.init()', ': get entity data: ', entitiesToRequest);
+                    this.getEntitiesByIds(entitiesToRequest, false, SzDetailLevel.VERBOSE).pipe(
+                        takeUntil(this.unsubscribe$),
+                        take(1)
+                    ).subscribe({
+                        next: (edata: SzEntityData[]) => {
+                            console.timeLog('SzStatSampleSet.init()', ': got entities: ', edata);
+                            // set entity data
+                            if(edata && edata.forEach) {
+                                edata.forEach((ent: SzEntityData) => {
+                                    // add to internal array
+                                    this._entities.set(ent.resolvedEntity.entityId, ent);
+                                })
+                            }
+                            // now extend records with real data
+                            this._currentPageRelations.forEach((rel: SzRelation) => {
+                                if(this._entities.has(rel.entity.entityId)) {
+                                    let _fullEnt        = this._entities.get(rel.entity.entityId).resolvedEntity;
+                                    let _fullEntRecsMap = new Map();
+                                    _fullEnt.records.map((rec) => {
+                                        _fullEntRecsMap.set(rec.dataSource+'|'+rec.recordId, rec);
+                                    })
+                                    rel.entity.records  = rel.entity.records.map((eRec) => {
+                                        return _fullEntRecsMap.get(eRec.dataSource+'|'+eRec.recordId);
+                                    });
+                                }
+                                if(this._entities.has(rel.relatedEntity.entityId)) {
+                                    let _fullEnt        = this._entities.get(rel.relatedEntity.entityId).resolvedEntity;
+                                    let _fullEntRecsMap = new Map();
+                                    _fullEnt.records.map((rec) => {
+                                        _fullEntRecsMap.set(rec.dataSource+'|'+rec.recordId, rec);
+                                    })
+                                    rel.entity.records  = rel.relatedEntity.records.map((eRec) => {
+                                        return _fullEntRecsMap.get(eRec.dataSource+'|'+eRec.recordId);
+                                    });
+                                }
+                                
+                            })
+                            //console.log(`\t\tExtended Data: `, this._currentPageRelations);
+                            let dataset = this.currentPageResults;
+                            console.timeLog('SzStatSampleSet.init()', ': extended data: ', dataset);
+                            console.timeEnd('SzStatSampleSet.init()');
+                            this._onDataUpdated.next(dataset);
+                        },
+                        error: (err) => {
+                            console.error(err);
+                        }
+                    });
+                }
             });
         }
     }
@@ -157,7 +244,7 @@ export class SzStatSampleSet {
     /** get the SzEntityData[] responses for multiple entities 
      * @memberof
      */
-    private getEntitiesByIds(entityIds: SzEntityIdentifiers, withRelated = true, detailLevel = SzDetailLevel.VERBOSE): Observable<SzEntityData[]> {
+    private getEntitiesByIds(entityIds: SzEntityIdentifiers, withRelated = false, detailLevel = SzDetailLevel.BRIEF): Observable<SzEntityData[]> {
         console.log('@senzing/sdk/services/sz-datamart[getEntitiesByIds('+ entityIds +', '+ withRelated +')] ');
         const withRelatedStr = withRelated ? 'FULL' : 'NONE';
         let _retSubject = new Subject<SzEntityData[]>();
@@ -188,32 +275,49 @@ export class SzStatSampleSet {
         this.unsubscribe$.complete();
     }
 
-    private _getNewSampleSet(statType: SzCrossSourceSummaryCategoryType, dataSource1?: string | undefined, dataSource2?: string | undefined, matchKey?: string, principle?: string, bound?: number, sampleSize?: number, pageSize?: number) : Observable<SzEntitiesPage | Error> {
-        let isVersus = false;
+    private _getNewSampleSet(statType: SzCrossSourceSummaryCategoryType, dataSource1?: string | undefined, dataSource2?: string | undefined, matchKey?: string, principle?: string, bound?: number, sampleSize?: number, pageSize?: number) : Observable<SzEntitiesPage | SzRelationsPage | Error> {
+        let isVersus = true;
         let isOneDataSourceUndefined = dataSource1 === undefined || dataSource2 === undefined;
         let apiMethod = 'getEntityIdsForCrossMatches';
         // immediately show empty results while we wait
         this._onDataUpdated.next(undefined);
-
+        console.log(`\t\t_getNewSampleSet(${statType}, ${dataSource1}, ${dataSource2}, ${matchKey}, ${principle}, ${bound}, undefined, ${pageSize}, ${sampleSize})`);
         // are we doing cross-source or single-source?
-        if(dataSource1 && dataSource2 && dataSource1 !== dataSource2 && !isOneDataSourceUndefined) { isVersus = true; }
+        //if(dataSource1 && dataSource2 && dataSource1 !== dataSource2 && !isOneDataSourceUndefined) { isVersus = true; }
+        
+        // if any one data source is defined it's always versus mode
+        if(dataSource1 && !dataSource2) { 
+            dataSource2 = dataSource1; 
+        } else if(dataSource2 && !dataSource1) {
+            dataSource1 = dataSource2; 
+        }
+
+        if(!dataSource1 && !dataSource2) {
+            let err = new Error(`"no datasource(s) provided`);
+            console.error(err.message);
+            throw err;
+        }
 
         // get the api method name to call for the stat type
         switch(statType){
             case SzCrossSourceSummaryCategoryType.AMBIGUOUS_MATCHES:
-                apiMethod = isVersus ? 'getAmbiguouslyCrossMatchedEntityIds' : 'getAmbiguouslyMatchedEntityIds';
+                //apiMethod = isVersus ? 'getAmbiguouslyCrossMatchedEntityIds' : 'getAmbiguouslyMatchedEntityIds';
+                apiMethod = isVersus ? 'getAmbiguouslyCrossMatchedRelations' : 'getAmbiguouslyMatchedRelations';
                 break;
             case SzCrossSourceSummaryCategoryType.DISCLOSED_RELATIONS:
-                apiMethod = isVersus ? 'getDisclosedCrossRelatedEntityIds' : 'getDisclosedRelatedEntityIds';
+                //apiMethod = isVersus ? 'getDisclosedCrossRelatedEntityIds' : 'getDisclosedRelatedEntityIds';
+                apiMethod = isVersus ? 'getDisclosedCrossRelatedRelations' : 'getDisclosedRelatedRelations';
                 break;
             case SzCrossSourceSummaryCategoryType.MATCHES:
                 apiMethod = isVersus ? 'getEntityIdsForCrossMatches' : 'getEntityIdsForSourceMatches';
                 break;
             case SzCrossSourceSummaryCategoryType.POSSIBLE_MATCHES:
-                apiMethod = isVersus ? 'getPossiblyCrossMatchedEntityIds' : 'getPossiblyMatchedEntityIds';
+                //apiMethod = isVersus ? 'getPossiblyCrossMatchedEntityIds' : 'getPossiblyMatchedEntityIds';
+                apiMethod = isVersus ? 'getPossiblyCrossMatchedRelations' : 'getPossiblyMatchedRelations';
                 break;
             case SzCrossSourceSummaryCategoryType.POSSIBLE_RELATIONS:
-                apiMethod = isVersus ? 'getPossiblyCrossRelatedEntityIds' : 'getPossiblyRelatedEntityIds';
+                //apiMethod = isVersus ? 'getPossiblyCrossRelatedEntityIds' : 'getPossiblyRelatedEntityIds';
+                apiMethod = isVersus ? 'getPossiblyCrossRelatedRelations' : 'getPossiblyRelatedRelations';
                 break;
             default:
                 apiMethod = 'getEntityIdsForSourceMatches';
@@ -229,10 +333,11 @@ export class SzStatSampleSet {
         }
         let _disAmbiMethod = this.statsService[apiMethod];
         if(isVersus) {
+            console.log(`\t\t\tcalling versus "${apiMethod}(${dataSource1},${dataSource2}, ${matchKey}, ${principle}, ${bound}, undefined, ${pageSize}, ${sampleSize})"`);
             // dataSourceCode: string, vsDataSourceCode: string, matchKey?: string, principle?: string, bound?: string, boundType?: SzBoundType, pageSize?: number, sampleSize?: number, observe?: 'body', reportProgress?: boolean
             return _disAmbiMethod.call(this.statsService, dataSource1, dataSource2, matchKey, principle, bound, undefined, pageSize, sampleSize).pipe(
-                tap((response: SzPagedEntitiesResponse) => {
-                    console.log(`got cross source sample entity ids: `, response);
+                tap((response: SzPagedEntitiesResponse | SzPagedRelationsResponse) => {
+                    console.log(`got cross source entity id's or relations: `, response);
                     if(response && response.data) {
                         //this.onCrossSourceSummaryStats.next(response.data);
                     }
@@ -241,11 +346,12 @@ export class SzStatSampleSet {
                     console.error('error: ', err);
                     return err;
                 }),
-                map((response: SzPagedEntitiesResponse) => {
+                map((response: SzPagedEntitiesResponse | SzPagedRelationsResponse) => {
                     return response.data;
                 })
             )
         } else {
+            console.log(`\t\t\tcalling "${apiMethod}(${dataSource1}, ${matchKey}, ${principle}, ${bound}, undefined, ${pageSize}, ${sampleSize})"`);
             // dataSourceCode: string, matchKey?: string, principle?: string, bound?: number, boundType?: SzBoundType, pageSize?: number, sampleSize?: number, observe?: 'body', reportProgress?: boolean
             return _disAmbiMethod.call(this.statsService, dataSource1, matchKey, principle, bound, undefined, pageSize, sampleSize).pipe(
                 tap((response: SzPagedEntitiesResponse) => {
@@ -364,7 +470,7 @@ export class SzDataMartService {
         })
     );
     /** when a new sample set has completed */
-    public _onSampleResultChange: BehaviorSubject<SzEntityData[] | undefined> = new BehaviorSubject<SzEntityData[] | undefined>(undefined);
+    public _onSampleResultChange: BehaviorSubject<SzEntityData[] | SzRelation[] | undefined> = new BehaviorSubject<SzEntityData[] | undefined>(undefined);
     public onSampleResultChange = this._onSampleResultChange.asObservable().pipe(
         filter(r => r !== undefined),
         tap((r) => {

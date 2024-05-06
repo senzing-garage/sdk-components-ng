@@ -1,4 +1,4 @@
-import { SzLoadedStats, SzSourceLoadedStats, SzLoadedStatsResponse, SzResolvedEntity, SzRelatedEntity, SzRecord, SzMatchedRecord, SzEntityRecord } from "@senzing/rest-api-client-ng";
+import { SzLoadedStats, SzSourceLoadedStats, SzLoadedStatsResponse, SzResolvedEntity, SzRelatedEntity, SzRecord, SzMatchedRecord, SzEntityRecord, SzRelation, SzEntity } from "@senzing/rest-api-client-ng";
 
 export interface SzCountStatsForDataSourcesResponse extends SzLoadedStatsResponse {
     /** override with extended */
@@ -50,7 +50,8 @@ export interface SzCrossSourceSummarySelectionClickEvent extends MouseEvent {
 }
 
 export interface SzStatSampleEntityTableItem extends SzResolvedEntity {
-    relatedEntities?: SzRelatedEntity[],
+    relatedEntities?: SzDataTableRelatedEntity[],
+    relatedEntity?: SzDataTableRelatedEntity,
     recordCount?: number,
     records?: SzRecord[] | SzMatchedRecord[],
     rows?: SzStatSampleEntityTableRow[]
@@ -59,6 +60,18 @@ export interface SzStatSampleEntityTableItem extends SzResolvedEntity {
 export interface SzStatsSampleTableLoadingEvent {
     inflight: boolean, 
     source: string
+}
+
+export interface SzDataTableEntity extends SzEntity {
+
+}
+export interface SzDataTableRelatedEntity extends SzRelatedEntity {
+    rows?: SzStatSampleEntityTableRow[]
+}
+
+export interface SzDataTableRelation extends SzRelation {
+    entity: SzDataTableEntity;
+    relatedEntity: SzDataTableEntity;
 }
 
 /*

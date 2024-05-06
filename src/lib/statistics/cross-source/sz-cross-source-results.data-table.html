@@ -1,5 +1,5 @@
 <!--<h2>gridStyle: "{{gridStyle}}"</h2>-->
-<ng-template #sz_dt_header_context_menu let-col>
+<!--<ng-template #sz_dt_header_context_menu let-col>
     <div class="sz-dt-header-context-menu" cdkMenu>
       <button class="header-context-menu-item" cdkMenuItem *ngIf="!isColumnHidden(col.key)" (click)="selectColumn(col.key, false)">Hide Column</button>
       <button class="header-context-menu-item" cdkMenuItem *ngIf="isColumnHidden(col.key)" (click)="selectColumn(col.key, true)">Show Column</button>
@@ -34,14 +34,20 @@
     <button class="header-context-menu-item" cdkMenuItem (click)="copyRowContent(data.row, data.rowData)">Copy Row As JSON</button>
     <button class="header-context-menu-item" cdkMenuItem (click)="minimizeCol(data.col)">Minimize Column</button>
     </div>
-</ng-template>
-<div class="column-picker-button">
-    <button mat-raised-button 
-    matTooltip="Choose Columns.." 
-    matTooltipPosition="left"
-    [matMenuTriggerFor]="columnsSelector" aria-label="Choose Columns">
-    <div class="icon-columns-select mdi--view-column-outline"></div>
+</ng-template>-->
+<div class="column-picker">
+    <button class="column-picker-button"
+        (click)="toggleColumnPicker($event)" aria-label="Choose Columns">
+        <div class="icon-columns-select mdi--view-column-outline"></div>
     </button>
+    <div class="sz-mat-menu vertical" [class.showing]="showColumnPickerMenu">
+        <button class="sz-mat-menu-item" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries; let i = index"
+        [attr.data-col-order]="columnOrder(col.key)"
+        [style.order]="columnOrder(col.key)"
+        (click)="$event.stopPropagation();">
+        <mat-checkbox [checked]="isColumnSelected(col.key)" (change)="selectColumn(col.key, $event.checked)" (click)="$event.stopPropagation();">{{col.value}}</mat-checkbox>
+        </button>
+    </div>
 </div>
 <mat-menu #columnsSelector="matMenu" class="sz-g-flexbox-vertical" yPosition="below" (click)="$event.stopPropagation();">
     <button mat-menu-item *ngFor="let col of this.selectableColumns | SzOrderedMapEntries; let i = index"
@@ -65,8 +71,6 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
             <th 
                 #colRef
                 *ngFor="let col of this.selectableColumns | SzOrderedMapEntries; let i = index"
-                [cdkContextMenuTriggerFor]="sz_dt_header_context_menu"
-                [cdkContextMenuTriggerData]="{$implicit: col}"
                 [class]="'sz-dt-column '+cellClass(col.key, 'sz-dt-header','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
                 [class.sorted]="isSortedBy(col.key)" 
                 [class.sorted-asc]="sortDirection === 'ASC'" 
@@ -103,7 +107,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
         [class.hasExpandedCells]="hasExpandedCells(rowRef)"
         [attr.data-source-1]="selectedDataSource1"
         [attr.data-source-2]="selectedDataSource2"
-        [class.has-additional-data]="getTotalRowCount(row.rows) !== getRowCountInSelectedDataSources(row.rows)"
+        [class.has-additional-data]="getTotalRowCount(row) !== getRowCountInSelectedDataSources(row)"
         [style]="rowGroupStyle(row)"
         >
             <!--<tr
@@ -142,14 +146,12 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                     [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
                     [class.hidden]="isColumnHidden(col.key)"
                     [class.empty-column]="getRowCountForField(col.key) === 0"
-                    [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
-                    [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: row[col.key], rowData: row}}"
                     (click)="onCellClick(col.key, row[col.key], $event, cellRef)">
                     <div class="cell-content" [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
                     <div *ngIf="col.key === 'entityId'">
                         <!-- toggle button -->
-                        <button mat-stroked-button class="more-button expanded"  (click)="toggleRowExpansion(rowRef)">{{getTotalRowCount(row.rows) - getRowCountInSelectedDataSources(row.rows)}} Less</button>
-                        <button mat-stroked-button class="more-button collapsed" (click)="toggleRowExpansion(rowRef)">{{getTotalRowCount(row.rows) - getRowCountInSelectedDataSources(row.rows)}} More</button>
+                        <button mat-stroked-button class="more-button expanded"  (click)="toggleRowExpansion(rowRef)">{{getTotalRowCount(row) - getRowCountInSelectedDataSources(row)}} Less</button>
+                        <button mat-stroked-button class="more-button collapsed" (click)="toggleRowExpansion(rowRef)">{{getTotalRowCount(row) - getRowCountInSelectedDataSources(row)}} More</button>
                     </div>
                 </td>
             </tr>
@@ -170,6 +172,41 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                     <div class="cell-content" [innerHTML]="cellValue(rowQ[col.key], col.key)" [attr.cell-key]="col.key"></div>
                 </td>
             </tr>
+            <tr *ngIf="row.relatedEntity" 
+                class="row-related-entity"
+                [attr.data-row-index]="incrementRowCount()"
+                [attr.data-source]="row.relatedEntity.dataSource"
+                >
+                <td #cellRef *ngFor="let col of this.selectableColumns | SzOrderedMapEntries"
+                    [attr.data-row-index]="getRowIndex()" 
+                    [attr.data-cell-order]="getCellOrder(col.key, getRowIndex())"
+                    [style]="cellStyle(col.key, getRowIndex())"
+                    [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
+                    [class.hidden]="isColumnHidden(col.key)"
+                    [class.no-cell]="col.key === 'entityId'"
+                    (click)="onCellClick(col.key, row.relatedEntity[col.key], $event, cellRef)">
+                        <div class="cell-content" [innerHTML]="cellValue(row.relatedEntity[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                </td>
+            </tr>
+            <ng-container *ngIf="row.relatedEntity && row.relatedEntity.rows">
+                <tr *ngFor="let rowY of row.relatedEntity.rows; let recordIndex=index;" 
+                [attr.data-row-index]="incrementRowCount()"
+                [attr.data-source]="rowY.dataSource"
+                [class.data-source-selected]="isDataSourceSelected(rowY.dataSource)"
+                [class.data-source-not-selected]="!isDataSourceSelected(rowY.dataSource)"
+                class="row-record">
+                <td #cellRef [attr.data-record-index]="recordIndex+1" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries" 
+                    [attr.data-cell-order]="getCellOrder(col.key, getRowIndex())"
+                    [class.no-cell]="col.key === 'entityId'"
+                    [class.empty-column]="getRowCountForField(col.key) === 0"
+                    [style]="cellStyle(col.key, getRowIndex())"
+                    [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
+                    (click)="onCellClick(col.key, rowY[col.key], $event, cellRef)"
+                >
+                    <div class="cell-content" [innerHTML]="cellValue(rowY[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                </td>
+            </tr>
+            </ng-container>
         </tbody>
     <!--</tbody>-->
     </table>

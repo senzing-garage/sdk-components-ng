@@ -2,11 +2,11 @@ import { Component, ChangeDetectorRef, OnInit, Input, Inject, OnDestroy, Output,
 import { Observable, Subject, takeUntil, throwError, zip } from 'rxjs';
 
 import { SzDataTable } from '../../shared/data-table/sz-data-table.component';
-import { SzCrossSourceSummaryCategoryType, SzStatSampleEntityTableItem, SzStatSampleEntityTableRow, SzStatsSampleTableLoadingEvent } from '../../models/stats';
+import { SzCrossSourceSummaryCategoryType, SzDataTableEntity, SzDataTableRelation, SzStatSampleEntityTableItem, SzStatSampleEntityTableRow, SzStatsSampleTableLoadingEvent } from '../../models/stats';
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzCSSClassService } from '../../services/sz-css-class.service';
-import { SzEntityData, SzMatchedRecord } from '@senzing/rest-api-client-ng';
+import { SzEntity, SzEntityData, SzMatchedRecord, SzRecord, SzRelation } from '@senzing/rest-api-client-ng';
 import { interpolateTemplate } from '../../common/utils';
 
 /**
@@ -143,12 +143,16 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     private _hasLoadedOnce = false;
     private _isLoading = false;
     private _noData = false;
+    private _columnPickerShowing = false;
 
     private get matchLevel() {
       return this.dataMartService.sampleMatchLevel;
     }
     public get colDataCount(): Map<string, number> {
       return this._colDataCount;
+    }
+    public get showColumnPickerMenu(): boolean {
+      return this._columnPickerShowing;
     }
     
     override get cellFormatters() {
@@ -289,8 +293,8 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
 
     rowGroupStyle(item: SzStatSampleEntityTableItem) {
       let retVal = '';
-      retVal += '--total-row-count: '+ this.getTotalRowCount(item.rows) +';';
-      retVal += ' --selected-datasources-row-count: '+ this.getRowCountInSelectedDataSources(item.rows) +';';
+      retVal += '--total-row-count: '+ this.getTotalRowCount(item) +';';
+      retVal += ' --selected-datasources-row-count: '+ this.getRowCountInSelectedDataSources(item) +';';
       return retVal;
     }
 
@@ -337,19 +341,48 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       return retVal;
     }
 
-    getTotalRowCount(rows: SzStatSampleEntityTableRow[]) {
-      return rows && rows.length ? rows.length : 0;
+    getTotalRowCount(item: SzStatSampleEntityTableItem) {
+      let retVal      = 0;
+      if(item.rows && item.rows.length) {
+        retVal      = item.rows.length;
+      }
+      if(item.relatedEntity) {
+        retVal++;
+        if(item.relatedEntity.rows && item.relatedEntity.rows.length) {
+          retVal    += item.relatedEntity.rows.length;
+        }
+      }
+      return retVal;
     }
 
-    getRowCountInSelectedDataSources(rows: SzStatSampleEntityTableRow[]) {
+    getRowCountInSelectedDataSources(item: SzStatSampleEntityTableItem) {
       let retVal = 0;
-      if(rows) {
+      if(item.rows && item.rows.length) {
+        let rowsInSelectedDataSources = item.rows.filter((row) => {
+          return (row.dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
+        });
+        retVal  = rowsInSelectedDataSources && rowsInSelectedDataSources.length ? rowsInSelectedDataSources.length : retVal;
+      }
+      if(item.relatedEntity) {
+        retVal  = retVal + 1;
+        if(item.relatedEntity.rows && item.relatedEntity.rows.length) {
+          //retVal    += item.relatedEntity.rows.length;
+          let rowsInSelectedDataSources = item.relatedEntity.rows.filter((row) => {
+            return (row.dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
+          });
+          retVal  += rowsInSelectedDataSources && rowsInSelectedDataSources.length ? rowsInSelectedDataSources.length : 0;
+  
+        }
+      }
+      return retVal;
+
+      /*if(rows) {
         let rowsInSelectedDataSources = rows.filter((row) => {
           return (row.dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
         });
         retVal  = rowsInSelectedDataSources && rowsInSelectedDataSources.length ? rowsInSelectedDataSources.length : retVal;
       }
-      return retVal;
+      return retVal;*/
     }
 
     override get gridStyle(): string {
@@ -444,7 +477,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     }
 
     // when new sample set data has changed
-    private onSampleSetDataChange(data: SzEntityData[] | undefined) {
+    private onSampleSetDataChange(data: SzEntityData[] | SzRelation[] | undefined) {
       if(data === undefined) {
         this.data = [];
         this._noData = true;
@@ -453,16 +486,33 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
         this._hasLoadedOnce = true;
       }
       this.resetRenderingIndexes();
-      // flatten data so we can display it
-      let transformed: SzStatSampleEntityTableItem[] = data.map((item) => {
-        // base row
-        let baseItem = item.resolvedEntity;
-        // add "rows: SzStatSampleEntityTableRow[]" // SzStatSampleEntityTableRow
-        let rows = item.resolvedEntity.records && item.resolvedEntity.records.map ? item.resolvedEntity.records.map((rec: SzMatchedRecord) => {
-          let retVal: SzStatSampleEntityTableRow = rec;
-          return retVal;
-        }) : undefined;
-        return Object.assign(baseItem, {relatedEntities: item.relatedEntities, rows: rows});
+      // flatten/normalize data so we can display it
+      let transformed: SzStatSampleEntityTableItem[] = data.map((item: SzEntityData | SzRelation) => {
+        // is it a relation or a entity
+        let isRelation = (item as SzEntityData).resolvedEntity ? false : true;
+        if(isRelation) {
+          let baseItem  = (item as SzRelation).entity;
+          let relItem   = (item as SzRelation).relatedEntity;
+          // add "rows: SzStatSampleEntityTableRow[]" // SzStatSampleEntityTableRow
+          let _entRows = baseItem.records && baseItem.records.map ? baseItem.records.map((rec: SzRecord) => {
+            let retVal: SzStatSampleEntityTableRow = rec;
+            return retVal;
+          }) : undefined;
+          let _relRows = relItem.records && relItem.records.map ? relItem.records.map((rec: SzRecord) => {
+            let retVal: SzStatSampleEntityTableRow = rec;
+            return retVal;
+          }) : undefined;
+          return Object.assign(baseItem, {relatedEntity: Object.assign((item as SzRelation).relatedEntity, {rows: _relRows, relatedEntityId: (item as SzRelation).relatedEntity.entityId}), rows: _entRows});
+        } else {
+          // base row
+          let baseItem = (item as SzEntityData).resolvedEntity;
+          // add "rows: SzStatSampleEntityTableRow[]" // SzStatSampleEntityTableRow
+          let rows = baseItem.records && baseItem.records.map ? baseItem.records.map((rec: SzMatchedRecord) => {
+            let retVal: SzStatSampleEntityTableRow = rec;
+            return retVal;
+          }) : undefined;
+          return Object.assign(baseItem, {relatedEntities: (item as SzEntityData).relatedEntities, rows: rows});
+        }
       });
       if(transformed && transformed.length > 0) {
         this._noData = false;
@@ -470,6 +520,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
         console.warn('!!no data available!!');
         this._noData = true;
       }
+      
       // get data counts
       transformed.forEach((item) =>{
         // for each column
@@ -494,6 +545,9 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       this.data     = transformed;
       this._loading.next({inflight: false, source: 'SzCrossSourceResultsDataTable.onSampleSetDataChange'});
       this.cd.markForCheck();
+    }
+    public toggleColumnPicker(event: MouseEvent) {
+      this._columnPickerShowing = !this._columnPickerShowing
     }
 
 }
