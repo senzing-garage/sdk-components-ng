@@ -371,7 +371,6 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
             return (row.dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
           });
           retVal  += rowsInSelectedDataSources && rowsInSelectedDataSources.length ? rowsInSelectedDataSources.length : 0;
-  
         }
       }
       return retVal;
@@ -407,6 +406,11 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
           retVal += '; ';
       }
       return retVal;
+    }
+
+    toggleColumnSelection(fieldName: string) {
+      let _cSelected = this.isColumnVisible(fieldName);
+      this.selectColumn(fieldName, !_cSelected);
     }
 
     isColumnExpanded(columnKey: string): boolean {
@@ -548,6 +552,25 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     }
     public toggleColumnPicker(event: MouseEvent) {
       this._columnPickerShowing = !this._columnPickerShowing
+    }
+
+    _colPickerMouseOutTimer;
+    hideColPicker() {
+      this._columnPickerShowing = false;
+    }
+
+    public setColPickerMOTimer(event: MouseEvent) {
+      if(!this._colPickerMouseOutTimer) {
+        this._colPickerMouseOutTimer = setTimeout(this.hideColPicker.bind(this), 5000);
+      }
+      return true;
+    }
+    public clearColPickerMOTimer(event: MouseEvent) {
+      if(this._colPickerMouseOutTimer) {
+        clearTimeout(this._colPickerMouseOutTimer);
+        this._colPickerMouseOutTimer = undefined;
+      }
+      return true;
     }
 
 }
