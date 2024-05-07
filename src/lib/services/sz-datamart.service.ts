@@ -206,13 +206,17 @@ export class SzStatSampleSet {
                             this._currentPageRelations.forEach((rel: SzRelation) => {
                                 if(this._entities.has(rel.entity.entityId)) {
                                     let _fullEnt        = this._entities.get(rel.entity.entityId).resolvedEntity;
+                                    // extend records first
                                     let _fullEntRecsMap = new Map();
                                     _fullEnt.records.map((rec) => {
                                         _fullEntRecsMap.set(rec.dataSource+'|'+rec.recordId, rec);
                                     })
+                                    
                                     rel.entity.records  = rel.entity.records.map((eRec) => {
                                         return _fullEntRecsMap.get(eRec.dataSource+'|'+eRec.recordId);
                                     });
+                                    // now extend ent with props from full ent (minus) the records
+                                    rel.entity = Object.assign(Object.assign({}, _fullEnt), rel.entity);
                                 }
                                 if(this._entities.has(rel.relatedEntity.entityId)) {
                                     let _fullEnt        = this._entities.get(rel.relatedEntity.entityId).resolvedEntity;
@@ -220,9 +224,11 @@ export class SzStatSampleSet {
                                     _fullEnt.records.map((rec) => {
                                         _fullEntRecsMap.set(rec.dataSource+'|'+rec.recordId, rec);
                                     })
-                                    rel.entity.records  = rel.relatedEntity.records.map((eRec) => {
+                                    rel.relatedEntity.records  = rel.relatedEntity.records.map((eRec) => {
                                         return _fullEntRecsMap.get(eRec.dataSource+'|'+eRec.recordId);
                                     });
+                                    // now extend ent with props from full ent (minus) the records
+                                    rel.relatedEntity = Object.assign(Object.assign({}, _fullEnt), rel.relatedEntity);
                                 }
                                 
                             })

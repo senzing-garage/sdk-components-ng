@@ -85,9 +85,14 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                 
                 >
                 <span class="col-name-text">{{col.value}}</span>
-                <button *ngIf="getRowCountForField(col.key) === 0" class="no-data-icon" mat-icon-button
-                    (click)="toggleNoDataLabel(col.key)"
-                    ><mat-icon aria-hidden="false" aria-label="toggle column label" fontIcon="info_outline"></mat-icon></button>
+                <div *ngIf="getRowCountForField(col.key) === 0" class="no-data-icon-wrapper">
+                    <button class="no-data-icon" mat-icon-button
+                        (click)="toggleNoDataLabel(col.key)"
+                        ><mat-icon aria-hidden="false" aria-label="toggle column label" fontIcon="info_outline"></mat-icon>
+                    </button>
+                    <span class="tooltiptext">{{col.value}} is collapsed because no data exists for the displayed records.
+                        Click to show or hide the column name placeholder.</span>
+                </div>
 
                 <span *ngIf="getRowCountForField(col.key) > 0" class="icon-sort descending mdi--sort-descending" (click)="sortBy(col.key,'DESC')"></span>
                 <span *ngIf="getRowCountForField(col.key) > 0" class="icon-sort ascending mdi--sort-ascending" (click)="sortBy(col.key,'ASC')"></span>
@@ -184,6 +189,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                     [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
                     [class.hidden]="isColumnHidden(col.key)"
                     [class.no-cell]="col.key === 'entityId'"
+                    [class.empty-column]="getRowCountForField(col.key) === 0"
                     (click)="onCellClick(col.key, row.relatedEntity[col.key], $event, cellRef)">
                         <div class="cell-content" [innerHTML]="cellValue(row.relatedEntity[col.key], col.key)" [attr.cell-key]="col.key"></div>
                 </td>
@@ -194,7 +200,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                 [attr.data-source]="rowY.dataSource"
                 [class.data-source-selected]="isDataSourceSelected(rowY.dataSource)"
                 [class.data-source-not-selected]="!isDataSourceSelected(rowY.dataSource)"
-                class="row-record">
+                class="row-record row-related-record">
                 <td #cellRef [attr.data-record-index]="recordIndex+1" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries" 
                     [attr.data-cell-order]="getCellOrder(col.key, getRowIndex())"
                     [class.no-cell]="col.key === 'entityId'"

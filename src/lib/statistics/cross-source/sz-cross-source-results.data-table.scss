@@ -28,6 +28,7 @@
             background-color: var(--sz-color-disclosed);
         }
     }
+
     // override any collapsed or hidden columns
     &.show-all-columns {
         .data-table {
@@ -35,7 +36,7 @@
                 .col-name-text {
                     display: inline-block;
                 }
-                .no-data-icon {
+                .no-data-icon-wrapper {
                     margin-top: unset;
                 }
             }
@@ -108,16 +109,20 @@
             -webkit-user-select: none;
             user-select: none;
             border-right: 1px solid #666;
+            z-index: 5;
+
             &.empty-column {
                 -webkit-user-select: auto;
                 user-select: auto;
                 width: unset !important;
+                overflow: visible; /* we only want the tooltips to show outside of the header  when col empty */
+
                 &.expanded {
                     width: unset;
                     .col-name-text {
                         display: inline-block;
                     }
-                    .no-data-icon {
+                    .no-data-icon-wrapper {
                         margin-top: unset;
                     }
                 }
@@ -177,8 +182,56 @@
                     }
                 }
             }
-            .no-data-icon {
+            .no-data-icon-wrapper {
                 display: none;
+                position: relative;
+                width: 18px;
+                height: 18px;
+
+                .tooltiptext {
+                    display: inline-block;
+                    position: absolute;
+                    top: 2px;
+                    right: 30px;
+                    visibility: hidden;
+                    opacity: 0;
+                    width: 220px;
+                    background-color: #3b3b3b;
+                    color: #fff;
+                    text-align: center;
+                    padding: 8px 14px 10px 9px;
+                    border-radius: 6px;
+                    font-size: 10px;
+                    white-space: break-spaces;
+                    transition: opacity 0.2s ease-out 0.4s;
+
+                    /* Position the tooltip text - see examples below! */
+                    position: absolute;
+                    z-index: 7;
+
+                    &:before {
+                        content: "";
+                        position: absolute;
+                        top: 9px;
+                        right: -15px;
+                        height: 20px;
+                        width: 20px;
+                        background: #3b3b3b;
+                        box-sizing: border-box;
+                        transform: rotate(34deg) translate(-50%);
+                        border-top: inherit;
+                        border-right: inherit;
+                        box-shadow: inherit;
+                        z-index: 6;
+                    }
+                }
+                &:hover .tooltiptext {
+                    visibility: visible;
+                    display: inline-block;
+                    opacity: 1;
+                }
+            }
+            .no-data-icon {
                 padding: 0;
                 --mdc-icon-button-state-layer-size: 14px;
                 width: 18px;
@@ -201,8 +254,8 @@
                 span:not(.no-data-icon) {
                     display: none;
                 }
-                .no-data-icon {
-                    display: inline-block;;
+                .no-data-icon-wrapper {
+                    display: inline-block;
                 }
             }
         }
@@ -219,7 +272,7 @@
         
         tbody {
             .row-record:nth-child(even of .data-source-selected) td {
-                background-color: #f2f2f2;
+                /*background-color: #f2f2f2;*/
             }
 
             &.row-group {
@@ -250,7 +303,7 @@
                 }
                 &.expanded {
                     .row-record:nth-child(even) td {
-                        background-color: #f2f2f2;
+                        /*background-color: #f2f2f2;*/
                     }
                     .row-record.data-source-not-selected td {
                         background-color: #cdedff;
@@ -336,10 +389,39 @@
                 background-color: #ececec;
             }
         }
-        .row-record {
+        .row-related-entity {
+            td {
+                border-top: 2px solid #636363;
+                background-color: #f5f5f5;
+            }
+        }
+        .row-related-record {
+            td {
+                background-color: #f5f5f5;
+            }
+        }
+        .row-record, .row-related-record {
             &.data-source-not-selected {
                 td {
                     background-color: #cdedff;
+                }
+            }
+        }
+    }
+    /* coloring specific to types of tables */
+    &.sample-type-ambiguous-matches,
+    &.sample-type-possible-matches,
+    &.sample-type-possible-relations,
+    &.sample-type-disclosed-relations {
+        .data-table {
+            .row-entity, .row-record {
+                td {
+                    background-color: #e4e4e4;
+                }
+            }
+            .row-related-entity, .row-related-record {
+                td {
+                    background-color: #f5f5f5;
                 }
             }
         }

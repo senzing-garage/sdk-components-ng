@@ -274,6 +274,11 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
                   _ml = SzCrossSourceSummaryCategoryTypeToMatchLevel.POSSIBLE_RELATIONS;
                   _mt = SzCrossSourceSummaryCategoryType.POSSIBLE_RELATIONS;
                 }
+                // hardcoded to test perf on first call
+                // !!!! REMOVE after debug
+                //_ml = SzCrossSourceSummaryCategoryTypeToMatchLevel.POSSIBLE_RELATIONS;
+                //_mt = SzCrossSourceSummaryCategoryType.POSSIBLE_RELATIONS;
+                
                 if(_ml && _mt) {
                   let _parametersEvt: SzCrossSourceSummarySelectionEvent = {
                     matchLevel: _ml,
