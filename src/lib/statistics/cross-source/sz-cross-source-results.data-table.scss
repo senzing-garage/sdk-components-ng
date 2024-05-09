@@ -289,9 +289,22 @@
                             padding: 2px 0px;
                             background-color: #55bfeb;
                             color: #fff;
+                            margin-top: 5px;
                         }
                         .more-button.collapsed  { display: block;}
                         .more-button.expanded   { display: none; }
+                        .cell-content {
+                            color: #00a4db;
+                            font-size: 16px;
+                            font-weight: bold;
+                            align-items: center;
+                            text-align: center;
+                            
+                            &:hover {
+                                text-decoration: underline;
+                                cursor: pointer;
+                            }
+                        }
                     }
                 }
                 .row-record.data-source-not-selected {
@@ -381,6 +394,20 @@
         .sz-dt-address-data-cell .cell-content {
             
         }
+        .sz-dt-related-entity-id-cell {
+            .cell-content {
+                color: #00a4db;
+                font-size: 16px;
+                font-weight: bold;
+                align-items: center;
+                text-align: center;
+
+                &:hover {
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+            }
+        }
         .row-entity {
             td {
                 border-top: 1px solid #636363;
@@ -459,9 +486,9 @@
                 input {
                     position: absolute;
                     opacity: 0;
-                    cursor: pointer;
                     height: 0;
                     width: 0;
+                    cursor: pointer;
 
                     /* When the checkbox is checked, add a blue background */
                     &:checked ~ .checkmark {
@@ -627,4 +654,17 @@
         -webkit-mask-size: 100% 100%;
         mask-size: 100% 100%;
       }
+}
+
+.sz-dt-context-menu {
+  background-color: #fafafa;
+  padding: 4pt;
+  font-size: 10pt;
+  z-index: 1000;
+  box-shadow: 0 0 12pt rgba(0, 0, 0, 0.25);
+  border-radius: 4pt;
+  padding: 0.5em 0 0.5em 0;
+  animation: fadeIn 0.1s ease-out;
+  opacity:1.0;
+  display:block;
 }

@@ -74,6 +74,12 @@ export interface SzDataTableRelation extends SzRelation {
     relatedEntity: SzDataTableEntity;
 }
 
+export interface SzDataTableCellEvent {
+    "key": string,
+    "value": any,
+    "event"?: MouseEvent
+}
+
 /*
 let _allColumns = [
     'Entity ID',

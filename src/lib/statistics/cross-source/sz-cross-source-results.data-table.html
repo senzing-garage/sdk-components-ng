@@ -1,5 +1,6 @@
 <!--<h2>gridStyle: "{{gridStyle}}"</h2>-->
-<!--<ng-template #sz_dt_header_context_menu let-col>
+<!-- Start Context Menus -->
+<ng-template #sz_dt_header_context_menu let-col>
     <div class="sz-dt-header-context-menu" cdkMenu>
       <button class="header-context-menu-item" cdkMenuItem *ngIf="!isColumnHidden(col.key)" (click)="selectColumn(col.key, false)">Hide Column</button>
       <button class="header-context-menu-item" cdkMenuItem *ngIf="isColumnHidden(col.key)" (click)="selectColumn(col.key, true)">Show Column</button>
@@ -14,9 +15,9 @@
 </ng-template>
 <ng-template #sz_dt_header_column_order_context_menu let-col>
     <div class="sz-dt-header-context-menu submenu" cdkMenu>
-        <button class="header-context-menu-item" cdkMenuItem (click)="moveColumn(col.key, -1)">Move Left</button>
-        <button class="header-context-menu-item" cdkMenuItem (click)="moveColumn(col.key, +1)">Move Right</button>
-        <button class="header-context-menu-item" cdkMenuItem (click)="moveColumn(col.key, (0 - columnOrder(col.key)))">Send to Front</button>
+        <button class="header-context-menu-item" cdkMenuItem (click)="debug(col); moveColumn(col.key, -1)">Move Left</button>
+        <button class="header-context-menu-item" cdkMenuItem (click)="debug(col); moveColumn(col.key, +1)">Move Right</button>
+        <button class="header-context-menu-item" cdkMenuItem disabled="disabled" (click)="debug(col); moveColumn(col.key, (2 - columnOrder(col.key)))">Send to Front</button>
     </div>
 </ng-template>
 <ng-template #sz_dt_header_row_order_context_menu let-col> 
@@ -32,21 +33,25 @@
     <div class="sz-dt-header-context-menu" cdkMenu>
     <button class="header-context-menu-item" cdkMenuItem (click)="copyCellContent(data.cell, data.cellData)">Copy Cell As JSON</button>
     <button class="header-context-menu-item" cdkMenuItem (click)="copyRowContent(data.row, data.rowData)">Copy Row As JSON</button>
-    <button class="header-context-menu-item" cdkMenuItem (click)="minimizeCol(data.col)">Minimize Column</button>
+    <!--<button class="header-context-menu-item" cdkMenuItem (click)="minimizeCol(data.col)">Minimize Column</button>-->
     </div>
-</ng-template>-->
+</ng-template>
+<!-- End Context Menus -->
 <div class="column-picker">
     <button class="column-picker-button has-tooltip"
-        (click)="toggleColumnPicker($event)" aria-label="Choose Columns">
+        (click)="toggleColumnPicker($event); $event.stopPropagation()" aria-label="Choose Columns">
         <div class="icon-columns-select mdi--view-column-outline"></div>
         <span class="tooltiptext no-nubbin">Select Columns to display</span>
     </button>
-    <div class="sz-mat-menu vertical" [class.showing]="showColumnPickerMenu">
+    <div #columnPickerRef class="sz-mat-menu vertical" [class.showing]="showColumnPickerMenu">
         <label class="sz-mat-menu-item" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries; let i = index"
-        (click)="toggleColumnSelection(col.key)">{{col.value}}
-            <input type="checkbox" [checked]="isColumnSelected(col.key)">
-            <span class="checkmark"></span>
-            <!--<mat-checkbox [checked]="isColumnSelected(col.key)" (change)="selectColumn(col.key, $event.checked)" (click)="$event.stopPropagation();">{{col.value}}</mat-checkbox>-->
+        >{{col.value}}
+            <input type="checkbox" 
+            [attr.is-checked]="isColumnSelected(col.key)" 
+            [checked]="isColumnSelected(col.key)"
+            (click)="toggleColumnSelection(col.key, $event)"
+            >
+            <span class="checkmark" (click)="$event.stopPropagation();"></span>
         </label>
     </div>
 </div>
@@ -81,6 +86,8 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                 [class.hidden]="isColumnHidden(col.key)"
                 [class.empty-column]="getRowCountForField(col.key) === 0"
                 [class.expanded]="isColumnExpanded(col.key)"
+                [cdkContextMenuTriggerFor]="sz_dt_header_context_menu"
+                [cdkContextMenuTriggerData]="{$implicit: col}"
                 [style]="columnStyle(col.key)"
                 [attr.data-field-name]="col.key"
                 [attr.data-col-order]="columnOrder(col.key)"
@@ -154,12 +161,23 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                     [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
                     [class.hidden]="isColumnHidden(col.key)"
                     [class.empty-column]="getRowCountForField(col.key) === 0"
+                    [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
+                    [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: row[col.key], rowData: row}}"
                     (click)="onCellClick(col.key, row[col.key], $event, cellRef)">
-                    <div class="cell-content" [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                    <div class="cell-content" 
+                        matTooltip="Click to view Entity Detail page" 
+                        matTooltipPosition="right"
+                        [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
                     <div *ngIf="col.key === 'entityId'">
                         <!-- toggle button -->
-                        <button mat-stroked-button class="more-button expanded"  (click)="toggleRowExpansion(rowRef)">{{getTotalRowCount(row) - getRowCountInSelectedDataSources(row)}} Less</button>
-                        <button mat-stroked-button class="more-button collapsed" (click)="toggleRowExpansion(rowRef)">{{getTotalRowCount(row) - getRowCountInSelectedDataSources(row)}} More</button>
+                        <button mat-stroked-button class="more-button expanded" 
+                            matTooltip="Show additional records from other data sources." 
+                            matTooltipPosition="right"
+                            (click)="toggleRowExpansion(rowRef); $event.stopPropagation()">{{getTotalRowCount(row) - getRowCountInSelectedDataSources(row)}} Less</button>
+                        <button mat-stroked-button class="more-button collapsed" 
+                            matTooltip="Show additional records from other data sources." 
+                            matTooltipPosition="right"
+                            (click)="toggleRowExpansion(rowRef); $event.stopPropagation()">{{getTotalRowCount(row) - getRowCountInSelectedDataSources(row)}} More</button>
                     </div>
                 </td>
             </tr>
@@ -176,6 +194,8 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                     [class.hidden]="isColumnHidden(col.key)"
                     [style]="cellStyle(col.key, getRowIndex())"
                     [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
+                    [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
+                    [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: rowQ[col.key], rowData: rowQ}}"
                     (click)="onCellClick(col.key, rowQ[col.key], $event, cellRef)"
                 >
                     <div class="cell-content" [innerHTML]="cellValue(rowQ[col.key], col.key)" [attr.cell-key]="col.key"></div>
@@ -194,8 +214,13 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                     [class.hidden]="isColumnHidden(col.key)"
                     [class.no-cell]="col.key === 'entityId'"
                     [class.empty-column]="getRowCountForField(col.key) === 0"
+                    [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
+                    [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: row.relatedEntity[col.key], rowData: row.relatedEntity}}"
                     (click)="onCellClick(col.key, row.relatedEntity[col.key], $event, cellRef)">
-                        <div class="cell-content" [innerHTML]="cellValue(row.relatedEntity[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                        <div class="cell-content" 
+                            matTooltip="Click to view Entity Detail page" 
+                            matTooltipPosition="above"
+                            [innerHTML]="cellValue(row.relatedEntity[col.key], col.key)" [attr.cell-key]="col.key"></div>
                 </td>
             </tr>
             <ng-container *ngIf="row.relatedEntity && row.relatedEntity.rows">
@@ -212,6 +237,8 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                     [class.hidden]="isColumnHidden(col.key)"
                     [style]="cellStyle(col.key, getRowIndex())"
                     [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
+                    [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
+                    [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: rowY[col.key], rowData: rowY}}"
                     (click)="onCellClick(col.key, rowY[col.key], $event, cellRef)"
                 >
                     <div class="cell-content" [innerHTML]="cellValue(rowY[col.key], col.key)" [attr.cell-key]="col.key"></div>

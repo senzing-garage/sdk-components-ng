@@ -45,7 +45,7 @@
         &:focus, &:focus-visible, &:focus-within {
             outline: none;
         }
-        &:hover, &[aria-expanded=true] {
+        &:hover:not([disabled]), &[aria-expanded=true] {
             background-color: #ddf4ff;
         }
 
@@ -58,6 +58,11 @@
             border-bottom-left-radius: 2px;
             border-bottom-right-radius: 2px;
             border-bottom: 1px solid #666;
+        }
+        &:disabled {
+            color: #adadad;
+            background-color: #ececec;
+            cursor: default;
         }
 
         &[aria-haspopup=menu] {
@@ -126,6 +131,14 @@ sz-cross-source-statistics {
         .mdc-icon-button__ripple,
         .mat-mdc-focus-indicator,
         .mat-mdc-button-ripple,
+        .mat-mdc-button-touch-target {
+            display: none !important;
+        }
+    }
+}
+
+sz-cross-source-results {
+    tbody .sz-dt-entity-id-cell .more-button {
         .mat-mdc-button-touch-target {
             display: none !important;
         }

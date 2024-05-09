@@ -3,12 +3,7 @@ import { SzGraphPrefs, SzPrefsService } from '../../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { camelToKebabCase, underscoresToDashes, getMapKeyByValue } from '../../common/utils';
-
-export interface SzDataTableCellEvent {
-  "key": string,
-  "value": any,
-  "event"?: MouseEvent
-}
+import { SzDataTableCellEvent } from '../../models/stats';
 
 /**
  * Embeddable Data Table Component
@@ -403,6 +398,8 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
     let shiftLeft       = orderModifier === -1;
     let shiftRight      = orderModifier === +1;
 
+    //console.log(`moveColumn('${fieldName}', ${orderModifier})`);
+
     if(shiftLeft || shiftRight) {
       // simple swap operation
       // swap new position with current one
@@ -433,7 +430,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
       // insert at new position, then every item 
       // > (lowest new || old) old position && < new position needs to decrement
     }
-    console.log(`reordered columns: `, this.orderedColumns, this._colOrder);
+    //console.log(`reordered columns: `, this.orderedColumns, this._colOrder);
   }
 
   copyCellContent(cell: HTMLElement, json?: any) {

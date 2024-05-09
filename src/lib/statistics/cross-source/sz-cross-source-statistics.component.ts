@@ -6,6 +6,7 @@ import { camelToKebabCase, underscoresToDashes, getMapKeyByValue, parseBool } fr
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzCrossSourceSummaryCategoryType, SzCrossSourceSummarySelectionEvent, SzCrossSourceSummarySelectionClickEvent, SzStatsSampleTableLoadingEvent } from '../../models/stats';
 import { SzEntitiesPage, SzEntityData, SzSourceSummary } from '@senzing/rest-api-client-ng';
+import { SzDataTableCellEvent } from '../../models/stats';
 
 export interface dataSourceSelectionChangeEvent {
   dataSource1?: string,
@@ -56,6 +57,7 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   }
 
   /** when a datasource section on one side or both of the venn diagram is clicked this event is emitted */
+  @Output() cellClick: EventEmitter<SzDataTableCellEvent> = new EventEmitter<SzDataTableCellEvent>();
   @Output() sourceStatisticClick: EventEmitter<SzCrossSourceSummarySelectionClickEvent> = new EventEmitter();
   @Output() dataSourceSelectionChange: EventEmitter<dataSourceSelectionChangeEvent> = new EventEmitter();
   @Output() sampleSourcesChange: EventEmitter<dataSourceSelectionChangeEvent> = new EventEmitter();
@@ -245,6 +247,7 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   /** since data can be any format we have to use loose typing */
   onTableCellClick(data: any) {
     console.log('cell click: ', data);
+    this.cellClick.emit(data);
   }
 
   onTableLoading(isLoading: SzStatsSampleTableLoadingEvent) {

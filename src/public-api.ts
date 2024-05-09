@@ -60,6 +60,7 @@ export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph
 /* charts */
 export { SzRecordStatsDonutChart } from './lib/charts/records-by-datasources/sz-donut.component'
 /** shared */
+export { SzAlertMessageDialog } from './lib/shared/alert-dialog/sz-alert-dialog.component';
 export { SzDataTable } from './lib/shared/data-table/sz-data-table.component';
 export { SzVennDiagramsComponent } from './lib/charts/versus/sz-venn-diagram.component';
 /** statistics */

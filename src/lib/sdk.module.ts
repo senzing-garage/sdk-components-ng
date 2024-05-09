@@ -216,6 +216,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzSdkMaterialModule
     ],
     exports: [
+        SzAlertMessageDialog,
         SzConfigurationComponent,
         SzConfigurationAboutComponent,
         SzDataTable,

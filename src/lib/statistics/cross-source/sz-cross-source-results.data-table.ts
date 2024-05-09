@@ -1,5 +1,6 @@
-import { Component, ChangeDetectorRef, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding } from '@angular/core';
-import { Observable, Subject, takeUntil, throwError, zip } from 'rxjs';
+import { Component, ChangeDetectorRef, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding, ChangeDetectionStrategy, TemplateRef, ViewContainerRef, ElementRef } from '@angular/core';
+import { Observable, Subject, Subscription, filter, fromEvent, take, takeUntil, throwError, zip } from 'rxjs';
+import {CdkMenu, CdkMenuItem, CdkContextMenuTrigger} from '@angular/cdk/menu';
 
 import { SzDataTable } from '../../shared/data-table/sz-data-table.component';
 import { SzCrossSourceSummaryCategoryType, SzDataTableEntity, SzDataTableRelation, SzStatSampleEntityTableItem, SzStatSampleEntityTableRow, SzStatsSampleTableLoadingEvent } from '../../models/stats';
@@ -7,7 +8,9 @@ import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzCSSClassService } from '../../services/sz-css-class.service';
 import { SzEntity, SzEntityData, SzMatchedRecord, SzRecord, SzRelation } from '@senzing/rest-api-client-ng';
-import { interpolateTemplate } from '../../common/utils';
+import { getMapKeyByValue, interpolateTemplate } from '../../common/utils';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
 
 /**
  * Data Table with specific overrides and formatting for displaying 
@@ -16,7 +19,8 @@ import { interpolateTemplate } from '../../common/utils';
 @Component({
   selector: 'sz-cross-source-results',
   templateUrl: './sz-cross-source-results.data-table.html',
-  styleUrls: ['./sz-cross-source-results.data-table.scss']
+  styleUrls: ['./sz-cross-source-results.data-table.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit, OnDestroy {
     /*override _colOrder: Map<string,number> = new Map([
@@ -85,6 +89,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       'entityData',
       'otherData'
     ]
+    private _selectableColumnsAsMap: Map<string,string> = new Map();
 
     private _matchLevelToColumnsMap  = new Map<number, string[]>([
       [1,[
@@ -143,7 +148,11 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     private _hasLoadedOnce = false;
     private _isLoading = false;
     private _noData = false;
+    @ViewChild('columnPickerRef') columnPickerRef: ElementRef<HTMLElement>;
     private _columnPickerShowing = false;
+    private _documentClick$: Subscription;
+    @ViewChild('sz_dt_header_context_menu') sz_dt_header_context_menu: TemplateRef<any>;
+    contexMenuOverRef: OverlayRef | null;
 
     private get matchLevel() {
       return this.dataMartService.sampleMatchLevel;
@@ -215,6 +224,8 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       private cd: ChangeDetectorRef,
       private cssService: SzCSSClassService,
       private dataMartService: SzDataMartService,
+      public overlay: Overlay,
+      public viewContainerRef: ViewContainerRef
     ) {
         super();
     }
@@ -237,11 +248,46 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       // listen for "loading" event
       this.loading.subscribe((isLoading) =>{
         this._isLoading = isLoading.inflight;
+        this.cd.detectChanges();
       });
+      // listen for document "click" and close out any menus that may be showing
+      this._documentClick$ = fromEvent<MouseEvent>(document, 'click')
+        .pipe(
+          filter(event => {
+            const clickTarget = event.target as HTMLElement;
+            if(this._contextMenuShowing) {
+              // check the overlay ref
+              return !!this.contexMenuOverRef && !this.contexMenuOverRef.overlayElement.contains(clickTarget);
+            } else if(this._columnPickerShowing && this.columnPickerRef) {
+              // check that it's not inside the picker element
+              return !this.columnPickerRef.nativeElement.contains(clickTarget)
+            }
+            return this._contextMenuShowing || this._columnPickerShowing;
+          })
+        ).subscribe((event) => this.onDocumentClick(event))
+    }
+    override get selectableColumns(): Map<string,string> {
+      return this._selectableColumnsAsMap;
     }
     private rowCount  = 0;
     private headerCellCount = this.selectableColumns.size;
     private cellIndex = this.headerCellCount + 1;
+
+    private generateSelectableColumnsMap() {
+      let _sCols = this._cols ? this._cols : new Map<string,string>();
+      if(this._selectableColumns && this._selectableColumns.length > 0) {
+        // only return columns in data AND in selectable list
+        let _pear = new Map<string,string>(
+          [..._sCols]
+          .filter(([k,v])=>{
+            return this._selectableColumns.includes(k);
+          }));
+        if(_pear.size > 0){
+          _sCols = _pear;
+        }
+      }
+      this._selectableColumnsAsMap = _sCols;
+    }
 
     getCellOrder(columnName: string, rowsPreceeding: number) {
       let rowCellOrderOffset  = this.numberOfColumns * rowsPreceeding;
@@ -288,6 +334,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
         } else {
           rowGroupElement.classList.add('expanded');
         }
+        this.cd.markForCheck();
       }
     }
 
@@ -311,10 +358,12 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     private onSampleMatchLevelChange(matchLevel: number) {
       if(this._matchLevelToColumnsMap.has(matchLevel)) {
         this._selectableColumns   = this._matchLevelToColumnsMap.get(matchLevel);
+        this.generateSelectableColumnsMap();
       } else {
         // we still need columns sooo...
         console.warn(`NO column map for MATCH LEVEL ${matchLevel}`);
         this._selectableColumns = this._matchLevelToColumnsMap.get(1);
+        this.generateSelectableColumnsMap();
       }
       // refresh the cols list so that grid column style is correct
       let _colsForMatchLevel    = new Map<string, string>([...this._cols].filter((_col)=>{
@@ -408,9 +457,21 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       return retVal;
     }
 
-    toggleColumnSelection(fieldName: string) {
+    toggleColumnSelection(fieldName: string, event: MouseEvent) {
+      // filter out checkbox clicks cause it'll double up the call and cancel itself out
+      if(event.target && event.currentTarget && event.target !== event.currentTarget){
+        console.warn(`cancelled out column toggle`, event.target);
+        return true;
+      }
+      //console.warn(`toggleColumnSelection(${fieldName})`, this.isColumnVisible(fieldName), event.target, event.currentTarget);
       let _cSelected = this.isColumnVisible(fieldName);
       this.selectColumn(fieldName, !_cSelected);
+      if(event && event.stopPropagation) {
+        event.stopPropagation();
+        return true;
+      }
+      this.cd.detectChanges();
+      return true;
     }
 
     isColumnExpanded(columnKey: string): boolean {
@@ -431,6 +492,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
           // add it
           this._expandedEmptyColumns.push(columnKey);
         }
+        this.cd.markForCheck();
       } else {
         console.warn(`toggleNoDataLabel: no element`);
       }
@@ -544,33 +606,124 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
             });
           })
         }
+        if(item.relatedEntity) {
+          this._selectableColumns.forEach((colName) => {
+            let _eCount = this._colDataCount.has(colName) ? this._colDataCount.get(colName) : 0;
+            if(item.relatedEntity[colName] !== undefined && item.relatedEntity[colName] !== null) {
+              this._colDataCount.set(colName, _eCount+1);
+            }
+          });
+          if(item.relatedEntity.rows) {
+            item.relatedEntity.rows.forEach((rowItem) => {
+              this._selectableColumns.forEach((colName) => {
+                let _eCount = this._colDataCount.has(colName) ? this._colDataCount.get(colName) : 0;
+                if(rowItem[colName] !== undefined && rowItem[colName] !== null) {
+                  this._colDataCount.set(colName, _eCount+1);
+                }
+              });
+            })
+          }
+        }
       });
       console.warn(`@senzing/sdk-components-ng/sz-cross-source-results.onSampleSetDataChange()`, data, transformed);
       this.data     = transformed;
       this._loading.next({inflight: false, source: 'SzCrossSourceResultsDataTable.onSampleSetDataChange'});
       this.cd.markForCheck();
     }
+
+    private onDocumentClick(event: MouseEvent) {
+      // just close any menu's
+      if(this._columnPickerShowing) {
+        this._columnPickerShowing = false;
+      }
+      if(this.contexMenuOverRef) {
+        this.contexMenuOverRef.dispose();
+        this.contexMenuOverRef    = undefined;
+        this._contextMenuShowing  = false;
+      }
+      this.cd.detectChanges();
+    }
+
+    private _contextMenuShowing = false;
+    public onHeaderContextMenu(event: MouseEvent, col: any) {
+      if(event && event.preventDefault) {
+        event.preventDefault();
+      }
+      let x = event.x;
+      let y = event.y;
+
+      this._contextMenuShowing = true;
+      const positionStrategy = this.overlay.position()
+        .flexibleConnectedTo({ x, y })
+        .withPositions([
+          {
+            originX: 'end',
+            originY: 'bottom',
+            overlayX: 'end',
+            overlayY: 'top',
+          }
+        ]);
+
+      this.contexMenuOverRef = this.overlay.create({
+        positionStrategy,
+        scrollStrategy: this.overlay.scrollStrategies.close()
+      });
+
+      this.contexMenuOverRef.attach(new TemplatePortal(this.sz_dt_header_context_menu, this.viewContainerRef, {
+        $implicit: col
+      }));
+    }
+
+    public debug(obj) {
+      console.log(`debug: `, obj);
+    }
+
+    override moveColumn(fieldName: string, orderModifier: number) {
+      let currentIndex    = this._colOrder.get(fieldName);
+      let newIndex        = currentIndex + orderModifier;
+      let shiftLeft       = orderModifier === -1;
+      let shiftRight      = orderModifier === +1;
+  
+      console.log(`moveColumn('${fieldName}', ${orderModifier}): ${newIndex}`);
+  
+      if(shiftLeft || shiftRight) {
+        // simple swap operation
+        // swap new position with current one
+        let _k            = getMapKeyByValue(this._colOrder, newIndex);
+        this._colOrder.set(_k, currentIndex);
+        this._colOrder.set(fieldName, newIndex);
+      //} else if(shiftRight) {
+        // swap 
+      } else {
+        // were probably jumping more than one item
+        // first col is always entityId so real jump to gront starts 
+        // at the second index pos
+        if(newIndex === 2) {
+          // insert at front
+          let newOrderMap = new Map<string, number>()
+          console.log('insert at front');
+          
+          this._colOrder.forEach((value, key)=>{
+            if(key !== fieldName) {
+              if(value > currentIndex) {
+                // decrement
+                this._colOrder.set(key, value-1);
+              } else {
+                // increment
+                this._colOrder.set(key, value+1);
+              }
+            }
+          });
+          this._colOrder.set(fieldName, newIndex);
+        }
+        // insert at new position, then every item 
+        // > (lowest new || old) old position && < new position needs to decrement
+      }
+      console.log(`reordered columns: `, this.orderedColumns, this._colOrder);
+    }
+
     public toggleColumnPicker(event: MouseEvent) {
-      this._columnPickerShowing = !this._columnPickerShowing
+      this._columnPickerShowing = !this._columnPickerShowing;
+      this.cd.detectChanges();
     }
-
-    _colPickerMouseOutTimer;
-    hideColPicker() {
-      this._columnPickerShowing = false;
-    }
-
-    public setColPickerMOTimer(event: MouseEvent) {
-      if(!this._colPickerMouseOutTimer) {
-        this._colPickerMouseOutTimer = setTimeout(this.hideColPicker.bind(this), 5000);
-      }
-      return true;
-    }
-    public clearColPickerMOTimer(event: MouseEvent) {
-      if(this._colPickerMouseOutTimer) {
-        clearTimeout(this._colPickerMouseOutTimer);
-        this._colPickerMouseOutTimer = undefined;
-      }
-      return true;
-    }
-
 }
