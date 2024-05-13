@@ -702,7 +702,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
           // insert at front
           let newOrderMap = new Map<string, number>()
           console.log('insert at front');
-          
+          this._colOrder.set(fieldName, newIndex);
           this._colOrder.forEach((value, key)=>{
             if(key !== fieldName) {
               if(value > currentIndex) {
@@ -714,7 +714,6 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
               }
             }
           });
-          this._colOrder.set(fieldName, newIndex);
         }
         // insert at new position, then every item 
         // > (lowest new || old) old position && < new position needs to decrement
