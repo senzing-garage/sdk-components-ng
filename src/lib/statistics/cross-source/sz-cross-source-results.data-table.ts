@@ -244,6 +244,10 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       this.dataMartService.onSampleResultChange.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe(this.onSampleSetDataChange.bind(this));
+      // listen for sampleset page changes
+      this.dataMartService.onSamplePageChange.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe(this.onPageChange.bind(this))
 
       // listen for "loading" event
       this.loading.subscribe((isLoading) =>{
@@ -677,6 +681,18 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     public debug(obj) {
       console.log(`debug: `, obj);
     }
+
+    public onPageChange(event) {
+      console.log(`onPageChange: `, event);
+    }
+
+    public handleSampleClicked(event) {
+      console.log(`handleSampleClicked: `, event);
+    }
+    public clearFilters(event) {
+      console.log(`clearFilters: `, event);
+    }
+    
 
     override moveColumn(fieldName: string, orderModifier: number) {
       let currentIndex    = this._colOrder.get(fieldName);

@@ -62,6 +62,19 @@ $sz-mat-theme: mat.define-light-theme((
   )
 ));
 
+$senzing-config-app-primary:    mat.define-palette($sz-mat-colors, PRIMARY, PRIMARY, PRIMARY);
+$senzing-config-app-accent:     mat.define-palette($sz-mat-colors, SECONDARY, SECONDARY, SECONDARY);
+$senzing-config-app-warn:       mat.define-palette(mat.$red-palette, 700, 900, 300);
+$senzing-config-app-warn-mild:  mat.define-palette(mat.$orange-palette, 700, 900, 300);
+$senzing-config-app-button-primary:  $sz-blue;
+
+$senzing-config-warn-color:         mat.get-color-from-palette($senzing-config-app-warn);
+$senzing-config-warn-mild-color:    mat.get-color-from-palette($senzing-config-app-warn-mild);
+$senzing-config-accent-color:       mat.get-color-from-palette($senzing-config-app-accent);
+$senzing-config-primary-color:      mat.get-color-from-palette($senzing-config-app-primary);
+$senzing-subheading-background-color: mat.get-color-from-palette($senzing-config-app-primary,800);
+$senzing-card-hover-color:          mat.get-color-from-palette($senzing-config-app-primary, 100);
+
 /*TODO(mdc-migration): Remove all-legacy-component-themes once all legacy components are migrated*/
 @include mat.all-legacy-component-themes($sz-mat-theme);
 

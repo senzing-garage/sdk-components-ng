@@ -37,24 +37,35 @@
     </div>
 </ng-template>
 <!-- End Context Menus -->
-<div class="column-picker">
-    <button class="column-picker-button has-tooltip"
-        (click)="toggleColumnPicker($event); $event.stopPropagation()" aria-label="Choose Columns">
-        <div class="icon-columns-select mdi--view-column-outline"></div>
-        <span class="tooltiptext no-nubbin">Select Columns to display</span>
-    </button>
-    <div #columnPickerRef class="sz-mat-menu vertical" [class.showing]="showColumnPickerMenu">
-        <label class="sz-mat-menu-item" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries; let i = index"
-        >{{col.value}}
-            <input type="checkbox" 
-            [attr.is-checked]="isColumnSelected(col.key)" 
-            [checked]="isColumnSelected(col.key)"
-            (click)="toggleColumnSelection(col.key, $event)"
-            >
-            <span class="checkmark" (click)="$event.stopPropagation();"></span>
-        </label>
+<div class="control-ribbon">
+    <!-- start paging component -->
+    <sz-cross-source-pager 
+        [pageSizeOptions]="[ 10, 25, 50, 75, 100 ]"
+        (clearFilters)="clearFilters($event)"
+        (sampleClicked)="handleSampleClicked($event)"></sz-cross-source-pager>
+    <!-- end paging component -->
+    <!-- start column picker component -->
+    <div class="column-picker">
+        <button class="column-picker-button has-tooltip"
+            (click)="toggleColumnPicker($event); $event.stopPropagation()" aria-label="Choose Columns">
+            <div class="icon-columns-select mdi--view-column-outline"></div>
+            <span class="tooltiptext no-nubbin">Select Columns to display</span>
+        </button>
+        <div #columnPickerRef class="sz-mat-menu vertical" [class.showing]="showColumnPickerMenu">
+            <label class="sz-mat-menu-item" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries; let i = index"
+            >{{col.value}}
+                <input type="checkbox" 
+                [attr.is-checked]="isColumnSelected(col.key)" 
+                [checked]="isColumnSelected(col.key)"
+                (click)="toggleColumnSelection(col.key, $event)"
+                >
+                <span class="checkmark" (click)="$event.stopPropagation();"></span>
+            </label>
+        </div>
     </div>
+    <!-- end column picker component -->
 </div>
+
 <!--<mat-menu #columnsSelector="matMenu" class="sz-g-flexbox-vertical" yPosition="below" (click)="$event.stopPropagation();">
     <button mat-menu-item *ngFor="let col of this.selectableColumns | SzOrderedMapEntries; let i = index"
     [attr.data-col-order]="columnOrder(col.key)"

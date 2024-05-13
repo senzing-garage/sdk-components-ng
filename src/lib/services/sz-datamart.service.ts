@@ -60,7 +60,7 @@ export class SzStatSampleSet {
     private _dataSource2: string;
     private _statType: SzCrossSourceSummaryCategoryType;
     private _matchKey: string;
-    private _currentPage: number;
+    private _currentPage: number = 0;
     //private _currentPageEntities: SzEntity[];
     //private _currentPageRelations: SzRelation[];
     private _entities = new Map<SzEntityIdentifier, SzEntityData>();
@@ -201,7 +201,7 @@ export class SzStatSampleSet {
         return undefined;
     }
     public get pagingParametersForRelations(): SzDataTableRelationsPagingParameters {
-        if(!this._isRelationsResponse && this._entityPages.has(this._currentPage)) {
+        if(this._isRelationsResponse && this._relationPages.has(this._currentPage)) {
             let {relations, ...destroParams} = this._relationPages.get(this._currentPage);
             return destroParams as SzDataTableRelationsPagingParameters;
         }
@@ -226,13 +226,13 @@ export class SzStatSampleSet {
         let _retVal: SzStatSampleSetPageChangeEvent;
         if(this._isRelationsResponse) {
             // pass relations page minus entities
+            let _cPageParams        = this.pagingParametersForRelations;
+            let _overwriteObj:any   = {statType: this.statType, totalCount: this.totalCount};
+            if(this.bound) { _overwriteObj.bound = this.bound; }
+            //console.log(`\t_getCurrentPageParameters: pagingParametersForRelations: `, this.pagingParametersForRelations);
             _retVal = Object.assign(
-                {statType: this.statType}, 
-                this.pagingParametersForRelations, 
-                {
-                    bound: this.bound,
-                    totalCount: this.totalCount
-                }
+                _overwriteObj, 
+                _cPageParams
             );
         } else {
             // pass entity page minus entities
@@ -402,7 +402,9 @@ export class SzStatSampleSet {
                             console.timeLog('SzStatSampleSet.init()', ': extended data: ', dataset);
                             console.timeEnd('SzStatSampleSet.init()');
                             this._onDataUpdated.next(dataset);
-                            this._onPagingUpdated.next(this._getCurrentPageParameters());
+                            let _currentPageParams = this._getCurrentPageParameters();
+                            console.warn(`SzStatSampleSet.init().pageParams(${this._currentPage}): `, _currentPageParams, this._relationPages.get(this._currentPage));
+                            this._onPagingUpdated.next(_currentPageParams);
                         },
                         error: (err) => {
                             console.error(err);

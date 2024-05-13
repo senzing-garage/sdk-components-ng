@@ -11,7 +11,9 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        margin: 33px 0 10px 0;
+        margin: 0 0 10px;
+        position: relative;
+        top: 27px;
 
         mat-slide-toggle.show-all-columns {
             margin-left: 20px;
