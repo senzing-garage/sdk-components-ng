@@ -116,18 +116,33 @@ export class SzVennDiagramsComponent implements OnInit, OnDestroy {
   private rightCircle: ElementRef;
 
   public handleLeftClick(event: MouseEvent) {
+    if(this.leftCount === 0) {
+      if(event.stopPropagation) event.stopPropagation();
+      return false;
+    }
     console.log(`left Clicked: ${this.leftCount}`);
     this.leftClicked.emit(event);
+    return true;
   }
 
   public handleOverlapClick(event: MouseEvent) {
+    if(this.overlapCount === 0) {
+      if(event.stopPropagation) event.stopPropagation();
+      return false;
+    }
     console.log(`overlapClicked: ${this.overlapCount}`);
     this.overlapClicked.emit(event);
+    return true;
   }
 
   public handleRightClick(event: MouseEvent) {
+    if(this.rightCount === 0) {
+      if(event.stopPropagation) event.stopPropagation();
+      return false;
+    }
     console.log(`right Clicked: ${this.rightCount}`);
     this.rightClicked.emit(event);
+    return true;
   }
 
   constructor(

@@ -127,7 +127,8 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
         </tr>
     </thead>
     <!--<tbody>-->
-        <tbody class="row-group" *ngFor="let row of this.data; let groupIndex=index;" 
+    <ng-container *ngIf="!isLoading">
+    <tbody class="row-group" *ngFor="let row of this.data; let groupIndex=index;" 
         #rowRef
         [attr.group-row-index]="groupIndex" 
         [class.hasExpandedCells]="hasExpandedCells(rowRef)"
@@ -258,6 +259,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                 </td>
             </tr>
             </ng-container>
-        </tbody>
+    </tbody>
+    </ng-container>
     <!--</tbody>-->
     </table>
