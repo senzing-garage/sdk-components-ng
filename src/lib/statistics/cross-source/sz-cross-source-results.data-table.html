@@ -175,9 +175,11 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                     [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
                     [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: row[col.key], rowData: row}}"
                     (click)="onCellClick(col.key, row[col.key], $event, cellRef)">
-                    <div class="cell-content" 
+                    <div *ngIf="col.key === 'entityId'" class="cell-content" 
                         matTooltip="Click to view Entity Detail page" 
                         matTooltipPosition="right"
+                        [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                    <div *ngIf="col.key !== 'entityId'" class="cell-content"
                         [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
                     <div *ngIf="col.key === 'entityId'">
                         <!-- toggle button -->
