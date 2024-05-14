@@ -268,7 +268,11 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
             }
             return this._contextMenuShowing || this._columnPickerShowing;
           })
-        ).subscribe((event) => this.onDocumentClick(event))
+        ).subscribe((event) => this.onDocumentClick(event));
+      // get and listen for prefs change
+      this.prefs.dataMart.prefsChanged.pipe(
+        takeUntil(this.unsubscribe$),
+      ).subscribe( this.onPrefsChange.bind(this) );
     }
     override get selectableColumns(): Map<string,string> {
       return this._selectableColumnsAsMap;
@@ -374,6 +378,12 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
         return this._selectableColumns.includes(_col[0]);
       }));
       this._selectedColumns     = _colsForMatchLevel;
+    }
+
+    /** proxy handler for when prefs have changed externally */
+    private onPrefsChange(prefs: any) {
+      // update view manually
+      this.cd.detectChanges();
     }
 
     public getRowCellOrder(fieldName: string) {
