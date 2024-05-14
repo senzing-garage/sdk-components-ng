@@ -143,6 +143,15 @@ sz-cross-source-results {
             display: none !important;
         }
     }
+
+    /* column level style overrides */
+    .sz-dt-address-data-cell .cell-content .data-item {
+        white-space: normal !important;
+        margin-bottom: 6px;
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
 }
 
 .sz-dt-menu-page-size {
