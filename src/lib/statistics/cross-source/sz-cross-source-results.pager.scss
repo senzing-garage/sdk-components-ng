@@ -39,7 +39,7 @@
   max-width: 18px;
 }
 
-:host button ::ng-deep .mat-button-wrapper {
+/*:host button ::ng-deep .mat-button-wrapper {
   font-size: 20px;
   height: 24px;
   line-height: 24px;
@@ -48,7 +48,7 @@
   width: 18px;
   max-width: 18px;
   overflow: hidden;
-}
+}*/
 
 :host DIV.showing-records,
 :host DIV.showing-pages {
@@ -94,6 +94,8 @@ DIV.showing-pages {
 
 :host button.paging-button {
   margin-top: 2px;
+  width: 20px;
+padding: 0;
 }
 
 DIV.show-records {

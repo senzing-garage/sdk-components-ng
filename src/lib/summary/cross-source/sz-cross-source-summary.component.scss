@@ -23,6 +23,18 @@
       }
     }
 
+    .venn-wrapper {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      .diagram-caption {
+        text-align: center;
+        color: #313131;
+        margin-top: 4px;
+        font-size: 15px;
+      }
+    }
+
     .data-select-wrapper {
         display: flex;
         flex-direction: row;

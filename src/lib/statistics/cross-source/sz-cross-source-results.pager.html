@@ -1,4 +1,8 @@
-<div class="showing-records">
+<div class="showing-records" 
+    [attr.data-first-record]="firstRecord"
+    [attr.data-last-record]="lastRecord"
+    >
+    <!--loading: {{loading}}-->
     <div class="show-records"
         (click)="editingPageSize = true">
         Showing {{firstRecord|number:'1.0'}} - {{lastRecord|number:'1.0'}} of {{availableCount|number:'1.0'}}
@@ -7,7 +11,8 @@
         panelClass="sz-dt-menu-page-size"
         (blur)="handlePageSizeEditBlur($event)"
         (selectionChange)="handlePageSizeEditChange($event)"
-        (keyup)="handlePageSizeEditKeyUp($event)">
+        (keyup)="handlePageSizeEditKeyUp($event)"
+        [disabled]="loading">
         <mat-option *ngFor="let pageSizeOption of pageSizeOptions"
               [value]="pageSizeOption">Show {{pageSizeOption | number : '1.0'}}</mat-option>
     </mat-select>
@@ -59,7 +64,7 @@
             </button>
             <button *ngFor="let filterValue of getFiltersByKey(filterKey)"
                     mat-menu-item class="clear-filter-item"
-                    [disabled]="isFilterDisabled(filterKey, filterValue)"
+                    [disabled]="isFilterDisabled(filterKey, filterValue) || loading"
                     (click)="clearFilters(filterKey, filterValue)">
                 <span class="clear-filter-icon material-icons">clear</span>
                 <label>{{filterKey}} = {{filterValue}}</label>
@@ -69,11 +74,11 @@
 </mat-menu>
 
 <!-- pages -->
-<button mat-icon-button [disabled]="isFirstPage"
+<button mat-icon-button [disabled]="isFirstPage || loading"
         (click)="goFirstPage()" class="paging-button">
     <span class="material-icons">first_page</span>
 </button>
-<button mat-icon-button [disabled]="isFirstPage"
+<button mat-icon-button [disabled]="isFirstPage || loading"
         (click)="goPreviousPage()" class="paging-button"><span class="material-icons">navigate_before</span>
 </button>
 <div class="showing-pages"
@@ -81,17 +86,17 @@
     [class.triple-digits]="pageDigits===3"
     [class.double-digits]="pageDigits===2">
     <div [class.hidden]="editingPage" class="show-pages"
-        (click)="editingPage = true">Page {{page}} of {{pageCount}}
+        >Page {{page}} of {{pageCount}}
     </div>
-    <input #pageField [class.hidden]="!editingPage" class="edit-page"
+    <!--<input #pageField [class.hidden]="!editingPage" class="edit-page"
     type="number" min="1" [max]="this.pageCount"
     (blur)="handlePageEditBlur($event)"
-    (keyup)="handlePageEditKeyUp($event)">
+    (keyup)="handlePageEditKeyUp($event)">-->
 </div>
-<button mat-icon-button [disabled]="isLastPage" (click)="goNextPage()" class="paging-button">
+<button mat-icon-button [disabled]="isLastPage || loading" (click)="goNextPage()" class="paging-button">
     <span class="material-icons">navigate_next</span>
 </button>
-<button mat-icon-button [disabled]="isLastPage" 
+<!--<button mat-icon-button [disabled]="isLastPage" 
     (click)="goLastPage()" class="paging-button">
     <span class="material-icons">last_page</span>
-</button>
+</button>-->

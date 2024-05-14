@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef, AfterContentInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, Input, Output, OnInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef, AfterContentInit, AfterViewInit, ViewChild, HostBinding } from '@angular/core';
 import { SzGraphPrefs, SzPrefsService } from '../../services/sz-prefs.service';
 import { take, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
@@ -28,6 +28,7 @@ import { MatMenu } from '@angular/material/menu';
 export class SzCrossSourcePagingComponent implements OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
+    public loading: boolean = false;
     private _totalCount : number = 0;
     private _sampleCount : number | null = null;
     private _filteredCount : number | null = null;
@@ -62,6 +63,10 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
   
     @ViewChild("filterMenu")
     public filterMenu: MatMenu;
+
+    @HostBinding("class.loading") get isLoading() {
+      return this.loading;
+    }
 
     public get sampled() : boolean {
         return (this.sampleCount !== null && this.sampleCount !== undefined
@@ -444,10 +449,17 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
         if (this._lastRecord < 1) {
           this._lastRecord = 1;
         }
-        this.selectedPage.emit({from: this.firstRecord,
+        // sample page indexes are "0" based
+        // and since we now have the next page value held internally
+        // we just need to tell the datamart to grab the current page we're
+        // on that we dont have data for yet.
+        console.log(`goPreviousPage: pageIndex = ${this.pageIndex}`);
+        this.dataMartService.sampleSetPage = this.pageIndex;
+
+        /*this.selectedPage.emit({from: this.firstRecord,
                                 to: this.lastRecord,
                                 page: this.page,
-                                pageSize: this.pageSize });
+                                pageSize: this.pageSize });*/
     }
     
     public goNextPage() {
@@ -457,10 +469,18 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
         if (this._lastRecord > this.availableCount) {
           this._lastRecord = this.availableCount;
         }
-        this.selectedPage.emit({from: this.firstRecord,
+
+        // sample page indexes are "0" based
+        // and since we now have the next page value held internally
+        // we just need to tell the datamart to grab the current page we're
+        // on that we dont have data for yet.
+        console.log(`goNextPage: pageIndex = ${this.pageIndex}`);
+        this.dataMartService.sampleSetPage = this.pageIndex;
+
+        /*this.selectedPage.emit({from: this.firstRecord,
                                 to: this.lastRecord,
                                 page: this.page,
-                                pageSize: this.pageSize });
+                                pageSize: this.pageSize });*/
     }
     
     public goLastPage() {
@@ -490,7 +510,15 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
     // listen for sampleset page changes
     this.dataMartService.onSamplePageChange.pipe(
       takeUntil(this.unsubscribe$)
-    ).subscribe(this.onDataMartSamplePageChange.bind(this))
+    ).subscribe(this.onDataMartSamplePageChange.bind(this));
+    
+    // listing for loading
+    this.dataMartService.onSampleRequest.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((loading) => {
+      console.log(`SzCrossSourcePagingComponent.onSampleRequest: ${loading}`);
+      this.loading = loading;
+    })
   }
 
   private onDataMartSamplePageChange(event: SzStatSampleSetPageChangeEvent) {
@@ -506,8 +534,11 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
     this._pageMinimumValue  = event.pageMinimumValue;
 
     // calc the page item spread
-    this._firstRecord       = this._beforePageCount === 0 ? 1 : this._beforePageCount;
-    this._lastRecord        = this._beforePageCount === 0 ?  this._pageItemCount : this._firstRecord + this._pageItemCount;
+    this._firstRecord       = this._beforePageCount === 0 ? 1 : this._beforePageCount + (this._pageItemCount > 0 ? 1 : 0);
+    this._lastRecord        = this._beforePageCount + this._pageItemCount;
+
+    //this._firstRecord       = this._beforePageCount === 0 ? 1 : (this._beforePageCount * this.pageSize);
+    //this._lastRecord        = this._beforePageCount === 0 ?  this._pageItemCount : this._firstRecord + this._pageItemCount;
   }
     
   constructor(

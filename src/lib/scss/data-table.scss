@@ -137,6 +137,17 @@ sz-cross-source-statistics {
     }
 }
 
+sz-cross-source-pager {
+    .paging-button {
+        .mdc-icon-button__ripple,
+        .mat-mdc-focus-indicator,
+        .mat-mdc-button-ripple,
+        .mat-mdc-button-touch-target {
+            display: none !important;
+        }
+    }
+}
+
 sz-cross-source-results {
     tbody .sz-dt-entity-id-cell .more-button {
         .mat-mdc-button-touch-target {

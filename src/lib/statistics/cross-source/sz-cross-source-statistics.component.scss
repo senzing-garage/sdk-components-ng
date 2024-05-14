@@ -15,12 +15,14 @@
         position: relative;
         top: 27px;
         z-index: 20;
+        width: calc(100% - 350px);
 
         mat-slide-toggle.show-all-columns {
             margin-left: 20px;
         }
         .title {
             margin: 0;
+            color: #3a3a3a;
         }
     }
 

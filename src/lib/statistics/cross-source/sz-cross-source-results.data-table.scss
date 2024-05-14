@@ -154,7 +154,7 @@
             .icon-sort {
                 position: absolute;
                 right: 5px;
-                display: none;
+                display: none !important;
                 cursor: pointer;
             }
             .handle-resize {

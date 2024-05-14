@@ -181,7 +181,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                         [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
                     <div *ngIf="col.key !== 'entityId'" class="cell-content"
                         [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
-                    <div *ngIf="col.key === 'entityId'">
+                    <div *ngIf="col.key === 'entityId' && (getTotalRowCount(row) - getRowCountInSelectedDataSources(row)) > 0">
                         <!-- toggle button -->
                         <button mat-stroked-button class="more-button expanded" 
                             matTooltip="Show additional records from other data sources." 

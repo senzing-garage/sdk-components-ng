@@ -54,22 +54,6 @@ export class SzStatSampleSet {
         boundType: SzBoundType.EXCLUSIVELOWER,
         statType: SzCrossSourceSummaryCategoryType.MATCHES
     }
-    //private _pagingParametersForEntities: SzDataTableEntitiesPagingParameters;
-    //private _pagingParametersForRelations: SzDataTableRelationsPagingParameters;
-
-    /*private _sampleSize: number = 100;
-    private _pageSize: number = 1000;
-    private _bound: string = "0";
-    private _boundType: SzBoundType = SzBoundType.EXCLUSIVELOWER;
-    private _totalEntityCount: number = 0;
-    private _afterPageCount: number;
-    private _beforePageCount: number;
-    private _maximumValue: string;
-    private _minimumValue: string;
-    private _pages = new Map<number, SzEntityIdentifier>();
-    private _pageMaximumValue: string;
-    private _pageMinimumValue: string;
-    */
 
     public get statType() {
         return this._requestParameters && this._requestParameters.statType ? this._requestParameters.statType : undefined;
@@ -78,45 +62,52 @@ export class SzStatSampleSet {
         return this._requestParameters && this._requestParameters.dataSource1 ? this._requestParameters.dataSource1 : undefined;
     }
     public set dataSource1(value: string) {
-        if(this._requestParameters && this._requestParameters.dataSource1) this._requestParameters.dataSource1 = value;
+        if(this._requestParameters) this._requestParameters.dataSource1 = value;
     }
     public get dataSource2() {
         return this._requestParameters && this._requestParameters.dataSource2 ? this._requestParameters.dataSource2 : undefined;
     }
     public set dataSource2(value: string) {
-        if(this._requestParameters && this._requestParameters.dataSource2) this._requestParameters.dataSource2 = value;
+        if(this._requestParameters) this._requestParameters.dataSource2 = value;
     }
     public get matchKey() {
         return this._requestParameters && this._requestParameters.matchKey ? this._requestParameters.matchKey : undefined;
     }
     public set matchKey(value: string) {
-        if(this._requestParameters && this._requestParameters.matchKey) this._requestParameters.matchKey = value;
+        if(this._requestParameters) this._requestParameters.matchKey = value;
     }
     public get principle() {
         return this._requestParameters && this._requestParameters.principle ? this._requestParameters.principle : undefined;
     }
     public set principle(value: string) {
-        if(this._requestParameters && this._requestParameters.principle) this._requestParameters.principle = value;
+        if(this._requestParameters) this._requestParameters.principle = value;
     }
     public get bound() {
         return this._requestParameters && this._requestParameters.bound ? this._requestParameters.bound : undefined;
     }
     public set bound(value: string) {
-        if(this._requestParameters && this._requestParameters.bound) this._requestParameters.bound = value;
+        if(this._requestParameters) this._requestParameters.bound = value;
     }
     public get sampleSize() {
         return this._requestParameters && this._requestParameters.sampleSize ? this._requestParameters.sampleSize : undefined;
     }
     public set sampleSize(value: number) {
-        if(this._requestParameters && this._requestParameters.sampleSize) this._requestParameters.sampleSize = value;
+        if(this._requestParameters) this._requestParameters.sampleSize = value;
     }
     public get pageSize() {
         return this._requestParameters && this._requestParameters.pageSize ? this._requestParameters.pageSize : this.prefs.dataMart.samplePageSize;
     }
+    
     public set pageSize(value: number) {
         let _oVal = (this._requestParameters && this._requestParameters.pageSize) ? this._requestParameters.pageSize : this.prefs.dataMart.samplePageSize;
         this.prefs.dataMart.samplePageSize   = value;
         if(_oVal !== value) {
+            // wipe out all other pages
+            if(this._isRelationsResponse && this._relationPages && this._relationPages.clear) {
+                this._relationPages.clear();
+            } else if(this._entityPages && this._entityPages.clear) {
+                this._entityPages.clear();
+            }
             // get new sampleset
             this._requestParameters.pageSize = value;
             this.updateDataWithParameters();
@@ -124,6 +115,57 @@ export class SzStatSampleSet {
             console.warn(`pageSize already set to current value: ${_oVal} | ${value}`);
         }
     }
+
+    public set pageIndex(value: number) {
+        // first check if we're already on that page
+        if(value !== this._currentPage) {
+            if(this._isRelationsResponse && this._relationPages.has(value)) {
+                // grab previous value
+                this._currentPage = value;
+            } else if(this._entityPages.has(value)) {
+                // grab previous value
+                this._currentPage   = value;
+            }
+            
+            // if one of the previous if statements set the current page
+            // publish existing data
+            if(this._currentPage === value) {                
+                let dataset     = this.currentPageResults;
+                let pageData    = this.currentPage;
+                this.bound      = pageData.pageMinimumValue as string;
+                console.warn(`already have page #${value}`, pageData);
+                this._onDataUpdated.next(dataset);
+                this._onPagingUpdated.next(this._getCurrentPageParameters());
+            } else {
+                // try to find the previous "bound" value
+                let _pageToFindIndex = value > 0 ? (value - 1) : 0;
+                let _newBoundValue   = undefined;
+                if(this._isRelationsResponse && this._relationPages.has(_pageToFindIndex)) {
+                    // grab the "pageMaximumValue" value off of target page -1
+                    _newBoundValue =  this._relationPages.get(_pageToFindIndex).pageMaximumValue;
+                } else if(this._entityPages.has(value)) {
+                    _newBoundValue =  this._entityPages.get(_pageToFindIndex).pageMaximumValue;
+                }
+                // we found value, create new request
+                if(_newBoundValue) {
+                    console.warn(`fetching with new bound value(${_newBoundValue}|${this.bound}) results for page #${value}`);
+
+                    this._currentPage   = value;
+                    this.bound          = _newBoundValue;
+                    this.getSampleDataFromParameters();
+                } else {
+                    console.warn(`could not get new bound value(${_newBoundValue}) from preceeding page #${_pageToFindIndex} | value = ${value}`, this._relationPages, this._entityPages);
+                }
+            }
+        } else {
+            console.warn(`already on that page ${value} | ${this._currentPage}`);
+        }
+    }
+
+    public get pageIndex(): number {
+        return this._currentPage;
+    }
+
     public get totalCount() {
         if(this._isRelationsResponse) {
             let _relPageParams    = this.pagingParametersForRelations;
@@ -197,6 +239,7 @@ export class SzStatSampleSet {
 
     private _onDataUpdated: BehaviorSubject<SzEntityData[] | SzRelation[]> = new BehaviorSubject<SzEntityData[]>(undefined);
     private _onPagingUpdated: BehaviorSubject<SzStatSampleSetPageChangeEvent> = new BehaviorSubject<SzStatSampleSetPageChangeEvent>(undefined)
+    private _loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(undefined);
 
     // we only want these publicly if they're not undefined
     public onDataUpdated = this._onDataUpdated.asObservable().pipe(
@@ -208,6 +251,11 @@ export class SzStatSampleSet {
         takeUntil(this.unsubscribe$),
         filter(r => r !== undefined)
     )
+    /** when api requests are being made */
+    public loading = this._loading.asObservable().pipe(
+        takeUntil(this.unsubscribe$),
+        filter(r => r !== undefined)
+    );
 
     private _getCurrentPageParameters(): SzStatSampleSetPageChangeEvent {
         let _retVal: SzStatSampleSetPageChangeEvent;
@@ -272,7 +320,7 @@ export class SzStatSampleSet {
 
     public init() {
         if(this.hasEnoughParametersForRequest) {
-            console.log(`\tinit(): `, this._dataSource1, this._dataSource2);
+            //console.log(`\tinit(): `, this._dataSource1, this._dataSource2);
             this.getSampleDataFromParameters();
         }
     }
@@ -284,6 +332,8 @@ export class SzStatSampleSet {
     private getSampleDataFromParameters() {
         console.time('SzStatSampleSet.getSampleDataFromParameters()');
 
+        this._loading.next(true);
+
         this._getNewSampleSet(this.statType, this.dataSource1, this.dataSource2, this.matchKey, this.principle, this.bound, this.sampleSize, this.pageSize).pipe(
             takeUntil(this.unsubscribe$),
             filter((data: SzEntitiesPage | SzRelationsPage) => {
@@ -292,7 +342,7 @@ export class SzStatSampleSet {
         ).subscribe((data: SzEntitiesPage | SzRelationsPage) => {
             let isEntityResponse        = (data as SzEntitiesPage).entities ? true : false; 
             this._isRelationsResponse   = !isEntityResponse;
-            console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': got sampleset page: ', data);
+            //console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': got sampleset page: ', data);
 
             if(isEntityResponse) {
                 let _dataPage               = (data as SzEntitiesPage);
@@ -306,7 +356,7 @@ export class SzStatSampleSet {
                 });
 
                 const _extendEntityData = (edata: SzEntityData[] | undefined) => {
-                    console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': got entities: ', edata);
+                    //console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': got entities: ', edata);
                     // expanded data
                     if(edata && edata.forEach) {
                         edata.forEach((ent: SzEntityData) => {
@@ -315,8 +365,10 @@ export class SzStatSampleSet {
                         })
                     }
                     let dataset = this.currentPageResults;
-                    console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': extended data: ', dataset);
+                    //console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': extended data: ', dataset);
                     console.timeEnd('SzStatSampleSet.getSampleDataFromParameters()');
+
+                    this._loading.next(false);
                     this._onDataUpdated.next(dataset);
                     this._onPagingUpdated.next(this._getCurrentPageParameters());
                 }
@@ -332,6 +384,7 @@ export class SzStatSampleSet {
                             take(1)
                         ).subscribe({next: _extendEntityData,
                             error: (err) => {
+                                this._loading.next(false);
                                 console.error(err);
                             }
                         });
@@ -339,6 +392,7 @@ export class SzStatSampleSet {
                 } else {
                     // there are no results and no entities to request
                     // just emit empty result
+                    this._loading.next(false);
                     this._onDataUpdated.next(this.currentPageResults);
                     console.timeEnd('SzStatSampleSet.getSampleDataFromParameters()');
                     return;
@@ -348,10 +402,11 @@ export class SzStatSampleSet {
                     // there are no entities
                     // just emit empty result
                     this._onDataUpdated.next(this.currentPageResults);
+                    this._loading.next(false);
                     console.timeEnd('SzStatSampleSet.getSampleDataFromParameters()');
                     return;
                 }
-                console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': get entity data: ', entitiesToRequest);
+                //console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': get entity data: ', entitiesToRequest);
             } else {
                 // expand "relations" nodes with more complete data
                 let _dataPage              = (data as SzRelationsPage);
@@ -366,7 +421,7 @@ export class SzStatSampleSet {
                 });
 
                 const _extendRelatedData = (edata: SzEntityData[] | undefined) => {
-                    console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': got entities: ', edata);
+                    //console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': got entities: ', edata);
                     // set entity data
                     if(edata && edata.forEach) {
                         edata.forEach((ent: SzEntityData) => {
@@ -407,11 +462,12 @@ export class SzStatSampleSet {
                     //console.log(`\t\tExtended Data: `, this._currentPageRelations);
                     this._relationPages.set(this._currentPage, _dataPage);
                     let dataset = this.currentPageResults;
-                    console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': extended data: ', dataset);
+                    //console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': extended data: ', dataset);
                     console.timeEnd('SzStatSampleSet.getSampleDataFromParameters()');
+                    this._loading.next(false);
                     this._onDataUpdated.next(dataset);
                     let _currentPageParams = this._getCurrentPageParameters();
-                    console.warn(`SzStatSampleSet.getSampleDataFromParameters().pageParams(${this._currentPage}): `, _currentPageParams, this._relationPages.get(this._currentPage));
+                    //console.warn(`SzStatSampleSet.getSampleDataFromParameters().pageParams(${this._currentPage}): `, _currentPageParams, this._relationPages.get(this._currentPage));
                     this._onPagingUpdated.next(_currentPageParams);
                 }
 
@@ -420,13 +476,14 @@ export class SzStatSampleSet {
                         // this is probably a parameter change and we don't need to fetch any new data
                         _extendRelatedData(undefined);
                     } else {
-                        console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': get entity data: ', entitiesToRequest);
+                        //console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': get entity data: ', entitiesToRequest);
                         this.getEntitiesByIds(entitiesToRequest, false, SzDetailLevel.VERBOSE).pipe(
                             takeUntil(this.unsubscribe$),
                             take(1)
                         ).subscribe({
                             next: _extendRelatedData,
                             error: (err) => {
+                                this._loading.next(false);
                                 console.error(err);
                             }
                         });
@@ -434,6 +491,7 @@ export class SzStatSampleSet {
                 } else {
                     // there are no results and no entities to request
                     // just emit empty result
+                    this._loading.next(false);
                     this._onDataUpdated.next(this.currentPageResults);
                     console.timeEnd('SzStatSampleSet.getSampleDataFromParameters()');
                     return;
@@ -472,6 +530,7 @@ export class SzStatSampleSet {
      * unsubscribe on destroy
      */
     destroy() {
+        this._loading.next(false);
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
@@ -644,6 +703,12 @@ export class SzDataMartService {
         }
     }
 
+    public set sampleSetPage(value: number) {
+        if(this._sampleSet) {
+            this._sampleSet.pageIndex = value;
+        }
+    }
+
     public get dataSource1() {
         return this.prefs.dataMart.dataSource1;
     }
@@ -670,15 +735,18 @@ export class SzDataMartService {
     public onSampleMatchLevelChange: BehaviorSubject<number | undefined> = new BehaviorSubject<number>(undefined);
     public onSampleTypeChange: BehaviorSubject<SzCrossSourceSummaryCategoryType | undefined> = new BehaviorSubject<SzCrossSourceSummaryCategoryType>(undefined);
     public onSampleDataSourceChange: BehaviorSubject<sampleDataSourceChangeEvent | undefined> = new BehaviorSubject<sampleDataSourceChangeEvent | undefined>(undefined);
+
     /** when a new sample set is being requested */
-    private _onSampleRequest: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    private _onSampleRequest$: Subscription;
+    private _onSampleRequest: BehaviorSubject<boolean> = new BehaviorSubject(undefined);
     public  onSampleRequest = this._onSampleRequest.asObservable().pipe(
-        filter((res)=>{ return res === true; }),
+        filter((res) => { return res !== undefined; }),
         tap((res) => {
             console.log(`DataMartService._onSampleRequest`, res);
         })
     );
     /** when a new sample set has completed */
+    private _onSampleResultChange$: Subscription;
     public _onSampleResultChange: BehaviorSubject<SzEntityData[] | SzRelation[] | undefined> = new BehaviorSubject<SzEntityData[] | undefined>(undefined);
     public onSampleResultChange = this._onSampleResultChange.asObservable().pipe(
         filter(r => r !== undefined),
@@ -687,6 +755,7 @@ export class SzDataMartService {
         })
     );
     /** when a page from the sample set has been updated or parameters have changed */
+    private _onSamplePageUpdated$: Subscription;
     public _onSamplePageChange: BehaviorSubject<SzStatSampleSetPageChangeEvent | undefined> = new BehaviorSubject<SzStatSampleSetPageChangeEvent | undefined>(undefined);
     public onSamplePageChange = this._onSamplePageChange.asObservable().pipe(
         filter(r => r !== undefined),
@@ -694,8 +763,6 @@ export class SzDataMartService {
             //console.log(`the fuck? onSampleResultChange: `, r)
         })
     );
-    private _onSampleResultChange$: Subscription;
-    private _onSamplePageUpdated$: Subscription;
 
     public onDataSource1Change: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
     public onDataSource2Change: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
@@ -880,6 +947,11 @@ export class SzDataMartService {
 
     public createNewSampleSetFromParameters(statType: SzCrossSourceSummaryCategoryType, dataSource1?: string | undefined, dataSource2?: string | undefined, matchKey?: string, principle?: string, bound?: number, sampleSize?: number, pageSize?: number) {
         // clear any previous subscription
+        if(this._onSampleRequest$) {
+            this._onSampleRequest$.unsubscribe();
+            this._onSampleRequest$ = undefined;
+            this._onSampleRequest.next(false);
+        }
         if(this._onSamplePageUpdated$) {
             this._onSamplePageUpdated$.unsubscribe();
             this._onSamplePageUpdated$ = undefined;
@@ -901,18 +973,27 @@ export class SzDataMartService {
         }, this.prefs, this.statsService, this.entityDataService);
         
         this._onSampleResultChange$ = this._sampleSet.onDataUpdated.pipe(
-            tap((res) =>{
+            tap((res) => {
                 // bubble up sample set evt to service scope
                 if(res && res.length === 0) {
                     console.error('NOOOOO ${res}', res);
                 }
+                this._onSampleRequest.next(false);
                 this._onSampleResultChange.next(res);
             })
         ).subscribe();
         this._onSamplePageUpdated$   = this._sampleSet.onPagingUpdated.pipe(
-            tap((res) =>{
+            tap((res) => {
                 // bubble up sample set evt to service scope
                 this._onSamplePageChange.next(res);
+            })
+        ).subscribe();
+
+        this._onSampleRequest$   = this._sampleSet.loading.pipe(
+            tap((res) =>{
+                // bubble up sample set evt to service scope
+                console.log(`SzDataMartService.onSampleRequest: ${res}`);
+                this._onSampleRequest.next(res);
             })
         ).subscribe();
 
