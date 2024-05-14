@@ -145,6 +145,18 @@ sz-cross-source-results {
     }
 }
 
+.sz-dt-menu-page-size {
+    min-width: 130px;
+    padding: 0 !important;
+    mat-option {
+        min-height: 28px;
+        .mdc-list-item__primary-text {
+            font-size: 11px;
+            white-space: nowrap;
+        }
+    }
+}
+
 /*  when content is through innerHTML the View Encapsulation 
     considers the tags to be outside of the component
  */

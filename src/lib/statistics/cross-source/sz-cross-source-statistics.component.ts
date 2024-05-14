@@ -171,7 +171,7 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     this.dataMartService.onSampleResultChange.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe((data) => {
-      console.log(`new sample set data ready... `);
+      console.log(`new sample set data ready... `, data);
       this._showTable = true;
     });
   }
@@ -206,6 +206,8 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   }
   /** when user clicks a source stat, change it in the service */
   onSourceStatClicked(evt: SzCrossSourceSummarySelectionClickEvent) {
+    this._loading.next(true);
+    
     console.log(`SzCrossSourceStatistics.onSourceStatClicked: `, evt);
     if(!evt.dataSource1 && evt.dataSource2) {
       // flip-flop if only one ds is defined

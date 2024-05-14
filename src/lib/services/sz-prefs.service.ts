@@ -110,6 +110,7 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   private _dataSource2: string = undefined;
   private _sampleDataSource1: string = undefined;
   private _sampleDataSource2: string = undefined;
+  private _samplePageSize: number = 100;
   private _sampleSize: number = 100;
   private _sampleStatType: SzCrossSourceSummaryCategoryType;
   private _sampleMatchLevel: number;
@@ -124,6 +125,7 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
     'sampleDataSource1',
     'sampleDataSource2',
     'sampleMatchLevel',
+    'samplePageSize',
     'sampleSize',
     'sampleStatType',
     'showAllColumns',
@@ -178,6 +180,16 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   public set sampleMatchLevel(value: number) {
     this._sampleMatchLevel = value;
     if(!this.bulkSet) this.prefChanged.next({name: 'sampleMatchLevel', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** sample page size parameter to use in stats queries */
+  public get samplePageSize(): number {
+    return this._samplePageSize;
+  }
+  /** sample page size parameter to use in stats queries */
+  public set samplePageSize(value: number) {
+    this._samplePageSize = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'samplePageSize', value: value});
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** samplesize parameter to use in stats queries */

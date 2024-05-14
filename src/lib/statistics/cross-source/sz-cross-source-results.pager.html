@@ -4,6 +4,7 @@
         Showing {{firstRecord|number:'1.0'}} - {{lastRecord|number:'1.0'}} of {{availableCount|number:'1.0'}}
     </div>
     <mat-select #pageSizeField class="edit-page-size"
+        panelClass="sz-dt-menu-page-size"
         (blur)="handlePageSizeEditBlur($event)"
         (selectionChange)="handlePageSizeEditChange($event)"
         (keyup)="handlePageSizeEditKeyUp($event)">

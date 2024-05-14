@@ -26,31 +26,10 @@ import {
 
 import { take, tap, map, catchError, takeUntil, filter } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { SzCountStatsForDataSourcesResponse, SzDataTableEntitiesPagingParameters, SzDataTableRelation, SzDataTableRelationsPagingParameters, SzStatCountsForDataSources } from '../models/stats';
+import { SzCountStatsForDataSourcesResponse, SzDataTableEntitiesPagingParameters, SzDataTableRelation, SzDataTableRelationsPagingParameters, SzStatCountsForDataSources, SzStatSampleSetPageChangeEvent, SzStatSampleSetParameters, sampleDataSourceChangeEvent } from '../models/stats';
 import { SzPrefsService } from '../services/sz-prefs.service';
 import { SzDataSourcesService } from './sz-datasources.service';
 import { SzCrossSourceSummaryCategoryType } from '../models/stats';
-
-export interface sampleDataSourceChangeEvent {
-    dataSource1?: string,
-    dataSource2?: string
-}
-
-export interface SzStatSampleSetParameters {
-    dataSource1?: string;
-    dataSource2?: string;
-    bound?: string;
-    boundType?: SzBoundType;
-    pageSize?: number;
-    statType: SzCrossSourceSummaryCategoryType;
-    page?: number;
-    matchKey?: string;
-    principle?: string;
-    sampleSize?: number
-}
-export interface SzStatSampleSetPageChangeEvent extends SzStatSampleSetParameters {
-    totalCount?: number;
-}
 
 export class SzStatSampleSet {
     /** subscription to notify subscribers to unbind */
@@ -132,10 +111,18 @@ export class SzStatSampleSet {
         if(this._requestParameters && this._requestParameters.sampleSize) this._requestParameters.sampleSize = value;
     }
     public get pageSize() {
-        return this._requestParameters && this._requestParameters.pageSize ? this._requestParameters.pageSize : undefined;
+        return this._requestParameters && this._requestParameters.pageSize ? this._requestParameters.pageSize : this.prefs.dataMart.samplePageSize;
     }
     public set pageSize(value: number) {
-        if(this._requestParameters && this._requestParameters.pageSize) this._requestParameters.pageSize = value;
+        let _oVal = (this._requestParameters && this._requestParameters.pageSize) ? this._requestParameters.pageSize : this.prefs.dataMart.samplePageSize;
+        this.prefs.dataMart.samplePageSize   = value;
+        if(_oVal !== value) {
+            // get new sampleset
+            this._requestParameters.pageSize = value;
+            this.updateDataWithParameters();
+        } else {
+            console.warn(`pageSize already set to current value: ${_oVal} | ${value}`);
+        }
     }
     public get totalCount() {
         if(this._isRelationsResponse) {
@@ -227,8 +214,10 @@ export class SzStatSampleSet {
         if(this._isRelationsResponse) {
             // pass relations page minus entities
             let _cPageParams        = this.pagingParametersForRelations;
-            let _overwriteObj:any   = {statType: this.statType, totalCount: this.totalCount};
+            let _cPageResults       = this.currentPageResults;
+            let _overwriteObj:any   = {statType: this.statType, totalCount: this.totalCount, pageItemCount: 0,  pageIndex: this._currentPage};
             if(this.bound) { _overwriteObj.bound = this.bound; }
+            if(_cPageResults && _cPageResults.length) { _overwriteObj.pageItemCount = _cPageResults.length; }
             //console.log(`\t_getCurrentPageParameters: pagingParametersForRelations: `, this.pagingParametersForRelations);
             _retVal = Object.assign(
                 _overwriteObj, 
@@ -236,13 +225,16 @@ export class SzStatSampleSet {
             );
         } else {
             // pass entity page minus entities
+            let _cPageParams        = this.pagingParametersForEntities;
+            let _cPageResults       = this.currentPageResults;
+            let _overwriteObj:any   = {statType: this.statType, totalCount: this.totalCount, pageItemCount: 0, pageIndex: this._currentPage};
+            if(this.bound) { _overwriteObj.bound = this.bound; }
+            if(_cPageResults && _cPageResults.length) { _overwriteObj.pageItemCount = _cPageResults.length; }
+
             _retVal = Object.assign(
-                {statType: this.statType}, 
+                _overwriteObj, 
                 this.pagingParametersForEntities, 
-                {
-                    bound: this.bound,
-                    totalCount: this.totalCount
-                }
+                _cPageParams
             );
         }
         console.info(`_getCurrentPageParameters()`, _retVal);
@@ -259,6 +251,7 @@ export class SzStatSampleSet {
 
     constructor( 
         private parameters: SzStatSampleSetParameters,
+        private prefs: SzPrefsService,
         private statsService: SzStatisticsService, private entityDataService: EntityDataService, deferInitialRequest?: boolean) {
 
         if(this.parameters) {
@@ -280,139 +273,173 @@ export class SzStatSampleSet {
     public init() {
         if(this.hasEnoughParametersForRequest) {
             console.log(`\tinit(): `, this._dataSource1, this._dataSource2);
-            console.time('SzStatSampleSet.init()');
-            this._getNewSampleSet(this.statType, this.dataSource1, this.dataSource2, this.matchKey, this.principle, this.bound, this.sampleSize, this.pageSize).pipe(
-                takeUntil(this.unsubscribe$),
-                filter((data: SzEntitiesPage | SzRelationsPage) => {
-                    return this._dataSource1 !== undefined || this._dataSource2 !== undefined ? true : false;
-                })
-            ).subscribe((data: SzEntitiesPage | SzRelationsPage) => {
-                let isEntityResponse        = (data as SzEntitiesPage).entities ? true : false; 
-                this._isRelationsResponse   = !isEntityResponse;
-                console.timeLog('SzStatSampleSet.init()', ': got sampleset page: ', data);
-
-                if(isEntityResponse) {
-                    let _dataPage               = (data as SzEntitiesPage);
-                    this._entityPages.set(this._currentPage, _dataPage);
-                    let _currentPageEntities   = _dataPage.entities;
-                    // get exploded entity data
-                    let entitiesToRequest = _currentPageEntities.filter((ent: SzEntity) => {
-                        return !this._entities.has(ent.entityId);
-                    }).map((ent: SzEntity) => {
-                        return ent.entityId;
-                    });
-
-                    if((entitiesToRequest && entitiesToRequest.length === 0) || !entitiesToRequest) {
-                        // there are no entities
-                        // just emit empty result
-                        this._onDataUpdated.next(this.currentPageResults);
-                        console.timeEnd('SzStatSampleSet.init()');
-                        return;
-                    }
-                    console.timeLog('SzStatSampleSet.init()', ': get entity data: ', entitiesToRequest);
-
-                    this.getEntitiesByIds(entitiesToRequest, false, SzDetailLevel.VERBOSE).pipe(
-                        takeUntil(this.unsubscribe$),
-                        take(1)
-                    ).subscribe({next: (edata: SzEntityData[]) => {
-                            console.timeLog('SzStatSampleSet.init()', ': got entities: ', edata);
-                            // expanded data
-                            if(edata && edata.forEach) {
-                                edata.forEach((ent: SzEntityData) => {
-                                    // add to internal array
-                                    this._entities.set(ent.resolvedEntity.entityId, ent);
-                                })
-                            }
-                            let dataset = this.currentPageResults;
-                            console.timeLog('SzStatSampleSet.init()', ': extended data: ', dataset);
-                            console.timeEnd('SzStatSampleSet.init()');
-                            this._onDataUpdated.next(dataset);
-                            this._onPagingUpdated.next(this._getCurrentPageParameters());
-                        },
-                        error: (err) => {
-                            console.error(err);
-                        }
-                    });
-                } else {
-                    // expand "relations" nodes with more complete data
-                    let _dataPage              = (data as SzRelationsPage);
-                    let _currentPageRelations  = _dataPage.relations;
-                    // get entity ids
-                    let entitiesToRequest  = [];
-                    _currentPageRelations.forEach((rel: SzRelation) => {
-                        let _entId  = rel && rel.entity && rel.entity.entityId ? rel.entity.entityId : undefined;
-                        let _relId  = rel && rel.relatedEntity && rel.relatedEntity.entityId ? rel.relatedEntity.entityId : undefined;
-                        if(_entId && !this._entities.has(_entId) && entitiesToRequest.indexOf(_entId) < 0) { entitiesToRequest.push(_entId); }
-                        if(_relId && !this._entities.has(_relId) && entitiesToRequest.indexOf(_relId) < 0) { entitiesToRequest.push(_relId); }
-                    });
-                    if((entitiesToRequest && entitiesToRequest.length === 0) || !entitiesToRequest) {
-                        // there are no entities
-                        // just emit empty result
-                        this._onDataUpdated.next(this.currentPageResults);
-                        console.timeEnd('SzStatSampleSet.init()');
-                        return;
-                    }
-                    console.timeLog('SzStatSampleSet.init()', ': get entity data: ', entitiesToRequest);
-                    this.getEntitiesByIds(entitiesToRequest, false, SzDetailLevel.VERBOSE).pipe(
-                        takeUntil(this.unsubscribe$),
-                        take(1)
-                    ).subscribe({
-                        next: (edata: SzEntityData[]) => {
-                            console.timeLog('SzStatSampleSet.init()', ': got entities: ', edata);
-                            // set entity data
-                            if(edata && edata.forEach) {
-                                edata.forEach((ent: SzEntityData) => {
-                                    // add to internal array
-                                    this._entities.set(ent.resolvedEntity.entityId, ent);
-                                })
-                            }
-                            // now extend records with real data
-                            _currentPageRelations.forEach((rel: SzRelation) => {
-                                if(this._entities.has(rel.entity.entityId)) {
-                                    let _fullEnt        = this._entities.get(rel.entity.entityId).resolvedEntity;
-                                    // extend records first
-                                    let _fullEntRecsMap = new Map();
-                                    _fullEnt.records.map((rec) => {
-                                        _fullEntRecsMap.set(rec.dataSource+'|'+rec.recordId, rec);
-                                    })
-                                    
-                                    rel.entity.records  = rel.entity.records.map((eRec) => {
-                                        return _fullEntRecsMap.get(eRec.dataSource+'|'+eRec.recordId);
-                                    });
-                                    // now extend ent with props from full ent (minus) the records
-                                    rel.entity = Object.assign(Object.assign({}, _fullEnt), rel.entity);
-                                }
-                                if(this._entities.has(rel.relatedEntity.entityId)) {
-                                    let _fullEnt        = this._entities.get(rel.relatedEntity.entityId).resolvedEntity;
-                                    let _fullEntRecsMap = new Map();
-                                    _fullEnt.records.map((rec) => {
-                                        _fullEntRecsMap.set(rec.dataSource+'|'+rec.recordId, rec);
-                                    })
-                                    rel.relatedEntity.records  = rel.relatedEntity.records.map((eRec) => {
-                                        return _fullEntRecsMap.get(eRec.dataSource+'|'+eRec.recordId);
-                                    });
-                                    // now extend ent with props from full ent (minus) the records
-                                    rel.relatedEntity = Object.assign(Object.assign({}, _fullEnt), rel.relatedEntity);
-                                }
-                                
-                            })
-                            //console.log(`\t\tExtended Data: `, this._currentPageRelations);
-                            this._relationPages.set(this._currentPage, _dataPage);
-                            let dataset = this.currentPageResults;
-                            console.timeLog('SzStatSampleSet.init()', ': extended data: ', dataset);
-                            console.timeEnd('SzStatSampleSet.init()');
-                            this._onDataUpdated.next(dataset);
-                            let _currentPageParams = this._getCurrentPageParameters();
-                            console.warn(`SzStatSampleSet.init().pageParams(${this._currentPage}): `, _currentPageParams, this._relationPages.get(this._currentPage));
-                            this._onPagingUpdated.next(_currentPageParams);
-                        },
-                        error: (err) => {
-                            console.error(err);
-                        }
-                    });
-                }
-            });
+            this.getSampleDataFromParameters();
         }
+    }
+
+    private updateDataWithParameters() {
+        this.getSampleDataFromParameters();
+    }
+
+    private getSampleDataFromParameters() {
+        console.time('SzStatSampleSet.getSampleDataFromParameters()');
+
+        this._getNewSampleSet(this.statType, this.dataSource1, this.dataSource2, this.matchKey, this.principle, this.bound, this.sampleSize, this.pageSize).pipe(
+            takeUntil(this.unsubscribe$),
+            filter((data: SzEntitiesPage | SzRelationsPage) => {
+                return this._dataSource1 !== undefined || this._dataSource2 !== undefined ? true : false;
+            })
+        ).subscribe((data: SzEntitiesPage | SzRelationsPage) => {
+            let isEntityResponse        = (data as SzEntitiesPage).entities ? true : false; 
+            this._isRelationsResponse   = !isEntityResponse;
+            console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': got sampleset page: ', data);
+
+            if(isEntityResponse) {
+                let _dataPage               = (data as SzEntitiesPage);
+                this._entityPages.set(this._currentPage, _dataPage);
+                let _currentPageEntities   = _dataPage.entities;
+                // get exploded entity data
+                let entitiesToRequest = _currentPageEntities.filter((ent: SzEntity) => {
+                    return !this._entities.has(ent.entityId);
+                }).map((ent: SzEntity) => {
+                    return ent.entityId;
+                });
+
+                const _extendEntityData = (edata: SzEntityData[] | undefined) => {
+                    console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': got entities: ', edata);
+                    // expanded data
+                    if(edata && edata.forEach) {
+                        edata.forEach((ent: SzEntityData) => {
+                            // add to internal array
+                            this._entities.set(ent.resolvedEntity.entityId, ent);
+                        })
+                    }
+                    let dataset = this.currentPageResults;
+                    console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': extended data: ', dataset);
+                    console.timeEnd('SzStatSampleSet.getSampleDataFromParameters()');
+                    this._onDataUpdated.next(dataset);
+                    this._onPagingUpdated.next(this._getCurrentPageParameters());
+                }
+
+                if(_currentPageEntities && _currentPageEntities.length > 0) {
+                    if((entitiesToRequest && entitiesToRequest.length === 0) || !entitiesToRequest) {
+                        // this is probably a parameter change and we don't need to fetch any new data
+                        _extendEntityData(undefined);
+                    } else {
+                        // fetch data
+                        this.getEntitiesByIds(entitiesToRequest, false, SzDetailLevel.VERBOSE).pipe(
+                            takeUntil(this.unsubscribe$),
+                            take(1)
+                        ).subscribe({next: _extendEntityData,
+                            error: (err) => {
+                                console.error(err);
+                            }
+                        });
+                    }
+                } else {
+                    // there are no results and no entities to request
+                    // just emit empty result
+                    this._onDataUpdated.next(this.currentPageResults);
+                    console.timeEnd('SzStatSampleSet.getSampleDataFromParameters()');
+                    return;
+                }
+
+                if((entitiesToRequest && entitiesToRequest.length === 0) || !entitiesToRequest) {
+                    // there are no entities
+                    // just emit empty result
+                    this._onDataUpdated.next(this.currentPageResults);
+                    console.timeEnd('SzStatSampleSet.getSampleDataFromParameters()');
+                    return;
+                }
+                console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': get entity data: ', entitiesToRequest);
+            } else {
+                // expand "relations" nodes with more complete data
+                let _dataPage              = (data as SzRelationsPage);
+                let _currentPageRelations  = _dataPage.relations;
+                // get entity ids
+                let entitiesToRequest  = [];
+                _currentPageRelations.forEach((rel: SzRelation) => {
+                    let _entId  = rel && rel.entity && rel.entity.entityId ? rel.entity.entityId : undefined;
+                    let _relId  = rel && rel.relatedEntity && rel.relatedEntity.entityId ? rel.relatedEntity.entityId : undefined;
+                    if(_entId && !this._entities.has(_entId) && entitiesToRequest.indexOf(_entId) < 0) { entitiesToRequest.push(_entId); }
+                    if(_relId && !this._entities.has(_relId) && entitiesToRequest.indexOf(_relId) < 0) { entitiesToRequest.push(_relId); }
+                });
+
+                const _extendRelatedData = (edata: SzEntityData[] | undefined) => {
+                    console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': got entities: ', edata);
+                    // set entity data
+                    if(edata && edata.forEach) {
+                        edata.forEach((ent: SzEntityData) => {
+                            // add to internal array
+                            this._entities.set(ent.resolvedEntity.entityId, ent);
+                        })
+                    }
+                    // now extend records with real data
+                    _currentPageRelations.forEach((rel: SzRelation) => {
+                        if(this._entities.has(rel.entity.entityId)) {
+                            let _fullEnt        = this._entities.get(rel.entity.entityId).resolvedEntity;
+                            // extend records first
+                            let _fullEntRecsMap = new Map();
+                            _fullEnt.records.map((rec) => {
+                                _fullEntRecsMap.set(rec.dataSource+'|'+rec.recordId, rec);
+                            })
+                            
+                            rel.entity.records  = rel.entity.records.map((eRec) => {
+                                return _fullEntRecsMap.get(eRec.dataSource+'|'+eRec.recordId);
+                            });
+                            // now extend ent with props from full ent (minus) the records
+                            rel.entity = Object.assign(Object.assign({}, _fullEnt), rel.entity);
+                        }
+                        if(this._entities.has(rel.relatedEntity.entityId)) {
+                            let _fullEnt        = this._entities.get(rel.relatedEntity.entityId).resolvedEntity;
+                            let _fullEntRecsMap = new Map();
+                            _fullEnt.records.map((rec) => {
+                                _fullEntRecsMap.set(rec.dataSource+'|'+rec.recordId, rec);
+                            })
+                            rel.relatedEntity.records  = rel.relatedEntity.records.map((eRec) => {
+                                return _fullEntRecsMap.get(eRec.dataSource+'|'+eRec.recordId);
+                            });
+                            // now extend ent with props from full ent (minus) the records
+                            rel.relatedEntity = Object.assign(Object.assign({}, _fullEnt), rel.relatedEntity);
+                        }
+                        
+                    })
+                    //console.log(`\t\tExtended Data: `, this._currentPageRelations);
+                    this._relationPages.set(this._currentPage, _dataPage);
+                    let dataset = this.currentPageResults;
+                    console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': extended data: ', dataset);
+                    console.timeEnd('SzStatSampleSet.getSampleDataFromParameters()');
+                    this._onDataUpdated.next(dataset);
+                    let _currentPageParams = this._getCurrentPageParameters();
+                    console.warn(`SzStatSampleSet.getSampleDataFromParameters().pageParams(${this._currentPage}): `, _currentPageParams, this._relationPages.get(this._currentPage));
+                    this._onPagingUpdated.next(_currentPageParams);
+                }
+
+                if(_currentPageRelations && _currentPageRelations.length > 0) {
+                    if((entitiesToRequest && entitiesToRequest.length === 0) || !entitiesToRequest) {
+                        // this is probably a parameter change and we don't need to fetch any new data
+                        _extendRelatedData(undefined);
+                    } else {
+                        console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': get entity data: ', entitiesToRequest);
+                        this.getEntitiesByIds(entitiesToRequest, false, SzDetailLevel.VERBOSE).pipe(
+                            takeUntil(this.unsubscribe$),
+                            take(1)
+                        ).subscribe({
+                            next: _extendRelatedData,
+                            error: (err) => {
+                                console.error(err);
+                            }
+                        });
+                    }
+                } else {
+                    // there are no results and no entities to request
+                    // just emit empty result
+                    this._onDataUpdated.next(this.currentPageResults);
+                    console.timeEnd('SzStatSampleSet.getSampleDataFromParameters()');
+                    return;
+                }
+            }
+        });
     }
 
     /** get the SzEntityData[] responses for multiple entities 
@@ -607,6 +634,14 @@ export class SzDataMartService {
         this.prefs.dataMart.sampleDataSource2 = value;
         let _evt = this.prefs.dataMart.sampleDataSource1 ? {dataSource1: this.prefs.dataMart.sampleDataSource1, dataSource2: value} : {dataSource2: value};
         if(_oType !== value) this.onSampleDataSourceChange.next(_evt); // only emit on change
+    }
+    public set samplePageSize(value: number) {
+        let _oType = this.prefs.dataMart.samplePageSize;
+        //this.prefs.dataMart.samplePageSize = value;
+        if(_oType !== value && this._sampleSet) {
+            // check to see if we need to make a new sample request
+            this._sampleSet.pageSize = value;
+        }
     }
 
     public get dataSource1() {
@@ -863,7 +898,7 @@ export class SzDataMartService {
             statType: statType,
             dataSource1: dataSource1,
             dataSource2: dataSource2
-        }, this.statsService, this.entityDataService);
+        }, this.prefs, this.statsService, this.entityDataService);
         
         this._onSampleResultChange$ = this._sampleSet.onDataUpdated.pipe(
             tap((res) =>{

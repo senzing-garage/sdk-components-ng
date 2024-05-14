@@ -202,3 +202,33 @@ export interface SzDataTableEntitiesPagingParameters {
      */
     afterPageCount: number;
 }
+
+
+export interface sampleDataSourceChangeEvent {
+    dataSource1?: string,
+    dataSource2?: string
+}
+
+export interface SzStatSampleSetParameters {
+    dataSource1?: string;
+    dataSource2?: string;
+    bound?: string;
+    boundType?: SzBoundType;
+    pageSize?: number;
+    statType: SzCrossSourceSummaryCategoryType;
+    page?: number;
+    matchKey?: string;
+    principle?: string;
+    sampleSize?: number
+}
+export interface SzStatSampleSetPageChangeEvent extends SzStatSampleSetParameters {
+    totalCount?: number;
+    pageIndex: number;
+    pageItemCount: number;
+    afterPageCount?: number;
+    beforePageCount?: number;
+    maximumValue?: string | number;
+    minimumValue?: string | number;
+    pageMaximumValue?: string | number;
+    pageMinimumValue?: string | number;
+}

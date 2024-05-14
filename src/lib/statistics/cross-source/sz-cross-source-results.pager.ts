@@ -5,7 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import { camelToKebabCase, underscoresToDashes, getMapKeyByValue } from '../../common/utils';
 import { SzCrossSourceSummary, SzDataSourcesResponseData, SzSummaryStats } from '@senzing/rest-api-client-ng';
 import { isValueTypeOfArray, parseBool, parseNumber, parseSzIdentifier, sortDataSourcesByIndex } from '../../common/utils';
-import { SzRecordCountDataSource } from '../../models/stats';
+import { SzRecordCountDataSource, SzStatSampleSetPageChangeEvent } from '../../models/stats';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzDataSourcesService } from '../../services/sz-datasources.service';
 import { SzCSSClassService } from '../../services/sz-css-class.service';
@@ -32,8 +32,18 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
     private _sampleCount : number | null = null;
     private _filteredCount : number | null = null;
     private _pageSize : number = 50;
+    
     private _firstRecord : number = 0;
     private _lastRecord : number = 0;
+
+    private _afterPageCount: number = 0;
+    private _beforePageCount: number = 0;
+    private _maximumValue: string | number;
+    private _minimumValue: string | number;
+    private _pageMaximumValue: string | number;
+    private _pageMinimumValue: string | number;
+    private _pageItemCount: number = 0;
+
     private _pageSizeOptions : number[] = [ 10, 25, 50, 75, 100 ];
     private _filters : {key: string, value: string, disabled?: boolean}[] = [];
     private _filterKeys : string[];
@@ -226,6 +236,7 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
     @Input("pageSize")
     public set pageSize(size: number) {
         if (this._pageSize === size) return;
+        /*
         this._pageSize = size;
     
         let pageNumber = Math.ceil(this._firstRecord / size);
@@ -249,7 +260,8 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
                                 to: this.lastRecord,
                                 page: this.page,
                                 pageSize: this.pageSize });
-    
+        */
+      this.dataMartService.samplePageSize = size;
     }
     
     public onSampleClicked(event: MouseEvent) {
@@ -344,6 +356,7 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
         //if (event.preventDefault) event.preventDefault();
         //if (event.stopPropagation) event.stopPropagation();
         if (!this.editingPageSize) return;
+
         this.pageSize = this.pageSizeField.value;
         this.editingPageSize = false;
     }
@@ -471,21 +484,43 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
         return this._sampleClickable;
     }
     
-    ngOnInit() {
-        this._sampleClickable = (this.sampleClicked.observers.length > 0);
-    }
+  ngOnInit() {
+    this._sampleClickable = (this.sampleClicked.observers.length > 0);
+
+    // listen for sampleset page changes
+    this.dataMartService.onSamplePageChange.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe(this.onDataMartSamplePageChange.bind(this))
+  }
+
+  private onDataMartSamplePageChange(event: SzStatSampleSetPageChangeEvent) {
+    console.info(`onDataMartSamplePageChange: `, event);
+    this._totalCount        = event.totalCount;
+    this._afterPageCount    = event.afterPageCount;
+    this._beforePageCount   = event.beforePageCount;
+    this._pageSize          = event.pageSize;
+    this._pageItemCount     = event.pageItemCount;
+    this._maximumValue      = event.maximumValue;
+    this._minimumValue      = event.minimumValue;
+    this._pageMaximumValue  = event.pageMaximumValue;
+    this._pageMinimumValue  = event.pageMinimumValue;
+
+    // calc the page item spread
+    this._firstRecord       = this._beforePageCount === 0 ? 1 : this._beforePageCount;
+    this._lastRecord        = this._beforePageCount === 0 ?  this._pageItemCount : this._firstRecord + this._pageItemCount;
+  }
     
-    constructor(
-        public prefs: SzPrefsService,
-        private cd: ChangeDetectorRef,
-        private cssService: SzCSSClassService,
-        private dataMartService: SzDataMartService
-    ) {}
-    /**
-    * unsubscribe when component is destroyed
-    */
-    ngOnDestroy() {
-        this.unsubscribe$.next();
-        this.unsubscribe$.complete();
-    }
+  constructor(
+    public prefs: SzPrefsService,
+    private cd: ChangeDetectorRef,
+    private cssService: SzCSSClassService,
+    private dataMartService: SzDataMartService
+  ) {}
+  /**
+  * unsubscribe when component is destroyed
+  */
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }
