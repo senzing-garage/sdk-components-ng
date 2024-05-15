@@ -77,6 +77,9 @@ export class SzVennDiagramsComponent implements OnInit, OnDestroy {
   public get color() : string {
     return this._color;
   }
+  // tslint:disable-next-line:no-input-rename
+  @Input("sz-disable-zero-click")
+  public disableZeroClick: boolean = false;
   /*
   @Input()
   public backgorundColorA: string;
@@ -116,7 +119,7 @@ export class SzVennDiagramsComponent implements OnInit, OnDestroy {
   private rightCircle: ElementRef;
 
   public handleLeftClick(event: MouseEvent) {
-    if(this.leftCount === 0) {
+    if(this.disableZeroClick && this.leftCount === 0) {
       if(event.stopPropagation) event.stopPropagation();
       return false;
     }
@@ -126,7 +129,7 @@ export class SzVennDiagramsComponent implements OnInit, OnDestroy {
   }
 
   public handleOverlapClick(event: MouseEvent) {
-    if(this.overlapCount === 0) {
+    if(this.disableZeroClick && this.overlapCount === 0) {
       if(event.stopPropagation) event.stopPropagation();
       return false;
     }
@@ -136,7 +139,7 @@ export class SzVennDiagramsComponent implements OnInit, OnDestroy {
   }
 
   public handleRightClick(event: MouseEvent) {
-    if(this.rightCount === 0) {
+    if(this.disableZeroClick && this.rightCount === 0) {
       if(event.stopPropagation) event.stopPropagation();
       return false;
     }

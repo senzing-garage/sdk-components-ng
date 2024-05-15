@@ -41,6 +41,7 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
 
   private _isLoading = false;
   private _showTableLoadingSpinner = true;
+  private _disableClickingOnZeroResults = true;
 
   @HostBinding("class.loading") get isLoading() {
     return this._isLoading;
@@ -54,6 +55,14 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   /** if set to false no loading spinner for the table will be shown */
   @Input() set showTableLoadingSpinner(value: boolean | string) {
     this._showTableLoadingSpinner = parseBool(value);
+  }
+  /** whether or not to disable clicking on venn diagrams with "0" results */
+  @Input() set disableClickingOnZeroResults(value: boolean | string) {
+    this._disableClickingOnZeroResults = parseBool(value);
+  }
+  /** @internal */
+  public get clickingOnZeroDisabled(): boolean {
+    return this._disableClickingOnZeroResults;
   }
 
   /** when a datasource section on one side or both of the venn diagram is clicked this event is emitted */
@@ -242,6 +251,7 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     this.getNewSampleSet(_parametersEvt).subscribe((obs)=>{
       // initialized
       //console.log('initialized new sample set: ', obs, _parametersEvt);
+      this.dataMartService.onSampleRequest.subscribe();
       this.dataMartService.onSampleResultChange.subscribe();
     })
   }

@@ -127,7 +127,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
         </tr>
     </thead>
     <!--<tbody>-->
-    <ng-container *ngIf="!isLoading">
+    <ng-container *ngIf="!noData">
     <tbody class="row-group" *ngFor="let row of this.data; let groupIndex=index;" 
         #rowRef
         [attr.group-row-index]="groupIndex" 
@@ -261,5 +261,14 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
             </ng-container>
     </tbody>
     </ng-container>
+    <tbody *ngIf="noData"
+    [style]="rowGroupStyle()">
+        <tr class="row-no-data">
+            <td 
+            [style.order]="this.selectableColumns.size + 1"
+            class="sz-dt-no-data-cell"
+            >No Results</td>
+        </tr>
+    </tbody>
     <!--</tbody>-->
     </table>

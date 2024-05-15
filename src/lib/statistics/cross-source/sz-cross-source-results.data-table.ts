@@ -247,7 +247,13 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       // listen for sampleset page changes
       this.dataMartService.onSamplePageChange.pipe(
         takeUntil(this.unsubscribe$)
-      ).subscribe(this.onPageChange.bind(this))
+      ).subscribe(this.onPageChange.bind(this));
+      // listen for sampleset no results
+      this.dataMartService.onSampleNoResults.pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe(this.onNoResults.bind(this));
+
+      
 
       // listen for "loading" event
       this.loading.subscribe((isLoading) =>{
@@ -346,10 +352,13 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       }
     }
 
-    rowGroupStyle(item: SzStatSampleEntityTableItem) {
+    rowGroupStyle(item?: SzStatSampleEntityTableItem) {
       let retVal = '';
-      retVal += '--total-row-count: '+ this.getTotalRowCount(item) +';';
-      retVal += ' --selected-datasources-row-count: '+ this.getRowCountInSelectedDataSources(item) +';';
+      retVal += '--column-count: '+ this.getColCount() +';';
+      if(item) {
+        retVal += '--total-row-count: '+ this.getTotalRowCount(item) +';';
+        retVal += ' --selected-datasources-row-count: '+ this.getRowCountInSelectedDataSources(item) +';';  
+      }
       return retVal;
     }
 
@@ -400,6 +409,14 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
         let rowsInSelectedDataSources = rows.filter((row) => {
           return (row.dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
         });
+      }
+      return retVal;
+    }
+
+    public getColCount() {
+      let retVal = 1;
+      if(this.selectedColumns) {
+        retVal = this.selectedColumns.size;
       }
       return retVal;
     }
@@ -694,6 +711,12 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
 
     public onPageChange(event) {
       console.log(`onPageChange: `, event);
+    }
+
+    public onNoResults(hasResults: boolean) {
+      this._noData    = hasResults;
+      this._isLoading = false;
+      this.cd.detectChanges();
     }
 
     public handleSampleClicked(event) {

@@ -298,6 +298,21 @@
                 /*background-color: #f2f2f2;*/
             }
 
+            .row-no-data {
+                border: 2px solid green;
+                font-size: 20px;
+
+                .sz-dt-no-data-cell {
+                    grid-column: span var(--column-count);
+                    min-height: 30vh;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-weight: bold;
+                    letter-spacing: 0.1em;
+                }
+            }
+
             &.row-group {
                 border: 1px solid rgb(104, 104, 104);
                 .row-entity {

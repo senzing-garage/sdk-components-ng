@@ -164,6 +164,18 @@ sz-cross-source-results {
         }
     }
 }
+sz-cross-source-summary {
+    sz-venn-diagram {
+        button.count-button {
+            .mat-ripple {
+                display: none !important;
+                &:hover {
+                    display: none !important;
+                }
+            }
+        }
+    }
+}
 
 .sz-dt-menu-page-size {
     min-width: 130px;

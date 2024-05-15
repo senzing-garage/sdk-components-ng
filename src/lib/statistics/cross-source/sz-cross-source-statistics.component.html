@@ -3,6 +3,7 @@
     <sz-cross-source-select
         (defaultToSourceSelected)="onDefaultToSourceSelected($event)"></sz-cross-source-select>
     <sz-cross-source-summary
+    [disableClickOnZero]="clickingOnZeroDisabled"
     (sourceStatisticClicked)="onSourceStatClicked($event)"></sz-cross-source-summary>
 </div>
 <div class="report-header">

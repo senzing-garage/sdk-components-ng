@@ -1,21 +1,8 @@
 <div class="cols">
-    <!--<sz-venn-diagram></sz-venn-diagram>
-    <sz-venn-diagram></sz-venn-diagram>
-    <sz-venn-diagram
-        sz-color="#246289"
-        backgorundColorA="rgb(213, 164, 133)"
-        borderColorA="rgb(255, 255, 255)"
-        blendModeA="difference"
-        backgorundColorB="rgb(173, 216, 230)"
-        borderColorB="rgb(75, 116, 142)"
-        blendModeB="multiply"
-        sz-left-legend="A"
-        sz-right-legend="B"
-    ></sz-venn-diagram>-->
-
     <div class="venn-wrapper matches">
         <sz-venn-diagram class="data-venn-matches"
             [sz-singular]="singular"
+            [sz-disable-zero-click]="disableClickOnZero"
             sz-color="#246289"
             *ngIf="hasData"
   
@@ -45,6 +32,7 @@
     <div class="venn-wrapper possibles">
         <sz-venn-diagram class="data-venn-possibles"
             [sz-singular]="singular"
+            [sz-disable-zero-click]="disableClickOnZero"
             sz-color="#CE8235"
             *ngIf="hasData"
   
@@ -75,6 +63,7 @@
     <div class="venn-wrapper relationships">
         <sz-venn-diagram class="data-venn-relationships"
             [sz-singular]="singular"
+            [sz-disable-zero-click]="disableClickOnZero"
             sz-color="#A99B37"
             *ngIf="hasData"
   
@@ -98,6 +87,7 @@
     <div class="venn-wrapper disclosed">
         <sz-venn-diagram class="data-venn-disclosed"
             [sz-singular]="singular"
+            [sz-disable-zero-click]="disableClickOnZero"
             sz-color="var(--sz-color-disclosed)"
             *ngIf="hasData"
   
@@ -121,6 +111,7 @@
     <div class="venn-wrapper ambiguous">
         <sz-venn-diagram class="data-venn-ambiguous"
             [sz-singular]="singular"
+            [sz-disable-zero-click]="disableClickOnZero"
             sz-color="var(--sz-color-ambiguous)"
             *ngIf="hasData"
             backgorundColorA="var(--sz-color-ambiguous)"

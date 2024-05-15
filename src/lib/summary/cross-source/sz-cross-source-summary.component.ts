@@ -1,4 +1,4 @@
-import { Component, Output, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, HostBinding } from '@angular/core';
+import { Component, Output, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, HostBinding, Input } from '@angular/core';
 import { Observable, Subject, forkJoin, of } from 'rxjs';
 import { skipWhile, take, takeUntil } from 'rxjs/operators';
 
@@ -7,6 +7,7 @@ import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzCrossSourceSummaryCategoryType, SzCrossSourceSummarySelectionClickEvent } from '../../models/stats';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzDataSourcesService } from '../../services/sz-datasources.service';
+import { parseBool } from '../../common/utils';
 
 /** http requests object that wraps the three different api observeables that need to 
  * happen before the component can be rendered. (basically a httpRequest rollup)
@@ -61,7 +62,9 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   private _crossSourceSummaryData : SzCrossSourceSummary | undefined;
   /** data from the api response for the second datasource selected */
   private _toDataSourceSummaryData: SzCrossSourceSummary | undefined;
-
+  /** @internal */
+  private _disableClickingOnZeroResults: boolean = true;
+  
   // --------------------------------- getters and setters -------------------------------
   /** is only one datasource on either side selected */
   public get singular() : boolean {
@@ -142,6 +145,14 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   /** get the number of possibly related entities for the second datasource to compare */
   public get toDataSourceRelated() {
     return this._getCountFromSummaryData(this._toDataSourceSummaryData, 'possibleRelations');
+  }
+  /** whether or not to disable clicking on venn diagrams with "0" results */
+  @Input() set disableClickOnZero(value: boolean | string) {
+    this._disableClickingOnZeroResults = parseBool(value);
+  }
+  /** @internal */
+  public get disableClickOnZero(): boolean {
+    return this._disableClickingOnZeroResults;
   }
 
   // ------------------------------------ event emitters ------------------------------------

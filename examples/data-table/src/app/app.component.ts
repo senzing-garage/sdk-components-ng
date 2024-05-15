@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, ViewContainerRef, TemplateRef, Input, OnDestroy } from '@angular/core';
 import {
+  SzAlertMessageDialog,
   SzDataMartService,
   SzSearchService,
   SzEntityDetailComponent,
@@ -14,6 +15,7 @@ import { tap, filter, take } from 'rxjs/operators';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Subject, Subscription, fromEvent } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-root',
@@ -44,6 +46,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     public overlay: Overlay,
     public prefs: SzPrefsService,
     public dataMart: SzDataMartService,
+    public dialog: MatDialog,
     public viewContainerRef: ViewContainerRef){}
 
   ngAfterViewInit() {
@@ -70,7 +73,21 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   /** since data can be any format we have to use loose typing */
   onCellClick(data: any) {
-    console.log(data);
+    console.log(`onCellClick`, data);
+    if(!data.value){ return; }
+    if(data.key === 'entityId' || data.key === 'relatedEntityId') {
+      this.dialog.open(SzAlertMessageDialog, {
+        panelClass: 'alert-dialog-panel',
+        width: '350px',
+        height: '200px',
+        data: {
+          title: `Opening Entity #${data.value} Detail`,
+          text: 'This would normally be a redirect to the entity detail page.',
+          showOkButton: false,
+          buttonText: 'Close'
+        }
+      });
+    }
   }
 
   onLoading(value: boolean) {
