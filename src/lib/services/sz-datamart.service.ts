@@ -24,7 +24,7 @@ import {
     SzRelation
 } from '@senzing/rest-api-client-ng';
 
-import { take, tap, map, catchError, takeUntil, filter } from 'rxjs/operators';
+import { take, tap, map, catchError, takeUntil, filter, distinctUntilChanged } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { SzCountStatsForDataSourcesResponse, SzDataTableEntitiesPagingParameters, SzDataTableRelation, SzDataTableRelationsPagingParameters, SzStatCountsForDataSources, SzStatSampleSetPageChangeEvent, SzStatSampleSetParameters, sampleDataSourceChangeEvent } from '../models/stats';
 import { SzPrefsService } from '../services/sz-prefs.service';
@@ -578,9 +578,9 @@ export class SzStatSampleSet {
                     this._loading.next(false);
                     console.timeEnd('SzStatSampleSet.getSampleDataFromParameters()');
                     if(_currentPageEntities && _currentPageEntities.length === 0) {
-                        this._onNoResults.next(false); // no results
+                        this._onNoResults.next(true); // no results
                     } else {
-                        this._onNoResults.next(true); // has results
+                        this._onNoResults.next(false); // has results
                     }
                     return;
                 }
@@ -723,7 +723,6 @@ export class SzDataMartService {
     }
     public set sampleMatchLevel(value: number) {
         this.prefs.dataMart.sampleMatchLevel = value;
-        console.log();
         this.onSampleMatchLevelChange.next(value);
     }
     public get sampleDataSource1() {
@@ -791,8 +790,11 @@ export class SzDataMartService {
     private _onSampleRequest: BehaviorSubject<boolean> = new BehaviorSubject(undefined);
     public  onSampleRequest = this._onSampleRequest.asObservable().pipe(
         filter((res) => { return res !== undefined; }),
+        distinctUntilChanged((prev, current) => { 
+            return prev !== current;
+        }),
         tap((res) => {
-            console.log(`DataMartService._onSampleRequest`, res);
+            console.warn(`DataMartService._onSampleRequest`, res);
         })
     );
     /** when the sampleset requested returns no results */

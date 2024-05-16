@@ -109,7 +109,10 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
+  private _title: string;
+
   get title() {
+    return this._title;
     let retVal    = '';
     let isSingle  = true;
     if(this.dataMartService.sampleDataSource1 && this.dataMartService.sampleDataSource2 && this.dataMartService.sampleDataSource1 !== this.dataMartService.sampleDataSource2) {
@@ -148,8 +151,48 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     return retVal;
   }
 
+  private _getTitleFromEvent(event: SzCrossSourceSummarySelectionEvent) {
+    let retVal    = '';
+    let isSingle  = true;
+    if(event.dataSource1 && event.dataSource2 && event.dataSource1 !== event.dataSource2) {
+      isSingle = false;
+    } else if(event.dataSource1 || event.dataSource2) {
+      isSingle  = true;
+    }
+    if(event.statType) {
+      switch(event.statType) {
+        case 'MATCHES':
+          retVal = isSingle ? 'Duplicates' : 'Matches';
+          break;
+        case 'AMBIGUOUS_MATCHES':
+          retVal = 'Ambiguous Matches';
+          break;
+        case 'POSSIBLE_MATCHES':
+          retVal = isSingle ? 'Possible Duplicates' : 'Possible Matches';
+          break;
+        case 'POSSIBLE_RELATIONS':
+          retVal = isSingle ? 'Possible Relationships' : 'Possibly Related';
+          break;
+        case 'DISCLOSED_RELATIONS':
+          retVal = 'Disclosed Relationships';
+          break;
+      };
+
+      if(event.dataSource1 && event.dataSource2 &&  event.dataSource1 !== event.dataSource2) {
+        retVal  += `: ${event.dataSource1} to ${this.dataMartService.sampleDataSource2}`;
+      } else if(event.dataSource1) {
+        retVal  += `: ${event.dataSource1}`;
+      } else if(event.dataSource2) {
+        retVal  += `: ${event.dataSource2}`;
+      }
+    }
+
+    return retVal;
+  }
+
   constructor(
     private dataMartService: SzDataMartService,
+    private cd: ChangeDetectorRef,
     public prefs: SzPrefsService
   ) {}
   ngOnInit() {
@@ -172,6 +215,11 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
         dataSource2: this.dataMartService.dataSource2
       });
     });
+    this.dataMartService.onSampleRequest.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((isInflight: boolean) => {
+      this._isLoading = isInflight;
+    });
     this.dataMartService.onSampleDataSourceChange.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe((event: {dataSource1?: string, dataSource2?: string}) => {
@@ -181,6 +229,7 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
       takeUntil(this.unsubscribe$)
     ).subscribe((data) => {
       //console.log(`new sample set data ready... `, data);
+      this._isLoading = false;
       this._showTable = true;
     });
   }
@@ -206,6 +255,9 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
       }
       this.dataMartService.sampleMatchLevel   = evt.matchLevel;
       this.dataMartService.sampleStatType     = evt.statType as SzCrossSourceSummaryCategoryType;
+
+      this._title = this._getTitleFromEvent(evt);
+      this.cd.detectChanges();
       this.getNewSampleSet(evt).subscribe((obs)=>{
         // initialized
         //console.log('initialized new sample set: ', evt, obs);
@@ -215,9 +267,51 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   }
   /** when user clicks a source stat, change it in the service */
   onSourceStatClicked(evt: SzCrossSourceSummarySelectionClickEvent) {
-    this._loading.next(true);
-    
     console.log(`SzCrossSourceStatistics.onSourceStatClicked: `, evt);
+    this._isLoading = true;
+    this._loading.next(true);
+    this.cd.detectChanges();
+
+    if(!evt.dataSource1 && evt.dataSource2) {
+      // flip-flop if only one ds is defined
+      this.dataMartService.sampleDataSource1  = evt.dataSource2;
+      this.dataMartService.sampleDataSource2  = evt.dataSource2;
+      //console.log(`\tdatasource1 set to datasource2: ["${this.dataMartService.sampleDataSource1}","${this.dataMartService.sampleDataSource2}"]`);
+    } else if((evt.dataSource1 && !evt.dataSource2) || ((evt.dataSource1 === evt.dataSource2) && evt.dataSource1 !== undefined)) {
+      this.dataMartService.sampleDataSource1  = evt.dataSource1;
+      this.dataMartService.sampleDataSource2  = evt.dataSource1;
+      //console.log(`\tdatasource2 set to datasource1: ["${this.dataMartService.sampleDataSource1}","${this.dataMartService.sampleDataSource2}" | "${evt.dataSource1}","${evt.dataSource2}"]`);
+    } else {
+      this.dataMartService.sampleDataSource1  = evt.dataSource1;
+      this.dataMartService.sampleDataSource2  = evt.dataSource2;
+      //console.log(`\tset both datasources: ["${this.dataMartService.sampleDataSource1}","${this.dataMartService.sampleDataSource2}"]`);
+    }
+  
+    // simplify the event payload passed back
+    let _parametersEvt: SzCrossSourceSummarySelectionEvent = {
+      matchLevel: evt.matchLevel,
+      statType: evt.statType
+    }
+    if(this.dataMartService.sampleDataSource1)  _parametersEvt.dataSource1 = this.dataMartService.sampleDataSource1;
+    if(this.dataMartService.sampleDataSource2)  _parametersEvt.dataSource2 = this.dataMartService.sampleDataSource2;
+    //this.sourceStatisticClick.emit(evt);  // emit the raw event jic someone needs to use stopPropagation or access to the DOM node
+
+    this._title = this._getTitleFromEvent(_parametersEvt);
+    this.cd.detectChanges();
+
+
+    // we give this a async delay because when we change it immediately
+    // it locks up the UI so the loading indicator doesn't present until 
+    // the table is done rendering
+    setTimeout(this._onSourceStatClicked.bind(this, _parametersEvt), 500);
+  }
+  _onSourceStatClicked(evt: SzCrossSourceSummarySelectionClickEvent) {
+    /*
+    First part here moved to the "onSourceStatClicked" to immediately provide 
+    user feedback
+    
+    this._loading.next(true);
+
     if(!evt.dataSource1 && evt.dataSource2) {
       // flip-flop if only one ds is defined
       this.dataMartService.sampleDataSource1  = evt.dataSource2;
@@ -242,13 +336,16 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     }
     if(this.dataMartService.sampleDataSource1)  _parametersEvt.dataSource1 = this.dataMartService.sampleDataSource1;
     if(this.dataMartService.sampleDataSource2)  _parametersEvt.dataSource2 = this.dataMartService.sampleDataSource2;
+    */
+    this.dataMartService.sampleMatchLevel   = evt.matchLevel;
+    this.dataMartService.sampleStatType     = evt.statType as SzCrossSourceSummaryCategoryType;
 
-    this.sampleParametersChange.emit(_parametersEvt);
+    this.sampleParametersChange.emit(evt);
     this.sourceStatisticClick.emit(evt);  // emit the raw event jic someone needs to use stopPropagation or access to the DOM node
 
     // get new sample set
     //console.log(`\t\tgetting new sample set: `, _parametersEvt, evt);
-    this.getNewSampleSet(_parametersEvt).subscribe((obs)=>{
+    this.getNewSampleSet(evt).subscribe((obs)=>{
       // initialized
       //console.log('initialized new sample set: ', obs, _parametersEvt);
       this.dataMartService.onSampleRequest.subscribe();
