@@ -135,11 +135,13 @@ import { SzPrefsService } from '../../services/sz-prefs.service';
                   tap((data: SzEntityData[]) => {
                     //this._loading.next(false);
                     //this._onNewSampleSet.next(data);
+                    this.dataMartService.doNotFetchSampleSetOnParameterChange = false;
                   })
             )
         } else {
             // just update the data
             this.dataMartService.refreshSampleSet();
+            this.dataMartService.doNotFetchSampleSetOnParameterChange = false;
         }
     }
 

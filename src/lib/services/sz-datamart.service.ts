@@ -99,7 +99,10 @@ export class SzStatSampleSet {
             }
             // get new sampleset
             this.updateDataWithParameters();
+        } else {
+            console.warn(`tried to set matchKey from "${_oVal}" to "${value}"`, this._doNotFetchOnParameterChange);
         }
+
     }
     public get principle() {
         return this._requestParameters && this._requestParameters.principle ? this._requestParameters.principle : undefined;
@@ -813,8 +816,11 @@ export class SzDataMartService {
         this._sampleSetMatchKey = value;
         if(this._sampleSet) {
             this._sampleSet.matchKey = value;
+            console.warn(`storing sampleSetMatchKey at sampleset context value: ${this._sampleSet.matchKey} | ${value}`);
+
         } else {
             // first request ??
+            console.warn(`storing sampleSetMatchKey on local value: ${this._sampleSetMatchKey} | ${value}`);
             this._sampleSetMatchKey  = value;
         }
     }

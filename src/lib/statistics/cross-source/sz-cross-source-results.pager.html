@@ -56,23 +56,13 @@
         <label>Clear All Filters ({{filters.length}})</label>
     </button>
     <div class="filter-menu-content">
-        <ng-container *ngFor="let filter of filters">
-            <hr *ngIf="filters.length > 1">
-            <!--<button *ngIf="getFiltersByKey(filterKey).length > 1 && getFiltersByKey(filterKey).length < filters.length"
-                    mat-menu-item class="clear-filter-item clear-filters-item"
-                    (click)="clearFilters(filterKey)">
-                    <span class="clear-filter-icon material-icons">clear</span>
-                <label>Clear {{getFiltersByKey(filterKey).length}} {{filterKey}} Filter(s)</label>
-            </button>-->
-            <button
-                    mat-menu-item class="clear-filter-item"
-                    disableRipple
-                    [disabled]="loading"
-                    (click)="clearFilters(filter.key, filter.value)">
-                <span class="clear-filter-icon material-icons">clear</span>
-                <label>{{filter.name}} = {{filter.value}}</label>
-            </button>
-        </ng-container>
+        <div
+            *ngFor="let filter of filters"
+                class="clear-filter-item"
+                (click)="clearFilters(filter.key, filter.value)">
+            <mat-icon class="clear-filter-icon">clear</mat-icon>
+            <span class="primary-text">{{filter.name}} = {{filter.value}}</span>
+    </div>
     </div>
 </mat-menu>
 

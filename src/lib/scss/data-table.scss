@@ -166,27 +166,29 @@ sz-cross-source-pager {
         padding: 4px 8px;
         border-bottom: 1px solid var(--sz-color-dialog-header-border);
     }
-    .mat-mdc-menu-item {
+
+    .clear-filter-item {
         font-size: 12px;
         line-height: 12px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
         .clear-filter-icon {
             font-size: 20px;
+            width: 20px;
+            height: 20px;
         }
         .mat-ripple {
             display: none !important;
         }
-        .mdc-list-item__primary-text {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            
-            label {
-                font-size: 12px;
-                max-width: 380px;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                margin-left: 6px;
-            }
+        .mdc-list-item__primary-text,
+        .primary-text {
+            font-size: 12px;
+            max-width: 380px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            margin-left: 6px;
         }
     }
 }

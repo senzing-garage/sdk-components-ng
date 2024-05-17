@@ -241,11 +241,15 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
     public clearFilters(key: string | undefined | null = undefined,
                           value : string | undefined | null = undefined)
     {
+      console.log(`clearFilters(${key}, ${value})`);
       if(key === 'matchKey') {
+        let _oVal = this.dataMartService.sampleSetMatchKey;
         this.dataMartService.sampleSetMatchKey = undefined;
+        console.log(`\tcleared sampleSetMatchKey: ${this.dataMartService.sampleSetMatchKey} | "${_oVal}"`);
       }
       if(key === 'principle') {
         this.dataMartService.sampleSetPrinciple = undefined;
+        console.log(`\tcleared sampleSetPrinciple: ${this.dataMartService.sampleSetPrinciple}`);
       }
     }
     
@@ -308,9 +312,6 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
     
     @Output("page-change") selectedPage: EventEmitter<{from: number, to: number, page: number, pageSize: number}>
         = new EventEmitter<{from: number, to:number, page: number, pageSize: number}>();
-    
-    @Output("clearFilters") clearFiltersEmitter : EventEmitter<{key: string, value: string}[]>
-        = new EventEmitter<{key: string, value: string}[]>();
     
     public get isFirstPage() : boolean {
         return this.firstRecord <= 1;
