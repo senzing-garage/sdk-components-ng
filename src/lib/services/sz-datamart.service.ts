@@ -28,7 +28,7 @@ import {
 
 import { take, tap, map, catchError, takeUntil, filter, distinctUntilChanged } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { SzCountStatsForDataSourcesResponse, SzDataTableEntitiesPagingParameters, SzDataTableRelation, SzDataTableRelationsPagingParameters, SzStatCountsForDataSources, SzStatSampleSetPageChangeEvent, SzStatSampleSetParameters, sampleDataSourceChangeEvent } from '../models/stats';
+import { SzCountStatsForDataSourcesResponse, SzCrossSourceCount, SzDataTableEntitiesPagingParameters, SzDataTableRelation, SzDataTableRelationsPagingParameters, SzStatCountsForDataSources, SzStatSampleSetPageChangeEvent, SzStatSampleSetParameters, sampleDataSourceChangeEvent } from '../models/stats';
 import { SzPrefsService } from '../services/sz-prefs.service';
 import { SzDataSourcesService } from './sz-datasources.service';
 import { SzCrossSourceSummaryCategoryType } from '../models/stats';
@@ -53,6 +53,7 @@ export class SzStatSampleSet {
     private _entityPages: Map<number, SzEntitiesPage>       = new Map<number, SzEntitiesPage>();
     private _relationPages: Map<number, SzRelationsPage>    = new Map<number, SzRelationsPage>();
     private _doNotFetchOnParameterChange                    = false;
+    private _unfilteredCount        = 0;
     /**
      * We store the parameters used to contruct the initial request here 
      * so we can update individual properties when they change and pull new 
@@ -120,6 +121,14 @@ export class SzStatSampleSet {
     }
     public get pageSize() {
         return this._requestParameters && this._requestParameters.pageSize ? this._requestParameters.pageSize : this.prefs.dataMart.samplePageSize;
+    }
+
+    public set unfilteredCount(value: number) {
+        this._unfilteredCount   = value;
+    }
+
+    public get unfilteredCount(): number {
+        return this._unfilteredCount;
     }
     
     public set pageSize(value: number) {
@@ -733,8 +742,18 @@ export class SzDataMartService {
     private _sampleSet: SzStatSampleSet;
     private _sampleSetMatchKey: string;
     private _sampleSetPrinciple: string;
+    private _sampleSetUnfilteredCount: number;
     private _doNotFetchSampleSetOnParameterChange: boolean = false;
+    /** we store the last known match key counts for present selection for filtering menu */
+    private _matchKeyCounts: SzCrossSourceCount[];
     //private _sampleStatType: SzCrossSourceSummaryCategoryType | undefined;
+
+    public get matchKeyCounts() {
+        return this._matchKeyCounts;
+    }
+    public set matchKeyCounts(value: SzCrossSourceCount[]) {
+        this._matchKeyCounts = value;
+    }
 
     public get sampleStatType() : SzCrossSourceSummaryCategoryType {
         return this.prefs.dataMart.sampleStatType;
@@ -806,6 +825,18 @@ export class SzDataMartService {
         } else {
             this._sampleSetPrinciple = value;
         }
+    }
+
+    public set sampleSetUnfilteredCount(value: number) {
+        if(this._sampleSet) {
+            this._sampleSet.unfilteredCount = value;
+        } else {
+            this._sampleSetUnfilteredCount = value;
+        }
+    }
+
+    public get sampleSetUnfilteredCount(): number {
+        return this._sampleSet ? this._sampleSet.unfilteredCount : this._sampleSetUnfilteredCount;
     }
 
     public get sampleSetMatchKey(): string {
@@ -1099,7 +1130,7 @@ export class SzDataMartService {
         }
     }
 
-    public createNewSampleSetFromParameters(statType: SzCrossSourceSummaryCategoryType, dataSource1?: string | undefined, dataSource2?: string | undefined, matchKey?: string, principle?: string, bound?: number, sampleSize?: number, pageSize?: number) {
+    public createNewSampleSetFromParameters(statType: SzCrossSourceSummaryCategoryType, dataSource1?: string | undefined, dataSource2?: string | undefined, matchKey?: string, principle?: string, bound?: number, sampleSize?: number, pageSize?: number, unfilteredCount?: number) {
         // clear any previous subscription
         if(this._onSampleRequest$) {
             this._onSampleRequest$.unsubscribe();
@@ -1121,7 +1152,15 @@ export class SzDataMartService {
         }
         
         console.log('createNewSampleSetFromParameters: ', {
-            statType: statType, dataSource1: dataSource1, dataSource2: dataSource2, matchKey: matchKey, principle: principle, bound: bound, sampleSize: sampleSize, pageSize: pageSize
+            statType: statType, 
+            dataSource1: dataSource1, 
+            dataSource2: dataSource2, 
+            matchKey: matchKey, 
+            principle: principle, 
+            bound: bound, 
+            sampleSize: sampleSize, 
+            pageSize: pageSize, 
+            unfilteredCount: unfilteredCount
         });
         // initialize new sample set
         this._onSampleRequest.next(true);
@@ -1133,6 +1172,13 @@ export class SzDataMartService {
             principle: principle,
             pageSize: pageSize
         }, this.prefs, this.statsService, this.entityDataService);
+        
+        if(unfilteredCount) {
+            this._sampleSet.unfilteredCount = unfilteredCount;
+            console.warn(`SET unfilteredCount to "${unfilteredCount}"`);
+        } else {
+            console.warn(`not setting unfilteredCount: "${unfilteredCount}"`);
+        }
         
         this._onSampleResultChange$ = this._sampleSet.onDataUpdated.pipe(
             tap((res) => {

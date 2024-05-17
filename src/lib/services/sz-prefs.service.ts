@@ -116,6 +116,7 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   private _sampleMatchLevel: number;
   private _showAllColumns: boolean = false;
   private _showDiagramHeader: boolean = true;
+  private _showMatchKeyFiltersOnSelect: boolean = true;
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
    */
@@ -129,7 +130,8 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
     'sampleSize',
     'sampleStatType',
     'showAllColumns',
-    'showDiagramHeader'
+    'showDiagramHeader',
+    'showMatchKeyFiltersOnSelect'
   ]
   // -------------- getters and setters
   /** first datasource to use in the datamart stats queries */
@@ -232,7 +234,17 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
     if(!this.bulkSet) this.prefChanged.next({name: 'showDiagramHeader', value: value});
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
-
+  /** whether or not prompt the user to select a match key on diagram click */
+  public get showMatchKeyFiltersOnSelect(): boolean {
+    return this._showMatchKeyFiltersOnSelect;
+  }
+  /** whether or not prompt the user to select a match key on diagram click */
+  public set showMatchKeyFiltersOnSelect(value: boolean) {
+    this._showMatchKeyFiltersOnSelect = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'showMatchKeyFiltersOnSelect', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  
   
   /**
    * publish out a "first" real payload so that

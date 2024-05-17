@@ -1,6 +1,7 @@
 import { Component, ChangeDetectorRef, OnInit, Input, Inject, OnDestroy, Output, EventEmitter, ViewChild, HostBinding, ChangeDetectionStrategy, TemplateRef, ViewContainerRef, ElementRef } from '@angular/core';
 import { Observable, Subject, Subscription, filter, fromEvent, take, takeUntil, throwError, zip } from 'rxjs';
 import {CdkMenu, CdkMenuItem, CdkContextMenuTrigger} from '@angular/cdk/menu';
+import { MatDialog } from '@angular/material/dialog';
 
 import { SzDataTable } from '../../shared/data-table/sz-data-table.component';
 import { SzCrossSourceSummaryCategoryType, SzDataTableEntity, SzDataTableRelation, SzStatSampleEntityTableItem, SzStatSampleEntityTableRow, SzStatsSampleTableLoadingEvent } from '../../models/stats';
@@ -11,6 +12,7 @@ import { SzEntity, SzEntityData, SzMatchedRecord, SzRecord, SzRelation } from '@
 import { getMapKeyByValue, interpolateTemplate } from '../../common/utils';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
+import { SzCrossSourceSummaryMatchKeyPickerDialog } from '../../summary/cross-source/sz-cross-source-matchkey-picker.component';
 
 /**
  * Data Table with specific overrides and formatting for displaying 
@@ -224,6 +226,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       private cd: ChangeDetectorRef,
       private cssService: SzCSSClassService,
       private dataMartService: SzDataMartService,
+      public dialog: MatDialog,
       public overlay: Overlay,
       public viewContainerRef: ViewContainerRef
     ) {
@@ -726,6 +729,23 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       console.log(`clearFilters: `, event);
     }
     
+    public openFilterDialog() {
+      let _matchKeyCountsData = this.dataMartService.matchKeyCounts;
+      let _statType = this.dataMartService.sampleStatType;
+      console.log(`openFilterDialog: `, _matchKeyCountsData, _statType);
+      if(_matchKeyCountsData) {
+
+        this.dialog.open(SzCrossSourceSummaryMatchKeyPickerDialog, {
+          panelClass: 'sz-css-matchkey-picker-dialog-panel',
+          minWidth: 200,
+          height: 'var(--sz-css-matchkey-picker-dialog-default-height)',
+          data: {
+            data: _matchKeyCountsData, 
+            statType: _statType
+          }
+        });
+      }
+    }
 
     override moveColumn(fieldName: string, orderModifier: number) {
       let currentIndex    = this._colOrder.get(fieldName);

@@ -8,7 +8,7 @@ import { SzCrossSourceCount, SzCrossSourceSummaryCategoryType, SzCrossSourceSumm
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzDataSourcesService } from '../../services/sz-datasources.service';
 import { parseBool } from '../../common/utils';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SzCrossSourceSummaryMatchKeyPickerDialog } from './sz-cross-source-matchkey-picker.component';
 
 /**
@@ -49,6 +49,9 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   private _toDataSourceSummaryData: SzCrossSourceSummary | undefined;
   /** @internal */
   private _disableClickingOnZeroResults: boolean = true;
+  
+  private _filterPickerDialog: MatDialogRef<SzCrossSourceSummaryMatchKeyPickerDialog>;
+  private _diagramClickEventPayload;
   
   // --------------------------------- getters and setters -------------------------------
   /** is only one datasource on either side selected */
@@ -285,11 +288,24 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
         _statTypeData = this._crossSourceSummaryData;
       }
     }
+    // store the last click payload so that if the user
+    // clicks outside the picker dialog we can still forward 
+    // the click event and display the results
+    this._diagramClickEventPayload = Object.assign(clickEvent, {
+      dataSource1: newFromDataSource,
+      dataSource2: newToDataSource,
+      matchLevel: matchLevel,
+      statType: statType
+    });
 
     if(_statTypeData) {
       let dialogData = this.dataMartService.getCrossSourceStatisticsByStatTypeFromData(statType, _statTypeData)
+      // store the match key counts so we have them even if the user doesn't select 
+      // a filter to be applied
+      this.dataMartService.matchKeyCounts = dialogData;
+
       console.log(`SzCrossSourceSummaryComponent.dialogData: ${diagramSection}, ${matchLevel}, ${statType}`, dialogData);
-      if(dialogData && dialogData.length > 1) {
+      if(this.prefs.dataMart.showMatchKeyFiltersOnSelect && dialogData && dialogData.length > 1) {
         this.openMatchKeyFilteringForSelection(dialogData, statType);
         return;
       }
@@ -314,7 +330,7 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   }
 
   public openMatchKeyFilteringForSelection(data: Array<SzCrossSourceCount>, statType: SzCrossSourceSummaryCategoryType) {
-    this.dialog.open(SzCrossSourceSummaryMatchKeyPickerDialog, {
+    this._filterPickerDialog = this.dialog.open(SzCrossSourceSummaryMatchKeyPickerDialog, {
       panelClass: 'sz-css-matchkey-picker-dialog-panel',
       minWidth: 200,
       height: 'var(--sz-css-matchkey-picker-dialog-default-height)',
@@ -323,5 +339,13 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
         statType: statType
       }
     });
+    this._filterPickerDialog.afterClosed().pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((stopPropagation: boolean) => {
+      if(!stopPropagation && this._diagramClickEventPayload) {
+        // continue 
+        this.sourceStatisticClicked.emit(this._diagramClickEventPayload as SzCrossSourceSummarySelectionClickEvent);
+      }
+    })
   }
 }

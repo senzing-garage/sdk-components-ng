@@ -1,9 +1,11 @@
 import { Component, HostBinding, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SzCrossSourceCount, SzCrossSourceSummaryCategoryType } from '../../models/stats';
-import { SzDataMartService } from '../../services/sz-datamart.service';
 import { Subject, take, takeUntil, tap } from 'rxjs';
 import { SzEntityData } from '@senzing/rest-api-client-ng';
+import { SzCrossSourceCount, SzCrossSourceSummaryCategoryType } from '../../models/stats';
+import { SzDataMartService } from '../../services/sz-datamart.service';
+import { isNotNull } from '../../common/utils';
+import { SzPrefsService } from '../../services/sz-prefs.service';
 
 /**
  * @internal
@@ -57,6 +59,9 @@ import { SzEntityData } from '@senzing/rest-api-client-ng';
         return retVal;
     }
     public get hasSelectedMatchKey(): boolean {
+        if(this._statType !== this.dataMartService.sampleStatType) {
+            return false;
+        }
         return this.dataMartService.sampleSetMatchKey && this.dataMartService.sampleSetMatchKey !== '';
     }
 
@@ -73,7 +78,7 @@ import { SzEntityData } from '@senzing/rest-api-client-ng';
     /** we use this on click to immediately close the dialog on mouse click */
     public setMatchKey(value: string) {
         this._updateSampleData(value);
-        this.dialogRef.close();
+        this.dialogRef.close(true);
     }
 
     private _updateSampleData(matchKey: string) {
@@ -94,20 +99,37 @@ import { SzEntityData } from '@senzing/rest-api-client-ng';
         }
         this.dataMartService.sampleSetMatchKey  = matchKey;
         this.dataMartService.sampleSetPage      = 0;
+        this.dataMartService.matchKeyCounts     = this._data;
+
+        if(isNotNull(this.dataMartService.sampleSetMatchKey)) {
+            // get null matchkey count
+            let totalItem = this._data.find((item)=>{ return !item.matchKey });
+            let countKey = this._statType === SzCrossSourceSummaryCategoryType.MATCHES ? 'entityCount' : 'relationCount';
+
+            console.info(`!!! totalItem: ${totalItem ? totalItem[countKey] : undefined}`, totalItem);
+            if(totalItem) {
+                this.dataMartService.sampleSetUnfilteredCount   = totalItem[countKey];
+            }
+        } else {
+            console.warn(`setting unfiltered count to undefined `);
+        }
 
         if(changeWholeSampleSet) {
             console.info(`\t_updateSampleData: `, this.dataMartService.sampleStatType, 
             this.dataMartService.sampleDataSource1, 
             this.dataMartService.sampleDataSource2, 
             this.dataMartService.sampleSetMatchKey, 
-            this.dataMartService.sampleSetPrinciple);
+            this.dataMartService.sampleSetPrinciple,
+            this.dataMartService.sampleSetUnfilteredCount);
 
             this.dataMartService.createNewSampleSetFromParameters(
                 this.dataMartService.sampleStatType, 
                 this.dataMartService.sampleDataSource1, 
                 this.dataMartService.sampleDataSource2, 
                 this.dataMartService.sampleSetMatchKey, 
-                this.dataMartService.sampleSetPrinciple).pipe(
+                this.dataMartService.sampleSetPrinciple,
+                undefined, undefined, undefined, 
+                this.dataMartService.sampleSetUnfilteredCount).pipe(
                   takeUntil(this.unsubscribe$),
                   take(1),
                   tap((data: SzEntityData[]) => {
@@ -158,11 +180,20 @@ import { SzEntityData } from '@senzing/rest-api-client-ng';
 
     public clearMatchKey() {
         this.dataMartService.sampleSetMatchKey = undefined;
+        this.dialogRef.close(true);
     }
 
     public getCount(row: SzCrossSourceCount) {
         let countKey = this._statType === SzCrossSourceSummaryCategoryType.MATCHES ? 'entityCount' : 'relationCount';
         return row && row[countKey] ? row[countKey] : 0;
+    }
+
+    public get showMatchKeyFiltersOnSelect() {
+        return this.prefs.dataMart.showMatchKeyFiltersOnSelect;
+    }
+
+    public toggleShowMatchKeyFiltersOnSelect() {
+        this.prefs.dataMart.showMatchKeyFiltersOnSelect = !this.prefs.dataMart.showMatchKeyFiltersOnSelect;
     }
 
     @HostBinding("class.sample-type-ambiguous-matches") get classAmbiguousMatches() {
@@ -185,7 +216,7 @@ import { SzEntityData } from '@senzing/rest-api-client-ng';
         @Inject(MAT_DIALOG_DATA) public data: {
         data: Array<SzCrossSourceCount>,
         statType: SzCrossSourceSummaryCategoryType
-        }, private dataMartService: SzDataMartService) {
+        }, private dataMartService: SzDataMartService, private prefs: SzPrefsService) {
       if(data) {
         if(data) {
           this._data        = data.data;

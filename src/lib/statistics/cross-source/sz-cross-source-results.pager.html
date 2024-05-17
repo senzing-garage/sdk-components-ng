@@ -18,14 +18,15 @@
     </mat-select>
 </div>
 <div *ngIf="sampled" class="sample-badge">
-    <button class="sample-badge-button" [class.clickable]="sampleClickable"
+    <button class="sample-badge-button has-tooltip" [class.clickable]="sampleClickable"
     (click)="onSampleClicked($event)">
         Sample
-        <span class="tooltiptext" *ngIf="filtered">Sampling {{sampleCount|number:'1.0'}} of {{filteredCount|number:'1.0'}} matching items with $(totalCount) total items</span>
+        <span class="tooltiptext" *ngIf="filtered">Sampling {{sampleCount|number:'1.0'}} of {{totalCount|number:'1.0'}} matching items with $(unFilteredCount) total items</span>
         <span class="tooltiptext" *ngIf="!filtered">Sampling {{sampleCount|number:'1.0'}} of {{totalCount|number:'1.0'}} items</span>
     </button>
 </div>
-<div *ngIf="filtered" class="filter-badge">
+<!--<span>filtering? {{isFiltered}}</span>-->
+<div *ngIf="isFiltered" class="filter-badge">
     <!--<button *ngIf="filters.length === 0" class="filter-badge-button clickable">
         Filtered
         <span class="material-icons">filter_list</span>
@@ -36,17 +37,18 @@
             Showing {{filteredCount|number:'1.0'}} matching items of {{totalCount|number:'1.0'}} total items
         </span>
     </button>-->
-    <button class="filter-badge clickable"
+    <button class="filter-badge clickable has-tooltip"
         [matMenuTriggerFor]="filterMenu">
         Filtered
             <span class="material-icons">filter_list</span>
-            <span class="tooltiptext" *ngIf="sampled">Sampling {{sampleCount}} of {{filteredCount}} matching items with {{totalCount}} total items</span>
-            <span class="tooltiptext" *ngIf="!sampled">Showing {{filteredCount|number:'1.0'}} matching items of {{totalCount|number:'1.0'}} total items</span>
+            <span class="tooltiptext" *ngIf="sampled">Sampling {{sampleCount}} of {{totalCount}} matching items with {{unFilteredCount}} total items</span>
+            <span class="tooltiptext" *ngIf="!sampled">Showing {{totalCount|number:'1.0'}} matching items of {{unFilteredCount|number:'1.0'}} total items</span>
     </button>
 </div>
 
 <!-- mat menu -->
-<mat-menu class="filter-menu" #filterMenu="matMenu" [overlapTrigger]="false" *ngIf="filters.length > 0">
+<mat-menu class="sz-dt-filter-menu" 
+    #filterMenu="matMenu" [overlapTrigger]="false" panelClass="sz-dt-filter-panel" *ngIf="isFiltered">
     <div class="filter-title">{{filters.length}} Filter(s) Applied</div>
     <button *ngIf="filters.length > 1" mat-menu-item
         class="clear-filter-item clear-filters-item" (click)="clearFilters()">
@@ -54,20 +56,21 @@
         <label>Clear All Filters ({{filters.length}})</label>
     </button>
     <div class="filter-menu-content">
-        <ng-container *ngFor="let filterKey of filterKeys">
+        <ng-container *ngFor="let filter of filters">
             <hr *ngIf="filters.length > 1">
-            <button *ngIf="getFiltersByKey(filterKey).length > 1 && getFiltersByKey(filterKey).length < filters.length"
+            <!--<button *ngIf="getFiltersByKey(filterKey).length > 1 && getFiltersByKey(filterKey).length < filters.length"
                     mat-menu-item class="clear-filter-item clear-filters-item"
                     (click)="clearFilters(filterKey)">
-                <span class="clear-filter-icon material-icons">clear</span>
+                    <span class="clear-filter-icon material-icons">clear</span>
                 <label>Clear {{getFiltersByKey(filterKey).length}} {{filterKey}} Filter(s)</label>
-            </button>
-            <button *ngFor="let filterValue of getFiltersByKey(filterKey)"
+            </button>-->
+            <button
                     mat-menu-item class="clear-filter-item"
-                    [disabled]="isFilterDisabled(filterKey, filterValue) || loading"
-                    (click)="clearFilters(filterKey, filterValue)">
+                    disableRipple
+                    [disabled]="loading"
+                    (click)="clearFilters(filter.key, filter.value)">
                 <span class="clear-filter-icon material-icons">clear</span>
-                <label>{{filterKey}} = {{filterValue}}</label>
+                <label>{{filter.name}} = {{filter.value}}</label>
             </button>
         </ng-container>
     </div>

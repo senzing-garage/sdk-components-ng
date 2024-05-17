@@ -10,6 +10,71 @@
   height: 27px;
 }
 
+/*.has-tooltip .tooltiptext {
+    top: 0px;
+    right: 40px;
+    width: unset;
+    padding: 8px 15px;
+    white-space: nowrap;
+}*/
+
+/* tooltips */
+.has-tooltip {
+    .tooltiptext {
+        display: inline-block;
+        position: absolute;
+        top: -40px;
+        left: -70px;
+        visibility: hidden;
+        opacity: 0;
+        width: 220px;
+        background-color: #3b3b3b;
+        color: #fff;
+        text-align: center;
+        padding: 8px 14px 10px 9px;
+        border-radius: 6px;
+        font-size: 10px;
+        white-space: break-spaces;
+        transition: opacity 0.2s ease-out 0.4s;
+        filter: drop-shadow(5px 8px 5px rgba(0, 0, 0, 0.3));
+
+
+        /* Position the tooltip text - see examples below! */
+        position: absolute;
+        z-index: 7;
+    }
+    &:hover .tooltiptext {
+        visibility: visible;
+        display: inline-block;
+        opacity: 1;
+    }
+}
+
+.filter-menu-content {
+    button.clear-filter-item {
+        font-size: 12px;
+        min-height: 34px;
+        padding: 2px 8px;
+        cursor: pointer;
+
+        &:hover {
+            /*background-color: var(--sz-color-dialog-header);*/
+        }
+
+        &:disabled {
+            cursor: default;
+            label {
+                cursor: default;
+            }
+        }
+        
+        label {
+            white-space: nowrap;
+            cursor: pointer;
+        }
+    }
+}
+
 :host > * {
   display: inline-block;
 }
@@ -88,6 +153,7 @@ DIV.showing-pages {
 
   DIV.show-pages {
     width: 100%;
+    text-align: center;
   }
 }
 

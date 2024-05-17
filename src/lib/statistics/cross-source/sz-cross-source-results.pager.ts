@@ -2,7 +2,7 @@ import { Component, Input, Output, OnInit, OnDestroy, EventEmitter, ElementRef, 
 import { SzGraphPrefs, SzPrefsService } from '../../services/sz-prefs.service';
 import { take, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
-import { camelToKebabCase, underscoresToDashes, getMapKeyByValue } from '../../common/utils';
+import { camelToKebabCase, underscoresToDashes, getMapKeyByValue, isNotNull } from '../../common/utils';
 import { SzCrossSourceSummary, SzDataSourcesResponseData, SzSummaryStats } from '@senzing/rest-api-client-ng';
 import { isValueTypeOfArray, parseBool, parseNumber, parseSzIdentifier, sortDataSourcesByIndex } from '../../common/utils';
 import { SzRecordCountDataSource, SzStatSampleSetPageChangeEvent } from '../../models/stats';
@@ -74,8 +74,7 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
     }
     
     public get filtered() : boolean {
-        return (this.filteredCount !== null && this.filteredCount !== undefined
-                && this.filteredCount <= this.totalCount);
+      return isNotNull(this.dataMartService.sampleSetMatchKey);
     }
     
     public get sampleCount() : number | null {
@@ -89,13 +88,25 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
     public get filteredCount() : number {
         return this._filteredCount;
     }
+
+    public get unFilteredCount() : number {
+        let retVal  = 0;
+        if(this.dataMartService && this.dataMartService.sampleSetUnfilteredCount) {
+          retVal = this.dataMartService.sampleSetUnfilteredCount;
+        }
+        return retVal;
+    }
+
+    public get sampleSetUnfilteredCount() {
+      return this.dataMartService.sampleSetUnfilteredCount;
+    }
     
     public get availableCount() : number {
         if (this.sampled) {
           return this.sampleCount;
         }
-        if (this.filtered) {
-          return this.filteredCount;
+        if( this.isFiltered) {
+          return this.unFilteredCount;
         }
         return this.totalCount;
     }
@@ -176,10 +187,11 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
         this._filteredCount = count;
     }
     
-    public get filters() : {key: string, value: string, disabled?: boolean}[] {
+    /*public get filters() : {key: string, value: string, disabled?: boolean}[] {
         return this._filters;
-    }
+    }*/
     
+    /*
     @Input("filters")
     public set filters(filters:  {key: string, value: string, disabled?: boolean}[]) {
         this._filters = filters.slice();
@@ -199,39 +211,42 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
           values.push(f.value);
         });
     }
-    
-    public isFilterDisabled(key: string, value: string) {
-        return this._disabledFilters.some(f => (f.key === key && f.value === value));
+    */
+  public get filters() {
+    let retVal = [];
+    if(this.dataMartService) {
+      if(isNotNull(this.dataMartService.sampleSetMatchKey)){
+        retVal.push({key: 'matchKey', name: 'Match Key', value: this.dataMartService.sampleSetMatchKey});
+      }
+      if(isNotNull(this.dataMartService.sampleSetPrinciple)){
+        retVal.push({key: 'principle', name: 'Principle', value: this.dataMartService.sampleSetPrinciple});
+      }
     }
-    
-    public get filterKeys(): string[] {
-        return this._filterKeys;
-    }
-    
-    public getFiltersByKey(key: string) : string[] {
-        const result = this._filterValuesByKey[key];
-        if (!result) return [];
-        return result;
+    return retVal;
+  }
+
+    public get isFiltered(): boolean {
+      let retVal = false;
+      if(this.dataMartService) {
+        if(isNotNull(this.dataMartService.sampleSetMatchKey)) {
+          retVal = true;
+        }
+        if(isNotNull(this.dataMartService.sampleSetPrinciple)) {
+          retVal = true;
+        }
+      }
+      return retVal
     }
     
     public clearFilters(key: string | undefined | null = undefined,
                           value : string | undefined | null = undefined)
     {
-        let filtersToClear;
-        if (!key && !value) {
-          filtersToClear = this.filters;
-    
-        } else if (!value) {
-          filtersToClear = this.filters.filter(f => f.key === key);
-    
-        } else {
-          filtersToClear = this.filters.filter(f => f.key === key && f.value === value);
-    
-        }
-        if (filtersToClear && filtersToClear.length > 0) {
-          this.clearFiltersEmitter.emit(filtersToClear);
-    
-        }
+      if(key === 'matchKey') {
+        this.dataMartService.sampleSetMatchKey = undefined;
+      }
+      if(key === 'principle') {
+        this.dataMartService.sampleSetPrinciple = undefined;
+      }
     }
     
     public get pageSize() : number {

@@ -2,15 +2,16 @@
 <!-- Start Context Menus -->
 <ng-template #sz_dt_header_context_menu let-col>
     <div class="sz-dt-header-context-menu" cdkMenu>
-      <button class="header-context-menu-item" cdkMenuItem *ngIf="!isColumnHidden(col.key)" (click)="selectColumn(col.key, false)">Hide Column</button>
-      <button class="header-context-menu-item" cdkMenuItem *ngIf="isColumnHidden(col.key)" (click)="selectColumn(col.key, true)">Show Column</button>
-      <button class="header-context-menu-item" cdkMenuItem 
-        [cdkMenuTriggerFor]="sz_dt_header_column_order_context_menu"
-        [cdkMenuTriggerData]="{$implicit: col}"
-      >Column Order</button>
-      <button class="header-context-menu-item" cdkMenuItem 
-      [cdkMenuTriggerFor]="sz_dt_header_row_order_context_menu"
-      [cdkMenuTriggerData]="{$implicit: col}">Order By {{col.value}}</button>
+        <button class="header-context-menu-item" *ngIf="col.key === 'matchKey'" cdkMenuItem (click)="openFilterDialog()">Filter By Match Key</button>
+        <button class="header-context-menu-item" cdkMenuItem *ngIf="!isColumnHidden(col.key)" (click)="selectColumn(col.key, false)">Hide Column</button>
+        <button class="header-context-menu-item" cdkMenuItem *ngIf="isColumnHidden(col.key)" (click)="selectColumn(col.key, true)">Show Column</button>
+        <button class="header-context-menu-item" cdkMenuItem 
+            [cdkMenuTriggerFor]="sz_dt_header_column_order_context_menu"
+            [cdkMenuTriggerData]="{$implicit: col}"
+        >Column Order</button>
+        <button class="header-context-menu-item" cdkMenuItem 
+        [cdkMenuTriggerFor]="sz_dt_header_row_order_context_menu"
+        [cdkMenuTriggerData]="{$implicit: col}">Order By {{col.value}}</button>
     </div>
 </ng-template>
 <ng-template #sz_dt_header_column_order_context_menu let-col>
@@ -31,8 +32,10 @@
 </ng-template>
 <ng-template #sz_dt_cell_context_menu let-data>
     <div class="sz-dt-header-context-menu" cdkMenu>
-    <button class="header-context-menu-item" cdkMenuItem (click)="copyCellContent(data.cell, data.cellData)">Copy Cell As JSON</button>
-    <button class="header-context-menu-item" cdkMenuItem (click)="copyRowContent(data.row, data.rowData)">Copy Row As JSON</button>
+        <button class="header-context-menu-item" *ngIf="data.col.key === 'matchKey'" cdkMenuItem (click)="openFilterDialog()">Filter By Match Key</button>
+        <button class="header-context-menu-item" cdkMenuItem (click)="copyCellContent(data.cell, data.cellData)">Copy Cell As JSON</button>
+        <button class="header-context-menu-item" cdkMenuItem (click)="copyRowContent(data.row, data.rowData)">Copy Row As JSON</button>
+
     <!--<button class="header-context-menu-item" cdkMenuItem (click)="minimizeCol(data.col)">Minimize Column</button>-->
     </div>
 </ng-template>
@@ -103,7 +106,6 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                 [attr.data-field-name]="col.key"
                 [attr.data-col-order]="columnOrder(col.key)"
                 [attr.data-col-value-count]="getRowCountForField(col.key)"
-                
                 >
                 <span class="col-name-text">{{col.value}}</span>
                 <div *ngIf="getRowCountForField(col.key) === 0" class="no-data-icon-wrapper has-tooltip">
@@ -120,6 +122,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                 <div *ngIf="getRowCountForField(col.key) > 0" class="handle-resize"
                 (mousedown)="onResizeMouseDown(col.key, $event)"
                 (mouseup)="onResizeMouseUp(col.key, $event)"></div>
+                <span *ngIf="col.key === 'matchKey'" class="icon-filter descending mdi--filter" (click)="openFilterDialog()"></span>
             </th>
             <!--<div class="leftdragbar" onmousedown="startColResize(col.key)" onmouseup="endColResize(col.key)"></div>-->
         <!--</ng-container>-->

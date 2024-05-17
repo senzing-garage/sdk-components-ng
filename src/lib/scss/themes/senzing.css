@@ -7,6 +7,7 @@ body {
   --sz-color-possible-matches: #C9741F;
   --sz-color-disclosed: #2B7169;
   --sz-color-ambiguous: #7b00ad;
+  --sz-color-dialog-header: #b3b3b3;
   --sz-search-button-submit-color: #FFFFFF;
   --sz-search-button-clear-color: #FFFFFF;
   --sz-search-button-submit-font-size: 10px;

@@ -97,6 +97,8 @@ body {
   --sz-color-how-report: #{$sz-lime};
   --sz-color-why-report: #{$sz-teal};
   --sz-color-config-warning: #{$sz-config-warn-color};
+  --sz-color-dialog-header: #{$sz-light-grey};
+  --sz-color-dialog-header-border: #{$sz-dark-grey};
 
   /* search box vars */
   --sz-search-button-submit-color: #{$sz-white};

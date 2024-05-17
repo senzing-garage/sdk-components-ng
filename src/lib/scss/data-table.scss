@@ -148,6 +148,49 @@ sz-cross-source-pager {
     }
 }
 
+.sz-dt-filter-menu {
+    font-family: "Open-Sans", "Helvetica Neue", Arial, sans-serif;
+    max-width: 420px !important;
+    .mat-mdc-menu-content {
+        padding: 0;
+        max-width: none;
+        width: unset !important;
+        max-height: calc(100vh - 150px) !important;
+        position: relative;
+    }
+    .filter-title {
+        font-size: 14px;
+        text-align: center;
+        background-color: var(--sz-color-dialog-header);
+        color: black;
+        padding: 4px 8px;
+        border-bottom: 1px solid var(--sz-color-dialog-header-border);
+    }
+    .mat-mdc-menu-item {
+        font-size: 12px;
+        line-height: 12px;
+        .clear-filter-icon {
+            font-size: 20px;
+        }
+        .mat-ripple {
+            display: none !important;
+        }
+        .mdc-list-item__primary-text {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            
+            label {
+                font-size: 12px;
+                max-width: 380px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                margin-left: 6px;
+            }
+        }
+    }
+}
+
 sz-cross-source-results {
     tbody .sz-dt-entity-id-cell .more-button {
         .mat-mdc-button-touch-target {
@@ -170,6 +213,7 @@ sz-cross-source-results {
         mat-radio-button {
             label {
                 font-size: 12px;
+                line-height: 15px;
             }
             .mdc-radio__background::before {
                 display: none;
