@@ -21,7 +21,9 @@ import {
     SzDetailLevel,
     SzPagedRelationsResponse,
     SzRelationsPage,
-    SzRelation
+    SzRelation,
+    SzMatchCounts,
+    SzRelationCounts
 } from '@senzing/rest-api-client-ng';
 
 import { take, tap, map, catchError, takeUntil, filter, distinctUntilChanged } from 'rxjs/operators';
@@ -50,6 +52,7 @@ export class SzStatSampleSet {
     private _entities               = new Map<SzEntityIdentifier, SzEntityData>();
     private _entityPages: Map<number, SzEntitiesPage>       = new Map<number, SzEntitiesPage>();
     private _relationPages: Map<number, SzRelationsPage>    = new Map<number, SzRelationsPage>();
+    private _doNotFetchOnParameterChange                    = false;
     /**
      * We store the parameters used to contruct the initial request here 
      * so we can update individual properties when they change and pull new 
@@ -84,7 +87,18 @@ export class SzStatSampleSet {
         return this._requestParameters && this._requestParameters.matchKey ? this._requestParameters.matchKey : undefined;
     }
     public set matchKey(value: string) {
+        let _oVal = this._requestParameters.matchKey ? this._requestParameters.matchKey : undefined;
         if(this._requestParameters) this._requestParameters.matchKey = value;
+        if(_oVal !== value && !this._doNotFetchOnParameterChange) {
+            // wipe out all previous pages (they will have incorrect "bound" values)
+            if(this._isRelationsResponse && this._relationPages && this._relationPages.clear) {
+                this._relationPages.clear();
+            } else if(this._entityPages && this._entityPages.clear) {
+                this._entityPages.clear();
+            }
+            // get new sampleset
+            this.updateDataWithParameters();
+        }
     }
     public get principle() {
         return this._requestParameters && this._requestParameters.principle ? this._requestParameters.principle : undefined;
@@ -111,7 +125,7 @@ export class SzStatSampleSet {
     public set pageSize(value: number) {
         let _oVal = (this._requestParameters && this._requestParameters.pageSize) ? this._requestParameters.pageSize : this.prefs.dataMart.samplePageSize;
         this.prefs.dataMart.samplePageSize   = value;
-        if(_oVal !== value) {
+        if(_oVal !== value && !this._doNotFetchOnParameterChange) {
             // wipe out all previous pages (they will have incorrect "bound" values)
             if(this._isRelationsResponse && this._relationPages && this._relationPages.clear) {
                 this._relationPages.clear();
@@ -128,7 +142,7 @@ export class SzStatSampleSet {
 
     public set pageIndex(value: number) {
         // first check if we're already on that page
-        if(value !== this._currentPage) {
+        if(value !== this._currentPage && !this._doNotFetchOnParameterChange) {
             if(this._isRelationsResponse && this._relationPages.has(value)) {
                 // grab previous value
                 this._currentPage = value;
@@ -256,6 +270,10 @@ export class SzStatSampleSet {
         return retVal;
     };
 
+    public set doNotFetchOnParameterChange(value: boolean) {
+        this._doNotFetchOnParameterChange = value;
+    }
+
     // -------------------------------- event subjects and observeabled --------------------------------
 
     private _onDataUpdated: BehaviorSubject<SzEntityData[] | SzRelation[]>      = new BehaviorSubject<SzEntityData[]>(undefined);
@@ -312,6 +330,11 @@ export class SzStatSampleSet {
     public init() {
         if(this.hasEnoughParametersForRequest) {
             //console.log(`\tinit(): `, this._dataSource1, this._dataSource2);
+            this.getSampleDataFromParameters();
+        }
+    }
+    public refresh() {
+        if(this.hasEnoughParametersForRequest) {
             this.getSampleDataFromParameters();
         }
     }
@@ -708,6 +731,9 @@ export class SzDataMartService {
     private _dataSourceDetails: SzDataSourcesResponseData | undefined;
     private _dataSourcesInFlight: boolean = false;
     private _sampleSet: SzStatSampleSet;
+    private _sampleSetMatchKey: string;
+    private _sampleSetPrinciple: string;
+    private _doNotFetchSampleSetOnParameterChange: boolean = false;
     //private _sampleStatType: SzCrossSourceSummaryCategoryType | undefined;
 
     public get sampleStatType() : SzCrossSourceSummaryCategoryType {
@@ -752,10 +778,42 @@ export class SzDataMartService {
         }
     }
 
+    public set doNotFetchSampleSetOnParameterChange(value: boolean) {
+        if(this._sampleSet) {
+            this._sampleSet.doNotFetchOnParameterChange = value;
+        }
+    }
+
     public set sampleSetPage(value: number) {
         if(this._sampleSet) {
             this._sampleSet.pageIndex = value;
         }
+    }
+
+    public set sampleSetMatchKey(value: string) {
+        this._sampleSetMatchKey = value;
+        if(this._sampleSet) {
+            this._sampleSet.matchKey = value;
+        } else {
+            // first request ??
+            this._sampleSetMatchKey  = value;
+        }
+    }
+
+    public set sampleSetPrinciple(value: string) {
+        if(this._sampleSet) {
+            this._sampleSet.principle = value;
+        } else {
+            this._sampleSetPrinciple = value;
+        }
+    }
+
+    public get sampleSetMatchKey(): string {
+        return this._sampleSet ? this._sampleSet.matchKey : this._sampleSetMatchKey;
+    }
+
+    public get sampleSetPrinciple(): string {
+        return this._sampleSet ? this._sampleSet.principle : this._sampleSetPrinciple;
     }
 
     public get dataSource1() {
@@ -794,7 +852,7 @@ export class SzDataMartService {
             return prev !== current;
         }),
         tap((res) => {
-            console.warn(`DataMartService._onSampleRequest`, res);
+            //console.warn(`DataMartService._onSampleRequest`, res);
         })
     );
     /** when the sampleset requested returns no results */
@@ -845,9 +903,9 @@ export class SzDataMartService {
                 this._dataSourceDetails = dsDetails.dataSourceDetails;
             })
         }
-        this.onSampleRequest.subscribe((isLoading)=>{
+        /*this.onSampleRequest.subscribe((isLoading)=>{
             console.warn(`DataMartService.onSampleRequest: ${isLoading}`);
-        });
+        });*/
     }
 
     public get loadedStatistics(): SzLoadedStats | undefined {
@@ -962,9 +1020,9 @@ export class SzDataMartService {
             })
         )
     }
-    public getCrossSourceStatistics(dataSource1?: string | undefined, dataSource2?: string | undefined) {
+    public getCrossSourceStatistics(dataSource1?: string | undefined, dataSource2?: string | undefined, matchKey?: string) {
         if(dataSource1 && dataSource2) {
-            return this.statsService.getCrossSourceSummaryStatistics(dataSource1, dataSource2).pipe(
+            return this.statsService.getCrossSourceSummaryStatistics(dataSource1, dataSource2, matchKey).pipe(
                 tap((response) => {
                     if(response && response.data) {
                         this.onCrossSourceSummaryStats.next(response.data);
@@ -977,7 +1035,7 @@ export class SzDataMartService {
                 map((response: SzCrossSourceSummaryResponse)=> response.data)
             );
         } else if(dataSource1) {
-            return this.statsService.getCrossSourceSummaryStatistics(dataSource1, dataSource1).pipe(
+            return this.statsService.getCrossSourceSummaryStatistics(dataSource1, dataSource1, matchKey).pipe(
                 tap((response) => {
                     if(response && response.data) {
                         this.onCrossSourceSummaryStats.next(response.data);
@@ -990,7 +1048,7 @@ export class SzDataMartService {
                 map((response: SzCrossSourceSummaryResponse)=> response.data)
             );
         } else if(dataSource2) {
-            return this.statsService.getCrossSourceSummaryStatistics(dataSource2, dataSource2).pipe(
+            return this.statsService.getCrossSourceSummaryStatistics(dataSource2, dataSource2, matchKey).pipe(
                 tap((response) => {
                     if(response && response.data) {
                         this.onCrossSourceSummaryStats.next(response.data);
@@ -1004,6 +1062,40 @@ export class SzDataMartService {
             );
         } else {
             throw new Error('at least one datasource must be selected for cross-source statistics. datasouces may be the same to compare to self.');
+        }
+    }
+
+    public getCrossSourceStatisticsByStatTypeFromData(statType: SzCrossSourceSummaryCategoryType, data: SzCrossSourceSummary): Array<SzRelationCounts> | Array<SzMatchCounts> {
+        let _statKey    = 'matches';
+        switch(statType){
+            case SzCrossSourceSummaryCategoryType.AMBIGUOUS_MATCHES:
+                _statKey = 'ambiguousMatches';
+                break;
+            case SzCrossSourceSummaryCategoryType.DISCLOSED_RELATIONS:
+                _statKey = 'disclosedRelations';
+                break;
+            case SzCrossSourceSummaryCategoryType.MATCHES:
+                _statKey = 'matches';
+                break;
+            case SzCrossSourceSummaryCategoryType.POSSIBLE_MATCHES:
+                _statKey = 'possibleMatches';
+                break;
+            case SzCrossSourceSummaryCategoryType.POSSIBLE_RELATIONS:
+                _statKey = 'possibleRelations';
+                break;
+            default:
+                _statKey = 'matches';
+                break;
+        }
+        if(data && data[_statKey]) {
+            return data[_statKey]
+        }
+        return undefined;
+    }
+
+    public refreshSampleSet() {
+        if(this._sampleSet) {
+            this._sampleSet.refresh();
         }
     }
 
@@ -1036,7 +1128,10 @@ export class SzDataMartService {
         this._sampleSet = new SzStatSampleSet({
             statType: statType,
             dataSource1: dataSource1,
-            dataSource2: dataSource2
+            dataSource2: dataSource2,
+            matchKey: matchKey,
+            principle: principle,
+            pageSize: pageSize
         }, this.prefs, this.statsService, this.entityDataService);
         
         this._onSampleResultChange$ = this._sampleSet.onDataUpdated.pipe(
@@ -1058,7 +1153,7 @@ export class SzDataMartService {
         this._onSampleRequest$   = this._sampleSet.loading.pipe(
             tap((res) =>{
                 // bubble up sample set evt to service scope
-                console.log(`SzDataMartService.onSampleRequest: ${res}`);
+                //console.log(`SzDataMartService.onSampleRequest: ${res}`);
                 this._onSampleRequest.next(res);
             })
         ).subscribe();
@@ -1073,9 +1168,6 @@ export class SzDataMartService {
         return this._sampleSet.onDataUpdated;
     }
 
-    public getSampleSetPagingInfo() {
-
-    }
     /*public getRecordCounts(): Observable<any> {
         let retVal = new Observable();
         // for now just return stub data

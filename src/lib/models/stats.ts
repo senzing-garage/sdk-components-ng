@@ -1,4 +1,5 @@
-import { SzLoadedStats, SzSourceLoadedStats, SzLoadedStatsResponse, SzResolvedEntity, SzRelatedEntity, SzRecord, SzMatchedRecord, SzEntityRecord, SzRelation, SzEntity, SzBoundType } from "@senzing/rest-api-client-ng";
+import { SzLoadedStats, SzSourceLoadedStats, SzLoadedStatsResponse, SzResolvedEntity, SzRelatedEntity, SzRecord, SzMatchedRecord, SzEntityRecord, SzRelation, SzEntity, SzBoundType, SzCrossSourceSummary } from "@senzing/rest-api-client-ng";
+import { Observable } from "rxjs";
 
 export interface SzCountStatsForDataSourcesResponse extends SzLoadedStatsResponse {
     /** override with extended */
@@ -231,4 +232,44 @@ export interface SzStatSampleSetPageChangeEvent extends SzStatSampleSetParameter
     minimumValue?: string | number;
     pageMaximumValue?: string | number;
     pageMinimumValue?: string | number;
+}
+
+/** http requests object that wraps the three different api observeables that need to 
+ * happen before the summary component can be rendered. (basically a httpRequest rollup)
+ */
+export interface SzCrossSourceSummaryRequests {
+  fromDataSource?: Observable<SzCrossSourceSummary> | Observable<boolean> 
+  overlapDataSource?: Observable<SzCrossSourceSummary> | Observable<boolean> 
+  toDataSource?: Observable<SzCrossSourceSummary> | Observable<boolean>
+}
+/** data response object that wraps the three different api calls that need to 
+ * happen before the summary component can be rendered. (basically a httpResponse rollup)
+ */
+export interface SzCrossSourceSummaryResponses {
+  fromDataSource?: SzCrossSourceSummary
+  overlapDataSource?: SzCrossSourceSummary
+  toDataSource?: SzCrossSourceSummary
+}
+
+export interface SzCrossSourceCount {
+    /**
+     * The optional match key associated with the statistics.  This may be `null` or absent if the statistics are not associated with a match key.
+     */
+    matchKey?: string;
+    /**
+     * The optional principle associated with the statistics.  This may be `null` or absent if the statistics are not associated with a principle.
+     */
+    principle?: string;
+    /**
+     * The number of entities having at least one record from the primary data source related by a relationship of the respective relationship type to  an entity with at least one record from the \"versus\" data source.
+     */
+    entityCount?: number;
+    /**
+     * The number of records from the primary data source in the entities described by the `entityCount`.  NOTE: this is not the total number of records in those entities, but only the count of those records from the primary data source.
+     */
+    recordCount?: number;
+    /**
+     * The number of relationships of the respective relationship type between entities having at least one record from the primary data source and entities having at least one record from the \"versus\" data source.
+     */
+    relationCount?: number;
 }

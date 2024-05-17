@@ -2,29 +2,14 @@ import { Component, Output, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, 
 import { Observable, Subject, forkJoin, of } from 'rxjs';
 import { skipWhile, take, takeUntil } from 'rxjs/operators';
 
-import { SzCrossSourceSummary, SzRelationCounts } from '@senzing/rest-api-client-ng';
+import { SzCrossSourceSummary, SzMatchCounts, SzRelationCounts } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../services/sz-prefs.service';
-import { SzCrossSourceSummaryCategoryType, SzCrossSourceSummarySelectionClickEvent } from '../../models/stats';
+import { SzCrossSourceCount, SzCrossSourceSummaryCategoryType, SzCrossSourceSummaryResponses, SzCrossSourceSummarySelectionClickEvent } from '../../models/stats';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzDataSourcesService } from '../../services/sz-datasources.service';
 import { parseBool } from '../../common/utils';
-
-/** http requests object that wraps the three different api observeables that need to 
- * happen before the component can be rendered. (basically a httpRequest rollup)
- */
-export interface crossSourceSummaryRequests {
-  fromDataSource?: Observable<SzCrossSourceSummary> | Observable<boolean> 
-  overlapDataSource?: Observable<SzCrossSourceSummary> | Observable<boolean> 
-  toDataSource?: Observable<SzCrossSourceSummary> | Observable<boolean>
-}
-/** data response object that wraps the three different api calls that need to 
- * happen before the component can be rendered. (basically a httpResponse rollup)
- */
-export interface crossSourceSummaryResponses {
-  fromDataSource?: SzCrossSourceSummary
-  overlapDataSource?: SzCrossSourceSummary
-  toDataSource?: SzCrossSourceSummary
-}
+import { MatDialog } from '@angular/material/dialog';
+import { SzCrossSourceSummaryMatchKeyPickerDialog } from './sz-cross-source-matchkey-picker.component';
 
 /**
  * Embeddable Venn Diagrams component that illustrates:
@@ -175,7 +160,8 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
     public prefs: SzPrefsService,
     private cd: ChangeDetectorRef,
     private dataMartService: SzDataMartService,
-    private dataSourcesService: SzDataSourcesService
+    private dataSourcesService: SzDataSourcesService,
+    public dialog: MatDialog
   ) {}
 
   /**
@@ -226,11 +212,11 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
 
     // stat requests
     let dataRequests = forkJoin({
-      fromDataSource: this.dataMartService.dataSource1 ? this.dataMartService.getCrossSourceStatistics(this.dataMartService.dataSource1) : of(false),
+      fromDataSource: this.dataMartService.dataSource1 ? this.dataMartService.getCrossSourceStatistics(this.dataMartService.dataSource1, undefined, '*') : of(false),
       overlapDataSource: this.dataMartService.dataSource1 && this.dataMartService.dataSource2 && this.dataMartService.dataSource1 !== this.dataMartService.dataSource2 ? this.dataMartService.getCrossSourceStatistics(
         this.dataMartService.dataSource1, 
-        this.dataMartService.dataSource2): of(false),
-      toDataSource: this.dataMartService.dataSource2 ? this.dataMartService.getCrossSourceStatistics(this.dataMartService.dataSource2) : of(false)
+        this.dataMartService.dataSource2, '*'): of(false),
+      toDataSource: this.dataMartService.dataSource2 ? this.dataMartService.getCrossSourceStatistics(this.dataMartService.dataSource2, undefined, '*') : of(false)
       });
 
     dataRequests.pipe(
@@ -260,7 +246,7 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
    * retrieval through variables/getters/setters.
    * @internal
   */
-  private onCrossSourceDataChanged(data: crossSourceSummaryResponses) {
+  private onCrossSourceDataChanged(data: SzCrossSourceSummaryResponses) {
     if(data && data.fromDataSource) {
       this._fromDataSourceSummaryData = data.fromDataSource;
     }
@@ -270,7 +256,7 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
     if(data && data.toDataSource) {
       this._toDataSourceSummaryData = data.toDataSource;
     }
-    console.log(`onCrossSourceDataChanged: `, this._fromDataSourceSummaryData, this._crossSourceSummaryData, this._toDataSourceSummaryData);
+    console.warn(`onCrossSourceDataChanged: `, this._fromDataSourceSummaryData, this._crossSourceSummaryData, this._toDataSourceSummaryData);
   }
   /** when a circle diagram is clicked for a particular stat this handler is invoked which then emits 
    * a 'summaryDiagramClick' event that can be listened for.
@@ -279,15 +265,34 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   diagramClick(clickEvent: MouseEvent, diagramSection: string, matchLevel: number, statType: SzCrossSourceSummaryCategoryType) {
     let newFromDataSource;
     let newToDataSource;
+    let _statTypeData: SzCrossSourceSummary;
     if (diagramSection === 'LEFT') {
       newFromDataSource = this.fromDataSource;
       newToDataSource = this.fromDataSource;
+      if(this._fromDataSourceSummaryData) {
+        _statTypeData = this._fromDataSourceSummaryData;
+      }
     } else if (diagramSection === 'RIGHT') {
       newFromDataSource = this.toDataSource;
       newToDataSource = this.toDataSource;
+      if(this._toDataSourceSummaryData) {
+        _statTypeData = this._toDataSourceSummaryData;
+      }
     } else if (diagramSection === 'OVERLAP') {
       newFromDataSource = this.fromDataSource;
       newToDataSource = this.toDataSource;
+      if(this._crossSourceSummaryData) {
+        _statTypeData = this._crossSourceSummaryData;
+      }
+    }
+
+    if(_statTypeData) {
+      let dialogData = this.dataMartService.getCrossSourceStatisticsByStatTypeFromData(statType, _statTypeData)
+      console.log(`SzCrossSourceSummaryComponent.dialogData: ${diagramSection}, ${matchLevel}, ${statType}`, dialogData);
+      if(dialogData && dialogData.length > 1) {
+        this.openMatchKeyFilteringForSelection(dialogData, statType);
+        return;
+      }
     }
     console.log(`SzCrossSourceSummaryComponent.diagramClick: ${diagramSection}, ${matchLevel}, ${statType}`);
 
@@ -306,5 +311,17 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
       matchLevel: matchLevel,
       statType: statType
     }) as SzCrossSourceSummarySelectionClickEvent);
+  }
+
+  public openMatchKeyFilteringForSelection(data: Array<SzCrossSourceCount>, statType: SzCrossSourceSummaryCategoryType) {
+    this.dialog.open(SzCrossSourceSummaryMatchKeyPickerDialog, {
+      panelClass: 'sz-css-matchkey-picker-dialog-panel',
+      minWidth: 200,
+      height: 'var(--sz-css-matchkey-picker-dialog-default-height)',
+      data: {
+        data: data, 
+        statType: statType
+      }
+    });
   }
 }

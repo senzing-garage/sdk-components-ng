@@ -164,6 +164,21 @@ sz-cross-source-results {
         }
     }
 }
+
+.sz-css-matchkey-picker-dialog-panel {
+    sz-css-matchkeys-dialog {
+        mat-radio-button {
+            label {
+                font-size: 12px;
+            }
+            .mdc-radio__background::before {
+                display: none;
+            }
+        }
+
+    }
+}
+
 sz-cross-source-summary {
     sz-venn-diagram {
         button.count-button {
