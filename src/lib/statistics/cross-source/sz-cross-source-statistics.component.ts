@@ -255,6 +255,21 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
       }
       this.dataMartService.sampleMatchLevel   = evt.matchLevel;
       this.dataMartService.sampleStatType     = evt.statType as SzCrossSourceSummaryCategoryType;
+      // get filter counts
+      this.dataMartService.getCrossSourceStatistics(
+        this.dataMartService.dataSource1 ? this.dataMartService.dataSource1 : (this.dataMartService.dataSource2 ? this.dataMartService.dataSource2 : undefined), 
+        this.dataMartService.dataSource1 && this.dataMartService.dataSource2 && this.dataMartService.dataSource1 !== this.dataMartService.dataSource2 ? this.dataMartService.dataSource2 : undefined, 
+        '*'
+      ).pipe(
+        takeUntil(this.unsubscribe$),
+        take(1)
+      ).subscribe((matchKeyCounts) => {
+        let _statTypeData = this.dataMartService.getCrossSourceStatisticsByStatTypeFromData(this.dataMartService.sampleStatType, matchKeyCounts);
+        if(_statTypeData){
+          this.dataMartService.matchKeyCounts = _statTypeData
+        }
+        //console.log('default match key counts: ', _statTypeData, matchKeyCounts);
+      })
 
       this._title = this._getTitleFromEvent(evt);
       this.cd.detectChanges();

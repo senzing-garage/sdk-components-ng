@@ -50,6 +50,25 @@ button[mat-menu-item].selected-to-data-source:hover {
   color: var(--sz-font-color);
   font-size: var(--sz-font-size);
 
+  &.show-hidden {
+    height: unset !important;
+    .stats .records-label__wrapper {
+      resize: both;
+    }
+
+    .legend .legend-items.unlisted {
+      display: flex;
+    }
+    .stats .other-datasources__link{
+      .show-more {
+        display: none;
+      }
+      .show-less {
+        display: block;
+      }
+    }
+  }
+
 
   .stats {
     flex-grow: 10;
@@ -59,6 +78,24 @@ button[mat-menu-item].selected-to-data-source:hover {
     color: $sz-font-color-1;
     padding-top: 20px;
     font-family: Roboto, "Helvetica Neue", sans-serif;
+
+    .other-datasources__link {
+      cursor: pointer;
+      a {
+        color: var(--sz-donut-chart-link-color);
+        font-size: var(--sz-donut-chart-link-font-size);
+        
+        &:hover, &:active {
+          text-decoration: underline;
+        }
+      }
+      .show-less {
+        display: none;
+      }
+      .show-more {
+        display: block;
+      }
+    }
 
     .total-data-sources__label {
       display: flex;
@@ -129,6 +166,7 @@ button[mat-menu-item].selected-to-data-source:hover {
       /*max-height: 180px;*/
       overflow: auto;
       padding-right: 15px;
+      height: calc(var(--sz-donut-chart-height) - 62px);
 
       .legend.from-data-source {
         max-height: none;
@@ -224,6 +262,11 @@ button[mat-menu-item].selected-to-data-source:hover {
     display: flex;
     align-items: center;
     height: 25px;
+
+    &.unlisted {
+      display: none;
+    }
+
     button.from-data-source {
       color: $sz-font-color-1;
       border: 0px none transparent;

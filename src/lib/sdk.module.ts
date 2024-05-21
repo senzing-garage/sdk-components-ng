@@ -223,6 +223,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzConfigurationAboutComponent,
         SzDataTable,
         SzCrossSourceResultsDataTable,
+        SzCrossSourceSelectComponent,
         SzCrossSourceStatistics,
         SzCrossSourceSummaryComponent,
         SzDecimalPercentPipe,

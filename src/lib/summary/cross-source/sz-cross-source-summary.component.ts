@@ -49,6 +49,7 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   private _toDataSourceSummaryData: SzCrossSourceSummary | undefined;
   /** @internal */
   private _disableClickingOnZeroResults: boolean = true;
+  private _openMatchKeyFiltersOnSelection: boolean = false;
   
   private _filterPickerDialog: MatDialogRef<SzCrossSourceSummaryMatchKeyPickerDialog>;
   private _diagramClickEventPayload;
@@ -141,6 +142,14 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   /** @internal */
   public get disableClickOnZero(): boolean {
     return this._disableClickingOnZeroResults;
+  }
+  /** whether or not to disable clicking on venn diagrams with "0" results */
+  @Input() set openMatchKeyFiltersOnSelection(value: boolean | string) {
+    this._openMatchKeyFiltersOnSelection = parseBool(value);
+  }
+    /** whether or not to disable clicking on venn diagrams with "0" results */
+  get openMatchKeyFiltersOnSelection(): boolean {
+    return this._openMatchKeyFiltersOnSelection;
   }
 
   // ------------------------------------ event emitters ------------------------------------
@@ -299,18 +308,22 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
     });
 
     if(_statTypeData) {
+      this.dataMartService.matchKeyCounts = this.dataMartService.getCrossSourceStatisticsByStatTypeFromData(statType, _statTypeData);
+    }
+    /*if(_statTypeData) {
       let dialogData = this.dataMartService.getCrossSourceStatisticsByStatTypeFromData(statType, _statTypeData)
       // store the match key counts so we have them even if the user doesn't select 
       // a filter to be applied
       this.dataMartService.matchKeyCounts = dialogData;
 
       console.log(`SzCrossSourceSummaryComponent.dialogData: ${diagramSection}, ${matchLevel}, ${statType}`, dialogData);
-      if(this.prefs.dataMart.showMatchKeyFiltersOnSelect && dialogData && dialogData.length > 1) {
+      if(this._openMatchKeyFiltersOnSelection && this.prefs.dataMart.showMatchKeyFiltersOnSelect && dialogData && dialogData.length > 1) {
         this.openMatchKeyFilteringForSelection(dialogData, statType);
         return;
       }
     }
     console.log(`SzCrossSourceSummaryComponent.diagramClick: ${diagramSection}, ${matchLevel}, ${statType}`);
+    */
 
     // emit event
     this.summaryDiagramClick.emit({

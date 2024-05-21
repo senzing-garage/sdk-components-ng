@@ -115,6 +115,26 @@ export class SzStatSampleSet {
     }
     public set bound(value: string) {
         if(this._requestParameters) this._requestParameters.bound = value;
+        if(value) {
+            // we might need to jump page(s)
+            if((this.currentPage.maximumValue as string) === value) {
+                // we're jumping to the last page
+                let _lastPage       = Math.ceil(this.totalCount / this.pageSize);
+                console.warn(`!!! changing to last page(${_lastPage}): (${this.currentPage.maximumValue} as string) === ${value}`)
+                this._currentPage   = _lastPage;
+                if(!this._doNotFetchOnParameterChange) this.getSampleDataFromParameters();
+            } else if((this.currentPage.minimumValue as string) === value) {
+                console.warn(`!!! changing to first page: (${this.currentPage.minimumValue} as string) === ${value}`);
+                this._currentPage = 0;
+                if(!this._doNotFetchOnParameterChange) this.getSampleDataFromParameters();
+            }
+        }
+    }
+    public get boundType() {
+        return this._requestParameters && this._requestParameters.boundType ? this._requestParameters.boundType : undefined;
+    }
+    public set boundType(value: SzBoundType) {
+        if(this._requestParameters) this._requestParameters.boundType = value;
     }
     public get sampleSize() {
         return this._requestParameters && this._requestParameters.sampleSize ? this._requestParameters.sampleSize : undefined;
@@ -427,7 +447,7 @@ export class SzStatSampleSet {
      * Constructs the actual DataMart API call from its' parameters and retuns a Observeable.
      * @returns Observable<SzEntitiesPage | SzRelationsPage | Error
      */
-    private _getNewSampleSet(statType: SzCrossSourceSummaryCategoryType, dataSource1?: string | undefined, dataSource2?: string | undefined, matchKey?: string, principle?: string, bound?: string, sampleSize?: number, pageSize?: number) : Observable<SzEntitiesPage | SzRelationsPage | Error> {
+    private _getNewSampleSet(statType: SzCrossSourceSummaryCategoryType, dataSource1?: string | undefined, dataSource2?: string | undefined, matchKey?: string, principle?: string, bound?: string, boundType?: SzBoundType, sampleSize?: number, pageSize?: number) : Observable<SzEntitiesPage | SzRelationsPage | Error> {
         let isVersus = true;
         let isOneDataSourceUndefined = dataSource1 === undefined || dataSource2 === undefined;
         let apiMethod = 'getEntityIdsForCrossMatches';
@@ -485,9 +505,9 @@ export class SzStatSampleSet {
         }
         let _disAmbiMethod = this.statsService[apiMethod];
         if(isVersus) {
-            console.log(`\t\t\tcalling versus "${apiMethod}(${dataSource1},${dataSource2}, ${matchKey}, ${principle}, ${bound}, undefined, ${pageSize}, ${sampleSize})"`);
+            console.log(`\t\t\tcalling versus "${apiMethod}(${dataSource1},${dataSource2}, ${matchKey}, ${principle}, ${bound}, ${boundType}, ${pageSize}, ${sampleSize})"`);
             // dataSourceCode: string, vsDataSourceCode: string, matchKey?: string, principle?: string, bound?: string, boundType?: SzBoundType, pageSize?: number, sampleSize?: number, observe?: 'body', reportProgress?: boolean
-            return _disAmbiMethod.call(this.statsService, dataSource1, dataSource2, matchKey, principle, bound, undefined, pageSize, sampleSize).pipe(
+            return _disAmbiMethod.call(this.statsService, dataSource1, dataSource2, matchKey, principle, bound, boundType, pageSize, sampleSize).pipe(
                 tap((response: SzPagedEntitiesResponse | SzPagedRelationsResponse) => {
                     console.log(`got cross source entity id's or relations: `, response);
                     if(response && response.data) {
@@ -504,9 +524,9 @@ export class SzStatSampleSet {
                 })
             )
         } else {
-            console.log(`\t\t\tcalling "${apiMethod}(${dataSource1}, ${matchKey}, ${principle}, ${bound}, undefined, ${pageSize}, ${sampleSize})"`);
+            console.log(`\t\t\tcalling "${apiMethod}(${dataSource1}, ${matchKey}, ${principle}, ${bound}, ${boundType}, ${pageSize}, ${sampleSize})"`);
             // dataSourceCode: string, matchKey?: string, principle?: string, bound?: number, boundType?: SzBoundType, pageSize?: number, sampleSize?: number, observe?: 'body', reportProgress?: boolean
-            return _disAmbiMethod.call(this.statsService, dataSource1, matchKey, principle, bound, undefined, pageSize, sampleSize).pipe(
+            return _disAmbiMethod.call(this.statsService, dataSource1, matchKey, principle, bound, boundType, pageSize, sampleSize).pipe(
                 tap((response: SzPagedEntitiesResponse) => {
                     console.log(`got single source sample entity ids: `, response);
 
@@ -537,7 +557,7 @@ export class SzStatSampleSet {
 
         this._loading.next(true);
 
-        this._getNewSampleSet(this.statType, this.dataSource1, this.dataSource2, this.matchKey, this.principle, this.bound, this.sampleSize, this.pageSize).pipe(
+        this._getNewSampleSet(this.statType, this.dataSource1, this.dataSource2, this.matchKey, this.principle, this.bound, this.boundType, this.sampleSize, this.pageSize).pipe(
             takeUntil(this.unsubscribe$),
             filter((data: SzEntitiesPage | SzRelationsPage) => {
                 return this._dataSource1 !== undefined || this._dataSource2 !== undefined ? true : false;
@@ -746,7 +766,10 @@ export class SzDataMartService {
     private _sampleSetMatchKey: string;
     private _sampleSetPrinciple: string;
     private _sampleSetUnfilteredCount: number;
+    private _sampleSetBound: string;
+    private _sampleSetBoundType: SzBoundType;
     private _doNotFetchSampleSetOnParameterChange: boolean = false;
+
     /** we store the last known match key counts for present selection for filtering menu */
     private _matchKeyCounts: SzCrossSourceCount[];
     //private _sampleStatType: SzCrossSourceSummaryCategoryType | undefined;
@@ -830,6 +853,38 @@ export class SzDataMartService {
             this._sampleSet.principle = value;
         } else {
             this._sampleSetPrinciple = value;
+        }
+    }
+
+    public set sampleSetBound(value: string) {
+        if(this._sampleSet) {
+            this._sampleSet.bound = value;
+        } else {
+            this._sampleSetBound = value;
+        }
+    }
+
+    public get sampleSetBound(): string {
+        if(this._sampleSet) {
+            return this._sampleSet.bound;
+        } else {
+            return this._sampleSetBound;
+        }
+    }
+
+    public get sampleSetBoundType(): SzBoundType {
+        if(this._sampleSet) {
+            return this._sampleSet.boundType;
+        } else {
+            return this._sampleSetBoundType;
+        }
+    }
+
+    public set sampleSetBoundType(value: SzBoundType) {
+        if(this._sampleSet) {
+            this._sampleSet.boundType = value;
+        } else {
+            this._sampleSetBoundType = value;
         }
     }
 

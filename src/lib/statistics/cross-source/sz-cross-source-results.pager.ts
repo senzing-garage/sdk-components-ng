@@ -3,7 +3,6 @@ import { SzGraphPrefs, SzPrefsService } from '../../services/sz-prefs.service';
 import { take, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { camelToKebabCase, underscoresToDashes, getMapKeyByValue, isNotNull } from '../../common/utils';
-import { SzCrossSourceSummary, SzDataSourcesResponseData, SzSummaryStats } from '@senzing/rest-api-client-ng';
 import { isValueTypeOfArray, parseBool, parseNumber, parseSzIdentifier, sortDataSourcesByIndex } from '../../common/utils';
 import { SzRecordCountDataSource, SzStatSampleSetPageChangeEvent } from '../../models/stats';
 import { SzDataMartService } from '../../services/sz-datamart.service';
@@ -11,6 +10,7 @@ import { SzDataSourcesService } from '../../services/sz-datasources.service';
 import { SzCSSClassService } from '../../services/sz-css-class.service';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { MatMenu } from '@angular/material/menu';
+import { SzBoundType } from '@senzing/rest-api-client-ng';
 
 /**
  * paging component for navigating through the sampling data table results.
@@ -106,7 +106,7 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
           return this.sampleCount;
         }
         if( this.isFiltered) {
-          return this.unFilteredCount;
+          //return this.unFilteredCount;
         }
         return this.totalCount;
     }
@@ -438,7 +438,11 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
     }
     
     public goFirstPage() {
-        this._firstRecord = 1;
+      if(this._minimumValue) {
+        this.dataMartService.sampleSetBoundType  = undefined; // defaults to EXCLUSIVELOWER
+        this.dataMartService.sampleSetBound = this._minimumValue as string;
+      }
+        /*this._firstRecord = 1;
         this._lastRecord = this._firstRecord + this.pageSize - 1;
         if (this._lastRecord > this.availableCount) {
           this._lastRecord = this.availableCount;
@@ -449,8 +453,16 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
         this.selectedPage.emit({from: this.firstRecord,
                                 to: this.lastRecord,
                                 page: this.page,
-                                pageSize: this.pageSize });
+                                pageSize: this.pageSize });*/
     }
+    public goLastPage() {
+      if(this._maximumValue) {
+        this.dataMartService.sampleSetBoundType  = SzBoundType.INCLUSIVEUPPER;
+        this.dataMartService.sampleSetBound      = this._maximumValue as string;
+      }
+    }
+
+    
     
     public goPreviousPage() {
         this._firstRecord -= this.pageSize;
@@ -499,7 +511,7 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
                                 pageSize: this.pageSize });*/
     }
     
-    public goLastPage() {
+    /*public goLastPage() {
         this._firstRecord = ((this.pageCount - 1) * this.pageSize) + 1;
         if (this._firstRecord < 1) {
           this._firstRecord = 1;
@@ -514,7 +526,7 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
                                 to: this.lastRecord,
                                 page: this.page,
                                 pageSize: this.pageSize });
-    }
+    }*/
     
     public get sampleClickable() : boolean {
         return this._sampleClickable;

@@ -1,5 +1,17 @@
 # @senzing/sdk-components-ng
 
+If you are beginning your journey with
+[Senzing](https://senzing.com/),
+please start with
+[Senzing Quick Start guides](https://docs.senzing.com/quickstart/).
+
+You are in the
+[Senzing Garage](https://github.com/senzing-garage)
+where projects are "tinkered" on.
+Although this GitHub repository may help you understand an approach to using Senzing,
+it's not considered to be "production ready" and is not considered to be part of the Senzing product.
+Heck, it may not even be appropriate for your application of Senzing!
+
 ## Overview
 
 This project is for the Senzing&reg; SDK components that can be used in other projects. There are two flavors that the components come in. The [@senzing/sdk-components-ng](https://www.npmjs.com/package/@senzing/sdk-components-ng) package which is based around the Angular 13.x.x framework, and the [@senzing/sdk-components-web](https://www.npmjs.com/package/@senzing/sdk-components-web) package which is framework agnostic and based around the [Web Components](https://developers.google.com/web/fundamentals/web-components/) standard. The usage for both packages is noted in the [documentation examples](http://hub.senzing.com/sdk-components-ng/).
@@ -7,6 +19,7 @@ This project is for the Senzing&reg; SDK components that can be used in other pr
 For information on the Web Components version see the [sdk-components-web guide](https://github.com/senzing-garage/sdk-components-ng/tree/master/sdk-components-web). 
 
 
+[![Build Status](https://travis-ci.com/Senzing/sdk-components-ng.svg?branch=master)](https://travis-ci.com/Senzing/sdk-components-ng)
 [![npm version](https://badge.fury.io/js/%40senzing%2Fsdk-components-ng.svg)](https://badge.fury.io/js/%40senzing%2Fsdk-components-ng)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/senzing/sdk-components-ng?color=%2300c4ff&logo=latest%20tag)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/senzing/sdk-components-ng?color=orange&logo=latest&logoColor=blue)

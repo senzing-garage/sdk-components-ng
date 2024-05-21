@@ -486,12 +486,15 @@ body {
 
   /* charts */
     /* record stats donut */
+    --sz-donut-chart-height: 200px;
     --sz-donut-chart-graph-align-items: start;
     --sz-donut-chart-graph-arc-stroke: rgba(0, 0, 0, 0.7);
     --sz-donut-chart-graph-arc-stroke-width: 1px;
     --sz-donut-chart-graph-arc-stroke-opacity: 0.5;
     --sz-donut-chart-unmatched-color: rgb(255 150 125);
     --sz-donut-chart-pending-color: rgb(235 255 125);
+    --sz-donut-chart-link-color: #{$sz-blue};
+    --sz-donut-chart-link-font-size: 13px;
   
   /* sample data table */
     --sz-sample-table-spinner-background: rgba(68, 68, 68, 0.3); 
