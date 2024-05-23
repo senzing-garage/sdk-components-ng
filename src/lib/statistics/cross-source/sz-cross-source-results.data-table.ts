@@ -4,7 +4,7 @@ import {CdkMenu, CdkMenuItem, CdkContextMenuTrigger} from '@angular/cdk/menu';
 import { MatDialog } from '@angular/material/dialog';
 
 import { SzDataTable } from '../../shared/data-table/sz-data-table.component';
-import { SzCrossSourceSummaryCategoryType, SzDataTableEntity, SzDataTableRelation, SzStatSampleEntityTableItem, SzStatSampleEntityTableRow, SzStatsSampleTableLoadingEvent } from '../../models/stats';
+import { SzCrossSourceSummaryCategoryType, SzDataTableEntity, SzDataTableRelation, SzStatSampleEntityTableItem, SzStatSampleEntityTableRow, SzStatSampleEntityTableRowType, SzStatsSampleTableLoadingEvent } from '../../models/stats';
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzCSSClassService } from '../../services/sz-css-class.service';
@@ -359,8 +359,10 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       let retVal = '';
       retVal += '--column-count: '+ this.getColCount() +';';
       if(item) {
-        retVal += '--total-row-count: '+ this.getTotalRowCount(item) +';';
-        retVal += ' --selected-datasources-row-count: '+ this.getRowCountInSelectedDataSources(item) +';';  
+        retVal += ' --entity-row-count: '+ this.getTotalRowCount(item, [SzStatSampleEntityTableRowType.ENTITY, SzStatSampleEntityTableRowType.ENTITY_RECORD]) +';';  
+        retVal += ' --selected-datasources-entity-row-count: '+ this.getRowCountInSelectedDataSources(item, [SzStatSampleEntityTableRowType.ENTITY, SzStatSampleEntityTableRowType.ENTITY_RECORD]) +';';  
+        retVal += ' --related-row-count: '+ this.getTotalRowCount(item, [SzStatSampleEntityTableRowType.RELATED, SzStatSampleEntityTableRowType.RELATED_RECORD]) +';';
+        retVal += ' --selected-datasources-related-row-count: '+ this.getRowCountInSelectedDataSources(item, [SzStatSampleEntityTableRowType.RELATED, SzStatSampleEntityTableRowType.RELATED_RECORD]) +';';  
       }
       return retVal;
     }
@@ -423,50 +425,77 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       }
       return retVal;
     }
-
-    getTotalRowCount(item: SzStatSampleEntityTableItem) {
+    
+    /** get the total data table row count for an entity or related entity. Optionally count only row types matching items in the "dataType" parameter. */
+    getTotalRowCount(item: SzStatSampleEntityTableItem, dataType?: SzStatSampleEntityTableRowType[]) {
       let retVal      = 0;
+      if(!dataType || (dataType && dataType.includes(SzStatSampleEntityTableRowType.ENTITY) && item.dataType === SzStatSampleEntityTableRowType.ENTITY)) {
+        retVal++;
+      }
       if(item.rows && item.rows.length) {
-        retVal      = item.rows.length;
+        if(!dataType) {
+          retVal      += item.rows.length;
+        } else if(dataType) {
+          retVal      += item.rows.filter((row: SzStatSampleEntityTableRow) => {
+            return dataType.includes(row.dataType);
+          }).length;
+        }
       }
       if(item.relatedEntity) {
-        retVal++;
+        if(!dataType || dataType.includes(SzStatSampleEntityTableRowType.RELATED)) {
+          retVal++;
+        }
         if(item.relatedEntity.rows && item.relatedEntity.rows.length) {
-          retVal    += item.relatedEntity.rows.length;
+          if(!dataType) {
+            retVal    += item.relatedEntity.rows.length;
+          } else if(dataType) {
+            retVal    += item.relatedEntity.rows.filter((row: SzStatSampleEntityTableRow) => {
+              return dataType.includes(row.dataType);
+            }).length;
+          }
         }
       }
       return retVal;
     }
 
-    getRowCountInSelectedDataSources(item: SzStatSampleEntityTableItem) {
+    /**
+     * Get the data table row count for a specific item. This is used to set the expand/collapse row-span for the 
+     * entityId cells for the main entity row and it's related entity row (if not statType of "Matches")
+     */
+    getRowCountInSelectedDataSources(item: SzStatSampleEntityTableItem, dataType?: SzStatSampleEntityTableRowType[]) {
       let retVal = 0;
+      if(!dataType || (dataType && dataType.includes(item.dataType))) {
+        // how would you check the datasource match on "SzStatSampleEntityTableItem"
+        retVal  += 1;
+      }
       if(item.rows && item.rows.length) {
         let rowsInSelectedDataSources = item.rows.filter((row) => {
-          return (row.dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
+          if(!dataType || (dataType && dataType.includes(row.dataType))) {
+            return (row.dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
+          }
+          return false;
         });
-        retVal  = rowsInSelectedDataSources && rowsInSelectedDataSources.length ? rowsInSelectedDataSources.length : retVal;
+        retVal  += (rowsInSelectedDataSources && rowsInSelectedDataSources.length ? rowsInSelectedDataSources.length : 0);
       }
       if(item.relatedEntity) {
-        retVal  = retVal + 1;
+        if(!dataType || (dataType && dataType.includes(item.relatedEntity.dataType))) {
+          // how would you check the datasource match on "SzDataTableRelatedEntity"
+          retVal  += 1;
+        }
         if(item.relatedEntity.rows && item.relatedEntity.rows.length) {
           //retVal    += item.relatedEntity.rows.length;
           let rowsInSelectedDataSources = item.relatedEntity.rows.filter((row) => {
-            return (row.dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
+            if(!dataType || (dataType && dataType.includes(row.dataType))) {
+              return (row.dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
+            }
+            return false;
           });
-          retVal  += rowsInSelectedDataSources && rowsInSelectedDataSources.length ? rowsInSelectedDataSources.length : 0;
+          retVal  += (rowsInSelectedDataSources && rowsInSelectedDataSources.length ? rowsInSelectedDataSources.length : 0);
         }
       }
       return retVal;
-
-      /*if(rows) {
-        let rowsInSelectedDataSources = rows.filter((row) => {
-          return (row.dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
-        });
-        retVal  = rowsInSelectedDataSources && rowsInSelectedDataSources.length ? rowsInSelectedDataSources.length : retVal;
-      }
-      return retVal;*/
     }
-
+    /** Sets the inline style tag for the entire data table. Mainly used for setting the grid column sizes. */
     override get gridStyle(): string {
       let retVal = '';
       if(this._cols && this._cols.size > 0) {
@@ -507,7 +536,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       this.cd.detectChanges();
       return true;
     }
-
+    /** check whether or not a column is expanded by user. */
     isColumnExpanded(columnKey: string): boolean {
       if(columnKey) {
         return this._expandedEmptyColumns.includes(columnKey);
@@ -591,26 +620,45 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
         // is it a relation or a entity
         let isRelation = (item as SzEntityData).resolvedEntity ? false : true;
         if(isRelation) {
-          let baseItem  = (item as SzRelation).entity;
-          let relItem   = (item as SzRelation).relatedEntity;
+          // base item is entity
+          let baseItem  = (item as SzRelation).entity as SzDataTableEntity;
+          baseItem.dataType = SzStatSampleEntityTableRowType.ENTITY;
+          // related item is related entity
+          let relItem   = (item as SzRelation).relatedEntity as SzDataTableEntity;
+          relItem.dataType  = SzStatSampleEntityTableRowType.RELATED;
+          
           // add "rows: SzStatSampleEntityTableRow[]" // SzStatSampleEntityTableRow
           let _entRows = baseItem.records && baseItem.records.map ? baseItem.records.map((rec: SzRecord) => {
-            let retVal: SzStatSampleEntityTableRow = rec;
+            let retVal      = Object.assign({dataType: SzStatSampleEntityTableRowType.ENTITY_RECORD}, rec);
             return retVal;
           }) : undefined;
+
           let _relRows = relItem.records && relItem.records.map ? relItem.records.map((rec: SzRecord) => {
-            let retVal: SzStatSampleEntityTableRow = rec;
+            let retVal      = Object.assign({dataType: SzStatSampleEntityTableRowType.RELATED_RECORD}, rec);
             return retVal;
           }) : undefined;
-          return Object.assign(baseItem, {relatedEntity: Object.assign((item as SzRelation).relatedEntity, {rows: _relRows, relatedEntityId: (item as SzRelation).relatedEntity.entityId}), rows: _entRows});
+
+          // mash them up in to one object
+          return Object.assign(baseItem, {
+            relatedEntity: Object.assign(
+              (item as SzRelation).relatedEntity, 
+              {
+                rows: _relRows, 
+                relatedEntityId: (item as SzRelation).relatedEntity.entityId
+              }
+            ), rows: _entRows});
         } else {
-          // base row
-          let baseItem = (item as SzEntityData).resolvedEntity;
+          // base item is entity
+          let baseItem = (item as SzEntityData).resolvedEntity as SzDataTableEntity;
+          baseItem.dataType = SzStatSampleEntityTableRowType.ENTITY;
+
           // add "rows: SzStatSampleEntityTableRow[]" // SzStatSampleEntityTableRow
           let rows = baseItem.records && baseItem.records.map ? baseItem.records.map((rec: SzMatchedRecord) => {
             let retVal: SzStatSampleEntityTableRow = rec;
+            retVal.dataType = SzStatSampleEntityTableRowType.ENTITY_RECORD;
             return retVal;
           }) : undefined;
+          // mash them up in to one object
           return Object.assign(baseItem, {relatedEntities: (item as SzEntityData).relatedEntities, rows: rows});
         }
       });

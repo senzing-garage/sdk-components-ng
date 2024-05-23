@@ -55,7 +55,8 @@ export interface SzStatSampleEntityTableItem extends SzResolvedEntity {
     relatedEntity?: SzDataTableRelatedEntity,
     recordCount?: number,
     records?: SzRecord[] | SzMatchedRecord[],
-    rows?: SzStatSampleEntityTableRow[]
+    rows?: SzStatSampleEntityTableRow[],
+    dataType?: SzStatSampleEntityTableRowType;
 }
 
 export interface SzStatsSampleTableLoadingEvent {
@@ -64,15 +65,18 @@ export interface SzStatsSampleTableLoadingEvent {
 }
 
 export interface SzDataTableEntity extends SzEntity {
-
+    dataType?: SzStatSampleEntityTableRowType;
 }
 export interface SzDataTableRelatedEntity extends SzRelatedEntity {
-    rows?: SzStatSampleEntityTableRow[]
+    rows?: SzStatSampleEntityTableRow[],
+    dataType?: SzStatSampleEntityTableRowType;
 }
-
 export interface SzDataTableRelation extends SzRelation {
     entity: SzDataTableEntity;
     relatedEntity: SzDataTableEntity;
+}
+
+export interface SzStatSampleEntityTableRowEntity extends SzEntity {
 }
 
 export interface SzDataTableCellEvent {
@@ -97,6 +101,15 @@ let _allColumns = [
     'Relationship Data'
   ];
 */
+export type SzStatSampleEntityTableRowType = 'ENTITY' | 'ENTITY_RECORD' | 'RELATED' | 'RELATED_RECORD' | 'DEBUG' | 'DEBUG2';
+export const SzStatSampleEntityTableRowType = {
+    ENTITY: 'ENTITY' as SzStatSampleEntityTableRowType,
+    ENTITY_RECORD: 'ENTITY_RECORD' as SzStatSampleEntityTableRowType,
+    DEBUG: 'DEBUG' as SzStatSampleEntityTableRowType,
+    DEBUG2: 'DEBUG2' as SzStatSampleEntityTableRowType,
+    RELATED: 'RELATED' as SzStatSampleEntityTableRowType,
+    RELATED_RECORD: 'RELATED_RECORD' as SzStatSampleEntityTableRowType
+};
 
 export interface SzStatSampleEntityTableRow extends SzResolvedEntity, SzMatchedRecord {
     /**
@@ -115,6 +128,10 @@ export interface SzStatSampleEntityTableRow extends SzResolvedEntity, SzMatchedR
      * The optioanl principle identifying the resolution rule that was used to merge the record into the entity to which it belonss.  This may be absent or `null` if this record belongs to a single-record entity or if it was the inital record of the first multi-record entity to which it belonged (even if it later re-resolved into a larger entity).
      */
     principle?: string;
+    /**
+     * the type of data construct this row represents
+     */
+    dataType?: SzStatSampleEntityTableRowType
 }
 
 export interface SzDataTableRelationsPagingParameters {
