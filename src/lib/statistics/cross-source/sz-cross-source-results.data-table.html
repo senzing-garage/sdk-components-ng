@@ -195,7 +195,6 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                 class="row-record row-entity-record">
                 <td #cellRef [attr.data-record-index]="recordIndex+1" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries" 
                     [attr.data-cell-order]="getCellOrder(col.key, getRowIndex())"
-                    [class.no-cell]="col.key === 'entityId' && recordIndex > 0"
                     [class.empty-column]="getRowCountForField(col.key) === 0"
                     [class.hidden]="isColumnHidden(col.key)"
                     [style]="cellStyle(col.key, getRowIndex())"
@@ -277,7 +276,6 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                 class="row-record row-related-record">
                     <td #cellRef [attr.data-record-index]="recordIndex+1" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries" 
                         [attr.data-cell-order]="getCellOrder(col.key, getRowIndex())"
-                        [class.no-cell]="col.key === 'entityId' && recordIndex > 0"
                         [class.empty-column]="getRowCountForField(col.key) === 0"
                         [class.hidden]="isColumnHidden(col.key)"
                         [style]="cellStyle(col.key, getRowIndex())"

@@ -267,11 +267,15 @@
             &.row-group {
                 border: 1px solid rgb(104, 104, 104);
 
+                /* by default hide all entity id cells */
+                .sz-dt-entity-id-cell {
+                    display: none;
+                }
+
                 /**
                 Sometimes the very first visible row is not the same thing as the first row
                 in the DOM. Hence the Fancy selectors for "first-instance-of-this-class"
                 */
-
                 :nth-child(1 of .data-source-selected) {
                     border: 1px solid orange;
 
@@ -294,11 +298,15 @@
                     :nth-child(1 of .row-related-record.data-source-selected) {
                         .sz-dt-entity-id-cell { grid-row: unset; }
                     }
+                    .row-record .sz-dt-entity-id-cell {
+                        display: none;
+                    }
                     /* since everything should be visible now just apply the rowspan to the 
                     first row entity id cell*/
                     .row-record:first-child {
                         .sz-dt-entity-id-cell {
                             grid-row: span var(--entity-row-count);
+                            display: grid !important;
                         }
                     }
                     /* now apply the related rows count to the rowspan for the first related row's
