@@ -67,6 +67,12 @@
         font-size: 12px;
         cursor: default;
 
+        /* because we are only setting border-top on 
+            * every row we need to add a bottom border to the 
+            * table itself
+        */
+        border-bottom: 1px solid #cfcfcf;
+
         thead,
         tbody,
         tr {
@@ -260,42 +266,83 @@
 
             &.row-group {
                 border: 1px solid rgb(104, 104, 104);
-                .row-entity, .row-related-entity {
+
+                /**
+                Sometimes the very first visible row is not the same thing as the first row
+                in the DOM. Hence the Fancy selectors for "first-instance-of-this-class"
+                */
+
+                :nth-child(1 of .data-source-selected) {
+                    border: 1px solid orange;
+
                     .sz-dt-entity-id-cell {
-                        .more-button {
-                            font-size: 10px;
-                            height: 22px;
-                            padding: 2px 5px 2px 8px;
-                            background-color: var(--sz-sample-dt-primary-color);
-                            color: #fff;
-                            margin-top: 5px;
-                            line-height: 18px;
-                            mat-icon {
-                                margin-right: 0;
-                                margin-top: 1px;
-                                font-size: 14px;
-                                line-height: 14px;
-                                opacity: 0.6;
-                                width: 14px;
-                                height: 14px;
-                            }
+                        grid-row: span var(--selected-datasources-entity-row-count);
+                        display: grid;
+                    }
+                }
+                :nth-child(1 of .row-related-record.data-source-selected) {
+                    border: 1px solid green;
+                    
+                    .sz-dt-entity-id-cell {
+                        grid-row: span var(--selected-datasources-related-row-count);
+                        display: grid;
+                    }
+                }
+                &.expanded {
+                    /* first unset the row-span(s) for "first row in selected datasources"*/
+                    :nth-child(1 of .data-source-selected),
+                    :nth-child(1 of .row-related-record.data-source-selected) {
+                        .sz-dt-entity-id-cell { grid-row: unset; }
+                    }
+                    /* since everything should be visible now just apply the rowspan to the 
+                    first row entity id cell*/
+                    .row-record:first-child {
+                        .sz-dt-entity-id-cell {
+                            grid-row: span var(--entity-row-count);
                         }
-                        .more-button.collapsed  { display: block; }
-                        .more-button.expanded   { 
-                            display: none; 
-                            mat-icon {
-                                opacity: 1;
-                            }
+                    }
+                    /* now apply the related rows count to the rowspan for the first related row's
+                    * related record entity id cell */
+                    :nth-child(1 of .row-related-record) .sz-dt-entity-id-cell {
+                        grid-row: span var(--related-row-count) !important;
+                    }
+                }
+
+                .sz-dt-entity-id-cell {
+                    .more-button {
+                        font-size: 10px;
+                        height: 22px;
+                        padding: 2px 5px 2px 8px;
+                        background-color: var(--sz-sample-dt-primary-color);
+                        color: #fff;
+                        margin-top: 5px;
+                        line-height: 18px;
+                        mat-icon {
+                            margin-right: 0;
+                            margin-top: 1px;
+                            font-size: 14px;
+                            line-height: 14px;
+                            opacity: 0.6;
+                            width: 14px;
+                            height: 14px;
+                        }
+                    }
+                    .more-button.collapsed  { display: block; }
+                    .more-button.expanded   { 
+                        display: none; 
+                        mat-icon {
+                            opacity: 1;
                         }
                     }
                 }
-                .row-entity {
+
+                :nth-child(1 of .row-entity-record.data-source-selected) {
                     /* we want the entity id cell to span all children row cells 
                     the variables '--selected-datasources-row-count' and '--total-row-count'
                     are defined on the scope of each .row-group through the style tag
                     */
                     .sz-dt-entity-id-cell {
-                        grid-row: span var(--selected-datasources-entity-row-count);
+                        /*grid-row: span var(--selected-datasources-entity-row-count);*/
                         max-height: unset;
                         border-bottom: none;
                         .cell-content {
@@ -311,12 +358,16 @@
                             }
                         }
                     }
-
                 }
-                .row-related-entity { 
+                :nth-child(1 of .row-related-record.data-source-selected) { 
                     .sz-dt-entity-id-cell {
-                        grid-row: span var(--selected-datasources-related-row-count);
+                        /*grid-row: span var(--selected-datasources-related-row-count);*/
                         overflow: visible;
+
+                        .cell-content {
+                            display: none;
+                        }
+
                         /* when the more button is in the lower cell we want to straddle the line */
                         .more-button {
                             position: absolute;
@@ -341,16 +392,19 @@
                     .row-record.data-source-not-selected td {
                         background-color: #cdedff;
                     }
-                    .row-entity .sz-dt-entity-id-cell {
+                    /*
+                    .row-entity-record.first .sz-dt-entity-id-cell {
                         grid-row: span var(--entity-row-count);
                         border-bottom: none;
                     }
-                    .row-related-entity .sz-dt-entity-id-cell {
+                    .row-related-record.first .sz-dt-entity-id-cell {
                         grid-row: span var(--related-row-count);
                         
-                    }
+                    }*/
                     /* swap "more" button to "less" button */
-                    .row-entity, .row-related-entity {
+
+                    .row-entity, .row-entity-record,
+                    .row-related-entity, .row-related-record {
                         .sz-dt-entity-id-cell {
                             .more-button.collapsed  { display: none;  }
                             .more-button.expanded   { display: block; }
@@ -382,8 +436,8 @@
             tr {
                 td {
                     /*margin-bottom: 2px;*/
-                    border-right: 1px solid #cfcfcf;
-                    border-bottom: 1px solid #cfcfcf;
+                    border-right: 2px solid #fff;
+                    border-top: 2px solid #fff;
                     &:last-child {
                         border-right: none;
                     }
@@ -395,9 +449,11 @@
                 }
                 &:first-child {
                     td {
-                        margin-top: 4px;
+                        /*margin-top: 4px;*/
+                        border-top: 2px solid #666;
                     }
                 }
+                
             }
             td {
                 position: relative;
@@ -458,11 +514,20 @@
         .row-related-entity .sz-dt-entity-id-cell .cell-content {
             display: none;
         }
-        .row-entity {
+        .row-entity-record {
             td {
-                border-top: 2px solid #636363;
-                border-bottom: 1px dotted #636363;
                 background-color: #ececec;
+            }
+            &:last-of-type {
+                td {
+                    border-bottom: none !important;
+                }
+            }
+            &.first {
+                td {
+                    border-top: 2px solid #636363;
+                    /*border-bottom: 1px dotted #636363;*/
+                }
             }
         }
         .row-related-entity {
@@ -474,6 +539,14 @@
         .row-related-record {
             td {
                 background-color: #f5f5f5;
+            }
+            &.first {
+                td {
+                    border-top: 1px dotted #212121;
+                }
+            }
+            &:last-child td {
+                border-bottom: none;
             }
         }
         .row-record, .row-related-record {

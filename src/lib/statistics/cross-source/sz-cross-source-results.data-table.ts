@@ -359,10 +359,10 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       let retVal = '';
       retVal += '--column-count: '+ this.getColCount() +';';
       if(item) {
-        retVal += ' --entity-row-count: '+ this.getTotalRowCount(item, [SzStatSampleEntityTableRowType.ENTITY, SzStatSampleEntityTableRowType.ENTITY_RECORD]) +';';  
-        retVal += ' --selected-datasources-entity-row-count: '+ this.getRowCountInSelectedDataSources(item, [SzStatSampleEntityTableRowType.ENTITY, SzStatSampleEntityTableRowType.ENTITY_RECORD]) +';';  
-        retVal += ' --related-row-count: '+ this.getTotalRowCount(item, [SzStatSampleEntityTableRowType.RELATED, SzStatSampleEntityTableRowType.RELATED_RECORD]) +';';
-        retVal += ' --selected-datasources-related-row-count: '+ this.getRowCountInSelectedDataSources(item, [SzStatSampleEntityTableRowType.RELATED, SzStatSampleEntityTableRowType.RELATED_RECORD]) +';';  
+        retVal += ' --entity-row-count: '+ this.getTotalRowCount(item, [SzStatSampleEntityTableRowType.ENTITY_RECORD]) +';';  
+        retVal += ' --selected-datasources-entity-row-count: '+ this.getRowCountInSelectedDataSources(item, [SzStatSampleEntityTableRowType.ENTITY_RECORD]) +';';  
+        retVal += ' --related-row-count: '+ this.getTotalRowCount(item, [SzStatSampleEntityTableRowType.RELATED_RECORD]) +';';
+        retVal += ' --selected-datasources-related-row-count: '+ this.getRowCountInSelectedDataSources(item, [SzStatSampleEntityTableRowType.RELATED_RECORD]) +';';  
       }
       return retVal;
     }
@@ -425,7 +425,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       }
       return retVal;
     }
-    
+
     /** get the total data table row count for an entity or related entity. Optionally count only row types matching items in the "dataType" parameter. */
     getTotalRowCount(item: SzStatSampleEntityTableItem, dataType?: SzStatSampleEntityTableRowType[]) {
       let retVal      = 0;
