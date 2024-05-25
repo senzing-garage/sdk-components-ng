@@ -208,6 +208,65 @@ sz-cross-source-results {
             margin-bottom: 0;
         }
     }
+
+    // truncate lines
+    &.truncate-cell-data {
+        .data-table tbody tr td {
+            // hide elements past value found in "" css var
+            .cell-content .data-item.hidden {
+                display: none;
+            }
+            &.has-hidden-items {
+                padding-bottom: 17px !important;
+                .toggle-expansion {
+                    display: block;
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                }
+                button {
+                    display: block;
+                    border: none;
+                    font-size: 8px;
+                    color: var(--sz-sample-table-cell-color);
+                    /*border-top: 1px solid #bdbdbd;*/
+                    width: 100%;
+                    /*text-align: left;*/
+
+                    cursor: pointer;
+                }
+                .more-link { display: block; }
+                .less-link { display: none;  }
+                mat-icon {
+                    display: inline-block;
+                    width: 14px;
+                    height: 14px;
+                    font-size: 14px;
+                    position: absolute;
+                    right: -2px;
+                    bottom: -1px;
+                    opacity: 0;
+                    transition: 440ms ease-out opacity;
+                    transform: rotate(-90deg);
+                }
+                &:hover {
+                    mat-icon { opacity: 1; }
+                }
+                &.expanded {
+                    mat-icon { 
+                        opacity: 1; 
+                        transform: rotate(90deg);
+                    }
+                    .more-link { display: none;  }
+                    .less-link { display: block; }
+                }
+            }
+            &.expanded .cell-content .data-item.hidden {
+                display: block;
+            }
+        }
+    }
 }
 
 .sz-css-matchkey-picker-dialog-panel {

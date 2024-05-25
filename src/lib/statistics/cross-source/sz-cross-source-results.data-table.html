@@ -140,31 +140,9 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
         [class.has-additional-data]="getTotalRowCount(row) !== getRowCountInSelectedDataSources(row)"
         [style]="rowGroupStyle(row)"
         >
-            <!--<tr
-            [attr.group-record-index]="rI+2" class="row-entity">
-                <td #cellRef [attr.data-row-index]="rI+1" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries" 
-                    [style]="cellStyle(col.key, getRowId(row, rI+1))"
-                    [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
-                    [class.expandable]="isCellExpandable(cellRef)"
-                    [class.expanded]="isCellExpanded(cellRef)"
-                    [class.hidden]="isColumnHidden(col.key)"
-                    [attr.data-cell-height]="getCellHeight(cellRef)"
-                    [attr.data-content-height]="getContentHeight(cellRef)"
-                    [attr.data-cached-content-height]="getCachedContentHeight(cellRef)"
-                    [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
-                    [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: row[col.key], rowData: row}}"
-                    (click)="onCellClick(col.key, row[col.key], $event, cellRef)">
-                    <div class="cell-content" [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
-                    <svg xmlns="http://www.w3.org/2000/svg" 
-                    height="24" 
-                    viewBox="0 -960 960 960" 
-                    width="24" 
-                    class="min-max-toggle"
-                    (click)="toggleCellExpansion(cellRef, getRowId(row, rI+1)); $event.stopPropagation();"
-                    ><path d="M440-440v240h-80v-160H200v-80h240Zm160-320v160h160v80H520v-240h80Z"/></svg>
-                </td>
-            </tr>-->
-            <!--<tr
+            <!-- show row for entity iteself -->
+            <!--
+                <tr
                 class="row-entity"
                 [attr.data-row-index]="incrementRowCount()"
                 [attr.data-source]="row.dataSource"
@@ -187,6 +165,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                         [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
                 </td>
             </tr>-->
+            <!-- show rows for entity records -->
             <tr *ngFor="let rowQ of row.rows; let recordIndex=index;" 
                 [attr.data-row-index]="incrementRowCount()"
                 [attr.data-source]="rowQ.dataSource"
@@ -198,6 +177,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                     [class.empty-column]="getRowCountForField(col.key) === 0"
                     [class.hidden]="isColumnHidden(col.key)"
                     [style]="cellStyle(col.key, getRowIndex())"
+                    [class.has-hidden-items]="hasTruncatedItems(rowQ[col.key])"
                     [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
                     [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
                     [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: rowQ[col.key], rowData: rowQ}}"
@@ -225,8 +205,18 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                             {{getTotalRowCount(row) - getRowCountInSelectedDataSources(row)}} More
                         </button>
                     </div>
+                    <!--<button (click)="debugTruncatedItemCount(rowQ[col.key])">truncated lines {{truncatedItemCount(rowQ[col.key])}}</button>-->
+                    <div class="toggle-expansion" *ngIf="col.key !== 'entityId' && hasTruncatedItems(rowQ[col.key])"
+                    (click)="toggleCellExpando(cellRef, $event)">
+                        <button class="more-link">
+                            {{truncatedItemCount(rowQ[col.key])}} more items</button>
+                        <button class="less-link">
+                            hide last {{truncatedItemCount(rowQ[col.key])}} items</button>
+                        <mat-icon>transit_enterexit</mat-icon>
+                    </div>
                 </td>
             </tr>
+            <!-- show row for related entity -->
             <!--<tr *ngIf="row.relatedEntity" 
                 class="row-related-entity"
                 [attr.data-row-index]="incrementRowCount()"
@@ -267,6 +257,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                         </div>
                 </td>
             </tr>-->
+            <!-- show rows for related entity records -->
             <ng-container *ngIf="row.relatedEntity && row.relatedEntity.rows">
                 <tr *ngFor="let rowY of row.relatedEntity.rows; let recordIndex=index;" 
                 [attr.data-row-index]="incrementRowCount()"
@@ -279,6 +270,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                         [class.empty-column]="getRowCountForField(col.key) === 0"
                         [class.hidden]="isColumnHidden(col.key)"
                         [style]="cellStyle(col.key, getRowIndex())"
+                        [class.has-hidden-items]="hasTruncatedItems(rowY[col.key])"
                         [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
                         [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
                         [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: rowY[col.key], rowData: rowY}}"
@@ -307,6 +299,12 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                                 <mat-icon>visibility</mat-icon>
                                 {{getTotalRowCount(row) - getRowCountInSelectedDataSources(row)}} More
                             </button>
+                        </div>
+                        <div class="toggle-expansion" *ngIf="col.key !== 'entityId' && hasTruncatedItems(rowY[col.key])"
+                            (click)="toggleCellExpando(cellRef, $event)">
+                            <button class="more-link">show {{truncatedItemCount(rowY[col.key])}} more</button>
+                            <button class="less-link">hide last {{truncatedItemCount(rowY[col.key])}}</button>
+                            <mat-icon>transit_enterexit</mat-icon>
                         </div>
                     </td>
             </tr>

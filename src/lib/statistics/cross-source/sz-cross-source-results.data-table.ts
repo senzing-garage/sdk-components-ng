@@ -25,18 +25,8 @@ import { SzCrossSourceSummaryMatchKeyPickerDialog } from '../../summary/cross-so
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit, OnDestroy {
-    /*override _colOrder: Map<string,number> = new Map([
-      ['entityId',0],
-      ['erCode',1],
-      ['matchKey',2],
-      ['dataSource',3],
-      ['recordId',4],
-      ['entityType',5],
-      ['nameData',6],
-      ['attributeData',7],
-      ['addressData',8],
-      ['relationshipData',9]
-    ])*/
+
+    /** display the columns in this order */
     override _colOrder: Map<string,number> = new Map([
       ['entityId', 0],
       ['resolutionRuleCode', 1],
@@ -54,8 +44,12 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       ['entityData', 13],
       ['otherData', 14]
     ]);
-
+    /** 
+     * stores how many times a column has data available to be displayed. Used to automatically 
+     * collapse columns that have no data available to display
+     */
     private _colDataCount: Map<string, number> = new Map();
+    /** maps the internal field name of a column to the human readable title */
     override _cols: Map<string,string> = new Map([
       ['entityId', 'Entity ID'],
       ['resolutionRuleCode', 'ER Code'],
@@ -73,7 +67,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       ['entityData', 'Entity Data'],
       ['otherData', 'Other Data']
     ])
-
+    /** these columns are available to show/hide in the table */
     override _selectableColumns: string[] = [
       'entityId',
       'resolutionRuleCode',
@@ -170,8 +164,13 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       let dataFieldRenderer = (data: string[]) => {
         let retVal = '';
         if(data && data.length > 0) {
-          retVal = data.map((strVal: string) => {
-            return `<span class="data-item">${strVal}</span>`;
+          let truncateAfter = this.truncatedLinesGreaterThan > 0 ? this.truncatedLinesGreaterThan : undefined;
+          retVal = data.map((strVal: string, lineIndex) => {
+            if(truncateAfter && (lineIndex+1) > truncateAfter) {
+              return `<span class="data-item hidden">${strVal}</span>`;
+            } else {
+              return `<span class="data-item">${strVal}</span>`;
+            }
           }).join('');
         }
         return retVal;
@@ -184,6 +183,29 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
         'relationshipData': dataFieldRenderer,
         'otherData': dataFieldRenderer,
       }
+    }
+    /** used to show expansion buttons for table cells that have information truncated */
+    public hasTruncatedItems(value: unknown | unknown[]) {
+      return this.truncatedItemCount(value) > 0;
+    }
+    /** used to show how many items are currently being hidden due to truncation */
+    public truncatedItemCount(value: unknown | unknown[]): number {
+      let truncateAfter = this.truncatedLinesGreaterThan > 0 ? this.truncatedLinesGreaterThan : undefined;
+      if(value && truncateAfter > 0 && (value as unknown[]).forEach && (value as unknown[]).length > truncateAfter) {
+        return (value as unknown[]).length - truncateAfter;
+      }
+      return 0;
+    }
+    public debugTruncatedItemCount(value: unknown | unknown[]) {
+      let truncateAfter = this.truncatedLinesGreaterThan;
+
+      console.log(`debugTruncatedItemCount(${truncateAfter}): `, 
+      truncateAfter > 0,
+      (value as unknown[]).length > truncateAfter, 
+      (value as unknown[]).length - truncateAfter, 
+      truncateAfter > 1,
+      (value && truncateAfter > 1 && (value as unknown[]).forEach && (value as unknown[]).length > truncateAfter),
+      this.truncatedItemCount(value));
     }
     
     /** if singular datasource set css class 'singular' on host */
@@ -214,6 +236,17 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     @HostBinding("class.loading") get isLoading() {
       return this._isLoading;
     }
+    @HostBinding("class.truncate-cell-data") get classTruncateLines() {
+      return (this.prefs.dataMart.truncateDataTableCellLines as number) > 1 || (this.prefs.dataMart.truncateDataTableCellLines as boolean) === true;
+    }
+    @HostBinding("class.wrap-lines") get classWrapLines() {
+      return this.prefs.dataMart.wrapDataTableCellLines;
+    }
+
+    private get truncatedLinesGreaterThan(): number {
+      return ((this.prefs.dataMart.truncateDataTableCellLines as number) > 0) ? (this.prefs.dataMart.truncateDataTableCellLines as number) : (this.prefs.dataMart.truncateDataTableCellLines as boolean) === true ? 1 : -1;
+    }
+
 
     /** aggregate observeable for when the component is "doing stuff" */
     private _loading: Subject<SzStatsSampleTableLoadingEvent> = new Subject();
@@ -343,6 +376,9 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       return true;
     }
 
+    /** when a result row has rows that are not visible(ie records that belong to the entity but come from non-selected datasources) 
+     * toggle whether or not the additional record rows are visible
+    */
     public toggleRowExpansion(rowGroupElement?: HTMLElement) {
       //console.log(`toggleRowExpansion() `, rowGroupElement);
       if(rowGroupElement) {
@@ -350,6 +386,20 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
           rowGroupElement.classList.remove('expanded');
         } else {
           rowGroupElement.classList.add('expanded');
+        }
+        this.cd.markForCheck();
+      }
+    }
+
+    /** expand or collapse cell when contents of cell contain items past truncation limit */
+    public toggleCellExpando(cellElement?: HTMLElement, event?: MouseEvent) {
+      console.log(`toggleCellExpando: `, cellElement, cellElement ? cellElement.classList.contains('expanded') : false);
+      if(event && event.stopPropagation) { event.stopPropagation(); }
+      if(cellElement) {
+        if(cellElement.classList.contains('expanded')) {
+          cellElement.classList.remove('expanded');
+        } else {
+          cellElement.classList.add('expanded');
         }
         this.cd.markForCheck();
       }
@@ -516,6 +566,10 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
             }
           });
           retVal += '; ';
+      }
+      if(this.classTruncateLines) {
+        let _lineCount  = (this.prefs.dataMart.truncateDataTableCellLines as number) > 1 ? (this.prefs.dataMart.truncateDataTableCellLines as number) : 1;
+        retVal += `--truncate-line-count: ${_lineCount}`;
       }
       return retVal;
     }

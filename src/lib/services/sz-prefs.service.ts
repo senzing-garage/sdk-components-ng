@@ -117,6 +117,9 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   private _showAllColumns: boolean = false;
   private _showDiagramHeader: boolean = true;
   private _showMatchKeyFiltersOnSelect: boolean = true;
+  private _truncateDataTableCellLines: number | boolean = true;
+  private _wrapDataTableCellLines: boolean = true;
+
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
    */
@@ -131,7 +134,9 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
     'sampleStatType',
     'showAllColumns',
     'showDiagramHeader',
-    'showMatchKeyFiltersOnSelect'
+    'showMatchKeyFiltersOnSelect',
+    'truncateDataTableCellLines',
+    'wrapDataTableCellLines'
   ]
   // -------------- getters and setters
   /** first datasource to use in the datamart stats queries */
@@ -244,7 +249,26 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
     if(!this.bulkSet) this.prefChanged.next({name: 'showMatchKeyFiltersOnSelect', value: value});
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
-  
+  /** truncate table cell data at X number of lines, or not at all */
+  public get truncateDataTableCellLines(): boolean | number {
+    return this._truncateDataTableCellLines;
+  }
+  /** truncate table cell data at X number of lines, or not at all */
+  public set truncateDataTableCellLines(value: boolean | number) {
+    this._truncateDataTableCellLines = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'truncateDataTableCellLines', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** wrap lines displayed in table cells */
+  public get wrapDataTableCellLines(): boolean {
+    return this._wrapDataTableCellLines;
+  }
+  /** wrap lines displayed in table cells */
+  public set wrapDataTableCellLines(value: boolean) {
+    this._wrapDataTableCellLines = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'wrapDataTableCellLines', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
   
   /**
    * publish out a "first" real payload so that
