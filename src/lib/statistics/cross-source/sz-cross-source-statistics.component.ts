@@ -5,7 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import { camelToKebabCase, underscoresToDashes, getMapKeyByValue, parseBool } from '../../common/utils';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzCrossSourceSummaryCategoryType, SzCrossSourceSummarySelectionEvent, SzCrossSourceSummarySelectionClickEvent, SzStatsSampleTableLoadingEvent } from '../../models/stats';
-import { SzEntitiesPage, SzEntityData, SzSourceSummary } from '@senzing/rest-api-client-ng';
+import { SzEntitiesPage, SzEntityData, SzEntityIdentifier, SzSourceSummary } from '@senzing/rest-api-client-ng';
 import { SzDataTableCellEvent } from '../../models/stats';
 
 export interface dataSourceSelectionChangeEvent {
@@ -72,6 +72,7 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   @Output() sampleSourcesChange: EventEmitter<dataSourceSelectionChangeEvent> = new EventEmitter();
   @Output() sampleTypeChange: EventEmitter<SzCrossSourceSummarySelectionEvent> = new EventEmitter();
   @Output() sampleParametersChange: EventEmitter<SzCrossSourceSummarySelectionEvent> = new EventEmitter();
+  @Output() entityIdClick: EventEmitter<SzEntityIdentifier> = new EventEmitter();
 
   /** when a new sample set is being requested */
   private   _onNewSampleSetRequested: Subject<boolean> = new Subject();
@@ -378,6 +379,11 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     console.warn(`onTableLoading ${isLoading.inflight}|${isLoading.source}`, isLoading);
     this._isLoading = isLoading.inflight;
     this._loading.next(this._isLoading);
+  }
+
+  onEntityIdClick(entityId: SzEntityIdentifier) {
+    console.log(`SzCrossSourceStatistics.onEntityIdClick: ${entityId}`);
+    this.entityIdClick.emit(entityId);
   }
 
   private getNewSampleSet(parameters: SzCrossSourceSummarySelectionEvent) {

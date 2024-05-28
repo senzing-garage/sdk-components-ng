@@ -9,9 +9,9 @@
             [cdkMenuTriggerFor]="sz_dt_header_column_order_context_menu"
             [cdkMenuTriggerData]="{$implicit: col}"
         >Column Order</button>
-        <button class="header-context-menu-item" cdkMenuItem 
+        <!--<button class="header-context-menu-item" cdkMenuItem 
         [cdkMenuTriggerFor]="sz_dt_header_row_order_context_menu"
-        [cdkMenuTriggerData]="{$implicit: col}">Order By {{col.value}}</button>
+        [cdkMenuTriggerData]="{$implicit: col}">Order By {{col.value}}</button>-->
     </div>
 </ng-template>
 <ng-template #sz_dt_header_column_order_context_menu let-col>
@@ -32,11 +32,47 @@
 </ng-template>
 <ng-template #sz_dt_cell_context_menu let-data>
     <div class="sz-dt-header-context-menu" cdkMenu>
-        <button class="header-context-menu-item" *ngIf="data.col.key === 'matchKey'" cdkMenuItem (click)="openFilterDialog()">Filter By Match Key</button>
-        <button class="header-context-menu-item" cdkMenuItem (click)="copyCellContent(data.cell, data.cellData)">Copy Cell As JSON</button>
-        <button class="header-context-menu-item" cdkMenuItem (click)="copyRowContent(data.row, data.rowData)">Copy Row As JSON</button>
 
+        <button class="header-context-menu-item" *ngIf="data.col.key === 'matchKey'" cdkMenuItem (click)="openFilterDialog()">Filter By Match Key</button>
+        <!--<button class="header-context-menu-item" *ngIf="data.col.key === 'entityId'" cdkMenuItem (click)="copyCellValue(data.entityData && data.entityData['entityId'] ? data.entityData['entityId'] : data.rowData['entityId'], data)">Copy Entity ID</button>
+        <button class="header-context-menu-item" *ngIf="data.col.key === 'entityId'" cdkMenuItem (click)="openEntityById(data.entityData && data.entityData['entityId'] ? data.entityData['entityId'] : data.rowData['entityId'])">Open Entity in new tab</button>-->
+        <button class="header-context-menu-item" *ngIf="data.col.key === 'entityId' || data.col.key === 'relatedEntityId'" cdkMenuItem 
+        [cdkMenuTriggerFor]="sz_dt_cell_entity_context_menu"
+        [cdkMenuTriggerData]="{$implicit: data}">Entity</button>
+        <!--<button class="header-context-menu-item" *ngIf="data.col.key === 'relatedEntityId'" cdkMenuItem (click)="copyCellValue(data.rowData['relatedEntityId'])">Copy Related Entity ID</button>
+        <button class="header-context-menu-item" *ngIf="data.col.key === 'relatedEntityId'" cdkMenuItem (click)="openEntityById(data.rowData['relatedEntityId'])">Open Entity in new tab</button>-->
+        <div class="separator" *ngIf="data.col.key === 'entityId' || data.col.key === 'relatedEntityId' || data.col.key === 'matchKey'"></div>
+        <!--<button class="header-context-menu-item" *ngIf="data.col.key !== 'entityId'" cdkMenuItem (click)="copyCellContent(data.cell, data.cellData)">Copy Cell As JSON</button>
+        <button class="header-context-menu-item" cdkMenuItem (click)="copyRowContent(data.row, data.rowData)">Copy Row As JSON</button>-->
+        <button class="header-context-menu-item" cdkMenuItem
+        [cdkMenuTriggerFor]="sz_dt_cell_row_context_menu"
+        [cdkMenuTriggerData]="{$implicit: data}">Row</button>
+        <button class="header-context-menu-item" cdkMenuItem
+        [cdkMenuTriggerFor]="sz_dt_cell_cell_context_menu"
+        [cdkMenuTriggerData]="{$implicit: data}">Cell</button>        
     <!--<button class="header-context-menu-item" cdkMenuItem (click)="minimizeCol(data.col)">Minimize Column</button>-->
+    </div>
+</ng-template>
+<ng-template #sz_dt_cell_cell_context_menu let-data> 
+    <div class="sz-dt-header-context-menu submenu" cdkMenu>
+        <button class="header-context-menu-item" cdkMenuItem (click)="copyCellContent(data.cell, data.cellData)">Copy as JSON</button>
+        <button class="header-context-menu-item" cdkMenuItem (click)="copyElementHTML(data.cell, data.cellData)">Copy as Text</button>
+    </div>
+</ng-template>
+<ng-template #sz_dt_cell_row_context_menu let-data> 
+    <div class="sz-dt-header-context-menu submenu" cdkMenu>
+        <button class="header-context-menu-item" cdkMenuItem (click)="copyRowContent(data.row, data.rowData)">Copy as JSON</button>
+        <!--<button class="header-context-menu-item" cdkMenuItem (click)="copyElementHTML(data.row, data.rowData, data)">Copy as Text</button>-->
+        <button class="header-context-menu-item" cdkMenuItemCheckbox 
+        [disabled]="!hasAdditionalDataSources(data.row)"
+        [cdkMenuItemChecked]="isShowingAdditionalDataSources(data.row)"
+        (click)="toggleRowExpansion(data.row)">Show other Data Sources</button>
+    </div>
+</ng-template>
+<ng-template #sz_dt_cell_entity_context_menu let-data> 
+    <div class="sz-dt-header-context-menu submenu" cdkMenu>
+        <button class="header-context-menu-item" cdkMenuItem (click)="openEntityById(data.col.key === 'entityId' ? data.entityData && data.entityData['entityId'] : data.col.key === 'relatedEntityId' ? data.relatedEntity && data.relatedEntity['entityId'] : undefined)">Open in New Tab</button>
+        <button class="header-context-menu-item" cdkMenuItem (click)="copyCellValue(data.col.key === 'entityId' ?  data.entityData && data.entityData['entityId']  : data.col.key === 'relatedEntityId' ? data.relatedEntity && data.relatedEntity['entityId'] : undefined)">Copy ID</button>
     </div>
 </ng-template>
 <!-- End Context Menus -->
@@ -180,7 +216,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                     [class.has-hidden-items]="hasTruncatedItems(rowQ[col.key])"
                     [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
                     [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
-                    [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: rowQ[col.key], rowData: rowQ}}"
+                    [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: rowQ[col.key], rowData: rowQ, entityData: row}}"
                     (click)="onCellClick(col.key, rowQ[col.key], $event, cellRef)"
                 >
                     <div *ngIf="col.key === 'entityId' && recordIndex === 0" class="cell-content" 
@@ -273,7 +309,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                         [class.has-hidden-items]="hasTruncatedItems(rowY[col.key])"
                         [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
                         [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
-                        [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: rowY[col.key], rowData: rowY}}"
+                        [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: rowY[col.key], rowData: rowY, entityData: row, relatedEntity: row.relatedEntity}}"
                         (click)="onCellClick(col.key, rowY[col.key], $event, cellRef)"
                     >
                         <div class="cell-content" 

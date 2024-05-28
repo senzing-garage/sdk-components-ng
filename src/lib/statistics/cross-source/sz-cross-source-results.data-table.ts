@@ -8,7 +8,7 @@ import { SzCrossSourceSummaryCategoryType, SzDataTableEntity, SzDataTableRelatio
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzCSSClassService } from '../../services/sz-css-class.service';
-import { SzEntity, SzEntityData, SzMatchedRecord, SzRecord, SzRelation } from '@senzing/rest-api-client-ng';
+import { SzEntity, SzEntityData, SzEntityIdentifier, SzMatchedRecord, SzRecord, SzRelation } from '@senzing/rest-api-client-ng';
 import { getMapKeyByValue, interpolateTemplate } from '../../common/utils';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
@@ -253,6 +253,8 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     @Output() loading: Observable<SzStatsSampleTableLoadingEvent> = this._loading.asObservable();
     private _onNoData: Subject<boolean> = new Subject();
     @Output() onNoData: Observable<boolean> = this._onNoData.asObservable();
+    private _onEntityIdClick: Subject<SzEntityIdentifier> = new Subject();
+    @Output() onEntityIdClick: Observable<SzEntityIdentifier> = this._onEntityIdClick.asObservable();
 
     constructor(
       public prefs: SzPrefsService,
@@ -404,6 +406,75 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
         this.cd.markForCheck();
       }
     }
+
+    copyElementHTML(ele: HTMLElement, data: any, debug?: any) {
+      //console.log(`copy html: `, ele, data,);
+
+      if(typeof ClipboardItem === "undefined") {
+        console.warn('copy to clipboard is not available');
+        return;
+      }
+      if(ele) {
+        let _valueElement = ele;
+        if(ele && ele.classList.contains('sz-dt-cell')) {
+          let valuesDiv   = ele.getElementsByClassName('cell-content');
+          _valueElement   = (valuesDiv && valuesDiv.length > 0) ? (valuesDiv[0] as HTMLElement) : _valueElement;
+        }
+        if(_valueElement) {
+          window.getSelection().removeAllRanges();
+          let range = document.createRange();
+          range.selectNode(_valueElement);
+          window.getSelection().addRange(range);
+          document.execCommand('copy');
+          window.getSelection().removeAllRanges();
+        }
+        //var range = document.createRange();
+        //range.selectNode(cell);
+        //window.getSelection().addRange(range);
+        //document.execCommand('copy')
+      }
+    }
+
+    copyCellValue(value: any, data?: any) {
+      //console.log(`copy cell value: `, value, data);
+      if(typeof ClipboardItem === "undefined") {
+        console.warn('copy to clipboard is not available');
+        return;
+      }
+      if(value) {
+        // get content
+        navigator.clipboard.writeText(value).then( (r) => {
+          console.log('wrote to clipboard: ', value);
+        })
+      }
+    }
+
+    openEntityById(value: any) {
+      console.log(`open entity: `, value);
+      this._onEntityIdClick.next(value as SzEntityIdentifier);
+    }
+
+    toggleRowExpansionFromMenu(data) {
+      console.log(`toggleRowExpansionFromMenu: `, data);
+
+    }
+
+    isShowingAdditionalDataSources(rowGroupElement?: HTMLElement) {
+      //console.log(`toggleRowExpansion() `, rowGroupElement);
+      if(rowGroupElement) {
+        return rowGroupElement.classList.contains('expanded')
+      }
+      return false;
+    }
+
+    hasAdditionalDataSources(rowGroupElement?: HTMLElement) {
+      if(rowGroupElement) {
+        return rowGroupElement.classList.contains('has-additional-data');
+      }
+      return false;
+    }
+
+    
 
     rowGroupStyle(item?: SzStatSampleEntityTableItem) {
       let retVal = '';

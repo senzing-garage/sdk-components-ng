@@ -5,6 +5,7 @@
     flex-wrap: nowrap;
     width: 150px;
     color: #666;
+    filter: drop-shadow(3px 4px 4px rgba(102, 102, 102, 0.377));
 
     &.submenu {
         margin-left: -1px;
@@ -230,6 +231,7 @@ sz-cross-source-results {
                     border: none;
                     font-size: 8px;
                     color: var(--sz-sample-table-cell-color);
+                    background-color: rgb(255 255 255 / 37%);
                     /*border-top: 1px solid #bdbdbd;*/
                     width: 100%;
                     /*text-align: left;*/
@@ -247,8 +249,8 @@ sz-cross-source-results {
                     right: -2px;
                     bottom: -1px;
                     opacity: 0;
-                    transition: 440ms ease-out opacity;
-                    transform: rotate(-90deg);
+                    transition: 440ms ease-out opacity, 100ms linear transform;
+                    transform: rotate(270deg);
                 }
                 &:hover {
                     mat-icon { opacity: 1; }
