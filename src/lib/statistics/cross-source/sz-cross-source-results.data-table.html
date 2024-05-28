@@ -219,7 +219,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                     [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: rowQ[col.key], rowData: rowQ, entityData: row}}"
                     (click)="onCellClick(col.key, rowQ[col.key], $event, cellRef)"
                 >
-                    <div *ngIf="col.key === 'entityId' && recordIndex === 0" class="cell-content" 
+                    <div *ngIf="col.key === 'entityId'" class="cell-content" 
                         matTooltip="Click to view Entity Detail page" 
                         matTooltipPosition="right"
                         [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
@@ -313,7 +313,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                         (click)="onCellClick(col.key, rowY[col.key], $event, cellRef)"
                     >
                         <div class="cell-content" 
-                            *ngIf="col.key === 'entityId' || (col.key === 'relatedEntityId' && recordIndex === 0)"
+                            *ngIf="col.key === 'entityId' || (col.key === 'relatedEntityId')"
                             matTooltip="Click to view Entity Detail page" 
                             [matTooltipPosition]="col.key === 'entityId' ? 'right':'above'"
                             [innerHTML]="cellValue(row.relatedEntity[col.key], col.key)" [attr.cell-key]="col.key"></div>

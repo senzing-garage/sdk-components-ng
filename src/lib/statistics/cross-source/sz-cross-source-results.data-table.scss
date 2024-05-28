@@ -271,6 +271,14 @@
                 .sz-dt-entity-id-cell {
                     display: none;
                 }
+                /* by default hide all "relatedEntityId" content cells */
+                .sz-dt-related-entity-id-cell  .cell-content {
+                    display: none;
+                }
+
+                .row-related-record .sz-dt-entity-id-cell .cell-content {
+                    display: none;
+                }
 
                 /**
                 Sometimes the very first visible row is not the same thing as the first row
@@ -293,18 +301,37 @@
                     
                     .sz-dt-entity-id-cell {
                         grid-row: span var(--selected-datasources-related-row-count);
-                        display: grid;
+                        display: block;
+                    }
+                    /* show the content only in the very first visible cell */
+                    .sz-dt-related-entity-id-cell  .cell-content {
+                        display: block;
                     }
                 }
                 &.expanded {
                     /* first unset the row-span(s) for "first row in selected datasources"*/
                     :nth-child(1 of .data-source-selected),
                     :nth-child(1 of .row-related-record.data-source-selected) {
-                        .sz-dt-entity-id-cell { grid-row: unset; }
+                        .sz-dt-entity-id-cell { 
+                            /* by default hide all the "entityId" cells (we'll enable just the first one below) */
+                            grid-row: unset; 
+                            display: none;
+                        }
+                        .sz-dt-related-entity-id-cell .cell-content {
+                            display: none;
+                        }
                     }
                     .row-record .sz-dt-entity-id-cell {
                         display: none;
                     }
+                    /* by default hide all "relatedEntityId" content elements (well enable just the fist one below */
+                    /*
+                    .row-record .sz-dt-related-entity-id-cell {
+                        .cell-content {
+                            display: none;
+                        }
+                    }*/
+
                     /* since everything should be visible now just apply the rowspan to the 
                     first row entity id cell*/
                     .row-record:first-child {
@@ -317,10 +344,28 @@
                     * related record entity id cell */
                     :nth-child(1 of .row-related-record) .sz-dt-entity-id-cell {
                         grid-row: span var(--related-row-count) !important;
+                        display: grid !important;
+                    }
+                    /* now show the "relatedEntityId" content for just the first row */
+                    :nth-child(1 of .row-related-record) .sz-dt-related-entity-id-cell .cell-content {
+                        display: block;
                     }
                 }
 
                 .sz-dt-entity-id-cell {
+                    .cell-content {
+                        /*color: var(--sz-sample-dt-primary-color);*/
+                        font-size: 16px;
+                        font-weight: bold;
+                        align-items: center;
+                        text-align: center;
+                        
+                        &:hover {
+                            text-decoration: underline;
+                            cursor: pointer;
+                        }
+                    }
+
                     .more-button {
                         font-size: 10px;
                         height: 22px;
@@ -406,6 +451,24 @@
                     }
                     tr:first-child td {
                         border-top: 2px solid #666 !important;
+                        .sz-dt-entity-id-cell {
+                            /*grid-row: span var(--selected-datasources-entity-row-count);*/
+                            max-height: unset;
+                            border-bottom: none;
+                            .cell-content {
+                                /*color: var(--sz-sample-dt-primary-color);*/
+                                font-size: 16px;
+                                font-weight: bold;
+                                align-items: center;
+                                text-align: center;
+                                
+                                &:hover {
+                                    text-decoration: underline;
+                                    cursor: pointer;
+                                }
+                            }
+
+                        }
                     }
                     .row-record:nth-child(even) td {
                         /*background-color: #f2f2f2;*/
@@ -433,6 +496,17 @@
                     }
                     .row-record.data-source-not-selected {
                         display: contents;
+                    }
+                    :nth-child(1 of .row-related-record) {
+                        .sz-dt-entity-id-cell {
+                            overflow: visible;
+                            /* when the more button is in the lower cell we want to straddle the line */
+                            .more-button {
+                                position: absolute;
+                                top: -13px;
+                                margin-top: 0px;
+                            }
+                        }
                     }
 
                 }
