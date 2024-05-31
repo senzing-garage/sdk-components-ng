@@ -9,8 +9,8 @@ import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzCSSClassService } from '../../services/sz-css-class.service';
 import { SzEntity, SzEntityData, SzEntityIdentifier, SzMatchedRecord, SzRecord, SzRelation } from '@senzing/rest-api-client-ng';
-import { getMapKeyByValue, interpolateTemplate } from '../../common/utils';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { getMapKeyByValue, interpolateTemplate, parseBool } from '../../common/utils';
+import { ConnectionPositionPair, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { SzCrossSourceSummaryMatchKeyPickerDialog } from '../../summary/cross-source/sz-cross-source-matchkey-picker.component';
 
@@ -85,7 +85,9 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       'entityData',
       'otherData'
     ]
+    private _alwaysVisibleColumns: string[] = ['entityId'];
     private _selectableColumnsAsMap: Map<string,string> = new Map();
+    private _visibiltySelectableColumnsAsMap: Map<string,string> = new Map();
 
     private _matchLevelToColumnsMap  = new Map<number, string[]>([
       [1,[
@@ -139,6 +141,15 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
         'otherData'
       ]]
     ]);
+
+    public menuPositions = {
+      settings: [
+        new ConnectionPositionPair(
+          { originX: 'start', originY: 'top' },
+          { overlayX: 'end', overlayY: 'top' }
+        ),
+      ]
+    }
 
     private _expandedEmptyColumns = [];
     private _hasLoadedOnce = false;
@@ -195,6 +206,9 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
         return (value as unknown[]).length - truncateAfter;
       }
       return 0;
+    }
+    public get truncateDataTableCellLines() {
+      return this.prefs.dataMart.truncateDataTableCellLines;
     }
     public debugTruncatedItemCount(value: unknown | unknown[]) {
       let truncateAfter = this.truncatedLinesGreaterThan;
@@ -321,12 +335,17 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     override get selectableColumns(): Map<string,string> {
       return this._selectableColumnsAsMap;
     }
+    public get visibilitySelectableColumns(): Map<string,string> {
+      return this._visibiltySelectableColumnsAsMap;
+    }
     private rowCount  = 0;
     private headerCellCount = this.selectableColumns.size;
     private cellIndex = this.headerCellCount + 1;
 
     private generateSelectableColumnsMap() {
       let _sCols = this._cols ? this._cols : new Map<string,string>();
+      let _vCols = this._cols ? this._cols : new Map<string,string>();
+
       if(this._selectableColumns && this._selectableColumns.length > 0) {
         // only return columns in data AND in selectable list
         let _pear = new Map<string,string>(
@@ -334,11 +353,18 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
           .filter(([k,v])=>{
             return this._selectableColumns.includes(k);
           }));
+        let _vis = new Map<string,string>(
+          [..._sCols]
+          .filter(([k,v])=>{
+            return this._selectableColumns.includes(k) && !this._alwaysVisibleColumns.includes(k);
+          }));        
         if(_pear.size > 0){
-          _sCols = _pear;
+          _sCols  = _pear;
+          _vCols  = _vis
         }
       }
-      this._selectableColumnsAsMap = _sCols;
+      this._selectableColumnsAsMap          = _sCols;
+      this._visibiltySelectableColumnsAsMap = _vCols;
     }
 
     getCellOrder(columnName: string, rowsPreceeding: number) {
@@ -966,5 +992,26 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     public toggleColumnPicker(event: MouseEvent) {
       this._columnPickerShowing = !this._columnPickerShowing;
       this.cd.detectChanges();
+    }
+    public toggleBoolPref(prefName: string, value?: any) {
+      /*if(prefName === 'truncateDataTableCellLines') {
+        // set it to "1"
+        if(this.prefs.dataMart.truncateDataTableCellLines !== undefined) {
+          this.prefs.dataMart.truncateDataTableCellLines = undefined;
+        } else {
+          this.prefs.dataMart.truncateDataTableCellLines = value ? value : 1;
+        }
+      } else {*/
+        // assume bool
+        this.prefs.dataMart[prefName] = !this.prefs.dataMart[prefName];
+      //}
+    }
+    public isPrefChecked(prefName: string) {
+      if(this.prefs.dataMart && this.prefs.dataMart[prefName] !== undefined) {
+        // has pref, might be number, might be boolean
+        let prefBool = parseBool(this.prefs.dataMart[prefName]);
+        return prefBool;
+      }
+      return false;
     }
 }

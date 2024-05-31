@@ -96,6 +96,13 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     this.prefs.dataMart.showAllColumns = value;
   }
 
+  public get defaultToDataSource() {
+    return this.prefs.dataMart.defaultDataSource1;
+  }
+  public get defaultFromDataSource() {
+    return this.prefs.dataMart.defaultDataSource2;
+  }
+
   public get resolutionMode()  {
     switch (this.dataMartService.sampleMatchLevel) {
       case 1:
@@ -244,7 +251,7 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-  onDefaultToSourceSelected(evt: SzCrossSourceSummarySelectionEvent) {
+  onDefaultSourcesSelected(evt: SzCrossSourceSummarySelectionEvent) {
     console.log(`onDefaultToSourceSelected: `, evt);
     if(evt) {
       this._isLoading = true;

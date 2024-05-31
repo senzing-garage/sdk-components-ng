@@ -75,6 +75,20 @@
         <button class="header-context-menu-item" cdkMenuItem (click)="copyCellValue(data.col.key === 'entityId' ?  data.entityData && data.entityData['entityId']  : data.col.key === 'relatedEntityId' ? data.relatedEntity && data.relatedEntity['entityId'] : undefined)">Copy ID</button>
     </div>
 </ng-template>
+<ng-template #sz_dt_settings_picker_menu> 
+    <div class="sz-dt-settings-menu" cdkMenu
+    >
+        <button class="header-context-menu-item" cdkMenuItemCheckbox 
+            [cdkMenuItemChecked]="isPrefChecked('rememberSelectedDataSources')"
+            (click)="toggleBoolPref('rememberSelectedDataSources')">Remember Selected Datasources</button>
+        <button class="header-context-menu-item" cdkMenuItemCheckbox 
+            [cdkMenuItemChecked]="isPrefChecked('truncateDataTableCellLines')"
+            (click)="toggleBoolPref('truncateDataTableCellLines')">Truncate Lines</button>
+        <button class="header-context-menu-item" cdkMenuItemCheckbox 
+            [cdkMenuItemChecked]="isPrefChecked('wrapDataTableCellLines')"
+            (click)="toggleBoolPref('wrapDataTableCellLines')">Wrap Cell Lines</button>
+    </div>
+</ng-template>
 <!-- End Context Menus -->
 <div class="control-ribbon">
     <!-- start paging component -->
@@ -83,28 +97,43 @@
         (clearFilters)="clearFilters($event)"
         (sampleClicked)="handleSampleClicked($event)"></sz-cross-source-pager>
     <!-- end paging component -->
-    <!-- start column picker component -->
-    <div class="column-picker">
-        <button class="column-picker-button has-tooltip"
-            (click)="toggleColumnPicker($event); $event.stopPropagation()" aria-label="Choose Columns">
-            <div class="icon-columns-select mdi--view-column-outline"></div>
-            <span class="tooltiptext no-nubbin">Select Columns to display</span>
-        </button>
-        <div #columnPickerRef class="sz-mat-menu vertical" [class.showing]="showColumnPickerMenu">
-            <label class="sz-mat-menu-item" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries; let i = index"
-            >{{col.value}}
-                <input type="checkbox" 
-                [attr.is-checked]="isColumnSelected(col.key)" 
-                [checked]="isColumnSelected(col.key)"
-                (click)="toggleColumnSelection(col.key, $event)"
+    <div class="control-ribbon-buttons">
+        <!-- start column picker component -->
+            <button class="column-picker-button has-tooltip"
+                (click)="toggleColumnPicker($event); $event.stopPropagation()" 
+                aria-label="Choose Columns"
+                matTooltip="Select Columns to display" 
+                matTooltipPosition="above">
+                <div class="icon-columns-select mdi--view-column-outline"></div>
+            </button>
+            <div #columnPickerRef class="sz-mat-menu vertical" 
+            [class.showing]="showColumnPickerMenu"
+            >
+                <label class="sz-mat-menu-item" 
+                    *ngFor="let col of this.visibilitySelectableColumns | SzOrderedMapEntries; let i = index"
+                >{{col.value}}
+                    <input type="checkbox" 
+                    [attr.is-checked]="isColumnSelected(col.key)" 
+                    [checked]="isColumnSelected(col.key)"
+                    (click)="toggleColumnSelection(col.key, $event)"
+                    >
+                    <span class="checkmark" (click)="$event.stopPropagation();"></span>
+                </label>
+            </div>
+        <!-- end column picker component -->
+        <!-- start pref settings -->
+            <button class="settings-icon-picker-button"
+                aria-label="Settings"
+                matTooltip="Additional Settings" 
+                matTooltipPosition="above"
+                [cdkMenuTriggerFor]="sz_dt_settings_picker_menu"
+                [cdkMenuPosition]="menuPositions.settings"
                 >
-                <span class="checkmark" (click)="$event.stopPropagation();"></span>
-            </label>
-        </div>
+                <div class="icon-settings-select mdi--view-settings-outline"></div>
+            </button>
+        <!-- end pref settings -->
     </div>
-    <!-- end column picker component -->
 </div>
-
 <!--<mat-menu #columnsSelector="matMenu" class="sz-g-flexbox-vertical" yPosition="below" (click)="$event.stopPropagation();">
     <button mat-menu-item *ngFor="let col of this.selectableColumns | SzOrderedMapEntries; let i = index"
     [attr.data-col-order]="columnOrder(col.key)"

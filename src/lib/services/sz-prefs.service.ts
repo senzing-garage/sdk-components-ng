@@ -5,7 +5,8 @@ import { SzDataSourceComposite } from '../models/data-sources';
 import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio } from '../models/folio';
 import { AdminStreamAnalysisConfig, AdminStreamConnProperties, AdminStreamLoadConfig } from '../models/data-admin';
 import { SzMatchKeyTokenFilterScope } from '../models/graph';
-import { SzCrossSourceSummaryCategoryType } from '../models/stats';
+import { SzCrossSourceSummaryCategoryType, SzCrossSourceSummaryCategoryTypeToMatchLevel } from '../models/stats';
+
 //import { Configuration as SzRestConfiguration, ConfigurationParameters as SzRestConfigurationParameters } from '@senzing/rest-api-client-ng';
 
 /**
@@ -108,6 +109,11 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _dataSource1: string = undefined;
   private _dataSource2: string = undefined;
+  private _defaultDataSource1: string = undefined;
+  private _defaultDataSource2: string = undefined;
+  private _defaultMatchLevel: number = undefined;
+  private _defaultStatType: SzCrossSourceSummaryCategoryType = undefined;
+  private _rememberSelectedDataSources: boolean = true;
   private _sampleDataSource1: string = undefined;
   private _sampleDataSource2: string = undefined;
   private _samplePageSize: number = 100;
@@ -126,6 +132,11 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   override jsonKeys = [
     'dataSource1',
     'dataSource2',
+    'defaultDataSource1',
+    'defaultDataSource2',
+    'defaultMatchLevel',
+    'defaultStatType',
+    'rememberSelectedDataSources',
     'sampleDataSource1',
     'sampleDataSource2',
     'sampleMatchLevel',
@@ -146,6 +157,7 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   /** first datasource to use in the datamart stats queries */
   public set dataSource1(value: string) {
     this._dataSource1 = value;
+    if(this._rememberSelectedDataSources) { this._defaultDataSource1 = value; }
     if(!this.bulkSet) this.prefChanged.next({name: 'dataSource1', value: value});
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
@@ -156,9 +168,63 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   /** first datasource to use in the datamart stats queries */
   public set dataSource2(value: string) {
     this._dataSource2 = value;
+    if(this._rememberSelectedDataSources) { this._defaultDataSource2 = value; }
     if(!this.bulkSet) this.prefChanged.next({name: 'dataSource2', value: value});
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
+  /** first datasource to use as the default in datamart stats queries */
+  public get defaultDataSource1(): string {
+    return this._defaultDataSource1;
+  }
+  /** first datasource to use as the default in datamart stats queries */
+  public set defaultDataSource1(value: string) {
+    this._defaultDataSource1 = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'defaultDataSource1', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** second datasource to use as the default in datamart stats queries */
+  public get defaultDataSource2(): string {
+    return this._defaultDataSource2;
+  }
+  /** second datasource to use as the default in datamart stats queries */
+  public set defaultDataSource2(value: string) {
+    this._defaultDataSource2 = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'defaultDataSource2', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** first datasource to use in the datamart stats queries */
+  public get defaultMatchLevel(): number {
+    return this._defaultMatchLevel;
+  }
+  /** first datasource to use in the datamart stats queries */
+  public set defaultMatchLevel(value: number) {
+    this._defaultMatchLevel = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'defaultMatchLevel', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** first datasource to use in the datamart stats queries */
+  public get defaultStatType(): SzCrossSourceSummaryCategoryType {
+    return this._defaultStatType;
+  }
+  /** first datasource to use in the datamart stats queries */
+  public set defaultStatType(value: SzCrossSourceSummaryCategoryType) {
+    this._defaultStatType = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'defaultStatType', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** if true and there are values for "dataSource1" and/or "dataSource2" then the datatable will 
+   * default to these previous values */
+  public get rememberSelectedDataSources(): boolean {
+    return this._rememberSelectedDataSources;
+  }
+  /** if true and there are values for "dataSource1" and/or "dataSource2" then the datatable will 
+   * default to these previous values */
+  public set rememberSelectedDataSources(value: boolean) {
+    this._rememberSelectedDataSources = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'rememberSelectedDataSources', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+
   /** first datasource to use in the datamart sampling stats queries */
   public get sampleDataSource1(): string {
     return this._sampleDataSource1;
@@ -186,6 +252,7 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   /** sample match leve parameter to use in stats queries */
   public set sampleMatchLevel(value: number) {
     this._sampleMatchLevel = value;
+    if(this._rememberSelectedDataSources) { this._defaultMatchLevel = value; }
     if(!this.bulkSet) this.prefChanged.next({name: 'sampleMatchLevel', value: value});
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
@@ -216,6 +283,7 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   /** sample stat type enum member value*/
   public set sampleStatType(value: SzCrossSourceSummaryCategoryType) {
     this._sampleStatType = value;
+    if(this._rememberSelectedDataSources) { this._defaultStatType = value; }
     if(!this.bulkSet) this.prefChanged.next({name: 'sampleStatType', value: value});
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }

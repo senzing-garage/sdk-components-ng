@@ -93,7 +93,7 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
    * event is emitted only after a initial pulldown selection is made. This event will contain 
    * necessary data to initialize a new SzSampleSet if desired.
    */
-  @Output() defaultToSourceSelected: EventEmitter<SzCrossSourceSummarySelectionEvent> = new EventEmitter();
+  @Output() defaultSourcesSelected: EventEmitter<SzCrossSourceSummarySelectionEvent> = new EventEmitter();
   /**
    * emitted when the component begins a request for data.
    * @returns entityId of the request being made.
@@ -218,8 +218,34 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
     console.info('onSummaryStatsChanged: ', stats, this.dataMartService);
     if(!this.dataMartService.dataSource1) {
       // select a default
-      if(this._defaultFromDataSource) { 
-        this.dataMartService.dataSource1 = this._defaultFromDataSource;
+      if(this._defaultFromDataSource || this._defaultToDataSource) { 
+        if(this._dataSources) {
+          if(this._defaultFromDataSource && this._dataSources.includes(this._defaultFromDataSource)) {
+            this.dataMartService.dataSource1 = this._defaultFromDataSource;
+          }
+          if(this._defaultToDataSource &&  this._dataSources.includes(this._defaultToDataSource)) {
+            this.dataMartService.dataSource2 = this._defaultToDataSource;
+          }
+          let _parametersEvt: SzCrossSourceSummarySelectionEvent = {
+            matchLevel: SzCrossSourceSummaryCategoryTypeToMatchLevel.MATCHES,
+            statType: SzCrossSourceSummaryCategoryType.MATCHES,
+          }
+          if(this.dataMartService.dataSource1 && this.dataMartService.dataSource2) {
+            // cross match
+            _parametersEvt.dataSource1 = this.dataMartService.dataSource1;
+            _parametersEvt.dataSource2 = this.dataMartService.dataSource2;
+          } else if(this.dataMartService.dataSource1) {
+            // to source
+            _parametersEvt.dataSource1 = this.dataMartService.dataSource1;
+          } else if(this.dataMartService.dataSource2) {
+            // from source
+            _parametersEvt.dataSource1 = this.dataMartService.dataSource2;
+          }
+          if(_parametersEvt && (_parametersEvt.dataSource1 || _parametersEvt.dataSource2)) {
+            // emit event
+            this.defaultSourcesSelected.emit(_parametersEvt);
+          }
+        }
       } else {
         // pull first valid
         if(stats) {
@@ -287,7 +313,7 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
                   }
                   if(this.dataMartService.dataSource2) { _parametersEvt.dataSource2 = this.dataMartService.dataSource2; }
                   // emit event
-                  this.defaultToSourceSelected.emit(_parametersEvt);
+                  this.defaultSourcesSelected.emit(_parametersEvt);
                 }
               }
             };
