@@ -506,8 +506,14 @@ body {
     --sz-sample-table-cell-link-font-weight: normal;
     --sz-sample-table-cell-link-text-decoration: underline;
     --sz-sample-table-cell-link-text-align: right;
+    --sz-sample-table-expand-button-background-color: #46b4f9;
+    --sz-sample-table-expand-button-color: #fff;
     --sz-sample-table-entity-row-background-color: #e4e4e4;
     --sz-sample-table-related-row-background-color: #f5f5f5;
     --sz-sample-table-expanded-row-background-color: #cdedff;
+    --sz-sample-table-expanded-row-expand-button-background-color: #f5f5f5;
+    --sz-sample-table-expanded-row-expand-button-border-color: #46b4f9;
+    --sz-sample-table-expanded-row-expand-button-color: var(--sz-sample-table-expanded-row-expand-button-border-color);
+
 }
 

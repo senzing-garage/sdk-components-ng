@@ -270,6 +270,17 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
     }
     console.warn(`onCrossSourceDataChanged: `, this._fromDataSourceSummaryData, this._crossSourceSummaryData, this._toDataSourceSummaryData);
   }
+  public get legendFrom(): string {
+    let retVal = 'A';
+    //let retVal = (this._fromDataSourceSummaryData && this._fromDataSourceSummaryData.dataSource) ? this._fromDataSourceSummaryData.dataSource : 'A';
+    return retVal;
+  }
+
+  public get legendTo(): string {
+    let retVal  = 'B';
+    //let retVal = (this._toDataSourceSummaryData && this._toDataSourceSummaryData.dataSource) ? this._toDataSourceSummaryData.dataSource : 'B';
+    return retVal;
+  }
   /** when a circle diagram is clicked for a particular stat this handler is invoked which then emits 
    * a 'summaryDiagramClick' event that can be listened for.
    * @internal

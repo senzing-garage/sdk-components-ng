@@ -19,9 +19,6 @@
         [class.smaller-font]="title.length > 60"
         [class.smallest-font]="title.length > 70"
     >{{ title }}</h2>
-    <mat-slide-toggle [disableRipple]="true" class="show-all-columns" color="#2B7169" [(ngModel)]="showAllColumns">
-        <span class="show-all-columns" [class.selected]="showAllColumns">Show All Columns</span>
-    </mat-slide-toggle>
     <!--<sz-paginator [totalCount]="totalCount"  [sampleCount]="sampleCount"
                 [filteredCount]="auditData?.AUDIT_PAGE?.FILTER ? filteredCount : null"
                 [firstRecord]="firstIndex+1" [lastRecord]="lastIndex+1"

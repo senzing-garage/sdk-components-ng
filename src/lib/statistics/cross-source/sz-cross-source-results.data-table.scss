@@ -391,8 +391,10 @@
                         font-size: 10px;
                         height: 22px;
                         padding: 2px 5px 2px 8px;
-                        background-color: var(--sz-sample-dt-primary-color);
-                        color: #fff;
+                        /*background-color: var(--sz-sample-dt-primary-color);*/
+                        /*background-color: var(--sz-sample-table-expanded-row-background-color);*/
+                        background-color: var(--sz-sample-table-expand-button-background-color);
+                        color: var(--sz-sample-table-expand-button-color);
                         margin-top: 5px;
                         line-height: 18px;
                         mat-icon {
@@ -408,6 +410,10 @@
                     .more-button.collapsed  { display: block; }
                     .more-button.expanded   { 
                         display: none; 
+                        background-color:   var(--sz-sample-table-expanded-row-expand-button-background-color);
+                        border-color:       var(--sz-sample-table-expanded-row-expand-button-border-color);
+                        color:              var(--sz-sample-table-expanded-row-expand-button-color);
+                        
                         mat-icon {
                             opacity: 1;
                         }
