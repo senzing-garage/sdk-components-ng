@@ -18,6 +18,9 @@
         .data-table tbody.row-group .row-entity-record .sz-dt-match-key-cell .cell-content {
             display: block !important;
         }
+        /*.data-table tbody.row-group .sz-dt-entity-id-cell {
+            grid-template-rows: 27px auto;
+        }*/
     }
     &.sample-type-possible-matches {
         --sz-sample-dt-primary-color: var(--sz-color-possible-matches);
@@ -301,6 +304,7 @@
                     .sz-dt-entity-id-cell {
                         grid-row: span var(--selected-datasources-entity-row-count);
                         display: grid;
+                        grid-template-rows: 27px auto;
                     }
                     td {
                         border-top: 2px solid #666;
@@ -350,6 +354,7 @@
                         .sz-dt-entity-id-cell {
                             grid-row: span var(--entity-row-count);
                             display: grid !important;
+                            grid-template-rows: 27px auto;
                         }
                     }
                     /* now apply the related rows count to the rowspan for the first related row's
@@ -467,7 +472,7 @@
                     }
                     &.row-related-entity .sz-dt-entity-id-cell,
                     &.row-related-record .sz-dt-entity-id-cell {
-                        background-color: var(--sz-sample-table-related-row-background-color);
+                        background-color: var(--sz-sample-table-related-row-background-color) !important;
                     }
                 }
                 &.expanded {

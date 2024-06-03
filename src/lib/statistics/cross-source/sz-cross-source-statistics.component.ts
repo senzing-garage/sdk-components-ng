@@ -218,6 +218,7 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     this.dataMartService.onDataSourceSelected.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe((dataSource: string) => {
+      //console.log(`SzCrossSourceStatistics.dataMartService.onDataSourceSelected: ${dataSource}`);
       this.dataSourceSelectionChange.emit({
         dataSource1: this.dataMartService.dataSource1,
         dataSource2: this.dataMartService.dataSource2

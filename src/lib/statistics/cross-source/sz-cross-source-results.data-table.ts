@@ -327,6 +327,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
             return this._contextMenuShowing || this._columnPickerShowing;
           })
         ).subscribe((event) => this.onDocumentClick(event));
+      
       // get and listen for prefs change
       this.prefs.dataMart.prefsChanged.pipe(
         takeUntil(this.unsubscribe$),
@@ -618,7 +619,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       if(item.rows && item.rows.length) {
         let rowsInSelectedDataSources = item.rows.filter((row) => {
           if(!dataType || (dataType && dataType.includes(row.dataType))) {
-            return (row.dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
+            return (row.dataSource !== undefined && [this.dataMartService.sampleDataSource1, this.dataMartService.sampleDataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
           }
           return false;
         });
@@ -633,7 +634,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
           //retVal    += item.relatedEntity.rows.length;
           let rowsInSelectedDataSources = item.relatedEntity.rows.filter((row) => {
             if(!dataType || (dataType && dataType.includes(row.dataType))) {
-              return (row.dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
+              return (row.dataSource !== undefined && [this.dataMartService.sampleDataSource1, this.dataMartService.sampleDataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
             }
             return false;
           });
@@ -742,14 +743,18 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     }
 
     get selectedDataSource1(): string | undefined {
-      return this.dataMartService.dataSource1;
+      return this.dataMartService.sampleDataSource1;
+      //return this.dataMartService.dataSource1;
     }
     get selectedDataSource2(): string | undefined {
-      return this.dataMartService.dataSource2;
+      return this.dataMartService.sampleDataSource2;
+      //return this.dataMartService.dataSource2;
     }
 
     public isDataSourceSelected(dataSource: string) {
-      return (dataSource !== undefined && [this.dataMartService.dataSource1, this.dataMartService.dataSource2].indexOf(dataSource) > -1) ? true : false;
+      return (dataSource !== undefined && 
+        [this.dataMartService.sampleDataSource1, this.dataMartService.sampleDataSource2]
+        .indexOf(dataSource) > -1) ? true : false;
     }
     private onSampleSetRequest(source: string, isInProgress: boolean | undefined) {
       console.warn(`SzCrossSourceResultsDataTable.onSampleSetRequest: ${isInProgress}`);
