@@ -108,7 +108,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       ]],
       [2,[
         'entityId',
-        'resolutionRuleCode',
+        /*'resolutionRuleCode',*/
         'matchKey',
         'relatedEntityId',
         'dataSource',
@@ -125,7 +125,7 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       ]],
       [3,[
         'entityId',
-        'resolutionRuleCode',
+        /*'resolutionRuleCode',*/
         'matchKey',
         'relatedEntityId',
         'dataSource',
@@ -795,7 +795,9 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
               (item as SzRelation).relatedEntity, 
               {
                 rows: _relRows, 
-                relatedEntityId: (item as SzRelation).relatedEntity.entityId
+                relatedEntityId:  (item as SzRelation).relatedEntity.entityId,
+                relatedMatchKey:  (item as SzRelation).matchKey,
+                relatedMatchType: (item as SzRelation).matchType
               }
             ), rows: _entRows});
         } else {
@@ -913,6 +915,17 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
 
     public onPageChange(event) {
       console.log(`onPageChange: `, event);
+    }
+
+    override onCellClick(cellName: string, data: any, event?: MouseEvent, element?: HTMLElement) { 
+      console.log(`on${cellName}Click: `, event, data);
+      if((cellName === 'relatedEntityId' || cellName === 'entityId') && data) {
+        this._onEntityIdClick.next(data as SzEntityIdentifier);
+      }
+      this.cellClick.emit({key: cellName, value: data});
+      if(element) {
+        //console.log('element: ', element, element.offsetHeight, element.scrollHeight);
+      }
     }
 
     public onNoResults(hasResults: boolean) {

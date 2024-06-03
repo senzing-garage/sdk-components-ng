@@ -181,6 +181,12 @@
 
 sz-cross-source-statistics {
     .report-header {
+        .header-toggle {
+            color: #46b4f9;
+            span.material-icons {
+                font-weight: 600;
+            }
+        }
         button {
             width: 24px !important;
             height: 24px !important;
@@ -196,6 +202,13 @@ sz-cross-source-statistics {
             .mat-mdc-button-ripple {
                 display: none !important;
             }
+        }
+        .show-all-columns label {
+            font-family: var(--sz-font-family);
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+            color: #313131;
         }
         mat-slide-toggle {
             .mdc-switch__ripple {

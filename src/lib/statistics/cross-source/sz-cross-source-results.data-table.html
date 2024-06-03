@@ -246,7 +246,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                     [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
                     [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
                     [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: rowQ[col.key], rowData: rowQ, entityData: row}}"
-                    (click)="onCellClick(col.key, rowQ[col.key], $event, cellRef)"
+                    (click)="onCellClick(col.key, (col.key === 'entityId'? row[col.key] : rowQ[col.key]), $event, cellRef)"
                 >
                     <div *ngIf="col.key === 'entityId'" class="cell-content" 
                         matTooltip="Click to view Entity Detail page" 
@@ -339,15 +339,18 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                         [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
                         [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
                         [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: rowY[col.key], rowData: rowY, entityData: row, relatedEntity: row.relatedEntity}}"
-                        (click)="onCellClick(col.key, rowY[col.key], $event, cellRef)"
+                        (click)="onCellClick(col.key, (col.key === 'relatedEntityId'? row.relatedEntity[col.key] : rowY[col.key]), $event, cellRef)"
                     >
+                        <div class="cell-content" 
+                            *ngIf="col.key === 'matchKey'"
+                            [innerHTML]="cellValue(row.relatedEntity.relatedMatchKey, col.key)" [attr.cell-key]="col.key"></div>
                         <div class="cell-content" 
                             *ngIf="col.key === 'entityId' || (col.key === 'relatedEntityId')"
                             matTooltip="Click to view Entity Detail page" 
                             [matTooltipPosition]="col.key === 'entityId' ? 'right':'above'"
                             [innerHTML]="cellValue(row.relatedEntity[col.key], col.key)" [attr.cell-key]="col.key"></div>
                         <div class="cell-content" 
-                            *ngIf="col.key !== 'entityId' && col.key !== 'relatedEntityId'"
+                            *ngIf="col.key !== 'entityId' && col.key !== 'relatedEntityId' && col.key !== 'matchKey'"
                             [innerHTML]="cellValue(rowY[col.key], col.key)" [attr.cell-key]="col.key"></div>
                         <!--<div class="cell-content" [innerHTML]="cellValue(rowY[col.key], col.key)" [attr.cell-key]="col.key"></div>-->
                         <div *ngIf="col.key === 'entityId' && (getTotalRowCount(row) - getRowCountInSelectedDataSources(row)) > 0">

@@ -690,14 +690,16 @@ export class SzStatSampleSet {
                                 _fullEntRecsMap.set(rec.dataSource+'|'+rec.recordId, rec);
                             })
                             rel.relatedEntity.records  = rel.relatedEntity.records.map((eRec) => {
+                                //let _moddedRec          = Object.assign({}, _fullEntRecsMap.get(eRec.dataSource+'|'+eRec.recordId), {matchKey: rel.matchKey ? rel.matchKey : undefined, matchLevel: undefined});
                                 return _fullEntRecsMap.get(eRec.dataSource+'|'+eRec.recordId);
+                                //return _moddedRec;
                             });
                             // now extend ent with props from full ent (minus) the records
                             rel.relatedEntity = Object.assign(Object.assign({}, _fullEnt), rel.relatedEntity);
                         }
                         
                     })
-                    //console.log(`\t\tExtended Data: `, this._currentPageRelations);
+                    //console.log(`\t\tExtended Data: `, _currentPageRelations);
                     this._relationPages.set(this._currentPage, _dataPage);
                     let dataset = this.currentPageResults;
                     //console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': extended data: ', dataset);

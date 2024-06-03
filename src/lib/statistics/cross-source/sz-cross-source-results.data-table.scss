@@ -14,6 +14,10 @@
         .data-table th {
             background-color: var(--sz-color-matches);
         }
+
+        .data-table tbody.row-group .row-entity-record .sz-dt-match-key-cell .cell-content {
+            display: block !important;
+        }
     }
     &.sample-type-possible-matches {
         --sz-sample-dt-primary-color: var(--sz-color-possible-matches);
@@ -276,7 +280,14 @@
                     display: none;
                 }
 
-                .row-related-record .sz-dt-entity-id-cell .cell-content {
+                .row-related-record {
+                    .sz-dt-entity-id-cell .cell-content,
+                    .sz-dt-match-key-cell .cell-content {
+                        display: none;
+                    }
+                }
+                /* for entity records on everything EXCEPT for "Matches" we don't want to show these */
+                .row-entity-record .sz-dt-match-key-cell .cell-content {
                     display: none;
                 }
 
@@ -304,7 +315,8 @@
                         display: block;
                     }
                     /* show the content only in the very first visible cell */
-                    .sz-dt-related-entity-id-cell  .cell-content {
+                    .sz-dt-related-entity-id-cell  .cell-content,
+                    .sz-dt-match-key-cell .cell-content {
                         display: block;
                     }
                 }
@@ -347,21 +359,25 @@
                         display: grid !important;
                     }
                     /* now show the "relatedEntityId" content for just the first row */
-                    :nth-child(1 of .row-related-record) .sz-dt-related-entity-id-cell .cell-content {
-                        display: block;
+                    :nth-child(1 of .row-related-record) {
+                        .sz-dt-related-entity-id-cell .cell-content, 
+                        .sz-dt-match-key-cell .cell-content {
+                            display: block !important;
+                        }
                     }
                 }
 
                 .sz-dt-entity-id-cell {
                     .cell-content {
                         /*color: var(--sz-sample-dt-primary-color);*/
-                        font-size: 16px;
-                        font-weight: bold;
-                        align-items: center;
-                        text-align: center;
+                        color: var(--sz-sample-table-cell-link-color);
+                        font-size: var(--sz-sample-table-cell-link-font-size);
+                        font-weight: var(--sz-sample-table-cell-link-font-weight);
+                        align-items: var(--sz-sample-table-cell-link-text-align);
+                        text-align: var(--sz-sample-table-cell-link-text-align);
+                        text-decoration: var(--sz-sample-table-cell-link-text-decoration);
                         
                         &:hover {
-                            text-decoration: underline;
                             cursor: pointer;
                         }
                     }
@@ -402,8 +418,7 @@
                         /*grid-row: span var(--selected-datasources-entity-row-count);*/
                         max-height: unset;
                         border-bottom: none;
-                        .cell-content {
-                            /*color: var(--sz-sample-dt-primary-color);*/
+                        /*.cell-content {
                             font-size: 16px;
                             font-weight: bold;
                             align-items: center;
@@ -413,7 +428,7 @@
                                 text-decoration: underline;
                                 cursor: pointer;
                             }
-                        }
+                        }*/
                     }
                 }
                 :nth-child(1 of .row-related-record.data-source-selected) { 
@@ -439,7 +454,20 @@
                 .row-record.data-source-not-selected {
                     display: none;
                     td {
-                        background-color: #cdedff;
+                        background-color: var(--sz-sample-table-expanded-row-background-color);
+                    }
+                }
+                /* we never want the first "entityId" cell to be blue 
+                * (which can happen if the very first record row is not in the selected 
+                * datasources)*/
+                .row-record {
+                    &.row-entity .sz-dt-entity-id-cell,
+                    &.row-entity-record .sz-dt-entity-id-cell {
+                        background-color: var(--sz-sample-table-entity-row-background-color) !important;
+                    }
+                    &.row-related-entity .sz-dt-entity-id-cell,
+                    &.row-related-record .sz-dt-entity-id-cell {
+                        background-color: var(--sz-sample-table-related-row-background-color);
                     }
                 }
                 &.expanded {
@@ -457,10 +485,12 @@
                             border-bottom: none;
                             .cell-content {
                                 /*color: var(--sz-sample-dt-primary-color);*/
-                                font-size: 16px;
-                                font-weight: bold;
-                                align-items: center;
-                                text-align: center;
+                                color: var(--sz-sample-table-cell-link-color);
+                                font-size: var(--sz-sample-table-cell-link-font-size);
+                                font-weight: var(--sz-sample-table-cell-link-font-weight);
+                                align-items: var(--sz-sample-table-cell-link-text-align);
+                                text-align: var(--sz-sample-table-cell-link-text-align);
+                                text-decoration: var(--sz-sample-table-cell-link-text-decoration);
                                 
                                 &:hover {
                                     text-decoration: underline;
@@ -474,7 +504,7 @@
                         /*background-color: #f2f2f2;*/
                     }
                     .row-record.data-source-not-selected td {
-                        background-color: #cdedff;
+                        background-color: var(--sz-sample-table-expanded-row-background-color);
                     }
                     /*
                     .row-entity-record.first .sz-dt-entity-id-cell {
@@ -594,14 +624,14 @@
 
         .sz-dt-related-entity-id-cell {
             .cell-content {
-                /* color: var(--sz-sample-dt-primary-color);*/
-                font-size: 16px;
-                font-weight: bold;
-                align-items: center;
-                text-align: center;
+                color: var(--sz-sample-table-cell-link-color);
+                font-size: var(--sz-sample-table-cell-link-font-size);
+                font-weight: var(--sz-sample-table-cell-link-font-weight);
+                align-items: var(--sz-sample-table-cell-link-text-align);
+                text-align: var(--sz-sample-table-cell-link-text-align);
+                text-decoration: var(--sz-sample-table-cell-link-text-decoration);
 
                 &:hover {
-                    text-decoration: underline;
                     cursor: pointer;
                 }
             }
@@ -612,7 +642,7 @@
         }
         .row-entity-record {
             td {
-                background-color: #ececec;
+                background-color: var(--sz-sample-table-entity-row-background-color);
             }
             &:last-of-type {
                 td {
@@ -629,12 +659,12 @@
         .row-related-entity {
             td {
                 border-top: 1px solid #636363;
-                background-color: #f5f5f5;
+                background-color: var(--sz-sample-table-related-row-background-color);
             }
         }
         .row-related-record {
             td {
-                background-color: #f5f5f5;
+                background-color: var(--sz-sample-table-related-row-background-color);
             }
             &.first {
                 td {
@@ -648,7 +678,7 @@
         .row-record, .row-related-record {
             &.data-source-not-selected {
                 td {
-                    background-color: #cdedff;
+                    background-color: var(--sz-sample-table-expanded-row-background-color);
                 }
             }
         }
@@ -661,12 +691,12 @@
         .data-table {
             .row-entity, .row-record {
                 td {
-                    background-color: #e4e4e4;
+                    background-color: var(--sz-sample-table-entity-row-background-color);
                 }
             }
             .row-related-entity, .row-related-record {
                 td {
-                    background-color: #f5f5f5;
+                    background-color: var(--sz-sample-table-related-row-background-color);
                 }
             }
         }
@@ -733,7 +763,7 @@
                 border-top: 1px solid #666;
                 border-left: 1px solid #666;
                 border-right: 1px solid #666;
-                /*background-color: #f5f5f5;*/
+                /*background-color: var(--sz-sample-table-related-row-background-color);*/
                 background-color: #fafafa;
                 cursor: pointer;
                 padding: 0 10px 0 24px;

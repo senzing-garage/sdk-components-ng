@@ -501,5 +501,13 @@ body {
     --sz-sample-table-spinner-height: calc(99vh - 120px);
     --sz-sample-table-spinner-width: calc(99vw - 10px);
     --sz-sample-table-cell-color: #424242;
+    --sz-sample-table-cell-link-color: #0000EE;
+    --sz-sample-table-cell-link-font-size: 12px;
+    --sz-sample-table-cell-link-font-weight: normal;
+    --sz-sample-table-cell-link-text-decoration: underline;
+    --sz-sample-table-cell-link-text-align: right;
+    --sz-sample-table-entity-row-background-color: #e4e4e4;
+    --sz-sample-table-related-row-background-color: #f5f5f5;
+    --sz-sample-table-expanded-row-background-color: #cdedff;
 }
 
