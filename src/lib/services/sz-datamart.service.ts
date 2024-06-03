@@ -185,11 +185,15 @@ export class SzStatSampleSet {
             
             // if one of the previous if statements set the current page
             // publish existing data
+            console.log(`set pageIndex(${value})`, this._currentPage === value, this._relationPages, this._entityPages);
             if(this._currentPage === value) {                
                 let dataset     = this.currentPageResults;
                 let pageData    = this.currentPage;
+                this._doNotFetchOnParameterChange = true;
                 this.bound      = pageData.pageMinimumValue as string;
                 console.warn(`already have page #${value}`, pageData);
+                this._doNotFetchOnParameterChange = false;
+
                 this._onDataUpdated.next(dataset);
                 this._onPagingUpdated.next(this._getCurrentPageParameters());
             } else {
@@ -205,9 +209,10 @@ export class SzStatSampleSet {
                 // we found value, create new request
                 if(_newBoundValue) {
                     console.warn(`fetching with new bound value(${_newBoundValue}|${this.bound}) results for page #${value}`);
-
-                    this._currentPage   = value;
+                    this._doNotFetchOnParameterChange = true;
                     this.bound          = _newBoundValue;
+                    this._currentPage   = value;
+                    this._doNotFetchOnParameterChange = false;
                     this.getSampleDataFromParameters();
                 } else {
                     console.warn(`could not get new bound value(${_newBoundValue}) from preceeding page #${_pageToFindIndex} | value = ${value}`, this._relationPages, this._entityPages);
