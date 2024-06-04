@@ -323,6 +323,9 @@
                     .sz-dt-match-key-cell .cell-content {
                         display: block;
                     }
+                    td {
+                        border-top: 1px dotted #313131;;
+                    }
                 }
                 &.expanded {
                     /* first unset the row-span(s) for "first row in selected datasources"*/
@@ -336,6 +339,9 @@
                         .sz-dt-related-entity-id-cell .cell-content {
                             display: none;
                         }
+                    }
+                    :nth-child(1 of .row-related-record.data-source-selected) td { 
+                        border-top: none;
                     }
                     .row-record .sz-dt-entity-id-cell {
                         display: none;
@@ -357,17 +363,23 @@
                             grid-template-rows: 27px auto;
                         }
                     }
-                    /* now apply the related rows count to the rowspan for the first related row's
-                    * related record entity id cell */
-                    :nth-child(1 of .row-related-record) .sz-dt-entity-id-cell {
-                        grid-row: span var(--related-row-count) !important;
-                        display: grid !important;
-                    }
-                    /* now show the "relatedEntityId" content for just the first row */
-                    :nth-child(1 of .row-related-record) {
+                    :nth-child(1 of .row-related-record) { 
+                        // the first related record row gets a dotted line separating it from 
+                        // the entity records
+                        td {
+                            border-top: 1px dotted #313131 !important;
+                        }
+                        /* now show the "relatedEntityId" content for just the first row */
                         .sz-dt-related-entity-id-cell .cell-content, 
                         .sz-dt-match-key-cell .cell-content {
                             display: block !important;
+                        }
+
+                        /* now apply the related rows count to the rowspan for the first related row's
+                        * related record entity id cell */
+                        .sz-dt-entity-id-cell {
+                            grid-row: span var(--related-row-count) !important;
+                            display: grid !important;
                         }
                     }
                 }
