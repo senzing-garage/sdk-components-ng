@@ -2,6 +2,9 @@ name: npm build
 
 on: push
 
+permissions:
+  contents: read
+
 jobs:
   npm-build:
     name: build, compile, and test angular components
