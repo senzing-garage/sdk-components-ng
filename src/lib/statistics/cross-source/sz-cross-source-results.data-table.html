@@ -234,8 +234,8 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
             <tr *ngFor="let rowQ of row.rows; let recordIndex=index;" 
                 [attr.data-row-index]="incrementRowCount()"
                 [attr.data-source]="rowQ.dataSource"
-                [class.data-source-selected]="isDataSourceSelected(rowQ.dataSource)"
-                [class.data-source-not-selected]="!isDataSourceSelected(rowQ.dataSource)"
+                [class.data-source-selected]="isDataSourceSelected(rowQ.dataSource, 'sampleDataSource1')"
+                [class.data-source-not-selected]="!isDataSourceSelected(rowQ.dataSource, 'sampleDataSource1')"
                 class="row-record row-entity-record">
                 <td #cellRef [attr.data-record-index]="recordIndex+1" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries" 
                     [attr.data-cell-order]="getCellOrder(col.key, getRowIndex())"
@@ -327,8 +327,8 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                 <tr *ngFor="let rowY of row.relatedEntity.rows; let recordIndex=index;" 
                 [attr.data-row-index]="incrementRowCount()"
                 [attr.data-source]="rowY.dataSource"
-                [class.data-source-selected]="isDataSourceSelected(rowY.dataSource)"
-                [class.data-source-not-selected]="!isDataSourceSelected(rowY.dataSource)"
+                [class.data-source-selected]="isDataSourceSelected(rowY.dataSource, 'sampleDataSource2')"
+                [class.data-source-not-selected]="!isDataSourceSelected(rowY.dataSource, 'sampleDataSource2')"
                 class="row-record row-related-record">
                     <td #cellRef [attr.data-record-index]="recordIndex+1" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries" 
                         [attr.data-cell-order]="getCellOrder(col.key, getRowIndex())"

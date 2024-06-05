@@ -4,7 +4,7 @@ import {CdkMenu, CdkMenuItem, CdkContextMenuTrigger} from '@angular/cdk/menu';
 import { MatDialog } from '@angular/material/dialog';
 
 import { SzDataTable } from '../../shared/data-table/sz-data-table.component';
-import { SzCrossSourceSummaryCategoryType, SzDataTableEntity, SzDataTableRelation, SzStatSampleEntityTableItem, SzStatSampleEntityTableRow, SzStatSampleEntityTableRowType, SzStatsSampleTableLoadingEvent } from '../../models/stats';
+import { SzCrossSourceSummaryCategoryType, SzCrossSourceSummaryCategoryTypeToMatchLevel, SzDataTableEntity, SzDataTableRelation, SzStatSampleEntityTableItem, SzStatSampleEntityTableRow, SzStatSampleEntityTableRowType, SzStatsSampleTableLoadingEvent } from '../../models/stats';
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzCSSClassService } from '../../services/sz-css-class.service';
@@ -610,10 +610,12 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
         // how would you check the datasource match on "SzStatSampleEntityTableItem"
         retVal  += 1;
       }
+      // count entity records
       if(item.rows && item.rows.length) {
+        let _dataSourcesToMatch = this.dataMartService.sampleMatchLevel === SzCrossSourceSummaryCategoryTypeToMatchLevel.MATCHES ? [this.dataMartService.sampleDataSource1, this.dataMartService.sampleDataSource2] : [this.dataMartService.sampleDataSource1];
         let rowsInSelectedDataSources = item.rows.filter((row) => {
           if(!dataType || (dataType && dataType.includes(row.dataType))) {
-            return (row.dataSource !== undefined && [this.dataMartService.sampleDataSource1, this.dataMartService.sampleDataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
+            return (row.dataSource !== undefined && _dataSourcesToMatch.indexOf(row.dataSource) > -1) ? 1 : 0;
           }
           return false;
         });
@@ -625,10 +627,12 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
           retVal  += 1;
         }
         if(item.relatedEntity.rows && item.relatedEntity.rows.length) {
+          // check if there is only "1" datasource, if row specifies to only match the second one and it's null flip it over to the first
+          let _dataSourcesToMatch = this.dataMartService.sampleMatchLevel === SzCrossSourceSummaryCategoryTypeToMatchLevel.MATCHES ? [this.dataMartService.sampleDataSource1, this.dataMartService.sampleDataSource2] : this.dataMartService.sampleDataSource2 && this.dataMartService.sampleDataSource2 !== undefined ? [this.dataMartService.sampleDataSource2] : [this.dataMartService.sampleDataSource1];
           //retVal    += item.relatedEntity.rows.length;
           let rowsInSelectedDataSources = item.relatedEntity.rows.filter((row) => {
             if(!dataType || (dataType && dataType.includes(row.dataType))) {
-              return (row.dataSource !== undefined && [this.dataMartService.sampleDataSource1, this.dataMartService.sampleDataSource2].indexOf(row.dataSource) > -1) ? 1 : 0;
+              return (row.dataSource !== undefined && _dataSourcesToMatch.indexOf(row.dataSource) > -1) ? 1 : 0;
             }
             return false;
           });
@@ -745,9 +749,12 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       //return this.dataMartService.dataSource2;
     }
 
-    public isDataSourceSelected(dataSource: string) {
+    public isDataSourceSelected(dataSource: string, dataSourceName?: string) {
+      // check if there is only "1" datasource, if row specifies to only match the second one and it's null flip it over to the first
+      dataSourceName = dataSourceName && dataSourceName === 'sampleDataSource2' &&  this.dataMartService.sampleDataSource2 === undefined ? 'sampleDataSource1' : dataSourceName;
+      let _dataSourcesToMatch = this.dataMartService.sampleMatchLevel === SzCrossSourceSummaryCategoryTypeToMatchLevel.MATCHES ? [this.dataMartService.sampleDataSource1, this.dataMartService.sampleDataSource2] : this.dataMartService && this.dataMartService[dataSourceName] ? this.dataMartService[dataSourceName] : [];
       return (dataSource !== undefined && 
-        [this.dataMartService.sampleDataSource1, this.dataMartService.sampleDataSource2]
+        _dataSourcesToMatch
         .indexOf(dataSource) > -1) ? true : false;
     }
     private onSampleSetRequest(source: string, isInProgress: boolean | undefined) {

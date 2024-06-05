@@ -336,9 +336,11 @@
                             grid-row: unset; 
                             display: none;
                         }
-                        .sz-dt-related-entity-id-cell .cell-content {
+                        .sz-dt-related-entity-id-cell .cell-content,
+                        .sz-dt-match-key-cell .cell-content {
                             display: none;
                         }
+                        
                     }
                     :nth-child(1 of .row-related-record.data-source-selected) td { 
                         border-top: none;
@@ -560,6 +562,7 @@
                                 margin-top: 0px;
                             }
                         }
+                        // hide
                     }
 
                 }
