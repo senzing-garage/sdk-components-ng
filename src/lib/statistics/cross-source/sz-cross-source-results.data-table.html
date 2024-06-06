@@ -149,6 +149,7 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
 <!--<button (click)="isColumnHidden2('resolutionRuleCode')">isColumnHidden2('resolutionRuleCode') ? {{isColumnHidden('resolutionRuleCode')}}</button>-->
 
 <table class="data-table data-sample-table" 
+    #tableRef
     [class.show-all-columns]="showAllColumns"
     [style]="gridStyle" 
     [attr.data-table-index]="resetTableIndexes()">
@@ -171,6 +172,9 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
                 [attr.data-field-name]="col.key"
                 [attr.data-col-order]="columnOrder(col.key)"
                 [attr.data-col-value-count]="getRowCountForField(col.key)"
+                (mousedown)="onHeaderMouseDown($event)"
+                (mousemove)="onHeaderMouseMove($event)"
+                (mouseup)="onHeaderMouseUp($event)"
                 >
                 <span class="col-name-text">{{col.value}}</span>
                 <div *ngIf="getRowCountForField(col.key) === 0" class="no-data-icon-wrapper has-tooltip">
@@ -390,3 +394,4 @@ sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
     </tbody>
     <!--</tbody>-->
     </table>
+    <div #resizeIndicatorRef class="resize-indicator"></div>

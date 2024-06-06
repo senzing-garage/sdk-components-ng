@@ -62,6 +62,23 @@
         }
     }
 
+    .resize-indicator {
+        display: none;
+        position: absolute;
+        left: 0px;
+        top: 27px;
+        width: 1px;
+        height: 100vh;
+        z-index: 1000;
+        border-left: 2px dotted #0000003f;
+    }
+
+    &.column-resizing {
+        .resize-indicator {
+            display: block;
+        }
+    }
+
     &.loading .data-table tbody td {
         opacity: .2;
     }
@@ -163,6 +180,13 @@
                 right: 0px;
                 top: 0px;
                 height: 100%;
+            }
+            &.is-dragging {
+                background-color: #c0c0c0;
+                .handle-resize {
+                    background-color: #000;
+                    right: unset;
+                }
             }
 
             &:hover {
@@ -340,7 +364,6 @@
                         .sz-dt-match-key-cell .cell-content {
                             display: none;
                         }
-                        
                     }
                     :nth-child(1 of .row-related-record.data-source-selected) td { 
                         border-top: none;

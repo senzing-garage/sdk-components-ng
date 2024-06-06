@@ -155,6 +155,11 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     @ViewChild('sz_dt_header_context_menu') sz_dt_header_context_menu: TemplateRef<any>;
     contexMenuOverRef: OverlayRef | null;
 
+    /** child ref to table (used for resize overlay calc) */
+    @ViewChild('tableRef') tableRef: ElementRef<HTMLElement>;
+    /** child ref to column drag resize indicator line */
+    @ViewChild('resizeIndicatorRef') resizeIndicatorRef: ElementRef<HTMLElement>;
+    
     private get matchLevel() {
       return this.dataMartService.sampleMatchLevel;
     }
@@ -249,6 +254,9 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
     }
     @HostBinding("class.wrap-lines") get classWrapLines() {
       return this.prefs.dataMart.wrapDataTableCellLines;
+    }
+    @HostBinding("class.column-resizing") get classColumnResizing() {
+      return this._isResizing;
     }
 
     private get truncatedLinesGreaterThan(): number {
@@ -657,6 +665,8 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
             if([0, undefined].includes(this._colDataCount.get(key)) && !this._expandedEmptyColumns.includes(key) && !this.showAllColumns) {
               // no data and not expanded
               retVal += ' 20px'; // no data
+            } else if(this._colSizes && this._colSizes.has(key)) {
+              retVal += ` ${_colSize}`;
             } else {
               retVal += ' minmax('+_colSize+',auto)';
             }
@@ -1033,4 +1043,93 @@ export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit
       }
       return false;
     }
+    _isResizing               = false;
+    _resizeCellClientXOffset  = 0;
+    _resizeCellClientYOffset  = 0;
+    _resizeTableHeight        = 0;
+    _resizeElement: HTMLElement;
+    _resizeMinWidth           = 100;
+    _resizeColName: string;
+    public onHeaderMouseDown(event: MouseEvent) {
+      console.info(`onHeaderMouseDown: `, event);
+      if(event && event.target && (event.target as HTMLElement).classList.contains('handle-resize')) {
+        // this is a resize handle
+        this._resizeElement = (event.target as HTMLElement);
+        if(this._resizeElement && this._resizeElement.parentElement) {
+          this._resizeCellClientXOffset   = this._resizeElement.parentElement.offsetLeft;
+          this._resizeCellClientYOffset   = this._resizeElement.parentElement.offsetTop;
+          this._resizeColName             = this._resizeElement.parentElement.getAttribute('data-field-name');
+          this._resizeElement.parentElement.classList.add('is-dragging');
+          // if "min-width" set on table cell limit resize to that
+          if(parseInt(this._resizeElement.parentElement.style.minWidth) > 0) {
+            this._resizeMinWidth = parseInt(this._resizeElement.parentElement.style.minWidth);
+          }
+          // make the indicator the same height as the table
+          if(this.tableRef && this.tableRef.nativeElement && this.tableRef.nativeElement.clientHeight) {
+            this.resizeIndicatorRef.nativeElement.style.height = this.tableRef.nativeElement.clientHeight +'px';
+          }
+          // set initial position
+          this._setResizeIndicatorPosition(event.clientX);
+          console.log(`\tparent offset: ${this._resizeCellClientXOffset}`, this._resizeElement.parentElement.getClientRects());
+        }
+        this._isResizing    = true;
+      }
+    }
+    override onHeaderMouseMove(event: MouseEvent) {
+      if(this._isResizing) {
+        console.log(`onHeaderMouseMove: `, event.clientX, (event.clientX - this._resizeCellClientXOffset));
+        this._setResizeIndicatorPosition(event.clientX);
+        /*
+        if(this._resizeElement) {
+          if(this._resizeMinWidth > 0) {
+            if((event.clientX - this._resizeCellClientXOffset) > this._resizeMinWidth) {
+              this._resizeElement.style.left  = (event.clientX - this._resizeCellClientXOffset) +'px';
+              if(this.resizeIndicatorRef) {
+                this.resizeIndicatorRef.nativeElement.style.left = event.clientX+'px';
+                //this._colSizes.set(this._resizeColName, this._resizeElement.style.left);
+              }
+            }
+          } else {
+            this._resizeElement.style.left    = (event.clientX - this._resizeCellClientXOffset) +'px';
+          }
+        }*/
+      }
+    }
+    private _setResizeIndicatorPosition(left: number) {
+      if(this._resizeElement) {
+        if(this._resizeMinWidth > 0) {
+          if((left - this._resizeCellClientXOffset) > this._resizeMinWidth) {
+            this._resizeElement.style.left  = (left - this._resizeCellClientXOffset) +'px';
+            if(this.resizeIndicatorRef) {
+              this.resizeIndicatorRef.nativeElement.style.left = left+'px';
+              //this._colSizes.set(this._resizeColName, this._resizeElement.style.left);
+            }
+          }
+        } else {
+          this._resizeElement.style.left    = (left - this._resizeCellClientXOffset) +'px';
+        }
+      }
+    }
+    public onHeaderMouseUp(event: MouseEvent) {
+      console.info(`onHeaderMouseUp: `, event);
+      if(this._resizeElement && this._resizeElement.parentElement) {
+        this._resizeElement.parentElement.classList.remove('is-dragging');
+        let colName = this._resizeElement.parentElement.getAttribute('data-field-name');
+        console.log(`\tset new "${colName}" width: ${this._resizeElement.style.left}`);
+        if(colName) {
+          //this._columnBeingResized.style.width = colWidth+'px';
+          this._colSizes.set(colName, this._resizeElement.style.left);
+        }
+      }
+      if(this._resizeElement) {
+        // undo the mouse-pinning so it just goes back to it's default style
+        this._resizeElement.style.left  = null;
+      }
+      this.cd.detectChanges();
+      this._isResizing              = false;
+      this._resizeElement           = undefined;
+      this._resizeCellClientXOffset  = undefined;
+
+    }
+
 }
