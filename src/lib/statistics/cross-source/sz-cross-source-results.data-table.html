@@ -16,9 +16,9 @@
 </ng-template>
 <ng-template #sz_dt_header_column_order_context_menu let-col>
     <div class="sz-dt-header-context-menu submenu" cdkMenu>
-        <button class="header-context-menu-item" cdkMenuItem (click)="debug(col); moveColumn(col.key, -1)">Move Left</button>
-        <button class="header-context-menu-item" cdkMenuItem (click)="debug(col); moveColumn(col.key, +1)">Move Right</button>
-        <button class="header-context-menu-item" cdkMenuItem disabled="disabled" (click)="debug(col); moveColumn(col.key, (2 - columnOrder(col.key)))">Send to Front</button>
+        <button class="header-context-menu-item" cdkMenuItem (click)="moveColumn(col.key, -1)">Move Left</button>
+        <button class="header-context-menu-item" cdkMenuItem (click)="moveColumn(col.key, +1)">Move Right</button>
+        <button class="header-context-menu-item" cdkMenuItem disabled="disabled" (click)="moveColumn(col.key, (2 - columnOrder(col.key)))">Send to Front</button>
     </div>
 </ng-template>
 <ng-template #sz_dt_header_row_order_context_menu let-col> 
@@ -94,8 +94,8 @@
     <!-- start paging component -->
     <sz-cross-source-pager 
         [pageSizeOptions]="[ 10, 25, 50, 75, 100 ]"
-        (clearFilters)="clearFilters($event)"
-        (sampleClicked)="handleSampleClicked($event)"></sz-cross-source-pager>
+        (clearFilters)="onPagingClearFilters($event)"
+        (sampleClicked)="onPagingSampleClicked($event)"></sz-cross-source-pager>
     <!-- end paging component -->
     <div class="control-ribbon-buttons">
         <!-- start column picker component -->
