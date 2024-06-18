@@ -88,6 +88,15 @@ export { AdminStreamConnProperties, AdminStreamAnalysisConfig, AdminStreamLoadCo
 export { SzDataSourceRecordAnalysis, SzDataSourceComposite } from './lib/models/data-sources';
 export { SzGraphTooltipEntityModel, SzGraphTooltipLinkModel, SzGraphNodeFilterPair, SzMatchKeyComposite, SzMatchKeyTokenComposite, SzEntityNetworkMatchKeyTokens, SzNetworkGraphInputs, SzMatchKeyTokenFilterScope } from './lib/models/graph';
 export { SzDataSourceRecordsSelection, SzDataSourceRecordSelection, SzWhySelectionModeBehavior, SzWhySelectionMode } from './lib/models/data-source-record-selection';
+export {
+  SzCrossSourceSummaryCategoryType,
+  SzCrossSourceSummaryCategoryTypeToMatchLevel,
+  SzCrossSourceSummarySelectionEvent,
+  SzCrossSourceSummarySelectionClickEvent,
+  sampleDataSourceChangeEvent,
+  SzStatSampleSetParameters,
+  SzStatSampleSetPageChangeEvent
+} from './lib/models/stats';
 export * from './lib/models/data-how';
 /** pipes */
 export { SzShortNumberPipe } from './lib/pipes/shortnumber.pipe'

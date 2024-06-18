@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, ViewContainerRef, TemplateRef, Input, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, ViewContainerRef, TemplateRef, Input, OnDestroy, Inject } from '@angular/core';
 import {
   SzAlertMessageDialog,
   SzDataMartService,
@@ -11,11 +11,13 @@ import {
   SzEntitiesPage
 } from '@senzing/sdk-components-ng';
 
-import { tap, filter, take } from 'rxjs/operators';
+import { tap, filter, take, takeUntil } from 'rxjs/operators';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Subject, Subscription, fromEvent } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
+import { SzSdkPrefsModel } from 'src/lib/services/sz-prefs.service';
 
 @Component({
   selector: 'app-root',
@@ -31,6 +33,12 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   public showEntityDetail   = false;
   public sampleStatType;
   private _isLoading        = false;
+  /** localstorage key to store pref data in */
+  public STORAGE_KEY = 'senzing-web-app-example-data-table';
+  /** original json value when app was loaded */
+  private _localStorageOriginalValue: SzSdkPrefsModel = this.storage.get(this.STORAGE_KEY);
+  /** local cached json model of prefs */
+  private _prefsJSON: SzSdkPrefsModel;
 
   public get isLoading(): boolean {
     return this._isLoading;
@@ -45,6 +53,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     public searchService: SzSearchService,
     public overlay: Overlay,
     public prefs: SzPrefsService,
+    @Inject(LOCAL_STORAGE) private storage: StorageService,
     public dataMart: SzDataMartService,
     public dialog: MatDialog,
     public viewContainerRef: ViewContainerRef){}
@@ -61,6 +70,12 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       console.log(`new sample set data ready... `);
       this.showSampleTable = true;
     })*/
+    this.prefs.prefsChanged.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe( (srprefs) => {
+      this._prefsJSON = srprefs;
+      this.savePrefsToLocalStorage();
+    });
   }
 
   /**
@@ -75,23 +90,32 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   onCellClick(data: any) {
     console.log(`onCellClick`, data);
     if(!data.value){ return; }
-    if(data.key === 'entityId' || data.key === 'relatedEntityId') {
-      this.dialog.open(SzAlertMessageDialog, {
-        panelClass: 'alert-dialog-panel',
-        width: '350px',
-        height: '200px',
-        data: {
-          title: `Opening Entity #${data.value} Detail`,
-          text: 'This would normally be a redirect to the entity detail page.',
-          showOkButton: false,
-          buttonText: 'Close'
-        }
-      });
+  }
+
+  onEntityIdClick(entityId: SzEntityIdentifier) {
+    console.log(`APP onEntityIdClick(${entityId})`);
+    if(entityId) {
+      this.openEntity(entityId);
     }
   }
 
-  onLoading(value: boolean) {
-    this._isLoading = value;
+  openEntity(entityId: SzEntityIdentifier) {
+    this.dialog.open(SzAlertMessageDialog, {
+      panelClass: 'alert-dialog-panel',
+      width: '350px',
+      height: '200px',
+      data: {
+        title: `Opening Entity #${entityId} Detail`,
+        text: 'This would normally be a redirect to the entity detail page.',
+        showOkButton: false,
+        buttonText: 'Close'
+      }
+    });
+  }
+
+  /** save value of  _prefsJSON to local storage */
+  savePrefsToLocalStorage() {
+    this.storage.set(this.STORAGE_KEY, this._prefsJSON);
   }
   
 }

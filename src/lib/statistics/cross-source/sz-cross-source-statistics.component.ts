@@ -4,7 +4,7 @@ import { take, takeUntil, tap } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { camelToKebabCase, underscoresToDashes, getMapKeyByValue, parseBool } from '../../common/utils';
 import { SzDataMartService } from '../../services/sz-datamart.service';
-import { SzCrossSourceSummaryCategoryType, SzCrossSourceSummarySelectionEvent, SzCrossSourceSummarySelectionClickEvent, SzStatsSampleTableLoadingEvent } from '../../models/stats';
+import { SzCrossSourceSummaryCategoryType, SzCrossSourceSummarySelectionEvent, SzCrossSourceSummarySelectionClickEvent, SzStatsSampleTableLoadingEvent, SzCrossSourceSummaryCategoryTypeToMatchLevel } from '../../models/stats';
 import { SzEntitiesPage, SzEntityData, SzEntityIdentifier, SzSourceSummary } from '@senzing/rest-api-client-ng';
 import { SzDataTableCellEvent } from '../../models/stats';
 
@@ -34,14 +34,11 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
 
-  private _showTable    = false;
-  public get showTable() {
-    return this._showTable;
-  }
-
-  private _isLoading = false;
-  private _showTableLoadingSpinner = true;
   private _disableClickingOnZeroResults = true;
+  private _isLoading = false;
+  private _showTable    = false;
+  private _showTableLoadingSpinner = true;
+  private _title: string;
 
   @HostBinding("class.loading") get isLoading() {
     return this._isLoading;
@@ -84,10 +81,12 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   private _loading: Subject<boolean> = new Subject();
   @Output() loading: Observable<boolean> = this._loading.asObservable();
 
-  public toggleExpanded() {
-    this.prefs.dataMart.showDiagramHeader = !this.prefs.dataMart.showDiagramHeader;
+  public get defaultFromDataSource() {
+    return this.prefs.dataMart.defaultDataSource2;
   }
-
+  public get defaultToDataSource() {
+    return this.prefs.dataMart.defaultDataSource1;
+  }
   public get showAllColumns() {
     return this.prefs.dataMart.showAllColumns;
   }
@@ -95,12 +94,8 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   public set showAllColumns(value: boolean) {
     this.prefs.dataMart.showAllColumns = value;
   }
-
-  public get defaultToDataSource() {
-    return this.prefs.dataMart.defaultDataSource1;
-  }
-  public get defaultFromDataSource() {
-    return this.prefs.dataMart.defaultDataSource2;
+  public get showTable() {
+    return this._showTable;
   }
 
   public get resolutionMode()  {
@@ -117,46 +112,13 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-  private _title: string;
-
-  get title() {
+  /** the title of the collapseable header */
+  public get title() {
     return this._title;
-    let retVal    = '';
-    let isSingle  = true;
-    if(this.dataMartService.sampleDataSource1 && this.dataMartService.sampleDataSource2 && this.dataMartService.sampleDataSource1 !== this.dataMartService.sampleDataSource2) {
-      isSingle = false;
-    } else if(this.dataMartService.sampleDataSource1 || this.dataMartService.sampleDataSource2) {
-      isSingle  = true;
-    }
-    if(this.dataMartService.sampleStatType) {
-      switch(this.dataMartService.sampleStatType) {
-        case 'MATCHES':
-          retVal = isSingle ? 'Duplicates' : 'Matches';
-          break;
-        case 'AMBIGUOUS_MATCHES':
-          retVal = 'Ambiguous Matches';
-          break;
-        case 'POSSIBLE_MATCHES':
-          retVal = isSingle ? 'Possible Duplicates' : 'Possible Matches';
-          break;
-        case 'POSSIBLE_RELATIONS':
-          retVal = isSingle ? 'Possible Relationships' : 'Possibly Related';
-          break;
-        case 'DISCLOSED_RELATIONS':
-          retVal = 'Disclosed Relationships';
-          break;
-      };
-
-      if(this.dataMartService.sampleDataSource1 && this.dataMartService.sampleDataSource2 && this.dataMartService.sampleDataSource1 !== this.dataMartService.sampleDataSource2) {
-        retVal  += `: ${this.dataMartService.sampleDataSource1} to ${this.dataMartService.sampleDataSource2}`;
-      } else if(this.dataMartService.sampleDataSource1) {
-        retVal  += `: ${this.dataMartService.sampleDataSource1}`;
-      } else if(this.dataMartService.sampleDataSource2) {
-        retVal  += `: ${this.dataMartService.sampleDataSource2}`;
-      }
-    }
-
-    return retVal;
+  }
+  /** set the title of the collapseable widget */
+  public set title(value: string) {
+    this._title = value;
   }
 
   private _getTitleFromEvent(event: SzCrossSourceSummarySelectionEvent) {
@@ -394,6 +356,10 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     this.entityIdClick.emit(entityId);
   }
 
+  public toggleExpanded() {
+    this.prefs.dataMart.showDiagramHeader = !this.prefs.dataMart.showDiagramHeader;
+  }
+
   private getNewSampleSet(parameters: SzCrossSourceSummarySelectionEvent) {
     // set loading emitter(s)
     this._onNewSampleSetRequested.next(true);
@@ -413,5 +379,14 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
           this._onNewSampleSet.next(data);
         })
       )
+  }
+  public updateTitle(datasource1, datasource2, statType) {
+    let _evt: SzCrossSourceSummarySelectionEvent  = {
+      dataSource1: datasource1,
+      dataSource2: datasource2,
+      statType: statType,
+      matchLevel: SzCrossSourceSummaryCategoryTypeToMatchLevel[statType]
+    }
+    this._title = this._getTitleFromEvent(_evt);
   }
 }
