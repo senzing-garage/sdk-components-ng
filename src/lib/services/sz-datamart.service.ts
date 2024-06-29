@@ -90,17 +90,32 @@ export class SzStatSampleSet {
         if(this._requestParameters) this._requestParameters.bound = value;
         if(value) {
             // we might need to jump page(s)
-            if(this.currentPage && (this.currentPage.maximumValue as string) === value) {
+            if(value === 'max' || value === 'MAX') {
+            //if(this.currentPage && (this.currentPage.maximumValue as string) === value) {
                 // we're jumping to the last page
+                let _lastPageSize   = this.totalCount % this.pageSize;
                 let _lastPage       = Math.ceil(this.totalCount / this.pageSize);
-                console.warn(`!!! changing to last page(${_lastPage}): (${this.currentPage.maximumValue} as string) === ${value}`)
+                console.warn(`!!! changing to last page(${_lastPage}) w/ ${_lastPageSize} results`);
                 this._currentPage   = _lastPage;
+                this.pageSize       = _lastPageSize;
+                this.boundType      = SzBoundType.INCLUSIVEUPPER;
                 if(!this._doNotFetchOnParameterChange) this.getSampleDataFromParameters();
-            } else if(this.currentPage && (this.currentPage.minimumValue as string) === value) {
+            } else if(value === undefined || value === '0' || value === '0:0') {
+                // first page
+                this._currentPage   = 0;
+                this.pageSize       = this.prefs.dataMart.samplePageSize; // grab pagesize off of prefs value;
+                this.boundType      = SzBoundType.INCLUSIVELOWER;
+                console.warn(`!!! changing to page 1: (${this.pageSize})`);
+                if(!this._doNotFetchOnParameterChange) this.getSampleDataFromParameters();
+            } else if(!this._doNotFetchOnParameterChange) {
+                // just change the bound type
+                //this.getSampleDataFromParameters();
+            }
+            /*} else if(this.currentPage && (this.currentPage.minimumValue as string) === value) {
                 console.warn(`!!! changing to first page: (${this.currentPage.minimumValue} as string) === ${value}`);
                 this._currentPage = 0;
                 if(!this._doNotFetchOnParameterChange) this.getSampleDataFromParameters();
-            }
+            }*/
         }
     }
     public get boundType() {
@@ -215,7 +230,18 @@ export class SzStatSampleSet {
                     this._currentPage   = value;
                     this._doNotFetchOnParameterChange = false;
                     this.getSampleDataFromParameters();
-                } else {
+                } else if(this.currentPageResults && this.currentPageResults.length > 0 && ((this._currentPage) - 1 === value || (this._currentPage +1) === value)) {
+                    // instead get the current page's first and last items and 
+                    // figure out if we need to before or after
+                    // if before use the first item and set the boundType to 'EXCLUSIVE_LOWER'
+                    // and if it's next grab the last item and do 'EXCLUSIVE_UPPER'
+                    if(this._currentPage > value) {
+                        // go prev
+                        let _bound = this._isRelationsResponse ? (this.currentPageResults as SzRelation[])[0].entity.entityId + ':'+ (this.currentPageResults as SzRelation[])[0].relatedEntity.entityId : (this.currentPageResults as SzEntityData[])[0].resolvedEntity.entityId;
+                    } else if(this._currentPage < value) {
+                        // go next
+                        let _bound = this._isRelationsResponse ? (this.currentPageResults as SzRelation[])[(this.currentPageResults as SzRelation[]).length  - 1].entity.entityId + ':'+ (this.currentPageResults as SzRelation[])[(this.currentPageResults as SzRelation[]).length - 1].relatedEntity.entityId : (this.currentPageResults as SzEntityData[])[(this.currentPageResults as SzEntityData[]).length - 1].resolvedEntity.entityId;
+                    }
                     console.warn(`could not get new bound value(${_newBoundValue}) from preceeding page #${_pageToFindIndex} | value = ${value}`, this._relationPages, this._entityPages);
                 }
             }
@@ -902,12 +928,20 @@ export class SzDataMartService {
         this.onSampleMatchLevelChange.next(value);
     }
     /** set the page size assigned to the sample set instance */
-    public set samplePageSize(value: number) {
+    public set sampleSetPageSize(value: number) {
         let _oType = this.prefs.dataMart.samplePageSize;
         //this.prefs.dataMart.samplePageSize = value;
         if(_oType !== value && this._sampleSet) {
             // check to see if we need to make a new sample request
             this._sampleSet.pageSize = value;
+        }
+    }
+    /** get the page size assigned to the sample set instance */
+    public get sampleSetPageSize() {
+        if(this._sampleSet && this._sampleSet.pageSize) {
+            return this._sampleSet.pageSize;
+        } else {
+            return this.prefs.dataMart.samplePageSize;
         }
     }
     /** get the bound assigned to the sample set instance. this is either the 
@@ -1038,7 +1072,7 @@ export class SzDataMartService {
     /** when either data source selection changes in the preferences. the preference may change without changing the value of "datasource1" in the sampleset. */
     public onDataSourceSelected                                                 = this._onDataSourceSelected.asObservable();
     /** count stats are changes when a new sample set has responded and been scanned for how many records per column are present. If the result for a column is "0" then the column is displayed in a "collapsed" state. */
-    public onCountStats:                Subject<SzLoadedStats | undefined>      = new BehaviorSubject<SzLoadedStats>(undefined);
+    public onCountStats:                BehaviorSubject<SzLoadedStats | undefined>      = new BehaviorSubject<SzLoadedStats>(undefined);
     /** when the count stats for a specific combination of "datasource1" vs "datasource2" are made available. */
     public onCrossSourceSummaryStats:   Subject<SzCrossSourceSummary | undefined> = new BehaviorSubject<SzCrossSourceSummary>(undefined);
     /** when "datasource1" or "datasource2" are changed for the sampleset. */
@@ -1048,7 +1082,7 @@ export class SzDataMartService {
     /** when "type" for the sampleset is changed. possible values are "MATCHES" | "AMBIGUOUS_MATCHES" | "POSSIBLE_MATCHES" | "POSSIBLE_RELATIONS" | "DISCLOSED_RELATIONS" */
     public onSampleTypeChange:          BehaviorSubject<SzCrossSourceSummaryCategoryType | undefined> = new BehaviorSubject<SzCrossSourceSummaryCategoryType>(undefined);
     /** when "matchLevel" for the sampleset is changed. */
-    public onSummaryStats:              Subject<SzSummaryStats | undefined>     = new BehaviorSubject<SzSummaryStats>(undefined);
+    public onSummaryStats:              BehaviorSubject<SzSummaryStats | undefined>     = new BehaviorSubject<SzSummaryStats>(undefined);
 
     /** when a new sample set is being requested 
      * @internal

@@ -1,6 +1,6 @@
 import { Component, Input, Output, OnInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef, AfterContentInit, AfterViewInit, ViewChild } from '@angular/core';
 import { SzGraphPrefs, SzPrefsService } from '../../services/sz-prefs.service';
-import { take, takeUntil } from 'rxjs/operators';
+import { take, takeUntil, tap } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { camelToKebabCase, underscoresToDashes, getMapKeyByValue } from '../../common/utils';
 import { SzCrossSourceSummary, SzDataSourcesResponseData, SzSourceSummary, SzSummaryStats } from '@senzing/rest-api-client-ng';
@@ -135,6 +135,9 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
         next: (dataSources: SzDataSourcesResponseData)=>{
           this._dataSources = dataSources.dataSources;
           console.log(`got datasources: `, this._dataSources);
+          if(this.dataMartService.summaryStatistics && (this.fromDataSource || this.toDataSource)) {
+            this.regenerateDataSourceLists(this._dataSources);
+          }
           //this.dataChanged.next(this._dataSourceCounts);
           /*if(this._dataSourceCounts && this._dataSources) {
             this.dataChanged.next(this._dataSourceCounts);
@@ -153,7 +156,12 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
         takeUntil(this.unsubscribe$)
       ).subscribe(this.onLoadedStatsChanged.bind(this));
       this.dataMartService.onSummaryStats.pipe(
-        takeUntil(this.unsubscribe$)
+        takeUntil(this.unsubscribe$),
+        tap((stats: SzSummaryStats) => {
+          if(this._dataSources && (this.fromDataSource || this.toDataSource)) {
+            this.regenerateDataSourceLists(this._dataSources);
+          }
+        })
       ).subscribe(this.onSummaryStatsChanged.bind(this));
       this.dataMartService.onDataSourceSelected.pipe(
         takeUntil(this.unsubscribe$)
@@ -184,10 +192,11 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
   private onDataSourceSelectionChanged(dsName: string) {
     if(this._dataSources && this.dataMartService.summaryStatistics) {
       this.regenerateDataSourceLists(this._dataSources);
+    } else {
+      //console.warn(`SzCrossSourceSelectComponent.onDataSourceSelectionChanged: no summary statistics yet`);
     }
   }
   private regenerateDataSourceLists(value: string[]) {
-    console.log(`regenerateDataSourceLists()`);
     // regenerate toDataSources
     this._toDataSources = value.map((ds: string) => {
       return {
@@ -202,6 +211,7 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
         connectionCount: this.getDiscoveredConnectionCount(ds, this.toDataSource)
       }
     });
+    console.log(`regenerateDataSourceLists(${this.fromDataSource}, ${this.toDataSource})`,this._fromDataSources, this._toDataSources, value);
   }
 
   public onPulldownMenuSizeChange(menubox: HTMLButtonElement, event: Event | any) {
@@ -320,6 +330,8 @@ export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDe
           }
         }
       }
+    } else {
+      //console.warn(`SzCrossSourceSelectComponent.onSummaryStatsChanged: datasource1 set to ${this.dataMartService.dataSource1}`, this.dataMartService);
     }
   }
   public getSummaryStats() {

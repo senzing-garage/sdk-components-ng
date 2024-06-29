@@ -285,7 +285,7 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
                                 page: this.page,
                                 pageSize: this.pageSize });
         */
-      this.dataMartService.samplePageSize = size;
+      this.dataMartService.sampleSetPageSize = size;
     }
     
     public onSampleClicked(event: MouseEvent) {
@@ -438,10 +438,9 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
     }
     
     public goFirstPage() {
-      if(this._minimumValue) {
-        this.dataMartService.sampleSetBoundType  = undefined; // defaults to EXCLUSIVELOWER
-        this.dataMartService.sampleSetBound = this._minimumValue as string;
-      }
+      //if(this._minimumValue) {
+        this.dataMartService.sampleSetBound      = undefined;
+      //}
         /*this._firstRecord = 1;
         this._lastRecord = this._firstRecord + this.pageSize - 1;
         if (this._lastRecord > this.availableCount) {
@@ -456,10 +455,14 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
                                 pageSize: this.pageSize });*/
     }
     public goLastPage() {
-      if(this._maximumValue) {
-        this.dataMartService.sampleSetBoundType  = SzBoundType.INCLUSIVEUPPER;
-        this.dataMartService.sampleSetBound      = this._maximumValue as string;
-      }
+      //if(this._maximumValue) {
+        //this.dataMartService.sampleSetBoundType   = SzBoundType.INCLUSIVEUPPER;
+        this.dataMartService.sampleSetBound       = 'max';
+        // figure out what the pageSize of the last page should be. use "totalCount % pageSize"
+        //this.dataMartService.sampleSetPageSize    =  this._totalCount % this.dataMartService.sampleSetPageSize;
+        console.log(`goLastPage: `, this.dataMartService.sampleSetPageSize, this._totalCount, this._totalCount % this.dataMartService.sampleSetPageSize);
+        //this.dataMartService.sampleSetBound     = this._maximumValue as string;
+      //}
     }
 
     
@@ -553,15 +556,20 @@ export class SzCrossSourcePagingComponent implements OnDestroy {
 
   private onDataMartSamplePageChange(event: SzStatSampleSetPageChangeEvent) {
     console.info(`onDataMartSamplePageChange: `, event);
+    
     this._totalCount        = event.totalCount;
     this._afterPageCount    = event.afterPageCount;
     this._beforePageCount   = event.beforePageCount;
-    this._pageSize          = event.pageSize;
-    this._pageItemCount     = event.pageItemCount;
+    if(event && event.bound !== 'max' && event.bound !== 'max:max') {
+      // for the very last page we can't pull the pagesize from that page because it may be 
+      // less than the actual page size preference
+      this._pageSize          = event.pageSize;
+    }
     this._maximumValue      = event.maximumValue;
     this._minimumValue      = event.minimumValue;
     this._pageMaximumValue  = event.pageMaximumValue;
     this._pageMinimumValue  = event.pageMinimumValue;
+    this._pageItemCount     = event.pageItemCount;
 
     // calc the page item spread
     this._firstRecord       = this._beforePageCount === 0 ? 1 : this._beforePageCount + (this._pageItemCount > 0 ? 1 : 0);
