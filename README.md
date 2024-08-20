@@ -63,7 +63,7 @@ The components package, along with any missing dependencies will be added to you
 Alternatively you can install the components and dependencies without the angular-cli via npm individually:
 `npm i @angular/material @angular/cdk @senzing/sdk-components-ng --save`
 
-Please take note that all the same [interfaces](https://senzing.github.io/rest-api-client-ng/), and [services](https://senzing.github.io/rest-api-client-ng/) from the [@senzing/rest-api-client-ng package](https://www.npmjs.com/package/@senzing/rest-api-client-ng) will also be available for convenience.
+Please take note that all the same [interfaces](https://senzing-garage.github.io/rest-api-client-ng/), and [services](https://senzing-garage.github.io/rest-api-client-ng/) from the [@senzing/rest-api-client-ng package](https://www.npmjs.com/package/@senzing/rest-api-client-ng) will also be available for convenience.
 
 #### Usage
 
@@ -188,7 +188,7 @@ And that's it! At least for the quickstart. There are a ton more options for run
 ## Configuration & Parameters
 
 The SenzingSDKModule accepts a factory method that returns an instance of the
-[SzRestConfiguration](https://senzing.github.io/rest-api-client-ng/classes/Configuration.html) class. By adding a factory like the following to the forRoot method, you can change services configuration to point to non-default values.
+[SzRestConfiguration](https://senzing-garage.github.io/rest-api-client-ng/classes/Configuration.html) class. By adding a factory like the following to the forRoot method, you can change services configuration to point to non-default values.
 
 The following tells any components to turn on CORS functionality and make all api requests to localhost port 8080 (i.e.: http://localhost:8080/).
 
@@ -223,12 +223,12 @@ export class AppModule { }
 
 ### Parameters
 
-See [online documentation](https://senzing.github.io/rest-api-client-ng/classes/Configuration.html) for a complete list of configuration parameters that can control the connection behavior of the sdk components.
+See [online documentation](https://senzing-garage.github.io/rest-api-client-ng/classes/Configuration.html) for a complete list of configuration parameters that can control the connection behavior of the sdk components.
 
 ## Documentation
 
 Installation contains a statically generated API and component references. They can be found in
-node_modules/@senzing/sdk-components-ng/docs or [Online here](https://senzing.github.io/sdk-components-ng/).
+node_modules/@senzing/sdk-components-ng/docs or [Online here](https://senzing-garage.github.io/sdk-components-ng/).
 
 ## Examples
 
@@ -252,7 +252,7 @@ Occasionally something does go wrong (I know, I know right?). Here are some comm
       showing up in the developer console</td>
       <td style="padding: 10px 5px;">
         Set the api configuration to the address and port your rest server is running at by
-        passing in an instance of <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> to the <a href="https://senzing.github.io/sdk-components-ng/modules/SenzingSdkModule.html">SenzingSdkModule.forRoot method</a>.
+        passing in an instance of <a href="https://senzing-garage.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> to the <a href="https://senzing-garage.github.io/sdk-components-ng/modules/SenzingSdkModule.html">SenzingSdkModule.forRoot method</a>.
         <br/><br/>
         Double check and make sure you can connect to your rest server via
         <code>curl -i http://localhost:8080/heartbeat</code>
