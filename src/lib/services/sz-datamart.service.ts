@@ -96,14 +96,14 @@ export class SzStatSampleSet {
                 let _lastPageSize   = this.totalCount % this.pageSize;
                 let _lastPage       = Math.ceil(this.totalCount / this.pageSize);
                 console.warn(`!!! changing to last page(${_lastPage}) w/ ${_lastPageSize} results`);
-                this._currentPage   = _lastPage;
-                this.pageSize       = _lastPageSize;
+                this._currentPage   = _lastPage - 1;  // the paging we use is "0" index based
+                this._requestParameters.pageSize = _lastPageSize; // manually set pageSize to skip over result clearing
                 this.boundType      = SzBoundType.INCLUSIVEUPPER;
                 if(!this._doNotFetchOnParameterChange) this.getSampleDataFromParameters();
             } else if(value === undefined || value === '0' || value === '0:0') {
                 // first page
                 this._currentPage   = 0;
-                this.pageSize       = this.prefs.dataMart.samplePageSize; // grab pagesize off of prefs value;
+                this._requestParameters.pageSize = this.prefs.dataMart.samplePageSize; // grab pagesize off of prefs value;
                 this.boundType      = SzBoundType.INCLUSIVELOWER;
                 console.warn(`!!! changing to page 1: (${this.pageSize})`);
                 if(!this._doNotFetchOnParameterChange) this.getSampleDataFromParameters();
@@ -111,11 +111,6 @@ export class SzStatSampleSet {
                 // just change the bound type
                 //this.getSampleDataFromParameters();
             }
-            /*} else if(this.currentPage && (this.currentPage.minimumValue as string) === value) {
-                console.warn(`!!! changing to first page: (${this.currentPage.minimumValue} as string) === ${value}`);
-                this._currentPage = 0;
-                if(!this._doNotFetchOnParameterChange) this.getSampleDataFromParameters();
-            }*/
         }
     }
     public get boundType() {
@@ -198,7 +193,7 @@ export class SzStatSampleSet {
                 // grab previous value
                 this._currentPage   = value;
             }
-            
+
             // if one of the previous if statements set the current page
             // publish existing data
             //console.log(`set pageIndex(${value})`, this._currentPage === value, this._relationPages, this._entityPages);
@@ -213,36 +208,46 @@ export class SzStatSampleSet {
                 this._onDataUpdated.next(dataset);
                 this._onPagingUpdated.next(this._getCurrentPageParameters());
             } else {
-                // try to find the previous "bound" value
-                let _pageToFindIndex = value > 0 ? (value - 1) : 0;
-                let _newBoundValue   = undefined;
+                // get current paging info
+                let _cPageParams        = this._getCurrentPageParameters();
+                let _pageToFindIndex    = value > 0 ? value : 0;
+                let _boundValue         = undefined;
+                let _boundType          = undefined;
+                let _pageSize           = this.prefs.dataMart.samplePageSize;
+
                 if(this._isRelationsResponse && this._relationPages.has(_pageToFindIndex)) {
                     // grab the "pageMaximumValue" value off of target page -1
-                    _newBoundValue =  this._relationPages.get(_pageToFindIndex).pageMaximumValue;
+                    _boundType          = SzBoundType.EXCLUSIVELOWER;
+                    _boundValue         =  this._relationPages.get(_pageToFindIndex).pageMaximumValue;
                 } else if(this._entityPages.has(value)) {
-                    _newBoundValue =  this._entityPages.get(_pageToFindIndex).pageMaximumValue;
-                }
-                // we found value, create new request
-                if(_newBoundValue) {
-                    console.warn(`fetching with new bound value(${_newBoundValue}|${this.bound}) results for page #${value}`);
-                    this._doNotFetchOnParameterChange = true;
-                    this.bound          = _newBoundValue;
-                    this._currentPage   = value;
-                    this._doNotFetchOnParameterChange = false;
-                    this.getSampleDataFromParameters();
-                } else if(this.currentPageResults && this.currentPageResults.length > 0 && ((this._currentPage) - 1 === value || (this._currentPage +1) === value)) {
-                    // instead get the current page's first and last items and 
-                    // figure out if we need to before or after
-                    // if before use the first item and set the boundType to 'EXCLUSIVE_LOWER'
-                    // and if it's next grab the last item and do 'EXCLUSIVE_UPPER'
-                    if(this._currentPage > value) {
+                    _boundType          = SzBoundType.EXCLUSIVELOWER;
+                    _boundValue         =  this._entityPages.get(_pageToFindIndex).pageMaximumValue;
+
+                } else if([_cPageParams.pageIndex - 1, _cPageParams.pageIndex + 1]) {
+                    // new bound value has to be based on current page params
+                    let isPrev      = (_cPageParams.pageIndex - 1) === value;
+                    _pageSize   = _cPageParams.bound === 'max:max' ? this.prefs.dataMart.samplePageSize : _cPageParams.pageSize;
+                    if(isPrev) {
                         // go prev
-                        let _bound = this._isRelationsResponse ? (this.currentPageResults as SzRelation[])[0].entity.entityId + ':'+ (this.currentPageResults as SzRelation[])[0].relatedEntity.entityId : (this.currentPageResults as SzEntityData[])[0].resolvedEntity.entityId;
-                    } else if(this._currentPage < value) {
-                        // go next
-                        let _bound = this._isRelationsResponse ? (this.currentPageResults as SzRelation[])[(this.currentPageResults as SzRelation[]).length  - 1].entity.entityId + ':'+ (this.currentPageResults as SzRelation[])[(this.currentPageResults as SzRelation[]).length - 1].relatedEntity.entityId : (this.currentPageResults as SzEntityData[])[(this.currentPageResults as SzEntityData[]).length - 1].resolvedEntity.entityId;
+                        _boundType  = SzBoundType.EXCLUSIVEUPPER;
+                        _boundValue = _cPageParams.pageMinimumValue;
+                    } else {
+                        _boundType  = SzBoundType.EXCLUSIVELOWER;
+                        _boundValue = _cPageParams.pageMaximumValue;
                     }
-                    console.warn(`could not get new bound value(${_newBoundValue}) from preceeding page #${_pageToFindIndex} | value = ${value}`, this._relationPages, this._entityPages);
+                }
+                //console.log(`boundType: "${_boundType}"\nbound: "${_boundValue}"\npageSize: ${_pageSize}`);
+                if(_boundValue) {
+                    this._doNotFetchOnParameterChange   = true;
+                    if(_boundType)  this._requestParameters.boundType   = _boundType;
+                    if(_pageSize)   this._requestParameters.pageSize    = _pageSize;
+                    
+                    this._requestParameters.bound       = _boundValue;
+                    this._currentPage                   = value;
+                    this._doNotFetchOnParameterChange   = false;
+                    this.getSampleDataFromParameters();
+                } else {
+                    console.warn(`page requested(${value}) more than a page away from current(${this._currentPage})`, this.currentPageResults);
                 }
             }
         } else {
@@ -256,6 +261,7 @@ export class SzStatSampleSet {
     public set pageSize(value: number) {
         let _oVal = (this._requestParameters && this._requestParameters.pageSize) ? this._requestParameters.pageSize : this.prefs.dataMart.samplePageSize;
         this.prefs.dataMart.samplePageSize   = value;
+        //this._lastSelectedPageSize = value;
         if(_oVal !== value && !this._doNotFetchOnParameterChange) {
             // wipe out all previous pages (they will have incorrect "bound" values)
             if(this._isRelationsResponse && this._relationPages && this._relationPages.clear) {
