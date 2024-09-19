@@ -60,11 +60,15 @@ export * from './lib/entity/detail/sz-entity-detail-graph/sz-entity-detail-graph
 /* charts */
 export { SzRecordStatsDonutChart } from './lib/charts/records-by-datasources/sz-donut.component'
 /** shared */
+export { SzAlertMessageDialog } from './lib/shared/alert-dialog/sz-alert-dialog.component';
 export { SzDataTable } from './lib/shared/data-table/sz-data-table.component';
 export { SzVennDiagramsComponent } from './lib/charts/versus/sz-venn-diagram.component';
 /** statistics */
 export { SzCrossSourceStatistics } from './lib/statistics/cross-source/sz-cross-source-statistics.component';
+export { SzCrossSourceSelectComponent } from './lib/statistics/cross-source/sz-cross-source-select.component';
 export { SzCrossSourceSummaryComponent } from './lib/summary/cross-source/sz-cross-source-summary.component';
+export { SzCrossSourceSummaryMatchKeyPickerDialog } from './lib/summary/cross-source/sz-cross-source-matchkey-picker.component';
+export { SzCrossSourceResultsDataTable } from './lib/statistics/cross-source/sz-cross-source-results.data-table';
 /** components */
 export * from './lib/sz-powered-by/sz-powered-by.component';
 export * from './lib/statistics/cross-source/sz-cross-source-select.component';
@@ -84,10 +88,20 @@ export { AdminStreamConnProperties, AdminStreamAnalysisConfig, AdminStreamLoadCo
 export { SzDataSourceRecordAnalysis, SzDataSourceComposite } from './lib/models/data-sources';
 export { SzGraphTooltipEntityModel, SzGraphTooltipLinkModel, SzGraphNodeFilterPair, SzMatchKeyComposite, SzMatchKeyTokenComposite, SzEntityNetworkMatchKeyTokens, SzNetworkGraphInputs, SzMatchKeyTokenFilterScope } from './lib/models/graph';
 export { SzDataSourceRecordsSelection, SzDataSourceRecordSelection, SzWhySelectionModeBehavior, SzWhySelectionMode } from './lib/models/data-source-record-selection';
+export {
+  SzCrossSourceSummaryCategoryType,
+  SzCrossSourceSummaryCategoryTypeToMatchLevel,
+  SzCrossSourceSummarySelectionEvent,
+  SzCrossSourceSummarySelectionClickEvent,
+  sampleDataSourceChangeEvent,
+  SzStatSampleSetParameters,
+  SzStatSampleSetPageChangeEvent
+} from './lib/models/stats';
 export * from './lib/models/data-how';
 /** pipes */
 export { SzShortNumberPipe } from './lib/pipes/shortnumber.pipe'
 export { SzDecimalPercentPipe } from './lib/pipes/decimalpercent.pipe'
+export { SzOrderedMapEntries } from './lib/pipes/mapentries.pipe';
 
 /** why */
 export { SzWhyEntityComponent } from './lib/why/sz-why-entity.component';

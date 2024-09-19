@@ -1,21 +1,8 @@
 <div class="cols">
-    <!--<sz-venn-diagram></sz-venn-diagram>
-    <sz-venn-diagram></sz-venn-diagram>
-    <sz-venn-diagram
-        sz-color="#246289"
-        backgorundColorA="rgb(213, 164, 133)"
-        borderColorA="rgb(255, 255, 255)"
-        blendModeA="difference"
-        backgorundColorB="rgb(173, 216, 230)"
-        borderColorB="rgb(75, 116, 142)"
-        blendModeB="multiply"
-        sz-left-legend="A"
-        sz-right-legend="B"
-    ></sz-venn-diagram>-->
-
     <div class="venn-wrapper matches">
         <sz-venn-diagram class="data-venn-matches"
             [sz-singular]="singular"
+            [sz-disable-zero-click]="disableClickOnZero"
             sz-color="#246289"
             *ngIf="hasData"
   
@@ -26,25 +13,49 @@
             borderColorB="rgb(75, 116, 142)"
             blendModeB="multiply"
   
-            sz-left-legend="A"
-            sz-right-legend="B"
+            [sz-left-legend]="legendFrom"
+            [sz-right-legend]="legendTo"
             [sz-left-count]="fromDataSourceMatches"
             [sz-overlap-count]="overlapDataSourceMatches"
             [sz-right-count]="toDataSourceMatches"
             [sz-left-caption]="singular ? '' : 'Duplicates'"
             [sz-right-caption]="singular ? '' : 'Duplicates'"
-            (sz-left-clicked)="diagramClick('LEFT', 1, 'MATCHES')"
-            (sz-right-clicked)="diagramClick('RIGHT', 1, 'MATCHES')"
-            (sz-overlap-clicked)="diagramClick('OVERLAP', 1, 'MATCHES')"
+            (sz-left-clicked)="diagramClick($event, 'LEFT', 1, 'MATCHES')"
+            (sz-right-clicked)="diagramClick($event, 'RIGHT', 1, 'MATCHES')"
+            (sz-overlap-clicked)="diagramClick($event, 'OVERLAP', 1, 'MATCHES')"
         ></sz-venn-diagram>
-        <div class="matches diagram-caption">{{
+        <div class="matches diagram-caption matches">{{
             singular ? 'Duplicates'
                      : 'Matches'
         }}</div>
     </div>
+    <div class="venn-wrapper ambiguous">
+        <sz-venn-diagram class="data-venn-ambiguous"
+            [sz-singular]="singular"
+            [sz-disable-zero-click]="disableClickOnZero"
+            sz-color="var(--sz-color-ambiguous)"
+            *ngIf="hasData"
+            backgorundColorA="var(--sz-color-ambiguous)"
+            borderColorA="rgb(212, 212, 212)"
+            blendModeA="difference"
+            backgorundColorB="var(--sz-color-ambiguous)"
+            borderColorB="rgb(169, 155, 55)"
+  
+            [sz-left-legend]="legendFrom"
+            [sz-right-legend]="legendTo"
+            [sz-left-count]="fromDataSourceAmbiguous"
+            [sz-overlap-count]="overlapDataSourceAmbiguous"
+            [sz-right-count]="toDataSourceAmbiguous"
+            (sz-left-clicked)="diagramClick($event, 'LEFT', 3, 'AMBIGUOUS_MATCHES')"
+            (sz-right-clicked)="diagramClick($event, 'RIGHT', 3, 'AMBIGUOUS_MATCHES')"
+            (sz-overlap-clicked)="diagramClick($event, 'OVERLAP', 3, 'AMBIGUOUS_MATCHES')"
+        ></sz-venn-diagram>
+        <div class="relationships diagram-caption ambiguous-matches">Ambiguous Matches</div>
+    </div>
     <div class="venn-wrapper possibles">
         <sz-venn-diagram class="data-venn-possibles"
             [sz-singular]="singular"
+            [sz-disable-zero-click]="disableClickOnZero"
             sz-color="#CE8235"
             *ngIf="hasData"
   
@@ -55,19 +66,19 @@
             borderColorB="rgb(76, 55, 47)"
             blendModeB="multiply"
   
-            sz-left-legend="A"
-            sz-right-legend="B"
+            [sz-left-legend]="legendFrom"
+            [sz-right-legend]="legendTo"
             [sz-left-count]="fromDataSourcePossibles"
             [sz-overlap-count]="overlapDataSourcePossibles"
             [sz-right-count]="toDataSourcePossibles"
 
             [sz-left-caption]="singular ? '' : 'Possible Duplicates'"
             [sz-right-caption]="singular ? '' : 'Possible Duplicates'"
-            (sz-left-clicked)="diagramClick('LEFT', 2, 'POSSIBLE')"
-            (sz-right-clicked)="diagramClick('RIGHT', 2, 'POSSIBLE')"
-            (sz-overlap-clicked)="diagramClick('OVERLAP', 2, 'POSSIBLE')"
+            (sz-left-clicked)="diagramClick($event, 'LEFT', 2, 'POSSIBLE_MATCHES')"
+            (sz-right-clicked)="diagramClick($event, 'RIGHT', 2, 'POSSIBLE_MATCHES')"
+            (sz-overlap-clicked)="diagramClick($event, 'OVERLAP', 2, 'POSSIBLE_MATCHES')"
         ></sz-venn-diagram>
-        <div class="possibles diagram-caption">{{
+        <div class="possibles diagram-caption possible-matches">{{
           singular ? 'Possible Duplicates'
                    : 'Possible Matches'
         }}</div>
@@ -75,6 +86,7 @@
     <div class="venn-wrapper relationships">
         <sz-venn-diagram class="data-venn-relationships"
             [sz-singular]="singular"
+            [sz-disable-zero-click]="disableClickOnZero"
             sz-color="#A99B37"
             *ngIf="hasData"
   
@@ -84,15 +96,39 @@
             backgorundColorB="rgb(204, 197, 140)"
             borderColorB="rgb(169, 155, 55)"
   
-            sz-left-legend="A"
-            sz-right-legend="B"
+            [sz-left-legend]="legendFrom"
+            [sz-right-legend]="legendTo"
             [sz-left-count]="fromDataSourceRelated"
             [sz-overlap-count]="overlapDataSourceRelated"
             [sz-right-count]="toDataSourceRelated"
-            (sz-left-clicked)="diagramClick('LEFT', 3, 'RELATIONSHIPS')"
-            (sz-right-clicked)="diagramClick('RIGHT', 3, 'RELATIONSHIPS')"
-            (sz-overlap-clicked)="diagramClick('OVERLAP', 3, 'RELATIONSHIPS')"
+            (sz-left-clicked)="diagramClick($event, 'LEFT', 3, 'POSSIBLE_RELATIONS')"
+            (sz-right-clicked)="diagramClick($event, 'RIGHT', 3, 'POSSIBLE_RELATIONS')"
+            (sz-overlap-clicked)="diagramClick($event, 'OVERLAP', 3, 'POSSIBLE_RELATIONS')"
         ></sz-venn-diagram>
-        <div class="relationships diagram-caption">Possibly Related</div>
+        <div class="relationships diagram-caption possible-relations">Possibly Related</div>
+    </div>
+    <div class="venn-wrapper disclosed">
+        <sz-venn-diagram class="data-venn-disclosed"
+            [sz-singular]="singular"
+            [sz-disable-zero-click]="disableClickOnZero"
+            sz-color="var(--sz-color-disclosed)"
+            *ngIf="hasData"
+  
+            backgorundColorA="var(--sz-color-disclosed)"
+            borderColorA="rgb(212, 212, 212)"
+            blendModeA="difference"
+            backgorundColorB="var(--sz-color-disclosed)"
+            borderColorB="rgb(169, 155, 55)"
+  
+            [sz-left-legend]="legendFrom"
+            [sz-right-legend]="legendTo"
+            [sz-left-count]="fromDataSourceDisclosed"
+            [sz-overlap-count]="overlapDataSourceDisclosed"
+            [sz-right-count]="toDataSourceDisclosed"
+            (sz-left-clicked)="diagramClick($event, 'LEFT', 3, 'DISCLOSED_RELATIONS')"
+            (sz-right-clicked)="diagramClick($event, 'RIGHT', 3, 'DISCLOSED_RELATIONS')"
+            (sz-overlap-clicked)="diagramClick($event, 'OVERLAP', 3, 'DISCLOSED_RELATIONS')"
+        ></sz-venn-diagram>
+        <div class="relationships diagram-caption disclosed-relations">Disclosed Relationships</div>
     </div>
 </div>

@@ -23,6 +23,35 @@
       }
     }
 
+    .venn-wrapper {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      .diagram-caption {
+        &.ambiguous-matches {
+          --sz-venn-diagram-caption-color: var(--sz-color-ambiguous);
+        }
+        &.matches {
+            --sz-venn-diagram-caption-color: var(--sz-color-matches);
+        }
+        &.possible-matches {
+            --sz-venn-diagram-caption-color: var(--sz-color-possible-matches);
+        }
+        &.possible-relations {
+            --sz-venn-diagram-caption-color: var(--sz-color-possibly-related);
+        }
+        &.disclosed-relations {
+            --sz-venn-diagram-caption-color: var(--sz-color-disclosed);
+        }
+
+        text-align: center;
+        /*color: #313131;*/
+        color: var(--sz-venn-diagram-caption-color);
+        margin-top: 4px;
+        font-size: 15px;
+      }
+    }
+
     .data-select-wrapper {
         display: flex;
         flex-direction: row;

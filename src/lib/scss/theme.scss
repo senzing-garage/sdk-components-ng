@@ -62,6 +62,19 @@ $sz-mat-theme: mat.define-light-theme((
   )
 ));
 
+$senzing-config-app-primary:    mat.define-palette($sz-mat-colors, PRIMARY, PRIMARY, PRIMARY);
+$senzing-config-app-accent:     mat.define-palette($sz-mat-colors, SECONDARY, SECONDARY, SECONDARY);
+$senzing-config-app-warn:       mat.define-palette(mat.$red-palette, 700, 900, 300);
+$senzing-config-app-warn-mild:  mat.define-palette(mat.$orange-palette, 700, 900, 300);
+$senzing-config-app-button-primary:  $sz-blue;
+
+$senzing-config-warn-color:         mat.get-color-from-palette($senzing-config-app-warn);
+$senzing-config-warn-mild-color:    mat.get-color-from-palette($senzing-config-app-warn-mild);
+$senzing-config-accent-color:       mat.get-color-from-palette($senzing-config-app-accent);
+$senzing-config-primary-color:      mat.get-color-from-palette($senzing-config-app-primary);
+$senzing-subheading-background-color: mat.get-color-from-palette($senzing-config-app-primary,800);
+$senzing-card-hover-color:          mat.get-color-from-palette($senzing-config-app-primary, 100);
+
 /*TODO(mdc-migration): Remove all-legacy-component-themes once all legacy components are migrated*/
 @include mat.all-legacy-component-themes($sz-mat-theme);
 
@@ -84,6 +97,8 @@ body {
   --sz-color-how-report: #{$sz-lime};
   --sz-color-why-report: #{$sz-teal};
   --sz-color-config-warning: #{$sz-config-warn-color};
+  --sz-color-dialog-header: #{$sz-light-grey};
+  --sz-color-dialog-header-border: #{$sz-dark-grey};
 
   /* search box vars */
   --sz-search-button-submit-color: #{$sz-white};
@@ -471,11 +486,34 @@ body {
 
   /* charts */
     /* record stats donut */
+    --sz-donut-chart-height: 200px;
     --sz-donut-chart-graph-align-items: start;
     --sz-donut-chart-graph-arc-stroke: rgba(0, 0, 0, 0.7);
     --sz-donut-chart-graph-arc-stroke-width: 1px;
     --sz-donut-chart-graph-arc-stroke-opacity: 0.5;
     --sz-donut-chart-unmatched-color: rgb(255 150 125);
     --sz-donut-chart-pending-color: rgb(235 255 125);
+    --sz-donut-chart-link-color: #{$sz-blue};
+    --sz-donut-chart-link-font-size: 13px;
+  
+  /* sample data table */
+    --sz-sample-table-spinner-background: rgba(68, 68, 68, 0.3); 
+    --sz-sample-table-spinner-height: calc(99vh - 120px);
+    --sz-sample-table-spinner-width: calc(99vw - 10px);
+    --sz-sample-table-cell-color: #424242;
+    --sz-sample-table-cell-link-color: #0000EE;
+    --sz-sample-table-cell-link-font-size: 12px;
+    --sz-sample-table-cell-link-font-weight: normal;
+    --sz-sample-table-cell-link-text-decoration: underline;
+    --sz-sample-table-cell-link-text-align: right;
+    --sz-sample-table-expand-button-background-color: #46b4f9;
+    --sz-sample-table-expand-button-color: #fff;
+    --sz-sample-table-entity-row-background-color: #e4e4e4;
+    --sz-sample-table-related-row-background-color: #f5f5f5;
+    --sz-sample-table-expanded-row-background-color: #cdedff;
+    --sz-sample-table-expanded-row-expand-button-background-color: #f5f5f5;
+    --sz-sample-table-expanded-row-expand-button-border-color: #46b4f9;
+    --sz-sample-table-expanded-row-expand-button-color: var(--sz-sample-table-expanded-row-expand-button-border-color);
+
 }
 

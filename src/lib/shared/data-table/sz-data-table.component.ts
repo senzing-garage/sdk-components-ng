@@ -3,12 +3,7 @@ import { SzGraphPrefs, SzPrefsService } from '../../services/sz-prefs.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { camelToKebabCase, underscoresToDashes, getMapKeyByValue } from '../../common/utils';
-
-export interface SzDataTableCellEvent {
-  "key": string,
-  "value": any,
-  "event"?: MouseEvent
-}
+import { SzDataTableCellEvent } from '../../models/stats';
 
 /**
  * Embeddable Data Table Component
@@ -33,16 +28,16 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   private _data: any[];
   private _cellContentSizes = new Map<HTMLElement, number[]>();
-  private _cols: Map<string,string>;
+  protected _cols: Map<string,string>;
   /** controlling the column order is easier to do as a map since were just using those in css */
-  private _colOrder: Map<string,number>;
+  protected _colOrder: Map<string,number>;
   private _expandedCells = new Map<string, Map<HTMLElement, number>>();
-  private _selectableColumns: string[];
-  private _selectedColumns: Map<string,string>;
+  protected _selectableColumns: string[];
+  protected _selectedColumns: Map<string,string>;
   private _fieldOrder: string[];
   private _columnResizing     = false;
   private _columnBeingResized: HTMLElement;
-  private _colSizes: Map<string,string> = new Map<string, string>();
+  protected _colSizes: Map<string,string> = new Map<string, string>();
   private _sortBy: string;
   private _sortDirection: 'DESC' | 'ASC' = 'ASC';
   private _sortOrder: Map<number, number> = new Map<number, number>();
@@ -153,6 +148,11 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
     }
     return retVal;
   }
+  get colOrder(): Map<string, number> {
+    let retVal  = this._colOrder;
+    retVal      = new Map([...retVal.entries()].sort((a, b) => a[1] - (b[1])));
+    return retVal;
+  }
   get gridStyle(): string {
     let retVal = '';
     if(this._cols && this._cols.size > 0) {
@@ -197,6 +197,18 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   }
   get numberOfColumns() {
     return this._cols && this._cols.size > 0 ? this._cols.size : 0;
+  }
+  /** custom cell renderers for data */
+  /*protected _cellFormatters() {
+    return {}
+  }*/
+
+  /*@Input()
+  set cellFormatters(value) {
+    this._cellFormatters = value;
+  }*/
+  get cellFormatters() {
+    return {};
   }
 
   constructor() {}
@@ -296,21 +308,31 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   }
   cellValue(value: unknown | unknown[], fieldName?: string) {
     let retVal = value;
+    let bespokeRenderer;
+
     if(!retVal) { return retVal; }
-    // get renderer for specific type
-    if(Array.isArray(value) ) {
-      retVal = value.join(', ');
-    } else if (value.toString ) {
-      retVal = value.toString();
+    // check to see if we have a custom cell value renderer first
+    if(this.cellFormatters && this.cellFormatters[fieldName]) {
+      // use this renderer
+      bespokeRenderer = this.cellFormatters[fieldName];
+      retVal          = bespokeRenderer(value, fieldName);
     }
-    // if [object Object] is in output something needs to be rendered better
-    /*if(fieldName === 'featureDetails') {
-      console.warn(`${fieldName} type: `, 
-      (retVal as string).indexOf('object Object'), 
-      (value as unknown).constructor === Object,
-      Object.prototype.toString.call(value) === "[object Object]");
-    }*/
-    if(retVal && (retVal as string).indexOf('object Object') > -1) {
+    // get renderer for specific type
+    if(!bespokeRenderer) {
+      if(Array.isArray(value) ) {
+        retVal = value.join(', ');
+      } else if (value.toString ) {
+        retVal = value.toString();
+      }
+      // if [object Object] is in output something needs to be rendered better
+      /*if(fieldName === 'featureDetails') {
+        console.warn(`${fieldName} type: `, 
+        (retVal as string).indexOf('object Object'), 
+        (value as unknown).constructor === Object,
+        Object.prototype.toString.call(value) === "[object Object]");
+      }*/
+    }
+    if(retVal && !bespokeRenderer && (retVal as string).indexOf('object Object') > -1) {
       // is json, check if array of object
       if(retVal && (retVal as string).indexOf('[object Object]') > -1) {
         // array of objects
@@ -376,6 +398,8 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
     let shiftLeft       = orderModifier === -1;
     let shiftRight      = orderModifier === +1;
 
+    //console.log(`moveColumn('${fieldName}', ${orderModifier})`);
+
     if(shiftLeft || shiftRight) {
       // simple swap operation
       // swap new position with current one
@@ -406,7 +430,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
       // insert at new position, then every item 
       // > (lowest new || old) old position && < new position needs to decrement
     }
-    console.log(`reordered columns: `, this.orderedColumns, this._colOrder);
+    //console.log(`reordered columns: `, this.orderedColumns, this._colOrder);
   }
 
   copyCellContent(cell: HTMLElement, json?: any) {

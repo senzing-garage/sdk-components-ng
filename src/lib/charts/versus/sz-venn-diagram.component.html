@@ -1,24 +1,28 @@
 <div #leftCircle class="left-set"
     [style.background-color]="color"
     [style.border-color]="color"
-    (click)="handleLeftClick()"></div>
+    [attr.disabled]="leftCount == 0 && disableZeroClick"
+    (click)="handleLeftClick($event)"></div>
 <div class="left-outline"></div>
 <div #rightCircle *ngIf="!singular" class="right-set"
       [style.background-color]="color"
       [style.border-color]="color"
-      (click)="handleRightClick()"></div>
+      [attr.disabled]="rightCount == 0 && disableZeroClick"
+      (click)="handleRightClick($event)"></div>
 <div *ngIf="!singular" class="right-outline"></div>
-<svg  #overlapArea *ngIf="!singular && overlapCount > 0" class="overlap-set"
+<svg  #overlapArea *ngIf="!singular" class="overlap-set"
   viewBox="83.876 25.526 82.426 137.082" xmlns="http://www.w3.org/2000/svg">
   <path
     [style.fill]="color"
-    (click)="handleOverlapClick()" 
+    (click)="handleOverlapClick($event)" 
     d="M 166.302 83.18 C 166.312 120.654 141.431 152.347 107.284 162.608 C 92.802 147.715 83.881 127.382 83.876 104.954 C 83.866 67.48 108.748 35.787 142.893 25.526 C 157.376 40.419 166.296 60.753 166.302 83.18 Z" 
-    style="paint-order: fill; stroke: rgba(0, 0, 0, 0.13);"/>
+    style="paint-order: fill; stroke: rgba(0, 0, 0, 0.13);"
+    [attr.disabled]="overlapCount == 0 && disableZeroClick"
+    />
 </svg>
 
-<button class="count-button left" mat-button [disabled]="leftCount==0"
-    (click)="handleLeftClick()"
+<button class="count-button left" mat-button [disabled]="leftCount == 0 && disableZeroClick"
+    (click)="handleLeftClick($event)"
   ><label class="count-button">{{
   leftCount > 1000 ? (leftCount | SzShortNumber) : leftCount
   }}</label
@@ -27,9 +31,9 @@
   }}</span
 ></button>
 
-<button *ngIf="!singular" mat-button [disabled]="overlapCount==0"
+<button *ngIf="!singular" mat-button [disabled]="overlapCount == 0 && disableZeroClick"
         class="count-button overlap"
-        (click)="handleOverlapClick()"
+        (click)="handleOverlapClick($event)"
   ><label class="count-button">{{
     overlapCount > 1000 ? (overlapCount | SzShortNumber) : overlapCount
   }}</label
@@ -38,9 +42,9 @@
   }}</span
 ></button>
 
-<button *ngIf="!singular" mat-button [disabled]="rightCount==0"
+<button *ngIf="!singular" mat-button [disabled]="rightCount == 0 && disableZeroClick"
         class="count-button right"
-        (click)="handleRightClick()"
+        (click)="handleRightClick($event)"
   ><label class="count-button">{{
   rightCount > 1000 ? (rightCount | SzShortNumber) : rightCount
   }}</label

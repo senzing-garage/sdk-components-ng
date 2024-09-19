@@ -1,6 +1,6 @@
 {
   "name": "@senzing/sdk-components-ng",
-  "version": "6.1.0",
+  "version": "7.0.0-alpha.1",
   "private": false,
   "keywords" :["Angular","Library","Senzing"],
   "license" : "SEE LICENSE IN LICENSE",
@@ -20,6 +20,6 @@
     "@angular/common": "^15.0.0",
     "@angular/core": "^15.0.0",
     "@angular/material": "^15.0.0",
-    "@senzing/rest-api-client-ng": "^6.1.0"
+    "@senzing/rest-api-client-ng": "^6.1.0-beta.3"
   }
 }

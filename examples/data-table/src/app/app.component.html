@@ -1,43 +1,26 @@
 <div style="text-align:left; font-weight: bold; font-size: 1.5em">
   @senzing/sdk-components-ng/examples/data-table
 </div>
-<div style="text-align:left; text-decoration: italic; font-size: 0.8em; margin: 2px 0 10px 0;">
+<!--<div style="text-align:left; text-decoration: italic; font-size: 0.8em; margin: 2px 0 10px 0;">
   An example Angular app showing usage of the sz-search, and sz-data-table
-</div>
-
-<!-- start search box -->
-<div class="component-example">
-  <sz-search
-    #searchBox
-    name="Acmemobil"
-    phone="702-333-3333"
-    address="909 Jenga Way Las Vegas NV 89111"
-    showIdentifierTypesPicker="false"
-    disableIdentifierOptions="SSN_LAST4"
-    enableIdentifierOptions="SOCIAL_NETWORK"
-    (resultsChange)="onSearchResults($event)"
-    (resultsCleared)="onSearchResultsCleared($event)"
-    (exception)="onSearchException($event)"
-    (parameterChange)="onSearchParameterChange($event)"></sz-search>
-</div>
-<!-- end search box -->
+</div>-->
 <!-- start data table results -->
 <div class="component-example">
-  <sz-cross-source-statistics></sz-cross-source-statistics>
-  <sz-data-table sz-venn-dt *ngIf="showSearchResults"
-  [data]="currentSearchResults"
-  (cellClick)="onCellClick($event)"></sz-data-table>
+  <sz-cross-source-statistics 
+    showTableLoadingSpinner="true"
+    (cellClick)="onCellClick($event)"
+    (entityIdClick)="onEntityIdClick($event)">
+    <div class="lds-ring spinner"><div></div><div></div><div></div><div></div></div>
+    <!--<svg class="spinner" width="96" height="96" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_ajPY{transform-origin:center;animation:spinner_AtaB .75s infinite linear}@keyframes spinner_AtaB{100%{transform:rotate(360deg)}}</style><path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25"/><path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z" class="spinner_ajPY"/></svg>-->
+  </sz-cross-source-statistics>
 </div>
 <!--  end data table results  -->
 <!-- start entity detail -->
-<div *ngIf="showSearchResultDetail">
+<div *ngIf="showEntityDetail">
   <!--<button class="download-pdf" type="button" (click)="onEntityPDFDownloadClick( $event )">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/><path d="M0 0h24v24H0z" fill="none"/></svg> Print
   </button>-->
-  <div class="detail-wrapper">
-      <button (click)="onBackToSearchResultsClick($event)">&lt;&lt; Go Back to Search Results</button>
-  </div>
-  <sz-entity-detail
+  <!--<sz-entity-detail
     #entityDetailComponent
     (graphEntityClick)="onGraphEntityClick($event)"
     (graphEntityDblClick)="onGraphEntityDblClick($event)"
@@ -49,6 +32,6 @@
     graphZoomControlPosition="top-left"
     [showRecordWhyUtilities]="true"
     [showEntityHowFunction]="true"
-    [entityId]="currentlySelectedEntityId"></sz-entity-detail>
+    [entityId]="currentlySelectedEntityId"></sz-entity-detail>-->
 </div>
 <!-- end entity detail -->

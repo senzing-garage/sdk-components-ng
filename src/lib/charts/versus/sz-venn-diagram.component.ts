@@ -77,6 +77,9 @@ export class SzVennDiagramsComponent implements OnInit, OnDestroy {
   public get color() : string {
     return this._color;
   }
+  // tslint:disable-next-line:no-input-rename
+  @Input("sz-disable-zero-click")
+  public disableZeroClick: boolean = false;
   /*
   @Input()
   public backgorundColorA: string;
@@ -94,15 +97,15 @@ export class SzVennDiagramsComponent implements OnInit, OnDestroy {
 
   // tslint:disable-next-line:no-output-rename
   @Output("sz-left-clicked")
-  public leftClicked : EventEmitter<number> = new EventEmitter<number>();
+  public leftClicked : EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   // tslint:disable-next-line:no-output-rename
   @Output("sz-overlap-clicked")
-  public overlapClicked : EventEmitter<number> = new EventEmitter<number>();
+  public overlapClicked : EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   // tslint:disable-next-line:no-output-rename
   @Output("sz-right-clicked")
-  public rightClicked : EventEmitter<number> = new EventEmitter<number>();
+  public rightClicked : EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   @HostBinding("class.colorized")
   public get colorized() : boolean {
@@ -115,17 +118,34 @@ export class SzVennDiagramsComponent implements OnInit, OnDestroy {
   @ViewChild("rightCircle")
   private rightCircle: ElementRef;
 
-  public handleLeftClick() {
-    this.leftClicked.emit(this.leftCount);
+  public handleLeftClick(event: MouseEvent) {
+    if(this.disableZeroClick && this.leftCount === 0) {
+      if(event.stopPropagation) event.stopPropagation();
+      return false;
+    }
+    console.log(`left Clicked: ${this.leftCount}`);
+    this.leftClicked.emit(event);
+    return true;
   }
 
-  public handleOverlapClick() {
+  public handleOverlapClick(event: MouseEvent) {
+    if(this.disableZeroClick && this.overlapCount === 0) {
+      if(event.stopPropagation) event.stopPropagation();
+      return false;
+    }
     console.log(`overlapClicked: ${this.overlapCount}`);
-    this.overlapClicked.emit(this.overlapCount);
+    this.overlapClicked.emit(event);
+    return true;
   }
 
-  public handleRightClick() {
-    this.rightClicked.emit(this.rightCount);
+  public handleRightClick(event: MouseEvent) {
+    if(this.disableZeroClick && this.rightCount === 0) {
+      if(event.stopPropagation) event.stopPropagation();
+      return false;
+    }
+    console.log(`right Clicked: ${this.rightCount}`);
+    this.rightClicked.emit(event);
+    return true;
   }
 
   constructor(

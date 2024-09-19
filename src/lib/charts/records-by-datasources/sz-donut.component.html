@@ -2,9 +2,9 @@
     <svg id="donut-chart" class="donut-chart" width="200" height="200"></svg>
     <div class="total-record-title__wrapper">
         <div class="total-record-title">{{
-        totalRecordCount < 1000
-        ? totalRecordCount
-        : (totalRecordCount | SzShortNumber )
+        shownRecordCount < 1000
+        ? shownRecordCount
+        : (shownRecordCount | SzShortNumber )
         }}
         </div>
         <div class="total-record-subtitle">Total Records</div>
@@ -32,7 +32,25 @@
                 }}</span>
             </button>
             </li>
-            <li class="legend-items" *ngIf="totalUnmatchedRecordCount > 0">
+            <li class="legend-items unlisted" *ngFor="let dsCount of hiddenDataSourceCounts; let i = index" >
+                <button class="from-data-source"
+                        (click)="onDataSourceDetailClick(dsCount)"
+                        [matTooltip]="getDataSourceName(dsCount.dataSource)"
+                        matTooltipPosition="below">
+                    <span class="legend__color-dot item-{{i + 1}}" 
+                    [style.backgroundColor]="dsCount.color"
+                    ></span>
+                    <span class="legend__count">{{
+                    dsCount.recordCount < 1000
+                        ? dsCount.recordCount
+                        : (dsCount.recordCount | SzShortNumber)
+                    }}</span>
+                    <span class="legend__subtitle">{{
+                    getDataSourceName(dsCount.dataSource)
+                    }}</span>
+                </button>
+            </li>
+            <!--<li class="legend-items" *ngIf="totalUnmatchedRecordCount > 0">
             <div>
                 <span class="legend__color-dot item-unmatched"></span>
                 <span class="legend__count">{{
@@ -40,7 +58,7 @@
                 }}</span>
                 <span class="legend__subtitle">Unmatched Records</span>
             </div>
-            </li>
+            </li>-->
             <li class="legend-items" *ngIf="totalPendingRecordCount > 0">
             <div>
                 <span class="legend__color-dot item-pending"></span>
@@ -54,19 +72,28 @@
         <ul class="legend legend__percentages">
             <li class="legend-items" *ngFor="let summary of dataSourceCounts; let i = index">
                 <span>{{
-                    (summary.recordCount/this.totalRecordCount) | SzDecimalPercent: 1 
+                    (summary.recordCount/this.shownRecordCount) | SzDecimalPercent: 1 
                 }}</span>
             </li>
-            <li class="legend-items" *ngIf="totalUnmatchedRecordCount > 0">
+            <li class="legend-items unlisted" *ngFor="let summary of hiddenDataSourceCounts; let i = index">
+                <span>{{
+                    (summary.recordCount/this.shownRecordCount) | SzDecimalPercent: 1 
+                }}</span>
+            </li>
+            <!--<li class="legend-items" *ngIf="totalUnmatchedRecordCount > 0">
                 <span>{{
                     (totalUnmatchedRecordCount/this.totalRecordCount) | SzDecimalPercent: 1
                 }}</span>
-            </li>
+            </li>-->
             <li class="legend-items" *ngIf="totalPendingRecordCount > 0">
                 <span>{{
                     (totalPendingRecordCount/this.totalRecordCount) | SzDecimalPercent: 1
                 }}</span>
             </li>
         </ul>
+    </div>
+    <div *ngIf="hiddenDataSourcesCount > 0" class="other-datasources__link">
+        <a (click)="toggleHiddenDataSources()" class="show-more">{{hiddenDataSourcesCount}} More Data Sources..</a>
+        <a *ngIf="totalDataSources > limitTo" (click)="toggleHiddenDataSources()" class="show-less">Show Top {{limitTo}} Data Sources..</a>
     </div>
 </div>

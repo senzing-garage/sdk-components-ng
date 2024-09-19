@@ -565,6 +565,6 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
 
   /** helper method for retrieving list of datasources */
   public getDataSources() {
-    return this.datasources.listDataSources();
+    return this.datasources.listDataSources('sz-preferences.component');
   }
 }

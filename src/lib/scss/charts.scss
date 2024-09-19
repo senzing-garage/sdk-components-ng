@@ -59,6 +59,7 @@ sz-record-counts-donut {
 sz-venn-diagram button.count-button {
     //&.hover {
         .mat-mdc-button-persistent-ripple,
+        .mat-mdc-focus-indicator,
         .mdc-button__ripple {
             display: none !important;
         }

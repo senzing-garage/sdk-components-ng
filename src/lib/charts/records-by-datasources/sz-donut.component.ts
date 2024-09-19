@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, HostBinding } from '@angular/core';
 import { SzPrefsService } from '../../services/sz-prefs.service';
 import { map, take, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
@@ -44,7 +44,11 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
   private _totalEntityCount: number;
   private _totalPendingRecordCount: number;
   private _totalRecordCount: number;
-  private _totalUnmatchedRecordCount: number;
+  private _hiddenRecordCount: number;
+  private _hiddenEntityCount: number;
+  private _hiddenDataSources: string[] = [];
+  private _showHiddenDataSources = false;
+  //private _totalUnmatchedRecordCount: number;
   private _unlistedDataSources: string[];
   private _limitToNumber: number;
   /* @internal used to override auto-generated colors with user value */
@@ -104,8 +108,11 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       })
     }
   }
-  @Input() public set limitToNumber(value: number | string) {
+  @Input() public set limitTo(value: number | string) {
     this._limitToNumber = parseNumber(value);
+  }
+  public get limitTo(): number {
+    return this._limitToNumber;
   }
   /** sort the vertical list. possible values for sort order of list are 'alphadesc' | 'alphaasc' | 'countdesc' | 'countasc' */
   @Input() public set orderBy(value: 'alphadesc' | 'alphaasc' | 'countdesc' | 'countasc') { 
@@ -126,6 +133,10 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
    * @returns error object.
    */
   @Output() exception: EventEmitter<Error> = new EventEmitter<Error>();
+
+  @HostBinding("class.show-hidden") get classMatches() {
+    return this._showHiddenDataSources;
+  }
   
   /** -------------------------------------- getters and setters -------------------------------------- */
 
@@ -135,8 +146,24 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
   get totalRecordCount(): number {
     return this._totalRecordCount;
   }
-  get totalUnmatchedRecordCount(): number {
+  get shownRecordCount(): number {
+    let retVal = this._hiddenDataSources && this._hiddenDataSources.length > 0 ? (this._totalRecordCount - this._hiddenRecordCount) : this._totalRecordCount;
+    if(this._hiddenDataSources && this._hiddenDataSources.length > 0 && this._showHiddenDataSources) {
+      retVal = this._totalRecordCount;
+    }
+    return retVal;
+  }
+  /*get totalUnmatchedRecordCount(): number {
     return this._totalUnmatchedRecordCount;
+  }*/
+  get hiddenDataSources(): string[] {
+    return this._hiddenDataSources;
+  }
+  get hiddenDataSourcesCount(): number {
+    return this._hiddenDataSources && this._hiddenDataSources.length ? this._hiddenDataSources.length : 0;
+  }
+  public get hasHiddenDataSources(): boolean {
+    return this._hiddenDataSources && this._hiddenDataSources.length > 0 ? true : false;
   }
   get totalPendingRecordCount(): number {
     return this._totalPendingRecordCount;
@@ -184,11 +211,23 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       retVal = this.sortBy(retVal, this._orderBy);
     }
     // limit top results
-    if(this._limitToNumber > 0) {
+    if(this._limitToNumber > 0 && retVal && retVal.slice && retVal.length > this._limitToNumber) {
       retVal = retVal.slice(0, this._limitToNumber);
     }
     return retVal;
   }
+  /** get the list of datasources that are not in the initial "TopX" results */
+  get hiddenDataSourceCounts(): SzRecordCountDataSource[] {
+    let retVal : SzRecordCountDataSource[] = [];
+    let _data = [].concat(this._dataSourceCounts);
+    if(this._hiddenDataSources && this._hiddenDataSources.length > 0) {
+      retVal = _data.filter((dsCountItem) => {
+        return this._hiddenDataSources.indexOf(dsCountItem.dataSource) > -1;
+      });
+    }
+    return retVal;
+  }
+  /** get the list of datasources that are in the "TopX" results */
   set dataSourceCounts(value: SzRecordCountDataSource[]) {
     this._dataSourceCounts = value;
     if(value && value.length) {
@@ -231,8 +270,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$)
     ).subscribe({
       next: (data) => {
-        //console.log('counted totals', this.getTotalsFromCounts(data));
-        this.initDonut()
+        this.initDonut();
         this.renderDonut(data);
       },
       error: (err) => {
@@ -280,11 +318,16 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     });
   }
 
+  /** if list is being limited show/hide additional non-topX */
+  public toggleHiddenDataSources() {
+    this._showHiddenDataSources = !this._showHiddenDataSources;
+  }
+
   /** --------------------------------------- methods and subs -------------------------------------- */
     /** -------------------------------------- drawing methods -------------------------------------- */
 
     static arcTooltipText(d: any) {
-      let retVal = `<strong>${d.data.dataSourceCode}</strong>: ${d.data.recordCount} record`+(d.data.recordCount !== 1 ? 's':''); ;
+      let retVal = `<strong>${d.data.dataSource ? d.data.dataSource : d.data.dataSourceCode}</strong>: ${d.data.recordCount} record`+(d.data.recordCount !== 1 ? 's':''); ;
       return retVal;
     }
 
@@ -359,22 +402,32 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     }
     
     private renderDonut(data?: SzRecordCountDataSource[]) {
-      console.log(`render donut: `, data);
-      let removedItems = (this._limitToNumber > 0) ? data.splice(this._limitToNumber): [];
-      if(this._limitToNumber > 0) {
-        // show total unlisted as single item
-        removedItems = data.splice(this._limitToNumber);
-      }
-      const dataSourcesToDisplay = data.slice(0);
+      let _data = [].concat(data); // create shallow data copy
+      // remove any datasources that should be hidden from shallow copy
+      let removedItems = (this._limitToNumber > 0) ? _data.splice(this._limitToNumber): [];
+      if(removedItems && removedItems.length > 0) {
+        this._hiddenDataSources = removedItems.map((dsCountItem: SzRecordCountDataSource) => {
+          return dsCountItem.dataSource;
+        });
+        let _hiddenRecordCount  = 0;
+        let _hiddenEntityCount  = 0;
+        removedItems.forEach((dsCountItem: SzRecordCountDataSource) => {
+          _hiddenRecordCount += dsCountItem.recordCount;
+          _hiddenEntityCount += dsCountItem.entityCount;
+        });
+        this._hiddenRecordCount = _hiddenRecordCount;
+        this._hiddenEntityCount = _hiddenEntityCount;
+      }    
+      const dataSourcesToDisplay = this._showHiddenDataSources ? data.slice(0) : _data.slice(0);
       // unmatched/singletons
-      if (this._totalUnmatchedRecordCount) {
+      /*if (this._totalUnmatchedRecordCount) {
         const unMatchedSummary: SzRecordCountDataSource = {
           dataSource: 'Unmatched',
           entityCount: 0,
           recordCount: this._totalUnmatchedRecordCount
         }
         dataSourcesToDisplay.push(unMatchedSummary);
-      }
+      }*/
       // pending load
       if (this._totalPendingRecordCount > 0) {
         const unMatchedSummary: SzRecordCountDataSource = {
@@ -483,7 +536,8 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     private getDataSourceRecordCounts(): Observable<SzRecordCountDataSource[]> {
       return this.dataMartService.getLoadedStatistics().pipe(
         map((response)=> {
-          console.info(`SzRecordStatsDonutChart.getDataSources(): response: `, response);
+
+          console.info(`SzRecordStatsDonutChart.getDataSourceRecordCounts(): response: `, response);
           if(response && response.data) {
             this.extendData(response.data);
 
@@ -493,9 +547,9 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
             if(response.data.totalRecordCount) {
               this._totalRecordCount = response.data.totalRecordCount;
             }
-            if(response.data.totalUnmatchedRecordCount) {
+            /*if(response.data.totalUnmatchedRecordCount) {
               this._totalUnmatchedRecordCount = response.data.totalUnmatchedRecordCount
-            }
+            }*/
             if(response.data.dataSourceCounts && response.data.dataSourceCounts.length > 0){
               this.dataSourceCounts = response.data.dataSourceCounts;
             }
@@ -507,7 +561,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     private getDataSources(): Observable<SzDataSourcesResponseData> {
       return this.dataSourcesService.listDataSourcesDetails()
     }
-    getTotalsFromCounts(data: SzRecordCountDataSource[]): { totalEntityCount: number, totalRecordCount: number, totalUnmatchedRecordCount: number} 
+    getTotalsFromCounts(data: SzRecordCountDataSource[]): { totalEntityCount: number, totalRecordCount: number} 
     {
       let retVal = 0;
       let recordTotals    = 0;
@@ -523,7 +577,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       return {
         totalEntityCount: entityTotals,
         totalRecordCount: recordTotals,
-        totalUnmatchedRecordCount: unmatchedTotals
+        /*totalUnmatchedRecordCount: unmatchedTotals*/
       };
     }
 

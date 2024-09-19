@@ -5,6 +5,8 @@ import { SzDataSourceComposite } from '../models/data-sources';
 import { SzSearchHistoryFolio, SzSearchHistoryFolioItem, SzSearchParamsFolio } from '../models/folio';
 import { AdminStreamAnalysisConfig, AdminStreamConnProperties, AdminStreamLoadConfig } from '../models/data-admin';
 import { SzMatchKeyTokenFilterScope } from '../models/graph';
+import { SzCrossSourceSummaryCategoryType, SzCrossSourceSummaryCategoryTypeToMatchLevel } from '../models/stats';
+
 //import { Configuration as SzRestConfiguration, ConfigurationParameters as SzRestConfigurationParameters } from '@senzing/rest-api-client-ng';
 
 /**
@@ -107,14 +109,45 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   /** @internal */
   private _dataSource1: string = undefined;
   private _dataSource2: string = undefined;
+  private _defaultDataSource1: string = undefined;
+  private _defaultDataSource2: string = undefined;
+  private _defaultMatchLevel: number = undefined;
+  private _defaultStatType: SzCrossSourceSummaryCategoryType = undefined;
+  private _rememberSelectedDataSources: boolean = true;
+  private _sampleDataSource1: string = undefined;
+  private _sampleDataSource2: string = undefined;
+  private _samplePageSize: number = 100;
   private _sampleSize: number = 100;
+  private _sampleStatType: SzCrossSourceSummaryCategoryType;
+  private _sampleMatchLevel: number;
+  private _showAllColumns: boolean = false;
+  private _showDiagramHeader: boolean = true;
+  private _showMatchKeyFiltersOnSelect: boolean = true;
+  private _truncateDataTableCellLines: number | boolean = true;
+  private _wrapDataTableCellLines: boolean = true;
+
   /** the keys of member setters or variables in the object
    * to output in json, or to take as json input
    */
   override jsonKeys = [
     'dataSource1',
     'dataSource2',
-    'sampleSize'
+    'defaultDataSource1',
+    'defaultDataSource2',
+    'defaultMatchLevel',
+    'defaultStatType',
+    'rememberSelectedDataSources',
+    'sampleDataSource1',
+    'sampleDataSource2',
+    'sampleMatchLevel',
+    'samplePageSize',
+    'sampleSize',
+    'sampleStatType',
+    'showAllColumns',
+    'showDiagramHeader',
+    'showMatchKeyFiltersOnSelect',
+    'truncateDataTableCellLines',
+    'wrapDataTableCellLines'
   ]
   // -------------- getters and setters
   /** first datasource to use in the datamart stats queries */
@@ -124,6 +157,7 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   /** first datasource to use in the datamart stats queries */
   public set dataSource1(value: string) {
     this._dataSource1 = value;
+    if(this._rememberSelectedDataSources) { this._defaultDataSource1 = value; }
     if(!this.bulkSet) this.prefChanged.next({name: 'dataSource1', value: value});
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
@@ -134,7 +168,102 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   /** first datasource to use in the datamart stats queries */
   public set dataSource2(value: string) {
     this._dataSource2 = value;
+    if(this._rememberSelectedDataSources) { this._defaultDataSource2 = value; }
     if(!this.bulkSet) this.prefChanged.next({name: 'dataSource2', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** first datasource to use as the default in datamart stats queries */
+  public get defaultDataSource1(): string {
+    return this._defaultDataSource1;
+  }
+  /** first datasource to use as the default in datamart stats queries */
+  public set defaultDataSource1(value: string) {
+    this._defaultDataSource1 = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'defaultDataSource1', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** second datasource to use as the default in datamart stats queries */
+  public get defaultDataSource2(): string {
+    return this._defaultDataSource2;
+  }
+  /** second datasource to use as the default in datamart stats queries */
+  public set defaultDataSource2(value: string) {
+    this._defaultDataSource2 = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'defaultDataSource2', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** first datasource to use in the datamart stats queries */
+  public get defaultMatchLevel(): number {
+    return this._defaultMatchLevel;
+  }
+  /** first datasource to use in the datamart stats queries */
+  public set defaultMatchLevel(value: number) {
+    this._defaultMatchLevel = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'defaultMatchLevel', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** first datasource to use in the datamart stats queries */
+  public get defaultStatType(): SzCrossSourceSummaryCategoryType {
+    return this._defaultStatType;
+  }
+  /** first datasource to use in the datamart stats queries */
+  public set defaultStatType(value: SzCrossSourceSummaryCategoryType) {
+    this._defaultStatType = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'defaultStatType', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** if true and there are values for "dataSource1" and/or "dataSource2" then the datatable will 
+   * default to these previous values */
+  public get rememberSelectedDataSources(): boolean {
+    return this._rememberSelectedDataSources;
+  }
+  /** if true and there are values for "dataSource1" and/or "dataSource2" then the datatable will 
+   * default to these previous values */
+  public set rememberSelectedDataSources(value: boolean) {
+    this._rememberSelectedDataSources = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'rememberSelectedDataSources', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+
+  /** first datasource to use in the datamart sampling stats queries */
+  public get sampleDataSource1(): string {
+    return this._sampleDataSource1;
+  }
+  /** first datasource to use in the datamart sampling stats queries */
+  public set sampleDataSource1(value: string) {
+    this._sampleDataSource1 = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'sampleDataSource1', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** second datasource to use in the datamart sampling stats queries */
+  public get sampleDataSource2(): string {
+    return this._sampleDataSource2;
+  }
+  /** second datasource to use in the datamart sampling stats queries */
+  public set sampleDataSource2(value: string) {
+    this._sampleDataSource2 = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'sampleDataSource2', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** sample match level parameter to use in stats queries */
+  public get sampleMatchLevel(): number {
+    return this._sampleMatchLevel;
+  }
+  /** sample match leve parameter to use in stats queries */
+  public set sampleMatchLevel(value: number) {
+    this._sampleMatchLevel = value;
+    if(this._rememberSelectedDataSources) { this._defaultMatchLevel = value; }
+    if(!this.bulkSet) this.prefChanged.next({name: 'sampleMatchLevel', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** sample page size parameter to use in stats queries */
+  public get samplePageSize(): number {
+    return this._samplePageSize;
+  }
+  /** sample page size parameter to use in stats queries */
+  public set samplePageSize(value: number) {
+    this._samplePageSize = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'samplePageSize', value: value});
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
   /** samplesize parameter to use in stats queries */
@@ -147,6 +276,68 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
     if(!this.bulkSet) this.prefChanged.next({name: 'sampleSize', value: value});
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
+  /** sample stat type enum member value*/
+  public get sampleStatType(): SzCrossSourceSummaryCategoryType {
+    return this._sampleStatType;
+  }
+  /** sample stat type enum member value*/
+  public set sampleStatType(value: SzCrossSourceSummaryCategoryType) {
+    this._sampleStatType = value;
+    if(this._rememberSelectedDataSources) { this._defaultStatType = value; }
+    if(!this.bulkSet) this.prefChanged.next({name: 'sampleStatType', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** whether or not hidden or empty columns are shown by default */
+  public get showAllColumns(): boolean {
+    return this._showAllColumns;
+  }
+  /** whether or not hidden or empty columns are shown by default */
+  public set showAllColumns(value: boolean) {
+    this._showAllColumns = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'showAllColumns', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** whether or not the venn diagrams are expanded */
+  public get showDiagramHeader(): boolean {
+    return this._showDiagramHeader;
+  }
+  /** whether or not the venn diagrams are expanded */
+  public set showDiagramHeader(value: boolean) {
+    this._showDiagramHeader = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'showDiagramHeader', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** whether or not prompt the user to select a match key on diagram click */
+  public get showMatchKeyFiltersOnSelect(): boolean {
+    return this._showMatchKeyFiltersOnSelect;
+  }
+  /** whether or not prompt the user to select a match key on diagram click */
+  public set showMatchKeyFiltersOnSelect(value: boolean) {
+    this._showMatchKeyFiltersOnSelect = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'showMatchKeyFiltersOnSelect', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** truncate table cell data at X number of lines, or not at all */
+  public get truncateDataTableCellLines(): boolean | number {
+    return this._truncateDataTableCellLines;
+  }
+  /** truncate table cell data at X number of lines, or not at all */
+  public set truncateDataTableCellLines(value: boolean | number) {
+    this._truncateDataTableCellLines = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'truncateDataTableCellLines', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  /** wrap lines displayed in table cells */
+  public get wrapDataTableCellLines(): boolean {
+    return this._wrapDataTableCellLines;
+  }
+  /** wrap lines displayed in table cells */
+  public set wrapDataTableCellLines(value: boolean) {
+    this._wrapDataTableCellLines = value;
+    if(!this.bulkSet) this.prefChanged.next({name: 'wrapDataTableCellLines', value: value});
+    if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
+  }
+  
   /**
    * publish out a "first" real payload so that
    * subscribers get an initial payload from this subclass

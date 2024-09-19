@@ -1,0 +1,95 @@
+<div class="showing-records" 
+    [attr.data-first-record]="firstRecord"
+    [attr.data-last-record]="lastRecord"
+    >
+    <!--loading: {{loading}}-->
+    <div class="show-records"
+        (click)="editingPageSize = true">
+        Showing {{firstRecord|number:'1.0'}} - {{lastRecord|number:'1.0'}} of {{availableCount|number:'1.0'}}
+    </div>
+    <mat-select #pageSizeField class="edit-page-size"
+        panelClass="sz-dt-menu-page-size"
+        (blur)="handlePageSizeEditBlur($event)"
+        (selectionChange)="handlePageSizeEditChange($event)"
+        (keyup)="handlePageSizeEditKeyUp($event)"
+        [disabled]="loading">
+        <mat-option *ngFor="let pageSizeOption of pageSizeOptions"
+              [value]="pageSizeOption">Show {{pageSizeOption | number : '1.0'}}</mat-option>
+    </mat-select>
+</div>
+<div *ngIf="sampled" class="sample-badge">
+    <button class="sample-badge-button has-tooltip" [class.clickable]="sampleClickable"
+    (click)="onSampleClicked($event)">
+        Sample
+        <span class="tooltiptext" *ngIf="filtered">Sampling {{sampleCount|number:'1.0'}} of {{totalCount|number:'1.0'}} matching items with $(unFilteredCount) total items</span>
+        <span class="tooltiptext" *ngIf="!filtered">Sampling {{sampleCount|number:'1.0'}} of {{totalCount|number:'1.0'}} items</span>
+    </button>
+</div>
+<!--<span>filtering? {{isFiltered}}</span>-->
+<div *ngIf="isFiltered" class="filter-badge">
+    <!--<button *ngIf="filters.length === 0" class="filter-badge-button clickable">
+        Filtered
+        <span class="material-icons">filter_list</span>
+        <span class="tooltiptext" *ngIf="sampled">
+            Sampling {{sampleCount|number:'1.0'}} of {{filteredCount|number:'1.0'}} matching items with {{totalCount|number:'1.0'}} total items
+        </span>
+        <span class="tooltiptext" *ngIf="!sampled">
+            Showing {{filteredCount|number:'1.0'}} matching items of {{totalCount|number:'1.0'}} total items
+        </span>
+    </button>-->
+    <button class="filter-badge clickable has-tooltip"
+        [matMenuTriggerFor]="filterMenu">
+        Filtered
+            <span class="material-icons">filter_list</span>
+            <span class="tooltiptext" *ngIf="sampled">Sampling {{sampleCount}} of {{totalCount}} matching items with {{unFilteredCount}} total items</span>
+            <span class="tooltiptext" *ngIf="!sampled">Showing {{totalCount|number:'1.0'}} matching items of {{unFilteredCount|number:'1.0'}} total items</span>
+    </button>
+</div>
+
+<!-- mat menu -->
+<mat-menu class="sz-dt-filter-menu" 
+    #filterMenu="matMenu" [overlapTrigger]="false" panelClass="sz-dt-filter-panel" *ngIf="isFiltered">
+    <div class="filter-title">{{filters.length}} Filter(s) Applied</div>
+    <button *ngIf="filters.length > 1" mat-menu-item
+        class="clear-filter-item clear-filters-item" (click)="clearFilters()">
+        <span class="clear-filter-icon material-icons">clear</span>
+        <label>Clear All Filters ({{filters.length}})</label>
+    </button>
+    <div class="filter-menu-content">
+        <div
+            *ngFor="let filter of filters"
+                class="clear-filter-item"
+                (click)="clearFilters(filter.key, filter.value)">
+            <mat-icon class="clear-filter-icon">clear</mat-icon>
+            <span class="primary-text">{{filter.name}} = {{filter.value}}</span>
+    </div>
+    </div>
+</mat-menu>
+
+<!-- pages -->
+<button mat-icon-button [disabled]="isFirstPage || loading"
+        (click)="goFirstPage()" class="paging-button">
+    <span class="material-icons">first_page</span>
+</button>
+<button mat-icon-button [disabled]="isFirstPage || loading"
+        (click)="goPreviousPage()" class="paging-button"><span class="material-icons">navigate_before</span>
+</button>
+<div class="showing-pages"
+    [class.many-digits]="pageDigits > 3"
+    [class.triple-digits]="pageDigits===3"
+    [class.double-digits]="pageDigits===2">
+    <div [class.hidden]="editingPage" class="show-pages"
+        >Page {{page}} of {{pageCount}}
+    </div>
+    <!--<input #pageField [class.hidden]="!editingPage" class="edit-page"
+    type="number" min="1" [max]="this.pageCount"
+    (blur)="handlePageEditBlur($event)"
+    (keyup)="handlePageEditKeyUp($event)">-->
+</div>
+<button mat-icon-button [disabled]="isLastPage || loading" (click)="goNextPage()" class="paging-button">
+    <span class="material-icons">navigate_next</span>
+</button>
+<button mat-icon-button [disabled]="isLastPage" 
+    (click)="goLastPage()" class="paging-button">
+    <span class="material-icons">last_page</span>
+</button>

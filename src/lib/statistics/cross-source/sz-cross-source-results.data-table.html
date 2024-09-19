@@ -1,1 +1,397 @@
-<h3>Cross Source Summary Data Table</h3>
+<!--<h2>gridStyle: "{{gridStyle}}"</h2>-->
+<!-- Start Context Menus -->
+<ng-template #sz_dt_header_context_menu let-col>
+    <div class="sz-dt-header-context-menu" cdkMenu>
+        <button class="header-context-menu-item" *ngIf="col.key === 'matchKey'" cdkMenuItem (click)="openFilterDialog()">Filter By Match Key</button>
+        <button class="header-context-menu-item" cdkMenuItem *ngIf="!isColumnHidden(col.key)" (click)="selectColumn(col.key, false)">Hide Column</button>
+        <button class="header-context-menu-item" cdkMenuItem *ngIf="isColumnHidden(col.key)" (click)="selectColumn(col.key, true)">Show Column</button>
+        <button class="header-context-menu-item" cdkMenuItem 
+            [cdkMenuTriggerFor]="sz_dt_header_column_order_context_menu"
+            [cdkMenuTriggerData]="{$implicit: col}"
+        >Column Order</button>
+        <!--<button class="header-context-menu-item" cdkMenuItem 
+        [cdkMenuTriggerFor]="sz_dt_header_row_order_context_menu"
+        [cdkMenuTriggerData]="{$implicit: col}">Order By {{col.value}}</button>-->
+    </div>
+</ng-template>
+<ng-template #sz_dt_header_column_order_context_menu let-col>
+    <div class="sz-dt-header-context-menu submenu" cdkMenu>
+        <button class="header-context-menu-item" cdkMenuItem (click)="moveColumn(col.key, -1)">Move Left</button>
+        <button class="header-context-menu-item" cdkMenuItem (click)="moveColumn(col.key, +1)">Move Right</button>
+        <button class="header-context-menu-item" cdkMenuItem disabled="disabled" (click)="moveColumn(col.key, (2 - columnOrder(col.key)))">Send to Front</button>
+    </div>
+</ng-template>
+<ng-template #sz_dt_header_row_order_context_menu let-col> 
+    <div class="sz-dt-header-context-menu submenu" cdkMenu>
+    <button class="header-context-menu-item" cdkMenuItemRadio 
+        [cdkMenuItemChecked]="sortDirection === 'ASC'"
+        (cdkMenuItemTriggered)="sortBy(col.key,'ASC')">Ascending</button>
+    <button class="header-context-menu-item" cdkMenuItemRadio 
+        [cdkMenuItemChecked]="sortDirection === 'DESC'">Decending</button>
+    </div>
+</ng-template>
+<ng-template #sz_dt_cell_context_menu let-data>
+    <div class="sz-dt-header-context-menu" cdkMenu>
+
+        <button class="header-context-menu-item" *ngIf="data.col.key === 'matchKey'" cdkMenuItem (click)="openFilterDialog()">Filter By Match Key</button>
+        <!--<button class="header-context-menu-item" *ngIf="data.col.key === 'entityId'" cdkMenuItem (click)="copyCellValue(data.entityData && data.entityData['entityId'] ? data.entityData['entityId'] : data.rowData['entityId'], data)">Copy Entity ID</button>
+        <button class="header-context-menu-item" *ngIf="data.col.key === 'entityId'" cdkMenuItem (click)="openEntityById(data.entityData && data.entityData['entityId'] ? data.entityData['entityId'] : data.rowData['entityId'])">Open Entity in new tab</button>-->
+        <button class="header-context-menu-item" *ngIf="data.col.key === 'entityId' || data.col.key === 'relatedEntityId'" cdkMenuItem 
+        [cdkMenuTriggerFor]="sz_dt_cell_entity_context_menu"
+        [cdkMenuTriggerData]="{$implicit: data}">Entity</button>
+        <!--<button class="header-context-menu-item" *ngIf="data.col.key === 'relatedEntityId'" cdkMenuItem (click)="copyCellValue(data.rowData['relatedEntityId'])">Copy Related Entity ID</button>
+        <button class="header-context-menu-item" *ngIf="data.col.key === 'relatedEntityId'" cdkMenuItem (click)="openEntityById(data.rowData['relatedEntityId'])">Open Entity in new tab</button>-->
+        <div class="separator" *ngIf="data.col.key === 'entityId' || data.col.key === 'relatedEntityId' || data.col.key === 'matchKey'"></div>
+        <!--<button class="header-context-menu-item" *ngIf="data.col.key !== 'entityId'" cdkMenuItem (click)="copyCellContent(data.cell, data.cellData)">Copy Cell As JSON</button>
+        <button class="header-context-menu-item" cdkMenuItem (click)="copyRowContent(data.row, data.rowData)">Copy Row As JSON</button>-->
+        <button class="header-context-menu-item" cdkMenuItem
+        [cdkMenuTriggerFor]="sz_dt_cell_row_context_menu"
+        [cdkMenuTriggerData]="{$implicit: data}">Row</button>
+        <button class="header-context-menu-item" cdkMenuItem
+        [cdkMenuTriggerFor]="sz_dt_cell_cell_context_menu"
+        [cdkMenuTriggerData]="{$implicit: data}">Cell</button>        
+    <!--<button class="header-context-menu-item" cdkMenuItem (click)="minimizeCol(data.col)">Minimize Column</button>-->
+    </div>
+</ng-template>
+<ng-template #sz_dt_cell_cell_context_menu let-data> 
+    <div class="sz-dt-header-context-menu submenu" cdkMenu>
+        <button class="header-context-menu-item" cdkMenuItem (click)="copyCellContent(data.cell, data.cellData)">Copy as JSON</button>
+        <button class="header-context-menu-item" cdkMenuItem (click)="copyElementHTML(data.cell, data.cellData)">Copy as Text</button>
+    </div>
+</ng-template>
+<ng-template #sz_dt_cell_row_context_menu let-data> 
+    <div class="sz-dt-header-context-menu submenu" cdkMenu>
+        <button class="header-context-menu-item" cdkMenuItem (click)="copyRowContent(data.row, data.rowData)">Copy as JSON</button>
+        <!--<button class="header-context-menu-item" cdkMenuItem (click)="copyElementHTML(data.row, data.rowData, data)">Copy as Text</button>-->
+        <button class="header-context-menu-item" cdkMenuItemCheckbox 
+        [disabled]="!hasAdditionalDataSources(data.row)"
+        [cdkMenuItemChecked]="isShowingAdditionalDataSources(data.row)"
+        (click)="toggleRowExpansion(data.row)">Show other Data Sources</button>
+    </div>
+</ng-template>
+<ng-template #sz_dt_cell_entity_context_menu let-data> 
+    <div class="sz-dt-header-context-menu submenu" cdkMenu>
+        <button class="header-context-menu-item" cdkMenuItem (click)="openEntityById(data.col.key === 'entityId' ? data.entityData && data.entityData['entityId'] : data.col.key === 'relatedEntityId' ? data.relatedEntity && data.relatedEntity['entityId'] : undefined)">Open in New Tab</button>
+        <button class="header-context-menu-item" cdkMenuItem (click)="copyCellValue(data.col.key === 'entityId' ?  data.entityData && data.entityData['entityId']  : data.col.key === 'relatedEntityId' ? data.relatedEntity && data.relatedEntity['entityId'] : undefined)">Copy ID</button>
+    </div>
+</ng-template>
+<ng-template #sz_dt_settings_picker_menu> 
+    <div class="sz-dt-settings-menu" cdkMenu
+    >
+        <button class="header-context-menu-item" cdkMenuItemCheckbox 
+            [cdkMenuItemChecked]="isPrefChecked('rememberSelectedDataSources')"
+            (click)="toggleBoolPref('rememberSelectedDataSources')">Remember Selected Datasources</button>
+        <button class="header-context-menu-item" cdkMenuItemCheckbox 
+            [cdkMenuItemChecked]="isPrefChecked('truncateDataTableCellLines')"
+            (click)="toggleBoolPref('truncateDataTableCellLines')">Truncate Lines</button>
+        <button class="header-context-menu-item" cdkMenuItemCheckbox 
+            [cdkMenuItemChecked]="isPrefChecked('wrapDataTableCellLines')"
+            (click)="toggleBoolPref('wrapDataTableCellLines')">Wrap Cell Lines</button>
+    </div>
+</ng-template>
+<!-- End Context Menus -->
+<div class="control-ribbon">
+    <!-- start paging component -->
+    <sz-cross-source-pager 
+        [pageSizeOptions]="[ 10, 25, 50, 75, 100 ]"
+        (clearFilters)="onPagingClearFilters($event)"
+        (sampleClicked)="onPagingSampleClicked($event)"></sz-cross-source-pager>
+    <!-- end paging component -->
+    <div class="control-ribbon-buttons">
+        <!-- start column picker component -->
+            <button class="column-picker-button has-tooltip"
+                (click)="toggleColumnPicker($event); $event.stopPropagation()" 
+                aria-label="Choose Columns"
+                matTooltip="Select Columns to display" 
+                matTooltipPosition="above">
+                <div class="icon-columns-select mdi--view-column-outline"></div>
+            </button>
+            <div #columnPickerRef class="sz-mat-menu vertical" 
+            [class.showing]="showColumnPickerMenu"
+            >
+                <label class="sz-mat-menu-item" 
+                    *ngFor="let col of this.visibilitySelectableColumns | SzOrderedMapEntries; let i = index"
+                >{{col.value}}
+                    <input type="checkbox" 
+                    [attr.is-checked]="isColumnSelected(col.key)" 
+                    [checked]="isColumnSelected(col.key)"
+                    (click)="toggleColumnSelection(col.key, $event)"
+                    >
+                    <span class="checkmark" (click)="$event.stopPropagation();"></span>
+                </label>
+            </div>
+        <!-- end column picker component -->
+        <!-- start pref settings -->
+            <button class="settings-icon-picker-button"
+                aria-label="Settings"
+                matTooltip="Additional Settings" 
+                matTooltipPosition="above"
+                [cdkMenuTriggerFor]="sz_dt_settings_picker_menu"
+                [cdkMenuPosition]="menuPositions.settings"
+                >
+                <div class="icon-settings-select mdi--view-settings-outline"></div>
+            </button>
+        <!-- end pref settings -->
+    </div>
+</div>
+<!--<mat-menu #columnsSelector="matMenu" class="sz-g-flexbox-vertical" yPosition="below" (click)="$event.stopPropagation();">
+    <button mat-menu-item *ngFor="let col of this.selectableColumns | SzOrderedMapEntries; let i = index"
+    [attr.data-col-order]="columnOrder(col.key)"
+    [style.order]="columnOrder(col.key)"
+    (click)="$event.stopPropagation();">
+    <mat-checkbox [checked]="isColumnSelected(col.key)" (change)="selectColumn(col.key, $event.checked)" (click)="$event.stopPropagation();">{{col.value}}</mat-checkbox>
+    </button>
+</mat-menu>-->
+<!--<button (click)="resetCellSizes()"> reset row cell sizes</button>
+<button (click)="getCellSizes()">get row cell sizes</button>-->
+<!--<button (click)="getGridColumnSizes()"
+sz-tooltip="Tooltip text">Get Grid Column Sizes</button>-->
+<!--<button (click)="isColumnHidden2('resolutionRuleCode')">isColumnHidden2('resolutionRuleCode') ? {{isColumnHidden('resolutionRuleCode')}}</button>-->
+
+<table class="data-table data-sample-table" 
+    #tableRef
+    [class.show-all-columns]="showAllColumns"
+    [style]="gridStyle" 
+    [attr.data-table-index]="resetTableIndexes()">
+    <thead>
+        <tr style="order: 0">
+        <!--<ng-container>-->
+            <th 
+                #colRef
+                *ngFor="let col of this.selectableColumns | SzOrderedMapEntries; let i = index"
+                [class]="'sz-dt-column '+cellClass(col.key, 'sz-dt-header','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
+                [class.sorted]="isSortedBy(col.key)" 
+                [class.sorted-asc]="sortDirection === 'ASC'" 
+                [class.sorted-desc]="sortDirection === 'DESC'"
+                [class.hidden]="isColumnHidden(col.key)"
+                [class.empty-column]="getRowCountForField(col.key) === 0"
+                [class.expanded]="isColumnExpanded(col.key)"
+                [cdkContextMenuTriggerFor]="sz_dt_header_context_menu"
+                [cdkContextMenuTriggerData]="{$implicit: col}"
+                [style]="columnStyle(col.key)"
+                [attr.data-field-name]="col.key"
+                [attr.data-col-order]="columnOrder(col.key)"
+                [attr.data-col-value-count]="getRowCountForField(col.key)"
+                (mousedown)="onHeaderMouseDown($event)"
+                (mousemove)="onHeaderMouseMove($event)"
+                (mouseup)="onHeaderMouseUp($event)"
+                >
+                <span class="col-name-text">{{col.value}}</span>
+                <div *ngIf="getRowCountForField(col.key) === 0" class="no-data-icon-wrapper has-tooltip">
+                    <button class="no-data-icon" mat-icon-button
+                        (click)="toggleNoDataLabel(col.key)"
+                        ><mat-icon aria-hidden="false" aria-label="toggle column label" fontIcon="info_outline"></mat-icon>
+                    </button>
+                    <span class="tooltiptext">{{col.value}} is collapsed because no data exists for the displayed records.
+                        Click to show or hide the column name placeholder.</span>
+                </div>
+
+                <span *ngIf="getRowCountForField(col.key) > 0" class="icon-sort descending mdi--sort-descending" (click)="sortBy(col.key,'DESC')"></span>
+                <span *ngIf="getRowCountForField(col.key) > 0" class="icon-sort ascending mdi--sort-ascending" (click)="sortBy(col.key,'ASC')"></span>
+                <div *ngIf="getRowCountForField(col.key) > 0" class="handle-resize"
+                (mousedown)="onResizeMouseDown(col.key, $event)"
+                (mouseup)="onResizeMouseUp(col.key, $event)"></div>
+                <span *ngIf="col.key === 'matchKey'" class="icon-filter descending mdi--filter" (click)="openFilterDialog()"></span>
+            </th>
+            <!--<div class="leftdragbar" onmousedown="startColResize(col.key)" onmouseup="endColResize(col.key)"></div>-->
+        <!--</ng-container>-->
+        
+        </tr>
+    </thead>
+    <!--<tbody>-->
+    <ng-container *ngIf="!noData && !isLoading">
+    <tbody class="row-group" *ngFor="let row of this.data; let groupIndex=index;" 
+        #rowRef
+        [attr.group-row-index]="groupIndex" 
+        [class.hasExpandedCells]="hasExpandedCells(rowRef)"
+        [attr.data-source-1]="selectedDataSource1"
+        [attr.data-source-2]="selectedDataSource2"
+        [class.has-additional-data]="getTotalRowCount(row) !== getRowCountInSelectedDataSources(row)"
+        [style]="rowGroupStyle(row)"
+        >
+            <!-- show row for entity iteself -->
+            <!--
+                <tr
+                class="row-entity"
+                [attr.data-row-index]="incrementRowCount()"
+                [attr.data-source]="row.dataSource"
+                >
+                <td #cellRef *ngFor="let col of this.selectableColumns | SzOrderedMapEntries"
+                    [attr.data-row-index]="getRowIndex()" 
+                    [attr.data-cell-order]="getCellOrder(col.key, getRowIndex())"
+                    [style]="cellStyle(col.key, getRowIndex())"
+                    [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
+                    [class.hidden]="isColumnHidden(col.key)"
+                    [class.empty-column]="getRowCountForField(col.key) === 0"
+                    [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
+                    [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: row[col.key], rowData: row}}"
+                    (click)="onCellClick(col.key, row[col.key], $event, cellRef)">
+                    <div *ngIf="col.key === 'entityId'" class="cell-content" 
+                        matTooltip="Click to view Entity Detail page" 
+                        matTooltipPosition="right"
+                        [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                    <div *ngIf="col.key !== 'entityId'" class="cell-content"
+                        [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                </td>
+            </tr>-->
+            <!-- show rows for entity records -->
+            <tr *ngFor="let rowQ of row.rows; let recordIndex=index;" 
+                [attr.data-row-index]="incrementRowCount()"
+                [attr.data-source]="rowQ.dataSource"
+                [class.data-source-selected]="isDataSourceSelected(rowQ.dataSource, 'sampleDataSource1')"
+                [class.data-source-not-selected]="!isDataSourceSelected(rowQ.dataSource, 'sampleDataSource1')"
+                class="row-record row-entity-record">
+                <td #cellRef [attr.data-record-index]="recordIndex+1" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries" 
+                    [attr.data-cell-order]="getCellOrder(col.key, getRowIndex())"
+                    [class.empty-column]="getRowCountForField(col.key) === 0"
+                    [class.hidden]="isColumnHidden(col.key)"
+                    [style]="cellStyle(col.key, getRowIndex())"
+                    [class.has-hidden-items]="hasTruncatedItems(rowQ[col.key])"
+                    [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
+                    [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
+                    [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: rowQ[col.key], rowData: rowQ, entityData: row}}"
+                    (click)="onCellClick(col.key, (col.key === 'entityId'? row[col.key] : rowQ[col.key]), $event, cellRef)"
+                >
+                    <div *ngIf="col.key === 'entityId'" class="cell-content" 
+                        matTooltip="Click to view Entity Detail page" 
+                        matTooltipPosition="right"
+                        [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                    <div *ngIf="col.key !== 'entityId'" class="cell-content"
+                        [innerHTML]="cellValue(rowQ[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                    <!--<div class="cell-content" [innerHTML]="cellValue(rowQ[col.key], col.key)" [attr.cell-key]="col.key"></div>-->
+                    <div *ngIf="col.key === 'entityId' && classMatches && (getTotalRowCount(row) - getRowCountInSelectedDataSources(row)) > 0">
+                        <button mat-stroked-button class="more-button expanded" 
+                            matTooltip="Hide additional records from other data sources." 
+                            matTooltipPosition="right"
+                            (click)="toggleRowExpansion(rowRef); $event.stopPropagation()">
+                            <mat-icon>visibility_off</mat-icon>
+                            {{getTotalRowCount(row) - getRowCountInSelectedDataSources(row)}} Less</button>
+                        <button mat-stroked-button class="more-button collapsed" 
+                            matTooltip="Show additional records from other data sources." 
+                            matTooltipPosition="right"
+                            (click)="toggleRowExpansion(rowRef); $event.stopPropagation()">
+                            <mat-icon>visibility</mat-icon>
+                            {{getTotalRowCount(row) - getRowCountInSelectedDataSources(row)}} More
+                        </button>
+                    </div>
+                    <!--<button (click)="debugTruncatedItemCount(rowQ[col.key])">truncated lines {{truncatedItemCount(rowQ[col.key])}}</button>-->
+                    <div class="toggle-expansion" *ngIf="col.key !== 'entityId' && hasTruncatedItems(rowQ[col.key])"
+                    (click)="toggleCellExpando(cellRef, $event)">
+                        <button class="more-link">
+                            {{truncatedItemCount(rowQ[col.key])}} more items</button>
+                        <button class="less-link">
+                            hide last {{truncatedItemCount(rowQ[col.key])}} items</button>
+                        <mat-icon>transit_enterexit</mat-icon>
+                    </div>
+                </td>
+            </tr>
+            <!-- show row for related entity -->
+            <!--<tr *ngIf="row.relatedEntity" 
+                class="row-related-entity"
+                [attr.data-row-index]="incrementRowCount()"
+                [attr.data-source]="row.relatedEntity.dataSource"
+                >
+                <td #cellRef *ngFor="let col of this.selectableColumns | SzOrderedMapEntries"
+                    [attr.data-row-index]="getRowIndex()" 
+                    [attr.data-cell-order]="getCellOrder(col.key, getRowIndex())"
+                    [style]="cellStyle(col.key, getRowIndex())"
+                    [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
+                    [class.hidden]="isColumnHidden(col.key)"
+                    [class.empty-column]="getRowCountForField(col.key) === 0"
+                    [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
+                    [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: row.relatedEntity[col.key], rowData: row.relatedEntity}}"
+                    (click)="onCellClick(col.key, row.relatedEntity[col.key], $event, cellRef)">
+                        <div class="cell-content" 
+                            *ngIf="col.key === 'entityId' || col.key === 'relatedEntityId'"
+                            matTooltip="Click to view Entity Detail page" 
+                            [matTooltipPosition]="col.key === 'entityId' ? 'right':'above'"
+                            [innerHTML]="cellValue(row.relatedEntity[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                        <div class="cell-content" 
+                            *ngIf="col.key !== 'entityId' && col.key !== 'relatedEntityId'"
+                            [innerHTML]="cellValue(row.relatedEntity[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                        <div *ngIf="col.key === 'entityId' && (getTotalRowCount(row) - getRowCountInSelectedDataSources(row)) > 0">
+                            <button mat-stroked-button class="more-button expanded" 
+                                matTooltip="Hide additional records from other data sources." 
+                                matTooltipPosition="right"
+                                (click)="toggleRowExpansion(rowRef); $event.stopPropagation()">
+                                <mat-icon>visibility_off</mat-icon>
+                                {{getTotalRowCount(row) - getRowCountInSelectedDataSources(row)}} Less</button>
+                            <button mat-stroked-button class="more-button collapsed" 
+                                matTooltip="Show additional records from other data sources." 
+                                matTooltipPosition="right"
+                                (click)="toggleRowExpansion(rowRef); $event.stopPropagation()">
+                                <mat-icon>visibility</mat-icon>
+                                {{getTotalRowCount(row) - getRowCountInSelectedDataSources(row)}} More
+                            </button>
+                        </div>
+                </td>
+            </tr>-->
+            <!-- show rows for related entity records -->
+            <ng-container *ngIf="row.relatedEntity && row.relatedEntity.rows">
+                <tr *ngFor="let rowY of row.relatedEntity.rows; let recordIndex=index;" 
+                [attr.data-row-index]="incrementRowCount()"
+                [attr.data-source]="rowY.dataSource"
+                [class.data-source-selected]="isDataSourceSelected(rowY.dataSource, 'sampleDataSource2')"
+                [class.data-source-not-selected]="!isDataSourceSelected(rowY.dataSource, 'sampleDataSource2')"
+                class="row-record row-related-record">
+                    <td #cellRef [attr.data-record-index]="recordIndex+1" *ngFor="let col of this.selectableColumns | SzOrderedMapEntries" 
+                        [attr.data-cell-order]="getCellOrder(col.key, getRowIndex())"
+                        [class.empty-column]="getRowCountForField(col.key) === 0"
+                        [class.hidden]="isColumnHidden(col.key)"
+                        [style]="cellStyle(col.key, getRowIndex())"
+                        [class.has-hidden-items]="hasTruncatedItems(rowY[col.key])"
+                        [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
+                        [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
+                        [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: rowY[col.key], rowData: rowY, entityData: row, relatedEntity: row.relatedEntity}}"
+                        (click)="onCellClick(col.key, (col.key === 'relatedEntityId'? row.relatedEntity[col.key] : rowY[col.key]), $event, cellRef)"
+                    >
+                        <div class="cell-content" 
+                            *ngIf="col.key === 'matchKey'"
+                            [innerHTML]="cellValue(row.relatedEntity.relatedMatchKey, col.key)" [attr.cell-key]="col.key"></div>
+                        <div class="cell-content" 
+                            *ngIf="col.key === 'entityId' || (col.key === 'relatedEntityId')"
+                            matTooltip="Click to view Entity Detail page" 
+                            [matTooltipPosition]="col.key === 'entityId' ? 'right':'above'"
+                            [innerHTML]="cellValue(row.relatedEntity[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                        <div class="cell-content" 
+                            *ngIf="col.key !== 'entityId' && col.key !== 'relatedEntityId' && col.key !== 'matchKey'"
+                            [innerHTML]="cellValue(rowY[col.key], col.key)" [attr.cell-key]="col.key"></div>
+                        <!--<div class="cell-content" [innerHTML]="cellValue(rowY[col.key], col.key)" [attr.cell-key]="col.key"></div>-->
+                        <div *ngIf="col.key === 'entityId' && (getTotalRowCount(row) - getRowCountInSelectedDataSources(row)) > 0">
+                            <button mat-stroked-button class="more-button expanded" 
+                                matTooltip="Hide additional records from other data sources." 
+                                matTooltipPosition="right"
+                                (click)="toggleRowExpansion(rowRef); $event.stopPropagation()">
+                                <mat-icon>visibility_off</mat-icon>
+                                {{getTotalRowCount(row) - getRowCountInSelectedDataSources(row)}} Less</button>
+                            <button mat-stroked-button class="more-button collapsed" 
+                                matTooltip="Show additional records from other data sources." 
+                                matTooltipPosition="right"
+                                (click)="toggleRowExpansion(rowRef); $event.stopPropagation()">
+                                <mat-icon>visibility</mat-icon>
+                                {{getTotalRowCount(row) - getRowCountInSelectedDataSources(row)}} More
+                            </button>
+                        </div>
+                        <div class="toggle-expansion" *ngIf="col.key !== 'entityId' && hasTruncatedItems(rowY[col.key])"
+                            (click)="toggleCellExpando(cellRef, $event)">
+                            <button class="more-link">show {{truncatedItemCount(rowY[col.key])}} more</button>
+                            <button class="less-link">hide last {{truncatedItemCount(rowY[col.key])}}</button>
+                            <mat-icon>transit_enterexit</mat-icon>
+                        </div>
+                    </td>
+            </tr>
+            </ng-container>
+    </tbody>
+    </ng-container>
+    <tbody *ngIf="noData"
+    [style]="rowGroupStyle()">
+        <tr class="row-no-data">
+            <td 
+            [style.order]="this.selectableColumns.size + 1"
+            class="sz-dt-no-data-cell"
+            >No Results</td>
+        </tr>
+    </tbody>
+    <!--</tbody>-->
+    </table>
+    <div #resizeIndicatorRef class="resize-indicator"></div>

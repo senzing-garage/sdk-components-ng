@@ -1,0 +1,29 @@
+<h1 mat-dialog-title cdkDrag class="title" cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>{{title}}</h1>
+<div mat-dialog-content class="body">
+    <div *ngIf="hasSelectedMatchKey">
+        <button mat-button
+            (click)="clearMatchKey()">
+            <mat-icon>close</mat-icon>
+            Clear Match Key Filter</button>
+    </div>
+    <mat-radio-group
+        aria-labelledby="filter-by-matchkey"
+        class="matchkey-radio-group"
+        (change)="onMatchKeyFilterChange($event)"
+        [(ngModel)]="selectedMatchKey">
+            <div class="match-key-row" *ngFor="let statRow of dataRows">
+                <ng-container *ngIf="!isTotalRow(statRow)">
+                <mat-radio-button class="match-key-radio-button" 
+                    disableRipple 
+                    (click)="setMatchKey(statRow.matchKey)"
+                    [value]="statRow.matchKey">
+                    {{statRow.matchKey}}
+                </mat-radio-button>
+                ({{getCount(statRow)}})
+                </ng-container>
+            </div>
+    </mat-radio-group>
+</div>
+<!--<div mat-dialog-actions>
+    <mat-checkbox class="do-not-prompt-on-click" (click)="toggleShowMatchKeyFiltersOnSelect()" [checked]="!showMatchKeyFiltersOnSelect">Do Not Show this prompt again</mat-checkbox>
+</div>-->

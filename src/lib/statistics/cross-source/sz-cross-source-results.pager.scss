@@ -1,0 +1,319 @@
+@import "../../scss/theme.scss";
+
+:host {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  height: 27px;
+}
+
+/*.has-tooltip .tooltiptext {
+    top: 0px;
+    right: 40px;
+    width: unset;
+    padding: 8px 15px;
+    white-space: nowrap;
+}*/
+
+/* tooltips */
+.has-tooltip {
+    .tooltiptext {
+        display: inline-block;
+        position: absolute;
+        top: -40px;
+        left: -70px;
+        visibility: hidden;
+        opacity: 0;
+        width: 220px;
+        background-color: #3b3b3b;
+        color: #fff;
+        text-align: center;
+        padding: 8px 14px 10px 9px;
+        border-radius: 6px;
+        font-size: 10px;
+        white-space: break-spaces;
+        transition: opacity 0.2s ease-out 0.4s;
+        filter: drop-shadow(5px 8px 5px rgba(0, 0, 0, 0.3));
+
+
+        /* Position the tooltip text - see examples below! */
+        position: absolute;
+        z-index: 7;
+    }
+    &:hover .tooltiptext {
+        visibility: visible;
+        display: inline-block;
+        opacity: 1;
+    }
+}
+
+.filter-menu-content {
+    .clear-filter-item {
+        font-size: 12px;
+        min-height: 34px;
+        padding: 2px 8px;
+        cursor: pointer;
+
+        &:hover {
+            /*background-color: var(--sz-color-dialog-header);*/
+        }
+
+        &:disabled {
+            cursor: default;
+            label {
+                cursor: default;
+            }
+        }
+        
+        label {
+            white-space: nowrap;
+            cursor: pointer;
+        }
+    }
+}
+
+:host > * {
+  display: inline-block;
+}
+
+:host button {
+  min-width: 0px;
+  width: 18px;
+  max-width: 18px;
+  overflow: hidden;
+  height: 24px;
+  line-height: 24px;
+  vertical-align: top;
+  border-radius: 0px;
+  border: 1px solid transparent;
+}
+
+:host SPAN.material-icons {
+  display: inline-block;
+  vertical-align: top;
+  line-height: 24px;
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  padding: 0px;
+  overflow: hidden;
+  width: 18px;
+  max-width: 18px;
+}
+
+/*:host button ::ng-deep .mat-button-wrapper {
+  font-size: 20px;
+  height: 24px;
+  line-height: 24px;
+  vertical-align: top;
+  display: inline-block;
+  width: 18px;
+  max-width: 18px;
+  overflow: hidden;
+}*/
+
+:host DIV.showing-records,
+:host DIV.showing-pages {
+  display: inline-flex;
+  font-size: 12px;
+  line-height: 24px;
+  width: auto;
+  min-width: 80px;
+  height: 24px;
+  vertical-align: middle;
+
+  DIV.show-records {
+    display: inline-block;
+    height: 24px;
+    text-align: center;
+    vertical-align: middle;
+    margin: 1px 0 0 0;
+    padding: 0 6px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    cursor: pointer;
+
+    &.hidden {
+      display: none;
+    }
+    
+    &:hover {
+      border: 1px solid #777777;
+    }
+  }
+  .hidden {
+    display: none;
+  }
+}
+DIV.showing-pages {
+  box-sizing: border-box;
+
+  DIV.show-pages {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+:host button.paging-button {
+  margin-top: 2px;
+  width: 20px;
+padding: 0;
+}
+
+DIV.show-records {
+  padding: 0px 2px;
+  width: auto;
+  text-align: right;
+  vertical-align: middle;
+}
+
+:host DIV.showing-records {
+  /*border: 1px solid transparent;*/
+  margin-right: 2px;
+  width: auto;
+  text-align: right;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: top;
+  white-space: nowrap;
+  vertical-align: top;
+  position: relative;
+  cursor: pointer;
+  font-stretch: condensed;
+  box-sizing: border-box;
+}
+
+:host DIV.showing-pages.double-digits {
+  width: 6.5em;
+}
+:host DIV.showing-pages.triple-digits {
+  width: 8em;
+}
+:host DIV.showing-pages.many-digits {
+  width: 9.5em;
+}
+
+:host .sample-badge,
+:host .filter-badge {
+  padding-top: 4px;
+
+  BUTTON {
+    color: #ffffff;
+    font-size: 10px;
+    padding: 0px 4px;
+    margin: 4px 2px;
+    height: 16px;
+    width: auto;
+    max-width: none;
+    border-radius: 4px;
+    vertical-align: middle;
+    box-sizing: border-box;
+    line-height: 14px;
+    outline: none;
+    cursor: default;
+
+    &.clickable {
+      cursor: pointer;
+    }
+
+    span.material-icons {
+      font-size: 12px;
+      line-height: 12px;
+      vertical-align: middle;
+    }
+  }
+}
+
+:host .filter-badge BUTTON {
+  background-color: $senzing-config-warn-mild-color;
+}
+:host .sample-badge BUTTON {
+  background-color: $senzing-config-warn-color;
+}
+
+/*
+:host BUTTON.sample-badge,
+:host BUTTON.filter-badge  {
+  color: #ffffff;
+  font-size: 10px;
+  letter-spacing: 2px;
+  padding: 0px 4px;
+  margin: 4px 2px;
+  height: 16px;
+  width: auto;
+  max-width: none;
+  border-radius: 4px;
+  vertical-align: middle;
+  box-sizing: border-box;
+  line-height: 14px;
+  outline: none;
+
+  span.material-icons {
+    font-size: 12px;
+    line-height: 12px;
+    vertical-align: middle;
+  }
+}
+
+:host BUTTON.sample-badge {
+  background-color: $senzing-config-warn-color;
+  cursor: default;
+}
+
+:host BUTTON.sample-badge.sample-clickable {
+  cursor: pointer;
+}
+
+:host BUTTON.filter-badge {
+  background-color: $senzing-config-warn-mild-color;
+  cursor: pointer;
+}
+*/
+
+:host INPUT.edit-page {
+  display: inline-block;
+  width: 100%;
+  height: 24px;
+  line-height: 24px;
+  font-size: 12px;
+  padding: 0px;
+  border: 0px none transparent;
+  text-align: center;
+  outline: none;
+  border-radius: 4px;
+  margin: 2px 6px 0 6px;
+}
+
+:host mat-SELECT.edit-page-size {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  width: 100%;
+  visibility: hidden;
+  overflow: hidden;
+  padding: 0px;
+  border: 0px none transparent;
+  text-align: center;
+  opacity: 0;
+}
+
+:host ::ng-deep .mat-select-trigger {
+  font-size: 12px;
+}
+
+:host ::ng-deep .mat-select-trigger {
+  margin-top: -3px;
+}
+
+:host ::ng-deep .mat-select-trigger .mat-select-value,
+:host ::ng-deep .mat-select-trigger .mat-select-value .mat-select-value-text {
+  width: 100%;
+  text-align: center;
+}

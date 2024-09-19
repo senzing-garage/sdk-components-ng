@@ -31,17 +31,22 @@ import { SzElementResizeService } from './services/sz-element-resize-listener.se
 /** pipes */
 import { SzShortNumberPipe } from './pipes/shortnumber.pipe'
 import { SzDecimalPercentPipe } from './pipes/decimalpercent.pipe';
+import { SzOrderedMapEntries } from './pipes/mapentries.pipe';
 /** directives */
 import { SzElementResizeObserverDirective } from './directives/sz-element-resize-observer.directive';
+import { SzTooltipComponent } from './directives/sz-tooltip.component';
+import { SzTooltipDirective } from './directives/sz-tooltip.directive';
 /** common */
 import { SzDataTable } from './shared/data-table/sz-data-table.component';
 /** charts */
 import { SzRecordStatsDonutChart } from './charts/records-by-datasources/sz-donut.component';
 import { SzVennDiagramsComponent } from './charts/versus/sz-venn-diagram.component';
 /** statistics */
+import { SzCrossSourcePagingComponent } from './statistics/cross-source/sz-cross-source-results.pager';
 import { SzCrossSourceResultsDataTable } from './statistics/cross-source/sz-cross-source-results.data-table'
 import { SzCrossSourceStatistics } from './statistics/cross-source/sz-cross-source-statistics.component';
 import { SzCrossSourceSummaryComponent } from './summary/cross-source/sz-cross-source-summary.component';
+import { SzCrossSourceSummaryMatchKeyPickerDialog } from './summary/cross-source/sz-cross-source-matchkey-picker.component';
 
 /** components */
 import { SzAlertMessageDialog } from './shared/alert-dialog/sz-alert-dialog.component';
@@ -135,10 +140,12 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzConfigurationAboutComponent,
         SzConfigurationComponent,
         SzDataTable,
+        SzCrossSourcePagingComponent,
         SzCrossSourceResultsDataTable,
         SzCrossSourceSelectComponent,
         SzCrossSourceStatistics,
         SzCrossSourceSummaryComponent,
+        SzCrossSourceSummaryMatchKeyPickerDialog,
         SzDecimalPercentPipe,
         SzEntityDetailComponent,
         SzEntityDetailGraphControlComponent,
@@ -169,6 +176,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowVirtualEntityCardComponent,
         SzHowVirtualEntityDialog,
         SzLicenseInfoComponent,
+        SzOrderedMapEntries,
         SzMultiSelectButtonComponent,
         SzPoweredByComponent,
         SzPreferencesComponent,
@@ -189,6 +197,8 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzSearchResultCardHeaderComponent,
         SzShortNumberPipe,
         SzStandaloneGraphComponent,
+        SzTooltipComponent,
+        SzTooltipDirective,
         SzVennDiagramsComponent,
         SzWhyEntitiesComparisonComponent,
         SzWhyEntityComponent,
@@ -208,9 +218,12 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzSdkMaterialModule
     ],
     exports: [
+        SzAlertMessageDialog,
         SzConfigurationComponent,
         SzConfigurationAboutComponent,
         SzDataTable,
+        SzCrossSourceResultsDataTable,
+        SzCrossSourceSelectComponent,
         SzCrossSourceStatistics,
         SzCrossSourceSummaryComponent,
         SzDecimalPercentPipe,
@@ -231,6 +244,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzHowVirtualEntityCardComponent,
         SzHowVirtualEntityDialog,
         SzLicenseInfoComponent,
+        SzOrderedMapEntries,
         SzPoweredByComponent,
         SzPreferencesComponent,
         SzRecordStatsDonutChart,

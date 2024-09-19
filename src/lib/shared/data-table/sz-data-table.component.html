@@ -1,5 +1,5 @@
 <!--<h2>gridStyle: "{{gridStyle}}"</h2>-->
-<ng-template #sz_dt_header_context_menu let-col>
+<!--<ng-template #sz_dt_header_context_menu let-col>
   <div class="sz-dt-header-context-menu" cdkMenu>
     <button class="header-context-menu-item" cdkMenuItem *ngIf="!isColumnHidden(col.key)" (click)="selectColumn(col.key, false)">Hide Column</button>
     <button class="header-context-menu-item" cdkMenuItem *ngIf="isColumnHidden(col.key)" (click)="selectColumn(col.key, true)">Show Column</button>
@@ -34,7 +34,7 @@
     <button class="header-context-menu-item" cdkMenuItem (click)="copyRowContent(data.row, data.rowData)">Copy Row As JSON</button>
     <button class="header-context-menu-item" cdkMenuItem (click)="minimizeCol(data.col)">Minimize Column</button>
   </div>
-</ng-template>
+</ng-template>-->
 <div class="column-picker-button">
   <button mat-raised-button 
     matTooltip="Choose Columns.." 
@@ -53,14 +53,11 @@
 </mat-menu>
 <!--<button (click)="resetCellSizes()"> reset row cell sizes</button>
 <button (click)="getCellSizes()">get row cell sizes</button>-->
-
 <table class="data-table" [style]="gridStyle">
     <thead>
       <tr style="order: 0" (mousemove)="onHeaderMouseMove($event)">
         <ng-container *ngFor="let col of this.selectableColumns | keyvalue; let i = index">
           <th 
-            [cdkContextMenuTriggerFor]="sz_dt_header_context_menu"
-            [cdkContextMenuTriggerData]="{$implicit: col}"
             [class]="'sz-dt-column '+cellClass(col.key, 'sz-dt-header','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
             [class.sorted]="isSortedBy(col.key)" 
             [class.sorted-asc]="sortDirection === 'ASC'" 
@@ -98,10 +95,8 @@
               [attr.data-cell-height]="getCellHeight(cellRef)"
               [attr.data-content-height]="getContentHeight(cellRef)"
               [attr.data-cached-content-height]="getCachedContentHeight(cellRef)"
-              [cdkContextMenuTriggerFor]="sz_dt_cell_context_menu"
-              [cdkContextMenuTriggerData]="{$implicit: {cell: cellRef, row: rowRef, col: col, cellData: row[col.key], rowData: row}}"
               (click)="onCellClick(col.key, row[col.key], $event, cellRef)">
-              <div class="cell-content" [innerHTML]="cellValue(row[col.key], col.key)"></div>
+              <div class="cell-content" [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
               <svg xmlns="http://www.w3.org/2000/svg" 
                 height="24" 
                 viewBox="0 -960 960 960" 

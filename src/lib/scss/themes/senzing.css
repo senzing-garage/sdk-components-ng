@@ -7,6 +7,7 @@ body {
   --sz-color-possible-matches: #C9741F;
   --sz-color-disclosed: #2B7169;
   --sz-color-ambiguous: #7b00ad;
+  --sz-color-dialog-header: #b3b3b3;
   --sz-search-button-submit-color: #FFFFFF;
   --sz-search-button-clear-color: #FFFFFF;
   --sz-search-button-submit-font-size: 10px;
@@ -193,4 +194,8 @@ body {
   /* charts */
     /* record stats donut */
     --sz-donut-chart-graph-align-items: center;
+  /* sample data table */
+  --sz-sample-table-spinner-background: rgba(68, 68, 68, 0.288); 
+  --sz-sample-table-spinner-height: calc(99vh - 120px);
+  --sz-sample-table-spinner-width: calc(99vw - 10px);
 }

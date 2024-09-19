@@ -224,3 +224,10 @@ export function isValueTypeOfArray(value: any) {
   }
   return retVal;
 }
+
+export function interpolateTemplate(template, args)  {
+  return Object.entries(args).reduce(
+      (result, [arg, val]) => result.replace(`$\{${arg}}`, `${val}`),
+      template,
+  )
+}

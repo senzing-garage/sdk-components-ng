@@ -1,4 +1,102 @@
 
 :host {
     display: block;
+
+    .show-all-columns {
+        user-select: none;
+        cursor: pointer;
+    }
+
+    .report-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: 0 0 10px;
+        position: relative;
+        top: 27px;
+        z-index: 20;
+        width: calc(100% - 350px);
+
+        mat-slide-toggle.show-all-columns {
+            margin-left: 20px;
+        }
+        .title {
+            margin: 0;
+            color: #3a3a3a;
+            font-size: 18px;
+            font-weight: 700;
+        }
+    }
+
+    .sz-css-heading {
+        display: none;
+
+        &.expanded {
+            display: block;
+        }
+    }
+
+    .spinner-container {
+        display: none;
+        justify-content: space-around;
+        align-items: center;
+        /*height: calc(99vh - 120px);*/
+        height: var(--sz-sample-table-spinner-height);
+        position: absolute;
+        top: 27px;
+        width: calc(99vw - 10px);
+        background: var(--sz-sample-table-spinner-background);
+    }
+
+    .data-table-container {
+        display: block;
+        position: relative;
+        /*&.loading {
+            .spinner-container {
+                display: block;
+            }
+        }*/
+    }
+
+    &.loading.show-table-loading-indicator {
+        .spinner-container {
+            display: flex;
+        }
+        sz-cross-source-results {
+            opacity: 0;
+        }
+    }
+
+    &.expanded {
+        .sz-css-heading {
+            display: block;
+        }
+        &.loading.show-table-loading-indicator {
+            .data-table-container .spinner-container {
+                height: calc(var(--sz-sample-table-spinner-height) - 200px);
+            }
+        }
+    }
+
+    sz-cross-source-summary {
+        min-height: 196px;
+    }
+
+    sz-cross-source-results {
+        width: 100%;
+        height: 100%;
+        display: block;
+        opacity: 1;
+    }
+
+    @keyframes spinner-rotate {
+        0%   {transform: rotate(0deg)}
+        100%   {transform: rotate(360deg)}
+    }
+
+    @keyframes spinner-prixClipFix {
+          0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+          50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+          75%, 100%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+    }
 }

@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { SenzingSdkModule, SzRestConfiguration  } from '@senzing/sdk-components-ng';
 import { AppComponent } from './app.component';
 import { SzExamplesHeader } from '../common/header.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MockTestDataInterceptor } from 'src/lib/interceptors/mock-test-data.interceptor.service';
 
 /**
 * Pull in api configuration(SzRestConfigurationParameters)
@@ -38,7 +40,13 @@ export function SzRestConfigurationFactory() {
     ReactiveFormsModule,
     SenzingSdkModule.forRoot( SzRestConfigurationFactory )
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MockTestDataInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

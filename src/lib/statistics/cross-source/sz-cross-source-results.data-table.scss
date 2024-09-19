@@ -1,0 +1,1048 @@
+:host {
+
+    * {
+        box-sizing: border-box;
+    }
+    &.sample-type-ambiguous-matches {
+        --sz-sample-dt-primary-color: var(--sz-color-ambiguous);
+        .data-table th {
+            background-color: var(--sz-color-ambiguous);
+        }
+    }
+    &.sample-type-matches {
+        --sz-sample-dt-primary-color: var(--sz-color-matches);
+        .data-table th {
+            background-color: var(--sz-color-matches);
+        }
+
+        .data-table tbody.row-group .row-entity-record .sz-dt-match-key-cell .cell-content {
+            display: block !important;
+        }
+        /*.data-table tbody.row-group .sz-dt-entity-id-cell {
+            grid-template-rows: 27px auto;
+        }*/
+    }
+    &.sample-type-possible-matches {
+        --sz-sample-dt-primary-color: var(--sz-color-possible-matches);
+        .data-table th {
+            background-color: var(--sz-color-possible-matches);
+        }
+    }
+    &.sample-type-possible-relations {
+        --sz-sample-dt-primary-color: var(--sz-color-possibly-related);
+        .data-table th {
+            background-color: var(--sz-color-possibly-related);
+        }
+    }
+    &.sample-type-disclosed-relations {
+        --sz-sample-dt-primary-color: var(--sz-color-disclosed);
+        .data-table th {
+            background-color: var(--sz-color-disclosed);
+        }
+    }
+
+    // override any collapsed or hidden columns
+    &.show-all-columns {
+        .data-table {
+            th.empty-column {
+                padding: 5px 22px 4px 14px;
+                .col-name-text {
+                    display: inline-block;
+                    text-overflow: ellipsis;
+                    width: 100%;
+                    overflow: hidden;
+                }
+                .no-data-icon-wrapper {
+                    margin-top: unset;
+                    position: absolute;
+                    right: 2px;
+                    top: 1px;
+                }
+            }
+        }
+    }
+
+    .resize-indicator {
+        display: none;
+        position: absolute;
+        left: 0px;
+        top: 27px;
+        width: 1px;
+        height: 100vh;
+        z-index: 1000;
+        border-left: 2px dotted #0000003f;
+    }
+
+    &.column-resizing {
+        .resize-indicator {
+            display: block;
+        }
+    }
+
+    &.loading .data-table tbody td {
+        opacity: .2;
+    }
+
+    .data-table {
+        display: grid;
+        border-collapse: collapse;
+        min-width: 100%;
+        /*column-gap: 2px;*/
+        font-size: 12px;
+        cursor: default;
+
+        /* because we are only setting border-top on 
+            * every row we need to add a bottom border to the 
+            * table itself
+        */
+        border-bottom: 1px solid #cfcfcf;
+
+        thead,
+        tbody,
+        tr {
+            display: contents;
+        }
+        
+        th,
+        td {
+            padding: 5px 14px 4px 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            &.hidden {
+                display: none;
+            }
+            &.no-cell {
+                display: none;
+            }
+        }
+        
+        th {
+            position: sticky;
+            top: 0;
+            background: #6c7ae0;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 14px;
+            padding: 5px 14px 6px;
+            color: #fff;
+            min-width: 100px;
+            -webkit-user-select: none;
+            user-select: none;
+            border-right: 1px solid #666;
+            z-index: 5;
+            filter: drop-shadow(1px 4px 3px rgba(0,0,0,.3));
+            border-bottom: 1px solid #666;
+
+            &.empty-column {
+                -webkit-user-select: auto;
+                user-select: auto;
+                width: unset !important;
+                overflow: visible; /* we only want the tooltips to show outside of the header  when col empty */
+
+                &.expanded {
+                    width: unset;
+                    padding: 5px 22px 4px 14px;
+                    .col-name-text {
+                        display: inline-block !important;
+                        width: 100%;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    .no-data-icon-wrapper {
+                        margin-top: unset;
+                        position: absolute;
+                        right: 2px;
+                        top: 1px;
+                    }
+                }
+            }
+
+            .icon-sort {
+                position: absolute;
+                right: 5px;
+                display: none !important;
+                cursor: pointer;
+            }
+            .icon-filter {
+                position: absolute;
+                right: 5px;
+                display: none;
+                cursor: pointer;
+            }
+            .handle-resize {
+                width: 2px;
+                background-color: #ffffff59;
+                cursor: ew-resize;
+                display: block;
+                position: absolute;
+                right: 0px;
+                top: 0px;
+                height: 100%;
+            }
+            &.is-dragging {
+                background-color: #c0c0c0;
+                .handle-resize {
+                    background-color: #000;
+                    right: unset;
+                }
+            }
+
+            &:hover {
+                .icon-sort {
+                    &.ascending {
+                        display: inline-block;
+                    }
+                }
+                .icon-filter {
+                    display: inline-block;
+                }
+            }
+
+            /* don't show icon for sort option already selected */
+            &.sorted {
+                &.sorted-asc {
+                    .icon-sort.ascending {
+                        display: inline-block;
+                    }
+                    &:hover {
+                        .icon-sort.ascending {
+                            display: none;
+                        }
+                        .icon-sort.descending {
+                            display: inline-block;
+                        }
+                    }
+                }
+                &.sorted-desc {
+                    .icon-sort.descending {
+                        display: inline-block;
+                    }
+                    &:hover {
+                        .icon-sort.descending {
+                            display: none;
+                        }
+                        .icon-sort.ascending {
+                            display: inline-block;
+                        }
+                    }
+                }
+            }
+            .no-data-icon-wrapper {
+                display: none;
+                position: relative;
+                width: 18px;
+                height: 18px;
+                top: 1px;
+            }
+            .no-data-icon {
+                padding: 0;
+                --mdc-icon-button-state-layer-size: 14px;
+                width: 18px;
+                height: 18px;
+                line-height: 18px;
+                margin-top: calc(50% - 6px);
+
+                mat-icon {
+                    font-size: 18px;
+                    line-height: 18px;
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+
+            &[data-col-value-count="0"] {
+                width: 20px;
+                padding: 0;
+                min-width: unset;
+                span.col-name-text {
+                    display: none;
+                }
+                .no-data-icon-wrapper {
+                    display: inline-block;
+                }
+            }
+        }
+        
+        th:last-child {
+            border: 0;
+        }
+        
+        td {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            color: var(--sz-sample-table-cell-color);
+        }
+        
+        tbody {
+            .row-record:nth-child(even of .data-source-selected) td {
+                /*background-color: #f2f2f2;*/
+            }
+
+            .row-no-data {
+                border: 2px solid green;
+                font-size: 20px;
+
+                .sz-dt-no-data-cell {
+                    grid-column: span var(--column-count);
+                    min-height: 30vh;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-weight: bold;
+                    letter-spacing: 0.1em;
+                }
+            }
+
+            &.row-group {
+                border: 1px solid rgb(104, 104, 104);
+
+                /* by default hide all entity id cells */
+                .sz-dt-entity-id-cell {
+                    display: none;
+                }
+                /* by default hide all "relatedEntityId" content cells */
+                .sz-dt-related-entity-id-cell  .cell-content {
+                    display: none;
+                }
+
+                .row-related-record {
+                    .sz-dt-entity-id-cell .cell-content,
+                    .sz-dt-match-key-cell .cell-content {
+                        display: none;
+                    }
+                }
+                /* for entity records on everything EXCEPT for "Matches" we don't want to show these */
+                .row-entity-record .sz-dt-match-key-cell .cell-content {
+                    display: none;
+                }
+
+                /**
+                Sometimes the very first visible row is not the same thing as the first row
+                in the DOM. Hence the Fancy selectors for "first-instance-of-this-class"
+                */
+                :nth-child(1 of .data-source-selected) {
+                    border: 1px solid orange;
+
+                    .sz-dt-entity-id-cell {
+                        grid-row: span var(--selected-datasources-entity-row-count);
+                        display: grid;
+                        grid-template-rows: 27px auto;
+                    }
+                    td {
+                        border-top: 2px solid #666;
+                    }
+                }
+
+                :nth-child(1 of .row-related-record.data-source-selected) {
+                    border: 1px solid green;
+                    
+                    .sz-dt-entity-id-cell {
+                        grid-row: span var(--selected-datasources-related-row-count);
+                        display: block;
+                    }
+                    /* show the content only in the very first visible cell */
+                    .sz-dt-related-entity-id-cell  .cell-content,
+                    .sz-dt-match-key-cell .cell-content {
+                        display: block;
+                    }
+                    td {
+                        border-top: 1px dotted #313131;;
+                    }
+                }
+                &.expanded {
+                    /* first unset the row-span(s) for "first row in selected datasources"*/
+                    :nth-child(1 of .data-source-selected),
+                    :nth-child(1 of .row-related-record.data-source-selected) {
+                        .sz-dt-entity-id-cell { 
+                            /* by default hide all the "entityId" cells (we'll enable just the first one below) */
+                            grid-row: unset; 
+                            display: none;
+                        }
+                        .sz-dt-related-entity-id-cell .cell-content,
+                        .sz-dt-match-key-cell .cell-content {
+                            display: none;
+                        }
+                    }
+                    :nth-child(1 of .row-related-record.data-source-selected) td { 
+                        border-top: none;
+                    }
+                    .row-record .sz-dt-entity-id-cell {
+                        display: none;
+                    }
+                    /* by default hide all "relatedEntityId" content elements (well enable just the fist one below */
+                    /*
+                    .row-record .sz-dt-related-entity-id-cell {
+                        .cell-content {
+                            display: none;
+                        }
+                    }*/
+
+                    /* since everything should be visible now just apply the rowspan to the 
+                    first row entity id cell*/
+                    .row-record:first-child {
+                        .sz-dt-entity-id-cell {
+                            grid-row: span var(--entity-row-count);
+                            display: grid !important;
+                            grid-template-rows: 27px auto;
+                        }
+                    }
+                    :nth-child(1 of .row-related-record) { 
+                        // the first related record row gets a dotted line separating it from 
+                        // the entity records
+                        td {
+                            border-top: 1px dotted #313131 !important;
+                        }
+                        /* now show the "relatedEntityId" content for just the first row */
+                        .sz-dt-related-entity-id-cell .cell-content, 
+                        .sz-dt-match-key-cell .cell-content {
+                            display: block !important;
+                        }
+
+                        /* now apply the related rows count to the rowspan for the first related row's
+                        * related record entity id cell */
+                        .sz-dt-entity-id-cell {
+                            grid-row: span var(--related-row-count) !important;
+                            display: grid !important;
+                        }
+                    }
+                }
+
+                .sz-dt-entity-id-cell {
+                    .cell-content {
+                        /*color: var(--sz-sample-dt-primary-color);*/
+                        color: var(--sz-sample-table-cell-link-color);
+                        font-size: var(--sz-sample-table-cell-link-font-size);
+                        font-weight: var(--sz-sample-table-cell-link-font-weight);
+                        align-items: var(--sz-sample-table-cell-link-text-align);
+                        text-align: var(--sz-sample-table-cell-link-text-align);
+                        text-decoration: var(--sz-sample-table-cell-link-text-decoration);
+                        
+                        &:hover {
+                            cursor: pointer;
+                        }
+                    }
+
+                    .more-button {
+                        font-size: 10px;
+                        height: 22px;
+                        padding: 2px 5px 2px 8px;
+                        /*background-color: var(--sz-sample-dt-primary-color);*/
+                        /*background-color: var(--sz-sample-table-expanded-row-background-color);*/
+                        background-color: var(--sz-sample-table-expand-button-background-color);
+                        color: var(--sz-sample-table-expand-button-color);
+                        margin-top: 5px;
+                        line-height: 18px;
+                        mat-icon {
+                            margin-right: 0;
+                            margin-top: 1px;
+                            font-size: 14px;
+                            line-height: 14px;
+                            opacity: 0.6;
+                            width: 14px;
+                            height: 14px;
+                        }
+                    }
+                    .more-button.collapsed  { display: block; }
+                    .more-button.expanded   { 
+                        display: none; 
+                        background-color:   var(--sz-sample-table-expanded-row-expand-button-background-color);
+                        border-color:       var(--sz-sample-table-expanded-row-expand-button-border-color);
+                        color:              var(--sz-sample-table-expanded-row-expand-button-color);
+                        
+                        mat-icon {
+                            opacity: 1;
+                        }
+                    }
+                }
+
+                :nth-child(1 of .row-entity-record.data-source-selected) {
+                    /* we want the entity id cell to span all children row cells 
+                    the variables '--selected-datasources-row-count' and '--total-row-count'
+                    are defined on the scope of each .row-group through the style tag
+                    */
+                    .sz-dt-entity-id-cell {
+                        /*grid-row: span var(--selected-datasources-entity-row-count);*/
+                        max-height: unset;
+                        border-bottom: none;
+                        /*.cell-content {
+                            font-size: 16px;
+                            font-weight: bold;
+                            align-items: center;
+                            text-align: center;
+                            
+                            &:hover {
+                                text-decoration: underline;
+                                cursor: pointer;
+                            }
+                        }*/
+                    }
+                }
+                :nth-child(1 of .row-related-record.data-source-selected) { 
+                    .sz-dt-entity-id-cell {
+                        /*grid-row: span var(--selected-datasources-related-row-count);*/
+                        overflow: visible;
+
+                        .cell-content {
+                            display: none;
+                        }
+
+                        /* when the more button is in the lower cell we want to straddle the line */
+                        .more-button {
+                            position: absolute;
+                            top: -13px;
+                            margin-top: 0px;
+                        }
+                    }
+                }
+                &.has-expanded-data .row-related-entity .sz-dt-entity-id-cell {
+                    padding-top: 20px;
+                }
+                .row-record.data-source-not-selected {
+                    display: none;
+                    td {
+                        background-color: var(--sz-sample-table-expanded-row-background-color);
+                    }
+                }
+                /* we never want the first "entityId" cell to be blue 
+                * (which can happen if the very first record row is not in the selected 
+                * datasources)*/
+                .row-record {
+                    &.row-entity .sz-dt-entity-id-cell,
+                    &.row-entity-record .sz-dt-entity-id-cell {
+                        background-color: var(--sz-sample-table-entity-row-background-color) !important;
+                    }
+                    &.row-related-entity .sz-dt-entity-id-cell,
+                    &.row-related-record .sz-dt-entity-id-cell {
+                        background-color: var(--sz-sample-table-related-row-background-color) !important;
+                    }
+                }
+                &.expanded {
+                    :nth-child(1 of .data-source-selected) { 
+                        border-top: none;
+                        td {
+                            border-top: none;
+                        }
+                    }
+                    tr:first-child td {
+                        border-top: 2px solid #666 !important;
+                        .sz-dt-entity-id-cell {
+                            /*grid-row: span var(--selected-datasources-entity-row-count);*/
+                            max-height: unset;
+                            border-bottom: none;
+                            .cell-content {
+                                /*color: var(--sz-sample-dt-primary-color);*/
+                                color: var(--sz-sample-table-cell-link-color);
+                                font-size: var(--sz-sample-table-cell-link-font-size);
+                                font-weight: var(--sz-sample-table-cell-link-font-weight);
+                                align-items: var(--sz-sample-table-cell-link-text-align);
+                                text-align: var(--sz-sample-table-cell-link-text-align);
+                                text-decoration: var(--sz-sample-table-cell-link-text-decoration);
+                                
+                                &:hover {
+                                    text-decoration: underline;
+                                    cursor: pointer;
+                                }
+                            }
+
+                        }
+                    }
+                    .row-record:nth-child(even) td {
+                        /*background-color: #f2f2f2;*/
+                    }
+                    .row-record.data-source-not-selected td {
+                        background-color: var(--sz-sample-table-expanded-row-background-color);
+                    }
+                    /*
+                    .row-entity-record.first .sz-dt-entity-id-cell {
+                        grid-row: span var(--entity-row-count);
+                        border-bottom: none;
+                    }
+                    .row-related-record.first .sz-dt-entity-id-cell {
+                        grid-row: span var(--related-row-count);
+                        
+                    }*/
+                    /* swap "more" button to "less" button */
+
+                    .row-entity, .row-entity-record,
+                    .row-related-entity, .row-related-record {
+                        .sz-dt-entity-id-cell {
+                            .more-button.collapsed  { display: none;  }
+                            .more-button.expanded   { display: block; }
+                        }
+                    }
+                    .row-record.data-source-not-selected {
+                        display: contents;
+                    }
+                    :nth-child(1 of .row-related-record) {
+                        .sz-dt-entity-id-cell {
+                            overflow: visible;
+                            /* when the more button is in the lower cell we want to straddle the line */
+                            .more-button {
+                                position: absolute;
+                                top: -13px;
+                                margin-top: 0px;
+                            }
+                        }
+                        // hide
+                    }
+
+                }
+                &:nth-of-type(1) tr {
+                    &:first-child {
+                        td {
+                            margin-top: 0 !important;
+                            border-top: 0 !important;
+                        }
+                    }
+                }
+            }
+            
+            /*tr:nth-child(even) td {
+                background: #f8f6ff;
+                .min-max-toggle {
+                    background-color: #f8f6ff;
+                }
+            }*/
+            /* because display='contents' we cant just add a row-grap or margin 
+             * on the row itself
+            */
+            tr {
+                td {
+                    /*margin-bottom: 2px;*/
+                    border-right: 2px solid #fff;
+                    border-top: 2px solid #fff;
+                    &:last-child {
+                        border-right: none;
+                    }
+                }
+                &:first-child, &:last-child {
+                    td {
+                        margin-bottom: 0;
+                    }
+                }
+
+                /*&:first-child {
+                    td {
+                        border-top: 2px solid #666;
+                    }
+                }*/               
+            }
+
+            td {
+                position: relative;
+                
+                .min-max-toggle {
+                    display: none;
+                    background-color: #fff;
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                    fill: #808080;
+                    cursor: pointer;
+                }
+                &.empty-column {
+                    min-width: unset;
+                    width: unset;
+                    padding: 0;
+                }
+            }
+            td.expandable {
+                &.expanded {
+                    max-height: unset;
+                }
+                /* hide everything after first row */
+                /*.cell-content {
+                    div {
+                        visibility: hidden;
+                        &:first-child {
+                            visibility: visible;
+                        }
+                    }
+                }*/
+                
+                &:hover {
+                    .min-max-toggle { 
+                        display: block;
+                    }
+                }
+            }
+        }
+
+
+        .sz-dt-related-entity-id-cell {
+            .cell-content {
+                color: var(--sz-sample-table-cell-link-color);
+                font-size: var(--sz-sample-table-cell-link-font-size);
+                font-weight: var(--sz-sample-table-cell-link-font-weight);
+                align-items: var(--sz-sample-table-cell-link-text-align);
+                text-align: var(--sz-sample-table-cell-link-text-align);
+                text-decoration: var(--sz-sample-table-cell-link-text-decoration);
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+        /* hide the entity id value in related entity row */
+        .row-related-entity .sz-dt-entity-id-cell .cell-content {
+            display: none;
+        }
+        .row-entity-record {
+            td {
+                background-color: var(--sz-sample-table-entity-row-background-color);
+            }
+            &:last-of-type {
+                td {
+                    border-bottom: none !important;
+                }
+            }
+            &.first {
+                td {
+                    border-top: 2px solid #636363;
+                    /*border-bottom: 1px dotted #636363;*/
+                }
+            }
+        }
+        .row-related-entity {
+            td {
+                border-top: 1px solid #636363;
+                background-color: var(--sz-sample-table-related-row-background-color);
+            }
+        }
+        .row-related-record {
+            td {
+                background-color: var(--sz-sample-table-related-row-background-color);
+            }
+            &.first {
+                td {
+                    border-top: 1px dotted #212121;
+                }
+            }
+            &:last-child td {
+                border-bottom: none;
+            }
+        }
+        .row-record, .row-related-record {
+            &.data-source-not-selected {
+                td {
+                    background-color: var(--sz-sample-table-expanded-row-background-color);
+                }
+            }
+        }
+    }
+    /* coloring specific to types of tables */
+    &.sample-type-ambiguous-matches,
+    &.sample-type-possible-matches,
+    &.sample-type-possible-relations,
+    &.sample-type-disclosed-relations {
+        .data-table {
+            .row-entity, .row-record {
+                td {
+                    background-color: var(--sz-sample-table-entity-row-background-color);
+                }
+            }
+            .row-related-entity, .row-related-record {
+                td {
+                    background-color: var(--sz-sample-table-related-row-background-color);
+                }
+            }
+        }
+    }
+
+    .control-ribbon {
+        position: relative;
+        display: inline-flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        top: -5px;
+        float: right;
+
+        .control-ribbon-buttons {
+            position: relative;
+            display: inline-flex;
+            flex-direction: row;
+            height: 20px;
+            margin-left: 10px;
+            
+            button {
+                display: flex;
+                align-items: center;
+                border: 1px solid #666;
+                padding: 0 5px;
+                min-width: 25px;
+                line-height: 20px;
+                height: 20px;
+                color: #666;
+                cursor: pointer;
+                border-left: 0;
+    
+                .mdc-button__label {
+                    height: 20px;
+                }
+            }
+            button:first-child {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 10px;
+                border-top-left-radius: 10px;
+                border-left: 1px solid;
+                padding: 0 6px 0 11px;
+            }
+            button:last-child {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 10px;
+                border-top-right-radius: 10px;
+                padding: 0 8px 0 5px;
+            }
+        }
+        .sz-mat-menu {
+            right: 56px;
+            top: 0px;
+            position: absolute;
+            filter: drop-shadow(0px 8px 5px rgba(0, 0, 0, 0.3));
+
+            .sz-mat-menu-item {
+                position: relative;
+                border-bottom: 0;
+                border-top: 1px solid #666;
+                border-left: 1px solid #666;
+                border-right: 1px solid #666;
+                /*background-color: var(--sz-sample-table-related-row-background-color);*/
+                background-color: #fafafa;
+                cursor: pointer;
+                padding: 0 10px 0 24px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                font-size: 11px;
+                text-transform: capitalize;
+                height: 19px;
+                line-height: 19px;
+                color: #666;
+                white-space: nowrap;
+
+                input {
+                    position: absolute;
+                    opacity: 0;
+                    height: 0;
+                    width: 0;
+                    cursor: pointer;
+
+                    /* When the checkbox is checked, add a blue background */
+                    &:checked ~ .checkmark {
+                        /*background-color: #2196F3;
+                        border-color: #2196F3;*/
+                        /* Show the checkmark when checked */
+                        &:after {
+                            display: block;
+                        }
+                    }
+                }
+
+                .checkmark {
+                    position: absolute;
+                    left: 7px;
+                    top: 4px;
+                    height: 12px;
+                    width: 12px;
+                    /*background-color: #ddd;
+                    border: 1px solid #666;*/
+                    
+                    /* Create the checkmark/indicator (hidden when not checked) */
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        display: none;
+                        left: 3px;
+                        top: -3px;
+                        width: 4px;
+                        height: 9px;
+                        border: solid #808080;
+                        border-width: 0 2px 2px 0;
+                        -webkit-transform: rotate(45deg);
+                        -ms-transform: rotate(45deg);
+                        transform: rotate(45deg);
+                    }
+                }
+
+                &:hover:not([disabled]), &[aria-expanded=true] {
+                    background-color: #ddf4ff;
+                }
+
+                &:first-child {
+                    border-top: 1px solid #666;
+                    border-top-left-radius: 4px;
+                    border-top-right-radius: 0;
+                }
+                &:last-child {
+                    border-bottom: 1px solid #636363;
+                    border-bottom-left-radius: 4px;
+                    border-bottom-right-radius: 4px;
+                }
+            }
+        }
+        .has-tooltip .tooltiptext {
+            top: 0px;
+            right: 40px;
+            width: unset;
+            padding: 8px 15px;
+            white-space: nowrap;
+        }
+    }
+
+    /* column picker */
+    .column-picker {
+        position: relative;
+        display: inline-block;
+        .right {
+            right: 0px;
+            position: relative;
+        }
+        
+    }
+
+    /* settings picker */
+    /*
+    button.settings-icon-picker-button {
+        position: relative;
+        right: 0px;
+
+        border: 1px solid #666;
+    }*/
+
+    /* tooltips */
+    .has-tooltip {
+        .tooltiptext {
+            display: inline-block;
+            position: absolute;
+            top: 2px;
+            right: 30px;
+            visibility: hidden;
+            opacity: 0;
+            width: 220px;
+            background-color: #3b3b3b;
+            color: #fff;
+            text-align: center;
+            padding: 8px 14px 10px 9px;
+            border-radius: 4px;
+            font-size: 10px;
+            white-space: break-spaces;
+            transition: opacity 0.2s ease-out 0.4s;
+            filter: drop-shadow(5px 8px 5px rgba(0, 0, 0, 0.3));
+
+
+            /* Position the tooltip text - see examples below! */
+            position: absolute;
+            z-index: 7;
+
+            &:not(.no-nubbin):before {
+                content: "";
+                position: absolute;
+                top: 9px;
+                right: -15px;
+                height: 20px;
+                width: 20px;
+                background: #3b3b3b;
+                box-sizing: border-box;
+                transform: rotate(34deg) translate(-50%);
+                border-top: inherit;
+                border-right: inherit;
+                box-shadow: inherit;
+                z-index: 6;
+            }
+        }
+        &:hover .tooltiptext {
+            visibility: visible;
+            display: inline-block;
+            opacity: 1;
+        }
+    }
+
+    /* icons */
+    .mdi--sort-descending {
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M19 7h3l-4-4l-4 4h3v14h2M2 17h10v2H2M6 5v2H2V5m0 6h7v2H2z'/%3E%3C/svg%3E");
+        background-color: currentColor;
+        -webkit-mask-image: var(--svg);
+        mask-image: var(--svg);
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+    }
+    .mdi--sort-ascending {
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M19 17h3l-4 4l-4-4h3V3h2M2 17h10v2H2M6 5v2H2V5m0 6h7v2H2z'/%3E%3C/svg%3E");
+        background-color: currentColor;
+        -webkit-mask-image: var(--svg);
+        mask-image: var(--svg);
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+    }
+    .mdi--view-settings-outline {
+        display: inline-block;
+        width: 1.5em;
+        height: 1.5em;
+        font-size: 10px;
+        --svg: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="%23e8eaed"><g><path d="M0,0h24v24H0V0z" fill="none"/><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></g></svg>');
+        background-color: currentColor;
+        -webkit-mask-image: var(--svg);
+        mask-image: var(--svg);
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+    }
+    .mdi--view-column-outline {
+        display: inline-block;
+        width: 1.5em;
+        height: 1.5em;
+        font-size: 11px;
+        --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M4 5v13h17V5zm10 2v9h-3V7zM6 7h3v9H6zm13 9h-3V7h3z'/%3E%3C/svg%3E");
+        background-color: currentColor;
+        -webkit-mask-image: var(--svg);
+        mask-image: var(--svg);
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+      }
+      .mdi--filter {
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        --svg: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23e8eaed"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>');
+        background-color: currentColor;
+        -webkit-mask-image: var(--svg);
+        mask-image: var(--svg);
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+      }
+}
+
+.sz-dt-context-menu {
+  background-color: #fafafa;
+  padding: 4pt;
+  font-size: 10pt;
+  z-index: 1000;
+  box-shadow: 0 0 12pt rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  padding: 0.5em 0 0.5em 0;
+  animation: fadeIn 0.1s ease-out;
+  opacity:1.0;
+  display:block;
+}

@@ -884,7 +884,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
 
   /** helper method for retrieving list of datasources */
   public getDataSources() {
-    return this.dataSourcesService.listDataSources();
+    return this.dataSourcesService.listDataSources('sz-graph-filter.component');
   }
   /** if "showDataSources" array is specified, check that string name is present in list */
   public shouldDataSourceBeDisplayed( dsName: string) {

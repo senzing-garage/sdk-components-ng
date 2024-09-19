@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
-import { CdkMenuModule } from '@angular/cdk/menu';
+import { CdkMenuModule, CdkContextMenuTrigger } from '@angular/cdk/menu';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -28,12 +28,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [],
   imports: [ 
     CdkAccordionModule,
     CdkMenuModule,
+    CdkContextMenuTrigger,
     CdkTreeModule,
     DragDropModule, 
     MatBadgeModule, 
@@ -59,10 +61,12 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     MatToolbarModule, 
     MatTooltipModule, 
     MatTreeModule, 
-    NoopAnimationsModule],
+    NoopAnimationsModule,
+    OverlayModule],
   exports: [ 
     CdkAccordionModule,
     CdkMenuModule,
+    CdkContextMenuTrigger,
     CdkTreeModule,
     DragDropModule, 
     MatBadgeModule, 
@@ -88,7 +92,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     MatToolbarModule, 
     MatTooltipModule, 
     MatTreeModule, 
-    NoopAnimationsModule
+    NoopAnimationsModule,
+    OverlayModule
   ],
 })
 export class SzSdkMaterialModule { }
