@@ -294,20 +294,24 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
                 if(_a.candidateFeature && ((_a.inboundFeature && _a.inboundFeature.featureId !== _a.candidateFeature.featureId) || !_a.inboundFeature)) {
                   retVal += `${_a.candidateFeature.featureValue}`;
                 }
-                if(_a.score){
-                  retVal += ` (full: ${_a.score})`;
+                if(_a.score > -1){
+                  retVal += ` (${_a.score})`;
                   if(_a.inboundFeature && _a.candidateFeature && _a.inboundFeature.featureId !== _a.candidateFeature.featureId) {
                     retVal += '</div>'+le;
                   }
                 }
                 retVal += '</div>';
               } else if((a as SzEntityFeature) && (a as SzEntityFeature).primaryValue) {
-                // no scoring available
-                let f = (a as SzEntityFeature);
+                // no scoring available ?
+                let f   = (a as SzEntityFeature);
+                let _a  = (a as SzFeatureScore);
                 retVal += '<div class="line-text ws-nowrap">'+ f.primaryValue;
                 let stats = fBId && fBId.has(f.primaryId) ? fBId.get(f.primaryId).statistics : false;
                 if(stats && stats.entityCount) {
                   retVal += ` [${stats.entityCount}]`;
+                }
+                if(_a.score > -1 && _a.scoringBucket){
+                  retVal += ` (${_a.scoringBucket.toLowerCase()}: ${_a.score})`;
                 }
                 retVal += '</div>'+le;
               } else if((a as SzNonScoringRecordFeature).featureType === 'NS') {
@@ -376,6 +380,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
           if(data && data.forEach){
             data.forEach((_feature, i) => {
               let le = (i < data.length-1) ? '\n': '';
+              let isScoringFeature = (_feature as SzFeatureScore) && (_feature as SzFeatureScore).score > -1
               if((_feature as SzEntityFeature).primaryValue) {
                 // this is a entity feature, make sure we're not duplicating values
                 let f = (_feature as SzEntityFeature);
@@ -383,6 +388,9 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
                 retVal += f.primaryValue;
                 if(stats && stats.entityCount) {
                   retVal += ` [${stats.entityCount}]`;
+                }
+                if(isScoringFeature){
+                  retVal += ` (${(_feature as SzFeatureScore).score})`;
                 }
                 retVal += le;
               } else if((_feature as SzFeatureScore).candidateFeature) {
@@ -395,6 +403,9 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
                 if(stats && stats.entityCount) {
                   retVal += ` [${stats.entityCount}]`;
                 }
+                if(isScoringFeature){
+                  retVal += ` (${f.score})`;
+                }
                 retVal += '</span></div>'+le;
               } else if((_feature as SzCandidateKey).featureType) {
                 // candidate key
@@ -404,6 +415,9 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
                 retVal += f.featureValue;
                 if(stats && stats.entityCount) {
                   retVal += ` [${stats.entityCount}]`;
+                }
+                if(isScoringFeature){
+                  retVal += ` (${(_feature as SzFeatureScore).score})`;
                 }
                 retVal += '</div>'+ le;
               } else if(_feature) {
