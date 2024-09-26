@@ -206,7 +206,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
         // assume it's already cast correctly
         this._matchKeyTokenSelectionScope = (value as SzMatchKeyTokenFilterScope);
     }
-    console.log(`@senzing/sdk-components-ng/sz-graph-filter.matchKeyTokenSelectionScope(${value} | ${(this._matchKeyTokenSelectionScope as unknown as string)})`, this._matchKeyTokenSelectionScope);
+    //console.log(`@senzing/sdk-components-ng/sz-graph-filter.matchKeyTokenSelectionScope(${value} | ${(this._matchKeyTokenSelectionScope as unknown as string)})`, this._matchKeyTokenSelectionScope);
   }
   /**
    * get the value of match key token filterings scope. possible values are 
@@ -225,7 +225,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   private _showCoreMatchKeyTokenChips: boolean       = false;
   @Input() public set showCoreMatchKeyTokenChips(value: boolean) {
     this._showCoreMatchKeyTokenChips = value;
-    console.log(`@senzing/sdk-components-ng/sz-graph-filter.showCoreMatchKeyTokenChips(${value})`, this._showCoreMatchKeyTokenChips);
+    //console.log(`@senzing/sdk-components-ng/sz-graph-filter.showCoreMatchKeyTokenChips(${value})`, this._showCoreMatchKeyTokenChips);
   }
   public get showCoreMatchKeyTokenChips(): boolean {
     return this._showCoreMatchKeyTokenChips;
@@ -582,19 +582,36 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   }
   /** handler for when a color value for a source in the "colorsByDataSourcesForm" has changed */
   onDsColorChange(dsValue: string, src?: any, evt?) {
+    // first check if color is 000 or fff
+    // if so this is a remove not an update
+    let _isRemoveOp = false;
+    //console.log(`changed color for "${dsValue}" to "${src.value}"`);
+    if(['#ffffff','#000000'].includes(src.value)) {
+      _isRemoveOp = true;
+    }
     // update color value in array
     if(this._dataSources) {
       let _dsIndex = this._dataSources.findIndex((dsVal: SzDataSourceComposite) => {
         return dsVal.name === dsValue;
       });
       if(_dsIndex && this._dataSources && this._dataSources[ _dsIndex ]) {
-        this._dataSources[ _dsIndex ].color = src.value;
+        if(_isRemoveOp) {
+          this._dataSources[ _dsIndex ].color = undefined;
+          //delete this._dataSources[ _dsIndex ].color;
+        } else {
+          this._dataSources[ _dsIndex ].color = src.value;
+        }
       }
     }
     // update color swatch bg color(for prettier boxes)
     if(src && src.style && src.style.setProperty){
-      src.style.setProperty('background-color', src.value);
+      if(_isRemoveOp) {
+        src.style.removeProperty('background-color');
+      } else {
+        src.style.setProperty('background-color', src.value);
+      }
     }
+
     // update colors pref
     if( this.prefs && this.prefs.graph) {
       // there is some sort of mem reference clone issue

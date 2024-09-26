@@ -225,6 +225,30 @@ export function isValueTypeOfArray(value: any) {
   return retVal;
 }
 
+/** are all values in one array present in the comparison array with no extra members 
+ * present in either.
+*/
+export function areArrayMembersEqual(value1: any[], value2: any[]) {
+  let _tempArr1ValsMap    = new Map( (value1 as unknown as string[]).map((val) => { return [val.toString(), val]; }));
+  let _tempAllValsMap     = new Map(_tempArr1ValsMap);
+  // add existing entityId's to hashmap
+  if(value2 && value2.forEach) {
+    value2.forEach((value) => {
+      _tempAllValsMap.set(value as string, value);
+    });
+    // now remove all entity id's that are identical to the values in input values
+    // if there is a remaining value then the id sets are different
+    if((value1 as unknown as string[]) && (value1 as unknown as string[]).forEach) {
+      (value1 as unknown as string[]).forEach((valStr) => {
+        if(_tempAllValsMap.has(valStr.toString())) { _tempAllValsMap.delete(valStr.toString()); }
+      });
+    }
+    
+  }
+  let noRemainder   = _tempAllValsMap.size <= 0;
+  return noRemainder;
+}
+
 export function interpolateTemplate(template, args)  {
   return Object.entries(args).reduce(
       (result, [arg, val]) => result.replace(`$\{${arg}}`, `${val}`),

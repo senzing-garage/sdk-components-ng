@@ -896,7 +896,8 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   /** proxy handler for when prefs have changed externally */
   private onPrefsChange(prefs: SzGraphPrefs) {
     //console.log('@senzing/sdk-components-ng/sz-graph-component.onPrefsChange(): ', prefs, this.prefs.graph.toJSONObject());
-    let queryParamChanged = false;
+    let queryParamChanged       = false;
+    let queryParametersChanged  = [];
     let _oldQueryParams = {maxDegrees: this.maxDegrees, maxEntities: this.maxEntities, buildOut: this.buildOut, unlimitedMaxEntities: this.unlimitedMaxEntities, unlimitedMaxScope: this.unlimitedMaxScope};
     let _newQueryParams = {maxDegrees: prefs.maxDegreesOfSeparation, maxEntities: prefs.maxEntities, buildOut: prefs.buildOut, unlimitedMaxEntities: prefs.unlimitedMaxEntities, unlimitedMaxScope: prefs.unlimitedMaxScope};
     if(
@@ -910,8 +911,23 @@ export class SzGraphComponent implements OnInit, OnDestroy {
           !this.unlimitedMaxEntities
         )
       ) ||
-      this.buildOut != prefs.buildOut
+      (this.buildOut != prefs.buildOut && !prefs.unlimitedMaxScope)
     ){
+      if(this.maxDegrees != prefs.maxDegreesOfSeparation) {
+        queryParametersChanged.push('maxDegrees');
+      }
+      if(this.maxEntities != prefs.maxEntities && ((this.unlimitedMaxEntities != prefs.unlimitedMaxEntities) || !this.unlimitedMaxEntities)) {
+        queryParametersChanged.push('maxEntities');
+      }
+      if(this.unlimitedMaxEntities != prefs.unlimitedMaxEntities) {
+        queryParametersChanged.push('unlimitedMaxEntities');
+      }
+      if(this.graphNetworkComponent && this.graphNetworkComponent.noMaxEntitiesLimit != prefs.unlimitedMaxEntities) {
+        queryParametersChanged.push('noMaxEntitiesLimit');
+      }
+      if(this.buildOut != prefs.buildOut && !prefs.unlimitedMaxScope) {
+        queryParametersChanged.push(`buildOut`);
+      }
       // only params that factor in to the API call
       // should trigger full redraw
       queryParamChanged = true;
@@ -947,21 +963,25 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       }
       if(prefs.dataSourceColors && prefs.dataSourceColors.sort) {
         let sorted = Array.from(prefs.dataSourceColors)
-        .filter((dsColorEntry: SzDataSourceComposite) => {
-          return dsColorEntry.color !== undefined;
-        })
         .sort((dsColorEntry1: SzDataSourceComposite, dsColorEntry2: SzDataSourceComposite) => {
           let retVal = dsColorEntry1.index > dsColorEntry2.index ? -1 : (dsColorEntry1.index < dsColorEntry2.index) ? 1 : 0 ;
           return retVal;
         })
         .forEach((dsColorEntry: SzDataSourceComposite) => {
-          this.graphContainerEle.nativeElement.style.setProperty(
-            `--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill`, 
-            dsColorEntry.color
-          );
-          //this.cssClassesService.setStyle(`.sz-node-ds-${dsColorEntry.name.toLowerCase()}`, "fill", dsColorEntry.color);
-          this.cssClassesService.setStyle(`body .sz-relationship-network-graph .sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon .sz-node-ds-${dsColorEntry.name.toLowerCase()}-fill`, "fill", `var(--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill)`);
-          this.cssClassesService.setStyle(`body .sz-relationship-network-graph .sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon .sz-graph-node-icon-fill`, "fill", `var(--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill)`);
+          if(dsColorEntry.color !== undefined) {
+            this.graphContainerEle.nativeElement.style.setProperty(
+              `--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill`, 
+              dsColorEntry.color
+            );
+            //this.cssClassesService.setStyle(`.sz-node-ds-${dsColorEntry.name.toLowerCase()}`, "fill", dsColorEntry.color);
+            this.cssClassesService.setStyle(`body .sz-relationship-network-graph .sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon .sz-node-ds-${dsColorEntry.name.toLowerCase()}-fill`, "fill", `var(--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill)`);
+            this.cssClassesService.setStyle(`body .sz-relationship-network-graph .sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon .sz-graph-node-icon-fill`, "fill", `var(--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill)`);  
+          } else {
+            // try removing value of variable so we can unset any previous values
+            this.graphContainerEle.nativeElement.style.removeProperty(`--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill`);
+            this.cssClassesService.removeStyle(`body .sz-relationship-network-graph .sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon .sz-node-ds-${dsColorEntry.name.toLowerCase()}-fill`, "fill");
+            this.cssClassesService.removeStyle(`body .sz-relationship-network-graph .sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon .sz-graph-node-icon-fill`, "fill");
+          }
         })
       }
     }
@@ -990,11 +1010,21 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     }
     if(this.graphNetworkComponent && queryParamChanged) {
       // update graph with new properties
-      this.graphNetworkComponent.maxDegrees           = this.maxDegrees;
-      this.graphNetworkComponent.maxEntities          = this.maxEntities;
-      this.graphNetworkComponent.buildOut             = this.buildOut;
-      this.graphNetworkComponent.noMaxEntitiesLimit   = this.unlimitedMaxEntities;
-      this.graphNetworkComponent.noMaxScopeLimit      = this.unlimitedMaxScope;
+      if(queryParametersChanged.includes('maxDegrees')){
+        this.graphNetworkComponent.maxDegrees           = this.maxDegrees;
+      }
+      if(queryParametersChanged.includes('maxEntities')){
+        this.graphNetworkComponent.maxEntities          = this.maxEntities;
+      }
+      if(queryParametersChanged.includes('buildOut')){
+        this.graphNetworkComponent.buildOut             = this.buildOut;
+      }
+      if(queryParametersChanged.includes('unlimitedMaxEntities')){
+        this.graphNetworkComponent.noMaxEntitiesLimit   = this.unlimitedMaxEntities;        
+      }
+      if(queryParametersChanged.includes('unlimitedMaxScope')){
+        this.graphNetworkComponent.noMaxScopeLimit      = this.unlimitedMaxScope;        
+      }
       if(this._graphComponentRendered){
         console.log('re-rendering graph');
         this.reload( this._graphIds );
@@ -1092,12 +1122,12 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     const _ret = this.entityNodecolorsByDataSource;
     if( this.queriedEntitiesColor && this.queriedEntitiesColor !== undefined && this.queriedEntitiesColor !== null){
       // add special color for active/primary nodes
-      _ret.push( {
+     /* _ret.push( {
         selectorFn: this.isEntityNodeInQuery.bind(this),
         modifierFn: this.setEntityNodeFillColor.bind(this, this.queriedEntitiesColor),
         selectorArgs: this.graphIds,
         modifierArgs: this.queriedEntitiesColor
-      } );
+      } );*/
     }
     return _ret;
   }

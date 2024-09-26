@@ -65,7 +65,7 @@ export class SzCSSClassService {
     this.headElement.appendChild(cssEle);
     return cssEle.sheet as CSSStyleSheet;
   }
-  /** dynamicall set/create a css class and it's values */
+  /** dynamically set/create a css class and it's values */
   public setStyle(selectorText: string, styleName: string, value: string): void {
     let rules: CSSRuleList = this.styleSheet.cssRules.length > 0 || this.styleSheet.rules.length == 0 ? this.styleSheet.cssRules : this.styleSheet.rules;
     let ruleIndex: number  = Array.from(rules).findIndex(r => r instanceof CSSStyleRule && r.selectorText.toLowerCase() == selectorText.toLowerCase());
@@ -78,8 +78,25 @@ export class SzCSSClassService {
       let newRuleIndex = this.styleSheet.insertRule(selectorText + `{ ${styleName}: ${value}}`, rules.length);
       return; 
     } else {
-      this.styleSheet.deleteRule(ruleIndex);
+      if(ruleIndex >= 0) { 
+        this.styleSheet.deleteRule(ruleIndex);
+      }
       this.styleSheet.insertRule(selectorText + `{ ${styleName}: ${value}}`, rules.length);
+    }
+  }
+  /** dynamically remove a css class by selector and  */
+  public removeStyle(selectorText: string, styleName?: string) {
+    if(!this.styleSheet){ return; }
+    let rules: CSSRuleList = this.styleSheet.cssRules.length > 0 || this.styleSheet.rules.length == 0 ? this.styleSheet.cssRules : this.styleSheet.rules;
+    let ruleIndex: number  = Array.from(rules).findIndex(r => r instanceof CSSStyleRule && r.selectorText.toLowerCase() == selectorText.toLowerCase());
+    if(ruleIndex >= 0){ 
+      //try{
+        if(!styleName) {
+          this.styleSheet.deleteRule(ruleIndex);
+        } else {
+          (this.styleSheet.cssRules[ruleIndex] as CSSStyleRule).style.removeProperty(styleName);
+        }
+      //} catch(err) {}
     }
   }
   /** dynamically set a css variable on the body element */

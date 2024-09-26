@@ -18,7 +18,7 @@ import {
 } from '@senzing/rest-api-client-ng';
 import { map, tap, first, takeUntil, take, filter } from 'rxjs/operators';
 import { Subject, Observable, BehaviorSubject, forkJoin } from 'rxjs';
-import { parseSzIdentifier, parseBool, isValueTypeOfArray } from '../../common/utils';
+import { parseSzIdentifier, parseBool, isValueTypeOfArray, areArrayMembersEqual } from '../../common/utils';
 import { SzNetworkGraphInputs, SzGraphTooltipEntityModel, SzGraphTooltipLinkModel, SzGraphNodeFilterPair, SzEntityNetworkMatchKeyTokens } from '../../../lib/models/graph';
 import { SzSearchService } from '../../services/sz-search.service';
 
@@ -426,12 +426,15 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       this._entityIds = [ value.toString() ];
     } else if(value && isValueTypeOfArray(value)) {
       // passed string[] or number[].
-      // we need to always convert to "string[]" or else the 
-      // result wont be what we expect
-      let _tempArr  = (value as unknown as string[]).map((val) => { return val.toString(); });
-      _changed      = this._entityIds != _tempArr;
-      this._entityIds = _tempArr;
-      //console.log(`entityIds = ${value}(any[]) | ${_changed}`, this._entityIds, value, (value as unknown as []));
+      _changed          = !areArrayMembersEqual((value as unknown as string[]), this._entityIds);
+      this._entityIds   = (value as unknown as string[]).map((val) => { return val.toString(); });
+
+      /*console.log(`entityIds = ${value}(any[]) | ${_changed} from "${_oldIds && _oldIds.join ? _oldIds.join(',') : ''}"`,
+        _oldIds, 
+        this._entityIds, 
+        new Map( (value as unknown as string[]).map((val) => { return [val.toString(), val]; })),
+        (value as unknown as [])
+      );*/
     } else if(value) {
       // unknown type of value
       // I guess we just.... guess??
@@ -444,7 +447,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       return this._focalEntities.indexOf(parseSzIdentifier(eId)) <= -1;
     }).map(parseSzIdentifier) : [];
     this._focalEntities = this._focalEntities.concat(uniqueEntityIds);
-    if(this.reloadOnIdChange && this._entityIds && this._entityIds.some( (eId) => { return _oldIds && _oldIds.indexOf(eId) < 0; })) {
+    if(this.reloadOnIdChange && _changed && this._entityIds && this._entityIds.some( (eId) => { return _oldIds && _oldIds.indexOf(eId) < 0; })) {
       this.reload( this._entityIds.map((eId) => { return parseInt(eId); }) );
     }
     //console.log('sdk-graph-components/sz-relationship-network.component: entityIds setter( '+_changed+' )', this._entityIds);
