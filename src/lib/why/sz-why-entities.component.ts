@@ -233,8 +233,8 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                         if(_scoreDetails.nameScoringDetails.surnameScore)     { _nameScoreValues.push(`sur:${_scoreDetails.nameScoringDetails.surnameScore}`);}
                         if(_scoreDetails.nameScoringDetails.generationScore)  { _nameScoreValues.push(`gen:${_scoreDetails.nameScoringDetails.generationScore}`);}
                         _retVal += (_nameScoreValues.length > 0 ? ` (${_nameScoreValues.join('|')})` : '');
-                    } else if(_scoreDetails && _scoreDetails.score) {
-                        _retVal += `(full:${_scoreDetails.score})`;
+                    } else if(_scoreDetails && _scoreDetails.score > -1) {
+                        _retVal += ` (${_scoreDetails.score})`;
                     }
                     if(['SAME','CLOSE','PLAUSIBLE'].indexOf(_scoreDetails.scoringBucket) > -1) {
                         _retVal += '</div>\n';
@@ -242,7 +242,19 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                     _retVal += '</div>\n';
                 } else {
                     valueAdded = featureValue;
-                    _retVal += '<div class="ws-nowrap line-text">'+ featureValue +'</div>\n';
+                    _retVal += '<div class="ws-nowrap line-text">'+ featureValue;
+                    if(_scoreDetails && _scoreDetails.nameScoringDetails) {
+                        let _nameScoreValues  = [];
+                        if(_scoreDetails.nameScoringDetails.fullNameScore)    { _nameScoreValues.push(`full:${_scoreDetails.nameScoringDetails.fullNameScore}`);}
+                        if(_scoreDetails.nameScoringDetails.orgNameScore)     { _nameScoreValues.push(`org:${_scoreDetails.nameScoringDetails.orgNameScore}`);}
+                        if(_scoreDetails.nameScoringDetails.givenNameScore)   { _nameScoreValues.push(`giv:${_scoreDetails.nameScoringDetails.givenNameScore}`);}
+                        if(_scoreDetails.nameScoringDetails.surnameScore)     { _nameScoreValues.push(`sur:${_scoreDetails.nameScoringDetails.surnameScore}`);}
+                        if(_scoreDetails.nameScoringDetails.generationScore)  { _nameScoreValues.push(`gen:${_scoreDetails.nameScoringDetails.generationScore}`);}
+                        _retVal += (_nameScoreValues.length > 0 ? ` (${_nameScoreValues.join('|')})` : '');
+                    } else if(_scoreDetails && _scoreDetails.score > -1) {
+                        _retVal += ' ('+ _scoreDetails.score +')';
+                    }
+                    _retVal += '</div>\n';
                 }
             }
             return [_retVal, valueAdded];
@@ -398,7 +410,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                                         if(_res[0] && !_retVal || _retVal === undefined) _retVal = '';
                                         if(_res[0]) _retVal += _res[0];
                                     });
-                                }else if(_feat.featureDetails && _feat.featureDetails.forEach){
+                                } else if(_feat.featureDetails && _feat.featureDetails.forEach){
                                     _feat.featureDetails.forEach((fd)=>{
                                         let _res = addFeatureToResult(fd, _scoreDetails, _feat.featureDetails, mk, fieldName, valuesAlreadyAdded);
                                         if(_res[1]) valuesAlreadyAdded.push(_res[1]);
