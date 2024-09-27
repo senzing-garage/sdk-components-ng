@@ -130,6 +130,12 @@ body {
       fill: var(--sz-graph-node-icon-color);
     }
 
+    &.sz-graph-primary-node {
+      .sz-graph-icon-enclosure {
+        fill: var(--sz-graph-primary-entity-color);
+      }
+    }
+
     &.graph-node-rel-primary {
       .sz-graph-node-icon-colored {
         fill: var(--sz-graph-node-icon-color);
