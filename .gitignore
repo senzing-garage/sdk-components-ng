@@ -37,6 +37,7 @@ sdk-components-ng.iml
 npm-debug.log
 yarn-error.log
 testem.log
+package-lock.old.json
 /typings
 *.old
 
