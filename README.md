@@ -40,7 +40,7 @@ Please see the installation instructions for each of these for how to install an
 
 If you're developing on Windows or macOS, you can make use of the [Senzing app](https://senzing.com/#download)
 to help populate an entity repository to test with.  It also gives you an easy way to load and browse data
-outside of the [Senzing REST API Sever](https://github.com/senzing-garage/senzing-api-server).  See the instructions
+outside of the [Senzing POC API Server](https://github.com/senzing-garage/senzing-poc-server).  See the instructions
 for using the [Senzing App Integration Scripts](https://github.com/senzing-garage/senzing-api-server/tree/master/app-scripts)
 to start the Senzing REST API Server using your existing projects in the Senzing app.
 
@@ -49,7 +49,7 @@ to start the Senzing REST API Server using your existing projects in the Senzing
 These components require an implementation of the [Senzing REST API](https://github.com/senzing-garage/senzing-rest-api-specification)
 to function.  You can use the [Senzing REST API Server](https://github.com/senzing-garage/senzing-api-server) as a default
 implementation in Java.  Follow [the instructions](https://github.com/senzing-garage/senzing-api-server) to check out and
-build the [Senzing REST API Sever](https://github.com/senzing-garage/senzing-api-server) from source or download a pre-built
+build the [Senzing POC API Server](https://github.com/senzing-garage/senzing-poc-server) from source or download a pre-built
 version when available.
 
 ### SDK Components
@@ -78,10 +78,10 @@ import {
 
 ### Quick Start
 
-**1)** Start up an instance of the [Senzing REST API Server](https://github.com/senzing-garage/senzing-api-server)
+**1)** Start up an instance of the [Senzing POC API Server](https://github.com/senzing-garage/senzing-poc-server)
 if not currently running.
 
-See the [README.md](https://github.com/senzing-garage/senzing-api-server) for instructions on how
+See the [README.md](https://github.com/senzing-garage/senzing-poc-server) for instructions on how
 to start the Senzing REST API Server on the command line or with Docker.
 
 **2)** Add the SenzingSDKModule to your angular app's app.module.ts
@@ -130,7 +130,7 @@ The result should be a list of service configuration parameters and values.
 
 **5)** Load the engine with data to resolve. The easiest way to do this currently is to load a CSV using the
 [Senzing app](https://senzing.com/#download).  This can also be done through the
-[Senzing REST API](https://github.com/senzing-garage/senzing-rest-api-specification) using the [Senzing REST API Server](https://github.com/senzing-garage/senzing-api-server).
+[Senzing REST API](https://github.com/senzing-garage/senzing-rest-api-specification) using the [Senzing POC API Server](https://github.com/senzing-garage/senzing-poc-server).
 
 **6)** Verify that the components are working properly. The easiest way to do this is to is to just implement a search box, and a result list. Copy the following to your app.component.html file
 
