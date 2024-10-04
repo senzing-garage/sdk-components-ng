@@ -12,10 +12,61 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">Senzing SDK Components</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">Senzing SDK Components</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -24,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -70,7 +121,7 @@
     </p>
     <p class="comment">
         <p>Provides a search box component that can search by id and/or record ids.</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC javascript) SzSearchByIdComponent --&gt;
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC javascript) SzSearchByIdComponent --&gt;
 &lt;sz-wc-search-by-id
 id=&quot;sz-search&quot;
 data-source=&quot;SAMPLE_PERSON&quot;
@@ -79,7 +130,7 @@ record-id=&quot;1001&quot;&gt;&lt;/sz-wc-search-by-id&gt;
  document.getElementById(&#39;sz-search&#39;).addEventListener(&#39;resultChange&#39;, function(results) {
    console.log(&#39;results: &#39;, results);
  });
-&lt;/script&gt;</code></pre></div><div><pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) SzSearchByIdComponent --&gt;
+&lt;/script&gt;</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) SzSearchByIdComponent --&gt;
 &lt;sz-search-by-id
 entityId=&quot;1004&quot;
 (resultChange)=&quot;myResultsHandler($event)&quot;
@@ -731,7 +782,7 @@ format is &quot;SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER&quot; or array of strings
                     <td class="col-md-4">
                         <div class="io-description"><p>Takes a collection or a single value of layout enum css classnames to pass
 to all children components. this value overrides auto-responsive css adjustments.</p>
-<div><pre class="line-numbers"><code class="language-html"></code></pre></div></div>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"></code></pre></div></div>
                     </td>
                 </tr>
             </tbody>
@@ -1043,7 +1094,7 @@ api server when a configuration change is detected</p>
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>(): void &#x3D;&gt; {
-    this.dataSourcesService.listDataSources().subscribe((dataSrc: string[]) &#x3D;&gt; {
+    this.dataSourcesService.listDataSources(&#x27;sz-search-by-id&#x27;).subscribe((dataSrc: string[]) &#x3D;&gt; {
       this._datasources &#x3D; dataSrc;
       this.cd.markForCheck();
       this.cd.detectChanges();
@@ -1277,7 +1328,7 @@ conf to change before fetching resources like the identifiers list</p>
                 <td class="col-md-4">
                     <a name="clearSearch"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>clearSearch</b></span>
                         <a href="#clearSearch"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1285,7 +1336,7 @@ conf to change before fetching resources like the identifiers list</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>clearSearch()</code>
                 </td>
             </tr>
@@ -1295,13 +1346,13 @@ conf to change before fetching resources like the identifiers list</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>clear the search params and form inputs.</p>
+                        <div class="io-description"><p>clear the search params and form inputs.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -1312,7 +1363,7 @@ conf to change before fetching resources like the identifiers list</p>
                 <td class="col-md-4">
                     <a name="getAnyDisabled"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>getAnyDisabled</b></span>
                         <a href="#getAnyDisabled"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1320,7 +1371,7 @@ conf to change before fetching resources like the identifiers list</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getAnyDisabled(keys: string[])</code>
                 </td>
             </tr>
@@ -1331,42 +1382,40 @@ conf to change before fetching resources like the identifiers list</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>keys</td>
-                                    <td>
-                                            <code>string[]</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>keys</td>
+                                            <td>
+                                                        <code>string[]</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1393,57 +1442,55 @@ conf to change before fetching resources like the identifiers list</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>get the responsive breakpoint string from min and max width</p>
+                        <div class="io-description"><p>get the responsive breakpoint string from min and max width</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>minWidth</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>minWidth</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
 
-                                    <td>
-                                        Yes
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>maxWidth</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                    </td>
-
-                                    <td>
-                                        Yes
-                                    </td>
+                                            <td>
+                                                    Yes
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>string | undefined</code>
+                                        </tr>
+                                        <tr>
+                                                <td>maxWidth</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string | undefined</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1454,7 +1501,7 @@ conf to change before fetching resources like the identifiers list</p>
                 <td class="col-md-4">
                     <a name="getDisabled"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>getDisabled</b></span>
                         <a href="#getDisabled"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1462,7 +1509,7 @@ conf to change before fetching resources like the identifiers list</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getDisabled(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -1473,42 +1520,40 @@ conf to change before fetching resources like the identifiers list</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>key</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1519,7 +1564,7 @@ conf to change before fetching resources like the identifiers list</p>
                 <td class="col-md-4">
                     <a name="getSearchParams"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>getSearchParams</b></span>
                         <a href="#getSearchParams"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1527,7 +1572,7 @@ conf to change before fetching resources like the identifiers list</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getSearchParams()</code>
                 </td>
             </tr>
@@ -1537,13 +1582,13 @@ conf to change before fetching resources like the identifiers list</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>get the current search params from input values</p>
+                        <div class="io-description"><p>get the current search params from input values</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>SzSearchByIdFormParams</code>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>SzSearchByIdFormParams</code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -1570,13 +1615,13 @@ conf to change before fetching resources like the identifiers list</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>unsubscribe when component is destroyed</p>
+                        <div class="io-description"><p>unsubscribe when component is destroyed</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -1587,7 +1632,7 @@ conf to change before fetching resources like the identifiers list</p>
                 <td class="col-md-4">
                     <a name="onKeyEnter"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onKeyEnter</b></span>
                         <a href="#onKeyEnter"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1595,7 +1640,7 @@ conf to change before fetching resources like the identifiers list</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onKeyEnter()</code>
                 </td>
             </tr>
@@ -1605,14 +1650,14 @@ conf to change before fetching resources like the identifiers list</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>submits search form on enter press
+                        <div class="io-description"><p>submits search form on enter press
 if the submit button is currently hidden</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -1623,7 +1668,7 @@ if the submit button is currently hidden</p>
                 <td class="col-md-4">
                     <a name="submitSearch"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>submitSearch</b></span>
                         <a href="#submitSearch"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1631,7 +1676,7 @@ if the submit button is currently hidden</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>submitSearch()</code>
                 </td>
             </tr>
@@ -1641,16 +1686,16 @@ if the submit button is currently hidden</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>submit current search params to search service.
+                        <div class="io-description"><p>submit current search params to search service.
 when search service returns a result it publishes the result
 through the resultChange event emitter, and
 any parameter changes through the paramsChange emmitter.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -2217,7 +2262,7 @@ format is &quot;SOCIAL_NETWORK, DRIVERS_LICENSE_NUMBER&quot; or array of strings
                         <td class="col-md-4">
                                 <div class="io-description"><p>Takes a collection or a single value of layout enum css classnames to pass
 to all children components. this value overrides auto-responsive css adjustments.</p>
-<div><pre class="line-numbers"><code class="language-html"></code></pre></div></div>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"></code></pre></div></div>
 
                                 <div class="io-description">
                                         <b>Parameters :</b>
@@ -2933,8 +2978,8 @@ conf to change before fetching resources like the identifiers list</p>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div>  <!-- @senzing/sdk/search/sz-search-by-id -->  <!--    NAME_FULL    DATE_OF_BIRTH    IDENTIFIER    IDENTIFIER_TYPE    ADDR_FULL    PHONE_NUMBER    EMAIL_ADDRESS  -->  <div class="content" *ngIf="true"  [ngClass]="_layoutClasses"  >      <section class="entity search" (ngSubmit)="submitSearch()">        <form class="form" [formGroup]="entitySearchForm" novalidate>          <div class="sz-row">              <div class="field datasource">                  <label for="entity-datasource">Get by Record ID</label>                  <select formControlName="dataSource"                  class="datasource-dropdown"                  id="datasource-name"                  name="datasource-name">                    <option [ngValue]="null" disabled [selected]="true">Data Source Name</option>                    <option *ngFor="let dsName of filteredDataSources"                            [value]="dsName">{{ dsName }}                    </option>                  </select>              </div>              <div class="field recordid" [class.disabled]="disabledFields[\'recordId\']" *ngIf="!hiddenFields[\'recordId\']">                <input formControlName="recordId"                        class="search-input"                        id="record-id"                        type="text"                        [attr.disabled]="getDisabled(\'recordId\')"                        (keyup.enter)="onKeyEnter()"                        placeholder="Record ID">              </div>              <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">                <button mat-button class="button__search-go"                [attr.disabled]="getDisabled(\'searchButton\')"                (click)="submitSearch()">{{searchButtonLabel}}</button>              </div>          </div>          <div class="sz-row">            <div class="field entityid">              <label for="entity-id">Get by Entity ID</label>              <input formControlName="entityId"                      class="search-input"                      id="entity-id"                      type="text"                      [attr.disabled]="getDisabled(\'entityId\')"                      (keyup.enter)="onKeyEnter()"                      placeholder="Entity ID">            </div>            <div class="action-button__wrapper hide-on-narrow" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">{{cancelButtonLabel}}</button>            </div>          </div>          <div class="sz-row bottom">            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'resetButton\']" *ngIf="!hiddenFields[\'resetButton\']">              <button mat-button class="button__search-clear"              [attr.disabled]="getDisabled(\'resetButton\')"              (click)="clearSearch()">{{cancelButtonLabelShort}}</button>            </div>            <div class="action-button__wrapper hide-on-medium hide-on-wide" [class.disabled]="disabledFields[\'searchButton\']" *ngIf="!hiddenFields[\'searchButton\']">              <button mat-button class="button__search-go"              [attr.disabled]="getDisabled(\'searchButton\')"              (click)="submitSearch()">{{searchButtonLabelShort}}</button>            </div>          </div>        </form>      </section>    </div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
-    var DIRECTIVES = [];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzCrossSourceResultsDataTable', 'selector': 'sz-cross-source-results'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzLicenseInfoComponent', 'selector': 'sz-license'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzTooltipComponent', 'selector': 'sz-tooltip'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
+    var DIRECTIVES = [{'name': 'SzElementResizeObserverDirective', 'selector': '[onResize]'},{'name': 'SzTooltipDirective', 'selector': '[sz-tooltip]'}];
     var ACTUAL_COMPONENT = {'name': 'SzSearchByIdComponent'};
 </script>
 <script src="../js/tree.js"></script>
@@ -2984,6 +3029,19 @@ conf to change before fetching resources like the identifiers list</p>
             var COMPODOC_CURRENT_PAGE_URL = 'SzSearchByIdComponent.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

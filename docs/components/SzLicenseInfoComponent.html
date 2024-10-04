@@ -1,0 +1,1280 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Senzing SDK Components</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">Senzing SDK Components</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  SzLicenseInfoComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/lib/configuration/sz-license/sz-license.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>A simple &quot;license info&quot; component.
+Used for displaying the current senzing license info.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;
+&lt;sz-license&gt;&lt;/sz-license&gt;</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) --&gt;
+&lt;sz-license&gt;&lt;/sz-license&gt;</code></pre></div>
+    </p>
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>sz-license</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./sz-license.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./sz-license.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#SzLicenseUpgradeType" >SzLicenseUpgradeType</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#unsubscribe$" >unsubscribe$</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#handleUpgradeButtonClicked" >handleUpgradeButtonClicked</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#openUpgradeButtonLink" >openUpgradeButtonLink</a>
+                            </li>
+                            <li>
+                                <a href="#recordCount" >recordCount</a>
+                            </li>
+                            <li>
+                                <a href="#showUpgradeButton" >showUpgradeButton</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#upgradeLicense" >upgradeLicense</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#recordCount" >recordCount</a>
+                                </li>
+                                <li>
+                                    <a href="#showUpgradeButton" >showUpgradeButton</a>
+                                </li>
+                                <li>
+                                    <a href="#openUpgradeButtonLink" >openUpgradeButtonLink</a>
+                                </li>
+                                <li>
+                                    <a href="#percentUsed" >percentUsed</a>
+                                </li>
+                                <li>
+                                    <a href="#expirationDate" >expirationDate</a>
+                                </li>
+                                <li>
+                                    <a href="#recordLimit" >recordLimit</a>
+                                </li>
+                                <li>
+                                    <a href="#licenseInfo" >licenseInfo</a>
+                                </li>
+                                <li>
+                                    <a href="#trialLicense" >trialLicense</a>
+                                </li>
+                                <li>
+                                    <a href="#limitInvalid" >limitInvalid</a>
+                                </li>
+                                <li>
+                                    <a href="#expirationInvalid" >expirationInvalid</a>
+                                </li>
+                                <li>
+                                    <a href="#approachingLimit" >approachingLimit</a>
+                                </li>
+                                <li>
+                                    <a href="#licenseLimitRatio" >licenseLimitRatio</a>
+                                </li>
+                                <li>
+                                    <a href="#expiringSoon" >expiringSoon</a>
+                                </li>
+                                <li>
+                                    <a href="#licenseDays" >licenseDays</a>
+                                </li>
+                                <li>
+                                    <a href="#licenseType" >licenseType</a>
+                                </li>
+                                <li>
+                                    <a href="#expired" >expired</a>
+                                </li>
+                                <li>
+                                    <a href="#licenseButtonLabelKey" >licenseButtonLabelKey</a>
+                                </li>
+                                <li>
+                                    <a href="#upgradeType" >upgradeType</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(adminService: <a href="../injectables/SzAdminService.html" target="_self">SzAdminService</a>, dmService: <a href="../injectables/SzDataMartService.html" target="_self">SzDataMartService</a>, router: Router)</code>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>adminService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SzAdminService.html" target="_self" >SzAdminService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>dmService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SzDataMartService.html" target="_self" >SzDataMartService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="openUpgradeButtonLink"></a>
+                        <b>openUpgradeButtonLink</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | boolean</code>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="recordCount"></a>
+                        <b>recordCount</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | number</code>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showUpgradeButton"></a>
+                        <b>showUpgradeButton</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | boolean</code>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="upgradeLicense"></a>
+                        <b>upgradeLicense</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>when a user clicks the info link inside of a step card this event is emitted</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleUpgradeButtonClicked"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>handleUpgradeButtonClicked</b></span>
+                        <a href="#handleUpgradeButtonClicked"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleUpgradeButtonClicked(event: Event)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                        <code>Event</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="SzLicenseUpgradeType"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>SzLicenseUpgradeType</b></span>
+                        <a href="#SzLicenseUpgradeType"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>SzLicenseUpgradeType</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>this brings in the enum to local scrope for html template access</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unsubscribe$"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>unsubscribe$</b></span>
+                        <a href="#unsubscribe$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject&lt;void&gt;()</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>subscription to notify subscribers to unbind</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="recordCount"></a>
+                        <span class="name"><b>recordCount</b><a href="#recordCount"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>recordCount(value: string | number)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code>string | number</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showUpgradeButton"></a>
+                        <span class="name"><b>showUpgradeButton</b><a href="#showUpgradeButton"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>showUpgradeButton()</code></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>showUpgradeButton(value: string | boolean)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code>string | boolean</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="openUpgradeButtonLink"></a>
+                        <span class="name"><b>openUpgradeButtonLink</b><a href="#openUpgradeButtonLink"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>openUpgradeButtonLink()</code></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>openUpgradeButtonLink(value: string | boolean)</code></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                        <code>string | boolean</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="percentUsed"></a>
+                        <span class="name"><b>percentUsed</b><a href="#percentUsed"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>percentUsed()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="expirationDate"></a>
+                        <span class="name"><b>expirationDate</b><a href="#expirationDate"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>expirationDate()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="recordLimit"></a>
+                        <span class="name"><b>recordLimit</b><a href="#recordLimit"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>recordLimit()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="licenseInfo"></a>
+                        <span class="name"><b>licenseInfo</b><a href="#licenseInfo"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>licenseInfo()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="trialLicense"></a>
+                        <span class="name"><b>trialLicense</b><a href="#trialLicense"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>trialLicense()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="limitInvalid"></a>
+                        <span class="name"><b>limitInvalid</b><a href="#limitInvalid"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>limitInvalid()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="expirationInvalid"></a>
+                        <span class="name"><b>expirationInvalid</b><a href="#expirationInvalid"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>expirationInvalid()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="approachingLimit"></a>
+                        <span class="name"><b>approachingLimit</b><a href="#approachingLimit"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>approachingLimit()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="licenseLimitRatio"></a>
+                        <span class="name"><b>licenseLimitRatio</b><a href="#licenseLimitRatio"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>licenseLimitRatio()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="expiringSoon"></a>
+                        <span class="name"><b>expiringSoon</b><a href="#expiringSoon"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>expiringSoon()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="licenseDays"></a>
+                        <span class="name"><b>licenseDays</b><a href="#licenseDays"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>licenseDays()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="licenseType"></a>
+                        <span class="name"><b>licenseType</b><a href="#licenseType"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>licenseType()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="expired"></a>
+                        <span class="name"><b>expired</b><a href="#expired"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>expired()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="licenseButtonLabelKey"></a>
+                        <span class="name"><b>licenseButtonLabelKey</b><a href="#licenseButtonLabelKey"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>licenseButtonLabelKey()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="upgradeType"></a>
+                        <span class="name"><b>upgradeType</b><a href="#upgradeType"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>upgradeType()</code></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;ul class&#x3D;&quot;license-messages&quot;&gt;
+    &lt;li *ngIf&#x3D;&quot;!limitInvalid&quot;&gt;
+        &lt;ng-template #evalLicenseUsage [ngIf]&#x3D;&quot;trialLicense&quot; [ngIfElse]&#x3D;&quot;licenseUsage&quot;&gt;
+            Using {{licenseLimitRatio | percent:&#x27;1.0-0&#x27;}} of your {{recordLimit | SzShortNumber}} evaluation license.
+        &lt;/ng-template&gt;
+        &lt;ng-template #licenseUsage&gt;
+            Using {{licenseLimitRatio | percent:&#x27;1.0-0&#x27;}} of your {{recordLimit | SzShortNumber}} record license.
+        &lt;/ng-template&gt;
+    &lt;/li&gt;
+    &lt;li *ngIf&#x3D;&quot;limitInvalid&quot;
+      &gt;&lt;span class&#x3D;&quot;material-icons warning-prefix&quot;&gt;warning&lt;/span
+        &gt;&lt;span class&#x3D;&quot;warning-prefix&quot;&gt;WARNING:&lt;/span
+        &gt; &lt;span class&#x3D;&quot;warning-message&quot;&gt;Your subscription record limit is invalid.&lt;/span
+    &gt;&lt;/li&gt;
+    &lt;li *ngIf&#x3D;&quot;!expirationInvalid&quot;&gt;
+        &lt;ng-template #evalLicenseTimeLeft [ngIf]&#x3D;&quot;trialLicense&quot; [ngIfElse]&#x3D;&quot;licenseTimeLeft&quot;&gt;
+            Your evaluation license is valid through {{expirationDate | date: &#x27;longDate&#x27;}} for non production use
+        &lt;/ng-template&gt;
+        &lt;ng-template #licenseTimeLeft&gt;
+            Your subscription is valid through {{expirationDate | date: &#x27;longDate&#x27;}}
+        &lt;/ng-template&gt;
+    &lt;/li&gt;
+    &lt;li *ngIf&#x3D;&quot;expirationInvalid&quot;
+      &gt;&lt;span class&#x3D;&quot;material-icons warning-prefix&quot;&gt;warning&lt;/span
+        &gt;&lt;span class&#x3D;&quot;warning-prefix&quot;&gt;WARNING:&lt;/span
+        &gt; &lt;span class&#x3D;&quot;warning-message&quot;&gt;Your subscription expiration date is invalid.&lt;/span
+    &gt;&lt;/li&gt;
+    &lt;li *ngIf&#x3D;&quot;!limitInvalid &amp;&amp; approachingLimit&quot;
+      &gt;&lt;span class&#x3D;&quot;material-icons warning-prefix&quot;&gt;warning&lt;/span
+        &gt;&lt;span class&#x3D;&quot;warning-prefix&quot;&gt;WARNING:&lt;/span
+        &gt; &lt;span class&#x3D;&quot;warning-message&quot;&gt;You are near your licensed record limit.&lt;/span
+    &gt;&lt;/li&gt;
+    &lt;li *ngIf&#x3D;&quot;!expirationInvalid &amp;&amp; expiringSoon&quot;
+      &gt;&lt;span class&#x3D;&quot;material-icons warning-prefix&quot;&gt;warning&lt;/span
+        &gt;&lt;span class&#x3D;&quot;warning-prefix&quot;&gt;WARNING:&lt;/span
+        &gt;
+        &lt;span class&#x3D;&quot;warning-message&quot; *ngIf&#x3D;&quot;expired&quot;&gt;
+            &lt;ng-template #trialLicenseExpired [ngIf]&#x3D;&quot;trialLicense&quot; [ngIfElse]&#x3D;&quot;licenseExpired&quot;&gt;
+                Your free trial has expired!
+            &lt;/ng-template&gt;
+            &lt;ng-template #licenseExpired&gt;
+                Your subscription has expired!
+            &lt;/ng-template&gt;
+        &lt;/span&gt;
+        &lt;span class&#x3D;&quot;warning-message&quot; *ngIf&#x3D;&quot;!expired&quot;&gt;
+            &lt;ng-template #licenseExpiryPlural [ngIf]&#x3D;&quot;licenseDays &gt; 1&quot; [ngIfElse]&#x3D;&quot;licenseExpirySingular&quot;&gt;
+                Your subscription will expire in {{licenseDays}} days.
+            &lt;/ng-template&gt;
+            &lt;ng-template #licenseExpirySingular&gt;
+                Your subscription will expire in {{licenseDays}} day.
+            &lt;/ng-template&gt;
+        &lt;/span&gt;
+    &gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class&#x3D;&quot;buttons&quot; *ngIf&#x3D;&quot;showUpgradeButton&quot;&gt;
+    &lt;div [ngSwitch]&#x3D;&quot;upgradeType&quot;&gt;
+        &lt;button mat-button color&#x3D;&quot;primary&quot; *ngSwitchCase&#x3D;&quot;SzLicenseUpgradeType.SUBSCRIBE&quot; 
+        (click)&#x3D;&quot;handleUpgradeButtonClicked($event)&quot;&gt;Subscribe Now&lt;/button&gt;
+        &lt;button class&#x3D;&quot;upgrade&quot; mat-button color&#x3D;&quot;primary&quot; *ngSwitchCase&#x3D;&quot;SzLicenseUpgradeType.UPGRADE&quot; 
+        (click)&#x3D;&quot;handleUpgradeButtonClicked($event)&quot;&gt;Request a License with More Records&lt;/button&gt;
+        &lt;button class&#x3D;&quot;upgrade&quot; mat-button color&#x3D;&quot;primary&quot; *ngSwitchCase&#x3D;&quot;SzLicenseUpgradeType.RENEW&quot; 
+        (click)&#x3D;&quot;handleUpgradeButtonClicked($event)&quot;&gt;Request a License with More Time&lt;/button&gt;
+        &lt;button class&#x3D;&quot;upgrade&quot; mat-button color&#x3D;&quot;primary&quot; *ngSwitchCase&#x3D;&quot;SzLicenseUpgradeType.VIEW&quot; 
+        (click)&#x3D;&quot;handleUpgradeButtonClicked($event)&quot;&gt;Request a License with More Records&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./sz-license.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">ul.license-messages {
+    margin-top: 30px;
+    margin-left: 0px;
+    padding: 0px;
+    list-style-type: none;
+    li {
+      font-size: 16px;
+      font-weight: 500;
+      margin-left: 0px;
+      margin-bottom: 5px;
+      padding: 0px;
+      white-space: nowrap;
+      line-height: 24px;
+      vertical-align: middle;
+
+      span {
+        line-height: 24px;
+        vertical-align: middle;
+        display: inline-block;
+      }
+      span.warning-prefix {
+        color: var(--sz-color-config-warning);
+      }
+    }
+}</code></pre>
+    </div>
+
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><ul class="license-messages">    <li *ngIf="!limitInvalid">        <ng-template #evalLicenseUsage [ngIf]="trialLicense" [ngIfElse]="licenseUsage">            Using {{licenseLimitRatio | percent:\'1.0-0\'}} of your {{recordLimit | SzShortNumber}} evaluation license.        </ng-template>        <ng-template #licenseUsage>            Using {{licenseLimitRatio | percent:\'1.0-0\'}} of your {{recordLimit | SzShortNumber}} record license.        </ng-template>    </li>    <li *ngIf="limitInvalid"      ><span class="material-icons warning-prefix">warning</span        ><span class="warning-prefix">WARNING:</span        > <span class="warning-message">Your subscription record limit is invalid.</span    ></li>    <li *ngIf="!expirationInvalid">        <ng-template #evalLicenseTimeLeft [ngIf]="trialLicense" [ngIfElse]="licenseTimeLeft">            Your evaluation license is valid through {{expirationDate | date: \'longDate\'}} for non production use        </ng-template>        <ng-template #licenseTimeLeft>            Your subscription is valid through {{expirationDate | date: \'longDate\'}}        </ng-template>    </li>    <li *ngIf="expirationInvalid"      ><span class="material-icons warning-prefix">warning</span        ><span class="warning-prefix">WARNING:</span        > <span class="warning-message">Your subscription expiration date is invalid.</span    ></li>    <li *ngIf="!limitInvalid && approachingLimit"      ><span class="material-icons warning-prefix">warning</span        ><span class="warning-prefix">WARNING:</span        > <span class="warning-message">You are near your licensed record limit.</span    ></li>    <li *ngIf="!expirationInvalid && expiringSoon"      ><span class="material-icons warning-prefix">warning</span        ><span class="warning-prefix">WARNING:</span        >        <span class="warning-message" *ngIf="expired">            <ng-template #trialLicenseExpired [ngIf]="trialLicense" [ngIfElse]="licenseExpired">                Your free trial has expired!            </ng-template>            <ng-template #licenseExpired>                Your subscription has expired!            </ng-template>        </span>        <span class="warning-message" *ngIf="!expired">            <ng-template #licenseExpiryPlural [ngIf]="licenseDays > 1" [ngIfElse]="licenseExpirySingular">                Your subscription will expire in {{licenseDays}} days.            </ng-template>            <ng-template #licenseExpirySingular>                Your subscription will expire in {{licenseDays}} day.            </ng-template>        </span>    ></li></ul><div class="buttons" *ngIf="showUpgradeButton">    <div [ngSwitch]="upgradeType">        <button mat-button color="primary" *ngSwitchCase="SzLicenseUpgradeType.SUBSCRIBE"         (click)="handleUpgradeButtonClicked($event)">Subscribe Now</button>        <button class="upgrade" mat-button color="primary" *ngSwitchCase="SzLicenseUpgradeType.UPGRADE"         (click)="handleUpgradeButtonClicked($event)">Request a License with More Records</button>        <button class="upgrade" mat-button color="primary" *ngSwitchCase="SzLicenseUpgradeType.RENEW"         (click)="handleUpgradeButtonClicked($event)">Request a License with More Time</button>        <button class="upgrade" mat-button color="primary" *ngSwitchCase="SzLicenseUpgradeType.VIEW"         (click)="handleUpgradeButtonClicked($event)">Request a License with More Records</button>    </div></div></div>'
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzCrossSourceResultsDataTable', 'selector': 'sz-cross-source-results'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzLicenseInfoComponent', 'selector': 'sz-license'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzTooltipComponent', 'selector': 'sz-tooltip'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
+    var DIRECTIVES = [{'name': 'SzElementResizeObserverDirective', 'selector': '[onResize]'},{'name': 'SzTooltipDirective', 'selector': '[sz-tooltip]'}];
+    var ACTUAL_COMPONENT = {'name': 'SzLicenseInfoComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'SzLicenseInfoComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

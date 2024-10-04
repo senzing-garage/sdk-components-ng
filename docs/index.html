@@ -12,10 +12,61 @@
         <link rel="stylesheet" href="./styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="./" class="navbar-brand">Senzing SDK Components</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="./" class="navbar-brand">Senzing SDK Components</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -24,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -32,6 +83,16 @@
                    <div class="content-data">
 
 <h1>@senzing/sdk-components-ng</h1>
+<p>If you are beginning your journey with
+<a href="https://senzing.com/">Senzing</a>,
+please start with
+<a href="https://docs.senzing.com/quickstart/">Senzing Quick Start guides</a>.</p>
+<p>You are in the
+<a href="https://github.com/senzing-garage">Senzing Garage</a>
+where projects are &quot;tinkered&quot; on.
+Although this GitHub repository may help you understand an approach to using Senzing,
+it&#39;s not considered to be &quot;production ready&quot; and is not considered to be part of the Senzing product.
+Heck, it may not even be appropriate for your application of Senzing!</p>
 <h2>Overview</h2>
 <p>This project is for the Senzing&reg; SDK components that can be used in other projects. There are two flavors that the components come in. The <a href="https://www.npmjs.com/package/@senzing/sdk-components-ng">@senzing/sdk-components-ng</a> package which is based around the Angular 13.x.x framework, and the <a href="https://www.npmjs.com/package/@senzing/sdk-components-web">@senzing/sdk-components-web</a> package which is framework agnostic and based around the <a href="https://developers.google.com/web/fundamentals/web-components/">Web Components</a> standard. The usage for both packages is noted in the <a href="http://hub.senzing.com/sdk-components-ng/">documentation examples</a>.</p>
 <p>For information on the Web Components version see the <a href="https://github.com/senzing-garage/sdk-components-ng/tree/master/sdk-components-web">sdk-components-web guide</a>. </p>
@@ -51,14 +112,14 @@
 <h4>Shortcuts</h4>
 <p>If you&#39;re developing on Windows or macOS, you can make use of the <a href="https://senzing.com/#download">Senzing app</a>
 to help populate an entity repository to test with.  It also gives you an easy way to load and browse data
-outside of the <a href="https://github.com/senzing-garage/senzing-api-server">Senzing REST API Sever</a>.  See the instructions
+outside of the <a href="https://github.com/senzing-garage/senzing-poc-server">Senzing POC API Server</a>.  See the instructions
 for using the <a href="https://github.com/senzing-garage/senzing-api-server/tree/master/app-scripts">Senzing App Integration Scripts</a>
 to start the Senzing REST API Server using your existing projects in the Senzing app.</p>
 <h4>REST API Server</h4>
 <p>These components require an implementation of the <a href="https://github.com/senzing-garage/senzing-rest-api-specification">Senzing REST API</a>
 to function.  You can use the <a href="https://github.com/senzing-garage/senzing-api-server">Senzing REST API Server</a> as a default
 implementation in Java.  Follow <a href="https://github.com/senzing-garage/senzing-api-server">the instructions</a> to check out and
-build the <a href="https://github.com/senzing-garage/senzing-api-server">Senzing REST API Sever</a> from source or download a pre-built
+build the <a href="https://github.com/senzing-garage/senzing-poc-server">Senzing POC API Server</a> from source or download a pre-built
 version when available.</p>
 <h3>SDK Components</h3>
 <p>Open a terminal window to the location of your project and type:
@@ -67,19 +128,19 @@ version when available.</p>
 <p>The components package, along with any missing dependencies will be added to your project. </p>
 <p>Alternatively you can install the components and dependencies without the angular-cli via npm individually:
 <code>npm i @angular/material @angular/cdk @senzing/sdk-components-ng --save</code></p>
-<p>Please take note that all the same <a href="https://senzing.github.io/rest-api-client-ng/">interfaces</a>, and <a href="https://senzing.github.io/rest-api-client-ng/">services</a> from the <a href="https://www.npmjs.com/package/@senzing/rest-api-client-ng">@senzing/rest-api-client-ng package</a> will also be available for convenience.</p>
+<p>Please take note that all the same <a href="https://senzing-garage.github.io/rest-api-client-ng/">interfaces</a>, and <a href="https://senzing-garage.github.io/rest-api-client-ng/">services</a> from the <a href="https://www.npmjs.com/package/@senzing/rest-api-client-ng">@senzing/rest-api-client-ng package</a> will also be available for convenience.</p>
 <h4>Usage</h4>
 <p>Just add the import statement for the particular component, service, or model that you want to use.</p>
-<div><pre class="line-numbers"><code class="language-typescript">import {
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">import {
   SzEntitySearchParams,
   SzAttributeSearchResult
 } from &#39;&#64;senzing/sdk-components-ng&#39;;</code></pre></div><h3>Quick Start</h3>
-<p><strong>1)</strong> Start up an instance of the <a href="https://github.com/senzing-garage/senzing-api-server">Senzing REST API Server</a>
+<p><strong>1)</strong> Start up an instance of the <a href="https://github.com/senzing-garage/senzing-poc-server">Senzing POC API Server</a>
 if not currently running.</p>
-<p>See the <a href="https://github.com/senzing-garage/senzing-api-server">README.md</a> for instructions on how
+<p>See the <a href="https://github.com/senzing-garage/senzing-poc-server">README.md</a> for instructions on how
 to start the Senzing REST API Server on the command line or with Docker.</p>
 <p><strong>2)</strong> Add the SenzingSDKModule to your angular app&#39;s app.module.ts</p>
-<div><pre class="line-numbers"><code class="language-typescript">import { BrowserModule } from &#39;&#64;angular/platform-browser&#39;;
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">import { BrowserModule } from &#39;&#64;angular/platform-browser&#39;;
 import { NgModule } from &#39;&#64;angular/core&#39;;
 import { SenzingSdkModule } from &#39;&#64;senzing/sdk-components-ng&#39;;
 
@@ -97,21 +158,21 @@ import { AppComponent } from &#39;./app.component&#39;;
   bootstrap: [AppComponent]
 })
 export class AppModule { }</code></pre></div><p><strong>3)</strong> Check that components can be rendered correctly. Add the following to your app.component.html (or any template) and verify the result:</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;sz-powered-by format=&quot;small&quot;&gt;&lt;/sz-powered-by&gt;</code></pre></div><p>The result should be a powered by logo like the following:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;sz-powered-by format=&quot;small&quot;&gt;&lt;/sz-powered-by&gt;</code></pre></div><p>The result should be a powered by logo like the following:</p>
 <p><img src="docs/images/ss-powered-by-tag.png" alt="powered by tag" class="img-responsive"></p>
 <p>If not then double check that step 2 is correct, and that you remembered to include the
 import statement as well.</p>
 <p><strong>4)</strong> Check that components can communicate with rest api gateway sucessfully. Add the following to your app.component.html(or any template):</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;sz-configuration-about&gt;&lt;/sz-configuration-about&gt;</code></pre></div><p>The result should be a list of service configuration parameters and values.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;sz-configuration-about&gt;&lt;/sz-configuration-about&gt;</code></pre></div><p>The result should be a list of service configuration parameters and values.</p>
 <p><strong>5)</strong> Load the engine with data to resolve. The easiest way to do this currently is to load a CSV using the
 <a href="https://senzing.com/#download">Senzing app</a>.  This can also be done through the
-<a href="https://github.com/senzing-garage/senzing-rest-api-specification">Senzing REST API</a> using the <a href="https://github.com/senzing-garage/senzing-api-server">Senzing REST API Server</a>.</p>
+<a href="https://github.com/senzing-garage/senzing-rest-api-specification">Senzing REST API</a> using the <a href="https://github.com/senzing-garage/senzing-poc-server">Senzing POC API Server</a>.</p>
 <p><strong>6)</strong> Verify that the components are working properly. The easiest way to do this is to is to just implement a search box, and a result list. Copy the following to your app.component.html file</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;sz-search (resultsChange)=&quot;onSearchResults($event)&quot;&gt;&lt;/sz-search&gt;
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;sz-search (resultsChange)=&quot;onSearchResults($event)&quot;&gt;&lt;/sz-search&gt;
 &lt;sz-search-results
 [results]=&quot;currentSearchResults&quot;
 (resultClick)=&quot;onSearchResultClick($event)&quot;&gt;&lt;/sz-search-results&gt;</code></pre></div><p>now in your controller class (app.component.ts) add the <em>onSearchResults</em> and <em>onSearchResultClick</em> methods we just referenced above:</p>
-<div><pre class="line-numbers"><code class="language-typescript">import { Component } from &#39;&#64;angular/core&#39;;
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">import { Component } from &#39;&#64;angular/core&#39;;
 import {
   SzEntitySearchParams,
   SzAttributeSearchResult
@@ -148,9 +209,9 @@ and you should be greeted by a page like with a search box. And search results l
 <p>And that&#39;s it! At least for the quickstart. There are a ton more options for running the rest server, interacting with the components and services.</p>
 <h2>Configuration &amp; Parameters</h2>
 <p>The SenzingSDKModule accepts a factory method that returns an instance of the
-<a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> class. By adding a factory like the following to the forRoot method, you can change services configuration to point to non-default values.</p>
+<a href="https://senzing-garage.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> class. By adding a factory like the following to the forRoot method, you can change services configuration to point to non-default values.</p>
 <p>The following tells any components to turn on CORS functionality and make all api requests to localhost port 8080 (i.e.: <a href="http://localhost:8080/">http://localhost:8080/</a>).</p>
-<div><pre class="line-numbers"><code class="language-typescript">import { BrowserModule } from &#39;&#64;angular/platform-browser&#39;;
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">import { BrowserModule } from &#39;&#64;angular/platform-browser&#39;;
 import { NgModule } from &#39;&#64;angular/core&#39;;
 import { SenzingSdkModule, SzRestConfiguration } from &#39;&#64;senzing/sdk-components-ng&#39;;
 import { AppComponent } from &#39;./app.component&#39;;
@@ -176,10 +237,10 @@ export function SzRestConfigurationFactory() {
   bootstrap: [AppComponent]
 })
 export class AppModule { }</code></pre></div><h3>Parameters</h3>
-<p>See <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">online documentation</a> for a complete list of configuration parameters that can control the connection behavior of the sdk components.</p>
+<p>See <a href="https://senzing-garage.github.io/rest-api-client-ng/classes/Configuration.html">online documentation</a> for a complete list of configuration parameters that can control the connection behavior of the sdk components.</p>
 <h2>Documentation</h2>
 <p>Installation contains a statically generated API and component references. They can be found in
-node_modules/@senzing/sdk-components-ng/docs or <a href="https://senzing.github.io/sdk-components-ng/">Online here</a>.</p>
+node_modules/@senzing/sdk-components-ng/docs or <a href="https://senzing-garage.github.io/sdk-components-ng/">Online here</a>.</p>
 <h2>Examples</h2>
 <p>When you check out the source for this repository there is a directory of Angular project examples. Please see the <a href="https://github.com/senzing-garage/sdk-components-ng/tree/master/examples">Examples Readme</a> for more information on how these work.</p>
 <h2>Troubleshooting</h2>
@@ -198,7 +259,7 @@ node_modules/@senzing/sdk-components-ng/docs or <a href="https://senzing.github.
       showing up in the developer console</td>
       <td style="padding: 10px 5px;">
         Set the api configuration to the address and port your rest server is running at by
-        passing in an instance of <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> to the <a href="https://senzing.github.io/sdk-components-ng/modules/SenzingSdkModule.html">SenzingSdkModule.forRoot method</a>.
+        passing in an instance of <a href="https://senzing-garage.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> to the <a href="https://senzing-garage.github.io/sdk-components-ng/modules/SenzingSdkModule.html">SenzingSdkModule.forRoot method</a>.
         <br/><br/>
         Double check and make sure you can connect to your rest server via
         <code>curl -i http://localhost:8080/heartbeat</code>
@@ -265,6 +326,19 @@ node_modules/@senzing/sdk-components-ng/docs or <a href="https://senzing.github.
             var COMPODOC_CURRENT_PAGE_URL = 'index.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="./js/libs/custom-elements.min.js"></script>
        <script src="./js/libs/lit-html.js"></script>

@@ -12,10 +12,61 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">Senzing SDK Components</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">Senzing SDK Components</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -24,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -72,11 +123,11 @@
         <p>Control Component allowing UI friendly changes
 to filtering, colors, and parameters of graph control.</p>
 <p>integrated with graph preferences and prefBUS.</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;
 &lt;sz-entity-detail-graph-filter #graphFilter
 [showLinkLabels]=&quot;true&quot;
 (optionChanged)=&quot;onOptionChange($event)&quot;
-&gt;&lt;/sz-entity-detail-graph-filter&gt;</code></pre></div><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) --&gt;
+&gt;&lt;/sz-entity-detail-graph-filter&gt;</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) --&gt;
 &lt;sz-wc-standalone-graph-filters id=&quot;sz-entity-detail-graph-filter&quot;&gt;&lt;/sz-wc-standalone-graph-filters&gt;
 &lt;script&gt;
 document.getElementById(&#39;sz-wc-standalone-graph-filters&#39;).addEventListener(&#39;optionChanged&#39;, function(data) { console.log(&#39;filter(s) changed&#39;, data); });
@@ -87,7 +138,7 @@ document.getElementById(&#39;sz-wc-standalone-graph-filters&#39;).addEventListen
         <h3>Extends</h3>
     </p>
     <p class="comment">
-                <code><a href="../components/SzGraphFilterComponent.html" target="_self" >SzGraphFilterComponent</a></code>
+                    <code><a href="../components/SzGraphFilterComponent.html" target="_self" >SzGraphFilterComponent</a></code>
     </p>
 
 
@@ -1350,47 +1401,45 @@ used mostly for diagnostics.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>method for getting the selected pref color for a datasource
+                        <div class="io-description"><p>method for getting the selected pref color for a datasource
 by the datasource name. used for applying background color to
 input[type=color] to make them look fancier</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>dsValue</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>dsValue</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1401,7 +1450,7 @@ input[type=color] to make them look fancier</p>
                 <td class="col-md-4">
                     <a name="getDataSources"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>getDataSources</b></span>
                         <a href="#getDataSources"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1409,7 +1458,7 @@ input[type=color] to make them look fancier</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getDataSources()</code>
                 </td>
             </tr>
@@ -1419,13 +1468,13 @@ input[type=color] to make them look fancier</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>helper method for retrieving list of datasources</p>
+                        <div class="io-description"><p>helper method for retrieving list of datasources</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -1436,7 +1485,7 @@ input[type=color] to make them look fancier</p>
                 <td class="col-md-4">
                     <a name="getMKBadgeCount"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>getMKBadgeCount</b></span>
                         <a href="#getMKBadgeCount"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1444,7 +1493,7 @@ input[type=color] to make them look fancier</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getMKBadgeCount(count: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
@@ -1454,45 +1503,43 @@ input[type=color] to make them look fancier</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>function for shortening the match key token badge counts notation</p>
+                        <div class="io-description"><p>function for shortening the match key token badge counts notation</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>count</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>count</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1503,7 +1550,7 @@ input[type=color] to make them look fancier</p>
                 <td class="col-md-4">
                     <a name="getValueFromEventTarget"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>getValueFromEventTarget</b></span>
                         <a href="#getValueFromEventTarget"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1511,7 +1558,7 @@ input[type=color] to make them look fancier</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getValueFromEventTarget(event)</code>
                 </td>
             </tr>
@@ -1522,38 +1569,36 @@ input[type=color] to make them look fancier</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>event</td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1564,7 +1609,7 @@ input[type=color] to make them look fancier</p>
                 <td class="col-md-4">
                     <a name="isMatchKeyCoreTokenSelected"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>isMatchKeyCoreTokenSelected</b></span>
                         <a href="#isMatchKeyCoreTokenSelected"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1572,7 +1617,7 @@ input[type=color] to make them look fancier</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>isMatchKeyCoreTokenSelected(mkName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -1583,42 +1628,40 @@ input[type=color] to make them look fancier</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>mkName</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>mkName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1629,7 +1672,7 @@ input[type=color] to make them look fancier</p>
                 <td class="col-md-4">
                     <a name="isMatchKeyTokenSelected"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>isMatchKeyTokenSelected</b></span>
                         <a href="#isMatchKeyTokenSelected"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1637,7 +1680,7 @@ input[type=color] to make them look fancier</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>isMatchKeyTokenSelected(mkName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -1648,42 +1691,40 @@ input[type=color] to make them look fancier</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>mkName</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>mkName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1711,10 +1752,10 @@ input[type=color] to make them look fancier</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -1741,13 +1782,13 @@ input[type=color] to make them look fancier</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>unsubscribe when component is destroyed</p>
+                        <div class="io-description"><p>unsubscribe when component is destroyed</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -1775,10 +1816,10 @@ input[type=color] to make them look fancier</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -1789,7 +1830,7 @@ input[type=color] to make them look fancier</p>
                 <td class="col-md-4">
                     <a name="onCheckboxPrefToggle"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onCheckboxPrefToggle</b></span>
                         <a href="#onCheckboxPrefToggle"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1797,7 +1838,7 @@ input[type=color] to make them look fancier</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onCheckboxPrefToggle(optName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, event)</code>
                 </td>
             </tr>
@@ -1807,56 +1848,54 @@ input[type=color] to make them look fancier</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>handler method for when a basic bool pref should be toggled</p>
+                        <div class="io-description"><p>handler method for when a basic bool pref should be toggled</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>optName</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>optName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>event</td>
-                                    <td>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                            </td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1883,47 +1922,45 @@ input[type=color] to make them look fancier</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>when user changes the order of a color by dragging it to
+                        <div class="io-description"><p>when user changes the order of a color by dragging it to
 a different position in list update internal list &quot;index&quot;
 values and save state to prefs.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>event</td>
-                                    <td>
-                                            <code>CdkDragDrop&lt;string[]&gt;</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                        <code>CdkDragDrop&lt;string[]&gt;</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1950,50 +1987,48 @@ values and save state to prefs.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>handler for when an string color pref value has changed. ie: queriedEntitiesColor</p>
+                        <div class="io-description"><p>handler for when an string color pref value has changed. ie: queriedEntitiesColor</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>prefName</td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>prefName</td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>value</td>
-
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                        <tr>
+                                                <td>value</td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2021,42 +2056,40 @@ values and save state to prefs.</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>mkName</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>mkName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2083,68 +2116,66 @@ values and save state to prefs.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>handler for when a color value for a source in the &quot;colorsByDataSourcesForm&quot; has changed</p>
+                        <div class="io-description"><p>handler for when a color value for a source in the &quot;colorsByDataSourcesForm&quot; has changed</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>dsValue</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>dsValue</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>src</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                    </td>
-
-                                    <td>
-                                        Yes
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                                <tr>
-                                    <td>evt</td>
-                                    <td>
-                                    </td>
+                                        </tr>
+                                        <tr>
+                                                <td>src</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
 
-                                    <td>
-                                        Yes
-                                    </td>
+                                            <td>
+                                                    Yes
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                        <tr>
+                                                <td>evt</td>
+                                            <td>
+                                            </td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2171,56 +2202,54 @@ values and save state to prefs.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>handler for when a filter by datasouce value in the &quot;filterByDataSourcesForm&quot; has changed</p>
+                        <div class="io-description"><p>handler for when a filter by datasouce value in the &quot;filterByDataSourcesForm&quot; has changed</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>dsValue</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>dsValue</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>evt</td>
-                                    <td>
-                                    </td>
-
-                                    <td>
-                                        Yes
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                        <tr>
+                                                <td>evt</td>
+                                            <td>
+                                            </td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2247,50 +2276,48 @@ values and save state to prefs.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>handler for when an integer pref value has changed. ie: buildOut</p>
+                        <div class="io-description"><p>handler for when an integer pref value has changed. ie: buildOut</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>prefName</td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>prefName</td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>value</td>
-
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                        <tr>
+                                                <td>value</td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2301,7 +2328,7 @@ values and save state to prefs.</p>
                 <td class="col-md-4">
                     <a name="onMatchKeyCoreModeToggle"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onMatchKeyCoreModeToggle</b></span>
                         <a href="#onMatchKeyCoreModeToggle"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -2309,7 +2336,7 @@ values and save state to prefs.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onMatchKeyCoreModeToggle(isCoreMode: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
@@ -2319,47 +2346,45 @@ values and save state to prefs.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>when the user toggles the match key tokens scope control this
+                        <div class="io-description"><p>when the user toggles the match key tokens scope control this
 handler is invoked to copy all selections from one mode to the
 other and update the preferences with the new values.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>isCoreMode</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>isCoreMode</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2370,7 +2395,7 @@ other and update the preferences with the new values.</p>
                 <td class="col-md-4">
                     <a name="onMaxEntitiesValueChange"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onMaxEntitiesValueChange</b></span>
                         <a href="#onMaxEntitiesValueChange"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -2378,7 +2403,7 @@ other and update the preferences with the new values.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onMaxEntitiesValueChange(value)</code>
                 </td>
             </tr>
@@ -2389,38 +2414,36 @@ other and update the preferences with the new values.</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>value</td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>value</td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2431,7 +2454,7 @@ other and update the preferences with the new values.</p>
                 <td class="col-md-4">
                     <a name="onMaxUnlimitedChange"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onMaxUnlimitedChange</b></span>
                         <a href="#onMaxUnlimitedChange"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -2439,7 +2462,7 @@ other and update the preferences with the new values.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onMaxUnlimitedChange(prefKey: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
@@ -2449,58 +2472,56 @@ other and update the preferences with the new values.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>when the user selects either the scope or entity limit &quot;unlimited&quot; checkboxes
+                        <div class="io-description"><p>when the user selects either the scope or entity limit &quot;unlimited&quot; checkboxes
 this handler is invoked to set the appropriate preferences.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>prefKey</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>prefKey</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>value</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2527,56 +2548,54 @@ this handler is invoked to set the appropriate preferences.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>handler for when a filter by match key value in the &quot;filterByMatchKeysForm&quot; has changed</p>
+                        <div class="io-description"><p>handler for when a filter by match key value in the &quot;filterByMatchKeysForm&quot; has changed</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>mkValue</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>mkValue</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>evt</td>
-                                    <td>
-                                    </td>
-
-                                    <td>
-                                        Yes
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                        <tr>
+                                                <td>evt</td>
+                                            <td>
+                                            </td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2604,42 +2623,40 @@ this handler is invoked to set the appropriate preferences.</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>mkName</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>mkName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2666,45 +2683,43 @@ this handler is invoked to set the appropriate preferences.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>toggle all available match key tokens on or off</p>
+                        <div class="io-description"><p>toggle all available match key tokens on or off</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>selectAll</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>selectAll</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2715,7 +2730,7 @@ this handler is invoked to set the appropriate preferences.</p>
                 <td class="col-md-4">
                     <a name="shouldDataSourceBeDisplayed"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>shouldDataSourceBeDisplayed</b></span>
                         <a href="#shouldDataSourceBeDisplayed"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -2723,7 +2738,7 @@ this handler is invoked to set the appropriate preferences.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>shouldDataSourceBeDisplayed(dsName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -2733,45 +2748,43 @@ this handler is invoked to set the appropriate preferences.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>if &quot;showDataSources&quot; array is specified, check that string name is present in list</p>
+                        <div class="io-description"><p>if &quot;showDataSources&quot; array is specified, check that string name is present in list</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>dsName</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>dsName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2782,7 +2795,7 @@ this handler is invoked to set the appropriate preferences.</p>
                 <td class="col-md-4">
                     <a name="shouldMatchKeyBeDisplayed"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>shouldMatchKeyBeDisplayed</b></span>
                         <a href="#shouldMatchKeyBeDisplayed"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -2790,7 +2803,7 @@ this handler is invoked to set the appropriate preferences.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>shouldMatchKeyBeDisplayed(mkName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -2800,45 +2813,43 @@ this handler is invoked to set the appropriate preferences.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>if &quot;showMatchKeys&quot; array is specified, check that string name is present in list</p>
+                        <div class="io-description"><p>if &quot;showMatchKeys&quot; array is specified, check that string name is present in list</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>mkName</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>mkName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2849,7 +2860,7 @@ this handler is invoked to set the appropriate preferences.</p>
                 <td class="col-md-4">
                     <a name="shouldMatchKeyTokenBeDisplayed"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>shouldMatchKeyTokenBeDisplayed</b></span>
                         <a href="#shouldMatchKeyTokenBeDisplayed"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -2857,7 +2868,7 @@ this handler is invoked to set the appropriate preferences.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>shouldMatchKeyTokenBeDisplayed(mkName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -2867,45 +2878,43 @@ this handler is invoked to set the appropriate preferences.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>if &quot;showMatchKeys&quot; array is specified, check that string name is present in list</p>
+                        <div class="io-description"><p>if &quot;showMatchKeys&quot; array is specified, check that string name is present in list</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>mkName</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>mkName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -3312,7 +3321,9 @@ this handler is invoked to set the appropriate preferences.</p>
             Hide Indirect Links
             &lt;span #ttt2 class&#x3D;&quot;tooltip-text&quot;&gt;do not show inter-related first level links&lt;/span&gt;
           &lt;/span&gt;
-          &lt;span class&#x3D;&quot;left-adjusted no-text&quot;&gt;&lt;mat-checkbox class&#x3D;&quot;unpadded&quot; [checked]&#x3D;&quot;suppressL1InterLinks&quot; (change)&#x3D;&quot;onCheckboxPrefToggle(&#x27;suppressL1InterLinks&#x27;,$event.checked)&quot;&gt;&lt;/mat-checkbox&gt;&lt;/span&gt;
+          &lt;span class&#x3D;&quot;left-adjusted no-text&quot;&gt;
+            &lt;mat-checkbox class&#x3D;&quot;unpadded&quot; [checked]&#x3D;&quot;suppressL1InterLinks&quot; 
+            (change)&#x3D;&quot;onCheckboxPrefToggle(&#x27;suppressL1InterLinks&#x27;,$event.checked); onMatchKeyCoreModeToggle($event.checked)&quot;&gt;&lt;/mat-checkbox&gt;&lt;/span&gt;
         &lt;/div&gt;
       &lt;/label&gt;
     &lt;/li&gt;
@@ -3437,7 +3448,6 @@ this handler is invoked to set the appropriate preferences.</p>
           Active/Focused Enitity
           &lt;span #ttt6 class&#x3D;&quot;tooltip-text&quot;&gt;The color of the current entity or entities&lt;/span&gt;
         &lt;/span&gt;
-        &lt;small class&#x3D;&quot;note-sub&quot;&gt;(*note overrides datasource member color if selected)&lt;/small&gt;
       &lt;/label&gt;
     &lt;/li&gt;
   &lt;/ul&gt;
@@ -3479,10 +3489,10 @@ this handler is invoked to set the appropriate preferences.</p>
         [&lt;span (click)&#x3D;&quot;onSelectAllMatchKeyTokens(true)&quot;&gt;All On&lt;/span&gt; | &lt;span (click)&#x3D;&quot;onSelectAllMatchKeyTokens(false)&quot;&gt;All Off&lt;/span&gt;]
       &lt;/div&gt;
     &lt;/div&gt;
-    &lt;mat-slide-toggle 
+    &lt;!--&lt;mat-slide-toggle 
       class&#x3D;&quot;match-key-token-mode-select&quot; 
       [checked]&#x3D;&quot;isMatchKeyTokenSelectionScopeCore&quot;
-      (change)&#x3D;&quot;onMatchKeyCoreModeToggle($event.checked)&quot;&gt;Directly Related Only&lt;/mat-slide-toggle&gt;
+      (change)&#x3D;&quot;onMatchKeyCoreModeToggle($event.checked)&quot;&gt;Directly Related Only&lt;/mat-slide-toggle&gt;--&gt;
     &lt;mat-chip-listbox 
       #matchKeyChipList
       multiple
@@ -3490,7 +3500,7 @@ this handler is invoked to set the appropriate preferences.</p>
       aria-orientation&#x3D;&quot;vertical&quot; 
       aria-label&#x3D;&quot;Match Key Filters&quot;&gt;
       
-      &lt;div *ngIf&#x3D;&quot;isMatchKeyTokenSelectionScopeCore&quot; class&#x3D;&quot;chip-group core&quot;&gt;
+      &lt;div *ngIf&#x3D;&quot;suppressL1InterLinks&quot; class&#x3D;&quot;chip-group core&quot;&gt;
         &lt;!--matchKeyCoreTokensIncluded: {{matchKeyCoreTokensIncluded}}&lt;br/&gt;--&gt;
         &lt;mat-chip-option *ngFor&#x3D;&quot;let mk of matchKeyCoreTokens; let i &#x3D; index&quot;
           class&#x3D;&quot;core-key&quot;
@@ -3504,7 +3514,8 @@ this handler is invoked to set the appropriate preferences.</p>
           {{mk.name}}
         &lt;/mat-chip-option&gt;
       &lt;/div&gt;
-      &lt;div *ngIf&#x3D;&quot;!isMatchKeyTokenSelectionScopeCore&quot; class&#x3D;&quot;chip-group extraneous&quot;&gt;
+      &lt;div *ngIf&#x3D;&quot;!suppressL1InterLinks&quot; class&#x3D;&quot;chip-group extraneous&quot;&gt;
+        &lt;!--matchKeyTokensIncluded: {{matchKeyTokensIncluded}}&lt;br/&gt;--&gt;
         &lt;mat-chip-option *ngFor&#x3D;&quot;let mk of matchKeyTokens; let i &#x3D; index&quot;
           class&#x3D;&quot;extra-key&quot;
           [class.selected]&#x3D;&quot;isMatchKeyTokenSelected(mk.name)&quot;
@@ -3841,9 +3852,9 @@ this handler is invoked to set the appropriate preferences.</p>
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><!-- start graph filtering tooltip template --><ng-template #tooltip let-tooltipMessage>  <span class="sz-sdk-tooltip tooltip-left">{{tooltipMessage}}</span></ng-template><!-- end   graph filtering tooltip template --><div class="drawer-wrapper">  <h3>{{ sectionTitles[0] }}</h3>  <form [formGroup]="slidersForm">  <ul class="sliders-list">    <li class="block-level-src no-text-selection" (mouseenter)="onShowTooltip(ttt1.innerHTML, $event)" (mouseleave)="hideTooltip(ttt1.innerHTML)">      <label class="checkbox-row">        <div class="checkbox-row">          <span>            Show Match Keys            <span #ttt1 class="tooltip-text">display match keys on relationship lines</span>          </span>          <span class="left-adjusted no-text"><mat-checkbox class="unpadded" [checked]="showLinkLabels" (change)="onCheckboxPrefToggle(\'showLinkLabels\',$event.checked)"></mat-checkbox></span>        </div>      </label>    </li>    <!--<li class="block-level-src no-text-selection">      <span class="tooltip">do not show inter-related first level links</span>      <label>        <input type="checkbox"          id="sz-graph-toggle-l1-link" name="sz-graph-toggle-l1-links"          [checked]="suppressL1InterLinks"          (change)="onCheckboxPrefToggle(\'suppressL1InterLinks\',$event)">        Suppress Indirect Links      </label>    </li>-->    <li class="block-level-src no-text-selection" (mouseenter)="onShowTooltip(ttt2.innerHTML, $event)" (mouseleave)="hideTooltip(ttt2.innerHTML)">      <label class="checkbox-row">        <div class="checkbox-row">          <span cclass="has-tooltip">            Hide Indirect Links            <span #ttt2 class="tooltip-text">do not show inter-related first level links</span>          </span>          <span class="left-adjusted no-text"><mat-checkbox class="unpadded" [checked]="suppressL1InterLinks" (change)="onCheckboxPrefToggle(\'suppressL1InterLinks\',$event.checked)"></mat-checkbox></span>        </div>      </label>    </li>    <li class="block-level-src no-text-selection" (mouseenter)="onShowTooltip(ttt3.innerHTML, $event)" (mouseleave)="hideTooltip(ttt3.innerHTML)">      <label class="checkbox-row">        <div class="checkbox-row">          <span>            Scope            <span #ttt3 class="tooltip-text">number of relationship hops away from focused entity</span>          </span>          <span class="left-adjusted"><mat-checkbox class="unpadded" [checked]="unlimitedMaxScope" (change)="onMaxUnlimitedChange(\'unlimitedMaxScope\',$event.checked)">unlimited</mat-checkbox></span>        </div>      </label>      <label class="slider-row" *ngIf="!unlimitedMaxScope">        <mat-slider style="width: 100%" min="1" [max]="buildOutMax"         [disabled]="unlimitedMaxScope"         #ngSlider><input matSliderThumb [value]="buildOut" (change)="onIntParameterChange(\'buildOut\', {source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value}.value)" #ngSliderThumb="matSliderThumb" /></mat-slider>        <!--<input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut"           (change)="onIntParameterChange(\'buildOut\', getValueFromEventTarget($event))" required>-->        <span class="intVal">({{ buildOut }})</span>      </label>    </li>    <li class="block-level-src no-text-selection" *ngIf="showMaxEntities" (mouseenter)="onShowTooltip(ttt4.innerHTML, $event)" (mouseleave)="hideTooltip(ttt4.innerHTML)">      <label class="checkbox-row">        <div class="checkbox-row">          <span>            Max            <span #ttt4 class="tooltip-text">hard limit on how many entities will be displayed</span>          </span>          <span class="left-adjusted"><mat-checkbox class="unpadded" [checked]="unlimitedMaxEntities" (change)="onMaxUnlimitedChange(\'unlimitedMaxEntities\',$event.checked)">unlimited</mat-checkbox></span>        </div>      </label>      <label class="slider-row" *ngIf="!unlimitedMaxEntities" style="display: flex; flex-direction: row; justify-content: space-between; align-content: center; flex-wrap: nowrap; align-items: center;">        <mat-slider style="width: 100%" min="1" [max]="maxEntitiesLimit + 3" step="3"         [disabled]="unlimitedMaxEntities"         #ngSlider><input matSliderThumb [value]="maxEntities" (change)="onIntParameterChange(\'maxEntities\', {source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value}.value)" #ngSliderThumb="matSliderThumb" /></mat-slider>        <!--<input type="range"           min="1" [max]="maxEntitiesLimit + 3"           [disabled]="true"          [value]="maxEntities" formControlName="maxEntities"           (change)="onIntParameterChange(\'maxEntities\', getValueFromEventTarget($event))" required>-->                <span style="white-space: nowrap;">({{ maxEntitiesValueLabel }}) of {{ maxEntitiesLimit }}</span>      </label>    </li>    <li *ngIf="showMaxDegreesOfSeparation" (mouseenter)="onShowTooltip(ttt5.innerHTML, $event)" (mouseleave)="hideTooltip(ttt5.innerHTML)">      <label>        <div>          <span>            Degrees            <span #ttt5 class="tooltip-text">maximum degrees of separation between nodes and focus</span>          </span>        </div>        <input type="range" min="1" max="5" [value]="maxDegreesOfSeparation" formControlName="maxDegreesOfSeparation"           (change)="onIntParameterChange(\'maxDegreesOfSeparation\', getValueFromEventTarget($event))" required>        <span class="intVal">({{ maxDegreesOfSeparation }})</span>      </label>    </li>  </ul>  </form>  <hr>  <h3 (mouseenter)="onShowTooltip(\'Only display entities that are in the selected datasource(s)\', $event)" (mouseleave)="hideTooltip()">{{ sectionTitles[1] }}</h3>  <form [formGroup]="filterByDataSourcesForm">  <ul class="filters-list">    <ng-container *ngFor="let ds of filterByDataSourcesData.controls; let i = index">        <ng-container *ngIf="shouldDataSourceBeDisplayed(dataSources[i].name)">            <li formArrayName="datasources">              <label>                <input type="checkbox" [formControlName]="i"                   (change)="onDsFilterChange(dataSources[i].name, $event)">{{dataSources[i].name}}              </label>            </li>        </ng-container>    </ng-container>  </ul>  </form>  <hr>  <h3>{{ sectionTitles[2] }}</h3>  <ul class="colors-list">    <li class="color-box" (mouseenter)="onShowTooltip(\'select color(s) for relationship lines that are directly related to the focal entity\', $event)" (mouseleave)="hideTooltip()">      <div class="color-box-placeholder"></div>      <label>        <input type="color" [(ngModel)]="linkColor" [style.background-color]="linkColor" (change)="onColorParameterChange(\'linkColor\', getValueFromEventTarget($event))">        Directly Related      </label>    </li>    <li class="color-box" (mouseenter)="onShowTooltip(\'select color(s) for relationship lines that are not directly related to the focal entity\', $event)" (mouseleave)="hideTooltip()">      <div class="color-box-placeholder"></div>      <label>        <input type="color" [(ngModel)]="indirectLinkColor" [style.background-color]="indirectLinkColor" (change)="onColorParameterChange(\'indirectLinkColor\', getValueFromEventTarget($event))">        Indirectly Related      </label>    </li>  </ul>  <hr>  <h3 class="no-text-selection" (mouseover)="onShowTooltip(\'select color(s) for entities that are present in selected datasource(s)\', $event)" (mouseout)="hideTooltip(\'select color(s) for entities that are present in selected datasource(s)\')">{{ sectionTitles[3] }}</h3>  <ul cdkDropList class="colors-list" (cdkDropListDropped)="onColorOrderDrop($event)">    <ng-container *ngFor="let ds of dataSourceColors; let i = index">      <li class="color-box" *ngIf="shouldDataSourceBeDisplayed(ds.name)" cdkDrag [cdkDragData]="ds.name">        <div class="color-box-placeholder" *cdkDragPlaceholder></div>        <label>          <input type="color" [(ngModel)]="ds.color" [style.background-color]="getDataSourceColor(ds.name)" (change)="onDsColorChange(ds.name, $event.target, $event)">          {{ds.name}}        </label>        <div class="color-box-handle" cdkDragHandle>          <mat-icon aria-hidden="false" aria-label="drag option">drag_handle</mat-icon>        </div>      </li>    </ng-container>  </ul>  <hr>  <h3>{{ sectionTitles[4] }}</h3>  <form [formGroup]="colorsMiscForm">  <ul class="other-colors-list">    <li class="no-text-selection" (mouseover)="onShowTooltip(ttt6.innerHTML, $event)" (mouseout)="hideTooltip(ttt6.innerHTML)">      <label>        <input #queriedNodesColorInput formControlName="queriedEntitiesColor" type="color" [style.background-color]="queriedNodesColorInput.value"           (change)="onColorParameterChange(\'queriedEntitiesColor\', getValueFromEventTarget($event))">        <span class="block-level-src">          Active/Focused Enitity          <span #ttt6 class="tooltip-text">The color of the current entity or entities</span>        </span>        <small class="note-sub">(*note overrides datasource member color if selected)</small>      </label>    </li>  </ul>  </form>  <div *ngIf="showMatchKeys && showMatchKeyFilters">    <hr>    <h3>      {{ sectionTitles[5] }}    </h3>    <form [formGroup]="filterByMatchKeysForm">    <ul class="filters-list">      <ng-container *ngFor="let ds of filterByMatchKeysData.controls; let i = index">          <ng-container *ngIf="shouldMatchKeyBeDisplayed(matchKeys[i].name)">              <li formArrayName="matchkeys">                <label>                  <input type="checkbox" [formControlName]="i" (change)="onMkFilterChange(matchKeys[i].name, $event)">{{matchKeys[i].name}}                </label>              </li>          </ng-container>      </ng-container>    </ul>    </form>  </div>  <!--  showMatchKeyTokens: {{showMatchKeyTokens}}<br/>  showMatchKeyTokenFilters: {{showMatchKeyTokenFilters}}<br/>  showMatchKeyTokenSelectAll: {{showMatchKeyTokenSelectAll}}<br/>  showCoreMatchKeyTokenChips: {{showCoreMatchKeyTokenChips}}<br/>  showExtraneousMatchKeyTokenChips: {{showExtraneousMatchKeyTokenChips}}<br/>  isMatchKeyTokenSelectionScopeCore: {{isMatchKeyTokenSelectionScopeCore}}  -->  <div *ngIf="showMatchKeyTokens && showMatchKeyTokenFilters">    <hr>    <div class="filter-header match-key-token-filter-header">      <h3>        {{ sectionTitles[6] }}      </h3>      <div *ngIf="showMatchKeyTokenSelectAll" class="bulk-select-options">        [<span (click)="onSelectAllMatchKeyTokens(true)">All On</span> | <span (click)="onSelectAllMatchKeyTokens(false)">All Off</span>]      </div>    </div>    <mat-slide-toggle       class="match-key-token-mode-select"       [checked]="isMatchKeyTokenSelectionScopeCore"      (change)="onMatchKeyCoreModeToggle($event.checked)">Directly Related Only</mat-slide-toggle>    <mat-chip-listbox       #matchKeyChipList      multiple      class="match-keys mat-chip-list-stacked"       aria-orientation="vertical"       aria-label="Match Key Filters">            <div *ngIf="isMatchKeyTokenSelectionScopeCore" class="chip-group core">        <!--matchKeyCoreTokensIncluded: {{matchKeyCoreTokensIncluded}}<br/>-->        <mat-chip-option *ngFor="let mk of matchKeyCoreTokens; let i = index"          class="core-key"          [class.selected]="isMatchKeyCoreTokenSelected(mk.name)"          (click)="onCoreMkTagFilterToggle(mk.name)"          disableRipple="true"          leadingIcon="false"          [matBadge]="getMKBadgeCount(mk.coreCount)"           matBadgePosition="after"           matBadgeColor="accent">          {{mk.name}}        </mat-chip-option>      </div>      <div *ngIf="!isMatchKeyTokenSelectionScopeCore" class="chip-group extraneous">        <mat-chip-option *ngFor="let mk of matchKeyTokens; let i = index"          class="extra-key"          [class.selected]="isMatchKeyTokenSelected(mk.name)"          (click)="onMkTagFilterToggle(mk.name)"          disableRipple="true"          leadingIcon="false"          [matBadge]="getMKBadgeCount(mk.count)" matBadgePosition="after" matBadgeColor="accent">          {{mk.name}}        </mat-chip-option>      </div>    </mat-chip-listbox>    <!--<form [formGroup]="filterByMatchKeyTokensForm">    <ul class="filters-list">      <ng-container *ngFor="let ds of filterByMatchKeyTokenData.controls; let i = index">          <ng-container *ngIf="shouldMatchKeyTokenBeDisplayed(matchKeyTokens[i].name)">              <li formArrayName="matchkeytokens">                <label>                  <input type="checkbox" [formControlName]="i" (change)="onMkTagFilterChange(matchKeyTokens[i].name, $event)">{{matchKeyTokens[i].name}}                </label>              </li>          </ng-container>      </ng-container>    </ul>    </form>-->  </div></div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
-    var DIRECTIVES = [];
+        var COMPONENT_TEMPLATE = '<div><!-- start graph filtering tooltip template --><ng-template #tooltip let-tooltipMessage>  <span class="sz-sdk-tooltip tooltip-left">{{tooltipMessage}}</span></ng-template><!-- end   graph filtering tooltip template --><div class="drawer-wrapper">  <h3>{{ sectionTitles[0] }}</h3>  <form [formGroup]="slidersForm">  <ul class="sliders-list">    <li class="block-level-src no-text-selection" (mouseenter)="onShowTooltip(ttt1.innerHTML, $event)" (mouseleave)="hideTooltip(ttt1.innerHTML)">      <label class="checkbox-row">        <div class="checkbox-row">          <span>            Show Match Keys            <span #ttt1 class="tooltip-text">display match keys on relationship lines</span>          </span>          <span class="left-adjusted no-text"><mat-checkbox class="unpadded" [checked]="showLinkLabels" (change)="onCheckboxPrefToggle(\'showLinkLabels\',$event.checked)"></mat-checkbox></span>        </div>      </label>    </li>    <!--<li class="block-level-src no-text-selection">      <span class="tooltip">do not show inter-related first level links</span>      <label>        <input type="checkbox"          id="sz-graph-toggle-l1-link" name="sz-graph-toggle-l1-links"          [checked]="suppressL1InterLinks"          (change)="onCheckboxPrefToggle(\'suppressL1InterLinks\',$event)">        Suppress Indirect Links      </label>    </li>-->    <li class="block-level-src no-text-selection" (mouseenter)="onShowTooltip(ttt2.innerHTML, $event)" (mouseleave)="hideTooltip(ttt2.innerHTML)">      <label class="checkbox-row">        <div class="checkbox-row">          <span cclass="has-tooltip">            Hide Indirect Links            <span #ttt2 class="tooltip-text">do not show inter-related first level links</span>          </span>          <span class="left-adjusted no-text">            <mat-checkbox class="unpadded" [checked]="suppressL1InterLinks"             (change)="onCheckboxPrefToggle(\'suppressL1InterLinks\',$event.checked); onMatchKeyCoreModeToggle($event.checked)"></mat-checkbox></span>        </div>      </label>    </li>    <li class="block-level-src no-text-selection" (mouseenter)="onShowTooltip(ttt3.innerHTML, $event)" (mouseleave)="hideTooltip(ttt3.innerHTML)">      <label class="checkbox-row">        <div class="checkbox-row">          <span>            Scope            <span #ttt3 class="tooltip-text">number of relationship hops away from focused entity</span>          </span>          <span class="left-adjusted"><mat-checkbox class="unpadded" [checked]="unlimitedMaxScope" (change)="onMaxUnlimitedChange(\'unlimitedMaxScope\',$event.checked)">unlimited</mat-checkbox></span>        </div>      </label>      <label class="slider-row" *ngIf="!unlimitedMaxScope">        <mat-slider style="width: 100%" min="1" [max]="buildOutMax"         [disabled]="unlimitedMaxScope"         #ngSlider><input matSliderThumb [value]="buildOut" (change)="onIntParameterChange(\'buildOut\', {source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value}.value)" #ngSliderThumb="matSliderThumb" /></mat-slider>        <!--<input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut"           (change)="onIntParameterChange(\'buildOut\', getValueFromEventTarget($event))" required>-->        <span class="intVal">({{ buildOut }})</span>      </label>    </li>    <li class="block-level-src no-text-selection" *ngIf="showMaxEntities" (mouseenter)="onShowTooltip(ttt4.innerHTML, $event)" (mouseleave)="hideTooltip(ttt4.innerHTML)">      <label class="checkbox-row">        <div class="checkbox-row">          <span>            Max            <span #ttt4 class="tooltip-text">hard limit on how many entities will be displayed</span>          </span>          <span class="left-adjusted"><mat-checkbox class="unpadded" [checked]="unlimitedMaxEntities" (change)="onMaxUnlimitedChange(\'unlimitedMaxEntities\',$event.checked)">unlimited</mat-checkbox></span>        </div>      </label>      <label class="slider-row" *ngIf="!unlimitedMaxEntities" style="display: flex; flex-direction: row; justify-content: space-between; align-content: center; flex-wrap: nowrap; align-items: center;">        <mat-slider style="width: 100%" min="1" [max]="maxEntitiesLimit + 3" step="3"         [disabled]="unlimitedMaxEntities"         #ngSlider><input matSliderThumb [value]="maxEntities" (change)="onIntParameterChange(\'maxEntities\', {source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value}.value)" #ngSliderThumb="matSliderThumb" /></mat-slider>        <!--<input type="range"           min="1" [max]="maxEntitiesLimit + 3"           [disabled]="true"          [value]="maxEntities" formControlName="maxEntities"           (change)="onIntParameterChange(\'maxEntities\', getValueFromEventTarget($event))" required>-->                <span style="white-space: nowrap;">({{ maxEntitiesValueLabel }}) of {{ maxEntitiesLimit }}</span>      </label>    </li>    <li *ngIf="showMaxDegreesOfSeparation" (mouseenter)="onShowTooltip(ttt5.innerHTML, $event)" (mouseleave)="hideTooltip(ttt5.innerHTML)">      <label>        <div>          <span>            Degrees            <span #ttt5 class="tooltip-text">maximum degrees of separation between nodes and focus</span>          </span>        </div>        <input type="range" min="1" max="5" [value]="maxDegreesOfSeparation" formControlName="maxDegreesOfSeparation"           (change)="onIntParameterChange(\'maxDegreesOfSeparation\', getValueFromEventTarget($event))" required>        <span class="intVal">({{ maxDegreesOfSeparation }})</span>      </label>    </li>  </ul>  </form>  <hr>  <h3 (mouseenter)="onShowTooltip(\'Only display entities that are in the selected datasource(s)\', $event)" (mouseleave)="hideTooltip()">{{ sectionTitles[1] }}</h3>  <form [formGroup]="filterByDataSourcesForm">  <ul class="filters-list">    <ng-container *ngFor="let ds of filterByDataSourcesData.controls; let i = index">        <ng-container *ngIf="shouldDataSourceBeDisplayed(dataSources[i].name)">            <li formArrayName="datasources">              <label>                <input type="checkbox" [formControlName]="i"                   (change)="onDsFilterChange(dataSources[i].name, $event)">{{dataSources[i].name}}              </label>            </li>        </ng-container>    </ng-container>  </ul>  </form>  <hr>  <h3>{{ sectionTitles[2] }}</h3>  <ul class="colors-list">    <li class="color-box" (mouseenter)="onShowTooltip(\'select color(s) for relationship lines that are directly related to the focal entity\', $event)" (mouseleave)="hideTooltip()">      <div class="color-box-placeholder"></div>      <label>        <input type="color" [(ngModel)]="linkColor" [style.background-color]="linkColor" (change)="onColorParameterChange(\'linkColor\', getValueFromEventTarget($event))">        Directly Related      </label>    </li>    <li class="color-box" (mouseenter)="onShowTooltip(\'select color(s) for relationship lines that are not directly related to the focal entity\', $event)" (mouseleave)="hideTooltip()">      <div class="color-box-placeholder"></div>      <label>        <input type="color" [(ngModel)]="indirectLinkColor" [style.background-color]="indirectLinkColor" (change)="onColorParameterChange(\'indirectLinkColor\', getValueFromEventTarget($event))">        Indirectly Related      </label>    </li>  </ul>  <hr>  <h3 class="no-text-selection" (mouseover)="onShowTooltip(\'select color(s) for entities that are present in selected datasource(s)\', $event)" (mouseout)="hideTooltip(\'select color(s) for entities that are present in selected datasource(s)\')">{{ sectionTitles[3] }}</h3>  <ul cdkDropList class="colors-list" (cdkDropListDropped)="onColorOrderDrop($event)">    <ng-container *ngFor="let ds of dataSourceColors; let i = index">      <li class="color-box" *ngIf="shouldDataSourceBeDisplayed(ds.name)" cdkDrag [cdkDragData]="ds.name">        <div class="color-box-placeholder" *cdkDragPlaceholder></div>        <label>          <input type="color" [(ngModel)]="ds.color" [style.background-color]="getDataSourceColor(ds.name)" (change)="onDsColorChange(ds.name, $event.target, $event)">          {{ds.name}}        </label>        <div class="color-box-handle" cdkDragHandle>          <mat-icon aria-hidden="false" aria-label="drag option">drag_handle</mat-icon>        </div>      </li>    </ng-container>  </ul>  <hr>  <h3>{{ sectionTitles[4] }}</h3>  <form [formGroup]="colorsMiscForm">  <ul class="other-colors-list">    <li class="no-text-selection" (mouseover)="onShowTooltip(ttt6.innerHTML, $event)" (mouseout)="hideTooltip(ttt6.innerHTML)">      <label>        <input #queriedNodesColorInput formControlName="queriedEntitiesColor" type="color" [style.background-color]="queriedNodesColorInput.value"           (change)="onColorParameterChange(\'queriedEntitiesColor\', getValueFromEventTarget($event))">        <span class="block-level-src">          Active/Focused Enitity          <span #ttt6 class="tooltip-text">The color of the current entity or entities</span>        </span>      </label>    </li>  </ul>  </form>  <div *ngIf="showMatchKeys && showMatchKeyFilters">    <hr>    <h3>      {{ sectionTitles[5] }}    </h3>    <form [formGroup]="filterByMatchKeysForm">    <ul class="filters-list">      <ng-container *ngFor="let ds of filterByMatchKeysData.controls; let i = index">          <ng-container *ngIf="shouldMatchKeyBeDisplayed(matchKeys[i].name)">              <li formArrayName="matchkeys">                <label>                  <input type="checkbox" [formControlName]="i" (change)="onMkFilterChange(matchKeys[i].name, $event)">{{matchKeys[i].name}}                </label>              </li>          </ng-container>      </ng-container>    </ul>    </form>  </div>  <!--  showMatchKeyTokens: {{showMatchKeyTokens}}<br/>  showMatchKeyTokenFilters: {{showMatchKeyTokenFilters}}<br/>  showMatchKeyTokenSelectAll: {{showMatchKeyTokenSelectAll}}<br/>  showCoreMatchKeyTokenChips: {{showCoreMatchKeyTokenChips}}<br/>  showExtraneousMatchKeyTokenChips: {{showExtraneousMatchKeyTokenChips}}<br/>  isMatchKeyTokenSelectionScopeCore: {{isMatchKeyTokenSelectionScopeCore}}  -->  <div *ngIf="showMatchKeyTokens && showMatchKeyTokenFilters">    <hr>    <div class="filter-header match-key-token-filter-header">      <h3>        {{ sectionTitles[6] }}      </h3>      <div *ngIf="showMatchKeyTokenSelectAll" class="bulk-select-options">        [<span (click)="onSelectAllMatchKeyTokens(true)">All On</span> | <span (click)="onSelectAllMatchKeyTokens(false)">All Off</span>]      </div>    </div>    <!--<mat-slide-toggle       class="match-key-token-mode-select"       [checked]="isMatchKeyTokenSelectionScopeCore"      (change)="onMatchKeyCoreModeToggle($event.checked)">Directly Related Only</mat-slide-toggle>-->    <mat-chip-listbox       #matchKeyChipList      multiple      class="match-keys mat-chip-list-stacked"       aria-orientation="vertical"       aria-label="Match Key Filters">            <div *ngIf="suppressL1InterLinks" class="chip-group core">        <!--matchKeyCoreTokensIncluded: {{matchKeyCoreTokensIncluded}}<br/>-->        <mat-chip-option *ngFor="let mk of matchKeyCoreTokens; let i = index"          class="core-key"          [class.selected]="isMatchKeyCoreTokenSelected(mk.name)"          (click)="onCoreMkTagFilterToggle(mk.name)"          disableRipple="true"          leadingIcon="false"          [matBadge]="getMKBadgeCount(mk.coreCount)"           matBadgePosition="after"           matBadgeColor="accent">          {{mk.name}}        </mat-chip-option>      </div>      <div *ngIf="!suppressL1InterLinks" class="chip-group extraneous">        <!--matchKeyTokensIncluded: {{matchKeyTokensIncluded}}<br/>-->        <mat-chip-option *ngFor="let mk of matchKeyTokens; let i = index"          class="extra-key"          [class.selected]="isMatchKeyTokenSelected(mk.name)"          (click)="onMkTagFilterToggle(mk.name)"          disableRipple="true"          leadingIcon="false"          [matBadge]="getMKBadgeCount(mk.count)" matBadgePosition="after" matBadgeColor="accent">          {{mk.name}}        </mat-chip-option>      </div>    </mat-chip-listbox>    <!--<form [formGroup]="filterByMatchKeyTokensForm">    <ul class="filters-list">      <ng-container *ngFor="let ds of filterByMatchKeyTokenData.controls; let i = index">          <ng-container *ngIf="shouldMatchKeyTokenBeDisplayed(matchKeyTokens[i].name)">              <li formArrayName="matchkeytokens">                <label>                  <input type="checkbox" [formControlName]="i" (change)="onMkTagFilterChange(matchKeyTokens[i].name, $event)">{{matchKeyTokens[i].name}}                </label>              </li>          </ng-container>      </ng-container>    </ul>    </form>-->  </div></div></div>'
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzCrossSourceResultsDataTable', 'selector': 'sz-cross-source-results'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzLicenseInfoComponent', 'selector': 'sz-license'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzTooltipComponent', 'selector': 'sz-tooltip'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
+    var DIRECTIVES = [{'name': 'SzElementResizeObserverDirective', 'selector': '[onResize]'},{'name': 'SzTooltipDirective', 'selector': '[sz-tooltip]'}];
     var ACTUAL_COMPONENT = {'name': 'SzEntityDetailGraphFilterComponent'};
 </script>
 <script src="../js/tree.js"></script>
@@ -3893,6 +3904,19 @@ this handler is invoked to set the appropriate preferences.</p>
             var COMPODOC_CURRENT_PAGE_URL = 'SzEntityDetailGraphFilterComponent.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

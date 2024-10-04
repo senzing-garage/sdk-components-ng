@@ -12,10 +12,61 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">Senzing SDK Components</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">Senzing SDK Components</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -24,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -72,11 +123,11 @@
         <p>Provides a graphical search results component. Data can be provided a number of ways.
 The simplest of which is to bind the results input setter to the output of the
 <a href="../components/SzSearchComponent.html">SzSearchComponent</a> resultsChange event.</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) SzSearchComponent --&gt;
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) SzSearchComponent --&gt;
 &lt;sz-search
 name=&quot;Isa Creepr&quot;
 (resultsChange)=&quot;resultsOfSearch=$event&quot;&gt;&lt;/sz-search&gt;
-&lt;sz-search-results [results]=&quot;resultsOfSearch&quot;&gt;&lt;/sz-search-results&gt;</code></pre></div><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo --&gt;
+&lt;sz-search-results [results]=&quot;resultsOfSearch&quot;&gt;&lt;/sz-search-results&gt;</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo --&gt;
 &lt;sz-wc-search
 id=&quot;sz-search&quot;
 name=&quot;Isa Creepr&quot;&gt;&lt;/sz-wc-search&gt;
@@ -674,7 +725,7 @@ used for displaying the parameters being searched on above result list.</p>
                 <td class="col-md-4">
                     <a name="clearSelected"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>clearSelected</b></span>
                         <a href="#clearSelected"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -682,7 +733,7 @@ used for displaying the parameters being searched on above result list.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>clearSelected()</code>
                 </td>
             </tr>
@@ -692,13 +743,13 @@ used for displaying the parameters being searched on above result list.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>clear any selected entity results if &quot;_showWhyComparisonButton&quot; set to true</p>
+                        <div class="io-description"><p>clear any selected entity results if &quot;_showWhyComparisonButton&quot; set to true</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -709,7 +760,7 @@ used for displaying the parameters being searched on above result list.</p>
                 <td class="col-md-4">
                     <a name="isSelected"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>isSelected</b></span>
                         <a href="#isSelected"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -717,7 +768,7 @@ used for displaying the parameters being searched on above result list.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>isSelected(entityResult: SzAttributeSearchResult)</code>
                 </td>
             </tr>
@@ -727,45 +778,43 @@ used for displaying the parameters being searched on above result list.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>is a search result already selected</p>
+                        <div class="io-description"><p>is a search result already selected</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>entityResult</td>
-                                    <td>
-                                            <code>SzAttributeSearchResult</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>entityResult</td>
+                                            <td>
+                                                        <code>SzAttributeSearchResult</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -792,13 +841,13 @@ used for displaying the parameters being searched on above result list.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>unsubscribe when component is destroyed</p>
+                        <div class="io-description"><p>unsubscribe when component is destroyed</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -826,10 +875,10 @@ used for displaying the parameters being searched on above result list.</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -840,7 +889,7 @@ used for displaying the parameters being searched on above result list.</p>
                 <td class="col-md-4">
                     <a name="onCompareClick"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onCompareClick</b></span>
                         <a href="#onCompareClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -848,7 +897,7 @@ used for displaying the parameters being searched on above result list.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onCompareClick(evt: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
@@ -858,45 +907,43 @@ used for displaying the parameters being searched on above result list.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>when the compare button is clicked</p>
+                        <div class="io-description"><p>when the compare button is clicked</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>evt</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>evt</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -907,7 +954,7 @@ used for displaying the parameters being searched on above result list.</p>
                 <td class="col-md-4">
                     <a name="onComparisonModeActiveChange"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onComparisonModeActiveChange</b></span>
                         <a href="#onComparisonModeActiveChange"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -915,7 +962,7 @@ used for displaying the parameters being searched on above result list.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onComparisonModeActiveChange(isActive: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
@@ -925,45 +972,43 @@ used for displaying the parameters being searched on above result list.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>when the user clicks the multi-select button to enable/disable click to select behavior this handler is invoked</p>
+                        <div class="io-description"><p>when the user clicks the multi-select button to enable/disable click to select behavior this handler is invoked</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>isActive</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>isActive</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -974,7 +1019,7 @@ used for displaying the parameters being searched on above result list.</p>
                 <td class="col-md-4">
                     <a name="onComparisonModeToggleClick"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onComparisonModeToggleClick</b></span>
                         <a href="#onComparisonModeToggleClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -982,7 +1027,7 @@ used for displaying the parameters being searched on above result list.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onComparisonModeToggleClick(evt: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
@@ -992,46 +1037,44 @@ used for displaying the parameters being searched on above result list.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>for multi-select the user has to click the button to change the default row behavior from
+                        <div class="io-description"><p>for multi-select the user has to click the button to change the default row behavior from
 click-&gt;go to detail to click-&gt;select for comparison</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>evt</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>evt</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1042,7 +1085,7 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
                 <td class="col-md-4">
                     <a name="onHowClicked"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onHowClicked</b></span>
                         <a href="#onHowClicked"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1050,7 +1093,7 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onHowClicked(event: howClickEvent)</code>
                 </td>
             </tr>
@@ -1060,45 +1103,43 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>when the &quot;how&quot; button is clicked</p>
+                        <div class="io-description"><p>when the &quot;how&quot; button is clicked</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>event</td>
-                                    <td>
-                                            <code>howClickEvent</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                        <code>howClickEvent</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1109,7 +1150,7 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
                 <td class="col-md-4">
                     <a name="onResultClick"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onResultClick</b></span>
                         <a href="#onResultClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1117,7 +1158,7 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onResultClick(evt: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, resData: SzAttributeSearchResult)</code>
                 </td>
             </tr>
@@ -1127,57 +1168,55 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>DOM click handler which then triggers the &quot;resultClick&quot; event emitter.</p>
+                        <div class="io-description"><p>DOM click handler which then triggers the &quot;resultClick&quot; event emitter.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>evt</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>evt</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>resData</td>
-                                    <td>
-                                            <code>SzAttributeSearchResult</code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                        <tr>
+                                                <td>resData</td>
+                                            <td>
+                                                        <code>SzAttributeSearchResult</code>
+                                            </td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1188,7 +1227,7 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
                 <td class="col-md-4">
                     <a name="openWhyComparisonModalOnClick"></a>
                     <span class="name">
-                        <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>openWhyComparisonModalOnClick</b></span>
                         <a href="#openWhyComparisonModalOnClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1196,7 +1235,7 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>openWhyComparisonModalOnClick(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
@@ -1213,46 +1252,44 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>whether or not to automatically open a modal with the entity comparison on
+                        <div class="io-description"><p>whether or not to automatically open a modal with the entity comparison on
 &quot;Why&quot; button click. (disable for custom implementation/action)</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>value</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1263,7 +1300,7 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
                 <td class="col-md-4">
                     <a name="toggleSelected"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>toggleSelected</b></span>
                         <a href="#toggleSelected"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1271,7 +1308,7 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>toggleSelected(entityResult: SzAttributeSearchResult)</code>
                 </td>
             </tr>
@@ -1281,45 +1318,43 @@ click-&gt;go to detail to click-&gt;select for comparison</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>add entity to selection if not already in it. remove entity from selection if already in selection</p>
+                        <div class="io-description"><p>add entity to selection if not already in it. remove entity from selection if already in selection</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>entityResult</td>
-                                    <td>
-                                            <code>SzAttributeSearchResult</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>entityResult</td>
+                                            <td>
+                                                        <code>SzAttributeSearchResult</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2254,8 +2289,8 @@ used for displaying the parameters being searched on above result list.</p>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><div [class.select-mode-active]="entitySelectActive">    <!-- @senzing/sdk/search/sz-search-results -->    <div class="sz-search-results-head">      <div class="sz-search-results-total-summary">        <div class="sz-search-results-total" *ngIf="searchResults && searchValue">          <span class="sz-search-results-total-bold">{{searchResultsTotal}} Results </span>found for          <div>            <ng-container *ngFor="let attribute of attributeDisplay">{{attribute?.attr}}              <span *ngIf="attribute?.value">:</span>              <span class="sz-search-results-parameter-value">{{attribute?.value}}&nbsp;</span>            </ng-container>          </div>        </div>      </div>      <!-- start "entity select control" mechanism -->      <sz-button-multi-select *ngIf="showWhyComparisonButton"        (onSelectActiveChange)="onComparisonModeActiveChange($event)"        (onSelectedClick)="onCompareClick($event)"        [selectedCount]="this.selectedEntities.length"        aria-hidden="false"         aria-label="Select Entities for Why comparison"        text="Compare Entities"        selectedItemTypeSingular="entity"        selectedItemTypePlural="entities"        selectedActionVerb="why comparison"        selectedActionVerbCTA="compare Why"        mat-icon="compare_arrows"        ></sz-button-multi-select>      <!-- end "entity select control" mechanism -->    </div>    <!--<div *ngIf="entitySelectActive">      <ul>        <li *ngFor="let selectedEntity of this.selectedEntities; let i = index">          {{ selectedEntity.nameData }}        </li>      </ul>    </div>-->    <div class="search-result__section-header matches"      *ngIf="this.matches?.length > 0"><span>Matches</span></div>    <sz-search-result-card      class="matches"      *ngFor="let searchResult of this.matches; let i = index"      (click)="onResultClick($event, searchResult)"      (howClick)="onHowClicked($event)"      [searchResult]="searchResult"      [cardTitle]="\'Match\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys">    </sz-search-result-card>    <div class="search-result__section-header possible-match"      *ngIf="this.possibleMatches?.length > 0"><span>Possible Match</span></div>    <sz-search-result-card      class="possible-match"      *ngFor="let searchResult of this.possibleMatches; let i = index"      (click)="onResultClick($event, searchResult)"      (howClick)="onHowClicked($event)"      [searchResult]="searchResult"      [cardTitle]="\'Possible Matches\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys">    </sz-search-result-card>    <div class="search-result__section-header possibly-related"      *ngIf="this.discoveredRelationships?.length > 0"><span>Possibly Related</span></div>    <sz-search-result-card      class="possibly-related"      *ngFor="let searchResult of this.discoveredRelationships; let i = index"      (click)="onResultClick($event, searchResult)"      (howClick)="onHowClicked($event)"      [searchResult]="searchResult"      [cardTitle]="\'Discovered Relationships\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys">    </sz-search-result-card>    <div class="search-result__section-header name-only-matches"      *ngIf="this.nameOnlyMatches?.length > 0"><span>Name Only Matches</span></div>    <sz-search-result-card      class="name-only"      *ngFor="let searchResult of this.nameOnlyMatches; let i = index"      (click)="onResultClick($event, searchResult)"      (howClick)="onHowClicked($event)"      [searchResult]="searchResult"      [cardTitle]="\'Name Only Matches\'"      [class.selected]="isSelected(searchResult)"      [showDataSources]="showDataSources"      [showMatchKey]="showMatchKeys"></sz-search-result-card></div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
-    var DIRECTIVES = [];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzCrossSourceResultsDataTable', 'selector': 'sz-cross-source-results'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzLicenseInfoComponent', 'selector': 'sz-license'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzTooltipComponent', 'selector': 'sz-tooltip'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
+    var DIRECTIVES = [{'name': 'SzElementResizeObserverDirective', 'selector': '[onResize]'},{'name': 'SzTooltipDirective', 'selector': '[sz-tooltip]'}];
     var ACTUAL_COMPONENT = {'name': 'SzSearchResultsComponent'};
 </script>
 <script src="../js/tree.js"></script>
@@ -2305,6 +2340,19 @@ used for displaying the parameters being searched on above result list.</p>
             var COMPODOC_CURRENT_PAGE_URL = 'SzSearchResultsComponent.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

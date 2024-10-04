@@ -12,10 +12,61 @@
         <link rel="stylesheet" href="../../styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../../" class="navbar-brand">Senzing SDK Components</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../../" class="navbar-brand">Senzing SDK Components</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -24,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -69,7 +120,7 @@
 <p>All Web Component tag names are prefixed with <code>sz-wc</code>. This is to prevent tag namespace collision/pollution. When browsing any of the online documentation examples, and you see a tag start with <code>sz-</code>, just remember if you are using the <code>@senzing/sdk-components-web</code> package your tag name should start with <code>sz-wc</code> instead.</p>
 <p>The other main difference between the two implementations is that if using angular the attributes are <a href="https://en.wikipedia.org/wiki/Camel_case">Camel Case</a>, and if using web components the attributes are kabob case. See <a href="https://en.wikipedia.org/wiki/Letter_case#Special_case_styles">https://en.wikipedia.org/wiki/Letter_case#Special_case_styles</a></p>
 <p>When accessing a method or setter through the DOM on a web component programatically however, you access the setter/method in camel case ie:</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;sz-wc-standalone-graph
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;sz-wc-standalone-graph
     filter-width=&quot;320&quot;
     graph-ids=&quot;1,1001,1002&quot;
     show-pop-out-icon=&quot;false&quot;
@@ -87,8 +138,8 @@
 <h1>Compatibility</h1>
 <p>Any web page or application that can render web component tags can be enabled by adding the <code>@senzing/sdk-components-web</code> package to it&#39;s dependencies. The basic requirement is that the application hosting the tags can parse javascript and supports rendering custom component tags. All modern web browsers, some mobile browsers, and any native applications that support embedded web views should be able to render these components.</p>
 <p>Add the css file to your document:</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;/node_modules/\&#64;senzing/sdk-components-web/senzing-components-web.css&quot;&gt;</code></pre></div><p>Add the javascript to your document:</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;script src=&quot;/node_modules/\&#64;senzing/sdk-components-web/senzing-components-web.js&quot; defer&gt;&lt;/script&gt;</code></pre></div><div style="border-radius: 5px; border: 1px solid #000; padding: 8px; margin-top: 10px">
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;/node_modules/\&#64;senzing/sdk-components-web/senzing-components-web.css&quot;&gt;</code></pre></div><p>Add the javascript to your document:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;script src=&quot;/node_modules/\&#64;senzing/sdk-components-web/senzing-components-web.js&quot; defer&gt;&lt;/script&gt;</code></pre></div><div style="border-radius: 5px; border: 1px solid #000; padding: 8px; margin-top: 10px">
   <div><b>Note*</b></div>
   You may have to change the paths pointing to each of these files depending on how your application is layed out. These files can be moved to wherever your other assets are stored, the examples above are just directly referencing the files from the node modules location.
 </div>
@@ -124,6 +175,19 @@
             var COMPODOC_CURRENT_PAGE_URL = 'examples.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="../../js/libs/custom-elements.min.js"></script>
        <script src="../../js/libs/lit-html.js"></script>

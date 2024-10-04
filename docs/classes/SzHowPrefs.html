@@ -12,10 +12,61 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">Senzing SDK Components</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">Senzing SDK Components</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -24,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -74,14 +125,14 @@
 used by <a href="../injectables/SzPrefsService.html">SzPrefsService</a> to store it&#39;s
 How related prefs.
 Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsService</a> context, not on its own.</p>
-<div><pre class="line-numbers"><code class="language-html">this.prefs.how.showResolutionRule = true;</code></pre></div><div><pre class="line-numbers"><code class="language-html">this.prefs.graph.prefsChanged.subscribe( (prefs) =&gt; { console.log(&#39;how pref change happened.&#39;, prefs); })</code></pre></div>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">this.prefs.how.showResolutionRule = true;</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-html">this.prefs.graph.prefsChanged.subscribe( (prefs) =&gt; { console.log(&#39;how pref change happened.&#39;, prefs); })</code></pre></div>
             </p>
 
             <p class="comment">
                 <h3>Extends</h3>
             </p>
             <p class="comment">
-                        <code><a href="../classes/SzSdkPrefsBase.html" target="_self" >SzSdkPrefsBase</a></code>
+                            <code><a href="../classes/SzSdkPrefsBase.html" target="_self" >SzSdkPrefsBase</a></code>
             </p>
 
 
@@ -105,6 +156,10 @@ Should really be used from <a href="../injectables/SzPrefsService.html">SzPrefsS
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#bulkSet" >bulkSet</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#prefChanged" >prefChanged</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -268,6 +323,40 @@ not publish change events on every single value change</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="prefChanged"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>prefChanged</b></span>
+                        <a href="#prefChanged"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Subject&lt;literal type&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject&lt;{name: string, value: any}&gt;()</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>subject that can be subscribed to for INDIVIDUAL value change
+notifications.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="prefsChanged"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
@@ -337,7 +426,7 @@ notifications.</p>
                 <td class="col-md-4">
                     <a name="fromJSONObject"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>fromJSONObject</b></span>
                         <a href="#fromJSONObject"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -345,7 +434,7 @@ notifications.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>fromJSONObject(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -355,45 +444,43 @@ notifications.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>populate values by calling setters with the same names as json keys</p>
+                        <div class="io-description"><p>populate values by calling setters with the same names as json keys</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>value</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -404,7 +491,7 @@ notifications.</p>
                 <td class="col-md-4">
                     <a name="getPublicPropertiesSchema"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>getPublicPropertiesSchema</b></span>
                         <a href="#getPublicPropertiesSchema"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -412,7 +499,7 @@ notifications.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getPublicPropertiesSchema()</code>
                 </td>
             </tr>
@@ -422,13 +509,13 @@ notifications.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>gets an array of all public json properties and their types</p>
+                        <div class="io-description"><p>gets an array of all public json properties and their types</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>{}</code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -439,7 +526,7 @@ notifications.</p>
                 <td class="col-md-4">
                     <a name="toJSONObject"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>toJSONObject</b></span>
                         <a href="#toJSONObject"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -447,7 +534,7 @@ notifications.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>toJSONObject()</code>
                 </td>
             </tr>
@@ -457,13 +544,13 @@ notifications.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>get shallow JSON copy of object state. properties are filtered by members of <a href="jsonKeys">jsonKeys</a></p>
+                        <div class="io-description"><p>get shallow JSON copy of object state. properties are filtered by members of <a href="jsonKeys">jsonKeys</a></p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>{}</code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -474,7 +561,7 @@ notifications.</p>
                 <td class="col-md-4">
                     <a name="toJSONString"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>toJSONString</b></span>
                         <a href="#toJSONString"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -482,7 +569,7 @@ notifications.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>toJSONString()</code>
                 </td>
             </tr>
@@ -492,13 +579,13 @@ notifications.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>get object state representation as a string</p>
+                        <div class="io-description"><p>get object state representation as a string</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -628,6 +715,19 @@ notifications.</p>
             var COMPODOC_CURRENT_PAGE_URL = 'SzHowPrefs.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

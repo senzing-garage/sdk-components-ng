@@ -12,10 +12,61 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">Senzing SDK Components</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">Senzing SDK Components</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -24,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -75,17 +126,17 @@ the component updates the corresponding value through this service.</p>
 <p>representational state is published and responded to through this class.
 it is up to the end consumer what to do with this data. it is not stored anywhere
 other than in memory by default. the third example shows how to load from localstorage.</p>
-<div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService) {
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService) {
     this.prefs.prefsChanged.subscribe((prefs: SzSdkPrefsModel) =&gt; { console.log(&#39;prefs changed!&#39;, prefs); })
-}</code></pre></div><div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService) {
+}</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService) {
     currentState = this.prefs.toJSONObject();
-}</code></pre></div><div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService, Inject(LOCAL_STORAGE) private storage: StorageService) {
+}</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService, Inject(LOCAL_STORAGE) private storage: StorageService) {
     // get from ls
     let _ls = this.storage.get(&quot;name_of_local_storage_store&quot;);
     this.prefs.fromJSONString( _ls );
     // store in ls
     this.prefs.prefsChanged.subscribe((prefs: SzSdkPrefsModel) =&gt; { this.storage.set(&quot;name_of_local_storage_store&quot;, prefs); })
-}</code></pre></div><div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService) {
+}</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService) {
     // set graph to collapsed by default
     this.prefs.entityDetail.graphSectionCollapsed = true;
 }</code></pre></div>
@@ -113,6 +164,11 @@ other than in memory by default. the third example shows how to load from locals
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Optional</span>
+                                <a href="#dataMart" >dataMart</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Optional</span>
                                 <a href="#entityDetail" >entityDetail</a>
                             </li>
                             <li>
@@ -124,6 +180,10 @@ other than in memory by default. the third example shows how to load from locals
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Optional</span>
                                 <a href="#how" >how</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#prefChanged" >prefChanged</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -204,7 +264,7 @@ other than in memory by default. the third example shows how to load from locals
                 <td class="col-md-4">
                     <a name="fromJSONObject"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>fromJSONObject</b></span>
                         <a href="#fromJSONObject"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -212,7 +272,7 @@ other than in memory by default. the third example shows how to load from locals
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>fromJSONObject(value: <a href="../interfaces/SzSdkPrefsModel.html" target="_self">SzSdkPrefsModel</a>)</code>
                 </td>
             </tr>
@@ -222,45 +282,43 @@ other than in memory by default. the third example shows how to load from locals
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>populate values from JSON. bulk import basically.</p>
+                        <div class="io-description"><p>populate values from JSON. bulk import basically.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>value</td>
-                                    <td>
-                                                <code><a href="../interfaces/SzSdkPrefsModel.html" target="_self" >SzSdkPrefsModel</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="../interfaces/SzSdkPrefsModel.html" target="_self" >SzSdkPrefsModel</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -271,7 +329,7 @@ other than in memory by default. the third example shows how to load from locals
                 <td class="col-md-4">
                     <a name="fromJSONString"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>fromJSONString</b></span>
                         <a href="#fromJSONString"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -279,7 +337,7 @@ other than in memory by default. the third example shows how to load from locals
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>fromJSONString(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -289,8 +347,8 @@ other than in memory by default. the third example shows how to load from locals
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>populate objects and values from JSON. bulk import basically. example shows bulk importing from local storage.</p>
-<div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService, Inject(LOCAL_STORAGE) private storage: StorageService) {
+                        <div class="io-description"><p>populate objects and values from JSON. bulk import basically. example shows bulk importing from local storage.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService, Inject(LOCAL_STORAGE) private storage: StorageService) {
     // get from ls
     let _ls = this.storage.get( name_of_local_storage_store );
     this.prefs.fromJSONString( _ls );
@@ -298,53 +356,40 @@ other than in memory by default. the third example shows how to load from locals
     this.prefs.prefsChanged.subscribe((prefs: SzSdkPrefsModel) =&gt; { this.storage.set( name_of_local_storage_store, prefs); })
 }</code></pre></div></div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>value</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                        <b>Example :</b>
-                        <div>
-                            <pre class="line-numbers"><code class="language-html">// --- use SzPrefsService.fromJSONString() to set/get from localstorage
-constructor(private prefs: SzPrefsService, Inject(LOCAL_STORAGE) private storage: StorageService) {
-// get from ls
-let _ls = this.storage.get( name_of_local_storage_store );
-this.prefs.fromJSONString( _ls );
-// store in ls
-this.prefs.prefsChanged.subscribe((prefs: SzSdkPrefsModel) =&amp;gt; { this.storage.set( name_of_local_storage_store, prefs); })
-}</code></pre>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
                         </div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -355,7 +400,7 @@ this.prefs.prefsChanged.subscribe((prefs: SzSdkPrefsModel) =&amp;gt; { this.stor
                 <td class="col-md-4">
                     <a name="toJSONObject"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>toJSONObject</b></span>
                         <a href="#toJSONObject"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -363,7 +408,7 @@ this.prefs.prefsChanged.subscribe((prefs: SzSdkPrefsModel) =&amp;gt; { this.stor
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>toJSONObject()</code>
                 </td>
             </tr>
@@ -373,27 +418,19 @@ this.prefs.prefsChanged.subscribe((prefs: SzSdkPrefsModel) =&amp;gt; { this.stor
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>get shallow JSON copy of services object state by calling
+                        <div class="io-description"><p>get shallow JSON copy of services object state by calling
 same method on namespace members.</p>
-<div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService) {
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService) {
     currentState = this.prefs.toJSONObject();
 }</code></pre></div></div>
 
-                    <div>
-                        <b>Example :</b>
-                        <div>
-                            <pre class="line-numbers"><code class="language-html">constructor(private prefs: SzPrefsService) {
-    currentState = this.prefs.toJSONObject();
-}</code></pre>
-                        </div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../interfaces/SzSdkPrefsModel.html" target="_self" >SzSdkPrefsModel</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/SzSdkPrefsModel.html" target="_self" >SzSdkPrefsModel</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -404,7 +441,7 @@ same method on namespace members.</p>
                 <td class="col-md-4">
                     <a name="toJSONString"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>toJSONString</b></span>
                         <a href="#toJSONString"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -412,7 +449,7 @@ same method on namespace members.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>toJSONString()</code>
                 </td>
             </tr>
@@ -422,13 +459,13 @@ same method on namespace members.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>get a serialized JSON string from current instance. bulk export.</p>
+                        <div class="io-description"><p>get a serialized JSON string from current instance. bulk export.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -467,6 +504,40 @@ same method on namespace members.</p>
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>instance of <a href="../classes/SzAdminPrefs.html">SzAdminPrefs</a></p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dataMart"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>dataMart</b></span>
+                        <a href="#dataMart"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/SzDataMartPrefs.html" target="_self" >SzDataMartPrefs</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new SzDataMartPrefs()</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>instance of <a href="../classes/SzGraphPrefs.html">SzGraphPrefs</a></p>
 </div>
                 </td>
             </tr>
@@ -522,7 +593,7 @@ same method on namespace members.</p>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../classes/SzGraphPrefs.html" target="_self" >SzGraphPrefs</a></code>
+                        <i>Type : </i>        <code><a href="../classess/SzGraphPrefs.html" target="_self" >SzGraphPrefs</a></code>
 
                     </td>
                 </tr>
@@ -569,6 +640,39 @@ same method on namespace members.</p>
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>instance of <a href="../classes/SzHowPrefs.html">SzHowPrefs</a></p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prefChanged"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>prefChanged</b></span>
+                        <a href="#prefChanged"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Subject&lt;literal type&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject&lt;{name: string, value: any}&gt;()</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>subscribe for state change representation.</p>
 </div>
                 </td>
             </tr>
@@ -725,6 +829,19 @@ same method on namespace members.</p>
             var COMPODOC_CURRENT_PAGE_URL = 'SzPrefsService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
