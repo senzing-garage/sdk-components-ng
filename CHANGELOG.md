@@ -28,7 +28,6 @@ The 7.0.0 release features several new components that use the new DataMart inte
   - Added ` SzDecimalPercentPipe` to format percent values from decimal inputs.
 - License wiget showing the current license expiry, record limit and how close a particular install is to it's limits. #616
   - `SzLicenseInfoComponent` component to show the current expiration and limit of license and how many records have been loaded so far.
-
 - Venn Diagram cross-source comparison chart. Shows how many records of each type(duplicates, possible relations, disclosed etc) are present in each datasource selected and the amount of each present in both selected datasources(the overlapping part of the diagram). #614
   - `SzCrossSourceSummaryComponent` is responsible for drawing the five venn diagrams. each of which are instances of `SzVennDiagramsComponent`.
   - `SzVennDiagramsComponent` displays a single circle if only one datasource is selected, or two circles if two datasources are selected with the overlapping part of the circle being the  records that are present in both datasources.
@@ -39,8 +38,6 @@ The 7.0.0 release features several new components that use the new DataMart inte
   - `SzElementResizeObserverDirective` allows listening for resize events on dom elements. (used for setting the width of pulldowns to the same as the width of the visible pulldown control which is responsive)
 - Sample set Data Table. The new Data Table component shows a sampleset of particular types of records for a specific datasource or datasources and allows paging through the result set. #627
   - `SzTooltipComponent` tooltip that floats above collapsed or limited table cells spawned by the `SzTooltipDirective` attribute.
-  - ` SzCrossSourceResultsDataTable`
-  - `SzCrossSourceSelectComponent`
   - `SzOrderedMapEntries`
   - `SzDataMartPrefs` stores persistent preferences like default selected data sources, match level etc.
   - `SzDataTable` generic component that can be fed data and displays data with formatting in a tabular format.
@@ -70,7 +67,6 @@ The 7.0.0 release features several new components that use the new DataMart inte
 - `SzCrossSourceSummaryRequests`
 - `SzCrossSourceSummaryResponses`
 - `SzCrossSourceCount`
-
 
 relevant tickets: #588 #590 #592 #606 #608 #614 #616 #627 #690 #689
 
