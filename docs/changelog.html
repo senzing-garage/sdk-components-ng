@@ -12,10 +12,61 @@
         <link rel="stylesheet" href="./styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="./" class="navbar-brand">Senzing SDK Components</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="./" class="navbar-brand">Senzing SDK Components</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -24,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -36,6 +87,101 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 <a href="https://dlaa.me/markdownlint/">markdownlint</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<h2>[7.0.0] - 2024-10-04</h2>
+<p>The 7.0.0 release features several new components that use the new DataMart interface(statistics calculation api) made available only in the <a href="https://github.com/senzing-garage/senzing-poc-server">Senzing POC API Server</a>. Using the <a href="https://github.com/senzing-garage/senzing-api-server">Senzing REST API Sever</a> without the new components(data sample browsing, and datasource&#39;s summary, Cross-Source comparison) is still possible but not advised for brand new installations.</p>
+<h3>Modified</h3>
+<ul>
+<li>Why and Why Not reports now show scores for all scoring features regardless of match key inclusion. #686</li>
+<li>Graph datasource colors can now be unselected by choosing pure white or black using the color picker. #690</li>
+<li>Why not modal could not horizontally scroll properly. #588</li>
+<li>Graph filter switch for &quot;Directly Related Only&quot; removed in due to confusion between it and the &quot;Hide Indirect Links&quot; checkbox. #590</li>
+<li>On &quot;Why&quot; screen the best matching value should be at the top on the left. #592</li>
+<li>&quot;Re-Eval&quot; button incorrectly showing up for singleton entities in the detail widget. #606</li>
+</ul>
+<h3>Added</h3>
+<ul>
+<li><p>Donut chart that breaks down how many records have been loaded for each datasource. #608</p>
+<ul>
+<li>Added <code>SzRecordStatsDonutChart</code> component.</li>
+<li>Added <code>SzDataMartService</code> service to interact with poc-server endpoints</li>
+<li>Added <code>SzCountStatsForDataSourcesResponse</code>, <code>SzStatCountsForDataSources</code>, <code>SzRecordCountDataSource</code> models</li>
+<li>List widget that shows how many records have been loaded for each datasource.</li>
+<li>Added <code>SzShortNumberPipe</code> to display the amount of records in the shortest format ie 12060 records will show <code>12.1K</code> etc</li>
+<li>Added <code> SzDecimalPercentPipe</code> to format percent values from decimal inputs.</li>
+</ul>
+</li>
+<li><p>License wiget showing the current license expiry, record limit and how close a particular install is to it&#39;s limits. #616</p>
+<ul>
+<li><code>SzLicenseInfoComponent</code> component to show the current expiration and limit of license and how many records have been loaded so far.</li>
+</ul>
+</li>
+<li><p>Venn Diagram cross-source comparison chart. Shows how many records of each type(duplicates, possible relations, disclosed etc) are present in each datasource selected and the amount of each present in both selected datasources(the overlapping part of the diagram). #614</p>
+<ul>
+<li><code>SzCrossSourceSummaryComponent</code> is responsible for drawing the five venn diagrams. each of which are instances of <code>SzVennDiagramsComponent</code>.</li>
+<li><code>SzVennDiagramsComponent</code> displays a single circle if only one datasource is selected, or two circles if two datasources are selected with the overlapping part of the circle being the  records that are present in both datasources.</li>
+<li><code>SzCrossSourceStatistics</code> is a wrapper that contains both the <em>pulldowns</em> AND the <em>venn diagrams</em></li>
+<li><code>SzCrossSourceSelectComponent</code> - this is a component wrapper for the select pulldowns themselves that allow a user to select two datasources to display in the venn diagrams.</li>
+<li><code>SzDataMartService</code> the service used to coordinate between components which datasources are selected, make api requests, set preferences etc.</li>
+<li><code>SzDataMartPrefs</code> stores state for parameters of the service/components and emits on changes.</li>
+<li><code>SzElementResizeObserverDirective</code> allows listening for resize events on dom elements. (used for setting the width of pulldowns to the same as the width of the visible pulldown control which is responsive)</li>
+</ul>
+</li>
+<li><p>Sample set Data Table. The new Data Table component shows a sampleset of particular types of records for a specific datasource or datasources and allows paging through the result set. #627</p>
+<ul>
+<li><code>SzTooltipComponent</code> tooltip that floats above collapsed or limited table cells spawned by the <code>SzTooltipDirective</code> attribute.</li>
+<li><code> SzCrossSourceResultsDataTable</code></li>
+<li><code>SzCrossSourceSelectComponent</code></li>
+<li><code>SzOrderedMapEntries</code></li>
+<li><code>SzDataMartPrefs</code> stores persistent preferences like default selected data sources, match level etc.</li>
+<li><code>SzDataTable</code> generic component that can be fed data and displays data with formatting in a tabular format.</li>
+<li><code>SzCrossSourceResultsDataTable</code> extends <code>SzDataTable</code> with functions and properties specific to displaying the sample results of cross source analysis query.</li>
+<li><code>SzCrossSourcePagingComponent</code> is a paging component for navigating through the sampling data table results.</li>
+<li><code>SzCrossSourceStatistics</code> Wrapper component for the comparing stats of one datasource with their mutual stat type of another datasource. Uses the Venn Diagram chart to show the overlap and a special Data Table specific to displaying a sample set from the selected type of stats for the two selected data sources.</li>
+</ul>
+</li>
+<li><p>The following events types have been added:</p>
+<ul>
+<li><code>SzStatsSampleTableLoadingEvent</code></li>
+<li><code>SzCrossSourceSummarySelectionEvent</code></li>
+<li><code>SzCrossSourceSummarySelectionClickEvent</code></li>
+<li><code>sampleDataSourceChangeEvent</code></li>
+<li><code>SzStatSampleSetPageChangeEvent</code></li>
+<li><code>SzDataTableCellEvent</code></li>
+</ul>
+</li>
+<li><p>The following enums have been added:</p>
+<ul>
+<li><code>SzCrossSourceSummaryCategoryType</code></li>
+<li><code>SzStatSampleEntityTableRowType</code></li>
+<li><code>SzCrossSourceSummaryCategoryTypeToMatchLevel</code></li>
+</ul>
+</li>
+<li><p>The following models have been added:</p>
+</li>
+<li><p><code>SzStatSampleEntityTableItem</code></p>
+</li>
+<li><p><code>SzDataTableEntity</code></p>
+</li>
+<li><p><code>SzDataTableRelatedEntity</code></p>
+</li>
+<li><p><code>SzStatSampleEntityTableRowEntity</code></p>
+</li>
+<li><p><code>SzStatSampleEntityTableRow</code></p>
+</li>
+<li><p><code>SzDataTableRelationsPagingParameters</code></p>
+</li>
+<li><p><code>SzDataTableEntitiesPagingParameters</code></p>
+</li>
+<li><p><code>SzStatSampleSetParameters</code></p>
+</li>
+<li><p><code>SzCrossSourceSummaryRequests</code></p>
+</li>
+<li><p><code>SzCrossSourceSummaryResponses</code></p>
+</li>
+<li><p><code>SzCrossSourceCount</code></p>
+</li>
+</ul>
+<p>relevant tickets: #588 #590 #592 #606 #608 #614 #616 #627 #690 #689</p>
 <h2>[6.1.0] - 2023-09-06</h2>
 <p>The major feature being added for this release is the inclusion a a new &quot;How&quot; report component. The How api functions are meant to provide information on HOW records in an entity came together or were pushed apart during resolution. The Visual How component will illustrate the final entity and allow the user to walk back through the entities resolution steps, branching off when singletons are merged in or virtual entities are created from the result of previous record resolution steps.</p>
 <h3>Modified</h3>
@@ -455,7 +601,7 @@ and <a href="https://github.com/senzing-garage/senzing-rest-api-specification/bl
 <ul>
 <li><a href="https://github.com/senzing-garage/rest-api-client-ng/releases">API Client package</a> updated to version <a href="https://github.com/senzing-garage/rest-api-client-ng/releases/tag/2.3.0">2.3.0</a></li>
 <li>Compatibility updates for <a href="https://github.com/senzing-garage/senzing-rest-api-specification/blob/master/CHANGELOG.md#270---2021-07-22">Senzing OAS 2.7.0</a> specification</li>
-<li>Compatibility updates for <a href="https://github.com/senzing-garage/senzing-api-server/blob/master/CHANGELOG.md#270---2021-07-22">Senzing Rest Server@2.7.0</a></li>
+<li>Compatibility updates for <a href="https://github.com/senzing-garage/senzing-api-server/blob/main/CHANGELOG.md#270---2021-07-22">Senzing Rest Server@2.7.0</a></li>
 <li>Preferences has several models added to facilitate stateful storage of <strong>Stream Loading</strong> features found in the [POC Server] extensions:<ul>
 <li><code>AdminStreamConnProperties</code>, <code>AdminStreamAnalysisConfig</code>, <code>AdminStreamLoadConfig</code>, <code>AdminStreamUploadRates</code> in src/lib/models/data-admin.ts</li>
 <li><code>SzAdminPrefs</code> added to <code>src/lib/services/sz-prefs.service.ts</code></li>
@@ -800,6 +946,19 @@ see the following links for associated tickets:</p>
             var COMPODOC_CURRENT_PAGE_URL = 'changelog.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="./js/libs/custom-elements.min.js"></script>
        <script src="./js/libs/lit-html.js"></script>

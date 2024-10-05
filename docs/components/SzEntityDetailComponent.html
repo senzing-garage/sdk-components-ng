@@ -12,10 +12,61 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">Senzing SDK Components</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">Senzing SDK Components</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -24,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -71,14 +122,14 @@
     <p class="comment">
         <p>The Entity Detail Component.
 Generates a complex detail page from input parameters.</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;
 &lt;sz-entity-detail
   [showGraphMatchKeys]=&quot;true&quot;
   (entityIdChanged)=&quot;entityChangedHandler($event)&quot;
-  [entityId]=&quot;currentlySelectedEntityId&quot;&gt;&lt;/sz-entity-detail&gt;</code></pre></div><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) by attribute --&gt;
+  [entityId]=&quot;currentlySelectedEntityId&quot;&gt;&lt;/sz-entity-detail&gt;</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) by attribute --&gt;
 &lt;sz-wc-entity-detail
   show-graph-match-keys=&quot;true&quot;
-  entity-id=&quot;1002&quot;&gt;&lt;/sz-wc-entity-detail&gt;</code></pre></div><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) by DOM --&gt;
+  entity-id=&quot;1002&quot;&gt;&lt;/sz-wc-entity-detail&gt;</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) by DOM --&gt;
 &lt;sz-wc-entity-detail id=&quot;sz-ent-detail&quot;&gt;&lt;/sz-wc-entity-detail&gt;
 &lt;script&gt;
 document.getElementById(&#39;sz-ent-detail&#39;).entityId = 1002;
@@ -1017,7 +1068,7 @@ how report in the header will be disabled and will not emit the click event when
                     <td class="col-md-4">
                         <div class="io-description"><p>Takes a collection or a single value of layout enum css classnames to pass
 to all children components. this value overrides auto-responsive css adjustments.</p>
-<div><pre class="line-numbers"><code class="language-html"></code></pre></div></div>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"></code></pre></div></div>
                     </td>
                 </tr>
             </tbody>
@@ -2518,7 +2569,7 @@ or multi-select operations.</p>
                 <td class="col-md-4">
                     <a name="hideGraphEntity"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>hideGraphEntity</b></span>
                         <a href="#hideGraphEntity"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -2526,7 +2577,7 @@ or multi-select operations.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>hideGraphEntity(entityId: SzEntityIdentifier)</code>
                 </td>
             </tr>
@@ -2536,45 +2587,43 @@ or multi-select operations.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>remove single node and any directly related nodes that are only related to the entity specified</p>
+                        <div class="io-description"><p>remove single node and any directly related nodes that are only related to the entity specified</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>entityId</td>
-                                    <td>
-                                            <code>SzEntityIdentifier</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>entityId</td>
+                                            <td>
+                                                        <code>SzEntityIdentifier</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2585,7 +2634,7 @@ or multi-select operations.</p>
                 <td class="col-md-4">
                     <a name="hideGraphEntityRelationships"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>hideGraphEntityRelationships</b></span>
                         <a href="#hideGraphEntityRelationships"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -2593,7 +2642,7 @@ or multi-select operations.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>hideGraphEntityRelationships(entityId: SzEntityIdentifier)</code>
                 </td>
             </tr>
@@ -2603,46 +2652,44 @@ or multi-select operations.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>hide all visible(expanded) entities related to a specific entity
+                        <div class="io-description"><p>hide all visible(expanded) entities related to a specific entity
 that are themselves not related to any other visible entities</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>entityId</td>
-                                    <td>
-                                            <code>SzEntityIdentifier</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>entityId</td>
+                                            <td>
+                                                        <code>SzEntityIdentifier</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2653,7 +2700,7 @@ that are themselves not related to any other visible entities</p>
                 <td class="col-md-4">
                     <a name="isGraphEntityRemovable"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>isGraphEntityRemovable</b></span>
                         <a href="#isGraphEntityRemovable"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -2661,7 +2708,7 @@ that are themselves not related to any other visible entities</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>isGraphEntityRemovable(entityId: SzEntityIdentifier)</code>
                 </td>
             </tr>
@@ -2671,45 +2718,43 @@ that are themselves not related to any other visible entities</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>can a specific entity node be removed from canvas</p>
+                        <div class="io-description"><p>can a specific entity node be removed from canvas</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>entityId</td>
-                                    <td>
-                                            <code>SzEntityIdentifier</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>entityId</td>
+                                            <td>
+                                                        <code>SzEntityIdentifier</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2737,10 +2782,10 @@ that are themselves not related to any other visible entities</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -2767,13 +2812,13 @@ that are themselves not related to any other visible entities</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>unsubscribe when component is destroyed</p>
+                        <div class="io-description"><p>unsubscribe when component is destroyed</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -2801,10 +2846,10 @@ that are themselves not related to any other visible entities</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -2815,7 +2860,7 @@ that are themselves not related to any other visible entities</p>
                 <td class="col-md-4">
                     <a name="onCompareEntitiesForWhyNot"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onCompareEntitiesForWhyNot</b></span>
                         <a href="#onCompareEntitiesForWhyNot"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -2823,7 +2868,7 @@ that are themselves not related to any other visible entities</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onCompareEntitiesForWhyNot(entityIds: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
@@ -2834,42 +2879,40 @@ that are themselves not related to any other visible entities</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>entityIds</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>entityIds</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2880,7 +2923,7 @@ that are themselves not related to any other visible entities</p>
                 <td class="col-md-4">
                     <a name="onCompareRecordsForWhy"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onCompareRecordsForWhy</b></span>
                         <a href="#onCompareRecordsForWhy"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -2888,7 +2931,7 @@ that are themselves not related to any other visible entities</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onCompareRecordsForWhy(records: SzRecordId[])</code>
                 </td>
             </tr>
@@ -2899,42 +2942,40 @@ that are themselves not related to any other visible entities</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>records</td>
-                                    <td>
-                                            <code>SzRecordId[]</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>records</td>
+                                            <td>
+                                                        <code>SzRecordId[]</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2945,7 +2986,7 @@ that are themselves not related to any other visible entities</p>
                 <td class="col-md-4">
                     <a name="onDataSourceRecordsSelected"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onDataSourceRecordsSelected</b></span>
                         <a href="#onDataSourceRecordsSelected"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -2953,7 +2994,7 @@ that are themselves not related to any other visible entities</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onDataSourceRecordsSelected(records: <a href="../interfaces/SzDataSourceRecordsSelection.html" target="_self">SzDataSourceRecordsSelection</a>)</code>
                 </td>
             </tr>
@@ -2964,42 +3005,40 @@ that are themselves not related to any other visible entities</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>records</td>
-                                    <td>
-                                                <code><a href="../interfaces/SzDataSourceRecordsSelection.html" target="_self" >SzDataSourceRecordsSelection</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>records</td>
+                                            <td>
+                                                            <code><a href="../interfaces/SzDataSourceRecordsSelection.html" target="_self" >SzDataSourceRecordsSelection</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -3010,7 +3049,7 @@ that are themselves not related to any other visible entities</p>
                 <td class="col-md-4">
                     <a name="onEntityIdChange"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onEntityIdChange</b></span>
                         <a href="#onEntityIdChange"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -3018,7 +3057,7 @@ that are themselves not related to any other visible entities</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onEntityIdChange()</code>
                 </td>
             </tr>
@@ -3028,14 +3067,14 @@ that are themselves not related to any other visible entities</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>when entityId property is changed, request the data from the api
+                        <div class="io-description"><p>when entityId property is changed, request the data from the api
 and display the result.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -3046,7 +3085,7 @@ and display the result.</p>
                 <td class="col-md-4">
                     <a name="onEntityRecordClick"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onEntityRecordClick</b></span>
                         <a href="#onEntityRecordClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -3054,7 +3093,7 @@ and display the result.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onEntityRecordClick(entityId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
@@ -3064,46 +3103,44 @@ and display the result.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>internal handler for when a entity record displayed inside of widget is
+                        <div class="io-description"><p>internal handler for when a entity record displayed inside of widget is
 clicked on.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>entityId</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>entityId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -3114,7 +3151,7 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="onGraphEntityClick"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onGraphEntityClick</b></span>
                         <a href="#onGraphEntityClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -3122,7 +3159,7 @@ clicked on.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onGraphEntityClick(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
@@ -3132,45 +3169,43 @@ clicked on.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>proxies internal graph component entity click to &quot;graphEntityClick&quot; event.</p>
+                        <div class="io-description"><p>proxies internal graph component entity click to &quot;graphEntityClick&quot; event.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>event</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -3181,7 +3216,7 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="onGraphEntityDblClick"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onGraphEntityDblClick</b></span>
                         <a href="#onGraphEntityDblClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -3189,7 +3224,7 @@ clicked on.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onGraphEntityDblClick(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
@@ -3199,45 +3234,43 @@ clicked on.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>proxies internal graph component entity double click to &quot;graphEntityDblClick&quot; event.</p>
+                        <div class="io-description"><p>proxies internal graph component entity double click to &quot;graphEntityDblClick&quot; event.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>event</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -3248,7 +3281,7 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="onGraphPopoutClick"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onGraphPopoutClick</b></span>
                         <a href="#onGraphPopoutClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -3256,7 +3289,7 @@ clicked on.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onGraphPopoutClick(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
@@ -3266,45 +3299,43 @@ clicked on.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>proxies internal graph component pop-out click to &quot;graphPopOutClick&quot; event.</p>
+                        <div class="io-description"><p>proxies internal graph component pop-out click to &quot;graphPopOutClick&quot; event.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>event</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -3315,7 +3346,7 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="onGraphRelationshipClick"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onGraphRelationshipClick</b></span>
                         <a href="#onGraphRelationshipClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -3323,7 +3354,7 @@ clicked on.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onGraphRelationshipClick(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
@@ -3333,45 +3364,43 @@ clicked on.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>proxies internal graph component relationship link click to &quot;graphRelationshipClick&quot; event.</p>
+                        <div class="io-description"><p>proxies internal graph component relationship link click to &quot;graphRelationshipClick&quot; event.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>event</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -3382,7 +3411,7 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="onGraphRelationshipRightClick"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onGraphRelationshipRightClick</b></span>
                         <a href="#onGraphRelationshipRightClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -3390,7 +3419,7 @@ clicked on.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onGraphRelationshipRightClick(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
@@ -3400,45 +3429,43 @@ clicked on.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>proxies internal graph component relationship link right-click to &quot;graphRelationshipContextClick&quot; event.</p>
+                        <div class="io-description"><p>proxies internal graph component relationship link right-click to &quot;graphRelationshipContextClick&quot; event.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>event</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -3449,7 +3476,7 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="onGraphRightClick"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onGraphRightClick</b></span>
                         <a href="#onGraphRightClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -3457,7 +3484,7 @@ clicked on.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onGraphRightClick(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
@@ -3467,45 +3494,43 @@ clicked on.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>proxies internal graph component entity right-click to &quot;graphContextMenuClick&quot; event.</p>
+                        <div class="io-description"><p>proxies internal graph component entity right-click to &quot;graphContextMenuClick&quot; event.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>event</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -3516,7 +3541,7 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="onHeaderHowButtonClick"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onHeaderHowButtonClick</b></span>
                         <a href="#onHeaderHowButtonClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -3524,7 +3549,7 @@ clicked on.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onHeaderHowButtonClick(event: howClickEvent)</code>
                 </td>
             </tr>
@@ -3534,45 +3559,43 @@ clicked on.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>proxies internal &quot;how button&quot; header click to &quot;headerHowButtonClick&quot; event.</p>
+                        <div class="io-description"><p>proxies internal &quot;how button&quot; header click to &quot;headerHowButtonClick&quot; event.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>event</td>
-                                    <td>
-                                            <code>howClickEvent</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                        <code>howClickEvent</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -3583,7 +3606,7 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="onHeaderReEvaluateButtonClick"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onHeaderReEvaluateButtonClick</b></span>
                         <a href="#onHeaderReEvaluateButtonClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -3591,7 +3614,7 @@ clicked on.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onHeaderReEvaluateButtonClick(event: howClickEvent)</code>
                 </td>
             </tr>
@@ -3601,45 +3624,43 @@ clicked on.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>proxies internal &quot;reevaluate button&quot; header click to &quot;onHeaderReEvaluateButtonClick&quot; event.</p>
+                        <div class="io-description"><p>proxies internal &quot;reevaluate button&quot; header click to &quot;onHeaderReEvaluateButtonClick&quot; event.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>event</td>
-                                    <td>
-                                            <code>howClickEvent</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                        <code>howClickEvent</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -3650,7 +3671,7 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="onHeaderWhyButtonClick"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onHeaderWhyButtonClick</b></span>
                         <a href="#onHeaderWhyButtonClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -3658,7 +3679,7 @@ clicked on.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onHeaderWhyButtonClick(entityId: SzEntityIdentifier)</code>
                 </td>
             </tr>
@@ -3668,45 +3689,43 @@ clicked on.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>proxies internal &quot;why button&quot; header click to &quot;onHeaderWhyButtonClick&quot; event.</p>
+                        <div class="io-description"><p>proxies internal &quot;why button&quot; header click to &quot;onHeaderWhyButtonClick&quot; event.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>entityId</td>
-                                    <td>
-                                            <code>SzEntityIdentifier</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>entityId</td>
+                                            <td>
+                                                        <code>SzEntityIdentifier</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -3717,7 +3736,7 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="onSectionCollapsedChange"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>onSectionCollapsedChange</b></span>
                         <a href="#onSectionCollapsedChange"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -3725,7 +3744,7 @@ clicked on.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onSectionCollapsedChange(prefsKey: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, isCollapsed: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
@@ -3736,54 +3755,52 @@ clicked on.</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>prefsKey</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>prefsKey</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>isCollapsed</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                        <tr>
+                                                <td>isCollapsed</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -3794,7 +3811,7 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="openWhyComparisonModalOnClick"></a>
                     <span class="name">
-                        <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>openWhyComparisonModalOnClick</b></span>
                         <a href="#openWhyComparisonModalOnClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -3802,7 +3819,7 @@ clicked on.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>openWhyComparisonModalOnClick(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
@@ -3819,46 +3836,44 @@ clicked on.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>whether or not to automatically open a modal with the entity comparison on
+                        <div class="io-description"><p>whether or not to automatically open a modal with the entity comparison on
 &quot;Why&quot; button click. (disable for custom implementation/action)</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>value</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -3869,7 +3884,7 @@ clicked on.</p>
                 <td class="col-md-4">
                     <a name="showGraphEntityRelationships"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>showGraphEntityRelationships</b></span>
                         <a href="#showGraphEntityRelationships"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -3877,7 +3892,7 @@ clicked on.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>showGraphEntityRelationships(entityId: SzEntityIdentifier)</code>
                 </td>
             </tr>
@@ -3887,46 +3902,44 @@ clicked on.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>show any entities that are related to a specific entity that are
+                        <div class="io-description"><p>show any entities that are related to a specific entity that are
 currently not on the canvas</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>entityId</td>
-                                    <td>
-                                            <code>SzEntityIdentifier</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>entityId</td>
+                                            <td>
+                                                        <code>SzEntityIdentifier</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -4455,7 +4468,7 @@ currently not on the canvas</p>
                         <td class="col-md-4">
                                 <div class="io-description"><p>Takes a collection or a single value of layout enum css classnames to pass
 to all children components. this value overrides auto-responsive css adjustments.</p>
-<div><pre class="line-numbers"><code class="language-html"></code></pre></div></div>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"></code></pre></div></div>
 
                                 <div class="io-description">
                                         <b>Parameters :</b>
@@ -7761,8 +7774,8 @@ the how report button an alert will be displayed telling the user that the repor
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><!-- @senzing/sdk/entity/detail/sz-entity-detail --><!-- start graph entity context menu template --><ng-template #graphNodeContextMenu let-entityEvt>  <ul class="graph-context-menu">      <li>#{{entityEvt?.entityId}}</li>      <li [class.disabled]="!isGraphEntityRemovable(entityEvt)" (click)="hideGraphEntity(entityEvt)">Hide Entity</li>  </ul></ng-template><!-- end graph entity context menu template --><!-- start graph link context menu template --><ng-template #graphLinkContextMenu let-linkEvt><ul class="graph-context-menu">    <li (click)="openWhyReportForGraphRelationship(linkEvt)">Show "Why Not" Report</li></ul></ng-template><!-- end graph link context menu template --><div #nativeElementRef>  <sz-entity-detail-header  [entity]="entity"  [forceLayout]="_forceLayout"  [showWhyFunction]="showEntityWhyFunction"  [showHowFunction]="showEntityHowFunction"  [requiresReEvaluation]="entityRequiresReEvaluation"  [showReEvaluateButton]="showReEvaluateButton"  [showReEvaluateMessage]="showReEvaluateMessage"  [reEvaluationMessage]="reEvaluateMessage"  [howButtonDisabled]="howFunctionDisabled"  [reEvaluateButtonDisabled]="reEvaluateButtonDisabled"  (onWhyButtonClick)="this.onHeaderWhyButtonClick($event)"  (onHowButtonClick)="this.onHeaderHowButtonClick($event)"  (onReEvaluateButtonClick)="this.onHeaderReEvaluateButtonClick($event)"  [layoutClasses]="_layoutEnforcers">  </sz-entity-detail-header>    <sz-entity-detail-graph data-html2canvas-ignore    *ngIf="graphData && this.showGraphSection"    [data]="graphData"    [title]="this.graphTitle"    [captureMouseWheel]="graphAllowScrollingZoom"    [showPopOutIcon]="graphShowPopOutIcon"    [popOutIconPosition]="graphPopOutIconPosition"    [showZoomControl]="graphShowZoomControl"    [zoomControlPosition]="graphZoomControlPosition"    (popoutClick)="onGraphPopoutClick($event)"    [showMatchKeyControl]="graphShowMatchKeyControl"    [showFiltersControl]="graphShowFiltersControl"    [matchKeyTokenSelectionScope]="graphMatchKeyTokenSelectionScope"    [showLinkLabels]="this._showGraphLinkLabels"    (contextMenuClick)="onGraphRightClick($event)"    (relationshipContextMenuClick)="onGraphRelationshipRightClick($event)"    (scrollWheelEvent)="graphScrollWheelEvent.emit($event)"    (entityClick)="onGraphEntityClick($event)"    (relationshipClick)="onGraphRelationshipClick($event)"  ></sz-entity-detail-graph>  <sz-entity-detail-section-how-report class="details-section how-report"    *ngIf="entityId && this.showHowSection"    collapsedStatePrefsKey="howSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'howSectionCollapsed\', $event)"    [entityId]="entityId"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers">  </sz-entity-detail-section-how-report>  <sz-entity-details-section class="details-section datasources"    *ngIf="entity?.resolvedEntity?.records?.length && this.showMatchesSection"    collapsedStatePrefsKey="recordsSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'recordsSectionCollapsed\', $event)"    [sectionData]="entity?.resolvedEntity?.records"    [sectionTitle]="\'Matched Records\'"    sectionId="detail-section-1"    [sectionCount]="entity?.resolvedEntity?.records?.length"    [showWhyUtilities]="showRecordWhyUtilities"    [whySelectionMode]="whySelectionMode"    (onCompareRecordsForWhy)="onCompareRecordsForWhy($event)"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInMatchesSection"    (dataSourceRecordsSelected)="onDataSourceRecordsSelected($event)"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section possible"    *ngIf="this._possibleMatches?.length && this.showPossibleMatchesSection"    collapsedStatePrefsKey="possibleMatchesSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'possibleMatchesSectionCollapsed\', $event)"    [sectionData]="this._possibleMatches"    [sectionTitle]="\'Possible Matches\'"    sectionId="detail-section-2"    [sectionCount]="this._possibleMatches?.length"    [showWhyUtilities]="showRelatedWhyNotFunction"    [whySelectionMode]="whySelectionMode"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInPossibleMatchesSection"    (onCollapsedChange)="this.onSectionCollapsedChange(\'possibleMatches\', $event)"    (entityRecordClick)="onEntityRecordClick($event)"    (onCompareEntitiesForWhyNot)="onCompareEntitiesForWhyNot($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section discovered"    *ngIf="this._discoveredRelationships?.length && this.showPossibleRelationshipsSection"    collapsedStatePrefsKey="possibleRelationshipsSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'possibleRelationshipsSectionCollapsed\', $event)"    [sectionData]="this._discoveredRelationships"    [sectionTitle]="\'Possible Relationships\'"    sectionId="detail-section-3"    [sectionCount]="this._discoveredRelationships?.length"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInPossibleRelationshipsSection"    [showWhyUtilities]="showRelatedWhyNotFunction"    [whySelectionMode]="whySelectionMode"    (entityRecordClick)="onEntityRecordClick($event)"    (onCompareEntitiesForWhyNot)="onCompareEntitiesForWhyNot($event)">  </sz-entity-details-section>  <sz-entity-details-section class="details-section disclosed"    *ngIf="this._disclosedRelationships?.length && this.showDisclosedSection"    collapsedStatePrefsKey="disclosedRelationshipsSectionCollapsed"    (onCollapsedChange)="this.onSectionCollapsedChange(\'disclosedRelationshipsSectionCollapsed\', $event)"    [sectionData]="this._disclosedRelationships"    [sectionTitle]="\'Disclosed Relationships\'"    sectionId="detail-section-4"    [sectionCount]="this._disclosedRelationships?.length"    [forceLayout]="_forceLayout"    [layoutClasses]="_layoutEnforcers"    [showNameDataInEntities]="showNameDataInDisclosedSection"    (entityRecordClick)="onEntityRecordClick($event)">  </sz-entity-details-section></div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
-    var DIRECTIVES = [];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzCrossSourceResultsDataTable', 'selector': 'sz-cross-source-results'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzLicenseInfoComponent', 'selector': 'sz-license'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzTooltipComponent', 'selector': 'sz-tooltip'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
+    var DIRECTIVES = [{'name': 'SzElementResizeObserverDirective', 'selector': '[onResize]'},{'name': 'SzTooltipDirective', 'selector': '[sz-tooltip]'}];
     var ACTUAL_COMPONENT = {'name': 'SzEntityDetailComponent'};
 </script>
 <script src="../js/tree.js"></script>
@@ -7812,6 +7825,19 @@ the how report button an alert will be displayed telling the user that the repor
             var COMPODOC_CURRENT_PAGE_URL = 'SzEntityDetailComponent.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

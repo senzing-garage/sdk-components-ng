@@ -12,10 +12,61 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">Senzing SDK Components</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">Senzing SDK Components</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -24,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -73,19 +124,19 @@
 respoond to UI bus event/preference changes.</p>
 <p>For Angular implementations we recommend using <a href="../injectables/SzPrefsService.html">SzPrefsService</a> as an injectable as it
 provides the more robust solution.</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) javascript --&gt;
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) javascript --&gt;
 &lt;sz-wc-preferences id=&quot;prefsIntf&quot;&gt;&lt;/sz-wc-preferences&gt;
-&lt;script&gt;document.getElementById(&#39;prefsIntf&#39;).GraphBuildOut = 5;&lt;/script&gt;</code></pre></div><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) By attribute: --&gt;
+&lt;script&gt;document.getElementById(&#39;prefsIntf&#39;).GraphBuildOut = 5;&lt;/script&gt;</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) By attribute: --&gt;
 &lt;sz-wc-preferences
-graph-build-out=&quot;20&quot;&gt;&lt;/sz-wc-preferences&gt;</code></pre></div><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) javascript bulk initialize from local storage: --&gt;
+graph-build-out=&quot;20&quot;&gt;&lt;/sz-wc-preferences&gt;</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) javascript bulk initialize from local storage: --&gt;
 &lt;sz-wc-preferences id=&quot;prefsIntf&quot; show-controls=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;
 &lt;script&gt;
 document.getElementById(&#39;prefsIntf&#39;).prefsFromJSONString = localStorage.getItem(&#39;NAME_OF_LS_KEY&#39;);
-&lt;/script&gt;</code></pre></div><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) show other data in search results: --&gt;
+&lt;/script&gt;</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) show other data in search results: --&gt;
 &lt;sz-wc-preferences
-search-results-show-other-data=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;</code></pre></div><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) show interactive UI: --&gt;
+search-results-show-other-data=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (WC) show interactive UI: --&gt;
 &lt;sz-wc-preferences
-show-controls=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;</code></pre></div><div><pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;
+show-controls=&quot;true&quot;&gt;&lt;/sz-wc-preferences&gt;</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;!-- (Angular) --&gt;
 &lt;sz-preferences
 (prefsChange)=&quot;myPrefsChangeHandler($event)&quot;&gt;</code></pre></div>
     </p>
@@ -1645,7 +1696,7 @@ used mostly for diagnostics.</p>
                 <td class="col-md-4">
                     <a name="boolPrefChecked"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>boolPrefChecked</b></span>
                         <a href="#boolPrefChecked"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1653,7 +1704,7 @@ used mostly for diagnostics.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>boolPrefChecked(prefGroup: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, prefKey: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -1663,57 +1714,55 @@ used mostly for diagnostics.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>get the linked ref to a specific pref whos type should be boolean through a fn</p>
+                        <div class="io-description"><p>get the linked ref to a specific pref whos type should be boolean through a fn</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>prefGroup</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>prefGroup</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>prefKey</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        </tr>
+                                        <tr>
+                                                <td>prefKey</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1724,7 +1773,7 @@ used mostly for diagnostics.</p>
                 <td class="col-md-4">
                     <a name="getDataSources"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>getDataSources</b></span>
                         <a href="#getDataSources"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1732,7 +1781,7 @@ used mostly for diagnostics.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getDataSources()</code>
                 </td>
             </tr>
@@ -1742,13 +1791,13 @@ used mostly for diagnostics.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>helper method for retrieving list of datasources</p>
+                        <div class="io-description"><p>helper method for retrieving list of datasources</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -1775,13 +1824,13 @@ used mostly for diagnostics.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>unsubscribe when component is destroyed</p>
+                        <div class="io-description"><p>unsubscribe when component is destroyed</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -1809,10 +1858,10 @@ used mostly for diagnostics.</p>
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -1823,7 +1872,7 @@ used mostly for diagnostics.</p>
                 <td class="col-md-4">
                     <a name="prefValAsInt"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>prefValAsInt</b></span>
                         <a href="#prefValAsInt"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1831,7 +1880,7 @@ used mostly for diagnostics.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>prefValAsInt(prefGroup: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, prefKey: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -1841,57 +1890,55 @@ used mostly for diagnostics.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>get the linked ref to a specific pref whos type should be number through a fn</p>
+                        <div class="io-description"><p>get the linked ref to a specific pref whos type should be number through a fn</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>prefGroup</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>prefGroup</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>prefKey</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                        </tr>
+                                        <tr>
+                                                <td>prefKey</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1902,7 +1949,7 @@ used mostly for diagnostics.</p>
                 <td class="col-md-4">
                     <a name="SortByInputType"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>SortByInputType</b></span>
                         <a href="#SortByInputType"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1910,7 +1957,7 @@ used mostly for diagnostics.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>SortByInputType(x, y)</code>
                 </td>
             </tr>
@@ -1920,50 +1967,48 @@ used mostly for diagnostics.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>reusable sorting method. does what it says</p>
+                        <div class="io-description"><p>reusable sorting method. does what it says</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>x</td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>x</td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>y</td>
-
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>1 | -1 | 0</code>
+                                        </tr>
+                                        <tr>
+                                                <td>y</td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>1 | -1 | 0</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1974,7 +2019,7 @@ used mostly for diagnostics.</p>
                 <td class="col-md-4">
                     <a name="SortByName"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>SortByName</b></span>
                         <a href="#SortByName"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1982,7 +2027,7 @@ used mostly for diagnostics.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>SortByName(x, y)</code>
                 </td>
             </tr>
@@ -1992,50 +2037,48 @@ used mostly for diagnostics.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>reusable sorting method. does what it says</p>
+                        <div class="io-description"><p>reusable sorting method. does what it says</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>x</td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>x</td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>y</td>
-
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>1 | -1 | 0</code>
+                                        </tr>
+                                        <tr>
+                                                <td>y</td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>1 | -1 | 0</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2046,7 +2089,7 @@ used mostly for diagnostics.</p>
                 <td class="col-md-4">
                     <a name="toSentenceCase"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>toSentenceCase</b></span>
                         <a href="#toSentenceCase"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -2054,7 +2097,7 @@ used mostly for diagnostics.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>toSentenceCase(str: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -2064,45 +2107,43 @@ used mostly for diagnostics.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>helper fn to break a camel-case string in to a sentence case string</p>
+                        <div class="io-description"><p>helper fn to break a camel-case string in to a sentence case string</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>str</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>str</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2129,68 +2170,66 @@ used mostly for diagnostics.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>update a specific pref whos type should be boolean through a fn</p>
+                        <div class="io-description"><p>update a specific pref whos type should be boolean through a fn</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>prefGroup</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>prefGroup</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>prefKey</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                                <tr>
-                                    <td>evt</td>
-                                    <td>
-                                    </td>
+                                        </tr>
+                                        <tr>
+                                                <td>prefKey</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                        <tr>
+                                                <td>evt</td>
+                                            <td>
+                                            </td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2217,69 +2256,67 @@ used mostly for diagnostics.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>get the linked ref to a specific pref whos type should be number through a fn</p>
+                        <div class="io-description"><p>get the linked ref to a specific pref whos type should be number through a fn</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>prefGroup</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>prefGroup</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>prefKey</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                                <tr>
-                                    <td>event</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                    </td>
+                                        </tr>
+                                        <tr>
+                                                <td>prefKey</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -2446,7 +2483,7 @@ used mostly for diagnostics.</p>
                     <tr>
                         <td class="col-md-4">
                                 <div class="io-description"><p>the allowed identifier types to show in the search form pulldown</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;sz-preferences
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;sz-preferences
 search-form-allowed-type-attributes=&quot;SSN_NUMBER,DRIVERS_LICENSE_NUMBER&quot;&gt;</code></pre></div></div>
 
                                 <div>
@@ -2526,7 +2563,7 @@ search-form-allowed-type-attributes=&quot;SSN_NUMBER,DRIVERS_LICENSE_NUMBER&quot
                     <tr>
                         <td class="col-md-4">
                                 <div class="io-description"><p>open a new tab when a user clicks a search result</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;sz-preferences
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;sz-preferences
 search-results-open-in-new-tab=&quot;true&quot;&gt;</code></pre></div></div>
 
                                 <div>
@@ -5693,8 +5730,8 @@ search-results-open-in-new-tab=&quot;true&quot;&gt;</code></pre>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><div *ngIf="showControls" class="sz-preferences">    <div class="prefs-ui-lists">        <!-- start search prefs -->        <div class="prefs-ui-column prefs-ui-column-search">            <!-- start search form prefs -->            <h4 class="title">Search</h4>            <ul class="prefs-ui-column-inner prefs-ui-column-inner-search">                <li *ngFor="let opt of searchFormOptions; let i = index" [attr.pref-key]="opt.name">                    <input *ngIf="opt.inputType == \'checkbox\'" [attr.id]="\'c1-opts-search-form-\'+ i" type="checkbox"                    [checked]="boolPrefChecked(\'searchForm\', opt.name)"                    (change)="updateBoolPrefValue(\'searchForm\', opt.name, $event)">                    <input *ngIf="opt.inputType == \'number\'" [attr.id]="\'c1-opts-search-form-\'+ i" type="number"                    min="1" max="90" size="2"                    [value]="prefValAsInt(\'searchForm\', opt.name)"                    (change)="updateIntPrefValue(\'searchForm\', opt.name, $event)">                    <label [attr.for]="\'c1-opts-search-form-\'+ i">{{ toSentenceCase(opt.name) | titlecase }}</label>                </li>            </ul>            <!-- end search form prefs -->            <!-- start search results prefs -->            <h4 class="title">Search Results</h4>            <ul class="prefs-ui-column-inner">                <li *ngFor="let opt of searchResultsOptions; let i = index" [attr.pref-key]="opt.name">                    <input *ngIf="opt.inputType == \'checkbox\'" [attr.id]="\'c2-opts-search-results-\'+ i" type="checkbox"                    [checked]="boolPrefChecked(\'searchResults\', opt.name)"                    (change)="updateBoolPrefValue(\'searchResults\', opt.name, $event)">                    <input *ngIf="opt.inputType == \'number\'" [attr.id]="\'c2-opts-search-results-\'+ i" type="number"                    min="1" max="90" size="2"                    [value]="prefValAsInt(\'searchResults\', opt.name)"                    (change)="updateIntPrefValue(\'searchResults\', opt.name, $event)">                    <label [attr.for]="\'c2-opts-search-results-\'+ i">{{ toSentenceCase(opt.name) | titlecase }}<!-- <span class="pref-key">({{opt.name}})</span> --></label>                </li>            </ul>            <!-- end search results prefs -->        </div>        <!-- end search prefs -->        <!-- start entity detail prefs -->        <div class="prefs-ui-column prefs-ui-column-entity-detail">            <h4 class="title">Entity Detail</h4>            <ul class="prefs-ui-column-inner">                <li *ngFor="let opt of entityDetailOptions; let i = index" [attr.pref-key]="opt.name">                    <input *ngIf="opt.inputType == \'checkbox\'" [attr.id]="\'c3-opts-entityDetail-\'+ i" type="checkbox"                    [checked]="boolPrefChecked(\'entityDetail\', opt.name)"                    (change)="updateBoolPrefValue(\'entityDetail\', opt.name, $event)">                    <input *ngIf="opt.inputType == \'number\'" [attr.id]="\'c3-opts-entityDetail-\'+ i" type="number"                    min="1" max="90" size="2"                    [value]="prefValAsInt(\'entityDetail\', opt.name)"                    (change)="updateIntPrefValue(\'entityDetail\', opt.name, $event)">                    <label [attr.for]="\'c3-opts-entityDetail-\'+ i">{{ toSentenceCase(opt.name) | titlecase }}</label>                </li>            </ul>        </div>        <!-- end entity detail prefs -->        <!-- start graph prefs -->        <div class="prefs-ui-column prefs-ui-column-graph">            <h4 class="title">Graph</h4>            <ul class="prefs-ui-column-inner">                <li *ngFor="let opt of graphOptions; let i = index" [attr.pref-key]="opt.name">                    <input *ngIf="opt.inputType == \'checkbox\'" [attr.id]="\'c4-opts-graph-\'+ i" type="checkbox"                    [checked]="boolPrefChecked(\'graph\', opt.name)"                    (change)="updateBoolPrefValue(\'graph\', opt.name, $event)">                    <input *ngIf="opt.inputType == \'number\'" [attr.id]="\'c4-opts-graph-\'+ i" type="number"                    min="1" max="90" size="2"                    [value]="prefValAsInt(\'graph\', opt.name)"                    (change)="updateIntPrefValue(\'graph\', opt.name, $event)">                    <label [attr.for]="\'c4-opts-graph-\'+ i">{{ toSentenceCase(opt.name) | titlecase }}</label>                </li>            </ul>            <!-- <h4 class="title">Datasource Colors</h4>            <sz-pref-dict [value]="GraphDataSourceColors" (dataChange)="GraphDataSourceColors = $event" valueType="color"></sz-pref-dict> -->        </div>        <!-- end graph prefs -->    </div></div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
-    var DIRECTIVES = [];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzCrossSourceResultsDataTable', 'selector': 'sz-cross-source-results'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzLicenseInfoComponent', 'selector': 'sz-license'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzTooltipComponent', 'selector': 'sz-tooltip'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
+    var DIRECTIVES = [{'name': 'SzElementResizeObserverDirective', 'selector': '[onResize]'},{'name': 'SzTooltipDirective', 'selector': '[sz-tooltip]'}];
     var ACTUAL_COMPONENT = {'name': 'SzPreferencesComponent'};
 </script>
 <script src="../js/tree.js"></script>
@@ -5744,6 +5781,19 @@ search-results-open-in-new-tab=&quot;true&quot;&gt;</code></pre>
             var COMPODOC_CURRENT_PAGE_URL = 'SzPreferencesComponent.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

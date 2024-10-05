@@ -12,10 +12,61 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">Senzing SDK Components</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">Senzing SDK Components</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -24,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -92,6 +143,24 @@ Add to your applications module imports array.</p>
                             <a href="../components/SzConfigurationComponent.html">SzConfigurationComponent</a>
                         </li>
                         <li class="list-group-item">
+                            <a href="../components/SzCrossSourceResultsDataTable.html">SzCrossSourceResultsDataTable</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../s/SzCrossSourceStatistics.html">SzCrossSourceStatistics</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../s/SzCrossSourceSummaryMatchKeyPickerDialog.html">SzCrossSourceSummaryMatchKeyPickerDialog</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../s/SzDataTable.html">SzDataTable</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../pipes/SzDecimalPercentPipe.html">SzDecimalPercentPipe</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../directives/SzElementResizeObserverDirective.html">SzElementResizeObserverDirective</a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="../components/SzEntityDetailComponent.html">SzEntityDetailComponent</a>
                         </li>
                         <li class="list-group-item">
@@ -110,10 +179,19 @@ Add to your applications module imports array.</p>
                             <a href="../s/SzHowVirtualEntityDialog.html">SzHowVirtualEntityDialog</a>
                         </li>
                         <li class="list-group-item">
+                            <a href="../components/SzLicenseInfoComponent.html">SzLicenseInfoComponent</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../pipes/SzOrderedMapEntries.html">SzOrderedMapEntries</a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="../components/SzPoweredByComponent.html">SzPoweredByComponent</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzPreferencesComponent.html">SzPreferencesComponent</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../s/SzRecordStatsDonutChart.html">SzRecordStatsDonutChart</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzRelationshipPathComponent.html">SzRelationshipPathComponent</a>
@@ -134,7 +212,16 @@ Add to your applications module imports array.</p>
                             <a href="../components/SzSearchResultsComponent.html">SzSearchResultsComponent</a>
                         </li>
                         <li class="list-group-item">
+                            <a href="../pipes/SzShortNumberPipe.html">SzShortNumberPipe</a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="../components/SzStandaloneGraphComponent.html">SzStandaloneGraphComponent</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../components/SzTooltipComponent.html">SzTooltipComponent</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../directives/SzTooltipDirective.html">SzTooltipDirective</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzWhyEntitiesComparisonComponent.html">SzWhyEntitiesComparisonComponent</a>
@@ -173,7 +260,13 @@ Add to your applications module imports array.</p>
                             <a href="../injectables/SzConfigurationService.html">SzConfigurationService</a>
                         </li>
                         <li class="list-group-item">
+                            <a href="../injectables/SzDataMartService.html">SzDataMartService</a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="../injectables/SzDataSourcesService.html">SzDataSourcesService</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../injectables/SzElementResizeService.html">SzElementResizeService</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../injectables/SzFoliosService.html">SzFoliosService</a>
@@ -208,10 +301,25 @@ Add to your applications module imports array.</p>
                                 class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
+                            <a href="../s/SzAlertMessageDialog.html">SzAlertMessageDialog</a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="../components/SzConfigurationAboutComponent.html">SzConfigurationAboutComponent</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzConfigurationComponent.html">SzConfigurationComponent</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../components/SzCrossSourceResultsDataTable.html">SzCrossSourceResultsDataTable</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../s/SzCrossSourceStatistics.html">SzCrossSourceStatistics</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../s/SzDataTable.html">SzDataTable</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../pipes/SzDecimalPercentPipe.html">SzDecimalPercentPipe</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzEntityDetailComponent.html">SzEntityDetailComponent</a>
@@ -232,6 +340,12 @@ Add to your applications module imports array.</p>
                             <a href="../s/SzHowVirtualEntityDialog.html">SzHowVirtualEntityDialog</a>
                         </li>
                         <li class="list-group-item">
+                            <a href="../components/SzLicenseInfoComponent.html">SzLicenseInfoComponent</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../pipes/SzOrderedMapEntries.html">SzOrderedMapEntries</a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="../components/SzPoweredByComponent.html">SzPoweredByComponent</a>
                         </li>
                         <li class="list-group-item">
@@ -239,6 +353,9 @@ Add to your applications module imports array.</p>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzPreferencesComponent.html">SzPreferencesComponent</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../s/SzRecordStatsDonutChart.html">SzRecordStatsDonutChart</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzRelationshipPathComponent.html">SzRelationshipPathComponent</a>
@@ -251,6 +368,9 @@ Add to your applications module imports array.</p>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzSearchResultsComponent.html">SzSearchResultsComponent</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="../pipes/SzShortNumberPipe.html">SzShortNumberPipe</a>
                         </li>
                         <li class="list-group-item">
                             <a href="../components/SzStandaloneGraphComponent.html">SzStandaloneGraphComponent</a>
@@ -283,7 +403,7 @@ Add to your applications module imports array.</p>
                 <td class="col-md-4">
                     <a name="forRoot"></a>
                     <span class="name">
-                        <span class="modifier">Static</span>
+                            <span class="modifier">Static</span>
                         <span ><b>forRoot</b></span>
                         <a href="#forRoot"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -291,7 +411,7 @@ Add to your applications module imports array.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>forRoot(apiConfigFactory?: () => void)</code>
                 </td>
             </tr>
@@ -301,56 +421,47 @@ Add to your applications module imports array.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>initialize the SenzingSdkModule with an optional factory method that returns a <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> instance.
+                        <div class="io-description"><p>initialize the SenzingSdkModule with an optional factory method that returns a <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a> instance.
 See <a href="https://senzing.github.io/rest-api-client-ng/classes/Configuration.html">SzRestConfiguration</a></p>
-<div><pre class="line-numbers"><code class="language-html">export function SzRestConfigurationFactory() {
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">export function SzRestConfigurationFactory() {
 return new SzRestConfiguration({ basePath: \&quot;myapiserverhostname.com:8080\&quot;, withCredentials: true });
 }</code></pre></div><p>SenzingSdkModule.forRoot( SzRestConfigurationFactory )</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>apiConfigFactory</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>apiConfigFactory</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
 
-                                    <td>
-                                        Yes
-                                    </td>
+                                            <td>
+                                                    Yes
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                        <b>Example :</b>
-                        <div>
-                            <pre class="line-numbers"><code class="language-html">export function SzRestConfigurationFactory() {
- return new SzRestConfiguration({ basePath: &amp;quot;myapiserverhostname.com:8080&amp;quot;, withCredentials: true });
-}&lt;/p&gt;
-&lt;p&gt;SenzingSdkModule.forRoot( SzRestConfigurationFactory )</code></pre>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../modules/SenzingSdkModule.html" target="_self" >ModuleWithProviders&lt;SenzingSdkModule&gt;</a></code>
+
                         </div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../modules/SenzingSdkModule.html" target="_self" >ModuleWithProviders&lt;SenzingSdkModule&gt;</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -364,7 +475,7 @@ return new SzRestConfiguration({ basePath: \&quot;myapiserverhostname.com:8080\&
 <p>Open up a terminal to your application root and type <code>npm install @senzing/sdk-components-ng --save</code>.</p>
 <h2>Add to app.module.ts</h2>
 <p>Now open up your applications main module file, in most cases this will be app.module.ts for projects generated by angular-cli.</p>
-<div><pre class="line-numbers"><code class="language-typescript">import { BrowserModule } from &#39;&#64;angular/platform-browser&#39;;
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">import { BrowserModule } from &#39;&#64;angular/platform-browser&#39;;
 import { NgModule } from &#39;&#64;angular/core&#39;;
 import { SenzingSdkModule } from &#39;&#64;senzing/sdk-components-ng&#39;;
 
@@ -384,7 +495,7 @@ import { AppComponent } from &#39;./app.component&#39;;
 export class AppModule { }</code></pre></div><p>Now start up your application and start adding tags or referencing services. The simplest
  way to test that things are set up correctly is to add the static <em>sz-powered-by</em> tag
  to your applications html template.</p>
-<div><pre class="line-numbers"><code class="language-html">&lt;sz-powered-by&gt;&lt;/sz-powered-by&gt;</code></pre></div></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;sz-powered-by&gt;&lt;/sz-powered-by&gt;</code></pre></div></p>
     </div>
 
 </div>
@@ -434,6 +545,19 @@ export class AppModule { }</code></pre></div><p>Now start up your application an
             var COMPODOC_CURRENT_PAGE_URL = 'SenzingSdkModule.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

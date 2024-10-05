@@ -12,10 +12,61 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">Senzing SDK Components</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">Senzing SDK Components</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -24,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -72,7 +123,7 @@ values that are passed throughout all components for API connection requests.</p
 change dynamically through the application lifecycle(ie changing request namespace from &#39;<a href="http://api.mydomain.com">http://api.mydomain.com</a>&#39; to &#39;<a href="http://api.mydomain.com/SUBSECTION">http://api.mydomain.com/SUBSECTION</a>&#39;).</p>
 <p>If your application just needs its values initialized that should be done by
 passing in a config factory to the <a href="../modules/SenzingSdkModule.html#forRoot">SenzingSdkModule</a> method.</p>
-<div><pre class="line-numbers"><code class="language-html">this.apiconf.basePath = &#39;http://apis.mydomain.com/&#39;;</code></pre></div><div><pre class="line-numbers"><code class="language-html">this.apiconf.parametersChanged.subscribe( (params) =&gt; { console.log(&#39;api connection params changed.&#39;, params); })</code></pre></div>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">this.apiconf.basePath = &#39;http://apis.mydomain.com/&#39;;</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-html">this.apiconf.parametersChanged.subscribe( (params) =&gt; { console.log(&#39;api connection params changed.&#39;, params); })</code></pre></div>
             </p>
 
 
@@ -237,7 +288,7 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
                 <td class="col-md-4">
                     <a name="addHeaderToApiRequests"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>addHeaderToApiRequests</b></span>
                         <a href="#addHeaderToApiRequests"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -245,7 +296,7 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>addHeaderToApiRequests(header: literal type)</code>
                 </td>
             </tr>
@@ -255,45 +306,43 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>add an additional header to all outgoing API requests</p>
+                        <div class="io-description"><p>add an additional header to all outgoing API requests</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>header</td>
-                                    <td>
-                                            <code>literal type</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>header</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -304,7 +353,7 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
                 <td class="col-md-4">
                     <a name="asConfigurationParameters"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>asConfigurationParameters</b></span>
                         <a href="#asConfigurationParameters"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -312,7 +361,7 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>asConfigurationParameters()</code>
                 </td>
             </tr>
@@ -322,13 +371,13 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>bulk fetch of sdk configuration parameters.</p>
+                        <div class="io-description"><p>bulk fetch of sdk configuration parameters.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>SzRestConfigurationParameters</code>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>SzRestConfigurationParameters</code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -339,7 +388,7 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
                 <td class="col-md-4">
                     <a name="fromParameters"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>fromParameters</b></span>
                         <a href="#fromParameters"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -347,7 +396,7 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>fromParameters(value: SzRestConfigurationParameters)</code>
                 </td>
             </tr>
@@ -357,45 +406,43 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>bulk runtime set of sdk configuration</p>
+                        <div class="io-description"><p>bulk runtime set of sdk configuration</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>value</td>
-                                    <td>
-                                            <code>SzRestConfigurationParameters</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                        <code>SzRestConfigurationParameters</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -406,7 +453,7 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
                 <td class="col-md-4">
                     <a name="removeHeaderFromApiRequests"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>removeHeaderFromApiRequests</b></span>
                         <a href="#removeHeaderFromApiRequests"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -414,7 +461,7 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>removeHeaderFromApiRequests(header: literal type | string)</code>
                 </td>
             </tr>
@@ -424,45 +471,43 @@ passing in a config factory to the <a href="../modules/SenzingSdkModule.html#for
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>remove an additional header from all outgoing API requests</p>
+                        <div class="io-description"><p>remove an additional header from all outgoing API requests</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>header</td>
-                                    <td>
-                                            <code>literal type | string</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>header</td>
+                                            <td>
+                                                        <code>literal type | string</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -996,6 +1041,19 @@ protocol://hostname:port string that your api server can be accessed through</p>
             var COMPODOC_CURRENT_PAGE_URL = 'SzConfigurationService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

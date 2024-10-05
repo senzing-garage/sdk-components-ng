@@ -6,6 +6,70 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.0.0] - 2024-10-04
+
+The 7.0.0 release features several new components that use the new DataMart interface(statistics calculation api) made available only in the [Senzing POC API Server](https://github.com/senzing-garage/senzing-poc-server). Using the [Senzing REST API Sever](https://github.com/senzing-garage/senzing-api-server) without the new components(data sample browsing, and datasource's summary, Cross-Source comparison) is still possible but not advised for brand new installations.
+
+### Modified
+- Why and Why Not reports now show scores for all scoring features regardless of match key inclusion. #686
+- Graph datasource colors can now be unselected by choosing pure white or black using the color picker. #690
+- Why not modal could not horizontally scroll properly. #588
+- Graph filter switch for "Directly Related Only" removed in due to confusion between it and the "Hide Indirect Links" checkbox. #590
+- On "Why" screen the best matching value should be at the top on the left. #592
+- "Re-Eval" button incorrectly showing up for singleton entities in the detail widget. #606
+
+### Added
+- Donut chart that breaks down how many records have been loaded for each datasource. #608
+  - Added `SzRecordStatsDonutChart` component.
+  - Added `SzDataMartService` service to interact with poc-server endpoints
+  - Added `SzCountStatsForDataSourcesResponse`, `SzStatCountsForDataSources`, `SzRecordCountDataSource` models
+  - List widget that shows how many records have been loaded for each datasource.
+  - Added `SzShortNumberPipe` to display the amount of records in the shortest format ie 12060 records will show `12.1K` etc
+  - Added ` SzDecimalPercentPipe` to format percent values from decimal inputs.
+- License wiget showing the current license expiry, record limit and how close a particular install is to it's limits. #616
+  - `SzLicenseInfoComponent` component to show the current expiration and limit of license and how many records have been loaded so far.
+- Venn Diagram cross-source comparison chart. Shows how many records of each type(duplicates, possible relations, disclosed etc) are present in each datasource selected and the amount of each present in both selected datasources(the overlapping part of the diagram). #614
+  - `SzCrossSourceSummaryComponent` is responsible for drawing the five venn diagrams. each of which are instances of `SzVennDiagramsComponent`.
+  - `SzVennDiagramsComponent` displays a single circle if only one datasource is selected, or two circles if two datasources are selected with the overlapping part of the circle being the  records that are present in both datasources.
+  - `SzCrossSourceStatistics` is a wrapper that contains both the *pulldowns* AND the *venn diagrams*
+  - `SzCrossSourceSelectComponent` - this is a component wrapper for the select pulldowns themselves that allow a user to select two datasources to display in the venn diagrams.
+  - `SzDataMartService` the service used to coordinate between components which datasources are selected, make api requests, set preferences etc.
+  - `SzDataMartPrefs` stores state for parameters of the service/components and emits on changes.
+  - `SzElementResizeObserverDirective` allows listening for resize events on dom elements. (used for setting the width of pulldowns to the same as the width of the visible pulldown control which is responsive)
+- Sample set Data Table. The new Data Table component shows a sampleset of particular types of records for a specific datasource or datasources and allows paging through the result set. #627
+  - `SzTooltipComponent` tooltip that floats above collapsed or limited table cells spawned by the `SzTooltipDirective` attribute.
+  - `SzOrderedMapEntries`
+  - `SzDataMartPrefs` stores persistent preferences like default selected data sources, match level etc.
+  - `SzDataTable` generic component that can be fed data and displays data with formatting in a tabular format.
+  - `SzCrossSourceResultsDataTable` extends `SzDataTable` with functions and properties specific to displaying the sample results of cross source analysis query.
+  - `SzCrossSourcePagingComponent` is a paging component for navigating through the sampling data table results.
+  - `SzCrossSourceStatistics` Wrapper component for the comparing stats of one datasource with their mutual stat type of another datasource. Uses the Venn Diagram chart to show the overlap and a special Data Table specific to displaying a sample set from the selected type of stats for the two selected data sources.
+- The following events types have been added:
+  - `SzStatsSampleTableLoadingEvent`
+  - `SzCrossSourceSummarySelectionEvent`
+  - `SzCrossSourceSummarySelectionClickEvent`
+  - `sampleDataSourceChangeEvent`
+  - `SzStatSampleSetPageChangeEvent`
+  - `SzDataTableCellEvent`
+- The following enums have been added:
+  - `SzCrossSourceSummaryCategoryType`
+  - `SzStatSampleEntityTableRowType`
+  - `SzCrossSourceSummaryCategoryTypeToMatchLevel`
+- The following models have been added:
+- `SzStatSampleEntityTableItem`
+- `SzDataTableEntity`
+- `SzDataTableRelatedEntity`
+- `SzStatSampleEntityTableRowEntity`
+- `SzStatSampleEntityTableRow`
+- `SzDataTableRelationsPagingParameters`
+- `SzDataTableEntitiesPagingParameters`
+- `SzStatSampleSetParameters`
+- `SzCrossSourceSummaryRequests`
+- `SzCrossSourceSummaryResponses`
+- `SzCrossSourceCount`
+
+relevant tickets: #588 #590 #592 #606 #608 #614 #616 #627 #690 #689
+
 ## [6.1.0] - 2023-09-06
 
 The major feature being added for this release is the inclusion a a new "How" report component. The How api functions are meant to provide information on HOW records in an entity came together or were pushed apart during resolution. The Visual How component will illustrate the final entity and allow the user to walk back through the entities resolution steps, branching off when singletons are merged in or virtual entities are created from the result of previous record resolution steps.

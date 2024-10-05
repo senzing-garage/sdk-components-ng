@@ -12,10 +12,61 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">Senzing SDK Components</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">Senzing SDK Components</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -24,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -71,7 +122,7 @@
     <p class="comment">
         <p>Provides a component that allows the user to select what &quot;Identity Types&quot; are displayed
 in the search form. Uses Angular Material &quot;Bottom Sheet&quot; to load in to view.</p>
-<div><pre class="line-numbers"><code class="language-html">// (Angular) SzSearchIdentifiersPickerSheetComponent
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">// (Angular) SzSearchIdentifiersPickerSheetComponent
   const bottomSheetRef = this.bottomSheet.open(SzSearchIdentifiersPickerSheetComponent, {
       ariaLabel: &#39;Identifier Types&#39;,
       panelClass: [&#39;sz-search-identifiers-picker-sheet&#39;],
@@ -88,7 +139,7 @@ in the search form. Uses Angular Material &quot;Bottom Sheet&quot; to load in to
         <h3>Extends</h3>
     </p>
     <p class="comment">
-                <code><a href="../components/SzSearchIdentifiersPickerDialogComponent.html" target="_self" >SzSearchIdentifiersPickerDialogComponent</a></code>
+                    <code><a href="../components/SzSearchIdentifiersPickerDialogComponent.html" target="_self" >SzSearchIdentifiersPickerDialogComponent</a></code>
     </p>
 
 
@@ -326,7 +377,7 @@ in the search form. Uses Angular Material &quot;Bottom Sheet&quot; to load in to
                 <td class="col-md-4">
                     <a name="onApplyClick"></a>
                     <span class="name">
-                        <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>onApplyClick</b></span>
                         <a href="#onApplyClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -334,7 +385,7 @@ in the search form. Uses Angular Material &quot;Bottom Sheet&quot; to load in to
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onApplyClick()</code>
                 </td>
             </tr>
@@ -344,13 +395,13 @@ in the search form. Uses Angular Material &quot;Bottom Sheet&quot; to load in to
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>when the user clicks the Apply button</p>
+                        <div class="io-description"><p>when the user clicks the Apply button</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -361,7 +412,7 @@ in the search form. Uses Angular Material &quot;Bottom Sheet&quot; to load in to
                 <td class="col-md-4">
                     <a name="onNoClick"></a>
                     <span class="name">
-                        <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>onNoClick</b></span>
                         <a href="#onNoClick"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -369,7 +420,7 @@ in the search form. Uses Angular Material &quot;Bottom Sheet&quot; to load in to
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onNoClick()</code>
                 </td>
             </tr>
@@ -379,13 +430,13 @@ in the search form. Uses Angular Material &quot;Bottom Sheet&quot; to load in to
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>when the user clicks the Cancel button</p>
+                        <div class="io-description"><p>when the user clicks the Cancel button</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -396,7 +447,7 @@ in the search form. Uses Angular Material &quot;Bottom Sheet&quot; to load in to
                 <td class="col-md-4">
                     <a name="attributeCodeAsText"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
+                            <span class="modifier">Public</span>
                         <span ><b>attributeCodeAsText</b></span>
                         <a href="#attributeCodeAsText"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -404,7 +455,7 @@ in the search form. Uses Angular Material &quot;Bottom Sheet&quot; to load in to
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>attributeCodeAsText(attrCode: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -414,45 +465,43 @@ in the search form. Uses Angular Material &quot;Bottom Sheet&quot; to load in to
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>takes an attributeCode string and applies formatting</p>
+                        <div class="io-description"><p>takes an attributeCode string and applies formatting</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>attrCode</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>attrCode</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -463,7 +512,7 @@ in the search form. Uses Angular Material &quot;Bottom Sheet&quot; to load in to
                 <td class="col-md-4">
                     <a name="extendInputData"></a>
                     <span class="name">
-                        <span class="modifier">Protected</span>
+                            <span class="modifier">Protected</span>
                         <span ><b>extendInputData</b></span>
                         <a href="#extendInputData"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -471,7 +520,7 @@ in the search form. Uses Angular Material &quot;Bottom Sheet&quot; to load in to
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>extendInputData(value: SzAttributeType[], selected: string[])</code>
                 </td>
             </tr>
@@ -481,67 +530,65 @@ in the search form. Uses Angular Material &quot;Bottom Sheet&quot; to load in to
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>used for taking a plain list of SzAttributeType[] and converting it to
+                        <div class="io-description"><p>used for taking a plain list of SzAttributeType[] and converting it to
 a type of AttrRow[] which can hold checkbox state as well as SzAttributeType properties.</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>value</td>
-                                    <td>
-                                            <code>SzAttributeType[]</code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                        <code>SzAttributeType[]</code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>SzAttributeType[]</p>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>selected</td>
-                                    <td>
-                                            <code>string[]</code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                    <td>
-                                        <p>array of attributeCode strings that are selected</p>
+                                            <td>
+                                                    <p>SzAttributeType[]</p>
 
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Array&lt;AttrRow&gt;</code>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>selected</td>
+                                            <td>
+                                                        <code>string[]</code>
+                                            </td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>array of attributeCode strings that are selected</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Array&lt;AttrRow&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -854,8 +901,8 @@ a type of AttrRow[] which can hold checkbox state as well as SzAttributeType pro
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><h1 mat-dialog-title class="mat-dialog-title">Identifier Types</h1><div mat-dialog-content class="mat-dialog-content">  <p>Select which identifiers appear in the dropdown</p>  <!--<mat-form-field>    <mat-label>Favorite Animal</mat-label>    <input matInput [(ngModel)]="data.animal">  </mat-form-field>-->  <div class="value-pair hide-on-modal toggle-all-list-header">    <div class="value-pair-row">      <mat-checkbox [(ngModel)]="allOptionsSelected" class="toggle-all">        <span *ngIf="allOptionsSelected">---- DESELECT ALL ----</span>        <span *ngIf="!allOptionsSelected">---- SELECT ALL &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----</span>      </mat-checkbox>    </div>  </div>  <div class="value-pair" *ngFor="let attrRow of orderedData">    <div class="value-pair-row">      <mat-checkbox [(ngModel)]="attrRow.checked">        {{attributeCodeAsText(attrRow.attributeCode) | uppercase}}      </mat-checkbox>    </div>  </div></div><div *ngIf="showButtons" mat-dialog-actions class="mat-dialog-actions">  <button mat-button color="basic" class="toggle-all hide-on-sheet">    <mat-checkbox [(ngModel)]="allOptionsSelected" class="toggle-all">      <span *ngIf="allOptionsSelected">Deselect All</span>      <span *ngIf="!allOptionsSelected">Select All</span>    </mat-checkbox>  </button>  <button mat-button class="cancel" color="basic" (click)="onNoClick()">Cancel</button>  <button mat-button class="accept" color="primary" (click)="onApplyClick()" cdkFocusInitial>Apply</button></div></div>'
-    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
-    var DIRECTIVES = [];
+    var COMPONENTS = [{'name': 'SzConfigurationAboutComponent', 'selector': 'sz-configuration-about'},{'name': 'SzConfigurationComponent', 'selector': 'sz-configuration'},{'name': 'SzCrossSourceResultsDataTable', 'selector': 'sz-cross-source-results'},{'name': 'SzEntityDetailComponent', 'selector': 'sz-entity-detail'},{'name': 'SzEntityDetailGraphFilterComponent', 'selector': 'sz-entity-detail-graph-filter'},{'name': 'SzEntityRecordViewerComponent', 'selector': 'sz-entity-record-viewer'},{'name': 'SzGraphFilterComponent', 'selector': 'sz-graph-filter'},{'name': 'SzHowEntityComponent', 'selector': 'sz-how-entity'},{'name': 'SzLicenseInfoComponent', 'selector': 'sz-license'},{'name': 'SzPoweredByComponent', 'selector': 'sz-powered-by'},{'name': 'SzPreferencesComponent', 'selector': 'sz-preferences'},{'name': 'SzRelationshipPathComponent', 'selector': 'sz-relationship-path'},{'name': 'SzSearchByIdComponent', 'selector': 'sz-search-by-id'},{'name': 'SzSearchComponent', 'selector': 'sz-search'},{'name': 'SzSearchIdentifiersPickerDialogComponent', 'selector': 'sz-search-identifiers-picker-dialog'},{'name': 'SzSearchIdentifiersPickerSheetComponent', 'selector': 'sz-search-identifiers-picker-sheet'},{'name': 'SzSearchResultsComponent', 'selector': 'sz-search-results'},{'name': 'SzStandaloneGraphComponent', 'selector': 'sz-standalone-graph'},{'name': 'SzTooltipComponent', 'selector': 'sz-tooltip'},{'name': 'SzWhyEntitiesComparisonComponent', 'selector': 'sz-why-entities'},{'name': 'SzWhyEntityComponent', 'selector': 'sz-why-entity'},{'name': 'SzWhyReportBaseComponent', 'selector': 'sz-why-entity-base'}];
+    var DIRECTIVES = [{'name': 'SzElementResizeObserverDirective', 'selector': '[onResize]'},{'name': 'SzTooltipDirective', 'selector': '[sz-tooltip]'}];
     var ACTUAL_COMPONENT = {'name': 'SzSearchIdentifiersPickerSheetComponent'};
 </script>
 <script src="../js/tree.js"></script>
@@ -905,6 +952,19 @@ a type of AttrRow[] which can hold checkbox state as well as SzAttributeType pro
             var COMPODOC_CURRENT_PAGE_URL = 'SzSearchIdentifiersPickerSheetComponent.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
