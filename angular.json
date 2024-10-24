@@ -153,16 +153,16 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/search-with-results-and-details:build",
             "port": 4300,
-            "proxyConfig": "proxy.conf.json"
+            "proxyConfig": "proxy.conf.json",
+            "buildTarget": "@senzing/sdk-components-ng/examples/search-with-results-and-details:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/search-with-results-and-details:build:production"
+              "buildTarget": "@senzing/sdk-components-ng/examples/search-with-results-and-details:build:production"
             },
             "development": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/search-with-results-and-details:build:development"
+              "buildTarget": "@senzing/sdk-components-ng/examples/search-with-results-and-details:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -170,7 +170,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/search-with-results-and-details:build"
+            "buildTarget": "@senzing/sdk-components-ng/examples/search-with-results-and-details:build"
           }
         }
       }
@@ -322,26 +322,26 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/search-in-graph:build",
             "port": 4300,
-            "proxyConfig": "proxy.conf.json"
+            "proxyConfig": "proxy.conf.json",
+            "buildTarget": "@senzing/sdk-components-ng/examples/search-in-graph:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/search-in-graph:build:production"
+              "buildTarget": "@senzing/sdk-components-ng/examples/search-in-graph:build:production"
             },
             "debug": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/search-in-graph:build:debug"
+              "buildTarget": "@senzing/sdk-components-ng/examples/search-in-graph:build:debug"
             },
             "development": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/search-in-graph:build:development"
+              "buildTarget": "@senzing/sdk-components-ng/examples/search-in-graph:build:development"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/search-in-graph:build"
+            "buildTarget": "@senzing/sdk-components-ng/examples/search-in-graph:build"
           }
         }
       }
@@ -451,20 +451,20 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/search-with-spinner:build",
             "port": 4300,
-            "proxyConfig": "proxy.conf.json"
+            "proxyConfig": "proxy.conf.json",
+            "buildTarget": "@senzing/sdk-components-ng/examples/search-with-spinner:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/search-with-spinner:build:production"
+              "buildTarget": "@senzing/sdk-components-ng/examples/search-with-spinner:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/search-with-spinner:build"
+            "buildTarget": "@senzing/sdk-components-ng/examples/search-with-spinner:build"
           }
         }
       }
@@ -582,23 +582,23 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/data-table:build",
             "port": 4300,
-            "proxyConfig": "proxy.conf.json"
+            "proxyConfig": "proxy.conf.json",
+            "buildTarget": "@senzing/sdk-components-ng/examples/data-table:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/data-table:build:production"
+              "buildTarget": "@senzing/sdk-components-ng/examples/data-table:build:production"
             },
             "development": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/data-table:build:development"
+              "buildTarget": "@senzing/sdk-components-ng/examples/data-table:build:development"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/data-table:build"
+            "buildTarget": "@senzing/sdk-components-ng/examples/data-table:build"
           }
         }
       }
@@ -716,23 +716,23 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/charts:build",
             "port": 4300,
-            "proxyConfig": "proxy.conf.json"
+            "proxyConfig": "proxy.conf.json",
+            "buildTarget": "@senzing/sdk-components-ng/examples/charts:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/charts:build:production"
+              "buildTarget": "@senzing/sdk-components-ng/examples/charts:build:production"
             },
             "development": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/charts:build:development"
+              "buildTarget": "@senzing/sdk-components-ng/examples/charts:build:development"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/charts:build"
+            "buildTarget": "@senzing/sdk-components-ng/examples/charts:build"
           }
         }
       }
@@ -850,23 +850,23 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/graph:build",
             "port": 4300,
-            "proxyConfig": "proxy.conf.json"
+            "proxyConfig": "proxy.conf.json",
+            "buildTarget": "@senzing/sdk-components-ng/examples/graph:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/graph:build:production"
+              "buildTarget": "@senzing/sdk-components-ng/examples/graph:build:production"
             },
             "development": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/graph:build:development"
+              "buildTarget": "@senzing/sdk-components-ng/examples/graph:build:development"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/graph:build"
+            "buildTarget": "@senzing/sdk-components-ng/examples/graph:build"
           }
         }
       }
@@ -989,23 +989,23 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/search-with-prefs:build",
             "port": 4300,
-            "proxyConfig": "proxy.conf.json"
+            "proxyConfig": "proxy.conf.json",
+            "buildTarget": "@senzing/sdk-components-ng/examples/search-with-prefs:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/search-with-prefs:build:production"
+              "buildTarget": "@senzing/sdk-components-ng/examples/search-with-prefs:build:production"
             },
             "development": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/search-with-prefs:build:development"
+              "buildTarget": "@senzing/sdk-components-ng/examples/search-with-prefs:build:development"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/search-with-prefs:build"
+            "buildTarget": "@senzing/sdk-components-ng/examples/search-with-prefs:build"
           }
         }
       }
@@ -1115,20 +1115,20 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/search-by-id:build",
             "port": 4300,
-            "proxyConfig": "proxy.conf.json"
+            "proxyConfig": "proxy.conf.json",
+            "buildTarget": "@senzing/sdk-components-ng/examples/search-by-id:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/search-by-id:build:production"
+              "buildTarget": "@senzing/sdk-components-ng/examples/search-by-id:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/search-by-id:build"
+            "buildTarget": "@senzing/sdk-components-ng/examples/search-by-id:build"
           }
         }
       }
@@ -1264,23 +1264,23 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "e2e-harness:build",
             "port": 4300,
-            "proxyConfig": "proxy.conf.json"
+            "proxyConfig": "proxy.conf.json",
+            "buildTarget": "e2e-harness:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "e2e-harness:build:production"
+              "buildTarget": "e2e-harness:build:production"
             },
             "e2e": {
-              "browserTarget": "e2e-harness:build:e2e"
+              "buildTarget": "e2e-harness:build:e2e"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "e2e-harness:build"
+            "buildTarget": "e2e-harness:build"
           }
         },
         "lint": {
@@ -1471,41 +1471,41 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "@senzing/sdk-components-web:build",
             "port": 4300,
-            "proxyConfig": "proxy.conf.json"
+            "proxyConfig": "proxy.conf.json",
+            "buildTarget": "@senzing/sdk-components-web:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "@senzing/sdk-components-web:build:production"
+              "buildTarget": "@senzing/sdk-components-web:build:production"
             },
             "apiServerConfig": {
-              "browserTarget": "@senzing/sdk-components-web:build:apiServerConfig"
+              "buildTarget": "@senzing/sdk-components-web:build:apiServerConfig"
             },
             "searchByAttribute": {
-              "browserTarget": "@senzing/sdk-components-web:build:searchByAttribute"
+              "buildTarget": "@senzing/sdk-components-web:build:searchByAttribute"
             },
             "searchById": {
-              "browserTarget": "@senzing/sdk-components-web:build:searchById"
+              "buildTarget": "@senzing/sdk-components-web:build:searchById"
             },
             "searchWithDetail": {
-              "browserTarget": "@senzing/sdk-components-web:build:searchWithDetail"
+              "buildTarget": "@senzing/sdk-components-web:build:searchWithDetail"
             },
             "largeGraph": {
-              "browserTarget": "@senzing/sdk-components-web:build:largeGraph"
+              "buildTarget": "@senzing/sdk-components-web:build:largeGraph"
             },
             "smallGraph": {
-              "browserTarget": "@senzing/sdk-components-web:build:smallGraph"
+              "buildTarget": "@senzing/sdk-components-web:build:smallGraph"
             },
             "findPathGraph": {
-              "browserTarget": "@senzing/sdk-components-web:build:findPathGraph"
+              "buildTarget": "@senzing/sdk-components-web:build:findPathGraph"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "@senzing/sdk-components-web:build"
+            "buildTarget": "@senzing/sdk-components-web:build"
           }
         }
       }
@@ -1623,10 +1623,10 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/with-how-features:build:production"
+              "buildTarget": "@senzing/sdk-components-ng/examples/with-how-features:build:production"
             },
             "development": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/with-how-features:build:development"
+              "buildTarget": "@senzing/sdk-components-ng/examples/with-how-features:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -1634,7 +1634,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/with-how-features:build"
+            "buildTarget": "@senzing/sdk-components-ng/examples/with-how-features:build"
           }
         },
         "test": {
@@ -1770,10 +1770,10 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/with-why-features:build:production"
+              "buildTarget": "@senzing/sdk-components-ng/examples/with-why-features:build:production"
             },
             "development": {
-              "browserTarget": "@senzing/sdk-components-ng/examples/with-why-features:build:development"
+              "buildTarget": "@senzing/sdk-components-ng/examples/with-why-features:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -1781,7 +1781,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "@senzing/sdk-components-ng/examples/with-why-features:build"
+            "buildTarget": "@senzing/sdk-components-ng/examples/with-why-features:build"
           }
         },
         "test": {
