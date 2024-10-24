@@ -1208,7 +1208,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     let retVal = true;
     nodeR.each((d) => {
       if(d.isCoreNode || d.isPrimaryEntity) {
-        retVal == false;
+        retVal = false;
       }
     });
     return retVal;

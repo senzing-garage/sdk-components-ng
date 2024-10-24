@@ -125,7 +125,7 @@ export class SzEntityRecordCardHeaderComponent implements OnInit, OnDestroy {
   }
 
   public onEntityDetailLinkClick(entityId: number | boolean): void {
-    if(entityId && entityId > 0 && typeof entityId == 'number') {
+    if(entityId && typeof entityId == 'number' && entityId > 0) {
       console.log('onEntityDetailLinkClick: "'+ entityId +'"');
       this.entityRecordClick.emit(entityId);
     }

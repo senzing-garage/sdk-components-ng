@@ -81,8 +81,8 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
 
   @Input() displayType: string = 'entity';
   @Input() truncateResults: boolean = true;
-
-  @Input() cardData: SzEntityDetailSectionData | SzSectionDataByDataSource;
+  @Input() cardData: SzEntityDetailSectionData | SzSectionDataByDataSource | undefined;
+  
   isOpen: boolean = false;
   matchPills: { text: string, ambiguous: boolean, plusMinus: string }[];
   headerTitleText: string;
@@ -104,6 +104,12 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+  // DO NOT DELETE THIS
+  // The compiler is dumb and things that property "cardData" is of type "never" which 
+  // is literally NEVER true. it is NEVER "never" and always <SzEntityDetailSectionData | SzSectionDataByDataSource>
+  get cardDataAsAny(): any {
+    return this.cardData as any;
   }
 
   get recordCount() {
@@ -146,7 +152,7 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
     this.matchPills = this.createPillInfo(this.cardData);
     //console.log('MATCH PILLS! ', this.matchPills);
     //this.matchPills = this.createMatchPillInfo(this.cardData.records);
-    this.headerTitleText = !this.isEntityRecord(this.cardData) && this.cardData && this.cardData.dataSource ? this.cardData.dataSource + (this.recordCount > 0 ? '(' + this.recordCount + ')' : '') : '';
+    this.headerTitleText = !this.isEntityRecord(this.cardData) && this.cardData && (this.cardData as any).dataSource ? (this.cardData as any).dataSource + (this.recordCount > 0 ? '(' + this.recordCount + ')' : '') : '';
 
     this.prefs.entityDetail.prefsChanged.pipe(
       takeUntil(this.unsubscribe$)
