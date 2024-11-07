@@ -4,13 +4,9 @@ var sass = require('sass');
 
 (async function build() {
   // do styles first
-  await sass.render({
-    file: "./src/lib/scss/styles.scss",
-    includePaths: ["./src/lib/scss/","./node_modules"]
-  }, function(err, result) {
-    if(err){
-      console.log('SASSY ERROR: ',err.message);
-    } else {
+  await sass.compileAsync("./src/lib/scss/styles.scss", {
+    loadPaths: ["./src/lib/scss/","./node_modules"]
+  }).then((result) => {
       // make styles dir
       fs.mkdir('./dist/@senzing/sdk-components-ng/styles', { recursive: true }, (err) => {
         if(!(err)){
@@ -28,9 +24,11 @@ var sass = require('sass');
 
         }
       });
-
+  }).catch( err => {
+    if(err){
+      console.log('SASSY ERROR: ',err.message);
     }
-  });
+  })
 
   // documentation
   await fs.copy(

@@ -1,5 +1,4 @@
 @use '@angular/material' as mat;
-//@import '~@angular/material/theming'; /* works both with angular compiler and nodejs 'sass' this way. dont change */
 @import "../scss/_variables";
 @import "../scss/_mixins";
 
@@ -49,14 +48,14 @@ $sz-mat-colors: (
 );
 
 // $default: 500, $lighter: 100, $darker: 700, $text: $default
-$sz-mat-primary: mat.define-palette($sz-mat-colors, PRIMARY, PRIMARY, PRIMARY);
-$sz-mat-accent:  mat.define-palette($sz-mat-colors, SECONDARY, SECONDARY, SECONDARY);
+$sz-mat-primary: mat.m2-define-palette($sz-mat-colors, PRIMARY, PRIMARY, PRIMARY);
+$sz-mat-accent:  mat.m2-define-palette($sz-mat-colors, SECONDARY, SECONDARY, SECONDARY);
 // The warn palette is optional (defaults to red).
-$sz-mat-warn:    mat.define-palette($sz-mat-colors, WARNING, WARNING, WARNING);
+$sz-mat-warn:    mat.m2-define-palette($sz-mat-colors, WARNING, WARNING, WARNING);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as `color` or `typography`.
-$sz-mat-theme: mat.define-light-theme((
+$sz-mat-theme: mat.m2-define-light-theme((
   color: (
     primary: $sz-mat-primary,
     accent: $sz-mat-accent,
@@ -64,18 +63,18 @@ $sz-mat-theme: mat.define-light-theme((
   )
 ));
 
-$senzing-config-app-primary:    mat.define-palette($sz-mat-colors, PRIMARY, PRIMARY, PRIMARY);
-$senzing-config-app-accent:     mat.define-palette($sz-mat-colors, SECONDARY, SECONDARY, SECONDARY);
-$senzing-config-app-warn:       mat.define-palette(mat.$red-palette, 700, 900, 300);
-$senzing-config-app-warn-mild:  mat.define-palette(mat.$orange-palette, 700, 900, 300);
+$senzing-config-app-primary:    mat.m2-define-palette($sz-mat-colors, PRIMARY, PRIMARY, PRIMARY);
+$senzing-config-app-accent:     mat.m2-define-palette($sz-mat-colors, SECONDARY, SECONDARY, SECONDARY);
+$senzing-config-app-warn:       mat.m2-define-palette(mat.$m2-red-palette, 700, 900, 300);
+$senzing-config-app-warn-mild:  mat.m2-define-palette(mat.$m2-orange-palette, 700, 900, 300);
 $senzing-config-app-button-primary:  $sz-blue;
 
-$senzing-config-warn-color:         mat.get-color-from-palette($senzing-config-app-warn);
-$senzing-config-warn-mild-color:    mat.get-color-from-palette($senzing-config-app-warn-mild);
-$senzing-config-accent-color:       mat.get-color-from-palette($senzing-config-app-accent);
-$senzing-config-primary-color:      mat.get-color-from-palette($senzing-config-app-primary);
-$senzing-subheading-background-color: mat.get-color-from-palette($senzing-config-app-primary,800);
-$senzing-card-hover-color:          mat.get-color-from-palette($senzing-config-app-primary, 100);
+$senzing-config-warn-color:         mat.m2-get-color-from-palette($senzing-config-app-warn);
+$senzing-config-warn-mild-color:    mat.m2-get-color-from-palette($senzing-config-app-warn-mild);
+$senzing-config-accent-color:       mat.m2-get-color-from-palette($senzing-config-app-accent);
+$senzing-config-primary-color:      mat.m2-get-color-from-palette($senzing-config-app-primary);
+$senzing-subheading-background-color: mat.m2-get-color-from-palette($senzing-config-app-primary,800);
+$senzing-card-hover-color:          mat.m2-get-color-from-palette($senzing-config-app-primary, 100);
 
 /*TODO(mdc-migration): Remove all-legacy-component-themes once all legacy components are migrated*/
 //@include mat.all-legacy-component-themes($sz-mat-theme);
