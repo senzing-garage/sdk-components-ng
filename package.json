@@ -65,7 +65,7 @@
     "@angular/platform-browser": "^18.2.11",
     "@angular/platform-browser-dynamic": "^18.2.11",
     "@angular/router": "^18.2.11",
-    "@senzing/rest-api-client-ng": "file:../libs/senzing-rest-api-client-ng-7.0.0-ng16-beta.0.tgz",
+    "@senzing/rest-api-client-ng": "file:../libs/senzing-rest-api-client-ng-7.0.0-ng18-beta.0.tgz",
     "d3": "^7.8.4",
     "document-register-element": "^1.14.10",
     "ngx-json-viewer": "^3.2.1",
