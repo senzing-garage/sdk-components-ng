@@ -1,6 +1,5 @@
 @use '@angular/material' as mat;
-//@use '../../../node_modules/@angular/material' as mat;     /* works both with angular compiler and nodejs 'sass' this way. dont change */
-@import '@angular/material/theming'; /* works both with angular compiler and nodejs 'sass' this way. dont change */
+//@import '~@angular/material/theming'; /* works both with angular compiler and nodejs 'sass' this way. dont change */
 @import "../scss/_variables";
 @import "../scss/_mixins";
 
@@ -23,6 +22,9 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
+
+$dark-primary-text: rgba(black, 0.87);
+$light-primary-text: rgba(black, 0.87);
 
 $sz-mat-colors: (
   PRIMARY: #0C9BF4,
@@ -76,7 +78,7 @@ $senzing-subheading-background-color: mat.get-color-from-palette($senzing-config
 $senzing-card-hover-color:          mat.get-color-from-palette($senzing-config-app-primary, 100);
 
 /*TODO(mdc-migration): Remove all-legacy-component-themes once all legacy components are migrated*/
-@include mat.all-legacy-component-themes($sz-mat-theme);
+//@include mat.all-legacy-component-themes($sz-mat-theme);
 
 @include mat.all-component-themes($sz-mat-theme);
 //@include mat.core-theme($sz-mat-theme);
