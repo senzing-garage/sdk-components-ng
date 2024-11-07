@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { SenzingSdkModule, SzPrefsService, SzConfigurationService, SzRestConfiguration } from '@senzing/sdk-components-ng';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
@@ -28,24 +28,18 @@ export function SzRestConfigurationFactory() {
   return new SzRestConfiguration( (apiConfig ? apiConfig : undefined) );
 }
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    SzPrefsManagerComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    FormsModule,
-    OverlayModule,
-    ReactiveFormsModule,
-    NgxJsonViewerModule,
-    SenzingSdkModule.forRoot( SzRestConfigurationFactory )
-  ],
-  providers: [
-    SzPrefsService,
-    SzConfigurationService
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        SzPrefsManagerComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        FormsModule,
+        OverlayModule,
+        ReactiveFormsModule,
+        NgxJsonViewerModule,
+        SenzingSdkModule.forRoot(SzRestConfigurationFactory)], providers: [
+        SzPrefsService,
+        SzConfigurationService,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }

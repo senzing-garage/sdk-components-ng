@@ -1,6 +1,6 @@
 import { NgModule, Injector, ModuleWithProviders, SkipSelf, Optional, Provider, InjectionToken } from '@angular/core';
 /* import { BrowserModule } from '@angular/platform-browser'; */
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule, Location, LocationStrategy, PathLocationStrategy, TitleCasePipe } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -134,8 +134,7 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
  * Senzing SDK Components Module.
  * Add to your applications module imports array.
  */
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         SzAlertMessageDialog,
         SzConfigurationAboutComponent,
         SzConfigurationComponent,
@@ -206,17 +205,6 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzWhyEntityDialog,
         SzWhyReportBaseComponent
     ],
-    imports: [
-        CommonModule,
-        DragDropModule,
-        HttpClientModule,
-        FormsModule,
-        ReactiveFormsModule,
-        LayoutModule,
-        NgxJsonViewerModule,
-        ApiModule,
-        SzSdkMaterialModule
-    ],
     exports: [
         SzAlertMessageDialog,
         SzConfigurationComponent,
@@ -264,8 +252,14 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzWhyEntitiesDialog,
         SzWhyEntityDialog,
         SzPreferencesComponent
-    ],
-    providers: [
+    ], imports: [CommonModule,
+        DragDropModule,
+        FormsModule,
+        ReactiveFormsModule,
+        LayoutModule,
+        NgxJsonViewerModule,
+        ApiModule,
+        SzSdkMaterialModule], providers: [
         SzMessageBundleService,
         SzAdminService,
         SzBulkDataService,
@@ -281,9 +275,9 @@ const SzRestConfigurationInjector = new InjectionToken<SzRestConfiguration>("SzR
         SzSearchService,
         HttpClient,
         TitleCasePipe,
-        SzUIEventService
-    ]
-})
+        SzUIEventService,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class SenzingSdkModule {
   /**
    * initialize the SenzingSdkModule with an optional factory method that returns a {@link https://senzing.github.io/rest-api-client-ng/classes/Configuration.html|SzRestConfiguration} instance.

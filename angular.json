@@ -77,12 +77,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/examples/search-with-results-and-details",
+            "outputPath": {
+              "base": "dist/examples/search-with-results-and-details"
+            },
             "index": "examples/search-with-results-and-details/src/index.html",
-            "main": "examples/search-with-results-and-details/src/main.ts",
-            "polyfills": "examples/search-with-results-and-details/src/polyfills.ts",
+            "polyfills": [
+              "examples/search-with-results-and-details/src/polyfills.ts"
+            ],
             "tsConfig": "examples/search-with-results-and-details/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "allowedCommonJsDependencies": [
@@ -110,7 +113,8 @@
               "src/lib/scss/styles.scss",
               "examples/search-with-results-and-details/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "examples/search-with-results-and-details/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -119,8 +123,6 @@
               "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -140,9 +142,7 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
@@ -211,12 +211,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/search-in-graph",
+            "outputPath": {
+              "base": "dist/search-in-graph"
+            },
             "index": "examples/search-in-graph/src/index.html",
-            "main": "examples/search-in-graph/src/main.ts",
-            "polyfills": "examples/search-in-graph/src/polyfills.ts",
+            "polyfills": [
+              "examples/search-in-graph/src/polyfills.ts"
+            ],
             "tsConfig": "examples/search-in-graph/tsconfig.app.json",
             "aot": true,
             "allowedCommonJsDependencies": [
@@ -244,7 +247,8 @@
               "src/lib/scss/styles.scss",
               "examples/search-in-graph/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "examples/search-in-graph/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -259,8 +263,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -289,8 +291,6 @@
               },
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -313,8 +313,6 @@
               },
               "namedChunks": true,
               "extractLicenses": false,
-              "vendorChunk": true,
-              "buildOptimizer": false,
               "budgets": []
             }
           }
@@ -382,12 +380,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/search-with-spinner",
+            "outputPath": {
+              "base": "dist/search-with-spinner"
+            },
             "index": "examples/search-with-spinner/src/index.html",
-            "main": "examples/search-with-spinner/src/main.ts",
-            "polyfills": "examples/search-with-spinner/src/polyfills.ts",
+            "polyfills": [
+              "examples/search-with-spinner/src/polyfills.ts"
+            ],
             "tsConfig": "examples/search-with-spinner/tsconfig.app.json",
             "aot": true,
             "allowedCommonJsDependencies": [
@@ -415,7 +416,8 @@
               "src/lib/scss/styles.scss",
               "examples/search-with-spinner/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "examples/search-with-spinner/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -431,8 +433,6 @@
               "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -505,12 +505,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/data-table",
+            "outputPath": {
+              "base": "dist/data-table"
+            },
             "index": "examples/data-table/src/index.html",
-            "main": "examples/data-table/src/main.ts",
-            "polyfills": "examples/data-table/src/polyfills.ts",
+            "polyfills": [
+              "examples/data-table/src/polyfills.ts"
+            ],
             "tsConfig": "examples/data-table/tsconfig.app.json",
             "aot": true,
             "allowedCommonJsDependencies": [
@@ -538,7 +541,8 @@
               "src/lib/scss/styles.scss",
               "examples/data-table/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "examples/data-table/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -554,8 +558,6 @@
               "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -570,9 +572,7 @@
               ]
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
@@ -639,12 +639,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/charts",
+            "outputPath": {
+              "base": "dist/charts"
+            },
             "index": "examples/charts/src/index.html",
-            "main": "examples/charts/src/main.ts",
-            "polyfills": "examples/charts/src/polyfills.ts",
+            "polyfills": [
+              "examples/charts/src/polyfills.ts"
+            ],
             "tsConfig": "examples/charts/tsconfig.app.json",
             "aot": true,
             "allowedCommonJsDependencies": [
@@ -672,7 +675,8 @@
               "src/lib/scss/styles.scss",
               "examples/charts/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "examples/charts/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -688,8 +692,6 @@
               "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -704,9 +706,7 @@
               ]
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
@@ -773,12 +773,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/graph",
+            "outputPath": {
+              "base": "dist/graph"
+            },
             "index": "examples/graph/src/index.html",
-            "main": "examples/graph/src/main.ts",
-            "polyfills": "examples/graph/src/polyfills.ts",
+            "polyfills": [
+              "examples/graph/src/polyfills.ts"
+            ],
             "tsConfig": "examples/graph/tsconfig.app.json",
             "aot": true,
             "allowedCommonJsDependencies": [
@@ -806,7 +809,8 @@
               "src/lib/scss/styles.scss",
               "examples/graph/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "examples/graph/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -822,8 +826,6 @@
               "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -838,9 +840,7 @@
               ]
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
@@ -907,12 +907,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/search-with-prefs",
+            "outputPath": {
+              "base": "dist/search-with-prefs"
+            },
             "index": "examples/search-with-prefs/src/index.html",
-            "main": "examples/search-with-prefs/src/main.ts",
-            "polyfills": "examples/search-with-prefs/src/polyfills.ts",
+            "polyfills": [
+              "examples/search-with-prefs/src/polyfills.ts"
+            ],
             "tsConfig": "examples/search-with-prefs/tsconfig.app.json",
             "aot": true,
             "allowedCommonJsDependencies": [
@@ -940,7 +943,8 @@
               "src/lib/scss/styles.scss",
               "examples/search-with-prefs/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "examples/search-with-prefs/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -956,8 +960,6 @@
               "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -980,8 +982,6 @@
               },
               "namedChunks": true,
               "extractLicenses": false,
-              "vendorChunk": true,
-              "buildOptimizer": false,
               "budgets": []
             }
           }
@@ -1046,12 +1046,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/search-by-id",
+            "outputPath": {
+              "base": "dist/search-by-id"
+            },
             "index": "examples/search-by-id/src/index.html",
-            "main": "examples/search-by-id/src/main.ts",
-            "polyfills": "examples/search-by-id/src/polyfills.ts",
+            "polyfills": [
+              "examples/search-by-id/src/polyfills.ts"
+            ],
             "tsConfig": "examples/search-by-id/tsconfig.app.json",
             "aot": true,
             "allowedCommonJsDependencies": [
@@ -1079,7 +1082,8 @@
               "src/lib/scss/styles.scss",
               "examples/search-by-id/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "examples/search-by-id/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -1095,8 +1099,6 @@
               "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -1167,12 +1169,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/e2e",
+            "outputPath": {
+              "base": "dist/e2e"
+            },
             "index": "e2e/harness/src/index.html",
-            "main": "e2e/harness/src/main.ts",
-            "polyfills": "e2e/harness/src/polyfills.ts",
+            "polyfills": [
+              "e2e/harness/src/polyfills.ts"
+            ],
             "tsConfig": "e2e/tsconfig.e2e.json",
             "aot": true,
             "allowedCommonJsDependencies": [
@@ -1200,7 +1205,8 @@
               "src/lib/scss/styles.scss",
               "e2e/harness/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "e2e/harness/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -1216,8 +1222,6 @@
               "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -1244,8 +1248,6 @@
               "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -1347,12 +1349,15 @@
       "prefix": "sz",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/@senzing/sdk-components-web",
+            "outputPath": {
+              "base": "dist/@senzing/sdk-components-web"
+            },
             "index": "sdk-components-web/src/index.html",
-            "main": "sdk-components-web/src/main.ts",
-            "polyfills": "sdk-components-web/src/polyfills.ts",
+            "polyfills": [
+              "sdk-components-web/src/polyfills.ts"
+            ],
             "tsConfig": "sdk-components-web/tsconfig.app.json",
             "aot": true,
             "allowedCommonJsDependencies": [
@@ -1380,7 +1385,8 @@
             "styles": [
               "sdk-components-web/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "sdk-components-web/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -1395,8 +1401,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -1547,12 +1551,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/with-how-features",
+            "outputPath": {
+              "base": "dist/with-how-features"
+            },
             "index": "examples/with-how-features/src/index.html",
-            "main": "examples/with-how-features/src/main.ts",
-            "polyfills": "examples/with-how-features/src/polyfills.ts",
+            "polyfills": [
+              "examples/with-how-features/src/polyfills.ts"
+            ],
             "tsConfig": "examples/with-how-features/tsconfig.app.json",
             "allowedCommonJsDependencies": [
               "core-js/modules/es.promise.js",
@@ -1580,7 +1587,8 @@
               "src/lib/scss/styles.scss",
               "examples/with-how-features/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "examples/with-how-features/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -1605,9 +1613,7 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
@@ -1694,12 +1700,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/with-why-features",
+            "outputPath": {
+              "base": "dist/with-why-features"
+            },
             "index": "examples/with-why-features/src/index.html",
-            "main": "examples/with-why-features/src/main.ts",
-            "polyfills": "examples/with-why-features/src/polyfills.ts",
+            "polyfills": [
+              "examples/with-why-features/src/polyfills.ts"
+            ],
             "tsConfig": "examples/with-why-features/tsconfig.app.json",
             "allowedCommonJsDependencies": [
               "core-js/modules/es.promise.js",
@@ -1727,7 +1736,8 @@
               "src/lib/scss/styles.scss",
               "examples/with-why-features/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "examples/with-why-features/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -1752,9 +1762,7 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true

@@ -1,8 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import {
-    HttpEvent, HttpInterceptor, HttpHandler, HttpRequest,
-    HttpResponse
-  } from '@angular/common/http';
+import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 
 import { BehaviorSubject, Observable, of, Subject, throwError } from 'rxjs';
 import * as datasourceStubData from '../../../stubs/datasources/datasources.json';
