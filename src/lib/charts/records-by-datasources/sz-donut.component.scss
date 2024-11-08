@@ -1,4 +1,4 @@
-@import "../../scss/theme.scss";
+@use "../../scss/theme.scss";
 
 button[mat-menu-item] {
   border-left: 1px solid transparent;
@@ -7,9 +7,9 @@ button[mat-menu-item] {
 button[mat-menu-item].selected-to-data-source,
 button[mat-menu-item].selected-to-data-source:hover {
   background-color: dodgerblue;
-  color: $sz-white;
-  border-left: 1px solid $sz-white;
-  border-right: 1px solid $sz-white;
+  color: theme.$sz-white;
+  border-left: 1px solid theme.$sz-white;
+  border-right: 1px solid theme.$sz-white;
 }
 
 :host .busy-mask {
@@ -75,7 +75,7 @@ button[mat-menu-item].selected-to-data-source:hover {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    color: $sz-font-color-1;
+    color: theme.$sz-font-color-1;
     padding-top: 20px;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 
@@ -193,7 +193,7 @@ button[mat-menu-item].selected-to-data-source:hover {
       .total-record-title {
         font-size: 24px;
         font-weight: 700;
-        color: $sz-highlight-grey;
+        color: theme.$sz-highlight-grey;
       }
       .total-record-subtitle {
         font-size: 0.8em;
@@ -204,7 +204,7 @@ button[mat-menu-item].selected-to-data-source:hover {
 
 .legend__title {
   text-align: center;
-  color: $sz-white;
+  color: theme.$sz-white;
   white-space: nowrap;
   font-size: 18px;
 }
@@ -221,8 +221,8 @@ button[mat-menu-item].selected-to-data-source:hover {
   &.to-data-source .legend-item,
   &.match-level .legend-item {
     width: 100%;
-    border-bottom: 1px solid $sz-light-grey;
-    border-top: 1px solid $sz-light-grey;
+    border-bottom: 1px solid theme.$sz-light-grey;
+    border-top: 1px solid theme.$sz-light-grey;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -268,7 +268,7 @@ button[mat-menu-item].selected-to-data-source:hover {
     }
 
     button.from-data-source {
-      color: $sz-font-color-1;
+      color: theme.$sz-font-color-1;
       border: 0px none transparent;
       padding: 0px;
       margin: 0px;
@@ -311,7 +311,7 @@ button[mat-menu-item].selected-to-data-source:hover {
         background-color: lightblue;
       }
       &.item-3 {
-        background-color: $sz-dark2;
+        background-color: theme.$sz-dark2;
       }
       &.item-4 {
         background-color: #6b486b;
@@ -333,7 +333,7 @@ button[mat-menu-item].selected-to-data-source:hover {
     .legend__title {
       font-size: 18px;
       font-weight: 700;
-      color: $sz-font-color-1;
+      color: theme.$sz-font-color-1;
       margin-right: 5px;
     }
   }
@@ -350,18 +350,18 @@ button[mat-menu-item].selected-to-data-source:hover {
   overflow-x: hidden;
 }
 .legend.from-data-source .legend-item:first-child {
-  border-top: 1px solid $sz-light-grey;
+  border-top: 1px solid theme.$sz-light-grey;
 }
 .legend.match-level .legend-item:last-child {
   border-bottom: 0 none transparent;
 }
 .legend.from-data-source .legend-item.selected {
   background-color: dodgerblue;
-  color: $sz-white;
+  color: theme.$sz-white;
 }
 
 .legend.from-data-source .legend-item.selected .legend__title {
-  color: $sz-white;
+  color: theme.$sz-white;
 }
 
 /* --------------------------------------- old stuff below --------------------------------------- */
@@ -378,7 +378,7 @@ mat-card {
 
 :host .errant .material-icons {
   font-size: 96px;
-  /*color: $senzing-config-warn-color;*/
+  /*color: theme.$senzing-config-warn-color;*/
 }
 :host .expired .material-icons {
   font-size: 96px;
@@ -400,21 +400,21 @@ mat-card {
     align-items: center;
     justify-content: center;
     font-size: 1.5em;
-    color: $sz-white;
+    color: theme.$sz-white;
     &.search {
-      background-color: $sz-green;
+      background-color: theme.$sz-green;
     }
     &.insights {
-      background-color: $sz-orange;
+      background-color: theme.$sz-orange;
     }
     &.suggestions {
-      background-color: $sz-brown;
+      background-color: theme.$sz-brown;
     }
     &.data {
-      background-color: $sz-dark2;
+      background-color: theme.$sz-dark2;
     }
     &.health {
-      background-color: $sz-dark-blue;
+      background-color: theme.$sz-dark-blue;
     }
   }
 
@@ -449,7 +449,7 @@ mat-card {
       padding: 20px 0px;
 
       .separator {
-        border-right: 1px solid $sz-light-grey;
+        border-right: 1px solid theme.$sz-light-grey;
       }
     }
     .no-data-mask {
@@ -471,8 +471,8 @@ mat-card {
         font-size: 32px;
         font-weight: 700;
         cursor: pointer;
-        color: $sz-dark-blue;
-        border: 1px solid $sz-dark-blue;
+        color: theme.$sz-dark-blue;
+        border: 1px solid theme.$sz-dark-blue;
         border-radius: 5px;
         padding: 10px;
         background-color: rgba(225,225,225,0.6);
@@ -528,7 +528,7 @@ mat-card {
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            color: $sz-font-color-1;
+            color: theme.$sz-font-color-1;
             padding-top: 20px;
             font-family: Roboto, "Helvetica Neue", sans-serif;
 
@@ -651,7 +651,7 @@ mat-card {
 
     }
     .data-card__right {
-      color: $sz-font-color-1;
+      color: theme.$sz-font-color-1;
       padding: 20px 20px;
       display: flex;
 
@@ -685,7 +685,7 @@ mat-card {
               display: inline-block;
             }
             span.warning-prefix {
-              /*color: $senzing-config-warn-color;*/
+              /*color: theme.$senzing-config-warn-color;*/
             }
           }
         }
@@ -697,7 +697,7 @@ mat-card {
           align-items: center;
 
           button.upgrade, button.import {
-            background-color: $sz-blue;
+            background-color: theme.$sz-blue;
             color: #ffffff;
           }
 
@@ -719,7 +719,7 @@ mat-card {
       .data-card__title,
       .legend__title {
         text-align: center;
-        color: $sz-white;
+        color: theme.$sz-white;
         white-space: nowrap;
         font-size: 18px;
       }
@@ -753,7 +753,7 @@ mat-card {
       justify-content: center;
       display: flex;
       flex-direction: column;
-      color: $sz-font-color-1;
+      color: theme.$sz-font-color-1;
     }
 
     .insights-card__left .headline {
@@ -766,7 +766,7 @@ mat-card {
     align-items: flex-start;
 
     h3 {
-      color: $sz-font-color-1;
+      color: theme.$sz-font-color-1;
       font-weight: 500;
     }
   }
@@ -791,7 +791,7 @@ mat-card {
     & + .subtitle {
       font-size: 1.5em;
       font-weight: 500;
-      color: $sz-light-grey;
+      color: theme.$sz-light-grey;
       margin-top: -16px;
     }
   }
@@ -815,13 +815,13 @@ mat-card {
   }
 
   .button__search-go {
-    background-color: $sz-red;
-    color: $sz-white;
+    background-color: theme.$sz-red;
+    color: theme.$sz-white;
   }
   .button__advanced-search {
-    background-color: $sz-white;
-    border: 1px solid $sz-red;
-    color: $sz-red;
+    background-color: theme.$sz-white;
+    border: 1px solid theme.$sz-red;
+    color: theme.$sz-red;
     min-width: 145px;
     margin: 0 100px 0 20px;
   }
@@ -836,7 +836,7 @@ mat-card {
   .data-card__title {
     font-size: 18pt;
     font-weight: 700;
-    color: $sz-font-color-1;
+    color: theme.$sz-font-color-1;
   }
 
   .data-card__right .legend .legend-item {
@@ -850,7 +850,7 @@ mat-card {
     background-color: black;
     opacity: 0.6;
     z-index: 2;
-    color: $sz-white;
+    color: theme.$sz-white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -859,7 +859,7 @@ mat-card {
 
 .no-data-loaded-msg {
   font-style: italic;
-  color: $sz-dark-grey;
+  color: theme.$sz-dark-grey;
   opacity: 0.8;
   font-variant: small-caps;
   font-size: 24px;

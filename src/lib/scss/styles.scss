@@ -1,11 +1,11 @@
-@import "./theme";
-@import "./charts";
-@import "./graph";
-@import "./why";
-@import "./how-rc";
-@import "./data-table";
-@import "./sz-mat-menu";
-@import "./stats-sample-data-table";
+@use "./theme";
+@use "./charts";
+@use "./graph";
+@use "./why";
+@use "./how-rc";
+@use "./data-table";
+@use "./sz-mat-menu";
+@use "./stats-sample-data-table";
 
 [class^="senzing-"], [class*=" senzing-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
@@ -26,8 +26,8 @@ body {
   /*
   --sz-graph-filter-match-key-mode-select-track-color: #414141;
   --sz-graph-filter-match-key-mode-select-handle-color: rgb(219, 219, 219);
-  --sz-graph-filter-match-key-mode-select-active-track-color: #{$sz-blue};
-  --sz-graph-filter-match-key-mode-select-active-handle-color: #{$sz-blue};
+  --sz-graph-filter-match-key-mode-select-active-track-color: #{theme.$sz-blue};
+  --sz-graph-filter-match-key-mode-select-active-handle-color: #{theme.$sz-blue};
   */
 
   /* match key tag cloud for standalone graph and filter(s) */

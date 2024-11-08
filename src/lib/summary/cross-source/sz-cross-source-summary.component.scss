@@ -1,4 +1,4 @@
-@import "../../scss/theme.scss";
+@use "../../scss/theme.scss";
 
 :host {
     width: 100%;
@@ -67,7 +67,7 @@
         width: 100%;
     
         .dsrc-versus {
-          color: $sz-grey;
+          color: theme.$sz-grey;
           font: 20px Arial;
           padding: 0 10px;
         }
@@ -214,7 +214,7 @@
                 width: 25px;
                 height: 16px;
                 line-height: 16px;
-                color: $sz-blue;
+                color: theme.$sz-blue;
                 text-shadow: 1px 1px rgba(30,30,30,0.3);
                 cursor: pointer;
               }

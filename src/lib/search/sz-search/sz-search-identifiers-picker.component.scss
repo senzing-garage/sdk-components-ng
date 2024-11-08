@@ -1,5 +1,4 @@
-@import "../../scss/_variables";
-@import "../../scss/_mixins";
+@use "../../scss/theme";
 
 /* default view is modal */
 :host {
@@ -23,8 +22,8 @@
     }
 
     button.mat-primary {
-        background-color: $sz-blue;
-        color: $sz-white;
+        background-color: theme.$sz-blue;
+        color: theme.$sz-white;
     }
     button.toggle-all {
         left: 0px;
