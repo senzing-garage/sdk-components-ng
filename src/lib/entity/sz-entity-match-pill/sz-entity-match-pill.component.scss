@@ -1,4 +1,4 @@
-@use "../../scss/theme.scss";
+@use "../../scss/colors";
 
 :host {
   margin: var(--sz-entity-detail-pill-margin);
@@ -22,9 +22,9 @@
       background-color: var(--sz-entity-detail-pill-background-color);
     }
     &.minus {
-      color: theme.$sz-red;
-      background-color: theme.$sz-white;
-      border: 1px solid theme.$sz-red;
+      color: colors.$red;
+      background-color: colors.$white;
+      border: 1px solid colors.$red;
     }
     &.is-ambiguous {
       background-color: var(--sz-color-ambiguous);

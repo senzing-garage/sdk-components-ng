@@ -5,7 +5,8 @@ var sass = require('sass');
 (async function build() {
   // do styles first
   await sass.compileAsync("./src/lib/scss/styles.scss", {
-    loadPaths: ["./src/lib/scss/","./node_modules"]
+    loadPaths: ["./src/lib/scss/","./node_modules"],
+    quietDeps: true
   }).then((result) => {
       // make styles dir
       fs.mkdir('./dist/@senzing/sdk-components-ng/styles', { recursive: true }, (err) => {

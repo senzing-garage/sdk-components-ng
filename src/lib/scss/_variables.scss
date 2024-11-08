@@ -1,51 +1,18 @@
-//Paths
-
-//Colors - $sz prefix so not overriding material styles
-$white: #FFFFFF;
-$light-background: #F8F8F8;
-$orange: #C9741F;
-$green: #2B7169;
-$brown: #A09020;
-$grey: #95989A;
-$light-grey: #E5E5E5;
-$dark-grey: #808285;
-$highlight-grey: #555;
-$blue: #0C9BF4;
-$dark-blue: #0E2863;
-$red: #D30B0F;
-$black: #000000;
-$dark1: #231F20;
-$dark2: #2D2D2D;
-$purple: #7c95a0;
-$teal: #2a94a5;
-$teal: #68e0fd;
-$magenta: #a52a63;
-$mint: #dafff6;
-$lime: #7da52a;
-
-$font-color-1: #5e5e5e;
-$font-color-2: #e5e5e5;
-$font-color-3: $grey;
-$input-font-color: $grey;
-$input-placeholder-color: #95989A;
-$input-border-color: $grey;
-$input-active-border-color: $dark-grey;
-$input-background-color: $white;
-$config-warn-color: $magenta;
+@use "colors";
 
 //Navigation
 $nav-parent__font-stack: Helvetica, 11px;
-$nav-parent__font-color: $light-grey;
+$nav-parent__font-color: colors.$light-grey;
 $nav-child__font-stack: Helvetica, 9px;
-$nav-child__font-color: $light-grey;
+$nav-child__font-color: colors.$light-grey;
 $nav-menu-width: 178px;
 $nav-menu-padding: 14px;
-$selected__background-color: $dark2;
+$selected__background-color: colors.$dark2;
 
 //Header
 $project-name__font-stack: Helvetica 18px bold;
-$project-name__font-color: $white;
-$header-color: $dark2;
+$project-name__font-color: colors.$white;
+$header-color: colors.$dark2;
 $header-height: 60px;
 
 //Search
@@ -58,11 +25,5 @@ $datasource-menu-font-family: Helvetica;
 //Snackbar
 $snack-font-family: Helvetica;
 
-//Modals
-$modal-header-color: #F0F0F0;
-$modal-footer-color: #F0F0F0;
-$modal-header-text-color: #F0F0F0;
-$modal-footer-buttons-primary-background-color: $blue;
-$modal-text-color: $dark2;
-
+//Paths
 $graph-zoom-slider-width: 150px;

@@ -1,4 +1,4 @@
-@use "../../scss/theme";
+@use "../../scss/colors";
 
 :host {
   display: block;
@@ -90,7 +90,7 @@
 
   sz-search-result-card {
     cursor: var(--sz-search-results-card-cursor);
-    background: theme.$sz-white;
+    background: colors.$white;
 
     &:hover {
       color: var(--sz-search-results-card-hover-color);
@@ -121,21 +121,21 @@
     align-items: center;
     justify-content: center;
     font-size: 1.5em;
-    color: theme.$sz-white;
+    color: colors.$white;
     &.search {
-      background-color: theme.$sz-green;
+      background-color: colors.$green;
     }
     &.insights {
-      background-color: theme.$sz-orange;
+      background-color: colors.$orange;
     }
     &.suggestions {
-      background-color: theme.$sz-brown;
+      background-color: colors.$brown;
     }
     &.data {
-      background-color: theme.$sz-dark2;
+      background-color: colors.$dark2;
     }
     &.health {
-      background-color: theme.$sz-dark-blue;
+      background-color: colors.$dark-blue;
     }
   }
 

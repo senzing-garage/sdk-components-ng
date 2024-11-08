@@ -1,5 +1,7 @@
 @use '@angular/material' as mat;
 @use "variables" as sz-vars;
+@use "colors";
+@forward "colors" as sz-*;
 @forward "variables" as sz-*;
 @forward "mixins" as sz-mixins-*;
 
@@ -68,7 +70,7 @@ $senzing-config-app-primary:    mat.m2-define-palette($sz-mat-colors, PRIMARY, P
 $senzing-config-app-accent:     mat.m2-define-palette($sz-mat-colors, SECONDARY, SECONDARY, SECONDARY);
 $senzing-config-app-warn:       mat.m2-define-palette(mat.$m2-red-palette, 700, 900, 300);
 $senzing-config-app-warn-mild:  mat.m2-define-palette(mat.$m2-orange-palette, 700, 900, 300);
-$senzing-config-app-button-primary:  sz-vars.$blue;
+$senzing-config-app-button-primary:  colors.$blue;
 
 $senzing-config-warn-color:         mat.m2-get-color-from-palette($senzing-config-app-warn);
 $senzing-config-warn-mild-color:    mat.m2-get-color-from-palette($senzing-config-app-warn-mild);
@@ -88,27 +90,27 @@ $senzing-card-hover-color:          mat.m2-get-color-from-palette($senzing-confi
 body {
   /* all component styles */
   --sz-font-family: sz-vars.$font-family;
-  --sz-color-matches: #{sz-vars.$dark-blue};
-  --sz-color-possible-match: #{sz-vars.$green};
-  --sz-color-possibly-related: #{sz-vars.$brown};
-  --sz-color-name-only-matches: #{sz-vars.$grey};
-  --sz-color-possible-matches: #{sz-vars.$orange};
-  --sz-color-disclosed: #{sz-vars.$green};
-  --sz-color-ambiguous: #{sz-vars.$purple};
-  --sz-color-graph-relationships: #{sz-vars.$magenta};
-  --sz-color-how-report: #{sz-vars.$lime};
-  --sz-color-why-report: #{sz-vars.$teal};
-  --sz-color-config-warning: #{sz-vars.$config-warn-color};
-  --sz-color-dialog-header: #{sz-vars.$light-grey};
-  --sz-color-dialog-header-border: #{sz-vars.$dark-grey};
+  --sz-color-matches: #{colors.$dark-blue};
+  --sz-color-possible-match: #{colors.$green};
+  --sz-color-possibly-related: #{colors.$brown};
+  --sz-color-name-only-matches: #{colors.$grey};
+  --sz-color-possible-matches: #{colors.$orange};
+  --sz-color-disclosed: #{colors.$green};
+  --sz-color-ambiguous: #{colors.$purple};
+  --sz-color-graph-relationships: #{colors.$magenta};
+  --sz-color-how-report: #{colors.$lime};
+  --sz-color-why-report: #{colors.$teal};
+  --sz-color-config-warning: #{colors.$config-warn-color};
+  --sz-color-dialog-header: #{colors.$light-grey};
+  --sz-color-dialog-header-border: #{colors.$dark-grey};
 
   /* search box vars */
-  --sz-search-button-submit-color: #{sz-vars.$white};
-  --sz-search-button-clear-color: #{sz-vars.$white};
-  --sz-search-button-submit-background-color: #{sz-vars.$blue};
-  --sz-search-button-clear-background-color: #{sz-vars.$grey};
-  --sz-search-button-border: 1px solid #{sz-vars.$dark-grey};
-  --sz-search-button-submit-border: 1px outset #{sz-vars.$blue};
+  --sz-search-button-submit-color: #{colors.$white};
+  --sz-search-button-clear-color: #{colors.$white};
+  --sz-search-button-submit-background-color: #{colors.$blue};
+  --sz-search-button-clear-background-color: #{colors.$grey};
+  --sz-search-button-border: 1px solid #{colors.$dark-grey};
+  --sz-search-button-submit-border: 1px outset #{colors.$blue};
   --sz-search-button-clear-padding: 0 10px 0 10px;
   --sz-search-button-submit-padding: 0 30px 0 30px;
   --sz-search-button-margin: 0;
@@ -118,9 +120,9 @@ body {
   /* --sz-search-button-submit-font-size: 10px;*/
   --sz-search-button-clear-font-size: 10px;
 
-  --sz-search-button-filter-color: #{sz-vars.$white};
-  --sz-search-button-filter-background-color: #{sz-vars.$blue};
-  --sz-search-button-filter-border-color: #{sz-vars.$blue}; // #0c9bf4
+  --sz-search-button-filter-color: #{colors.$white};
+  --sz-search-button-filter-background-color: #{colors.$blue};
+  --sz-search-button-filter-border-color: #{colors.$blue}; // #0c9bf4
   --sz-search-button-filter-border-style: outset;
   --sz-search-button-filter-border-radius: 50%;
   --sz-search-button-filter-border-width: 1px;
@@ -130,19 +132,19 @@ body {
   --sz-search-button-filter-padding: 2px 3px 2px 2px;
   --sz-search-button-filter-margin-top: 7px;
 
-  --sz-search-input-color: #{sz-vars.$input-font-color};
-  --sz-search-input-background-color: #{sz-vars.$input-background-color};
+  --sz-search-input-color: #{colors.$input-font-color};
+  --sz-search-input-background-color: #{colors.$input-background-color};
   --sz-search-input-display: inline-block;
   --sz-search-input-font-size: 13px;
   --sz-search-input-padding:  .25em .5em;
   --sz-search-input-margin: 5px;
-  --sz-search-input-placeholder-color: #{sz-vars.$input-placeholder-color};
-  --sz-search-input-border: 1px solid #{sz-vars.$input-border-color};
+  --sz-search-input-placeholder-color: #{colors.$input-placeholder-color};
+  --sz-search-input-border: 1px solid #{colors.$input-border-color};
   --sz-search-input-border-radius: 6px;
-  --sz-search-input-hover-border: 1px solid #{sz-vars.$input-active-border-color};
+  --sz-search-input-hover-border: 1px solid #{colors.$input-active-border-color};
   --sz-search-input-focus-border: var(--sz-search-input-hover-border);
 
-  --sz-search-label-color: #{sz-vars.$font-color-1};
+  --sz-search-label-color: #{colors.$font-color-1};
   --sz-search-label-padding: 4px;
   --sz-search-label-margin: 0 0 10px 4px;
   --sz-search-label-font-size: 11px;
@@ -164,9 +166,9 @@ body {
 
   /* search results vars */
   --sz-search-results-padding: 20px;
-  --sz-search-results-color: #{sz-vars.$font-color-1};
+  --sz-search-results-color: #{colors.$font-color-1};
   --sz-search-results-font-family: #{sz-vars.$font-family};
-  --sz-search-results-a-color: #{sz-vars.$blue};
+  --sz-search-results-a-color: #{colors.$blue};
   --sz-search-results-a-hover-color: var(--sz-search-results-a-color);
   --sz-search-results-name-hover-color: var(--sz-search-results-a-color);
   --sz-search-results-a-cursor: pointer;
@@ -174,24 +176,24 @@ body {
   --sz-search-results-col-name-min-width: 300px;
   --sz-search-results-col-margin-right: 2em;
   --sz-search-results-datasources-spacing: 8px;
-  --sz-search-results-how-button-border: 1px solid #{sz-vars.$dark-grey};
-  --sz-search-results-how-button-background-color: #{sz-vars.$light-background};
+  --sz-search-results-how-button-border: 1px solid #{colors.$dark-grey};
+  --sz-search-results-how-button-background-color: #{colors.$light-background};
   --sz-search-results-how-button-padding: 0px 10px;
   --sz-search-results-how-button-margin: 0;
-  --sz-search-results-how-button-color: #{sz-vars.$dark-grey};
+  --sz-search-results-how-button-color: #{colors.$dark-grey};
 
   --sz-search-results-header-width: calc(100% - 40px);
   --sz-search-results-header-display: block;
   --sz-search-results-header-padding: 0;
   --sz-search-results-header-margin: 20px 0 30px 0;
   --sz-search-results-header-font-size: 1.5em;
-  --sz-search-results-header-color: #{sz-vars.$font-color-1};
+  --sz-search-results-header-color: #{colors.$font-color-1};
   --sz-search-results-header-parameter-value-color: var(--sz-search-results-a-color);
   --sz-search-results-header-badge-selected-background-color: var(--sz-search-results-header-parameter-value-color);
   --sz-search-results-header-badge-selected-color: #fff;
 
   /* match key colors */
-  --sz-search-results-section-header-color: #{sz-vars.$font-color-2};
+  --sz-search-results-section-header-color: #{colors.$font-color-2};
   --sz-search-results-section-header-padding: 2px 20px;
   --sz-search-results-section-header-text-opacity: 1;
   --sz-search-results-matches-header-background-color: var(--sz-color-matches);
@@ -219,7 +221,7 @@ body {
     /* start header vars */
     --sz-entity-detail-header-font-size: 1em;
     --sz-entity-detail-header-font-family: var(--sz-font-family);
-    --sz-entity-detail-header-color: #{sz-vars.$font-color-1};
+    --sz-entity-detail-header-color: #{colors.$font-color-1};
     --sz-entity-detail-header-display: flex;
 
     --sz-entity-detail-icon-display: block;
@@ -242,7 +244,7 @@ body {
 
     --sz-entity-detail-header-section-totals-border: none;
     --sz-entity-detail-header-section-totals-border-radius: 2px;
-    --sz-entity-detail-header-section-totals-color: #{sz-vars.$white};
+    --sz-entity-detail-header-section-totals-color: #{colors.$white};
     --sz-entity-detail-header-section-totals-font-size: 60px;
     --sz-entity-detail-header-section-totals-width: 200px;
     --sz-entity-detail-header-section-totals-height: 100px;
@@ -319,8 +321,8 @@ body {
     --sz-entity-detail-pill-text-transform: uppercase;
     --sz-entity-detail-pill-padding: 8px 8px 9px 8px;
     --sz-entity-detail-pill-margin: 0 10px 0 0;
-    --sz-entity-detail-pill-background-color: #{sz-vars.$dark-grey};
-    --sz-entity-detail-pill-color: #{sz-vars.$white};
+    --sz-entity-detail-pill-background-color: #{colors.$dark-grey};
+    --sz-entity-detail-pill-color: #{colors.$white};
     --sz-entity-detail-pill-border-radius: 5px;
     /* special overrides for component view since it coexists with primary detail view */
     --sz-entity-detail-section-header-lo-rail-font-size: 12px;
@@ -349,7 +351,7 @@ body {
 
     /* graph */
     --sz-graph-primary-entity-color: rgb(161, 219, 253);
-    --sz-graph-node-icon-color: sz-vars.$dark2;
+    --sz-graph-node-icon-color: colors.$dark2;
     --sz-graph-node-icon-outline-color: #565656;
     --sz-graph-link-line-color: #999;
     --sz-graph-link-line-non-focused-color: var(--sz-graph-link-line-color);
@@ -402,7 +404,7 @@ body {
     /* graph filters */
     --sz-graph-filter-control-background-color: transparent;
     --sz-graph-filter-control-cb-no-text-min-width: 79px;
-    --sz-graph-filter-multi-select-link-color: #{sz-vars.$blue};
+    --sz-graph-filter-multi-select-link-color: #{colors.$blue};
     --sz-graph-filter-match-key-tags-display: inline-flex;
     --sz-graph-filter-match-key-tags-flex-direction: column;
     --sz-graph-filter-match-key-tags-align-items: flex-start;
@@ -427,7 +429,7 @@ body {
     --sz-graph-filter-match-key-mode-select-track-color: #00000061;
     --sz-graph-filter-match-key-mode-select-handle-color: rgb(219, 219, 219);
     --sz-graph-filter-match-key-mode-select-active-track-color: rgba(15, 158, 247, 0.31);
-    --sz-graph-filter-match-key-mode-select-active-handle-color: #{sz-vars.$blue};
+    --sz-graph-filter-match-key-mode-select-active-handle-color: #{colors.$blue};
     /* filter tooltips */
     --sz-graph-filter-tooltip-background-color: #353535a6;
     --sz-graph-filter-tooltip-color: #fff;
@@ -450,7 +452,7 @@ body {
   --sz-how-nav-min-width: 230px;
   --sz-how-nav-min-height: 100%;
   --sz-how-nav-padding: 3px;
-  --sz-how-nav-border: 1px solid #{sz-vars.$black};
+  --sz-how-nav-border: 1px solid #{colors.$black};
   --sz-how-nav-border-radius: 3px;
   --sz-how-nav-border-top: var(-sz-how-nav-border);
   --sz-how-nav-border-right: var(-sz-how-nav-border);
@@ -459,18 +461,18 @@ body {
   --sz-how-nav-overflow-y: auto;
   --sz-how-nav-resize: horizontal;
   --sz-how-nav-font-size: 12px;
-  --sz-how-nav-background: #{sz-vars.$light-grey};
-  --sz-how-nav-color: #{sz-vars.$black};
+  --sz-how-nav-background: #{colors.$light-grey};
+  --sz-how-nav-color: #{colors.$black};
 
-  --sz-how-step-card-color: #{sz-vars.$dark1};
-  --sz-how-step-card-border: 2px solid #{sz-vars.$black};
+  --sz-how-step-card-color: #{colors.$dark1};
+  --sz-how-step-card-border: 2px solid #{colors.$black};
   --sz-how-step-card-type-color-add: #feae00;
   --sz-how-step-card-type-color-create: #ffd932;
   --sz-how-step-card-type-color-merge: #16e7cf;
   --sz-how-step-card-type-color-interim: #56c1ff;
   --sz-how-step-card-type-color-final: #88fa4e;
-  --sz-how-step-card-data-table-border: 2px solid #{sz-vars.$dark1};
-  --sz-how-step-card-data-table-cell-border: 2px solid #{sz-vars.$dark1};
+  --sz-how-step-card-data-table-border: 2px solid #{colors.$dark1};
+  --sz-how-step-card-data-table-cell-border: 2px solid #{colors.$dark1};
   --sz-how-step-card-title-text-margin-top: 0px;
   --sz-how-step-card-base-z-index: 500;
 
@@ -495,7 +497,7 @@ body {
     --sz-donut-chart-graph-arc-stroke-opacity: 0.5;
     --sz-donut-chart-unmatched-color: rgb(255 150 125);
     --sz-donut-chart-pending-color: rgb(235 255 125);
-    --sz-donut-chart-link-color: #{sz-vars.$blue};
+    --sz-donut-chart-link-color: #{colors.$blue};
     --sz-donut-chart-link-font-size: 13px;
   
   /* sample data table */

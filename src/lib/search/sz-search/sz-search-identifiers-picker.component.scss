@@ -1,4 +1,4 @@
-@use "../../scss/theme";
+@use "../../scss/colors";
 
 /* default view is modal */
 :host {
@@ -22,8 +22,8 @@
     }
 
     button.mat-primary {
-        background-color: theme.$sz-blue;
-        color: theme.$sz-white;
+        background-color: colors.$blue;
+        color: colors.$white;
     }
     button.toggle-all {
         left: 0px;
