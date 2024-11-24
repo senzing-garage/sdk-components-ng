@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzRelationshipNetworkLookupComponent } from './sz-relationship-network-lookup.component';
 import { SenzingSdkModule } from 'src/lib/sdk.module';
@@ -7,7 +7,7 @@ describe('SzRelationshipNetworkLookupComponent', () => {
   let component: SzRelationshipNetworkLookupComponent;
   let fixture: ComponentFixture<SzRelationshipNetworkLookupComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SenzingSdkModule.forRoot()]
     })

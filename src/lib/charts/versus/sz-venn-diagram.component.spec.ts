@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzVennDiagramsComponent } from './sz-venn-diagram.component';
 import { SenzingSdkModule } from '../../sdk.module';
@@ -10,7 +10,7 @@ describe('SzVennDiagramsComponent', () => {
   let component: SzVennDiagramsComponent;
   let fixture: ComponentFixture<SzVennDiagramsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SenzingSdkModule.forRoot()],
       providers: [

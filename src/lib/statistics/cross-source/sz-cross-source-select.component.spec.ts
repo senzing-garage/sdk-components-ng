@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MockTestDataInterceptor } from '../../interceptors/mock-test-data.interceptor.service';
 
@@ -9,7 +9,7 @@ describe('SzCrossSourceSelectComponent', () => {
   let component: SzCrossSourceSelectComponent;
   let fixture: ComponentFixture<SzCrossSourceSelectComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SenzingSdkModule.forRoot()],
       providers: [

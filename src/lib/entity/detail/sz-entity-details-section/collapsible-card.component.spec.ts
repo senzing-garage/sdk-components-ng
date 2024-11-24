@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzEntityDetailSectionCollapsibleCardComponent } from './collapsible-card.component';
 import { SenzingSdkModule } from 'src/lib/sdk.module';
@@ -7,7 +7,7 @@ describe('SzEntityDetailSectionCollapsibleCardComponent', () => {
   let component: SzEntityDetailSectionCollapsibleCardComponent;
   let fixture: ComponentFixture<SzEntityDetailSectionCollapsibleCardComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SenzingSdkModule.forRoot()]
     })

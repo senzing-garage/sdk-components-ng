@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzSearchComponent } from './sz-search.component';
 import { SenzingSdkModule } from 'src/lib/sdk.module';
@@ -8,7 +8,7 @@ describe('SzSearchComponent', () => {
   let component: SzSearchComponent;
   let fixture: ComponentFixture<SzSearchComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SenzingSdkModule.forRoot()]
     })
