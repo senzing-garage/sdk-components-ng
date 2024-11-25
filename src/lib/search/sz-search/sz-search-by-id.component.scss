@@ -1,4 +1,4 @@
-@import "../../scss/theme.scss";
+@use "../../scss/colors";
 
 :host {
   display: flex;
@@ -64,21 +64,21 @@
     align-items: center;
     justify-content: center;
     font-size: 1.5em;
-    color: $sz-white;
+    color: colors.$white;
     &.search {
-      background-color: $sz-green;
+      background-color: colors.$green;
     }
     &.insights {
-      background-color: $sz-orange;
+      background-color: colors.$orange;
     }
     &.suggestions {
-      background-color: $sz-brown;
+      background-color: colors.$brown;
     }
     &.data {
-      background-color: $sz-dark2;
+      background-color: colors.$dark2;
     }
     &.health {
-      background-color: $sz-dark-blue;
+      background-color: colors.$dark-blue;
     }
   }
 
@@ -162,11 +162,11 @@
     &:hover, &:focus {
       /* box-shadow: inset 0 -2px #ccc; */
       border: var(--sz-search-input-hover-border);
-      border-color: var($sz-input-active-border-color);
+      border-color: var(colors.$input-active-border-color);
       outline: none;
     }
     &::placeholder {
-      color: var($sz-input-placeholder-color);
+      color: var(colors.$input-placeholder-color);
       margin-left: 2em;
       transition: opacity 100ms linear;
     }

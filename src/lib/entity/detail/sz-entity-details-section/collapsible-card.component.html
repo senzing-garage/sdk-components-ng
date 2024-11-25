@@ -89,7 +89,7 @@
     <ng-container *ngIf="!isEntityRecord(cardData)">
       <div class="search-card-records  mat-expansion-panel-body">
         <sz-entity-record-card-content
-          *ngFor="let _cardData of cardData?.records"
+          *ngFor="let _cardData of cardDataAsAny?.records"
           [showOtherData]="showOtherDataInDatasourceRecords"
           [columnsShown]="columnsShown"
           [truncateOtherDataAt]="truncateOtherDataInRecordsAt"

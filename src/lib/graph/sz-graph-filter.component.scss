@@ -1,5 +1,4 @@
-@import "../scss/_variables";
-@import "../scss/_mixins";
+@use "../scss/theme.scss";
 
 :host {
   background-color: var(--sz-graph-filter-control-background-color);
@@ -247,7 +246,7 @@
 }
 
 .no-text-selection {
-  @include no-text-selection;
+  @include theme.sz-mixins-no-text-selection;
 }
 
 .tooltip-text {

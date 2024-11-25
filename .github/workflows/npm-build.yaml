@@ -9,14 +9,18 @@ jobs:
   npm-build:
     name: build, compile, and test angular components
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: use Node.js 18.x
-        uses: actions/setup-node@v3
+      - name: use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
 
       - name: setup
         run: npm ci

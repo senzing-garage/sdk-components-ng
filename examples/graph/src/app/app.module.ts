@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { SenzingSdkModule, SzRestConfiguration  } from '@senzing/sdk-components-ng';
 import { AppComponent } from './app.component';
 
@@ -25,18 +25,11 @@ export function SzRestConfigurationFactory() {
   return new SzRestConfiguration( (apiConfig ? apiConfig : undefined) );
 }
 
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SenzingSdkModule.forRoot( SzRestConfigurationFactory )
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SenzingSdkModule.forRoot(SzRestConfigurationFactory)], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }

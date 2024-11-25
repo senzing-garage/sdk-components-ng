@@ -1,4 +1,4 @@
-@import "../../scss/theme.scss";
+@use "../../scss/theme.scss";
 
 :host {
   display: flex;
@@ -230,10 +230,10 @@ DIV.show-records {
 }
 
 :host .filter-badge BUTTON {
-  background-color: $senzing-config-warn-mild-color;
+  background-color: theme.$senzing-config-warn-mild-color;
 }
 :host .sample-badge BUTTON {
-  background-color: $senzing-config-warn-color;
+  background-color: theme.$senzing-config-warn-color;
 }
 
 /*
@@ -261,7 +261,7 @@ DIV.show-records {
 }
 
 :host BUTTON.sample-badge {
-  background-color: $senzing-config-warn-color;
+  background-color: theme.$senzing-config-warn-color;
   cursor: default;
 }
 
@@ -270,7 +270,7 @@ DIV.show-records {
 }
 
 :host BUTTON.filter-badge {
-  background-color: $senzing-config-warn-mild-color;
+  background-color: theme.$senzing-config-warn-mild-color;
   cursor: pointer;
 }
 */

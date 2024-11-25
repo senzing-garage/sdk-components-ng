@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule, TitleCasePipe } from '@angular/common';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from '../../../data/services/in-memory-data.service';
 
@@ -35,22 +35,15 @@ export function SzRestConfigurationFactory() {
   return new SzRestConfiguration( (apiConfig ? apiConfig : undefined) );
 }
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    SzSearchComponentTest,
-    SzSearchResultsTestComponent,
-    SzSearchResultsCardTestComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SenzingSdkModule.forRoot( SzRestConfigurationFactory ),
-    environment.test ? HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, { delay: 100 }) : []
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        SzSearchComponentTest,
+        SzSearchResultsTestComponent,
+        SzSearchResultsCardTestComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SenzingSdkModule.forRoot(SzRestConfigurationFactory),
+        environment.test ? HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, { delay: 100 }) : []], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }

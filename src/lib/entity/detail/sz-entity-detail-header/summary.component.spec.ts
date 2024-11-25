@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzEntityDetailSectionSummaryComponent } from './summary.component';
 import { SenzingSdkModule } from 'src/lib/sdk.module';
@@ -7,7 +7,7 @@ describe('SzEntityDetailSectionSummaryComponent', () => {
   let component: SzEntityDetailSectionSummaryComponent;
   let fixture: ComponentFixture<SzEntityDetailSectionSummaryComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SenzingSdkModule.forRoot()]
     })

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzWhyEntityComponent } from './sz-why-entity.component';
 import { SenzingSdkModule } from 'src/lib/sdk.module';
@@ -7,7 +7,7 @@ describe('SzPoweredByComponent', () => {
   let component: SzWhyEntityComponent;
   let fixture: ComponentFixture<SzWhyEntityComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SenzingSdkModule.forRoot()]
     })

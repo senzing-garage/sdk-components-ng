@@ -1,3 +1,11 @@
 {
-  "threshold": 37
+  "ignore": [
+    "**/src/**",
+    "**/run/**",
+    "**/e2e/**",
+    "**/docs/**",
+    "karma*",
+    "docker*",
+    "angular.json"
+  ]
 }

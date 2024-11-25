@@ -1,4 +1,4 @@
-@import "../../../scss/variables";
+@use "../../../scss/colors";
 
 :host {
   .search-card__header--wrapper {
@@ -14,7 +14,7 @@
     }
 
     .search-card__header--alert {
-      color: $sz-red;
+      color: colors.$red;
       margin: 0 10px;
     }
     .search-card__header {

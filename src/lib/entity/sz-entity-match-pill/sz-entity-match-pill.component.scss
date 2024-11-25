@@ -1,4 +1,4 @@
-@import "../../scss/variables";
+@use "../../scss/colors";
 
 :host {
   margin: var(--sz-entity-detail-pill-margin);
@@ -22,9 +22,9 @@
       background-color: var(--sz-entity-detail-pill-background-color);
     }
     &.minus {
-      color: $sz-red;
-      background-color: $sz-white;
-      border: 1px solid $sz-red;
+      color: colors.$red;
+      background-color: colors.$white;
+      border: 1px solid colors.$red;
     }
     &.is-ambiguous {
       background-color: var(--sz-color-ambiguous);

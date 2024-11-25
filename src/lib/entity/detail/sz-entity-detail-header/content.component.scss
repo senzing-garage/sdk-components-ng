@@ -1,4 +1,4 @@
-@import "../../../scss/variables";
+@use "../../../scss/colors";
 
 :host {
   display: flex;
@@ -97,7 +97,7 @@
 
   .search__link {
     text-decoration: none;
-    color: $sz-blue;
+    color: colors.$blue;
   }
 
   .linked-attribute::before {

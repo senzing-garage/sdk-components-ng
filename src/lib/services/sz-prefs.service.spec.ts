@@ -1,7 +1,8 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { SzSdkPrefsModel, SzPrefsService } from './sz-prefs.service';
 import { filter, debounceTime } from 'rxjs/operators';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SzPrefsService', () => {
   let injector: TestBed;
@@ -70,9 +71,9 @@ describe('SzPrefsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [SzPrefsService],
-    });
+    imports: [],
+    providers: [SzPrefsService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
 
     injector = getTestBed();
     service = injector.get(SzPrefsService);

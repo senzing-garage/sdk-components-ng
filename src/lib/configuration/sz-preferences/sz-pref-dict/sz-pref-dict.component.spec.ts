@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SzPrefDictComponent } from './sz-pref-dict.component';
 import { SenzingSdkModule } from 'src/lib/sdk.module';
@@ -7,7 +7,7 @@ describe('SzConfigurationAboutComponent', () => {
   let component: SzPrefDictComponent;
   let fixture: ComponentFixture<SzPrefDictComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SenzingSdkModule.forRoot()]
     })

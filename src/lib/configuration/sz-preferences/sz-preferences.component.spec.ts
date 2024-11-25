@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { SzSdkPrefsModel, SzPrefsService } from '../../services/sz-prefs.service';
@@ -9,14 +9,14 @@ describe('SzPreferencesComponent', () => {
   let component: SzPreferencesComponent;
   let fixture: ComponentFixture<SzPreferencesComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SenzingSdkModule.forRoot()]
     })
     .compileComponents();
   }));
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     fixture = TestBed.createComponent(SzPreferencesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

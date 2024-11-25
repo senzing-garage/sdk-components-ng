@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.0] - 2024-11-26
+
+The 8.0.0 release updates the version of @angular required to 18 and typescript to 4.5.x.
+
 ## [7.0.0] - 2024-10-04
 
 The 7.0.0 release features several new components that use the new DataMart interface(statistics calculation api) made available only in the [Senzing POC API Server](https://github.com/senzing-garage/senzing-poc-server). Using the [Senzing REST API Sever](https://github.com/senzing-garage/senzing-api-server) without the new components(data sample browsing, and datasource's summary, Cross-Source comparison) is still possible but not advised for brand new installations.
