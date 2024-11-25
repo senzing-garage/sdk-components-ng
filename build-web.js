@@ -3,38 +3,43 @@ const concat = require('concat');
 const cheerio = require('cheerio');
 const path = require('path');
 
+const distDirBasePath   = './dist/@senzing/sdk-components-web/';
+const distDirPath       = `${distDirBasePath}browser/`;
+const packageDir        = `${distDirBasePath}package/`;
+
 (async function build() {
+  await fs.ensureDir(`${distDirPath}`);
+  // files may or may not exist depending on type of build
+  /*if(fs.existsSync(`${distDirPath}styles.css`)){
+    files.push(`${distDirPath}styles.css`);
+  }*/
+  // first create output directory
+  await fs.copy(
+    `${distDirPath}`,
+    `${packageDir}`
+  ).catch(()=>{ console.log('build error #0'); });
+
   const files = [
-    './dist/@senzing/sdk-components-web/runtime.js',
-    './dist/@senzing/sdk-components-web/main.js',
-    './dist/@senzing/sdk-components-web/polyfills.js'
+    `${packageDir}main.js`,
+    `${packageDir}polyfills.js`
   ];
 
-  await fs.ensureDir('./dist/@senzing/sdk-components-web/');
-  // files may or may not exist depending on type of build
-  if(fs.existsSync('./dist/@senzing/sdk-components-web/4.js')){
-    files.push('./dist/@senzing/sdk-components-web/4.js');
-  } else if(fs.existsSync('./dist/@senzing/sdk-components-web/styles.js')){
-    files.push('./dist/@senzing/sdk-components-web/styles.js');
+  if(fs.existsSync(`${distDirPath}vendor.js`)){
+    files.push(`${packageDir}vendor.js`);
   }
-  if(fs.existsSync('./dist/@senzing/sdk-components-web/5.js')){
-    files.push('./dist/@senzing/sdk-components-web/5.js');
-  } else if(fs.existsSync('./dist/@senzing/sdk-components-web/vendor.js')){
-    files.push('./dist/@senzing/sdk-components-web/vendor.js');
-  }  
   // concat all files together
-  await concat(files, './dist/@senzing/sdk-components-web/senzing-components-web.js');
+  await concat(files, `${packageDir}senzing-components-web.js`);
   // copy styles
   if(fs.existsSync('./node_modules/@senzing/sdk-components-ng/styles')){
     await fs.copy(
       './node_modules/@senzing/sdk-components-ng/styles',
-      './dist/@senzing/sdk-components-web/styles'
+      `${packageDir}styles`
     ).catch(()=>{ console.log('build error #1'); });
   }
 
-  if(fs.existsSync('./dist/@senzing/sdk-components-web/styles.css')){
+  if(fs.existsSync(`${packageDir}styles.css`)){
     // concat
-    fs.rename('./dist/@senzing/sdk-components-web/styles.css', './dist/@senzing/sdk-components-web/senzing-components-web.css');
+    fs.rename(`${packageDir}styles.css`, `${packageDir}senzing-components-web.css`);
     /*
     await fs.copy(
       './dist/@senzing/sdk-components-web/styles/styles.css',
@@ -47,41 +52,41 @@ const path = require('path');
   }
   await fs.copyFile(
     './sdk-components-web/package.json',
-    './dist/@senzing/sdk-components-web/package.json'
+    `${packageDir}package.json`
   ).catch(()=>{ console.log('build error #3'); });
   await fs.copyFile(
     './sdk-components-web/README.md',
-    './dist/@senzing/sdk-components-web/README.md'
+    `${packageDir}README.md`
   ).catch(()=>{ console.log('build error #4'); });
 
   // remove extraneous files
-  if( fs.existsSync('./dist/@senzing/sdk-components-web/favicon.ico')){
-    await fs.remove('./dist/@senzing/sdk-components-web/favicon.ico').catch(()=>{ console.log('build error #5'); });
+  if( fs.existsSync(`${packageDir}favicon.ico`)){
+    await fs.remove(`${packageDir}favicon.ico`).catch(()=>{ console.log('build error #5'); });
   }
-  if( fs.existsSync('./dist/@senzing/sdk-components-web/runtime.js')){
+  /*if( fs.existsSync('./dist/@senzing/sdk-components-web/runtime.js')){
     await fs.remove('./dist/@senzing/sdk-components-web/runtime.js').catch(()=>{ console.log('build error #7'); });
+  }*/
+  if( fs.existsSync(`${packageDir}main.js`)){
+    await fs.remove(`${packageDir}main.js`).catch(()=>{ console.log('build error #10'); });
   }
-  if( fs.existsSync('./dist/@senzing/sdk-components-web/main.js')){
-    await fs.remove('./dist/@senzing/sdk-components-web/main.js').catch(()=>{ console.log('build error #10'); });
+  if( fs.existsSync(`${packageDir}polyfills.js`)){
+    await fs.remove(`${packageDir}polyfills.js`).catch(()=>{ console.log('build error #6'); });
   }
-  if( fs.existsSync('./dist/@senzing/sdk-components-web/polyfills.js')){
-    await fs.remove('./dist/@senzing/sdk-components-web/polyfills.js').catch(()=>{ console.log('build error #6'); });
+  if( fs.existsSync(`${packageDir}styles.js`)){
+    await fs.remove(`${packageDir}styles.js`).catch(()=>{ console.log('build error #8'); });
   }
-  if( fs.existsSync('./dist/@senzing/sdk-components-web/styles.js')){
-    await fs.remove('./dist/@senzing/sdk-components-web/styles.js').catch(()=>{ console.log('build error #8'); });
+  if( fs.existsSync(`${packageDir}4.js`)){
+    await fs.remove(`${packageDir}4.js`).catch(()=>{ console.log('build error #9'); });
   }
-  if( fs.existsSync('./dist/@senzing/sdk-components-web/4.js')){
-    await fs.remove('./dist/@senzing/sdk-components-web/4.js').catch(()=>{ console.log('build error #9'); });
+  if( fs.existsSync(`${packageDir}5.js`)){
+    await fs.remove(`${packageDir}5.js`).catch(()=>{ console.log('build error #10'); });
   }
-  if( fs.existsSync('./dist/@senzing/sdk-components-web/5.js')){
-    await fs.remove('./dist/@senzing/sdk-components-web/5.js').catch(()=>{ console.log('build error #10'); });
-  }
-  if( fs.existsSync('./dist/@senzing/sdk-components-web/vendor.js')){
-    await fs.remove('./dist/@senzing/sdk-components-web/vendor.js').catch(()=>{ console.log('build error #9'); });
+  if( fs.existsSync(`${packageDir}vendor.js`)){
+    await fs.remove(`${packageDir}vendor.js`).catch(()=>{ console.log('build error #9'); });
   }
 
   // add scripts to examples
-  const examplesDir = path.join(__dirname, 'dist/@senzing/sdk-components-web/examples');
+  const examplesDir = path.join(`${packageDir}examples`);
   await fs.readdir(examplesDir, function(err, files) {
     if (err) {
       console.log("Error getting directory information.")
@@ -111,10 +116,10 @@ const path = require('path');
   })
 
   // rename index.html to example.html
-  await fs.rename('./dist/@senzing/sdk-components-web/index.html','./dist/@senzing/sdk-components-web/dev.html').catch(()=>{ console.log('build error #8'); });
+  await fs.rename(`${packageDir}index.html`,`${packageDir}dev.html`).catch(()=>{ console.log('build error #8'); });
 
   // replace script refs in example.html
-  await fs.readFile((__dirname + '/dist/@senzing/sdk-components-web/dev.html'), {encoding: 'utf8'}, (error, data) => {
+  await fs.readFile((`${packageDir}dev.html`), {encoding: 'utf8'}, (error, data) => {
     if(error){
       console.log('build error #13');
       return;
@@ -136,7 +141,7 @@ const path = require('path');
     $('link[href="styles.css"]').attr('href', 'senzing-components-web.css');
 
     // write file
-    fs.writeFile((__dirname + '/dist/@senzing/sdk-components-web/index.html'), $.html(), (error) => {
+    fs.writeFile((`${packageDir}index.html`), $.html(), (error) => {
       if(error){
         console.error('build error #14');
         return;
