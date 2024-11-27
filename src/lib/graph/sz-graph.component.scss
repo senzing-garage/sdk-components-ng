@@ -221,6 +221,8 @@ sz-graph-control, .sz-graph-control, .sz-graph-filter {
 }
 
 .sz-graph-filter {
+  max-width: 300px;
+
   &.top-left {
     top: 21px;
     left: 0px;

@@ -28,7 +28,7 @@ export class AppComponent implements AfterViewInit {
   public unsubscribe$ = new Subject<void>();
   public currentSearchResults: SzAttributeSearchResult[];
   public currentlySelectedEntityId: number;
-  public searchResultEntityIds: SzEntityIdentifier[] = [3];
+  public searchResultEntityIds: SzEntityIdentifier[] = [1];
   //public searchResultEntityIds: SzEntityIdentifier[] = [300002];
   //public searchResultEntityIds: SzEntityIdentifier[] = [500038];
   public currentSearchParameters: SzEntitySearchParams;
