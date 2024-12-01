@@ -3549,8 +3549,7 @@ this handler is invoked to set the appropriate preferences.</p>
                 <p class="comment">
                     <code>../../../graph/sz-graph-filter.component.scss</code>
                 </p>
-                <pre class="line-numbers"><code class="language-scss">@import &quot;../scss/_variables&quot;;
-@import &quot;../scss/_mixins&quot;;
+                <pre class="line-numbers"><code class="language-scss">@use &quot;../scss/theme.scss&quot;;
 
 :host {
   background-color: var(--sz-graph-filter-control-background-color);
@@ -3798,7 +3797,7 @@ this handler is invoked to set the appropriate preferences.</p>
 }
 
 .no-text-selection {
-  @include no-text-selection;
+  @include theme.sz-mixins-no-text-selection;
 }
 
 .tooltip-text {
@@ -3929,7 +3928,6 @@ this handler is invoked to set the appropriate preferences.</p>
        <script src="../js/libs/es6-shim.min.js"></script>
        <script src="../js/libs/EventDispatcher.js"></script>
        <script src="../js/libs/promise.min.js"></script>
-       <script src="../js/libs/zepto.min.js"></script>
 
        <script src="../js/compodoc.js"></script>
 

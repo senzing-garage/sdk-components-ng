@@ -1478,7 +1478,7 @@ of the default right-click</p>
                 <p class="comment">
                     <code>../../../graph/sz-graph.component.scss</code>
                 </p>
-                <pre class="line-numbers"><code class="language-scss">@import &quot;../scss/variables&quot;;
+                <pre class="line-numbers"><code class="language-scss">@use &quot;../scss/theme&quot;;
 
 :host {
   height: var(--sz-large-graph-height);
@@ -1701,6 +1701,8 @@ sz-graph-control, .sz-graph-control, .sz-graph-filter {
 }
 
 .sz-graph-filter {
+  max-width: 300px;
+
   &amp;.top-left {
     top: 21px;
     left: 0px;
@@ -1728,9 +1730,9 @@ sz-graph-control, .sz-graph-control, .sz-graph-filter {
 
 .zoom-control-container {
   position: absolute;
-  width: $graph-zoom-slider-width;
-  top: calc(#{$graph-zoom-slider-width} / 2 + 30px);
-  left: calc(30px - (#{$graph-zoom-slider-width} / 2));
+  width: theme.$sz-graph-zoom-slider-width;
+  top: calc(#{theme.$sz-graph-zoom-slider-width} / 2 + 30px);
+  left: calc(30px - (#{theme.$sz-graph-zoom-slider-width} / 2));
   z-index: 100;
   -webkit-transform: rotate(270deg);
   -moz-transform: rotate(270deg);
@@ -1740,24 +1742,24 @@ sz-graph-control, .sz-graph-control, .sz-graph-filter {
   flex-direction: row;
 
   &amp;.top-left {
-    top: calc(#{$graph-zoom-slider-width} / 2 + 30px);
-    left: calc(30px - (#{$graph-zoom-slider-width} / 2 + 4px));
+    top: calc(#{theme.$sz-graph-zoom-slider-width} / 2 + 30px);
+    left: calc(30px - (#{theme.$sz-graph-zoom-slider-width} / 2 + 4px));
   }
   &amp;.top-right {
-    top: calc(#{$graph-zoom-slider-width} / 2 + 30px);
+    top: calc(#{theme.$sz-graph-zoom-slider-width} / 2 + 30px);
     left: unset;
-    right: calc(30px - (#{$graph-zoom-slider-width} / 2));
+    right: calc(30px - (#{theme.$sz-graph-zoom-slider-width} / 2));
   }
   &amp;.bottom-left {
     top: unset;
-    bottom: calc(#{$graph-zoom-slider-width} / 2 + 40px);
-    left: calc(30px - (#{$graph-zoom-slider-width} / 2 + 4px));
+    bottom: calc(#{theme.$sz-graph-zoom-slider-width} / 2 + 40px);
+    left: calc(30px - (#{theme.$sz-graph-zoom-slider-width} / 2 + 4px));
   }
   &amp;.bottom-right {
     top: unset;
     left: unset;
-    bottom: calc(#{$graph-zoom-slider-width} / 2 + 40px);
-    right: calc(30px - (#{$graph-zoom-slider-width} / 2));
+    bottom: calc(#{theme.$sz-graph-zoom-slider-width} / 2 + 40px);
+    right: calc(30px - (#{theme.$sz-graph-zoom-slider-width} / 2));
   }
 
   button.zoom-in,
@@ -1911,7 +1913,6 @@ sz-graph-control, .sz-graph-control, .sz-graph-filter {
        <script src="../js/libs/es6-shim.min.js"></script>
        <script src="../js/libs/EventDispatcher.js"></script>
        <script src="../js/libs/promise.min.js"></script>
-       <script src="../js/libs/zepto.min.js"></script>
 
        <script src="../js/compodoc.js"></script>
 
