@@ -150,13 +150,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="modules/SenzingSdkModule.html" data-type="entity-link" >SenzingSdkModule</a>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ?
-                                            'data-bs-target="#components-links-module-SenzingSdkModule-3b88889df521b3e8b9d7b1e5a7981ff7eb19e769eba1541ef3643d79bc8d07e5885a924c15f9dc76410614d4eabce0f83d6eedd83dbdae0da441dcf99cab0875"' : 'data-bs-target="#xs-components-links-module-SenzingSdkModule-3b88889df521b3e8b9d7b1e5a7981ff7eb19e769eba1541ef3643d79bc8d07e5885a924c15f9dc76410614d4eabce0f83d6eedd83dbdae0da441dcf99cab0875"' }>
+                                            'data-bs-target="#components-links-module-SenzingSdkModule-39509ce9050e3448677259d395943f4f28e3d8ebe3dfb09cc61e29278d91e99f154fe9f5f23e5a39be70c2e137bbbcc1e48bf814d0ffdd6a0162e214a37bbae7"' : 'data-bs-target="#xs-components-links-module-SenzingSdkModule-39509ce9050e3448677259d395943f4f28e3d8ebe3dfb09cc61e29278d91e99f154fe9f5f23e5a39be70c2e137bbbcc1e48bf814d0ffdd6a0162e214a37bbae7"' }>
                                             <span class="icon ion-md-cog"></span>
                                             <span>Components</span>
                                             <span class="icon ion-ios-arrow-down"></span>
                                         </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-SenzingSdkModule-3b88889df521b3e8b9d7b1e5a7981ff7eb19e769eba1541ef3643d79bc8d07e5885a924c15f9dc76410614d4eabce0f83d6eedd83dbdae0da441dcf99cab0875"' :
-                                            'id="xs-components-links-module-SenzingSdkModule-3b88889df521b3e8b9d7b1e5a7981ff7eb19e769eba1541ef3643d79bc8d07e5885a924c15f9dc76410614d4eabce0f83d6eedd83dbdae0da441dcf99cab0875"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-SenzingSdkModule-39509ce9050e3448677259d395943f4f28e3d8ebe3dfb09cc61e29278d91e99f154fe9f5f23e5a39be70c2e137bbbcc1e48bf814d0ffdd6a0162e214a37bbae7"' :
+                                            'id="xs-components-links-module-SenzingSdkModule-39509ce9050e3448677259d395943f4f28e3d8ebe3dfb09cc61e29278d91e99f154fe9f5f23e5a39be70c2e137bbbcc1e48bf814d0ffdd6a0162e214a37bbae7"' }>
                                             <li class="link">
                                                 <a href="components/SzConfigurationAboutComponent.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzConfigurationAboutComponent</a>
                                             </li>
@@ -227,13 +227,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     </li>
                                 <li class="chapter inner">
                                     <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ?
-                                        'data-bs-target="#directives-links-module-SenzingSdkModule-3b88889df521b3e8b9d7b1e5a7981ff7eb19e769eba1541ef3643d79bc8d07e5885a924c15f9dc76410614d4eabce0f83d6eedd83dbdae0da441dcf99cab0875"' : 'data-bs-target="#xs-directives-links-module-SenzingSdkModule-3b88889df521b3e8b9d7b1e5a7981ff7eb19e769eba1541ef3643d79bc8d07e5885a924c15f9dc76410614d4eabce0f83d6eedd83dbdae0da441dcf99cab0875"' }>
+                                        'data-bs-target="#directives-links-module-SenzingSdkModule-39509ce9050e3448677259d395943f4f28e3d8ebe3dfb09cc61e29278d91e99f154fe9f5f23e5a39be70c2e137bbbcc1e48bf814d0ffdd6a0162e214a37bbae7"' : 'data-bs-target="#xs-directives-links-module-SenzingSdkModule-39509ce9050e3448677259d395943f4f28e3d8ebe3dfb09cc61e29278d91e99f154fe9f5f23e5a39be70c2e137bbbcc1e48bf814d0ffdd6a0162e214a37bbae7"' }>
                                         <span class="icon ion-md-code-working"></span>
                                         <span>Directives</span>
                                         <span class="icon ion-ios-arrow-down"></span>
                                     </div>
-                                    <ul class="links collapse" ${ isNormalMode ? 'id="directives-links-module-SenzingSdkModule-3b88889df521b3e8b9d7b1e5a7981ff7eb19e769eba1541ef3643d79bc8d07e5885a924c15f9dc76410614d4eabce0f83d6eedd83dbdae0da441dcf99cab0875"' :
-                                        'id="xs-directives-links-module-SenzingSdkModule-3b88889df521b3e8b9d7b1e5a7981ff7eb19e769eba1541ef3643d79bc8d07e5885a924c15f9dc76410614d4eabce0f83d6eedd83dbdae0da441dcf99cab0875"' }>
+                                    <ul class="links collapse" ${ isNormalMode ? 'id="directives-links-module-SenzingSdkModule-39509ce9050e3448677259d395943f4f28e3d8ebe3dfb09cc61e29278d91e99f154fe9f5f23e5a39be70c2e137bbbcc1e48bf814d0ffdd6a0162e214a37bbae7"' :
+                                        'id="xs-directives-links-module-SenzingSdkModule-39509ce9050e3448677259d395943f4f28e3d8ebe3dfb09cc61e29278d91e99f154fe9f5f23e5a39be70c2e137bbbcc1e48bf814d0ffdd6a0162e214a37bbae7"' }>
                                         <li class="link">
                                             <a href="directives/SzElementResizeObserverDirective.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzElementResizeObserverDirective</a>
                                         </li>
@@ -244,13 +244,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 </li>
                                 <li class="chapter inner">
                                     <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ?
-                                        'data-bs-target="#injectables-links-module-SenzingSdkModule-3b88889df521b3e8b9d7b1e5a7981ff7eb19e769eba1541ef3643d79bc8d07e5885a924c15f9dc76410614d4eabce0f83d6eedd83dbdae0da441dcf99cab0875"' : 'data-bs-target="#xs-injectables-links-module-SenzingSdkModule-3b88889df521b3e8b9d7b1e5a7981ff7eb19e769eba1541ef3643d79bc8d07e5885a924c15f9dc76410614d4eabce0f83d6eedd83dbdae0da441dcf99cab0875"' }>
+                                        'data-bs-target="#injectables-links-module-SenzingSdkModule-39509ce9050e3448677259d395943f4f28e3d8ebe3dfb09cc61e29278d91e99f154fe9f5f23e5a39be70c2e137bbbcc1e48bf814d0ffdd6a0162e214a37bbae7"' : 'data-bs-target="#xs-injectables-links-module-SenzingSdkModule-39509ce9050e3448677259d395943f4f28e3d8ebe3dfb09cc61e29278d91e99f154fe9f5f23e5a39be70c2e137bbbcc1e48bf814d0ffdd6a0162e214a37bbae7"' }>
                                         <span class="icon ion-md-arrow-round-down"></span>
                                         <span>Injectables</span>
                                         <span class="icon ion-ios-arrow-down"></span>
                                     </div>
-                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-SenzingSdkModule-3b88889df521b3e8b9d7b1e5a7981ff7eb19e769eba1541ef3643d79bc8d07e5885a924c15f9dc76410614d4eabce0f83d6eedd83dbdae0da441dcf99cab0875"' :
-                                        'id="xs-injectables-links-module-SenzingSdkModule-3b88889df521b3e8b9d7b1e5a7981ff7eb19e769eba1541ef3643d79bc8d07e5885a924c15f9dc76410614d4eabce0f83d6eedd83dbdae0da441dcf99cab0875"' }>
+                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-SenzingSdkModule-39509ce9050e3448677259d395943f4f28e3d8ebe3dfb09cc61e29278d91e99f154fe9f5f23e5a39be70c2e137bbbcc1e48bf814d0ffdd6a0162e214a37bbae7"' :
+                                        'id="xs-injectables-links-module-SenzingSdkModule-39509ce9050e3448677259d395943f4f28e3d8ebe3dfb09cc61e29278d91e99f154fe9f5f23e5a39be70c2e137bbbcc1e48bf814d0ffdd6a0162e214a37bbae7"' }>
                                         <li class="link">
                                             <a href="injectables/SzAdminService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzAdminService</a>
                                         </li>
@@ -294,13 +294,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 </li>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ?
-                                            'data-bs-target="#pipes-links-module-SenzingSdkModule-3b88889df521b3e8b9d7b1e5a7981ff7eb19e769eba1541ef3643d79bc8d07e5885a924c15f9dc76410614d4eabce0f83d6eedd83dbdae0da441dcf99cab0875"' : 'data-bs-target="#xs-pipes-links-module-SenzingSdkModule-3b88889df521b3e8b9d7b1e5a7981ff7eb19e769eba1541ef3643d79bc8d07e5885a924c15f9dc76410614d4eabce0f83d6eedd83dbdae0da441dcf99cab0875"' }>
+                                            'data-bs-target="#pipes-links-module-SenzingSdkModule-39509ce9050e3448677259d395943f4f28e3d8ebe3dfb09cc61e29278d91e99f154fe9f5f23e5a39be70c2e137bbbcc1e48bf814d0ffdd6a0162e214a37bbae7"' : 'data-bs-target="#xs-pipes-links-module-SenzingSdkModule-39509ce9050e3448677259d395943f4f28e3d8ebe3dfb09cc61e29278d91e99f154fe9f5f23e5a39be70c2e137bbbcc1e48bf814d0ffdd6a0162e214a37bbae7"' }>
                                             <span class="icon ion-md-add"></span>
                                             <span>Pipes</span>
                                             <span class="icon ion-ios-arrow-down"></span>
                                         </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="pipes-links-module-SenzingSdkModule-3b88889df521b3e8b9d7b1e5a7981ff7eb19e769eba1541ef3643d79bc8d07e5885a924c15f9dc76410614d4eabce0f83d6eedd83dbdae0da441dcf99cab0875"' :
-                                            'id="xs-pipes-links-module-SenzingSdkModule-3b88889df521b3e8b9d7b1e5a7981ff7eb19e769eba1541ef3643d79bc8d07e5885a924c15f9dc76410614d4eabce0f83d6eedd83dbdae0da441dcf99cab0875"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="pipes-links-module-SenzingSdkModule-39509ce9050e3448677259d395943f4f28e3d8ebe3dfb09cc61e29278d91e99f154fe9f5f23e5a39be70c2e137bbbcc1e48bf814d0ffdd6a0162e214a37bbae7"' :
+                                            'id="xs-pipes-links-module-SenzingSdkModule-39509ce9050e3448677259d395943f4f28e3d8ebe3dfb09cc61e29278d91e99f154fe9f5f23e5a39be70c2e137bbbcc1e48bf814d0ffdd6a0162e214a37bbae7"' }>
                                             <li class="link">
                                                 <a href="pipes/SzDecimalPercentPipe.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >SzDecimalPercentPipe</a>
                                             </li>
