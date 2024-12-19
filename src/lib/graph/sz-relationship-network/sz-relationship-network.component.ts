@@ -397,6 +397,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         // string array
         _changed = this._entityIds != value.split(',');
         this._entityIds = value.split(',');
+        console.warn(`set entity ids from string array "${value}"`, this._entityIds);
       } else {
         // single string
         if(this._entityIds) {
@@ -450,7 +451,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     if(this.reloadOnIdChange && _changed && this._entityIds && this._entityIds.some( (eId) => { return _oldIds && _oldIds.indexOf(eId) < 0; })) {
       this.reload( this._entityIds.map((eId) => { return parseInt(eId); }) );
     }
-    //console.log('sdk-graph-components/sz-relationship-network.component: entityIds setter( '+_changed+' )', this._entityIds);
+    console.log('sz-relationship-network.component: entityIds setter( '+_changed+' )', this._entityIds);
   }
   public get entityIds(): SzEntityIdentifier | SzEntityIdentifier[] {
     return this._entityIds;
@@ -1462,7 +1463,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       let _maxEntities  = this._unlimitedMaxEntities ? 40000 : this._maxEntities;
       let _maxBuildOut  = this._unlimitedMaxScope ? 10 : this._buildOut;
 
-      this.getNetworkComposite(this._entityIds[0], this._maxDegrees, _maxBuildOut, _maxEntities).pipe(
+      this.getNetworkComposite2(this._entityIds, this._maxDegrees, _maxBuildOut, _maxEntities).pipe(
       //this.getNetwork(this._entityIds, this._maxDegrees, _maxBuildOut, _maxEntities).pipe(
         takeUntil(this.unsubscribe$),
         first(),
@@ -1540,6 +1541,85 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       networkResp.data = networkData;
     }
     return networkResp
+  }
+  private getNetworkComposite2(entityIds: SzEntityIdentifier[], maxDegrees: number, buildOut: number, maxEntities: number) {
+    let returnSubject     = new Subject<SzEntityNetworkResponse>();
+    let returnObserveable = returnSubject.asObservable();
+    if(console.time){
+      try {
+        console.time('graph composite data')
+        console.time('graph entity data')
+        console.time('graph network data')
+
+      }catch(err){}
+    }
+    this._requestStarted.next(true);
+    this._dataRequested.next(true);
+
+    let requestSets   = {};
+    let responseSets  = {};
+    console.log('getNetworkComposite2: '+ entityIds)
+
+    entityIds.forEach((entityId: SzEntityIdentifier) => {
+      let entityIdStr = (entityId as string);
+
+      requestSets[entityIdStr] = {};
+      requestSets[entityIdStr]['entityRequest'] = this.entityDataService.getEntityByEntityId(
+        entityId as number,
+        SzDetailLevel.SUMMARY,
+        SzFeatureMode.NONE,
+        undefined,
+        undefined,
+        undefined, 
+        SzRelationshipMode.PARTIAL, 
+        false
+      ).pipe(
+        tap(() => {
+          if(console.time){
+            try {
+              console.timeEnd('graph entity data')
+            }catch(err){}
+          }
+        })
+      )
+      requestSets[entityIdStr]['networkRequest'] = this.graphService.findEntityNetwork(
+        [entityId],
+        undefined,
+        maxDegrees,
+        1,
+        maxEntities,
+        SzDetailLevel.NETWORKMINIMAL,
+        SzFeatureMode.NONE,
+        false,
+        false,
+        false, 
+        SzRelationshipNetworkComponent.WITHOUT_RAW
+      ).pipe(
+        tap(() => {
+          if(console.time){
+            try {
+              console.timeEnd('graph network data')
+            }catch(err){}
+          }
+        })
+      );
+      
+      forkJoin(requestSets[entityIdStr]).subscribe((responses: (SzEntityResponse | SzEntityNetworkResponse)[]) => {
+        responseSets[entityIdStr] = {
+          entityResponse: responses['entityRequest'],
+          networkResponse: responses['networkRequest'],
+          mergedResponse: this.mergeEntityResponseWithNetworkResponse(responses['entityRequest'], responses['networkRequest'])
+        }
+        console.log('getNetworkComposite Response: ', responseSets);
+        
+        returnSubject.next(responseSets[entityIdStr].mergedResponse);
+      })
+    });
+
+
+
+    // for each request set 
+    return returnObserveable
   }
 
   private getNetworkComposite(entityId: SzEntityIdentifier, maxDegrees: number, buildOut: number, maxEntities: number) {
