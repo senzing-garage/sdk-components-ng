@@ -1,4 +1,4 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { TestBed, getTestBed, tick } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { SzSdkPrefsModel, SzPrefsService } from './sz-prefs.service';
 import { filter, debounceTime } from 'rxjs/operators';
@@ -458,24 +458,6 @@ describe('SzPrefsService', () => {
       done();
     });
     service.graph.openInSidePanel = true;
-  });
-  it('graph "showLinkLabels" changes to true', (done) => {
-    service.prefsChanged.pipe(
-      debounceTime(500)
-    ).subscribe((g: SzSdkPrefsModel) => {
-      expect(g.graph.showLinkLabels).toEqual(true);
-      done();
-    });
-    service.graph.showLinkLabels = true;
-  });
-  it('graph "rememberStateOptions" changes to true', (done) => {
-    service.prefsChanged.pipe(
-      debounceTime(500)
-    ).subscribe((g: SzSdkPrefsModel) => {
-      expect(g.graph.rememberStateOptions).toEqual(true);
-      done();
-    });
-    service.graph.rememberStateOptions = true;
   });
   it('graph "maxDegreesOfSeparation" changes to 9', (done) => {
     service.prefsChanged.pipe(

@@ -343,20 +343,6 @@ describe('SzPreferencesComponent', () => {
       });
       fixture.componentInstance.GraphOpenInSidePanel = true;
     });
-    it('graph "showLinkLabels" changes to true', (done) => {
-      fixture.componentInstance.prefsChange.subscribe((g: SzSdkPrefsModel) => {
-        expect(g.graph.showLinkLabels).toEqual(true);
-        done();
-      });
-      fixture.componentInstance.GraphShowLinkLabels = true;
-    });
-    it('graph "rememberStateOptions" changes to true', (done) => {
-      fixture.componentInstance.prefsChange.subscribe((g: SzSdkPrefsModel) => {
-        expect(g.graph.rememberStateOptions).toEqual(true);
-        done();
-      });
-      fixture.componentInstance.GraphRememberStateOptions = true;
-    });
     it('graph "maxDegreesOfSeparation" changes to 9', (done) => {
       fixture.componentInstance.prefsChange.subscribe((g: SzSdkPrefsModel) => {
         expect(g.graph.maxDegreesOfSeparation).toEqual(9);
