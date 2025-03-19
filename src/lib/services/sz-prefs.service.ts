@@ -1268,7 +1268,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** show match keys/edge labels on relationships */
   public set showLinkLabels(value: boolean) {
     let oldValue = this._showLinkLabels;
-    if(oldValue == value) { return; }
+    if(oldValue === value) { return; }
     this._showLinkLabels = value;
     if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject({source: "showLinkLabels", newValue: value, oldValue: oldValue}) );
   }
@@ -1737,7 +1737,6 @@ export class SzPrefsService implements OnDestroy {
       takeUntil(this.unsubscribe$),
       debounce(() => timer(100))
     ).subscribe((prefsObj ) => {
-      console.log("prefs change: ", prefsObj);
       this.prefsChanged.next( this.toJSONObject() );
     });
   }
