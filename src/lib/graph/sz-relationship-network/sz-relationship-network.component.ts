@@ -2001,6 +2001,21 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         .on('dblclick', this.onLinkDblClick.bind(this));
       }
     }
+    let stopEventListenersForLinks    = (_links, _labels?) => {
+      if(_links && _links.on) {
+        _links.on('mouseover.tooltip', null)
+        .on("mouseout.tooltip", null)
+        .on("mousemove", null)
+        .on('click', null)
+        .on('dblclick', null)
+        .on('contextmenu', null);
+      }
+      if(_labels && _labels.on) {
+        _labels.on('click', null);
+        _labels.on('mouseover', null);
+        _labels.on('mouseout', null);
+      }
+    }
     function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
       var angleInRadians = (angleInDegrees-90) * Math.PI / 180.0;
     
@@ -2719,6 +2734,17 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     attachEventListenersToNodes(this.node, this._tooltip, this.nodeLabel, this);
     // Make the tooltip visible when mousing over links.
     attachEventListenersToLinks(this.link, this.linkLabel, this._tooltip, this);
+    // when we destroy commponent make sure the listeners are detached
+    this.unsubscribe$.pipe(
+      take(1)
+    ).subscribe(() => {
+      // Make the tooltip visible when mousing over nodes.
+      stopEventListenersForNodes(this.node, this.nodeLabel);
+      // Make the tooltip visible when mousing over links.
+      stopEventListenersForLinks(this.link, this.linkLabel);
+      // hide existing tooltip
+      this._tooltip.style("opacity", 0);
+    });
 
     // publish out event
     this._rendered = true;
