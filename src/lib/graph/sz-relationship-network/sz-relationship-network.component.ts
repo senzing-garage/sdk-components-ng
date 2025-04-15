@@ -1508,6 +1508,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    if(this._tooltip) {
+      this._tooltip.remove();
+    }
   }
 
   private mergeEntityResponseWithNetworkResponse(entityResp: SzEntityResponse, networkResp: SzEntityNetworkResponse): SzEntityNetworkResponse {
