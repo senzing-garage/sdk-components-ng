@@ -53,7 +53,8 @@ export interface SzResolutionStepListItem extends SzResolutionStep {
 @Component({
     selector: 'sz-how-nav',
     templateUrl: './sz-how-nav.component.html',
-    styleUrls: ['./sz-how-nav.component.scss']
+    styleUrls: ['./sz-how-nav.component.scss'],
+    standalone: false
 })
 export class SzHowNavComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */

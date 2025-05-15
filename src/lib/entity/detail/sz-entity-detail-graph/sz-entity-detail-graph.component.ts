@@ -13,9 +13,10 @@ import { SzCSSClassService } from '../../../services/sz-css-class.service';
  * @export
  */
 @Component({
-  selector: 'sz-entity-detail-graph',
-  templateUrl: './sz-entity-detail-graph.component.html',
-  styleUrls: ['./sz-entity-detail-graph.component.scss']
+    selector: 'sz-entity-detail-graph',
+    templateUrl: './sz-entity-detail-graph.component.html',
+    styleUrls: ['./sz-entity-detail-graph.component.scss'],
+    standalone: false
 })
 export class SzEntityDetailGraphComponent extends SzGraphComponent {
   @Input() public override title: string = "Relationships at a Glance";

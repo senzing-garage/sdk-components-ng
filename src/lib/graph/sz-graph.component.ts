@@ -50,9 +50,10 @@ import { SzCSSClassService } from '../services/sz-css-class.service';
  * </script>
  */
 @Component({
-  selector: 'sz-graph',
-  templateUrl: './sz-graph.component.html',
-  styleUrls: ['./sz-graph.component.scss']
+    selector: 'sz-graph',
+    templateUrl: './sz-graph.component.html',
+    styleUrls: ['./sz-graph.component.scss'],
+    standalone: false
 })
 export class SzGraphComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

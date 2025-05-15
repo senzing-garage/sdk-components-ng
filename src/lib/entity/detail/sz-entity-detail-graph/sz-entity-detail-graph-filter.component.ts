@@ -26,9 +26,10 @@ import { Overlay } from '@angular/cdk/overlay';
  * </script>
  */
 @Component({
-  selector: 'sz-entity-detail-graph-filter',
-  templateUrl: '../../../graph/sz-graph-filter.component.html',
-  styleUrls: ['../../../graph/sz-graph-filter.component.scss']
+    selector: 'sz-entity-detail-graph-filter',
+    templateUrl: '../../../graph/sz-graph-filter.component.html',
+    styleUrls: ['../../../graph/sz-graph-filter.component.scss'],
+    standalone: false
 })
 export class SzEntityDetailGraphFilterComponent extends SzGraphFilterComponent {
   constructor(

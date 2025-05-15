@@ -10,9 +10,10 @@ import { Subject } from 'rxjs';
  * @export
  */
 @Component({
-  selector: 'sz-search-result-card-header',
-  templateUrl: './sz-search-result-card-header.component.html',
-  styleUrls: ['./sz-search-result-card-header.component.scss']
+    selector: 'sz-search-result-card-header',
+    templateUrl: './sz-search-result-card-header.component.html',
+    styleUrls: ['./sz-search-result-card-header.component.scss'],
+    standalone: false
 })
 export class SzSearchResultCardHeaderComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

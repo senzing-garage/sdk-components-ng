@@ -6,9 +6,10 @@ import { SzEntityIdentifier } from '@senzing/rest-api-client-ng';
 import { SzRelationshipNetworkComponent } from '@senzing/sdk-components-ng';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent {
   title = 'graph';

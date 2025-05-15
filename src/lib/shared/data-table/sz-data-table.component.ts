@@ -19,9 +19,10 @@ import { SzDataTableCellEvent } from '../../models/stats';
  *
  */
 @Component({
-  selector: 'sz-data-table',
-  templateUrl: './sz-data-table.component.html',
-  styleUrls: ['./sz-data-table.component.scss']
+    selector: 'sz-data-table',
+    templateUrl: './sz-data-table.component.html',
+    styleUrls: ['./sz-data-table.component.scss'],
+    standalone: false
 })
 export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

@@ -30,9 +30,10 @@ import {
  * 
  */
 @Component({
-  selector: 'sz-entity-record-viewer',
-  templateUrl: './sz-entity-record-viewer.component.html',
-  styleUrls: ['./sz-entity-record-viewer.component.scss']
+    selector: 'sz-entity-record-viewer',
+    templateUrl: './sz-entity-record-viewer.component.html',
+    styleUrls: ['./sz-entity-record-viewer.component.scss'],
+    standalone: false
 })
 export class SzEntityRecordViewerComponent {
   /** the record to display */

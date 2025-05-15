@@ -5,9 +5,10 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'sz-prefs-manager',
-  templateUrl: './prefs-manager.component.html',
-  styleUrls: ['./prefs-manager.component.scss']
+    selector: 'sz-prefs-manager',
+    templateUrl: './prefs-manager.component.html',
+    styleUrls: ['./prefs-manager.component.scss'],
+    standalone: false
 })
 export class SzPrefsManagerComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

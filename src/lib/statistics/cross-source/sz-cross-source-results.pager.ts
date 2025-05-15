@@ -21,9 +21,10 @@ import { SzBoundType } from '@senzing/rest-api-client-ng';
  *
  */
 @Component({
-  selector: 'sz-cross-source-pager',
-  templateUrl: './sz-cross-source-results.pager.html',
-  styleUrls: ['./sz-cross-source-results.pager.scss']
+    selector: 'sz-cross-source-pager',
+    templateUrl: './sz-cross-source-results.pager.html',
+    styleUrls: ['./sz-cross-source-results.pager.scss'],
+    standalone: false
 })
 export class SzCrossSourcePagingComponent implements OnDestroy {
     /** subscription to notify subscribers to unbind */

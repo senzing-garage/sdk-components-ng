@@ -7,9 +7,10 @@ import { SzNetworkGraphInputs } from '../../models/graph';
  * @internal
  */
 @Component({
-  selector: 'sz-relationship-network-input',
-  templateUrl: './sz-relationship-network-input.component.html',
-  styleUrls: ['./sz-relationship-network-input.component.scss']
+    selector: 'sz-relationship-network-input',
+    templateUrl: './sz-relationship-network-input.component.html',
+    styleUrls: ['./sz-relationship-network-input.component.scss'],
+    standalone: false
 })
 export class SzRelationshipNetworkInputComponent implements OnInit {
 

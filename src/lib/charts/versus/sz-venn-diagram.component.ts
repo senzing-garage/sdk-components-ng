@@ -24,9 +24,10 @@ import { SzDataSourcesService } from '../../services/sz-datasources.service';
  *
  */
 @Component({
-  selector: 'sz-venn-diagram',
-  templateUrl: './sz-venn-diagram.component.html',
-  styleUrls: ['./sz-venn-diagram.component.scss']
+    selector: 'sz-venn-diagram',
+    templateUrl: './sz-venn-diagram.component.html',
+    styleUrls: ['./sz-venn-diagram.component.scss'],
+    standalone: false
 })
 export class SzVennDiagramsComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

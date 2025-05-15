@@ -12,9 +12,10 @@ import { SzMultiSelectButtonComponent } from '../../../shared/multi-select-butto
  * @export
  */
 @Component({
-  selector: 'sz-entity-detail-section-collapsible-card',
-  templateUrl: './collapsible-card.component.html',
-  styleUrls: ['./collapsible-card.component.scss']
+    selector: 'sz-entity-detail-section-collapsible-card',
+    templateUrl: './collapsible-card.component.html',
+    styleUrls: ['./collapsible-card.component.scss'],
+    standalone: false
 })
 export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, OnDestroy {
   @ViewChild('messages') private messagesContainer: HTMLElement;

@@ -8,9 +8,10 @@ import { SzGraphControlComponent } from '../../../graph/sz-graph-control.compone
  * @export
  */
 @Component({
-  selector: 'sz-entity-detail-graph-control',
-  templateUrl: '../../../graph/sz-graph-control.component.html',
-  styleUrls: ['../../../graph/sz-graph-control.component.scss']
+    selector: 'sz-entity-detail-graph-control',
+    templateUrl: '../../../graph/sz-graph-control.component.html',
+    styleUrls: ['../../../graph/sz-graph-control.component.scss'],
+    standalone: false
 })
 export class SzEntityDetailGraphControlComponent extends SzGraphControlComponent {
   constructor(

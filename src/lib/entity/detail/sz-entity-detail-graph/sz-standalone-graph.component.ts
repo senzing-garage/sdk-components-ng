@@ -52,9 +52,10 @@ import { SzCSSClassService } from '../../../services/sz-css-class.service';
  * </script>
  */
 @Component({
-  selector: 'sz-standalone-graph',
-  templateUrl: './sz-standalone-graph.component.html',
-  styleUrls: ['../../../graph/sz-graph.component.scss']
+    selector: 'sz-standalone-graph',
+    templateUrl: './sz-standalone-graph.component.html',
+    styleUrls: ['../../../graph/sz-graph.component.scss'],
+    standalone: false
 })
 export class SzStandaloneGraphComponent extends SzGraphComponent implements AfterViewInit {  
   /** @internal */

@@ -6,9 +6,10 @@ import { SzNetworkGraphInputs } from '../../models/graph';
  * @internal
  */
 @Component({
-  selector: 'sz-relationship-network-lookup',
-  templateUrl: './sz-relationship-network-lookup.component.html',
-  styleUrls: ['./sz-relationship-network-lookup.component.scss']
+    selector: 'sz-relationship-network-lookup',
+    templateUrl: './sz-relationship-network-lookup.component.html',
+    styleUrls: ['./sz-relationship-network-lookup.component.scss'],
+    standalone: false
 })
 export class SzRelationshipNetworkLookupComponent implements OnInit {
 

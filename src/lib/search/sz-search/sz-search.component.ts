@@ -87,9 +87,10 @@ interface SzBoolFieldMapByName {
  * 
  */
 @Component({
-  selector: 'sz-search',
-  templateUrl: './sz-search.component.html',
-  styleUrls: ['./sz-search.component.scss']
+    selector: 'sz-search',
+    templateUrl: './sz-search.component.html',
+    styleUrls: ['./sz-search.component.scss'],
+    standalone: false
 })
 export class SzSearchComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

@@ -5,9 +5,10 @@ import { Component, OnInit } from '@angular/core';
  * @export
  */
 @Component({
-  selector: 'sz-entity-record-card',
-  templateUrl: './sz-entity-record-card.component.html',
-  styleUrls: ['./sz-entity-record-card.component.scss']
+    selector: 'sz-entity-record-card',
+    templateUrl: './sz-entity-record-card.component.html',
+    styleUrls: ['./sz-entity-record-card.component.scss'],
+    standalone: false
 })
 export class SzEntityRecordCardComponent implements OnInit {
 

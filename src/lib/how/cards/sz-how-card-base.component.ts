@@ -21,7 +21,8 @@ import { SzPrefsService } from '../../services/sz-prefs.service';
 @Component({
     selector: 'sz-how-step-card-base',
     template: `<p>Step Card Base</p>`,
-    styleUrls: ['./sz-how-card-base.component.scss']
+    styleUrls: ['./sz-how-card-base.component.scss'],
+    standalone: false
 })
 export class SzHowStepCardBase implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */

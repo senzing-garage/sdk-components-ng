@@ -47,9 +47,10 @@ import { takeUntil } from 'rxjs/operators';
  * @export
  */
 @Component({
-  selector: 'sz-preferences',
-  templateUrl: 'sz-preferences.component.html',
-  styleUrls: ['sz-preferences.component.scss']
+    selector: 'sz-preferences',
+    templateUrl: 'sz-preferences.component.html',
+    styleUrls: ['sz-preferences.component.scss'],
+    standalone: false
 })
 export class SzPreferencesComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

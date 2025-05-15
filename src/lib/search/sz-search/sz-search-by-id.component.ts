@@ -70,9 +70,10 @@ const parseBool = (value: any): boolean => {
  *
  */
 @Component({
-  selector: 'sz-search-by-id',
-  templateUrl: './sz-search-by-id.component.html',
-  styleUrls: ['./sz-search-by-id.component.scss']
+    selector: 'sz-search-by-id',
+    templateUrl: './sz-search-by-id.component.html',
+    styleUrls: ['./sz-search-by-id.component.scss'],
+    standalone: false
 })
 export class SzSearchByIdComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

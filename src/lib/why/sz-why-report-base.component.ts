@@ -8,7 +8,8 @@ import { SzEntityFeatureWithScoring, SzNonScoringRecordFeature, SzWhyEntityColum
 @Component({
     selector: 'sz-why-entity-base',
     templateUrl: './sz-why-entity.component.html',
-    styleUrls: ['./sz-why-entity.component.scss']
+    styleUrls: ['./sz-why-entity.component.scss'],
+    standalone: false
 })
 export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */

@@ -22,7 +22,8 @@ import { SzHowStepCardBase } from './sz-how-card-base.component';
 @Component({
     selector: 'sz-how-singleton-card',
     templateUrl: './sz-how-singleton-card.component.html',
-    styleUrls: ['./sz-how-card-base.component.scss']
+    styleUrls: ['./sz-how-card-base.component.scss'],
+    standalone: false
 })
 export class SzHowSingletonCardComponent extends SzHowStepCardBase implements OnInit, OnDestroy {
     override get title(): string {

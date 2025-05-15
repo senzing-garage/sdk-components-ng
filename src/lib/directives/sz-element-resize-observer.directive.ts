@@ -8,7 +8,8 @@ import { SzElementResizeService } from '../services/sz-element-resize-listener.s
  * @example <mycomponent (onResize)="myCallBackReference($event)">
  */
 @Directive({
-    selector: '[onResize]'
+    selector: '[onResize]',
+    standalone: false
 })
 export class SzElementResizeObserverDirective implements AfterViewInit, OnChanges, OnDestroy {
     /** event emitter for resize event */

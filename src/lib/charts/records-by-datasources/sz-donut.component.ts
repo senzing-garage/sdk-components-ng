@@ -30,9 +30,10 @@ import { SzDataSourcesService } from '../../services/sz-datasources.service';
  * </script>
  */
 @Component({
-  selector: 'sz-record-counts-donut',
-  templateUrl: './sz-donut.component.html',
-  styleUrls: ['./sz-donut.component.scss']
+    selector: 'sz-record-counts-donut',
+    templateUrl: './sz-donut.component.html',
+    styleUrls: ['./sz-donut.component.scss'],
+    standalone: false
 })
 export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

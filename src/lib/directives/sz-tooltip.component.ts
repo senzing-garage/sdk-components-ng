@@ -10,20 +10,21 @@ export class SzTooltipComponent {
 }*/
 
 @Component({
-  selector: 'sz-tooltip',
-  styleUrls: ['./sz-tooltip.component.scss'],
-  templateUrl: './sz-tooltip.component.html',
-  animations: [
-    trigger('tooltip', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate(300, style({ opacity: 1 })),
-      ]),
-      transition(':leave', [
-        animate(300, style({ opacity: 0 })),
-      ]),
-    ]),
-  ],
+    selector: 'sz-tooltip',
+    styleUrls: ['./sz-tooltip.component.scss'],
+    templateUrl: './sz-tooltip.component.html',
+    animations: [
+        trigger('tooltip', [
+            transition(':enter', [
+                style({ opacity: 0 }),
+                animate(300, style({ opacity: 1 })),
+            ]),
+            transition(':leave', [
+                animate(300, style({ opacity: 0 })),
+            ]),
+        ]),
+    ],
+    standalone: false
 })
 export class SzTooltipComponent {
   @Input() text = '';

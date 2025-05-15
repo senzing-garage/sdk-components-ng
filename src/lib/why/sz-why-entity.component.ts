@@ -19,9 +19,10 @@ import { SzWhyReportBaseComponent } from './sz-why-report-base.component';
  * &lt;sz-wc-why-entity entityId="5"&gt;&lt;/sz-wc-why-entity&gt;<br/>
  */
 @Component({
-  selector: 'sz-why-entity',
-  templateUrl: './sz-why-entity.component.html',
-  styleUrls: ['./sz-why-entity.component.scss']
+    selector: 'sz-why-entity',
+    templateUrl: './sz-why-entity.component.html',
+    styleUrls: ['./sz-why-entity.component.scss'],
+    standalone: false
 })
 export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements OnInit, OnDestroy {
   protected override _data: SzWhyEntityResult[] | SzWhyEntitiesResult;
@@ -248,9 +249,10 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
  * @internal
  */
 @Component({
-  selector: 'sz-dialog-why-entity',
-  templateUrl: 'sz-why-entity-dialog.component.html',
-  styleUrls: ['sz-why-entity-dialog.component.scss']
+    selector: 'sz-dialog-why-entity',
+    templateUrl: 'sz-why-entity-dialog.component.html',
+    styleUrls: ['sz-why-entity-dialog.component.scss'],
+    standalone: false
 })
 export class SzWhyEntityDialog {
   /** subscription to notify subscribers to unbind */

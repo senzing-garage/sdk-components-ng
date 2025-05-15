@@ -7,8 +7,9 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
     selector: 'sz-alert-dialog',
     templateUrl: 'sz-alert-dialog.component.html',
-    styleUrls: ['sz-alert-dialog.component.scss']
-  })
+    styleUrls: ['sz-alert-dialog.component.scss'],
+    standalone: false
+})
   export class SzAlertMessageDialog {
     private _showOkButton = true;
     public title: string = 'Alert';

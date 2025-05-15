@@ -7,9 +7,10 @@ import * as d3 from 'd3';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'sz-relationship-path',
-  templateUrl: './sz-relationship-path.component.html',
-  styleUrls: ['./sz-relationship-path.component.scss']
+    selector: 'sz-relationship-path',
+    templateUrl: './sz-relationship-path.component.html',
+    styleUrls: ['./sz-relationship-path.component.scss'],
+    standalone: false
 })
 export class SzRelationshipPathComponent implements OnInit, AfterViewInit {
   /** subscription to notify subscribers to unbind */

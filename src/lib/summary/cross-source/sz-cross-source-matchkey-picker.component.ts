@@ -13,8 +13,9 @@ import { SzPrefsService } from '../../services/sz-prefs.service';
 @Component({
     selector: 'sz-css-matchkeys-dialog',
     templateUrl: 'sz-cross-source-matchkey-picker.component.html',
-    styleUrls: ['sz-cross-source-matchkey-picker.component.scss']
-  })
+    styleUrls: ['sz-cross-source-matchkey-picker.component.scss'],
+    standalone: false
+})
   export class SzCrossSourceSummaryMatchKeyPickerDialog implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();

@@ -54,9 +54,10 @@ import { SzAlertMessageDialog } from '../../shared/alert-dialog/sz-alert-dialog.
  * </script>
  */
 @Component({
-  selector: 'sz-entity-detail',
-  templateUrl: './sz-entity-detail.component.html',
-  styleUrls: ['./sz-entity-detail.component.scss']
+    selector: 'sz-entity-detail',
+    templateUrl: './sz-entity-detail.component.html',
+    styleUrls: ['./sz-entity-detail.component.scss'],
+    standalone: false
 })
 export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   /** subscription to notify subscribers to unbind */

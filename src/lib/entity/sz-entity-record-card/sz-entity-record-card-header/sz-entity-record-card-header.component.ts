@@ -11,9 +11,10 @@ import { bestEntityName } from '../../entity-utils';
  * @export
  */
 @Component({
-  selector: 'sz-entity-record-card-header',
-  templateUrl: './sz-entity-record-card-header.component.html',
-  styleUrls: ['./sz-entity-record-card-header.component.scss']
+    selector: 'sz-entity-record-card-header',
+    templateUrl: './sz-entity-record-card-header.component.html',
+    styleUrls: ['./sz-entity-record-card-header.component.scss'],
+    standalone: false
 })
 export class SzEntityRecordCardHeaderComponent implements OnInit, OnDestroy {
   @Input() searchResult: SzSearchResultEntityData;

@@ -29,9 +29,10 @@ import { SzSearchService } from '../../services/sz-search.service';
  * @export
  */
 @Component({
-  selector: 'sz-relationship-network',
-  templateUrl: './sz-relationship-network.component.html',
-  styleUrls: ['./sz-relationship-network.component.scss']
+    selector: 'sz-relationship-network',
+    templateUrl: './sz-relationship-network.component.html',
+    styleUrls: ['./sz-relationship-network.component.scss'],
+    standalone: false
 })
 export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

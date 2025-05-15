@@ -46,9 +46,10 @@ import { howClickEvent } from '../../models/data-how';
  * 
  */
 @Component({
-  selector: 'sz-search-results',
-  templateUrl: './sz-search-results.component.html',
-  styleUrls: ['./sz-search-results.component.scss']
+    selector: 'sz-search-results',
+    templateUrl: './sz-search-results.component.html',
+    styleUrls: ['./sz-search-results.component.scss'],
+    standalone: false
 })
 export class SzSearchResultsComponent implements OnInit, OnDestroy {
   public searchResultsJSON; // TODO: remove after debugging

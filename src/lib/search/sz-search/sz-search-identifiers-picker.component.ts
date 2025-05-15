@@ -33,9 +33,10 @@ interface AttrData {
  * @export
  */
 @Component({
-selector: 'sz-search-identifiers-picker-dialog',
-templateUrl: './sz-search-identifiers-picker.component.html',
-styleUrls: ['./sz-search-identifiers-picker.component.scss']
+    selector: 'sz-search-identifiers-picker-dialog',
+    templateUrl: './sz-search-identifiers-picker.component.html',
+    styleUrls: ['./sz-search-identifiers-picker.component.scss'],
+    standalone: false
 })
 export class SzSearchIdentifiersPickerDialogComponent {
     protected _dataModel: AttrRow[];
@@ -171,7 +172,8 @@ export class SzSearchIdentifiersPickerDialogComponent {
 @Component({
     selector: 'sz-search-identifiers-picker-sheet',
     templateUrl: './sz-search-identifiers-picker.component.html',
-    styleUrls: ['./sz-search-identifiers-picker.component.scss']
+    styleUrls: ['./sz-search-identifiers-picker.component.scss'],
+    standalone: false
 })
 export class SzSearchIdentifiersPickerSheetComponent extends SzSearchIdentifiersPickerDialogComponent {
     @HostBinding('class.isMatSheet') true;

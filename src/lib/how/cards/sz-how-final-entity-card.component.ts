@@ -21,7 +21,8 @@ import { SzResolutionStepListItemType } from '../../models/data-how';
 @Component({
     selector: 'sz-how-final-entity-card',
     templateUrl: './sz-how-final-entity-card.component.html',
-    styleUrls: ['./sz-how-card-base.component.scss']
+    styleUrls: ['./sz-how-card-base.component.scss'],
+    standalone: false
 })
 export class SzHowFinalEntityCardComponent extends SzHowStepCardBase implements OnInit, OnDestroy  {
 

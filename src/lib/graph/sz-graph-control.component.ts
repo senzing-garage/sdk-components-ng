@@ -7,9 +7,10 @@ import { Subject } from 'rxjs';
  * @export
  */
 @Component({
-  selector: 'sz-graph-control',
-  templateUrl: './sz-graph-control.component.html',
-  styleUrls: ['./sz-graph-control.component.scss']
+    selector: 'sz-graph-control',
+    templateUrl: './sz-graph-control.component.html',
+    styleUrls: ['./sz-graph-control.component.scss'],
+    standalone: false
 })
 export class SzGraphControlComponent implements OnInit, OnDestroy {
   isOpen: boolean = true;

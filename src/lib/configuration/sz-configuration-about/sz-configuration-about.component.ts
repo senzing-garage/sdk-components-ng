@@ -17,9 +17,10 @@ import { SzConfigurationService } from '../../services/sz-configuration.service'
  * <sz-wc-configuration-about></sz-wc-configuration-about>
  */
 @Component({
-  selector: 'sz-configuration-about',
-  templateUrl: './sz-configuration-about.component.html',
-  styleUrls: ['./sz-configuration-about.component.scss']
+    selector: 'sz-configuration-about',
+    templateUrl: './sz-configuration-about.component.html',
+    styleUrls: ['./sz-configuration-about.component.scss'],
+    standalone: false
 })
 export class SzConfigurationAboutComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

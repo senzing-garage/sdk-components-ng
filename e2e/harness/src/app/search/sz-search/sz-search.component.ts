@@ -24,9 +24,10 @@ interface SzSearchFormParams {
   type?: string[];
 };
 @Component({
-  selector: 'app-sz-search',
-  templateUrl: './sz-search.component.html',
-  styleUrls: ['./sz-search.component.scss']
+    selector: 'app-sz-search',
+    templateUrl: './sz-search.component.html',
+    styleUrls: ['./sz-search.component.scss'],
+    standalone: false
 })
 export class SzSearchComponentTest implements OnInit {
   /**

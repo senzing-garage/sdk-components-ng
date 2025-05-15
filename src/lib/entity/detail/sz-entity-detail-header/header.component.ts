@@ -25,9 +25,10 @@ import { SzWhyEntityDialog } from '../../../why/sz-why-entity.component';
  * @export
  */
 @Component({
-  selector: 'sz-entity-detail-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+    selector: 'sz-entity-detail-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: false
 })
 export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
   @Input() public searchTerm: string;
