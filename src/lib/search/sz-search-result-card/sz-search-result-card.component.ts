@@ -9,9 +9,10 @@ import { howClickEvent } from '../../models/data-how';
  * @export
  */
 @Component({
-  selector: 'sz-search-result-card',
-  templateUrl: './sz-search-result-card.component.html',
-  styleUrls: ['./sz-search-result-card.component.scss']
+    selector: 'sz-search-result-card',
+    templateUrl: './sz-search-result-card.component.html',
+    styleUrls: ['./sz-search-result-card.component.scss'],
+    standalone: false
 })
 export class SzSearchResultCardComponent implements OnInit, OnDestroy {
   @Input()searchResult: SzEntityDetailSectionData | SzAttributeSearchResult;

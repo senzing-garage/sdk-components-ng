@@ -34,9 +34,10 @@ import { SzCrossSourceSummaryMatchKeyPickerDialog } from './sz-cross-source-matc
  *
  */
 @Component({
-  selector: 'sz-cross-source-summary',
-  templateUrl: './sz-cross-source-summary.component.html',
-  styleUrls: ['./sz-cross-source-summary.component.scss']
+    selector: 'sz-cross-source-summary',
+    templateUrl: './sz-cross-source-summary.component.html',
+    styleUrls: ['./sz-cross-source-summary.component.scss'],
+    standalone: false
 })
 export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

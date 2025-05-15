@@ -12,9 +12,10 @@ import { SzPrefsService } from '../../../services/sz-prefs.service';
  * @export
  */
 @Component({
-  selector: 'sz-entity-detail-header-content',
-  templateUrl: './content.component.html',
-  styleUrls: ['./content.component.scss']
+    selector: 'sz-entity-detail-header-content',
+    templateUrl: './content.component.html',
+    styleUrls: ['./content.component.scss'],
+    standalone: false
 })
 export class SzEntityDetailHeaderContentComponent implements OnDestroy, OnInit {
   /** subscription to notify subscribers to unbind */

@@ -8,9 +8,10 @@ import { Configuration as SzRestConfiguration } from '@senzing/rest-api-client-n
  * @internal
  */
 @Component({
-  selector: 'sz-pref-dict',
-  templateUrl: './sz-pref-dict.component.html',
-  styleUrls: ['./sz-pref-dict.component.scss']
+    selector: 'sz-pref-dict',
+    templateUrl: './sz-pref-dict.component.html',
+    styleUrls: ['./sz-pref-dict.component.scss'],
+    standalone: false
 })
 export class SzPrefDictComponent implements OnInit {
 

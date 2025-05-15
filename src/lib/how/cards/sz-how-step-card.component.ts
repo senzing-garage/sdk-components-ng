@@ -28,7 +28,8 @@ import { SzPrefsService } from '../../services/sz-prefs.service';
 @Component({
     selector: 'sz-how-step-card',
     templateUrl: './sz-how-step-card.component.html',
-    styleUrls: ['./sz-how-card-base.component.scss']
+    styleUrls: ['./sz-how-card-base.component.scss'],
+    standalone: false
 })
 export class SzHowStepCardComponent extends SzHowStepCardBase implements OnInit, OnDestroy {
     /** the title if the cards itemType is a 'GROUP' or 'STACK' */

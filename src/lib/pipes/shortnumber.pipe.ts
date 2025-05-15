@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'SzShortNumber'
+    name: 'SzShortNumber',
+    standalone: false
 })
 export class SzShortNumberPipe implements PipeTransform {
   transform(number: number, args?: any): any {

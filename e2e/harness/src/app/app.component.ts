@@ -6,9 +6,10 @@ import {
 } from '@senzing/sdk-components-ng';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styles: []
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styles: [],
+    standalone: false
 })
 export class AppComponent {
   public currentSearchResults: SzAttributeSearchResult[];

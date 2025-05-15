@@ -1,8 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'SzDecimalPercent'
-  })
+    name: 'SzDecimalPercent',
+    standalone: false
+})
   export class SzDecimalPercentPipe implements PipeTransform {
     transform(percent: number, precision: number = 1): any {
       if (isNaN(percent))    return null; // will only work value is a number

@@ -22,7 +22,8 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
 @Component({
     selector: 'sz-how-virtual-entity-card',
     templateUrl: './sz-how-virtual-entity-card.component.html',
-    styleUrls: ['./sz-how-virtual-entity-card.component.scss']
+    styleUrls: ['./sz-how-virtual-entity-card.component.scss'],
+    standalone: false
 })
 export class SzHowVirtualEntityCardComponent implements OnInit {
 

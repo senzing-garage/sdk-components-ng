@@ -35,9 +35,10 @@ import { isBoolean } from '../common/utils';
  * </script>
  */
 @Component({
-  selector: 'sz-graph-filter',
-  templateUrl: './sz-graph-filter.component.html',
-  styleUrls: ['./sz-graph-filter.component.scss']
+    selector: 'sz-graph-filter',
+    templateUrl: './sz-graph-filter.component.html',
+    styleUrls: ['./sz-graph-filter.component.scss'],
+    standalone: false
 })
 export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy {
   /**

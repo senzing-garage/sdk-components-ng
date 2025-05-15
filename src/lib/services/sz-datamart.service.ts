@@ -223,7 +223,7 @@ export class SzStatSampleSet {
                     _boundType          = SzBoundType.EXCLUSIVELOWER;
                     _boundValue         =  this._entityPages.get(_pageToFindIndex).pageMaximumValue;
 
-                } else if([_cPageParams.pageIndex - 1, _cPageParams.pageIndex + 1]) {
+                } else if([_cPageParams.pageIndex - 1, _cPageParams.pageIndex + 1].includes(value)) {
                     // new bound value has to be based on current page params
                     let isPrev      = (_cPageParams.pageIndex - 1) === value;
                     _pageSize   = _cPageParams.bound === 'max:max' ? this.prefs.dataMart.samplePageSize : _cPageParams.pageSize;

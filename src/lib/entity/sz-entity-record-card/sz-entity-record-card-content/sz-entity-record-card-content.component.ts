@@ -20,9 +20,10 @@ import { SzWhySelectionMode, SzWhySelectionAction, SzWhySelectionModeBehavior, S
  * @export
  */
 @Component({
-  selector: 'sz-entity-record-card-content',
-  templateUrl: './sz-entity-record-card-content.component.html',
-  styleUrls: ['./sz-entity-record-card-content.component.scss']
+    selector: 'sz-entity-record-card-content',
+    templateUrl: './sz-entity-record-card-content.component.html',
+    styleUrls: ['./sz-entity-record-card-content.component.scss'],
+    standalone: false
 })
 export class SzEntityRecordCardContentComponent implements OnInit {
   /** subscription to notify subscribers to unbind */

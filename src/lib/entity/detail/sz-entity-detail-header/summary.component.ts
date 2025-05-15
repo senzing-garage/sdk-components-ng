@@ -10,9 +10,10 @@ import { Subject } from 'rxjs';
  * @export
  */
 @Component({
-  selector: 'sz-entity-detail-section-summary',
-  templateUrl: './summary.component.html',
-  styleUrls: ['./summary.component.scss']
+    selector: 'sz-entity-detail-section-summary',
+    templateUrl: './summary.component.html',
+    styleUrls: ['./summary.component.scss'],
+    standalone: false
 })
 export class SzEntityDetailSectionSummaryComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

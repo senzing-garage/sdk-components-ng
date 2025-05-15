@@ -13,9 +13,10 @@ import { SzHowUIService } from '../../../services/sz-how-ui.service';
  * @export
  */
 @Component({
-  selector: 'sz-entity-detail-section-how-report',
-  templateUrl: './sz-entity-detail-how-report.component.html',
-  styleUrls: ['./sz-entity-detail-how-report.component.scss']
+    selector: 'sz-entity-detail-section-how-report',
+    templateUrl: './sz-entity-detail-how-report.component.html',
+    styleUrls: ['./sz-entity-detail-how-report.component.scss'],
+    standalone: false
 })
 export class SzEntityDetailHowReportComponent implements OnDestroy, OnInit {
   /** subscription to notify subscribers to unbind */

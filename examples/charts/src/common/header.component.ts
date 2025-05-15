@@ -3,8 +3,9 @@ import { Component, HostBinding, Input, ViewChild, Output, OnInit, OnDestroy, Ev
 @Component({
     selector: 'sz-example-header',
     templateUrl: './header.component.html',
-    styleUrls: ['./header.component.scss']
-  })
+    styleUrls: ['./header.component.scss'],
+    standalone: false
+})
   export class SzExamplesHeader {
     @Input() public title: string = '';
     @Input() public description: string = '';

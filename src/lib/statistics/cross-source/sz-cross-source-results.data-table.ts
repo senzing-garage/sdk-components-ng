@@ -19,10 +19,11 @@ import { SzCrossSourceSummaryMatchKeyPickerDialog } from '../../summary/cross-so
  * sample results from the cross source summary component.
  */
 @Component({
-  selector: 'sz-cross-source-results',
-  templateUrl: './sz-cross-source-results.data-table.html',
-  styleUrls: ['./sz-cross-source-results.data-table.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'sz-cross-source-results',
+    templateUrl: './sz-cross-source-results.data-table.html',
+    styleUrls: ['./sz-cross-source-results.data-table.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SzCrossSourceResultsDataTable extends SzDataTable implements OnInit, OnDestroy {
 

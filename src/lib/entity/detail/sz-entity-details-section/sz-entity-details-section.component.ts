@@ -13,9 +13,10 @@ import { SzDataSourceRecordsSelection, SzWhySelectionMode, SzWhySelectionModeBeh
  * @export
  */
 @Component({
-  selector: 'sz-entity-details-section',
-  templateUrl: './sz-entity-details-section.component.html',
-  styleUrls: ['./sz-entity-details-section.component.scss']
+    selector: 'sz-entity-details-section',
+    templateUrl: './sz-entity-details-section.component.html',
+    styleUrls: ['./sz-entity-details-section.component.scss'],
+    standalone: false
 })
 export class SzEntityDetailsSectionComponent implements OnDestroy {
   /** subscription to notify subscribers to unbind */

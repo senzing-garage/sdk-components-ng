@@ -12,9 +12,10 @@ import { SzEntitySearchParams, SzSearchService, JSONScrubber } from '@senzing/sd
 
 
 @Component({
-  selector: 'app-sz-search-results-test',
-  templateUrl: './sz-search-results-test.component.html',
-  styleUrls: ['./sz-search-results-test.component.scss']
+    selector: 'app-sz-search-results-test',
+    templateUrl: './sz-search-results-test.component.html',
+    styleUrls: ['./sz-search-results-test.component.scss'],
+    standalone: false
 })
 export class SzSearchResultsTestComponent implements OnInit {
   public _searchResults: SzAttributeSearchResult[];

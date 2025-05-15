@@ -52,7 +52,10 @@ export class SzTooltipDirective implements OnInit {
 }*/
 
 
-@Directive({ selector: '[sz-tooltip]' })
+@Directive({
+    selector: '[sz-tooltip]',
+    standalone: false
+})
 export class SzTooltipDirective implements OnInit {
 
   @Input('sz-tooltip') text = '';

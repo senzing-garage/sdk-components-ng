@@ -5,9 +5,10 @@ import { Component, Input, OnInit } from '@angular/core';
  * @export
  */
 @Component({
-  selector: 'sz-entity-detail-section-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+    selector: 'sz-entity-detail-section-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: false
 })
 export class SzEntityDetailSectionHeaderComponent implements OnInit {
   @Input() sectionTitle: string;

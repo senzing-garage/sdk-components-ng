@@ -10,9 +10,10 @@ import { howClickEvent } from '../../../models/data-how';
  * @export
  */
 @Component({
-  selector: 'sz-search-result-card-content',
-  templateUrl: './sz-search-result-card-content.component.html',
-  styleUrls: ['./sz-search-result-card-content.component.scss']
+    selector: 'sz-search-result-card-content',
+    templateUrl: './sz-search-result-card-content.component.html',
+    styleUrls: ['./sz-search-result-card-content.component.scss'],
+    standalone: false
 })
 export class SzSearchResultCardContentComponent implements OnInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

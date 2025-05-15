@@ -24,7 +24,8 @@ import { SzHowUIService } from '../services/sz-how-ui.service';
 @Component({
     selector: 'sz-how-step-stack',
     templateUrl: './sz-how-step-stack.component.html',
-    styleUrls: ['./sz-how-step-stack.component.scss']
+    styleUrls: ['./sz-how-step-stack.component.scss'],
+    standalone: false
 })
 export class SzHowStepStackComponent implements OnDestroy {
     /** subscription to notify subscribers to unbind */

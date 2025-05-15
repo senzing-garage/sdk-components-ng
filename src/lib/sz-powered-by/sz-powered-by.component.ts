@@ -14,9 +14,10 @@ import { Component, OnInit, Input } from '@angular/core';
  * <sz-wc-powered-by></sz-wc-powered-by>
  */
 @Component({
-  selector: 'sz-powered-by',
-  templateUrl: './sz-powered-by.component.html',
-  styleUrls: ['./sz-powered-by.component.scss']
+    selector: 'sz-powered-by',
+    templateUrl: './sz-powered-by.component.html',
+    styleUrls: ['./sz-powered-by.component.scss'],
+    standalone: false
 })
 export class SzPoweredByComponent implements OnInit {
   @Input()

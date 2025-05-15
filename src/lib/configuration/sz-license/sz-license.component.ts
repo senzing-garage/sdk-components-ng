@@ -21,9 +21,10 @@ import { SzLicenseUpgradeMouseEvent } from '../../models/event-license';
  * <sz-license></sz-license>
  */
 @Component({
-  selector: 'sz-license',
-  templateUrl: './sz-license.component.html',
-  styleUrls: ['./sz-license.component.scss']
+    selector: 'sz-license',
+    templateUrl: './sz-license.component.html',
+    styleUrls: ['./sz-license.component.scss'],
+    standalone: false
 })
 export class SzLicenseInfoComponent implements OnInit {
   /** subscription to notify subscribers to unbind */

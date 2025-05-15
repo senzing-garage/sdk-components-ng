@@ -20,9 +20,10 @@ import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { SzSdkPrefsModel } from 'src/lib/services/sz-prefs.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

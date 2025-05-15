@@ -30,7 +30,8 @@ import { SzResolutionStepListItemType, SzResolutionStepNode } from '../models/da
 @Component({
     selector: 'sz-how-entity',
     templateUrl: './sz-how-entity.component.html',
-    styleUrls: ['./sz-how-entity.component.scss']
+    styleUrls: ['./sz-how-entity.component.scss'],
+    standalone: false
 })
 export class SzHowEntityComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */

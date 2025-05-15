@@ -19,9 +19,10 @@ import { SzCSSClassService } from '../../services/sz-css-class.service';
  *
  */
 @Component({
-  selector: 'sz-cross-source-select',
-  templateUrl: './sz-cross-source-select.component.html',
-  styleUrls: ['./sz-cross-source-select.component.scss']
+    selector: 'sz-cross-source-select',
+    templateUrl: './sz-cross-source-select.component.html',
+    styleUrls: ['./sz-cross-source-select.component.scss'],
+    standalone: false
 })
 export class SzCrossSourceSelectComponent implements OnInit, AfterViewInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

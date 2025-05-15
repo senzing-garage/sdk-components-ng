@@ -13,8 +13,9 @@ import { SzHowUIService } from '../services/sz-how-ui.service';
 @Component({
     selector: 'sz-dialog-how-rc-virtual-entity-dialog',
     templateUrl: 'sz-how-virtual-entity-dialog.component.html',
-    styleUrls: ['sz-how-virtual-entity-dialog.component.scss']
-  })
+    styleUrls: ['sz-how-virtual-entity-dialog.component.scss'],
+    standalone: false
+})
   export class SzHowVirtualEntityDialog {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();

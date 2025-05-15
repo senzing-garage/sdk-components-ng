@@ -26,9 +26,10 @@ export interface dataSourceSelectionChangeEvent {
  *
  */
 @Component({
-  selector: 'sz-cross-source-statistics',
-  templateUrl: './sz-cross-source-statistics.component.html',
-  styleUrls: ['./sz-cross-source-statistics.component.scss']
+    selector: 'sz-cross-source-statistics',
+    templateUrl: './sz-cross-source-statistics.component.html',
+    styleUrls: ['./sz-cross-source-statistics.component.scss'],
+    standalone: false
 })
 export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy {
   /** subscription to notify subscribers to unbind */

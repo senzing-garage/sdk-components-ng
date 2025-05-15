@@ -20,9 +20,10 @@ import { SzCSSClassService } from '../services/sz-css-class.service';
  * &lt;sz-wc-why-entities&gt;&lt;/sz-wc-why-entities&gt;<br/>
  */
 @Component({
-  selector: 'sz-why-entities',
-  templateUrl: './sz-why-entities.component.html',
-  styleUrls: ['./sz-why-entities.component.scss']
+    selector: 'sz-why-entities',
+    templateUrl: './sz-why-entities.component.html',
+    styleUrls: ['./sz-why-entities.component.scss'],
+    standalone: false
 })
 export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent implements OnInit, OnDestroy {
     /**
@@ -602,9 +603,10 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
  * @internal
 */
 @Component({
-  selector: 'sz-dialog-why-entities',
-  styleUrls: ['sz-why-entities-dialog.component.scss'],
-  templateUrl: 'sz-why-entities-dialog.component.html'
+    selector: 'sz-dialog-why-entities',
+    styleUrls: ['sz-why-entities-dialog.component.scss'],
+    templateUrl: 'sz-why-entities-dialog.component.html',
+    standalone: false
 })
 export class SzWhyEntitiesDialog implements OnDestroy {
   /** subscription to notify subscribers to unbind */
