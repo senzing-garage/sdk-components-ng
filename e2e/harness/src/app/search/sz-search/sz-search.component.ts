@@ -77,18 +77,18 @@ export class SzSearchComponentTest implements OnInit {
   @Output() searchEnd: EventEmitter<number> = new EventEmitter<number>();
 
   /**
-   * emmitted when the results have been cleared.
+   * emitted when the results have been cleared.
    * @memberof SzSearchComponent
    */
   @Output() resultsCleared: EventEmitter<void> = new EventEmitter<void>();
   /**
-   * emmitted when the search results have been changed.
+   * emitted when the search results have been changed.
    * @memberof SzSearchComponent
    */
   @Output('resultsChange')
   searchResults: Subject<SzAttributeSearchResult[]> = new Subject<SzAttributeSearchResult[]>();
   /**
-   * emmitted when parameters of the search have been changed.
+   * emitted when parameters of the search have been changed.
    *
    * @memberof SzSearchComponent
    */
@@ -250,7 +250,7 @@ export class SzSearchComponentTest implements OnInit {
    * submit current search params to search service.
    * when search service returns a result it publishes the result
    * through the resultsChange event emitter, and
-   * any parameter changes through the paramsChange emmitter.
+   * any parameter changes through the paramsChange emitter.
    */
   public submitSearch(): void {
     const searchParams = JSONScrubber(this.entitySearchForm.value);

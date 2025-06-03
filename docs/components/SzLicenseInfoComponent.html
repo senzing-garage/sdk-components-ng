@@ -357,39 +357,39 @@ Used for displaying the current senzing license info.</p>
                                         <tbody>
                                                 <tr>
                                                         <td>adminService</td>
-                                                  
+
                                                         <td>
                                                                         <code><a href="../injectables/SzAdminService.html" target="_self" >SzAdminService</a></code>
                                                         </td>
-                                                  
+
                                                     <td>
                                                             No
                                                     </td>
-                                                    
+
                                                 </tr>
                                                 <tr>
                                                         <td>dmService</td>
-                                                  
+
                                                         <td>
                                                                         <code><a href="../injectables/SzDataMartService.html" target="_self" >SzDataMartService</a></code>
                                                         </td>
-                                                  
+
                                                     <td>
                                                             No
                                                     </td>
-                                                    
+
                                                 </tr>
                                                 <tr>
                                                         <td>router</td>
-                                                  
+
                                                         <td>
                                                                     <code>Router</code>
                                                         </td>
-                                                  
+
                                                     <td>
                                                             No
                                                     </td>
-                                                    
+
                                                 </tr>
                                         </tbody>
                                     </table>
@@ -479,7 +479,7 @@ Used for displaying the current senzing license info.</p>
 
 
     <section data-compodoc="block-methods">
-    
+
     <h3 id="methods">
         Methods
     </h3>
@@ -510,7 +510,7 @@ Used for displaying the current senzing license info.</p>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
-                                
+
                                 <table class="params">
                                     <thead>
                                         <tr>
@@ -540,7 +540,7 @@ Used for displaying the current senzing license info.</p>
 
                         </div>
                             <div class="io-description">
-                                
+
                             </div>
                 </td>
             </tr>
@@ -579,7 +579,7 @@ Used for displaying the current senzing license info.</p>
     </table>
 </section>
     <section data-compodoc="block-properties">
-    
+
     <h3 id="inputs">
         Properties
     </h3>
@@ -603,7 +603,7 @@ Used for displaying the current senzing license info.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>this brings in the enum to local scrope for html template access</p>
+                    <div class="io-description"><p>this brings in the enum to local scope for html template access</p>
 </div>
                 </td>
             </tr>
@@ -674,15 +674,15 @@ Used for displaying the current senzing license info.</p>
                                             <tbody>
                                                     <tr>
                                                             <td>value</td>
-                                                    
+
                                                             <td>
                                                                         <code>string | number</code>
                                                             </td>
-                                                    
+
                                                         <td>
                                                                 No
                                                         </td>
-                                                        
+
                                                     </tr>
                                             </tbody>
                                         </table>
@@ -733,15 +733,15 @@ Used for displaying the current senzing license info.</p>
                                             <tbody>
                                                     <tr>
                                                             <td>value</td>
-                                                    
+
                                                             <td>
                                                                         <code>string | boolean</code>
                                                             </td>
-                                                    
+
                                                         <td>
                                                                 No
                                                         </td>
-                                                        
+
                                                     </tr>
                                             </tbody>
                                         </table>
@@ -792,15 +792,15 @@ Used for displaying the current senzing license info.</p>
                                             <tbody>
                                                     <tr>
                                                             <td>value</td>
-                                                    
+
                                                             <td>
                                                                         <code>string | boolean</code>
                                                             </td>
-                                                    
+
                                                         <td>
                                                                 No
                                                         </td>
-                                                        
+
                                                     </tr>
                                             </tbody>
                                         </table>
@@ -1132,13 +1132,13 @@ Used for displaying the current senzing license info.</p>
 &lt;/ul&gt;
 &lt;div class&#x3D;&quot;buttons&quot; *ngIf&#x3D;&quot;showUpgradeButton&quot;&gt;
     &lt;div [ngSwitch]&#x3D;&quot;upgradeType&quot;&gt;
-        &lt;button mat-button color&#x3D;&quot;primary&quot; *ngSwitchCase&#x3D;&quot;SzLicenseUpgradeType.SUBSCRIBE&quot; 
+        &lt;button mat-button color&#x3D;&quot;primary&quot; *ngSwitchCase&#x3D;&quot;SzLicenseUpgradeType.SUBSCRIBE&quot;
         (click)&#x3D;&quot;handleUpgradeButtonClicked($event)&quot;&gt;Subscribe Now&lt;/button&gt;
-        &lt;button class&#x3D;&quot;upgrade&quot; mat-button color&#x3D;&quot;primary&quot; *ngSwitchCase&#x3D;&quot;SzLicenseUpgradeType.UPGRADE&quot; 
+        &lt;button class&#x3D;&quot;upgrade&quot; mat-button color&#x3D;&quot;primary&quot; *ngSwitchCase&#x3D;&quot;SzLicenseUpgradeType.UPGRADE&quot;
         (click)&#x3D;&quot;handleUpgradeButtonClicked($event)&quot;&gt;Request a License with More Records&lt;/button&gt;
-        &lt;button class&#x3D;&quot;upgrade&quot; mat-button color&#x3D;&quot;primary&quot; *ngSwitchCase&#x3D;&quot;SzLicenseUpgradeType.RENEW&quot; 
+        &lt;button class&#x3D;&quot;upgrade&quot; mat-button color&#x3D;&quot;primary&quot; *ngSwitchCase&#x3D;&quot;SzLicenseUpgradeType.RENEW&quot;
         (click)&#x3D;&quot;handleUpgradeButtonClicked($event)&quot;&gt;Request a License with More Time&lt;/button&gt;
-        &lt;button class&#x3D;&quot;upgrade&quot; mat-button color&#x3D;&quot;primary&quot; *ngSwitchCase&#x3D;&quot;SzLicenseUpgradeType.VIEW&quot; 
+        &lt;button class&#x3D;&quot;upgrade&quot; mat-button color&#x3D;&quot;primary&quot; *ngSwitchCase&#x3D;&quot;SzLicenseUpgradeType.VIEW&quot;
         (click)&#x3D;&quot;handleUpgradeButtonClicked($event)&quot;&gt;Request a License with More Records&lt;/button&gt;
     &lt;/div&gt;
 &lt;/div&gt;</code></pre>
@@ -1176,7 +1176,7 @@ Used for displaying the current senzing license info.</p>
     </div>
 
 
-    
+
 </div>
 
 <script src="../js/libs/vis.min.js"></script>

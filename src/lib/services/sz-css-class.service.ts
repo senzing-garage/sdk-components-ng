@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 /**
  * A service that provides the capability to "dynamically" add CSS
- * classes to the head of the document or app. Also can dynamically set css vars 
+ * classes to the head of the document or app. Also can dynamically set css vars
  * on the document body.
  *
  * @export
@@ -25,7 +25,7 @@ export class SzCSSClassService {
     }
     return this._headElement;
   }
-  /** get body element 
+  /** get body element
    * @internal
   */
   private get bodyElement(): HTMLBodyElement {
@@ -34,7 +34,7 @@ export class SzCSSClassService {
     }
     return this._bodyElement;
   }
-  /** get the existing styleshee
+  /** get the existing stylesheet
    * @internal
    */
   private get styleSheet(): CSSStyleSheet {
@@ -73,12 +73,12 @@ export class SzCSSClassService {
 
     if(!styleName || !value){ return; }
 
-    if(!rule){ 
-      // create 
+    if(!rule){
+      // create
       let newRuleIndex = this.styleSheet.insertRule(selectorText + `{ ${styleName}: ${value}}`, rules.length);
-      return; 
+      return;
     } else {
-      if(ruleIndex >= 0) { 
+      if(ruleIndex >= 0) {
         this.styleSheet.deleteRule(ruleIndex);
       }
       this.styleSheet.insertRule(selectorText + `{ ${styleName}: ${value}}`, rules.length);
@@ -89,7 +89,7 @@ export class SzCSSClassService {
     if(!this.styleSheet){ return; }
     let rules: CSSRuleList = this.styleSheet.cssRules.length > 0 || this.styleSheet.rules.length == 0 ? this.styleSheet.cssRules : this.styleSheet.rules;
     let ruleIndex: number  = Array.from(rules).findIndex(r => r instanceof CSSStyleRule && r.selectorText.toLowerCase() == selectorText.toLowerCase());
-    if(ruleIndex >= 0){ 
+    if(ruleIndex >= 0){
       //try{
         if(!styleName) {
           this.styleSheet.deleteRule(ruleIndex);

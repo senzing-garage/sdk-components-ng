@@ -217,12 +217,12 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
     if(!this.bulkSet) this.prefChanged.next({name: 'defaultStatType', value: value});
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
-  /** if true and there are values for "dataSource1" and/or "dataSource2" then the datatable will 
+  /** if true and there are values for "dataSource1" and/or "dataSource2" then the datatable will
    * default to these previous values */
   public get rememberSelectedDataSources(): boolean {
     return this._rememberSelectedDataSources;
   }
-  /** if true and there are values for "dataSource1" and/or "dataSource2" then the datatable will 
+  /** if true and there are values for "dataSource1" and/or "dataSource2" then the datatable will
    * default to these previous values */
   public set rememberSelectedDataSources(value: boolean) {
     this._rememberSelectedDataSources = value;
@@ -254,7 +254,7 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
   public get sampleMatchLevel(): number {
     return this._sampleMatchLevel;
   }
-  /** sample match leve parameter to use in stats queries */
+  /** sample match level parameter to use in stats queries */
   public set sampleMatchLevel(value: number) {
     this._sampleMatchLevel = value;
     if(this._rememberSelectedDataSources) { this._defaultMatchLevel = value; }
@@ -342,7 +342,7 @@ export class SzDataMartPrefs extends SzSdkPrefsBase {
     if(!this.bulkSet) this.prefChanged.next({name: 'wrapDataTableCellLines', value: value});
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject() );
   }
-  
+
   /**
    * publish out a "first" real payload so that
    * subscribers get an initial payload from this subclass
@@ -1288,11 +1288,11 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     this._rememberStateOptions = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject({source: "rememberStateOptions", newValue: value, oldValue: oldValue}) );
   }
-  /** maximum degrees of separatation between relationships */
+  /** maximum degrees of separation between relationships */
   public get maxDegreesOfSeparation(): number {
     return this._maxDegreesOfSeparation;
   }
-  /** maximum degrees of separatation between relationships */
+  /** maximum degrees of separation between relationships */
   public set maxDegreesOfSeparation(value: number) {
     let oldValue = this._maxDegreesOfSeparation;
     if(oldValue == value) { return; }
@@ -1328,7 +1328,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** hide any entity node when belonging to particular datasources */
   public set dataSourcesFiltered(value: string[]) {
     let oldValue = this._dataSourcesFiltered;
-    if(oldValue && value && areArrayMembersEqual(oldValue, value)) { 
+    if(oldValue && value && areArrayMembersEqual(oldValue, value)) {
       return;
     }
     this._dataSourcesFiltered = value;
@@ -1341,7 +1341,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** hide any entity node when relationship does not contain a particular match key */
   public set matchKeysIncluded(value: string[]) {
     let oldValue = this._matchKeysIncluded;
-    if(oldValue && value && areArrayMembersEqual(oldValue, value)) { 
+    if(oldValue && value && areArrayMembersEqual(oldValue, value)) {
       return;
     }
     this._matchKeysIncluded = value;
@@ -1354,7 +1354,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** hide any entity node when relationship does not contain a particular match key */
   public set matchKeyTokensIncluded(value: string[]) {
     let oldValue = this._matchKeyTokensIncluded;
-    if(oldValue && value && areArrayMembersEqual(oldValue, value)) { 
+    if(oldValue && value && areArrayMembersEqual(oldValue, value)) {
       return;
     }
     this._matchKeyTokensIncluded = value;
@@ -1367,7 +1367,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
   /** hide any entity node when relationship does not contain a particular match key */
   public set matchKeyCoreTokensIncluded(value: string[]) {
     let oldValue = this._matchKeyCoreTokensIncluded;
-    if(oldValue && value && areArrayMembersEqual(oldValue, value)) { 
+    if(oldValue && value && areArrayMembersEqual(oldValue, value)) {
       return;
     }
     this._matchKeyCoreTokensIncluded = value;
@@ -1384,21 +1384,21 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     this._neverFilterQueriedEntityIds = value;
     if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject({source: "neverFilterQueriedEntityIds", newValue: value, oldValue: oldValue}) );
   }
-  /** color of active or queried for entity or entitities */
+  /** color of active or queried for entity or entities */
   public get queriedEntitiesColor(): string | undefined {
     return this._queriedEntitiesColor;
   }
-  /** color of active or queried for entity or entitities */
+  /** color of active or queried for entity or entities */
   public set queriedEntitiesColor(value: string | undefined) {
     let oldValue = this._queriedEntitiesColor;
     this._queriedEntitiesColor = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject({source: "queriedEntitiesColor", newValue: value, oldValue: oldValue}) );
   }
-  /** color of focused/expanded entity or entitities */
+  /** color of focused/expanded entity or entities */
   public get focusedEntitiesColor(): string | undefined {
     return this._focusedEntitiesColor;
   }
-  /** color of focused/expanded entity or entitities */
+  /** color of focused/expanded entity or entities */
   public set focusedEntitiesColor(value: string | undefined) {
     let oldValue = this._focusedEntitiesColor;
     if(oldValue == value) { return; }
@@ -1427,12 +1427,12 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     this._indirectLinkColor = value;
     if(!this.bulkSet) this.prefsChanged.next( this.toJSONObject({source: "indirectLinkColor", newValue: value, oldValue: oldValue}) );
   }
-  /** whether or not to ignore the maxEntities value and always get 
+  /** whether or not to ignore the maxEntities value and always get
    * all related entities */
   public get unlimitedMaxEntities(): boolean {
     return this._unlimitedMaxEntities;
   }
-  /** whether or not to ignore the maxEntities value and always get 
+  /** whether or not to ignore the maxEntities value and always get
    * all related entities */
   public set unlimitedMaxEntities(value: boolean) {
     let oldValue = this._unlimitedMaxEntities;
@@ -1440,12 +1440,12 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     this._unlimitedMaxEntities = value;
     if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject({source: "unlimitedMaxEntities", newValue: value, oldValue: oldValue}) );
   }
-  /** whether or not to ignore the maxDegreesOfSeparation value and always get 
+  /** whether or not to ignore the maxDegreesOfSeparation value and always get
    * build out to max */
    public get unlimitedMaxScope(): boolean {
     return this._unlimitedMaxScope;
   }
-  /** whether or not to ignore the maxDegreesOfSeparation value and always get 
+  /** whether or not to ignore the maxDegreesOfSeparation value and always get
    * build out to max */
   public set unlimitedMaxScope(value: boolean) {
     let oldValue = this._unlimitedMaxScope;
@@ -1453,12 +1453,12 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     this._unlimitedMaxScope = value;
     if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject({source: "unlimitedMaxScope", newValue: value, oldValue: oldValue}) );
   }
-  /** whether or not to ignore the maxDegreesOfSeparation value and always get 
+  /** whether or not to ignore the maxDegreesOfSeparation value and always get
    * build out to max */
    public get suppressL1InterLinks(): boolean {
     return this._suppressL1InterLinks;
   }
-  /** whether or not to ignore the maxDegreesOfSeparation value and always get 
+  /** whether or not to ignore the maxDegreesOfSeparation value and always get
    * build out to max */
   public set suppressL1InterLinks(value: boolean) {
     let oldValue = this._suppressL1InterLinks;
@@ -1481,7 +1481,7 @@ export class SzGraphPrefs extends SzSdkPrefsBase {
     this._matchKeyTokenSelectionScope = value;
     if(!this.bulkSet && this._rememberStateOptions) this.prefsChanged.next( this.toJSONObject({source: "matchKeyTokenSelectionScope", newValue: value, oldValue: oldValue}) );
   }
-  
+
 
   /**
    * publish out a "first" real payload so that
@@ -1720,7 +1720,7 @@ export class SzPrefsService implements OnDestroy {
 
   constructor(){
     // listen for any prefs changes
-    // as one meta-observeable
+    // as one meta-observable
     const concat_prefchanges = merge(
       this.admin.prefsChanged,
       this.dataMart.prefChanged,

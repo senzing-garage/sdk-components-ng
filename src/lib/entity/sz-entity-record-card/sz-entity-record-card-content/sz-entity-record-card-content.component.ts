@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
+import { SzSearchResultEntityData } from '../../../models/responses/search-results/sz-search-result-entity-data';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 import {
   SzEntityData,
@@ -239,9 +239,9 @@ export class SzEntityRecordCardContentComponent implements OnInit {
     return retVal;
   }
   /**
-   * static method so we can figure out what columns would be displayed for a record outside 
-   * of the context of the component itself. This is used to query for all columns displayed for an  
-   * individual record, then fed back in to ALL records via "columnsShown" so that columns 
+   * static method so we can figure out what columns would be displayed for a record outside
+   * of the context of the component itself. This is used to query for all columns displayed for an
+   * individual record, then fed back in to ALL records via "columnsShown" so that columns
    * are always aligned properly.
    */
   public static getColumnsThatWouldBeDisplayedForData(entity: SzEntityRecord | SzRelatedEntity): boolean[] {
@@ -252,7 +252,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
         retVal[0] = true;
       }
       // name and attr data
-      let nameAndAttrData = SzEntityRecordCardContentComponent.getNameDataFromEntity(entity).concat(SzEntityRecordCardContentComponent.getAattributeDataFromEntity(entity));
+      let nameAndAttrData = SzEntityRecordCardContentComponent.getNameDataFromEntity(entity).concat(SzEntityRecordCardContentComponent.getAttributeDataFromEntity(entity));
       if(nameAndAttrData.length > 0) {
         retVal[1] = true;
       }
@@ -263,7 +263,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
         retVal[2] = true;
       }
       // identifier data
-      let identifierData = SzEntityRecordCardContentComponent.getIdentifierDataFromEntity(entity); 
+      let identifierData = SzEntityRecordCardContentComponent.getIdentifierDataFromEntity(entity);
       if(identifierData.length > 0) {
         retVal[3] = true;
       }
@@ -334,10 +334,10 @@ export class SzEntityRecordCardContentComponent implements OnInit {
     } else {
       return [];
     }*/
-    return SzEntityRecordCardContentComponent.getAattributeDataFromEntity(this.entity);
+    return SzEntityRecordCardContentComponent.getAttributeDataFromEntity(this.entity);
   }
 
-  public static getAattributeDataFromEntity(entity): string[] {
+  public static getAttributeDataFromEntity(entity): string[] {
     if (entity) {
       if ( entity.characteristicData) {
         return entity.characteristicData;
@@ -394,7 +394,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
     } else {
       return [];
     }*/
-    return SzEntityRecordCardContentComponent.getPhoneDataFromEntity(this.entity); 
+    return SzEntityRecordCardContentComponent.getPhoneDataFromEntity(this.entity);
   }
 
   public static getPhoneDataFromEntity(entity): string[] {
@@ -424,7 +424,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
     } else {
       return [];
     }*/
-    return SzEntityRecordCardContentComponent.getIdentifierDataFromEntity(this.entity); 
+    return SzEntityRecordCardContentComponent.getIdentifierDataFromEntity(this.entity);
   }
 
   public static getIdentifierDataFromEntity(entity): string[] {
@@ -507,12 +507,12 @@ export class SzEntityRecordCardContentComponent implements OnInit {
     }
     return false;
   }
-  @Output('onDataSourceRecordClicked') 
+  @Output('onDataSourceRecordClicked')
   onRecordCardContentClickedEmitter: EventEmitter<SzRecordId> = new EventEmitter<SzRecordId>();
 
   public onRecordCardContentClicked(event: any) {
     //console.log('SzEntityRecordCardContentComponent.onRecordCardContentClicked()', this.entity, this);
-    
+
     if(this.entity && this.entity.dataSource && this.entity.recordId) {
       let recordId: SzRecordId = {src: this.entity.dataSource, id: this.entity.recordId};
       this.onRecordCardContentClickedEmitter.emit(recordId);
@@ -520,7 +520,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
       console.error('SzEntityRecordCardContentComponent.onRecordCardContentClicked() ERROR: datasource or recordId missing');
     }
   }
-  @Output('onDataSourceRecordWhyClicked') 
+  @Output('onDataSourceRecordWhyClicked')
   onRecordCardWhyClickedEmitter: EventEmitter<SzRecordId> = new EventEmitter<SzRecordId>();
 
   public onRecordCardWhyClicked(event: any) {
@@ -532,7 +532,7 @@ export class SzEntityRecordCardContentComponent implements OnInit {
       console.error('SzEntityRecordCardContentComponent.onRecordCardWhyClicked() ERROR: datasource or recordId missing');
     }
   }
-  @Output('onWhyNotClicked') 
+  @Output('onWhyNotClicked')
   onWhyNotClickedEmitter: EventEmitter<SzEntityIdentifier> = new EventEmitter<SzEntityIdentifier>();
 
   public onRelatedEntityCardWhyNotClicked(event: any) {

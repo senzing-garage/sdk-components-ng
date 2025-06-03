@@ -91,8 +91,8 @@
         font-size: 12px;
         cursor: default;
 
-        /* because we are only setting border-top on 
-            * every row we need to add a bottom border to the 
+        /* because we are only setting border-top on
+            * every row we need to add a bottom border to the
             * table itself
         */
         border-bottom: 1px solid #cfcfcf;
@@ -102,7 +102,7 @@
         tr {
             display: contents;
         }
-        
+
         th,
         td {
             padding: 5px 14px 4px 14px;
@@ -116,7 +116,7 @@
                 display: none;
             }
         }
-        
+
         th {
             position: sticky;
             top: 0;
@@ -264,17 +264,17 @@
                 }
             }
         }
-        
+
         th:last-child {
             border: 0;
         }
-        
+
         td {
             padding-top: 10px;
             padding-bottom: 10px;
             color: var(--sz-sample-table-cell-color);
         }
-        
+
         tbody {
             .row-record:nth-child(even of .data-source-selected) td {
                 /*background-color: #f2f2f2;*/
@@ -337,7 +337,7 @@
 
                 :nth-child(1 of .row-related-record.data-source-selected) {
                     border: 1px solid green;
-                    
+
                     .sz-dt-entity-id-cell {
                         grid-row: span var(--selected-datasources-related-row-count);
                         display: block;
@@ -355,9 +355,9 @@
                     /* first unset the row-span(s) for "first row in selected datasources"*/
                     :nth-child(1 of .data-source-selected),
                     :nth-child(1 of .row-related-record.data-source-selected) {
-                        .sz-dt-entity-id-cell { 
+                        .sz-dt-entity-id-cell {
                             /* by default hide all the "entityId" cells (we'll enable just the first one below) */
-                            grid-row: unset; 
+                            grid-row: unset;
                             display: none;
                         }
                         .sz-dt-related-entity-id-cell .cell-content,
@@ -365,7 +365,7 @@
                             display: none;
                         }
                     }
-                    :nth-child(1 of .row-related-record.data-source-selected) td { 
+                    :nth-child(1 of .row-related-record.data-source-selected) td {
                         border-top: none;
                     }
                     .row-record .sz-dt-entity-id-cell {
@@ -379,7 +379,7 @@
                         }
                     }*/
 
-                    /* since everything should be visible now just apply the rowspan to the 
+                    /* since everything should be visible now just apply the rowspan to the
                     first row entity id cell*/
                     .row-record:first-child {
                         .sz-dt-entity-id-cell {
@@ -388,14 +388,14 @@
                             grid-template-rows: 27px auto;
                         }
                     }
-                    :nth-child(1 of .row-related-record) { 
-                        // the first related record row gets a dotted line separating it from 
+                    :nth-child(1 of .row-related-record) {
+                        // the first related record row gets a dotted line separating it from
                         // the entity records
                         td {
                             border-top: 1px dotted #313131 !important;
                         }
                         /* now show the "relatedEntityId" content for just the first row */
-                        .sz-dt-related-entity-id-cell .cell-content, 
+                        .sz-dt-related-entity-id-cell .cell-content,
                         .sz-dt-match-key-cell .cell-content {
                             display: block !important;
                         }
@@ -418,7 +418,7 @@
                         align-items: var(--sz-sample-table-cell-link-text-align);
                         text-align: var(--sz-sample-table-cell-link-text-align);
                         text-decoration: var(--sz-sample-table-cell-link-text-decoration);
-                        
+
                         &:hover {
                             cursor: pointer;
                         }
@@ -445,12 +445,12 @@
                         }
                     }
                     .more-button.collapsed  { display: block; }
-                    .more-button.expanded   { 
-                        display: none; 
+                    .more-button.expanded   {
+                        display: none;
                         background-color:   var(--sz-sample-table-expanded-row-expand-button-background-color);
                         border-color:       var(--sz-sample-table-expanded-row-expand-button-border-color);
                         color:              var(--sz-sample-table-expanded-row-expand-button-color);
-                        
+
                         mat-icon {
                             opacity: 1;
                         }
@@ -458,7 +458,7 @@
                 }
 
                 :nth-child(1 of .row-entity-record.data-source-selected) {
-                    /* we want the entity id cell to span all children row cells 
+                    /* we want the entity id cell to span all children row cells
                     the variables '--selected-datasources-row-count' and '--total-row-count'
                     are defined on the scope of each .row-group through the style tag
                     */
@@ -471,7 +471,7 @@
                             font-weight: bold;
                             align-items: center;
                             text-align: center;
-                            
+
                             &:hover {
                                 text-decoration: underline;
                                 cursor: pointer;
@@ -479,7 +479,7 @@
                         }*/
                     }
                 }
-                :nth-child(1 of .row-related-record.data-source-selected) { 
+                :nth-child(1 of .row-related-record.data-source-selected) {
                     .sz-dt-entity-id-cell {
                         /*grid-row: span var(--selected-datasources-related-row-count);*/
                         overflow: visible;
@@ -505,8 +505,8 @@
                         background-color: var(--sz-sample-table-expanded-row-background-color);
                     }
                 }
-                /* we never want the first "entityId" cell to be blue 
-                * (which can happen if the very first record row is not in the selected 
+                /* we never want the first "entityId" cell to be blue
+                * (which can happen if the very first record row is not in the selected
                 * datasources)*/
                 .row-record {
                     &.row-entity .sz-dt-entity-id-cell,
@@ -519,7 +519,7 @@
                     }
                 }
                 &.expanded {
-                    :nth-child(1 of .data-source-selected) { 
+                    :nth-child(1 of .data-source-selected) {
                         border-top: none;
                         td {
                             border-top: none;
@@ -539,7 +539,7 @@
                                 align-items: var(--sz-sample-table-cell-link-text-align);
                                 text-align: var(--sz-sample-table-cell-link-text-align);
                                 text-decoration: var(--sz-sample-table-cell-link-text-decoration);
-                                
+
                                 &:hover {
                                     text-decoration: underline;
                                     cursor: pointer;
@@ -561,7 +561,7 @@
                     }
                     .row-related-record.first .sz-dt-entity-id-cell {
                         grid-row: span var(--related-row-count);
-                        
+
                     }*/
                     /* swap "more" button to "less" button */
 
@@ -598,14 +598,14 @@
                     }
                 }
             }
-            
+
             /*tr:nth-child(even) td {
                 background: #f8f6ff;
                 .min-max-toggle {
                     background-color: #f8f6ff;
                 }
             }*/
-            /* because display='contents' we cant just add a row-grap or margin 
+            /* because display='contents' we cant just add a row-gap or margin
              * on the row itself
             */
             tr {
@@ -627,12 +627,12 @@
                     td {
                         border-top: 2px solid #666;
                     }
-                }*/               
+                }*/
             }
 
             td {
                 position: relative;
-                
+
                 .min-max-toggle {
                     display: none;
                     background-color: #fff;
@@ -661,9 +661,9 @@
                         }
                     }
                 }*/
-                
+
                 &:hover {
-                    .min-max-toggle { 
+                    .min-max-toggle {
                         display: block;
                     }
                 }
@@ -767,7 +767,7 @@
             flex-direction: row;
             height: 20px;
             margin-left: 10px;
-            
+
             button {
                 display: flex;
                 align-items: center;
@@ -779,7 +779,7 @@
                 color: #666;
                 cursor: pointer;
                 border-left: 0;
-    
+
                 .mdc-button__label {
                     height: 20px;
                 }
@@ -853,7 +853,7 @@
                     width: 12px;
                     /*background-color: #ddd;
                     border: 1px solid #666;*/
-                    
+
                     /* Create the checkmark/indicator (hidden when not checked) */
                     &:after {
                         content: "";
@@ -904,7 +904,7 @@
             right: 0px;
             position: relative;
         }
-        
+
     }
 
     /* settings picker */

@@ -7,7 +7,7 @@ export interface SzCountStatsForDataSourcesResponse extends SzLoadedStatsRespons
 }
 export interface SzStatCountsForDataSources extends SzLoadedStats {
     /** we add pending count so app can optionally inject values */
-    totalPendingCount?: number, 
+    totalPendingCount?: number,
     /** we change this to the extended model which includes color and pending count */
     dataSourceCounts: SzRecordCountDataSource[]
 }
@@ -60,7 +60,7 @@ export interface SzStatSampleEntityTableItem extends SzResolvedEntity {
 }
 
 export interface SzStatsSampleTableLoadingEvent {
-    inflight: boolean, 
+    inflight: boolean,
     source: string
 }
 
@@ -121,11 +121,11 @@ export interface SzStatSampleEntityTableRow extends SzResolvedEntity, SzMatchedR
      */
     recordId?: string;
     /**
-     * The optional match key describing why the record merged into the entity to which it belongs.  This may be absent or `null` if this record belongs to a single-record entity or if it was the inital record of the first multi-record entity to which it belonged (even if it later re-resolved into a larger entity).
+     * The optional match key describing why the record merged into the entity to which it belongs.  This may be absent or `null` if this record belongs to a single-record entity or if it was the initial record of the first multi-record entity to which it belonged (even if it later re-resolved into a larger entity).
      */
     matchKey?: string;
     /**
-     * The optioanl principle identifying the resolution rule that was used to merge the record into the entity to which it belonss.  This may be absent or `null` if this record belongs to a single-record entity or if it was the inital record of the first multi-record entity to which it belonged (even if it later re-resolved into a larger entity).
+     * The optional principle identifying the resolution rule that was used to merge the record into the entity to which it belongs.  This may be absent or `null` if this record belongs to a single-record entity or if it was the initial record of the first multi-record entity to which it belonged (even if it later re-resolved into a larger entity).
      */
     principle?: string;
     /**
@@ -145,7 +145,7 @@ export interface SzDataTableRelationsPagingParameters {
      */
     pageSize: number;
     /**
-     * The requested sample size representing the number of `SzRelation`'s to be randmonly selected from the page of results.
+     * The requested sample size representing the number of `SzRelation`'s to be randomly selected from the page of results.
      */
     sampleSize?: number;
     /**
@@ -188,7 +188,7 @@ export interface SzDataTableEntitiesPagingParameters {
      */
     pageSize: number;
     /**
-     * The requested sample size representing the number of entities to be randmonly selected from the page of results.
+     * The requested sample size representing the number of entities to be randomly selected from the page of results.
      */
     sampleSize?: number;
     /**
@@ -251,15 +251,15 @@ export interface SzStatSampleSetPageChangeEvent extends SzStatSampleSetParameter
     pageMinimumValue?: string | number;
 }
 
-/** http requests object that wraps the three different api observeables that need to 
+/** http requests object that wraps the three different api observables that need to
  * happen before the summary component can be rendered. (basically a httpRequest rollup)
  */
 export interface SzCrossSourceSummaryRequests {
-  fromDataSource?: Observable<SzCrossSourceSummary> | Observable<boolean> 
-  overlapDataSource?: Observable<SzCrossSourceSummary> | Observable<boolean> 
+  fromDataSource?: Observable<SzCrossSourceSummary> | Observable<boolean>
+  overlapDataSource?: Observable<SzCrossSourceSummary> | Observable<boolean>
   toDataSource?: Observable<SzCrossSourceSummary> | Observable<boolean>
 }
-/** data response object that wraps the three different api calls that need to 
+/** data response object that wraps the three different api calls that need to
  * happen before the summary component can be rendered. (basically a httpResponse rollup)
  */
 export interface SzCrossSourceSummaryResponses {

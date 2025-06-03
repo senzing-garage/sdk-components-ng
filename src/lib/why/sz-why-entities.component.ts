@@ -12,7 +12,7 @@ import { SzCSSClassService } from '../services/sz-css-class.service';
 /**
  * Display the "Why" information for entities
  *
- * @example 
+ * @example
  * &lt;!-- (Angular) --&gt;<br/>
  * &lt;sz-why-entities&gt;&lt;/sz-why-entities&gt;<br/><br/>
  *
@@ -27,13 +27,13 @@ import { SzCSSClassService } from '../services/sz-css-class.service';
 })
 export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent implements OnInit, OnDestroy {
     /**
-     * place to store the original data given back from the network response, but before 
+     * place to store the original data given back from the network response, but before
      * processing transforms and formatting.
      * @internal
      */
     protected override _data: SzWhyEntitiesResult;
-    /** 
-     * rows that will be rendered vertically. auto generated from #getRowsFromData 
+    /**
+     * rows that will be rendered vertically. auto generated from #getRowsFromData
      * @internal
      */
     protected override _rows: SzWhyFeatureRow[] = [
@@ -72,8 +72,8 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
             }
         });
     }
-  
-    /** when the respone from the server is returned this even is emitted */
+
+    /** when the response from the server is returned this even is emitted */
     @Output() onResult: EventEmitter<SzWhyEntitiesResult>               = new EventEmitter<SzWhyEntitiesResult>();
     @Output() onEntitiesChanged: EventEmitter<SzEntityData[]>           = new EventEmitter<SzEntityData[]>();
     // --------------------------- data manipulation subs and routines ---------------------------
@@ -98,7 +98,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
             let retVal = false;
             let matchKeyAsMap = mk && (mk as string).length ? getMapFromMatchKey((mk as string)) : (mk as Map<string, {prefix: string, value: string}>);
             if(matchKeyAsMap && matchKeyAsMap.size > 0 && matchKeyAsMap.has(fieldName)) {
-                // if there is a matching score entry for the feature AAAAANNNNNDDD
+                // if there is a matching score entry for the feature AND
                 // the feature is p
                 if(featureScores) {
                     //featWithScoring.featureScores'
@@ -169,16 +169,16 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
             } else {
                 featIsInScore   = idsInScore.indexOf((_feat as SzEntityFeatureDetail).internalId) > -1;
                 stats           = fBId && fBId.has((_feat as SzEntityFeatureDetail).internalId) ? fBId.get((_feat as SzEntityFeatureDetail).internalId) : false;
-            }            
-            let c   = _scoreDetails && 
-                ((valuesAlreadyAdded && valuesAlreadyAdded.length === 0) || !valuesAlreadyAdded) 
-                && _colors[_scoreDetails.scoringBucket] && 
-                featIsInScore && 
+            }
+            let c   = _scoreDetails &&
+                ((valuesAlreadyAdded && valuesAlreadyAdded.length === 0) || !valuesAlreadyAdded)
+                && _colors[_scoreDetails.scoringBucket] &&
+                featIsInScore &&
                 featureIsInMatchKey(fieldName, mk) ? 'color-'+ _colors[_scoreDetails.scoringBucket] : '';
             let sb  = (_scoreDetails && _scoreDetails. scoringBucket) ? `score-${_scoreDetails.scoringBucket}` : '';
             let featureValue    = undefined;
             let externalVal     = undefined;
-            if((_feat as SzFeatureScore).candidateFeature || (_feat as SzFeatureScore).inboundFeature) { 
+            if((_feat as SzFeatureScore).candidateFeature || (_feat as SzFeatureScore).inboundFeature) {
                 let hasExternalValue    = !candidateIsInDetails || !inboundIsInDetails;
                 if(hasExternalValue) {
                     // ok, which one
@@ -225,7 +225,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                             _retVal += ` [${stats.statistics.entityCount}]`;
                         }
                     }
-                    
+
                     if(_scoreDetails.nameScoringDetails) {
                         let _nameScoreValues  = [];
                         if(_scoreDetails.nameScoringDetails.fullNameScore)    { _nameScoreValues.push(`full:${_scoreDetails.nameScoringDetails.fullNameScore}`);}
@@ -375,10 +375,10 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                     data = data.sort((rowA, rowB)=>{
                         let rowAAsScored    = (rowA as SzEntityFeatureWithScoring);
                         let rowBAsScored    = (rowB as SzEntityFeatureWithScoring);
-        
+
                         let rowASortValue   = rowAAsScored.primaryId;
                         let rowBSortValue   = rowBAsScored.primaryId;
-        
+
                         if(rowA && rowAAsScored.scoringDetails) {
                             rowASortValue = rowAAsScored.scoringDetails.score;
                         }
@@ -433,7 +433,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                         }
                     });
                 } else {
-                    // assume it's just aaaaahhh... actually.. I dunno.
+                    // assume it's just... actually.. I dunno.
                     // cast to string
                     if(data && data.toString) {
                         _retVal += `${data}`;
@@ -446,7 +446,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
         return _retVal;
     }
 
-    /** call the /why api endpoint and return a observeable */
+    /** call the /why api endpoint and return a observable */
     protected override getData(): Observable<SzWhyEntitiesResponse> {
         if(this.entityIds && this.entityIds.length == 2) {
             return this.entityData.whyEntities(this.entityIds[0].toString(), this.entityIds[1].toString(), true, true, true, SzDetailLevel.VERBOSE, SzFeatureMode.REPRESENTATIVE, false, false)
@@ -454,9 +454,9 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
         return throwError(()=> { return new Error("entity id's not specified")})
     }
 
-    /** 
+    /**
      * Add "formattedRows" that correspond to the string renderer output of each item in each collection returned from the result of
-     * #transformData's rows property. The result of each item is a string or collection of strings that is the result of either a 
+     * #transformData's rows property. The result of each item is a string or collection of strings that is the result of either a
      * renderer specific for that feature type, or the 'default' renderer found in this.renderers.default.
      * @internal
      */
@@ -481,9 +481,9 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
         return retVal;
     }
     /**
-     * when the api requests respond this method properly sets up all the 
+     * when the api requests respond this method properly sets up all the
      * properties that get set/generated from some part of those requests
-     * @interal
+     * @internal
      */
     protected override onDataResponse(results: [SzWhyEntitiesResponse, string[]]) {
         this._isLoading = false;
@@ -493,7 +493,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
         this.onEntitiesChanged.emit(this._entities);
         // add any fields defined in initial _rows value to the beginning of the order
         // custom/meta fields go first basically
-        if(results[1]){ 
+        if(results[1]){
             this._orderedFeatureTypes = this._rows.map((fr)=>{ return fr.key}).concat(results[1]);
         }
         this._featureStatsById  = this.getFeatureStatsByIdFromEntityData(this._entities);
@@ -501,7 +501,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
 
         this._shapedData    = this.transformData(this._data, this._entities);
         this._formattedData = this.formatData(this._shapedData);
-        // now that we have all our "results" grab the features so we 
+        // now that we have all our "results" grab the features so we
         // can iterate by those and blank out cells that are missing
         this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
         this._headers       = this.getHeadersFromData(this._shapedData);
@@ -511,8 +511,8 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
     }
     /**
      * Extends the data response from the why api with data found "rows" that can be more directly utilized by the rendering template.
-     * Every why result column gets additional fields like "dataSources", "internalId", "rows", "whyResult" that are pulled, hoisted, 
-     * or joined from other places. 
+     * Every why result column gets additional fields like "dataSources", "internalId", "rows", "whyResult" that are pulled, hoisted,
+     * or joined from other places.
      * @internal
      */
     override transformWhyNotResultData(data: SzWhyEntitiesResult, entities: SzEntityData[]): SzWhyEntityColumn[] {
@@ -529,7 +529,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                 }, ent.resolvedEntity);
                 // do why info
                 if(data && data.matchInfo) {
-                    if(data.matchInfo.whyKey && data.matchInfo.resolutionRule) { 
+                    if(data.matchInfo.whyKey && data.matchInfo.resolutionRule) {
                         retObj.whyResult = {key: data.matchInfo.whyKey, rule: data.matchInfo.resolutionRule };
                     }
                 }
@@ -547,7 +547,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
                 return retObj;
             });
             // go over the initial rows
-            // now for each item in an entities features, check if it can be found in 
+            // now for each item in an entities features, check if it can be found in
             // the matchInfo results
             results.forEach((ent)=>{
                 for(let fKey in ent.features) {
@@ -598,7 +598,7 @@ export class SzWhyEntitiesComparisonComponent extends SzWhyReportBaseComponent i
     }
 }
 
-/** 
+/**
  * Dialog component for displaying a WHY NOT report in a modal window
  * @internal
 */
@@ -645,7 +645,7 @@ export class SzWhyEntitiesDialog implements OnDestroy {
       this._entities = data.entities;
     }
   }
-  
+
   /**
    * unsubscribe when component is destroyed
    */

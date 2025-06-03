@@ -31,23 +31,23 @@ export class SzConfigurationService {
   public removeHeaderFromApiRequests(header: {[key: string]: string} | string): void {
     this.apiConfiguration.removeAdditionalRequestHeader( header );
   }
-  /** 
-   * additional http/https request headers that will be added by default to 
+  /**
+   * additional http/https request headers that will be added by default to
    * all outbound api server requests.
    */
   public get additionalApiRequestHeaders(): {[key: string]: string} | undefined {
     return this.apiConfiguration.additionalHeaders;
   }
-  /** 
-   * set additional http/https request headers to be added by default to 
-   * all outbound api server requests. most commonly used for adding custom 
+  /**
+   * set additional http/https request headers to be added by default to
+   * all outbound api server requests. most commonly used for adding custom
    * or required non-standard headers like jwt session tokens, auth id etc.
    */
   public set additionalApiRequestHeaders(value: {[key: string]: string} | undefined) {
     this.apiConfiguration.additionalHeaders = value;
   }
   /**
-   * emmitted when a property has been changed.
+   * emitted when a property has been changed.
    * used mostly for diagnostics.
    */
   @Output()
@@ -57,7 +57,7 @@ export class SzConfigurationService {
     this.parametersChanged.next(this.apiConfiguration);
   }
   /**
-   * apiKeys to use when connnecting to Api Server
+   * apiKeys to use when connecting to Api Server
    */
   @Input()
   set apiKeys(value: {[ key: string ]: string}) {
@@ -72,7 +72,7 @@ export class SzConfigurationService {
     this.apiConfiguration.username = value;
     this.onParameterChange();
   }
-  /** password used for challenge respose. */
+  /** password used for challenge response. */
   @Input()
   set password(value: string) {
     this.apiConfiguration.password = value;

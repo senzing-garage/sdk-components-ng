@@ -8,7 +8,7 @@ import {
 import { take, tap, map } from 'rxjs/operators';
 
 /**
- * methods used to get data from the api server about its 
+ * methods used to get data from the api server about its
  * configuration.
  *
  * @export
@@ -46,7 +46,7 @@ export class SzConfigDataService {
     getFeaturesFromConfig(config: {[key: string]: Array<any> | any}) {
         console.log('getFeaturesFromConfig: ', config);
         if(config && config['CFG_FTYPE']) {
-            // config has featuress
+            // config has features
             return config['CFG_FTYPE']
         }
     }
@@ -59,8 +59,8 @@ export class SzConfigDataService {
             //retVal.pipe(delay(1000)); // delay response so it waits
             setTimeout(
                 ((v) => {
-                    //console.log(`getOrderedFeatures: from cache: `, v); 
-                    _retVal.next(v); 
+                    //console.log(`getOrderedFeatures: from cache: `, v);
+                    _retVal.next(v);
                 }).bind(this, this._orderedFeatureTypes), 500);
         } else {
             this.getActiveConfig().subscribe({

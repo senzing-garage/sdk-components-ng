@@ -135,7 +135,7 @@ export class SzSearchHistoryFolio extends SzSearchParamsFolio {
    */
   public updateMode = 1;
 
-  /** gets the history folio items in decending chronological order */
+  /** gets the history folio items in descending chronological order */
   public get history(): SzSearchHistoryFolioItem[] {
     let _items: SzSearchParamsFolioItem[] = [];
     _items = _items.concat(this.items).reverse();

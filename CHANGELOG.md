@@ -15,6 +15,7 @@ The 9.0.0 release updates the version of @angular required to 19 and typescript 
 The 8.0.0 release updates the version of @angular required to 18 and typescript to 4.5.x.
 
 # Bugs fixes
+
 #705 #706 #708 #709
 
 ## [7.0.0] - 2024-10-04
@@ -22,6 +23,7 @@ The 8.0.0 release updates the version of @angular required to 18 and typescript 
 The 7.0.0 release features several new components that use the new DataMart interface(statistics calculation api) made available only in the [Senzing POC API Server](https://github.com/senzing-garage/senzing-poc-server). Using the [Senzing REST API Sever](https://github.com/senzing-garage/senzing-api-server) without the new components(data sample browsing, and datasource's summary, Cross-Source comparison) is still possible but not advised for brand new installations.
 
 ### Modified
+
 - Why and Why Not reports now show scores for all scoring features regardless of match key inclusion. #686
 - Graph datasource colors can now be unselected by choosing pure white or black using the color picker. #690
 - Why not modal could not horizontally scroll properly. #588
@@ -30,6 +32,7 @@ The 7.0.0 release features several new components that use the new DataMart inte
 - "Re-Eval" button incorrectly showing up for singleton entities in the detail widget. #606
 
 ### Added
+
 - Donut chart that breaks down how many records have been loaded for each datasource. #608
   - Added `SzRecordStatsDonutChart` component.
   - Added `SzDataMartService` service to interact with poc-server endpoints
@@ -41,8 +44,8 @@ The 7.0.0 release features several new components that use the new DataMart inte
   - `SzLicenseInfoComponent` component to show the current expiration and limit of license and how many records have been loaded so far.
 - Venn Diagram cross-source comparison chart. Shows how many records of each type(duplicates, possible relations, disclosed etc) are present in each datasource selected and the amount of each present in both selected datasources(the overlapping part of the diagram). #614
   - `SzCrossSourceSummaryComponent` is responsible for drawing the five venn diagrams. each of which are instances of `SzVennDiagramsComponent`.
-  - `SzVennDiagramsComponent` displays a single circle if only one datasource is selected, or two circles if two datasources are selected with the overlapping part of the circle being the  records that are present in both datasources.
-  - `SzCrossSourceStatistics` is a wrapper that contains both the *pulldowns* AND the *venn diagrams*
+  - `SzVennDiagramsComponent` displays a single circle if only one datasource is selected, or two circles if two datasources are selected with the overlapping part of the circle being the records that are present in both datasources.
+  - `SzCrossSourceStatistics` is a wrapper that contains both the _pulldowns_ AND the _venn diagrams_
   - `SzCrossSourceSelectComponent` - this is a component wrapper for the select pulldowns themselves that allow a user to select two datasources to display in the venn diagrams.
   - `SzDataMartService` the service used to coordinate between components which datasources are selected, make api requests, set preferences etc.
   - `SzDataMartPrefs` stores state for parameters of the service/components and emits on changes.
@@ -86,16 +89,18 @@ relevant tickets: #588 #590 #592 #606 #608 #614 #616 #627 #690 #689
 The major feature being added for this release is the inclusion a a new "How" report component. The How api functions are meant to provide information on HOW records in an entity came together or were pushed apart during resolution. The Visual How component will illustrate the final entity and allow the user to walk back through the entities resolution steps, branching off when singletons are merged in or virtual entities are created from the result of previous record resolution steps.
 
 ### Modified
+
 - new graph icons. see #499
 - match keys are now shown by default in the graph. #496
 - new why and why not report column formatting to match g2Explorer. #558 #551
 - why and why not datatransforms changed to match g2Explorer. #529
 
 ### Added
+
 - "How" entity report component(s) added. see #438
   - Added `SzHowEntityComponent` component which is the only component that should be used at an implementation level. The other components listed below are components that this component uses to create things like different color cards, nested trees, navigation, groups etc.
   - Added `SzHowNavComponent` component which is used to provide quick step jumping based on filter criteria.
-  - Added `SzHowStepNodeComponent` component which represents a *node* in the step tree. Nodes are different that *Steps* since they can be other trees, groups, and recurse. Step nodes will contain `SzHowStepCardComponent`, `SzHowStepStackComponent`, `SzHowFinalEntityCardComponent`, `SzHowSingletonCardComponent`, and/or nested `SzHowStepNodeComponent` components.
+  - Added `SzHowStepNodeComponent` component which represents a _node_ in the step tree. Nodes are different that _Steps_ since they can be other trees, groups, and recurse. Step nodes will contain `SzHowStepCardComponent`, `SzHowStepStackComponent`, `SzHowFinalEntityCardComponent`, `SzHowSingletonCardComponent`, and/or nested `SzHowStepNodeComponent` components.
   - Added `SzHowStepStackComponent` component which represents a collapsible group of `ADD Record` steps found in sequence.
   - Added `SzHowStepCardBase` which serves as a base class for card permutations.
     - `SzHowStepCardComponent` is the card component representing a Add Record, Singleton, Merge, Interim.
@@ -108,25 +113,29 @@ relevant tickets: #438 #496 #499 #513 #516 #525 #527 #529 #531 #534 #538 #545 #5
 ## [6.0.0] - 2023-01-20
 
 ### Modified
+
 - Angular Framework updated to version 15. As of 6.0.0 release this package now requires `@angular@~15.0.0` to compile and run. Updating to angular 15 resolves major dependency compatibility issues so we can apply the latest security patches to the library. For information updating your project from a previous angular version to `~15.0.0` see the [Angular Update Guide ](https://update.angular.io/)
-- [Angular Material](https://material.angular.io/) updated to version 15. As of 6.0.0 release this package now requires v15 of angular material library. Since the compiled version of this package defines it's dependency as a *peer dependency* it's worth mentioning that your project will need to import it to function properly. `ng add @angular/material@15`.
+- [Angular Material](https://material.angular.io/) updated to version 15. As of 6.0.0 release this package now requires v15 of angular material library. Since the compiled version of this package defines it's dependency as a _peer dependency_ it's worth mentioning that your project will need to import it to function properly. `ng add @angular/material@15`.
 - D3.js updated to version 7. version 5 was exposing a security defect in d3.color(see [SNYK-JS-D3COLOR-1076592](https://security.snyk.io/vuln/SNYK-JS-D3COLOR-1076592)) that had no patches available until version 7. [see #466](https://github.com/senzing-garage/sdk-components-ng/issues/466)
 
 ### Removed
+
 - `forceSimulation` property removed from `SzRelationshipNetworkComponent` base class. (no one should be directly using this anyways)
 
 ## [5.1.1] - 2022-10-31
 
 ### Added
+
 - Added "hide indirect links" UI control to graph filtering component.
 - Added `suppressL1InterLinks` to graph preferences
 - Added `linkColor` to graph preferences
 - Added `indirectLinkColor` to graph preferences
-- Added *Link Color* section to graph filter component
-- Added *Data Sources* list to graph hover tooltip
+- Added _Link Color_ section to graph filter component
+- Added _Data Sources_ list to graph hover tooltip
 - Added "Why Not" button/report to "Possible Matches" section in the entity detail component.
 
 ### Modified
+
 - Match keys on graph entity link(s) are now in a vertically centered multi-line list.
 - Bugfix for match key labels. (see #383)
 - Entity detail embedded graph now defaults to collapsed nodes when relationships are `<= 10`
@@ -144,14 +153,14 @@ relevant tickets: #309 #364 #383 #407 #413 #414 #415 #416 #417 #422 #423 #432 #4
 - the upper limit of the maximum entities ui slider is now dynamically set from the initial query.
 - match key token counts now feature condensed notation instead of ellipsis.
 
-
 ### Added
+
 - the following event emitters added to `SzGraphFilterComponent`
   - `matchKeyTokenSelectionScopeChanged` when the user switches from `CORE` to `EXTRANEOUS` match key token scope
 - the following getters and setters added to `SzGraphFilterComponent`
-  -  `maxEntitiesLimit` the maximum value that the slider control will allow. default is 200.
-  -  `unlimitedMaxEntities` ignore the `maxEntities` value and always pull up to 40000
-  -  `unlimitedMaxScope` ignore the `buildOut` value and always pull up to 10
+  - `maxEntitiesLimit` the maximum value that the slider control will allow. default is 200.
+  - `unlimitedMaxEntities` ignore the `maxEntities` value and always pull up to 40000
+  - `unlimitedMaxScope` ignore the `buildOut` value and always pull up to 10
 - the following getters and setters added to `SzGraphComponent`
   - `unlimitedMaxEntities`
   - `unlimitedMaxScope`
@@ -173,8 +182,8 @@ relevant tickets: #309 #364 #383 #407 #413 #414 #415 #416 #417 #422 #423 #432 #4
   - `unlimitedMaxScope`
 - `getEntitiesByIds` method added to `SzSearchService` to get data for multiple entities by their id's in the form of `Observable<SzEntityData[]>`
 
-
 ### Modified
+
 - Changed the behavior of `showCoreMatchKeyTokenChips` to automatically set `matchKeyTokenSelectionScope` to `CORE`.
 - Changed the complete match key display to a comma deliminated list of tokens on each line for readability
 - Changed the `shouldDataSourceBeDisplayed` method in `SzGraphFilterComponent` to allow for passing an empty array to `showDataSources` so we can initialize with an empty list that will prevent showing datasources before the list is ready.
@@ -186,45 +195,37 @@ relevant tickets: #309 #364 #383 #407 #413 #414 #415 #416 #417 #422 #423 #432 #4
   - `requestStarted` fixed
   - `requestComplete` fixed
   - `getNetwork` signature changed to `getNetwork(entityIds: SzEntityIdentifier[], maxDegrees: number, buildOut: number, maxEntities: number)`
-  - the following event emitters have been rewired so that they are just proxies of 
-the observeable event streams for uniformity/reliability:
-    - `onRequestStarted`
-    - `onRequestCompleted`
-    - `onRenderStarted`
-    - `onRenderCompleted`
-    - `onNoResults`
-    - `onDataRequested`
-    - `onDataLoaded`
-    - `onDataUpdated`
-    - `scaleChanged`
+  - the following event emitters have been rewired so that they are just proxies of
+    the observable event streams for uniformity/reliability: - `onRequestStarted` - `onRequestCompleted` - `onRenderStarted` - `onRenderCompleted` - `onNoResults` - `onDataRequested` - `onDataLoaded` - `onDataUpdated` - `scaleChanged`
 
 relevant tickets: #343 #344 #347 #348 #350 #355 #358
 
 ## [5.0.0] - 2022-07-01
 
-This release adds new functionality around expanding and collapsing related entities in *Network Graph* related components. We've moved the `@senzing/sdk-graph-components` to the scope of this package for easier maintenance and installation(now you just need this package instead of two). We're also adding the *Why Not* component that can be embedded between two or more entities to generate a report to show why two entities/records did not resolve.
+This release adds new functionality around expanding and collapsing related entities in _Network Graph_ related components. We've moved the `@senzing/sdk-graph-components` to the scope of this package for easier maintenance and installation(now you just need this package instead of two). We're also adding the _Why Not_ component that can be embedded between two or more entities to generate a report to show why two entities/records did not resolve.
 
 ### Added
-- The `SzWhyEntitiesComparisonComponent` added for doing _WHY_ comparison _between_ entities. Adds the ability to run "Why Not" Reports from within the context of the search results and graph. 
+
+- The `SzWhyEntitiesComparisonComponent` added for doing _WHY_ comparison _between_ entities. Adds the ability to run "Why Not" Reports from within the context of the search results and graph.
 - The following input parameters added to `SzSearchResultsComponent`:
-  - `showWhyComparisonButton` enables a *multi-select* button behavior for search results that when clicked allows a user to click to toggle selection of an entity in the results then click the button to show a *WHY NOT* report for differences between those two entities.
-- The follwing getters and setters added to `SzEntityDetailComponent`
+  - `showWhyComparisonButton` enables a _multi-select_ button behavior for search results that when clicked allows a user to click to toggle selection of an entity in the results then click the button to show a _WHY NOT_ report for differences between those two entities.
+- The following getters and setters added to `SzEntityDetailComponent`
   - `showGraphContextMenu` enables the built-in context menu for entity nodes on the graph embedded in the entity detail component.
   - `showGraphLinkContextMenu` enables the built-in context menu for relationship lines/labels on the graph embedded in the entity detail component.
   - `graphMatchKeyTokenSelectionScope` possible values are "CORE" and "EXTRANEOUS". core sets the scope of match key token filtering to just entities directly related to the focused/primary entity of the graph. defaults to `EXTRANEOUS`.
 - The following Event Emitters added to `SzEntityDetailComponent`
   - `graphRelationshipContextMenuClick` is emitted when a user right clicks on relationship lines/labels in the embedded graph component.
   - `graphRelationshipClick` is emitted when a user clicks on relationship lines/labels in the embedded graph component.
-- The following properties added to `SzGraphComponent` and are inheirited by `SzStandaloneGraphComponent` and `SzEntityDetailGraphComponent`.
+- The following properties added to `SzGraphComponent` and are inherited by `SzStandaloneGraphComponent` and `SzEntityDetailGraphComponent`.
   - `matchKeyTokenSelectionScope` possible values are "CORE" and "EXTRANEOUS". core sets the scope of match key token filtering to just entities directly related to the focused/primary entity of the graph. defaults to `EXTRANEOUS`.
-- The following methods added to `SzGraphComponent` and are inheirited by `SzStandaloneGraphComponent` and `SzEntityDetailGraphComponent`.
+- The following methods added to `SzGraphComponent` and are inherited by `SzStandaloneGraphComponent` and `SzEntityDetailGraphComponent`.
   - `canRemoveNode(entityId: SzEntityIdentifier)` returns boolean if an entity on canvas can be removed(root nodes, and primary query nodes cannot).
   - `canExpandNode(entityId: SzEntityIdentifier)` returns boolean if a node has hidden related entities that can be shown on canvas.
-  - `removeNode(entityId: SzEntityIdentifier)` removes a single node and any directly related nodes 
+  - `removeNode(entityId: SzEntityIdentifier)` removes a single node and any directly related nodes
   - `collapseNode(entityId: SzEntityIdentifier)` hide all visible(expanded) entities related to a specific entity that are themselves not related to any other visible entities.
   - `expandNode(entityId: SzEntityIdentifier)` show any entities that are related to a specific entity that are currently not on the canvas.
 - The following event emitters added to `SzGraphComponent`
-  - `relationshipContextMenuClick` is emitted when a user right clicks on relationship lines/labels in the embedded graph component. 
+  - `relationshipContextMenuClick` is emitted when a user right clicks on relationship lines/labels in the embedded graph component.
   - `relationshipClick` is emitted when a user clicks on relationship lines/labels in the embedded graph component.
 - The following methods added to `SzEntityDetailComponent`
   - `isGraphEntityRemovable(entityId: SzEntityIdentifier)` can a specific entity node be removed from canvas.
@@ -253,7 +254,7 @@ This release adds new functionality around expanding and collapsing related enti
   - `updateHiddenRelationshipCounts` update the relationship count bubble inside a entity node with the value from numberRelatedHidden.
   - `getRelatedNodesByIdQuery` returns a D3.Selection of nodes that match the entity ids provided
   - `updateIsHiddenForLinks` ensure that a link node(line) is not visible if one of the connected nodes is not visible
-  - `getEntityNodeClass` get the css classes as a space separate string to apply to an entity node. 
+  - `getEntityNodeClass` get the css classes as a space separate string to apply to an entity node.
   - `getEntityLinkClass` get the css classes as a space separate string to apply to an entity link node(line).
   - `getEntityLinkLabelClass` get the css classes as a space separate string to apply to an entity link node.
   - `expandCollapseToggle` toggles the collapsed or expanded nodes related to a node
@@ -271,7 +272,7 @@ This release adds new functionality around expanding and collapsing related enti
   - `applyPositionToNodes` takes the X/Y values set on a node's data property and converts them to CSS transform properties
   - `updateLinksForNodes` when a node(s) position has changed this sub is called to keep the end of the link path attached to the node being moved
   - `attachEventListenersToNodes` attach internal handlers for things like click, drag, mouseover events to a selection of nodes so handlers are called.
-  - `stopEventListenersForNodes` remove event handers for a selection of nodes
+  - `stopEventListenersForNodes` remove event handlers for a selection of nodes
   - `attachEventListenersToLinks` attach internal handlers for things like click, drag, mouseover events to a selection of nodes so handlers are called.
   - `polarToCartesian` dependency for drawing concentric rings
   - `describeArc` dependency for drawing concentric rings
@@ -289,20 +290,22 @@ This release adds new functionality around expanding and collapsing related enti
   - `eventPageY` the y position on the page non-relative that the event occurred at.
 
 ### Removed
+
 - The following methods have been removed from `SzRelationshipNetworkComponent`
   - `onSimulationCycle` gravity simulation has been removed in favor or concentric ring algorithm.
   - `unlockForcePosition` gravity simulation has been removed in favor or concentric ring algorithm.
   - `lockForcePosition` gravity simulation has been removed in favor or concentric ring algorithm.
-  - `fade` used to highlight directly related  nodes by changing the opacity of all unrelated nodes
-  - `linkfade` used to highlight directly related  nodes by changing the opacity of all unrelated nodes
+  - `fade` used to highlight directly related nodes by changing the opacity of all unrelated nodes
+  - `linkfade` used to highlight directly related nodes by changing the opacity of all unrelated nodes
   - `onNodeDragEnded` no longer needed
 
 ### Modified
+
 - `_graphIds` property on `SzGraphComponent` type changed from `number[]` to `SzEntityIdentifier[]`
 - `graphIds` property getter and setter on `SzGraphComponent` type changed from `number[]` to `SzEntityIdentifier[]`
 - `reload` method in `SzGraphComponent` parameter type changed to `string | number | SzEntityIdentifier | SzEntityIdentifier[]`
-- Major refactoring around the draw mechanism inside `SzRelationshipNetworkComponent`. Almost all of the routiines in `addSvg` method reorganized or rewritten. The following subroutines added 
-  - `onNodeContextClick` added the following to the `contextMenuClick` event emmitter so the context menu could be positioned correctly.
+- Major refactoring around the draw mechanism inside `SzRelationshipNetworkComponent`. Almost all of the routines in `addSvg` method reorganized or rewritten. The following subroutines added
+  - `onNodeContextClick` added the following to the `contextMenuClick` event emitter so the context menu could be positioned correctly.
     - `eventPageX` the x position on the page non-relative that the event occurred at.
     - `eventPageY` the y position on the page non-relative that the event occurred at.
   - `contextMenuClick`
@@ -317,15 +320,16 @@ This update brings the models in line with the changes for the `3.0.0` release o
 and [rest api specification](https://github.com/senzing-garage/senzing-rest-api-specification/blob/caceres.version-3.0.0/senzing-rest-api.yaml).
 
 ### Added
-- `showMatchKeyFilters` property added to `sz-standalone-graph` tag. specifying a value of `false` will hide the *Filter By Match Key* section of the embedded graph controls. (defaults to _true_)
-- `showMatchKeyFilters` property added to `sz-graph-filter` tag. specifying a value of `false` will hide the *Filter By Match Key* list of checkboxes. (defaults to _true_)
+
+- `showMatchKeyFilters` property added to `sz-standalone-graph` tag. specifying a value of `false` will hide the _Filter By Match Key_ section of the embedded graph controls. (defaults to _true_)
+- `showMatchKeyFilters` property added to `sz-graph-filter` tag. specifying a value of `false` will hide the _Filter By Match Key_ list of checkboxes. (defaults to _true_)
 - `SzWhyEntityComponent` component for displaying results from the api server's respective why endpoints(`/entities/{entityId}/why`).
 - `parseSzIdentifier` function added to `src/lib/common/utils.ts`
 - `nonTextTrim` function added to `src/lib/common/utils.ts`
-- `SzWhySelectionMode` 
+- `SzWhySelectionMode`
 - `showWhyFunction` input attribute added to `SzEntityDetailComponent`. Turns on the availability of "Why" related functions(Why button under icon, why buttons in the records section) in the entity detail component.
 - `whySelectionMode` input attribute added to `SzEntityDetailComponent`. Turns on the availability of "Why" related functions(Why button under icon, why buttons in the records section) in the entity detail component. values are `NONE`|`SINGLE`|`MULTI`
--  `openWhyComparisonModalOnClick` input attribute added to `SzEntityDetailComponent`. setting to `false` will mean that the integrator will be responsible for responding to "Why" events(`recordsWhyButtonClick`,`headerWhyButtonClick`), the component will no longer display a modal on click by default. 
+- `openWhyComparisonModalOnClick` input attribute added to `SzEntityDetailComponent`. setting to `false` will mean that the integrator will be responsible for responding to "Why" events(`recordsWhyButtonClick`,`headerWhyButtonClick`), the component will no longer display a modal on click by default.
 - The following getters/setters, and methods to `SzEntityDetailComponent`
   - `showRecordWhyUtilities` - explicitly hide or show the why buttons on individual records.
   - `showEntityWhyFunction` - explicitly hide or show the why button under the icon.
@@ -334,9 +338,10 @@ and [rest api specification](https://github.com/senzing-garage/senzing-rest-api-
 - The following event emitters to `SzEntityDetailComponent`
   - `recordsWhyButtonClick` - is emitted when a user clicks a why button from within the context of a record.
   - `headerWhyButtonClick` - is emitted when a user clicks a why button underneath the icon in the header.
-- The graph filters found in the `SzStandaloneGraphComponent` can now show a tag cloud of *Match Key Tokens*. If setting the `showMatchKeyTokenFilters="true"` you should also set the `showMatchKeyFilters]="false"` since the two options are exclusive and will interfere with proper function of the other.
+- The graph filters found in the `SzStandaloneGraphComponent` can now show a tag cloud of _Match Key Tokens_. If setting the `showMatchKeyTokenFilters="true"` you should also set the `showMatchKeyFilters]="false"` since the two options are exclusive and will interfere with proper function of the other.
 
 ### Removed
+
 - the following methods removed `SzAdminService`
   - `addEntityClasses()`
   - `addEntityTypes()`
@@ -371,49 +376,54 @@ and [rest api specification](https://github.com/senzing-garage/senzing-rest-api-
 - `SzSearchResultEntityData.matchScore` property
 
 ## [3.0.0] - 2021-12-17
+
 ### Modified
+
 - Angular Framework Updated to version 13. As of 3.0.0 release this package now requires `@angular@~13.0.0` to compile and run. Updating to angular 13 resolves major dependency compatibility issues so we can apply the latest security patches to the library. For information updating your project from a previous angular version to `~13.0.0` see the [Angular Update Guide ](https://update.angular.io/)
 - SzSearchComponent.resultCleared event emitter payload is now of type `void` and not `SzEntitySearchParams`.
 - Small bugfix to properly clip the graph scale ui control when graph section in entity detail is collapsed.
 
 ### Deleted
+
 - Admin Import example and related code. The admin load functionality has been deprecated since there is just too much movement of the methodology and complexity used to achieve this functionality for it be practical to expose it via the sdk-components-ng package. For a working example of how to implement load and analyze functionality see the consuming [Entity Search Web App](https://github.com/senzing-garage/entity-search-web-app) repository.
 - Angular Schematics support. see #253
 
 relevant tickets: #253 #252 #251 #250
 
 ## [2.2.6] - 2021-11-23
+
 ### Added
+
 - `SzEntityDetailGraphComponent`
-   - `showZoomControl` input setter for whether or not to show zoom controls.
-   - `showZoomControl` getter for whether or not zoom controls are shown.
-   - `zoomControlPosition` input setter for where the zoom control shows up on the embedded graph.
-   - `zoomControlPosition` getter for where the zoom control shows up on the embedded graph.
-   - `graphZoom` input setter for the current zoom level of the graph.
-   - `graphZoom` getter for the current zoom level of the graph.
-   - `onGraphZoom()` handler for proxying zoom state of graph component to local scope.
-   - `zoomIn()` zooms the graph in.
-   - `zoomOut()` zooms the graph out.
+  - `showZoomControl` input setter for whether or not to show zoom controls.
+  - `showZoomControl` getter for whether or not zoom controls are shown.
+  - `zoomControlPosition` input setter for where the zoom control shows up on the embedded graph.
+  - `zoomControlPosition` getter for where the zoom control shows up on the embedded graph.
+  - `graphZoom` input setter for the current zoom level of the graph.
+  - `graphZoom` getter for the current zoom level of the graph.
+  - `onGraphZoom()` handler for proxying zoom state of graph component to local scope.
+  - `zoomIn()` zooms the graph in.
+  - `zoomOut()` zooms the graph out.
 - `SzStandaloneGraphComponent`
-   - `showZoomControl` input setter for whether or not to show zoom controls.
-   - `showZoomControl` getter for whether or not zoom controls are shown.
-   - `zoomControlPosition` input setter for where the zoom control shows up on the embedded graph.
-   - `zoomControlPosition` getter for where the zoom control shows up on the embedded graph.
-   - `graphZoom` input setter for the current zoom level of the graph.
-   - `graphZoom` getter for the current zoom level of the graph.
-   - `onGraphZoom()` handler for proxying zoom state of graph component to local scope.
-   - `zoomIn()` zooms the graph in.
-   - `zoomOut()` zooms the graph out.
+  - `showZoomControl` input setter for whether or not to show zoom controls.
+  - `showZoomControl` getter for whether or not zoom controls are shown.
+  - `zoomControlPosition` input setter for where the zoom control shows up on the embedded graph.
+  - `zoomControlPosition` getter for where the zoom control shows up on the embedded graph.
+  - `graphZoom` input setter for the current zoom level of the graph.
+  - `graphZoom` getter for the current zoom level of the graph.
+  - `onGraphZoom()` handler for proxying zoom state of graph component to local scope.
+  - `zoomIn()` zooms the graph in.
+  - `zoomOut()` zooms the graph out.
 - `SzEntityDetailComponent`
-   - `graphZoomControlPosition` input setter for where the zoom control shows up on the embedded graph.
-   - `graphShowZoomControl` input setter for whether or not to show zoom controls on embedded graph.
+  - `graphZoomControlPosition` input setter for where the zoom control shows up on the embedded graph.
+  - `graphShowZoomControl` input setter for whether or not to show zoom controls on embedded graph.
 
 relevant tickets: #245 #240
 
 ## [2.2.5] - 2021-11-01
 
 - Graph now allows the user to be able to show/hide entities on the graph control whos' relationships belong to specific match keys present in the graph in the filters control.
-- *Search by Datasource/RecordId* now gets the full `SzEntityData` instead of just the `SzEntityRecord`
+- _Search by Datasource/RecordId_ now gets the full `SzEntityData` instead of just the `SzEntityRecord`
 - Old behavior(to return just `SzEntityRecord` instead of `SzEntityData`) relocated from `SzSearchService.getEntityByRecordId` to `SzSearchService.getRecordById`
 - Various new CSS Variables added for styling granularity relevant to https://github.com/senzing-garage/entity-search-web-app/issues/213
 
@@ -438,7 +448,7 @@ relevant tickets: #204 #226
     - removeHeaderFromApiRequests
   - Accessors added to SzConfigurationService :
     - additionalApiRequestHeaders
-  - @Input() Accessor added to SzConfigurationComponent : 
+  - @Input() Accessor added to SzConfigurationComponent :
     - additionalHeaders
 - Code Cleanup (various commented out or unused variables removed)
 - Graph entity datasource colors are now reorderable via drag. Color with highest priority is shown when a graph entity belongs to multiple datasources.
@@ -458,6 +468,7 @@ relevant tickets: #207
 relevant tickets: #202
 
 ## [2.2.0] - 2020-12-31
+
 - Select Identifiers in Search Form feature added. #191
 - Angular Material added to `peerDependencies`. #192
 - Package now supports basic install schematics: `ng add @senzing/sdk-components-ng`. #190
@@ -466,24 +477,25 @@ relevant tickets: #202
 
 - API Client package updated to the [Senzing OAS 2.2.0](https://github.com/senzing-garage/senzing-rest-api-specification/releases/tag/2.2.0) specification.
 - Web Components code integrated as a child project in to the the `sdk-components-ng` repository. see ticket [#169](https://github.com/senzing-garage/sdk-components-ng/issues/169).
-Documentation for `@senzing/sdk-components-web` now [available here](http://hub.senzing.com/sdk-components-ng/additional-documentation/web-components.html).
+  Documentation for `@senzing/sdk-components-web` now [available here](http://hub.senzing.com/sdk-components-ng/additional-documentation/web-components.html).
 - Bugfixes: #169, #170, #173, #174, #175, #176, #177, #178, #179, #180, #181
 
 ## [2.1.1] - 2020-10-02
 
 - Bugfixes for graph node filtering, color application by datasource, tooltips, redraw and source race conditions.
-- Added *Entity Id* to entity detail component
+- Added _Entity Id_ to entity detail component
 
 relevant tickets: #162, #159, #152, #137
 
 ## [2.1.0] - 2020-09-21
 
-Maintenence release for framework upgrade to Angular 10: see [https://blog.angular.io/version-10-of-angular-now-available-78960babd41](https://blog.angular.io/version-10-of-angular-now-available-78960babd41)
+Maintenance release for framework upgrade to Angular 10: see [https://blog.angular.io/version-10-of-angular-now-available-78960babd41](https://blog.angular.io/version-10-of-angular-now-available-78960babd41)
 
 Major updates to most dependency versions have also been made which should improve file sizes, security, and stability.
 
 The following Senzing projects have also been updated to operate on Angular 10,
 see the following links for associated tickets:
+
 - [sdk-components-ng/issues/143](https://github.com/senzing-garage/sdk-components-ng/issues/143)
 - [rest-api-client-ng/issues/39](https://github.com/senzing-garage/rest-api-client-ng/issues/39)
 - [sdk-graph-components/issues/37](https://github.com/senzing-garage/sdk-graph-components/issues/37)
@@ -533,7 +545,7 @@ Added in components that can be used for bulk analysis and bulk loading. The com
 
 ### Added to 1.2.0
 
-New *"Search By Id"* component, *"record viewer"* component, search history type-ahead, various bugfixes, rest-client updates, admin service, and basic folio models.
+New _"Search By Id"_ component, _"record viewer"_ component, search history type-ahead, various bugfixes, rest-client updates, admin service, and basic folio models.
 
 - new components:
   - SzSearchByIdComponent Component
@@ -574,13 +586,13 @@ New *"Search By Id"* component, *"record viewer"* component, search history type
 
 - pop out graph icon
 - new "example/search-in-graph" project to show search integrating directly with graph
-- new *[SzPrefDictComponent](https://senzing.github.io/sdk-components-ng/components/SzPrefDictComponent.html)* for displaying pref(s) that are object/key/value based(ie json object)
-- added *[dataSourceColors](https://senzing.github.io/sdk-components-ng/classes/SzGraphPrefs.html#dataSourceColors)* configuration to SzPreferencesComponent
-- added *[SzEntityDetailGraphFilterComponent](https://senzing.github.io/sdk-components-ng/components/SzEntityDetailGraphFilterComponent.html)*
-- added *SzStandaloneGraphComponent*, a embeddable graph components designed to run in it's own context or near-to.
+- new _[SzPrefDictComponent](https://senzing.github.io/sdk-components-ng/components/SzPrefDictComponent.html)_ for displaying pref(s) that are object/key/value based(ie json object)
+- added _[dataSourceColors](https://senzing.github.io/sdk-components-ng/classes/SzGraphPrefs.html#dataSourceColors)_ configuration to SzPreferencesComponent
+- added _[SzEntityDetailGraphFilterComponent](https://senzing.github.io/sdk-components-ng/components/SzEntityDetailGraphFilterComponent.html)_
+- added _SzStandaloneGraphComponent_, a embeddable graph components designed to run in it's own context or near-to.
 - added new [SzDataSourcesService](https://senzing.github.io/sdk-components-ng/injectables/SzDataSourcesService.html) class for retrieving the datasources from the api server instance.
 - modified existing SzGraphComponent code, adding all new properties to keep feature parity with SzStandaloneGraphComponent's implementation.
-- added new *layout-rail* layout for ... well, exactly what it sounds like, a rail version of the entity detail component.
+- added new _layout-rail_ layout for ... well, exactly what it sounds like, a rail version of the entity detail component.
 - relevant tickets
   - [#105](https://github.com/senzing-garage/sdk-components-ng/issues/105)
   - [#104](https://github.com/senzing-garage/sdk-components-ng/issues/104)
@@ -594,7 +606,7 @@ New *"Search By Id"* component, *"record viewer"* component, search history type
 - CSS for responsive breakpoint(s) and/or reflow on narrow width
 - Various UI/UX layout bugfixes
 - Graph should reload on entityIdChange
-- Graph should collapse on *0* results
+- Graph should collapse on _0_ results
 - Include "other data" in records area.
 - Text highlighting no longer triggers click-thru
 - Search identifiers drop-down should auto-update on api config change
@@ -678,7 +690,7 @@ fixes, features for:
 - remove extraneous div in sz-search markup
 - remove extra padding/margins from search component wrapper
 - add onKeyEnter handler to submit search when search button is hidden/not present
-- Add New  CSS Theme Variables:
+- Add New CSS Theme Variables:
   - --sz-search-results-name-color
   - --sz-search-results-name-hover-color
   - --sz-search-results-name-font-weight

@@ -1,15 +1,15 @@
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { 
-    EntityDataService as SzEntityDataService, 
-    SzEntityIdentifier, SzFeatureMode, SzHowEntityResponse, SzHowEntityResult, SzRecordIdentifier, SzRecordIdentifiers, SzResolutionStep, SzResolvedEntity, SzVirtualEntity, SzVirtualEntityRecord, SzVirtualEntityResponse 
+import {
+    EntityDataService as SzEntityDataService,
+    SzEntityIdentifier, SzFeatureMode, SzHowEntityResponse, SzHowEntityResult, SzRecordIdentifier, SzRecordIdentifiers, SzResolutionStep, SzResolvedEntity, SzVirtualEntity, SzVirtualEntityRecord, SzVirtualEntityResponse
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzHowUIService } from '../services/sz-how-ui.service';
-import { 
-  SzVirtualEntityRecordsClickEvent, 
-  SzResolvedVirtualEntity, 
-  SzResolutionStepDisplayType 
+import {
+  SzVirtualEntityRecordsClickEvent,
+  SzResolvedVirtualEntity,
+  SzResolutionStepDisplayType
 } from '../models/data-how';
 import { Observable, Subject, take, takeUntil, zip, map, tap } from 'rxjs';
 import { parseBool } from '../common/utils';
@@ -19,10 +19,10 @@ import { SzResolutionStepListItemType, SzResolutionStepNode } from '../models/da
 /**
  * Display the "How" information for entity
  *
- * @example 
+ * @example
  * <!-- (Angular) -->
  * <sz-how-entity entityId="5"></sz-how-entity>
- * 
+ *
  * @example
  * <!-- (WC) -->
  * <sz-wc-how-entity entityId="5"></sz-wc-how-entity>
@@ -38,13 +38,13 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     public unsubscribe$ = new Subject<void>();
     /** the data retrieved from the 'finalStates' array of the how api request. passed to other components. */
     public finalCardsData: SzVirtualEntity[];
-    /** 
+    /**
      * @internal
      * the data retrieved from the how api request.
      */
     private _data: SzHowEntityResult;
-    /** 
-     * @internal 
+    /**
+     * @internal
      * we get the expanded "virtual entities" for every step in the how request.
      * these must be retrieved individually per the api spec. this is where we store
      * them while working with them.
@@ -60,29 +60,29 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     private _stepNodes: Array<SzResolutionStepNode>;
     /** @internal */
     private _isLoading                        = false;
-    /** 
-     * @internal 
+    /**
+     * @internal
      * whether or not to show the navigation rail
      */
     private _showNavigation                   = true;
-    /** 
-     * @internal 
+    /**
+     * @internal
      * the entity id to display in the component
      */
     private _entityId: SzEntityIdentifier;
-    /** 
-     * @internal 
+    /**
+     * @internal
      * used for ensuring the data of this component displayed matches the entity id passed in
      */
     private _dataLoadedForId: SzEntityIdentifier;
-    /** 
-     * @internal 
+    /**
+     * @internal
      * when the number of steps returned from a api request is less than or equal to this number
      * the cards are automatically expanded.
      */
     private _expandCardsWhenLessThan: number  = 2;
 
-    // -------------------------------------------- observeables and emitters --------------------------------------------
+    // -------------------------------------------- observables and emitters --------------------------------------------
     /** @internal */
     private _dataChange: Subject<SzHowEntityResult>           = new Subject<SzHowEntityResult>();
     /** when the data has changed this event is emitted */
@@ -111,7 +111,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     @Output() public virtualEntitiesDataChanged               = new EventEmitter<Map<string, SzResolvedVirtualEntity>>();
     /** when a user clicks the info link inside of a step card this event is emitted*/
     @Output() public virtualEntityInfoLinkClicked             = new EventEmitter<SzVirtualEntityRecordsClickEvent>();
-    
+
     // --------------------------------------------    getters and setters    --------------------------------------------
     /**
      * the entity id of the entity to display the How report for
@@ -158,12 +158,12 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     }
 
     // -------------------------------------------------- event handlers -------------------------------------------------
-    
-    /** 
-     * @internal 
-     * when the entity id changes this method 
-     * this method queries the api endpoint and 
-     * reinitializes all the various objects and collections that are generated from the data 
+
+    /**
+     * @internal
+     * when the entity id changes this method
+     * this method queries the api endpoint and
+     * reinitializes all the various objects and collections that are generated from the data
      * returned.
     */
     private onEntityIdChange() {
@@ -179,7 +179,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
 
             if(this._data.finalStates && this._data.finalStates.length > 0) {
                 // has at least one final states
-                // for each final state get the virual step
+                // for each final state get the virtual step
                 // and populate the components
                 let _finalStatesData = this._data.finalStates
                 .filter((fStateObj) => {
@@ -307,7 +307,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       let _retVal   = false;
       let _groupId  = this.getResolutionStepGroupIdByMemberVirtualId(virtualEntityId, nodesWithChildren);
       if(_groupId) {
-        _retVal     = true; 
+        _retVal     = true;
       }
       return _retVal;
     }
@@ -318,7 +318,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         public dialog: MatDialog,
         private howUIService: SzHowUIService
     ){}
-    
+
     /** get data and set up event subscribers on initialization */
     ngOnInit() {
       //this.getFeatureTypeOrderFromConfig();
@@ -349,7 +349,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       this.entityIdChange.pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe(this.onEntityIdChange.bind(this));
-      // when user clicks on the info icon on a card open up 
+      // when user clicks on the info icon on a card open up
       // a floating data box
       this.virtualEntityInfoLinkClick.pipe(
           takeUntil(this.unsubscribe$)
@@ -373,7 +373,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     // ------------------------------------------------ data manipulation ------------------------------------------------
 
     /**
-     * @internal 
+     * @internal
      * retrieve the how data for a entity */
     private getData(entityId: SzEntityIdentifier): Observable<SzHowEntityResponse> {
         return this.howUIService.getHowDataForEntity(
@@ -381,9 +381,9 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         );
     }
     /**
-     * @internal 
+     * @internal
      * this method returns node wrappers as SzResolutionStepNode that contain children SzResolutionStepNode or SzResolutionStep steps.
-     * This is primarily used for generating the default 'STACK' groups, but also include 'SzResolutionStepNode' objects 
+     * This is primarily used for generating the default 'STACK' groups, but also include 'SzResolutionStepNode' objects
      * that contain other groups or individual steps
      */
     getGroupsFromStepNodes(_rSteps?: Array<SzResolutionStepNode | SzResolutionStep>): Map<string, SzResolutionStepNode> {
@@ -410,13 +410,13 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     }
     /**
      * @internal
-     * recursively scan a nodes children and their childrens children to collect
-     * all virtual entity id's that are decendents of this node
+     * recursively scan a nodes children and their children's children to collect
+     * all virtual entity id's that are descendants of this node
      */
     /*
     getVirtualEntityIdsForNode(_rStep?: SzResolutionStepNode): string[] {
       let retVal: Array<string> = [];
-      
+
       if(_rStep && _rStep.children) {
         _rStep.children.forEach((sNode, ind)=>{
           let idToAdd = (sNode as SzResolutionStepNode).id ? (sNode as SzResolutionStepNode).id : (sNode as SzResolutionStep).resolvedVirtualEntityId;
@@ -448,14 +448,14 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     }
     /**
      * @internal
-     * 
+     *
      * This method returns steps nodes for the final entities with steps as children, and
-     * contiguous add record steps grouped in to stacks, and interim steps nested. Objects can have 'children' objects of the same 
-     * type.. which can also have children etc. This is a method that traverses from the final nodes down the steps and creates a datastructure of 
+     * contiguous add record steps grouped in to stacks, and interim steps nested. Objects can have 'children' objects of the same
+     * type.. which can also have children etc. This is a method that traverses from the final nodes down the steps and creates a datastructure of
      * nodes suitable for rendering.
      * @param finalStates final steps returned from api request
      * @param rSteps the object containing all steps returned from the api request.
-     * @returns 
+     * @returns
      */
     private getStepNodesFromFinalStates(finalStates: SzVirtualEntity[], rSteps: {[key: string]: SzResolutionStep}) {
       let stepsByVirtualId              = new Map<string, SzResolutionStep>();
@@ -495,11 +495,11 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     }
     /**
      * @internal
-     * 
-     * This is the main method used for recursional traversal by #getStepNodesFromFinalStates
+     *
+     * This is the main method used for recursive traversal by #getStepNodesFromFinalStates
      * @param _rSteps array of steps to traverse and transform in to nested {SzResolutionStepNode} nodes
      * @param stepsByVirtualId map of ALL steps with their virtual id as the key
-     * @returns 
+     * @returns
      */
     private getNestedStepNodesFromSteps(_rSteps: Array<SzResolutionStep>, stepsByVirtualId: Map<string, SzResolutionStep>, parentIsMerge?: boolean, parentIsFinal?: boolean): Array<SzResolutionStepNode> {
       let retVal:Array<SzResolutionStepNode> = [];
@@ -654,7 +654,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
         } else if(extendedNode.isInterim) {
           // if the node is an interim node and there are no nodes to traverse
           // then it's probably an interim with just one step(CREATE)
-          // then add node as child of iteself
+          // then add node as child of itself
           extendedNode.children   = [(Object.assign({
             id: step.resolvedVirtualEntityId,
             stepType: stepType,
@@ -664,7 +664,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
           retVal.push(extendedNode);
           extendedNode.virtualEntityIds = [step.resolvedVirtualEntityId];
         } else {
-          if(parentIsFinal) { 
+          if(parentIsFinal) {
             // this is a final step node so append it to itself for display purposes
             let finalNode: SzResolutionStepNode = Object.assign({
               id: step.resolvedVirtualEntityId,
@@ -697,9 +697,9 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
       return retVal;
     }
 
-    /** 
+    /**
      * @internal
-     * this is the method that does the heavy lifting for getting ALL the data 
+     * this is the method that does the heavy lifting for getting ALL the data
      * for each virtual entity in each steps "inboundVirtualEntity" AND "candidateVirtualEntity".
      * this data can then be used to populate any component or look up any components
      * displayed data at the source by its virtual entity id.
@@ -707,7 +707,7 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
     private getVirtualEntityDataForSteps(resolutionSteps?: {[key: string]: SzResolutionStep}, finalVirtualEntities?: SzVirtualEntity[]): Observable<Map<string, SzResolvedVirtualEntity>> {
       let _rParamsByVirtualEntityIds  = {};
       let _responseSubject      = new Subject<Map<string, SzResolvedVirtualEntity>>();
-      let _retObserveable       = _responseSubject.asObservable();
+      let _retObservable       = _responseSubject.asObservable();
       if(resolutionSteps){
         for(let rKey in resolutionSteps) {
           _rParamsByVirtualEntityIds[ resolutionSteps[rKey].inboundVirtualEntity.virtualEntityId ] = resolutionSteps[rKey].inboundVirtualEntity.records.map((vRec: SzVirtualEntityRecord)=>{
@@ -756,11 +756,11 @@ export class SzHowEntityComponent implements OnInit, OnDestroy {
           _results.forEach((virtualEntityResponse) => {
             retVal.set(virtualEntityResponse.virtualEntityId, virtualEntityResponse);
           });
-          
+
           _responseSubject.next(retVal);
         });
       }
-      return _retObserveable;
+      return _retObservable;
     }
 
     // -------------------------------- debug methods (delete or comment out for release) --------------------------------

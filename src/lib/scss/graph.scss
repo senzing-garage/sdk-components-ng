@@ -37,7 +37,7 @@ body {
     }
   }
 
-  // for core non-removable nodes we dont want to show
+  // for core non-removable nodes we don't want to show
   // the "-" glyph, only the "+"
   .sz-graph-primary-node {
     &.sz-graph-all-related-visible {

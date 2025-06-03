@@ -12,9 +12,9 @@ import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzDataSourcesService } from '../../services/sz-datasources.service';
 
 /**
- * Embeddable Donut Graph showing how many 
- * records belong to which datasources for the repository in a visual way. 
- * 
+ * Embeddable Donut Graph showing how many
+ * records belong to which datasources for the repository in a visual way.
+ *
  * @internal
  * @example <!-- (Angular) -->
  * <sz-record-counts-donut (dataSourceClick)="onDataSourceClick($event)"></sz-record-counts-donut>
@@ -55,7 +55,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
   /* @internal used to override auto-generated colors with user value */
   private _colors: string[];
   /** @internal possible values for sort order of list are 'alphadesc' | 'alphaasc' | 'countdesc' | 'countasc' */
-  private _orderBy: 'alphadesc' | 'alphaasc' | 'countdesc' | 'countasc'; 
+  private _orderBy: 'alphadesc' | 'alphaasc' | 'countdesc' | 'countasc';
   /* donut chart properties */
   /** @internal width of svg */
   private donutWidth: number;
@@ -80,7 +80,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
 
   };
   /**
-   * emmitted when the entity data to display has been changed.
+   * emitted when the entity data to display has been changed.
    */
   @Output('dataChanged')
   dataChanged: Subject<SzRecordCountDataSource[]> = new Subject<SzRecordCountDataSource[]>();
@@ -116,7 +116,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     return this._limitToNumber;
   }
   /** sort the vertical list. possible values for sort order of list are 'alphadesc' | 'alphaasc' | 'countdesc' | 'countasc' */
-  @Input() public set orderBy(value: 'alphadesc' | 'alphaasc' | 'countdesc' | 'countasc') { 
+  @Input() public set orderBy(value: 'alphadesc' | 'alphaasc' | 'countdesc' | 'countasc') {
     this._orderBy = value;
   }
   /**
@@ -138,7 +138,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
   @HostBinding("class.show-hidden") get classMatches() {
     return this._showHiddenDataSources;
   }
-  
+
   /** -------------------------------------- getters and setters -------------------------------------- */
 
   get totalEntityCount(): number {
@@ -179,7 +179,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     if(this._pendingLoadColor !== undefined && this._pendingLoadColor !== null) {
       return this._pendingLoadColor;
     }
-    // otherwise pull from last color value in pallete
+    // otherwise pull from last color value in palette
     if(this._colorPalette && this._colorPalette.length >= 200) {
       this._pendingLoadColor = this._colorPalette[ 200 ];
       return `hsl('${ this._unnamedRecordsColor }', 100%, 50%)`;
@@ -191,7 +191,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     if(this._unnamedRecordsColor !== undefined && this._unnamedRecordsColor !== null) {
       return this._unnamedRecordsColor;
     }
-    // otherwise pull from last color value in pallete
+    // otherwise pull from last color value in palette
     if(this._colorPalette && this._colorPalette.length > 0) {
       this._unnamedRecordsColor = this._colorPalette[ this._colorPalette.length - 1];
       return `hsl('${ this._unnamedRecordsColor }', 100%, 50%)`;
@@ -336,7 +336,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       this.donutSvg = d3.select('svg.donut-chart');
       if (!this.donutSvg) { console.warn('no donut svg'); return; }
       if (this.donutSvg.empty && this.donutSvg.empty()) { console.warn('donut already rendered'); return; }
-      
+
       this.donutSvg.selectAll('*').remove();
       this.donutWidth   = +this.donutSvg.attr('width');
       this.donutHeight  = +this.donutSvg.attr('height');
@@ -374,7 +374,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
 
       // Normally a scale maps from a domain to a range.  You would specify the domain here with the range.
       // scaleOrdinal maps from discrete value to discrete value.  This allows the domain to be generated from the data as it's processed.
-      
+
       /*this.color = d3Scale.scaleOrdinal()
         .range(this._colorPalette);
       //  .range(this.getColors());*/
@@ -401,7 +401,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
           .attr("filter", "url(#dropshadow)");
       }
     }
-    
+
     private renderDonut(data?: SzRecordCountDataSource[]) {
       let _data = [].concat(data); // create shallow data copy
       // remove any datasources that should be hidden from shallow copy
@@ -418,7 +418,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
         });
         this._hiddenRecordCount = _hiddenRecordCount;
         this._hiddenEntityCount = _hiddenEntityCount;
-      }    
+      }
       const dataSourcesToDisplay = this._showHiddenDataSources ? data.slice(0) : _data.slice(0);
       // unmatched/singletons
       /*if (this._totalUnmatchedRecordCount) {
@@ -446,7 +446,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       // sub for attaching event handlers to node(s)
       let attachEventListenersToNodes   = (_nodes, _tooltip, _scope?: any) => {
         _scope  = _scope ? _scope : this;
-        // Make the tooltip visible when mousing over nodes. 
+        // Make the tooltip visible when mousing over nodes.
         if(_nodes && _nodes.on) {
           _nodes.on('mouseover.tooltip', function (event, d, j) {
             _tooltip.transition()
@@ -478,7 +478,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
           .attr('class', 'arc');
       let arcPaths = g.append('path')
           .attr('d', this.arc)
-          .attr('class', (d) => { 
+          .attr('class', (d) => {
             if(d.data.dataSourceCode === 'unmatched'){
               return 'item-unmatched';
             }
@@ -494,13 +494,13 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     }
 
     /** ---------------------------------- data transform methods ----------------------------------- */
-    
+
     addColorsToData(data: SzRecordCountDataSource[]) {
       let numOfColors     = data.length;
       const initialColor  = 1;
       const increment     = 360 / numOfColors;
       const colors        = [];
-          
+
       for (let i = 0; i < numOfColors; i++) {
         let _colorNum   = Math.round((initialColor + (i * increment)) % 360);
         let _colorStyle = (this._colors && this._colors.length >= i && this._colors[i]) ? this._colors[i] : 'hsl('+ _colorNum +', 100%, 50%, 56%)';
@@ -530,7 +530,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
       if(this._dataSources) {
         if(this._dataSources[dsCode] && this._dataSources[dsCode].dataSourceName) {
           return this._dataSources[dsCode].dataSourceName
-        } 
+        }
       }
       return dsCode
     }
@@ -562,7 +562,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     private getDataSources(): Observable<SzDataSourcesResponseData> {
       return this.dataSourcesService.listDataSourcesDetails()
     }
-    getTotalsFromCounts(data: SzRecordCountDataSource[]): { totalEntityCount: number, totalRecordCount: number} 
+    getTotalsFromCounts(data: SzRecordCountDataSource[]): { totalEntityCount: number, totalRecordCount: number}
     {
       let retVal = 0;
       let recordTotals    = 0;
@@ -612,7 +612,7 @@ export class SzRecordStatsDonutChart implements OnInit, OnDestroy {
     }
 
   // ----------------------------------------- event handlers -----------------------------------------
-  
+
   /**
    * handler for when a arc node is clicked.
    * proxies to synthetic event "dataSourceClick"

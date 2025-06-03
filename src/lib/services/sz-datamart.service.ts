@@ -34,10 +34,10 @@ import { SzDataSourcesService } from './sz-datasources.service';
 import { SzCrossSourceSummaryCategoryType } from '../models/stats';
 
 /**
- * Represents an object of a sampling dataset. When a user clicks on a venn diagram a number of 
- * parameters are assembled and passed to the constructor of this class to perform all the 
- * necessary logic to populate it's properties from the parameters and request the necessary 
- * data to represent the page(s) of data requested. 
+ * Represents an object of a sampling dataset. When a user clicks on a venn diagram a number of
+ * parameters are assembled and passed to the constructor of this class to perform all the
+ * necessary logic to populate it's properties from the parameters and request the necessary
+ * data to represent the page(s) of data requested.
  */
 export class SzStatSampleSet {
     /** subscription to notify subscribers to unbind */
@@ -66,8 +66,8 @@ export class SzStatSampleSet {
     /** @internal */
     private _unfilteredCount        = 0;
     /**
-     * We store the parameters used to contruct the initial request here 
-     * so we can update individual properties when they change and pull new 
+     * We store the parameters used to construct the initial request here
+     * so we can update individual properties when they change and pull new
      * requests with just the modified parameter(s).
      * @internal
      */
@@ -241,7 +241,7 @@ export class SzStatSampleSet {
                     this._doNotFetchOnParameterChange   = true;
                     if(_boundType)  this._requestParameters.boundType   = _boundType;
                     if(_pageSize)   this._requestParameters.pageSize    = _pageSize;
-                    
+
                     this._requestParameters.bound       = _boundValue;
                     this._currentPage                   = value;
                     this._doNotFetchOnParameterChange   = false;
@@ -302,7 +302,7 @@ export class SzStatSampleSet {
     public set sampleSize(value: number) {
         if(this._requestParameters) this._requestParameters.sampleSize = value;
     }
-    /** get the total count of relationship pairs(if a relationship type request) 
+    /** get the total count of relationship pairs(if a relationship type request)
      * or the total entity count for statTypes that request entities(Matches)
     */
     public get totalCount() {
@@ -377,7 +377,7 @@ export class SzStatSampleSet {
     );
 
     // ---------------------------------- lifecycle methods ----------------------------------
-    constructor( 
+    constructor(
         private parameters: SzStatSampleSetParameters,
         private prefs: SzPrefsService,
         private statsService: SzStatisticsService, private entityDataService: EntityDataService, deferInitialRequest?: boolean) {
@@ -397,8 +397,8 @@ export class SzStatSampleSet {
             this.init();
         }
     }
-    /** 
-     * if enough parameters have been passed to the constructor to make a request 
+    /**
+     * if enough parameters have been passed to the constructor to make a request
      * a request will be made and properties populated, and events will be emitted.
     */
     public init() {
@@ -423,7 +423,7 @@ export class SzStatSampleSet {
     }
 
     // ------------------------------------ sub-routines and methods for more DRY ------------------------------------
-    
+
     /** return a page change event that contains all the response page information plus
      * a few mutated ones for property type/name cohesion.
      * @internal
@@ -439,7 +439,7 @@ export class SzStatSampleSet {
             if(_cPageResults && _cPageResults.length) { _overwriteObj.pageItemCount = _cPageResults.length; }
             //console.log(`\t_getCurrentPageParameters: pagingParametersForRelations: `, this.pagingParametersForRelations);
             _retVal = Object.assign(
-                _overwriteObj, 
+                _overwriteObj,
                 _cPageParams
             );
         } else {
@@ -451,17 +451,17 @@ export class SzStatSampleSet {
             if(_cPageResults && _cPageResults.length) { _overwriteObj.pageItemCount = _cPageResults.length; }
 
             _retVal = Object.assign(
-                _overwriteObj, 
-                this.pagingParametersForEntities, 
+                _overwriteObj,
+                this.pagingParametersForEntities,
                 _cPageParams
             );
         }
         console.info(`_getCurrentPageParameters()`, _retVal);
         return _retVal;
     }
-    /** 
-     * We need to get full entity data for entity objects since the datamart endpoints 
-     * return minimal information. Gets the SzEntityData[] responses for multiple entities 
+    /**
+     * We need to get full entity data for entity objects since the datamart endpoints
+     * return minimal information. Gets the SzEntityData[] responses for multiple entities
      */
     private getEntitiesByIds(entityIds: SzEntityIdentifiers, withRelated = false, detailLevel = SzDetailLevel.BRIEF): Observable<SzEntityData[]> {
         console.log('@senzing/sdk/services/sz-datamart[getEntitiesByIds('+ entityIds +', '+ withRelated +')] ');
@@ -469,11 +469,11 @@ export class SzStatSampleSet {
         let _retSubject = new Subject<SzEntityData[]>();
         let _retVal     = _retSubject.asObservable();
 
-        let _listOfObserveables = entityIds.map((eId) => {
+        let _listOfObservables = entityIds.map((eId) => {
             return this.entityDataService.getEntityByEntityId(eId, detailLevel, undefined, undefined, undefined, false, withRelatedStr)
         })
 
-        forkJoin(_listOfObserveables).pipe(
+        forkJoin(_listOfObservables).pipe(
         map((res: SzEntityResponse[]) => {
             return res.map((res: SzEntityResponse) => (res.data as SzEntityData))
         })
@@ -486,7 +486,7 @@ export class SzStatSampleSet {
         return _retVal;
     }
     /**
-     * Constructs the actual DataMart API call from its' parameters and retuns a Observeable.
+     * Constructs the actual DataMart API call from its' parameters and returns a Observable.
      * @returns Observable<SzEntitiesPage | SzRelationsPage | Error
      */
     private _getNewSampleSet(statType: SzCrossSourceSummaryCategoryType, dataSource1?: string | undefined, dataSource2?: string | undefined, matchKey?: string, principle?: string, bound?: string, boundType?: SzBoundType, sampleSize?: number, pageSize?: number) : Observable<SzEntitiesPage | SzRelationsPage | Error> {
@@ -498,12 +498,12 @@ export class SzStatSampleSet {
         console.log(`\t\t_getNewSampleSet(${statType}, ${dataSource1}, ${dataSource2}, ${matchKey}, ${principle}, ${bound}, undefined, ${pageSize}, ${sampleSize})`);
         // are we doing cross-source or single-source?
         //if(dataSource1 && dataSource2 && dataSource1 !== dataSource2 && !isOneDataSourceUndefined) { isVersus = true; }
-        
+
         // if any one data source is defined it's always versus mode
-        if(dataSource1 && !dataSource2) { 
-            dataSource2 = dataSource1; 
+        if(dataSource1 && !dataSource2) {
+            dataSource2 = dataSource1;
         } else if(dataSource2 && !dataSource1) {
-            dataSource1 = dataSource2; 
+            dataSource1 = dataSource2;
         }
 
         if(!dataSource1 && !dataSource2) {
@@ -605,7 +605,7 @@ export class SzStatSampleSet {
                 return this._dataSource1 !== undefined || this._dataSource2 !== undefined ? true : false;
             })
         ).subscribe((data: SzEntitiesPage | SzRelationsPage) => {
-            let isEntityResponse        = (data as SzEntitiesPage).entities ? true : false; 
+            let isEntityResponse        = (data as SzEntitiesPage).entities ? true : false;
             this._isRelationsResponse   = !isEntityResponse;
             console.timeLog('SzStatSampleSet.getSampleDataFromParameters()', ': got sampleset page: ', data);
 
@@ -718,7 +718,7 @@ export class SzStatSampleSet {
                             _fullEnt.records.map((rec) => {
                                 _fullEntRecsMap.set(rec.dataSource+'|'+rec.recordId, rec);
                             })
-                            
+
                             rel.entity.records  = rel.entity.records.map((eRec) => {
                                 return _fullEntRecsMap.get(eRec.dataSource+'|'+eRec.recordId);
                             });
@@ -739,7 +739,7 @@ export class SzStatSampleSet {
                             // now extend ent with props from full ent (minus) the records
                             rel.relatedEntity = Object.assign(Object.assign({}, _fullEnt), rel.relatedEntity);
                         }
-                        
+
                     })
                     //console.log(`\t\tExtended Data: `, _currentPageRelations);
                     this._relationPages.set(this._currentPage, _dataPage);
@@ -790,10 +790,10 @@ export class SzStatSampleSet {
 }
 
 /**
- * Service class used to get data from the poc server using the 
- * datamart api(s). Stores state of responses and provides getters and setters to create 
- * and manage parameters for an instance of #SzStatSampleSet 
- * Largely used for statistics charts like the record count Donut Graph and the #SzCrossSourceStatistics component 
+ * Service class used to get data from the poc server using the
+ * datamart api(s). Stores state of responses and provides getters and setters to create
+ * and manage parameters for an instance of #SzStatSampleSet
+ * Largely used for statistics charts like the record count Donut Graph and the #SzCrossSourceStatistics component
  * used to browse sampleset results in a data table format.
  *
  * @export
@@ -864,7 +864,7 @@ export class SzDataMartService {
             this._sampleSet.doNotFetchOnParameterChange = value;
         }
     }
-    /** get the statistics for how many records from which datasources have beeen loaded */
+    /** get the statistics for how many records from which datasources have been loaded */
     public get loadedStatistics(): SzLoadedStats | undefined {
         if(!this._loadedStatistics) this._getLatestLoadedStats();
         return this._loadedStatistics;
@@ -876,7 +876,7 @@ export class SzDataMartService {
 
     public get dataSources() {
         if(this._dataSources || this._dataSourcesInFlight){ return this._dataSources; }
-        // if we dont have any datasources init
+        // if we don't have any datasources init
         this.getDataSources().pipe(
             take(1)
         ).subscribe();
@@ -884,7 +884,7 @@ export class SzDataMartService {
     }
     public get dataSourceDetails() {
         if(this._dataSourceDetails){ return this._dataSourceDetails; }
-        // if we dont have any datasources init
+        // if we don't have any datasources init
         this.getDataSourceDetails().pipe(
             take(1)
         ).subscribe();
@@ -898,7 +898,7 @@ export class SzDataMartService {
     public set matchKeyCounts(value: SzCrossSourceCount[]) {
         this._matchKeyCounts = value;
     }
-        
+
         // ----------------------- sample set instance getters/setters -----------------------
     /** get the "from" datasource name assigned to the sample set instance */
     public get sampleDataSource1() {
@@ -926,7 +926,7 @@ export class SzDataMartService {
     public get sampleMatchLevel() {
         return this.prefs.dataMart.sampleMatchLevel;
     }
-    /** set the matchLevel assigned to the sample set instance. 
+    /** set the matchLevel assigned to the sample set instance.
      *  will trigger new sampleset request if different from current one.
     */
     public set sampleMatchLevel(value: number) {
@@ -950,7 +950,7 @@ export class SzDataMartService {
             return this.prefs.dataMart.samplePageSize;
         }
     }
-    /** get the bound assigned to the sample set instance. this is either the 
+    /** get the bound assigned to the sample set instance. this is either the
      * "{entityId}" OR the combo "{entityId}:{relatedId}" that the sampleset ends/begins with.
      */
     public get sampleSetBound(): string {
@@ -960,7 +960,7 @@ export class SzDataMartService {
             return this._sampleSetBound;
         }
     }
-    /** set the bound assigned to the sample set instance. this is either the 
+    /** set the bound assigned to the sample set instance. this is either the
      * "{entityId}" OR the combo "{entityId}:{relatedId}" to start/end at.
      */
     public set sampleSetBound(value: string) {
@@ -970,7 +970,7 @@ export class SzDataMartService {
             this._sampleSetBound = value;
         }
     }
-    /** get the boundType assigned to the sample set instance. possible values are 
+    /** get the boundType assigned to the sample set instance. possible values are
      * "INCLUSIVE_LOWER" | "EXCLUSIVE_LOWER" | "INCLUSIVE_UPPER" | "EXCLUSIVE_UPPER"
      */
     public get sampleSetBoundType(): SzBoundType {
@@ -980,9 +980,9 @@ export class SzDataMartService {
             return this._sampleSetBoundType;
         }
     }
-    /** set the boundType assigned to the sample set instance. possible values are 
+    /** set the boundType assigned to the sample set instance. possible values are
      * "INCLUSIVE_LOWER" | "EXCLUSIVE_LOWER" | "INCLUSIVE_UPPER" | "EXCLUSIVE_UPPER"
-     * 
+     *
      *  will trigger new sampleset request if different from current one.
      */
     public set sampleSetBoundType(value: SzBoundType) {
@@ -1027,13 +1027,13 @@ export class SzDataMartService {
             this._sampleSetPrinciple = value;
         }
     }
-    /** get the statType assigned to the sample set instance 
+    /** get the statType assigned to the sample set instance
      * possible values are "MATCHES" | "AMBIGUOUS_MATCHES" | "POSSIBLE_MATCHES" | "POSSIBLE_RELATIONS" | "DISCLOSED_RELATIONS"
     */
     public get sampleStatType() : SzCrossSourceSummaryCategoryType {
         return this.prefs.dataMart.sampleStatType;
     }
-    /** set the statType assigned to the sample set instance 
+    /** set the statType assigned to the sample set instance
      * possible values are "MATCHES" | "AMBIGUOUS_MATCHES" | "POSSIBLE_MATCHES" | "POSSIBLE_RELATIONS" | "DISCLOSED_RELATIONS"
     */
     public set sampleStatType(value: SzCrossSourceSummaryCategoryType) {
@@ -1090,7 +1090,7 @@ export class SzDataMartService {
     /** when "matchLevel" for the sampleset is changed. */
     public onSummaryStats:              BehaviorSubject<SzSummaryStats | undefined>     = new BehaviorSubject<SzSummaryStats>(undefined);
 
-    /** when a new sample set is being requested 
+    /** when a new sample set is being requested
      * @internal
     */
     private _onSampleRequest$: Subscription;
@@ -1099,7 +1099,7 @@ export class SzDataMartService {
     /** on new sample request being made. */
     public  onSampleRequest = this._onSampleRequest.asObservable().pipe(
         filter((res) => { return res !== undefined; }),
-        distinctUntilChanged((prev, current) => { 
+        distinctUntilChanged((prev, current) => {
             return prev !== current;
         }),
         tap((res) => {
@@ -1129,7 +1129,7 @@ export class SzDataMartService {
     );
 
     constructor(
-        private http: HttpClient, 
+        private http: HttpClient,
         public prefs: SzPrefsService,
         private dataSourcesService: SzDataSourcesService,
         private entityDataService: EntityDataService,
@@ -1147,8 +1147,8 @@ export class SzDataMartService {
 
     // ------------------------------------ sub-routines and methods for more DRY ------------------------------------
 
-    /** 
-     * Request a new sampleset from the parameters passed to the method. 
+    /**
+     * Request a new sampleset from the parameters passed to the method.
      * sampleset is initialized and kept in a local reference */
     public createNewSampleSetFromParameters(statType: SzCrossSourceSummaryCategoryType, dataSource1?: string | undefined, dataSource2?: string | undefined, matchKey?: string, principle?: string, bound?: number, sampleSize?: number, pageSize?: number, unfilteredCount?: number) {
         // clear any previous subscription
@@ -1170,16 +1170,16 @@ export class SzDataMartService {
             this._onSampleNoResults$.unsubscribe();
             this._onSampleNoResults$ = undefined;
         }
-        
+
         console.log('createNewSampleSetFromParameters: ', {
-            statType: statType, 
-            dataSource1: dataSource1, 
-            dataSource2: dataSource2, 
-            matchKey: matchKey, 
-            principle: principle, 
-            bound: bound, 
-            sampleSize: sampleSize, 
-            pageSize: pageSize, 
+            statType: statType,
+            dataSource1: dataSource1,
+            dataSource2: dataSource2,
+            matchKey: matchKey,
+            principle: principle,
+            bound: bound,
+            sampleSize: sampleSize,
+            pageSize: pageSize,
             unfilteredCount: unfilteredCount
         });
         // initialize new sample set
@@ -1192,19 +1192,19 @@ export class SzDataMartService {
             principle: principle,
             pageSize: pageSize
         }, this.prefs, this.statsService, this.entityDataService);
-        
+
         if(unfilteredCount) {
             this._sampleSet.unfilteredCount = unfilteredCount;
             console.warn(`SET unfilteredCount to "${unfilteredCount}"`);
         } else {
             console.warn(`not setting unfilteredCount: "${unfilteredCount}"`);
         }
-        
+
         this._onSampleResultChange$ = this._sampleSet.onDataUpdated.pipe(
             tap((res) => {
                 // bubble up sample set evt to service scope
                 if(res && res.length === 0) {
-                    console.error('NOOOOO ${res}', res);
+                    console.error('NO ${res}', res);
                 }
                 this._onSampleRequest.next(false);
                 this._onSampleResultChange.next(res);
@@ -1245,7 +1245,7 @@ export class SzDataMartService {
             ).subscribe();
         }
     }
-    /** same as #getSummaryStatistics but with deboune safety 
+    /** same as #getSummaryStatistics but with deboune safety
      * @internal
     */
     private _getLatestSummaryStats() {
@@ -1298,7 +1298,7 @@ export class SzDataMartService {
                 map((response: SzCrossSourceSummaryResponse)=> response.data)
             );
         } else {
-            throw new Error('at least one datasource must be selected for cross-source statistics. datasouces may be the same to compare to self.');
+            throw new Error('at least one datasource must be selected for cross-source statistics. datasources may be the same to compare to self.');
         }
     }
     /** get the type of stat matching the type from the cross source stat data response. */
