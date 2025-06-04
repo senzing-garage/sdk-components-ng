@@ -119,7 +119,7 @@
 </ul>
 <p>All Web Component tag names are prefixed with <code>sz-wc</code>. This is to prevent tag namespace collision/pollution. When browsing any of the online documentation examples, and you see a tag start with <code>sz-</code>, just remember if you are using the <code>@senzing/sdk-components-web</code> package your tag name should start with <code>sz-wc</code> instead.</p>
 <p>The other main difference between the two implementations is that if using angular the attributes are <a href="https://en.wikipedia.org/wiki/Camel_case">Camel Case</a>, and if using web components the attributes are kabob case. See <a href="https://en.wikipedia.org/wiki/Letter_case#Special_case_styles">https://en.wikipedia.org/wiki/Letter_case#Special_case_styles</a></p>
-<p>When accessing a method or setter through the DOM on a web component programmatically however, you access the setter/method in camel case ie:</p>
+<p>When accessing a method or setter through the DOM on a web component programatically however, you access the setter/method in camel case ie:</p>
 <b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;sz-wc-standalone-graph
     filter-width=&quot;320&quot;
     graph-ids=&quot;1,1001,1002&quot;
@@ -130,7 +130,7 @@
     show-match-keys=&quot;true&quot;&gt;&lt;/sz-wc-standalone-graph&gt;
 
 &lt;script&gt;
-    // hide graph filter control programmatically
+    // hide graph filter control programatically
     document.querySelector(&#39;sz-wc-standalone-graph&#39;).showFiltersControl = false;
 &lt;/script&gt;</code></pre></div><h1>Getting Started</h1>
 <p>Getting set up to work with the Senzing SDK Components can be done in as little as 10 minutes if you already have an Senzing REST API Server installation running. </p>

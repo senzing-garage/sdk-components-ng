@@ -65,7 +65,10 @@ Please take note that all the same [interfaces, and services] from the [@senzing
 Just add the import statement for the particular component, service, or model that you want to use.
 
 ```typescript
-import { SzEntitySearchParams, SzAttributeSearchResult } from "@senzing/sdk-components-ng";
+import { 
+  SzEntitySearchParams, 
+  SzAttributeSearchResult 
+} from "@senzing/sdk-components-ng";
 ```
 
 ### Quick Start
@@ -86,8 +89,13 @@ import { SenzingSdkModule } from "@senzing/sdk-components-ng";
 import { AppComponent } from "./app.component";
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, SenzingSdkModule.forRoot()],
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule, 
+    SenzingSdkModule.forRoot()
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
@@ -122,7 +130,10 @@ The result should be a list of service configuration parameters and values.
 **6)** Verify that the components are working properly. The easiest way to do this is to is to just implement a search box, and a result list. Copy the following to your app.component.html file
 
 ```html
-<sz-search (resultsChange)="onSearchResults($event)"></sz-search> <sz-search-results [results]="currentSearchResults" (resultClick)="onSearchResultClick($event)"></sz-search-results>
+<sz-search (resultsChange)="onSearchResults($event)"></sz-search>
+<sz-search-results 
+[results]="currentSearchResults" 
+(resultClick)="onSearchResultClick($event)"></sz-search-results>
 ```
 
 now in your controller class (app.component.ts) add the _onSearchResults_ and _onSearchResultClick_ methods we just referenced above:

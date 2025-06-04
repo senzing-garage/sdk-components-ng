@@ -293,8 +293,8 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li><code>requestStarted</code> fixed</li>
 <li><code>requestComplete</code> fixed</li>
 <li><code>getNetwork</code> signature changed to <code>getNetwork(entityIds: SzEntityIdentifier[], maxDegrees: number, buildOut: number, maxEntities: number)</code></li>
-<li>the following event emitters have been rewired so that they are just proxies of
-the observable event streams for uniformity/reliability:<ul>
+<li>the following event emitters have been rewired so that they are just proxies of 
+the observeable event streams for uniformity/reliability:<ul>
 <li><code>onRequestStarted</code></li>
 <li><code>onRequestCompleted</code></li>
 <li><code>onRenderStarted</code></li>
@@ -319,7 +319,7 @@ the observable event streams for uniformity/reliability:<ul>
 <li><code>showWhyComparisonButton</code> enables a <em>multi-select</em> button behavior for search results that when clicked allows a user to click to toggle selection of an entity in the results then click the button to show a <em>WHY NOT</em> report for differences between those two entities.</li>
 </ul>
 </li>
-<li>The following getters and setters added to <code>SzEntityDetailComponent</code><ul>
+<li>The follwing getters and setters added to <code>SzEntityDetailComponent</code><ul>
 <li><code>showGraphContextMenu</code> enables the built-in context menu for entity nodes on the graph embedded in the entity detail component.</li>
 <li><code>showGraphLinkContextMenu</code> enables the built-in context menu for relationship lines/labels on the graph embedded in the entity detail component.</li>
 <li><code>graphMatchKeyTokenSelectionScope</code> possible values are &quot;CORE&quot; and &quot;EXTRANEOUS&quot;. core sets the scope of match key token filtering to just entities directly related to the focused/primary entity of the graph. defaults to <code>EXTRANEOUS</code>.</li>
@@ -330,11 +330,11 @@ the observable event streams for uniformity/reliability:<ul>
 <li><code>graphRelationshipClick</code> is emitted when a user clicks on relationship lines/labels in the embedded graph component.</li>
 </ul>
 </li>
-<li>The following properties added to <code>SzGraphComponent</code> and are inherited by <code>SzStandaloneGraphComponent</code> and <code>SzEntityDetailGraphComponent</code>.<ul>
+<li>The following properties added to <code>SzGraphComponent</code> and are inheirited by <code>SzStandaloneGraphComponent</code> and <code>SzEntityDetailGraphComponent</code>.<ul>
 <li><code>matchKeyTokenSelectionScope</code> possible values are &quot;CORE&quot; and &quot;EXTRANEOUS&quot;. core sets the scope of match key token filtering to just entities directly related to the focused/primary entity of the graph. defaults to <code>EXTRANEOUS</code>.</li>
 </ul>
 </li>
-<li>The following methods added to <code>SzGraphComponent</code> and are inherited by <code>SzStandaloneGraphComponent</code> and <code>SzEntityDetailGraphComponent</code>.<ul>
+<li>The following methods added to <code>SzGraphComponent</code> and are inheirited by <code>SzStandaloneGraphComponent</code> and <code>SzEntityDetailGraphComponent</code>.<ul>
 <li><code>canRemoveNode(entityId: SzEntityIdentifier)</code> returns boolean if an entity on canvas can be removed(root nodes, and primary query nodes cannot).</li>
 <li><code>canExpandNode(entityId: SzEntityIdentifier)</code> returns boolean if a node has hidden related entities that can be shown on canvas.</li>
 <li><code>removeNode(entityId: SzEntityIdentifier)</code> removes a single node and any directly related nodes </li>
@@ -398,7 +398,7 @@ the observable event streams for uniformity/reliability:<ul>
 <li><code>applyPositionToNodes</code> takes the X/Y values set on a node&#39;s data property and converts them to CSS transform properties</li>
 <li><code>updateLinksForNodes</code> when a node(s) position has changed this sub is called to keep the end of the link path attached to the node being moved</li>
 <li><code>attachEventListenersToNodes</code> attach internal handlers for things like click, drag, mouseover events to a selection of nodes so handlers are called.</li>
-<li><code>stopEventListenersForNodes</code> remove event handlers for a selection of nodes</li>
+<li><code>stopEventListenersForNodes</code> remove event handers for a selection of nodes</li>
 <li><code>attachEventListenersToLinks</code> attach internal handlers for things like click, drag, mouseover events to a selection of nodes so handlers are called.</li>
 <li><code>polarToCartesian</code> dependency for drawing concentric rings</li>
 <li><code>describeArc</code> dependency for drawing concentric rings</li>
@@ -438,8 +438,8 @@ the observable event streams for uniformity/reliability:<ul>
 <li><code>_graphIds</code> property on <code>SzGraphComponent</code> type changed from <code>number[]</code> to <code>SzEntityIdentifier[]</code></li>
 <li><code>graphIds</code> property getter and setter on <code>SzGraphComponent</code> type changed from <code>number[]</code> to <code>SzEntityIdentifier[]</code></li>
 <li><code>reload</code> method in <code>SzGraphComponent</code> parameter type changed to <code>string | number | SzEntityIdentifier | SzEntityIdentifier[]</code></li>
-<li>Major refactoring around the draw mechanism inside <code>SzRelationshipNetworkComponent</code>. Almost all of the routines in <code>addSvg</code> method reorganized or rewritten. The following subroutines added <ul>
-<li><code>onNodeContextClick</code> added the following to the <code>contextMenuClick</code> event emitter so the context menu could be positioned correctly.<ul>
+<li>Major refactoring around the draw mechanism inside <code>SzRelationshipNetworkComponent</code>. Almost all of the routiines in <code>addSvg</code> method reorganized or rewritten. The following subroutines added <ul>
+<li><code>onNodeContextClick</code> added the following to the <code>contextMenuClick</code> event emmitter so the context menu could be positioned correctly.<ul>
 <li><code>eventPageX</code> the x position on the page non-relative that the event occurred at.</li>
 <li><code>eventPageY</code> the y position on the page non-relative that the event occurred at.</li>
 </ul>
@@ -647,7 +647,7 @@ Documentation for <code>@senzing/sdk-components-web</code> now <a href="http://h
 </ul>
 <p>relevant tickets: #162, #159, #152, #137</p>
 <h2>[2.1.0] - 2020-09-21</h2>
-<p>Maintenance release for framework upgrade to Angular 10: see <a href="https://blog.angular.io/version-10-of-angular-now-available-78960babd41">https://blog.angular.io/version-10-of-angular-now-available-78960babd41</a></p>
+<p>Maintenence release for framework upgrade to Angular 10: see <a href="https://blog.angular.io/version-10-of-angular-now-available-78960babd41">https://blog.angular.io/version-10-of-angular-now-available-78960babd41</a></p>
 <p>Major updates to most dependency versions have also been made which should improve file sizes, security, and stability.</p>
 <p>The following Senzing projects have also been updated to operate on Angular 10,
 see the following links for associated tickets:</p>

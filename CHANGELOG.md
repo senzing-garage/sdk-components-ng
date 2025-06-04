@@ -196,7 +196,16 @@ relevant tickets: #309 #364 #383 #407 #413 #414 #415 #416 #417 #422 #423 #432 #4
   - `requestComplete` fixed
   - `getNetwork` signature changed to `getNetwork(entityIds: SzEntityIdentifier[], maxDegrees: number, buildOut: number, maxEntities: number)`
   - the following event emitters have been rewired so that they are just proxies of
-    the observable event streams for uniformity/reliability: - `onRequestStarted` - `onRequestCompleted` - `onRenderStarted` - `onRenderCompleted` - `onNoResults` - `onDataRequested` - `onDataLoaded` - `onDataUpdated` - `scaleChanged`
+    the observable event streams for uniformity/reliability: 
+    - `onRequestStarted` 
+    - `onRequestCompleted` 
+    - `onRenderStarted` 
+    - `onRenderCompleted` 
+    - `onNoResults` 
+    - `onDataRequested` 
+    - `onDataLoaded` 
+    - `onDataUpdated` 
+    - `scaleChanged`
 
 relevant tickets: #343 #344 #347 #348 #350 #355 #358
 

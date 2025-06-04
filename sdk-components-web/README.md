@@ -55,12 +55,12 @@ To listen for the result of a the search box completed search for example you wo
 event listener to the dom node ie:
 
 ```javascript
-document.querySelector("sz-search").addEventListener("resultsChange", function (evt) {
+document.querySelector('sz-search').addEventListener('resultsChange', function (evt) {
   if (evt.detail) {
     var searchResults = evt.detail;
     // check if results > 0
     if (searchResults > 0) {
-      console.log("SzAttributeSearchResult[]: ", searchResults);
+      console.log('SzAttributeSearchResult[]: ', searchResults);
     }
   }
 });
