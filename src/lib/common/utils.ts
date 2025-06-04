@@ -46,8 +46,8 @@ export function parseNumber(value: any) {
     return -1; // not a number
   } else if (typeof value === 'string') {
     return parseInt(value.trim());
-  } else if (typeof value === 'number') { 
-    return value as number; 
+  } else if (typeof value === 'number') {
+    return value as number;
   }
   return value as number;
 }
@@ -65,9 +65,9 @@ export function parseDate(value: any) {
       // valid date, cast to object
       return new Date(value);
     }
-    // not parseable datetime
+    // not parsable datetime
     return undefined
-  } 
+  }
 }
 /** convert value of any type who's value can be converted to SzIdentifier */
 export function parseSzIdentifier(value: any): number {
@@ -108,17 +108,17 @@ export function isNotNull(value?: string | any) {
 }
 
 /**
- * Function used to return an array of "SzDataSourceComposite" in the order 
+ * Function used to return an array of "SzDataSourceComposite" in the order
  * specified by each members "index" property
  */
 export function sortDataSourcesByIndex(value: SzDataSourceComposite[]): SzDataSourceComposite[] {
   let retVal  = value;
   if(retVal && retVal.sort) {
     // first sort by any existing indexes
-    retVal = retVal.sort((a, b) => {    
+    retVal = retVal.sort((a, b) => {
         if (a.index > b.index) {
             return 1;
-        } else if (a.index < b.index) {    
+        } else if (a.index < b.index) {
             return -1;
         } else {
           // sort by name
@@ -139,10 +139,10 @@ export function sortMatchKeysByIndex(value: SzMatchKeyComposite[]): SzMatchKeyCo
   let retVal  = value;
   if(retVal && retVal.sort) {
     // first sort by any existing indexes
-    retVal = retVal.sort((a, b) => {    
+    retVal = retVal.sort((a, b) => {
         if (a.index > b.index) {
             return 1;
-        } else if (a.index < b.index) {    
+        } else if (a.index < b.index) {
             return -1;
         } else {
           // sort by name
@@ -194,10 +194,10 @@ export function sortMatchKeyTokensByIndex(value: SzMatchKeyTokenComposite[]): Sz
   let retVal  = value;
   if(retVal && retVal.sort) {
     // first sort by any existing indexes
-    retVal = retVal.sort((a, b) => {    
+    retVal = retVal.sort((a, b) => {
         if (a.index > b.index) {
             return 1;
-        } else if (a.index < b.index) {    
+        } else if (a.index < b.index) {
             return -1;
         } else {
           // sort by name
@@ -225,7 +225,7 @@ export function isValueTypeOfArray(value: any) {
   return retVal;
 }
 
-/** are all values in one array present in the comparison array with no extra members 
+/** are all values in one array present in the comparison array with no extra members
  * present in either.
 */
 export function areArrayMembersEqual(value1: any[], value2: any[]) {
@@ -243,7 +243,7 @@ export function areArrayMembersEqual(value1: any[], value2: any[]) {
         if(_tempAllValsMap.has(valStr.toString())) { _tempAllValsMap.delete(valStr.toString()); }
       });
     }
-    
+
   }
   let noRemainder   = _tempAllValsMap.size <= 0;
   return noRemainder;

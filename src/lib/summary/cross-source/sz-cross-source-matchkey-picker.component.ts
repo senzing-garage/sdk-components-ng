@@ -85,7 +85,7 @@ import { SzPrefsService } from '../../services/sz-prefs.service';
     private _updateSampleData(matchKey: string) {
         console.log(`_updateSampleData: ${matchKey}`, matchKey);
         this.dataMartService.doNotFetchSampleSetOnParameterChange = true;
-        let changeWholeSampleSet = false; // we dont want to fetch new requests 4 times while we change parameters
+        let changeWholeSampleSet = false; // we don't want to fetch new requests 4 times while we change parameters
         if(this.dataMartService.sampleStatType !== this._statType) {
             changeWholeSampleSet = true;
             this.dataMartService.sampleStatType = this._statType;
@@ -116,20 +116,20 @@ import { SzPrefsService } from '../../services/sz-prefs.service';
         }
 
         if(changeWholeSampleSet) {
-            console.info(`\t_updateSampleData: `, this.dataMartService.sampleStatType, 
-            this.dataMartService.sampleDataSource1, 
-            this.dataMartService.sampleDataSource2, 
-            this.dataMartService.sampleSetMatchKey, 
+            console.info(`\t_updateSampleData: `, this.dataMartService.sampleStatType,
+            this.dataMartService.sampleDataSource1,
+            this.dataMartService.sampleDataSource2,
+            this.dataMartService.sampleSetMatchKey,
             this.dataMartService.sampleSetPrinciple,
             this.dataMartService.sampleSetUnfilteredCount);
 
             this.dataMartService.createNewSampleSetFromParameters(
-                this.dataMartService.sampleStatType, 
-                this.dataMartService.sampleDataSource1, 
-                this.dataMartService.sampleDataSource2, 
-                this.dataMartService.sampleSetMatchKey, 
+                this.dataMartService.sampleStatType,
+                this.dataMartService.sampleDataSource1,
+                this.dataMartService.sampleDataSource2,
+                this.dataMartService.sampleSetMatchKey,
                 this.dataMartService.sampleSetPrinciple,
-                undefined, undefined, undefined, 
+                undefined, undefined, undefined,
                 this.dataMartService.sampleSetUnfilteredCount).pipe(
                   takeUntil(this.unsubscribe$),
                   take(1),
@@ -214,7 +214,7 @@ import { SzPrefsService } from '../../services/sz-prefs.service';
     @HostBinding("class.sample-type-disclosed-relations") get classDisclosedRelations() {
       return this._statType === SzCrossSourceSummaryCategoryType.DISCLOSED_RELATIONS;
     }
-  
+
     constructor(public dialogRef: MatDialogRef<SzCrossSourceSummaryMatchKeyPickerDialog>,
         @Inject(MAT_DIALOG_DATA) public data: {
         data: Array<SzCrossSourceCount>,

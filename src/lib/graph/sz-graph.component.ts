@@ -17,7 +17,7 @@ import { SzCSSClassService } from '../services/sz-css-class.service';
  *
  * Optionally can display a embedded filter control to allow user
  * to change the components parameters of this component.
- * 
+ *
  * @internal
  * @example <!-- (Angular) -->
  * <sz-graph
@@ -61,7 +61,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   public isOpen: boolean = true;
 
   /**
-   * Observeable stream for the event that occurs when the graph is
+   * Observable stream for the event that occurs when the graph is
    * rendered for the first time.
    * TODO: remove in next 0.0.7 sdk-graph-components release
    */
@@ -223,7 +223,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   public get matchKeyTokensIncluded(): string[] {
     return this._matchKeyTokensIncluded;
   }*/
-  
+
   /** @internal */
   private _showPopOutIcon = false;
   /** whether or not to show the pop-out icon */
@@ -240,7 +240,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @Input() public set showFiltersControl(value: boolean | string) {
     this._showFiltersControl = parseBool(value);
   }
-  /** whether or not to show the filters drawer 
+  /** whether or not to show the filters drawer
    * @returns boolean
   */
   public get showFiltersControl(): boolean | string {
@@ -271,9 +271,9 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   /** @internal */
   protected _showCoreMatchKeyTokenChips: boolean            = false;
   /**
-   * whether or not to show only the match key token chips that apply 
-   * to "core" relationships. ie if the relationship is only between 
-   * the queried entity and 1 level away relationships. 
+   * whether or not to show only the match key token chips that apply
+   * to "core" relationships. ie if the relationship is only between
+   * the queried entity and 1 level away relationships.
    */
   @Input() public set showCoreMatchKeyTokenChips(value: boolean | string){
     this._showCoreMatchKeyTokenChips = parseBool(value);
@@ -283,9 +283,9 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     }
   }
   /**
-   * whether or not to show only the match key token chips that apply 
-   * to "core" relationships. ie if the relationship is only between 
-   * the queried entity and 1 level away relationships. 
+   * whether or not to show only the match key token chips that apply
+   * to "core" relationships. ie if the relationship is only between
+   * the queried entity and 1 level away relationships.
    */
   public get showCoreMatchKeyTokenChips(): boolean {
     return this._showCoreMatchKeyTokenChips;
@@ -293,11 +293,11 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   /** @internal */
   protected _showExtraneousMatchKeyTokenChips: boolean = true;
   /**
-   * whether or not to show only match key token chips that apply 
-   * to relationships between entities that are NOT directly related to 
-   * the primary entities. ie if the relationship is only between 
-   * a relatiohship between two entities that are not the primary queried 
-   * entity. 
+   * whether or not to show only match key token chips that apply
+   * to relationships between entities that are NOT directly related to
+   * the primary entities. ie if the relationship is only between
+   * a relationship between two entities that are not the primary queried
+   * entity.
    */
   @Input() public set showExtraneousMatchKeyTokenChips(value: boolean | string) {
     this._showExtraneousMatchKeyTokenChips = parseBool(value);
@@ -307,11 +307,11 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     }
   }
   /**
-   * whether or not to show only match key token chips that apply 
-   * to relationships between entities that are NOT directly related to 
-   * the primary entities. ie if the relationship is only between 
-   * a relatiohship between two entities that are not the primary queried 
-   * entity. 
+   * whether or not to show only match key token chips that apply
+   * to relationships between entities that are NOT directly related to
+   * the primary entities. ie if the relationship is only between
+   * a relationship between two entities that are not the primary queried
+   * entity.
    */
   public get showExtraneousMatchKeyTokenChips(): boolean {
     return this._showExtraneousMatchKeyTokenChips;
@@ -319,11 +319,11 @@ export class SzGraphComponent implements OnInit, OnDestroy {
 
   /** @internal */
   private _matchKeyTokenSelectionScope: SzMatchKeyTokenFilterScope       = SzMatchKeyTokenFilterScope.EXTRANEOUS;
-  /** sets the depth of what entities are shown when they match the 
+  /** sets the depth of what entities are shown when they match the
    * match key token filters. possible values are "CORE" and "EXTRANEOUS".
-   * when "CORE" is selected only entities that are directly related to queried 
-   * entity/entities are filtered by match key tokens. 
-   * when "EXTRANEOUS" is selected ALL entities no matter how they are related 
+   * when "CORE" is selected only entities that are directly related to queried
+   * entity/entities are filtered by match key tokens.
+   * when "EXTRANEOUS" is selected ALL entities no matter how they are related
    * are filtered by match key tokens.
    */
   @Input() public set matchKeyTokenSelectionScope(value: SzMatchKeyTokenFilterScope | string){
@@ -338,40 +338,40 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     //console.log(`@senzing/sdk-components-ng/sz-graph-component.matchKeyTokenSelectionScope(${value} | ${(this._matchKeyTokenSelectionScope as unknown as string)})`, this._matchKeyTokenSelectionScope);
   }
   /**
-   * get the value of match key token filterings scope. possible values are 
+   * get the value of match key token filtering scope. possible values are
    * "CORE" and "EXTRANEOUS".
-   * core means the filtering is only being applied to entities that are directly 
+   * core means the filtering is only being applied to entities that are directly
    * related to the primary entity/entities being displayed.
    */
   public get matchKeyTokenSelectionScope() {
     return this._matchKeyTokenSelectionScope as SzMatchKeyTokenFilterScope;
   }
-  
+
   /** whether or not to show match keys toggle control */
   @Input() set showMatchKeyControl(value: boolean | string) {
-    this._showMatchKeyControl = parseBool(value);    
+    this._showMatchKeyControl = parseBool(value);
   }
   get showMatchKeyControl(): boolean | string {
     return this._showMatchKeyControl;
   }
   @Input() set showMatchKeyFilters(value: boolean | string) {
-    this._showMatchKeysFilters = parseBool(value);    
+    this._showMatchKeysFilters = parseBool(value);
   }
   get showMatchKeyFilters(): boolean | string {
     return this._showMatchKeysFilters;
   }
   @Input() set showMatchKeyTokenFilters(value: boolean | string) {
-    this._showMatchKeyTokenFilters = parseBool(value);    
+    this._showMatchKeyTokenFilters = parseBool(value);
   }
   get showMatchKeyTokenFilters(): boolean | string {
     return this._showMatchKeyTokenFilters;
   }
   @Input() set showFilterTooltips(value: boolean | string) {
-    this._showFilterTooltips = parseBool(value);    
+    this._showFilterTooltips = parseBool(value);
   }
   get showFilterTooltips(): boolean | string {
     return this._showFilterTooltips;
-  } 
+  }
 
   private _showZoomControl: boolean = true;
   /** the whether or not the zoom control is shown */
@@ -434,7 +434,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @HostBinding('class.not-showing-inter-link-lines') public get hidingInterLinkLines(): boolean {
     return this._suppressL1InterLinks;
   }
-  
+
 
   @ViewChild('graphContainer') graphContainerEle: ElementRef<HTMLDivElement>;
   @ViewChild(SzGraphControlComponent) graphControlComponent: SzGraphControlComponent;
@@ -461,23 +461,23 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   /** @internal */
   private _requestNoResults: Subject<boolean> = new Subject<boolean>();
   /**
-   * Observeable stream for the event that occurs when a network
+   * Observable stream for the event that occurs when a network
    * request is initiated
    */
   @Output() public requestStarted: EventEmitter<boolean> = new EventEmitter<boolean>();
   /**
-   * Observeable stream for the event that occurs when a network
+   * Observable stream for the event that occurs when a network
    * request is completed
    */
   @Output() public requestComplete: EventEmitter<boolean> = new EventEmitter<boolean>();
   /**
-   * Observeable stream for the event that occurs when a draw
+   * Observable stream for the event that occurs when a draw
    * operation is completed
    */
   @Output() public renderStarted: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() public renderComplete: EventEmitter<boolean> = new EventEmitter<boolean>();
   /**
-   * Observeable stream for the event that occurs when a
+   * Observable stream for the event that occurs when a
    * request completed but has no results
    */
   @Output() public requestNoResults: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -533,7 +533,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     this.entityDblClick.emit(event);
   }
 
-  /** event is emitted when the collection of datasources present in graph dislay change*/
+  /** event is emitted when the collection of datasources present in graph display change*/
   @Output() dataSourcesChange: EventEmitter<any> = new EventEmitter<string[]>();
   /** event is emitted when the graph components data is updated or loaded */
   @Output() dataLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -541,9 +541,9 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   @Output() dataLoaded: EventEmitter<SzEntityNetworkData> = new EventEmitter<SzEntityNetworkData>();
   /** event is emitted when the graph components data is updated or loaded */
   @Output() dataUpdated: EventEmitter<SzEntityNetworkData> = new EventEmitter<SzEntityNetworkData>();
-  /** event is emitted when the collection of matchkeys present in graph dislay change */
+  /** event is emitted when the collection of matchkeys present in graph display change */
   @Output() matchKeysChange: EventEmitter<any> = new EventEmitter<string[]>();
-  /** event is emitted when the collection of matchkey tokens present in graph dislay change */
+  /** event is emitted when the collection of matchkey tokens present in graph display change */
   @Output() matchKeyTokensChange: EventEmitter<any> = new EventEmitter<SzMatchKeyTokenComposite[]>();
   /** event is emitted when a graph pre-flight request is performed */
   @Output() preflightRequestComplete: EventEmitter<any> = new EventEmitter<any>();
@@ -572,7 +572,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       let _existingKeyPos         = retVal.findIndex((mkComposite: SzMatchKeyTokenComposite) => {
         return mkComposite.name === dKey;
       })
-      if(_existingKeyPos < 0) { 
+      if(_existingKeyPos < 0) {
         retVal.push({
           derived: true,
           disclosed: false,
@@ -597,7 +597,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       let _existingKeyPos         = retVal.findIndex((mkComposite: SzMatchKeyTokenComposite) => {
         return mkComposite.name === dKey;
       })
-      if(_existingKeyPos < 0) { 
+      if(_existingKeyPos < 0) {
         retVal.push({
           derived: false,
           disclosed: true,
@@ -639,12 +639,12 @@ export class SzGraphComponent implements OnInit, OnDestroy {
   }
   /**
    * when new data has been added to the initial data request
-   * through ad-hoc expansion or some other process this handler 
+   * through ad-hoc expansion or some other process this handler
    * is invokes to build list of distinct match key tokens and datasource names
    * from data.
   */
   public onGraphDataUpdated(data: any) {
-    if(data && data.entities) { 
+    if(data && data.entities) {
       this.filterShowDataSources  = SzRelationshipNetworkComponent.getDataSourcesFromEntityNetworkData(data);
       let _matchKeyTokens         = SzRelationshipNetworkComponent.getMatchKeyTokensFromEntityData(data, this.graphIds);
       let matchKeyTokens          = this.getMatchKeyTokenComposites( _matchKeyTokens );
@@ -739,15 +739,15 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** when match keys are loaded in graph view, this handler is invoked to 
-   * transfer to filters component list 
+  /** when match keys are loaded in graph view, this handler is invoked to
+   * transfer to filters component list
    */
   onMatchKeysChange(data: string[]) {
     this.filterShowMatchKeys = data;
   }
 
-  /** when match keys are loaded in graph view, this handler is invoked to 
-   * transfer to filters component list 
+  /** when match keys are loaded in graph view, this handler is invoked to
+   * transfer to filters component list
    */
    onMatchKeyTokensChange(data: SzMatchKeyTokenComposite[]) {
     this.filterShowMatchKeyTokens = data;
@@ -902,13 +902,13 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     let _oldQueryParams = {maxDegrees: this.maxDegrees, maxEntities: this.maxEntities, buildOut: this.buildOut, unlimitedMaxEntities: this.unlimitedMaxEntities, unlimitedMaxScope: this.unlimitedMaxScope};
     let _newQueryParams = {maxDegrees: prefs.maxDegreesOfSeparation, maxEntities: prefs.maxEntities, buildOut: prefs.buildOut, unlimitedMaxEntities: prefs.unlimitedMaxEntities, unlimitedMaxScope: prefs.unlimitedMaxScope};
     if(
-      this.maxDegrees != prefs.maxDegreesOfSeparation || 
-      this.unlimitedMaxEntities != prefs.unlimitedMaxEntities || 
+      this.maxDegrees != prefs.maxDegreesOfSeparation ||
+      this.unlimitedMaxEntities != prefs.unlimitedMaxEntities ||
       (this.graphNetworkComponent && this.graphNetworkComponent.noMaxEntitiesLimit != prefs.unlimitedMaxEntities) ||
       (
         this.maxEntities != prefs.maxEntities &&
         (
-          (this.unlimitedMaxEntities != prefs.unlimitedMaxEntities) || 
+          (this.unlimitedMaxEntities != prefs.unlimitedMaxEntities) ||
           !this.unlimitedMaxEntities
         )
       ) ||
@@ -937,10 +937,10 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       console.warn('@senzing/sdk-components-ng/sz-graph-component.onPrefsChange(): query parameter changed!!!',
       this.maxDegrees != prefs.maxDegreesOfSeparation,
       this.maxEntities != prefs.maxEntities, // it's this one triggering when it shouldn't
-      this.maxEntities, 
+      this.maxEntities,
       prefs.maxEntities,
-      this.buildOut != prefs.buildOut, 
-      this.buildOut, prefs.buildOut, 
+      this.buildOut != prefs.buildOut,
+      this.buildOut, prefs.buildOut,
       prefs.unlimitedMaxEntities
       );*/
     }
@@ -971,12 +971,12 @@ export class SzGraphComponent implements OnInit, OnDestroy {
         .forEach((dsColorEntry: SzDataSourceComposite) => {
           if(dsColorEntry.color !== undefined) {
             this.graphContainerEle.nativeElement.style.setProperty(
-              `--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill`, 
+              `--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill`,
               dsColorEntry.color
             );
             //this.cssClassesService.setStyle(`.sz-node-ds-${dsColorEntry.name.toLowerCase()}`, "fill", dsColorEntry.color);
             this.cssClassesService.setStyle(`body .sz-relationship-network-graph .sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon .sz-node-ds-${dsColorEntry.name.toLowerCase()}-fill`, "fill", `var(--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill)`);
-            this.cssClassesService.setStyle(`body .sz-relationship-network-graph .sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon .sz-graph-node-icon-fill`, "fill", `var(--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill)`);  
+            this.cssClassesService.setStyle(`body .sz-relationship-network-graph .sz-node-ds-${dsColorEntry.name.toLowerCase()} .sz-graph-node-icon .sz-graph-node-icon-fill`, "fill", `var(--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill)`);
           } else {
             // try removing value of variable so we can unset any previous values
             this.graphContainerEle.nativeElement.style.removeProperty(`--sz-graph-node-ds-${dsColorEntry.name.toLowerCase()}-fill`);
@@ -1021,10 +1021,10 @@ export class SzGraphComponent implements OnInit, OnDestroy {
         this.graphNetworkComponent.buildOut             = this.buildOut;
       }
       if(queryParametersChanged.includes('unlimitedMaxEntities')){
-        this.graphNetworkComponent.noMaxEntitiesLimit   = this.unlimitedMaxEntities;        
+        this.graphNetworkComponent.noMaxEntitiesLimit   = this.unlimitedMaxEntities;
       }
       if(queryParametersChanged.includes('unlimitedMaxScope')){
-        this.graphNetworkComponent.noMaxScopeLimit      = this.unlimitedMaxScope;        
+        this.graphNetworkComponent.noMaxScopeLimit      = this.unlimitedMaxScope;
       }
       if(this._graphComponentRendered){
         console.log('re-rendering graph');
@@ -1116,7 +1116,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     }
     return _ret;
   }
-  
+
 
   /** get an array of SzGraphNodeFilterPair to use for highlighting certain graph nodes specific colors */
   public get entityNodeColors(): SzGraphNodeFilterPair[] {
@@ -1137,7 +1137,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     const _retVal = false;
     const _hasActiveEntColorSet = ( this.queriedEntitiesColor && this.queriedEntitiesColor !== undefined && this.queriedEntitiesColor !== null) ? true : false;
 
-    if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0 && 
+    if(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0 &&
     ((isColorQuery && _hasActiveEntColorSet) || !isColorQuery)){
       return false;
     } else {
@@ -1189,7 +1189,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
+
   /** @internal */
   private clearMatchKeyFilters() {
     if(this.prefs.graph) {
@@ -1210,7 +1210,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       return true;
     } else {
       if(nodeData && nodeData.relationshipMatchKeys && nodeData.relationshipMatchKeys.indexOf){
-        // D3 filter query 
+        // D3 filter query
         retVal = (nodeData.relationshipMatchKeys.some( (mkName) => {
           return matchKeys.indexOf(mkName) > -1;
         }));
@@ -1235,7 +1235,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
         }
         // and show everything else
       } else if(nodeData && (nodeData.isRelatedToPrimaryEntity || nodeData.relatedToPrimaryEntityDirectly || nodeData.isPrimaryEntity) && nodeData.coreRelationshipMatchKeyTokens && nodeData.coreRelationshipMatchKeyTokens.indexOf){
-        // D3 filter query 
+        // D3 filter query
         retVal = (nodeData.coreRelationshipMatchKeyTokens.some( (tokenName) => {
           return coreMatchKeyTokens.indexOf(tokenName) > -1;
         }));
@@ -1249,7 +1249,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       }
     } else {
       if(nodeData && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf){
-        // D3 filter query 
+        // D3 filter query
         retVal = (nodeData.relationshipMatchKeyTokens.some( (tokenName) => {
           return matchKeyTokens.indexOf(tokenName) > -1;
         }));
@@ -1258,15 +1258,15 @@ export class SzGraphComponent implements OnInit, OnDestroy {
       }
     }
     /*
-    console.log(`isMatchKeyTokenInEntityNode #last: 
-    ${(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0)} | 
-    ${coreMatchKeyTokens ? true : false} | 
-    (${this._matchKeyTokenSelectionScope}  ${(coreMatchKeyTokens && this._matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.CORE) ? true : false}) | 
-    ${(coreMatchKeyTokens && coreMatchKeyTokens.length === 0)} | 
-    ${(nodeData && (nodeData.isRelatedToPrimaryEntity || nodeData.relatedToPrimaryEntityDirectly || nodeData.isPrimaryEntity) && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf) ? true : false}`, 
-    coreMatchKeyTokens, 
-    matchKeyTokens, 
-    nodeData, 
+    console.log(`isMatchKeyTokenInEntityNode #last:
+    ${(this.neverFilterQueriedEntityIds && this.graphIds.indexOf( nodeData.entityId ) >= 0)} |
+    ${coreMatchKeyTokens ? true : false} |
+    (${this._matchKeyTokenSelectionScope}  ${(coreMatchKeyTokens && this._matchKeyTokenSelectionScope === SzMatchKeyTokenFilterScope.CORE) ? true : false}) |
+    ${(coreMatchKeyTokens && coreMatchKeyTokens.length === 0)} |
+    ${(nodeData && (nodeData.isRelatedToPrimaryEntity || nodeData.relatedToPrimaryEntityDirectly || nodeData.isPrimaryEntity) && nodeData.relationshipMatchKeyTokens && nodeData.relationshipMatchKeyTokens.indexOf) ? true : false}`,
+    coreMatchKeyTokens,
+    matchKeyTokens,
+    nodeData,
     retVal);
     */
     return retVal;
@@ -1314,8 +1314,8 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     //console.log(`@senzing/sdk-components-ng/sz-graph-component.canExpandNode: `, entityId);
     return this.graph.canExpandNode(entityId);
   }
-  /** 
-   * remove single node and any directly related nodes that are 
+  /**
+   * remove single node and any directly related nodes that are
    * only related to the entity specified.
    */
   public removeNode(entityId: SzEntityIdentifier) {
@@ -1329,7 +1329,7 @@ export class SzGraphComponent implements OnInit, OnDestroy {
     console.log(`@senzing/sdk-components-ng/sz-graph-component.collapseNode: `, entityId);
     this.graph.collapseNode(entityId);
   }
-  /** show any entities that are related to a specific entity that are 
+  /** show any entities that are related to a specific entity that are
    * currently not on the canvas
    */
   public expandNode(entityId: SzEntityIdentifier) {

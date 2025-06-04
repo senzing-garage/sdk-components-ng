@@ -296,19 +296,19 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
         return _bp.cssClass;
       })
     })
-    // proxy internal "Subject" to event emitter for tidyness
+    // proxy internal "Subject" to event emitter for tidiness
     this._onWhyButtonClicked.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe( (entityId: SzEntityIdentifier) => {
       this.onWhyButtonClick.emit(entityId);
     });
-    // proxy internal "Subject" to event emitter for tidyness
+    // proxy internal "Subject" to event emitter for tidiness
     this._onHowButtonClicked.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe( (payload: howClickEvent) => {
       this.onHowButtonClick.emit(payload);
     })
-    // proxy internal "Subject" to event emitter for tidyness
+    // proxy internal "Subject" to event emitter for tidiness
     this._onReEvaluateButtonClicked.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe( (payload: howClickEvent) => {
@@ -348,12 +348,12 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     return [];
   }
 
-  /** 
-   * when the user clicks the "why" button (if enabled with "showWhyFunction") 
+  /**
+   * when the user clicks the "why" button (if enabled with "showWhyFunction")
    * @internal
   */
   private _onWhyButtonClicked = new Subject<SzEntityIdentifier>();
-  /** (Observeable Event) when the user clicks the "why" button (if enabled with "showWhyFunction") */
+  /** (Observable Event) when the user clicks the "why" button (if enabled with "showWhyFunction") */
   public onWhyButtonClicked   = this._onWhyButtonClicked.asObservable();
   /** (Event Emitter) when the user clicks the "why" button (if enabled with "showWhyFunction") */
   @Output() onWhyButtonClick: EventEmitter<SzEntityIdentifier> = new EventEmitter<SzEntityIdentifier>();
@@ -367,12 +367,12 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
   public get showWhyFunction(): boolean {
     return this._showWhyFunction;
   }
-  /** 
-   * when the user clicks the "how" button (if enabled with "showHowFunction") 
+  /**
+   * when the user clicks the "how" button (if enabled with "showHowFunction")
    * @internal
   */
   private _onHowButtonClicked = new Subject<howClickEvent>();
-  /** (Observeable Event) when the user clicks the "how" button (if enabled with "showHowFunction") */
+  /** (Observable Event) when the user clicks the "how" button (if enabled with "showHowFunction") */
   public onHowButtonClicked   = this._onHowButtonClicked.asObservable();
   /** (Event Emitter) when the user clicks the "how" button (if enabled with "showHowFunction") */
   @Output() onHowButtonClick: EventEmitter<howClickEvent> = new EventEmitter<howClickEvent>();
@@ -403,9 +403,9 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     return this._howButtonDisabled ? "How not available. No resolution was required. " : "Click to see How this entity was resolved";
   }
   /**
-   * When user clicks the "How" button this handler is invoked 
-   * which then proxies the event to observeables and emitters 
-   * @internal 
+   * When user clicks the "How" button this handler is invoked
+   * which then proxies the event to observables and emitters
+   * @internal
   */
   public onHowButtonClickHandler(event: MouseEvent) {
     let _payload: howClickEvent = Object.assign(event);
@@ -415,9 +415,9 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
     this._onHowButtonClicked.next(_payload);
   }
   /**
-   * When user clicks the "Why" button this handler is invoked 
-   * which then proxies the event to observeables and emitters 
-   * @internal 
+   * When user clicks the "Why" button this handler is invoked
+   * which then proxies the event to observables and emitters
+   * @internal
   */
   public onWhyButtonClickHandler(event: any) {
     this._onWhyButtonClicked.next(this.entityId);
@@ -470,20 +470,20 @@ export class SzEntityDetailHeaderComponent implements OnInit, OnDestroy {
   public get reEvaluationMessage(): string {
     return this._reEvaluationMessage;
   }
-  
-  /** 
-   * when the user clicks the "how" button (if enabled with "showHowFunction") 
+
+  /**
+   * when the user clicks the "how" button (if enabled with "showHowFunction")
    * @internal
   */
   private _onReEvaluateButtonClicked = new Subject<howClickEvent>();
-  /** (Observeable Event) when the user clicks the "how" button (if enabled with "showHowFunction") */
+  /** (Observable Event) when the user clicks the "how" button (if enabled with "showHowFunction") */
   public onReEvaluateButtonClicked   = this._onReEvaluateButtonClicked.asObservable();
   /** (Event Emitter) when the user clicks the "how" button (if enabled with "showHowFunction") */
   @Output() onReEvaluateButtonClick: EventEmitter<howClickEvent> = new EventEmitter<howClickEvent>();
   /**
-   * When user clicks the "Why" button this handler is invoked 
-   * which then proxies the event to observeables and emitters 
-   * @internal 
+   * When user clicks the "Why" button this handler is invoked
+   * which then proxies the event to observables and emitters
+   * @internal
   */
   public onReEvaluateButtonClickHandler(event: any) {
     let _payload: howClickEvent = Object.assign(event);

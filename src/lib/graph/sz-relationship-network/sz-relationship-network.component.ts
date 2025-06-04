@@ -2,17 +2,17 @@ import { Component, Input, Output, HostBinding, OnInit, ViewChild, AfterViewInit
 import * as d3 from 'd3';
 import { NodeInfo, LinkInfo } from './graph-types';
 
-import { 
-  EntityGraphService, 
-  EntityDataService, 
-  SzEntityNetworkResponse, 
-  SzEntityNetworkData, 
+import {
+  EntityGraphService,
+  EntityDataService,
+  SzEntityNetworkResponse,
+  SzEntityNetworkData,
   SzRelationshipMode,
-  SzFeatureMode, 
-  SzRelatedEntity, 
-  SzEntityData, 
-  SzEntityIdentifier, 
-  SzEntityPath, 
+  SzFeatureMode,
+  SzRelatedEntity,
+  SzEntityData,
+  SzEntityIdentifier,
+  SzEntityPath,
   SzDetailLevel,
   SzEntityResponse
 } from '@senzing/rest-api-client-ng';
@@ -63,9 +63,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           }
         },
         {
-          'type': 'path', 
+          'type': 'path',
           attrs: {
-            'd': 'M 22.16 24.248 L 18.88 22.327 L 13.815 19.478 L 13.864 19.391 L 6.414 15.029 L 6.426 33.595 L 22.092 42.63 Z M 20.333 19.703 L 23.822 21.666 L 39.836 12.495 L 23.907 3.309 L 8.006 12.486 Z M 25.16 24.358 L 25.091 43.022 L 41.426 33.595 L 41.414 15.049 Z M 45.427 35.905 L 23.935 48.31 L 2.427 35.905 L 2.412 11.095 L 23.904 -1.31 L 45.412 11.095 Z', 
+            'd': 'M 22.16 24.248 L 18.88 22.327 L 13.815 19.478 L 13.864 19.391 L 6.414 15.029 L 6.426 33.595 L 22.092 42.63 Z M 20.333 19.703 L 23.822 21.666 L 39.836 12.495 L 23.907 3.309 L 8.006 12.486 Z M 25.16 24.358 L 25.091 43.022 L 41.426 33.595 L 41.414 15.049 Z M 45.427 35.905 L 23.935 48.31 L 2.427 35.905 L 2.412 11.095 L 23.904 -1.31 L 45.412 11.095 Z',
             'style':"stroke-width: 0px; stroke-linecap: round; stroke-linejoin: round;"
           }
         },
@@ -91,69 +91,69 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         {'type': 'line',    attrs: {'x1': "23.779", 'y1': "1.105",  'x2': "23.664", 'y2': "7.596", 'style':'stroke-width: 2px;'}},
         {'type': 'polygon', attrs: {points: "15.64 11.124 15.411 31.766 24.741 36.289 24.964 36.244 25.149 15.379", 'style':'fill-opacity: 0.75;', class: "sz-graph-node-icon-fill"}},
         {
-          'type': 'rect',    
+          'type': 'rect',
           attrs: {
             style: 'fill-opacity: 0.35; stroke-width: 1px;', class: "sz-graph-node-icon-fill",
             height: "9.788", transform: "matrix(-0.018042, 0.999837, -1.007432, 0.402843, 40.21048, -13.625907)", x: "23.466", y: "4.329", width: "20.616"
           }
         },
         {
-          'type': 'rect',    
+          'type': 'rect',
           attrs: {
             'style':'fill-opacity: 0.25;', class: "sz-graph-node-icon-fill",
             height: "2.112", transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 28.714645, 9.942789)", x: "19.509", y: "9.62", width:"3.191"
           }
         },
         {
-          'type': 'rect',    
+          'type': 'rect',
           attrs: {
             height: "5.854", transform: "matrix(-0.003082, 0.999995, -1.001202, 0.388327, 51.197021, -12.424412)", x: "28.798", y: "17.702", width:"9.521"
           }
         },
         {
-          'type': 'rect',    
+          'type': 'rect',
           attrs: {
             'style':'fill-opacity: 0.5;', class: "sz-graph-node-icon-fill",
             height: "7.268", transform: "matrix(-0.914328, -0.404975, 1.289519, -0.522545, 35.140316, 29.862576)", x: "24.535", y: "9.911", width: "10.319"
           }
         },
         {
-          'type': 'rect',    
+          'type': 'rect',
           attrs: {
             'style':'fill-opacity: 0.25;',
-            x:"19.509", y: "9.62", width: "3.191", height: "2.112", 
+            x:"19.509", y: "9.62", width: "3.191", height: "2.112",
             transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 32.736656, 11.856229)"
           }
         },
         {
-          'type': 'rect',    
+          'type': 'rect',
           attrs: {
             'style':'fill-opacity: 0.25;',
-            x:"19.509", y: "9.62", width: "3.191", height: "2.112", 
+            x:"19.509", y: "9.62", width: "3.191", height: "2.112",
             transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 28.792051, 5.020195)"
           }
         },
         {
-          'type': 'rect',    
+          'type': 'rect',
           attrs: {
             'style':'fill-opacity: 0.25;',
-            x:"19.509", y: "9.62", width: "3.191", height: "2.112", 
+            x:"19.509", y: "9.62", width: "3.191", height: "2.112",
             transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 32.742924, 6.862499)"
           }
         },
         {
-          'type': 'rect',    
+          'type': 'rect',
           attrs: {
             'style':'fill-opacity: 0.25;',
-            x:"19.509", y: "9.62", width: "3.191", height: "2.112", 
+            x:"19.509", y: "9.62", width: "3.191", height: "2.112",
             transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 28.869457, -0.05721)"
           }
         },
         {
-          'type': 'rect',    
+          'type': 'rect',
           attrs: {
             'style':'fill-opacity: 0.25;',
-            x:"19.509", y: "9.62", width: "3.191", height: "2.112", 
+            x:"19.509", y: "9.62", width: "3.191", height: "2.112",
             transform: "matrix(-0.002299, 0.999997, -0.998892, -0.483175, 32.794529, 1.810894)"
           }
         }
@@ -162,12 +162,12 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   };
   public entityId: number | undefined;
   chart: any;
-  /** whethor or not to show the tooltip */
+  /** whether or not to show the tooltip */
   tooltipShowing      = false;
   graphData: any;
   /** tooltip data for entity hover */
   public toolTipEntData: SzGraphTooltipEntityModel | undefined;
-  /** tooltip daata for entity relationship links */
+  /** tooltip data for entity relationship links */
   public toolTipLinkData: SzGraphTooltipLinkModel | undefined;
   /** data used to populate tooltip template, switched ref to either "toolTipEntData" or "toolTipLinkData" */
   public toolTipData: SzGraphTooltipEntityModel | SzGraphTooltipLinkModel | undefined;
@@ -187,42 +187,42 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
 
   /** @internal */
   private _dataRequested  = new BehaviorSubject<boolean>(false);
-  /** observeable for when new data has been requested from the api */
+  /** observable for when new data has been requested from the api */
   public dataRequested    = this._dataRequested.asObservable();
   /** @internal */
   private _dataLoaded     = new Subject<SzNetworkGraphInputs>();
-  /** observeable for when data has been updated */
+  /** observable for when data has been updated */
   public dataLoaded       = this._dataLoaded.asObservable();
   /** @internal */
   private _requestStarted: Subject<boolean> = new BehaviorSubject<boolean>(false);
-  /** observeable for when new data has been requested from the api */
+  /** observable for when new data has been requested from the api */
   public requestStarted   = this._requestStarted.asObservable().pipe(filter((value) => value !== false));
   /** @internal */
   private _requestComplete: Subject<boolean> = new BehaviorSubject<boolean>(false);
-  /** observeable stream for the event that occurs when a network api request is completed */
+  /** observable stream for the event that occurs when a network api request is completed */
   public requestComplete  = this._requestComplete.asObservable().pipe(filter((value) => value !== false));
   /** @internal */
   private _renderStarted: Subject<boolean> = new BehaviorSubject<boolean>(false);
-  /** Observeable stream that occurs when the rendering cycle of a graph is in progress */
+  /** Observable stream that occurs when the rendering cycle of a graph is in progress */
   public renderStarted = this._renderStarted.asObservable().pipe(filter((value) => value !== false));
   /** @internal */
   private _renderComplete: Subject<boolean> = new BehaviorSubject<boolean>(false);
-  /** observeable stream for the event that occurs when a draw operation is completed */
+  /** observable stream for the event that occurs when a draw operation is completed */
   public renderComplete = this._renderComplete.asObservable().pipe(filter((value) => value !== false));
   /** @internal */
   private _requestNoResults: Subject<boolean> = new BehaviorSubject<boolean>(false);
-  /** observeable stream for the event that occurs when a request completed but has no results */
+  /** observable stream for the event that occurs when a request completed but has no results */
   public noResults = this._requestNoResults.asObservable().pipe(filter((value) => value !== false));
   /** @internal */
   private _lastPrimaryRequestParameters: {
     entityIds: SzEntityIdentifier[],
     maxDegrees: number,
-    buildOut: number, 
+    buildOut: number,
     maxEntities: number
   } = undefined;
   /** @internal */
   private _onZoom: Subject<number> = new Subject<number>();
-  /** observeable stream for when the canvas zoom level is changed */
+  /** observable stream for when the canvas zoom level is changed */
   public onZoom: Observable<number> = this._onZoom.asObservable();
 
   /** Event emitter for the event that occurs when a network request is initiated*/
@@ -318,7 +318,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       return;
     }
     //this.render(value);
-  }  
+  }
   /**
    * arbitrary value just for drawing
    * @internal
@@ -357,7 +357,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
 
   /**
    * the preserveAspectRatio attribute on the svg element.
-   * @interal
+   * @internal
    */
   private _preserveAspectRatio: string = "xMidYMid meet";
    /**
@@ -408,7 +408,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
             _changed = true;
           }
         } else {
-          _changed = true;  
+          _changed = true;
         }
         this._entityIds = [value];
       }
@@ -422,7 +422,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           _changed = true;
         }
       } else {
-        _changed = true;  
+        _changed = true;
       }
       this._entityIds = [ value.toString() ];
     } else if(value && isValueTypeOfArray(value)) {
@@ -431,8 +431,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       this._entityIds   = (value as unknown as string[]).map((val) => { return val.toString(); });
 
       /*console.log(`entityIds = ${value}(any[]) | ${_changed} from "${_oldIds && _oldIds.join ? _oldIds.join(',') : ''}"`,
-        _oldIds, 
-        this._entityIds, 
+        _oldIds,
+        this._entityIds,
         new Map( (value as unknown as string[]).map((val) => { return [val.toString(), val]; })),
         (value as unknown as [])
       );*/
@@ -472,8 +472,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   /** @internal */
   private _maxEntitiesPreflightLimit: number | undefined;
   /** the maximum entities to pull back from the api request */
-  @Input() set maxEntities(value: string | number) { 
-    this._maxEntities = parseInt(value as string); 
+  @Input() set maxEntities(value: string | number) {
+    this._maxEntities = parseInt(value as string);
   }
   /** the maximum entities to pull back from the api request */
   public get maxEntities(): number {
@@ -522,31 +522,31 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
    * name label ellipsis clipping
    */
    private _labelMaxLength = 15;
-   @Input() public set labelMaxLength(value: number) { this._labelMaxLength = value; }  
+   @Input() public set labelMaxLength(value: number) { this._labelMaxLength = value; }
 
   private _zoomEnabled = true;
-  /** 
+  /**
    * can only be set to false prior to render cycle. default is true .
    */
-  @Input() public set zoomEnabled(value: boolean) { 
+  @Input() public set zoomEnabled(value: boolean) {
     this._zoomEnabled = value;
     if(value) {
       this.initializeZoom();
     }
   }
   /** is zooming enabled */
-  public get zoomEnabled(): boolean { 
-    return this._zoomEnabled !== undefined; 
+  public get zoomEnabled(): boolean {
+    return this._zoomEnabled !== undefined;
   }
   /** @internal */
   private _expandByDefaultWhenLessThan: number;
-  /** when this value is set, if the initial amount of relationships is 
+  /** when this value is set, if the initial amount of relationships is
    * less than this number than all items are unhidden by default
    */
   @Input() public set expandByDefaultWhenLessThan(value: number) {
     this._expandByDefaultWhenLessThan = value;
   }
-  /** when this value is set, if the initial amount of relationships is 
+  /** when this value is set, if the initial amount of relationships is
    * less than this number than all items are unhidden by default
    */
   public get expandByDefaultWhenLessThan(): number {
@@ -554,13 +554,13 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   }
   /** @internal */
   private _ignoreFilters: boolean;
-  /** if this value is set then we ignore all entity filtering regardless 
+  /** if this value is set then we ignore all entity filtering regardless
    * of whether or not the entity meets the condition
    */
   @Input() public set ignoreFilters(value: boolean) {
     this._ignoreFilters = value;
   }
-  /** if this value is set then we ignore all entity filtering regardless 
+  /** if this value is set then we ignore all entity filtering regardless
    * of whether or not the entity meets the condition
    */
   public get ignoreFilters(): boolean {
@@ -585,7 +585,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     if(value > 0) {
       this._scaleMin = value;
     } else {
-      console.warn('graph minumum zoom cannot be less than 1');
+      console.warn('graph minimum zoom cannot be less than 1');
     }
   }
 
@@ -683,7 +683,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     } else if (fnPair && fnPair.selectorFn) {
       if( this.node && this.node.each) {
         // D3
-        
+
         this.node.each((element, ind) => {
           let nodeMatches = fnPair.selectorFn(element);
           if(nodeMatches) {
@@ -915,7 +915,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   }
   /**
    * set the includes filter to apply to the display of nodes in graph. The default is to hide any
-   * nodes that do not return at least one true for the selectorFn called on the nodes in the graph. Similar to 
+   * nodes that do not return at least one true for the selectorFn called on the nodes in the graph. Similar to
    * filter, but arg is a single SzGraphNodeFilterPair instead of array and is inclusionary instead of exclusionary.
    */
   @Input() public set includes(fn: SzGraphNodeFilterPair | undefined) {
@@ -933,7 +933,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   }
   /**
    * apply the filters pairs set with "includes =" or pass a set of filter pairs in and run the functions
-   * on the graph data nodes. 
+   * on the graph data nodes.
    */
   public applyIncludeFilters(fn: SzGraphNodeFilterPair | undefined) {
     if(fn) {
@@ -1004,17 +1004,17 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   private _scaleRaw: number = 1;
   /** the current zoom level of the graph */
   public get zoom(): number {
-    let retVal = this._scaleRaw; 
+    let retVal = this._scaleRaw;
     return retVal;
   }
-  
+
   /** scalePerc is zoom amount on a 1-100 scale
    * calcs assume 1 == 75% so that should be default
   * @internal*/
   private _scalePerc: number = 75;
   /** the current amount the graph is scaled to. 1 - 100 value. */
   public get scale(): number {
-    let retVal = this._scalePerc; 
+    let retVal = this._scalePerc;
     return retVal;
   }
 
@@ -1025,7 +1025,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     this._scalePerc = value;
     // convert perc value above 50 to zoom value
     let units = (this._scaleMax - 1) / 50;
-    let zoomValue = ((value - 50) * units) + 1; 
+    let zoomValue = ((value - 50) * units) + 1;
     if(value < 50) {
       // divide by 1 for zoom-out
       let l1units = (1 - this._scaleMin) / 50;
@@ -1093,7 +1093,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       });
       this._expandNode(d);
     }
-    // we only want links to just read off of 
+    // we only want links to just read off of
     // whatever the visibility is of the nodes (K.I.S.S.)
     let hiddenEntities   = [];
     this.node.each((_rn) => {
@@ -1102,11 +1102,11 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       }
     });
 
-    // for each related node make sure the node has the 
+    // for each related node make sure the node has the
     // ".sz-graph-icon-edge-glyph-collapsed" class otherwise there will be no toggle bubble
 
-    // lines and line labels all use the same 
-    // data store, so setting "isHidden" from one 
+    // lines and line labels all use the same
+    // data store, so setting "isHidden" from one
     // will set it on the other as well
     this.link.each((_ln) => {
       let shouldBeHidden = (hiddenEntities.includes(_ln.targetEntityId) || hiddenEntities.includes(_ln.sourceEntityId));
@@ -1163,12 +1163,12 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       });
     }
   }
-  /** 
+  /**
    * Remove any directly related entity nodes from the node specified
-   * If they are themselves not related to another entity on the 
+   * If they are themselves not related to another entity on the
    * canvas directly.
    */
-  public collapseNode(entityId: SzEntityIdentifier) { 
+  public collapseNode(entityId: SzEntityIdentifier) {
     if(!entityId){
       return;
     }
@@ -1214,7 +1214,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     });
     return retVal;
   }
-  /** 
+  /**
    * gets the d3 data associated with nodes
    * @internal
    * @param nodeIds array of entityIds
@@ -1228,7 +1228,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   /**
    * recursively traverse related entities until the end at a
    * primary or core node.
-   * 
+   *
    */
   private getRelatedPaths(d): Array<any> {
     let retVal = [];
@@ -1238,8 +1238,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       let debugPrefix = '';
       for(let i=0; i < depth; i++) { debugPrefix = debugPrefix +'\t';}
 
-      // we only want data for nodes we havent already traversed
-      // this is so we dont PING-PONG between two related nodes
+      // we only want data for nodes we haven't already traversed
+      // this is so we don't PING-PONG between two related nodes
       let retData = this.getDataForNodes(entityIds).filter((rn) => {
         return !idsAlreadyTraversed.includes(rn.entityId);
       })
@@ -1247,8 +1247,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       idsAlreadyTraversed = idsAlreadyTraversed.concat(retData.map((rn) => { return rn.entityId; }));
       // are any of these related nodes the core node
       // if so stop traversal
-      let isAnyCoreNode = retData.some((rn) => { 
-        return (rn.isPrimaryEntity || rn.isCoreNode); 
+      let isAnyCoreNode = retData.some((rn) => {
+        return (rn.isPrimaryEntity || rn.isCoreNode);
       })
       //console.log(debugPrefix+`[${entityIds.join(',')}]: has core?`, isAnyCoreNode);
       //console.log(debugPrefix+'already traversed:', idsAlreadyTraversed);
@@ -1281,7 +1281,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     let relPaths = this.getRelatedPaths(d);
 
     /** I have no idea how this is doing the RIGHT thing
-     * but it is. I need to go back overrr this?? maybe? 
+     * but it is. I need to go back over this?? maybe?
      */
     return relPaths.filter((pathArrOrValue) => {
       return pathArrOrValue && pathArrOrValue === true;
@@ -1297,10 +1297,10 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   /**
    * Remove a node
    * Any nodes that are no longer connected to any anchor nodes are removed in a cascade.
-   * 
+   *
    * @internal
    * @param removeSource remove the source node from canvas. defaults to false
-   * @param removeDependents will remove all related nodes not connected to another node that is connected to 
+   * @param removeDependents will remove all related nodes not connected to another node that is connected to
    * a source/primary node.
    */
   private _removeNode(d: any, removeSource: boolean = false, removeDependents?: boolean) {
@@ -1327,7 +1327,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       });
     }
 
-    // we only want links to just read off of 
+    // we only want links to just read off of
     // whatever the visibility is of the nodes (K.I.S.S.)
     let hiddenEntities   = [];
     this.node.each((_rn) => {
@@ -1336,11 +1336,11 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       }
     });
 
-    // for each related node make sure the node has the 
+    // for each related node make sure the node has the
     // ".sz-graph-icon-edge-glyph-collapsed" class otherwise there will be no toggle bubble
 
-    // lines and line labels all use the same 
-    // data store, so setting "isHidden" from one 
+    // lines and line labels all use the same
+    // data store, so setting "isHidden" from one
     // will set it on the other as well
     this.link.each((_ln) => {
       let shouldBeHidden = (hiddenEntities.includes(_ln.targetEntityId) || hiddenEntities.includes(_ln.sourceEntityId));
@@ -1422,7 +1422,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     ).subscribe((value) => { this.onNoResults.emit(value) });
   }
 
-  /** since the user can set zoom to false and then "true" we need a way to 
+  /** since the user can set zoom to false and then "true" we need a way to
    * optionally enable zoom.
    */
   private initializeZoom() {
@@ -1477,7 +1477,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           if(gdata && gdata.data) {
             let entitiesById = new Set();
             (gdata.data as SzEntityNetworkData).entities.forEach((_rEntData: SzEntityData) => {
-              // for each entity 
+              // for each entity
               entitiesById.add(_rEntData.resolvedEntity.entityId);
               //entitiesById[_rEntData.resolvedEntity.entityId] = 1;
               if(_rEntData && _rEntData.relatedEntities && _rEntData.relatedEntities.forEach) {
@@ -1548,7 +1548,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
 
   private getNetworkComposite(entityId: SzEntityIdentifier, maxDegrees: number, buildOut: number, maxEntities: number) {
     let returnSubject     = new Subject<SzEntityNetworkResponse>();
-    let returnObserveable = returnSubject.asObservable();
+    let returnObservable = returnSubject.asObservable();
     if(console.time){
       try {
         console.time('graph composite data')
@@ -1566,8 +1566,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       SzFeatureMode.NONE,
       undefined,
       undefined,
-      undefined, 
-      SzRelationshipMode.PARTIAL, 
+      undefined,
+      SzRelationshipMode.PARTIAL,
       false
     ).pipe(
       tap(() => {
@@ -1588,7 +1588,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       SzFeatureMode.NONE,
       false,
       false,
-      false, 
+      false,
       SzRelationshipNetworkComponent.WITHOUT_RAW
     ).pipe(
       tap(() => {
@@ -1627,7 +1627,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       })*/
       returnSubject.next(modifiedResp);
     });
-    return returnObserveable
+    return returnObservable
   }
 
 
@@ -1646,25 +1646,25 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     if(
       this._lastPrimaryRequestParameters && (
       this._lastPrimaryRequestParameters.entityIds !== _lastPrimaryRequestParameters.entityIds ||
-      this._lastPrimaryRequestParameters.maxDegrees !== _lastPrimaryRequestParameters.maxDegrees || 
-      this._lastPrimaryRequestParameters.buildOut !== _lastPrimaryRequestParameters.buildOut || 
+      this._lastPrimaryRequestParameters.maxDegrees !== _lastPrimaryRequestParameters.maxDegrees ||
+      this._lastPrimaryRequestParameters.buildOut !== _lastPrimaryRequestParameters.buildOut ||
       this._lastPrimaryRequestParameters.maxEntities !== _lastPrimaryRequestParameters.maxEntities
     )) {
       _parametersChanged = true;
     }
 
-    let _hasEntityIds = ((entityIds && entityIds.length > 0 && _parametersChanged) || 
+    let _hasEntityIds = ((entityIds && entityIds.length > 0 && _parametersChanged) ||
     (entityIds && entityIds.length > 0 && _noLastRequestParameters));
 
-    /*console.log(`getNetwork(${entityIds},${maxDegrees},${buildOut},${maxEntities} | ${this.maxEntities}) | ${this._unlimitedMaxEntities}`, 
+    /*console.log(`getNetwork(${entityIds},${maxDegrees},${buildOut},${maxEntities} | ${this.maxEntities}) | ${this._unlimitedMaxEntities}`,
     _parametersChanged, _hasEntityIds, entityIds, entityIds.length,
     (entityIds && entityIds.length > 0 && _parametersChanged),
     (entityIds && entityIds.length > 0 && _noLastRequestParameters));*/
 
     this._lastPrimaryRequestParameters = _lastPrimaryRequestParameters;
     if(
-      entityIds && entityIds.length > 0 && _parametersChanged || 
-      entityIds && entityIds.length > 0 && _noLastRequestParameters) 
+      entityIds && entityIds.length > 0 && _parametersChanged ||
+      entityIds && entityIds.length > 0 && _noLastRequestParameters)
     {
       if(console.time){
         try {
@@ -1683,7 +1683,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         SzFeatureMode.NONE,
         false,
         false,
-        false, 
+        false,
         SzRelationshipNetworkComponent.WITHOUT_RAW).pipe(
           tap(() => {
             if(console.time){
@@ -1787,7 +1787,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     if(entityIds && entityIds !== undefined) {
       this.entityIds = entityIds;
     }
-    
+
     if(this.svgZoom && this.svgZoom.selectAll) {
       this.svgZoom.selectAll('*').remove();
     }
@@ -1873,7 +1873,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
 
       if(nodes && nodes.size) {
         let numberOfNodes = nodes.size();
-      
+
         nodes.each((_n, _j) => {
           let positionOnCircumference: SVGPoint = circleCoord(_n, _circle, _j, numberOfNodes, circleDiameter);
           _n.position = positionOnCircumference;
@@ -1897,15 +1897,15 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     let updateLinksForNodes = (_nodes) => {
       let _entityIds  = _nodes.data().map((_d) => { return _d.entityId; });
       let lnk         = this.link.filter(
-        (l) => { 
+        (l) => {
           return _entityIds.indexOf(l.sourceEntityId) > -1 || _entityIds.indexOf(l.targetEntityId);
         });
-      
+
       lnk.attr('d', this.onLinkEntityPositionChange.bind(this));
     }
     let attachEventListenersToNodes   = (_nodes, _tooltip, _labels?, _scope?: any) => {
       _scope  = _scope ? _scope : this;
-      // Make the tooltip visible when mousing over nodes. 
+      // Make the tooltip visible when mousing over nodes.
       if(_nodes && _nodes.on) {
         _nodes.on('mouseover.tooltip', function (event, d,j) {
           _tooltip.transition()
@@ -2022,7 +2022,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     }
     function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
       var angleInRadians = (angleInDegrees-90) * Math.PI / 180.0;
-    
+
       return {
         x: centerX + (radius * Math.cos(angleInRadians)),
         y: centerY + (radius * Math.sin(angleInRadians))
@@ -2033,23 +2033,23 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     function describeArc(x, y, radius, startAngle, endAngle){
         var start = polarToCartesian(x, y, radius, endAngle);
         var end = polarToCartesian(x, y, radius, startAngle);
-    
+
         var arcSweep = endAngle - startAngle <= 180 ? "0" : "1";
-    
+
         var d = [
-            "M", start.x, start.y, 
+            "M", start.x, start.y,
             "A", radius, radius, 0, arcSweep, 0, end.x, end.y,
             "L", x,y,
             "L", start.x, start.y
         ].join(" ");
-    
-        return d;       
+
+        return d;
     }
     // evenly space nodes along arc
     var circleCoord = function(node, circle, index, num_nodes, circleDiameter?: number): SVGPoint {
-      // we take alittle bit off the end otherwise itll count the last part of the path
+      // we take a little bit off the end otherwise it'll count the last part of the path
       // which goes from the center to the outer circumference of the circle
-      var circumference = circle.node().getTotalLength() - (circleDiameter ? circleDiameter * 2 : 0); 
+      var circumference = circle.node().getTotalLength() - (circleDiameter ? circleDiameter * 2 : 0);
       var pointAtLength = function(l){return circle.node().getPointAtLength(l)};
       var sectionLength = (circumference)/num_nodes;
       var position = sectionLength*index+sectionLength/2;
@@ -2069,7 +2069,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         // and add +2 entityGlyph widths/heights to diameter
         let _circDiameter       = minimumRingDiameter + (((ringSpacing*2) * ringIndex));
         let _circCircumference  = Math.PI * _circDiameter;
-        // now create a selection that has just the nodes that 
+        // now create a selection that has just the nodes that
         // should be drawn on the circles path
         let _itemsThatWillFitOnPath = Math.floor(_circCircumference / avgItemWidth);
         let _nodesToPosition = _nodes
@@ -2084,7 +2084,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         .filter((_n, _j) => {
           return _j >= lastPluckedIndex;
         }).size() <= 0;
-        if(circlesToDraw.length > 20) { 
+        if(circlesToDraw.length > 20) {
           ringCalcComplete = true; // estop
         }
         ringIndex = ringIndex+1;
@@ -2167,7 +2167,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       .attr('y', 0)
       .attr('x', 0)
       .each(function(d, i) {
-        let mkVertInc = 0;        
+        let mkVertInc = 0;
         //console.log('[adding link label]', d, d.matchKeyTokensFlat);
         let mkNodes = d3.select(this).selectAll('g.sz-graph-link-label')
         .data(d.matchKeyTokensFlat)
@@ -2202,15 +2202,15 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         // now that we have the line height
         // place the link labels vertically on the line
         _newLabels.attr('dy', function(mkNode, mki){
-            let retVal = d.matchKeyTokensFlat.length <= 1 ? 
-            ((_linkLabelTextSize-1) / 2) : 
-            (mki * _linkLabelLineHeight) - 
-            parseInt( 
-              d.matchKeyTokensFlat.length <= 1 ? 
-                (_linkLabelTextSize / 2)  : 
+            let retVal = d.matchKeyTokensFlat.length <= 1 ?
+            ((_linkLabelTextSize-1) / 2) :
+            (mki * _linkLabelLineHeight) -
+            parseInt(
+              d.matchKeyTokensFlat.length <= 1 ?
+                (_linkLabelTextSize / 2)  :
                 (
                   (d.matchKeyTokensFlat.length*_linkLabelLineHeight / 2) - _linkLabelLineHeight
-                ) as any 
+                ) as any
             );
             return retVal - 2;
           })
@@ -2288,10 +2288,10 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
             }
             // update entities with collapsed relationship information
             _newNodes.each(this.updateHasCollapsedRelationships.bind(this, _newNodes))
-                  
+
             // update initial visibility state
             _newNodes.attr('class', this.getEntityNodeClass.bind(this));
-            
+
             // Adds a background underneath the node labels.  This label is mostly opaque so that the label is still legible in
             // busy areas of a network.
             _newNodes.insert('svg:rect', 'text')
@@ -2307,7 +2307,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
 
             let businessNodes = _newNodes.filter(d => d.iconType === "business");
             let genericNodes  = _newNodes.filter(d => d.iconType === "default")
-            
+
             let _appendIconsForNodes = (_nodeList, _iconType) => {
               let _iconGroups = _nodeList.append('g');
 
@@ -2365,7 +2365,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
             // add icons for generic nodes
             _appendIconsForNodes(genericNodes, 'default');
             _appendIconsForNodes(businessNodes, 'business');
-          
+
           // --- render business nodes
 
             // add svg mask for business so you cant click through the surface
@@ -2428,7 +2428,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
             _newNodes.each(this.updateHasCollapsedRelationships.bind(this, _newNodes))
             // update initial visibility state
             _newNodes.attr('class', this.getEntityNodeClass.bind(this));
-            
+
             let _nodesWithCollapsibleRelationships = _newNodes.filter(d => !d.allRelatedEntitiesOnDeck || d.hasCollapsibleRelationships || (d.hasRelatedEdges && d.numberRelated > 1));
             if(_nodesWithCollapsibleRelationships) {
               // add bubble
@@ -2555,7 +2555,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       // update entities with collapsed relationship information
       _nodes.each(this.updateHasCollapsedRelationships.bind(this, _nodes))
       this.updateHiddenRelationshipCounts(_nodes);
-      
+
       // update initial visibility state
       _nodes.attr('class', this.getEntityNodeClass.bind(this));
 
@@ -2566,8 +2566,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       }
     }
 
-    let randomIntBetweenRange = (min, max) => { 
-      // min and max included 
+    let randomIntBetweenRange = (min, max) => {
+      // min and max included
       return Math.floor(Math.random() * (max - min + 1) + min)
     }
 
@@ -2581,12 +2581,12 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           map(this.addExistingNodeData.bind(this)),
           map(this.addLinksToNodeData.bind(this))
         ).subscribe((result: any) => {
-          
+
           // filter out already onDeck items
-          let _onDeckEntities = (this.node && this.node.data) ? 
+          let _onDeckEntities = (this.node && this.node.data) ?
             this.node.data().map((_odEnt) => { return _odEnt.entityId; }) : [];
           graph               = result;
-        
+
           // draw the links on canvas first so they are behind the nodes
           let _drawLnks   = drawLinks(result.links);
 
@@ -2615,7 +2615,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
             let hasSetPosition = (_d.x || _d.y || _d.x === 0 || _d.y === 0) ;
             return (d.relatedEntities.indexOf(_d.entityId) >= 0) && !hasSetPosition;
           });
-          
+
           //console.log('getNextLayerForEntity: links', this.linkedByNodeIndexMap, this.link.data());
           //console.log('getNextLayerForEntity: nodes', result.nodes, d.relatedEntities, newNodes.data());
 
@@ -2638,7 +2638,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     this._expandNodeAndRelated = expandNodeAndRelated;
 
     let onExpandCollapseClick     = (event, d) => {
-      // this handler always superceeds any click events etc
+      // this handler always supersedes any click events etc
       // so we stop propagation
       if(event && event.stopPropagation){ event.stopPropagation(); }
 
@@ -2668,7 +2668,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       // update entities with collapsed relationship information
       this.node.each(this.updateHasCollapsedRelationships.bind(this, this.node))
       this.updateHiddenRelationshipCounts(this.node);
-      
+
       // update initial visibility state
       this.node.attr('class', this.getEntityNodeClass.bind(this));
 
@@ -2683,11 +2683,11 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       // give the initial ring diameter a bit extra if there's a lot of items
       let nodesCircleSchema = drawNodesInRings(nodesToPosition);
       // make sure core nodes are positioned correctly
-      let coreClusterSpacing      = 200; 
+      let coreClusterSpacing      = 200;
       let ringsSortedByDiameter   = nodesCircleSchema.sort((csA, csB) => {
         return csB.diameter - csA.diameter;
       });
-      let inintialClusterOffset   = ringsSortedByDiameter && ringsSortedByDiameter.length > 0 ? ringsSortedByDiameter[0].diameter : 400;
+      let initialClusterOffset   = ringsSortedByDiameter && ringsSortedByDiameter.length > 0 ? ringsSortedByDiameter[0].diameter : 400;
       coreNodes
       .sort((_cnA, _cnB) => d3.descending(_cnA.numberRelated, _cnB.numberRelated))
       .each((_n, _j) => {
@@ -2698,7 +2698,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         })
         if(anyOtherNodeInSamePosition && _j > 0) {
           // reposition node so it's somewhere else
-          _n.x = inintialClusterOffset + (_j * randomIntBetweenRange(coreClusterSpacing, coreClusterSpacing+300));
+          _n.x = initialClusterOffset + (_j * randomIntBetweenRange(coreClusterSpacing, coreClusterSpacing+300));
           _n.y = (!(_j === 0 || _j % 2 === 0)) ? (0 - randomIntBetweenRange(50, 300)) : (0 + randomIntBetweenRange(150, 300));
         }
       });
@@ -2738,7 +2738,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     attachEventListenersToNodes(this.node, this._tooltip, this.nodeLabel, this);
     // Make the tooltip visible when mousing over links.
     attachEventListenersToLinks(this.link, this.linkLabel, this._tooltip, this);
-    // when we destroy commponent make sure the listeners are detached
+    // when we destroy component make sure the listeners are detached
     this.unsubscribe$.pipe(
       take(1)
     ).subscribe(() => {
@@ -2758,8 +2758,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       }catch(err){}
     }
   }
-  /** 
-   * update the relationship count bubble inside a entity node 
+  /**
+   * update the relationship count bubble inside a entity node
    * with the value from numberRelatedHidden
    */
   private updateHiddenRelationshipCounts(_nodes) {
@@ -2781,8 +2781,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   }
   /**
    * updates the "touchesFocalEntity" property on link lines
-   * and link labels. Then updates the css classes for both the 
-   * link lines and link text labels so that they can filtered in 
+   * and link labels. Then updates the css classes for both the
+   * link lines and link text labels so that they can filtered in
    * the UI bases on these properties
    */
   private updateIsRelatedToFocalEntitiesForLinks(links, linkLabels) {
@@ -2791,9 +2791,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     links.each((ll, i) => {
       if(ll && (ll.sourceEntityId || ll.targetEntityId)) {
         if(this.focalEntities && this.focalEntities.some) {
-          let isDirectlyRelatedToFocalEntity = this.focalEntities.some((focalEnt: SzEntityIdentifier) => { 
+          let isDirectlyRelatedToFocalEntity = this.focalEntities.some((focalEnt: SzEntityIdentifier) => {
             return (
-              parseSzIdentifier(focalEnt) === parseSzIdentifier(ll.sourceEntityId) || 
+              parseSzIdentifier(focalEnt) === parseSzIdentifier(ll.sourceEntityId) ||
               parseSzIdentifier(focalEnt) === parseSzIdentifier(ll.targetEntityId));
           }) ? true : false;
           ll.touchesFocalEntity = isDirectlyRelatedToFocalEntity;
@@ -2809,12 +2809,12 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     }
   }
 
-  /** 
-   * ensure that a link node(line) is not visible if one 
+  /**
+   * ensure that a link node(line) is not visible if one
    * of the connected nodes is not visible
    */
   private updateIsHiddenForLinks(hiddenNodes, _ln) {
-    // we only want links to just read off of 
+    // we only want links to just read off of
     // whatever the visibility is of the nodes (K.I.S.S.)
     if(!_ln){
       //console.warn(`updateIsHiddenForLinks: `,_ln, hiddenNodes);
@@ -2830,8 +2830,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     //console.log('checking if line between '+ _ln.sourceEntityId +' and '+ _ln.targetEntityId +' should be hidden: '+ shouldBeHidden, hiddenNodes.includes(_ln.sourceEntityId), hiddenNodes.includes(_ln.targetEntityId), hiddenNodes);
   }
   /**
-   * get the css classes as a space separate string 
-   * to apply to an entity link node(line) 
+   * get the css classes as a space separate string
+   * to apply to an entity link node(line)
    */
   private getEntityLinkClass(_ln) {
     let _visibilityClass      = _ln.isHidden ? ['sz-node-state-hidden']  : [];
@@ -2850,8 +2850,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     return _classes.join(' ');
   }
   /**
-   * get the css classes as a space separate string 
-   * to apply to an entity node 
+   * get the css classes as a space separate string
+   * to apply to an entity node
    */
   private getEntityNodeClass(_d) {
     let _visibilityClass        = _d.isHidden ?                   ['sz-node-state-hidden']  : [];
@@ -2905,8 +2905,8 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       return relatedEntityIds && relatedEntityIds.indexOf && relatedEntityIds.indexOf(d.entityId) >= 0;
     })
   }
-  /** 
-   * return an array of entity ids for nodes 
+  /**
+   * return an array of entity ids for nodes
    * that exist on canvas but are not currently visible
    */
   private getHiddenNodeIds(_nodeData) {
@@ -2918,9 +2918,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     }
     return _retVal;
   }
-  /** 
-   * get the css classes as a space separate string 
-   * to apply to an entity link label node 
+  /**
+   * get the css classes as a space separate string
+   * to apply to an entity link label node
    */
   private getEntityLinkLabelClass (_ln) {
     let _visibilityClass      = _ln.isHidden ? ['sz-node-state-hidden']  : [];
@@ -2977,9 +2977,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     let collapsibleNodes            = (d.relatedEntities && d.relatedEntities.filter) ? d.relatedEntities.filter((_d) => {
       return !nonRemovableNodes.includes(_d.entityId);
     }) : [];
-    /** 
+    /**
      * TODO: I dunno why but nodes that were previously edge nodes
-     * become core nodes on expansion so the bubble dissapears
+     * become core nodes on expansion so the bubble disappears
      * I just need to fix this issue then code cleanup
      */
     let hasCollapsibleRelationships = collapsibleNodes.length > 0 && !(d.isCoreNode || d.isPrimaryEntity);
@@ -3054,7 +3054,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       retVal += "</ul>";
     }*/
     //console.log('tt match key categories by entity id: ', d.matchKeyCategoriesByEntityId[d.entityId], d.coreRelationshipMatchKeyTokens[ d.entityId ]);
-    
+
     //retVal += "<br/><strong>areAllRelatedEntitiesOnDeck(1)</strong>: "+ d.allRelatedEntitiesOnDeck;
     //retVal += "<br/><strong>numberRelated</strong>: "+ d.numberRelated;
     //retVal += "<br/><strong>numberRelatedOnDeck</strong>: "+ d.numberRelatedOnDeck;
@@ -3078,7 +3078,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
       this.linkedByNodeIndexMap[`${b.index},${a.index}`] ||
       a.index === b.index;
   }
-  
+
   /**
    * handler for when a relationship link label is clicked.
    * proxies to synthetic event "relationshipClick"
@@ -3246,7 +3246,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
    * line so that it stays connected
    */
   private onLinkEntityPositionChange(linkNode) {
-    // get source and target x position 
+    // get source and target x position
     // so were always left to right
     let linkedNodes   = this.getNodesByIdQuery([linkNode.sourceEntityId,linkNode.targetEntityId]);
     let _linkTargets  = {source: linkNode.source, target: linkNode.target }
@@ -3270,7 +3270,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   private onNodeDragged(event, d) {
     d.x = event.x;
     d.y = event.y;
-    
+
     this.node.filter((_d) => {
       return _d.entityId === d.entityId;
     })
@@ -3279,11 +3279,11 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     .attr('transform',`translate(${d.x},${d.y})`)
 
     let lnk = this.link.filter(
-      (l) => { 
+      (l) => {
         //console.log(`lnk filter: `, l.sourceEntityId, d.entityId);
-        return l.sourceEntityId === d.entityId || l.targetEntityId === d.entityId; 
+        return l.sourceEntityId === d.entityId || l.targetEntityId === d.entityId;
       });
-    
+
     lnk.attr('d', this.onLinkEntityPositionChange.bind(this));
   }
 
@@ -3294,7 +3294,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   private mergeGData(targetData: any, srcData: any) {
     const srcEntityPaths  = srcData ? srcData.entityPaths : undefined;
     const srcEntitiesData = srcData.nodes;
-   
+
     let entitiesInTarget  = targetData.nodes.map((entNode) => {
       return entNode.entityId;
     })
@@ -3315,9 +3315,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   }
 
   /**
-   * gets the data from the current nodes and links displayed in 
+   * gets the data from the current nodes and links displayed in
    * the graph as SzEntityNetworkData formatted data
-   * @returns 
+   * @returns
    */
   private asEntityNetworkData(): SzEntityNetworkData {
     let returnValue: {
@@ -3455,7 +3455,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           if(_relatedMatchCategory && _relatedMatchCategory.length == 2) {
             //console.log(`\t\t\thas match key categories..`);
             if(
-              (_relatedMatchCategory && _relatedMatchCategory[0] && _relatedMatchCategory[0].length > 0) || 
+              (_relatedMatchCategory && _relatedMatchCategory[0] && _relatedMatchCategory[0].length > 0) ||
               (_relatedMatchCategory && _relatedMatchCategory[1] && _relatedMatchCategory[1].length > 0)
             ){
               //console.log(`\t\t\thas match key categories..`);
@@ -3504,7 +3504,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
               // not sure whats going on here
             }
           }
-          
+
         });
       }
     });
@@ -3512,7 +3512,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     //console.log(`related Match Key Categories: `,matchKeyCategoriesByEntityId);
     //console.log(`related Core Categories: `,matchKeyCoreCategoriesByEntityId);
 
-    
+
     //console.log('-------------------- end match key map routine --------------------');
 
 
@@ -3541,7 +3541,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
             // when entity has a related entity that is not the primary or searched for user can hide/show it
             hasCollapsibleRelationships = true;
           }
-        }); 
+        });
       }
 
       const relColorClasses = [];
@@ -3562,7 +3562,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         dataSourceClasses = resolvedEntity.recordSummaries && resolvedEntity.recordSummaries.map ? resolvedEntity.recordSummaries.map((ds) => { return (ds.dataSource && ds.dataSource.toLowerCase) ? `sz-node-ds-${ds.dataSource.toLowerCase()}`:`sz-node-ds-${ds.dataSource}`; }) : undefined;
       }
 
-      // entitities who use this entity as it's source
+      // entities who use this entity as it's source
       // Create Node
       entityIndex.push(entityId);
       const features = resolvedEntity.features;
@@ -3570,7 +3570,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         address: resolvedEntity.addressData && resolvedEntity.addressData.length > 0 ? resolvedEntity.addressData[0] : SzRelationshipNetworkComponent.firstOrNull(features, "ADDRESS"),
         areAllRelatedEntitiesOnDeck: false,
         coreRelationshipMatchKeyTokens: coreRelatedMatchKeyCategories,
-        dataSources: resolvedEntity.recordSummaries && resolvedEntity.recordSummaries.map ? resolvedEntity.recordSummaries.map((ds) =>  ds.dataSource ) : undefined, 
+        dataSources: resolvedEntity.recordSummaries && resolvedEntity.recordSummaries.map ? resolvedEntity.recordSummaries.map((ds) =>  ds.dataSource ) : undefined,
         dataSourceClasses: dataSourceClasses,
         entityId: entityId,
         hasCollapsedRelationships: relatedToPrimaryEntityDirectly && (relatedEntities && relatedEntities.length > 0),
@@ -3619,7 +3619,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     let _lineCharCount    = 0;
     let _lineCurrent      = '';
     let name_lines        = [name]; // default to whole name if no other conditions are met
-    let name_words        = name && name.split ? name.split(' ') : []; 
+    let name_words        = name && name.split ? name.split(' ') : [];
 
     if(name_words && name_words.forEach) {
       name_lines = [];
@@ -3677,9 +3677,9 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           let isRelatedToFocalEntity = false;
 
           if(this.focalEntities && this.focalEntities.some) {
-            isRelatedToFocalEntity = this.focalEntities.some((focalEnt: SzEntityIdentifier) => { 
+            isRelatedToFocalEntity = this.focalEntities.some((focalEnt: SzEntityIdentifier) => {
               return (
-                parseSzIdentifier(focalEnt) === parseSzIdentifier(entityInfo.entityId) || 
+                parseSzIdentifier(focalEnt) === parseSzIdentifier(entityInfo.entityId) ||
                 parseSzIdentifier(focalEnt) === parseSzIdentifier(relatedEntity.entityId));
             }) ? true : false;
           }
@@ -3711,7 +3711,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
           }
           if(matchKeyCategoriesByEntityId[ relatedEntityId ] && matchKeyCategoriesByEntityId[ relatedEntityId ].concat) {
             matchKeyCategoriesByEntityId[ relatedEntityId ] = matchKeyCategoriesByEntityId[ relatedEntityId ].concat(_relatedMatchCategory[0]).concat(_relatedMatchCategory[1])
-            
+
           }
           // de-dupe values
           matchKeyCategoriesByEntityId[ relatedEntityId ] = matchKeyCategoriesByEntityId[ relatedEntityId ].filter((value, index, self) => {
@@ -3850,13 +3850,13 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     const _datasources = [];
     if(data && data.entities && data.entities.map) {
       // flatten first
-      const entititiesDS = data.entities.map( (entity) => {
+      const entitiesDS = data.entities.map( (entity) => {
         if(entity.resolvedEntity.recordSummaries && entity.resolvedEntity.recordSummaries.map) {
           return entity.resolvedEntity.recordSummaries.map( (_ds) => _ds.dataSource);
         }
         return entity.resolvedEntity.recordSummaries;
       });
-      entititiesDS.forEach( (element: string[]) => {
+      entitiesDS.forEach( (element: string[]) => {
         if(element && element.forEach) {
           element.forEach( (_dsString: string) => {
             if(_datasources.indexOf(_dsString) === -1) {
@@ -3967,11 +3967,11 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
     }
     return _matchkeys;
   }
-  /** 
-   * takes a complex match key like "NAME+ADDRESS-DOB (Ambiguous)" and turns it in to 
-   * an array of positive tokens like ["NAME","ADDRESS","Ambiguous"]. 
-   * keys categorized as "disclosed" type(s) are return value position[0]. 
-   * keys categorized as "derived" type(s) are return value position[1]. 
+  /**
+   * takes a complex match key like "NAME+ADDRESS-DOB (Ambiguous)" and turns it in to
+   * an array of positive tokens like ["NAME","ADDRESS","Ambiguous"].
+   * keys categorized as "disclosed" type(s) are return value position[0].
+   * keys categorized as "derived" type(s) are return value position[1].
    */
   public static tokenizeMatchKey(matchKey: string) {
     let disclosedKeys = [];
@@ -4029,7 +4029,7 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
   }
   /**
    * Takes the data from a graph request and scans all entities found for relationship match keys.
-   * match keys found are broken in to constituant tokens and classified as either 
+   * match keys found are broken in to constituent tokens and classified as either
    * "DISCLOSED" or "DERIVED" types. The members of the return value for "DERIVED" or "DISCLOSED" are
    * arrays of the entity ids found in the data that have that match key token present.
    */
@@ -4057,14 +4057,14 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         // if core link and we're returning that option add to core derived
         if(retValue && retValue.CORE && entityMatchKeysResult.isCoreRelationship) {
           if(!retValue.CORE.DISCLOSED[entityDisclosedMatchKey]) { retValue.CORE.DISCLOSED[entityDisclosedMatchKey] = []; }
-          if(retValue.CORE.DISCLOSED[entityDisclosedMatchKey].indexOf(entityMatchKeysResult.entityId) <= -1){ 
+          if(retValue.CORE.DISCLOSED[entityDisclosedMatchKey].indexOf(entityMatchKeysResult.entityId) <= -1){
             retValue.CORE.DISCLOSED[entityDisclosedMatchKey].push(entityMatchKeysResult.entityId);
           }
         }
         // if there is no current key in disclosed create it
         if(!retValue.DISCLOSED[entityDisclosedMatchKey]) { retValue.DISCLOSED[entityDisclosedMatchKey] = []; }
-        // if match key doesnt already have entityId add it
-        if(retValue.DISCLOSED[entityDisclosedMatchKey].indexOf(entityMatchKeysResult.entityId) <= -1){ 
+        // if match key doesn't already have entityId add it
+        if(retValue.DISCLOSED[entityDisclosedMatchKey].indexOf(entityMatchKeysResult.entityId) <= -1){
           retValue.DISCLOSED[entityDisclosedMatchKey].push(entityMatchKeysResult.entityId);
         }
       });
@@ -4072,14 +4072,14 @@ export class SzRelationshipNetworkComponent implements AfterViewInit, OnDestroy 
         // if core link and we're returning that option add to core derived
         if(retValue && retValue.CORE && entityMatchKeysResult.isCoreRelationship) {
           if(!retValue.CORE.DERIVED[entityDerivedMatchKey]) { retValue.CORE.DERIVED[entityDerivedMatchKey] = []; }
-          if(retValue.CORE.DERIVED[entityDerivedMatchKey].indexOf(entityMatchKeysResult.entityId) <= -1){ 
+          if(retValue.CORE.DERIVED[entityDerivedMatchKey].indexOf(entityMatchKeysResult.entityId) <= -1){
             retValue.CORE.DERIVED[entityDerivedMatchKey].push(entityMatchKeysResult.entityId);
           }
         }
         // if there is no current key in derived create it
         if(!retValue.DERIVED[entityDerivedMatchKey]) { retValue.DERIVED[entityDerivedMatchKey] = []; }
-        // if match key doesnt already have entityId add it
-        if(retValue.DERIVED[entityDerivedMatchKey].indexOf(entityMatchKeysResult.entityId) <= -1){ 
+        // if match key doesn't already have entityId add it
+        if(retValue.DERIVED[entityDerivedMatchKey].indexOf(entityMatchKeysResult.entityId) <= -1){
           retValue.DERIVED[entityDerivedMatchKey].push(entityMatchKeysResult.entityId);
         }
       });

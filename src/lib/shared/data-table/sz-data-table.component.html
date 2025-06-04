@@ -3,11 +3,11 @@
   <div class="sz-dt-header-context-menu" cdkMenu>
     <button class="header-context-menu-item" cdkMenuItem *ngIf="!isColumnHidden(col.key)" (click)="selectColumn(col.key, false)">Hide Column</button>
     <button class="header-context-menu-item" cdkMenuItem *ngIf="isColumnHidden(col.key)" (click)="selectColumn(col.key, true)">Show Column</button>
-    <button class="header-context-menu-item" cdkMenuItem 
+    <button class="header-context-menu-item" cdkMenuItem
       [cdkMenuTriggerFor]="sz_dt_header_column_order_context_menu"
       [cdkMenuTriggerData]="{$implicit: col}"
     >Column Order</button>
-    <button class="header-context-menu-item" cdkMenuItem 
+    <button class="header-context-menu-item" cdkMenuItem
     [cdkMenuTriggerFor]="sz_dt_header_row_order_context_menu"
     [cdkMenuTriggerData]="{$implicit: col}">Order By {{col.value}}</button>
   </div>
@@ -19,13 +19,13 @@
     <button class="header-context-menu-item" cdkMenuItem (click)="moveColumn(col.key, (0 - columnOrder(col.key)))">Send to Front</button>
   </div>
 </ng-template>
-<ng-template #sz_dt_header_row_order_context_menu let-col> 
+<ng-template #sz_dt_header_row_order_context_menu let-col>
   <div class="sz-dt-header-context-menu submenu" cdkMenu>
-    <button class="header-context-menu-item" cdkMenuItemRadio 
+    <button class="header-context-menu-item" cdkMenuItemRadio
       [cdkMenuItemChecked]="sortDirection === 'ASC'"
       (cdkMenuItemTriggered)="sortBy(col.key,'ASC')">Ascending</button>
-    <button class="header-context-menu-item" cdkMenuItemRadio 
-      [cdkMenuItemChecked]="sortDirection === 'DESC'">Decending</button>
+    <button class="header-context-menu-item" cdkMenuItemRadio
+      [cdkMenuItemChecked]="sortDirection === 'DESC'">Descending</button>
   </div>
 </ng-template>
 <ng-template #sz_dt_cell_context_menu let-data>
@@ -36,8 +36,8 @@
   </div>
 </ng-template>-->
 <div class="column-picker-button">
-  <button mat-raised-button 
-    matTooltip="Choose Columns.." 
+  <button mat-raised-button
+    matTooltip="Choose Columns.."
     matTooltipPosition="left"
     [matMenuTriggerFor]="columnsSelector" aria-label="Choose Columns">
     <div class="icon-columns-select mdi--view-column-outline"></div>
@@ -57,10 +57,10 @@
     <thead>
       <tr style="order: 0" (mousemove)="onHeaderMouseMove($event)">
         <ng-container *ngFor="let col of this.selectableColumns | keyvalue; let i = index">
-          <th 
-            [class]="'sz-dt-column '+cellClass(col.key, 'sz-dt-header','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
-            [class.sorted]="isSortedBy(col.key)" 
-            [class.sorted-asc]="sortDirection === 'ASC'" 
+          <th
+            [class]="'sz-dt-column '+cellClass(col.key, 'sz-dt-header','cell')+' '+cellClass(col.key, 'sz-dt','column')"
+            [class.sorted]="isSortedBy(col.key)"
+            [class.sorted-asc]="sortDirection === 'ASC'"
             [class.sorted-desc]="sortDirection === 'DESC'"
             [class.hidden]="isColumnHidden(col.key)"
             [style]="columnStyle(col.key)"
@@ -77,18 +77,18 @@
           </th>
           <!--<div class="leftdragbar" onmousedown="startColResize(col.key)" onmouseup="endColResize(col.key)"></div>-->
         </ng-container>
-        
+
       </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let row of this.data; let rI=index;" 
+        <tr *ngFor="let row of this.data; let rI=index;"
         #rowRef
-        [attr.data-row-index]="rI+1" 
+        [attr.data-row-index]="rI+1"
         [class.hasExpandedCells]="hasExpandedCells(rowRef)"
         [style.order]="rI+1">
-            <td #cellRef [attr.data-row-index]="rI+1" *ngFor="let col of this.selectableColumns | keyvalue" 
+            <td #cellRef [attr.data-row-index]="rI+1" *ngFor="let col of this.selectableColumns | keyvalue"
               [style]="cellStyle(col.key, getRowId(row, rI+1))"
-              [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')" 
+              [class]="'sz-dt-cell '+cellClass(col.key, 'sz-dt','cell')+' '+cellClass(col.key, 'sz-dt','column')"
               [class.expandable]="isCellExpandable(cellRef)"
               [class.expanded]="isCellExpanded(cellRef)"
               [class.hidden]="isColumnHidden(col.key)"
@@ -97,10 +97,10 @@
               [attr.data-cached-content-height]="getCachedContentHeight(cellRef)"
               (click)="onCellClick(col.key, row[col.key], $event, cellRef)">
               <div class="cell-content" [innerHTML]="cellValue(row[col.key], col.key)" [attr.cell-key]="col.key"></div>
-              <svg xmlns="http://www.w3.org/2000/svg" 
-                height="24" 
-                viewBox="0 -960 960 960" 
-                width="24" 
+              <svg xmlns="http://www.w3.org/2000/svg"
+                height="24"
+                viewBox="0 -960 960 960"
+                width="24"
                 class="min-max-toggle"
                 (click)="toggleCellExpansion(cellRef, getRowId(row, rI+1)); $event.stopPropagation();"
                 ><path d="M440-440v240h-80v-160H200v-80h240Zm160-320v160h160v80H520v-240h80Z"/></svg>

@@ -1,5 +1,5 @@
-import { Component, HostBinding, Input, OnInit, AfterViewInit, 
-  OnDestroy, Output, EventEmitter, ChangeDetectorRef, ViewChild, TemplateRef, 
+import { Component, HostBinding, Input, OnInit, AfterViewInit,
+  OnDestroy, Output, EventEmitter, ChangeDetectorRef, ViewChild, TemplateRef,
   ViewContainerRef } from '@angular/core';
 import { SzPrefsService, SzSdkPrefsModel } from '../services/sz-prefs.service';
 import { SzDataSourcesService } from '../services/sz-datasources.service';
@@ -20,7 +20,7 @@ import { isBoolean } from '../common/utils';
  *
  * integrated with graph preferences and prefBUS.
  *
- * @example 
+ * @example
  * <!-- (Angular) -->
  * <sz-graph-filter #graphFilter
       [showLinkLabels]="true"
@@ -42,14 +42,14 @@ import { isBoolean } from '../common/utils';
 })
 export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
-   * used for displaying tooltips above all other page content 
+   * used for displaying tooltips above all other page content
    * @internal */
   overlayRef: OverlayRef | undefined;
 
   isOpen: boolean = true;
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
-  /** private list of datasource records augmented by SzDataSourceComposite shape 
+  /** private list of datasource records augmented by SzDataSourceComposite shape
    * @internal
   */
   private _dataSources: SzDataSourceComposite[]               = [];
@@ -74,7 +74,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     return this._showTooltips;
   }
 
-  /** private list of SzDataSourceComposite as stored in local storage 
+  /** private list of SzDataSourceComposite as stored in local storage
    * @internal
   */
   private _dataSourceColors: SzDataSourceComposite[]  = [];
@@ -167,14 +167,14 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   }
   private _showMatchKeysFilters: boolean = true;
   @Input() public set showMatchKeyFilters(value: boolean | string) {
-    this._showMatchKeysFilters = parseBool(value);    
+    this._showMatchKeysFilters = parseBool(value);
   }
   public get showMatchKeyFilters(): boolean | string {
     return this._showMatchKeysFilters;
   }
   private _showMatchKeyTokenFilters: boolean = true;
   @Input() public set showMatchKeyTokenFilters(value: boolean | string) {
-    this._showMatchKeyTokenFilters = parseBool(value);    
+    this._showMatchKeyTokenFilters = parseBool(value);
   }
   public get showMatchKeyTokenFilters(): boolean | string {
     return this._showMatchKeyTokenFilters;
@@ -188,11 +188,11 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   /** when the user changes the scope of the match keys selected this event is published */
   @Output() public matchKeyTokenSelectionScopeChanged = new EventEmitter<SzMatchKeyTokenFilterScope>();
 
-  /** sets the depth of what entities are shown when they match the 
+  /** sets the depth of what entities are shown when they match the
    * match key token filters. possible values are "CORE" and "EXTRANEOUS".
-   * when "CORE" is selected only entities that are directly related to queried 
-   * entity/entities are filtered by match key tokens. 
-   * when "EXTRANEOUS" is selected ALL entities no matter how they are related 
+   * when "CORE" is selected only entities that are directly related to queried
+   * entity/entities are filtered by match key tokens.
+   * when "EXTRANEOUS" is selected ALL entities no matter how they are related
    * are filtered by match key tokens.
    */
   @Input() public set matchKeyTokenSelectionScope(value: SzMatchKeyTokenFilterScope | string) {
@@ -210,9 +210,9 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     //console.log(`@senzing/sdk-components-ng/sz-graph-filter.matchKeyTokenSelectionScope(${value} | ${(this._matchKeyTokenSelectionScope as unknown as string)})`, this._matchKeyTokenSelectionScope);
   }
   /**
-   * get the value of match key token filterings scope. possible values are 
+   * get the value of match key token filtering scope. possible values are
    * "CORE" and "EXTRANEOUS".
-   * core means the filtering is only being applied to entities that are directly 
+   * core means the filtering is only being applied to entities that are directly
    * related to the primary entity/entities being displayed.
    */
   public get matchKeyTokenSelectionScope(): SzMatchKeyTokenFilterScope | string {
@@ -241,9 +241,9 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   @Input() linkColor: string;
   @Input() indirectLinkColor: string;
 
-  /** 
+  /**
    * set the internal list of datasource colors from local storage or input value
-   * and update any changed members also present in "_dataSources" with 
+   * and update any changed members also present in "_dataSources" with
    * current properties
    */
   @Input() set dataSourceColors(value: SzDataSourceComposite[]) {
@@ -354,14 +354,14 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     return <FormArray>this.filterByMatchKeyTokensForm.get('matchkeytokens');
   }*/
 
-  // --------------------------------- event emmitters and subjects ----------------------
+  // --------------------------------- event emitters and subjects ----------------------
   /**
-   * emmitted when a property has been changed.
+   * emitted when a property has been changed.
    * used mostly for diagnostics.
    */
   @Output()
   public prefsChange: EventEmitter<SzSdkPrefsModel> = new EventEmitter<SzSdkPrefsModel>();
-  /** inheirited from "SzEntityDetailGraphControlComponent" code. wanted it to be interchangeable */
+  /** inherited from "SzEntityDetailGraphControlComponent" code. wanted it to be interchangeable */
   @Output() public optionChanged = new EventEmitter<{name: string, value: any}>();
 
   // ------------------------------ forms, form groups, and handlers ---------------------
@@ -418,7 +418,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
 
   // --------------------------------- start event handlers -----------------------
 
-  /** handler for when a filter by datasouce value in the "filterByDataSourcesForm" has changed */
+  /** handler for when a filter by datasource value in the "filterByDataSourcesForm" has changed */
   onDsFilterChange(dsValue: string, evt?) {
     const filteredDataSourceNames = this.filterByDataSourcesForm.value.datasources
       .map((v, i) => v ? null : this.dataSources[i].name)
@@ -431,7 +431,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     const includedMatchKeyNames = this.filterByMatchKeysForm.value.matchkeys
       .map((v, i) => v ? this.matchKeys[i].name :  null)
       .filter(v => v !== null);
-    // update filters pref    
+    // update filters pref
     this.prefs.graph.matchKeysIncluded = includedMatchKeyNames;
     //console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkFilterChange',this.prefs.graph.matchKeysIncluded);
   }
@@ -459,17 +459,17 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
       console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onMkTagFilterToggle: added ${mkName} to cloud value`,_matchKeyTokensIncludedMemCopy);
     }
   }
-  onCoreMkTagFilterToggle( mkName: string ) { 
+  onCoreMkTagFilterToggle( mkName: string ) {
     let _matchKeyTokensIncludedMemCopy: string[] = [];
     if(this.matchKeyCoreTokensIncluded && this.matchKeyCoreTokensIncluded.length) {
       let _matchKeyTokensIncludedMemCopy = [].concat(this.matchKeyCoreTokensIncluded);
-      // pull any other items out of the values 
+      // pull any other items out of the values
       // IF the values are not in the current tag cloud
       let _matchKeyCoreTokens        = this.matchKeyCoreTokens.map((mkTok) => mkTok.name);
       _matchKeyTokensIncludedMemCopy = _matchKeyTokensIncludedMemCopy.filter((mkStr: string) => {
         return (_matchKeyCoreTokens.indexOf(mkStr) > -1) ? true : false;
       });
-      // now that we have a clean array see if the current value has 
+      // now that we have a clean array see if the current value has
       // an existing position
       let _existingKeyPos = _matchKeyTokensIncludedMemCopy.indexOf(mkName);
       console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onCoreMkTagFilterToggle: checking if "${mkName}" is in existing items: ${_matchKeyTokensIncludedMemCopy}`, _existingKeyPos);
@@ -482,7 +482,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
         // add to included token list
         _matchKeyTokensIncludedMemCopy.push( mkName );
         this.prefs.graph.matchKeyCoreTokensIncluded = _matchKeyTokensIncludedMemCopy;
-        console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onCoreMkTagFilterToggle: addeded ${mkName}(${_existingKeyPos}) to cloud value`,_matchKeyTokensIncludedMemCopy);
+        console.log(`@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onCoreMkTagFilterToggle: added ${mkName}(${_existingKeyPos}) to cloud value`,_matchKeyTokensIncludedMemCopy);
       }
     } else {
       console.log(`matchKeyCoreTokensIncluded: ${this.matchKeyCoreTokensIncluded}`);
@@ -540,8 +540,8 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   /**
-   * hides visible tooltip 
-   * @internal 
+   * hides visible tooltip
+   * @internal
    */
   hideTooltip(message?: string) {
     if(!this.showTooltips) { return false; }
@@ -551,7 +551,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     }
     if (this.overlayRef) {
       this.overlayRef.addPanelClass('fade-out');
-      // we want to give the animation time to finish 
+      // we want to give the animation time to finish
       // before fading out
       setTimeout(() => {
         if (this.overlayRef) {
@@ -565,8 +565,8 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   /**
-   * method for getting the selected pref color for a datasource 
-   * by the datasource name. used for applying background color to 
+   * method for getting the selected pref color for a datasource
+   * by the datasource name. used for applying background color to
    * input[type=color] to make them look fancier
    */
   getDataSourceColor(dsValue: string) {
@@ -689,8 +689,8 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     this.cd.detectChanges();
   }
 
-  /** 
-   * when user changes the order of a color by dragging it to 
+  /**
+   * when user changes the order of a color by dragging it to
    * a different position in list update internal list "index"
    * values and save state to prefs.
    */
@@ -707,7 +707,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
       if(existingItem && event.item.data !== existingItem.name) {
         let _existingByName = this._dataSources.find( (_ds: SzDataSourceComposite) => {
           return _ds.name === event.item.data;
-        });        
+        });
       }
     }
     // now update index values after slicing array
@@ -750,7 +750,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
   /** toggle all available match key tokens on or off */
   onSelectAllMatchKeyTokens(selectAll: boolean) {
     /**
-     * @TODO something about changing this is causing a new 
+     * @TODO something about changing this is causing a new
      * graph data request. Need to fix this.
      */
     console.log('@senzing/sdk-components-ng/sz-entity-detail-graph-filter.onSelectAllMatchKeyTokens: ', selectAll);
@@ -767,13 +767,13 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
         this.prefs.graph.matchKeyTokensIncluded = [];
     }
   }
-  /** when the user toggles the match key tokens scope control this 
-   * handler is invoked to copy all selections from one mode to the 
+  /** when the user toggles the match key tokens scope control this
+   * handler is invoked to copy all selections from one mode to the
    * other and update the preferences with the new values.
   */
   public onMatchKeyCoreModeToggle(isCoreMode: any) {
     if(!isCoreMode && (this._matchKeyTokenSelectionScope !== SzMatchKeyTokenFilterScope.EXTRANEOUS)) {
-      // copy over any selected chips from 
+      // copy over any selected chips from
       let _matchKeyTokens = this.matchKeyTokens.map((mkToken) => mkToken.name);
       let _matchKeyTokensIncludedMemCopy = new Set([].concat(this.matchKeyCoreTokensIncluded));
       let _filteredList = [].concat(..._matchKeyTokensIncludedMemCopy).filter((strVal) => {
@@ -782,7 +782,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
       this.prefs.graph.matchKeyTokensIncluded = _filteredList;
       //console.log('onMatchKeyCoreModeToggle1: ', this.matchKeyTokens, [].concat(..._matchKeyTokensIncludedMemCopy), this.prefs.graph.matchKeyTokensIncluded);
     } else if(isCoreMode && (this._matchKeyTokenSelectionScope !== SzMatchKeyTokenFilterScope.CORE)) {
-      // copy any items from extra to core 
+      // copy any items from extra to core
       // IF the items exist in core
       let _matchKeyCoreTokens = this.matchKeyCoreTokens.map((mkToken) => mkToken.name);
       let _matchKeyCoreTokensIncludedMemCopy = new Set([].concat(this.matchKeyCoreTokensIncluded, this.matchKeyTokensIncluded));
@@ -795,12 +795,12 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     this.prefs.graph.matchKeyTokenSelectionScope = (!isCoreMode) ? SzMatchKeyTokenFilterScope.EXTRANEOUS : SzMatchKeyTokenFilterScope.CORE;
     this._onMatchKeyTokenSelectionScopeChange.next( this._matchKeyTokenSelectionScope );
   }
-  /** this event handler proxies the internal "_onMatchKeyTokenSelectionScopeChange" event 
+  /** this event handler proxies the internal "_onMatchKeyTokenSelectionScopeChange" event
    * the the public "matchKeyTokenSelectionScopeChanged" event emitter.
    */
   private onMatchKeyTokenSelectionScopeChanged(scope: SzMatchKeyTokenFilterScope) {
     console.log('onMatchKeyTokenSelectionScopeChanged: ', scope);
-    
+
     // now emit events
     this.optionChanged.emit({name: 'matchKeyTokenFilterScope', value: scope});
     this.matchKeyTokenSelectionScopeChanged.emit(scope);
@@ -866,7 +866,7 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
         }
         return retVal;
       });
-      // init form controls for filter by datasource      
+      // init form controls for filter by datasource
       this.dataSources.forEach((o, i) => {
         const dsFilterVal = !(this.dataSourcesFiltered.indexOf(o.name) >= 0);
         const control1 = new UntypedFormControl(dsFilterVal); // if first item set to true, else false
@@ -946,5 +946,5 @@ export class SzGraphFilterComponent implements OnInit, AfterViewInit, OnDestroy 
     }
     return retVal;
   }
-  
+
 }

@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
  * A button component with a "selected" count and action emitters and methods.
  * used for selecting multiple search results for comparison.
  * used for selected multiple records on the entity detail for comparison.
- * 
+ *
  * @internal
  */
 @Component({
@@ -45,8 +45,8 @@ export class SzMultiSelectButtonComponent implements OnInit, OnDestroy, AfterVie
     @Output() onSelectedClick: EventEmitter<any> = new EventEmitter<any>();
 
     public get tooltipText(): string {
-        let minumumDelta            = (this.minimumSelected - this.selectedCount);
-        let itemTypeRemainingText   = minumumDelta <= 1 ? this.selectedItemTypeSingular : this.selectedItemTypePlural;
+        let minimumDelta            = (this.minimumSelected - this.selectedCount);
+        let itemTypeRemainingText   = minimumDelta <= 1 ? this.selectedItemTypeSingular : this.selectedItemTypePlural;
         let itemTypeText            = this.selectedCount <= 1 ? this.selectedItemTypeSingular : this.selectedItemTypePlural;
         if(!this.isSelectActive){
             // this button has a mode lock, let user know they have to engage first
@@ -58,7 +58,7 @@ export class SzMultiSelectButtonComponent implements OnInit, OnDestroy, AfterVie
             if(this.selectedCount < this.minimumSelected && (this.minimumSelected - this.selectedCount) <= 1) {
                 retVal  +=  ` Another must be selected for ${this.selectedActionVerb}.`;
             } else {
-                retVal  +=  ` Another ${minumumDelta} ${itemTypeRemainingText} must be selected for ${this.selectedActionVerb}.`;
+                retVal  +=  ` Another ${minimumDelta} ${itemTypeRemainingText} must be selected for ${this.selectedActionVerb}.`;
             }
             return retVal;
         } else {

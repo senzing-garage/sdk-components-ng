@@ -12,11 +12,11 @@ import { SzLicenseUpgradeMouseEvent } from '../../models/event-license';
  * A simple "license info" component.
  * Used for displaying the current senzing license info.
  *
- * @example 
+ * @example
  * <!-- (Angular) -->
  * <sz-license></sz-license>
  *
- * @example 
+ * @example
  * <!-- (WC) -->
  * <sz-license></sz-license>
  */
@@ -29,14 +29,14 @@ import { SzLicenseUpgradeMouseEvent } from '../../models/event-license';
 export class SzLicenseInfoComponent implements OnInit {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
-  /** this brings in the enum to local scrope for html template access */
+  /** this brings in the enum to local scope for html template access */
   readonly SzLicenseUpgradeType = SzLicenseUpgradeType;
 
   private _licenseInfo: SzLicenseInfo = {};
   private _countStats: SzLoadedStats;
   private _recordCount: number;
   private _showUpgradeButton: boolean = true;
-  
+
   @Input() public set recordCount(value: string | number) {
     this._recordCount = parseNumber(value);
   }
@@ -154,8 +154,8 @@ export class SzLicenseInfoComponent implements OnInit {
 
   //@Input() format = 'small';
   constructor(
-    private adminService: SzAdminService, 
-    private dmService: SzDataMartService, 
+    private adminService: SzAdminService,
+    private dmService: SzDataMartService,
     private router: Router) {}
 
   ngOnInit() {

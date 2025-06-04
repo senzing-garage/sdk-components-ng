@@ -40,7 +40,7 @@ sz-record-counts-donut {
   }
 
 .mat-mdc-menu-panel.mat-mdc-menu-panel.sz-css-versus-menu, .sz-css-versus-menu {
-    min-width: unset; // we unset this because we dynamicall match the src element
+    min-width: unset; // we unset this because we dynamically match the src element
     max-width: unset; // same
     width: var(--sz-css-pulldown-width); // var is dynamically set on resize to match host ele
     top: 4px;
@@ -55,7 +55,7 @@ sz-record-counts-donut {
     }
 }
 
-/* make sure ripple highlight doesnt show */
+/* make sure ripple highlight doesn't show */
 sz-venn-diagram button.count-button {
     //&.hover {
         .mat-mdc-button-persistent-ripple,

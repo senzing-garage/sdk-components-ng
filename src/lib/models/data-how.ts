@@ -1,13 +1,13 @@
 import { SzResolutionStep, SzResolvedEntity, SzVirtualEntity, SzVirtualEntityRecord } from '@senzing/rest-api-client-ng';
 import { SzEntityMouseEvent } from './event-basic-event';
-/** when a user clicks a "more info" link on a step card this event 
+/** when a user clicks a "more info" link on a step card this event
  * extends a regular mouse click with how specific information.
 */
 export interface SzVirtualEntityRecordsClickEvent extends MouseEvent {
     records?: Array<SzVirtualEntityRecord>,
     dataSourceName?: string
 }
-/** extends a resolved entity model with virtual entity properties to tie 
+/** extends a resolved entity model with virtual entity properties to tie
  * the two together.
  */
 export interface SzResolvedVirtualEntity extends SzResolvedEntity {
@@ -15,11 +15,11 @@ export interface SzResolvedVirtualEntity extends SzResolvedEntity {
 }
 /** used to categorize records in a virtual entity by their datasources */
 export interface SzVirtualEntityRecordsByDataSource {
-    [key: string]: Array<SzVirtualEntityRecord> 
+    [key: string]: Array<SzVirtualEntityRecord>
 }
 /** Common wrapper for extending data from a How step with UI specific features
- * and things like "children" for converting a flat dimensional step to a recursive 
- * heirarchal Tree of steps.
+ * and things like "children" for converting a flat dimensional step to a recursive
+ * hierarchal Tree of steps.
  */
 export interface SzResolutionStepNode extends SzResolutionStep, SzVirtualEntity {
     /** id of virtual entity or generated uuid */
@@ -28,7 +28,7 @@ export interface SzResolutionStepNode extends SzResolutionStep, SzVirtualEntity 
     virtualEntityIds?: string[],
     /** used for deciding presentation information of a card */
     stepType?: SzResolutionStepDisplayType,
-    /** used for deciding what type of component to embed, whether or not the component has 
+    /** used for deciding what type of component to embed, whether or not the component has
      * things like nested steps, or flat arrays of contiguous items etc
      */
     itemType?: SzResolutionStepListItemType,
@@ -43,13 +43,13 @@ export interface SzResolutionStepNode extends SzResolutionStep, SzVirtualEntity 
     isMemberOfGroup?: boolean,
     /** the id of the parent group */
     memberOfGroup?: string,
-    /** the resolved virtual entity has much more information than a regular step 
+    /** the resolved virtual entity has much more information than a regular step
      * and is more like an snapshot of an "entity" at a particular point in it's resolution
      */
     resolvedVirtualEntity?: SzResolvedVirtualEntity
 }
-/** 
- * when a user clicks on a "how" button in the entity detail or in a search result 
+/**
+ * when a user clicks on a "how" button in the entity detail or in a search result
  * this payload of the click emitted .
  * @internal
  */
@@ -62,12 +62,12 @@ export const SzResolutionStepListItemType = {
     FINAL: 'FINAL' as SzResolutionStepListItemType,
     /** use for steps that have other steps as children and are not "STACK"'s */
     GROUP: 'GROUP' as SzResolutionStepListItemType,
-    /** use to group CONTIGUOUS steps of the same type so they can be grouped together 
+    /** use to group CONTIGUOUS steps of the same type so they can be grouped together
      * (usually multiple "ADD" or "CREATE") */
     STACK: 'STACK' as SzResolutionStepListItemType,
     /** every step that is not a group of some kind */
     STEP: 'STEP' as SzResolutionStepListItemType,
-    /** when final results are unresolved sometimes they are single unresoved records */
+    /** when final results are unresolved sometimes they are single unresolved records */
     SINGLETON: 'SINGLETON' as SzResolutionStepListItemType
 };
 /** the custom type of `SzResolutionStepDisplayType` */

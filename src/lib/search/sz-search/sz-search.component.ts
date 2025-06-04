@@ -50,8 +50,8 @@ interface SzBoolFieldMapByName {
 /**
  * Provides a search box component that can execute search queries and return results.
  * @export
- * 
- * @example 
+ *
+ * @example
  * <!-- (WC javascript) SzSearchComponent -->
  * <sz-wc-search
  * id="sz-search"
@@ -62,7 +62,7 @@ interface SzBoolFieldMapByName {
  *  });
  * </script>
  *
- * @example 
+ * @example
  * <!-- (Angular) SzSearchComponent -->
  * <sz-search
  * name="Isa Creepr"
@@ -70,7 +70,7 @@ interface SzBoolFieldMapByName {
  * (searchStart)="showSpinner()"
  * (searchEnd)="hideSpinner()"></sz-search>
  *
- * @example 
+ * @example
  * <!-- (WC javascript) SzSearchComponent and SzSearchResultsComponent combo -->
  * <sz-wc-search
  * id="sz-search"
@@ -84,7 +84,7 @@ interface SzBoolFieldMapByName {
  *    szSearchResultsComponent.results = evt.detail;
  *  });
  * </script>
- * 
+ *
  */
 @Component({
     selector: 'sz-search',
@@ -290,17 +290,17 @@ export class SzSearchComponent implements OnInit, OnDestroy {
   @Output() exception: EventEmitter<Error> = new EventEmitter<Error>();
 
   /**
-   * emmitted when the results have been cleared.
+   * emitted when the results have been cleared.
    * @memberof SzSearchComponent
    */
   @Output() resultsCleared: EventEmitter<void> = new EventEmitter<void>();
   /**
-   * emmitted when the search results have been changed.
+   * emitted when the search results have been changed.
    * @memberof SzSearchComponent
    */
   @Output('resultsChange') searchResults: Subject<SzAttributeSearchResult[]> = new Subject<SzAttributeSearchResult[]>();
   /**
-   * emmitted when parameters of the search have been changed.
+   * emitted when parameters of the search have been changed.
    *
    * @memberof SzSearchComponent
    */
@@ -533,7 +533,7 @@ export class SzSearchComponent implements OnInit, OnDestroy {
       this.disableIdentifierOption(opt);
     });
   }
-  /** @interal */
+  /** @internal */
   public getAnyDisabled(keys: string[]): string {
     const _some = keys.some((key) => {
       return this.disabledFields[ key ];
@@ -543,7 +543,7 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     }
     return null;
   }
-  /** @interal */
+  /** @internal */
   public getDisabled(key: string): string {
     if(this.disabledFields && this.disabledFields[ key ]) {
       return '';
@@ -658,7 +658,7 @@ export class SzSearchComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Returns the placeholder text to show in the "Identifier" field for the 
+   * Returns the placeholder text to show in the "Identifier" field for the
    * selected "Identifier Type".
    * @returns string
    */
@@ -795,7 +795,7 @@ export class SzSearchComponent implements OnInit, OnDestroy {
           selected: this.allowedTypeAttributes
         }
       });
-  
+
       dialogRef.afterClosed().subscribe((result: SzAttributeType[]) => {
         if(result) {
           let newAllowedList = result.map((attrObj: SzAttributeType) => {
@@ -819,7 +819,7 @@ export class SzSearchComponent implements OnInit, OnDestroy {
 
       bottomSheetRef.afterDismissed().pipe(
         first()
-      ).subscribe((result: SzAttributeType[]) => {        
+      ).subscribe((result: SzAttributeType[]) => {
         if(result) {
           let newAllowedList = result.map((attrObj: SzAttributeType) => {
             return attrObj.attributeCode;
@@ -856,9 +856,9 @@ export class SzSearchComponent implements OnInit, OnDestroy {
     return this.matchingAttributes;
   }
 
-  /** 
+  /**
    * returns text displayed in the "identifier type" drop-down
-   * @internal 
+   * @internal
    */
   public attributeCodeAsHumanReadable(attrCode: string): string {
     if(attrCode && attrCode.replace) {
@@ -1152,7 +1152,7 @@ export class SzSearchComponent implements OnInit, OnDestroy {
    * submit current search params to search service.
    * when search service returns a result it publishes the result
    * through the resultsChange event emitter, and
-   * any parameter changes through the paramsChange emmitter.
+   * any parameter changes through the paramsChange emitter.
    */
   public submitSearch(): void {
     const searchParams = this.getSearchParams();

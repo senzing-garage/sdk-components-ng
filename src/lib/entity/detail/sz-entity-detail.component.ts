@@ -32,20 +32,20 @@ import { SzAlertMessageDialog } from '../../shared/alert-dialog/sz-alert-dialog.
  * The Entity Detail Component.
  * Generates a complex detail page from input parameters.
  *
- * @example 
+ * @example
  * <!-- (Angular) -->
  * <sz-entity-detail
  *   [showGraphMatchKeys]="true"
  *   (entityIdChanged)="entityChangedHandler($event)"
  *   [entityId]="currentlySelectedEntityId"></sz-entity-detail>
- * 
- * @example 
+ *
+ * @example
  * <!-- (WC) by attribute -->
  * <sz-wc-entity-detail
  *   show-graph-match-keys="true"
  *   entity-id="1002"></sz-wc-entity-detail>
- * 
- * @example 
+ *
+ * @example
  * <!-- (WC) by DOM -->
  * <sz-wc-entity-detail id="sz-ent-detail"></sz-wc-entity-detail>
  * <script>
@@ -69,7 +69,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private entityDetailJSON: string = "";
   private _requestDataOnIdChange = true;
   public entity: SzEntityData;
-  
+
 
   // layout enforcers
   /** @internal */
@@ -109,7 +109,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    * update prefs values when setter values change.
    * useful when you have multiple component instances but not
    * all of them should be setting prefs state. OR if you have a specific
-   * instance that shouldnt be updating pref state.
+   * instance that shouldn't be updating pref state.
    */
   @Input() set updatePrefsOnChange(value: boolean) {
     this._updatePrefsOnChange = value;
@@ -128,7 +128,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   private _showPossibleMatchesSection: boolean = true;
   private _showPossibleRelationshipsSection: boolean = true;
   private _showDisclosedSection: boolean = true;
-  // collapse or expand specific setions
+  // collapse or expand specific sections
   private _graphSectionCollapsed: boolean = true;
   private _recordsSectionCollapsed: boolean = false;
   private _possibleMatchesSectionCollapsed: boolean = false;
@@ -159,7 +159,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
   /** @internal */
   private _headerHowButtonClicked: Subject<howClickEvent> = new Subject<howClickEvent>();
-  /** (Observeable) when the user clicks on the "how" button in header under the icon */
+  /** (Observable) when the user clicks on the "how" button in header under the icon */
   public headerHowButtonClicked = this._headerHowButtonClicked.asObservable();
   /** (Event Emitter) when the user clicks on the "How" button in header under the icon */
   @Output() howButtonClick        = new EventEmitter<howClickEvent>();
@@ -170,11 +170,11 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
   /** @internal */
   private _headerWhyButtonClicked: Subject<SzEntityIdentifier> = new Subject<SzEntityIdentifier>();
-  /** (Observeable) when the user clicks on the "Why" button in header under the icon */
+  /** (Observable) when the user clicks on the "Why" button in header under the icon */
   public headerWhyButtonClicked = this._headerWhyButtonClicked.asObservable();
   /** @internal */
   private _headerReEvaluateButtonClicked: Subject<howClickEvent> = new Subject<howClickEvent>();
-  /** (Observeable) when the user clicks on the "reevalute" button in header under the icon */
+  /** (Observable) when the user clicks on the "reevaluate" button in header under the icon */
   public headerReEvaluateButtonClicked = this._headerReEvaluateButtonClicked.asObservable();
   /** (Event Emitter) when the user clicks on the "Why" button in header under the icon */
   @Output() headerWhyButtonClick = new EventEmitter<SzEntityIdentifier>();
@@ -207,11 +207,11 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   }
   /** @internal */
   private _graphMatchKeyTokenSelectionScope: SzMatchKeyTokenFilterScope       = SzMatchKeyTokenFilterScope.EXTRANEOUS;
-  /** sets the depth of what entities are shown when they match the 
+  /** sets the depth of what entities are shown when they match the
    * match key token filters. possible values are "CORE" and "EXTRANEOUS".
-   * when "CORE" is selected only entities that are directly related to queried 
-   * entity/entities are filtered by match key tokens. 
-   * when "EXTRANEOUS" is selected ALL entities no matter how they are related 
+   * when "CORE" is selected only entities that are directly related to queried
+   * entity/entities are filtered by match key tokens.
+   * when "EXTRANEOUS" is selected ALL entities no matter how they are related
    * are filtered by match key tokens.
    */
   @Input() public set graphMatchKeyTokenSelectionScope(value: SzMatchKeyTokenFilterScope | string){
@@ -224,9 +224,9 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     }
   }
   /**
-   * get the value of match key token filterings scope. possible values are 
+   * get the value of match key token filtering scope. possible values are
    * "CORE" and "EXTRANEOUS".
-   * core means the filtering is only being applied to entities that are directly 
+   * core means the filtering is only being applied to entities that are directly
    * related to the primary entity/entities being displayed.
    */
   public get graphMatchKeyTokenSelectionScope() {
@@ -246,13 +246,13 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
       this._whySelectionMode = SzWhySelectionMode.NONE;
     }
   }
-  /** if "showRecordWhyUtilities" set to true there is a "single-record" select behavior, and a 
+  /** if "showRecordWhyUtilities" set to true there is a "single-record" select behavior, and a
    * "multi-select" behavior. possible values are `SINGLE` and `MUTLI`
   */
   public get whySelectionMode(): SzWhySelectionModeBehavior {
     return this._whySelectionMode;
   }
-  /** if "showRecordWhyUtilities" set to true there is a "single-record" select behavior, and a 
+  /** if "showRecordWhyUtilities" set to true there is a "single-record" select behavior, and a
    * "multi-select" behavior. possible values are `SINGLE` and `MUTLI`
   */
   @Input() set whySelectionMode(value: SzWhySelectionModeBehavior) {
@@ -280,13 +280,13 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   get reEvaluateButtonDisabled(): boolean {
     return this._reEvaluateButtonDisabled;
   }
-  /** if the entity's how report has no resolution steps and this value is set to true the button for the 
+  /** if the entity's how report has no resolution steps and this value is set to true the button for the
    * how report in the header will be disabled and will not emit the click event when the user clicks it
    */
   @Input() set dynamicHowFeatures(value: boolean) {
     this._dynamicHowFeatures = value;
   }
-  /** if the entity's how report has no resolution steps and this value is set to true the button for the 
+  /** if the entity's how report has no resolution steps and this value is set to true the button for the
    * how report in the header will be disabled and will not emit the click event when the user clicks it
    */
   get dynamicHowFeatures(): boolean {
@@ -298,10 +298,10 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   }
   /** whether or not to show the "how" button for the entire entity */
   @Input() set showEntityHowFunction(value: boolean) {
-    if(value !== this._showEntityHowFunction && 
-      value === true && 
+    if(value !== this._showEntityHowFunction &&
+      value === true &&
       this._entityId !== undefined &&
-      (this._dynamicHowFeatures === true || 
+      (this._dynamicHowFeatures === true ||
       this._showHowFunctionWarnings === true)
       ) {
         // check to see if entity has how steps, if not disable how functions
@@ -338,15 +338,15 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   public get entityRequiresReEvaluation(): boolean {
     return this._entityRequiresReEvaluation;
   }
-  /** message to show when re-evalution is required */
+  /** message to show when re-evaluation is required */
   public get reEvaluateMessage(): string {
     return this._reEvaluationMessage;
   }
-  /** message to show when re-evalution is required */
+  /** message to show when re-evaluation is required */
   @Input() set reEvaluateMessage(value: string) {
     this._reEvaluationMessage = value;
   }
-  /** when set to true a request to the how report for the entity is made to check whether or not anything 
+  /** when set to true a request to the how report for the entity is made to check whether or not anything
    * would be displayed and if the result has no steps in it's "resolutionSteps" collection when the user clicks
    * the how report button an alert will be displayed telling the user that the report is unavailable.
    */
@@ -354,7 +354,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     this._showHowFunctionWarnings = value;
     if(value === true) { this.dynamicHowFeatures = true; }
   }
-  /** when set to true a request to the how report for the entity is made to check whether or not anything 
+  /** when set to true a request to the how report for the entity is made to check whether or not anything
    * would be displayed and if the result has no steps in it's "resolutionSteps" collection when the user clicks
    * the how report button an alert will be displayed telling the user that the report is unavailable.
    */
@@ -377,7 +377,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   @Input() set showRelatedWhyNotFunction(value: boolean) {
     this._showRelatedWhyNotUtilities = value;
   }
-  /** whether or not to automatically open a modal with the entity comparison on 
+  /** whether or not to automatically open a modal with the entity comparison on
    * "Why" button click. (disable for custom implementation/action)
    */
   @Input() openWhyComparisonModalOnClick(value: boolean) {
@@ -412,12 +412,12 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
    */
   @Output() exception: EventEmitter<Error> = new EventEmitter<Error>();
   /**
-   * emmitted when the entity data to display has been changed.
+   * emitted when the entity data to display has been changed.
    */
   @Output('dataChanged')
   dataChanged: Subject<SzEntityData> = new Subject<SzEntityData>();
   /**
-   * emmitted when the entity id has been changed.
+   * emitted when the entity id has been changed.
    */
   @Output('entityIdChanged')
   entityIdChanged: EventEmitter<number> = new EventEmitter<number>();
@@ -584,7 +584,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
 
-  /** there is a use case where we dont want to show name data, like when it's already listing names in the headers */
+  /** there is a use case where we don't want to show name data, like when it's already listing names in the headers */
   private _showBestNameOnlyInMatchesSection               = false;
   private _showBestNameOnlyInDisclosedSection             = this._showBestNameOnlyInMatchesSection;
   private _showBestNameOnlyInPossibleMatchesSection       = this._showBestNameOnlyInMatchesSection;
@@ -841,7 +841,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     this.showPossibleRelationshipsSection = prefs.showPossibleRelationshipsSection;
     this.showDisclosedSection = prefs.showDisclosedSection;
 
-    // collapse or expand specific setions
+    // collapse or expand specific sections
     this.graphSectionCollapsed = prefs.graphSectionCollapsed;
     this.recordsSectionCollapsed = prefs.recordsSectionCollapsed;
     this.possibleMatchesSectionCollapsed = prefs.possibleMatchesSectionCollapsed;
@@ -930,7 +930,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   public onGraphPopoutClick(event: any) {
     this.graphPopOutClick.emit(event);
   }
-  
+
   /**
    * proxies internal "how button" header click to "headerHowButtonClick" event.
    */
@@ -1026,7 +1026,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     if(entityIds && entityIds.length > 0 && entityIds.push){
       entityIds.push(this.entity.resolvedEntity.entityId);
     }
-    
+
     this.relatedEntitiesWhyNotButtonClick.emit(entityIds);
     if(this._openWhyComparisonModalOnClick) {
       this.dialog.open(SzWhyEntitiesDialog, {
@@ -1082,12 +1082,12 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
           this.onEntityDataChanged();
           this.requestEnd.emit( entityData );
           this.dataChanged.next( entityData );
-          if(this._showEntityHowFunction && (this._dynamicHowFeatures === true || 
+          if(this._showEntityHowFunction && (this._dynamicHowFeatures === true ||
             this._showHowFunctionWarnings === true)) {
             // check to see if entity has how steps, if not disable how functions
             this.checkIfEntityHasHowSteps();
           }
-        }, 
+        },
         error: (err)=> {
           this.requestEnd.emit( err );
           this.exception.next( err );
@@ -1095,12 +1095,12 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
       });
     }
   }
-  
+
   /** @internal */
   private _graphContextMenuSub: Subscription;
-  /** 
+  /**
    * shows a graph context menu when triggered by an appropriate event
-   * @internal 
+   * @internal
    */
   private openGraphContextMenu(event: any, contextMenu: TemplateRef<any>) {
     console.log('SzEntityDetailComponent.openGraphContextMenu: ', event);
@@ -1131,8 +1131,8 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     return false;
   }
   /**
-   * closes any active graph context menu 
-   * @internal 
+   * closes any active graph context menu
+   * @internal
    */
   private closeGraphContextMenu() {
     if (this._graphContextMenuSub){
@@ -1148,7 +1148,7 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
   public isGraphEntityRemovable(entityId: SzEntityIdentifier): boolean {
     return this.graphComponent.canRemoveNode(entityId);
   }
-  /** show any entities that are related to a specific entity that are 
+  /** show any entities that are related to a specific entity that are
    * currently not on the canvas
    */
   public showGraphEntityRelationships(entityId: SzEntityIdentifier) {
@@ -1183,8 +1183,8 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
       });
     }
   }
-  /** 
-   * when a entity id has been changed and the "" flag is set to true we run a 
+  /**
+   * when a entity id has been changed and the "" flag is set to true we run a
    * pre-click check to make sure that the how button returns a valid report.
    * @internal
   */
@@ -1215,10 +1215,10 @@ export class SzEntityDetailComponent implements OnInit, OnDestroy, AfterViewInit
           let hasSteps = (resp && resp.data && resp.data.resolutionSteps && Object.keys(resp.data.resolutionSteps).length > 0);
           let numberOfFinalStates = resp && resp.data && resp.data.finalStates && resp.data.finalStates.length ? resp.data.finalStates.length : 0
           let isSingleton = (numberOfFinalStates === 1 && resp && resp.data && resp.data.finalStates && resp.data.finalStates[0]) ? resp.data.finalStates[0].singleton: false;
-          
+
           if(isSingleton) {
             // entity only has one record,
-            // dont show re-eval
+            // don't show re-eval
             _retObs.next([false, false]);
           } else if (!hasSteps || numberOfFinalStates > 1){
             // no resolution steps and more than one final state

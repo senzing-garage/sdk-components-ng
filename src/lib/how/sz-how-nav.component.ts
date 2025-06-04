@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, OnDestroy, HostBinding } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataSource } from '@angular/cdk/collections';
-import { 
-    EntityDataService as SzEntityDataService, 
-    SzResolutionStep, SzVirtualEntityRecord, SzFeatureScore 
+import {
+    EntityDataService as SzEntityDataService,
+    SzResolutionStep, SzVirtualEntityRecord, SzFeatureScore
 } from '@senzing/rest-api-client-ng';
 import { SzConfigDataService } from '../services/sz-config-data.service';
 import { SzResolutionStepDisplayType, SzResolvedVirtualEntity } from '../models/data-how';
@@ -13,7 +13,7 @@ import { isNotNull } from '../common/utils';
 import { SzHowUIService } from '../services/sz-how-ui.service';
 
 /**
- * @internal 
+ * @internal
  * model for counting how many steps match a specific parameter */
 export interface SzHowNavComponentParameterCounts {
     'CREATE': number,
@@ -23,7 +23,7 @@ export interface SzHowNavComponentParameterCounts {
     'LOW_SCORE_ADDRESS': number,
     'LOW_SCORE_PHONE': number
 }
-/** 
+/**
  * @internal
  * model that extends a resolution step with display specific metadata used in the matches list */
 export interface SzResolutionStepListItem extends SzResolutionStep {
@@ -38,15 +38,15 @@ export interface SzResolutionStepListItem extends SzResolutionStep {
 }
 /**
  * @internal
- * Provides a collapsible list of steps from a "How" report that can 
- * be used for quickly navigating a how report and filtering based on user 
+ * Provides a collapsible list of steps from a "How" report that can
+ * be used for quickly navigating a how report and filtering based on user
  * parameters.
  *
- * @example 
+ * @example
  * <!-- (Angular) -->
  * <sz-how-nav></sz-how-nav>
  *
- * @example 
+ * @example
  * <!-- (WC) -->
  * <sz-wc-how-nav></sz-wc-how-nav>
 */
@@ -59,19 +59,19 @@ export interface SzResolutionStepListItem extends SzResolutionStep {
 export class SzHowNavComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
-    /** 
+    /**
      * @internal
      * object of steps to navigate keyed by virtualId
      */
     private _stepMap: {[key: string]: SzResolutionStep} = {};
-    /** 
+    /**
      * @internal
      * map of virtual entities keyed by virtualId
      */
     private _virtualEntitiesById: Map<string, SzResolvedVirtualEntity>;
-    /** 
-     * @internal 
-     * when the list of steps is prepared for render it is extended with 
+    /**
+     * @internal
+     * when the list of steps is prepared for render it is extended with
      * metadata and cached in this variable*/
     private _listSteps: SzResolutionStepListItem[];
     /** @internal when the full list of virtual entities is passed in or changed this subject emits */
@@ -94,12 +94,12 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         this._virtualEntitiesDataChange.next(this._virtualEntitiesById);
         this._parameterCounts = this.getParameterCounts();
     }
-    /** an object of steps whos key value is the virtual id of the step */
+    /** an object of steps who's key value is the virtual id of the step */
     @Input() set stepsByVirtualId(value: {[key: string]: SzResolutionStep}) {
         this._stepMap = value;
         this._parameterCounts = this.getParameterCounts();
     }
-    /** an object of steps whos key value is the virtual id of the step */
+    /** an object of steps who's key value is the virtual id of the step */
     get stepsByVirtualId(): {[key: string]: SzResolutionStep} {
         return this._stepMap;
     }
@@ -121,7 +121,7 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
-    /** gets the total number of steps where two virtual entitities where merged together */
+    /** gets the total number of steps where two virtual entities where merged together */
     get numberOfMergeSteps(): number {
         let retVal = 0;
         if(this.mergeSteps) {
@@ -154,8 +154,8 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
             let steps = Object.values(this._stepMap);
             let _tVal = steps.filter((step: SzResolutionStep) => {
                 // check if merge step
-                if(!(step.candidateVirtualEntity.singleton && 
-                    step.inboundVirtualEntity.singleton) && 
+                if(!(step.candidateVirtualEntity.singleton &&
+                    step.inboundVirtualEntity.singleton) &&
                     (step.candidateVirtualEntity.singleton === false || step.inboundVirtualEntity.singleton === false)
                 ) {
                     return true;
@@ -174,8 +174,8 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
             let steps = Object.values(this._stepMap);
             let _tVal = steps.filter((step: SzResolutionStep) => {
                 // check if merge step
-                if(!(step.candidateVirtualEntity.singleton && 
-                    step.inboundVirtualEntity.singleton) && 
+                if(!(step.candidateVirtualEntity.singleton &&
+                    step.inboundVirtualEntity.singleton) &&
                     (step.candidateVirtualEntity.singleton === true || step.inboundVirtualEntity.singleton === true)
                 ) {
                     return true;
@@ -218,7 +218,7 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
     /** @internal */
     private _filterByVirtualEntityCreation: boolean     = false;
     /** @internal */
-    private _filterByMergeInterimEntitites: boolean     = false;
+    private _filterByMergeInterimEntities: boolean     = false;
     /** @internal */
     private _filterByAddRecordtoVirtualEntity: boolean  = false;
     /** @internal */
@@ -233,7 +233,7 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         /** whether or not to include steps that created a new virtual entity  */
         get filterByVirtualEntityCreation(): boolean       { return this._filterByVirtualEntityCreation; }
         /** whether or not to include steps that merged one or more virtual entities */
-        get filterByMergeInterimEntitites(): boolean       { return this._filterByMergeInterimEntitites; }
+        get filterByMergeInterimEntities(): boolean       { return this._filterByMergeInterimEntities; }
         /** whether or not to include steps where a record was added to a virtual entity */
         get filterByAddRecordtoVirtualEntity(): boolean    { return this._filterByAddRecordtoVirtualEntity; }
         /** whether or not to include steps where names where not a close or same match */
@@ -253,8 +253,8 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
             this._filterByVirtualEntityCreation = parseBool(value);
         }
         /** whether or not to include steps that merged one or more virtual entities */
-        @Input() set filterByMergeInterimEntitites(value: boolean | undefined) {
-            this._filterByMergeInterimEntitites = parseBool(value);
+        @Input() set filterByMergeInterimEntities(value: boolean | undefined) {
+            this._filterByMergeInterimEntities = parseBool(value);
         }
         /** whether or not to include steps where a record was added to a virtual entity */
         @Input() set filterByAddRecordtoVirtualEntity(value: boolean | undefined) {
@@ -275,7 +275,7 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
     // ---------------------------------------- end parameters
 
     // ---------------------------------------- start filtered collection getters
-    
+
     /** list for steps extended with presentation and filtering specific data */
     public get listSteps(): SzResolutionStepListItem[] {
         let retVal: SzResolutionStepListItem[] = [];
@@ -287,7 +287,7 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         }
         return retVal;
     }
-    /** 
+    /**
      * @internal
      * generates extended presentation and filtering specific data for steps and returns them as an array of extended items */
     private getListSteps(): SzResolutionStepListItem[] {
@@ -297,7 +297,7 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
             retVal = _steps.map((_s: SzResolutionStep) => {
                 let _t: SzResolutionStepListItem = Object.assign({
                     actionType: this.getStepListCardType(_s),
-                    cssClasses: this.getStepListItemCssClasses(_s), 
+                    cssClasses: this.getStepListItemCssClasses(_s),
                     title: this.getStepListItemTitle(_s),
                     description: this.getStepListItemDescription(_s),
                     recordIds: this.getStepListItemRecords(_s),
@@ -324,7 +324,7 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
                 _hasParamsChecked = true;
                 _inc = _inc || step.actionType == SzResolutionStepDisplayType.ADD;
             }
-            if(this._filterByMergeInterimEntitites) {
+            if(this._filterByMergeInterimEntities) {
                 _hasParamsChecked = true;
                 _inc = _inc || step.actionType == SzResolutionStepDisplayType.MERGE;
             }
@@ -383,13 +383,13 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
             return _hasParamsChecked ? _inc : true;
         });
 
-        // we do the free text search OUTSIDE of main criteria check loop so that 
-        // the checkbox parameters are an "OR" operation by themselves, but become 
+        // we do the free text search OUTSIDE of main criteria check loop so that
+        // the checkbox parameters are an "OR" operation by themselves, but become
         // a "AND" operation in conjunction with free text search
         if(this._filterByTextOrRecordId && isNotNull(this._filterByTextOrRecordId)){
             // check if text is in record Id's
             let _critStr            = this._filterByTextOrRecordId.toUpperCase().trim();
-            
+
             let _critTerms          = _critStr.split(' ');
             let _critTerm           = _critStr;
 
@@ -419,8 +419,8 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * @internal 
-     * map of counts for specific filtering criteria to show user how many items will be 
+     * @internal
+     * map of counts for specific filtering criteria to show user how many items will be
      * selected when a filter is applied
      */
     private _parameterCounts: SzHowNavComponentParameterCounts = {
@@ -431,7 +431,7 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         'LOW_SCORE_ADDRESS':0,
         'LOW_SCORE_PHONE':0
     }
-    /** map of counts for specific filtering criteria to show user how many items will be 
+    /** map of counts for specific filtering criteria to show user how many items will be
      * selected when a filter is applied
      */
     public get parameterCounts(): SzHowNavComponentParameterCounts {
@@ -499,7 +499,7 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         return retVal;
     }
     /**
-     * @internal 
+     * @internal
      * get a array of recordId's present in a particular step.
      */
     private getStepListItemRecords(step: SzResolutionStep): string[] {
@@ -517,7 +517,7 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         return retVal;
     }
     /**
-     * @internal 
+     * @internal
      * get a array of datasources present in a particular step.
      */
     private getStepListItemDataSources(step: SzResolutionStep): string[] {
@@ -535,8 +535,8 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         return retVal;
     }
     /**
-     * @internal 
-     * get a array of text tokens in a particular step so a user can perform text searches for steps that 
+     * @internal
+     * get a array of text tokens in a particular step so a user can perform text searches for steps that
      * contain particular terms.
      */
     private getStepListItemFreeTextTerms(step: SzResolutionStepListItem): string[] {
@@ -575,10 +575,10 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
             // add important data from result entity in to search
             let termsToAdd = [];
             let itemToScan  = this._virtualEntitiesById.get(step.resolvedVirtualEntityId);
-            if(itemToScan.bestName) { 
-                termsToAdd.push(itemToScan.bestName); 
+            if(itemToScan.bestName) {
+                termsToAdd.push(itemToScan.bestName);
             } else if(itemToScan.entityName) {
-                termsToAdd.push(itemToScan.entityName); 
+                termsToAdd.push(itemToScan.entityName);
             }
             if(itemToScan.features && Object.keys(itemToScan.features).length > 0) {
                 // has features, add them
@@ -594,7 +594,7 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         let ret = [...new Set(retVal)];
         //console.log(`getStepListItemFreeTextTerms()`, ret, step, this._virtualEntitiesById);
         return ret;
-    }    
+    }
     /**
      * @internal
      * get the type of card that the step will be displayed as.
@@ -622,7 +622,7 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
     }
     /**
      * @internal
-     * get the description for a step that is displayed in the matches list. 
+     * get the description for a step that is displayed in the matches list.
      */
     private getStepListItemDescription(step: SzResolutionStep): {text: string, cssClasses: string[]}[] {
         let retVal = [];
@@ -693,7 +693,7 @@ export class SzHowNavComponent implements OnInit, OnDestroy {
         this.unsubscribe$.complete();
     }
     /**
-     * when a step is clicked this method collapses all other currently expanded steps, and expands the 
+     * when a step is clicked this method collapses all other currently expanded steps, and expands the
      * step specified and all ancestors in it's tree.
      */
     public stepClicked(step: SzResolutionStep) {

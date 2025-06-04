@@ -14,9 +14,9 @@ export interface dataSourceSelectionChangeEvent {
 }
 
 /**
- * Wrapper component for the comparing stats of one datasource 
- * with their mutual stat type of another datasource. Uses the 
- * Venn Diagram chart to show the overlap and a special Data Table 
+ * Wrapper component for the comparing stats of one datasource
+ * with their mutual stat type of another datasource. Uses the
+ * Venn Diagram chart to show the overlap and a special Data Table
  * specific to displaying a sample set from the selected type of stats
  * for the two selected data sources.
  *
@@ -78,7 +78,7 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
   /** when a new sample set has completed it's data requests/initialization */
   private _onNewSampleSet: Subject<SzEntityData[]> = new Subject();
   @Output() onNewSampleSet = this._onNewSampleSet.asObservable();
-  /** aggregate observeable for when the component is "doing stuff" */
+  /** aggregate observable for when the component is "doing stuff" */
   private _loading: Subject<boolean> = new Subject();
   @Output() loading: Observable<boolean> = this._loading.asObservable();
 
@@ -113,11 +113,11 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-  /** the title of the collapseable header */
+  /** the title of the collapsable header */
   public get title() {
     return this._title;
   }
-  /** set the title of the collapseable widget */
+  /** set the title of the collapsable widget */
   public set title(value: string) {
     this._title = value;
   }
@@ -229,8 +229,8 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
       this.dataMartService.sampleStatType     = evt.statType as SzCrossSourceSummaryCategoryType;
       // get filter counts
       this.dataMartService.getCrossSourceStatistics(
-        this.dataMartService.dataSource1 ? this.dataMartService.dataSource1 : (this.dataMartService.dataSource2 ? this.dataMartService.dataSource2 : undefined), 
-        this.dataMartService.dataSource1 && this.dataMartService.dataSource2 && this.dataMartService.dataSource1 !== this.dataMartService.dataSource2 ? this.dataMartService.dataSource2 : undefined, 
+        this.dataMartService.dataSource1 ? this.dataMartService.dataSource1 : (this.dataMartService.dataSource2 ? this.dataMartService.dataSource2 : undefined),
+        this.dataMartService.dataSource1 && this.dataMartService.dataSource2 && this.dataMartService.dataSource1 !== this.dataMartService.dataSource2 ? this.dataMartService.dataSource2 : undefined,
         '*'
       ).pipe(
         takeUntil(this.unsubscribe$),
@@ -273,7 +273,7 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
       this.dataMartService.sampleDataSource2  = evt.dataSource2;
       //console.log(`\tset both datasources: ["${this.dataMartService.sampleDataSource1}","${this.dataMartService.sampleDataSource2}"]`);
     }
-  
+
     // simplify the event payload passed back
     let _parametersEvt: SzCrossSourceSummarySelectionEvent = {
       matchLevel: evt.matchLevel,
@@ -288,15 +288,15 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
 
 
     // we give this a async delay because when we change it immediately
-    // it locks up the UI so the loading indicator doesn't present until 
+    // it locks up the UI so the loading indicator doesn't present until
     // the table is done rendering
     setTimeout(this._onSourceStatClicked.bind(this, _parametersEvt), 500);
   }
   _onSourceStatClicked(evt: SzCrossSourceSummarySelectionClickEvent) {
     /*
-    First part here moved to the "onSourceStatClicked" to immediately provide 
+    First part here moved to the "onSourceStatClicked" to immediately provide
     user feedback
-    
+
     this._loading.next(true);
 
     if(!evt.dataSource1 && evt.dataSource2) {
@@ -368,10 +368,10 @@ export class SzCrossSourceStatistics implements OnInit, AfterViewInit, OnDestroy
 
     // initialize new sample set
     return this.dataMartService.createNewSampleSetFromParameters(
-      parameters.statType, 
-      parameters.dataSource1, 
-      parameters.dataSource2, 
-      parameters.matchKey, 
+      parameters.statType,
+      parameters.dataSource1,
+      parameters.dataSource2,
+      parameters.matchKey,
       parameters.principle).pipe(
         takeUntil(this.unsubscribe$),
         take(1),

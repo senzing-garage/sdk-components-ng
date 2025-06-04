@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
 
-//import { SzSearchResults } from '../..//models/responces/search-results/search-results';
+//import { SzSearchResults } from '../..//models/responses/search-results/search-results';
 //import { SzEntityDetailSectionData } from '../../models/entity-detail-section-data';
 
 import {
