@@ -12,9 +12,9 @@ import { SzDataMartService } from '../../services/sz-datamart.service';
 import { SzDataSourcesService } from '../../services/sz-datasources.service';
 
 /**
- * Embeddable Donut Graph showing how many 
- * records belong to which datasources for the repository in a visual way. 
- * 
+ * Embeddable Donut Graph showing how many
+ * records belong to which datasources for the repository in a visual way.
+ *
  * @internal
  * @example <!-- (Angular) -->
  * <sz-venn-diagram></sz-venn-diagram>
@@ -83,13 +83,13 @@ export class SzVennDiagramsComponent implements OnInit, OnDestroy {
   public disableZeroClick: boolean = false;
   /*
   @Input()
-  public backgorundColorA: string;
+  public backgroundColorA: string;
   @Input()
   public borderColorA: string;
   @Input()
   public blendModeA: string | null = null;
   @Input()
-  public backgorundColorB: string;
+  public backgroundColorB: string;
   @Input()
   public borderColorB: string;
   @Input()

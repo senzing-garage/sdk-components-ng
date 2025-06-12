@@ -40,7 +40,7 @@ export class SzSearchService {
     private configService: ConfigService) {}
 
   /**
-   * perform a search request againt the data source.
+   * perform a search request against the data source.
    * @link http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml | GET /entities
    *
    * @memberof SzSearchService
@@ -142,7 +142,7 @@ export class SzSearchService {
       map((res: SzEntityResponse) => (res.data as SzEntityData))
     );
   }
-  /** get the SzEntityData[] responses for multiple entities 
+  /** get the SzEntityData[] responses for multiple entities
    * @memberof SzSearchService
    */
   public getEntitiesByIds(entityIds: SzEntityIdentifiers, withRelated = false, detailLevel = SzDetailLevel.VERBOSE): Observable<SzEntityData[]> {
@@ -151,11 +151,11 @@ export class SzSearchService {
     let _retSubject = new Subject<SzEntityData[]>();
     let _retVal     = _retSubject.asObservable();
 
-    let _listOfObserveables = entityIds.map((eId) => {
+    let _listOfObservables = entityIds.map((eId) => {
       return this.entityDataService.getEntityByEntityId(eId, detailLevel, undefined, undefined, undefined, undefined, withRelatedStr)
     })
 
-    forkJoin(_listOfObserveables).pipe(
+    forkJoin(_listOfObservables).pipe(
       map((res: SzEntityResponse[]) => {
         return res.map((res: SzEntityResponse) => (res.data as SzEntityData))
       })

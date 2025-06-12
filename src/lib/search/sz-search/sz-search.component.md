@@ -1,5 +1,4 @@
-
-The search box component and the search results component are split up. this is done for some practical reasons. most noteably, so results can be placed wherever it makes sense to put them. This does complicate set up a tiny bit, but the tradeoff in flexibility is well worth it.
+The search box component and the search results component are split up. this is done for some practical reasons. most notably, so results can be placed wherever it makes sense to put them. This does complicate set up a tiny bit, but the tradeoff in flexibility is well worth it.
 
 So, lets get down to business.
 lets bind the output of the search component to the input of the search results component.
@@ -7,6 +6,7 @@ lets bind the output of the search component to the input of the search results 
 ## Angular
 
 first two methods to your component(or app.component.ts) that will handle the output of our search component:
+
 ```typescript
   public onSearchResults(evt: SzSearchResults) {
     console.log('@senzing/sdk-components-ng/sz-search/searchResults: ', evt);
@@ -19,31 +19,30 @@ first two methods to your component(or app.component.ts) that will handle the ou
     this.currentSearchParameters = searchParams;
   }
 ```
+
 and the property `currentSearchResults` and import the `SzAttributeSearchResult` model:
+
 ```typescript
 public currentSearchResults: SzAttributeSearchResult[];
 ```
 
 your app.component.ts up to this point should look something like this:
+
 ```typescript
-import {
-  SzAttributeSearchResult,
-  SzEntitySearchParams,
-  SzSearchComponent
-} from '@senzing/sdk-components-ng';
+import { SzAttributeSearchResult, SzEntitySearchParams, SzSearchComponent } from "@senzing/sdk-components-ng";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements AfterViewInit {
   public currentSearchResults: SzAttributeSearchResult[];
   public currentSearchParameters: SzEntitySearchParams;
 
-  constructor(){}
+  constructor() {}
 
-  public onSearchResults(evt: SzAttributeSearchResult[]){
+  public onSearchResults(evt: SzAttributeSearchResult[]) {
     // store on current scope
     this.currentSearchResults = evt;
   }
@@ -55,13 +54,11 @@ export class AppComponent implements AfterViewInit {
 }
 ```
 
-now lets add the attrribute search component(sz-search) to the method we just created. Add the following to your app.component.html file:
+now lets add the attribute search component(sz-search) to the method we just created. Add the following to your app.component.html file:
 
 ```html
 <!-- start search box -->
-<sz-search 
-  (resultsChange)="onSearchResults($event)"
-  (parameterChange)="onSearchParameterChange($event)"></sz-search>
+<sz-search (resultsChange)="onSearchResults($event)" (parameterChange)="onSearchParameterChange($event)"></sz-search>
 <!-- end search box -->
 ```
 
@@ -74,7 +71,5 @@ Now we should be getting the results of the search, and assigning it to the clas
 <sz-search-results [results]="currentSearchResults" [parameters]="currentSearchParameters"></sz-search-results>
 <!-- end search results -->
 ```
-
-
 
 ## Web Components

@@ -15,7 +15,7 @@ import { SzAdminService } from './sz-admin.service';
 import { tap, map, catchError, takeUntil } from 'rxjs/operators';
 /**
  * methods used to manipulate data is bulk, ie
- * import, analyze, map, and load data from a parseable format.
+ * import, analyze, map, and load data from a parsable format.
  *
  * @export
  */
@@ -144,7 +144,7 @@ export class SzBulkDataService {
     console.log('SzBulkDataService.createDataSources: ', dataSources);
     return this.datasourcesService.addDataSources(dataSources);
   }
-  /** analze a file and prep for mapping */
+  /** analyze a file and prep for mapping */
   public analyze(file: File): Observable<SzBulkDataAnalysisResponse> {
     //console.log('SzBulkDataService.analyze: ', file);
     this.currentError = undefined;
@@ -160,7 +160,7 @@ export class SzBulkDataService {
         this.dataSourceMap = this.getDataSourceMapFromAnalysis( this.currentAnalysis.analysisByDataSource );
         this.onDataSourceMapChange.next( this.dataSourceMap );
         this.onAnalysisChange.next( this.currentAnalysis );
-        console.log('analyze set analysis respose: ', this.dataSourceMap, this.currentAnalysis);
+        console.log('analyze set analysis response: ', this.dataSourceMap, this.currentAnalysis);
       })
     )
   }

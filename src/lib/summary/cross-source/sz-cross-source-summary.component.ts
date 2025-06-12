@@ -16,13 +16,13 @@ import { SzCrossSourceSummaryMatchKeyPickerDialog } from './sz-cross-source-matc
  *   duplicates for datasource1 vs datasource2
  *   possible matches for datasource1 vs datasource2
  *   possibly related for datasource1 vs datasource2
- * 
- * datasouce1 vs datasource2 have no public setters because 
+ *
+ * datasource1 vs datasource2 have no public setters because
  * there are just to many stateful properties to coordinate through direct setters.
- * 
- * Instead set the datasoure(s) through either the #SzDataMartService or the 
+ *
+ * Instead set the datasource(s) through either the #SzDataMartService or the
  * #SzCrossSourceSelectComponent.
- * 
+ *
  * @internal
  * @example <!-- (Angular) -->
  * <sz-cross-source-select></sz-cross-source-select>
@@ -51,10 +51,10 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
   /** @internal */
   private _disableClickingOnZeroResults: boolean = true;
   private _openMatchKeyFiltersOnSelection: boolean = false;
-  
+
   private _filterPickerDialog: MatDialogRef<SzCrossSourceSummaryMatchKeyPickerDialog>;
   private _diagramClickEventPayload;
-  
+
   // --------------------------------- getters and setters -------------------------------
   /** is only one datasource on either side selected */
   public get singular() : boolean {
@@ -214,7 +214,7 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
     ).subscribe(this.onDataSourceSelectionChange.bind(this))
   }
   /**
-   * When a selected datasource is changed from the datamart service this method is called 
+   * When a selected datasource is changed from the datamart service this method is called
    * which in turn sets up the http requests needed to populate the widget.
    * @internal
    */
@@ -227,7 +227,7 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
     let dataRequests = forkJoin({
       fromDataSource: this.dataMartService.dataSource1 ? this.dataMartService.getCrossSourceStatistics(this.dataMartService.dataSource1, undefined, '*') : of(false),
       overlapDataSource: this.dataMartService.dataSource1 && this.dataMartService.dataSource2 && this.dataMartService.dataSource1 !== this.dataMartService.dataSource2 ? this.dataMartService.getCrossSourceStatistics(
-        this.dataMartService.dataSource1, 
+        this.dataMartService.dataSource1,
         this.dataMartService.dataSource2, '*'): of(false),
       toDataSource: this.dataMartService.dataSource2 ? this.dataMartService.getCrossSourceStatistics(this.dataMartService.dataSource2, undefined, '*') : of(false)
       });
@@ -255,7 +255,7 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
     this._crossSourceSummaryData    = undefined;
     this._toDataSourceSummaryData   = undefined;
   }
-  /** when all the api requests respond this method is called to store the data on the instance for 
+  /** when all the api requests respond this method is called to store the data on the instance for
    * retrieval through variables/getters/setters.
    * @internal
   */
@@ -282,7 +282,7 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
     //let retVal = (this._toDataSourceSummaryData && this._toDataSourceSummaryData.dataSource) ? this._toDataSourceSummaryData.dataSource : 'B';
     return retVal;
   }
-  /** when a circle diagram is clicked for a particular stat this handler is invoked which then emits 
+  /** when a circle diagram is clicked for a particular stat this handler is invoked which then emits
    * a 'summaryDiagramClick' event that can be listened for.
    * @internal
    */
@@ -310,7 +310,7 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
       }
     }
     // store the last click payload so that if the user
-    // clicks outside the picker dialog we can still forward 
+    // clicks outside the picker dialog we can still forward
     // the click event and display the results
     this._diagramClickEventPayload = Object.assign(clickEvent, {
       dataSource1: newFromDataSource,
@@ -324,7 +324,7 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
     }
     /*if(_statTypeData) {
       let dialogData = this.dataMartService.getCrossSourceStatisticsByStatTypeFromData(statType, _statTypeData)
-      // store the match key counts so we have them even if the user doesn't select 
+      // store the match key counts so we have them even if the user doesn't select
       // a filter to be applied
       this.dataMartService.matchKeyCounts = dialogData;
 
@@ -360,7 +360,7 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
       minWidth: 200,
       height: 'var(--sz-css-matchkey-picker-dialog-default-height)',
       data: {
-        data: data, 
+        data: data,
         statType: statType
       }
     });
@@ -368,7 +368,7 @@ export class SzCrossSourceSummaryComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$)
     ).subscribe((stopPropagation: boolean) => {
       if(!stopPropagation && this._diagramClickEventPayload) {
-        // continue 
+        // continue
         this.sourceStatisticClicked.emit(this._diagramClickEventPayload as SzCrossSourceSummarySelectionClickEvent);
       }
     })

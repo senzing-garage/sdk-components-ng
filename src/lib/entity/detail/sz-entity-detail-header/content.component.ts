@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy, ChangeDetec
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { SzSearchResultEntityData } from '../../../models/responces/search-results/sz-search-result-entity-data';
+import { SzSearchResultEntityData } from '../../../models/responses/search-results/sz-search-result-entity-data';
 import { SzEntityDetailSectionData } from '../../../models/entity-detail-section-data';
 import { SzEntityRecord, SzEntityFeature } from '@senzing/rest-api-client-ng';
 import { SzPrefsService } from '../../../services/sz-prefs.service';

@@ -86,7 +86,7 @@ export class SzRelationshipPathComponent implements OnInit, AfterViewInit {
 
   /**
    * the preserveAspectRatio attribute on the svg element.
-   * @interal
+   * @internal
    */
   private _preserveAspectRatio: string = "xMidYMid meet";
    /**
@@ -128,14 +128,14 @@ export class SzRelationshipPathComponent implements OnInit, AfterViewInit {
   }
 
   private _from: string;
-  @Input() public set from(value: string) { 
+  @Input() public set from(value: string) {
     this._from = value;
   }
   public get from(): string { return this._from; }
 
   private _to: string;
-  @Input() public set to(value: string) { 
-    this._to = value; 
+  @Input() public set to(value: string) {
+    this._to = value;
   }
   public get to(): string { return this._to; }
 
@@ -167,7 +167,7 @@ export class SzRelationshipPathComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // !!!! logic moved to ngAfterViewInit
-    // !!!! as of NG10 ViewChild(Ref) is no longer available at 
+    // !!!! as of NG10 ViewChild(Ref) is no longer available at
     // !!!! time of view init
     /*
     // get dom element reference to svg tag
@@ -374,7 +374,7 @@ export class SzRelationshipPathComponent implements OnInit, AfterViewInit {
       .force('x', d3.forceX(this._svgWidth / 2).strength(0.01)) // x and y continually pull all nodes toward a point.  If the
       .force('y', d3.forceY(this._svgHeight / 2).strength(0.01)) //  graph has multiple networks, this keeps them on screen
       .on('tick', this.tick.bind(this));*/
-    
+
     this.forceSimulation = d3.forceSimulation(graph.nodes)
     .force('link', d3.forceLink().links(graph.links).distance(this._statWidth / this._linkGravity)) // links pull nodes together
     .force('charge', d3.forceManyBody().strength(-30)) // nodes repel each other
@@ -496,7 +496,7 @@ export class SzRelationshipPathComponent implements OnInit, AfterViewInit {
    */
   tick() {
     // Update the SVG for each .node
-    
+
     this.node.attr("transform", d => "translate(" + d.x + "," + d.y + ")")
       .call(d3.drag()             // TODO Update dragging code to use v5 conventions for event listening
         .on("start", this.dragstarted.bind(this))

@@ -10,12 +10,12 @@ import { SzConfigurationService } from '../../services/sz-configuration.service'
  * For Angular implementations we recommend using {@link SzConfigurationService} as an injectable as it
  * provides the more robust solution.
  *
- * @example 
+ * @example
  * <!-- (WC) SzConfigurationComponent Example - javascript -->
  * <sz-wc-configuration id="sz-api-conf"></sz-wc-configuration>
  * document.getElementById('sz-api-conf').basePath = 'http://apis.mydomain.com';
  *
- * @example 
+ * @example
  * <!-- (WC) SzConfigurationComponent Example - By attribute -->
  * <sz-wc-configuration base-path="http://apis.mydomain.com/api"></sz-wc-configuration>
  *
@@ -28,7 +28,7 @@ import { SzConfigurationService } from '../../services/sz-configuration.service'
 })
 export class SzConfigurationComponent {
   /**
-   * emmitted when a property has been changed.
+   * emitted when a property has been changed.
    * used mostly for diagnostics.
    */
   @Output()
@@ -39,7 +39,7 @@ export class SzConfigurationComponent {
   }
 
   /**
-   * apiKeys to use when connnecting to Api Server
+   * apiKeys to use when connecting to Api Server
    */
   @Input()
   set apiKeys(value: {[ key: string ]: string}) {
@@ -56,7 +56,7 @@ export class SzConfigurationComponent {
     this.onParameterChange();
   }
 
-  /** password used for challenge respose. */
+  /** password used for challenge response. */
   @Input()
   set password(value: string) {
     this.apiConfigService.password = value;
@@ -85,9 +85,9 @@ export class SzConfigurationComponent {
     this.onParameterChange();
   }
 
-  /** 
-   * set additional http/https request headers to be added by default to 
-   * all outbound api server requests. most commonly used for adding custom 
+  /**
+   * set additional http/https request headers to be added by default to
+   * all outbound api server requests. most commonly used for adding custom
    * or required non-standard headers like jwt session tokens, auth id etc.
    */
   @Input()

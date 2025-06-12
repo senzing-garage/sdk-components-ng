@@ -27,7 +27,7 @@ import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 export class AppComponent implements AfterViewInit, OnDestroy {
   /** current results from search */
   public currentSearchResults: SzAttributeSearchResult[];
-  /** entity id to disply in detail component */
+  /** entity id to display in detail component */
   public currentlySelectedEntityId: number;
   public currentEntityData: SzEntityData;
   public showNoResultsMessage = false;

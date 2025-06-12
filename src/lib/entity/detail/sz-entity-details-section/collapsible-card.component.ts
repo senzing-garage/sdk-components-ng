@@ -40,8 +40,8 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   @Output() onCompareRecordsForWhy = new EventEmitter<SzRecordId[]>();
   @Output() onCompareEntitiesForWhyNot = new EventEmitter<SzEntityIdentifier[]>();
 
-  /** 
-   * if "showRecordWhyUtilities" set to true there is a "single-record" select behavior, and a 
+  /**
+   * if "showRecordWhyUtilities" set to true there is a "single-record" select behavior, and a
    * "multi-select" behavior. possible values are `SINGLE` and `MUTLI`
    */
   public get whySelectionMode(): SzWhySelectionModeBehavior {
@@ -56,7 +56,7 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   public get isSingleSelect(): boolean {
     return this._whySelectionMode === SzWhySelectionMode.SINGLE
   }
-  
+
   public truncateOtherDataInRecordsAt: number = -1; // < 0 is unlimited
 
   /**
@@ -65,7 +65,7 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   @Input()
   set expanded(value) {
     this.isOpen = value;
-    // publish event change emmitter
+    // publish event change emitter
     this.onCollapsedChange.emit(!this.isOpen);
   }
   /**
@@ -83,7 +83,7 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   @Input() displayType: string = 'entity';
   @Input() truncateResults: boolean = true;
   @Input() cardData: SzEntityDetailSectionData | SzSectionDataByDataSource | undefined;
-  
+
   isOpen: boolean = false;
   matchPills: { text: string, ambiguous: boolean, plusMinus: string }[];
   headerTitleText: string;
@@ -107,7 +107,7 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
     this.unsubscribe$.complete();
   }
   // DO NOT DELETE THIS
-  // The compiler is dumb and things that property "cardData" is of type "never" which 
+  // The compiler is dumb and things that property "cardData" is of type "never" which
   // is literally NEVER true. it is NEVER "never" and always <SzEntityDetailSectionData | SzSectionDataByDataSource>
   get cardDataAsAny(): any {
     return this.cardData as any;
@@ -146,7 +146,7 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
     */
     return false;
   }
-  
+
 
   ngOnInit() {
     //console.log('CARD DATA: ', this.cardData);
@@ -261,10 +261,10 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
     this.onCompareEntitiesForWhyNot.emit([]);
   }
 
-  /** when using the "MULTI" mode record select, the "click-to-select" behavior can be toggled, 
+  /** when using the "MULTI" mode record select, the "click-to-select" behavior can be toggled,
    * when the icon is clicked to toggle the mode this event is emitted */
   @Output('dataSourceSelectModeChanged') onDataSourceSelectModeChangedEmitter = new EventEmitter<boolean>();
-  /** when using the "MULTI" mode record select, the "click-to-select" behavior can be toggled, 
+  /** when using the "MULTI" mode record select, the "click-to-select" behavior can be toggled,
    * when the icon is clicked this handler is invoked */
   public onWhyRecordComparisonModeActiveChange(isActive: boolean) {
     this.onDataSourceSelectModeChangedEmitter.emit(isActive);
@@ -273,7 +273,7 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
   public get relatedWhyNotSelectActive() {
     return this.relatedWhyMultiselectActive || this.isSingleSelect;
   };
-  
+
   /** are records selectable via a "click" user event */
   public get recordWhySelectActive() {
     return this.recordWhyMultiselectActive || this.isSingleSelect;
@@ -305,10 +305,10 @@ export class SzEntityDetailSectionCollapsibleCardComponent implements OnInit, On
     let retVal = [];
     let _dataSources = Object.keys(this.dataSourceRecordsSelected);
     _dataSources.forEach((selectedDataSource) => {
-      retVal = retVal.concat( 
+      retVal = retVal.concat(
         this.dataSourceRecordsSelected[selectedDataSource].map((selectedRecordId) => {
           return {src: selectedDataSource, id: selectedRecordId}
-        }) 
+        })
       )
     })
     return retVal
