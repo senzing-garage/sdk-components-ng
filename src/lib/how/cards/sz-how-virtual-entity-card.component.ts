@@ -1,14 +1,14 @@
 import { Component, OnInit, Input, ViewChild, HostBinding, EventEmitter, Output } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
-import { 
-    SzEntityFeature, SzEntityIdentifier, SzResolvedEntity, 
+import {
+    SzEntityFeature, SzEntityIdentifier, SzResolvedEntity,
     SzVirtualEntityRecord, EntityDataService as SzEntityDataService, SzResolutionStep } from '@senzing/rest-api-client-ng';
 import { Subject } from 'rxjs';
 import { SzSearchService } from '../../services/sz-search.service';
 import { friendlyFeaturesName } from '../../models/data-features';
-import { 
-    SzResolutionStepDisplayType, 
-    SzResolvedVirtualEntity, 
+import {
+    SzResolutionStepDisplayType,
+    SzResolvedVirtualEntity,
     SzVirtualEntityRecordsClickEvent ,
     SzVirtualEntityRecordsByDataSource
 } from '../../models/data-how';
@@ -16,7 +16,7 @@ import { SzHowUIService } from '../../services/sz-how-ui.service';
 
 /**
  * Display the "Virtual Entity" information for how resolution step
- * 
+ *
  * @internal
 */
 @Component({
@@ -47,7 +47,7 @@ export class SzHowVirtualEntityCardComponent implements OnInit {
         return this.displayType === SzResolutionStepDisplayType.CREATE;
     }
     @HostBinding('class.sz-how-entity-card') cssCardClass: boolean = true;
-    
+
     @ViewChild(MatAccordion) featuresAccordion: MatAccordion;
     @ViewChild(MatAccordion) stepsAccordion: MatAccordion;
 
@@ -92,7 +92,7 @@ export class SzHowVirtualEntityCardComponent implements OnInit {
     get virtualEntity(): SzResolvedVirtualEntity {
         return this._data;
     }
-    
+
     public get title(): string {
         let retVal = 'Virtual Entity';
         if(this._data) {
@@ -116,14 +116,14 @@ export class SzHowVirtualEntityCardComponent implements OnInit {
         // check if we have a cached version of this first
         if(!this._sources && this._data && this._data.records) {
             let _recordsByDataSource: {
-                [key: string]: Array<SzVirtualEntityRecord> 
+                [key: string]: Array<SzVirtualEntityRecord>
             } = {};
             this._data.records.forEach((dsRec) => {
                 if(!_recordsByDataSource[dsRec.dataSource]) {
                     _recordsByDataSource[dsRec.dataSource] = [];
                 }
                 _recordsByDataSource[dsRec.dataSource].push(dsRec);
-    
+
             });
             this._sources = _recordsByDataSource;
         }
@@ -238,7 +238,7 @@ export class SzHowVirtualEntityCardComponent implements OnInit {
                     name: _key,
                     features: entity.features[_key]
                 });
-            }            
+            }
             // first sort alphabetically
             orderedFeatures.sort((a: {name: string, features: SzEntityFeature[]}, b: {name: string, features: SzEntityFeature[]}) => {
                 var textA = a.name.toUpperCase();
@@ -325,7 +325,7 @@ export class SzHowVirtualEntityCardComponent implements OnInit {
             records: this.sources[dsKey],
             dataSourceName: dsKey
         });
-        console.log('SzHowVirtualCardComponent.onMoreLinkClck: ', payload, evt);
+        console.log('SzHowVirtualCardComponent.onMoreLinkClick: ', payload, evt);
         this._moreLinkClick.next(payload);
         //Array<SzVirtualEntityRecord>
     }

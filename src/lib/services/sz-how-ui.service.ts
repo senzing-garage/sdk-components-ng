@@ -12,10 +12,10 @@ import { SzPrefsService } from './sz-prefs.service';
 import { SzResolutionStepDisplayType, SzResolutionStepListItemType, SzResolutionStepNode } from '../models/data-how';
 
 /**
- * Provides methods, eventing, and utilities used to display the 
- * result of a "How" operation. A "How" report displays all the steps 
+ * Provides methods, eventing, and utilities used to display the
+ * result of a "How" operation. A "How" report displays all the steps
  * that were taken to resolve multiple input streams to a single entity.
- * 
+ *
  * @export
  */
 @Injectable({
@@ -44,11 +44,11 @@ export class SzHowUIService {
   private _stepNodes: Array<SzResolutionStepNode>;
   /** @internal */
   private _userHasChangedStepState  = new Map<string, boolean>();
-  /** when a group is expanded or collapsed this observeable emits the id of the group that was changed */
+  /** when a group is expanded or collapsed this observable emits the id of the group that was changed */
   public onGroupExpansionChange     = this._onGroupExpansionChange.asObservable();
-  /** when a group is expanded or collapsed this observeable emits the id of the group that was changed */
+  /** when a group is expanded or collapsed this observable emits the id of the group that was changed */
   public onStepExpansionChange      = this._onStepExpansionChange.asObservable();
-  /** 
+  /**
    * An array of all the groups currently expanded.
    * Groups include "Interim Entities" than can have children,
    * Stacks of multiple "Add Record" Operations and "Final Entity" nodes
@@ -56,9 +56,9 @@ export class SzHowUIService {
   public get expandedGroups() {
     return this._expandedGroups;
   }
-  /** 
+  /**
    * An array of all step cards currently expanded.
-   * Cards can all be collapsed and are often children of 
+   * Cards can all be collapsed and are often children of
    * Group nodes.
    */
   public get expandedNodes() {
@@ -91,17 +91,17 @@ export class SzHowUIService {
   public set stepNodeGroups(value: Map<string, SzResolutionStepNode>) {
     this._stepNodeGroups          = value;
   }
-  /** set the step nodes present in an initial "how" presentation. This input 
-   * should be in the form of a fully nested array. The array should start at the 
-   * top level with "Final Cards" and each final card should have "children" nodes, and 
+  /** set the step nodes present in an initial "how" presentation. This input
+   * should be in the form of a fully nested array. The array should start at the
+   * top level with "Final Cards" and each final card should have "children" nodes, and
    * each of those children nodes can have children etc.
    */
   public set stepNodes(value: Array<SzResolutionStepNode>) {
     this._stepNodes = value;
   }
-  /** get the step nodes present in the current "how" presentation. This input 
-   * should be in the form of a fully nested array. The array should start at the 
-   * top level with "Final Cards" and each final card should have "children" nodes, and 
+  /** get the step nodes present in the current "how" presentation. This input
+   * should be in the form of a fully nested array. The array should start at the
+   * top level with "Final Cards" and each final card should have "children" nodes, and
    * each of those children nodes can have children etc.
    */
   public get stepNodes(): Array<SzResolutionStepNode> {
@@ -143,10 +143,10 @@ export class SzHowUIService {
   }
   /**
    * Collapse a node found in either "stepNodes"
-   * @param id the id of the node or group. commonly in format of "V00000-S0" if node 
-   * represents a step or "170e0833-0522-406d-bf07-1c50e7" uid string if step group wrapper that 
+   * @param id the id of the node or group. commonly in format of "V00000-S0" if node
+   * represents a step or "170e0833-0522-406d-bf07-1c50e7" uid string if step group wrapper that
    * isn't an actual resolution step itself.
-   * @param itemType some groups have the same id's as steps inside them(interim merge steps) which are 
+   * @param itemType some groups have the same id's as steps inside them(interim merge steps) which are
    * actually "GROUP"'s, this parameter allows you to specify between node's and groups with the same ID's.
    */
   public collapseNode(id: string, itemType?: SzResolutionStepListItemType, debug?: boolean) {
@@ -199,8 +199,8 @@ export class SzHowUIService {
   /**
    * Expand all children of a specific node group.
    * @param groupId the id of the node group that the children belong to
-   * @param itemType optionally specify the type of node that the group is. For instance, 
-   * an Interim entity might have the same Id as a step inside of that node. This allows you to 
+   * @param itemType optionally specify the type of node that the group is. For instance,
+   * an Interim entity might have the same Id as a step inside of that node. This allows you to
    * specify that you want just the group or the node inside the group.
    * @param childNodeTypes optionally only expand children of this type.
    */
@@ -210,7 +210,7 @@ export class SzHowUIService {
       _stepNodes.filter((_fn) => (itemType && _fn.itemType === itemType || !itemType)).forEach((_n) => {
         // type match
         if(_n && _n.children && _n.children.filter) {
-          _n.children.filter((_c) => { 
+          _n.children.filter((_c) => {
             return ((childNodeTypes && (_c as SzResolutionStepNode).itemType && childNodeTypes.includes((_c as SzResolutionStepNode).itemType)) || !childNodeTypes);
           }).forEach((_cn) => {
             // call expand for each child matching the type
@@ -222,10 +222,10 @@ export class SzHowUIService {
   }
   /**
    * Expand a node found in "stepNodes"
-   * @param id the id of the node or group. commonly in format of "V00000-S0" if node 
-   * represents a step or "170e0833-0522-406d-bf07-1c50e7" uid string if step group wrapper that 
+   * @param id the id of the node or group. commonly in format of "V00000-S0" if node
+   * represents a step or "170e0833-0522-406d-bf07-1c50e7" uid string if step group wrapper that
    * isn't an actual resolution step itself.
-   * @param itemType some groups have the same id's as steps inside them(interim merge steps) which are 
+   * @param itemType some groups have the same id's as steps inside them(interim merge steps) which are
    * actually "GROUP"'s, this parameter allows you to specify between node's and groups with the same ID's.
    */
   expandNode(id: string, itemType?: SzResolutionStepListItemType, debug?: boolean) {
@@ -256,9 +256,9 @@ export class SzHowUIService {
         // make sure any parent nodes are also expanded
         this.expandParentNodes(_n);
 
-        // if it's a group 
-        if(_n.itemType === SzResolutionStepListItemType.GROUP 
-          || _n.itemType === SzResolutionStepListItemType.FINAL 
+        // if it's a group
+        if(_n.itemType === SzResolutionStepListItemType.GROUP
+          || _n.itemType === SzResolutionStepListItemType.FINAL
           || _n.itemType === SzResolutionStepListItemType.STACK) {
           //this.expandGroup(_n.id);
           if(!this.isGroupExpanded(id)) {
@@ -266,7 +266,7 @@ export class SzHowUIService {
             this._onGroupExpansionChange.next(id);
             // check to see if there is only one child
             // if so expand that one too
-            if(_n.children && _n.children.length === 1) {                
+            if(_n.children && _n.children.length === 1) {
               let childType = (_n.children[0] as SzResolutionStepNode).itemType ? (_n.children[0] as SzResolutionStepNode).itemType : SzResolutionStepListItemType.STEP;
               let childId   = (_n.children[0] as SzResolutionStepNode).id ? (_n.children[0] as SzResolutionStepNode).id : _n.children[0].resolvedVirtualEntityId;
               this.expandNode(childId, childType);
@@ -285,7 +285,7 @@ export class SzHowUIService {
     }
   }
   /**
-   * Recursively expand all parent nodes of a specific child. This is a recursive method used for tree 
+   * Recursively expand all parent nodes of a specific child. This is a recursive method used for tree
    * traversal and not meant to be used externally.
    * @internal
    * @param stepId The id of the child node
@@ -295,8 +295,8 @@ export class SzHowUIService {
     if(node && node.virtualEntityIds && node.virtualEntityIds.indexOf(stepId) > -1) {
       // node is a child of this node
       let nodeIsExcludedType = typesToExclude && typesToExclude.length > 0 ? typesToExclude.indexOf(node.stepType) < 0 : false;
-      if(!this.isGroupExpanded(node.id) && !nodeIsExcludedType) { 
-        this._expandedGroups.push(node.id); 
+      if(!this.isGroupExpanded(node.id) && !nodeIsExcludedType) {
+        this._expandedGroups.push(node.id);
         //console.log(`\t\tadded "${node.id} to [${this._expandedGroups.join(',')}]"`, typesToExclude);
       }
       // check the children recursively
@@ -312,7 +312,7 @@ export class SzHowUIService {
   /**
    * Expand all parents in tree that need to be expanded for the child node to be visible.
    * @internal
-   * @param node 
+   * @param node
    */
   private expandParentNodes(node: SzResolutionStepNode) {
     //let _group      = this._stepNodeGroups.get(id);
@@ -371,14 +371,14 @@ export class SzHowUIService {
         console.info(`getStepNodeById(${id}): `,_retVal, _traversedTree, _stepNodes);
       }
     }
-    
+
     //console.warn(`getStepNodeById(${id}): `,_retVal);
     return _retVal;
   }
 
   /**
-   * Get a flat array of all nodes and groups that contain the node who's id 
-   * matches what's being searched for. This is a recursive method used for tree 
+   * Get a flat array of all nodes and groups that contain the node who's id
+   * matches what's being searched for. This is a recursive method used for tree
    * traversal and not meant to be used externally.
    * @internal
    * @param id id of the child node to search for.
@@ -405,9 +405,9 @@ export class SzHowUIService {
     return retVal;
   }
   /**
-   * Query the `/entities/${entityId}/how` api server endpoint for data on HOW an 
+   * Query the `/entities/${entityId}/how` api server endpoint for data on HOW an
    * entity came together.
-   * @param entityId 
+   * @param entityId
    */
   public getHowDataForEntity(entityId: SzEntityIdentifier): Observable<SzHowEntityResponse> {
     return this.entityDataService.howEntityByEntityID(
@@ -421,11 +421,11 @@ export class SzHowUIService {
   }
   /**
    * Get all parent nodes of a specific child node.
-   * This is a recursive method used for tree 
+   * This is a recursive method used for tree
    * traversal and not meant to be used externally.
    * @internal
    * @param childNodeId The id of the node who's ancestral tree we should traverse.
-   * @param startingNode The starting node who's tree we should search down. This is usually a "final" card but it could be any level 
+   * @param startingNode The starting node who's tree we should search down. This is usually a "final" card but it could be any level
    * in a tree.
    */
   private getParentsContainingNode(childNodeId: string, startingNode?: SzResolutionStepNode, debug?: boolean): SzResolutionStepNode[] {
@@ -434,7 +434,7 @@ export class SzHowUIService {
 
     if(startingNode && startingNode.virtualEntityIds && startingNode.virtualEntityIds.includes(childNodeId)){
       // child node is present in tree
-      // limit to direct descendents
+      // limit to direct descendants
       if(startingNode && startingNode.children && startingNode.children.some) {
         //has descendent
         let _dd = startingNode.children.some((_n) => {
@@ -469,7 +469,7 @@ export class SzHowUIService {
     // first get ALL nodes in tree that might contain node
     let parentNodes: Array<SzResolutionStepNode> = this.getParentsContainingNode(childNodeId, undefined, debug);
     let retVal: SzResolutionStepNode;
-    // now filter those down to a single node that has the node we're 
+    // now filter those down to a single node that has the node we're
     // looking for in it's children array
     if(parentNodes && parentNodes.find) {
       if(parentItemType) {
@@ -480,7 +480,7 @@ export class SzHowUIService {
       if(debug) {
         console.info(`getDirectParentContainingNode(${childNodeId}): `, parentNodes);
       }
-      // we should have all descendents at this point
+      // we should have all descendants at this point
       retVal = parentNodes.find((pNode)=>{
         if(pNode.children && pNode.children.find) {
           let childMatchingId = pNode.children.find((cNode)=>{
@@ -498,8 +498,8 @@ export class SzHowUIService {
     return retVal;
   }
   /**
-   * Get the direct ancestor of a child node. It is technically possible that there is more 
-   * than 1 parent of a child but exceedingly unlikely except in cases that resolved to two separate 
+   * Get the direct ancestor of a child node. It is technically possible that there is more
+   * than 1 parent of a child but exceedingly unlikely except in cases that resolved to two separate
    * final entities.
    * @param childNodeId the id of the child
    */
@@ -511,8 +511,8 @@ export class SzHowUIService {
     return retVal;
   }
   /**
-   * Get the Root level node group that contains a specific child step. So say if you have a 
-   * add record step that is a child of an interim step that is a child of a merge step, that is a child of 
+   * Get the Root level node group that contains a specific child step. So say if you have a
+   * add record step that is a child of an interim step that is a child of a merge step, that is a child of
    * a final result card you can get the "FINAL" card from the child id of the record step.
    * @param childNodeId the id of the child
    */
@@ -549,9 +549,9 @@ export class SzHowUIService {
         // we are looking in a specific group
         let _groupSpecified = this._stepNodeGroups.has(gId) ? this._stepNodeGroups.get(gId) : undefined;
         if(debug){
-          console.log(`isStepMemberOfStack(${vId}, ${gId})`, 
-          _groupSpecified, 
-          ((_groupSpecified && _groupSpecified.virtualEntityIds) ? _groupSpecified.virtualEntityIds.indexOf(vId) > -1 : false), 
+          console.log(`isStepMemberOfStack(${vId}, ${gId})`,
+          _groupSpecified,
+          ((_groupSpecified && _groupSpecified.virtualEntityIds) ? _groupSpecified.virtualEntityIds.indexOf(vId) > -1 : false),
           this._stepNodeGroups);
         }
         if(_groupSpecified) {
@@ -598,9 +598,9 @@ export class SzHowUIService {
   }
 
   /**
-   * Step nodes that are children of nodes with a itemType of `STACK` can be "pinned" in place. When a 
+   * Step nodes that are children of nodes with a itemType of `STACK` can be "pinned" in place. When a
    * step in a stack is pinned in place we remove that node from the stack and place it in the stack's parent at the appropriate index.
-   * if there are steps after the step being pinned we remove those items too and place them in a new stack and place the 
+   * if there are steps after the step being pinned we remove those items too and place them in a new stack and place the
    * new stack directly after or before the item being pinned.
    * @param vId the id of the step to pin
    * @param gId the id of the stack that contains the item to be pinned.
@@ -627,11 +627,11 @@ export class SzHowUIService {
             return (step as SzResolutionStepNode).id ? (step as SzResolutionStepNode).id === _stack.id : step.resolvedVirtualEntityId === _stack.id ? true : false;
           });
           let itemToPin             = _members[_itemIndexInStack];
-          if(_itemIndexInStack > -1) { 
+          if(_itemIndexInStack > -1) {
             //console.log(`\item index: ${_itemIndexInStack}`);
             itemsBeforeNode     = itemsBeforeNode.concat(_members.slice(0, _itemIndexInStack));
-            if((_itemIndexInStack+1) < _members.length) { 
-              itemsAfterNode    = itemsAfterNode.concat(_members.slice(_itemIndexInStack+1)); 
+            if((_itemIndexInStack+1) < _members.length) {
+              itemsAfterNode    = itemsAfterNode.concat(_members.slice(_itemIndexInStack+1));
             }
 
             // move current item to "after" the stack
@@ -741,9 +741,9 @@ export class SzHowUIService {
     return this._stepNodeGroups;
   }
   /**
-   * Expand a specific node and all parent nodes of node that need to be expanded in order for the node to 
-   * be visible. Collapse all other nodes that are not the node or a direct decendent. 
-   * @param vId 
+   * Expand a specific node and all parent nodes of node that need to be expanded in order for the node to
+   * be visible. Collapse all other nodes that are not the node or a direct descendant.
+   * @param vId
    */
   public selectStep(vId: string) {
     // clear out any other selected
@@ -753,7 +753,7 @@ export class SzHowUIService {
     return;
   }
   /**
-   * Checks to see whether or not a specific step can become a child of a sibling stack or create one, and that the resulting 
+   * Checks to see whether or not a specific step can become a child of a sibling stack or create one, and that the resulting
    * stack would have at least 2 items it in.
    * @param vId the id of the step to check
    */
@@ -770,8 +770,8 @@ export class SzHowUIService {
       if(itemNode) {
         // located node
         itemsBeforeNode     = itemsBeforeNode.concat(parentNode.children.slice(0, indexInParent));
-        if((indexInParent + 1) < parentNode.children.length) { 
-          itemsAfterNode    = itemsAfterNode.concat(parentNode.children.slice(indexInParent + 1)); 
+        if((indexInParent + 1) < parentNode.children.length) {
+          itemsAfterNode    = itemsAfterNode.concat(parentNode.children.slice(indexInParent + 1));
         }
         if(debug) {
           console.log(`stepCanBeUnPinned: `, itemsBeforeNode, itemsAfterNode);
@@ -784,14 +784,14 @@ export class SzHowUIService {
           // is previous item a step or stack group AND
           // not an interim or merge step
           retVal = (
-            (itemsBeforeNode[(itemsBeforeNode.length - 1)] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STEP || 
+            (itemsBeforeNode[(itemsBeforeNode.length - 1)] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STEP ||
             (itemsBeforeNode[(itemsBeforeNode.length - 1)] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STACK) ? true : false;
         }
         if(!retVal && itemsAfterNode && itemsAfterNode.length > 0 && itemsAfterNode[0]) {
           // is next item a step or stack group AND
           // not an interim or merge step
           retVal = (
-            (itemsAfterNode[0] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STEP || 
+            (itemsAfterNode[0] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STEP ||
             (itemsAfterNode[0] as SzResolutionStepNode).itemType === SzResolutionStepListItemType.STACK) ? true : false;
         }
       } else if(debug) {
@@ -804,9 +804,9 @@ export class SzHowUIService {
   }
   /**
    * Alternate the expanded state of a Step or Group Node.
-   * @param id Id of the step to expand/collapse. If groupId is not set and id is we assume that we are 
+   * @param id Id of the step to expand/collapse. If groupId is not set and id is we assume that we are
    * looking for a node with a type of "STEP" who's id matches the `id` parameter.
-   * Pass "undefined" with a groupId if you specifically 
+   * Pass "undefined" with a groupId if you specifically
    * want to toggle a group node.
    * @param groupId Id of the group to toggle expansion on. Pass `id` as `undefined` to toggle a node with type `STACK`,`GROUP`, or `FINAL`.
    * @param itemType optionally specify the item type you want to toggle.
@@ -823,9 +823,9 @@ export class SzHowUIService {
     }
   }
   /**
-   * Step nodes that are children of nodes with a itemType of `STACK` can be "pinned" in place. When a 
-   * step in a stack is unpinned we check to see if we can add the item being unpinned to any stack groups either before or 
-   * after the item being unpinned. If none exist we create them, if additional step items are before or after and those 
+   * Step nodes that are children of nodes with a itemType of `STACK` can be "pinned" in place. When a
+   * step in a stack is unpinned we check to see if we can add the item being unpinned to any stack groups either before or
+   * after the item being unpinned. If none exist we create them, if additional step items are before or after and those
    * items are also not pinned we merge all the steps together in order to their new target STACK.
    * @param vId the id of the step to pin
    */
@@ -846,8 +846,8 @@ export class SzHowUIService {
         if(itemNode) {
           // located node
           itemsBeforeNode     = itemsBeforeNode.concat(parentNode.children.slice(0, (indexInParent - 0)));
-          if((indexInParent+1) < parentNode.children.length) { 
-            itemsAfterNode      = itemsAfterNode.concat(parentNode.children.slice((indexInParent + 1))); 
+          if((indexInParent+1) < parentNode.children.length) {
+            itemsAfterNode      = itemsAfterNode.concat(parentNode.children.slice((indexInParent + 1)));
           }
           let _pItem            = itemsBeforeNode && itemsBeforeNode.length > 0 ? (itemsBeforeNode[(itemsBeforeNode.length - 1)] as SzResolutionStepNode) : undefined;
           let _nItem            = itemsAfterNode  && itemsAfterNode.length  > 0 ? (itemsAfterNode[0] as SzResolutionStepNode) : undefined;
@@ -899,7 +899,7 @@ export class SzHowUIService {
             // add current item to following stack
             _nItem.children = [itemNode].concat(_nItem.children);
             if(_pItem && (_pItem.itemType === SzResolutionStepListItemType.STEP || SzHowUIService.getResolutionStepCardType(_pItem) === SzResolutionStepDisplayType.ADD)){
-              // append contiguous previous items to beggining of children
+              // append contiguous previous items to beginning of children
               let previousStepsToAdd      = [];
               let itemsBeforeNodeInRev    = itemsBeforeNode;
               let isContiguous            = true;
@@ -920,7 +920,7 @@ export class SzHowUIService {
             itemsToRemoveFromParent.push(itemNode);
             //console.log(`\t\tadded current item to following stack`);
           } else if(_pItem && (_pItem.itemType === SzResolutionStepListItemType.STEP || SzHowUIService.getResolutionStepCardType(_pItem) === SzResolutionStepDisplayType.ADD)) {
-            // previous item exists and is a step we can add to the current node 
+            // previous item exists and is a step we can add to the current node
             // to create a new stack
             let _childrenOfNewStack     = [];
             let itemsBeforeNodeInRev    = itemsBeforeNode;
@@ -1031,8 +1031,8 @@ export class SzHowUIService {
   /**
    * Sets up the service class and sets the "entityDataService" injected in to it
    * to a static reference so static methods can have access to the injected services.
-   * @param entityDataService 
-   * @param prefs 
+   * @param entityDataService
+   * @param prefs
    */
   constructor(
     public configDataService: SzConfigDataService,
@@ -1047,9 +1047,9 @@ export class SzHowUIService {
   // -----------------------------  STATIC METHODS -----------------------------
 
   /**
-   * Query the `/entities/${entityId}/how` api server endpoint for data on HOW an 
+   * Query the `/entities/${entityId}/how` api server endpoint for data on HOW an
    * entity came together.
-   * @param entityId 
+   * @param entityId
    */
   public static getHowDataForEntity(entityId: SzEntityIdentifier): Observable<SzHowEntityResponse> {
     return this._entityDataService.howEntityByEntityID(
@@ -1057,13 +1057,13 @@ export class SzHowUIService {
     )
   }
   /**
-   * Get the type of `CARD` that should be displayed. Possible results are: 
+   * Get the type of `CARD` that should be displayed. Possible results are:
    * - `ADD` when a step added a singleton record to resolution
    * - `CREATE` when a step created a virtual entity
-   * - `INTERIM` a virtual entity used to temporily hold the result of previous steps that are then used in subsequent steps.
+   * - `INTERIM` a virtual entity used to temporarily hold the result of previous steps that are then used in subsequent steps.
    * - `FINAL` the final result of a series of other steps used to resolve an entity
    * - `MERGE` when two virtual entities are merged together to form a new virtual entity
-   * @param step the resolution step 
+   * @param step the resolution step
    */
   public static getResolutionStepCardType(step: SzResolutionStep, stepNumber?: number): SzResolutionStepDisplayType {
     if(step && step !== undefined) {
@@ -1098,17 +1098,17 @@ export class SzHowUIService {
    * - `FINAL` a card representing a final result of previous steps that resulted in a entity.
    * - `GROUP` used for nodes that have child nodes and/or groups. groups can expand and collapse child nodes.
    * - `STACK` a special type of `GROUP` that displays a series of contiguous steps that can be collapsed and expanded only 1 level deep. Used
-   * to collapse multiple steps of the same type in to a meta group to declutter repetative steps.
+   * to collapse multiple steps of the same type in to a meta group to de-clutter repetitive steps.
    * - `STEP` an individual card that has no child items.
-   * @param item 
+   * @param item
    */
   public static getResolutionStepListItemType(item: SzResolutionStep | SzResolutionStepNode): SzResolutionStepListItemType {
     if(item && item !== undefined) {
       let itemIsGroup   = (item as SzResolutionStepNode).virtualEntityIds && (item as SzResolutionStepNode).itemType ===  SzResolutionStepListItemType.GROUP ? true : false;
       let itemsIsStack  = (item as SzResolutionStepNode).virtualEntityIds && (item as SzResolutionStepNode).itemType ===  SzResolutionStepListItemType.STACK && !itemIsGroup ? true : false;
-      
+
       if(itemIsGroup) {
-        // item is a interim entity whos children are a collection of steps AND/OR stacks (single with subtree)
+        // item is a interim entity who's children are a collection of steps AND/OR stacks (single with subtree)
         return SzResolutionStepListItemType.GROUP;
       } else if(itemsIsStack) {
         // item is a collection of steps but not an interim entity (collapsible multi-step)
@@ -1121,9 +1121,9 @@ export class SzHowUIService {
     return undefined;
   }
   /**
-   * Get all virtualEntityId's or resolvedEntityId's or Id's and recordId's for steps or nodes that 
-   * are descendents of a step node. This is a recursive Tree traversal method and should not be used trivially.
-   * @param isNested is the step being passed as the `step` parameter a child of another card. pass `false` or `undefined` for 
+   * Get all virtualEntityId's or resolvedEntityId's or Id's and recordId's for steps or nodes that
+   * are descendants of a step node. This is a recursive Tree traversal method and should not be used trivially.
+   * @param isNested is the step being passed as the `step` parameter a child of another card. pass `false` or `undefined` for
    * root level nodes.
    * @param step the step to gather virtual entity ids's for
    */
@@ -1142,12 +1142,12 @@ export class SzHowUIService {
   }*/
   /**
    * @internal
-   * recursively scan a nodes children and their childrens children to collect
-   * all virtual entity id's that are decendents of this node
+   * recursively scan a nodes children and their children's children to collect
+   * all virtual entity id's that are descendants of this node
    */
   public static getVirtualEntityIdsForNode(_rStep?: SzResolutionStepNode): string[] {
     let retVal: Array<string> = [];
-    
+
     if(_rStep && _rStep.children) {
       _rStep.children.forEach((sNode, ind)=>{
         let idToAdd = (sNode as SzResolutionStepNode).id ? (sNode as SzResolutionStepNode).id : (sNode as SzResolutionStep).resolvedVirtualEntityId;
@@ -1162,12 +1162,12 @@ export class SzHowUIService {
     return retVal;
   }
   /**
-   * Set the `virtualEntityIds` property of a node/step to an array of virtualEntityId's or resolvedEntityId's or Id's and recordId's for steps or nodes that 
-   * are descendents of a step node. This is a recursive Tree traversal method and should not be used trivially.
-   * @param isNested is the step being passed as the `step` parameter a child of another card. pass `false` or `undefined` for 
+   * Set the `virtualEntityIds` property of a node/step to an array of virtualEntityId's or resolvedEntityId's or Id's and recordId's for steps or nodes that
+   * are descendants of a step node. This is a recursive Tree traversal method and should not be used trivially.
+   * @param isNested is the step being passed as the `step` parameter a child of another card. pass `false` or `undefined` for
    * root level nodes.
    * @param step the step to query for descendent steps/children
-   * @returns 
+   * @returns
    */
   public static setVirtualEntityIdsForNode(isNested: boolean, step: SzResolutionStepNode) {
     let retVal: string[] = [];

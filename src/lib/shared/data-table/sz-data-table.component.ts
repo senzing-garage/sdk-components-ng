@@ -9,7 +9,7 @@ import { SzDataTableCellEvent } from '../../models/stats';
  * Embeddable Data Table Component
  * used to display a collection of entities in a spreadsheet format.
  *
- * 
+ *
  * @internal
  * @example <!-- (Angular) -->
  * <sz-data-table
@@ -43,8 +43,8 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   private _sortDirection: 'DESC' | 'ASC' = 'ASC';
   private _sortOrder: Map<number, number> = new Map<number, number>();
   private _hiddenColumns: string[] = [];
-  
-  /** name of field in data to be used as the primary key 
+
+  /** name of field in data to be used as the primary key
    * for storing reverse lookups, row state etc.
    * @required
   */
@@ -59,7 +59,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
       // check to see if field is in the columns list
       overwriteProperty = this._cols.has(value);
     } else if(this._data && this._data.length > 0) {
-      /** 
+      /**
        * @TODO check to see if field is in the columns list
        **/
     }
@@ -84,7 +84,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
     // if cols aren't defined just grab everything from the data
     if(!this._cols && this._data && this._data.length > 0 && this._data[0]) {
         this._cols = this.getFieldNamesFromData(this._data);
-        if(!this._colOrder){ 
+        if(!this._colOrder){
           let _cOrder = this.getColumnOrderFromData(this._data);
           this._colOrder  = _cOrder;
           console.log('set column order: ', _cOrder);
@@ -215,7 +215,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   constructor() {}
   ngOnInit() {}
   ngAfterViewInit() {
-    // we need to wait until we have data before trying to 
+    // we need to wait until we have data before trying to
     // get the real sizes of inner content
     this.resetCellSizes();
   }
@@ -231,7 +231,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
 
   getFieldNamesFromData(data): Map<string,string>{
     let retVal = new Map();
-    
+
     this._data.forEach((drow) => {
         let fields = Object.keys(this._data[0]);
         if(fields && fields.length > 0){
@@ -295,10 +295,10 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
     }
     return retVal;
   }
-  cellStyle(fieldName: string, rowsPreceeding: number): string {
+  cellStyle(fieldName: string, rowsPreceding: number): string {
     let retVal = '';
     let rowOrderPrefix      = 0;
-    let rowCellOrderOffset  = this.numberOfColumns * rowsPreceeding;
+    let rowCellOrderOffset  = this.numberOfColumns * rowsPreceding;
     if(this._colOrder && this._colOrder.has(fieldName)) {
       retVal += 'order: '+ (rowCellOrderOffset+this._colOrder.get(fieldName))+';';
     }
@@ -327,8 +327,8 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
       }
       // if [object Object] is in output something needs to be rendered better
       /*if(fieldName === 'featureDetails') {
-        console.warn(`${fieldName} type: `, 
-        (retVal as string).indexOf('object Object'), 
+        console.warn(`${fieldName} type: `,
+        (retVal as string).indexOf('object Object'),
         (value as unknown).constructor === Object,
         Object.prototype.toString.call(value) === "[object Object]");
       }*/
@@ -408,7 +408,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
       this._colOrder.set(_k, currentIndex);
       this._colOrder.set(fieldName, newIndex);
     //} else if(shiftRight) {
-      // swap 
+      // swap
     } else {
       // were probably jumping more than one item
       if(newIndex === 0) {
@@ -428,7 +428,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
           }
         });
       }
-      // insert at new position, then every item 
+      // insert at new position, then every item
       // > (lowest new || old) old position && < new position needs to decrement
     }
     //console.log(`reordered columns: `, this.orderedColumns, this._colOrder);
@@ -495,7 +495,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   isSortedBy(fieldName: string) {
     return this._sortBy !== undefined && this._sortBy === fieldName;
   }
-  
+
   sortBy(fieldName: string, sortDirection: 'DESC' | 'ASC') {
     this._sortBy          = fieldName;
     this._sortDirection   = sortDirection;
@@ -512,7 +512,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
     this._columnBeingResized    = (srcEle.classList.contains('handle-resize')) ? srcEle.parentElement : srcEle;
     console.log(`handle mdown: `, this._columnBeingResized);
   }
-  onResizeMouseUp(fieldName: string, event: MouseEvent) { 
+  onResizeMouseUp(fieldName: string, event: MouseEvent) {
     // stop listening for mousemove
     this._columnResizing      = false;
     this._columnBeingResized  = undefined;
@@ -571,7 +571,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   hasExpandedCells(rowRef?: HTMLElement) {
     return false;
   }
-  onCellClick(cellName: string, data: any, event?: MouseEvent, element?: HTMLElement) { 
+  onCellClick(cellName: string, data: any, event?: MouseEvent, element?: HTMLElement) {
     console.log(`on${cellName}Click: `, event, data);
     this.cellClick.emit({key: cellName, value: data});
     if(element) {
@@ -610,14 +610,14 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
     if(this._cellContentSizes.has(element)) {
       // grab previous values
       // we do this to avoid calculating whether or not
-      // something is collapseable after being expanded
+      // something is collapsable after being expanded
       _sizes = this._cellContentSizes.get(element);
 
     } else if(element) {
       _sizes = [element.offsetHeight+5, element.scrollHeight];
       this._cellContentSizes.set(element, _sizes);
     }
-    if(element) { 
+    if(element) {
       // always grab the scroll height off live
       _sizes[1] = element.scrollHeight;
     }
@@ -629,9 +629,9 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
   toggleCellExpansion(element: HTMLElement, rowId?: number) {
     if(element && element.hasAttribute && element.hasAttribute('data-row-index')) {
       let rowId               = element.getAttribute('data-row-index');
-      let rowHasExpadedCells  = (this._expandedCells.has(rowId));
-      if(!rowHasExpadedCells) {
-        // easy-peasy, just add
+      let rowHasExpandedCells  = (this._expandedCells.has(rowId));
+      if(!rowHasExpandedCells) {
+        // just add
         this._expandedCells.set(rowId, new Map([[element, 0]]));
       } else {
         // check to see if cell exists
@@ -663,7 +663,7 @@ export class SzDataTable implements OnInit, AfterViewInit, OnDestroy {
     }*/
   }
   public getRowId(data, index) {
-    // if reverse lookup map check that first 
+    // if reverse lookup map check that first
 
     // if it's not in there use the index
     return index;

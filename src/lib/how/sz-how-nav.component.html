@@ -13,10 +13,10 @@
           <mat-checkbox [(ngModel)]="filterByVirtualEntityCreation" name="filterByVirtualEntityCreationCheckbox" class="prevent-text-selection">Create Virtual Entity ({{getParameterCount('CREATE')}})</mat-checkbox>
         </li>
         <li *ngIf="getParameterCount('MERGE') > 0">
-          <mat-checkbox [(ngModel)]="filterByMergeInterimEntitites" name="filterByMergeInterimEntititesCheckbox" class="prevent-text-selection">Merge Interim Entitites ({{getParameterCount('MERGE')}})</mat-checkbox>
+          <mat-checkbox [(ngModel)]="filterByMergeInterimEntities" name="filterByMergeInterimEntitiesCheckbox" class="prevent-text-selection">Merge Interim Entities ({{getParameterCount('MERGE')}})</mat-checkbox>
         </li>
         <li *ngIf="getParameterCount('ADD') > 0">
-          <mat-checkbox [(ngModel)]="filterByAddRecordtoVirtualEntity" name="filterByMergeInterimEntititesCheckbox" class="prevent-text-selection">Add Record to Virtual Entity ({{getParameterCount('ADD')}})</mat-checkbox>
+          <mat-checkbox [(ngModel)]="filterByAddRecordtoVirtualEntity" name="filterByMergeInterimEntitiesCheckbox" class="prevent-text-selection">Add Record to Virtual Entity ({{getParameterCount('ADD')}})</mat-checkbox>
         </li>
       </ul>
     </section>

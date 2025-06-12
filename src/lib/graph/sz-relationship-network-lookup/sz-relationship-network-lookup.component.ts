@@ -54,7 +54,7 @@ export class SzRelationshipNetworkLookupComponent implements OnInit {
         this._entityIds.push(parseInt(text.trim()));
       } else {
         // anything else we do not handle
-        console.error('Entity ID in specifeid array is not properly formatted: ', v, value);
+        console.error('Entity ID in specified array is not properly formatted: ', v, value);
         throw new Error('Entity ID in specified is not properly formatted: ' + v);
       }
     });

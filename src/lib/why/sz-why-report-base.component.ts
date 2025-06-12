@@ -15,7 +15,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
     /** subscription to notify subscribers to unbind */
     public unsubscribe$ = new Subject<void>();
     /**
-     * place to store the original data given back from the network response, but before 
+     * place to store the original data given back from the network response, but before
      * processing transforms and formatting.
      * @internal
      */
@@ -26,31 +26,31 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
      */
     protected _entities: SzEntityData[];
     /**
-     * stats for each feature found in the entity. 
-     * @internal 
+     * stats for each feature found in the entity.
+     * @internal
      */
     protected _featureStatsById: Map<number, SzEntityFeatureDetail>;
     protected _featuresByDetailIds: Map<number, SzEntityFeature>;
-    
+
     /** data thats ready to be used for UI/UX rendering, multiple fields
      * concatenated in to meta-fields, embedded line breaks, html tags etc.
      */
     protected _formattedData;
-    /** 
+    /**
      * an array of the columns to display in the table
-     * @internal 
+     * @internal
      */
     protected _headers: string[];
-    /** returns true when waiting for network requests to complete. 
+    /** returns true when waiting for network requests to complete.
      * @internal
      */
     protected _isLoading = false;
-    /** features in the order found in the server config 
+    /** features in the order found in the server config
      * @internal
      */
     protected _orderedFeatureTypes: string[] | undefined;
-    /** 
-     * rows that will be rendered vertically. auto generated from #getRowsFromData 
+    /**
+     * rows that will be rendered vertically. auto generated from #getRowsFromData
      * @internal
      */
     protected _rows: SzWhyFeatureRow[] = [
@@ -58,13 +58,13 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
       {key: 'DATA_SOURCES',  title: 'Data Sources'},
       {key: 'WHY_RESULT',    title: 'Why Result'}
     ];
-    /** 
-     * shaped data is data that has been extended, hoisted, joined etc but not 
+    /**
+     * shaped data is data that has been extended, hoisted, joined etc but not
      * necessarily containing data that can be directly rendered.
      * @internal
      */
     protected _shapedData;
-  
+
     // -------------------------- component input and output parameters --------------------------
     /** the entity id to display the why report for. */
     @Input()  entityId: SzEntityIdentifier;
@@ -72,12 +72,12 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
     @Input()  recordsToShow: SzRecordId[] | undefined;
     /** returns true when waiting for network requests to complete */
     @Output() loading: EventEmitter<boolean> = new EventEmitter<boolean>();
-    /** when the row definitions(that list all the fields that will be displayed) have been 
+    /** when the row definitions(that list all the fields that will be displayed) have been
      * pulled from the results this even is emitted */
     @Output() onRowsChanged: EventEmitter<SzWhyFeatureRow[]>  = new EventEmitter<SzWhyFeatureRow[]>();
 
     // ----------------------------------- getters and setters -----------------------------------
-    /** return the preformatted data after the transforms and renderers have generated 
+    /** return the preformatted data after the transforms and renderers have generated
      * html compatible rows etc.
     */
     public get formattedData() {
@@ -91,14 +91,14 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
     public get isLoading(): boolean {
       return this._isLoading;
     }
-    /** returns true when waiting for network requests to complete. 
+    /** returns true when waiting for network requests to complete.
      * @internal
      */
     public set isLoading(value: boolean) {
       this._isLoading = value;
     }
     /**
-     * returns a Object who's keys correspond to a particular type of 'featureType' of each type of feature 
+     * returns a Object who's keys correspond to a particular type of 'featureType' of each type of feature
      * in the "matchInfo.featureScores" result of why api response.
      * @internal
      */
@@ -106,7 +106,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
         return this._renderers;
     }
     /**
-     * returns a Object who's keys correspond to a particular type of 'featureType' of each type of feature 
+     * returns a Object who's keys correspond to a particular type of 'featureType' of each type of feature
      * in the "matchInfo.featureScores" result of why api response.
      * @internal
      */
@@ -188,11 +188,11 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
             let le = (i < displayedFeatures.length-1) ? '\n': '';
             entryIndex++;
             let isFeatureScore = (_feature as SzFeatureScore) && (_feature as SzFeatureScore).score > -1;
-            
+
             if(isFeatureScore && (_feature as SzFeatureScore).inboundFeature || (_feature as SzFeatureScore).candidateFeature) {
               let f = (_feature as SzFeatureScore);
               let c = entryIndex === 0 && _colors[f.scoringBucket] && featureIsInMatchKey('NAME', mk) ? 'color-'+ _colors[f.scoringBucket] : '';
-              if(f.inboundFeature) { 
+              if(f.inboundFeature) {
                 if(fBDId && fBDId.has(f.inboundFeature.featureId)){
                   let _fbyDId = fBDId.get(f.inboundFeature.featureId);
                   retVal += `<div class="ws-nowrap line-text ${c}">`+f.inboundFeature.featureValue;
@@ -220,7 +220,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
                   if(f.nameScoringDetails.givenNameScore)   { _nameScoreValues.push(`giv:${f.nameScoringDetails.givenNameScore}`);}
                   if(f.nameScoringDetails.surnameScore)     { _nameScoreValues.push(`sur:${f.nameScoringDetails.surnameScore}`);}
                   if(f.nameScoringDetails.generationScore)  { _nameScoreValues.push(`gen:${f.nameScoringDetails.generationScore}`);}
-  
+
                   retVal += (_nameScoreValues.length > 0 ? `(${_nameScoreValues.join('|')})` : '');
                   if(f.inboundFeature.featureId !== f.candidateFeature.featureId) {
                     retVal += '</div>'+le;
@@ -336,7 +336,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
             let retVal = '';
             let _recordsBySource = new Map<string, SzFocusRecordId[]>();
             data.forEach((r, i) => {
-                if(!_recordsBySource.has(r.dataSource)){ 
+                if(!_recordsBySource.has(r.dataSource)){
                     _recordsBySource.set(r.dataSource, [r]);
                 } else {
                     // add to existing records
@@ -368,8 +368,8 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
             let _values = getArrayOfPairsFromMatchKey(data.key);
             //console.log(`renderers.WHY_RESULT: ${data.key}`, _values);
             // now put it back together with colors
-            _value = _values.map((t) => { 
-              return `<span class="${t.prefix === '-' ? 'color-red' : 'color-green'}">${t.prefix+t.value}</span>`; 
+            _value = _values.map((t) => {
+              return `<span class="${t.prefix === '-' ? 'color-red' : 'color-green'}">${t.prefix+t.value}</span>`;
             }).join('');
             return `<div class="color-mk">${_value}</div>\n`+ (data && data.rule ? `<div><span class="indented"></span>Principle: ${data.rule}</div>`:'');
           } else {
@@ -422,7 +422,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
                 }
                 retVal += '</div>'+ le;
               } else if(_feature) {
-                // nnnnnooooooot suuuuure, maybe single value???
+                // not sure, maybe single value???
                 // just call toString on it for now
                 retVal += new String(_feature);
                 retVal += le;
@@ -433,11 +433,11 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
         }
       }
     }
-    /** return the list of all rows that will be displayed in thecomponent */
+    /** return the list of all rows that will be displayed in the component */
     public get rows() {
       return this._rows;
     }
-  
+
     constructor(
       public configDataService: SzConfigDataService,
       protected entityData: EntityDataService) {
@@ -473,10 +473,10 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
       this.unsubscribe$.next();
       this.unsubscribe$.complete();
     }
-  
+
     // --------------------------- data manipulation subs and routines ---------------------------
-  
-    /** call the /why api endpoint and return a observeable */
+
+    /** call the /why api endpoint and return a observable */
     protected getData(): Observable<SzWhyEntityResponse> {
       return this.entityData.whyEntityByEntityID(parseSzIdentifier(this.entityId), true, true, true, SzDetailLevel.VERBOSE, SzFeatureMode.REPRESENTATIVE, false, false)
     }
@@ -484,7 +484,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
     protected getOrderedFeatures() {
       return this.configDataService.getOrderedFeatures(true);
     }
-  
+
     /** when iterating over each cell for the table this method is called to pull the field value
      * from the "formattedRows" which contain html markup.
      */
@@ -516,7 +516,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
       return cells;
     }
     /**
-     * generate a array of rows to display from the data provided. Returns an array of all unique field values 
+     * generate a array of rows to display from the data provided. Returns an array of all unique field values
      * found in each why result.
      * @internal
      */
@@ -535,11 +535,11 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
             }
           });
         });
-        // if we have features from config we should return the  
+        // if we have features from config we should return the
         // values in that order
         if(orderedFeatureTypes && orderedFeatureTypes.length > 0) {
           _rows.sort((
-              a: SzWhyFeatureRow, 
+              a: SzWhyFeatureRow,
               b: SzWhyFeatureRow
           ) => {
             return orderedFeatureTypes.indexOf(a.key) - orderedFeatureTypes.indexOf(b.key);
@@ -547,8 +547,8 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
         }
         return _rows;
     }
-    
-    /** generate a map of features, keyed by id so we can get things like "duplicate" counts and 
+
+    /** generate a map of features, keyed by id so we can get things like "duplicate" counts and
      * other meta data for display.
      * @internal
      */
@@ -611,7 +611,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
       }
       return retVal;
     }
-    /** generate a map of feature stats, keyed by id so we can get things like "duplicate" counts and 
+    /** generate a map of feature stats, keyed by id so we can get things like "duplicate" counts and
      * other meta data for display.
      * @internal
      */
@@ -664,9 +664,9 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
       }
       return retVal;
     }
-    /** 
+    /**
      * Add "formattedRows" that correspond to the string renderer output of each item in each collection returned from the result of
-     * #transformData's rows property. The result of each item is a string or collection of strings that is the result of either a 
+     * #transformData's rows property. The result of each item is a string or collection of strings that is the result of either a
      * renderer specific for that feature type, or the 'default' renderer found in this.renderers.default.
      * @internal
      */
@@ -704,9 +704,9 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
       return retVal;
     }
     /**
-     * when the api requests respond this method properly sets up all the 
+     * when the api requests respond this method properly sets up all the
      * properties that get set/generated from some part of those requests
-     * @interal
+     * @internal
      */
     protected onDataResponse(results: [SzWhyEntityResponse, string[]]) {
       this._isLoading = false;
@@ -715,7 +715,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
       this._entities      = results[0].data.entities;
       // add any fields defined in initial _rows value to the beginning of the order
       // custom/meta fields go first basically
-      if(results[1]){ 
+      if(results[1]){
         this._orderedFeatureTypes = this._rows.map((fr)=>{ return fr.key}).concat(results[1]);
       }
       this._featureStatsById    = this.getFeatureStatsByIdFromEntityData(this._entities);
@@ -724,15 +724,15 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
 
       this._shapedData    = this.transformData(this._data, this._entities);
       this._formattedData = this.formatData(this._shapedData);
-      // now that we have all our "results" grab the features so we 
+      // now that we have all our "results" grab the features so we
       // can iterate by those and blank out cells that are missing
       this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
       this._headers       = this.getHeadersFromData(this._shapedData);
     }
     /**
      * Extends the data response from the why api with data found "rows" that can be more directly utilized by the rendering template.
-     * Every why result column gets additional fields like "dataSources", "internalId", "rows", "whyResult" that are pulled, hoisted, 
-     * or joined from other places. 
+     * Every why result column gets additional fields like "dataSources", "internalId", "rows", "whyResult" that are pulled, hoisted,
+     * or joined from other places.
      * @internal
      */
     protected transformData(data: SzWhyEntityResult[] | SzWhyEntitiesResult, entities: SzEntityData[]): SzWhyEntityColumn[] {
@@ -778,7 +778,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
             });
           }
         }
-        // look up records on final entity with the same recordId as the one 
+        // look up records on final entity with the same recordId as the one
         // in the whyResult[i].perspective.focusRecords
         /*
         if(matchWhyResult.perspective.focusRecords && matchWhyResult.perspective.focusRecords.length > 0) {
@@ -817,7 +817,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
         }
         */
         // extend rows with "scoringDetails"
-        
+
         if(matchWhyResult.matchInfo && matchWhyResult.matchInfo.candidateKeys) {
           // add "candidate keys" to features we want to display
           for(let _k in matchWhyResult.matchInfo.candidateKeys) {
@@ -833,9 +833,9 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
               });
             } else {
               // selectively add
-              // aaaaaaactually, if we already have entries for this field we should probably just 
+              // actually, if we already have entries for this field we should probably just
               // use those instead
-              let _featuresOmittingExsiting = matchWhyResult.matchInfo.candidateKeys[_k].filter((_cFeat) => {
+              let _featuresOmittingExisting = matchWhyResult.matchInfo.candidateKeys[_k].filter((_cFeat) => {
                 let alreadyHasFeat = _tempRes.rows[_k].some((_rowFeat) => {
                   return (_rowFeat as SzFeatureScore).candidateFeature.featureId === _cFeat.featureId;
                 });
@@ -850,7 +850,7 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
                 return 0;
               });
               //_tempRes.rows[_k] = _tempRes.rows[_k].concat(matchWhyResult.matchInfo.candidateKeys[_k]);
-              _tempRes.rows[_k] = _tempRes.rows[_k].concat(_featuresOmittingExsiting);
+              _tempRes.rows[_k] = _tempRes.rows[_k].concat(_featuresOmittingExisting);
             }
           }
         }
@@ -870,10 +870,10 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
                   _tempRes.rows[_fKey] = entityForInternalId.features[_fKey];
                 } else {
                   // selectively add
-                  // hmmmm..... .. actuuuuuaaaaaallly..
+                  // hmmm..... .. actually..
                   /*
                   console.log(`${_fKey} existing: `,_tempRes.rows[_fKey]);
-                  let _featuresOmittingExsiting = entityForInternalId.features[_fKey].filter((_eFeat) => {
+                  let _featuresOmittingExisting = entityForInternalId.features[_fKey].filter((_eFeat) => {
                     let alreadyHasFeat = _tempRes.rows[_fKey].some((_rowFeat) => {
                       let _retVal = false;
                       if((_rowFeat as SzCandidateKey).featureId) {
@@ -897,8 +897,8 @@ export class SzWhyReportBaseComponent implements OnInit, OnDestroy {
                     }
                     return 0;
                   });
-                  console.log(`\t${_fKey} omitted: `, _featuresOmittingExsiting);
-                  _tempRes.rows[_fKey] = _tempRes.rows[_fKey].concat(_featuresOmittingExsiting);
+                  console.log(`\t${_fKey} omitted: `, _featuresOmittingExisting);
+                  _tempRes.rows[_fKey] = _tempRes.rows[_fKey].concat(_featuresOmittingExisting);
                   */
                 }
               }

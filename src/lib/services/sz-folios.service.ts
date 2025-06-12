@@ -28,7 +28,7 @@ export class SzFoliosService {
   }
   /** the behavior subject used for broadcasting the searchHistoryUpdated event */
   private search_history$ = new BehaviorSubject( this.prefs.searchForm.searchHistory );
-  /** the observeable that can be listend for when the search history is updated */
+  /** the observable that can be listened for when the search history is updated */
   public  searchHistoryUpdated: Observable<SzSearchHistoryFolio> = this.search_history$.asObservable();
 
   constructor(
@@ -58,8 +58,8 @@ export class SzFoliosService {
   public addToSearchHistory(data: SzSearchEvent) {
     let newSearchHistoryItem = new SzSearchHistoryFolioItem(data.params);
     if (!this.search_history) {
-      // WHAAAAAAHHHHHH??? o.O
-      // ummm.. no. make it so.
+      // what??? o.O
+      // no. make it so.
       this.prefs.searchForm.searchHistory = new SzSearchHistoryFolio( [newSearchHistoryItem] );
       console.log('SzFoliosService.addToSearchHistory: CREATED BRAND NEW FOLIO!!', this.search_history );
     } else if(this.search_history && this.search_history.add) {

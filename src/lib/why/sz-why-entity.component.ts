@@ -11,7 +11,7 @@ import { SzWhyReportBaseComponent } from './sz-why-report-base.component';
 /**
  * Display the "Why" information for entity
  *
- * @example 
+ * @example
  * &lt;!-- (Angular) --&gt;<br/>
  * &lt;sz-why-entity entityId="5"&gt;&lt;/sz-why-entity&gt;<br/><br/>
  *
@@ -29,7 +29,7 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
   // -------------------------- component input and output parameters --------------------------
   /** the entity id to display the why report for. */
   @Input()  override entityId: SzEntityIdentifier;
-  /** when the respone from the server is returned this event is emitted */
+  /** when the response from the server is returned this event is emitted */
   @Output() onResult: EventEmitter<SzWhyEntityResult[] | SzWhyEntitiesResult>     = new EventEmitter<SzWhyEntityResult[] | SzWhyEntitiesResult>();
   // ----------------------------------- getters and setters -----------------------------------
 
@@ -66,14 +66,14 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
 
   // --------------------------- data manipulation subs and routines ---------------------------
 
-  /** call the /why api endpoint and return a observeable */
+  /** call the /why api endpoint and return a observable */
   override getData(): Observable<SzWhyEntityResponse> {
     return this.entityData.whyEntityByEntityID(parseSzIdentifier(this.entityId), true, true, true, SzDetailLevel.VERBOSE, SzFeatureMode.REPRESENTATIVE, false, false)
   }
   /**
-   * when the api requests respond this method properly sets up all the 
+   * when the api requests respond this method properly sets up all the
    * properties that get set/generated from some part of those requests
-   * @interal
+   * @internal
    */
   protected override onDataResponse(results: [SzWhyEntityResponse, string[]]) {
     this._isLoading = false;
@@ -82,7 +82,7 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
     this._entities      = results[0].data.entities;
     // add any fields defined in initial _rows value to the beginning of the order
     // custom/meta fields go first basically
-    if(results[1]){ 
+    if(results[1]){
       this._orderedFeatureTypes = this._rows.map((fr)=>{ return fr.key}).concat(results[1]);
     }
     this._featureStatsById    = this.getFeatureStatsByIdFromEntityData(this._entities);
@@ -91,7 +91,7 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
 
     this._shapedData    = this.transformData(this._data, this._entities);
     this._formattedData = this.formatData(this._shapedData);
-    // now that we have all our "results" grab the features so we 
+    // now that we have all our "results" grab the features so we
     // can iterate by those and blank out cells that are missing
     this._rows          = this.getRowsFromData(this._shapedData, this._orderedFeatureTypes);
     this._headers       = this.getHeadersFromData(this._shapedData);
@@ -101,8 +101,8 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
   }
   /**
    * Extends the data response from the why api with data found "rows" that can be more directly utilized by the rendering template.
-   * Every why result column gets additional fields like "dataSources", "internalId", "rows", "whyResult" that are pulled, hoisted, 
-   * or joined from other places. 
+   * Every why result column gets additional fields like "dataSources", "internalId", "rows", "whyResult" that are pulled, hoisted,
+   * or joined from other places.
    * @internal
    */
   override transformData(data: SzWhyEntityResult[], entities: SzEntityData[]): SzWhyEntityColumn[] {
@@ -145,11 +145,11 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
             } else {
               return 0
             }
-            
+
           });
         }
       }
-      // look up records on final entity with the same recordId as the one 
+      // look up records on final entity with the same recordId as the one
       // in the whyResult[i].perspective.focusRecords to show
       if(matchWhyResult.perspective.focusRecords && matchWhyResult.perspective.focusRecords.length > 0) {
         matchWhyResult.perspective.focusRecords.forEach((fr) => {
@@ -179,7 +179,7 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
                     _tempRes.rows['ADDRESS'] = [];
                   } else {
                     // we already have addresses
-                    // make sure we dont duplicate
+                    // make sure we don't duplicate
                     let valuesToExclude = _tempRes.rows['ADDRESS'].map((faddr)=>{
                       let isFeatureScore = (faddr as SzFeatureScore).candidateFeature ? true : false;
                       //let isScore = (faddr as SzCandidateKey).featureValue ? true : false;
@@ -216,9 +216,9 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
             });
           } else {
             // selectively add
-            // aaaaaaactually, if we already have entries for this field we should probably just 
+            // actually, if we already have entries for this field we should probably just
             // use those instead
-            let _featuresOmittingExsiting = matchWhyResult.matchInfo.candidateKeys[_k].filter((_cFeat) => {
+            let _featuresOmittingExisting = matchWhyResult.matchInfo.candidateKeys[_k].filter((_cFeat) => {
               let alreadyHasFeat = _tempRes.rows[_k].some((_rowFeat) => {
                 return (_rowFeat as SzFeatureScore).candidateFeature.featureId === _cFeat.featureId;
               });
@@ -233,7 +233,7 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
               return 0;
             });
             //_tempRes.rows[_k] = _tempRes.rows[_k].concat(matchWhyResult.matchInfo.candidateKeys[_k]);
-            _tempRes.rows[_k] = _tempRes.rows[_k].concat(_featuresOmittingExsiting);
+            _tempRes.rows[_k] = _tempRes.rows[_k].concat(_featuresOmittingExisting);
           }
         }
       }
@@ -257,7 +257,7 @@ export class SzWhyEntityComponent extends SzWhyReportBaseComponent implements On
 export class SzWhyEntityDialog {
   /** subscription to notify subscribers to unbind */
   public unsubscribe$ = new Subject<void>();
-  
+
   private _entityId: SzEntityIdentifier;
   private _entityName: string;
   private _recordsToShow: SzRecordId[];

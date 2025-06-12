@@ -63,7 +63,7 @@ $sz-mat-theme: mat.m2-define-light-theme((
   color: (
     primary: $sz-mat-primary,
     accent: $sz-mat-accent,
-    warn: $sz-mat-warn,  
+    warn: $sz-mat-warn,
   )
 ));
 
@@ -87,7 +87,7 @@ $senzing-card-hover-color:          mat.m2-get-color-from-palette($senzing-confi
 //@include mat.core-theme($sz-mat-theme);
 //@include mat.button-theme($sz-mat-theme);
 
-// --------------------- CSS VARIABLE BODY INHERITANCE 
+// --------------------- CSS VARIABLE BODY INHERITANCE
 body {
   /* all component styles */
   --sz-font-family: sz-vars.$font-family;
@@ -377,7 +377,7 @@ body {
     --sz-entity-graph-control-padding-bottom: 0px;
     --sz-entity-graph-control-padding-left: 3px;
     --sz-entity-graph-overlay-color: #9d9d9d;
-    
+
     /* tooltip */
     --sz-graph-tooltip-font-size: 10px;
     --sz-graph-tooltip-background-color: #fff;
@@ -425,7 +425,7 @@ body {
     --sz-graph-filter-match-key-tags-count-badge-top: calc(50% - 11px);
     --sz-graph-filter-match-key-tags-count-badge-right: 3px;
     --sz-graph-filter-match-key-tags-count-badge-background-color: #ffffffbd;
-    --sz-graph-filter-match-key-tags-count-badge-color: inheirit;
+    --sz-graph-filter-match-key-tags-count-badge-color: inherit;
     --sz-graph-filter-match-key-core-tags-selected-background-color: rgb(238, 238, 164);
     --sz-graph-filter-match-key-mode-select-track-color: #00000061;
     --sz-graph-filter-match-key-mode-select-handle-color: rgb(219, 219, 219);
@@ -448,7 +448,7 @@ body {
   --sz-why-dialog-header-color: #0909098c;
   --sz-why-dialog-min-height: 400px;
   --sz-why-dialog-default-height: var(--sz-why-dialog-min-height);
-  
+
   /* how report vars */
   --sz-how-nav-min-width: 230px;
   --sz-how-nav-min-height: 100%;
@@ -477,7 +477,7 @@ body {
   --sz-how-step-card-title-text-margin-top: 0px;
   --sz-how-step-card-base-z-index: 500;
 
-  /* entity detail how style overides, defaults to same as non-detail how styles */
+  /* entity detail how style overrides, defaults to same as non-detail how styles */
   --sz-entity-detail-section-how-step-card-color: var(--sz-how-step-card-color);
   --sz-entity-detail-section-how-step-card-border: var(--sz-how-step-card-border);
   --sz-entity-detail-section-how-step-card-type-color-add: var(--sz-how-step-card-type-color-add);
@@ -500,9 +500,9 @@ body {
     --sz-donut-chart-pending-color: rgb(235 255 125);
     --sz-donut-chart-link-color: #{colors.$blue};
     --sz-donut-chart-link-font-size: 13px;
-  
+
   /* sample data table */
-    --sz-sample-table-spinner-background: rgba(68, 68, 68, 0.3); 
+    --sz-sample-table-spinner-background: rgba(68, 68, 68, 0.3);
     --sz-sample-table-spinner-height: calc(99vh - 120px);
     --sz-sample-table-spinner-width: calc(99vw - 10px);
     --sz-sample-table-cell-color: #424242;

@@ -37,7 +37,7 @@
             <span #ttt2 class="tooltip-text">do not show inter-related first level links</span>
           </span>
           <span class="left-adjusted no-text">
-            <mat-checkbox class="unpadded" [checked]="suppressL1InterLinks" 
+            <mat-checkbox class="unpadded" [checked]="suppressL1InterLinks"
             (change)="onCheckboxPrefToggle('suppressL1InterLinks',$event.checked); onMatchKeyCoreModeToggle($event.checked)"></mat-checkbox></span>
         </div>
       </label>
@@ -53,10 +53,10 @@
         </div>
       </label>
       <label class="slider-row" *ngIf="!unlimitedMaxScope">
-        <mat-slider style="width: 100%" min="1" [max]="buildOutMax" 
+        <mat-slider style="width: 100%" min="1" [max]="buildOutMax"
         [disabled]="unlimitedMaxScope"
          #ngSlider><input matSliderThumb [value]="buildOut" (change)="onIntParameterChange('buildOut', {source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value}.value)" #ngSliderThumb="matSliderThumb" /></mat-slider>
-        <!--<input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut" 
+        <!--<input type="range" [min]="buildOutMin" [max]="buildOutMax" formControlName="buildOut" [value]="buildOut"
           (change)="onIntParameterChange('buildOut', getValueFromEventTarget($event))" required>-->
         <span class="intVal">({{ buildOut }})</span>
       </label>
@@ -72,14 +72,14 @@
         </div>
       </label>
       <label class="slider-row" *ngIf="!unlimitedMaxEntities" style="display: flex; flex-direction: row; justify-content: space-between; align-content: center; flex-wrap: nowrap; align-items: center;">
-        <mat-slider style="width: 100%" min="1" [max]="maxEntitiesLimit + 3" step="3" 
+        <mat-slider style="width: 100%" min="1" [max]="maxEntitiesLimit + 3" step="3"
         [disabled]="unlimitedMaxEntities"
          #ngSlider><input matSliderThumb [value]="maxEntities" (change)="onIntParameterChange('maxEntities', {source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value}.value)" #ngSliderThumb="matSliderThumb" /></mat-slider>
-        <!--<input type="range" 
-          min="1" [max]="maxEntitiesLimit + 3" 
+        <!--<input type="range"
+          min="1" [max]="maxEntitiesLimit + 3"
           [disabled]="true"
-          [value]="maxEntities" formControlName="maxEntities" 
-          (change)="onIntParameterChange('maxEntities', getValueFromEventTarget($event))" required>-->        
+          [value]="maxEntities" formControlName="maxEntities"
+          (change)="onIntParameterChange('maxEntities', getValueFromEventTarget($event))" required>-->
         <span style="white-space: nowrap;">({{ maxEntitiesValueLabel }}) of {{ maxEntitiesLimit }}</span>
       </label>
     </li>
@@ -91,7 +91,7 @@
             <span #ttt5 class="tooltip-text">maximum degrees of separation between nodes and focus</span>
           </span>
         </div>
-        <input type="range" min="1" max="5" [value]="maxDegreesOfSeparation" formControlName="maxDegreesOfSeparation" 
+        <input type="range" min="1" max="5" [value]="maxDegreesOfSeparation" formControlName="maxDegreesOfSeparation"
           (change)="onIntParameterChange('maxDegreesOfSeparation', getValueFromEventTarget($event))" required>
         <span class="intVal">({{ maxDegreesOfSeparation }})</span>
       </label>
@@ -107,7 +107,7 @@
         <ng-container *ngIf="shouldDataSourceBeDisplayed(dataSources[i].name)">
             <li formArrayName="datasources">
               <label>
-                <input type="checkbox" [formControlName]="i" 
+                <input type="checkbox" [formControlName]="i"
                   (change)="onDsFilterChange(dataSources[i].name, $event)">{{dataSources[i].name}}
               </label>
             </li>
@@ -157,10 +157,10 @@
   <ul class="other-colors-list">
     <li class="no-text-selection" (mouseover)="onShowTooltip(ttt6.innerHTML, $event)" (mouseout)="hideTooltip(ttt6.innerHTML)">
       <label>
-        <input #queriedNodesColorInput formControlName="queriedEntitiesColor" type="color" [style.background-color]="queriedNodesColorInput.value" 
+        <input #queriedNodesColorInput formControlName="queriedEntitiesColor" type="color" [style.background-color]="queriedNodesColorInput.value"
           (change)="onColorParameterChange('queriedEntitiesColor', getValueFromEventTarget($event))">
         <span class="block-level-src">
-          Active/Focused Enitity
+          Active/Focused Entity
           <span #ttt6 class="tooltip-text">The color of the current entity or entities</span>
         </span>
       </label>
@@ -204,17 +204,17 @@
         [<span (click)="onSelectAllMatchKeyTokens(true)">All On</span> | <span (click)="onSelectAllMatchKeyTokens(false)">All Off</span>]
       </div>
     </div>
-    <!--<mat-slide-toggle 
-      class="match-key-token-mode-select" 
+    <!--<mat-slide-toggle
+      class="match-key-token-mode-select"
       [checked]="isMatchKeyTokenSelectionScopeCore"
       (change)="onMatchKeyCoreModeToggle($event.checked)">Directly Related Only</mat-slide-toggle>-->
-    <mat-chip-listbox 
+    <mat-chip-listbox
       #matchKeyChipList
       multiple
-      class="match-keys mat-chip-list-stacked" 
-      aria-orientation="vertical" 
+      class="match-keys mat-chip-list-stacked"
+      aria-orientation="vertical"
       aria-label="Match Key Filters">
-      
+
       <div *ngIf="suppressL1InterLinks" class="chip-group core">
         <!--matchKeyCoreTokensIncluded: {{matchKeyCoreTokensIncluded}}<br/>-->
         <mat-chip-option *ngFor="let mk of matchKeyCoreTokens; let i = index"
@@ -223,8 +223,8 @@
           (click)="onCoreMkTagFilterToggle(mk.name)"
           disableRipple="true"
           leadingIcon="false"
-          [matBadge]="getMKBadgeCount(mk.coreCount)" 
-          matBadgePosition="after" 
+          [matBadge]="getMKBadgeCount(mk.coreCount)"
+          matBadgePosition="after"
           matBadgeColor="accent">
           {{mk.name}}
         </mat-chip-option>

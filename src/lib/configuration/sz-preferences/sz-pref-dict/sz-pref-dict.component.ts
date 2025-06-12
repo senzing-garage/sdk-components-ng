@@ -28,7 +28,7 @@ export class SzPrefDictComponent implements OnInit {
   private _newKeyMaxInt = Object.keys(this._data).length + 1;
 
   /**
-   * emmitted when a property has been changed.
+   * emitted when a property has been changed.
    * used mostly for diagnostics.
    */
   @Output()

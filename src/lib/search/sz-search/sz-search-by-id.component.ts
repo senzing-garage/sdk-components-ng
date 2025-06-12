@@ -46,7 +46,7 @@ const parseBool = (value: any): boolean => {
 /**
  * Provides a search box component that can search by id and/or record ids.
  *
- * @example 
+ * @example
  * <!-- (WC javascript) SzSearchByIdComponent -->
  * <sz-wc-search-by-id
  * id="sz-search"
@@ -58,14 +58,14 @@ const parseBool = (value: any): boolean => {
  *  });
  * </script>
  *
- * @example 
+ * @example
  * <!-- (Angular) SzSearchByIdComponent -->
  * <sz-search-by-id
  * entityId="1004"
  * (resultChange)="myResultsHandler($event)"
  * (searchStart)="showSpinner()"
  * (searchEnd)="hideSpinner()"></sz-search-by-id>
- * 
+ *
  * @export
  *
  */
@@ -128,23 +128,23 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
   @Output() exception: EventEmitter<Error> = new EventEmitter<Error>();
 
   /**
-   * emmitted when the results have been cleared.
+   * emitted when the results have been cleared.
    * @memberof SzSearchByIdComponent
    */
   @Output() resultCleared: EventEmitter<void> = new EventEmitter<void>();
   /**
-   * emmitted when the search results have been changed.
+   * emitted when the search results have been changed.
    * @memberof SzSearchByIdComponent
    */
   @Output() resultChange: EventEmitter<SzEntityRecord> = new EventEmitter<SzEntityRecord>();
 
   /** the result of the get "by entity id" submitSearch query. */
   private _entity: SzEntityData;
-  /** event emmiter for when the _entity property has changed */
+  /** event emitter for when the _entity property has changed */
   @Output() entityChange: EventEmitter<SzEntityData> = new EventEmitter<SzEntityData>();
 
   /**
-   * emmitted when parameters of the search have been changed.
+   * emitted when parameters of the search have been changed.
    *
    * @memberof SzSearchByIdComponent
    */
@@ -205,7 +205,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
       this.disableDataSourceOption(opt);
     });
   }
-  /** @interal */
+  /** @internal */
   public getAnyDisabled(keys: string[]): string {
     const _some = keys.some((key) => {
       return this.disabledFields[ key ];
@@ -215,7 +215,7 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
     }
     return null;
   }
-  /** @interal */
+  /** @internal */
   public getDisabled(key: string): string {
     if(this.disabledFields && this.disabledFields[ key ]) {
       return '';
@@ -542,13 +542,13 @@ export class SzSearchByIdComponent implements OnInit, OnDestroy {
    * submit current search params to search service.
    * when search service returns a result it publishes the result
    * through the resultChange event emitter, and
-   * any parameter changes through the paramsChange emmitter.
+   * any parameter changes through the paramsChange emitter.
    */
   public submitSearch(): void {
     const searchParams = this.getSearchParams();
     //console.log('submitSearch() ',JSON.parse(JSON.stringify(searchParams)), this);
     if(
-      (searchParams.entityId != undefined && searchParams.entityId != null) || 
+      (searchParams.entityId != undefined && searchParams.entityId != null) ||
       (searchParams.recordId && searchParams.dataSource)
     ) {
       // emit search start

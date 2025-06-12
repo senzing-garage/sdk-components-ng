@@ -35,7 +35,7 @@ export class SzEntityDetailHowReportComponent implements OnDestroy, OnInit {
   ]
   @Input() public forceLayout: boolean = false;
   isOpen: boolean = false;
-  
+
   @HostBinding('class.open') get cssClssOpen() { return this.expanded; }
   @HostBinding('class.closed') get cssClssClosed() { return !this.expanded; }
 
@@ -50,7 +50,7 @@ export class SzEntityDetailHowReportComponent implements OnDestroy, OnInit {
   @Input()
   set expanded(value) {
     this.isOpen = value;
-    // publish event change emmitter
+    // publish event change emitter
     this.onCollapsedChange.emit(!this.isOpen);
   }
   /**
@@ -84,7 +84,7 @@ export class SzEntityDetailHowReportComponent implements OnDestroy, OnInit {
     ).subscribe( this.onPrefsChange.bind(this) );
 
     if(this.entityId){
-        
+
         /*SzHowUIService.getHowDataForEntity(this.entityId).pipe(
             takeUntil(this.unsubscribe$)
         ).subscribe((result) => {

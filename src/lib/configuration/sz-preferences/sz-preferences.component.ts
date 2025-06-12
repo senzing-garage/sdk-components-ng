@@ -7,39 +7,39 @@ import { takeUntil } from 'rxjs/operators';
 
 /**
  * Provides a service integration web component(WC) that can be used to set, read, change, and
- * respoond to UI bus event/preference changes.
+ * respond to UI bus event/preference changes.
  *
  * For Angular implementations we recommend using {@link SzPrefsService} as an injectable as it
  * provides the more robust solution.
  *
- * @example 
+ * @example
  * <!-- (WC) javascript -->
  * <sz-wc-preferences id="prefsIntf"></sz-wc-preferences>
  * <script>document.getElementById('prefsIntf').GraphBuildOut = 5;</script>
  *
- * @example 
+ * @example
  * <!-- (WC) By attribute: -->
  * <sz-wc-preferences
  * graph-build-out="20"></sz-wc-preferences>
  *
- * @example 
+ * @example
  * <!-- (WC) javascript bulk initialize from local storage: -->
  * <sz-wc-preferences id="prefsIntf" show-controls="true"></sz-wc-preferences>
  * <script>
  * document.getElementById('prefsIntf').prefsFromJSONString = localStorage.getItem('NAME_OF_LS_KEY');
  * </script>
  *
- * @example 
+ * @example
  * <!-- (WC) show other data in search results: -->
  * <sz-wc-preferences
  * search-results-show-other-data="true"></sz-wc-preferences>
  *
- * @example 
+ * @example
  * <!-- (WC) show interactive UI: -->
  * <sz-wc-preferences
  * show-controls="true"></sz-wc-preferences>
  *
- * @example 
+ * @example
  * <!-- (Angular) -->
  * <sz-preferences
  * (prefsChange)="myPrefsChangeHandler($event)">
@@ -60,10 +60,10 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   /** show control interface */
   @Input() public showControls = false;
 
-  // --------------------------------- event emmitters and subjects ----------------------
+  // --------------------------------- event emitters and subjects ----------------------
 
   /**
-   * emmitted when a property has been changed.
+   * emitted when a property has been changed.
    * used mostly for diagnostics.
    */
   @Output()
@@ -401,7 +401,7 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   }
   /** publish prefs change events on state change in graph component */
   @Input() public set GraphRememberStateOptions(value: boolean) {
-    // this one doesnt need to push "next" to event bus
+    // this one doesn't need to push "next" to event bus
     // rather it controls whether the other setters send to event bus
     this.prefs.graph.rememberStateOptions = value;
   }
@@ -413,11 +413,11 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   @Input() public set GraphMaxDegreesOfSeparation(value: number) {
     this.prefs.graph.maxDegreesOfSeparation = value;
   }
-  /** maximum nuber of entitities displayed in graph component. useful for overflow scenarios */
+  /** maximum number of entities displayed in graph component. useful for overflow scenarios */
   public get GraphMaxEntities(): number {
     return this.prefs.graph.maxEntities;
   }
-  /** maximum nuber of entitities displayed in graph component. useful for overflow scenarios */
+  /** maximum number of entities displayed in graph component. useful for overflow scenarios */
   @Input() public set GraphMaxEntities(value: number) {
     this.prefs.graph.maxEntities = value;
   }
@@ -496,7 +496,7 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   public toSentenceCase( str: string) {
     return str.replace(/([A-Z]+)/g, " $1").replace(/([A-Z][a-z])/g, " $1")
   }
-  /** get the linked ref to a specific pref whos type should be boolean through a fn */
+  /** get the linked ref to a specific pref who's type should be boolean through a fn */
   public boolPrefChecked(prefGroup: string, prefKey: string){
     let retVal = false;
     if (this.prefs[prefGroup] && typeof this.prefs[prefGroup][prefKey] === 'boolean') {
@@ -513,14 +513,14 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
   public SortByInputType(x,y) {
     return ((x.inputType == y.inputType) ? 0 : ((x.inputType > y.inputType) ? -1 : 1 ));
   }
-  /** get the linked ref to a specific pref whos type should be number through a fn */
+  /** get the linked ref to a specific pref who's type should be number through a fn */
   public prefValAsInt(prefGroup: string, prefKey: string): number {
     let retVal = -1;
     // console.log(`prefValAsInt( ${prefKey} )`, typeof this.prefs[prefGroup][prefKey]);
     retVal = this.prefs[prefGroup][prefKey];
     return retVal;
   }
-  /** update a specific pref whos type should be boolean through a fn */
+  /** update a specific pref who's type should be boolean through a fn */
   updateBoolPrefValue(prefGroup: string, prefKey: string, evt) {
     const _checked = evt.target.checked;
     let prefTypeFromSchema = this.prefs[prefGroup].getPublicPropertiesSchema()[prefKey]
@@ -528,7 +528,7 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
       this.prefs[prefGroup][prefKey] = _checked;
     }
   }
-  /** get the linked ref to a specific pref whos type should be number through a fn */
+  /** get the linked ref to a specific pref who's type should be number through a fn */
   updateIntPrefValue(prefGroup: string, prefKey: string, event: any): void {
     const prefVal = (event && event.srcElement && event.srcElement.value) ? parseInt(event.srcElement.value) : this.prefs[prefGroup][prefKey] ;
     //console.log(`updateIntPrefValue(${prefGroup}, ${prefKey})`, prefVal, typeof this.prefs[prefGroup][prefKey]);
@@ -557,7 +557,7 @@ export class SzPreferencesComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-  /** event bus prefs change to component emmitter proxy */
+  /** event bus prefs change to component emitter proxy */
   private onPrefsChange(value: SzSdkPrefsModel): void {
     if(this.prefsChange) {
       this.prefsChange.emit(value);
