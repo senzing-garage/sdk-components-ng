@@ -2,14 +2,15 @@ name: npm build
 
 on: push
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   npm-build:
     name: build, compile, and test angular components
     outputs:
       status: ${{ job.status }}
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -17,6 +18,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v5
