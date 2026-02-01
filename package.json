@@ -64,7 +64,7 @@
     "@angular/forms": "^19.2.16",
     "@angular/material": "^19.2.16",
     "@angular/platform-browser": "^19.2.16",
-    "@angular/platform-browser-dynamic": "^19.2.16",
+    "@angular/platform-browser-dynamic": "^19.2.18",
     "@angular/router": "^19.2.16",
     "@senzing/rest-api-client-ng": "^8.0.0",
     "d3": "^7.8.4",
